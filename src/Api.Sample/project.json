@@ -1,0 +1,41 @@
+﻿{
+  "version": "1.0.0-*",
+  "compilationOptions": {
+    "emitEntryPoint": true
+  },
+
+  "dependencies": {
+    "Microsoft.AspNet.IISPlatformHandler": "1.0.0-rc1-final",
+    "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
+    "Microsoft.AspNet.Diagnostics": "1.0.0-rc1-final",
+    "Microsoft.AspNet.Server.Kestrel": "1.0.0-rc1-final",
+    "Microsoft.AspNet.StaticFiles": "1.0.0-rc1-final",
+    "Microsoft.AspNet.Authentication.JwtBearer": "1.0.0-rc1-final",
+    "Microsoft.AspNet.Authentication.OAuthBearer": "1.0.0-beta7",
+    "Microsoft.Extensions.Configuration.FileProviderExtensions": "1.0.0-rc1-final",
+    "Microsoft.Extensions.Configuration.Json": "1.0.0-rc1-final",
+    "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
+    "Microsoft.Extensions.Logging.Console": "1.0.0-rc1-final",
+    "Microsoft.Extensions.Logging.Debug": "1.0.0-rc1-final",
+    "AspNet.Metrics": "1.0.0-alpha"
+  },
+
+  "commands": {
+    "web": "Microsoft.AspNet.Server.Kestrel"
+  },
+
+  "frameworks": {
+    "dnx451": {
+    }
+   
+  },
+
+  "exclude": [
+    "wwwroot",
+    "node_modules"
+  ],
+  "publishExclude": [
+    "**.user",
+    "**.vspscc"
+  ]
+}

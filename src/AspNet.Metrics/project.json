@@ -1,0 +1,35 @@
+{
+  "version": "1.0.0-alpha",
+  "description": "The library provides support for integrating ASP.NET 5 with the Metrics.NET Library",
+  "authors": [ "Allan Hardy" ],
+  "tags": [ "mvc measurements charts timer histogram duration graphite influxdb health checks metrics" ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/alhardy/aspnet-metrics"
+  },
+  "compilationOptions": {
+    "warningsAsErrors": true,
+    "nowarn": [
+      "CS1591"
+    ],
+    "xmlDoc": true
+  },
+  "projectUrl": "",
+  "licenseUrl": "",
+  "dependencies": {
+    "Metrics.NET": "0.3.4-pre",
+    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final",
+    "Microsoft.Extensions.Logging.Abstractions": "1.0.0-rc1-final",
+    "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+    "Microsoft.Framework.OptionsModel": "1.0.0-rc1-15642",
+    "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+    "Microsoft.AspNet.Routing": "1.0.0-rc1-final"
+  },
+  "frameworks": {
+    "net451": {
+      "frameworkAssemblies": {
+        "System.Runtime": ""
+      }
+    }
+  }
+}
