@@ -5,8 +5,8 @@ using AspNet.Metrics.Internal;
 using AspNet.Metrics.Middleware;
 using Metrics;
 using Metrics.Core;
-using Microsoft.Framework.OptionsModel;
-using Microsoft.Framework.DependencyInjection;
+using Microsoft.Extensions.OptionsModel;
+using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.AspNet.Builder
@@ -38,7 +38,7 @@ namespace Microsoft.AspNet.Builder
                 app.Use(next => new MetricsEndpointTextEndpointMiddleware(next, options, metricsContext).Invoke);
                 app.Use(next => new MetricsEndpointVisualizationEndpointMiddleware(next, options).Invoke);
 
-                // Web Metrics Middlware
+                // Web Metrics Middldware
                 app.Use(next => new ErrorMeterMiddleware(next, options, metricsContext).Invoke);
                 app.Use(next => new PerRequestTimerMiddleware(next, options, metricsContext).Invoke);
                 app.Use(next => new RequestTimerMiddleware(next, options, metricsContext).Invoke);

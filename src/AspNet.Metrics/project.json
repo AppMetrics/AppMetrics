@@ -21,7 +21,6 @@
     "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final",
     "Microsoft.Extensions.Logging.Abstractions": "1.0.0-rc1-final",
     "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
-    "Microsoft.Framework.OptionsModel": "1.0.0-rc1-15642",
     "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
     "Microsoft.AspNet.Routing": "1.0.0-rc1-final"
   },

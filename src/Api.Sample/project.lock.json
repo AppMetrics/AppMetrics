@@ -12,8 +12,7 @@
           "Microsoft.AspNet.Routing": "1.0.0-rc1-final",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final",
           "Microsoft.Extensions.Logging.Abstractions": "1.0.0-rc1-final",
-          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
-          "Microsoft.Framework.OptionsModel": "1.0.0-rc1-15642"
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final"
         },
         "frameworkAssemblies": [
           "System.Runtime"
@@ -1441,92 +1440,6 @@
           "lib/net451/Microsoft.Extensions.WebEncoders.Core.dll": {}
         }
       },
-      "Microsoft.Framework.Configuration/1.0.0-rc1-15666": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Framework.Configuration.Abstractions": "1.0.0-rc1-15666"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/dnx451/Microsoft.Framework.Configuration.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Microsoft.Framework.Configuration.dll": {}
-        }
-      },
-      "Microsoft.Framework.Configuration.Abstractions/1.0.0-rc1-15666": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/dnx451/Microsoft.Framework.Configuration.Abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Microsoft.Framework.Configuration.Abstractions.dll": {}
-        }
-      },
-      "Microsoft.Framework.Configuration.Binder/1.0.0-rc1-15666": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Framework.Configuration": "1.0.0-rc1-15666"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/dnx451/Microsoft.Framework.Configuration.Binder.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Microsoft.Framework.Configuration.Binder.dll": {}
-        }
-      },
-      "Microsoft.Framework.DependencyInjection.Abstractions/1.0.0-rc1-15644": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/dnx451/Microsoft.Framework.DependencyInjection.Abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Microsoft.Framework.DependencyInjection.Abstractions.dll": {}
-        }
-      },
-      "Microsoft.Framework.OptionsModel/1.0.0-rc1-15642": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Framework.Configuration.Abstractions": "1.0.0-rc1-15666",
-          "Microsoft.Framework.Configuration.Binder": "1.0.0-rc1-15666",
-          "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-rc1-15644"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/dnx451/Microsoft.Framework.OptionsModel.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Microsoft.Framework.OptionsModel.dll": {}
-        }
-      },
       "Microsoft.IdentityModel.Logging/1.0.0-rc1-211161024": {
         "type": "package",
         "frameworkAssemblies": [
@@ -1863,8 +1776,7 @@
           "Microsoft.AspNet.Routing": "1.0.0-rc1-final",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final",
           "Microsoft.Extensions.Logging.Abstractions": "1.0.0-rc1-final",
-          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
-          "Microsoft.Framework.OptionsModel": "1.0.0-rc1-15642"
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final"
         },
         "frameworkAssemblies": [
           "System.Runtime"
@@ -3295,92 +3207,6 @@
           "lib/net451/Microsoft.Extensions.WebEncoders.Core.dll": {}
         }
       },
-      "Microsoft.Framework.Configuration/1.0.0-rc1-15666": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Framework.Configuration.Abstractions": "1.0.0-rc1-15666"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/dnx451/Microsoft.Framework.Configuration.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Microsoft.Framework.Configuration.dll": {}
-        }
-      },
-      "Microsoft.Framework.Configuration.Abstractions/1.0.0-rc1-15666": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/dnx451/Microsoft.Framework.Configuration.Abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Microsoft.Framework.Configuration.Abstractions.dll": {}
-        }
-      },
-      "Microsoft.Framework.Configuration.Binder/1.0.0-rc1-15666": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Framework.Configuration": "1.0.0-rc1-15666"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/dnx451/Microsoft.Framework.Configuration.Binder.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Microsoft.Framework.Configuration.Binder.dll": {}
-        }
-      },
-      "Microsoft.Framework.DependencyInjection.Abstractions/1.0.0-rc1-15644": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/dnx451/Microsoft.Framework.DependencyInjection.Abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Microsoft.Framework.DependencyInjection.Abstractions.dll": {}
-        }
-      },
-      "Microsoft.Framework.OptionsModel/1.0.0-rc1-15642": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Framework.Configuration.Abstractions": "1.0.0-rc1-15666",
-          "Microsoft.Framework.Configuration.Binder": "1.0.0-rc1-15666",
-          "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-rc1-15644"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/dnx451/Microsoft.Framework.OptionsModel.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Microsoft.Framework.OptionsModel.dll": {}
-        }
-      },
       "Microsoft.IdentityModel.Logging/1.0.0-rc1-211161024": {
         "type": "package",
         "frameworkAssemblies": [
@@ -3717,8 +3543,7 @@
           "Microsoft.AspNet.Routing": "1.0.0-rc1-final",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final",
           "Microsoft.Extensions.Logging.Abstractions": "1.0.0-rc1-final",
-          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
-          "Microsoft.Framework.OptionsModel": "1.0.0-rc1-15642"
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final"
         },
         "frameworkAssemblies": [
           "System.Runtime"
@@ -5147,92 +4972,6 @@
         },
         "runtime": {
           "lib/net451/Microsoft.Extensions.WebEncoders.Core.dll": {}
-        }
-      },
-      "Microsoft.Framework.Configuration/1.0.0-rc1-15666": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Framework.Configuration.Abstractions": "1.0.0-rc1-15666"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/dnx451/Microsoft.Framework.Configuration.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Microsoft.Framework.Configuration.dll": {}
-        }
-      },
-      "Microsoft.Framework.Configuration.Abstractions/1.0.0-rc1-15666": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/dnx451/Microsoft.Framework.Configuration.Abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Microsoft.Framework.Configuration.Abstractions.dll": {}
-        }
-      },
-      "Microsoft.Framework.Configuration.Binder/1.0.0-rc1-15666": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Framework.Configuration": "1.0.0-rc1-15666"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/dnx451/Microsoft.Framework.Configuration.Binder.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Microsoft.Framework.Configuration.Binder.dll": {}
-        }
-      },
-      "Microsoft.Framework.DependencyInjection.Abstractions/1.0.0-rc1-15644": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/dnx451/Microsoft.Framework.DependencyInjection.Abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Microsoft.Framework.DependencyInjection.Abstractions.dll": {}
-        }
-      },
-      "Microsoft.Framework.OptionsModel/1.0.0-rc1-15642": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Framework.Configuration.Abstractions": "1.0.0-rc1-15666",
-          "Microsoft.Framework.Configuration.Binder": "1.0.0-rc1-15666",
-          "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-rc1-15644"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/dnx451/Microsoft.Framework.OptionsModel.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Microsoft.Framework.OptionsModel.dll": {}
         }
       },
       "Microsoft.IdentityModel.Logging/1.0.0-rc1-211161024": {
@@ -6664,96 +6403,6 @@
         "Microsoft.Extensions.WebEncoders.Core.1.0.0-rc1-final.nupkg",
         "Microsoft.Extensions.WebEncoders.Core.1.0.0-rc1-final.nupkg.sha512",
         "Microsoft.Extensions.WebEncoders.Core.nuspec"
-      ]
-    },
-    "Microsoft.Framework.Configuration/1.0.0-rc1-15666": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "ukxK3EseyaE6RsD7vJUQEqsaKMimfs3xqbOHn4FBIOSTiCDXCPLzKQRMiwWV97a5LM0FQG14+NHrEIiymiv+EA==",
-      "files": [
-        "lib/dnx451/Microsoft.Framework.Configuration.dll",
-        "lib/dnx451/Microsoft.Framework.Configuration.xml",
-        "lib/dnxcore50/Microsoft.Framework.Configuration.dll",
-        "lib/dnxcore50/Microsoft.Framework.Configuration.xml",
-        "lib/dotnet/Microsoft.Framework.Configuration.dll",
-        "lib/dotnet/Microsoft.Framework.Configuration.xml",
-        "lib/net45/Microsoft.Framework.Configuration.dll",
-        "lib/net45/Microsoft.Framework.Configuration.xml",
-        "Microsoft.Framework.Configuration.1.0.0-rc1-15666.nupkg",
-        "Microsoft.Framework.Configuration.1.0.0-rc1-15666.nupkg.sha512",
-        "Microsoft.Framework.Configuration.nuspec"
-      ]
-    },
-    "Microsoft.Framework.Configuration.Abstractions/1.0.0-rc1-15666": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "/YVnj7pdeFvDltfFdWwDJA0L0MJo1fHawMS+ijzX8gfZlcN+YOLihKuhMT3O1d8UT5OCqC6REVFoVpagNy0MLw==",
-      "files": [
-        "lib/dnx451/Microsoft.Framework.Configuration.Abstractions.dll",
-        "lib/dnx451/Microsoft.Framework.Configuration.Abstractions.xml",
-        "lib/dnxcore50/Microsoft.Framework.Configuration.Abstractions.dll",
-        "lib/dnxcore50/Microsoft.Framework.Configuration.Abstractions.xml",
-        "lib/dotnet/Microsoft.Framework.Configuration.Abstractions.dll",
-        "lib/dotnet/Microsoft.Framework.Configuration.Abstractions.xml",
-        "lib/net45/Microsoft.Framework.Configuration.Abstractions.dll",
-        "lib/net45/Microsoft.Framework.Configuration.Abstractions.xml",
-        "Microsoft.Framework.Configuration.Abstractions.1.0.0-rc1-15666.nupkg",
-        "Microsoft.Framework.Configuration.Abstractions.1.0.0-rc1-15666.nupkg.sha512",
-        "Microsoft.Framework.Configuration.Abstractions.nuspec"
-      ]
-    },
-    "Microsoft.Framework.Configuration.Binder/1.0.0-rc1-15666": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "QybL1b+xadcZlTN+uNN4aqao93xzoqm1wY8JTPqe/WhBbZj/apmZLuUQzsp8OqNUEnT1GftlKrE/TOxqzJ9AwQ==",
-      "files": [
-        "lib/dnx451/Microsoft.Framework.Configuration.Binder.dll",
-        "lib/dnx451/Microsoft.Framework.Configuration.Binder.xml",
-        "lib/dnxcore50/Microsoft.Framework.Configuration.Binder.dll",
-        "lib/dnxcore50/Microsoft.Framework.Configuration.Binder.xml",
-        "lib/dotnet/Microsoft.Framework.Configuration.Binder.dll",
-        "lib/dotnet/Microsoft.Framework.Configuration.Binder.xml",
-        "lib/net45/Microsoft.Framework.Configuration.Binder.dll",
-        "lib/net45/Microsoft.Framework.Configuration.Binder.xml",
-        "Microsoft.Framework.Configuration.Binder.1.0.0-rc1-15666.nupkg",
-        "Microsoft.Framework.Configuration.Binder.1.0.0-rc1-15666.nupkg.sha512",
-        "Microsoft.Framework.Configuration.Binder.nuspec"
-      ]
-    },
-    "Microsoft.Framework.DependencyInjection.Abstractions/1.0.0-rc1-15644": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "P7BnmsXBknEUqQFoisTcfmud/a0Opovwjx4vc9i6jkIiNCRBIsrOTmeI3RKjTwOWQnWN68RRd4h6IYa4s91Y4w==",
-      "files": [
-        "lib/dnx451/Microsoft.Framework.DependencyInjection.Abstractions.dll",
-        "lib/dnx451/Microsoft.Framework.DependencyInjection.Abstractions.xml",
-        "lib/dnxcore50/Microsoft.Framework.DependencyInjection.Abstractions.dll",
-        "lib/dnxcore50/Microsoft.Framework.DependencyInjection.Abstractions.xml",
-        "lib/dotnet/Microsoft.Framework.DependencyInjection.Abstractions.dll",
-        "lib/dotnet/Microsoft.Framework.DependencyInjection.Abstractions.xml",
-        "lib/net45/Microsoft.Framework.DependencyInjection.Abstractions.dll",
-        "lib/net45/Microsoft.Framework.DependencyInjection.Abstractions.xml",
-        "Microsoft.Framework.DependencyInjection.Abstractions.1.0.0-rc1-15644.nupkg",
-        "Microsoft.Framework.DependencyInjection.Abstractions.1.0.0-rc1-15644.nupkg.sha512",
-        "Microsoft.Framework.DependencyInjection.Abstractions.nuspec"
-      ]
-    },
-    "Microsoft.Framework.OptionsModel/1.0.0-rc1-15642": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "PiDYtmGVurppj5Buwpj/hbwqGHPcIO8e6Tt08AHqeQU/bT1mRUQ/jJhDACUqkigQpwfVT2cIqNqFYtgBTxT8qQ==",
-      "files": [
-        "lib/dnx451/Microsoft.Framework.OptionsModel.dll",
-        "lib/dnx451/Microsoft.Framework.OptionsModel.xml",
-        "lib/dnxcore50/Microsoft.Framework.OptionsModel.dll",
-        "lib/dnxcore50/Microsoft.Framework.OptionsModel.xml",
-        "lib/dotnet/Microsoft.Framework.OptionsModel.dll",
-        "lib/dotnet/Microsoft.Framework.OptionsModel.xml",
-        "lib/net45/Microsoft.Framework.OptionsModel.dll",
-        "lib/net45/Microsoft.Framework.OptionsModel.xml",
-        "Microsoft.Framework.OptionsModel.1.0.0-rc1-15642.nupkg",
-        "Microsoft.Framework.OptionsModel.1.0.0-rc1-15642.nupkg.sha512",
-        "Microsoft.Framework.OptionsModel.nuspec"
       ]
     },
     "Microsoft.IdentityModel.Logging/1.0.0-rc1-211161024": {
