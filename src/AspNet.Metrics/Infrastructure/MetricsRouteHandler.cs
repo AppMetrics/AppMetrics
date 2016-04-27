@@ -6,64 +6,68 @@ namespace AspNet.Metrics.Infrastructure
 {
     public class MetricsRouteHandler : IRouter
     {
-        private readonly IRouter _requestRouter;
+        private readonly IRouter _next;
         private readonly IRouteNameResolver _routeNameResolver;
 
 
-        public MetricsRouteHandler(IRouter requestRouter)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MetricsRouteHandler" /> class.
+        /// </summary>
+        /// <param name="next">The request router.</param>
+        /// <exception cref="System.ArgumentNullException"></exception>
+        public MetricsRouteHandler(IRouter next)
         {
-            if (requestRouter == null)
+            if (next == null)
             {
-                throw new ArgumentNullException(nameof(requestRouter));
+                throw new ArgumentNullException(nameof(next));
             }
 
-            _requestRouter = requestRouter;
-            _routeNameResolver = new DefaultRouteNameResolver();
+            _next = next;
+            _routeNameResolver = new DefaultRouteTemplateResolver();
         }
 
-        public MetricsRouteHandler(IRouter requestRouter, IRouteNameResolver routeNameResolver)
+        public MetricsRouteHandler(IRouter next,
+            IRouteNameResolver routeNameResolver)
         {
-            if (requestRouter == null)
+            if (next == null)
             {
-                throw new ArgumentNullException(nameof(requestRouter));
+                throw new ArgumentNullException(nameof(next));
             }
             if (routeNameResolver == null)
             {
                 throw new ArgumentNullException(nameof(routeNameResolver));
             }
 
-            _requestRouter = requestRouter;
+            _next = next;
             _routeNameResolver = routeNameResolver;
         }
 
+        /// <inheritdoc />
         public VirtualPathData GetVirtualPath(VirtualPathContext context)
-        {
-            // We return null here because we're not responsible for generating the url, the route is.
-            return null;
-        }
+            => _next.GetVirtualPath(context);
 
+
+        /// <inheritdoc />
         public async Task RouteAsync(RouteContext context)
         {
-            var metricName = await _routeNameResolver.Resolve(context);
+            var metricName = await _routeNameResolver.ResolveMatchingTemplateRoute(context);
+
+            if (string.IsNullOrWhiteSpace(metricName))
+            {
+                metricName = await _routeNameResolver.ResolveMatchingAttributeRoute(context);
+            }
+
+            await _next.RouteAsync(context);
+
+            if (!context.IsHandled)
+            {
+                return;
+            }
 
             if (!string.IsNullOrEmpty(metricName))
             {
                 context.AddMetricsCurrentRouteName(metricName);
-                await _requestRouter.RouteAsync(context);
             }
-
-            //Fall back to the default which looks at the route group value on the route context set my asp.net routing
-            if (_routeNameResolver.GetType() != typeof(DefaultRouteNameResolver))
-            {
-                metricName = await _routeNameResolver.Resolve(context);
-
-                if (!string.IsNullOrEmpty(metricName))
-                {
-                    context.AddMetricsCurrentRouteName(metricName);
-                }
-            }
-
-            await _requestRouter.RouteAsync(context);
         }
     }
 }

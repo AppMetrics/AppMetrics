@@ -9,6 +9,7 @@
         "dependencies": {
           "Metrics.NET": "0.3.4-pre",
           "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.AspNet.Mvc.Core": "6.0.0-rc1-final",
           "Microsoft.AspNet.Routing": "1.0.0-rc1-final",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final",
           "Microsoft.Extensions.Logging.Abstractions": "1.0.0-rc1-final",
@@ -1773,6 +1774,7 @@
         "dependencies": {
           "Metrics.NET": "0.3.4-pre",
           "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.AspNet.Mvc.Core": "6.0.0-rc1-final",
           "Microsoft.AspNet.Routing": "1.0.0-rc1-final",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final",
           "Microsoft.Extensions.Logging.Abstractions": "1.0.0-rc1-final",
@@ -3540,6 +3542,7 @@
         "dependencies": {
           "Metrics.NET": "0.3.4-pre",
           "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.AspNet.Mvc.Core": "6.0.0-rc1-final",
           "Microsoft.AspNet.Routing": "1.0.0-rc1-final",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final",
           "Microsoft.Extensions.Logging.Abstractions": "1.0.0-rc1-final",

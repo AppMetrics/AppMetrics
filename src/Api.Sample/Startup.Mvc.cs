@@ -1,5 +1,4 @@
-﻿using Api.Sample.Infstructure;
-using AspNet.Metrics.Infrastructure;
+﻿using AspNet.Metrics.Infrastructure;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,9 +29,7 @@ namespace Api.Sample
         public static IApplicationBuilder UseMvcWithMetrics(this IApplicationBuilder app)
         {
             app.UseMetrics();
-            app.UseMvc(routes => routes.DefaultHandler = new MetricsRouteHandler(new 
-                
-                MvcRouteHandler(), new MvcAttributeRouteTemplateRouteNameResolver()));
+            app.UseMvc(routes => routes.DefaultHandler = new MetricsRouteHandler(new MvcRouteHandler()));
 
             return app;
         }

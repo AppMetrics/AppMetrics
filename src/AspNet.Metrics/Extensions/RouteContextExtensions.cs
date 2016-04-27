@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Routing.Template;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.AspNet.Routing

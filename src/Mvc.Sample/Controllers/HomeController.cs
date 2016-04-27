@@ -20,6 +20,11 @@ namespace Mvc.Sample.Controllers
             return View();
         }
 
+        public IActionResult TestParam(int id)
+        {
+            return View("About");
+        }
+
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
