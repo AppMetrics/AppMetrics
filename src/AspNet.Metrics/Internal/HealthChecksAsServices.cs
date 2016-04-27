@@ -7,6 +7,7 @@ using AspNet.Metrics.Infrastructure;
 using Metrics.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 
 namespace AspNet.Metrics.Internal
 {

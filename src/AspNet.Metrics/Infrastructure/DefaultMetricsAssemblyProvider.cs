@@ -17,14 +17,8 @@ namespace AspNet.Metrics.Infrastructure
         }
 
         /// <inheritdoc />
-        public IEnumerable<Assembly> CandidateAssemblies
-        {
-            get
-            {
-                return GetCandidateLibraries().SelectMany(l => l.Assemblies)
-                    .Select(Load);
-            }
-        }
+        public IEnumerable<Assembly> CandidateAssemblies => GetCandidateLibraries().SelectMany(l => l.Assemblies)
+            .Select(Load);
 
         /// <summary>
         ///     Gets the set of assembly names that are used as root for discovery of
@@ -56,13 +50,8 @@ namespace AspNet.Metrics.Infrastructure
             // GetReferencingLibraries returns the transitive closure of referencing assemblies
             // for a given assembly.
             return ReferenceAssemblies.SelectMany(_libraryManager.GetReferencingLibraries)
-                                      .Distinct()
-                                      .Where(IsCandidateLibrary);
-        }
-
-        private static Assembly Load(AssemblyName assemblyName)
-        {
-            return Assembly.Load(assemblyName);
+                .Distinct()
+                .Where(IsCandidateLibrary);
         }
 
         private bool IsCandidateLibrary(Library library)
@@ -70,5 +59,7 @@ namespace AspNet.Metrics.Infrastructure
             Debug.Assert(ReferenceAssemblies != null);
             return !ReferenceAssemblies.Contains(library.Name);
         }
+
+        private static Assembly Load(AssemblyName assemblyName) => Assembly.Load(assemblyName);
     }
 }

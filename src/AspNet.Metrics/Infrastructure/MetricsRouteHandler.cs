@@ -1,7 +1,7 @@
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using AspNet.Metrics.Internal;
+using AspNet.Metrics.Logging;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc.Infrastructure;
 using Microsoft.AspNet.Routing;
@@ -14,9 +14,7 @@ namespace AspNet.Metrics.Infrastructure
     {
         private readonly IRouter _next;
         private readonly IRouteNameResolver _routeNameResolver;
-        private IActionContextAccessor _actionContextAccessor;
         private IActionSelector _actionSelector;
-        private DiagnosticSource _diagnosticSource;
         private ILogger _logger;
 
 
@@ -72,11 +70,32 @@ namespace AspNet.Metrics.Infrastructure
             MetricsServicesHelper.ThrowIfMetricsNotRegistered(services);
             EnsureServices(context.HttpContext);
 
-            var metricName = await _routeNameResolver.ResolveMatchingTemplateRoute(context);
+            var template = await _routeNameResolver.ResolveMatchingTemplateRoute(context);
 
-            if (string.IsNullOrWhiteSpace(metricName))
+            if (!string.IsNullOrWhiteSpace(template))
             {
-                metricName = await _routeNameResolver.ResolveMatchingAttributeRoute(context);
+                _logger.TemplateRouteFound(template);
+                await ContinueNext(context, template);
+                return;
+            }
+
+            template = await _routeNameResolver.ResolveMatchingAttributeRoute(context);
+
+            if (!string.IsNullOrWhiteSpace(template))
+            {
+                _logger.AttributeTemplateFound(template);
+                await ContinueNext(context, template);
+                return;
+            }
+
+            await _next.RouteAsync(context);
+        }
+
+        private async Task ContinueNext(RouteContext context, string template)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
             }
 
             await _next.RouteAsync(context);
@@ -86,19 +105,14 @@ namespace AspNet.Metrics.Infrastructure
                 return;
             }
 
-            if (!string.IsNullOrEmpty(metricName))
+            if (!string.IsNullOrEmpty(template))
             {
-                context.AddMetricsCurrentRouteName(metricName);
+                context.AddMetricsCurrentRouteName(template);
             }
         }
 
         private void EnsureServices(HttpContext context)
         {
-            if (_actionContextAccessor == null)
-            {
-                _actionContextAccessor = context.RequestServices.GetRequiredService<IActionContextAccessor>();
-            }
-
             if (_actionSelector == null)
             {
                 _actionSelector = context.RequestServices.GetRequiredService<IActionSelector>();
@@ -108,11 +122,6 @@ namespace AspNet.Metrics.Infrastructure
             {
                 var factory = context.RequestServices.GetRequiredService<ILoggerFactory>();
                 _logger = factory.CreateLogger<MetricsRouteHandler>();
-            }
-
-            if (_diagnosticSource == null)
-            {
-                _diagnosticSource = context.RequestServices.GetRequiredService<DiagnosticSource>();
             }
         }
     }
