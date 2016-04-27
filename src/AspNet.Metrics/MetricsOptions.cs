@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using AspNet.Metrics.Infrastructure;
 using Microsoft.AspNet.Http;
 
 namespace AspNet.Metrics
@@ -9,6 +10,7 @@ namespace AspNet.Metrics
         public MetricsOptions()
         {
             IgnoredRequestPatterns = new List<Regex>();
+            RouteNameResolver = new DefaultRouteTemplateResolver();
         }
 
         public bool HealthEnabled { get; set; }
@@ -32,5 +34,7 @@ namespace AspNet.Metrics
         public bool PingEnabled { get; set; }
 
         public PathString PingEndpoint { get; set; }
+
+        public IRouteNameResolver RouteNameResolver { get; set; }
     }
 }

@@ -1,6 +1,4 @@
-﻿using AspNet.Metrics.Infrastructure;
-using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Mvc.Infrastructure;
+﻿using Microsoft.AspNet.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -24,14 +22,6 @@ namespace Api.Sample
             });
 
             return mvcBuilder;
-        }
-
-        public static IApplicationBuilder UseMvcWithMetrics(this IApplicationBuilder app)
-        {
-            app.UseMetrics();
-            app.UseMvc(routes => routes.DefaultHandler = new MetricsRouteHandler(new MvcRouteHandler()));
-
-            return app;
         }
     }
 }

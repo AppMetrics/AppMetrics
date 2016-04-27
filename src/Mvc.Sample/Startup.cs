@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Builder;
+﻿using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,22 +18,6 @@ namespace Mvc.Sample
         }
 
         public IConfigurationRoot Configuration { get; set; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services
-              .AddLogging()
-              .AddRouting(options => { options.LowercaseUrls = true; })
-              .AddCaching();
-
-            services.AddMvc();
-
-            services
-               .AddMetrics()
-               .AddAllPerforrmanceCounters()
-               .AddHealthChecks();
-        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -59,7 +39,28 @@ namespace Mvc.Sample
 
             app.UseStaticFiles();
 
-            app.UseMvcWithMetrics();
+            app.UseMvcWithMetrics(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
+        }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services
+                .AddLogging()
+                .AddRouting(options => { options.LowercaseUrls = true; })
+                .AddCaching();
+
+            services.AddMvc();
+
+            services
+                .AddMetrics()
+                .AddAllPerforrmanceCounters()
+                .AddHealthChecks();
         }
 
         // Entry point for the application.

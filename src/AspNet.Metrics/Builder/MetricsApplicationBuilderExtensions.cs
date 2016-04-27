@@ -1,10 +1,14 @@
 using System;
 using System.Linq;
 using AspNet.Metrics;
+using AspNet.Metrics.Infrastructure;
 using AspNet.Metrics.Internal;
 using AspNet.Metrics.Middleware;
 using Metrics;
 using Metrics.Core;
+using Microsoft.AspNet.Mvc.Infrastructure;
+using Microsoft.AspNet.Mvc.Routing;
+using Microsoft.AspNet.Routing;
 using Microsoft.Extensions.OptionsModel;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -49,6 +53,40 @@ namespace Microsoft.AspNet.Builder
             UseHealthChecks(app);
 
             return app;
+        }
+
+        public static IApplicationBuilder UseMvcWithMetrics(this IApplicationBuilder app)
+        {
+            app.UseMvcWithMetrics(routes => { });
+
+            return app;
+        }
+
+        public static IApplicationBuilder UseMvcWithMetrics(this IApplicationBuilder app,
+            Action<IRouteBuilder> configureRoutes)
+        {
+            if (app == null)
+            {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            app.UseMetrics();
+
+            var router = new MetricsRouteHandler(new MvcRouteHandler());
+
+            var routes = new RouteBuilder
+            {
+                DefaultHandler = router,
+                ServiceProvider = app.ApplicationServices
+            };
+
+            configureRoutes(routes);
+
+            routes.Routes.Insert(0, AttributeRouting.CreateAttributeMegaRoute(
+               routes.DefaultHandler,
+               app.ApplicationServices));
+
+            return app.UseRouter(routes.Build());
         }
 
         private static void UseHealthChecks(IApplicationBuilder app)
