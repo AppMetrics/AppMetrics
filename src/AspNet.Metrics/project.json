@@ -17,7 +17,7 @@
   "projectUrl": "",
   "licenseUrl": "",
   "dependencies": {
-    "Metrics.NET": "0.3.4-pre",
+    "Metrics.NET": "0.3.5",
     "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final",
     "Microsoft.Extensions.Logging.Abstractions": "1.0.0-rc1-final",
     "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",

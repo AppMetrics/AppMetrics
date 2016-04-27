@@ -3,7 +3,7 @@
   "version": 2,
   "targets": {
     ".NETFramework,Version=v4.5.1": {
-      "Metrics.NET/0.3.4-pre": {
+      "Metrics.NET/0.3.5": {
         "type": "package",
         "compile": {
           "lib/net45/Metrics.dll": {}
@@ -412,7 +412,7 @@
       }
     },
     ".NETFramework,Version=v4.5.1/win7-x86": {
-      "Metrics.NET/0.3.4-pre": {
+      "Metrics.NET/0.3.5": {
         "type": "package",
         "compile": {
           "lib/net45/Metrics.dll": {}
@@ -821,7 +821,7 @@
       }
     },
     ".NETFramework,Version=v4.5.1/win7-x64": {
-      "Metrics.NET/0.3.4-pre": {
+      "Metrics.NET/0.3.5": {
         "type": "package",
         "compile": {
           "lib/net45/Metrics.dll": {}
@@ -1231,15 +1231,15 @@
     }
   },
   "libraries": {
-    "Metrics.NET/0.3.4-pre": {
+    "Metrics.NET/0.3.5": {
       "type": "package",
-      "sha512": "hGxipgpnyIrks5uC6FuC2whQTAkdXmQIjGneH3Bp09b5gPBPnl0vIP0ckqgxBedpWpb+oNYax4xfQ6ABVQ/thw==",
+      "sha512": "r8c2iuNbVbVAkCX/2RR6owkwAr3gVnff1LukwAU/rpCDALgIo10V5QDb7CY5x+lLqKc+w/I0IP5d0h6XqRPJPQ==",
       "files": [
         "lib/net45/Metrics.dll",
         "lib/net45/Metrics.pdb",
         "lib/net45/Metrics.XML",
-        "Metrics.NET.0.3.4-pre.nupkg",
-        "Metrics.NET.0.3.4-pre.nupkg.sha512",
+        "Metrics.NET.0.3.5.nupkg",
+        "Metrics.NET.0.3.5.nupkg.sha512",
         "Metrics.NET.nuspec"
       ]
     },
@@ -1696,7 +1696,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "Metrics.NET >= 0.3.4-pre",
+      "Metrics.NET >= 0.3.5",
       "Microsoft.Extensions.DependencyInjection.Abstractions >= 1.0.0-rc1-final",
       "Microsoft.Extensions.Logging.Abstractions >= 1.0.0-rc1-final",
       "Microsoft.AspNet.Http.Abstractions >= 1.0.0-rc1-final",

@@ -10,14 +10,15 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace AspNet.Metrics.Internal
 {
-    public static class HealthChecksAsServices
+    internal static class HealthChecksAsServices
     {
         public static void AddHealthChecksAsServices(IServiceCollection services, IEnumerable<Type> types)
         {
             var healthCheckTypeProvider = new StaticHealthCheckTypeProvider();
+
             foreach (var type in types)
             {
-                services.TryAddTransient(typeof(HealthCheck), type);
+                services.TryAddEnumerable(ServiceDescriptor.Singleton(typeof(HealthCheck), type));
                 healthCheckTypeProvider.HealthCheckTypes.Add(type.GetTypeInfo());
             }
 
@@ -32,10 +33,10 @@ namespace AspNet.Metrics.Internal
                 assemblyProvider.CandidateAssemblies.Add(assembly);
             }
 
-            var controllerTypeProvider = new DefaultHealthCheckTypeProvider(assemblyProvider);
-            var controllerTypes = controllerTypeProvider.HealthCheckTypes;
+            var healthCheckTypeProvider = new DefaultHealthCheckTypeProvider(assemblyProvider);
+            var healthCheckTypes = healthCheckTypeProvider.HealthCheckTypes;
 
-            AddHealthChecksAsServices(services, controllerTypes.Select(type => type.AsType()));
+            AddHealthChecksAsServices(services, healthCheckTypes.Select(type => type.AsType()));
         }
     }
 }

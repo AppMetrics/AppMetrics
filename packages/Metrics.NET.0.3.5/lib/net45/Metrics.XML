@@ -1,0 +1,2758 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Metrics</name>
+    </assembly>
+    <members>
+        <member name="M:Metrics.AdvancedMetricsContext.AttachContext(System.String,Metrics.MetricsContext)">
+            <summary>
+            Attach a context that has already been created (ex: by a library exposing internal metrics)
+            </summary>
+            <param name="contextName">name of the context to attach</param>
+            <param name="context">Existing context instance.</param>
+            <returns>true if the context was attached, false otherwise.</returns>
+        </member>
+        <member name="M:Metrics.AdvancedMetricsContext.CompletelyDisableMetrics">
+            <summary>
+            All metrics operations will be NO-OP.
+            This is useful for measuring the impact of the metrics library on the application.
+            If you think the Metrics library is causing issues, this will disable all Metrics operations.
+            </summary>
+        </member>
+        <member name="M:Metrics.AdvancedMetricsContext.ResetMetricsValues">
+            <summary>
+            Clear all collected data for all the metrics in this context
+            </summary>
+        </member>
+        <member name="E:Metrics.AdvancedMetricsContext.ContextShuttingDown">
+            <summary>
+            Event fired when the context is disposed or shutdown or the CompletelyDisableMetrics is called.
+            </summary>
+        </member>
+        <member name="E:Metrics.AdvancedMetricsContext.ContextDisabled">
+            <summary>
+            Event fired when the context CompletelyDisableMetrics is called.
+            </summary>
+        </member>
+        <member name="M:Metrics.AdvancedMetricsContext.Gauge(System.String,System.Func{Metrics.MetricData.MetricValueProvider{System.Double}},Metrics.Unit,Metrics.MetricTags)">
+            <summary>
+            Register a custom Gauge instance.
+            </summary>
+            <param name="name">Name of the metric. Must be unique across all counters in this context.</param>
+            <param name="unit">Description of what the is being measured ( Unit.Requests , Unit.Items etc ) .</param>
+            <param name="valueProvider">Function used to build a custom instance.</param>
+            <param name="tags">Optional set of tags that can be associated with the metric.</param>
+        </member>
+        <member name="M:Metrics.AdvancedMetricsContext.Counter``1(System.String,Metrics.Unit,System.Func{``0},Metrics.MetricTags)">
+            <summary>
+            Register a custom Counter instance
+            </summary>
+            <param name="name">Name of the metric. Must be unique across all counters in this context.</param>
+            <param name="unit">Description of what the is being measured ( Unit.Requests , Unit.Items etc ) .</param>
+            <param name="builder">Function used to build a custom instance.</param>
+            <param name="tags">Optional set of tags that can be associated with the metric.</param>
+            <returns>Reference to the metric</returns>
+        </member>
+        <member name="M:Metrics.AdvancedMetricsContext.Meter``1(System.String,Metrics.Unit,System.Func{``0},Metrics.TimeUnit,Metrics.MetricTags)">
+            <summary>
+            Register a custom Meter instance.
+            </summary>
+            <param name="name">Name of the metric. Must be unique across all meters in this context.</param>
+            <param name="unit">Description of what the is being measured ( Unit.Requests , Unit.Items etc ) .</param>
+            <param name="builder">Function used to build a custom instance.</param>
+            <param name="rateUnit">Time unit for rates reporting. Defaults to Second ( occurrences / second ).</param>
+            <param name="tags">Optional set of tags that can be associated with the metric.</param>
+            <returns>Reference to the metric</returns>
+        </member>
+        <member name="M:Metrics.AdvancedMetricsContext.Histogram``1(System.String,Metrics.Unit,System.Func{``0},Metrics.MetricTags)">
+            <summary>
+            Register a custom Histogram instance
+            </summary>
+            <param name="name">Name of the metric. Must be unique across all histograms in this context.</param>
+            <param name="unit">Description of what the is being measured ( Unit.Requests , Unit.Items etc ) .</param>
+            <param name="builder">Function used to build a custom instance.</param>
+            <param name="tags">Optional set of tags that can be associated with the metric.</param>
+            <returns>Reference to the metric</returns>
+        </member>
+        <member name="M:Metrics.AdvancedMetricsContext.Histogram(System.String,Metrics.Unit,System.Func{Metrics.Sampling.Reservoir},Metrics.MetricTags)">
+            <summary>
+            Register a Histogram metric with a custom Reservoir instance
+            </summary>
+            <param name="name">Name of the metric. Must be unique across all histograms in this context.</param>
+            <param name="unit">Description of what the is being measured ( Unit.Requests , Unit.Items etc ) .</param>
+            <param name="builder">Function used to build a custom reservoir instance.</param>
+            <param name="tags">Optional set of tags that can be associated with the metric.</param>
+            <returns>Reference to the metric</returns>
+        </member>
+        <member name="M:Metrics.AdvancedMetricsContext.Timer``1(System.String,Metrics.Unit,System.Func{``0},Metrics.TimeUnit,Metrics.TimeUnit,Metrics.MetricTags)">
+            <summary>
+            Register a custom Timer implementation.
+            </summary>
+            <param name="name">Name of the metric. Must be unique across all timers in this context.</param>
+            <param name="unit">Description of what the is being measured ( Unit.Requests , Unit.Items etc ) .</param>
+            <param name="builder">Function used to build a custom instance.</param>
+            <param name="rateUnit">Time unit for rates reporting. Defaults to Second ( occurrences / second ).</param>
+            <param name="durationUnit">Time unit for reporting durations. Defaults to Milliseconds. </param>
+            <param name="tags">Optional set of tags that can be associated with the metric.</param>
+            <returns>Reference to the metric</returns>
+        </member>
+        <member name="M:Metrics.AdvancedMetricsContext.Timer(System.String,Metrics.Unit,System.Func{Metrics.Core.HistogramImplementation},Metrics.TimeUnit,Metrics.TimeUnit,Metrics.MetricTags)">
+            <summary>
+            Register a Timer metric with a custom Histogram implementation.
+            </summary>
+            <param name="name">Name of the metric. Must be unique across all timers in this context.</param>
+            <param name="unit">Description of what the is being measured ( Unit.Requests , Unit.Items etc ) .</param>
+            <param name="builder">Function used to build a custom histogram instance.</param>
+            <param name="rateUnit">Time unit for rates reporting. Defaults to Second ( occurrences / second ).</param>
+            <param name="durationUnit">Time unit for reporting durations. Defaults to Milliseconds. </param>
+            <param name="tags">Optional set of tags that can be associated with the metric.</param>
+            <returns>Reference to the metric</returns>
+        </member>
+        <member name="M:Metrics.AdvancedMetricsContext.Timer(System.String,Metrics.Unit,System.Func{Metrics.Sampling.Reservoir},Metrics.TimeUnit,Metrics.TimeUnit,Metrics.MetricTags)">
+            <summary>
+            Register a Timer metric with a custom Reservoir implementation for the histogram.
+            </summary>
+            <param name="name">Name of the metric. Must be unique across all timers in this context.</param>
+            <param name="unit">Description of what the is being measured ( Unit.Requests , Unit.Items etc ) .</param>
+            <param name="builder">Function used to build a custom reservoir instance.</param>
+            <param name="rateUnit">Time unit for rates reporting. Defaults to Second ( occurrences / second ).</param>
+            <param name="durationUnit">Time unit for reporting durations. Defaults to Milliseconds. </param>
+            <param name="tags">Optional set of tags that can be associated with the metric.</param>
+            <returns>Reference to the metric</returns>
+        </member>
+        <member name="M:Metrics.AdvancedMetricsContext.WithCustomMetricsBuilder(Metrics.Core.MetricsBuilder)">
+            <summary>
+            Replace the DefaultMetricsBuilder used in this context.
+            </summary>
+            <param name="metricsBuilder">The custom metrics builder.</param>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicIntArray.GetValue(System.Int32)">
+            <summary>
+            Returns the latest value of this instance written by any processor.
+            </summary>
+            <param name="index">index in the array</param>
+            <returns>The latest written value of this instance.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicIntArray.SetValue(System.Int32,System.Int32)">
+            <summary>
+            Write a new value to this instance. The value is immediately seen by all processors.
+            </summary>
+            <param name="index">index in the array</param>
+            <param name="value">The new value for this instance.</param>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicIntArray.Add(System.Int32,System.Int32)">
+            <summary>
+            Add <paramref name="value"/> to this instance and return the resulting value.
+            </summary>
+            <param name="index">index in the array</param>
+            <param name="value">The amount to add.</param>
+            <returns>The value of this instance + the amount added.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicIntArray.GetAndAdd(System.Int32,System.Int32)">
+            <summary>
+            Add <paramref name="value"/> to this instance and return the value this instance had before the add operation.
+            </summary>
+            <param name="index">index in the array</param>
+            <param name="value">The amount to add.</param>
+            <returns>The value of this instance before the amount was added.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicIntArray.GetAndIncrement(System.Int32)">
+            <summary>
+            Increment this instance and return the value the instance had before the increment.
+            </summary>
+            <param name="index">index in the array</param>
+            <returns>The value of the instance *before* the increment.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicIntArray.GetAndIncrement(System.Int32,System.Int32)">
+            <summary>
+            Increment this instance with <paramref name="value"/> and return the value the instance had before the increment.
+            </summary>
+            <param name="index">index in the array</param>
+            <param name="value">value to increment with</param>
+            <returns>The value of the instance *before* the increment.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicIntArray.GetAndDecrement(System.Int32)">
+            <summary>
+            Decrement this instance and return the value the instance had before the decrement.
+            </summary>
+            <param name="index">index in the array</param>
+            <returns>The value of the instance *before* the decrement.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicIntArray.GetAndDecrement(System.Int32,System.Int32)">
+            <summary>
+            Decrement this instance with <paramref name="value"/> and return the value the instance had before the decrement.
+            </summary>
+            <param name="index">index in the array</param>
+            <param name="value">value to decrement with</param>
+            <returns>The value of the instance *before* the decrement.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicIntArray.Increment(System.Int32)">
+            <summary>
+            Increment this instance and return the value after the increment.
+            </summary>
+            <param name="index">index in the array</param>
+            <returns>The value of the instance *after* the increment.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicIntArray.Increment(System.Int32,System.Int32)">
+            <summary>
+            Increment this instance with <paramref name="value"/> and return the value after the increment.
+            </summary>
+            <param name="index">index in the array</param>
+            <param name="value">value to increment with</param>
+            <returns>The value of the instance *after* the increment.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicIntArray.Decrement(System.Int32)">
+            <summary>
+            Decrement this instance and return the value after the decrement.
+            </summary>
+            <param name="index">index in the array</param>
+            <returns>The value of the instance *after* the decrement.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicIntArray.Decrement(System.Int32,System.Int32)">
+            <summary>
+            Decrement this instance with <paramref name="value"/> and return the value after the decrement.
+            </summary>
+            <param name="index">index in the array</param>
+            <param name="value">value to decrement with</param>
+            <returns>The value of the instance *after* the decrement.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicIntArray.GetAndReset(System.Int32)">
+            <summary>
+            Returns the current value of the instance and sets it to zero as an atomic operation.
+            </summary>
+            <param name="index">index in the array</param>
+            <returns>The current value of the instance.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicIntArray.GetAndSet(System.Int32,System.Int32)">
+            <summary>
+            Returns the current value of the instance and sets it to <paramref name="newValue"/> as an atomic operation.
+            </summary>
+            <param name="index">index in the array</param>
+            <param name="newValue">value that will be set in the array at <paramref name="index"/></param>
+            <returns>The current value of the instance.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicIntArray.CompareAndSwap(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Replace the value of this instance, if the current value is equal to the <paramref name="expected"/> value.
+            </summary>
+            <param name="index">index in the array</param>
+            <param name="expected">Value this instance is expected to be equal with.</param>
+            <param name="updated">Value to set this instance to, if the current value is equal to the expected value</param>
+            <returns>True if the update was made, false otherwise.</returns>
+        </member>
+        <member name="T:Metrics.ConcurrencyUtilities.AtomicInteger">
+            <summary>
+            Atomic int value. Operations exposed on this class are performed using System.Threading.Interlocked class and are thread safe.
+            For AtomicInt values that are stored in arrays PaddedAtomicInt is recommended.
+            </summary>
+            <remarks>
+            The AtomicInteger is a struct not a class and members of this type should *not* be declared readonly or changes will not be reflected in the member instance. 
+            </remarks>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicInteger.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance with the specified <paramref name="value"/>.
+            </summary>
+            <param name="value">Initial value of the instance.</param>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicInteger.GetValue">
+            <summary>
+            Returns the latest value of this instance written by any processor.
+            </summary>
+            <returns>The latest written value of this instance.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicInteger.NonVolatileGetValue">
+            <summary>
+            Returns the current value of the instance without using Volatile.Read fence and ordering.  
+            </summary>
+            <returns>The current value of the instance in a non-volatile way (might not observe changes on other threads).</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicInteger.SetValue(System.Int32)">
+            <summary>
+            Write a new value to this instance. The value is immediately seen by all processors.
+            </summary>
+            <param name="value">The new value for this instance.</param>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicInteger.LazySetValue(System.Int32)">
+            <summary>
+            From the Java Version:
+            Eventually sets to the given value.
+            The semantics are that the write is guaranteed not to be re-ordered with any previous write, 
+            but may be reordered with subsequent operations (or equivalently, might not be visible to other threads) 
+            until some other volatile write or synchronizing action occurs).
+            </summary>
+            <remarks>
+            Currently implemented by calling Volatile.Write which is different from the java version. 
+            Not sure if it is possible on CLR to implement this.
+            </remarks>
+            <param name="value">The new value for this instance.</param>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicInteger.NonVolatileSetValue(System.Int32)">
+            <summary>
+            Set the value without using Volatile.Write fence and ordering.
+            </summary>
+            <param name="value">The new value for this instance.</param>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicInteger.Add(System.Int32)">
+            <summary>
+            Add <paramref name="value"/> to this instance and return the resulting value.
+            </summary>
+            <param name="value">The amount to add.</param>
+            <returns>The value of this instance + the amount added.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicInteger.GetAndAdd(System.Int32)">
+            <summary>
+            Add <paramref name="value"/> to this instance and return the value this instance had before the add operation.
+            </summary>
+            <param name="value">The amount to add.</param>
+            <returns>The value of this instance before the amount was added.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicInteger.GetAndIncrement">
+            <summary>
+            Increment this instance and return the value the instance had before the increment.
+            </summary>
+            <returns>The value of the instance *before* the increment.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicInteger.GetAndIncrement(System.Int32)">
+            <summary>
+            Increment this instance with <paramref name="value"/> and return the value the instance had before the increment.
+            </summary>
+            <returns>The value of the instance *before* the increment.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicInteger.GetAndDecrement">
+            <summary>
+            Decrement this instance and return the value the instance had before the decrement.
+            </summary>
+            <returns>The value of the instance *before* the decrement.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicInteger.GetAndDecrement(System.Int32)">
+            <summary>
+            Decrement this instance with <paramref name="value"/> and return the value the instance had before the decrement.
+            </summary>
+            <returns>The value of the instance *before* the decrement.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicInteger.Increment">
+            <summary>
+            Increment this instance and return the value after the increment.
+            </summary>
+            <returns>The value of the instance *after* the increment.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicInteger.Increment(System.Int32)">
+            <summary>
+            Increment this instance with <paramref name="value"/> and return the value after the increment.
+            </summary>
+            <returns>The value of the instance *after* the increment.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicInteger.Decrement">
+            <summary>
+            Decrement this instance and return the value after the decrement.
+            </summary>
+            <returns>The value of the instance *after* the decrement.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicInteger.Decrement(System.Int32)">
+            <summary>
+            Decrement this instance with <paramref name="value"/> and return the value after the decrement.
+            </summary>
+            <returns>The value of the instance *after* the decrement.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicInteger.GetAndReset">
+            <summary>
+            Returns the current value of the instance and sets it to zero as an atomic operation.
+            </summary>
+            <returns>The current value of the instance.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicInteger.GetAndSet(System.Int32)">
+            <summary>
+            Returns the current value of the instance and sets it to <paramref name="newValue"/> as an atomic operation.
+            </summary>
+            <returns>The current value of the instance.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicInteger.CompareAndSwap(System.Int32,System.Int32)">
+            <summary>
+            Replace the value of this instance, if the current value is equal to the <paramref name="expected"/> value.
+            </summary>
+            <param name="expected">Value this instance is expected to be equal with.</param>
+            <param name="updated">Value to set this instance to, if the current value is equal to the expected value</param>
+            <returns>True if the update was made, false otherwise.</returns>
+        </member>
+        <member name="T:Metrics.ConcurrencyUtilities.AtomicLong">
+            <summary>
+            Atomic long value. Operations exposed on this class are performed using System.Threading.Interlocked class and are thread safe.
+            For AtomicLong values that are stored in arrays PaddedAtomicLong is recommended.
+            </summary>
+            <remarks>
+            The AtomicLong is a struct not a class and members of this type should *not* be declared readonly or changes will not be reflected in the member instance. 
+            </remarks>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLong.#ctor(System.Int64)">
+            <summary>
+            Initializes a new instance with the specified <paramref name="value"/>.
+            </summary>
+            <param name="value">Initial value of the instance.</param>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLong.GetValue">
+            <summary>
+            Returns the latest value of this instance written by any processor.
+            </summary>
+            <returns>The latest written value of this instance.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLong.NonVolatileGetValue">
+            <summary>
+            Returns the current value of the instance without using Volatile.Read fence and ordering.  
+            </summary>
+            <returns>The current value of the instance in a non-volatile way (might not observe changes on other threads).</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLong.SetValue(System.Int64)">
+            <summary>
+            Write a new value to this instance. The value is immediately seen by all processors.
+            </summary>
+            <param name="value">The new value for this instance.</param>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLong.LazySetValue(System.Int64)">
+            <summary>
+            From the Java Version:
+            Eventually sets to the given value.
+            The semantics are that the write is guaranteed not to be re-ordered with any previous write, 
+            but may be reordered with subsequent operations (or equivalently, might not be visible to other threads) 
+            until some other volatile write or synchronizing action occurs).
+            </summary>
+            <remarks>
+            Currently implemented by calling Volatile.Write which is different from the java version. 
+            Not sure if it is possible on CLR to implement this.
+            </remarks>
+            <param name="value">The new value for this instance.</param>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLong.NonVolatileSetValue(System.Int64)">
+            <summary>
+            Set the value without using Volatile.Write fence and ordering.
+            </summary>
+            <param name="value">The new value for this instance.</param>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLong.Add(System.Int64)">
+            <summary>
+            Add <paramref name="value"/> to this instance and return the resulting value.
+            </summary>
+            <param name="value">The amount to add.</param>
+            <returns>The value of this instance + the amount added.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLong.GetAndAdd(System.Int64)">
+            <summary>
+            Add <paramref name="value"/> to this instance and return the value this instance had before the add operation.
+            </summary>
+            <param name="value">The amount to add.</param>
+            <returns>The value of this instance before the amount was added.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLong.GetAndIncrement">
+            <summary>
+            Increment this instance and return the value the instance had before the increment.
+            </summary>
+            <returns>The value of the instance *before* the increment.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLong.GetAndIncrement(System.Int64)">
+            <summary>
+            Increment this instance with <paramref name="value"/> and return the value the instance had before the increment.
+            </summary>
+            <returns>The value of the instance *before* the increment.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLong.GetAndDecrement">
+            <summary>
+            Decrement this instance and return the value the instance had before the decrement.
+            </summary>
+            <returns>The value of the instance *before* the decrement.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLong.GetAndDecrement(System.Int64)">
+            <summary>
+            Decrement this instance with <paramref name="value"/> and return the value the instance had before the decrement.
+            </summary>
+            <returns>The value of the instance *before* the decrement.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLong.Increment">
+            <summary>
+            Increment this instance and return the value after the increment.
+            </summary>
+            <returns>The value of the instance *after* the increment.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLong.Increment(System.Int64)">
+            <summary>
+            Increment this instance with <paramref name="value"/> and return the value after the increment.
+            </summary>
+            <returns>The value of the instance *after* the increment.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLong.Decrement">
+            <summary>
+            Decrement this instance and return the value after the decrement.
+            </summary>
+            <returns>The value of the instance *after* the decrement.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLong.Decrement(System.Int64)">
+            <summary>
+            Decrement this instance with <paramref name="value"/> and return the value after the decrement.
+            </summary>
+            <returns>The value of the instance *after* the decrement.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLong.GetAndReset">
+            <summary>
+            Returns the current value of the instance and sets it to zero as an atomic operation.
+            </summary>
+            <returns>The current value of the instance.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLong.GetAndSet(System.Int64)">
+            <summary>
+            Returns the current value of the instance and sets it to <paramref name="newValue"/> as an atomic operation.
+            </summary>
+            <returns>The current value of the instance.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLong.CompareAndSwap(System.Int64,System.Int64)">
+            <summary>
+            Replace the value of this instance, if the current value is equal to the <paramref name="expected"/> value.
+            </summary>
+            <param name="expected">Value this instance is expected to be equal with.</param>
+            <param name="updated">Value to set this instance to, if the current value is equal to the expected value</param>
+            <returns>True if the update was made, false otherwise.</returns>
+        </member>
+        <member name="T:Metrics.ConcurrencyUtilities.AtomicLongArray">
+            <summary>
+            Array of longs which provides atomic operations on the array elements. 
+            </summary>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLongArray.GetValue(System.Int32)">
+            <summary>
+            Returns the latest value of this instance written by any processor.
+            </summary>
+            <param name="index">index in the array</param>
+            <returns>The latest written value of this instance.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLongArray.SetValue(System.Int32,System.Int64)">
+            <summary>
+            Write a new value to this instance. The value is immediately seen by all processors.
+            </summary>
+            <param name="index">index in the array</param>
+            <param name="value">The new value for this instance.</param>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLongArray.Add(System.Int32,System.Int64)">
+            <summary>
+            Add <paramref name="value"/> to this instance and return the resulting value.
+            </summary>
+            <param name="index">index in the array</param>
+            <param name="value">The amount to add.</param>
+            <returns>The value of this instance + the amount added.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLongArray.GetAndAdd(System.Int32,System.Int64)">
+            <summary>
+            Add <paramref name="value"/> to this instance and return the value this instance had before the add operation.
+            </summary>
+            <param name="index">index in the array</param>
+            <param name="value">The amount to add.</param>
+            <returns>The value of this instance before the amount was added.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLongArray.GetAndIncrement(System.Int32)">
+            <summary>
+            Increment this instance and return the value the instance had before the increment.
+            </summary>
+            <param name="index">index in the array</param>
+            <returns>The value of the instance *before* the increment.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLongArray.GetAndIncrement(System.Int32,System.Int64)">
+            <summary>
+            Increment this instance with <paramref name="value"/> and return the value the instance had before the increment.
+            </summary>
+            <param name="index">index in the array</param>
+            <param name="value">value to increment with</param>
+            <returns>The value of the instance *before* the increment.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLongArray.GetAndDecrement(System.Int32)">
+            <summary>
+            Decrement this instance and return the value the instance had before the decrement.
+            </summary>
+            <param name="index">index in the array</param>
+            <returns>The value of the instance *before* the decrement.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLongArray.GetAndDecrement(System.Int32,System.Int64)">
+            <summary>
+            Decrement this instance with <paramref name="value"/> and return the value the instance had before the decrement.
+            </summary>
+            <param name="index">index in the array</param>
+            <param name="value">value to decrement with</param>
+            <returns>The value of the instance *before* the decrement.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLongArray.Increment(System.Int32)">
+            <summary>
+            Increment this instance and return the value after the increment.
+            </summary>
+            <param name="index">index in the array</param>
+            <returns>The value of the instance *after* the increment.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLongArray.Increment(System.Int32,System.Int64)">
+            <summary>
+            Increment this instance with <paramref name="value"/> and return the value after the increment.
+            </summary>
+            <param name="index">index in the array</param>
+            <param name="value">value to increment with</param>
+            <returns>The value of the instance *after* the increment.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLongArray.Decrement(System.Int32)">
+            <summary>
+            Decrement this instance and return the value after the decrement.
+            </summary>
+            <param name="index">index in the array</param>
+            <returns>The value of the instance *after* the decrement.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLongArray.Decrement(System.Int32,System.Int64)">
+            <summary>
+            Decrement this instance with <paramref name="value"/> and return the value after the decrement.
+            </summary>
+            <param name="index">index in the array</param>
+            <param name="value">value to decrement with</param>
+            <returns>The value of the instance *after* the decrement.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLongArray.GetAndReset(System.Int32)">
+            <summary>
+            Returns the current value of the instance and sets it to zero as an atomic operation.
+            </summary>
+            <param name="index">index in the array</param>
+            <returns>The current value of the instance.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLongArray.GetAndSet(System.Int32,System.Int64)">
+            <summary>
+            Returns the current value of the instance and sets it to <paramref name="newValue"/> as an atomic operation.
+            </summary>
+            <param name="index">index in the array</param>
+            <param name="newValue">value that will be set in the array at <paramref name="index"/></param>
+            <returns>The current value of the instance.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.AtomicLongArray.CompareAndSwap(System.Int32,System.Int64,System.Int64)">
+            <summary>
+            Replace the value of this instance, if the current value is equal to the <paramref name="expected"/> value.
+            </summary>
+            <param name="index">index in the array</param>
+            <param name="expected">Value this instance is expected to be equal with.</param>
+            <param name="updated">Value to set this instance to, if the current value is equal to the expected value</param>
+            <returns>True if the update was made, false otherwise.</returns>
+        </member>
+        <member name="T:Metrics.ConcurrencyUtilities.PaddedAtomicLong">
+            <summary>
+            Padded version of the AtomicLong to avoid false CPU cache sharing. Recommended for cases where instances of 
+            AtomicLong end up close to each other in memory - when stored in an array for ex. 
+            </summary>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.PaddedAtomicLong.#ctor(System.Int64)">
+            <summary>
+            Initializes a new instance with the specified <paramref name="value"/>.
+            </summary>
+            <param name="value">Initial value of the instance.</param>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.PaddedAtomicLong.GetValue">
+            <summary>
+            Returns the latest value of this instance written by any processor.
+            </summary>
+            <returns>The latest written value of this instance.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.PaddedAtomicLong.NonVolatileGetValue">
+            <summary>
+            Returns the current value of the instance without using Volatile.Read fence and ordering.  
+            </summary>
+            <returns>The current value of the instance in a non-volatile way (might not observe changes on other threads).</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.PaddedAtomicLong.SetValue(System.Int64)">
+            <summary>
+            Write a new value to this instance. The value is immediately seen by all processors.
+            </summary>
+            <param name="value">The new value for this instance.</param>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.PaddedAtomicLong.LazySetValue(System.Int64)">
+            <summary>
+            From the Java Version:
+            Eventually sets to the given value.
+            The semantics are that the write is guaranteed not to be re-ordered with any previous write, 
+            but may be reordered with subsequent operations (or equivalently, might not be visible to other threads) 
+            until some other volatile write or synchronizing action occurs).
+            </summary>
+            <remarks>
+            Currently implemented by calling Volatile.Write which is different from the java version. 
+            Not sure if it is possible on CLR to implement this.
+            </remarks>
+            <param name="value">The new value for this instance.</param>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.PaddedAtomicLong.NonVolatileSetValue(System.Int64)">
+            <summary>
+            Set the value without using Volatile.Write fence and ordering.
+            </summary>
+            <param name="value">The new value for this instance.</param>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.PaddedAtomicLong.Add(System.Int64)">
+            <summary>
+            Add <paramref name="value"/> to this instance and return the resulting value.
+            </summary>
+            <param name="value">The amount to add.</param>
+            <returns>The value of this instance + the amount added.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.PaddedAtomicLong.GetAndAdd(System.Int64)">
+            <summary>
+            Add <paramref name="value"/> to this instance and return the value this instance had before the add operation.
+            </summary>
+            <param name="value">The amount to add.</param>
+            <returns>The value of this instance before the amount was added.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.PaddedAtomicLong.GetAndIncrement">
+            <summary>
+            Increment this instance and return the value the instance had before the increment.
+            </summary>
+            <returns>The value of the instance *before* the increment.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.PaddedAtomicLong.GetAndIncrement(System.Int64)">
+            <summary>
+            Increment this instance with <paramref name="value"/> and return the value the instance had before the increment.
+            </summary>
+            <returns>The value of the instance *before* the increment.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.PaddedAtomicLong.GetAndDecrement">
+            <summary>
+            Decrement this instance and return the value the instance had before the decrement.
+            </summary>
+            <returns>The value of the instance *before* the decrement.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.PaddedAtomicLong.GetAndDecrement(System.Int64)">
+            <summary>
+            Decrement this instance with <paramref name="value"/> and return the value the instance had before the decrement.
+            </summary>
+            <returns>The value of the instance *before* the decrement.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.PaddedAtomicLong.Increment">
+            <summary>
+            Increment this instance and return the value after the increment.
+            </summary>
+            <returns>The value of the instance *after* the increment.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.PaddedAtomicLong.Increment(System.Int64)">
+            <summary>
+            Increment this instance with <paramref name="value"/> and return the value after the increment.
+            </summary>
+            <returns>The value of the instance *after* the increment.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.PaddedAtomicLong.Decrement">
+            <summary>
+            Decrement this instance and return the value after the decrement.
+            </summary>
+            <returns>The value of the instance *after* the decrement.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.PaddedAtomicLong.Decrement(System.Int64)">
+            <summary>
+            Decrement this instance with <paramref name="value"/> and return the value after the decrement.
+            </summary>
+            <returns>The value of the instance *after* the decrement.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.PaddedAtomicLong.GetAndReset">
+            <summary>
+            Returns the current value of the instance and sets it to zero as an atomic operation.
+            </summary>
+            <returns>The current value of the instance.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.PaddedAtomicLong.GetAndSet(System.Int64)">
+            <summary>
+            Returns the current value of the instance and sets it to <paramref name="newValue"/> as an atomic operation.
+            </summary>
+            <returns>The current value of the instance.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.PaddedAtomicLong.CompareAndSwap(System.Int64,System.Int64)">
+            <summary>
+            Replace the value of this instance, if the current value is equal to the <paramref name="expected"/> value.
+            </summary>
+            <param name="expected">Value this instance is expected to be equal with.</param>
+            <param name="updated">Value to set this instance to, if the current value is equal to the expected value</param>
+            <returns>True if the update was made, false otherwise.</returns>
+        </member>
+        <member name="T:Metrics.ConcurrencyUtilities.Striped64">
+            <summary>
+             A class holding common representation and mechanics for classes supporting dynamic striping on 64bit values.
+            </summary>
+        </member>
+        <member name="T:Metrics.ConcurrencyUtilities.StripedLongAdder">
+            <summary>
+            One or more variables that together maintain an initially zero sum.
+            When updates are contended cross threads, the set of variables may grow dynamically to reduce contention.
+            Method GetValue() returns the current total combined across the variables maintaining the sum.
+            
+            This class is usually preferable to AtomicLong when multiple threads update a common sum that is used for purposes such
+            as collecting statistics, not for fine-grained synchronization control.
+            
+            Under low update contention, the two classes have similar characteristics. 
+            But under high contention, expected throughput of this class is significantly higher, at the expense of higher space consumption.
+            
+            </summary>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.StripedLongAdder.#ctor">
+            <summary>
+            Creates a new instance of the adder with initial value of zero.
+            </summary>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.StripedLongAdder.#ctor(System.Int64)">
+            <summary>
+            Creates a new instance of the adder with initial <paramref name="value"/>.
+            </summary>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.StripedLongAdder.GetValue">
+            <summary>
+            Returns the current value of this adder. This method sums all the buckets and returns the result.
+            </summary>
+            <returns>The current value recored by this adder.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.StripedLongAdder.NonVolatileGetValue">
+            <summary>
+            Returns the current value of the instance without using Volatile.Read fence and ordering.  
+            </summary>
+            <returns>The current value of the instance in a non-volatile way (might not observe changes on other threads).</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.StripedLongAdder.GetAndReset">
+            <summary>
+            Returns the current value of this adder and resets the value to zero.
+            This method sums all the buckets, resets their value and returns the result.
+            </summary>
+            <remarks>
+            This method is thread-safe. If updates happen during this method, they are either included in the final sum, or reflected in the value after the reset.
+            </remarks>
+            <returns>The current value recored by this adder.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.StripedLongAdder.Reset">
+            <summary>
+            Resets the current value to zero.
+            </summary>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.StripedLongAdder.Increment">
+            <summary>
+            Increment the value of this instance.
+            </summary>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.StripedLongAdder.Increment(System.Int64)">
+            <summary>
+            Increment the value of this instance with <paramref name="value"/>.
+            </summary>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.StripedLongAdder.Decrement">
+            <summary>
+            Decrement the value of this instance.
+            </summary>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.StripedLongAdder.Decrement(System.Int64)">
+            <summary>
+            Decrement the value of this instance with <paramref name="value"/>.
+            </summary>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.StripedLongAdder.Add(System.Int64)">
+            <summary>
+            Add <paramref name="value"/> to this instance.
+            </summary>
+            <param name="value">Value to add.</param>
+        </member>
+        <member name="T:Metrics.ConcurrencyUtilities.ThreadLocalLongAdder">
+            <summary>
+            This class is similar in functionality with the StripedLongAdder, but uses the ThreadLocal class to 
+            keep a value for each thread. The GetValue method sums all the values and returns the result.
+            
+            This class is a bit baster (in micro-benchmarks) than the StripedLongAdder for incrementing a value on multiple threads, 
+            but it creates a ValueHolder instance for each thread that increments the value, not just for when contention is present. 
+            Considering this, the StripedLongAdder might be a better solution in some cases (multiple threads, relatively low contention).
+            </summary>
+        </member>
+        <member name="F:Metrics.ConcurrencyUtilities.ThreadLocalLongAdder.local">
+            <summary>
+            We store a ValueHolder instance for each thread that requires one.
+            </summary>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.ThreadLocalLongAdder.#ctor">
+            <summary>
+            Creates a new instance of the adder with initial value of zero.
+            </summary>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.ThreadLocalLongAdder.#ctor(System.Int64)">
+            <summary>
+            Creates a new instance of the adder with initial <paramref name="value"/>.
+            </summary>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.ThreadLocalLongAdder.GetValue">
+            <summary>
+            Returns the current value of this adder. This method sums all the thread local variables and returns the result.
+            </summary>
+            <returns>The current value recored by this adder.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.ThreadLocalLongAdder.NonVolatileGetValue">
+            <summary>
+            Returns the current value of the instance without using Volatile.Read fence and ordering.  
+            </summary>
+            <returns>The current value of the instance in a non-volatile way (might not observe changes on other threads).</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.ThreadLocalLongAdder.GetAndReset">
+            <summary>
+            Returns the current value of this adder and resets the value to zero.
+            This method sums all the thread local variables, resets their value and returns the result.
+            </summary>
+            <remarks>
+            This method is thread-safe. If updates happen during this method, they are either included in the final sum, or reflected in the value after the reset.
+            </remarks>
+            <returns>The current value recored by this adder.</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.ThreadLocalLongAdder.Reset">
+            <summary>
+            Resets the current value to zero.
+            </summary>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.ThreadLocalLongAdder.Add(System.Int64)">
+            <summary>
+            Add <paramref name="value"/> to this instance.
+            </summary>
+            <param name="value">Value to add.</param>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.ThreadLocalLongAdder.Increment">
+            <summary>
+            Increment the value of this instance.
+            </summary>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.ThreadLocalLongAdder.Decrement">
+            <summary>
+            Decrement the value of this instance.
+            </summary>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.ThreadLocalLongAdder.Increment(System.Int64)">
+            <summary>
+            Increment the value of this instance with <paramref name="value"/>.
+            </summary>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.ThreadLocalLongAdder.Decrement(System.Int64)">
+            <summary>
+            Decrement the value of this instance with <paramref name="value"/>.
+            </summary>
+        </member>
+        <member name="T:Metrics.ConcurrencyUtilities.ThreadLocalRandom">
+            <summary>
+            Helper class to generate Random values is a thread safe way. Not suitable for cryptographic operations.
+            </summary>
+        </member>
+        <member name="T:Metrics.ConcurrencyUtilities.VolatileDouble">
+            <summary>
+            Double value on which the GetValue/SetValue operations are performed using Volatile.Read/Volatile.Write.
+            </summary>
+            <remarks>
+            This datastructure is a struct. If a member is declared readonly VolatileDouble calling set will *NOT* modify the value.
+            GetValue/SetValue are expressed as methods to make it obvious that a non-trivial operation is performed.
+            </remarks>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.VolatileDouble.#ctor(System.Double)">
+            <summary>
+            Initialize the value of this instance
+            </summary>
+            <param name="value">Initial value of the instance.</param>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.VolatileDouble.SetValue(System.Double)">
+            <summary>
+            Set the the value of this instance to <paramref name="newValue"/>
+            </summary>
+            <remarks>
+            Don't call Set on readonly fields.
+            </remarks>
+            <param name="newValue">New value for this instance</param>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.VolatileDouble.LazySetValue(System.Double)">
+            <summary>
+            From the Java Version:
+            Eventually sets to the given value.
+            The semantics are that the write is guaranteed not to be re-ordered with any previous write, 
+            but may be reordered with subsequent operations (or equivalently, might not be visible to other threads) 
+            until some other volatile write or synchronizing action occurs).
+            </summary>
+            <remarks>
+            Currently implemented by calling Volatile.Write which is different from the java version. 
+            Not sure if it is possible on CLR to implement this.
+            </remarks>
+            <param name="value">The new value for this instance.</param>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.VolatileDouble.NonVolatileSetValue(System.Double)">
+            <summary>
+            Set the value without using Volatile.Write fence and ordering.
+            </summary>
+            <param name="value">The new value for this instance.</param>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.VolatileDouble.GetValue">
+            <summary>
+            Get the current value of this instance
+            </summary>
+            <returns>The current value of the instance</returns>
+        </member>
+        <member name="M:Metrics.ConcurrencyUtilities.VolatileDouble.NonVolatileGetValue">
+            <summary>
+            Returns the current value of the instance without using Volatile.Read fence and ordering.  
+            </summary>
+            <returns>The current value of the instance in a non-volatile way (might not observe changes on other threads).</returns>
+        </member>
+        <member name="T:Metrics.Logging.ILog">
+            <summary>
+            Simple interface that represent a logger.
+            </summary>
+        </member>
+        <member name="M:Metrics.Logging.ILog.Log(Metrics.Logging.LogLevel,System.Func{System.String},System.Exception,System.Object[])">
+            <summary>
+            Log a message the specified log level.
+            </summary>
+            <param name="logLevel">The log level.</param>
+            <param name="messageFunc">The message function.</param>
+            <param name="exception">An optional exception.</param>
+            <param name="formatParameters">Optional format parameters for the message generated by the messagefunc. </param>
+            <returns>true if the message was logged. Otherwise false.</returns>
+            <remarks>
+            Note to implementers: the message func should not be called if the loglevel is not enabled
+            so as not to incur performance penalties.
+            
+            To check IsEnabled call Log with only LogLevel and check the return value, no event will be written.
+            </remarks>
+        </member>
+        <member name="T:Metrics.Logging.LogLevel">
+            <summary>
+            The log level.
+            </summary>
+        </member>
+        <member name="T:Metrics.Logging.ILogProvider">
+            <summary>
+            Represents a way to get a <see cref="T:Metrics.Logging.ILog"/>
+            </summary>
+        </member>
+        <member name="M:Metrics.Logging.ILogProvider.GetLogger(System.String)">
+            <summary>
+            Gets the specified named logger.
+            </summary>
+            <param name="name">Name of the logger.</param>
+            <returns>The logger reference.</returns>
+        </member>
+        <member name="M:Metrics.Logging.ILogProvider.OpenNestedContext(System.String)">
+            <summary>
+            Opens a nested diagnostics context. Not supported in EntLib logging.
+            </summary>
+            <param name="message">The message to add to the diagnostics context.</param>
+            <returns>A disposable that when disposed removes the message from the context.</returns>
+        </member>
+        <member name="M:Metrics.Logging.ILogProvider.OpenMappedContext(System.String,System.String)">
+            <summary>
+            Opens a mapped diagnostics context. Not supported in EntLib logging.
+            </summary>
+            <param name="key">A key.</param>
+            <param name="value">A value.</param>
+            <returns>A disposable that when disposed removes the map from the context.</returns>
+        </member>
+        <member name="T:Metrics.Logging.LogProvider">
+            <summary>
+            Provides a mechanism to create instances of <see cref="T:Metrics.Logging.ILog" /> objects.
+            </summary>
+        </member>
+        <member name="F:Metrics.Logging.LogProvider.DisableLoggingEnvironmentVariable">
+            <summary>
+            The disable logging environment variable. If the environment variable is set to 'true', then logging
+            will be disabled.
+            </summary>
+        </member>
+        <member name="M:Metrics.Logging.LogProvider.SetCurrentLogProvider(Metrics.Logging.ILogProvider)">
+            <summary>
+            Sets the current log provider.
+            </summary>
+            <param name="logProvider">The log provider.</param>
+        </member>
+        <member name="P:Metrics.Logging.LogProvider.IsDisabled">
+            <summary>
+            Gets or sets a value indicating whether this is logging is disabled.
+            </summary>
+            <value>
+            <c>true</c> if logging is disabled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Metrics.Logging.LogProvider.OnCurrentLogProviderSet">
+            <summary>
+            Sets an action that is invoked when a consumer of your library has called SetCurrentLogProvider. It is 
+            important that hook into this if you are using child libraries (especially ilmerged ones) that are using
+            LibLog (or other logging abstraction) so you adapt and delegate to them.
+            <see cref="M:Metrics.Logging.LogProvider.SetCurrentLogProvider(Metrics.Logging.ILogProvider)"/> 
+            </summary>
+        </member>
+        <member name="M:Metrics.Logging.LogProvider.For``1">
+            <summary>
+            Gets a logger for the specified type.
+            </summary>
+            <typeparam name="T">The type whose name will be used for the logger.</typeparam>
+            <returns>An instance of <see cref="T:Metrics.Logging.ILog"/></returns>
+        </member>
+        <member name="M:Metrics.Logging.LogProvider.GetCurrentClassLogger">
+            <summary>
+            Gets a logger for the current class.
+            </summary>
+            <returns>An instance of <see cref="T:Metrics.Logging.ILog"/></returns>
+        </member>
+        <member name="M:Metrics.Logging.LogProvider.GetLogger(System.Type)">
+            <summary>
+            Gets a logger for the specified type.
+            </summary>
+            <param name="type">The type whose name will be used for the logger.</param>
+            <returns>An instance of <see cref="T:Metrics.Logging.ILog"/></returns>
+        </member>
+        <member name="M:Metrics.Logging.LogProvider.GetLogger(System.String)">
+            <summary>
+            Gets a logger with the specified name.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>An instance of <see cref="T:Metrics.Logging.ILog"/></returns>
+        </member>
+        <member name="M:Metrics.Logging.LogProvider.OpenNestedContext(System.String)">
+            <summary>
+            Opens a nested diagnostics context.
+            </summary>
+            <param name="message">A message.</param>
+            <returns>An <see cref="T:System.IDisposable"/> that closes context when disposed.</returns>
+        </member>
+        <member name="M:Metrics.Logging.LogProvider.OpenMappedContext(System.String,System.String)">
+            <summary>
+            Opens a mapped diagnostics context.
+            </summary>
+            <param name="key">A key.</param>
+            <param name="value">A value.</param>
+            <returns>An <see cref="T:System.IDisposable"/> that closes context when disposed.</returns>
+        </member>
+        <member name="T:Metrics.Logging.LogProviders.LoupeLogProvider.WriteDelegate">
+            <summary>
+            The form of the Loupe Log.Write method we're using
+            </summary>
+        </member>
+        <member name="P:Metrics.Logging.LogProviders.LoupeLogProvider.ProviderIsAvailableOverride">
+            <summary>
+            Gets or sets a value indicating whether [provider is available override]. Used in tests.
+            </summary>
+            <value>
+            <c>true</c> if [provider is available override]; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:Metrics.Logging.LogProviders.LogMessageFormatter.SimulateStructuredLogging(System.Func{System.String},System.Object[])">
+            <summary>
+            Some logging frameworks support structured logging, such as serilog. This will allow you to add names to structured data in a format string:
+            For example: Log("Log message to {user}", user). This only works with serilog, but as the user of LibLog, you don't know if serilog is actually 
+            used. So, this class simulates that. it will replace any text in {curly braces} with an index number. 
+            
+            "Log {message} to {user}" would turn into => "Log {0} to {1}". Then the format parameters are handled using regular .net string.Format.
+            </summary>
+            <param name="messageBuilder">The message builder.</param>
+            <param name="formatParameters">The format parameters.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Metrics.Core.ReadOnlyMetricsContext">
+            <summary>
+            Read only metrics context ( ex: to capture metrics from a remote system )
+            </summary>
+        </member>
+        <member name="M:Metrics.Core.HitRatioGauge.#ctor(Metrics.Meter,Metrics.Meter)">
+            <summary>
+            Creates a new HitRatioGauge with externally tracked Meters, and uses the OneMinuteRate from the MeterValue of the meters.
+            </summary>
+            <param name="hitMeter"></param>
+            <param name="totalMeter"></param>
+        </member>
+        <member name="M:Metrics.Core.HitRatioGauge.#ctor(Metrics.Meter,Metrics.Meter,System.Func{Metrics.MetricData.MeterValue,System.Double})">
+            <summary>
+            Creates a new HitRatioGauge with externally tracked Meters, and uses the provided meter rate function to extract the value for the ratio.
+            </summary>
+            <param name="hitMeter">The numerator meter to use for the ratio.</param>
+            <param name="totalMeter">The denominator meter to use for the ratio.</param>
+            <param name="meterRateFunc">The function to extract a value from the MeterValue. Will be applied to both the numerator and denominator meters.</param>
+        </member>
+        <member name="M:Metrics.Core.HitRatioGauge.#ctor(Metrics.Meter,Metrics.Timer)">
+            <summary>
+            Creates a new HitRatioGauge with externally tracked Meter and Timer, and uses the OneMinuteRate from the MeterValue of the meters.
+            </summary>
+            <param name="hitMeter">The numerator meter to use for the ratio.</param>
+            <param name="totalTimer">The denominator meter to use for the ratio.</param>
+        </member>
+        <member name="M:Metrics.Core.HitRatioGauge.#ctor(Metrics.Meter,Metrics.Timer,System.Func{Metrics.MetricData.MeterValue,System.Double})">
+            <summary>
+            Creates a new HitRatioGauge with externally tracked Meter and Timer, and uses the provided meter rate function to extract the value for the ratio.
+            </summary>
+            <param name="hitMeter">The numerator meter to use for the ratio.</param>
+            <param name="totalTimer">The denominator timer to use for the ratio.</param>
+            <param name="meterRateFunc">The function to extract a value from the MeterValue. Will be applied to both the numerator and denominator meters.</param>
+        </member>
+        <member name="F:Metrics.MetricData.CounterValue.SetItem.Item">
+            <summary>
+            Registered item name.
+            </summary>
+        </member>
+        <member name="F:Metrics.MetricData.CounterValue.SetItem.Count">
+            <summary>
+            Specific count for this item.
+            </summary>
+        </member>
+        <member name="F:Metrics.MetricData.CounterValue.SetItem.Percent">
+            <summary>
+            Percent of this item from the total count.
+            </summary>
+        </member>
+        <member name="F:Metrics.MetricData.CounterValue.Count">
+            <summary>
+            Total count of the counter instance.
+            </summary>
+        </member>
+        <member name="F:Metrics.MetricData.CounterValue.Items">
+            <summary>
+            Separate counters for each registered set item.
+            </summary>
+        </member>
+        <member name="T:Metrics.MetricData.CounterValueSource">
+            <summary>
+            Combines the value for a counter with the defined unit for the value.
+            </summary>
+        </member>
+        <member name="T:Metrics.MetricData.GaugeValueSource">
+            <summary>
+            Combines the value of a gauge (a double) with the defined unit for the value.
+            </summary>
+        </member>
+        <member name="T:Metrics.MetricData.HistogramValue">
+            <summary>
+            The value reported by a Histogram Metric
+            </summary>
+        </member>
+        <member name="T:Metrics.MetricData.HistogramValueSource">
+            <summary>
+            Combines the value of the histogram with the defined unit for the value.
+            </summary>
+        </member>
+        <member name="T:Metrics.MetricData.MeterValue">
+            <summary>
+            The value reported by a Meter Metric
+            </summary>
+        </member>
+        <member name="T:Metrics.MetricData.MeterValueSource">
+            <summary>
+            Combines the value of the meter with the defined unit and the rate unit at which the value is reported.
+            </summary>
+        </member>
+        <member name="T:Metrics.MetricData.MetricsDataProvider">
+            <summary>
+            A provider capable of returning the current values for a set of metrics
+            </summary>
+        </member>
+        <member name="P:Metrics.MetricData.MetricsDataProvider.CurrentMetricsData">
+            <summary>
+            Returns the current metrics data for the context for which this provider has been created.
+            </summary>
+        </member>
+        <member name="T:Metrics.MetricData.TimerValue">
+            <summary>
+            The value reported by a Timer Metric
+            </summary>
+        </member>
+        <member name="T:Metrics.MetricData.TimerValueSource">
+            <summary>
+            Combines the value of the timer with the defined unit and the time units for rate and duration.
+            </summary>
+        </member>
+        <member name="T:Metrics.MetricData.MetricValueProvider`1">
+            <summary>
+            Indicates the ability to provide the value for a metric.
+            This is the raw value. Consumers should use <see cref="T:Metrics.MetricData.MetricValueSource`1"/>
+            </summary>
+            <typeparam name="T">Type of the value returned by the metric</typeparam>
+        </member>
+        <member name="P:Metrics.MetricData.MetricValueProvider`1.Value">
+            <summary>
+            The current value of the metric.
+            </summary>
+        </member>
+        <member name="M:Metrics.MetricData.MetricValueProvider`1.GetValue(System.Boolean)">
+            <summary>
+            Get the current value for the metric, but also reset the metric.
+            Useful for pushing data to only one consumer (ex: graphite) where you might want to only capture values just between the report interval.
+            </summary>
+            <param name="resetMetric">if set to true the metric will be reset.</param>
+            <returns>The current value for the metric.</returns>
+        </member>
+        <member name="T:Metrics.MetricData.MetricValueSource`1">
+            <summary>
+            Provides the value of a metric and information about units.
+            This is the class that metric consumers should use.
+            </summary>
+            <typeparam name="T">Type of the metric value</typeparam>
+        </member>
+        <member name="P:Metrics.MetricData.MetricValueSource`1.Name">
+            <summary>
+            Name of the metric.
+            </summary>
+        </member>
+        <member name="P:Metrics.MetricData.MetricValueSource`1.Value">
+            <summary>
+            The current value of the metric.
+            </summary>
+        </member>
+        <member name="P:Metrics.MetricData.MetricValueSource`1.Unit">
+            <summary>
+            Unit representing what the metric is measuring.
+            </summary>
+        </member>
+        <member name="P:Metrics.MetricData.MetricValueSource`1.Tags">
+            <summary>
+            Tags associated with the metric.
+            </summary>
+        </member>
+        <member name="P:Metrics.MetricData.MetricValueSource`1.ValueProvider">
+            <summary>
+            Instance capable of returning the current value for the metric.
+            </summary>
+        </member>
+        <member name="T:Metrics.MetricTags">
+            <summary>
+            Collection of tags that can be attached to a metric.
+            </summary>
+        </member>
+        <member name="M:Metrics.Sampling.ExponentiallyDecayingReservoir.Rescale">
+            * "A common feature of the above techniques—indeed, the key technique that
+        </member>
+        <member name="T:Metrics.Sampling.HdrHistogramReservoir">
+            <summary>
+            Sampling reservoir based on HdrHistogram.
+            Based on the java version from Marshall Pierce https://bitbucket.org/marshallpierce/hdrhistogram-metrics-reservoir/src/83a8ec568a1e?at=master
+            </summary>
+        </member>
+        <member name="T:Metrics.ResetableMetric">
+            <summary>
+            Indicates a metric's ability to be reset. Reseting a metric clear all currently collected data.
+            </summary>
+        </member>
+        <member name="M:Metrics.ResetableMetric.Reset">
+            <summary>
+            Clear all currently collected data for this metric.
+            </summary>
+        </member>
+        <member name="T:Metrics.HealthCheckResult">
+            <summary>
+            Result of a health check
+            </summary>
+        </member>
+        <member name="F:Metrics.HealthCheckResult.IsHealthy">
+            <summary>
+            True if the check was successful, false if the check failed.
+            </summary>
+        </member>
+        <member name="F:Metrics.HealthCheckResult.Message">
+            <summary>
+            Status message of the check. A status can be provided for both healthy and unhealthy states.
+            </summary>
+        </member>
+        <member name="M:Metrics.HealthCheckResult.Healthy">
+            <summary>
+            Create a healthy status response.
+            </summary>
+            <returns>Healthy status response.</returns>
+        </member>
+        <member name="M:Metrics.HealthCheckResult.Healthy(System.String,System.Object[])">
+            <summary>
+            Create a healthy status response.
+            </summary>
+            <param name="message">Status message.</param>
+            <param name="values">Values to format the status message with.</param>
+            <returns>Healthy status response.</returns>
+        </member>
+        <member name="M:Metrics.HealthCheckResult.Unhealthy">
+            <summary>
+            Create a unhealthy status response.
+            </summary>
+            <returns>Unhealthy status response.</returns>
+        </member>
+        <member name="M:Metrics.HealthCheckResult.Unhealthy(System.String,System.Object[])">
+            <summary>
+            Create a unhealthy status response.
+            </summary>
+            <param name="message">Status message.</param>
+            <param name="values">Values to format the status message with.</param>
+            <returns>Unhealthy status response.</returns>
+        </member>
+        <member name="M:Metrics.HealthCheckResult.Unhealthy(System.Exception)">
+            <summary>
+            Create a unhealthy status response.
+            </summary>
+            <param name="exception">Exception to use for reason.</param>
+            <returns>Unhealthy status response.</returns>
+        </member>
+        <member name="T:Metrics.Counter">
+            <summary>
+            A counter is a simple incrementing and decrementing 64-bit integer.
+            Each operation can also be applied to a item from a set and the counter will store individual count for each set item.
+            </summary>
+        </member>
+        <member name="M:Metrics.Counter.Increment">
+            <summary>
+            Increment the counter value.
+            </summary>
+        </member>
+        <member name="M:Metrics.Counter.Increment(System.String)">
+            <summary>
+            Increment the counter value for an item from a set.
+            The counter value is incremented but the counter will also keep track and increment another counter associated with the <paramref name="item"/>.
+            The counter value will contain the total count and for each item the specific count and percentage of total count.
+            </summary>
+            <param name="item">Item from the set for which to increment the counter value.</param>
+        </member>
+        <member name="M:Metrics.Counter.Increment(System.Int64)">
+            <summary>
+            Increment the counter value with a specified amount.
+            </summary>
+            <param name="amount">The amount with which to increment the counter.</param>
+        </member>
+        <member name="M:Metrics.Counter.Increment(System.String,System.Int64)">
+            <summary>
+            Increment the counter value with a specified amount for an item from a set.
+            The counter value is incremented but the counter will also keep track and increment another counter associated with the <paramref name="item"/>.
+            The counter value will contain the total count and for each item the specific count and percentage of total count.
+            </summary>
+            <param name="item">Item from the set for which to increment the counter value.</param>
+            <param name="amount">The amount with which to increment the counter.</param>
+        </member>
+        <member name="M:Metrics.Counter.Decrement">
+            <summary>
+            Decrement the counter value.
+            </summary>
+        </member>
+        <member name="M:Metrics.Counter.Decrement(System.String)">
+            <summary>
+            Decrement the counter value for an item from a set.
+            The counter value is decremented but the counter will also keep track and decrement another counter associated with the <paramref name="item"/>.
+            The counter value will contain the total count and for each item the specific count and percentage of total count.
+            </summary>
+            <param name="item">Item from the set for which to increment the counter value.</param>
+        </member>
+        <member name="M:Metrics.Counter.Decrement(System.Int64)">
+            <summary>
+            Decrement the counter value with a specified amount.
+            </summary>
+            <param name="amount">The amount with which to increment the counter.</param>
+        </member>
+        <member name="M:Metrics.Counter.Decrement(System.String,System.Int64)">
+            <summary>
+            Decrement the counter value with a specified amount for an item from a set.
+            The counter value is decremented but the counter will also keep track and decrement another counter associated with the <paramref name="item"/>.
+            The counter value will contain the total count and for each item the specific count and percentage of total count.
+            </summary>
+            <param name="item">Item from the set for which to increment the counter value.</param>
+            <param name="amount">The amount with which to increment the counter.</param>
+        </member>
+        <member name="T:Metrics.HealthStatus">
+            <summary>
+            Structure describing the status of executing all the health checks operations.
+            </summary>
+        </member>
+        <member name="F:Metrics.HealthStatus.HasRegisteredChecks">
+            <summary>
+            Flag indicating whether any checks are registered
+            </summary>
+        </member>
+        <member name="F:Metrics.HealthStatus.IsHealthy">
+            <summary>
+            All health checks passed.
+            </summary>
+        </member>
+        <member name="F:Metrics.HealthStatus.Results">
+            <summary>
+            Result of each health check operation
+            </summary>
+        </member>
+        <member name="T:Metrics.HealthChecks">
+            <summary>
+            Registry for health checks
+            </summary>
+        </member>
+        <member name="M:Metrics.HealthChecks.RegisterHealthCheck(System.String,System.Action)">
+            <summary>
+            Registers an action to monitor. If the action throws the health check fails, otherwise is successful.
+            </summary>
+            <param name="name">Name of the health check.</param>
+            <param name="check">Action to execute.</param>
+        </member>
+        <member name="M:Metrics.HealthChecks.RegisterHealthCheck(System.String,System.Func{System.String})">
+            <summary>
+            Registers an action to monitor. If the action throws the health check fails, 
+            otherwise is successful and the returned string is used as status message.
+            </summary>
+            <param name="name">Name of the health check.</param>
+            <param name="check">Function to execute.</param>
+        </member>
+        <member name="M:Metrics.HealthChecks.RegisterHealthCheck(System.String,System.Func{Metrics.HealthCheckResult})">
+            <summary>
+            Registers a function to monitor. If the function throws or returns an HealthCheckResult.Unhealthy the check fails,
+            otherwise the result of the function is used as a status.
+            </summary>
+            <param name="name">Name of the health check.</param>
+            <param name="check">Function to execute</param>
+        </member>
+        <member name="M:Metrics.HealthChecks.RegisterHealthCheck(Metrics.Core.HealthCheck)">
+            <summary>
+            Registers a custom health check.
+            </summary>
+            <param name="healthCheck">Custom health check to register.</param>
+        </member>
+        <member name="M:Metrics.HealthChecks.GetStatus">
+            <summary>
+            Execute all registered checks and return overall.
+            </summary>
+            <returns>Status of the system.</returns>
+        </member>
+        <member name="M:Metrics.HealthChecks.UnregisterAllHealthChecks">
+            <summary>
+            Remove all the registered health checks.
+            </summary>
+        </member>
+        <member name="T:Metrics.Histogram">
+            <summary>
+            A Histogram measures the distribution of values in a stream of data: e.g., the number of results returned by a search.
+            </summary>
+        </member>
+        <member name="M:Metrics.Histogram.Update(System.Int64,System.String)">
+            <summary>
+            Records a value.
+            </summary>
+            <param name="value">Value to be added to the histogram.</param>
+            <param name="userValue">A custom user value that will be associated to the results.
+            Useful for tracking (for example) for which id the max or min value was recorded.
+            </param>
+        </member>
+        <member name="T:Metrics.MetricsContext">
+            <summary>
+            Represents a logical grouping of metrics
+            </summary>
+        </member>
+        <member name="P:Metrics.MetricsContext.Advanced">
+            <summary>
+            Exposes advanced operations that are possible on this metrics context.
+            </summary>
+        </member>
+        <member name="P:Metrics.MetricsContext.DataProvider">
+            <summary>
+            Returns a metrics data provider capable of returning the metrics in this context and any existing child contexts.
+            </summary>
+        </member>
+        <member name="M:Metrics.MetricsContext.Context(System.String)">
+            <summary>
+            Create a new child metrics context. Metrics added to the child context are kept separate from the metrics in the 
+            parent context.
+            </summary>
+            <param name="contextName">Name of the child context.</param>
+            <returns>Newly created child context.</returns>
+        </member>
+        <member name="M:Metrics.MetricsContext.Context(System.String,System.Func{System.String,Metrics.MetricsContext})">
+            <summary>
+            Create a new child metrics context. Metrics added to the child context are kept separate from the metrics in the 
+            parent context.
+            </summary>
+            <param name="contextName">Name of the child context.</param>
+            <param name="contextCreator">Function used to create the instance of the child context. (Use for creating custom contexts)</param>
+            <returns>Newly created child context.</returns>
+        </member>
+        <member name="M:Metrics.MetricsContext.ShutdownContext(System.String)">
+            <summary>
+            Remove a child context. The metrics for the child context are removed from the MetricsData of the parent context.
+            </summary>
+            <param name="contextName">Name of the child context to shutdown.</param>
+        </member>
+        <member name="M:Metrics.MetricsContext.Gauge(System.String,System.Func{System.Double},Metrics.Unit,Metrics.MetricTags)">
+            <summary>
+            A gauge is the simplest metric type. It just returns a value. This metric is suitable for instantaneous values.
+            </summary>
+            <param name="name">Name of this gauge metric. Must be unique across all gauges in this context.</param>
+            <param name="valueProvider">Function that returns the value for the gauge.</param>
+            <param name="unit">Description of want the value represents ( Unit.Requests , Unit.Items etc ) .</param>
+            <param name="tags">Optional set of tags that can be associated with the metric.</param>
+        </member>
+        <member name="M:Metrics.MetricsContext.PerformanceCounter(System.String,System.String,System.String,System.String,Metrics.Unit,Metrics.MetricTags)">
+            <summary>
+            Register a performance counter as a Gauge metric.
+            </summary>
+            <param name="name">Name of this gauge metric. Must be unique across all gauges in this context.</param>
+            <param name="counterCategory">Category of the performance counter</param>
+            <param name="counterName">Name of the performance counter</param>
+            <param name="counterInstance">Instance of the performance counter</param>
+            <param name="unit">Description of want the value represents ( Unit.Requests , Unit.Items etc ) .</param>
+            <param name="tags">Optional set of tags that can be associated with the metric.</param>
+        </member>
+        <member name="M:Metrics.MetricsContext.Counter(System.String,Metrics.Unit,Metrics.MetricTags)">
+            <summary>
+            A counter is a simple incrementing and decrementing 64-bit integer. Ex number of active requests.
+            </summary>
+            <param name="name">Name of the metric. Must be unique across all counters in this context.</param>
+            <param name="unit">Description of what the is being measured ( Unit.Requests , Unit.Items etc ) .</param>
+            <param name="tags">Optional set of tags that can be associated with the metric.</param>
+            <returns>Reference to the metric</returns>
+        </member>
+        <member name="M:Metrics.MetricsContext.Meter(System.String,Metrics.Unit,Metrics.TimeUnit,Metrics.MetricTags)">
+            <summary>
+            A meter measures the rate at which a set of events occur, in a few different ways. 
+            This metric is suitable for keeping a record of now often something happens ( error, request etc ).
+            </summary>
+            <remarks>
+            The mean rate is the average rate of events. It’s generally useful for trivia, 
+            but as it represents the total rate for your application’s entire lifetime (e.g., the total number of requests handled, 
+            divided by the number of seconds the process has been running), it doesn’t offer a sense of recency. 
+            Luckily, meters also record three different exponentially-weighted moving average rates: the 1-, 5-, and 15-minute moving averages.
+            </remarks>
+            <param name="name">Name of the metric. Must be unique across all meters in this context.</param>
+            <param name="unit">Description of what the is being measured ( Unit.Requests , Unit.Items etc ) .</param>
+            <param name="rateUnit">Time unit for rates reporting. Defaults to Second ( occurrences / second ).</param>
+            <param name="tags">Optional set of tags that can be associated with the metric.</param>
+            <returns>Reference to the metric</returns>
+        </member>
+        <member name="M:Metrics.MetricsContext.Histogram(System.String,Metrics.Unit,Metrics.SamplingType,Metrics.MetricTags)">
+            <summary>
+            A Histogram measures the distribution of values in a stream of data: e.g., the number of results returned by a search.
+            </summary>
+            <param name="name">Name of the metric. Must be unique across all histograms in this context.</param>
+            <param name="unit">Description of what the is being measured ( Unit.Requests , Unit.Items etc ) .</param>
+            <param name="samplingType">Type of the sampling to use (see SamplingType for details ).</param>
+            <param name="tags">Optional set of tags that can be associated with the metric.</param>
+            <returns>Reference to the metric</returns>
+        </member>
+        <member name="M:Metrics.MetricsContext.Timer(System.String,Metrics.Unit,Metrics.SamplingType,Metrics.TimeUnit,Metrics.TimeUnit,Metrics.MetricTags)">
+            <summary>
+            A timer is basically a histogram of the duration of a type of event and a meter of the rate of its occurrence.
+            <seealso cref="M:Metrics.MetricsContext.Histogram(System.String,Metrics.Unit,Metrics.SamplingType,Metrics.MetricTags)"/> and <seealso cref="M:Metrics.MetricsContext.Meter(System.String,Metrics.Unit,Metrics.TimeUnit,Metrics.MetricTags)"/>
+            </summary>
+            <param name="name">Name of the metric. Must be unique across all timers in this context.</param>
+            <param name="unit">Description of what the is being measured ( Unit.Requests , Unit.Items etc ) .</param>
+            <param name="samplingType">Type of the sampling to use (see SamplingType for details ).</param>
+            <param name="rateUnit">Time unit for rates reporting. Defaults to Second ( occurrences / second ).</param>
+            <param name="durationUnit">Time unit for reporting durations. Defaults to Milliseconds. </param>
+            <param name="tags">Optional set of tags that can be associated with the metric.</param>
+            <returns>Reference to the metric</returns>
+        </member>
+        <member name="T:Metrics.Meter">
+            <summary>
+            A meter measures the rate at which a set of events occur, in a few different ways. 
+            The mean rate is the average rate of events. It’s generally useful for trivia, 
+            but as it represents the total rate for your application’s entire lifetime (e.g., the total number of requests handled, 
+            divided by the number of seconds the process has been running), it doesn’t offer a sense of recency. 
+            Luckily, meters also record three different exponentially-weighted moving average rates: the 1-, 5-, and 15-minute moving averages.
+            </summary>
+        </member>
+        <member name="M:Metrics.Meter.Mark">
+            <summary>
+            Mark the occurrence of an event.
+            </summary>
+        </member>
+        <member name="M:Metrics.Meter.Mark(System.String)">
+            <summary>
+            Mark the occurrence of an event for an item in a set.
+            The total rate of the event is updated, but the meter will also keep track and update a specific rate for each <paramref name="item"/> registered.
+            The meter value will contain the total rate and for each registered item the specific rate and percentage of total count.
+            </summary>
+            <param name="item">Item from the set for which to record the event.</param>
+        </member>
+        <member name="M:Metrics.Meter.Mark(System.Int64)">
+            <summary>
+            Mark the occurrence of <paramref name="count"/> events.
+            </summary>
+            <param name="count"></param>
+        </member>
+        <member name="M:Metrics.Meter.Mark(System.String,System.Int64)">
+            <summary>
+            Mark the occurrence of <paramref name="count"/> events for an item in a set.
+            The total rate of the event is updated, but the meter will also keep track and update a specific rate for each <paramref name="item"/> registered.
+            The meter value will contain the total rate and for each registered item the specific rate and percentage of total count.
+            </summary>
+            <param name="count"></param>
+            <param name="item">Item from the set for which to record the events.</param>
+        </member>
+        <member name="P:Metrics.MetricsConfig.DefaultSamplingType">
+            <summary>
+            Gets the currently configured default sampling type to use for histogram sampling.
+            </summary>
+        </member>
+        <member name="M:Metrics.MetricsConfig.WithHttpEndpoint(System.String,Metrics.MetricData.MetricsFilter,System.Int32)">
+            <summary>
+            Create HTTP endpoint where metrics will be available in various formats:
+            GET / => visualization application
+            GET /json => metrics serialized as JSON
+            GET /text => metrics in human readable text format
+            </summary>
+            <param name="httpUriPrefix">prefix where to start HTTP endpoint</param>
+            <param name="filter">Only report metrics that match the filter.</param> 
+            <param name="maxRetries">maximum number of attempts to start the http listener. Note the retry time between attempts is dependent on this value</param>
+            <returns>Chain-able configuration object.</returns>
+        </member>
+        <member name="M:Metrics.MetricsConfig.WithHealthStatus(System.Func{Metrics.HealthStatus})">
+            <summary>
+            Configure Metrics library to use a custom health status reporter. By default HealthChecks.GetStatus() is used.
+            </summary>
+            <param name="healthStatus">Function that provides the current health status.</param>
+            <returns>Chain-able configuration object.</returns>
+        </member>
+        <member name="M:Metrics.MetricsConfig.WithErrorHandler(System.Action{System.Exception},System.Boolean)">
+            <summary>
+            Error handler for the metrics library. If a handler is registered any error will be passed to the handler.
+            By default unhandled errors are logged, printed to console if Environment.UserInteractive is true, and logged with Trace.TracError.
+            </summary>
+            <param name="errorHandler">Action with will be executed with the exception.</param>
+            <param name="clearExistingHandlers">Is set to true, remove any existing handler.</param>
+            <returns>Chain able configuration object.</returns>
+        </member>
+        <member name="M:Metrics.MetricsConfig.WithErrorHandler(System.Action{System.Exception,System.String},System.Boolean)">
+            <summary>
+            Error handler for the metrics library. If a handler is registered any error will be passed to the handler.
+            By default unhandled errors are logged, printed to console if Environment.UserInteractive is true, and logged with Trace.TracError.
+            </summary>
+            <param name="errorHandler">Action with will be executed with the exception and a specific message.</param>
+            <param name="clearExistingHandlers">Is set to true, remove any existing handler.</param>
+            <returns>Chain able configuration object.</returns>
+        </member>
+        <member name="M:Metrics.MetricsConfig.WithReporting(System.Action{Metrics.Reports.MetricsReports})">
+            <summary>
+            Configure the way metrics are reported
+            </summary>
+            <param name="reportsConfig">Reports configuration action</param>
+            <returns>Chain-able configuration object.</returns>
+        </member>
+        <member name="M:Metrics.MetricsConfig.WithConfigExtension(System.Action{Metrics.MetricsContext,System.Func{Metrics.HealthStatus}})">
+            <summary>
+            This method is used for customizing the metrics configuration.
+            The <paramref name="extension"/> will be called with the current MetricsContext and HealthStatus provider.
+            </summary>
+            <remarks>
+            In general you don't need to call this method directly.
+            </remarks>
+            <param name="extension">Action to apply extra configuration.</param>
+            <returns>Chain-able configuration object.</returns>
+        </member>
+        <member name="M:Metrics.MetricsConfig.WithConfigExtension``1(System.Func{Metrics.MetricsContext,System.Func{Metrics.HealthStatus},``0})">
+            <summary>
+            This method is used for customizing the metrics configuration.
+            The <paramref name="extension"/> will be called with the current MetricsContext and HealthStatus provider.
+            </summary>
+            <remarks>
+            In general you don't need to call this method directly.
+            </remarks>
+            <param name="extension">Action to apply extra configuration.</param>
+            <returns>The result of calling the extension.</returns>
+        </member>
+        <member name="M:Metrics.MetricsConfig.WithDefaultSamplingType(Metrics.SamplingType)">
+            <summary>
+            Configure the default sampling type to use for histograms.
+            </summary>
+            <param name="type">Type of sampling to use.</param>
+            <returns>Chain-able configuration object.</returns>
+        </member>
+        <member name="M:Metrics.Reports.MetricsReports.WithReport(Metrics.Reporters.MetricsReport,System.TimeSpan,Metrics.MetricData.MetricsFilter)">
+            <summary>
+            Schedule a generic reporter to be executed at a fixed <paramref name="interval"/>
+            </summary>
+            <param name="report">Function that returns an instance of a reporter</param>
+            <param name="interval">Interval at which to run the report.</param>
+            <param name="filter">Only report metrics that match the filter.</param> 
+        </member>
+        <member name="M:Metrics.Reports.MetricsReports.WithConsoleReport(System.TimeSpan,Metrics.MetricData.MetricsFilter)">
+            <summary>
+            Schedule a Console Report to be executed and displayed on the console at a fixed <paramref name="interval"/>.
+            </summary>
+            <param name="interval">Interval at which to display the report on the Console.</param>
+            <param name="filter">Only report metrics that match the filter.</param> 
+        </member>
+        <member name="M:Metrics.Reports.MetricsReports.WithCSVReports(System.String,System.TimeSpan,Metrics.MetricData.MetricsFilter,System.String)">
+            <summary>
+            Configure Metrics to append a line for each metric to a CSV file in the <paramref name="directory"/>.
+            </summary>
+            <param name="directory">Directory where to store the CSV files.</param>
+            <param name="interval">Interval at which to append a line to the files.</param>
+            <param name="delimiter">CSV delimiter to use</param>
+            <param name="filter">Only report metrics that match the filter.</param> 
+        </member>
+        <member name="M:Metrics.Reports.MetricsReports.WithTextFileReport(System.String,System.TimeSpan,Metrics.MetricData.MetricsFilter)">
+            <summary>
+            Schedule a Human Readable report to be executed and appended to a text file.
+            </summary>
+            <param name="filePath">File where to append the report.</param>
+            <param name="interval">Interval at which to run the report.</param>
+            <param name="filter">Only report metrics that match the filter.</param> 
+        </member>
+        <member name="M:Metrics.Reports.MetricsReports.StopAndClearAllReports">
+            <summary>
+            Stop all registered reports and clear the registrations.
+            </summary>
+        </member>
+        <member name="M:Metrics.PerformanceCountersConfigExtensions.WithAllCounters(Metrics.MetricsConfig,System.String,System.String)">
+            <summary>
+            Register all pre-defined performance counters as Gauge metrics.
+            This includes System Counters, CLR Global Counters and CLR App Counters.
+            </summary>
+        </member>
+        <member name="M:Metrics.PerformanceCountersConfigExtensions.WithSystemCounters(Metrics.MetricsConfig,System.String)">
+            <summary>
+            Register all pre-defined system performance counters as Gauge metrics.
+            This includes: Available RAM, CPU Usage, Disk Writes/sec, Disk Reads/sec
+            </summary>
+        </member>
+        <member name="M:Metrics.PerformanceCountersConfigExtensions.WithAppCounters(Metrics.MetricsConfig,System.String)">
+            <summary>
+            Register application level, CLR related performance counters as Gauge metrics.
+            This includes: Mb in all heaps, time in GC, exceptions per sec, Threads etc.
+            </summary>
+        </member>
+        <member name="F:Metrics.SamplingType.Default">
+            <summary>
+            Sampling will be done using the default configured SamplingType.
+            Call Metric.Config.WithDefaultSamplingType() to set the default value. 
+            </summary>
+        </member>
+        <member name="F:Metrics.SamplingType.HighDynamicRange">
+            <summary>
+            Sampling will be done with a A High Dynamic Range (HDR) Histogram. Note: The HDR Histogram implementation is in beta stage, some issues might still be present.
+            </summary>
+            <remarks>
+            The HDR Histogram is an extremely efficient implementation of a histogram. 
+            More information about <a href="http://hdrhistogram.github.io/HdrHistogram/">HDR Histogram</a>
+            </remarks>
+        </member>
+        <member name="F:Metrics.SamplingType.ExponentiallyDecaying">
+            <summary>
+            Sampling will be done with a Exponentially Decaying Reservoir.
+            </summary>
+            <remarks>
+            A histogram with an exponentially decaying reservoir produces quantiles which are representative of (roughly) the last five minutes of data.
+            It does so by using a forward-decaying priority reservoir with an exponential weighting towards newer data. 
+            Unlike the uniform reservoir, an exponentially decaying reservoir represents recent data, allowing you to know very quickly if the distribution 
+            of the data has changed.
+            More information about <a href="http://metrics.codahale.com/manual/core/#man-core-histograms">Exponentially Decaying Reservoir</a>
+            </remarks>
+        </member>
+        <member name="F:Metrics.SamplingType.LongTerm">
+            <summary>
+            Sampling will done with a Uniform Reservoir.
+            </summary>
+            <remarks>
+            A histogram with a uniform reservoir produces quantiles which are valid for the entirely of the histogram’s lifetime.
+            It will return a median value, for example, which is the median of all the values the histogram has ever been updated with.
+            Use a uniform histogram when you’re interested in long-term measurements. 
+            Don’t use one where you’d want to know if the distribution of the underlying data stream has changed recently.
+            More information about <a href="http://metrics.codahale.com/manual/core/#man-core-histograms">Exponentially Decaying Reservoir</a>
+            </remarks>
+        </member>
+        <member name="F:Metrics.SamplingType.SlidingWindow">
+            <summary>
+            Sampling will done with a Sliding Window Reservoir.
+            A histogram with a sliding window reservoir produces quantiles which are representative of the past N measurements.
+            More information about <a href="http://metrics.codahale.com/manual/core/#man-core-histograms">Exponentially Decaying Reservoir</a>
+            </summary>
+        </member>
+        <member name="T:Metrics.Metric">
+            <summary>
+            Static wrapper around a global MetricContext instance.
+            </summary>
+        </member>
+        <member name="P:Metrics.Metric.Advanced">
+            <summary>
+            Exposes advanced operations that are possible on this metrics context.
+            </summary>
+        </member>
+        <member name="M:Metrics.Metric.Context(System.String)">
+            <summary>
+            Create a new child metrics context. Metrics added to the child context are kept separate from the metrics in the 
+            parent context.
+            </summary>
+            <param name="contextName">Name of the child context.</param>
+            <returns>Newly created child context.</returns>
+        </member>
+        <member name="M:Metrics.Metric.Context(System.String,System.Func{System.String,Metrics.MetricsContext})">
+            <summary>
+            Create a new child metrics context. Metrics added to the child context are kept separate from the metrics in the 
+            parent context.
+            </summary>
+            <param name="contextName">Name of the child context.</param>
+            <param name="contextCreator">Function used to create the instance of the child context. (Use for creating custom contexts)</param>
+            <returns>Newly created child context.</returns>
+        </member>
+        <member name="M:Metrics.Metric.ShutdownContext(System.String)">
+            <summary>
+            Remove a child context. The metrics for the child context are removed from the MetricsData of the parent context.
+            </summary>
+            <param name="contextName">Name of the child context to shutdown.</param>
+        </member>
+        <member name="P:Metrics.Metric.Config">
+            <summary>
+            Entrypoint for Global Metrics Configuration.
+            </summary>
+            <example>
+            <code>
+            Metric.Config
+                .WithHttpEndpoint("http://localhost:1234/")
+                .WithErrorHandler(x => Console.WriteLine(x.ToString()))
+                .WithAllCounters()
+                .WithReporting(config => config
+                    .WithConsoleReport(TimeSpan.FromSeconds(30))
+                    .WithCSVReports(@"c:\temp\reports\", TimeSpan.FromSeconds(10))
+                    .WithTextFileReport(@"C:\temp\reports\metrics.txt", TimeSpan.FromSeconds(10))
+                );
+            </code>
+            </example>
+        </member>
+        <member name="M:Metrics.Metric.PerformanceCounter(System.String,System.String,System.String,System.String,Metrics.Unit,Metrics.MetricTags)">
+            <summary>
+            Register a performance counter as a Gauge metric.
+            </summary>
+            <param name="name">Name of this gauge metric. Must be unique across all gauges in this context.</param>
+            <param name="counterCategory">Category of the performance counter</param>
+            <param name="counterName">Name of the performance counter</param>
+            <param name="counterInstance">Instance of the performance counter</param>
+            <param name="unit">Description of want the value represents ( Unit.Requests , Unit.Items etc ) .</param>
+            <param name="tags">Optional set of tags that can be associated with the metric.</param>
+            <returns>Reference to the gauge</returns>
+        </member>
+        <member name="M:Metrics.Metric.Gauge(System.String,System.Func{System.Double},Metrics.Unit,Metrics.MetricTags)">
+            <summary>
+            A gauge is the simplest metric type. It just returns a value. This metric is suitable for instantaneous values.
+            </summary>
+            <param name="name">Name of this gauge metric. Must be unique across all gauges in this context.</param>
+            <param name="valueProvider">Function that returns the value for the gauge.</param>
+            <param name="unit">Description of want the value represents ( Unit.Requests , Unit.Items etc ) .</param>
+            <param name="tags">Optional set of tags that can be associated with the metric.</param>
+            <returns>Reference to the gauge</returns>
+        </member>
+        <member name="M:Metrics.Metric.Meter(System.String,Metrics.Unit,Metrics.TimeUnit,Metrics.MetricTags)">
+            <summary>
+            A meter measures the rate at which a set of events occur, in a few different ways. 
+            This metric is suitable for keeping a record of now often something happens ( error, request etc ).
+            </summary>
+            <remarks>
+            The mean rate is the average rate of events. It’s generally useful for trivia, 
+            but as it represents the total rate for your application’s entire lifetime (e.g., the total number of requests handled, 
+            divided by the number of seconds the process has been running), it doesn’t offer a sense of recency. 
+            Luckily, meters also record three different exponentially-weighted moving average rates: the 1-, 5-, and 15-minute moving averages.
+            </remarks>
+            <param name="name">Name of the metric. Must be unique across all meters in this context.</param>
+            <param name="unit">Description of what the is being measured ( Unit.Requests , Unit.Items etc ) .</param>
+            <param name="rateUnit">Time unit for rates reporting. Defaults to Second ( occurrences / second ).</param>
+            <param name="tags">Optional set of tags that can be associated with the metric.</param>
+            <returns>Reference to the metric</returns>
+        </member>
+        <member name="M:Metrics.Metric.Counter(System.String,Metrics.Unit,Metrics.MetricTags)">
+            <summary>
+            A counter is a simple incrementing and decrementing 64-bit integer. Ex number of active requests.
+            </summary>
+            <param name="name">Name of the metric. Must be unique across all counters in this context.</param>
+            <param name="unit">Description of what the is being measured ( Unit.Requests , Unit.Items etc ) .</param>
+            <param name="tags">Optional set of tags that can be associated with the metric. Tags can be string array or comma separated values in a string.
+            ex: tags: "tag1,tag2" or tags: new[] {"tag1", "tag2"}
+            </param>
+            <returns>Reference to the metric</returns>
+        </member>
+        <member name="M:Metrics.Metric.Histogram(System.String,Metrics.Unit,Metrics.SamplingType,Metrics.MetricTags)">
+            <summary>
+            A Histogram measures the distribution of values in a stream of data: e.g., the number of results returned by a search.
+            </summary>
+            <param name="name">Name of the metric. Must be unique across all histograms in this context.</param>
+            <param name="unit">Description of what the is being measured ( Unit.Requests , Unit.Items etc ) .</param>
+            <param name="samplingType">Type of the sampling to use (see SamplingType for details ).</param>
+            <param name="tags">Optional set of tags that can be associated with the metric.</param>
+            <returns>Reference to the metric</returns>
+        </member>
+        <member name="M:Metrics.Metric.Timer(System.String,Metrics.Unit,Metrics.SamplingType,Metrics.TimeUnit,Metrics.TimeUnit,Metrics.MetricTags)">
+            <summary>
+            A timer is basically a histogram of the duration of a type of event and a meter of the rate of its occurrence.
+            <seealso cref="M:Metrics.Metric.Histogram(System.String,Metrics.Unit,Metrics.SamplingType,Metrics.MetricTags)"/> and <seealso cref="M:Metrics.Metric.Meter(System.String,Metrics.Unit,Metrics.TimeUnit,Metrics.MetricTags)"/>
+            </summary>
+            <param name="name">Name of the metric. Must be unique across all timers in this context.</param>
+            <param name="unit">Description of what the is being measured ( Unit.Requests , Unit.Items etc ) .</param>
+            <param name="samplingType">Type of the sampling to use (see SamplingType for details ).</param>
+            <param name="rateUnit">Time unit for rates reporting. Defaults to Second ( occurrences / second ).</param>
+            <param name="durationUnit">Time unit for reporting durations. Defaults to Milliseconds. </param>
+            <param name="tags">Optional set of tags that can be associated with the metric.</param>
+            <returns>Reference to the metric</returns>
+        </member>
+        <member name="T:Metrics.Timer">
+            <summary>
+            A timer is basically a histogram of the duration of a type of event and a meter of the rate of its occurrence.
+            <seealso cref="T:Metrics.Histogram"/> and <seealso cref="T:Metrics.Meter"/>
+            </summary>
+        </member>
+        <member name="M:Metrics.Timer.NewContext(System.String)">
+            <summary>
+            Creates a new disposable instance and records the time it takes until the instance is disposed.
+            <code>
+            using(timer.NewContext())
+            {
+                ExecuteMethodThatNeedsMonitoring();
+            }
+            </code>
+            </summary>
+            <param name="userValue">A custom user value that will be associated to the results.
+            Useful for tracking (for example) for which id the max or min value was recorded.
+            </param>
+            <returns>A disposable instance that will record the time passed until disposed.</returns>
+        </member>
+        <member name="M:Metrics.Timer.Time(System.Action,System.String)">
+            <summary>
+            Runs the <paramref name="action"/> and records the time it took.
+            </summary>
+            <param name="action">Action to run and record time for.</param>
+            <param name="userValue">A custom user value that will be associated to the results.
+            Useful for tracking (for example) for which id the max or min value was recorded.
+            </param>
+        </member>
+        <member name="M:Metrics.Timer.Time``1(System.Func{``0},System.String)">
+            <summary>
+            Runs the <paramref name="action"/> returning the result and records the time it took.
+            </summary>
+            <typeparam name="T">Type of the value returned by the action</typeparam>
+            <param name="action">Action to run and record time for.</param>
+            <param name="userValue">A custom user value that will be associated to the results.
+            Useful for tracking (for example) for which id the max or min value was recorded.
+            </param>
+            <returns>The result of the <paramref name="action"/></returns>
+        </member>
+        <member name="M:Metrics.Timer.StartRecording">
+            <summary>
+            This is part of advanced timer API. Use Timer.NewContext() by default. 
+            Manually start timing an action.
+            </summary>
+            <returns>value representing the current time in nanoseconds.</returns>
+        </member>
+        <member name="M:Metrics.Timer.CurrentTime">
+            <summary>
+            This is part of advanced timer API. Use Timer.NewContext() by default. 
+            Returns the current time in nanoseconds for computing elapsed time.
+            </summary>
+            <returns>value representing the current time in nanoseconds.</returns>
+        </member>
+        <member name="M:Metrics.Timer.EndRecording">
+            <summary>
+            This is part of advanced timer API. Use Timer.NewContext() by default.
+            Manually ends timing an action.
+            </summary>
+            <returns>value representing the current time in nanoseconds.</returns>
+        </member>
+        <member name="M:Metrics.Timer.Record(System.Int64,Metrics.TimeUnit,System.String)">
+            <summary>
+            This is part of advanced timer API. Use Timer.NewContext() by default.
+            Manually record timer value.
+            </summary>
+            <param name="time">The value representing the manually measured time.</param>
+            <param name="unit">Unit for the value.</param>
+            <param name="userValue">A custom user value that will be associated to the results.
+            Useful for tracking (for example) for which id the max or min value was recorded.
+            </param>
+        </member>
+        <member name="T:Metrics.TimerContext">
+            <summary>
+            This struct is meant to be returned by the timer.NewContext() method and is intended to be used inside a using statement:
+            <code>
+            using(timer.NewContext())
+            {
+                ExecuteMethodThatNeedsMonitoring();
+            }
+            </code>
+            <remarks>
+            Double disposing the instance, or a copy of the instance (since it is a struct) will cause the timer to record wrong values.
+            Stick to directly passing it to the using() statement.
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Metrics.TimerContext.TrackUserValue(System.String)">
+            <summary>
+            Set the user value for this timer context.
+            </summary>
+            <param name="value">New user value to use for this context.</param>
+        </member>
+        <member name="P:Metrics.TimerContext.Elapsed">
+            <summary>
+            Provides the currently elapsed time from when the instance has been created
+            </summary>
+        </member>
+        <member name="T:Metrics.Utils.ActionScheduler">
+            <summary>
+            Utility class to schedule an Action to be executed repeatedly according to the interval.
+            </summary>
+            <remarks>
+            The scheduling code is inspired form Daniel Crenna's metrics port
+            https://github.com/danielcrenna/metrics-net/blob/master/src/metrics/Reporting/ReporterBase.cs
+            </remarks>
+        </member>
+        <member name="M:Metrics.Utils.AppEnvironment.ResolveAspSiteName">
+            <summary>
+            Try to resolve Asp site name without compile-time linking System.Web assembly.
+            </summary>
+            <returns>Site name if able to identify</returns>
+        </member>
+        <member name="T:Metrics.Utils.EWMA">
+            <summary>
+            An exponentially-weighted moving average.
+            <a href="http://www.teamquest.com/pdfs/whitepaper/ldavg1.pdf">UNIX Load Average Part 1: How It Works</a>
+            <a href="http://www.teamquest.com/pdfs/whitepaper/ldavg2.pdf">UNIX Load Average Part 2: Not Your Average Average</a>
+            <a href="http://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average">EMA</a>
+            </summary>
+        </member>
+        <member name="T:Metrics.Utils.IHideObjectMembers">
+            <summary>
+            Helper interface to cleanup editor visible members on metrics.
+            </summary>
+        </member>
+        <member name="T:Metrics.Utils.Scheduler">
+            <summary>
+            Indicates the ability to schedule the execution of an Action at a specified interval
+            </summary>
+        </member>
+        <member name="M:Metrics.Utils.Scheduler.Start(System.TimeSpan,System.Action)">
+            <summary>
+            Schedule the <paramref name="action"/> to be executed at <paramref name="interval"/>.
+            </summary>
+            <param name="interval">Interval at which to execute action</param>
+            <param name="action">Action to execute</param>
+        </member>
+        <member name="M:Metrics.Utils.Scheduler.Start(System.TimeSpan,System.Action{System.Threading.CancellationToken})">
+            <summary>
+            Schedule the <paramref name="action"/> to be executed at <paramref name="interval"/>.
+            </summary>
+            <param name="interval">Interval at which to execute action</param>
+            <param name="action">Action to execute</param>
+        </member>
+        <member name="M:Metrics.Utils.Scheduler.Start(System.TimeSpan,System.Func{System.Threading.Tasks.Task})">
+            <summary>
+            Schedule the <paramref name="action"/> to be executed at <paramref name="interval"/>.
+            The returned task is await-ed on each time the <paramref name="action"/> is invoked.
+            </summary>
+            <param name="interval">Interval at which to execute action</param>
+            <param name="action">Action to execute</param>
+        </member>
+        <member name="M:Metrics.Utils.Scheduler.Start(System.TimeSpan,System.Func{System.Threading.CancellationToken,System.Threading.Tasks.Task})">
+            <summary>
+            Schedule the <paramref name="action"/> to be executed at <paramref name="interval"/>.
+            The returned task is await-ed on each time the <paramref name="action"/> is invoked.
+            </summary>
+            <param name="interval">Interval at which to execute action</param>
+            <param name="action">Action to execute</param>
+        </member>
+        <member name="M:Metrics.Utils.Scheduler.Stop">
+            <summary>
+            Stop the scheduler.
+            </summary>
+        </member>
+        <member name="T:HdrHistogram.AbstractHistogram">
+            <summary>
+            <h3>An abstract base class for integer values High Dynamic Range (HDR) Histograms</h3>
+            
+            AbstractHistogram supports the recording and analyzing sampled data value counts across a configurable integer value
+            range with configurable value precision within the range. Value precision is expressed as the number of significant
+            digits in the value recording, and provides control over value quantization behavior across the value range and the
+            subsequent value resolution at any given level.
+            
+            For example, a Histogram could be configured to track the counts of observed integer values between 0 and
+            3,600,000,000 while maintaining a value precision of 3 significant digits across that range. Value quantization
+            within the range will thus be no larger than 1/1,000th (or 0.1%) of any value. This example Histogram could
+            be used to track and analyze the counts of observed response times ranging between 1 microsecond and 1 hour
+            in magnitude, while maintaining a value resolution of 1 microsecond up to 1 millisecond, a resolution of
+            1 millisecond (or better) up to one second, and a resolution of 1 second (or better) up to 1,000 seconds. At it's
+            maximum tracked value (1 hour), it would still maintain a resolution of 3.6 seconds (or better).
+            
+            See package description for {@link org.HdrHistogram} for details.
+            </summary>
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.#ctor(System.Int64,System.Int64,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Construct a Histogram given the Lowest and Highest values to be tracked and a number of significant
+            decimal digits. Providing a lowestDiscernibleValue is useful is situations where the units used
+            for the histogram's values are much smaller that the minimal accuracy required. E.g. when tracking
+            time values stated in nanosecond units, where the minimal accuracy required is a microsecond, the
+            proper value for lowestDiscernibleValue would be 1000.
+            </summary>
+            <param name="lowestDiscernibleValue">The lowest value that can be discerned (distinguished from 0) by the histogram. Must be a positive integer that is {@literal >=} 1. May be internally rounded down to nearest power of 2.</param>
+            <param name="highestTrackableValue">The highest value to be tracked by the histogram. Must be a positive integer that is {@literal >=} (2 * lowestDiscernibleValue).</param>
+            <param name="numberOfSignificantValueDigits">Specifies the precision to use. This is the number of significant decimal digits to which the histogram will maintain value resolution and separation. Must be a non-negative integer between 0 and 5.</param>
+            <param name="wordSizeInBytes"></param>
+            <param name="autoResize"></param>
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.#ctor(HdrHistogram.AbstractHistogram)">
+            <summary> 
+            Construct a histogram with the same range settings as a given source histogram,
+            duplicating the source's start/end timestamps (but NOT its contents).
+            </summary>
+            <param name="source">The source histogram to duplicate/</param>
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.RecordValue(System.Int64)">
+            <summary>
+            Record a value in the histogram.
+            </summary>
+            <param name="value">value The value to be recorded.</param>
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.RecordValueWithCount(System.Int64,System.Int64)">
+            <summary>
+            Record a value in the histogram (adding to the value's current count) 
+            </summary>
+            <param name="value">The value to be recorded.</param>
+            <param name="count">The number of occurrences of this value to record</param>
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.RecordValueWithExpectedInterval(System.Int64,System.Int64)">
+            <summary>
+            Record a value in the histogram.
+            
+            To compensate for the loss of sampled values when a recorded value is larger than the expected
+            interval between value samples, Histogram will auto-generate an additional series of decreasingly-smaller
+            (down to the expectedIntervalBetweenValueSamples) value records.
+            
+            Note: This is a at-recording correction method, as opposed to the post-recording correction method provided
+            by {@link #copyCorrectedForCoordinatedOmission(long)}.
+            The two methods are mutually exclusive, and only one of the two should be be used on a given data set to correct
+            for the same coordinated omission issue.
+            
+            See notes in the description of the Histogram calls for an illustration of why this corrective behavior is
+            important.
+            </summary>
+            <param name="value">The value to record</param>
+            <param name="expectedIntervalBetweenValueSamples">If expectedIntervalBetweenValueSamples is larger than 0, add auto-generated value records as appropriate if value is larger than expectedIntervalBetweenValueSamples</param>
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.getTotalCount">
+            Get the total count of all recorded values in the histogram
+            @return the total count of all recorded values in the histogram
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.updatedMaxValue(System.Int64)">
+            Set internally tracked maxValue to new value if new value is greater than current one.
+            May be overridden by subclasses for synchronization or atomicity purposes.
+            @param value new maxValue to set
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.updateMinNonZeroValue(System.Int64)">
+            Set internally tracked minNonZeroValue to new value if new value is smaller than current one.
+            May be overridden by subclasses for synchronization or atomicity purposes.
+            @param value new minNonZeroValue to set
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.reset">
+            Reset the contents and stats of this histogram
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.copy">
+             Create a copy of this histogram, complete with data and everything.
+            
+             @return A distinct copy of this histogram.
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:HdrHistogram.AbstractHistogram.copyCorrectedForCoordinatedOmission(System.Int64)" -->
+        <member name="M:HdrHistogram.AbstractHistogram.copyInto(HdrHistogram.AbstractHistogram)">
+             Copy this histogram into the target histogram, overwriting it's contents.
+            
+             @param targetHistogram the histogram to copy into
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.copyIntoCorrectedForCoordinatedOmission(HdrHistogram.AbstractHistogram,System.Int64)">
+             Copy this histogram, corrected for coordinated omission, into the target histogram, overwriting it's contents.
+             (see {@link #copyCorrectedForCoordinatedOmission} for more detailed explanation about how correction is applied)
+            
+             @param targetHistogram the histogram to copy into
+             @param expectedIntervalBetweenValueSamples If expectedIntervalBetweenValueSamples is larger than 0, add
+                                                       auto-generated value records as appropriate if value is larger
+                                                       than expectedIntervalBetweenValueSamples
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:HdrHistogram.AbstractHistogram.add(HdrHistogram.AbstractHistogram)" -->
+        <!-- Badly formed XML comment ignored for member "M:HdrHistogram.AbstractHistogram.subtract(HdrHistogram.AbstractHistogram)" -->
+        <!-- Badly formed XML comment ignored for member "M:HdrHistogram.AbstractHistogram.addWhileCorrectingForCoordinatedOmission(HdrHistogram.AbstractHistogram,System.Int64)" -->
+        <member name="M:HdrHistogram.AbstractHistogram.shiftValuesLeft(System.Int32)">
+             Shift recorded values to the left (the equivalent of a &lt;&lt; shift operation on all recorded values). The
+             configured integer value range limits and value precision setting will remain unchanged.
+            
+             An {@link ArrayIndexOutOfBoundsException} will be thrown if any recorded values may be lost
+             as a result of the attempted operation, reflecting an "overflow" conditions. Expect such an overflow
+             exception if the operation would cause the current maxValue to be scaled to a value that is outside
+             of the covered value range.
+            
+             @param numberOfBinaryOrdersOfMagnitude The number of binary orders of magnitude to shift by
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:HdrHistogram.AbstractHistogram.shiftValuesRight(System.Int32)" -->
+        <member name="M:HdrHistogram.AbstractHistogram.Equals(HdrHistogram.AbstractHistogram)">
+            <summary>
+            Determine if this histogram is equivalent to another.
+            </summary>
+            <param name="other">the other histogram to compare to</param>
+            <returns>True if this histogram are equivalent with the other.</returns>
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.Equals(System.Object)">
+            <summary>
+            Determine if this histogram is equivalent to another.
+            </summary>
+            <param name="other">the other histogram to compare to</param>
+            <returns>True if this histogram are equivalent with the other.</returns>
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.getLowestDiscernibleValue">
+            get the configured lowestDiscernibleValue
+            @return lowestDiscernibleValue
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.getHighestTrackableValue">
+            get the configured highestTrackableValue
+            @return highestTrackableValue
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.getNumberOfSignificantValueDigits">
+            get the configured numberOfSignificantValueDigits
+            @return numberOfSignificantValueDigits
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.sizeOfEquivalentValueRange(System.Int64)">
+             Get the size (in value units) of the range of values that are equivalent to the given value within the
+             histogram's resolution. Where "equivalent" means that value samples recorded for any two
+             equivalent values are counted in a common total count.
+            
+             @param value The given value
+             @return The lowest value that is equivalent to the given value within the histogram's resolution.
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.lowestEquivalentValue(System.Int64)">
+             Get the lowest value that is equivalent to the given value within the histogram's resolution.
+             Where "equivalent" means that value samples recorded for any two
+             equivalent values are counted in a common total count.
+            
+             @param value The given value
+             @return The lowest value that is equivalent to the given value within the histogram's resolution.
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.highestEquivalentValue(System.Int64)">
+             Get the highest value that is equivalent to the given value within the histogram's resolution.
+             Where "equivalent" means that value samples recorded for any two
+             equivalent values are counted in a common total count.
+            
+             @param value The given value
+             @return The highest value that is equivalent to the given value within the histogram's resolution.
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.medianEquivalentValue(System.Int64)">
+             Get a value that lies in the middle (rounded up) of the range of values equivalent the given value.
+             Where "equivalent" means that value samples recorded for any two
+             equivalent values are counted in a common total count.
+            
+             @param value The given value
+             @return The value lies in the middle (rounded up) of the range of values equivalent the given value.
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.nextNonEquivalentValue(System.Int64)">
+             Get the next value that is not equivalent to the given value within the histogram's resolution.
+             Where "equivalent" means that value samples recorded for any two
+             equivalent values are counted in a common total count.
+            
+             @param value The given value
+             @return The next value that is not equivalent to the given value within the histogram's resolution.
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.valuesAreEquivalent(System.Int64,System.Int64)">
+             Determine if two values are equivalent with the histogram's resolution.
+             Where "equivalent" means that value samples recorded for any two
+             equivalent values are counted in a common total count.
+            
+             @param value1 first value to compare
+             @param value2 second value to compare
+             @return True if values are equivalent with the histogram's resolution.
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.getEstimatedFootprintInBytes">
+             Provide a (conservatively high) estimate of the Histogram's total footprint in bytes
+            
+             @return a (conservatively high) estimate of the Histogram's total footprint in bytes
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.getStartTimeStamp">
+            get the start time stamp [optionally] stored with this histogram
+            @return the start time stamp [optionally] stored with this histogram
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.setStartTimeStamp(System.Int64)">
+            Set the start time stamp value associated with this histogram to a given value.
+            @param timeStampMsec the value to set the time stamp to, [by convention] in msec since the epoch.
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.getEndTimeStamp">
+            get the end time stamp [optionally] stored with this histogram
+            @return the end time stamp [optionally] stored with this histogram
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.setEndTimeStamp(System.Int64)">
+            Set the end time stamp value associated with this histogram to a given value.
+            @param timeStampMsec the value to set the time stamp to, [by convention] in msec since the epoch.
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.getMinValue">
+             Get the lowest recorded value level in the histogram
+            
+             @return the Min value recorded in the histogram
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.getMaxValue">
+             Get the highest recorded value level in the histogram
+            
+             @return the Max value recorded in the histogram
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.getMinNonZeroValue">
+             Get the lowest recorded non-zero value level in the histogram
+            
+             @return the lowest recorded non-zero value level in the histogram
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.getMaxValueAsDouble">
+             Get the highest recorded value level in the histogram as a double
+            
+             @return the Max value recorded in the histogram
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.getMean">
+             Get the computed mean value of all recorded values in the histogram
+            
+             @return the mean value (in value units) of the histogram data
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogram.getStdDeviation">
+             Get the computed standard deviation of all recorded values in the histogram
+            
+             @return the standard deviation (in value units) of the histogram data
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:HdrHistogram.AbstractHistogram.getValueAtPercentile(System.Double)" -->
+        <!-- Badly formed XML comment ignored for member "M:HdrHistogram.AbstractHistogram.getPercentileAtOrBelowValue(System.Int64)" -->
+        <!-- Badly formed XML comment ignored for member "M:HdrHistogram.AbstractHistogram.getCountBetweenValues(System.Int64,System.Int64)" -->
+        <!-- Badly formed XML comment ignored for member "M:HdrHistogram.AbstractHistogram.getCountAtValue(System.Int64)" -->
+        <member name="T:HdrHistogram.AbstractHistogramBase">
+            <summary>
+            This non-public AbstractHistogramBase super-class separation is meant to bunch "cold" fields
+            separately from "hot" fields, in an attempt to force the JVM to place the (hot) fields
+            commonly used in the value recording code paths close together.
+            Subclass boundaries tend to be strongly control memory layout decisions in most practical
+            JVM implementations, making this an effective method for control filed grouping layout.
+            </summary>
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogramEnumerableExtensions.RecordedValues(HdrHistogram.AbstractHistogram)">
+            <summary>
+            Provide a means of iterating through all recorded histogram values using the finest granularity steps
+            supported by the underlying representation. The iteration steps through all non-zero recorded value counts,
+            and terminates when all recorded histogram values are exhausted.
+            <seealso cref="T:HdrHistogram.RecordedValuesIterator"/>
+            </summary>
+            <param name="histogram">The histogram on which to iterate.</param>
+            <returns></returns>
+        </member>
+        <member name="T:HdrHistogram.AbstractHistogramIterator">
+            <summary>
+            Used for iterating through histogram values.
+            </summary>
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogramIterator.hasNext">
+             Returns true if the iteration has more elements. (In other words, returns true if next would return an
+             element rather than throwing an exception.)
+            
+             @return true if the iterator has more elements.
+        </member>
+        <member name="M:HdrHistogram.AbstractHistogramIterator.next">
+             Returns the next element in the iteration.
+            
+             @return the {@link HistogramIterationValue} associated with the next element in the iteration.
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:HdrHistogram.ConcurrentHistogram" -->
+        <member name="M:HdrHistogram.ConcurrentHistogram.#ctor(System.Int32)">
+             Construct an auto-resizing ConcurrentHistogram with a lowest discernible value of 1 and an auto-adjusting
+             highestTrackableValue. Can auto-resize up to track values up to (Long.MAX_VALUE / 2).
+            
+             @param numberOfSignificantValueDigits Specifies the precision to use. This is the number of significant
+                                                   decimal digits to which the histogram will maintain value resolution
+                                                   and separation. Must be a non-negative integer between 0 and 5.
+        </member>
+        <member name="M:HdrHistogram.ConcurrentHistogram.#ctor(System.Int64,System.Int64,System.Int32)">
+             Construct a ConcurrentHistogram given the Lowest and Highest values to be tracked and a number of significant
+             decimal digits. Providing a lowestDiscernibleValue is useful is situations where the units used
+             for the histogram's values are much smaller that the minimal accuracy required. E.g. when tracking
+             time values stated in nanosecond units, where the minimal accuracy required is a microsecond, the
+             proper value for lowestDiscernibleValue would be 1000.
+            
+             @param lowestDiscernibleValue The lowest value that can be tracked (distinguished from 0) by the histogram.
+                                           Must be a positive integer that is {@literal >=} 1. May be internally rounded
+                                           down to nearest power of 2.
+             @param highestTrackableValue The highest value to be tracked by the histogram. Must be a positive
+                                          integer that is {@literal >=} (2 * lowestDiscernibleValue).
+             @param numberOfSignificantValueDigits Specifies the precision to use. This is the number of significant
+                                                   decimal digits to which the histogram will maintain value resolution
+                                                   and separation. Must be a non-negative integer between 0 and 5.
+        </member>
+        <member name="M:HdrHistogram.ConcurrentHistogram.#ctor(HdrHistogram.AbstractHistogram)">
+            Construct a histogram with the same range settings as a given source histogram,
+            duplicating the source's start/end timestamps (but NOT it's contents)
+            @param source The source histogram to duplicate
+        </member>
+        <member name="T:HdrHistogram.Histogram">
+            <summary>
+            <h3>A High Dynamic Range (HDR) Histogram</h3>
+            <para>
+            {@link Histogram} supports the recording and analyzing sampled data value counts across a configurable integer value
+            range with configurable value precision within the range. Value precision is expressed as the number of significant
+            digits in the value recording, and provides control over value quantization behavior across the value range and the
+            subsequent value resolution at any given level.
+            </para>
+            <para>
+            For example, a Histogram could be configured to track the counts of observed integer values between 0 and
+            3,600,000,000 while maintaining a value precision of 3 significant digits across that range. Value quantization
+            within the range will thus be no larger than 1/1,000th (or 0.1%) of any value. This example Histogram could
+            be used to track and analyze the counts of observed response times ranging between 1 microsecond and 1 hour
+            in magnitude, while maintaining a value resolution of 1 microsecond up to 1 millisecond, a resolution of
+            1 millisecond (or better) up to one second, and a resolution of 1 second (or better) up to 1,000 seconds. At its
+            maximum tracked value (1 hour), it would still maintain a resolution of 3.6 seconds (or better).
+            </para>
+            <para>
+            Histogram tracks value counts in <b><code>long</code></b> fields. Smaller field types are available in the
+            {@link IntCountsHistogram} and {@link ShortCountsHistogram} implementations of
+            {@link org.HdrHistogram.AbstractHistogram}.
+            </para>
+            <para>
+            Auto-resizing: When constructed with no specified value range (or when auto-resize is turned on with {@link
+            Histogram#setAutoResize}) a {@link Histogram} will auto-resize its dynamic range to include recorded values as
+            they are encountered. Note that recording calls that cause auto-resizing may take longer to execute, as resizing
+            incurs allocation and copying of internal data structures.
+            </para>
+            <para>
+            See package description for {@link org.HdrHistogram} for details.
+            </para>
+            </summary>
+        </member>
+        <member name="M:HdrHistogram.Histogram.#ctor(System.Int32)">
+            <summary>
+            Construct an auto-resizing histogram with a lowest discernible value of 1 and an auto-adjusting
+            highestTrackableValue. Can auto-resize up to track values up to (long.MaxValue / 2).
+            </summary>
+            <param name="numberOfSignificantValueDigits">Specifies the precision to use. This is the number of significant decimal digits to which the histogram will maintain value resolution and separation. Must be a non-negative integer between 0 and 5.</param>
+        </member>
+        <member name="M:HdrHistogram.Histogram.#ctor(System.Int64,System.Int32)">
+            <summary>
+            Construct a Histogram given the Highest value to be tracked and a number of significant decimal digits. The
+            histogram will be constructed to implicitly track (distinguish from 0) values as low as 1.
+            </summary>
+            <param name="highestTrackableValue">The highest value to be tracked by the histogram. Must be a positiveinteger that is {@literal >=} 2.</param>
+            <param name="numberOfSignificantValueDigits">Specifies the precision to use. This is the number of significant decimal digits to which the histogram will maintain value resolution and separation. Must be a non-negative integer between 0 and 5.</param>
+        </member>
+        <member name="M:HdrHistogram.Histogram.#ctor(System.Int64,System.Int64,System.Int32)">
+            <summary>
+            Construct a Histogram given the Lowest and Highest values to be tracked and a number of significant
+            decimal digits. Providing a lowestDiscernibleValue is useful is situations where the units used
+            for the histogram's values are much smaller that the minimal accuracy required. E.g. when tracking
+            time values stated in nanosecond units, where the minimal accuracy required is a microsecond, the
+            proper value for lowestDiscernibleValue would be 1000.
+            </summary>
+            <param name="lowestDiscernibleValue">The lowest value that can be discerned (distinguished from 0) by the histogram. Must be a positive integer that is {@literal >=} 1. May be internally rounded down to nearest power of 2.</param>
+            <param name="highestTrackableValue">The highest value to be tracked by the histogram. Must be a positive integer that is {@literal >=} (2 * lowestDiscernibleValue).</param>
+            <param name="numberOfSignificantValueDigits">Specifies the precision to use. This is the number of significant decimal digits to which the histogram will maintain value resolution and separation. Must be a non-negative integer between 0 and 5.</param>
+        </member>
+        <member name="M:HdrHistogram.Histogram.#ctor(HdrHistogram.AbstractHistogram)">
+            <summary> 
+            Construct a histogram with the same range settings as a given source histogram,
+            duplicating the source's start/end timestamps (but NOT its contents).
+            </summary>
+            <param name="source">The source histogram to duplicate/</param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:HdrHistogram.HistogramIterationValue" -->
+        <member name="M:HdrHistogram.Iterable`1.iterator">
+             Returns an iterator over a set of elements of type T.
+            
+             @return an Iterator.
+        </member>
+        <member name="M:HdrHistogram.Iterator`1.hasNext">
+             Returns {@code true} if the iteration has more elements.
+             (In other words, returns {@code true} if {@link #next} would
+             return an element rather than throwing an exception.)
+            
+             @return {@code true} if the iteration has more elements
+        </member>
+        <member name="M:HdrHistogram.Iterator`1.next">
+             Returns the next element in the iteration.
+            
+             @return the next element in the iteration
+             @throws NoSuchElementException if the iteration has no more elements
+        </member>
+        <member name="T:HdrHistogram.RecordedValuesIterator">
+             Written by Gil Tene of Azul Systems, and released to the public domain,
+             as explained at http://creativecommons.org/publicdomain/zero/1.0/
+            
+             @author Gil Tene
+            Used for iterating through all recorded histogram values using the finest granularity steps supported by the
+            underlying representation. The iteration steps through all non-zero recorded value counts, and terminates when
+            all recorded histogram values are exhausted.
+        </member>
+        <member name="M:HdrHistogram.RecordedValuesIterator.reset">
+            Reset iterator for re-use in a fresh iteration over the same histogram data set.
+        </member>
+        <member name="M:HdrHistogram.RecordedValuesIterator.#ctor(HdrHistogram.AbstractHistogram)">
+            @param histogram The histogram this iterator will operate on
+        </member>
+        <member name="T:HdrHistogram.Recorder">
+            <summary>
+            Records integer values, and provides stable interval {@link Histogram} samples from
+            live recorded data without interrupting or stalling active recording of values. Each interval
+            histogram provided contains all value counts accumulated since the previous interval histogram
+            was taken.
+             
+            This pattern is commonly used in logging interval histogram information while recording is ongoing.
+            
+            {@link Recorder} supports concurrent
+            {@link Recorder#RecordValue} or
+            {@link Recorder#recordValueWithExpectedInterval} calls.
+            Recording calls are wait-free on architectures that support atomic increment operations, and
+            are lock-free on architectures that do not.
+            </summary>
+        </member>
+        <member name="M:HdrHistogram.Recorder.#ctor(System.Int32)">
+            <summary>
+            Construct an auto-resizing Recorder with a lowest discernible value of
+            1 and an auto-adjusting highestTrackableValue. Can auto-resize up to track values up to (long.MaxValue / 2).
+            </summary>
+            <param name="numberOfSignificantValueDigits">Specifies the precision to use. This is the number of significant decimal digits to which the histogram will maintain value resolution and separation. Must be a non-negative integer between 0 and 5.</param>
+        </member>
+        <member name="M:HdrHistogram.Recorder.RecordValue(System.Int64)">
+            <summary>
+            Record a value.
+            </summary>
+            <param name="value">The value to record.</param>
+        </member>
+        <member name="M:HdrHistogram.Recorder.GetIntervalHistogram">
+            <summary>
+            Get a new instance of an interval histogram, which will include a stable, consistent view of all value
+            counts accumulated since the last interval histogram was taken.
+            
+            Calling {@link Recorder#GetIntervalHistogram()} will reset
+            the value counts, and start accumulating value counts for the next interval.
+            </summary>
+            <returns>a histogram containing the value counts accumulated since the last interval histogram was taken.</returns>
+        </member>
+        <member name="M:HdrHistogram.Recorder.GetIntervalHistogram(HdrHistogram.Histogram)">
+            <summary>
+            Get an interval histogram, which will include a stable, consistent view of all value counts
+            accumulated since the last interval histogram was taken.
+            
+            {@link Recorder#GetIntervalHistogram(Histogram histogramToRecycle)
+            GetIntervalHistogram(histogramToRecycle)}
+            accepts a previously returned interval histogram that can be recycled internally to avoid allocation
+            and content copying operations, and is therefore significantly more efficient for repeated use than
+            {@link Recorder#GetIntervalHistogram()} and
+            {@link Recorder#getIntervalHistogramInto getIntervalHistogramInto()}. The provided
+            {@code histogramToRecycle} must
+            be either be null or an interval histogram returned by a previous call to
+            {@link Recorder#GetIntervalHistogram(Histogram histogramToRecycle)
+            GetIntervalHistogram(histogramToRecycle)} or
+            {@link Recorder#GetIntervalHistogram()}.
+            
+            NOTE: The caller is responsible for not recycling the same returned interval histogram more than once. If
+            the same interval histogram instance is recycled more than once, behavior is undefined.
+            
+            Calling {@link Recorder#GetIntervalHistogram(Histogram histogramToRecycle)
+            GetIntervalHistogram(histogramToRecycle)} will reset the value counts, and start accumulating value
+            counts for the next interval
+            </summary>
+            <param name="histogramToRecycle">a previously returned interval histogram that may be recycled to avoid allocation and copy operations.</param>
+            <returns>a histogram containing the value counts accumulated since the last interval histogram was taken.</returns>
+        </member>
+        <member name="M:HdrHistogram.Recorder.Reset">
+            <summary>
+            Reset any value counts accumulated thus far.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:HdrHistogram.SynchronizedHistogram" -->
+        <member name="M:HdrHistogram.SynchronizedHistogram.#ctor(System.Int32)">
+             Construct an auto-resizing SynchronizedHistogram with a lowest discernible value of 1 and an auto-adjusting
+             highestTrackableValue. Can auto-resize up to track values up to (Long.MAX_VALUE / 2).
+            
+             @param numberOfSignificantValueDigits Specifies the precision to use. This is the number of significant
+                                                   decimal digits to which the histogram will maintain value resolution
+                                                   and separation. Must be a non-negative integer between 0 and 5.
+        </member>
+        <member name="M:HdrHistogram.SynchronizedHistogram.#ctor(System.Int64,System.Int32)">
+             Construct a SynchronizedHistogram given the Highest value to be tracked and a number of significant decimal digits. The
+             histogram will be constructed to implicitly track (distinguish from 0) values as low as 1.
+            
+             @param highestTrackableValue The highest value to be tracked by the histogram. Must be a positive
+                                          integer that is {@literal >=} 2.
+             @param numberOfSignificantValueDigits Specifies the precision to use. This is the number of significant
+                                                   decimal digits to which the histogram will maintain value resolution
+                                                   and separation. Must be a non-negative integer between 0 and 5.
+        </member>
+        <member name="M:HdrHistogram.SynchronizedHistogram.#ctor(System.Int64,System.Int64,System.Int32)">
+             Construct a SynchronizedHistogram given the Lowest and Highest values to be tracked and a number of significant
+             decimal digits. Providing a lowestDiscernibleValue is useful is situations where the units used
+             for the histogram's values are much smaller that the minimal accuracy required. E.g. when tracking
+             time values stated in nanosecond units, where the minimal accuracy required is a microsecond, the
+             proper value for lowestDiscernibleValue would be 1000.
+            
+             @param lowestDiscernibleValue The lowest value that can be tracked (distinguished from 0) by the histogram.
+                                           Must be a positive integer that is {@literal >=} 1. May be internally rounded
+                                           down to nearest power of 2.
+             @param highestTrackableValue The highest value to be tracked by the histogram. Must be a positive
+                                          integer that is {@literal >=} (2 * lowestDiscernibleValue).
+             @param numberOfSignificantValueDigits Specifies the precision to use. This is the number of significant
+                                                   decimal digits to which the histogram will maintain value resolution
+                                                   and separation. Must be a non-negative integer between 0 and 5.
+        </member>
+        <member name="M:HdrHistogram.SynchronizedHistogram.#ctor(HdrHistogram.AbstractHistogram)">
+            Construct a histogram with the same range settings as a given source histogram,
+            duplicating the source's start/end timestamps (but NOT it's contents)
+            @param source The source histogram to duplicate
+        </member>
+        <member name="T:HdrHistogram.WriterReaderPhaser">
+            <summary>
+            WriterReaderPhaser instances provide an asymmetric means for synchronizing the execution of
+            wait-free "writer" critical sections against a "reader phase flip" that needs to make sure no writer critical
+            sections that were active at the beginning of the flip are still active after the flip is done. Multiple writers
+            and multiple readers are supported.
+            
+            While a WriterReaderPhaser can be useful in multiple scenarios, a specific and common use case is
+            that of safely managing "double buffered" data stream access in which writers can proceed without being
+            blocked, while readers gain access to stable and unchanging buffer samples
+            <blockquote>
+            NOTE: WriterReaderPhaser writers are wait-free on architectures that support wait-free atomic
+            increment operations. They remain lock-free (but not wait-free) on architectures that do not support
+            wait-free atomic increment operations.
+            </blockquote>
+            WriterReaderPhaser "writers" are wait free, "readers" block for other "readers", and
+            "readers" are only blocked by "writers" whose critical was entered before the reader's
+            WriterReaderPhaser#flipPhase() attempt.
+            
+            When used to protect an actively recording data structure, the assumptions on how readers and writers act are:
+            <ol>
+            <li>There are two sets of data structures ("active" and "inactive")</li>
+            <li>Writing is done to the perceived active version (as perceived by the writer), and only
+                within critical sections delineated by {@link WriterReaderPhaser#writerCriticalSectionEnter}
+                and {@link WriterReaderPhaser#writerCriticalSectionExit}).</li>
+            <li>Only readers switch the perceived roles of the active and inactive data structures.
+                They do so only while under readerLock(), and only before calling flipPhase().</li>
+            </ol>
+            When the above assumptions are met, {@link WriterReaderPhaser} guarantees that the inactive data structures are not
+            being modified by any writers while being read while under readerLock() protection after a flipPhase()
+            operation. 
+            </summary>
+        </member>
+        <member name="M:HdrHistogram.WriterReaderPhaser.WriterCriticalSectionEnter">
+            <summary>
+             Indicate entry to a critical section containing a write operation.
+             
+             This call is wait-free on architectures that support wait free atomic increment operations,
+             and is lock-free on architectures that do not.
+             
+             {@link WriterReaderPhaser#writerCriticalSectionEnter()} must be matched with a subsequent
+             {@link WriterReaderPhaser#writerCriticalSectionExit(long)} in order for CriticalSectionPhaser
+             synchronization to function properly.
+            </summary>
+            <returns>an (opaque) value associated with the critical section entry, which MUST be provided to the matching {@link WriterReaderPhaser#writerCriticalSectionExit} call.</returns>
+        </member>
+        <member name="M:HdrHistogram.WriterReaderPhaser.WriterCriticalSectionExit(System.Int64)">
+            <summary>
+            Indicate exit from a critical section containing a write operation.
+            
+            This call is wait-free on architectures that support wait free atomic increment operations,
+            and is lock-free on architectures that do not.
+            
+            {@link WriterReaderPhaser#writerCriticalSectionExit(long)} must be matched with a preceding
+            {@link WriterReaderPhaser#writerCriticalSectionEnter()} call, and must be provided with the
+            matching {@link WriterReaderPhaser#writerCriticalSectionEnter()} call's return value, in
+            order for CriticalSectionPhaser synchronization to function properly.
+            </summary>
+            <param name="criticalValueAtEnter">the (opaque) value returned from the matching {@link WriterReaderPhaser#writerCriticalSectionEnter()} call.</param>
+        </member>
+        <member name="M:HdrHistogram.WriterReaderPhaser.ReaderLock">
+            <summary>
+            Enter to a critical section containing a read operation (mutually excludes against other
+            {@link WriterReaderPhaser#readerLock} calls).
+            
+            {@link WriterReaderPhaser#readerLock} DOES NOT provide synchronization
+            against {@link WriterReaderPhaser#writerCriticalSectionEnter()} calls. Use {@link WriterReaderPhaser#flipPhase()}
+            to synchronize reads against writers.
+            </summary>
+        </member>
+        <member name="M:HdrHistogram.WriterReaderPhaser.ReaderUnlock">
+            <summary>
+            Exit from a critical section containing a read operation (relinquishes mutual exclusion against other
+            {@link WriterReaderPhaser#readerLock} calls).
+            </summary>
+        </member>
+        <member name="M:HdrHistogram.WriterReaderPhaser.FlipPhase(System.Int64)">
+            <summary>
+            Flip a phase in the {@link WriterReaderPhaser} instance, {@link WriterReaderPhaser#flipPhase()}
+            can only be called while holding the readerLock().
+            {@link WriterReaderPhaser#flipPhase()} will return only after all writer critical sections (protected by
+            {@link WriterReaderPhaser#writerCriticalSectionEnter()} ()} and
+            {@link WriterReaderPhaser#writerCriticalSectionExit(long)} ()}) that may have been in flight when the
+            {@link WriterReaderPhaser#flipPhase()} call were made had completed.
+            
+            No actual writer critical section activity is required for {@link WriterReaderPhaser#flipPhase()} to
+            succeed.
+            
+            However, {@link WriterReaderPhaser#flipPhase()} is lock-free with respect to calls to
+            {@link WriterReaderPhaser#writerCriticalSectionEnter()} and
+            {@link WriterReaderPhaser#writerCriticalSectionExit(long)}. It may spin-wait for for active
+            writer critical section code to complete.
+            </summary>
+            <param name="yieldTimeNsec">The amount of time (in nanoseconds) to sleep in each yield if yield loop is needed.</param>
+        </member>
+    </members>
+</doc>

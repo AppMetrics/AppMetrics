@@ -50,7 +50,7 @@ namespace AspNet.Metrics.Health
             {
                 return false;
             }
-            // We only consider public top-level classes as healthchesk. IsPublic returns false for nested
+            // We only consider public top-level classes as health check. IsPublic returns false for nested
             // classes, regardless of visibility modifiers
             if (!typeInfo.IsPublic)
             {
@@ -61,7 +61,7 @@ namespace AspNet.Metrics.Health
                 return false;
             }
             if (!typeInfo.Name.EndsWith(HealthCheckTypeName, StringComparison.OrdinalIgnoreCase) &&
-                !DerivesFromController(typeInfo, candidateAssemblies))
+                !DerivesFromHealthCheck(typeInfo, candidateAssemblies))
             {
                 return false;
             }
@@ -73,7 +73,7 @@ namespace AspNet.Metrics.Health
             return true;
         }
 
-        private bool DerivesFromController(TypeInfo typeInfo, ISet<Assembly> candidateAssemblies)
+        private bool DerivesFromHealthCheck(TypeInfo typeInfo, ISet<Assembly> candidateAssemblies)
         {
             while (typeInfo != ObjectTypeInfo)
             {

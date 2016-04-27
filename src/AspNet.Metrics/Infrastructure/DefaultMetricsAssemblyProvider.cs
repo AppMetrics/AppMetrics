@@ -31,12 +31,13 @@ namespace AspNet.Metrics.Infrastructure
         ///     MVC controllers, view components and views.
         /// </summary>
         // DefaultControllerTypeProvider uses CandidateAssemblies to determine if the base type of a POCO controller
-        // lives in an assembly that references MVC. CandidateAssemblies excludes all assemblies from the
+        // lives in an assembly that references Metrics.NET. CandidateAssemblies excludes all assemblies from the
         // ReferenceAssemblies set. Consequently adding WebApiCompatShim to this set would cause the ApiController to
         // fail this test.
         protected virtual HashSet<string> ReferenceAssemblies { get; } = new HashSet<string>(StringComparer.Ordinal)
         {
             "Metrics.Net",
+            "AspNet.Metrics"
         };
 
         /// <summary>

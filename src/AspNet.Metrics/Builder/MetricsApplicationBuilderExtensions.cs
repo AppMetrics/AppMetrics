@@ -9,8 +9,8 @@ using Metrics.Core;
 using Microsoft.AspNet.Mvc.Infrastructure;
 using Microsoft.AspNet.Mvc.Routing;
 using Microsoft.AspNet.Routing;
-using Microsoft.Extensions.OptionsModel;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.OptionsModel;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.AspNet.Builder
@@ -83,15 +83,15 @@ namespace Microsoft.AspNet.Builder
             configureRoutes(routes);
 
             routes.Routes.Insert(0, AttributeRouting.CreateAttributeMegaRoute(
-               routes.DefaultHandler,
-               app.ApplicationServices));
+                routes.DefaultHandler,
+                app.ApplicationServices));
 
             return app.UseRouter(routes.Build());
         }
 
         private static void UseHealthChecks(IApplicationBuilder app)
         {
-            var healthChecks = app.ApplicationServices.GetService<HealthCheck[]>();
+            var healthChecks = app.ApplicationServices.GetServices<HealthCheck>();
 
             if (healthChecks == null || !healthChecks.Any())
             {
