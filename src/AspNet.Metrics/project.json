@@ -14,8 +14,8 @@
     ],
     "xmlDoc": true
   },
-  "projectUrl": "",
-  "licenseUrl": "",
+  "projectUrl": "https://github.com/alhardy/aspnet-metrics",
+  "licenseUrl": "https://github.com/alhardy/aspnet-metrics/blob/master/LICENSE",
   "dependencies": {
     "Metrics.NET": "0.3.5",
     "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final",
