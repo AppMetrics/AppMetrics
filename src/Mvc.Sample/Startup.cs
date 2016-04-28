@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
+using Microsoft.AspNet.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -58,7 +59,11 @@ namespace Mvc.Sample
             services.AddMvc();
 
             services
-                .AddMetrics()
+                .AddMetrics(options =>
+                {
+                    options.MetricsVisualisationEnabled = false;
+                    options.MetricsEndpoint = new PathString("/metrics");                    
+                })
                 .AddAllPerforrmanceCounters()
                 .AddHealthChecks();
         }

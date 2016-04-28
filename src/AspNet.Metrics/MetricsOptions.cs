@@ -11,6 +11,30 @@ namespace AspNet.Metrics
         {
             IgnoredRequestPatterns = new List<Regex>();
             RouteNameResolver = new DefaultRouteTemplateResolver();
+
+            HealthEndpoint = new PathString("/health");
+            MetricsEndpoint = new PathString("/json");
+            MetricsVisualizationEndpoint = new PathString("/metrics-visual");
+            MetricsTextEndpoint = new PathString("/metrics-text");
+            PingEndpoint = new PathString("/ping");
+
+            HealthEnabled = true;
+            MetricsEnabled = true;
+            MetricsTextEnabled = true;
+            MetricsVisualisationEnabled = true;
+            PingEnabled = true;
+
+            IgnoredRequestPatterns.Add(new Regex("(?i)^.css"));
+            IgnoredRequestPatterns.Add(new Regex("(?i)^.js"));
+            IgnoredRequestPatterns.Add(new Regex("(?i)^.html"));
+            IgnoredRequestPatterns.Add(new Regex("(?i)^json"));
+            IgnoredRequestPatterns.Add(new Regex("(?i)^swagger"));
+            IgnoredRequestPatterns.Add(new Regex("(?i)^metrics"));
+            IgnoredRequestPatterns.Add(new Regex("(?i)^metrics-text"));
+            IgnoredRequestPatterns.Add(new Regex("(?i)^metrics-visual"));
+            IgnoredRequestPatterns.Add(new Regex("(?i)^health"));
+            IgnoredRequestPatterns.Add(new Regex("(?i)^ping"));
+            IgnoredRequestPatterns.Add(new Regex("(?i)^favicon.ico"));
         }
 
         public bool HealthEnabled { get; set; }

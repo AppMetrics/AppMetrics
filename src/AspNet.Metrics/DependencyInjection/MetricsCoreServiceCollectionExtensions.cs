@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.OptionsModel;
 
 // ReSharper disable CheckNamespace
-
 namespace Microsoft.Extensions.DependencyInjection
 // ReSharper restore CheckNamespace
 {
@@ -30,30 +29,28 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(services));
             }
 
-            //ConfigureDefaultServices(services);
+            ConfigureDefaultServices(services);
 
             AddMetricsCoreServices(services);
 
             if (setupAction != null)
-            {
+            {                
                 services.Configure(setupAction);
             }
 
             return new MetricsBuilder(services);
         }
 
-        // To enable unit testing
         internal static void AddMetricsCoreServices(IServiceCollection services)
         {
-            services.TryAddEnumerable(ServiceDescriptor.Transient<IConfigureOptions<MetricsOptions>, MetricsCoreOptionsSetup>());
-
+            services.TryAddSingleton<IConfigureOptions<MetricsOptions>, MetricsCoreOptionsSetup>();
             services.TryAddSingleton<MetricsMarkerService, MetricsMarkerService>();
         }
 
-        //private static void ConfigureDefaultServices(IServiceCollection services)
-        //{
-        //    services.AddRouting();
-        //    services.AddOptions();
-        //}
+        private static void ConfigureDefaultServices(IServiceCollection services)
+        {
+            services.AddRouting();
+            services.AddOptions();
+        }
     }
 }
