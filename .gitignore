@@ -65,3 +65,11 @@ logs/*
 
 #Temp folders
 temp/
+
+#Tools and packages
+.nuget
+.nuget/*
+artifacts
+artifacts/*
+packages
+packages/*
