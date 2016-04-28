@@ -12,7 +12,6 @@ deploy:
   server: https://www.myget.org/F/alhardy/api/v2/package
   api_key:
     secure: gIAiACgNj+JzXyLLTe3rLxZyrAB9RpC8Lw81xEjdOLXqotprqEwGiFWRipEqkpps
-  symbol_server: https://nuget.symbolsource.org/MyGet/alhardy
-  artifact: artifacts/packages/release/*.nupkg
+  skip_symbols: true
   on:
     branch: dev
