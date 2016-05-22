@@ -6,11 +6,11 @@ using AspNet.Metrics.Internal;
 using AspNet.Metrics.Middleware;
 using Metrics;
 using Metrics.Core;
-using Microsoft.AspNet.Mvc.Infrastructure;
-using Microsoft.AspNet.Mvc.Routing;
-using Microsoft.AspNet.Routing;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.Internal;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.OptionsModel;
+using Microsoft.Extensions.Options;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.AspNet.Builder
@@ -42,7 +42,7 @@ namespace Microsoft.AspNet.Builder
                 app.Use(next => new MetricsEndpointTextEndpointMiddleware(next, options, metricsContext).Invoke);
                 app.Use(next => new MetricsEndpointVisualizationEndpointMiddleware(next, options).Invoke);
 
-                // Web Metrics Middldware
+                // Web Metrics Middleware
                 app.Use(next => new ErrorMeterMiddleware(next, options, metricsContext).Invoke);
                 app.Use(next => new PerRequestTimerMiddleware(next, options, metricsContext).Invoke);
                 app.Use(next => new RequestTimerMiddleware(next, options, metricsContext).Invoke);
@@ -74,10 +74,9 @@ namespace Microsoft.AspNet.Builder
 
             var router = new MetricsRouteHandler(new MvcRouteHandler());
 
-            var routes = new RouteBuilder
+            var routes = new RouteBuilder(app)
             {
-                DefaultHandler = router,
-                ServiceProvider = app.ApplicationServices
+                DefaultHandler = router
             };
 
             configureRoutes(routes);

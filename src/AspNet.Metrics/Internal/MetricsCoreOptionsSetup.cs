@@ -1,6 +1,4 @@
-using System.Text.RegularExpressions;
-using Microsoft.AspNet.Http;
-using Microsoft.Extensions.OptionsModel;
+using Microsoft.Extensions.Options;
 
 namespace AspNet.Metrics.Internal
 {
@@ -12,7 +10,6 @@ namespace AspNet.Metrics.Internal
 
         public static void ConfigureMetrics(MetricsOptions options)
         {
-            
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNet.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 // ReSharper disable CheckNamespace
-namespace Microsoft.AspNet.Routing
+namespace Microsoft.AspNetCore.Routing
 // ReSharper restore CheckNamespace
 {
     public static class MetricsContextExtensions

@@ -3,9 +3,8 @@ using System.Net;
 using System.Threading.Tasks;
 using Metrics;
 using Metrics.Utils;
-using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Http;
-using Microsoft.AspNet.Routing;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 
 namespace AspNet.Metrics.Middleware
 {

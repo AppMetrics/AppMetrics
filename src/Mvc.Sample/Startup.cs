@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Http;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -11,10 +12,10 @@ namespace Mvc.Sample
     {
         public Startup(IHostingEnvironment env)
         {
-            // Set up configuration sources.
             var builder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .AddEnvironmentVariables();
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
             Configuration = builder.Build();
         }
 
@@ -28,15 +29,12 @@ namespace Mvc.Sample
 
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
-            app.UseIISPlatformHandler();
 
             app.UseStaticFiles();
 
@@ -53,8 +51,7 @@ namespace Mvc.Sample
         {
             services
                 .AddLogging()
-                .AddRouting(options => { options.LowercaseUrls = true; })
-                .AddCaching();
+                .AddRouting(options => { options.LowercaseUrls = true; });
 
             services.AddMvc();
 
@@ -62,13 +59,10 @@ namespace Mvc.Sample
                 .AddMetrics(options =>
                 {
                     options.MetricsVisualisationEnabled = false;
-                    options.MetricsEndpoint = new PathString("/metrics");                    
+                    options.MetricsEndpoint = new PathString("/metrics");
                 })
                 .AddAllPerforrmanceCounters()
                 .AddHealthChecks();
         }
-
-        // Entry point for the application.
-        public static void Main(string[] args) => WebApplication.Run<Startup>(args);
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.AspNet.Routing;
+using Microsoft.AspNetCore.Routing;
 
 namespace AspNet.Metrics.Infrastructure
 {

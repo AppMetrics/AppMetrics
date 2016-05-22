@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using AspNet.Metrics.Infrastructure;
-using Microsoft.AspNet.Http;
+using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Metrics
 {

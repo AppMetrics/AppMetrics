@@ -2,9 +2,9 @@ using System;
 using System.Threading.Tasks;
 using AspNet.Metrics.Internal;
 using AspNet.Metrics.Logging;
-using Microsoft.AspNet.Http;
-using Microsoft.AspNet.Mvc.Infrastructure;
-using Microsoft.AspNet.Routing;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -100,7 +100,7 @@ namespace AspNet.Metrics.Infrastructure
 
             await _next.RouteAsync(context);
 
-            if (!context.IsHandled)
+            if (context.Handler == null)
             {
                 return;
             }

@@ -13,7 +13,7 @@
       "launchBrowser": true,
       "launchUrl": "api/values",
       "environmentVariables": {
-        "Hosting:Environment": "Development"
+        "  ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "web": {
@@ -21,6 +21,9 @@
       "environmentVariables": {
         "Hosting:Environment": "Development"
       }
+    },
+    "Api.Sample": {
+      "commandName": "Project"
     }
   }
 }

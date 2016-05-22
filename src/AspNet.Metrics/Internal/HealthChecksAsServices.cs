@@ -7,7 +7,6 @@ using AspNet.Metrics.Infrastructure;
 using Metrics.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Logging;
 
 namespace AspNet.Metrics.Internal
 {
@@ -15,6 +14,11 @@ namespace AspNet.Metrics.Internal
     {
         public static void AddHealthChecksAsServices(IServiceCollection services, IEnumerable<Type> types)
         {
+            if (services == null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
             var healthCheckTypeProvider = new StaticHealthCheckTypeProvider();
 
             foreach (var type in types)
@@ -23,11 +27,16 @@ namespace AspNet.Metrics.Internal
                 healthCheckTypeProvider.HealthCheckTypes.Add(type.GetTypeInfo());
             }
 
-            services.Replace(ServiceDescriptor.Instance<IHealthCheckTypeProvider>(healthCheckTypeProvider));
+            services.Replace(ServiceDescriptor.Singleton<IHealthCheckTypeProvider>(healthCheckTypeProvider));
         }
 
         public static void AddHealthChecksAsServices(IServiceCollection services, IEnumerable<Assembly> assemblies)
         {
+            if (services == null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
             var assemblyProvider = new StaticMetricsAssemblyProvider();
             foreach (var assembly in assemblies)
             {

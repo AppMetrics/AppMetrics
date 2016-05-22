@@ -2,8 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Metrics;
-using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Http;
+using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Metrics.Middleware
 {

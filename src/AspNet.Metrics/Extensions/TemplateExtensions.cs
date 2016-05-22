@@ -1,7 +1,7 @@
 using System.Linq;
 
 // ReSharper disable CheckNamespace
-namespace Microsoft.AspNet.Routing.Template
+namespace Microsoft.AspNetCore.Routing.Template
 // ReSharper restore CheckNamespace
 {
     internal static class TemplateExtensions
@@ -19,7 +19,7 @@ namespace Microsoft.AspNet.Routing.Template
         public static string ToTemplateSegmentString(this TemplateSegment templateSegment) =>
             string.Join(string.Empty, templateSegment.Parts.Select(ToTemplatePartString));
 
-        public static string ToTemplateString(this TemplateRoute templateRoute,
+        public static string ToTemplateString(this Route templateRoute,
             string controller, string action) =>
                 string.Join("/", templateRoute.ParsedTemplate.Segments
                     .Select(s => s.ToTemplateSegmentString()))

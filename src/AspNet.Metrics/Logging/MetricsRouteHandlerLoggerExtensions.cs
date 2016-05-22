@@ -6,12 +6,12 @@ namespace AspNet.Metrics.Logging
     {
         public static void AttributeTemplateFound(this ILogger logger, string template)
         {
-            logger.LogVerbose(1, $"Found AttributeRouteTemplate {template}");
+            logger.LogTrace(1, $"Found AttributeRouteTemplate {template}");
         }
 
         public static void TemplateRouteFound(this ILogger logger, string template)
         {
-            logger.LogVerbose(1, $"Found TemplateRoute {template}");
+            logger.LogTrace(1, $"Found TemplateRoute {template}");
         }
     }
 }
