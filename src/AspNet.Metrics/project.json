@@ -1,6 +1,7 @@
 {
   "version": "1.0.0-beta",
   "description": "The library provides support for integrating ASP.NET 5 with the Metrics.NET Library",
+  "releaseNotes": "Upgraded from ASP.NET CORE RC1 to RC2",
   "authors": [ "Allan Hardy" ],
   "packOptions": {
     "tags": [ "mvc measurements charts timer histogram duration graphite influxdb health checks metrics" ],
