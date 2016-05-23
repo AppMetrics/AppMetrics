@@ -11,7 +11,8 @@ namespace AspNet.Metrics.Infrastructure
     {
         internal static HashSet<string> ReferenceAssemblies { get; } = new HashSet<string>(StringComparer.Ordinal)
         {
-            "Metrics.NET"
+            "Metrics.NET",
+            "AspNet.Metrics"
         };
 
         internal static IEnumerable<Assembly> DiscoverAssemblies(string entryPointAssemblyName)
