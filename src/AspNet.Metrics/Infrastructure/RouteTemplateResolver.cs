@@ -1,37 +1,40 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Template;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace AspNet.Metrics.Infrastructure
 {
     public class DefaultRouteTemplateResolver : IRouteNameResolver
     {
-        public Task<string> ResolveMatchingAttributeRoute(RouteContext routeContext)
+        public Task<string> ResolveMatchingTemplateRoute(RouteData routeData)
         {
-            var actionSelector = routeContext.HttpContext.RequestServices.GetRequiredService<IActionSelector>();
-
-            var actionDescriptor = actionSelector.Select(routeContext);
-
-            return Task.FromResult(actionDescriptor?.AttributeRouteInfo?.Template.ToLower() ?? string.Empty);
-        }
-
-        public Task<string> ResolveMatchingTemplateRoute(RouteContext routeContext)
-        {
-            var templateRoute = routeContext.RouteData.Routers
+            var templateRoute = routeData.Routers
                 .FirstOrDefault(r => r.GetType().Name == "Route")
                 as Route;
 
-            if (templateRoute == null) return Task.FromResult(string.Empty);
+            if (templateRoute != null)
+            {
+                var controller = routeData.Values.FirstOrDefault(v => v.Key == "controller");
+                var action = routeData.Values.FirstOrDefault(v => v.Key == "action");
 
-            var controller = routeContext.RouteData.Values.FirstOrDefault(v => v.Key == "controller");
-            var action = routeContext.RouteData.Values.FirstOrDefault(v => v.Key == "action");
+                var result = templateRoute.ToTemplateString(controller.Value as string, action.Value as string);
 
-            var result = templateRoute.ToTemplateString(controller.Value as string, action.Value as string);
+                return Task.FromResult(result.ToLower());
+            }
 
-            return Task.FromResult(result.ToLower());
+            var attributeRouteHandler = routeData.Routers
+                .FirstOrDefault(r => r.GetType().Name == "MvcAttributeRouteHandler")
+                as MvcAttributeRouteHandler;
+
+            if (attributeRouteHandler != null)
+            {
+                var actionDescriptor = attributeRouteHandler.Actions.FirstOrDefault();
+                return Task.FromResult(actionDescriptor?.AttributeRouteInfo?.Template.ToLower() ?? string.Empty);
+            }
+
+            return Task.FromResult(string.Empty);
         }
     }
 }

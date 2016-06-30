@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 // ReSharper disable CheckNamespace
+
 namespace Microsoft.AspNet.Builder
 // ReSharper restore CheckNamespace
 {
@@ -53,39 +54,6 @@ namespace Microsoft.AspNet.Builder
             UseHealthChecks(app);
 
             return app;
-        }
-
-        public static IApplicationBuilder UseMvcWithMetrics(this IApplicationBuilder app)
-        {
-            app.UseMvcWithMetrics(routes => { });
-
-            return app;
-        }
-
-        public static IApplicationBuilder UseMvcWithMetrics(this IApplicationBuilder app,
-            Action<IRouteBuilder> configureRoutes)
-        {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            app.UseMetrics();
-
-            var router = new MetricsRouteHandler(new MvcRouteHandler());
-
-            var routes = new RouteBuilder(app)
-            {
-                DefaultHandler = router
-            };
-
-            configureRoutes(routes);
-
-            routes.Routes.Insert(0, AttributeRouting.CreateAttributeMegaRoute(
-                routes.DefaultHandler,
-                app.ApplicationServices));
-
-            return app.UseRouter(routes.Build());
         }
 
         private static void UseHealthChecks(IApplicationBuilder app)

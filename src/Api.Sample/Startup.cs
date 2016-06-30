@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Builder;
+﻿using AspNet.Metrics.Infrastructure;
+using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -27,7 +28,9 @@ namespace Api.Sample
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseMvcWithMetrics();
+            app.UseMetrics();
+
+            app.UseMvc();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -37,7 +40,10 @@ namespace Api.Sample
                 .AddLogging()
                 .AddRouting(options => { options.LowercaseUrls = true; });
 
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new MetricsResourceFilter(new DefaultRouteTemplateResolver()));
+            });
 
             services
                 .AddMetrics()

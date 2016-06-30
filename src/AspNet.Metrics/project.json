@@ -1,9 +1,9 @@
 {
-  "version": "1.0.0-beta",
+  "version": "1.0.0-rtm",
   "description": "The library provides support for integrating ASP.NET 5 with the Metrics.NET Library",
-  "releaseNotes": "Upgraded from ASP.NET CORE RC1 to RC2",
   "authors": [ "Allan Hardy" ],
   "packOptions": {
+    "releaseNotes": "Upgraded from ASP.NET CORE RC2 to RTM",
     "tags": [ "mvc measurements charts timer histogram duration graphite influxdb health checks metrics" ],
     "repository": {
       "type": "git",
@@ -21,14 +21,15 @@
     "xmlDoc": true
   },
   "dependencies": {
-    "NETStandard.Library": "1.5.0-rc2-24027",
-    "Metrics.NET": "0.3.5",
-    "Microsoft.AspNetCore.Mvc": "1.0.0-rc2-final",
-    "Microsoft.AspNetCore.Routing": "1.0.0-rc2-final",
-    "Microsoft.Extensions.DependencyInjection": "1.0.0-rc2-final",
-    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc2-final",
-    "Microsoft.Extensions.Logging": "1.0.0-rc2-final",
-    "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc2-final"
+    "Metrics.NET": "0.3.7",
+    "Microsoft.AspNetCore.Mvc": "1.0.0",
+    "Microsoft.AspNetCore.Routing": "1.0.0",
+    "Microsoft.Extensions.DependencyInjection": "1.0.0",
+    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0",
+    "Microsoft.Extensions.Logging": "1.0.0",
+    "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
+    "NETStandard.Library": "1.6.0",
+    "System.Linq": "4.1.0"
   },
   "frameworks": {
     "net461": { }

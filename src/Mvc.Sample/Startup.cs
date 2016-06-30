@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Builder;
+﻿using AspNet.Metrics.Infrastructure;
+using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -38,7 +39,9 @@ namespace Mvc.Sample
 
             app.UseStaticFiles();
 
-            app.UseMvcWithMetrics(routes =>
+            app.UseMetrics();
+
+            app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
@@ -53,7 +56,10 @@ namespace Mvc.Sample
                 .AddLogging()
                 .AddRouting(options => { options.LowercaseUrls = true; });
 
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new MetricsResourceFilter(new DefaultRouteTemplateResolver()));
+            });
 
             services
                 .AddMetrics(options =>

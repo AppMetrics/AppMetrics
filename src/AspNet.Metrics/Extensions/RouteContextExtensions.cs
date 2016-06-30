@@ -8,9 +8,9 @@ namespace Microsoft.AspNetCore.Routing
     {
         private static readonly string MetricsCurrentRouteName = "__Mertics.CurrentRouteName__";
 
-        public static void AddMetricsCurrentRouteName(this RouteContext routeContext, string metricName)
+        public static void AddMetricsCurrentRouteName(this HttpContext context, string metricName)
         {
-            routeContext.HttpContext.Items.Add(MetricsCurrentRouteName, metricName);
+            context.Items.Add(MetricsCurrentRouteName, metricName);
         }
 
         public static string GetMetricsCurrentRouteName(this HttpContext context)
