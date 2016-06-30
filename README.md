@@ -21,9 +21,15 @@ In your ```Startup.cs``` add the libraries dependencies using the ```IServiceCol
 public void ConfigureServices(IServiceCollection services)
 {
 	...
+	
+	services.AddMvc(options =>
+	{
+		options.Filters.Add(new MetricsResourceFilter(new DefaultRouteTemplateResolver()));
+	});
+	
 	service.AddMetrics()
-		   .AddAllPerformanceCounters()
-           .AddHealthChecks()
+	       .AddAllPerformanceCounters()
+               .AddHealthChecks()
 	...
 }
 ```
@@ -34,7 +40,9 @@ Then in your ```Startup.cs``` add the required ASP.NET Middleware
 public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
 {
 	...
-	app.UseMvcWithMetrics(routes => {
+	app.UseMetrics();
+	
+	app.UseMvc(routes => {
 		routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
@@ -95,13 +103,13 @@ This library registers default settings which can be customize. These settings i
 	{
 		...
 		service
-                .AddMetrics(options =>
-                {
-                    options.MetricsVisualisationEnabled = false;
-                    options.MetricsEndpoint = new PathString("/metrics");                    
-                })
-			   .AddAllPerformanceCounters()
-	           .AddHealthChecks()
+                       .AddMetrics(options =>
+                       {
+                            options.MetricsVisualisationEnabled = false;
+                            options.MetricsEndpoint = new PathString("/metrics");                    
+                       })
+		       .AddAllPerformanceCounters()
+           	       .AddHealthChecks()
 		...
 	}
 ```
