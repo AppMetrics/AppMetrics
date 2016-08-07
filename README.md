@@ -5,4 +5,4 @@ dev branch build [![Build status](https://ci.appveyor.com/api/projects/status/mj
 [NuGet Releases](https://www.nuget.org/packages/AspNet.Metrics/) | 
 [Dev Releases](https://www.myget.org/feed/alhardy/package/nuget/AspNet.Metrics)
 
-# See the [wiki](https://github.com/alhardy/aspnet-metrics/wiki) for more info
+See the [wiki](https://github.com/alhardy/aspnet-metrics/wiki) for more info
