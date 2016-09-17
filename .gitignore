@@ -32,6 +32,7 @@ Ankh.NoLoad
 *.vsmdi
 
 #Tooling
+.idea
 _ReSharper*/
 *.resharper
 [Tt]est[Rr]esult*
