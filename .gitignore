@@ -30,6 +30,7 @@ ipch/
 [Bb]in
 Ankh.NoLoad
 *.vsmdi
+*.lock.json
 
 #Tooling
 .idea
