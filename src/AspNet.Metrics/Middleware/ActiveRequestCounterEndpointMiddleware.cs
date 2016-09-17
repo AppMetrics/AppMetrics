@@ -24,7 +24,8 @@ namespace AspNet.Metrics.Middleware
             }
 
             _next = next;
-            _activeRequests = metricsContext.Context.Counter("Active Requests", Unit.Custom("ActiveRequests"));
+            _activeRequests = metricsContext.Context.Context(ApplicationRequestsContextName)
+                .Counter("Active Requests", Unit.Custom("ActiveRequests"));
         }
 
         public async Task Invoke(HttpContext context)

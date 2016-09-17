@@ -7,6 +7,8 @@ namespace AspNet.Metrics.Middleware
     public abstract class MetricsMiddlewareBase
     {
         private readonly MetricsOptions _options;
+        protected const string ApplicationRequestsContextName = "Application.WebRequests";
+        protected const string ApplicationOauth2RequestsContextName = "Application.Client.WebRequests";
 
         protected MetricsMiddlewareBase(MetricsOptions options)
         {

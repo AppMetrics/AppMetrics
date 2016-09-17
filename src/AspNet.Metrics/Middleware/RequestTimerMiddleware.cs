@@ -25,7 +25,8 @@ namespace AspNet.Metrics.Middleware
             }
 
             _next = next;
-            _requestTimer = metricsContext.Context.Timer("Web Requests", Unit.Requests);
+            _requestTimer = metricsContext.Context.Context(ApplicationRequestsContextName)
+                .Timer("Web Requests", Unit.Requests);
         }
 
         public async Task Invoke(HttpContext context)

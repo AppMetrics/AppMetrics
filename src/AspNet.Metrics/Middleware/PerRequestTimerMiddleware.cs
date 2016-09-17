@@ -47,7 +47,8 @@ namespace AspNet.Metrics.Middleware
                 {
                     var startTime = (long)context.Items[TimerItemsKey];
                     var elapsed = Clock.Default.Nanoseconds - startTime;
-                    _metricsContext.Context.Timer(context.GetMetricsCurrentRouteName(), Unit.Requests).Record(elapsed, TimeUnit.Nanoseconds);
+                    _metricsContext.Context.Context(ApplicationRequestsContextName)
+                        .Timer(context.GetMetricsCurrentRouteName(), Unit.Requests).Record(elapsed, TimeUnit.Nanoseconds);
                 }
             }
             else

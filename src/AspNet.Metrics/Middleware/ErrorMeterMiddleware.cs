@@ -8,8 +8,10 @@ namespace AspNet.Metrics.Middleware
 {
     public class ErrorMeterMiddleware : MetricsMiddlewareBase
     {
+        private readonly Meter _badRequestMeter;
         private readonly Meter _errorMeter;
         private readonly RequestDelegate _next;
+        private readonly Meter _unauthorizedMeter;
 
         public ErrorMeterMiddleware(RequestDelegate next, MetricsOptions options, AspNetMetricsContext metricsContext)
             : base(options)
@@ -25,7 +27,15 @@ namespace AspNet.Metrics.Middleware
             }
 
             _next = next;
-            _errorMeter = metricsContext.Context.Meter("Web Request Errors", Unit.Errors);
+
+            _errorMeter = metricsContext.Context.Context(ApplicationRequestsContextName)
+                .Meter("Web Error Requests", Unit.Custom("500 Errors"));
+
+            _badRequestMeter = metricsContext.Context.Context(ApplicationRequestsContextName)
+                .Meter("Web Bad Requests", Unit.Custom("400 Errors"));
+
+            _unauthorizedMeter = metricsContext.Context.Context(ApplicationRequestsContextName)
+                .Meter("Web Unauthorized Requests", Unit.Custom("401 Errors"));
         }
 
         public async Task Invoke(HttpContext context)
@@ -34,9 +44,17 @@ namespace AspNet.Metrics.Middleware
             {
                 await _next(context);
 
-                if (context.Response.StatusCode == (int)HttpStatusCode.InternalServerError)
+                switch (context.Response.StatusCode)
                 {
-                    _errorMeter.Mark();
+                    case (int)HttpStatusCode.InternalServerError:
+                        _errorMeter.Mark();
+                        break;
+                    case (int)HttpStatusCode.BadRequest:
+                        _badRequestMeter.Mark();
+                        break;
+                    case (int)HttpStatusCode.Unauthorized:
+                        _unauthorizedMeter.Mark();
+                        break;
                 }
             }
             else

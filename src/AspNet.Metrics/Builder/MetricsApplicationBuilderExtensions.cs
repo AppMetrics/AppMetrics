@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 // ReSharper disable CheckNamespace
+
 namespace Microsoft.AspNet.Builder
 // ReSharper restore CheckNamespace
 {
@@ -45,6 +46,7 @@ namespace Microsoft.AspNet.Builder
                 app.Use(next => new RequestTimerMiddleware(next, options, metricsContext).Invoke);
                 app.Use(next => new ActiveRequestCounterEndpointMiddleware(next, options, metricsContext).Invoke);
                 app.Use(next => new PostAndPutRequestSizeHistogramMiddleware(next, options, metricsContext).Invoke);
+                app.Use(next => new OAuth2ClientRequestRateMiddleware(next, options, metricsContext).Invoke);
             });
 
             UseHealthChecks(app);

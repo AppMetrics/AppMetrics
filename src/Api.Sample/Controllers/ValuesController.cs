@@ -26,6 +26,24 @@ namespace Api.Sample.Controllers
             return "value";
         }
 
+        [HttpGet("500")]
+        public IActionResult Get500()
+        {
+            return StatusCode(500);
+        }
+
+        [HttpGet("401")]
+        public IActionResult Get401()
+        {
+            return StatusCode(401);
+        }
+
+        [HttpGet("400")]
+        public IActionResult Get400()
+        {
+            return StatusCode(400);
+        }
+
         // POST api/values
         [HttpPost]
         public void Post([FromBody] string value)
