@@ -1,19 +1,15 @@
 using System;
 using System.Linq;
 using AspNet.Metrics;
-using AspNet.Metrics.Infrastructure;
 using AspNet.Metrics.Internal;
 using AspNet.Metrics.Middleware;
 using Metrics;
 using Metrics.Core;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc.Internal;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 // ReSharper disable CheckNamespace
-
 namespace Microsoft.AspNet.Builder
 // ReSharper restore CheckNamespace
 {

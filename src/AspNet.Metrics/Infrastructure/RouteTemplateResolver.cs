@@ -11,7 +11,7 @@ namespace AspNet.Metrics.Infrastructure
         public Task<string> ResolveMatchingTemplateRoute(RouteData routeData)
         {
             var templateRoute = routeData.Routers
-                .FirstOrDefault(r => r.GetType().Name == "Route")
+                    .FirstOrDefault(r => r.GetType().Name == "Route")
                 as Route;
 
             if (templateRoute != null)
@@ -19,19 +19,21 @@ namespace AspNet.Metrics.Infrastructure
                 var controller = routeData.Values.FirstOrDefault(v => v.Key == "controller");
                 var action = routeData.Values.FirstOrDefault(v => v.Key == "action");
 
-                var result = templateRoute.ToTemplateString(controller.Value as string, action.Value as string);
+                var result = templateRoute.ToTemplateString(controller.Value as string, action.Value as string).ToLower();
 
-                return Task.FromResult(result.ToLower());
+                return Task.FromResult(result);
             }
 
             var attributeRouteHandler = routeData.Routers
-                .FirstOrDefault(r => r.GetType().Name == "MvcAttributeRouteHandler")
+                    .FirstOrDefault(r => r.GetType().Name == "MvcAttributeRouteHandler")
                 as MvcAttributeRouteHandler;
 
             if (attributeRouteHandler != null)
             {
                 var actionDescriptor = attributeRouteHandler.Actions.FirstOrDefault();
-                return Task.FromResult(actionDescriptor?.AttributeRouteInfo?.Template.ToLower() ?? string.Empty);
+                var result = actionDescriptor?.AttributeRouteInfo?.Template.ToLower() ?? string.Empty;
+
+                return Task.FromResult(result);
             }
 
             return Task.FromResult(string.Empty);
