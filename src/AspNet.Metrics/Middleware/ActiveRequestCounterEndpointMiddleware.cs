@@ -24,7 +24,7 @@ namespace AspNet.Metrics.Middleware
             }
 
             _next = next;
-            _activeRequests = metricsContext.Context.Context(ApplicationRequestsContextName)
+            _activeRequests = metricsContext.Context.GetWebApplicationContext()
                 .Counter("Active Requests", Unit.Custom("ActiveRequests"));
         }
 

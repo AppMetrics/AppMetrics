@@ -63,7 +63,7 @@ namespace Api.Sample
 
             services
                 .AddMetrics()
-                .AddAllPerforrmanceCounters()
+                .WithAllPerformanceCounters()
                 .AddHealthChecks();
         }
     }

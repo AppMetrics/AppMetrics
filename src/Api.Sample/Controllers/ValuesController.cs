@@ -26,19 +26,19 @@ namespace Api.Sample.Controllers
             return "value";
         }
 
-        [HttpGet("500")]
+        [HttpGet("error")]
         public IActionResult Get500()
         {
             return StatusCode(500);
         }
 
-        [HttpGet("401")]
+        [HttpGet("unauth")]
         public IActionResult Get401()
         {
             return StatusCode(401);
         }
 
-        [HttpGet("400")]
+        [HttpGet("bad")]
         public IActionResult Get400()
         {
             return StatusCode(400);

@@ -45,10 +45,14 @@ namespace AspNet.Metrics.Middleware
 
                 if (context.HasMetricsCurrentRouteName() && context.Response.StatusCode != (int)HttpStatusCode.NotFound)
                 {
+                    var clientId = context.OAuthClientId();
+
                     var startTime = (long)context.Items[TimerItemsKey];
                     var elapsed = Clock.Default.Nanoseconds - startTime;
-                    _metricsContext.Context.Context(ApplicationRequestsContextName)
-                        .Timer(context.GetMetricsCurrentRouteName(), Unit.Requests).Record(elapsed, TimeUnit.Nanoseconds);
+
+                    _metricsContext.Context.GetWebApplicationContext()
+                        .Timer(context.GetMetricsCurrentRouteName(), Unit.Requests)
+                        .Record(elapsed, TimeUnit.Nanoseconds, clientId.IsPresent() ? clientId : null);
                 }
             }
             else

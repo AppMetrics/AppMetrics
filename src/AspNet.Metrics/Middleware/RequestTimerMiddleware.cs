@@ -25,7 +25,7 @@ namespace AspNet.Metrics.Middleware
             }
 
             _next = next;
-            _requestTimer = metricsContext.Context.Context(ApplicationRequestsContextName)
+            _requestTimer = metricsContext.Context.GetWebApplicationContext()
                 .Timer("Web Requests", Unit.Requests);
         }
 

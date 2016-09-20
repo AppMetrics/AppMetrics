@@ -3,7 +3,7 @@
   "description": "The library provides support for integrating ASP.NET 5 with the Metrics.NET Library",
   "authors": [ "Allan Hardy" ],
   "packOptions": {
-    "releaseNotes": "Upgraded from ASP.NET CORE RC2 to RTM",
+    "releaseNotes": "Upgraded ASP.NET MVC Packages. Included configuration options to add ASP NET And SQL Performance Counters. Added middleware to record request rates and errors per OAuth2 Client. Updated error middleware to record 400, 401 and 500 requests as separate metrics.",
     "tags": [ "mvc measurements charts timer histogram duration graphite influxdb health checks metrics" ],
     "repository": {
       "type": "git",
