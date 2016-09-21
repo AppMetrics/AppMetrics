@@ -1,6 +1,7 @@
 using System.Linq;
 
 // ReSharper disable CheckNamespace
+
 namespace Microsoft.AspNetCore.Routing.Template
 // ReSharper restore CheckNamespace
 {
@@ -20,10 +21,10 @@ namespace Microsoft.AspNetCore.Routing.Template
             string.Join(string.Empty, templateSegment.Parts.Select(ToTemplatePartString));
 
         public static string ToTemplateString(this Route templateRoute,
-            string controller, string action) =>
-                string.Join("/", templateRoute.ParsedTemplate.Segments
+                string controller, string action) =>
+            string.Join("/", templateRoute.ParsedTemplate.Segments
                     .Select(s => s.ToTemplateSegmentString()))
-                    .Replace("{controller}", controller)
-                    .Replace("{action}", action);
+                .Replace("{controller}", controller)
+                .Replace("{action}", action);
     }
 }

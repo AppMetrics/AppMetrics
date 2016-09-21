@@ -26,6 +26,24 @@ namespace Api.Sample.Controllers
             return "value";
         }
 
+        [HttpGet("error")]
+        public IActionResult Get500()
+        {
+            return StatusCode(500);
+        }
+
+        [HttpGet("unauth")]
+        public IActionResult Get401()
+        {
+            return StatusCode(401);
+        }
+
+        [HttpGet("bad")]
+        public IActionResult Get400()
+        {
+            return StatusCode(400);
+        }
+
         // POST api/values
         [HttpPost]
         public void Post([FromBody] string value)

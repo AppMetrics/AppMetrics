@@ -1,12 +1,13 @@
 {
   "dependencies": {
     "AspNet.Metrics": "1.0.0-rtm",
+    "AspNet.Metrics.PerformanceCounters": "1.0.0-rtm",
     "HealthCheck.Samples": "1.0.0-*",
     "Metrics.NET": "0.3.7",
     "Microsoft.AspNetCore.Diagnostics": "1.0.0",
-    "Microsoft.AspNetCore.Mvc": "1.0.0",
+    "Microsoft.AspNetCore.Mvc": "1.0.1",
     "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
-    "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
+    "Microsoft.AspNetCore.Server.Kestrel": "1.0.1",
     "Microsoft.AspNetCore.StaticFiles": "1.0.0",
     "Microsoft.Extensions.Configuration.FileExtensions": "1.0.0",
     "Microsoft.Extensions.Configuration.Json": "1.0.0",

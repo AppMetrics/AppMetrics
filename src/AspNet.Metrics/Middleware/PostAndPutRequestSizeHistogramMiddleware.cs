@@ -25,7 +25,8 @@ namespace AspNet.Metrics.Middleware
             }
 
             _next = next;
-            _histogram = metricsContext.Context.Histogram("Web Request Post & Put Size", Unit.Bytes, SamplingType.Default);
+            _histogram = metricsContext.Context.GetWebApplicationContext()
+                .Histogram("Web Request Post & Put Size", Unit.Bytes, SamplingType.Default);
         }
 
         public async Task Invoke(HttpContext context)

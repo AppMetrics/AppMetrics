@@ -13,18 +13,6 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class MetricsCoreBuilderExtensions
     {
-        public static IMetricsBuilder AddAllPerforrmanceCounters(this IMetricsBuilder builder)
-        {
-            if (builder == null)
-            {
-                throw new ArgumentNullException(nameof(builder));
-            }
-
-            Metric.Config.WithAllCounters();
-
-            return builder;
-        }
-
         public static IMetricsBuilder AddHealthChecks(this IMetricsBuilder builder)
         {
             if (builder == null)

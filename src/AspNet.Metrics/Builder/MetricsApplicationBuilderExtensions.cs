@@ -1,19 +1,15 @@
 using System;
 using System.Linq;
 using AspNet.Metrics;
-using AspNet.Metrics.Infrastructure;
 using AspNet.Metrics.Internal;
 using AspNet.Metrics.Middleware;
 using Metrics;
 using Metrics.Core;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc.Internal;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 // ReSharper disable CheckNamespace
-
 namespace Microsoft.AspNet.Builder
 // ReSharper restore CheckNamespace
 {
@@ -44,7 +40,8 @@ namespace Microsoft.AspNet.Builder
                 app.Use(next => new MetricsEndpointVisualizationEndpointMiddleware(next, options).Invoke);
 
                 // Web Metrics Middleware
-                app.Use(next => new ErrorMeterMiddleware(next, options, metricsContext).Invoke);
+                app.Use(next => new ErrorRequestMeterMiddleware(next, options, metricsContext).Invoke);
+                app.Use(next => new OAuth2ClientWebRequestMeterMiddleware(next, options, metricsContext).Invoke);
                 app.Use(next => new PerRequestTimerMiddleware(next, options, metricsContext).Invoke);
                 app.Use(next => new RequestTimerMiddleware(next, options, metricsContext).Invoke);
                 app.Use(next => new ActiveRequestCounterEndpointMiddleware(next, options, metricsContext).Invoke);

@@ -24,10 +24,7 @@ namespace AspNet.Metrics
             MetricsVisualisationEnabled = true;
             PingEnabled = true;
 
-            IgnoredRequestPatterns.Add(new Regex("(?i)^.css"));
-            IgnoredRequestPatterns.Add(new Regex("(?i)^.js"));
-            IgnoredRequestPatterns.Add(new Regex("(?i)^.html"));
-            IgnoredRequestPatterns.Add(new Regex("(?i)^json"));
+            IgnoredRequestPatterns.Add(new Regex(@"\.(jpg|gif|css|js|png|woff|ttf|txt|eot|svg)$"));
             IgnoredRequestPatterns.Add(new Regex("(?i)^swagger"));
             IgnoredRequestPatterns.Add(new Regex("(?i)^metrics"));
             IgnoredRequestPatterns.Add(new Regex("(?i)^metrics-text"));

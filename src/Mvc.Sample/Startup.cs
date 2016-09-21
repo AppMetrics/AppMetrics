@@ -56,10 +56,7 @@ namespace Mvc.Sample
                 .AddLogging()
                 .AddRouting(options => { options.LowercaseUrls = true; });
 
-            services.AddMvc(options =>
-            {
-                options.Filters.Add(new MetricsResourceFilter(new DefaultRouteTemplateResolver()));
-            });
+            services.AddMvc(options => { options.Filters.Add(new MetricsResourceFilter(new DefaultRouteTemplateResolver())); });
 
             services
                 .AddMetrics(options =>
@@ -67,7 +64,7 @@ namespace Mvc.Sample
                     options.MetricsVisualisationEnabled = false;
                     options.MetricsEndpoint = new PathString("/metrics");
                 })
-                .AddAllPerforrmanceCounters()
+                .WithSystemPerforrmanceCounters()
                 .AddHealthChecks();
         }
     }

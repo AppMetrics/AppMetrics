@@ -1,4 +1,7 @@
-﻿using AspNet.Metrics.Infrastructure;
+﻿using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using AspNet.Metrics.Infrastructure;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +13,8 @@ namespace Api.Sample
 {
     public class Startup
     {
+        static Random _random = new Random();
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -30,6 +35,20 @@ namespace Api.Sample
 
             app.UseMetrics();
 
+            // DEVNOTE: Fake a client being authorized to test oauth2 client request rate middleare
+            app.Use((context, func) =>
+            {
+                context.User =
+                    new ClaimsPrincipal(new List<ClaimsIdentity>
+                    {
+                        new ClaimsIdentity(new[]
+                        {
+                            new Claim("client_id", "client" + _random.Next(1, 10))
+                        })
+                    });
+                return func();
+            });
+
             app.UseMvc();
         }
 
@@ -40,14 +59,11 @@ namespace Api.Sample
                 .AddLogging()
                 .AddRouting(options => { options.LowercaseUrls = true; });
 
-            services.AddMvc(options =>
-            {
-                options.Filters.Add(new MetricsResourceFilter(new DefaultRouteTemplateResolver()));
-            });
+            services.AddMvc(options => { options.Filters.Add(new MetricsResourceFilter(new DefaultRouteTemplateResolver())); });
 
             services
                 .AddMetrics()
-                .AddAllPerforrmanceCounters()
+                .WithAllPerformanceCounters()
                 .AddHealthChecks();
         }
     }

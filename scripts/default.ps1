@@ -17,7 +17,7 @@ $testsRoot = "$solutionRoot\test"
 $globalFilePath = "$solutionRoot\global.json"
 $appProjects = Get-ChildItem "$srcRoot\**\$projectFileName" | foreach { $_.FullName }
 $testProjects = Get-ChildItem "$testsRoot\**\$projectFileName" | foreach { $_.FullName }
-$packableProjectDirectories = @("$srcRoot\AspNet.Metrics")
+$packableProjectDirectories = @("$srcRoot\AspNet.Metrics", "$srcRoot\AspNet.Metrics.PerformanceCounters")
 
 task default -depends PatchProject, TestParams, Setup, Build, RunTests, Pack
 

@@ -30,8 +30,10 @@ ipch/
 [Bb]in
 Ankh.NoLoad
 *.vsmdi
+*.lock.json
 
 #Tooling
+.idea
 _ReSharper*/
 *.resharper
 [Tt]est[Rr]esult*

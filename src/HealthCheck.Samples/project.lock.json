@@ -3,7 +3,7 @@
   "version": 2,
   "targets": {
     ".NETFramework,Version=v4.6.1": {
-      "Metrics.NET/0.3.5": {
+      "Metrics.NET/0.3.7": {
         "type": "package",
         "compile": {
           "lib/net45/Metrics.dll": {}
@@ -15,12 +15,12 @@
     }
   },
   "libraries": {
-    "Metrics.NET/0.3.5": {
-      "sha512": "r8c2iuNbVbVAkCX/2RR6owkwAr3gVnff1LukwAU/rpCDALgIo10V5QDb7CY5x+lLqKc+w/I0IP5d0h6XqRPJPQ==",
+    "Metrics.NET/0.3.7": {
+      "sha512": "GCdUUnvazGDws8UBoXTX5WTKQLY2Styuj4fa7nYmZTyb/xUg3nFqk4k+h49J59R6efiX5y/rfkyr/kBlAbZzjw==",
       "type": "package",
+      "path": "Metrics.NET/0.3.7",
       "files": [
-        "Metrics.NET.0.3.5.nupkg",
-        "Metrics.NET.0.3.5.nupkg.sha512",
+        "Metrics.NET.0.3.7.nupkg.sha512",
         "Metrics.NET.nuspec",
         "lib/net45/Metrics.XML",
         "lib/net45/Metrics.dll",
@@ -30,7 +30,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "Metrics.NET >= 0.3.5"
+      "Metrics.NET >= 0.3.7"
     ],
     ".NETFramework,Version=v4.6.1": []
   },
