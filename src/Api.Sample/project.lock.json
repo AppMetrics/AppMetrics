@@ -2003,6 +2003,20 @@
         "runtime": {
           "net461/AspNet.Metrics.dll": {}
         }
+      },
+      "AspNet.Metrics.PerformanceCounters/1.0.0-rtm": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6.1",
+        "dependencies": {
+          "AspNet.Metrics": "1.0.0-rtm",
+          "NETStandard.Library": "1.6.0"
+        },
+        "compile": {
+          "net461/AspNet.Metrics.PerformanceCounters.dll": {}
+        },
+        "runtime": {
+          "net461/AspNet.Metrics.PerformanceCounters.dll": {}
+        }
       }
     }
   },
@@ -6342,11 +6356,17 @@
       "type": "project",
       "path": "../AspNet.Metrics/project.json",
       "msbuildProject": "../AspNet.Metrics/AspNet.Metrics.xproj"
+    },
+    "AspNet.Metrics.PerformanceCounters/1.0.0-rtm": {
+      "type": "project",
+      "path": "../AspNet.Metrics.PerformanceCounters/project.json",
+      "msbuildProject": "../AspNet.Metrics.PerformanceCounters/AspNet.Metrics.PerformanceCounters.xproj"
     }
   },
   "projectFileDependencyGroups": {
     "": [
       "AspNet.Metrics >= 1.0.0-rtm",
+      "AspNet.Metrics.PerformanceCounters >= 1.0.0-rtm",
       "Metrics.NET >= 0.3.7",
       "Microsoft.AspNetCore.Mvc >= 1.0.1",
       "Microsoft.AspNetCore.Server.IISIntegration >= 1.0.0",

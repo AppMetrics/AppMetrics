@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "AspNet.Metrics": "1.0.0-rtm",
+    "AspNet.Metrics.PerformanceCounters": "1.0.0-rtm",
     "HealthCheck.Samples": "1.0.0-*",
     "Metrics.NET": "0.3.7",
     "Microsoft.AspNetCore.Diagnostics": "1.0.0",

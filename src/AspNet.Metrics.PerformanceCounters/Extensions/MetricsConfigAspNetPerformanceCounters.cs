@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 
 // ReSharper disable CheckNamespace
-
 namespace Metrics
 // ReSharper restore CheckNamespace
 {
