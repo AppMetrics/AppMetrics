@@ -9,13 +9,6 @@ namespace AspNet.Metrics.Facts
     [Route("api/[controller]")]
     public class TestController : Controller
     {
-        private readonly TestContext _metricContext;
-
-        public TestController(TestContext context)
-        {
-            _metricContext = context;
-        }
-
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
@@ -40,17 +33,17 @@ namespace AspNet.Metrics.Facts
         }
 
         [HttpGet("300ms")]
-        public IActionResult Get300ms()
+        public async Task<IActionResult> Get300ms()
         {
-            _metricContext.Clock.Advance(TimeUnit.Milliseconds, 300);
-
+            //TODO: Advanced the test clock, don't want to slow down tests
+            await Task.Delay(300);
             return StatusCode(200);
         }
 
         [HttpGet("30ms")]
-        public IActionResult Get30ms()
+        public async Task<IActionResult> Get30ms()
         {
-            _metricContext.Clock.Advance(TimeUnit.Milliseconds, 30);
+            await Task.Delay(30);
 
             return StatusCode(200);
         }

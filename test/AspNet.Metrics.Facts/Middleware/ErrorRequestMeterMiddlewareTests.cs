@@ -4,13 +4,13 @@ using Xunit;
 
 namespace AspNet.Metrics.Facts.Middleware
 {
-    public class ErrorRequestMeterMiddlewareTests : IClassFixture<MetricsTestFixture>
+    public class ErrorRequestMeterMiddlewareTests
     {
         private readonly MetricsTestFixture _fixture;
 
-        public ErrorRequestMeterMiddlewareTests(MetricsTestFixture fixture)
+        public ErrorRequestMeterMiddlewareTests()
         {
-            _fixture = fixture;
+            _fixture = new MetricsTestFixture();
         }
 
         [Fact]

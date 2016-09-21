@@ -1,16 +1,23 @@
 ﻿using System.Threading.Tasks;
+using AspNet.Metrics.Infrastructure;
 using FluentAssertions;
+using Metrics;
+using Microsoft.AspNet.Builder;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace AspNet.Metrics.Facts.Middleware
 {
-    public class PerRequestTimerMiddlewareTests : IClassFixture<MetricsTestFixture>
+    public class PerRequestTimerMiddlewareTests //: IClassFixture<MetricsTestFixture>
     {
         private readonly MetricsTestFixture _fixture;
 
-        public PerRequestTimerMiddlewareTests(MetricsTestFixture fixture)
+        public PerRequestTimerMiddlewareTests()
         {
-            _fixture = fixture;
+            _fixture = new MetricsTestFixture();
         }
 
         [Fact]

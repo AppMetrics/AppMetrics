@@ -16,6 +16,7 @@ namespace AspNet.Metrics.Facts
         public MetricsTestFixture()
         {
             TestContext = new TestContext();
+            TestContext.ResetMetricsValues();
             MetricsConfig = new MetricsConfig(TestContext);
 
             Server = new TestServer(new WebHostBuilder()
@@ -24,7 +25,6 @@ namespace AspNet.Metrics.Facts
                     services.AddRouting(options => { options.LowercaseUrls = true; });
                     services.AddMvc(options => { options.Filters.Add(new MetricsResourceFilter(new DefaultRouteTemplateResolver())); });
                     services.AddMetrics();
-                    services.Add(new ServiceDescriptor(TestContext.GetType(), s => TestContext, ServiceLifetime.Transient));
                 })
                 .Configure(app =>
                 {
@@ -35,20 +35,21 @@ namespace AspNet.Metrics.Facts
             Client = Server.CreateClient();
         }
 
-        public HttpClient Client { get; }
+        public HttpClient Client { get; set; }
 
-        public MetricsConfig MetricsConfig { get; }
+        public MetricsConfig MetricsConfig { get; set; }
 
-        public TestServer Server { get; }
+        public TestServer Server { get; set; }
 
-        public TestContext TestContext { get; }
+        public TestContext TestContext { get; set; }
 
         public void Dispose()
         {
-            Server.Dispose();
-            Client.Dispose();
+            TestContext.ResetMetricsValues();
             TestContext.Dispose();
             MetricsConfig.Dispose();
+            Client.Dispose();
+            Server.Dispose();
         }
     }
 }
