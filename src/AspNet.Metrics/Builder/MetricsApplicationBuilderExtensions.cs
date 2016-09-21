@@ -10,12 +10,18 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 // ReSharper disable CheckNamespace
+
 namespace Microsoft.AspNet.Builder
 // ReSharper restore CheckNamespace
 {
     public static class MetricsAppBuilderExtensions
     {
         public static IApplicationBuilder UseMetrics(this IApplicationBuilder app)
+        {
+            return app.UseMetrics(Metric.Config);
+        }
+
+        public static IApplicationBuilder UseMetrics(this IApplicationBuilder app, MetricsConfig config)
         {
             if (app == null)
             {
@@ -28,7 +34,7 @@ namespace Microsoft.AspNet.Builder
 
             var options = app.ApplicationServices.GetService<IOptions<MetricsOptions>>().Value;
 
-            Metric.Config.WithConfigExtension((ctx, hs) =>
+            config.WithConfigExtension((ctx, hs) =>
             {
                 var metricsContext = new AspNetMetricsContext(ctx, hs);
 

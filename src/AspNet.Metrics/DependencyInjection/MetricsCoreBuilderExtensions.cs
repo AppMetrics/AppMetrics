@@ -8,6 +8,7 @@ using Metrics.Reports;
 using Microsoft.AspNetCore.Hosting;
 
 // ReSharper disable CheckNamespace
+
 namespace Microsoft.Extensions.DependencyInjection
 // ReSharper restore CheckNamespace
 {
@@ -50,14 +51,28 @@ namespace Microsoft.Extensions.DependencyInjection
             return builder;
         }
 
-        public static IMetricsBuilder AddReporter(this IMetricsBuilder builder, Action<MetricsReports> reportsAction)
+        public static IMetricsBuilder AddReporter(this IMetricsBuilder builder,
+            Action<MetricsReports> reportsAction, MetricsConfig config)
         {
             if (builder == null)
             {
                 throw new ArgumentNullException(nameof(builder));
             }
 
-            Metric.Config.WithReporting(reportsAction);
+            config.WithReporting(reportsAction);
+
+            return builder;
+        }
+
+        public static IMetricsBuilder AddReporter(this IMetricsBuilder builder,
+            Action<MetricsReports> reportsAction)
+        {
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+
+            builder.AddReporter(reportsAction, Metric.Config);
 
             return builder;
         }

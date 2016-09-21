@@ -1,5 +1,6 @@
 ﻿using System;
 using AspNet.Metrics;
+using Metrics;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 // ReSharper disable CheckNamespace
@@ -13,7 +14,8 @@ namespace Microsoft.Extensions.DependencyInjection
             return services.AddMetricsCore(null);
         }
 
-        public static IMetricsBuilder AddMetrics(this IServiceCollection services, Action<MetricsOptions> setupAction)
+        public static IMetricsBuilder AddMetrics(this IServiceCollection services, 
+            Action<MetricsOptions> setupAction)
         {
             var builder = services.AddMetricsCore(setupAction);
 
