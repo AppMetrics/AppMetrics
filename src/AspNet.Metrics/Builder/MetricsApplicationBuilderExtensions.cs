@@ -5,6 +5,7 @@ using AspNet.Metrics.Internal;
 using AspNet.Metrics.Middleware;
 using Metrics;
 using Metrics.Core;
+using Metrics.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -23,6 +24,11 @@ namespace Microsoft.AspNet.Builder
 
         public static IApplicationBuilder UseMetrics(this IApplicationBuilder app, MetricsConfig config)
         {
+            return app.UseMetrics(config, Clock.Default);
+        }
+
+        public static IApplicationBuilder UseMetrics(this IApplicationBuilder app, MetricsConfig config, Clock clock)
+        {
             if (app == null)
             {
                 throw new ArgumentNullException(nameof(app));
@@ -36,7 +42,7 @@ namespace Microsoft.AspNet.Builder
 
             config.WithConfigExtension((ctx, hs) =>
             {
-                var metricsContext = new AspNetMetricsContext(ctx, hs);
+                var metricsContext = new AspNetMetricsContext(ctx, hs, clock);
 
                 // Metrics Endpoint Middleware
                 app.Use(next => new MetricsEndpointMiddleware(next, options, metricsContext).Invoke);

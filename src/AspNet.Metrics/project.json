@@ -4,7 +4,7 @@
   "authors": [ "Allan Hardy" ],
   "packOptions": {
     "releaseNotes": "Moved performance counter registration into a separate package (AspNet.Metrics.PerformanceCounters)",
-    "tags": [ "mvc measurements charts timer histogram duration graphite influxdb health checks metrics" ],
+    "tags": [ "mvc", "measurements", "charts", "timer", "histogram", "graphite", "influxdb", "health checks", "metrics" ],
     "repository": {
       "type": "git",
       "url": "git://github.com/alhardy/aspnet-metrics"

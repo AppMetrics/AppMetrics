@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net.Http;
-using System.Runtime.InteropServices;
 using AspNet.Metrics.Infrastructure;
 using Metrics;
 using Microsoft.AspNet.Builder;
@@ -23,12 +22,16 @@ namespace AspNet.Metrics.Facts
                 .ConfigureServices(services =>
                 {
                     services.AddRouting(options => { options.LowercaseUrls = true; });
-                    services.AddMvc(options => { options.Filters.Add(new MetricsResourceFilter(new DefaultRouteTemplateResolver())); });
+                    services.AddMvc(options =>
+                    {
+                        options.Filters.Add(new MetricsResourceFilter(new DefaultRouteTemplateResolver()));
+                    });
                     services.AddMetrics();
+                    services.AddTransient(typeof(TestContext), delegate { return TestContext; });
                 })
                 .Configure(app =>
                 {
-                    app.UseMetrics(MetricsConfig);
+                    app.UseMetrics(MetricsConfig, TestContext.Clock);
                     app.UseMvc();
                 }));
 

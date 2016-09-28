@@ -1,17 +1,10 @@
 ﻿using System.Threading.Tasks;
-using AspNet.Metrics.Infrastructure;
 using FluentAssertions;
-using Metrics;
-using Microsoft.AspNet.Builder;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace AspNet.Metrics.Facts.Middleware
 {
-    public class PerRequestTimerMiddlewareTests //: IClassFixture<MetricsTestFixture>
+    public class PerRequestTimerMiddlewareTests
     {
         private readonly MetricsTestFixture _fixture;
 
@@ -27,9 +20,15 @@ namespace AspNet.Metrics.Facts.Middleware
             await _fixture.Client.GetAsync("/api/test/error");
 
 
-            _fixture.TestContext.TimerValue("Application.WebRequests", "GET api/test").Histogram.Count.Should().Be(1);
-            _fixture.TestContext.TimerValue("Application.WebRequests", "GET api/test/error").Histogram.Count.Should().Be(1);
-            _fixture.TestContext.TimerValue("Application.WebRequests", "Web Requests").Histogram.Count.Should().Be(2);
+            var timer1 =  _fixture.TestContext.TimerValue("Application.WebRequests", "GET api/test");
+            timer1.Histogram.Count.Should().Be(1);
+
+            var timer2 = _fixture.TestContext.TimerValue("Application.WebRequests", "GET api/test/error");
+            timer2.Histogram.Count.Should().Be(1);
+
+
+            var timer3 = _fixture.TestContext.TimerValue("Application.WebRequests", "Web Requests");
+            timer3.Histogram.Count.Should().Be(2);
         }
 
         [Fact]
@@ -39,13 +38,31 @@ namespace AspNet.Metrics.Facts.Middleware
             await _fixture.Client.GetAsync("/api/test/30ms");
 
 
-            _fixture.TestContext.TimerValue("Application.WebRequests", "GET api/test/30ms").Histogram.Min.Should().BeLessThan(100);
-            _fixture.TestContext.TimerValue("Application.WebRequests", "GET api/test/30ms").Histogram.Max.Should().BeLessThan(100);
-            _fixture.TestContext.TimerValue("Application.WebRequests", "GET api/test/30ms").Histogram.Mean.Should().BeLessThan(100);
+            var timer1 = _fixture.TestContext.TimerValue("Application.WebRequests", "GET api/test/30ms");
+            timer1.Histogram.Min.Should().Be(30);
+            timer1.Histogram.Max.Should().Be(30);
+            timer1.Histogram.Mean.Should().Be(30);
+            timer1.Histogram.Percentile95.Should().Be(30);
+            timer1.Histogram.Percentile98.Should().Be(30);
+            timer1.Histogram.Percentile99.Should().Be(30);
+            timer1.Histogram.Percentile999.Should().Be(30);
+            timer1.TotalTime.Should().Be(30);
 
-            _fixture.TestContext.TimerValue("Application.WebRequests", "GET api/test/300ms").Histogram.Min.Should().BeGreaterOrEqualTo(300);
-            _fixture.TestContext.TimerValue("Application.WebRequests", "GET api/test/300ms").Histogram.Max.Should().BeGreaterOrEqualTo(300);
-            _fixture.TestContext.TimerValue("Application.WebRequests", "GET api/test/300ms").Histogram.Mean.Should().BeGreaterOrEqualTo(300);
+            var timer2 = _fixture.TestContext.TimerValue("Application.WebRequests", "GET api/test/300ms");
+            timer2.Histogram.Min.Should().Be(300);
+            timer2.Histogram.Max.Should().Be(300);
+            timer2.Histogram.Mean.Should().Be(300);
+            timer2.Histogram.Percentile75.Should().Be(300);
+            timer2.Histogram.Percentile95.Should().Be(300);
+            timer2.Histogram.Percentile98.Should().Be(300);
+            timer2.Histogram.Percentile99.Should().Be(300);
+            timer2.Histogram.Percentile999.Should().Be(300);
+            timer2.TotalTime.Should().Be(300);
+
+            var timer3 = _fixture.TestContext.TimerValue("Application.WebRequests", "Web Requests");
+            timer3.Histogram.Min.Should().Be(30);
+            timer3.Histogram.Max.Should().Be(300);
+            timer3.TotalTime.Should().Be(330);
         }
     }
 }

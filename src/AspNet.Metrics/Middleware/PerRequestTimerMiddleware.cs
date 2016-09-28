@@ -2,9 +2,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using Metrics;
-using Metrics.Utils;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
 
 namespace AspNet.Metrics.Middleware
 {
@@ -39,7 +37,7 @@ namespace AspNet.Metrics.Middleware
         {
             if (PerformMetric(context))
             {
-                context.Items[TimerItemsKey] = Clock.Default.Nanoseconds;
+                context.Items[TimerItemsKey] = _metricsContext.Clock.Nanoseconds;
 
                 await _next(context);
 
@@ -48,7 +46,7 @@ namespace AspNet.Metrics.Middleware
                     var clientId = context.OAuthClientId();
 
                     var startTime = (long)context.Items[TimerItemsKey];
-                    var elapsed = Clock.Default.Nanoseconds - startTime;
+                    var elapsed = _metricsContext.Clock.Nanoseconds - startTime;
 
                     _metricsContext.Context.GetWebApplicationContext()
                         .Timer(context.GetMetricsCurrentRouteName(), Unit.Requests)
