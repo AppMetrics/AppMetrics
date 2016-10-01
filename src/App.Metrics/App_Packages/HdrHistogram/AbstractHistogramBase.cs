@@ -7,22 +7,44 @@
 
 // Ported to.NET Standard Library by Allan Hardy
 
-
 using System;
 using App.Metrics.App_Packages.Concurrency;
 
 namespace App.Metrics.App_Packages.HdrHistogram
 {
     /// <summary>
-    /// This non-public AbstractHistogramBase super-class separation is meant to bunch "cold" fields
-    /// separately from "hot" fields, in an attempt to force the JVM to place the (hot) fields
-    /// commonly used in the value recording code paths close together.
-    /// Subclass boundaries tend to be strongly control memory layout decisions in most practical
-    /// JVM implementations, making this an effective method for control filed grouping layout.
+    ///     This non-public AbstractHistogramBase super-class separation is meant to bunch "cold" fields
+    ///     separately from "hot" fields, in an attempt to force the JVM to place the (hot) fields
+    ///     commonly used in the value recording code paths close together.
+    ///     Subclass boundaries tend to be strongly control memory layout decisions in most practical
+    ///     JVM implementations, making this an effective method for control filed grouping layout.
     /// </summary>
     internal abstract class AbstractHistogramBase
     {
-        private static AtomicLong constructionIdentityCount = new AtomicLong(0);
+        internal int countsArrayLength;
+
+        // "Cold" accessed fields. Not used in the recording code path:
+        internal protected readonly long Identity;
+        internal protected readonly int NumberOfSignificantValueDigits;
+
+
+        internal protected int bucketCount;
+        internal protected long endTimeStampMsec = 0;
+        internal protected long HighestTrackableValue;
+
+        internal protected double integerToDoubleValueConversionRatio = 1.0;
+
+
+        internal protected long startTimeStampMsec = long.MaxValue;
+        internal protected int subBucketCount;
+
+        protected readonly bool AutoResize;
+
+        protected readonly long LowestDiscernibleValue;
+
+        protected readonly RecordedValuesIterator recordedValuesIterator;
+        protected readonly int WordSizeInBytes;
+        private static AtomicLong _constructionIdentityCount = new AtomicLong(0);
 
         protected AbstractHistogramBase(long lowestDiscernibleValue, int numberOfSignificantValueDigits, int wordSizeInBytes, bool autoResize)
         {
@@ -37,36 +59,13 @@ namespace App.Metrics.App_Packages.HdrHistogram
                 throw new ArgumentException("numberOfSignificantValueDigits must be between 0 and 5");
             }
 
-            this.LowestDiscernibleValue = lowestDiscernibleValue;
-            this.Identity = constructionIdentityCount.GetAndIncrement();
-            this.NumberOfSignificantValueDigits = numberOfSignificantValueDigits;
-            this.WordSizeInBytes = wordSizeInBytes;
-            this.AutoResize = autoResize;
+            LowestDiscernibleValue = lowestDiscernibleValue;
+            Identity = _constructionIdentityCount.GetAndIncrement();
+            NumberOfSignificantValueDigits = numberOfSignificantValueDigits;
+            WordSizeInBytes = wordSizeInBytes;
+            AutoResize = autoResize;
 
-            this.recordedValuesIterator = new RecordedValuesIterator(this as AbstractHistogram);
+            recordedValuesIterator = new RecordedValuesIterator(this as AbstractHistogram);
         }
-
-        // "Cold" accessed fields. Not used in the recording code path:
-        internal protected readonly long Identity;
-        internal protected readonly int NumberOfSignificantValueDigits;
-
-        protected readonly bool AutoResize;
-        protected readonly int WordSizeInBytes;
-
-        protected readonly long LowestDiscernibleValue;
-        internal protected long HighestTrackableValue;
-
-
-        internal protected int bucketCount;
-        internal protected int subBucketCount;
-        internal int countsArrayLength;
-
-
-        internal protected long startTimeStampMsec = long.MaxValue;
-        internal protected long endTimeStampMsec = 0;
-
-        internal protected double integerToDoubleValueConversionRatio = 1.0;
-
-        protected readonly RecordedValuesIterator recordedValuesIterator;
     }
 }

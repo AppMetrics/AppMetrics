@@ -30,8 +30,8 @@ namespace App.Metrics.MetricData
                 throw new ArgumentNullException(nameof(items));
             }
 
-            this.Count = count;
-            this.Items = items;
+            Count = count;
+            Items = items;
         }
 
         internal CounterValue(long count) : this(count, noItems)
@@ -58,9 +58,9 @@ namespace App.Metrics.MetricData
 
             public SetItem(string item, long count, double percent)
             {
-                this.Item = item;
-                this.Count = count;
-                this.Percent = percent;
+                Item = item;
+                Count = count;
+                Percent = percent;
             }
         }
     }

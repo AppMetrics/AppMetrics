@@ -36,7 +36,7 @@ public
 #endif
         struct AtomicIntArray
     {
-        private readonly int[] array;
+        private readonly int[] _array;
 
         public AtomicIntArray(int length)
         {
@@ -44,7 +44,7 @@ public
             {
                 throw new ArgumentException("Length must be positive", "length");
             }
-            this.array = new int[length];
+            _array = new int[length];
         }
 
         public AtomicIntArray(IReadOnlyList<int> source)
@@ -54,12 +54,12 @@ public
             {
                 clone[i] = source[i];
             }
-            this.array = clone;
+            _array = clone;
         }
 
         public int Length
         {
-            get { return this.array.Length; }
+            get { return _array.Length; }
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ public
         /// <returns>The value of this instance + the amount added.</returns>
         public int Add(int index, int value)
         {
-            return Interlocked.Add(ref this.array[index], value);
+            return Interlocked.Add(ref _array[index], value);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ public
         /// <returns>True if the update was made, false otherwise.</returns>
         public bool CompareAndSwap(int index, int expected, int updated)
         {
-            return Interlocked.CompareExchange(ref this.array[index], updated, expected) == expected;
+            return Interlocked.CompareExchange(ref _array[index], updated, expected) == expected;
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ public
         /// <returns>The value of the instance *after* the decrement.</returns>
         public int Decrement(int index)
         {
-            return Interlocked.Decrement(ref this.array[index]);
+            return Interlocked.Decrement(ref _array[index]);
         }
 
         /// <summary>
@@ -177,7 +177,7 @@ public
         /// <returns>The current value of the instance.</returns>
         public int GetAndSet(int index, int newValue)
         {
-            return Interlocked.Exchange(ref this.array[index], newValue);
+            return Interlocked.Exchange(ref _array[index], newValue);
         }
 
         /// <summary>
@@ -187,7 +187,7 @@ public
         /// <returns>The latest written value of this instance.</returns>
         public int GetValue(int index)
         {
-            return Volatile.Read(ref this.array[index]);
+            return Volatile.Read(ref _array[index]);
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ public
         /// <returns>The value of the instance *after* the increment.</returns>
         public int Increment(int index)
         {
-            return Interlocked.Increment(ref this.array[index]);
+            return Interlocked.Increment(ref _array[index]);
         }
 
         /// <summary>
@@ -218,7 +218,7 @@ public
         /// <param name="value">The new value for this instance.</param>
         public void SetValue(int index, int value)
         {
-            Volatile.Write(ref this.array[index], value);
+            Volatile.Write(ref _array[index], value);
         }
     }
 }

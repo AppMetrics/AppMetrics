@@ -1,6 +1,6 @@
 ﻿using App.Metrics.Core;
-using Xunit;
 using FluentAssertions;
+using Xunit;
 
 namespace App.Metrics.Facts.Metrics
 {
@@ -35,6 +35,13 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
+        public void HistogramMetric_RecordsMeanForOneElement()
+        {
+            histogram.Update(1L);
+            histogram.Value.Mean.Should().Be(1);
+        }
+
+        [Fact]
         public void HistogramMetric_RecordsUserValue()
         {
             histogram.Update(1L, "A");
@@ -42,13 +49,6 @@ namespace App.Metrics.Facts.Metrics
 
             histogram.Value.MinUserValue.Should().Be("A");
             histogram.Value.MaxUserValue.Should().Be("B");
-        }
-
-        [Fact]
-        public void HistogramMetric_RecordsMeanForOneElement()
-        {
-            histogram.Update(1L);
-            histogram.Value.Mean.Should().Be(1);
         }
     }
 }

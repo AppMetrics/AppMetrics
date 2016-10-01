@@ -15,18 +15,18 @@ namespace App.Metrics.MetricData
 
     public sealed class FilteredMetrics : MetricsDataProvider
     {
-        private readonly MetricsFilter filter;
-        private readonly MetricsDataProvider provider;
+        private readonly MetricsFilter _filter;
+        private readonly MetricsDataProvider _provider;
 
         public FilteredMetrics(MetricsDataProvider provider, MetricsFilter filter)
         {
-            this.provider = provider;
-            this.filter = filter;
+            this._provider = provider;
+            this._filter = filter;
         }
 
         public MetricsData CurrentMetricsData
         {
-            get { return this.provider.CurrentMetricsData.Filter(this.filter); }
+            get { return this._provider.CurrentMetricsData.Filter(this._filter); }
         }
     }
 

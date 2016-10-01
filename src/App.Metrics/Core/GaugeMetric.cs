@@ -9,11 +9,11 @@ namespace App.Metrics.Core
 
     public class FunctionGauge : GaugeImplementation
     {
-        private readonly Func<double> valueProvider;
+        private readonly Func<double> _valueProvider;
 
         public FunctionGauge(Func<double> valueProvider)
         {
-            this.valueProvider = valueProvider;
+            _valueProvider = valueProvider;
         }
 
         public double Value
@@ -22,7 +22,7 @@ namespace App.Metrics.Core
             {
                 try
                 {
-                    return this.valueProvider();
+                    return _valueProvider();
                 }
                 catch (Exception x)
                 {
@@ -40,13 +40,13 @@ namespace App.Metrics.Core
 
     public sealed class DerivedGauge : GaugeImplementation
     {
-        private readonly MetricValueProvider<double> gauge;
-        private readonly Func<double, double> transformation;
+        private readonly MetricValueProvider<double> _gauge;
+        private readonly Func<double, double> _transformation;
 
         public DerivedGauge(MetricValueProvider<double> gauge, Func<double, double> transformation)
         {
-            this.gauge = gauge;
-            this.transformation = transformation;
+            _gauge = gauge;
+            _transformation = transformation;
         }
 
         public double Value
@@ -55,7 +55,7 @@ namespace App.Metrics.Core
             {
                 try
                 {
-                    return this.transformation(this.gauge.Value);
+                    return _transformation(_gauge.Value);
                 }
                 catch (Exception x)
                 {

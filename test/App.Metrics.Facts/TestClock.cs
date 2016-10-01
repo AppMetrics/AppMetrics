@@ -7,9 +7,17 @@ namespace App.Metrics.Facts
     {
         private long nanoseconds = 0;
 
-        public override long Nanoseconds { get { return this.nanoseconds; } }
+        public event EventHandler Advanced;
 
-        public override DateTime UTCDateTime { get { return new DateTime(this.nanoseconds / 100L, DateTimeKind.Utc); } }
+        public override long Nanoseconds
+        {
+            get { return this.nanoseconds; }
+        }
+
+        public override DateTime UTCDateTime
+        {
+            get { return new DateTime(this.nanoseconds / 100L, DateTimeKind.Utc); }
+        }
 
         public void Advance(TimeUnit unit, long value)
         {
@@ -19,7 +27,5 @@ namespace App.Metrics.Facts
                 Advanced(this, EventArgs.Empty);
             }
         }
-
-        public event EventHandler Advanced;
     }
 }

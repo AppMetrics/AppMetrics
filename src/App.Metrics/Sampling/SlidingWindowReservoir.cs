@@ -13,50 +13,53 @@ namespace App.Metrics.Sampling
     {
         private const int DefaultSize = 1028;
 
-        private readonly UserValueWrapper[] values;
+        private readonly UserValueWrapper[] _values;
         private AtomicLong count = new AtomicLong();
 
         public SlidingWindowReservoir()
-            : this(DefaultSize) { }
+            : this(DefaultSize)
+        {
+        }
 
         public SlidingWindowReservoir(int size)
         {
-            this.values = new UserValueWrapper[size];
-        }
-
-        public void Update(long value, string userValue = null)
-        {
-            var newCount = this.count.Increment();
-            this.values[(int)((newCount - 1) % this.values.Length)] = new UserValueWrapper(value, userValue);
-        }
-
-        public void Reset()
-        {
-            Array.Clear(this.values, 0, this.values.Length);
-            this.count.SetValue(0L);
+            _values = new UserValueWrapper[size];
         }
 
         public Snapshot GetSnapshot(bool resetReservoir = false)
         {
-            var size = Math.Min((int)this.count.GetValue(), this.values.Length);
+            var size = Math.Min((int)count.GetValue(), _values.Length);
             if (size == 0)
             {
                 return new UniformSnapshot(0, Enumerable.Empty<long>());
             }
 
             var snapshotValues = new UserValueWrapper[size];
-            Array.Copy(this.values, snapshotValues, size);
+            Array.Copy(_values, snapshotValues, size);
 
             if (resetReservoir)
             {
-                Array.Clear(this.values, 0, snapshotValues.Length);
-                this.count.SetValue(0L);
+                Array.Clear(_values, 0, snapshotValues.Length);
+                count.SetValue(0L);
             }
 
             Array.Sort(snapshotValues, UserValueWrapper.Comparer);
             var minValue = snapshotValues[0].UserValue;
             var maxValue = snapshotValues[size - 1].UserValue;
-            return new UniformSnapshot(this.count.GetValue(), snapshotValues.Select(v => v.Value), valuesAreSorted: true, minUserValue: minValue, maxUserValue: maxValue);
+            return new UniformSnapshot(count.GetValue(), snapshotValues.Select(v => v.Value), valuesAreSorted: true, minUserValue: minValue,
+                maxUserValue: maxValue);
+        }
+
+        public void Reset()
+        {
+            Array.Clear(_values, 0, _values.Length);
+            count.SetValue(0L);
+        }
+
+        public void Update(long value, string userValue = null)
+        {
+            var newCount = count.Increment();
+            _values[(int)((newCount - 1) % _values.Length)] = new UserValueWrapper(value, userValue);
         }
     }
 }

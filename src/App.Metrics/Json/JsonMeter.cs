@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.MetricData;
-using App.Metrics.Utils;
 
 namespace App.Metrics.Json
 {
@@ -17,8 +16,8 @@ namespace App.Metrics.Json
 
         public SetItem[] Items
         {
-            get { return this.items; }
-            set { this.items = value ?? new SetItem[0]; }
+            get { return items; }
+            set { items = value ?? new SetItem[0]; }
         }
 
         public double MeanRate { get; set; }
@@ -60,38 +59,38 @@ namespace App.Metrics.Json
 
         public IEnumerable<JsonProperty> ToJsonProperties()
         {
-            yield return new JsonProperty("Name", this.Name);
-            yield return new JsonProperty("Count", this.Count);
-            yield return new JsonProperty("MeanRate", this.MeanRate);
-            yield return new JsonProperty("OneMinuteRate", this.OneMinuteRate);
-            yield return new JsonProperty("FiveMinuteRate", this.FiveMinuteRate);
-            yield return new JsonProperty("FifteenMinuteRate", this.FifteenMinuteRate);
-            yield return new JsonProperty("Unit", this.Unit);
-            yield return new JsonProperty("RateUnit", this.RateUnit);
+            yield return new JsonProperty("Name", Name);
+            yield return new JsonProperty("Count", Count);
+            yield return new JsonProperty("MeanRate", MeanRate);
+            yield return new JsonProperty("OneMinuteRate", OneMinuteRate);
+            yield return new JsonProperty("FiveMinuteRate", FiveMinuteRate);
+            yield return new JsonProperty("FifteenMinuteRate", FifteenMinuteRate);
+            yield return new JsonProperty("Unit", Unit);
+            yield return new JsonProperty("RateUnit", RateUnit);
 
-            if (this.Items.Length > 0)
+            if (Items.Length > 0)
             {
-                yield return new JsonProperty("Items", this.Items.Select(i => new JsonObject(ToJsonProperties(i))));
+                yield return new JsonProperty("Items", Items.Select(i => new JsonObject(ToJsonProperties(i))));
             }
 
-            if (this.Tags.Length > 0)
+            if (Tags.Length > 0)
             {
-                yield return new JsonProperty("Tags", this.Tags);
+                yield return new JsonProperty("Tags", Tags);
             }
         }
 
         public MeterValueSource ToValueSource()
         {
-            var rateUnit = TimeUnitExtensions.FromUnit(this.RateUnit);
+            var rateUnit = TimeUnitExtensions.FromUnit(RateUnit);
 
-            var items = this.Items.Select(i =>
+            var items = Items.Select(i =>
                     new MeterValue.SetItem(i.Item, i.Percent,
                         new MeterValue(i.Count, i.MeanRate, i.OneMinuteRate, i.FiveMinuteRate, i.FifteenMinuteRate, rateUnit)))
                 .ToArray();
 
-            var meterValue = new MeterValue(this.Count, this.MeanRate, this.OneMinuteRate, this.FiveMinuteRate, this.FifteenMinuteRate, rateUnit,
+            var meterValue = new MeterValue(Count, MeanRate, OneMinuteRate, FiveMinuteRate, FifteenMinuteRate, rateUnit,
                 items);
-            return new MeterValueSource(this.Name, ConstantValue.Provider(meterValue), this.Unit, rateUnit, this.Tags);
+            return new MeterValueSource(Name, ConstantValue.Provider(meterValue), Unit, rateUnit, Tags);
         }
 
         private static IEnumerable<JsonProperty> ToJsonProperties(SetItem item)

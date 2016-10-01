@@ -28,12 +28,12 @@ namespace App.Metrics.App_Packages.HdrHistogram
     internal class Recorder
     {
         private static readonly long factor = 1000L / Stopwatch.Frequency;
+
+        private static readonly AtomicLong instanceIdSequencer = new AtomicLong(1);
         private static readonly object syncLock = new object();
         private readonly long instanceId = instanceIdSequencer.GetAndIncrement();
 
         private readonly WriterReaderPhaser recordingPhaser = new WriterReaderPhaser();
-
-        private static readonly AtomicLong instanceIdSequencer = new AtomicLong(1);
 
         private volatile Histogram activeHistogram;
         private Histogram inactiveHistogram;
@@ -128,7 +128,7 @@ namespace App.Metrics.App_Packages.HdrHistogram
         /// <param name="value">The value to record.</param>
         public void RecordValue(long value)
         {
-            long criticalValueAtEnter = recordingPhaser.WriterCriticalSectionEnter();
+            var criticalValueAtEnter = recordingPhaser.WriterCriticalSectionEnter();
             try
             {
                 activeHistogram.RecordValue(value);
@@ -160,12 +160,12 @@ namespace App.Metrics.App_Packages.HdrHistogram
                 recordingPhaser.ReaderLock();
 
                 // Swap active and inactive histograms:
-                Histogram tempHistogram = inactiveHistogram;
+                var tempHistogram = inactiveHistogram;
                 inactiveHistogram = activeHistogram;
                 activeHistogram = tempHistogram;
 
                 // Mark end time of previous interval and start time of new one:
-                long now = CurentTimeInMilis();
+                var now = CurentTimeInMilis();
                 activeHistogram.setStartTimeStamp(now);
                 inactiveHistogram.setEndTimeStamp(now);
 
@@ -204,7 +204,7 @@ namespace App.Metrics.App_Packages.HdrHistogram
             public InternalConcurrentHistogram(long id, int numberOfSignificantValueDigits)
                 : base(numberOfSignificantValueDigits)
             {
-                this.ContainingInstanceId = id;
+                ContainingInstanceId = id;
             }
         }
     }

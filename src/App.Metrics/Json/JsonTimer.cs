@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using App.Metrics.MetricData;
-using App.Metrics.Utils;
 
 namespace App.Metrics.Json
 {
@@ -39,21 +38,21 @@ namespace App.Metrics.Json
 
         public IEnumerable<JsonProperty> ToJsonProperties()
         {
-            yield return new JsonProperty("Name", this.Name);
-            yield return new JsonProperty("Count", this.Count);
-            yield return new JsonProperty("ActiveSessions", this.ActiveSessions);
-            yield return new JsonProperty("TotalTime", this.TotalTime);
+            yield return new JsonProperty("Name", Name);
+            yield return new JsonProperty("Count", Count);
+            yield return new JsonProperty("ActiveSessions", ActiveSessions);
+            yield return new JsonProperty("TotalTime", TotalTime);
 
-            yield return new JsonProperty("Rate", ToJsonProperties(this.Rate));
-            yield return new JsonProperty("Histogram", ToJsonProperties(this.Histogram));
+            yield return new JsonProperty("Rate", ToJsonProperties(Rate));
+            yield return new JsonProperty("Histogram", ToJsonProperties(Histogram));
 
-            yield return new JsonProperty("Unit", this.Unit);
-            yield return new JsonProperty("RateUnit", this.RateUnit);
-            yield return new JsonProperty("DurationUnit", this.DurationUnit);
+            yield return new JsonProperty("Unit", Unit);
+            yield return new JsonProperty("RateUnit", RateUnit);
+            yield return new JsonProperty("DurationUnit", DurationUnit);
 
-            if (this.Tags.Length > 0)
+            if (Tags.Length > 0)
             {
-                yield return new JsonProperty("Tags", this.Tags);
+                yield return new JsonProperty("Tags", Tags);
             }
         }
 
@@ -64,21 +63,21 @@ namespace App.Metrics.Json
 
         public TimerValueSource ToValueSource()
         {
-            var rateUnit = TimeUnitExtensions.FromUnit(this.RateUnit);
-            var durationUnit = TimeUnitExtensions.FromUnit(this.DurationUnit);
+            var rateUnit = TimeUnitExtensions.FromUnit(RateUnit);
+            var durationUnit = TimeUnitExtensions.FromUnit(DurationUnit);
 
-            var rateValue = new MeterValue(this.Count, this.Rate.MeanRate, this.Rate.OneMinuteRate, this.Rate.FiveMinuteRate,
-                this.Rate.FifteenMinuteRate, rateUnit);
-            var histogramValue = new HistogramValue(this.Count,
-                this.Histogram.LastValue, this.Histogram.LastUserValue,
-                this.Histogram.Max, this.Histogram.MaxUserValue, this.Histogram.Mean,
-                this.Histogram.Min, this.Histogram.MinUserValue, this.Histogram.StdDev, this.Histogram.Median,
-                this.Histogram.Percentile75, this.Histogram.Percentile95, this.Histogram.Percentile98,
-                this.Histogram.Percentile99, this.Histogram.Percentile999, this.Histogram.SampleSize);
+            var rateValue = new MeterValue(Count, Rate.MeanRate, Rate.OneMinuteRate, Rate.FiveMinuteRate,
+                Rate.FifteenMinuteRate, rateUnit);
+            var histogramValue = new HistogramValue(Count,
+                Histogram.LastValue, Histogram.LastUserValue,
+                Histogram.Max, Histogram.MaxUserValue, Histogram.Mean,
+                Histogram.Min, Histogram.MinUserValue, Histogram.StdDev, Histogram.Median,
+                Histogram.Percentile75, Histogram.Percentile95, Histogram.Percentile98,
+                Histogram.Percentile99, Histogram.Percentile999, Histogram.SampleSize);
 
-            var timerValue = new TimerValue(rateValue, histogramValue, this.ActiveSessions, this.TotalTime, durationUnit);
+            var timerValue = new TimerValue(rateValue, histogramValue, ActiveSessions, TotalTime, durationUnit);
 
-            return new TimerValueSource(this.Name, ConstantValue.Provider(timerValue), this.Unit, rateUnit, durationUnit, this.Tags);
+            return new TimerValueSource(Name, ConstantValue.Provider(timerValue), Unit, rateUnit, durationUnit, Tags);
         }
 
         private static HistogramData ToHistogram(HistogramValue histogram)
@@ -113,7 +112,7 @@ namespace App.Metrics.Json
 
         private static IEnumerable<JsonProperty> ToJsonProperties(HistogramData histogram)
         {
-            bool hasUserValues = histogram.LastUserValue != null || histogram.MinUserValue != null || histogram.MaxUserValue != null;
+            var hasUserValues = histogram.LastUserValue != null || histogram.MinUserValue != null || histogram.MaxUserValue != null;
 
             yield return new JsonProperty("LastValue", histogram.LastValue);
 

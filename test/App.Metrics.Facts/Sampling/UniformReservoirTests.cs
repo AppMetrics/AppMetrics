@@ -1,6 +1,6 @@
 ﻿using App.Metrics.Sampling;
-using Xunit;
 using FluentAssertions;
+using Xunit;
 
 namespace App.Metrics.Facts.Sampling
 {
@@ -9,9 +9,9 @@ namespace App.Metrics.Facts.Sampling
         [Fact]
         public void UniformReservoir_Of100OutOf1000Elements()
         {
-            UniformReservoir reservoir = new UniformReservoir(100);
+            var reservoir = new UniformReservoir(100);
 
-            for (int i = 0; i < 1000; i++)
+            for (var i = 0; i < 1000; i++)
             {
                 reservoir.Update(i);
             }
@@ -24,7 +24,7 @@ namespace App.Metrics.Facts.Sampling
         [Fact]
         public void UniformReservoir_RecordsUserValue()
         {
-            UniformReservoir reservoir = new UniformReservoir(100);
+            var reservoir = new UniformReservoir(100);
 
             reservoir.Update(2L, "B");
             reservoir.Update(1L, "A");

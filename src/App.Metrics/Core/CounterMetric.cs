@@ -13,16 +13,16 @@ namespace App.Metrics.Core
 
     public sealed class CounterMetric : CounterImplementation
     {
-        private readonly StripedLongAdder counter = new StripedLongAdder();
-        private ConcurrentDictionary<string, StripedLongAdder> setCounters;
+        private readonly StripedLongAdder _counter = new StripedLongAdder();
+        private ConcurrentDictionary<string, StripedLongAdder> _setCounters;
 
         public CounterValue Value
         {
             get
             {
-                if (this.setCounters == null || this.setCounters.Count == 0)
+                if (_setCounters == null || _setCounters.Count == 0)
                 {
-                    return new CounterValue(this.counter.GetValue());
+                    return new CounterValue(_counter.GetValue());
                 }
                 return GetValueWithSetItems();
             }
@@ -30,12 +30,12 @@ namespace App.Metrics.Core
 
         public void Decrement()
         {
-            this.counter.Decrement();
+            _counter.Decrement();
         }
 
         public void Decrement(long value)
         {
-            this.counter.Add(-value);
+            _counter.Add(-value);
         }
 
         public void Decrement(string item)
@@ -52,22 +52,22 @@ namespace App.Metrics.Core
 
         public CounterValue GetValue(bool resetMetric = false)
         {
-            var value = this.Value;
+            var value = Value;
             if (resetMetric)
             {
-                this.Reset();
+                Reset();
             }
             return value;
         }
 
         public void Increment()
         {
-            this.counter.Increment();
+            _counter.Increment();
         }
 
         public void Increment(long value)
         {
-            this.counter.Add(value);
+            _counter.Add(value);
         }
 
         public void Increment(string item)
@@ -84,10 +84,10 @@ namespace App.Metrics.Core
 
         public void Reset()
         {
-            this.counter.Reset();
-            if (this.setCounters != null)
+            _counter.Reset();
+            if (_setCounters != null)
             {
-                foreach (var item in this.setCounters)
+                foreach (var item in _setCounters)
                 {
                     item.Value.Reset();
                 }
@@ -96,12 +96,12 @@ namespace App.Metrics.Core
 
         private CounterValue GetValueWithSetItems()
         {
-            Debug.Assert(this.setCounters != null);
-            var total = this.counter.GetValue();
+            Debug.Assert(_setCounters != null);
+            var total = _counter.GetValue();
 
-            var items = new CounterValue.SetItem[this.setCounters.Count];
+            var items = new CounterValue.SetItem[_setCounters.Count];
             var index = 0;
-            foreach (var item in this.setCounters)
+            foreach (var item in _setCounters)
             {
                 var itemValue = item.Value.GetValue();
 
@@ -121,12 +121,12 @@ namespace App.Metrics.Core
 
         private StripedLongAdder SetCounter(string item)
         {
-            if (this.setCounters == null)
+            if (_setCounters == null)
             {
-                Interlocked.CompareExchange(ref this.setCounters, new ConcurrentDictionary<string, StripedLongAdder>(), null);
+                Interlocked.CompareExchange(ref _setCounters, new ConcurrentDictionary<string, StripedLongAdder>(), null);
             }
-            Debug.Assert(this.setCounters != null);
-            return this.setCounters.GetOrAdd(item, v => new StripedLongAdder());
+            Debug.Assert(_setCounters != null);
+            return _setCounters.GetOrAdd(item, v => new StripedLongAdder());
         }
     }
 }

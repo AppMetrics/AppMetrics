@@ -12,35 +12,6 @@ namespace App.Metrics.Facts.Core
     {
         private readonly MetricsContext context = new DefaultMetricsContext();
 
-        public class CustomCounter : CounterImplementation
-        {
-            public void Increment() { }
-            public void Increment(long value) { }
-            public void Decrement() { }
-            public void Decrement(long value) { }
-
-            public void Increment(string item) { }
-            public void Increment(string item, long value) { }
-            public void Decrement(string item) { }
-            public void Decrement(string item, long value) { }
-
-            public void Reset() { }
-
-            public CounterValue GetValue(bool resetMetric = false)
-            {
-                return this.Value;
-            }
-            public CounterValue Value
-            {
-                get { return new CounterValue(10L, new CounterValue.SetItem[0]); }
-            }
-
-            public bool Merge(MetricValueProvider<CounterValue> other)
-            {
-                return true;
-            }
-        }
-
         [Fact]
         public void MetricsContext_CanRegisterCustomCounter()
         {
@@ -50,25 +21,17 @@ namespace App.Metrics.Facts.Core
             context.DataProvider.CurrentMetricsData.Counters.Single().Value.Count.Should().Be(10L);
         }
 
-        public class CustomReservoir : Reservoir
+        [Fact]
+        public void MetricsContext_CanRegisterTimerWithCustomHistogram()
         {
-            private readonly List<long> values = new List<long>();
+            var histogram = new CustomHistogram();
 
-            public long Count { get { return this.values.Count; } }
-            public int Size { get { return this.values.Count; } }
+            var timer = context.Advanced.Timer("custom", Unit.Calls, () => (HistogramImplementation)histogram);
 
-            public void Update(long value, string userValue) { this.values.Add(value); }
+            timer.Record(10L, TimeUnit.Nanoseconds);
 
-            public Snapshot GetSnapshot(bool resetReservoir = false)
-            {
-                return new UniformSnapshot(this.values.Count, this.values);
-            }
-
-            public void Reset()
-            {
-                this.values.Clear();
-            }
-            public IEnumerable<long> Values { get { return this.values; } }
+            histogram.Reservoir.Size.Should().Be(1);
+            histogram.Reservoir.Values.Single().Should().Be(10L);
         }
 
         [Fact]
@@ -83,39 +46,118 @@ namespace App.Metrics.Facts.Core
             reservoir.Values.Single().Should().Be(10L);
         }
 
-        public class CustomHistogram : HistogramImplementation
+        public class CustomCounter : CounterImplementation
         {
-            private readonly CustomReservoir reservoir = new CustomReservoir();
-            public void Update(long value, string userValue) { this.reservoir.Update(value, userValue); }
-            public void Reset() { this.reservoir.Reset(); }
-
-            public CustomReservoir Reservoir { get { return this.reservoir; } }
-
-            public HistogramValue GetValue(bool resetMetric = false)
+            public CounterValue Value
             {
-                return this.Value;
+                get { return new CounterValue(10L, new CounterValue.SetItem[0]); }
             }
 
-            public HistogramValue Value
+            public void Decrement()
             {
-                get
-                {
-                    return new HistogramValue(this.reservoir.Values.Last(), null, this.reservoir.GetSnapshot());
-                }
+            }
+
+            public void Decrement(long value)
+            {
+            }
+
+            public void Decrement(string item)
+            {
+            }
+
+            public void Decrement(string item, long value)
+            {
+            }
+
+            public CounterValue GetValue(bool resetMetric = false)
+            {
+                return Value;
+            }
+
+            public void Increment()
+            {
+            }
+
+            public void Increment(long value)
+            {
+            }
+
+            public void Increment(string item)
+            {
+            }
+
+            public void Increment(string item, long value)
+            {
+            }
+
+            public bool Merge(MetricValueProvider<CounterValue> other)
+            {
+                return true;
+            }
+
+            public void Reset()
+            {
             }
         }
 
-        [Fact]
-        public void MetricsContext_CanRegisterTimerWithCustomHistogram()
+        public class CustomHistogram : HistogramImplementation
         {
-            var histogram = new CustomHistogram();
+            public CustomReservoir Reservoir { get; } = new CustomReservoir();
 
-            var timer = context.Advanced.Timer("custom", Unit.Calls, () => (HistogramImplementation)histogram);
+            public HistogramValue Value
+            {
+                get { return new HistogramValue(Reservoir.Values.Last(), null, Reservoir.GetSnapshot()); }
+            }
 
-            timer.Record(10L, TimeUnit.Nanoseconds);
+            public HistogramValue GetValue(bool resetMetric = false)
+            {
+                return Value;
+            }
 
-            histogram.Reservoir.Size.Should().Be(1);
-            histogram.Reservoir.Values.Single().Should().Be(10L);
+            public void Reset()
+            {
+                Reservoir.Reset();
+            }
+
+            public void Update(long value, string userValue)
+            {
+                Reservoir.Update(value, userValue);
+            }
+        }
+
+        public class CustomReservoir : Reservoir
+        {
+            private readonly List<long> _values = new List<long>();
+
+            public long Count
+            {
+                get { return _values.Count; }
+            }
+
+            public int Size
+            {
+                get { return _values.Count; }
+            }
+
+            public IEnumerable<long> Values
+            {
+                get { return _values; }
+            }
+
+            public Snapshot GetSnapshot(bool resetReservoir = false)
+            {
+                return new UniformSnapshot(_values.Count, _values);
+            }
+
+            public void Reset()
+            {
+                _values.Clear();
+            }
+
+            public void Update(long value, string userValue)
+            {
+                _values.Add(value);
+            }
         }
     }
 }

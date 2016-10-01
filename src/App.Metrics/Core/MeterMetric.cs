@@ -15,12 +15,12 @@ namespace App.Metrics.Core
     {
         private static readonly TimeSpan TickInterval = TimeSpan.FromSeconds(5);
 
-        private readonly Clock clock;
-        private readonly Scheduler tickScheduler;
+        private readonly Clock _clock;
+        private readonly Scheduler _tickScheduler;
 
-        private ConcurrentDictionary<string, SimpleMeter> setMeters;
+        private ConcurrentDictionary<string, SimpleMeter> _setMeters;
 
-        private long startTime;
+        private long _startTime;
 
         public MeterMetric()
             : this(Clock.Default, new ActionScheduler())
@@ -29,10 +29,10 @@ namespace App.Metrics.Core
 
         public MeterMetric(Clock clock, Scheduler scheduler)
         {
-            this.clock = clock;
-            this.startTime = this.clock.Nanoseconds;
-            this.tickScheduler = scheduler;
-            this.tickScheduler.Start(TickInterval, (Action)Tick);
+            _clock = clock;
+            _startTime = _clock.Nanoseconds;
+            _tickScheduler = scheduler;
+            _tickScheduler.Start(TickInterval, (Action)Tick);
         }
 
         public MeterValue Value
@@ -42,23 +42,23 @@ namespace App.Metrics.Core
 
         public void Dispose()
         {
-            this.tickScheduler.Stop();
-            using (this.tickScheduler)
+            _tickScheduler.Stop();
+            using (_tickScheduler)
             {
             }
 
-            if (this.setMeters != null)
+            if (_setMeters != null)
             {
-                this.setMeters.Clear();
-                this.setMeters = null;
+                _setMeters.Clear();
+                _setMeters = null;
             }
         }
 
         public MeterValue GetValue(bool resetMetric = false)
         {
-            if (this.setMeters == null || this.setMeters.Count == 0)
+            if (_setMeters == null || _setMeters.Count == 0)
             {
-                double elapsed = (this.clock.Nanoseconds - this.startTime);
+                double elapsed = (_clock.Nanoseconds - _startTime);
                 var value = base.GetValue(elapsed);
                 if (resetMetric)
                 {
@@ -94,22 +94,22 @@ namespace App.Metrics.Core
                 return;
             }
 
-            if (this.setMeters == null)
+            if (_setMeters == null)
             {
-                Interlocked.CompareExchange(ref this.setMeters, new ConcurrentDictionary<string, SimpleMeter>(), null);
+                Interlocked.CompareExchange(ref _setMeters, new ConcurrentDictionary<string, SimpleMeter>(), null);
             }
 
-            Debug.Assert(this.setMeters != null);
-            this.setMeters.GetOrAdd(item, v => new SimpleMeter()).Mark(count);
+            Debug.Assert(_setMeters != null);
+            _setMeters.GetOrAdd(item, v => new SimpleMeter()).Mark(count);
         }
 
         public new void Reset()
         {
-            this.startTime = this.clock.Nanoseconds;
+            _startTime = _clock.Nanoseconds;
             base.Reset();
-            if (this.setMeters != null)
+            if (_setMeters != null)
             {
-                foreach (var meter in this.setMeters.Values)
+                foreach (var meter in _setMeters.Values)
                 {
                     meter.Reset();
                 }
@@ -118,15 +118,15 @@ namespace App.Metrics.Core
 
         private MeterValue GetValueWithSetItems(bool resetMetric)
         {
-            double elapsed = this.clock.Nanoseconds - this.startTime;
+            double elapsed = _clock.Nanoseconds - _startTime;
             var value = base.GetValue(elapsed);
 
-            Debug.Assert(this.setMeters != null);
+            Debug.Assert(_setMeters != null);
 
-            var items = new MeterValue.SetItem[this.setMeters.Count];
+            var items = new MeterValue.SetItem[_setMeters.Count];
             var index = 0;
 
-            foreach (var meter in this.setMeters)
+            foreach (var meter in _setMeters)
             {
                 var itemValue = meter.Value.GetValue(elapsed);
                 var percent = value.Count > 0 ? itemValue.Count / (double)value.Count * 100 : 0.0;
@@ -150,9 +150,9 @@ namespace App.Metrics.Core
         private new void Tick()
         {
             base.Tick();
-            if (this.setMeters != null)
+            if (_setMeters != null)
             {
-                foreach (var value in this.setMeters.Values)
+                foreach (var value in _setMeters.Values)
                 {
                     value.Tick();
                 }

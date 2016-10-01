@@ -9,16 +9,16 @@ namespace App.Metrics.Sampling
 {
     public struct UserValueWrapper
     {
-        public static readonly UserValueWrapper Empty = new UserValueWrapper();
         public static readonly IComparer<UserValueWrapper> Comparer = new UserValueComparer();
+        public static readonly UserValueWrapper Empty = new UserValueWrapper();
+        public readonly string UserValue;
 
         public readonly long Value;
-        public readonly string UserValue;
 
         public UserValueWrapper(long value, string userValue = null)
         {
-            this.Value = value;
-            this.UserValue = userValue;
+            Value = value;
+            UserValue = userValue;
         }
 
         private class UserValueComparer : IComparer<UserValueWrapper>

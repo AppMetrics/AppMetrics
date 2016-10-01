@@ -4,7 +4,7 @@ namespace App.Metrics.Core
 {
     public class HealthCheck
     {
-        private readonly Func<HealthCheckResult> check;
+        private readonly Func<HealthCheckResult> _check;
 
         public HealthCheck(string name, Action check)
             : this(name, () =>
@@ -22,8 +22,8 @@ namespace App.Metrics.Core
 
         public HealthCheck(string name, Func<HealthCheckResult> check)
         {
-            this.Name = name;
-            this.check = check;
+            Name = name;
+            _check = check;
         }
 
         protected HealthCheck(string name)
@@ -37,17 +37,17 @@ namespace App.Metrics.Core
         {
             try
             {
-                return new Result(this.Name, this.Check());
+                return new Result(Name, Check());
             }
             catch (Exception x)
             {
-                return new Result(this.Name, HealthCheckResult.Unhealthy(x));
+                return new Result(Name, HealthCheckResult.Unhealthy(x));
             }
         }
 
         protected virtual HealthCheckResult Check()
         {
-            return this.check();
+            return _check();
         }
 
         public struct Result
@@ -57,8 +57,8 @@ namespace App.Metrics.Core
 
             public Result(string name, HealthCheckResult check)
             {
-                this.Name = name;
-                this.Check = check;
+                Name = name;
+                Check = check;
             }
         }
     }

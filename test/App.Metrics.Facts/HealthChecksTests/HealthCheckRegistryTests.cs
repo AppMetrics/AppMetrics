@@ -8,10 +8,21 @@ namespace App.Metrics.Facts.HealthChecksTests
     public class HealthCheckRegistryTests
     {
         [Fact]
+        public void HealthCheck_RegistryDoesNotThrowOnDuplicateRegistration()
+        {
+            HealthChecks.UnregisterAllHealthChecks();
+
+            HealthChecks.RegisterHealthCheck(new HealthCheck("test", () => { }));
+
+            Action action = () => HealthChecks.RegisterHealthCheck(new HealthCheck("test", () => { }));
+            action.ShouldNotThrow<InvalidOperationException>();
+        }
+
+        [Fact]
         public void HealthCheck_RegistryExecutesCheckOnEachGetStatus()
         {
             HealthChecks.UnregisterAllHealthChecks();
-            int count = 0;
+            var count = 0;
 
             HealthChecks.RegisterHealthCheck(new HealthCheck("test", () => { count++; }));
 
@@ -52,17 +63,6 @@ namespace App.Metrics.Facts.HealthChecksTests
 
             status.IsHealthy.Should().BeTrue();
             status.Results.Length.Should().Be(2);
-        }
-
-        [Fact]
-        public void HealthCheck_RegistryDoesNotThrowOnDuplicateRegistration()
-        {
-            HealthChecks.UnregisterAllHealthChecks();
-
-            HealthChecks.RegisterHealthCheck(new HealthCheck("test", () => { }));
-
-            Action action = () => HealthChecks.RegisterHealthCheck(new HealthCheck("test", () => { }));
-            action.ShouldNotThrow<InvalidOperationException>();
         }
     }
 }

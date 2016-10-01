@@ -15,13 +15,13 @@ namespace App.Metrics
 
         private MetricsErrorHandler()
         {
-            this.AddHandler((x, msg) => Log.LogError("Metrics: Unhandled exception in App.Metrics Library {0} {1}", x, msg, x.Message));
-            this.AddHandler((x, msg) => Log.LogError("Metrics: Unhandled exception in App.Metrics Library " + x.ToString()));
+            AddHandler((x, msg) => Log.LogError("Metrics: Unhandled exception in App.Metrics Library {0} {1}", x, msg, x.Message));
+            AddHandler((x, msg) => Log.LogError("Metrics: Unhandled exception in App.Metrics Library " + x.ToString()));
 
             //TODO: AH - Console logging if UserInteractive
             //if (Environment.UserInteractive)
             //{
-            //    this.AddHandler((x, msg) => Console.WriteLine("Metrics: Unhandled exception in App.Metrics Library {0} {1}", msg, x.ToString()));
+            //    AddHandler((x, msg) => Console.WriteLine("Metrics: Unhandled exception in App.Metrics Library {0} {1}", msg, x.ToString()));
             //}
         }
 
@@ -44,15 +44,15 @@ namespace App.Metrics
 
         internal void AddHandler(Action<Exception, string> handler)
         {
-            this.handlers.Add(handler);
+            handlers.Add(handler);
         }
 
         internal void ClearHandlers()
         {
-            while (!this.handlers.IsEmpty)
+            while (!handlers.IsEmpty)
             {
                 Action<Exception, string> item;
-                this.handlers.TryTake(out item);
+                handlers.TryTake(out item);
             }
         }
 
@@ -60,7 +60,7 @@ namespace App.Metrics
         {
             ErrorMeter.Mark();
 
-            foreach (var handler in this.handlers)
+            foreach (var handler in handlers)
             {
                 try
                 {

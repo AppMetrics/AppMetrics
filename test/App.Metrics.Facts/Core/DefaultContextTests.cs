@@ -10,24 +10,10 @@ namespace App.Metrics.Facts.Core
     public class DefaultContextTests
     {
         private readonly MetricsContext context = new DefaultMetricsContext();
-        public MetricsData CurrentData { get { return this.context.DataProvider.CurrentMetricsData; } }
 
-        [Fact]
-        public void MetricsContext_EmptyChildContextIsSameContext()
+        public MetricsData CurrentData
         {
-            var child = context.Context(string.Empty);
-            object.ReferenceEquals(context, child).Should().BeTrue();
-            child = context.Context(null);
-            object.ReferenceEquals(context, child).Should().BeTrue();
-        }
-
-        [Fact]
-        public void MetricsContext_ChildWithSameNameAreSameInstance()
-        {
-            var first = context.Context("test");
-            var second = context.Context("test");
-
-            object.ReferenceEquals(first, second).Should().BeTrue();
+            get { return this.context.DataProvider.CurrentMetricsData; }
         }
 
         [Fact]
@@ -41,48 +27,28 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void MetricsContext_MetricsArePresentInMetricsData()
+        public void MetricsContext_CanPropagateValueTags()
         {
-            var counter = context.Counter("test", Unit.Requests);
+            context.Counter("test", Unit.None, "tag");
+            context.DataProvider.CurrentMetricsData.Counters.Single().Tags.Should().Equal(new[] { "tag" });
 
-            counter.Increment();
+            context.Meter("test", Unit.None, tags: "tag");
+            context.DataProvider.CurrentMetricsData.Meters.Single().Tags.Should().Equal(new[] { "tag" });
 
-            var counterValue = CurrentData.Counters.Single();
+            context.Histogram("test", Unit.None, tags: "tag");
+            context.DataProvider.CurrentMetricsData.Histograms.Single().Tags.Should().Equal(new[] { "tag" });
 
-            counterValue.Name.Should().Be("test");
-            counterValue.Unit.Should().Be(Unit.Requests);
-            counterValue.Value.Count.Should().Be(1);
+            context.Timer("test", Unit.None, tags: "tag");
+            context.DataProvider.CurrentMetricsData.Timers.Single().Tags.Should().Equal(new[] { "tag" });
         }
 
         [Fact]
-        public void MetricsContext_RaisesShutdownEventOnMetricsDisable()
+        public void MetricsContext_ChildWithSameNameAreSameInstance()
         {
-            //TODO: AH - FluentAssertions no longer has MonitorEvents
-            //context.MonitorEvents();
-            //context.Advanced.CompletelyDisableMetrics();
-            //context.ShouldRaise("ContextShuttingDown");
-        }
+            var first = context.Context("test");
+            var second = context.Context("test");
 
-        [Fact]
-        public void MetricsContext_RaisesShutdownEventOnDispose()
-        {
-            //TODO: AH - FluentAssertions no longer has MonitorEvents
-
-            //context.MonitorEvents();
-            //context.Dispose();
-            //context.ShouldRaise("ContextShuttingDown");
-        }
-
-        [Fact]
-        public void MetricsContext_DataProviderReflectsNewMetrics()
-        {
-            var provider = context.DataProvider;
-
-            context.Counter("test", Unit.Bytes).Increment();
-
-            provider.CurrentMetricsData.Counters.Should().HaveCount(1);
-            provider.CurrentMetricsData.Counters.Single().Name.Should().Be("test");
-            provider.CurrentMetricsData.Counters.Single().Value.Count.Should().Be(1L);
+            ReferenceEquals(first, second).Should().BeTrue();
         }
 
         [Fact]
@@ -103,6 +69,18 @@ namespace App.Metrics.Facts.Core
             counter.Increment();
 
             provider.CurrentMetricsData.ChildMetrics.Single().Counters.Single().Value.Count.Should().Be(2);
+        }
+
+        [Fact]
+        public void MetricsContext_DataProviderReflectsNewMetrics()
+        {
+            var provider = context.DataProvider;
+
+            context.Counter("test", Unit.Bytes).Increment();
+
+            provider.CurrentMetricsData.Counters.Should().HaveCount(1);
+            provider.CurrentMetricsData.Counters.Single().Name.Should().Be("test");
+            provider.CurrentMetricsData.Counters.Single().Value.Count.Should().Be(1L);
         }
 
         [Fact]
@@ -133,6 +111,15 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
+        public void MetricsContext_EmptyChildContextIsSameContext()
+        {
+            var child = context.Context(string.Empty);
+            ReferenceEquals(context, child).Should().BeTrue();
+            child = context.Context(null);
+            ReferenceEquals(context, child).Should().BeTrue();
+        }
+
+        [Fact]
         public void MetricsContext_MetricsAddedAreVisibleInTheDataProvider()
         {
             context.DataProvider.CurrentMetricsData.Counters.Should().BeEmpty();
@@ -141,19 +128,36 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void MetricsContext_CanPropagateValueTags()
+        public void MetricsContext_MetricsArePresentInMetricsData()
         {
-            context.Counter("test", Unit.None, "tag");
-            context.DataProvider.CurrentMetricsData.Counters.Single().Tags.Should().Equal(new[] { "tag" });
+            var counter = context.Counter("test", Unit.Requests);
 
-            context.Meter("test", Unit.None, tags: "tag");
-            context.DataProvider.CurrentMetricsData.Meters.Single().Tags.Should().Equal(new[] { "tag" });
+            counter.Increment();
 
-            context.Histogram("test", Unit.None, tags: "tag");
-            context.DataProvider.CurrentMetricsData.Histograms.Single().Tags.Should().Equal(new[] { "tag" });
+            var counterValue = CurrentData.Counters.Single();
 
-            context.Timer("test", Unit.None, tags: "tag");
-            context.DataProvider.CurrentMetricsData.Timers.Single().Tags.Should().Equal(new[] { "tag" });
+            counterValue.Name.Should().Be("test");
+            counterValue.Unit.Should().Be(Unit.Requests);
+            counterValue.Value.Count.Should().Be(1);
+        }
+
+        [Fact]
+        public void MetricsContext_RaisesShutdownEventOnDispose()
+        {
+            //TODO: AH - FluentAssertions no longer has MonitorEvents
+
+            //context.MonitorEvents();
+            //context.Dispose();
+            //context.ShouldRaise("ContextShuttingDown");
+        }
+
+        [Fact]
+        public void MetricsContext_RaisesShutdownEventOnMetricsDisable()
+        {
+            //TODO: AH - FluentAssertions no longer has MonitorEvents
+            //context.MonitorEvents();
+            //context.Advanced.CompletelyDisableMetrics();
+            //context.ShouldRaise("ContextShuttingDown");
         }
     }
 }

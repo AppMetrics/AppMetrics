@@ -51,7 +51,7 @@ public
 
             public long GetAndReset()
             {
-                return Interlocked.Exchange(ref this.Value, 0L);
+                return Interlocked.Exchange(ref Value, 0L);
             }
         }
 
@@ -72,7 +72,7 @@ public
         /// </summary>
         public ThreadLocalLongAdder(long value)
         {
-            this.local.Value.Value = value;
+            local.Value.Value = value;
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ public
         public long GetValue()
         {
             long sum = 0;
-            foreach (var value in this.local.Values)
+            foreach (var value in local.Values)
             {
                 sum += Volatile.Read(ref value.Value);
             }
@@ -96,7 +96,7 @@ public
         public long NonVolatileGetValue()
         {
             long sum = 0;
-            foreach (var value in this.local.Values)
+            foreach (var value in local.Values)
             {
                 sum += value.Value;
             }
@@ -115,7 +115,7 @@ public
         public long GetAndReset()
         {
             long sum = 0;
-            foreach (var val in this.local.Values)
+            foreach (var val in local.Values)
             {
                 sum += val.GetAndReset();
             }
@@ -127,7 +127,7 @@ public
         /// </summary>
         public void Reset()
         {
-            foreach (var value in this.local.Values)
+            foreach (var value in local.Values)
             {
                 Volatile.Write(ref value.Value, 0L);
             }
@@ -139,7 +139,7 @@ public
         /// <param name="value">Value to add.</param>
         public void Add(long value)
         {
-            this.local.Value.Value += value;
+            local.Value.Value += value;
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ public
         /// </summary>
         public void Increment()
         {
-            this.local.Value.Value++;
+            local.Value.Value++;
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ public
         /// </summary>
         public void Decrement()
         {
-            this.local.Value.Value--;
+            local.Value.Value--;
         }
 
         /// <summary>

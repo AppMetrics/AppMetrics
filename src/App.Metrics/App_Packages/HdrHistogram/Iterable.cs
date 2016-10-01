@@ -7,28 +7,29 @@
 
 // Ported to.NET Standard Library by Allan Hardy
 
+using System.Collections;
 using System.Collections.Generic;
 
 namespace App.Metrics.App_Packages.HdrHistogram
 {
     internal abstract class Iterable<T> : IEnumerable<T>
     {
+        public IEnumerator<T> GetEnumerator()
+        {
+            return iterator();
+        }
 
         /**
          * Returns an iterator over a set of elements of type T.
          *
          * @return an Iterator.
          */
+
         protected abstract Iterator<T> iterator();
 
-        public IEnumerator<T> GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.iterator();
-        }
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

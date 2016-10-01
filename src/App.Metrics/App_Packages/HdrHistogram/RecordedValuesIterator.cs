@@ -28,39 +28,40 @@ namespace App.Metrics.App_Packages.HdrHistogram
         int visitedIndex;
 
         /**
-         * Reset iterator for re-use in a fresh iteration over the same histogram data set.
-         */
-        public void reset()
-        {
-            reset(histogram);
-        }
-
-        private void reset(AbstractHistogram histogram)
-        {
-            resetIterator(histogram);
-            visitedIndex = -1;
-        }
-
-        /**
          * @param histogram The histogram this iterator will operate on
          */
+
         public RecordedValuesIterator(AbstractHistogram histogram)
         {
             reset(histogram);
         }
 
+        /**
+         * Reset iterator for re-use in a fresh iteration over the same histogram data set.
+         */
 
-        protected override void incrementIterationLevel()
+        public void reset()
         {
-            visitedIndex = currentIndex;
+            reset(Histogram);
         }
 
 
-        protected override bool reachedIterationLevel()
+        protected override void IncrementIterationLevel()
         {
-            long currentCount = histogram.getCountAtIndex(currentIndex);
-            return (currentCount != 0) && (visitedIndex != currentIndex);
+            visitedIndex = CurrentIndex;
+        }
+
+
+        protected override bool ReachedIterationLevel()
+        {
+            var currentCount = Histogram.getCountAtIndex(CurrentIndex);
+            return (currentCount != 0) && (visitedIndex != CurrentIndex);
+        }
+
+        private void reset(AbstractHistogram histogram)
+        {
+            ResetIterator(histogram);
+            visitedIndex = -1;
         }
     }
-
 }

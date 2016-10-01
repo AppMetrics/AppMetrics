@@ -17,10 +17,10 @@ namespace App.Metrics.Utils
 
         public void Dispose()
         {
-            if (this.token != null)
+            if (token != null)
             {
-                this.token.Cancel();
-                this.token.Dispose();
+                token.Cancel();
+                token.Dispose();
             }
         }
 
@@ -56,19 +56,19 @@ namespace App.Metrics.Utils
                 throw new ArgumentException("interval must be > 0 seconds", nameof(interval));
             }
 
-            if (this.token != null)
+            if (token != null)
             {
                 throw new InvalidOperationException("Scheduler is already started.");
             }
 
-            this.token = new CancellationTokenSource();
+            token = new CancellationTokenSource();
 
-            RunScheduler(interval, action, this.token);
+            RunScheduler(interval, action, token);
         }
 
         public void Stop()
         {
-            if (this.token != null)
+            if (token != null)
             {
                 token.Cancel();
             }

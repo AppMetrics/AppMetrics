@@ -2,60 +2,38 @@
 using System.Linq;
 using App.Metrics.Json;
 using App.Metrics.MetricData;
+using FluentAssertions;
 using Newtonsoft.Json;
 using Xunit;
-using FluentAssertions;
 
 namespace App.Metrics.Facts.Json
 {
     public class JsonSerializationTests
     {
-        private class ConstantProvider<T> : MetricValueProvider<T>
-        {
-            public ConstantProvider(T value)
-            {
-                this.Value = value;
-            }
-
-            public T Value { get; set; }
-            public T GetValue(bool resetMetric = false)
-            {
-                return this.Value;
-            }
-
-            public bool Merge(MetricValueProvider<T> other)
-            {
-                return false;
-            }
-        }
-
-        private static MetricValueProvider<T> Provider<T>(T value)
-        {
-            return new ConstantProvider<T>(value);
-        }
-
-        private readonly MeterValue meterValue = new MeterValue(5, 1, 2, 3, 4, TimeUnit.Seconds, new[] 
-        {
-            new MeterValue.SetItem("item",0.5,new MeterValue(1,2,3,4,5,TimeUnit.Seconds, new MeterValue.SetItem[0])) 
-        });
+        private readonly CounterValueSource counter;
 
         private readonly CounterValue counterValue = new CounterValue(7, new[]
         {
-            new CounterValue.SetItem("item",6,0.9)
+            new CounterValue.SetItem("item", 6, 0.9)
         });
 
-        private readonly HistogramValue histogramValue = new HistogramValue(1, 2, "3", 4, "5", 6, 7, "8", 9, 10, 11, 12, 13, 14, 15, 16);
-
-        private readonly TimerValue timerValue;
+        private readonly MetricsData data;
 
         private readonly GaugeValueSource gauge = new GaugeValueSource("test", Provider(0.5), Unit.MegaBytes, MetricTags.None);
-        private readonly CounterValueSource counter;
-        private readonly MeterValueSource meter;
         private readonly HistogramValueSource histogram;
+
+        private readonly HistogramValue histogramValue = new HistogramValue(1, 2, "3", 4, "5", 6, 7, "8", 9, 10, 11, 12, 13, 14, 15, 16);
+        private readonly JsonMetricsContext jsonContext;
+        private readonly MeterValueSource meter;
+
+        private readonly MeterValue meterValue = new MeterValue(5, 1, 2, 3, 4, TimeUnit.Seconds, new[]
+        {
+            new MeterValue.SetItem("item", 0.5, new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds, new MeterValue.SetItem[0]))
+        });
+
         private readonly TimerValueSource timer;
 
-        private readonly MetricsData data;
-        private readonly JsonMetricsContext jsonContext;
+        private readonly TimerValue timerValue;
 
         public JsonSerializationTests()
         {
@@ -68,7 +46,7 @@ namespace App.Metrics.Facts.Json
 
             this.data = new MetricsData("test", new DateTime(2014, 2, 17), new[] { new EnvironmentEntry("name", "1") },
                 new[] { gauge }, new[] { counter }, new[] { meter }, new[] { histogram }, new[] { timer },
-                    Enumerable.Empty<MetricsData>()
+                Enumerable.Empty<MetricsData>()
             );
             this.jsonContext = JsonMetricsContext.FromContext(this.data, "1");
         }
@@ -91,21 +69,6 @@ namespace App.Metrics.Facts.Json
         }
 
         [Fact]
-        public void JsonSerialization_CanSerializeGauge()
-        {
-            jsonContext.Gauges.Should().HaveCount(1);
-            jsonContext.Gauges[0].Name.Should().Be(gauge.Name);
-            jsonContext.Gauges[0].Value.Should().Be(gauge.Value);
-            jsonContext.Gauges[0].Unit.Should().Be(gauge.Unit.Name);
-
-            var json = jsonContext.ToJsonObject().AsJson(true);
-
-            var result = JsonConvert.DeserializeObject<JsonMetricsContext>(json);
-
-            result.Gauges.ShouldBeEquivalentTo(jsonContext.Gauges);
-        }
-
-        [Fact]
         public void JsonSerialization_CanSerializeCounter()
         {
             jsonContext.Counters.Should().HaveCount(1);
@@ -125,33 +88,18 @@ namespace App.Metrics.Facts.Json
         }
 
         [Fact]
-        public void JsonSerialization_CanSerializeMeter()
+        public void JsonSerialization_CanSerializeGauge()
         {
-            jsonContext.Meters.Should().HaveCount(1);
-            jsonContext.Meters[0].Name.Should().Be(meter.Name);
-
-            jsonContext.Meters[0].Count.Should().Be(meter.Value.Count);
-            jsonContext.Meters[0].MeanRate.Should().Be(meter.Value.MeanRate);
-            jsonContext.Meters[0].OneMinuteRate.Should().Be(meter.Value.OneMinuteRate);
-            jsonContext.Meters[0].FiveMinuteRate.Should().Be(meter.Value.FiveMinuteRate);
-            jsonContext.Meters[0].FifteenMinuteRate.Should().Be(meter.Value.FifteenMinuteRate);
-            jsonContext.Meters[0].Unit.Should().Be(meter.Unit.Name);
-            jsonContext.Meters[0].RateUnit.Should().Be(meter.RateUnit.Unit());
-
-            jsonContext.Meters[0].Items.Should().HaveCount(1);
-            jsonContext.Meters[0].Items[0].Item.Should().Be("item");
-            jsonContext.Meters[0].Items[0].Count.Should().Be(1);
-            jsonContext.Meters[0].Items[0].Percent.Should().Be(0.5);
-            jsonContext.Meters[0].Items[0].MeanRate.Should().Be(2);
-            jsonContext.Meters[0].Items[0].OneMinuteRate.Should().Be(3);
-            jsonContext.Meters[0].Items[0].FiveMinuteRate.Should().Be(4);
-            jsonContext.Meters[0].Items[0].FifteenMinuteRate.Should().Be(5);
+            jsonContext.Gauges.Should().HaveCount(1);
+            jsonContext.Gauges[0].Name.Should().Be(gauge.Name);
+            jsonContext.Gauges[0].Value.Should().Be(gauge.Value);
+            jsonContext.Gauges[0].Unit.Should().Be(gauge.Unit.Name);
 
             var json = jsonContext.ToJsonObject().AsJson(true);
 
             var result = JsonConvert.DeserializeObject<JsonMetricsContext>(json);
 
-            result.Meters.ShouldBeEquivalentTo(jsonContext.Meters);
+            result.Gauges.ShouldBeEquivalentTo(jsonContext.Gauges);
         }
 
         [Fact]
@@ -194,6 +142,36 @@ namespace App.Metrics.Facts.Json
         }
 
         [Fact]
+        public void JsonSerialization_CanSerializeMeter()
+        {
+            jsonContext.Meters.Should().HaveCount(1);
+            jsonContext.Meters[0].Name.Should().Be(meter.Name);
+
+            jsonContext.Meters[0].Count.Should().Be(meter.Value.Count);
+            jsonContext.Meters[0].MeanRate.Should().Be(meter.Value.MeanRate);
+            jsonContext.Meters[0].OneMinuteRate.Should().Be(meter.Value.OneMinuteRate);
+            jsonContext.Meters[0].FiveMinuteRate.Should().Be(meter.Value.FiveMinuteRate);
+            jsonContext.Meters[0].FifteenMinuteRate.Should().Be(meter.Value.FifteenMinuteRate);
+            jsonContext.Meters[0].Unit.Should().Be(meter.Unit.Name);
+            jsonContext.Meters[0].RateUnit.Should().Be(meter.RateUnit.Unit());
+
+            jsonContext.Meters[0].Items.Should().HaveCount(1);
+            jsonContext.Meters[0].Items[0].Item.Should().Be("item");
+            jsonContext.Meters[0].Items[0].Count.Should().Be(1);
+            jsonContext.Meters[0].Items[0].Percent.Should().Be(0.5);
+            jsonContext.Meters[0].Items[0].MeanRate.Should().Be(2);
+            jsonContext.Meters[0].Items[0].OneMinuteRate.Should().Be(3);
+            jsonContext.Meters[0].Items[0].FiveMinuteRate.Should().Be(4);
+            jsonContext.Meters[0].Items[0].FifteenMinuteRate.Should().Be(5);
+
+            var json = jsonContext.ToJsonObject().AsJson(true);
+
+            var result = JsonConvert.DeserializeObject<JsonMetricsContext>(json);
+
+            result.Meters.ShouldBeEquivalentTo(jsonContext.Meters);
+        }
+
+        [Fact]
         public void JsonSerialization_CanSerializeTimer()
         {
             jsonContext.Timers.Should().HaveCount(1);
@@ -208,6 +186,31 @@ namespace App.Metrics.Facts.Json
             var result = JsonConvert.DeserializeObject<JsonMetricsContext>(json);
 
             result.Histograms.ShouldBeEquivalentTo(jsonContext.Histograms);
+        }
+
+        private static MetricValueProvider<T> Provider<T>(T value)
+        {
+            return new ConstantProvider<T>(value);
+        }
+
+        private class ConstantProvider<T> : MetricValueProvider<T>
+        {
+            public ConstantProvider(T value)
+            {
+                this.Value = value;
+            }
+
+            public T Value { get; set; }
+
+            public T GetValue(bool resetMetric = false)
+            {
+                return this.Value;
+            }
+
+            public bool Merge(MetricValueProvider<T> other)
+            {
+                return false;
+            }
         }
     }
 }

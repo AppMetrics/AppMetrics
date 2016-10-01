@@ -62,22 +62,22 @@ namespace App.Metrics.MetricData
             double percentile999,
             int sampleSize)
         {
-            this.Count = count;
-            this.LastValue = lastValue;
-            this.LastUserValue = lastUserValue;
-            this.Max = max;
-            this.MaxUserValue = maxUserValue;
-            this.Mean = mean;
-            this.Min = min;
-            this.MinUserValue = minUserValue;
-            this.StdDev = stdDev;
-            this.Median = median;
-            this.Percentile75 = percentile75;
-            this.Percentile95 = percentile95;
-            this.Percentile98 = percentile98;
-            this.Percentile99 = percentile99;
-            this.Percentile999 = percentile999;
-            this.SampleSize = sampleSize;
+            Count = count;
+            LastValue = lastValue;
+            LastUserValue = lastUserValue;
+            Max = max;
+            MaxUserValue = maxUserValue;
+            Mean = mean;
+            Min = min;
+            MinUserValue = minUserValue;
+            StdDev = stdDev;
+            Median = median;
+            Percentile75 = percentile75;
+            Percentile95 = percentile95;
+            Percentile98 = percentile98;
+            Percentile99 = percentile99;
+            Percentile999 = percentile999;
+            SampleSize = sampleSize;
         }
 
         public HistogramValue Scale(double factor)
@@ -87,22 +87,22 @@ namespace App.Metrics.MetricData
                 return this;
             }
 
-            return new HistogramValue(this.Count,
-                this.LastValue * factor,
-                this.LastUserValue,
-                this.Max * factor,
-                this.MaxUserValue,
-                this.Mean * factor,
-                this.Min * factor,
-                this.MinUserValue,
-                this.StdDev * factor,
-                this.Median * factor,
-                this.Percentile75 * factor,
-                this.Percentile95 * factor,
-                this.Percentile98 * factor,
-                this.Percentile99 * factor,
-                this.Percentile999 * factor,
-                this.SampleSize);
+            return new HistogramValue(Count,
+                LastValue * factor,
+                LastUserValue,
+                Max * factor,
+                MaxUserValue,
+                Mean * factor,
+                Min * factor,
+                MinUserValue,
+                StdDev * factor,
+                Median * factor,
+                Percentile75 * factor,
+                Percentile95 * factor,
+                Percentile98 * factor,
+                Percentile99 * factor,
+                Percentile999 * factor,
+                SampleSize);
         }
     }
 

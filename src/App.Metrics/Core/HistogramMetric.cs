@@ -10,8 +10,8 @@ namespace App.Metrics.Core
 
     public sealed class HistogramMetric : HistogramImplementation
     {
-        private readonly Reservoir reservoir;
-        private UserValueWrapper last;
+        private readonly Reservoir _reservoir;
+        private UserValueWrapper _last;
 
         public HistogramMetric()
             : this(SamplingType.Default)
@@ -25,7 +25,7 @@ namespace App.Metrics.Core
 
         public HistogramMetric(Reservoir reservoir)
         {
-            this.reservoir = reservoir;
+            _reservoir = reservoir;
         }
 
         public HistogramValue Value
@@ -35,24 +35,24 @@ namespace App.Metrics.Core
 
         public HistogramValue GetValue(bool resetMetric = false)
         {
-            var value = new HistogramValue(this.last.Value, this.last.UserValue, this.reservoir.GetSnapshot(resetMetric));
+            var value = new HistogramValue(_last.Value, _last.UserValue, _reservoir.GetSnapshot(resetMetric));
             if (resetMetric)
             {
-                this.last = UserValueWrapper.Empty;
+                _last = UserValueWrapper.Empty;
             }
             return value;
         }
 
         public void Reset()
         {
-            this.last = UserValueWrapper.Empty;
-            this.reservoir.Reset();
+            _last = UserValueWrapper.Empty;
+            _reservoir.Reset();
         }
 
         public void Update(long value, string userValue = null)
         {
-            this.last = new UserValueWrapper(value, userValue);
-            this.reservoir.Update(value, userValue);
+            _last = new UserValueWrapper(value, userValue);
+            _reservoir.Update(value, userValue);
         }
 
         private static Reservoir SamplingTypeToReservoir(SamplingType samplingType)

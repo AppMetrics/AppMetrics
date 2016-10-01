@@ -11,56 +11,64 @@ namespace App.Metrics.Sampling
 {
     public sealed class UniformSnapshot : Snapshot
     {
-        private readonly long[] values;
+        private readonly long[] _values;
 
-        public UniformSnapshot(long count, IEnumerable<long> values, bool valuesAreSorted = false, string minUserValue = null, string maxUserValue = null)
+        public UniformSnapshot(long count, IEnumerable<long> values, bool valuesAreSorted = false, string minUserValue = null,
+            string maxUserValue = null)
         {
-            this.Count = count;
-            this.values = values.ToArray();
+            Count = count;
+            _values = values.ToArray();
             if (!valuesAreSorted)
             {
-                Array.Sort(this.values);
+                Array.Sort(_values);
             }
-            this.MinUserValue = minUserValue;
-            this.MaxUserValue = maxUserValue;
+            MinUserValue = minUserValue;
+            MaxUserValue = maxUserValue;
         }
 
         public long Count { get; }
 
-        public int Size => this.values.Length;
-
-        public long Max => this.values.LastOrDefault();
-        public long Min => this.values.FirstOrDefault();
+        public long Max => _values.LastOrDefault();
 
         public string MaxUserValue { get; }
+
+        public double Mean => Size == 0 ? 0.0 : _values.Average();
+
+        public double Median => GetValue(0.5d);
+
+        public long Min => _values.FirstOrDefault();
+
         public string MinUserValue { get; }
 
-        public double Mean => Size == 0 ? 0.0 : this.values.Average();
+        public double Percentile75 => GetValue(0.75d);
+
+        public double Percentile95 => GetValue(0.95d);
+
+        public double Percentile98 => GetValue(0.98d);
+
+        public double Percentile99 => GetValue(0.99d);
+
+        public double Percentile999 => GetValue(0.999d);
+
+        public int Size => _values.Length;
 
         public double StdDev
         {
             get
             {
-                if (this.Size <= 1)
+                if (Size <= 1)
                 {
                     return 0;
                 }
 
-                var avg = this.values.Average();
-                var sum = this.values.Sum(d => Math.Pow(d - avg, 2));
+                var avg = _values.Average();
+                var sum = _values.Sum(d => Math.Pow(d - avg, 2));
 
-                return Math.Sqrt((sum) / (this.values.Length - 1));
+                return Math.Sqrt((sum) / (_values.Length - 1));
             }
         }
 
-        public double Median => GetValue(0.5d);
-        public double Percentile75 => GetValue(0.75d);
-        public double Percentile95 => GetValue(0.95d);
-        public double Percentile98 => GetValue(0.98d);
-        public double Percentile99 => GetValue(0.99d);
-        public double Percentile999 => GetValue(0.999d);
-
-        public IEnumerable<long> Values => this.values;
+        public IEnumerable<long> Values => _values;
 
         public double GetValue(double quantile)
         {
@@ -69,26 +77,26 @@ namespace App.Metrics.Sampling
                 throw new ArgumentException($"{quantile} is not in [0..1]");
             }
 
-            if (this.Size == 0)
+            if (Size == 0)
             {
                 return 0;
             }
 
-            var pos = quantile * (this.values.Length + 1);
+            var pos = quantile * (_values.Length + 1);
             var index = (int)pos;
 
             if (index < 1)
             {
-                return this.values[0];
+                return _values[0];
             }
 
-            if (index >= this.values.Length)
+            if (index >= _values.Length)
             {
-                return this.values[this.values.Length - 1];
+                return _values[_values.Length - 1];
             }
 
-            double lower = this.values[index - 1];
-            double upper = this.values[index];
+            double lower = _values[index - 1];
+            double upper = _values[index];
 
             return lower + (pos - Math.Floor(pos)) * (upper - lower);
         }

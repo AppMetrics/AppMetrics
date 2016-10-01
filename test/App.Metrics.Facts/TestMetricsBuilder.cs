@@ -17,19 +17,14 @@ namespace App.Metrics.Facts
             this.scheduler = scheduler;
         }
 
-        public MetricValueProvider<double> BuildGauge(string name, Unit unit, Func<double> valueProvider)
-        {
-            return new FunctionGauge(valueProvider);
-        }
-
         public CounterImplementation BuildCounter(string name, Unit unit)
         {
             return new CounterMetric();
         }
 
-        public MeterImplementation BuildMeter(string name, Unit unit, TimeUnit rateUnit)
+        public MetricValueProvider<double> BuildGauge(string name, Unit unit, Func<double> valueProvider)
         {
-            return new MeterMetric(this.clock, this.scheduler);
+            return new FunctionGauge(valueProvider);
         }
 
         public HistogramImplementation BuildHistogram(string name, Unit unit, SamplingType samplingType)
@@ -40,6 +35,11 @@ namespace App.Metrics.Facts
         public HistogramImplementation BuildHistogram(string name, Unit unit, Reservoir reservoir)
         {
             return new HistogramMetric(new UniformReservoir());
+        }
+
+        public MeterImplementation BuildMeter(string name, Unit unit, TimeUnit rateUnit)
+        {
+            return new MeterMetric(this.clock, this.scheduler);
         }
 
         public TimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, SamplingType samplingType)

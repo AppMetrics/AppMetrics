@@ -9,7 +9,7 @@ namespace App.Metrics.Reporters
 {
     public abstract class BaseReport : MetricsReport
     {
-        private CancellationToken token;
+        private CancellationToken _token;
 
         protected DateTime CurrentContextTimestamp { get; private set; }
 
@@ -17,9 +17,9 @@ namespace App.Metrics.Reporters
 
         public void RunReport(MetricsData metricsData, Func<HealthStatus> healthStatus, CancellationToken token)
         {
-            this.token = token;
+            _token = token;
 
-            this.ReportTimestamp = Clock.Default.UTCDateTime;
+            ReportTimestamp = Clock.Default.UTCDateTime;
 
             StartReport(metricsData.Context);
 
@@ -87,7 +87,7 @@ namespace App.Metrics.Reporters
 
         private void ReportContext(MetricsData data, IEnumerable<string> contextStack)
         {
-            this.CurrentContextTimestamp = data.Timestamp;
+            CurrentContextTimestamp = data.Timestamp;
             var contextName = FormatContextName(contextStack, data.Context);
 
             StartContext(contextName);
@@ -123,7 +123,7 @@ namespace App.Metrics.Reporters
 
         private void ReportSection<T>(string name, IEnumerable<T> metrics, Action<T> reporter)
         {
-            if (token.IsCancellationRequested)
+            if (_token.IsCancellationRequested)
             {
                 return;
             }
@@ -133,7 +133,7 @@ namespace App.Metrics.Reporters
                 StartMetricGroup(name);
                 foreach (var metric in metrics)
                 {
-                    if (token.IsCancellationRequested)
+                    if (_token.IsCancellationRequested)
                     {
                         break;
                     }

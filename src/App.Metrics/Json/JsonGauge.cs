@@ -5,12 +5,12 @@ namespace App.Metrics.Json
 {
     public class JsonGauge : JsonMetric
     {
-        private double value;
+        private double _value;
 
         public double? Value
         {
-            get { return this.value; }
-            set { this.value = value ?? double.NaN; }
+            get { return _value; }
+            set { _value = value ?? double.NaN; }
         }
 
         public static JsonGauge FromGauge(MetricValueSource<double> gauge)
@@ -31,19 +31,19 @@ namespace App.Metrics.Json
 
         public IEnumerable<JsonProperty> ToJsonProperties()
         {
-            yield return new JsonProperty("Name", this.Name);
-            yield return new JsonProperty("Value", this.Value.Value);
-            yield return new JsonProperty("Unit", this.Unit);
+            yield return new JsonProperty("Name", Name);
+            yield return new JsonProperty("Value", Value.Value);
+            yield return new JsonProperty("Unit", Unit);
 
-            if (this.Tags.Length > 0)
+            if (Tags.Length > 0)
             {
-                yield return new JsonProperty("Tags", this.Tags);
+                yield return new JsonProperty("Tags", Tags);
             }
         }
 
         public GaugeValueSource ToValueSource()
         {
-            return new GaugeValueSource(this.Name, ConstantValue.Provider(this.Value.Value), this.Unit, this.Tags);
+            return new GaugeValueSource(Name, ConstantValue.Provider(Value.Value), Unit, Tags);
         }
     }
 }

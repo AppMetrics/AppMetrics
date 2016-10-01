@@ -6,14 +6,14 @@ namespace App.Metrics.Json
 {
     public class JsonCounter : JsonMetric
     {
-        private SetItem[] items = new SetItem[0];
+        private SetItem[] _items = new SetItem[0];
 
         public long Count { get; set; }
 
         public SetItem[] Items
         {
-            get { return this.items; }
-            set { this.items = value ?? new SetItem[0]; }
+            get { return _items; }
+            set { _items = value ?? new SetItem[0]; }
         }
 
         public static JsonCounter FromCounter(MetricValueSource<CounterValue> counter)
@@ -35,29 +35,29 @@ namespace App.Metrics.Json
 
         public IEnumerable<JsonProperty> ToJsonProperties()
         {
-            yield return new JsonProperty("Name", this.Name);
-            yield return new JsonProperty("Count", this.Count);
-            yield return new JsonProperty("Unit", this.Unit);
+            yield return new JsonProperty("Name", Name);
+            yield return new JsonProperty("Count", Count);
+            yield return new JsonProperty("Unit", Unit);
 
-            if (this.Items.Length > 0)
+            if (Items.Length > 0)
             {
-                yield return new JsonProperty("Items", this.Items.Select(i => new JsonObject(ToJsonProperties(i))));
+                yield return new JsonProperty("Items", Items.Select(i => new JsonObject(ToJsonProperties(i))));
             }
 
-            if (this.Tags.Length > 0)
+            if (Tags.Length > 0)
             {
-                yield return new JsonProperty("Tags", this.Tags);
+                yield return new JsonProperty("Tags", Tags);
             }
         }
 
         public CounterValueSource ToValueSource()
         {
-            var items = this.items.Select(i => new CounterValue.SetItem(i.Item, i.Count, i.Percent))
+            var items = _items.Select(i => new CounterValue.SetItem(i.Item, i.Count, i.Percent))
                 .ToArray();
 
-            var counterValue = new CounterValue(this.Count, items);
+            var counterValue = new CounterValue(Count, items);
 
-            return new CounterValueSource(this.Name, ConstantValue.Provider(counterValue), this.Unit, this.Tags);
+            return new CounterValueSource(Name, ConstantValue.Provider(counterValue), Unit, Tags);
         }
 
         private static IEnumerable<JsonProperty> ToJsonProperties(SetItem item)

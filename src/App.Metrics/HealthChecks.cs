@@ -28,9 +28,9 @@ namespace App.Metrics
 
         public HealthStatus(IEnumerable<HealthCheck.Result> results)
         {
-            this.Results = results.ToArray();
-            this.IsHealthy = this.Results.All(r => r.Check.IsHealthy);
-            this.HasRegisteredChecks = this.Results.Length > 0;
+            Results = results.ToArray();
+            IsHealthy = Results.All(r => r.Check.IsHealthy);
+            HasRegisteredChecks = Results.Length > 0;
         }
     }
 

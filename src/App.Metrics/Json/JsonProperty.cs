@@ -46,8 +46,8 @@ namespace App.Metrics.Json
 
         public JsonProperty(string name, JsonValue value)
         {
-            this.Name = name;
-            this.Value = value;
+            Name = name;
+            Value = value;
         }
 
         public string Name { get; }

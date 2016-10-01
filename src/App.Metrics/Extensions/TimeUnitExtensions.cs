@@ -1,8 +1,9 @@
 ﻿using System;
 
 // ReSharper disable CheckNamespace
+
 namespace App.Metrics
- // ReSharper restore CheckNamespace
+    // ReSharper restore CheckNamespace
 {
     public static class TimeUnitExtensions
     {

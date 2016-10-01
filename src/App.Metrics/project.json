@@ -28,7 +28,7 @@
         "System.Collections.Specialized": "4.0.1",
         "System.Diagnostics.Process": "4.1.0",
         "Microsoft.Extensions.Logging": "1.0.0",
-        "System.Threading.Thread":  "4.0.0" 
+        "System.Threading.Thread": "4.0.0"
 
       }
     }

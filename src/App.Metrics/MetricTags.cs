@@ -11,13 +11,13 @@ namespace App.Metrics
     public struct MetricTags : IHideObjectMembers
     {
         public static readonly MetricTags None = new MetricTags(Enumerable.Empty<string>());
-        private static readonly string[] empty = new string[0];
+        private static readonly string[] Empty = new string[0];
 
-        private readonly string[] tags;
+        private readonly string[] _tags;
 
         public MetricTags(params string[] tags)
         {
-            this.tags = tags.ToArray();
+            _tags = tags.ToArray();
         }
 
         public MetricTags(IEnumerable<string> tags)
@@ -32,7 +32,7 @@ namespace App.Metrics
 
         public string[] Tags
         {
-            get { return tags ?? empty; }
+            get { return _tags ?? Empty; }
         }
 
         public static implicit operator MetricTags(string commaSeparatedTags)

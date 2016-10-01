@@ -11,14 +11,14 @@
         {
             public ConstantValueProvider(T value)
             {
-                this.Value = value;
+                Value = value;
             }
 
             public T Value { get; }
 
             public T GetValue(bool resetMetric = false)
             {
-                return this.Value;
+                return Value;
             }
         }
     }

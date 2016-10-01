@@ -12,11 +12,11 @@ namespace App.Metrics.Core
 
     public sealed class TimerMetric : TimerImplementation, IDisposable
     {
-        private readonly StripedLongAdder activeSessionsCounter = new StripedLongAdder();
-        private readonly Clock clock;
-        private readonly HistogramImplementation histogram;
-        private readonly MeterImplementation meter;
-        private readonly StripedLongAdder totalRecordedTime = new StripedLongAdder();
+        private readonly StripedLongAdder _activeSessionsCounter = new StripedLongAdder();
+        private readonly Clock _clock;
+        private readonly HistogramImplementation _histogram;
+        private readonly MeterImplementation _meter;
+        private readonly StripedLongAdder _totalRecordedTime = new StripedLongAdder();
 
         public TimerMetric()
             : this(new HistogramMetric(), new MeterMetric(), Clock.Default)
@@ -45,9 +45,9 @@ namespace App.Metrics.Core
 
         public TimerMetric(HistogramImplementation histogram, MeterImplementation meter, Clock clock)
         {
-            this.clock = clock;
-            this.meter = meter;
-            this.histogram = histogram;
+            _clock = clock;
+            _meter = meter;
+            _histogram = histogram;
         }
 
         public TimerValue Value
@@ -57,29 +57,29 @@ namespace App.Metrics.Core
 
         public long CurrentTime()
         {
-            return this.clock.Nanoseconds;
+            return _clock.Nanoseconds;
         }
 
         public void Dispose()
         {
-            using (this.histogram as IDisposable)
+            using (_histogram as IDisposable)
             {
             }
-            using (this.meter as IDisposable)
+            using (_meter as IDisposable)
             {
             }
         }
 
         public long EndRecording()
         {
-            this.activeSessionsCounter.Decrement();
-            return this.clock.Nanoseconds;
+            _activeSessionsCounter.Decrement();
+            return _clock.Nanoseconds;
         }
 
         public TimerValue GetValue(bool resetMetric = false)
         {
-            var total = resetMetric ? this.totalRecordedTime.GetAndReset() : this.totalRecordedTime.GetValue();
-            return new TimerValue(this.meter.GetValue(resetMetric), this.histogram.GetValue(resetMetric), this.activeSessionsCounter.GetValue(), total,
+            var total = resetMetric ? _totalRecordedTime.GetAndReset() : _totalRecordedTime.GetValue();
+            return new TimerValue(_meter.GetValue(resetMetric), _histogram.GetValue(resetMetric), _activeSessionsCounter.GetValue(), total,
                 TimeUnit.Nanoseconds);
         }
 
@@ -93,51 +93,51 @@ namespace App.Metrics.Core
             var nanos = unit.ToNanoseconds(duration);
             if (nanos >= 0)
             {
-                this.histogram.Update(nanos, userValue);
-                this.meter.Mark(userValue);
-                this.totalRecordedTime.Add(nanos);
+                _histogram.Update(nanos, userValue);
+                _meter.Mark(userValue);
+                _totalRecordedTime.Add(nanos);
             }
         }
 
         public void Reset()
         {
-            this.meter.Reset();
-            this.histogram.Reset();
+            _meter.Reset();
+            _histogram.Reset();
         }
 
         public long StartRecording()
         {
-            this.activeSessionsCounter.Increment();
-            return this.clock.Nanoseconds;
+            _activeSessionsCounter.Increment();
+            return _clock.Nanoseconds;
         }
 
         public void Time(Action action, string userValue = null)
         {
-            var start = this.clock.Nanoseconds;
+            var start = _clock.Nanoseconds;
             try
             {
-                this.activeSessionsCounter.Increment();
+                _activeSessionsCounter.Increment();
                 action();
             }
             finally
             {
-                this.activeSessionsCounter.Decrement();
-                Record(this.clock.Nanoseconds - start, TimeUnit.Nanoseconds, userValue);
+                _activeSessionsCounter.Decrement();
+                Record(_clock.Nanoseconds - start, TimeUnit.Nanoseconds, userValue);
             }
         }
 
         public T Time<T>(Func<T> action, string userValue = null)
         {
-            var start = this.clock.Nanoseconds;
+            var start = _clock.Nanoseconds;
             try
             {
-                this.activeSessionsCounter.Increment();
+                _activeSessionsCounter.Increment();
                 return action();
             }
             finally
             {
-                this.activeSessionsCounter.Decrement();
-                Record(this.clock.Nanoseconds - start, TimeUnit.Nanoseconds, userValue);
+                _activeSessionsCounter.Decrement();
+                Record(_clock.Nanoseconds - start, TimeUnit.Nanoseconds, userValue);
             }
         }
     }

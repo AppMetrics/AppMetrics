@@ -6,22 +6,26 @@ using App.Metrics.Utils;
 namespace App.Metrics.Facts
 {
     /// <summary>
-    /// Utility class for manually executing the scheduled task.
+    ///     Utility class for manually executing the scheduled task.
     /// </summary>
     /// <remarks>
-    /// This class is useful for testing.
+    ///     This class is useful for testing.
     /// </remarks>
     public sealed class TestScheduler : Scheduler
     {
         private readonly TestClock clock;
-        private TimeSpan interval;
         private Action<CancellationToken> action;
+        private TimeSpan interval;
         private long lastRun = 0;
 
         public TestScheduler(TestClock clock)
         {
             this.clock = clock;
             this.clock.Advanced += (s, l) => this.RunIfNeeded();
+        }
+
+        public void Dispose()
+        {
         }
 
         public void Start(TimeSpan interval, Func<CancellationToken, Task> task)
@@ -51,21 +55,21 @@ namespace App.Metrics.Facts
             this.action = action;
         }
 
+        public void Stop()
+        {
+        }
+
         private void RunIfNeeded()
         {
-            long clockSeconds = clock.Seconds;
-            long elapsed = clockSeconds - lastRun;
+            var clockSeconds = clock.Seconds;
+            var elapsed = clockSeconds - lastRun;
             var times = elapsed / interval.TotalSeconds;
-            using (CancellationTokenSource ts = new CancellationTokenSource())
+            using (var ts = new CancellationTokenSource())
                 while (times-- >= 1)
                 {
                     lastRun = clockSeconds;
                     action(ts.Token);
                 }
         }
-
-        public void Stop() { }
-        public void Dispose() { }
     }
-
 }

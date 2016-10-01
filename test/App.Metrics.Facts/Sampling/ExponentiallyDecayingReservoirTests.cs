@@ -1,7 +1,7 @@
-﻿using App.Metrics.Sampling;
-using Xunit;
+﻿using System.Linq;
+using App.Metrics.Sampling;
 using FluentAssertions;
-using System.Linq;
+using Xunit;
 
 namespace App.Metrics.Facts.Sampling
 {
@@ -16,40 +16,10 @@ namespace App.Metrics.Facts.Sampling
         }
 
         [Fact]
-        public void EDR_ReservoirOf100OutOf1000Elements()
-        {
-            ExponentiallyDecayingReservoir reservoir = new ExponentiallyDecayingReservoir(100, 0.99);
-            for (int i = 0; i < 1000; i++)
-            {
-                reservoir.Update(i);
-            }
-
-            reservoir.Size.Should().Be(100);
-            var snapshot = reservoir.GetSnapshot();
-            snapshot.Size.Should().Be(100);
-            snapshot.Values.Should().OnlyContain(v => 0 <= v && v < 1000);
-        }
-
-        [Fact]
-        public void EDR_ReservoirOf100OutOf10Elements()
-        {
-            ExponentiallyDecayingReservoir reservoir = new ExponentiallyDecayingReservoir(100, 0.99);
-            for (int i = 0; i < 10; i++)
-            {
-                reservoir.Update(i);
-            }
-
-            reservoir.Size.Should().Be(10);
-            var snapshot = reservoir.GetSnapshot();
-            snapshot.Size.Should().Be(10);
-            snapshot.Values.Should().OnlyContain(v => 0 <= v && v < 10);
-        }
-
-        [Fact]
         public void EDR_HeavilyBiasedReservoirOf100OutOf1000Elements()
         {
-            ExponentiallyDecayingReservoir reservoir = new ExponentiallyDecayingReservoir(1000, 0.01);
-            for (int i = 0; i < 100; i++)
+            var reservoir = new ExponentiallyDecayingReservoir(1000, 0.01);
+            for (var i = 0; i < 100; i++)
             {
                 reservoir.Update(i);
             }
@@ -63,10 +33,10 @@ namespace App.Metrics.Facts.Sampling
         [Fact]
         public void EDR_longPeriodsOfInactivityShouldNotCorruptSamplingState()
         {
-            ExponentiallyDecayingReservoir reservoir = new ExponentiallyDecayingReservoir(10, 0.015, clock, scheduler);
+            var reservoir = new ExponentiallyDecayingReservoir(10, 0.015, clock, scheduler);
 
             // add 1000 values at a rate of 10 values/second
-            for (int i = 0; i < 1000; i++)
+            for (var i = 0; i < 1000; i++)
             {
                 reservoir.Update(1000 + i);
                 clock.Advance(TimeUnit.Milliseconds, 100);
@@ -86,7 +56,7 @@ namespace App.Metrics.Facts.Sampling
             snapshot.Values.Should().OnlyContain(v => 1000 <= v && v < 3000);
 
             // add 1000 values at a rate of 10 values/second
-            for (int i = 0; i < 1000; i++)
+            for (var i = 0; i < 1000; i++)
             {
                 reservoir.Update(3000 + i);
                 clock.Advance(TimeUnit.Milliseconds, 100);
@@ -100,68 +70,18 @@ namespace App.Metrics.Facts.Sampling
         }
 
         [Fact]
-        public void EDR_SpotLift()
-        {
-            ExponentiallyDecayingReservoir reservoir = new ExponentiallyDecayingReservoir(clock, scheduler);
-
-            int valuesRatePerMinute = 10;
-            int valuesIntervalMillis = (int)(TimeUnit.Minutes.ToMilliseconds(1) / valuesRatePerMinute);
-            // mode 1: steady regime for 120 minutes
-            for (int i = 0; i < 120 * valuesRatePerMinute; i++)
-            {
-                reservoir.Update(177);
-                clock.Advance(TimeUnit.Milliseconds, valuesIntervalMillis);
-            }
-
-            // switching to mode 2: 10 minutes more with the same rate, but larger value
-            for (int i = 0; i < 10 * valuesRatePerMinute; i++)
-            {
-                reservoir.Update(9999);
-                clock.Advance(TimeUnit.Milliseconds, valuesIntervalMillis);
-            }
-
-            // expect that quantiles should be more about mode 2 after 10 minutes
-            reservoir.GetSnapshot().Median.Should().Be(9999);
-        }
-
-        [Fact]
-        public void EDR_SpotFall()
-        {
-            ExponentiallyDecayingReservoir reservoir = new ExponentiallyDecayingReservoir(clock, scheduler);
-
-            int valuesRatePerMinute = 10;
-            int valuesIntervalMillis = (int)(TimeUnit.Minutes.ToMilliseconds(1) / valuesRatePerMinute);
-            // mode 1: steady regime for 120 minutes
-            for (int i = 0; i < 120 * valuesRatePerMinute; i++)
-            {
-                reservoir.Update(9998);
-                clock.Advance(TimeUnit.Milliseconds, valuesIntervalMillis);
-            }
-
-            // switching to mode 2: 10 minutes more with the same rate, but smaller value
-            for (int i = 0; i < 10 * valuesRatePerMinute; i++)
-            {
-                reservoir.Update(178);
-                clock.Advance(TimeUnit.Milliseconds, valuesIntervalMillis);
-            }
-
-            // expect that quantiles should be more about mode 2 after 10 minutes
-            reservoir.GetSnapshot().Percentile95.Should().Be(178);
-        }
-
-        [Fact]
         public void EDR_QuantiliesShouldBeBasedOnWeights()
         {
-            ExponentiallyDecayingReservoir reservoir = new ExponentiallyDecayingReservoir(clock, scheduler);
+            var reservoir = new ExponentiallyDecayingReservoir(clock, scheduler);
 
-            for (int i = 0; i < 40; i++)
+            for (var i = 0; i < 40; i++)
             {
                 reservoir.Update(177);
             }
 
             clock.Advance(TimeUnit.Seconds, 120);
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 reservoir.Update(9999);
             }
@@ -178,13 +98,93 @@ namespace App.Metrics.Facts.Sampling
         [Fact]
         public void EDR_RecordsUserValue()
         {
-            ExponentiallyDecayingReservoir reservoir = new ExponentiallyDecayingReservoir(clock, scheduler);
+            var reservoir = new ExponentiallyDecayingReservoir(clock, scheduler);
 
             reservoir.Update(2L, "B");
             reservoir.Update(1L, "A");
 
             reservoir.GetSnapshot().MinUserValue.Should().Be("A");
             reservoir.GetSnapshot().MaxUserValue.Should().Be("B");
+        }
+
+        [Fact]
+        public void EDR_ReservoirOf100OutOf1000Elements()
+        {
+            var reservoir = new ExponentiallyDecayingReservoir(100, 0.99);
+            for (var i = 0; i < 1000; i++)
+            {
+                reservoir.Update(i);
+            }
+
+            reservoir.Size.Should().Be(100);
+            var snapshot = reservoir.GetSnapshot();
+            snapshot.Size.Should().Be(100);
+            snapshot.Values.Should().OnlyContain(v => 0 <= v && v < 1000);
+        }
+
+        [Fact]
+        public void EDR_ReservoirOf100OutOf10Elements()
+        {
+            var reservoir = new ExponentiallyDecayingReservoir(100, 0.99);
+            for (var i = 0; i < 10; i++)
+            {
+                reservoir.Update(i);
+            }
+
+            reservoir.Size.Should().Be(10);
+            var snapshot = reservoir.GetSnapshot();
+            snapshot.Size.Should().Be(10);
+            snapshot.Values.Should().OnlyContain(v => 0 <= v && v < 10);
+        }
+
+        [Fact]
+        public void EDR_SpotFall()
+        {
+            var reservoir = new ExponentiallyDecayingReservoir(clock, scheduler);
+
+            var valuesRatePerMinute = 10;
+            var valuesIntervalMillis = (int)(TimeUnit.Minutes.ToMilliseconds(1) / valuesRatePerMinute);
+            // mode 1: steady regime for 120 minutes
+            for (var i = 0; i < 120 * valuesRatePerMinute; i++)
+            {
+                reservoir.Update(9998);
+                clock.Advance(TimeUnit.Milliseconds, valuesIntervalMillis);
+            }
+
+            // switching to mode 2: 10 minutes more with the same rate, but smaller value
+            for (var i = 0; i < 10 * valuesRatePerMinute; i++)
+            {
+                reservoir.Update(178);
+                clock.Advance(TimeUnit.Milliseconds, valuesIntervalMillis);
+            }
+
+            // expect that quantiles should be more about mode 2 after 10 minutes
+            reservoir.GetSnapshot().Percentile95.Should().Be(178);
+        }
+
+        [Fact]
+        public void EDR_SpotLift()
+        {
+            var reservoir = new ExponentiallyDecayingReservoir(clock, scheduler);
+
+            var valuesRatePerMinute = 10;
+            var valuesIntervalMillis = (int)(TimeUnit.Minutes.ToMilliseconds(1) / valuesRatePerMinute);
+            // mode 1: steady regime for 120 minutes
+            for (var i = 0; i < 120 * valuesRatePerMinute; i++)
+            {
+                reservoir.Update(177);
+                clock.Advance(TimeUnit.Milliseconds, valuesIntervalMillis);
+            }
+
+            // switching to mode 2: 10 minutes more with the same rate, but larger value
+            for (var i = 0; i < 10 * valuesRatePerMinute; i++)
+            {
+                reservoir.Update(9999);
+                clock.Advance(TimeUnit.Milliseconds, valuesIntervalMillis);
+            }
+
+            // expect that quantiles should be more about mode 2 after 10 minutes
+            reservoir.GetSnapshot().Median.Should().Be(9999);
         }
     }
 }

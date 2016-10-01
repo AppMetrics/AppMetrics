@@ -12,49 +12,31 @@ using System;
 namespace App.Metrics.App_Packages.HdrHistogram
 {
     /// <summary>
-    /// Used for iterating through histogram values.
+    ///     Used for iterating through histogram values.
     /// </summary>
     internal abstract class AbstractHistogramIterator : Iterator<HistogramIterationValue>
     {
-        protected AbstractHistogram histogram;
-        protected long savedHistogramTotalRawCount;
+        internal readonly HistogramIterationValue CurrentIterationValue = new HistogramIterationValue();
 
-        protected int currentIndex;
-        protected long currentValueAtIndex;
+        protected long ArrayTotalCount;
+        protected long CountAtThisValue;
 
-        protected long nextValueAtIndex;
+        protected int CurrentIndex;
+        protected long CurrentValueAtIndex;
+        protected AbstractHistogram Histogram;
 
-        long prevValueIteratedTo;
-        long totalCountToPrevIndex;
+        protected long NextValueAtIndex;
+        protected long SavedHistogramTotalRawCount;
 
-        protected long totalCountToCurrentIndex;
-        long totalValueToCurrentIndex;
+        protected long TotalCountToCurrentIndex;
 
-        protected long arrayTotalCount;
-        protected long countAtThisValue;
+        private bool _freshSubBucket;
 
-        private bool freshSubBucket;
-        internal readonly HistogramIterationValue currentIterationValue = new HistogramIterationValue();
+        private double _integerToDoubleValueConversionRatio;
 
-        private double integerToDoubleValueConversionRatio;
-
-        protected void resetIterator(AbstractHistogram histogram)
-        {
-            this.histogram = histogram;
-            this.savedHistogramTotalRawCount = histogram.getTotalCount();
-            this.arrayTotalCount = histogram.getTotalCount();
-            this.integerToDoubleValueConversionRatio = histogram.integerToDoubleValueConversionRatio;
-            this.currentIndex = 0;
-            this.currentValueAtIndex = 0;
-            this.nextValueAtIndex = 1 << histogram.unitMagnitude;
-            this.prevValueIteratedTo = 0;
-            this.totalCountToPrevIndex = 0;
-            this.totalCountToCurrentIndex = 0;
-            this.totalValueToCurrentIndex = 0;
-            this.countAtThisValue = 0;
-            this.freshSubBucket = true;
-            currentIterationValue.reset();
-        }
+        long _prevValueIteratedTo;
+        long _totalCountToPrevIndex;
+        long _totalValueToCurrentIndex;
 
         /**
          * Returns true if the iteration has more elements. (In other words, returns true if next would return an
@@ -65,11 +47,11 @@ namespace App.Metrics.App_Packages.HdrHistogram
 
         public override bool hasNext()
         {
-            if (histogram.getTotalCount() != savedHistogramTotalRawCount)
+            if (Histogram.getTotalCount() != SavedHistogramTotalRawCount)
             {
                 throw new InvalidOperationException("ConcurrentModificationException");
             }
-            return (totalCountToCurrentIndex < arrayTotalCount);
+            return (TotalCountToCurrentIndex < ArrayTotalCount);
         }
 
         /**
@@ -81,67 +63,84 @@ namespace App.Metrics.App_Packages.HdrHistogram
         public override HistogramIterationValue next()
         {
             // Move through the sub buckets and buckets until we hit the next reporting level:
-            while (!exhaustedSubBuckets())
+            while (!ExhaustedSubBuckets())
             {
-                countAtThisValue = histogram.getCountAtIndex(currentIndex);
-                if (freshSubBucket)
-                { // Don't add unless we've incremented since last bucket...
-                    totalCountToCurrentIndex += countAtThisValue;
-                    totalValueToCurrentIndex += countAtThisValue * histogram.highestEquivalentValue(currentValueAtIndex);
-                    freshSubBucket = false;
-                }
-                if (reachedIterationLevel())
+                CountAtThisValue = Histogram.getCountAtIndex(CurrentIndex);
+                if (_freshSubBucket)
                 {
-                    long valueIteratedTo = getValueIteratedTo();
-                    currentIterationValue.set(valueIteratedTo, prevValueIteratedTo, countAtThisValue,
-                            (totalCountToCurrentIndex - totalCountToPrevIndex), totalCountToCurrentIndex,
-                            totalValueToCurrentIndex, ((100.0 * totalCountToCurrentIndex) / arrayTotalCount),
-                            getPercentileIteratedTo(), integerToDoubleValueConversionRatio);
-                    prevValueIteratedTo = valueIteratedTo;
-                    totalCountToPrevIndex = totalCountToCurrentIndex;
+                    // Don't add unless we've incremented since last bucket...
+                    TotalCountToCurrentIndex += CountAtThisValue;
+                    _totalValueToCurrentIndex += CountAtThisValue * Histogram.highestEquivalentValue(CurrentValueAtIndex);
+                    _freshSubBucket = false;
+                }
+                if (ReachedIterationLevel())
+                {
+                    var valueIteratedTo = GetValueIteratedTo();
+                    CurrentIterationValue.Set(valueIteratedTo, _prevValueIteratedTo, CountAtThisValue,
+                        (TotalCountToCurrentIndex - _totalCountToPrevIndex), TotalCountToCurrentIndex,
+                        _totalValueToCurrentIndex, ((100.0 * TotalCountToCurrentIndex) / ArrayTotalCount),
+                        GetPercentileIteratedTo(), _integerToDoubleValueConversionRatio);
+                    _prevValueIteratedTo = valueIteratedTo;
+                    _totalCountToPrevIndex = TotalCountToCurrentIndex;
                     // move the next iteration level forward:
-                    incrementIterationLevel();
-                    if (histogram.getTotalCount() != savedHistogramTotalRawCount)
+                    IncrementIterationLevel();
+                    if (Histogram.getTotalCount() != SavedHistogramTotalRawCount)
                     {
                         throw new InvalidOperationException("ConcurrentModificationException");
                     }
-                    return currentIterationValue;
+                    return CurrentIterationValue;
                 }
-                incrementSubBucket();
+                IncrementSubBucket();
             }
             // Should not reach here. But possible for overflowed histograms under certain conditions
             throw new IndexOutOfRangeException();
         }
 
-        protected abstract void incrementIterationLevel();
+        protected abstract void IncrementIterationLevel();
 
-        protected abstract bool reachedIterationLevel();
+        protected abstract bool ReachedIterationLevel();
 
-        double getPercentileIteratedTo()
+        protected void ResetIterator(AbstractHistogram histogram)
         {
-            return (100.0 * this.totalCountToCurrentIndex) / arrayTotalCount;
+            this.Histogram = histogram;
+            this.SavedHistogramTotalRawCount = histogram.getTotalCount();
+            this.ArrayTotalCount = histogram.getTotalCount();
+            this._integerToDoubleValueConversionRatio = histogram.integerToDoubleValueConversionRatio;
+            this.CurrentIndex = 0;
+            this.CurrentValueAtIndex = 0;
+            this.NextValueAtIndex = 1 << histogram.unitMagnitude;
+            this._prevValueIteratedTo = 0;
+            this._totalCountToPrevIndex = 0;
+            this.TotalCountToCurrentIndex = 0;
+            this._totalValueToCurrentIndex = 0;
+            this.CountAtThisValue = 0;
+            this._freshSubBucket = true;
+            CurrentIterationValue.Reset();
         }
 
-        long getValueIteratedTo()
+        private bool ExhaustedSubBuckets()
         {
-            return histogram.highestEquivalentValue(currentValueAtIndex);
+            return (CurrentIndex >= Histogram.countsArrayLength);
         }
 
-        private bool exhaustedSubBuckets()
+        double GetPercentileIteratedTo()
         {
-            return (currentIndex >= histogram.countsArrayLength);
+            return (100.0 * this.TotalCountToCurrentIndex) / ArrayTotalCount;
         }
 
-        void incrementSubBucket()
+        long GetValueIteratedTo()
         {
-            freshSubBucket = true;
+            return Histogram.highestEquivalentValue(CurrentValueAtIndex);
+        }
+
+        void IncrementSubBucket()
+        {
+            _freshSubBucket = true;
             // Take on the next index:
-            currentIndex++;
-            currentValueAtIndex = histogram.ValueFromIndex(currentIndex);
+            CurrentIndex++;
+            CurrentValueAtIndex = Histogram.ValueFromIndex(CurrentIndex);
             // Figure out the value at the next index (used by some iterators):
-            nextValueAtIndex = histogram.ValueFromIndex(currentIndex + 1);
+            NextValueAtIndex = Histogram.ValueFromIndex(CurrentIndex + 1);
         }
-
     }
-
 }

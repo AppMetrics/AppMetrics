@@ -7,12 +7,20 @@
 
 // Ported to.NET Standard Library by Allan Hardy
 
+using System.Collections;
 using System.Collections.Generic;
 
 namespace App.Metrics.App_Packages.HdrHistogram
 {
     internal abstract class Iterator<E> : IEnumerator<E>
     {
+        public E Current { get; private set; }
+
+        object IEnumerator.Current
+        {
+            get { return Current; }
+        }
+
         /**
          * Returns {@code true} if the iteration has more elements.
          * (In other words, returns {@code true} if {@link #next} would
@@ -20,6 +28,7 @@ namespace App.Metrics.App_Packages.HdrHistogram
          *
          * @return {@code true} if the iteration has more elements
          */
+
         public abstract bool hasNext();
 
         /**
@@ -28,20 +37,25 @@ namespace App.Metrics.App_Packages.HdrHistogram
          * @return the next element in the iteration
          * @throws NoSuchElementException if the iteration has no more elements
          */
+
         public abstract E next();
 
-        public E Current { get; private set; }
-        public void Dispose() { }
-        object System.Collections.IEnumerator.Current { get { return this.Current; } }
+        public void Dispose()
+        {
+        }
+
         public bool MoveNext()
         {
             if (hasNext())
             {
-                this.Current = this.next();
+                Current = next();
                 return true;
             }
             return false;
         }
-        public void Reset() { }
+
+        public void Reset()
+        {
+        }
     }
 }

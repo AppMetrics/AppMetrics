@@ -1,6 +1,6 @@
 ﻿using App.Metrics.Sampling;
-using Xunit;
 using FluentAssertions;
+using Xunit;
 
 namespace App.Metrics.Facts.Sampling
 {

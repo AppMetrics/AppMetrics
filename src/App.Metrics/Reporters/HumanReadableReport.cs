@@ -6,36 +6,36 @@ namespace App.Metrics.Reporters
 {
     public abstract class HumanReadableReport : BaseReport
     {
-        private readonly int padding;
+        private readonly int _padding;
 
         protected HumanReadableReport(int padding = 20)
         {
-            this.padding = padding;
+            _padding = padding;
         }
 
         public void WriteValue(string label, string value, string sign = "=")
         {
-            string pad = string.Empty;
+            var pad = string.Empty;
 
-            if (label.Length + 2 + sign.Length < padding)
+            if (label.Length + 2 + sign.Length < _padding)
             {
-                pad = new string(' ', padding - label.Length - 1 - sign.Length);
+                pad = new string(' ', _padding - label.Length - 1 - sign.Length);
             }
 
-            this.WriteLine("{0}{1} {2} {3}", pad, label, sign, value);
+            WriteLine("{0}{1} {2} {3}", pad, label, sign, value);
         }
 
         protected abstract void WriteLine(string line, params string[] args);
 
         protected override void ReportCounter(string name, CounterValue value, Unit unit, MetricTags tags)
         {
-            this.WriteMetricName(name);
+            WriteMetricName(name);
             WriteValue("Count", unit.FormatCount(value.Count));
             if (value.Items.Length > 0)
             {
                 WriteValue("Total Items", value.Items.Length.ToString());
             }
-            for (int i = 0; i < value.Items.Length; i++)
+            for (var i = 0; i < value.Items.Length; i++)
             {
                 var key = "Item " + i.ToString();
                 var item = value.Items[i];
@@ -46,8 +46,8 @@ namespace App.Metrics.Reporters
 
         protected override void ReportGauge(string name, double value, Unit unit, MetricTags tags)
         {
-            this.WriteMetricName(name);
-            this.WriteValue("value", unit.FormatValue(value));
+            WriteMetricName(name);
+            WriteValue("value", unit.FormatValue(value));
         }
 
         protected override void ReportHealth(HealthStatus status)
@@ -81,20 +81,20 @@ namespace App.Metrics.Reporters
 
         protected override void ReportHistogram(string name, HistogramValue value, Unit unit, MetricTags tags)
         {
-            this.WriteMetricName(name);
-            this.WriteHistogram(value, unit);
+            WriteMetricName(name);
+            WriteHistogram(value, unit);
         }
 
         protected override void ReportMeter(string name, MeterValue value, Unit unit, TimeUnit rateUnit, MetricTags tags)
         {
-            this.WriteMetricName(name);
-            this.WriteMeter(value, unit, rateUnit);
+            WriteMetricName(name);
+            WriteMeter(value, unit, rateUnit);
 
             if (value.Items.Length > 0)
             {
                 WriteValue("Total Items", value.Items.Length.ToString());
             }
-            for (int i = 0; i < value.Items.Length; i++)
+            for (var i = 0; i < value.Items.Length; i++)
             {
                 var key = "Item " + i.ToString();
                 var item = value.Items[i];
@@ -106,29 +106,29 @@ namespace App.Metrics.Reporters
 
         protected override void ReportTimer(string name, TimerValue value, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
         {
-            this.WriteMetricName(name);
-            this.WriteValue("Active Sessions", value.ActiveSessions.ToString());
-            this.WriteValue("Total Time", unit.FormatDuration(value.TotalTime, durationUnit));
-            this.WriteMeter(value.Rate, unit, rateUnit);
-            this.WriteHistogram(value.Histogram, unit, durationUnit);
+            WriteMetricName(name);
+            WriteValue("Active Sessions", value.ActiveSessions.ToString());
+            WriteValue("Total Time", unit.FormatDuration(value.TotalTime, durationUnit));
+            WriteMeter(value.Rate, unit, rateUnit);
+            WriteHistogram(value.Histogram, unit, durationUnit);
         }
 
         protected override void StartMetricGroup(string metricType)
         {
-            this.WriteLine();
-            this.WriteLine();
-            this.WriteLine("***** {0} - {1} *****", metricType, Clock.FormatTimestamp(this.CurrentContextTimestamp));
+            WriteLine();
+            WriteLine();
+            WriteLine("***** {0} - {1} *****", metricType, Clock.FormatTimestamp(CurrentContextTimestamp));
         }
 
         protected override void StartReport(string contextName)
         {
-            this.WriteLine("{0} - {1}", contextName, Clock.FormatTimestamp(this.ReportTimestamp));
+            WriteLine("{0} - {1}", contextName, Clock.FormatTimestamp(ReportTimestamp));
         }
 
         protected void WriteMetricName(string name)
         {
-            this.WriteLine();
-            this.WriteLine("    {0}", name);
+            WriteLine();
+            WriteLine("    {0}", name);
         }
 
         private void WriteHistogram(HistogramValue value, Unit unit, TimeUnit? durationUnit = null)
@@ -167,7 +167,7 @@ namespace App.Metrics.Reporters
 
         private void WriteLine()
         {
-            this.WriteLine(string.Empty);
+            WriteLine(string.Empty);
         }
 
         private void WriteMeter(MeterValue value, Unit unit, TimeUnit rateUnit)

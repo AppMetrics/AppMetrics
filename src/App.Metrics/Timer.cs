@@ -115,11 +115,11 @@ namespace App.Metrics
         {
             get
             {
-                if (this._timer == null)
+                if (_timer == null)
                 {
                     return TimeSpan.Zero;
                 }
-                var milliseconds = TimeUnit.Nanoseconds.Convert(TimeUnit.Milliseconds, _timer.CurrentTime() - this._start);
+                var milliseconds = TimeUnit.Nanoseconds.Convert(TimeUnit.Milliseconds, _timer.CurrentTime() - _start);
                 return TimeSpan.FromMilliseconds(milliseconds);
             }
         }

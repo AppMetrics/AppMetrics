@@ -20,72 +20,72 @@ namespace App.Metrics.Json
 
     public class StringJsonValue : JsonValue
     {
-        private readonly string value;
+        private readonly string _value;
 
         public StringJsonValue(string value)
         {
-            this.value = value;
+            _value = value;
         }
 
         public override string AsJson(bool indented = true, int indent = 0)
         {
-            return "\"" + Escape(this.value) + "\"";
+            return "\"" + Escape(_value) + "\"";
         }
     }
 
     public class LongJsonValue : JsonValue
     {
-        private readonly long value;
+        private readonly long _value;
 
         public LongJsonValue(long value)
         {
-            this.value = value;
+            _value = value;
         }
 
         public override string AsJson(bool indented = true, int indent = 0)
         {
-            return this.value.ToString("D", CultureInfo.InvariantCulture);
+            return _value.ToString("D", CultureInfo.InvariantCulture);
         }
     }
 
     public class DoubleJsonValue : JsonValue
     {
-        private readonly double value;
+        private readonly double _value;
 
         public DoubleJsonValue(double value)
         {
-            this.value = value;
+            _value = value;
         }
 
         public override string AsJson(bool indented = true, int indent = 0)
         {
-            if (double.IsNaN(this.value) || double.IsInfinity(this.value))
+            if (double.IsNaN(_value) || double.IsInfinity(_value))
             {
                 return "null";
             }
 
-            return this.value.ToString("F", CultureInfo.InvariantCulture);
+            return _value.ToString("F", CultureInfo.InvariantCulture);
         }
     }
 
     public class BoolJsonValue : JsonValue
     {
-        private readonly bool value;
+        private readonly bool _value;
 
         public BoolJsonValue(bool value)
         {
-            this.value = value;
+            _value = value;
         }
 
         public override string AsJson(bool indented = true, int indent = 0)
         {
-            return this.value ? "true" : "false";
+            return _value ? "true" : "false";
         }
     }
 
     public class ObjectJsonValue : JsonValue
     {
-        private readonly JsonObject value;
+        private readonly JsonObject _value;
 
         public ObjectJsonValue(IEnumerable<JsonProperty> properties)
             : this(new JsonObject(properties))
@@ -94,57 +94,57 @@ namespace App.Metrics.Json
 
         public ObjectJsonValue(JsonObject value)
         {
-            this.value = value;
+            _value = value;
         }
 
         public override string AsJson(bool indented = true, int indent = 0)
         {
-            return this.value.AsJson(indented, indent);
+            return _value.AsJson(indented, indent);
         }
     }
 
     public class CollectionJsonValue : JsonValue
     {
-        private readonly IEnumerable<JsonObject> values;
+        private readonly IEnumerable<JsonObject> _values;
 
         public CollectionJsonValue(IEnumerable<JsonObject> values)
         {
-            this.values = values;
+            _values = values;
         }
 
         public override string AsJson(bool indented = true, int indent = 0)
         {
-            return "[" + string.Join(",", this.values.Select(e => e.AsJson(indented, indent))) + "]";
+            return "[" + string.Join(",", _values.Select(e => e.AsJson(indented, indent))) + "]";
         }
     }
 
     public class StringArrayJsonValue : JsonValue
     {
-        private readonly IEnumerable<string> values;
+        private readonly IEnumerable<string> _values;
 
         public StringArrayJsonValue(IEnumerable<string> values)
         {
-            this.values = values;
+            _values = values;
         }
 
         public override string AsJson(bool indented = true, int indent = 0)
         {
-            return "[" + string.Join(",", this.values.Select(v => new StringJsonValue(v).AsJson(indented, indent))) + "]";
+            return "[" + string.Join(",", _values.Select(v => new StringJsonValue(v).AsJson(indented, indent))) + "]";
         }
     }
 
     public class JsonValueArray : JsonValue
     {
-        private readonly IEnumerable<JsonValue> values;
+        private readonly IEnumerable<JsonValue> _values;
 
         public JsonValueArray(IEnumerable<JsonValue> values)
         {
-            this.values = values;
+            _values = values;
         }
 
         public override string AsJson(bool indented = true, int indent = 0)
         {
-            return "[" + string.Join(",", this.values.Select(v => v.AsJson(indented, indent))) + "]";
+            return "[" + string.Join(",", _values.Select(v => v.AsJson(indented, indent))) + "]";
         }
     }
 }

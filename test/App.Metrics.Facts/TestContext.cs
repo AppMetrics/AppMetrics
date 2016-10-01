@@ -15,20 +15,23 @@ namespace App.Metrics.Facts
             this.Scheduler = scheduler;
         }
 
-        private TestContext(string contextName, TestClock clock)
-            : this(contextName, clock, new TestScheduler(clock))
-        { }
-
         public TestContext()
             : this("TestContext", new TestClock())
-        { }
+        {
+        }
+
+        private TestContext(string contextName, TestClock clock)
+            : this(contextName, clock, new TestScheduler(clock))
+        {
+        }
 
         public TestClock Clock { get; private set; }
+
         public TestScheduler Scheduler { get; private set; }
 
-        protected override MetricsContext CreateChildContextInstance(string contextName)
+        public CounterValue CounterValue(params string[] nameWithContext)
         {
-            return new TestContext(contextName, this.Clock, this.Scheduler);
+            return ValueFor<CounterValue>(GetDataFor(nameWithContext).Counters, nameWithContext);
         }
 
         public double GaugeValue(params string[] nameWithContext)
@@ -36,14 +39,19 @@ namespace App.Metrics.Facts
             return ValueFor<double>(GetDataFor(nameWithContext).Gauges, nameWithContext);
         }
 
-        public CounterValue CounterValue(params string[] nameWithContext)
+        public TestContext GetContextFor(params string[] nameWithContext)
         {
-            return ValueFor<CounterValue>(GetDataFor(nameWithContext).Counters, nameWithContext);
+            if (nameWithContext.Length == 1)
+            {
+                return this;
+            }
+
+            return (this.Context(nameWithContext.First()) as TestContext).GetContextFor(nameWithContext.Skip(1).ToArray());
         }
 
-        public MeterValue MeterValue(params string[] nameWithContext)
+        public MetricsData GetDataFor(params string[] nameWithContext)
         {
-            return ValueFor<MeterValue>(GetDataFor(nameWithContext).Meters, nameWithContext);
+            return GetContextFor(nameWithContext).DataProvider.CurrentMetricsData;
         }
 
         public HistogramValue HistogramValue(params string[] nameWithContext)
@@ -51,9 +59,19 @@ namespace App.Metrics.Facts
             return ValueFor<HistogramValue>(GetDataFor(nameWithContext).Histograms, nameWithContext);
         }
 
+        public MeterValue MeterValue(params string[] nameWithContext)
+        {
+            return ValueFor<MeterValue>(GetDataFor(nameWithContext).Meters, nameWithContext);
+        }
+
         public TimerValue TimerValue(params string[] nameWithContext)
         {
             return ValueFor<TimerValue>(GetDataFor(nameWithContext).Timers, nameWithContext);
+        }
+
+        protected override MetricsContext CreateChildContextInstance(string contextName)
+        {
+            return new TestContext(contextName, this.Clock, this.Scheduler);
         }
 
         private T ValueFor<T>(IEnumerable<MetricValueSource<T>> values, string[] nameWithContext)
@@ -65,21 +83,6 @@ namespace App.Metrics.Facts
                 string.Join(".", nameWithContext.Take(nameWithContext.Length - 1)), string.Join(",", values.Select(v => v.Name)));
 
             return value.Single();
-        }
-
-        public MetricsData GetDataFor(params string[] nameWithContext)
-        {
-            return GetContextFor(nameWithContext).DataProvider.CurrentMetricsData;
-        }
-
-        public TestContext GetContextFor(params string[] nameWithContext)
-        {
-            if (nameWithContext.Length == 1)
-            {
-                return this;
-            }
-
-            return (this.Context(nameWithContext.First()) as TestContext).GetContextFor(nameWithContext.Skip(1).ToArray());
         }
     }
 }

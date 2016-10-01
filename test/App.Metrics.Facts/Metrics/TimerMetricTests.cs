@@ -13,16 +13,21 @@ namespace App.Metrics.Facts.Metrics
 
         public TimerMetricTests()
         {
-            this.timer = new TimerMetric(new HistogramMetric(new UniformReservoir()), new MeterMetric(this.clock, new TestScheduler(this.clock)), this.clock);
+            this.timer = new TimerMetric(new HistogramMetric(new UniformReservoir()), new MeterMetric(this.clock, new TestScheduler(this.clock)),
+                this.clock);
         }
 
         [Fact]
         public void TimerMetric_CanCount()
         {
             timer.Value.Rate.Count.Should().Be(0);
-            using (timer.NewContext()) { }
+            using (timer.NewContext())
+            {
+            }
             timer.Value.Rate.Count.Should().Be(1);
-            using (timer.NewContext()) { }
+            using (timer.NewContext())
+            {
+            }
             timer.Value.Rate.Count.Should().Be(2);
             timer.Time(() => { });
             timer.Value.Rate.Count.Should().Be(3);
@@ -31,13 +36,20 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void TimerMetric_CountsEvenIfActionThrows()
+        public void TimerMetric_CanReset()
         {
-            Action action = () => this.timer.Time(() => { throw new InvalidOperationException(); });
+            using (var context = timer.NewContext())
+            {
+                clock.Advance(TimeUnit.Milliseconds, 100);
+            }
 
-            action.ShouldThrow<InvalidOperationException>();
+            timer.Value.Rate.Count.Should().NotBe(0);
+            timer.Value.Histogram.Count.Should().NotBe(0);
 
-            this.timer.Value.Rate.Count.Should().Be(1);
+            timer.Reset();
+
+            timer.Value.Rate.Count.Should().Be(0);
+            timer.Value.Histogram.Count.Should().Be(0);
         }
 
         [Fact]
@@ -76,30 +88,13 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void TimerMetric_CanReset()
+        public void TimerMetric_CountsEvenIfActionThrows()
         {
-            using (var context = timer.NewContext())
-            {
-                clock.Advance(TimeUnit.Milliseconds, 100);
-            }
+            Action action = () => this.timer.Time(() => { throw new InvalidOperationException(); });
 
-            timer.Value.Rate.Count.Should().NotBe(0);
-            timer.Value.Histogram.Count.Should().NotBe(0);
+            action.ShouldThrow<InvalidOperationException>();
 
-            timer.Reset();
-
-            timer.Value.Rate.Count.Should().Be(0);
-            timer.Value.Histogram.Count.Should().Be(0);
-        }
-
-        [Fact]
-        public void TimerMetric_RecordsUserValue()
-        {
-            timer.Record(1L, TimeUnit.Milliseconds, "A");
-            timer.Record(10L, TimeUnit.Milliseconds, "B");
-
-            timer.Value.Histogram.MinUserValue.Should().Be("A");
-            timer.Value.Histogram.MaxUserValue.Should().Be("B");
+            this.timer.Value.Rate.Count.Should().Be(1);
         }
 
         [Fact]
@@ -117,14 +112,13 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void TimerMetric_UserValueCanBeSetAfterContextCreation()
+        public void TimerMetric_RecordsUserValue()
         {
-            using (var x = timer.NewContext())
-            {
-                x.TrackUserValue("test");
-            }
+            timer.Record(1L, TimeUnit.Milliseconds, "A");
+            timer.Record(10L, TimeUnit.Milliseconds, "B");
 
-            timer.Value.Histogram.LastUserValue.Should().Be("test");
+            timer.Value.Histogram.MinUserValue.Should().Be("A");
+            timer.Value.Histogram.MaxUserValue.Should().Be("B");
         }
 
         [Fact]
@@ -136,6 +130,17 @@ namespace App.Metrics.Facts.Metrics
             }
 
             timer.Value.Histogram.LastUserValue.Should().Be("b");
+        }
+
+        [Fact]
+        public void TimerMetric_UserValueCanBeSetAfterContextCreation()
+        {
+            using (var x = timer.NewContext())
+            {
+                x.TrackUserValue("test");
+            }
+
+            timer.Value.Histogram.LastUserValue.Should().Be("test");
         }
     }
 }

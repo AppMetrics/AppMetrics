@@ -7,15 +7,15 @@ namespace App.Metrics.Reporters
 {
     public sealed class MetricsReports : IHideObjectMembers, IDisposable
     {
-        private readonly Func<HealthStatus> healthStatus;
-        private readonly MetricsDataProvider metricsDataProvider;
+        private readonly Func<HealthStatus> _healthStatus;
+        private readonly MetricsDataProvider _metricsDataProvider;
 
-        private readonly List<ScheduledReporter> reports = new List<ScheduledReporter>();
+        private readonly List<ScheduledReporter> _reports = new List<ScheduledReporter>();
 
         public MetricsReports(MetricsDataProvider metricsDataProvider, Func<HealthStatus> healthStatus)
         {
-            this.metricsDataProvider = metricsDataProvider;
-            this.healthStatus = healthStatus;
+            _metricsDataProvider = metricsDataProvider;
+            _healthStatus = healthStatus;
         }
 
         public void Dispose()
@@ -28,8 +28,8 @@ namespace App.Metrics.Reporters
         /// </summary>
         public void StopAndClearAllReports()
         {
-            this.reports.ForEach(r => r.Dispose());
-            this.reports.Clear();
+            _reports.ForEach(r => r.Dispose());
+            _reports.Clear();
         }
 
         /// <summary>
@@ -50,8 +50,8 @@ namespace App.Metrics.Reporters
         /// <param name="filter">Only report metrics that match the filter.</param>
         public MetricsReports WithReport(MetricsReport report, TimeSpan interval, MetricsFilter filter = null)
         {
-            var newReport = new ScheduledReporter(report, this.metricsDataProvider.WithFilter(filter), this.healthStatus, interval);
-            this.reports.Add(newReport);
+            var newReport = new ScheduledReporter(report, _metricsDataProvider.WithFilter(filter), _healthStatus, interval);
+            _reports.Add(newReport);
             return this;
         }
 

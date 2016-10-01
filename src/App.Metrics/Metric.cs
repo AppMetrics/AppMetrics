@@ -146,7 +146,7 @@ namespace App.Metrics
             return globalContext.Meter(name, unit, rateUnit, tags);
         }
 
-        ///     Remove a child context. The metrics for the child context are removed from the MetricsData of the parent context.
+        /// Remove a child context. The metrics for the child context are removed from the MetricsData of the parent context.
         /// </summary>
         /// <param name="contextName">Name of the child context to shutdown.</param>
         public static void ShutdownContext(string contextName)

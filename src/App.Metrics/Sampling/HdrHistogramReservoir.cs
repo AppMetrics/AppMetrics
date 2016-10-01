@@ -15,18 +15,18 @@ namespace App.Metrics.Sampling
     /// </summary>
     public sealed class HdrHistogramReservoir : Reservoir
     {
-        private readonly object maxValueLock = new object();
-        private readonly object minValueLock = new object();
-        private readonly Recorder recorder;
+        private readonly object _maxValueLock = new object();
+        private readonly object _minValueLock = new object();
+        private readonly Recorder _recorder;
 
-        private readonly App_Packages.HdrHistogram.Histogram runningTotals;
-        private App_Packages.HdrHistogram.Histogram intervalHistogram;
-        private string maxUserValue;
+        private readonly App_Packages.HdrHistogram.Histogram _runningTotals;
+        private App_Packages.HdrHistogram.Histogram _intervalHistogram;
+        private string _maxUserValue;
 
-        private AtomicLong maxValue = new AtomicLong(0);
-        private string minUserValue;
+        private AtomicLong _maxValue = new AtomicLong(0);
+        private string _minUserValue;
 
-        private AtomicLong minValue = new AtomicLong(long.MaxValue);
+        private AtomicLong _minValue = new AtomicLong(long.MaxValue);
 
         public HdrHistogramReservoir()
             : this(new Recorder(2))
@@ -35,32 +35,33 @@ namespace App.Metrics.Sampling
 
         internal HdrHistogramReservoir(Recorder recorder)
         {
-            this.recorder = recorder;
+            _recorder = recorder;
 
-            this.intervalHistogram = recorder.GetIntervalHistogram();
-            this.runningTotals = new App_Packages.HdrHistogram.Histogram(this.intervalHistogram.NumberOfSignificantValueDigits);
+            _intervalHistogram = recorder.GetIntervalHistogram();
+            _runningTotals = new App_Packages.HdrHistogram.Histogram(_intervalHistogram.NumberOfSignificantValueDigits);
         }
 
         public Snapshot GetSnapshot(bool resetReservoir = false)
         {
-            var snapshot = new HdrSnapshot(UpdateTotals(), this.minValue.GetValue(), this.minUserValue, this.maxValue.GetValue(), this.maxUserValue);
+            var snapshot = new HdrSnapshot(UpdateTotals(), _minValue.GetValue(), _minUserValue, _maxValue.GetValue(),
+                _maxUserValue);
             if (resetReservoir)
             {
-                this.Reset();
+                Reset();
             }
             return snapshot;
         }
 
         public void Reset()
         {
-            this.recorder.Reset();
-            this.runningTotals.reset();
-            this.intervalHistogram.reset();
+            _recorder.Reset();
+            _runningTotals.reset();
+            _intervalHistogram.reset();
         }
 
         public void Update(long value, string userValue = null)
         {
-            this.recorder.RecordValue(value);
+            _recorder.RecordValue(value);
             if (userValue != null)
             {
                 TrackMinMaxUserValue(value, userValue);
@@ -70,18 +71,18 @@ namespace App.Metrics.Sampling
         private void SetMaxValue(long value, string userValue)
         {
             long current;
-            while (value > (current = this.maxValue.GetValue()))
+            while (value > (current = _maxValue.GetValue()))
             {
-                this.maxValue.CompareAndSwap(current, value);
+                _maxValue.CompareAndSwap(current, value);
             }
 
             if (value == current)
             {
-                lock (this.maxValueLock)
+                lock (_maxValueLock)
                 {
-                    if (value == this.maxValue.GetValue())
+                    if (value == _maxValue.GetValue())
                     {
-                        this.maxUserValue = userValue;
+                        _maxUserValue = userValue;
                     }
                 }
             }
@@ -90,18 +91,18 @@ namespace App.Metrics.Sampling
         private void SetMinValue(long value, string userValue)
         {
             long current;
-            while (value < (current = this.minValue.GetValue()))
+            while (value < (current = _minValue.GetValue()))
             {
-                this.minValue.CompareAndSwap(current, value);
+                _minValue.CompareAndSwap(current, value);
             }
 
             if (value == current)
             {
-                lock (this.minValueLock)
+                lock (_minValueLock)
                 {
-                    if (value == this.minValue.GetValue())
+                    if (value == _minValue.GetValue())
                     {
-                        this.minUserValue = userValue;
+                        _minUserValue = userValue;
                     }
                 }
             }
@@ -109,12 +110,12 @@ namespace App.Metrics.Sampling
 
         private void TrackMinMaxUserValue(long value, string userValue)
         {
-            if (value > this.maxValue.NonVolatileGetValue())
+            if (value > _maxValue.NonVolatileGetValue())
             {
                 SetMaxValue(value, userValue);
             }
 
-            if (value < this.minValue.NonVolatileGetValue())
+            if (value < _minValue.NonVolatileGetValue())
             {
                 SetMinValue(value, userValue);
             }
@@ -122,11 +123,11 @@ namespace App.Metrics.Sampling
 
         private App_Packages.HdrHistogram.Histogram UpdateTotals()
         {
-            lock (this.runningTotals)
+            lock (_runningTotals)
             {
-                this.intervalHistogram = this.recorder.GetIntervalHistogram(this.intervalHistogram);
-                this.runningTotals.add(this.intervalHistogram);
-                return this.runningTotals.copy() as App_Packages.HdrHistogram.Histogram;
+                _intervalHistogram = _recorder.GetIntervalHistogram(_intervalHistogram);
+                _runningTotals.add(_intervalHistogram);
+                return _runningTotals.copy() as App_Packages.HdrHistogram.Histogram;
             }
         }
     }

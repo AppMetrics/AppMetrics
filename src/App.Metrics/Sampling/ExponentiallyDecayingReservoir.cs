@@ -1,6 +1,4 @@
-﻿// Written by Iulian Margarintescu
-// 
-// Ported to .NET Standard Library by Allan Hardy
+﻿// Ported to .NET Standard Library by Allan Hardy
 // Original repo: https://github.com/etishor/Metrics.NET
 
 using System;
@@ -17,18 +15,18 @@ namespace App.Metrics.Sampling
         private const int DefaultSize = 1028;
         private static readonly TimeSpan RescaleInterval = TimeSpan.FromHours(1);
 
-        private readonly double alpha;
+        private readonly double _alpha;
 
-        private readonly Clock clock;
+        private readonly Clock _clock;
 
-        private readonly Scheduler rescaleScheduler;
-        private readonly int size;
+        private readonly Scheduler _rescaleScheduler;
+        private readonly int _size;
 
-        private readonly SortedList<double, WeightedSample> values;
-        private AtomicLong count = new AtomicLong();
+        private readonly SortedList<double, WeightedSample> _values;
+        private AtomicLong _count = new AtomicLong();
 
-        private SpinLock @lock = new SpinLock();
-        private AtomicLong startTime;
+        private SpinLock _lock = new SpinLock();
+        private AtomicLong _startTime;
 
         public ExponentiallyDecayingReservoir()
             : this(DefaultSize, DefaultAlpha)
@@ -47,26 +45,26 @@ namespace App.Metrics.Sampling
 
         public ExponentiallyDecayingReservoir(int size, double alpha, Clock clock, Scheduler scheduler)
         {
-            this.size = size;
-            this.alpha = alpha;
-            this.clock = clock;
+            _size = size;
+            _alpha = alpha;
+            _clock = clock;
 
-            this.values = new SortedList<double, WeightedSample>(size, ReverseOrderDoubleComparer.Instance);
+            _values = new SortedList<double, WeightedSample>(size, ReverseOrderDoubleComparer.Instance);
 
-            this.rescaleScheduler = scheduler;
-            this.rescaleScheduler.Start(RescaleInterval, () => Rescale());
+            _rescaleScheduler = scheduler;
+            _rescaleScheduler.Start(RescaleInterval, () => Rescale());
 
-            this.startTime = new AtomicLong(clock.Seconds);
+            _startTime = new AtomicLong(clock.Seconds);
         }
 
         public int Size
         {
-            get { return Math.Min(this.size, (int)this.count.GetValue()); }
+            get { return Math.Min(_size, (int)_count.GetValue()); }
         }
 
         public void Dispose()
         {
-            using (this.rescaleScheduler)
+            using (_rescaleScheduler)
             {
             }
         }
@@ -76,8 +74,8 @@ namespace App.Metrics.Sampling
             var lockTaken = false;
             try
             {
-                this.@lock.Enter(ref lockTaken);
-                var snapshot = new WeightedSnapshot(this.count.GetValue(), this.values.Values);
+                _lock.Enter(ref lockTaken);
+                var snapshot = new WeightedSnapshot(_count.GetValue(), _values.Values);
                 if (resetReservoir)
                 {
                     ResetReservoir();
@@ -88,7 +86,7 @@ namespace App.Metrics.Sampling
             {
                 if (lockTaken)
                 {
-                    this.@lock.Exit();
+                    _lock.Exit();
                 }
             }
         }
@@ -98,21 +96,21 @@ namespace App.Metrics.Sampling
             var lockTaken = false;
             try
             {
-                this.@lock.Enter(ref lockTaken);
+                _lock.Enter(ref lockTaken);
                 ResetReservoir();
             }
             finally
             {
                 if (lockTaken)
                 {
-                    this.@lock.Exit();
+                    _lock.Exit();
                 }
             }
         }
 
         public void Update(long value, string userValue = null)
         {
-            Update(value, userValue, this.clock.Seconds);
+            Update(value, userValue, _clock.Seconds);
         }
 
         ///* "A common feature of the above techniques—indeed, the key technique that
@@ -138,38 +136,38 @@ namespace App.Metrics.Sampling
             var lockTaken = false;
             try
             {
-                this.@lock.Enter(ref lockTaken);
-                var oldStartTime = this.startTime.GetValue();
-                this.startTime.SetValue(this.clock.Seconds);
+                _lock.Enter(ref lockTaken);
+                var oldStartTime = _startTime.GetValue();
+                _startTime.SetValue(_clock.Seconds);
 
-                var scalingFactor = Math.Exp(-this.alpha * (this.startTime.GetValue() - oldStartTime));
+                var scalingFactor = Math.Exp(-_alpha * (_startTime.GetValue() - oldStartTime));
 
-                var keys = new List<double>(this.values.Keys);
+                var keys = new List<double>(_values.Keys);
                 foreach (var key in keys)
                 {
-                    var sample = this.values[key];
-                    this.values.Remove(key);
-                    var newKey = key * Math.Exp(-this.alpha * (this.startTime.GetValue() - oldStartTime));
+                    var sample = _values[key];
+                    _values.Remove(key);
+                    var newKey = key * Math.Exp(-_alpha * (_startTime.GetValue() - oldStartTime));
                     var newSample = new WeightedSample(sample.Value, sample.UserValue, sample.Weight * scalingFactor);
-                    this.values[newKey] = newSample;
+                    _values[newKey] = newSample;
                 }
                 // make sure the counter is in sync with the number of stored samples.
-                this.count.SetValue(this.values.Count);
+                _count.SetValue(_values.Count);
             }
             finally
             {
                 if (lockTaken)
                 {
-                    this.@lock.Exit();
+                    _lock.Exit();
                 }
             }
         }
 
         private void ResetReservoir()
         {
-            this.values.Clear();
-            this.count.SetValue(0L);
-            this.startTime.SetValue(this.clock.Seconds);
+            _values.Clear();
+            _count.SetValue(0L);
+            _startTime.SetValue(_clock.Seconds);
         }
 
         private void Update(long value, string userValue, long timestamp)
@@ -177,9 +175,9 @@ namespace App.Metrics.Sampling
             var lockTaken = false;
             try
             {
-                this.@lock.Enter(ref lockTaken);
+                _lock.Enter(ref lockTaken);
 
-                var itemWeight = Math.Exp(this.alpha * (timestamp - this.startTime.GetValue()));
+                var itemWeight = Math.Exp(_alpha * (timestamp - _startTime.GetValue()));
                 var sample = new WeightedSample(value, userValue, itemWeight);
 
                 var random = 0.0;
@@ -191,21 +189,21 @@ namespace App.Metrics.Sampling
 
                 var priority = itemWeight / random;
 
-                var newCount = this.count.GetValue();
+                var newCount = _count.GetValue();
                 newCount++;
-                this.count.SetValue(newCount);
+                _count.SetValue(newCount);
 
-                if (newCount <= this.size)
+                if (newCount <= _size)
                 {
-                    this.values[priority] = sample;
+                    _values[priority] = sample;
                 }
                 else
                 {
-                    var first = this.values.Keys[this.values.Count - 1];
+                    var first = _values.Keys[_values.Count - 1];
                     if (first < priority)
                     {
-                        this.values.Remove(first);
-                        this.values[priority] = sample;
+                        _values.Remove(first);
+                        _values[priority] = sample;
                     }
                 }
             }
@@ -213,7 +211,7 @@ namespace App.Metrics.Sampling
             {
                 if (lockTaken)
                 {
-                    this.@lock.Exit();
+                    _lock.Exit();
                 }
             }
         }

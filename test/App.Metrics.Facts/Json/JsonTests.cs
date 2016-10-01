@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-using System.Threading;
-using App.Metrics.Json;
+﻿using App.Metrics.Json;
 using FluentAssertions;
 using Xunit;
 

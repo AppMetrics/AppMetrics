@@ -9,22 +9,22 @@
         public readonly HistogramValue Histogram;
         public readonly MeterValue Rate;
         public readonly long TotalTime;
-        private readonly TimeUnit durationUnit;
+        private readonly TimeUnit _durationUnit;
 
         public TimerValue(MeterValue rate, HistogramValue histogram, long activeSessions, long totalTime, TimeUnit durationUnit)
         {
-            this.Rate = rate;
-            this.Histogram = histogram;
-            this.ActiveSessions = activeSessions;
-            this.TotalTime = totalTime;
-            this.durationUnit = durationUnit;
+            Rate = rate;
+            Histogram = histogram;
+            ActiveSessions = activeSessions;
+            TotalTime = totalTime;
+            _durationUnit = durationUnit;
         }
 
         public TimerValue Scale(TimeUnit rate, TimeUnit duration)
         {
-            var durationFactor = this.durationUnit.ScalingFactorFor(duration);
-            var total = this.durationUnit.Convert(duration, this.TotalTime);
-            return new TimerValue(this.Rate.Scale(rate), this.Histogram.Scale(durationFactor), this.ActiveSessions, total, duration);
+            var durationFactor = _durationUnit.ScalingFactorFor(duration);
+            var total = _durationUnit.Convert(duration, TotalTime);
+            return new TimerValue(Rate.Scale(rate), Histogram.Scale(durationFactor), ActiveSessions, total, duration);
         }
     }
 
@@ -37,8 +37,8 @@
             MetricTags tags)
             : base(name, new ScaledValueProvider<TimerValue>(value, v => v.Scale(rateUnit, durationUnit)), unit, tags)
         {
-            this.RateUnit = rateUnit;
-            this.DurationUnit = durationUnit;
+            RateUnit = rateUnit;
+            DurationUnit = durationUnit;
         }
 
         public TimeUnit DurationUnit { get; private set; }

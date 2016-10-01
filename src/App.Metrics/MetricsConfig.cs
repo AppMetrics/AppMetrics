@@ -8,9 +8,9 @@ namespace App.Metrics
 {
     public sealed class MetricsConfig : IDisposable, IHideObjectMembers
     {
-        //TODO: AH - Inject Logger
         private static readonly ILogger Log = new LoggerFactory().CreateLogger(typeof(MetricsConfig));
         public static readonly bool GloballyDisabledMetrics = ReadGloballyDisableMetricsSetting();
+        //TODO: AH - Inject Logger
 
 
         private readonly MetricsContext _context;
@@ -206,7 +206,7 @@ namespace App.Metrics
 
         private void DisableAllReports()
         {
-            this._reports.StopAndClearAllReports();
+            _reports.StopAndClearAllReports();
         }
     }
 }

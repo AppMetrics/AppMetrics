@@ -21,8 +21,8 @@ namespace App.Metrics
 
         private HealthCheckResult(bool isHealthy, string message)
         {
-            this.IsHealthy = isHealthy;
-            this.Message = message;
+            IsHealthy = isHealthy;
+            Message = message;
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace App.Metrics
 
         private static string FormatStackTrace(Exception exception, int indent = 2)
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
 
             var aggregate = exception as AggregateException;
             var pad = new string(' ', indent * 2);

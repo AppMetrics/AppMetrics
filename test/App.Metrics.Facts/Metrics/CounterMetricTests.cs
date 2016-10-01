@@ -2,8 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Core;
-using Xunit;
 using FluentAssertions;
+using Xunit;
 
 namespace App.Metrics.Facts.Metrics
 {
@@ -12,67 +12,15 @@ namespace App.Metrics.Facts.Metrics
         private readonly CounterMetric counter = new CounterMetric();
 
         [Fact]
-        public void CounterMetric_StartsFromZero()
-        {
-            counter.Value.Count.Should().Be(0L);
-        }
-
-        [Fact]
-        public void CounterMetric_CanIncrement()
-        {
-            counter.Increment();
-            counter.Value.Count.Should().Be(1L);
-        }
-
-        [Fact]
-        public void CounterMetric_CanIncrementWithValue()
-        {
-            counter.Increment(32L);
-            counter.Value.Count.Should().Be(32L);
-        }
-
-        [Fact]
-        public void CounterMetric_CanIncrementMultipleTimes()
-        {
-            counter.Increment();
-            counter.Increment();
-            counter.Increment();
-            counter.Value.Count.Should().Be(3L);
-        }
-
-        [Fact]
-        public void CounterMetric_CanDecrement()
-        {
-            counter.Decrement();
-            counter.Value.Count.Should().Be(-1L);
-        }
-
-        [Fact]
-        public void CounterMetric_CanDecrementWithValue()
-        {
-            counter.Decrement(32L);
-            counter.Value.Count.Should().Be(-32L);
-        }
-
-        [Fact]
-        public void CounterMetric_CanDecrementMultipleTimes()
-        {
-            counter.Decrement();
-            counter.Decrement();
-            counter.Decrement();
-            counter.Value.Count.Should().Be(-3L);
-        }
-
-        [Fact]
         public void CounterMetric_CanBeIncrementedOnMultipleThreads()
         {
             const int threadCount = 16;
             const long iterations = 1000 * 100;
 
-            List<Thread> threads = new List<Thread>();
-            TaskCompletionSource<int> tcs = new TaskCompletionSource<int>();
+            var threads = new List<Thread>();
+            var tcs = new TaskCompletionSource<int>();
 
-            for (int i = 0; i < threadCount; i++)
+            for (var i = 0; i < threadCount; i++)
             {
                 threads.Add(new Thread(s =>
                 {
@@ -92,24 +40,16 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void CounterMetric_CanReset()
-        {
-            counter.Increment();
-            counter.Value.Count.Should().Be(1L);
-            counter.Reset();
-            counter.Value.Count.Should().Be(0L);
-        }
-
-        [Fact]
-        public void CounterMetric_CanCountForSetItem()
+        public void CounterMetric_CanComputePercentWithZeroTotal()
         {
             counter.Increment("A");
-            counter.Value.Count.Should().Be(1L);
-            counter.Value.Items.Should().HaveCount(1);
+            counter.Decrement("A");
+
+            counter.Value.Count.Should().Be(0);
 
             counter.Value.Items[0].Item.Should().Be("A");
-            counter.Value.Items[0].Count.Should().Be(1);
-            counter.Value.Items[0].Percent.Should().Be(100);
+            counter.Value.Items[0].Count.Should().Be(0);
+            counter.Value.Items[0].Percent.Should().Be(0);
         }
 
         [Fact]
@@ -131,6 +71,73 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
+        public void CounterMetric_CanCountForSetItem()
+        {
+            counter.Increment("A");
+            counter.Value.Count.Should().Be(1L);
+            counter.Value.Items.Should().HaveCount(1);
+
+            counter.Value.Items[0].Item.Should().Be("A");
+            counter.Value.Items[0].Count.Should().Be(1);
+            counter.Value.Items[0].Percent.Should().Be(100);
+        }
+
+        [Fact]
+        public void CounterMetric_CanDecrement()
+        {
+            counter.Decrement();
+            counter.Value.Count.Should().Be(-1L);
+        }
+
+        [Fact]
+        public void CounterMetric_CanDecrementMultipleTimes()
+        {
+            counter.Decrement();
+            counter.Decrement();
+            counter.Decrement();
+            counter.Value.Count.Should().Be(-3L);
+        }
+
+        [Fact]
+        public void CounterMetric_CanDecrementWithValue()
+        {
+            counter.Decrement(32L);
+            counter.Value.Count.Should().Be(-32L);
+        }
+
+        [Fact]
+        public void CounterMetric_CanIncrement()
+        {
+            counter.Increment();
+            counter.Value.Count.Should().Be(1L);
+        }
+
+        [Fact]
+        public void CounterMetric_CanIncrementMultipleTimes()
+        {
+            counter.Increment();
+            counter.Increment();
+            counter.Increment();
+            counter.Value.Count.Should().Be(3L);
+        }
+
+        [Fact]
+        public void CounterMetric_CanIncrementWithValue()
+        {
+            counter.Increment(32L);
+            counter.Value.Count.Should().Be(32L);
+        }
+
+        [Fact]
+        public void CounterMetric_CanReset()
+        {
+            counter.Increment();
+            counter.Value.Count.Should().Be(1L);
+            counter.Reset();
+            counter.Value.Count.Should().Be(0L);
+        }
+
+        [Fact]
         public void CounterMetric_CanResetSetItem()
         {
             counter.Increment("A");
@@ -140,17 +147,9 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void CounterMetric_CanComputePercentWithZeroTotal()
+        public void CounterMetric_StartsFromZero()
         {
-            counter.Increment("A");
-            counter.Decrement("A");
-
-            counter.Value.Count.Should().Be(0);
-
-            counter.Value.Items[0].Item.Should().Be("A");
-            counter.Value.Items[0].Count.Should().Be(0);
-            counter.Value.Items[0].Percent.Should().Be(0);
+            counter.Value.Count.Should().Be(0L);
         }
-
     }
 }

@@ -70,55 +70,55 @@ namespace App.Metrics.Json
 
         public IEnumerable<JsonProperty> ToJsonProperties()
         {
-            bool hasUserValues = this.LastUserValue != null || this.MinUserValue != null || this.MaxUserValue != null;
+            var hasUserValues = LastUserValue != null || MinUserValue != null || MaxUserValue != null;
 
-            yield return new JsonProperty("Name", this.Name);
-            yield return new JsonProperty("Count", this.Count);
-            yield return new JsonProperty("LastValue", this.LastValue);
+            yield return new JsonProperty("Name", Name);
+            yield return new JsonProperty("Count", Count);
+            yield return new JsonProperty("LastValue", LastValue);
 
             if (hasUserValues)
             {
-                yield return new JsonProperty("LastUserValue", this.LastUserValue);
+                yield return new JsonProperty("LastUserValue", LastUserValue);
             }
-            yield return new JsonProperty("Min", this.Min);
+            yield return new JsonProperty("Min", Min);
             if (hasUserValues)
             {
-                yield return new JsonProperty("MinUserValue", this.MinUserValue);
+                yield return new JsonProperty("MinUserValue", MinUserValue);
             }
-            yield return new JsonProperty("Max", this.Max);
+            yield return new JsonProperty("Max", Max);
             if (hasUserValues)
             {
-                yield return new JsonProperty("MaxUserValue", this.MaxUserValue);
+                yield return new JsonProperty("MaxUserValue", MaxUserValue);
             }
-            yield return new JsonProperty("Mean", this.Mean);
+            yield return new JsonProperty("Mean", Mean);
             if (hasUserValues)
             {
-                yield return new JsonProperty("MaxUserValue", this.MaxUserValue);
+                yield return new JsonProperty("MaxUserValue", MaxUserValue);
             }
 
-            yield return new JsonProperty("StdDev", this.StdDev);
-            yield return new JsonProperty("Median", this.Median);
-            yield return new JsonProperty("Percentile75", this.Percentile75);
-            yield return new JsonProperty("Percentile95", this.Percentile95);
-            yield return new JsonProperty("Percentile98", this.Percentile98);
-            yield return new JsonProperty("Percentile99", this.Percentile99);
-            yield return new JsonProperty("Percentile999", this.Percentile999);
-            yield return new JsonProperty("SampleSize", this.SampleSize);
-            yield return new JsonProperty("Unit", this.Unit);
+            yield return new JsonProperty("StdDev", StdDev);
+            yield return new JsonProperty("Median", Median);
+            yield return new JsonProperty("Percentile75", Percentile75);
+            yield return new JsonProperty("Percentile95", Percentile95);
+            yield return new JsonProperty("Percentile98", Percentile98);
+            yield return new JsonProperty("Percentile99", Percentile99);
+            yield return new JsonProperty("Percentile999", Percentile999);
+            yield return new JsonProperty("SampleSize", SampleSize);
+            yield return new JsonProperty("Unit", Unit);
 
-            if (this.Tags.Length > 0)
+            if (Tags.Length > 0)
             {
-                yield return new JsonProperty("Tags", this.Tags);
+                yield return new JsonProperty("Tags", Tags);
             }
         }
 
         public HistogramValueSource ToValueSource()
         {
-            var histogramValue = new HistogramValue(this.Count, this.LastValue, this.LastUserValue,
-                this.Max, this.MaxUserValue, this.Mean, this.Min, this.MinUserValue, this.StdDev, this.Median,
-                this.Percentile75, this.Percentile95, this.Percentile98, this.Percentile99, this.Percentile999, this.SampleSize);
+            var histogramValue = new HistogramValue(Count, LastValue, LastUserValue,
+                Max, MaxUserValue, Mean, Min, MinUserValue, StdDev, Median,
+                Percentile75, Percentile95, Percentile98, Percentile99, Percentile999, SampleSize);
 
-            return new HistogramValueSource(this.Name, ConstantValue.Provider(histogramValue), this.Unit, this.Tags);
+            return new HistogramValueSource(Name, ConstantValue.Provider(histogramValue), Unit, Tags);
         }
     }
 }

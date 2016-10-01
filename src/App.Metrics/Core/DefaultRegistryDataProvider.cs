@@ -6,11 +6,11 @@ namespace App.Metrics.Core
 {
     public sealed class DefaultRegistryDataProvider : RegistryDataProvider
     {
-        private readonly Func<IEnumerable<CounterValueSource>> counters;
-        private readonly Func<IEnumerable<GaugeValueSource>> gauges;
-        private readonly Func<IEnumerable<HistogramValueSource>> histograms;
-        private readonly Func<IEnumerable<MeterValueSource>> meters;
-        private readonly Func<IEnumerable<TimerValueSource>> timers;
+        private readonly Func<IEnumerable<CounterValueSource>> _counters;
+        private readonly Func<IEnumerable<GaugeValueSource>> _gauges;
+        private readonly Func<IEnumerable<HistogramValueSource>> _histograms;
+        private readonly Func<IEnumerable<MeterValueSource>> _meters;
+        private readonly Func<IEnumerable<TimerValueSource>> _timers;
 
         public DefaultRegistryDataProvider(
             Func<IEnumerable<GaugeValueSource>> gauges,
@@ -19,36 +19,36 @@ namespace App.Metrics.Core
             Func<IEnumerable<HistogramValueSource>> histograms,
             Func<IEnumerable<TimerValueSource>> timers)
         {
-            this.gauges = gauges;
-            this.counters = counters;
-            this.meters = meters;
-            this.histograms = histograms;
-            this.timers = timers;
+            _gauges = gauges;
+            _counters = counters;
+            _meters = meters;
+            _histograms = histograms;
+            _timers = timers;
         }
 
         public IEnumerable<CounterValueSource> Counters
         {
-            get { return this.counters(); }
+            get { return _counters(); }
         }
 
         public IEnumerable<GaugeValueSource> Gauges
         {
-            get { return this.gauges(); }
+            get { return _gauges(); }
         }
 
         public IEnumerable<HistogramValueSource> Histograms
         {
-            get { return this.histograms(); }
+            get { return _histograms(); }
         }
 
         public IEnumerable<MeterValueSource> Meters
         {
-            get { return this.meters(); }
+            get { return _meters(); }
         }
 
         public IEnumerable<TimerValueSource> Timers
         {
-            get { return this.timers(); }
+            get { return _timers(); }
         }
     }
 }

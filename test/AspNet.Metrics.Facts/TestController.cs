@@ -41,6 +41,7 @@ namespace AspNet.Metrics.Facts
         public async Task<IActionResult> Get300ms()
         {
             _metricsContext.Clock.Advance(TimeUnit.Milliseconds, 300);
+            await Task.FromResult(0);
             return StatusCode(200);
         }
 
@@ -48,7 +49,7 @@ namespace AspNet.Metrics.Facts
         public async Task<IActionResult> Get30ms()
         {
             _metricsContext.Clock.Advance(TimeUnit.Milliseconds, 30);
-
+            await Task.FromResult(0);
             return StatusCode(200);
         }
 

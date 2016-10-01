@@ -35,7 +35,7 @@ namespace App.Metrics.Json
             var healty = status.Results.Where(r => r.Check.IsHealthy)
                 .Select(r => new JsonProperty(r.Name, r.Check.Message));
             properties.Add(new JsonProperty("Healthy", healty));
-            this.root.AddRange(properties);
+            root.AddRange(properties);
             return this;
         }
 

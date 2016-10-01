@@ -18,52 +18,52 @@ namespace App.Metrics.Core
         private static readonly double M15Alpha = 1 - Math.Exp(-IntervalSeconds / SecondsPerMinute / FifteenMinutes);
 
 
-        private readonly StripedLongAdder uncounted = new StripedLongAdder();
-        private volatile bool initialized;
-        private VolatileDouble m15Rate = new VolatileDouble(0.0);
-        private VolatileDouble m1Rate = new VolatileDouble(0.0);
-        private VolatileDouble m5Rate = new VolatileDouble(0.0);
+        private readonly StripedLongAdder _uncounted = new StripedLongAdder();
+        private volatile bool _initialized;
+        private VolatileDouble _m15Rate = new VolatileDouble(0.0);
+        private VolatileDouble _m1Rate = new VolatileDouble(0.0);
+        private VolatileDouble _m5Rate = new VolatileDouble(0.0);
 
-        private AtomicLong total = new AtomicLong(0L);
+        private AtomicLong _total = new AtomicLong(0L);
 
         private double FifteenMinuteRate
         {
-            get { return this.m15Rate.GetValue() * NanosInSecond; }
+            get { return _m15Rate.GetValue() * NanosInSecond; }
         }
 
         private double FiveMinuteRate
         {
-            get { return this.m5Rate.GetValue() * NanosInSecond; }
+            get { return _m5Rate.GetValue() * NanosInSecond; }
         }
 
         private double OneMinuteRate
         {
-            get { return this.m1Rate.GetValue() * NanosInSecond; }
+            get { return _m1Rate.GetValue() * NanosInSecond; }
         }
 
         public MeterValue GetValue(double elapsed)
         {
-            var count = this.total.GetValue() + this.uncounted.GetValue();
+            var count = _total.GetValue() + _uncounted.GetValue();
             return new MeterValue(count, GetMeanRate(count, elapsed), OneMinuteRate, FiveMinuteRate, FifteenMinuteRate, TimeUnit.Seconds);
         }
 
         public void Mark(long count)
         {
-            this.uncounted.Add(count);
+            _uncounted.Add(count);
         }
 
         public void Reset()
         {
-            this.uncounted.Reset();
-            this.total.SetValue(0L);
-            this.m1Rate.SetValue(0.0);
-            this.m5Rate.SetValue(0.0);
-            this.m15Rate.SetValue(0.0);
+            _uncounted.Reset();
+            _total.SetValue(0L);
+            _m1Rate.SetValue(0.0);
+            _m5Rate.SetValue(0.0);
+            _m15Rate.SetValue(0.0);
         }
 
         public void Tick()
         {
-            var count = this.uncounted.GetAndReset();
+            var count = _uncounted.GetAndReset();
             Tick(count);
         }
 
@@ -79,25 +79,25 @@ namespace App.Metrics.Core
 
         private void Tick(long count)
         {
-            this.total.Add(count);
+            _total.Add(count);
             var instantRate = count / Interval;
-            if (this.initialized)
+            if (_initialized)
             {
-                var rate = this.m1Rate.GetValue();
-                this.m1Rate.SetValue(rate + M1Alpha * (instantRate - rate));
+                var rate = _m1Rate.GetValue();
+                _m1Rate.SetValue(rate + M1Alpha * (instantRate - rate));
 
-                rate = this.m5Rate.GetValue();
-                this.m5Rate.SetValue(rate + M5Alpha * (instantRate - rate));
+                rate = _m5Rate.GetValue();
+                _m5Rate.SetValue(rate + M5Alpha * (instantRate - rate));
 
-                rate = this.m15Rate.GetValue();
-                this.m15Rate.SetValue(rate + M15Alpha * (instantRate - rate));
+                rate = _m15Rate.GetValue();
+                _m15Rate.SetValue(rate + M15Alpha * (instantRate - rate));
             }
             else
             {
-                this.m1Rate.SetValue(instantRate);
-                this.m5Rate.SetValue(instantRate);
-                this.m15Rate.SetValue(instantRate);
-                this.initialized = true;
+                _m1Rate.SetValue(instantRate);
+                _m5Rate.SetValue(instantRate);
+                _m15Rate.SetValue(instantRate);
+                _initialized = true;
             }
         }
     }

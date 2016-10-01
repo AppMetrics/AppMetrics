@@ -7,8 +7,8 @@ namespace App.Metrics.Json
 {
     public static class JsonBuilderV1
     {
-        public const int Version = 1;
         public const string MetricsMimeType = "application/vnd.metrics.net.v1.metrics+json";
+        public const int Version = 1;
 
         private const bool DefaultIndented = true;
 

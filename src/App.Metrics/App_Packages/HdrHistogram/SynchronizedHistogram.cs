@@ -30,7 +30,7 @@ namespace App.Metrics.App_Packages.HdrHistogram
 
     internal class SynchronizedHistogram : Histogram
     {
-        private static readonly object syncLock = new object();
+        private static readonly object SyncLock = new object();
 
         /**
      * Construct an auto-resizing SynchronizedHistogram with a lowest discernible value of 1 and an auto-adjusting
@@ -97,7 +97,7 @@ namespace App.Metrics.App_Packages.HdrHistogram
 
         public override AbstractHistogram copy()
         {
-            lock (syncLock)
+            lock (SyncLock)
             {
                 SynchronizedHistogram copy;
                 lock (this)
@@ -111,9 +111,9 @@ namespace App.Metrics.App_Packages.HdrHistogram
 
         public override AbstractHistogram copyCorrectedForCoordinatedOmission(long expectedIntervalBetweenValueSamples)
         {
-            lock (syncLock)
+            lock (SyncLock)
             {
-                SynchronizedHistogram toHistogram = new SynchronizedHistogram(this);
+                var toHistogram = new SynchronizedHistogram(this);
                 toHistogram.addWhileCorrectingForCoordinatedOmission(this, expectedIntervalBetweenValueSamples);
                 return toHistogram;
             }
@@ -121,9 +121,9 @@ namespace App.Metrics.App_Packages.HdrHistogram
 
         public override long getTotalCount()
         {
-            lock (syncLock)
+            lock (SyncLock)
             {
-                return totalCount;
+                return TotalCount;
             }
         }
 
@@ -154,53 +154,53 @@ namespace App.Metrics.App_Packages.HdrHistogram
 
         internal override long getCountAtIndex(int index)
         {
-            lock (syncLock)
+            lock (SyncLock)
             {
-                return counts[NormalizeIndex(index, normalizingIndexOffset, countsArrayLength)];
+                return Counts[NormalizeIndex(index, NormalizingIndexOffset, countsArrayLength)];
             }
         }
 
         protected internal override int _getEstimatedFootprintInBytes()
         {
-            lock (syncLock)
+            lock (SyncLock)
             {
-                return (512 + (8 * counts.Length));
+                return (512 + (8 * Counts.Length));
             }
         }
 
         protected internal override void clearCounts()
         {
-            lock (syncLock)
+            lock (SyncLock)
             {
-                Array.Clear(counts, 0, counts.Length);
-                totalCount = 0;
+                Array.Clear(Counts, 0, Counts.Length);
+                TotalCount = 0;
             }
         }
 
         protected internal override void resize(long newHighestTrackableValue)
         {
-            lock (syncLock)
+            lock (SyncLock)
             {
-                int oldNormalizedZeroIndex = NormalizeIndex(0, normalizingIndexOffset, countsArrayLength);
+                var oldNormalizedZeroIndex = NormalizeIndex(0, NormalizingIndexOffset, countsArrayLength);
 
                 establishSize(newHighestTrackableValue);
 
-                int countsDelta = countsArrayLength - counts.Length;
-                Array.Resize(ref counts, countsArrayLength);
+                var countsDelta = countsArrayLength - Counts.Length;
+                Array.Resize(ref Counts, countsArrayLength);
 
                 if (oldNormalizedZeroIndex != 0)
                 {
                     // We need to shift the stuff from the zero index and up to the end of the array:
-                    int newNormalizedZeroIndex = oldNormalizedZeroIndex + countsDelta;
-                    int lengthToCopy = (countsArrayLength - countsDelta) - oldNormalizedZeroIndex;
-                    Array.Copy(counts, oldNormalizedZeroIndex, counts, newNormalizedZeroIndex, lengthToCopy);
+                    var newNormalizedZeroIndex = oldNormalizedZeroIndex + countsDelta;
+                    var lengthToCopy = (countsArrayLength - countsDelta) - oldNormalizedZeroIndex;
+                    Array.Copy(Counts, oldNormalizedZeroIndex, Counts, newNormalizedZeroIndex, lengthToCopy);
                 }
             }
         }
 
         protected internal override void shiftValuesLeft(int numberOfBinaryOrdersOfMagnitude)
         {
-            lock (syncLock)
+            lock (SyncLock)
             {
                 base.shiftValuesLeft(numberOfBinaryOrdersOfMagnitude);
             }
@@ -208,7 +208,7 @@ namespace App.Metrics.App_Packages.HdrHistogram
 
         protected internal override void shiftValuesRight(int numberOfBinaryOrdersOfMagnitude)
         {
-            lock (syncLock)
+            lock (SyncLock)
             {
                 base.shiftValuesRight(numberOfBinaryOrdersOfMagnitude);
             }
@@ -216,87 +216,87 @@ namespace App.Metrics.App_Packages.HdrHistogram
 
         protected override void addToCountAtIndex(int index, long value)
         {
-            lock (syncLock)
+            lock (SyncLock)
             {
-                counts[NormalizeIndex(index, normalizingIndexOffset, countsArrayLength)] += value;
+                Counts[NormalizeIndex(index, NormalizingIndexOffset, countsArrayLength)] += value;
             }
         }
 
         protected override void addToTotalCount(long value)
         {
-            lock (syncLock)
+            lock (SyncLock)
             {
-                totalCount += value;
+                TotalCount += value;
             }
         }
 
         protected override long getCountAtNormalizedIndex(int index)
         {
-            lock (syncLock)
+            lock (SyncLock)
             {
-                return counts[index];
+                return Counts[index];
             }
         }
 
         protected override int getNormalizingIndexOffset()
         {
-            lock (syncLock)
+            lock (SyncLock)
             {
-                return normalizingIndexOffset;
+                return NormalizingIndexOffset;
             }
         }
 
         protected override void incrementCountAtIndex(int index)
         {
-            lock (syncLock)
+            lock (SyncLock)
             {
-                counts[NormalizeIndex(index, normalizingIndexOffset, countsArrayLength)]++;
+                Counts[NormalizeIndex(index, NormalizingIndexOffset, countsArrayLength)]++;
             }
         }
 
         protected override void incrementTotalCount()
         {
-            lock (syncLock)
+            lock (SyncLock)
             {
-                totalCount++;
+                TotalCount++;
             }
         }
 
         protected override void setCountAtIndex(int index, long value)
         {
-            lock (syncLock)
+            lock (SyncLock)
             {
-                counts[NormalizeIndex(index, normalizingIndexOffset, countsArrayLength)] = value;
+                Counts[NormalizeIndex(index, NormalizingIndexOffset, countsArrayLength)] = value;
             }
         }
 
         protected override void setCountAtNormalizedIndex(int index, long value)
         {
-            lock (syncLock)
+            lock (SyncLock)
             {
-                counts[index] = value;
+                Counts[index] = value;
             }
         }
 
         protected override void setNormalizingIndexOffset(int normalizingIndexOffset)
         {
-            lock (syncLock)
+            lock (SyncLock)
             {
-                this.normalizingIndexOffset = normalizingIndexOffset;
+                NormalizingIndexOffset = normalizingIndexOffset;
             }
         }
 
         protected override void setTotalCount(long totalCount)
         {
-            lock (syncLock)
+            lock (SyncLock)
             {
-                this.totalCount = totalCount;
+                TotalCount = totalCount;
             }
         }
 
         protected override void shiftNormalizingIndexByOffset(int offsetToAdd, bool lowestHalfBucketPopulated)
         {
-            lock (syncLock)
+            lock (SyncLock)
             {
                 nonConcurrentNormalizingIndexShift(offsetToAdd, lowestHalfBucketPopulated);
             }
@@ -304,7 +304,7 @@ namespace App.Metrics.App_Packages.HdrHistogram
 
         protected override void updatedMaxValue(long maxValue)
         {
-            lock (syncLock)
+            lock (SyncLock)
             {
                 if (maxValue > getMaxValue())
                 {
@@ -315,7 +315,7 @@ namespace App.Metrics.App_Packages.HdrHistogram
 
         protected override void updateMinNonZeroValue(long minNonZeroValue)
         {
-            lock (syncLock)
+            lock (SyncLock)
             {
                 if (minNonZeroValue < getMinNonZeroValue())
                 {

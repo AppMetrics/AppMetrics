@@ -9,7 +9,7 @@ namespace App.Metrics.Reporters
     {
         private StringBuilder buffer;
 
-        public string Result => this.buffer.ToString();
+        public string Result => buffer.ToString();
 
         public static string RenderMetrics(MetricsData metricsData, Func<HealthStatus> healthStatus)
         {
@@ -20,13 +20,13 @@ namespace App.Metrics.Reporters
 
         protected override void StartReport(string contextName)
         {
-            this.buffer = new StringBuilder();
+            buffer = new StringBuilder();
             base.StartReport(contextName);
         }
 
         protected override void WriteLine(string line, params string[] args)
         {
-            this.buffer.AppendLine(string.Format(line, args));
+            buffer.AppendLine(string.Format(line, args));
         }
     }
 }

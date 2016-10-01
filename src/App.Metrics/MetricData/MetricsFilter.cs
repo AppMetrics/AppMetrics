@@ -31,9 +31,9 @@ namespace App.Metrics.MetricData
     public class Filter : MetricsFilter
     {
         public static MetricsFilter All = new NoOpFilter();
-        private Predicate<string> context;
-        private Predicate<string> name;
-        private HashSet<MetricType> types;
+        private Predicate<string> _context;
+        private Predicate<string> _name;
+        private HashSet<MetricType> _types;
 
         private Filter()
         {
@@ -46,7 +46,7 @@ namespace App.Metrics.MetricData
 
         public bool IsMatch(string context)
         {
-            if (this.context != null && !this.context(context))
+            if (context != null && !_context(context))
             {
                 return false;
             }
@@ -56,7 +56,7 @@ namespace App.Metrics.MetricData
 
         public bool IsMatch(GaugeValueSource gauge)
         {
-            if (types != null && !types.Contains(MetricType.Gauge))
+            if (_types != null && !_types.Contains(MetricType.Gauge))
             {
                 return false;
             }
@@ -65,7 +65,7 @@ namespace App.Metrics.MetricData
 
         public bool IsMatch(CounterValueSource counter)
         {
-            if (types != null && !types.Contains(MetricType.Counter))
+            if (_types != null && !_types.Contains(MetricType.Counter))
             {
                 return false;
             }
@@ -74,7 +74,7 @@ namespace App.Metrics.MetricData
 
         public bool IsMatch(MeterValueSource meter)
         {
-            if (types != null && !types.Contains(MetricType.Meter))
+            if (_types != null && !_types.Contains(MetricType.Meter))
             {
                 return false;
             }
@@ -83,7 +83,7 @@ namespace App.Metrics.MetricData
 
         public bool IsMatch(HistogramValueSource histogram)
         {
-            if (types != null && !types.Contains(MetricType.Histogram))
+            if (_types != null && !_types.Contains(MetricType.Histogram))
             {
                 return false;
             }
@@ -92,7 +92,7 @@ namespace App.Metrics.MetricData
 
         public bool IsMatch(TimerValueSource timer)
         {
-            if (types != null && !types.Contains(MetricType.Timer))
+            if (_types != null && !_types.Contains(MetricType.Timer))
             {
                 return false;
             }
@@ -101,7 +101,7 @@ namespace App.Metrics.MetricData
 
         public Filter WhereContext(Predicate<string> condition)
         {
-            this.context = condition;
+            _context = condition;
             return this;
         }
 
@@ -112,7 +112,7 @@ namespace App.Metrics.MetricData
 
         public Filter WhereName(Predicate<string> condition)
         {
-            this.name = condition;
+            _name = condition;
             return this;
         }
 
@@ -123,13 +123,13 @@ namespace App.Metrics.MetricData
 
         public Filter WhereType(params MetricType[] types)
         {
-            this.types = new HashSet<MetricType>(types);
+            _types = new HashSet<MetricType>(types);
             return this;
         }
 
         private bool IsNameMatch(string name)
         {
-            if (this.name != null && !this.name(name))
+            if (name != null && !_name(name))
             {
                 return false;
             }

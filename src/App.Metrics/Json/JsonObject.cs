@@ -8,7 +8,7 @@ namespace App.Metrics.Json
     {
         public JsonObject(IEnumerable<JsonProperty> properties)
         {
-            this.Properties = properties;
+            Properties = properties;
         }
 
         public IEnumerable<JsonProperty> Properties { get; }
@@ -16,7 +16,7 @@ namespace App.Metrics.Json
         public string AsJson(bool indented = true, int indent = 0)
         {
             indent = indented ? indent : 0;
-            var properties = this.Properties.Select(p => p.AsJson(indented, indent + 2));
+            var properties = Properties.Select(p => p.AsJson(indented, indent + 2));
 
             var jsonProperties = string.Join(indented ? "," + Environment.NewLine : ",", properties);
 

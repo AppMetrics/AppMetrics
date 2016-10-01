@@ -6,12 +6,6 @@ namespace App.Metrics.Facts.Utils
     public class TimeUnitTests
     {
         [Fact]
-        public void TimeUnit_ConvertsToZeroOnFractionalUnit()
-        {
-            TimeUnit.Seconds.ToMinutes(30L).Should().Be(0);
-        }
-
-        [Fact]
         public void TimeUnit_CanConvertBetweenUnits()
         {
             TimeUnit.Nanoseconds.ToNanoseconds(10L).Should().Be(10L);
@@ -72,6 +66,12 @@ namespace App.Metrics.Facts.Utils
         }
 
         [Fact]
+        public void TimeUnit_ConvertsToZeroOnFractionalUnit()
+        {
+            TimeUnit.Seconds.ToMinutes(30L).Should().Be(0);
+        }
+
+        [Fact]
         public void TimeUnit_HasCorrectScalingFactor()
         {
             TimeUnit.Nanoseconds.ScalingFactorFor(TimeUnit.Nanoseconds).Should().Be(1.0);
@@ -80,7 +80,9 @@ namespace App.Metrics.Facts.Utils
             TimeUnit.Nanoseconds.ScalingFactorFor(TimeUnit.Seconds).Should().Be(1.0 * 0.001 * 0.001 * 0.001);
             TimeUnit.Nanoseconds.ScalingFactorFor(TimeUnit.Minutes).Should().Be(1.0 * 0.001 * 0.001 * 0.001 * 1 / 60.0);
             TimeUnit.Nanoseconds.ScalingFactorFor(TimeUnit.Hours).Should().Be(1.0 * 0.001 * 0.001 * 0.001 * 1 / 60.0 * 1 / 60.0);
-            TimeUnit.Nanoseconds.ScalingFactorFor(TimeUnit.Days).Should().BeApproximately(1.0 * 0.001 * 0.001 * 0.001 * 1 / 60.0 * 1 / 60.0 * 1 / 24.0, 1.0E-20);
+            TimeUnit.Nanoseconds.ScalingFactorFor(TimeUnit.Days)
+                .Should()
+                .BeApproximately(1.0 * 0.001 * 0.001 * 0.001 * 1 / 60.0 * 1 / 60.0 * 1 / 24.0, 1.0E-20);
 
             TimeUnit.Microseconds.ScalingFactorFor(TimeUnit.Nanoseconds).Should().Be(1.0 * 1000);
             TimeUnit.Microseconds.ScalingFactorFor(TimeUnit.Microseconds).Should().Be(1);

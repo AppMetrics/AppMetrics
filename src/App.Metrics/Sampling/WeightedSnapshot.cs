@@ -17,47 +17,47 @@ namespace App.Metrics.Sampling
 
         public WeightedSample(long value, string userValue, double weight)
         {
-            this.Value = value;
-            this.UserValue = userValue;
-            this.Weight = weight;
+            Value = value;
+            UserValue = userValue;
+            Weight = weight;
         }
     }
 
     public sealed class WeightedSnapshot : Snapshot
     {
-        private readonly double[] normWeights;
-        private readonly double[] quantiles;
-        private readonly long[] values;
+        private readonly double[] _normWeights;
+        private readonly double[] _quantiles;
+        private readonly long[] _values;
 
         public WeightedSnapshot(long count, IEnumerable<WeightedSample> values)
         {
-            this.Count = count;
+            Count = count;
             var sample = values.ToArray();
             Array.Sort(sample, WeightedSampleComparer.Instance);
 
             var sumWeight = sample.Sum(s => s.Weight);
 
-            this.values = new long[sample.Length];
-            this.normWeights = new double[sample.Length];
-            this.quantiles = new double[sample.Length];
+            _values = new long[sample.Length];
+            _normWeights = new double[sample.Length];
+            _quantiles = new double[sample.Length];
 
             for (var i = 0; i < sample.Length; i++)
             {
-                this.values[i] = sample[i].Value;
-                this.normWeights[i] = sample[i].Weight / sumWeight;
+                _values[i] = sample[i].Value;
+                _normWeights[i] = sample[i].Weight / sumWeight;
                 if (i > 0)
                 {
-                    this.quantiles[i] = this.quantiles[i - 1] + this.normWeights[i - 1];
+                    _quantiles[i] = _quantiles[i - 1] + _normWeights[i - 1];
                 }
             }
 
-            this.MinUserValue = sample.Select(s => s.UserValue).FirstOrDefault();
-            this.MaxUserValue = sample.Select(s => s.UserValue).LastOrDefault();
+            MinUserValue = sample.Select(s => s.UserValue).FirstOrDefault();
+            MaxUserValue = sample.Select(s => s.UserValue).LastOrDefault();
         }
 
         public long Count { get; }
 
-        public long Max => this.values.LastOrDefault();
+        public long Max => _values.LastOrDefault();
 
         public string MaxUserValue { get; }
 
@@ -65,15 +65,15 @@ namespace App.Metrics.Sampling
         {
             get
             {
-                if (this.values.Length == 0)
+                if (_values.Length == 0)
                 {
                     return 0.0;
                 }
 
                 double sum = 0;
-                for (var i = 0; i < this.values.Length; i++)
+                for (var i = 0; i < _values.Length; i++)
                 {
-                    sum += this.values[i] * this.normWeights[i];
+                    sum += _values[i] * _normWeights[i];
                 }
                 return sum;
             }
@@ -81,7 +81,7 @@ namespace App.Metrics.Sampling
 
         public double Median => GetValue(0.5d);
 
-        public long Min => this.values.FirstOrDefault();
+        public long Min => _values.FirstOrDefault();
 
         public string MinUserValue { get; }
 
@@ -95,31 +95,31 @@ namespace App.Metrics.Sampling
 
         public double Percentile999 => GetValue(0.999d);
 
-        public int Size => this.values.Length;
+        public int Size => _values.Length;
 
         public double StdDev
         {
             get
             {
-                if (this.Size <= 1)
+                if (Size <= 1)
                 {
                     return 0;
                 }
 
-                var mean = this.Mean;
+                var mean = Mean;
                 double variance = 0;
 
-                for (var i = 0; i < this.values.Length; i++)
+                for (var i = 0; i < _values.Length; i++)
                 {
-                    var diff = this.values[i] - mean;
-                    variance += this.normWeights[i] * diff * diff;
+                    var diff = _values[i] - mean;
+                    variance += _normWeights[i] * diff * diff;
                 }
 
                 return Math.Sqrt(variance);
             }
         }
 
-        public IEnumerable<long> Values => this.values;
+        public IEnumerable<long> Values => _values;
 
         public double GetValue(double quantile)
         {
@@ -133,7 +133,7 @@ namespace App.Metrics.Sampling
                 return 0;
             }
 
-            var posx = Array.BinarySearch(this.quantiles, quantile);
+            var posx = Array.BinarySearch(_quantiles, quantile);
             if (posx < 0)
             {
                 posx = ~posx - 1;
@@ -141,10 +141,10 @@ namespace App.Metrics.Sampling
 
             if (posx < 1)
             {
-                return this.values[0];
+                return _values[0];
             }
 
-            return posx >= this.values.Length ? this.values[this.values.Length - 1] : this.values[posx];
+            return posx >= _values.Length ? _values[_values.Length - 1] : _values[posx];
         }
 
         private class WeightedSampleComparer : IComparer<WeightedSample>

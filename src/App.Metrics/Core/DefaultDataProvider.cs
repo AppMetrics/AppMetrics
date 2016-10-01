@@ -7,11 +7,11 @@ namespace App.Metrics.Core
 {
     public class DefaultDataProvider : MetricsDataProvider
     {
-        private readonly Func<IEnumerable<MetricsDataProvider>> childProviders;
-        private readonly string context;
-        private readonly IEnumerable<EnvironmentEntry> environment;
-        private readonly RegistryDataProvider registryDataProvider;
-        private readonly Func<DateTime> timestampProvider;
+        private readonly Func<IEnumerable<MetricsDataProvider>> _childProviders;
+        private readonly string _context;
+        private readonly IEnumerable<EnvironmentEntry> _environment;
+        private readonly RegistryDataProvider _registryDataProvider;
+        private readonly Func<DateTime> _timestampProvider;
 
         public DefaultDataProvider(string context,
             Func<DateTime> timestampProvider,
@@ -27,25 +27,25 @@ namespace App.Metrics.Core
             RegistryDataProvider registryDataProvider,
             Func<IEnumerable<MetricsDataProvider>> childProviders)
         {
-            this.context = context;
-            this.timestampProvider = timestampProvider;
-            this.environment = environment;
-            this.registryDataProvider = registryDataProvider;
-            this.childProviders = childProviders;
+            _context = context;
+            _timestampProvider = timestampProvider;
+            _environment = environment;
+            _registryDataProvider = registryDataProvider;
+            _childProviders = childProviders;
         }
 
         public MetricsData CurrentMetricsData
         {
             get
             {
-                return new MetricsData(this.context, this.timestampProvider(),
-                    this.environment,
-                    this.registryDataProvider.Gauges.ToArray(),
-                    this.registryDataProvider.Counters.ToArray(),
-                    this.registryDataProvider.Meters.ToArray(),
-                    this.registryDataProvider.Histograms.ToArray(),
-                    this.registryDataProvider.Timers.ToArray(),
-                    this.childProviders().Select(p => p.CurrentMetricsData));
+                return new MetricsData(_context, _timestampProvider(),
+                    _environment,
+                    _registryDataProvider.Gauges.ToArray(),
+                    _registryDataProvider.Counters.ToArray(),
+                    _registryDataProvider.Meters.ToArray(),
+                    _registryDataProvider.Histograms.ToArray(),
+                    _registryDataProvider.Timers.ToArray(),
+                    _childProviders().Select(p => p.CurrentMetricsData));
             }
         }
     }

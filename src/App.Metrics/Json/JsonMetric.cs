@@ -8,8 +8,8 @@
 
         public string[] Tags
         {
-            get { return this.tags; }
-            set { this.tags = value ?? new string[0]; }
+            get { return tags; }
+            set { tags = value ?? new string[0]; }
         }
 
         public string Unit { get; set; }

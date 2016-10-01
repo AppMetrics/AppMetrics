@@ -100,7 +100,7 @@ namespace App.Metrics.Utils
 
         private static string GetIpAddress()
         {
-            string hostName = SafeGetString(Dns.GetHostName);
+            var hostName = SafeGetString(Dns.GetHostName);
             try
             {
                 //TODO AH -: Make async
