@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Written by Iulian Margarintescu
+// 
+// Ported to .NET Standard Library by Allan Hardy
+// Original repo: https://github.com/etishor/Metrics.NET
+
+using System;
 using System.Linq;
 using App.Metrics.App_Packages.Concurrency;
 

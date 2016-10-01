@@ -1,3 +1,6 @@
+// Written by Iulian Margarintescu
+// Ported to .NET Standard Library by Allan Hardy
+
 // This is a collection of .NET concurrency utilities, inspired by the classes
 // available in java. This utilities are written by Iulian Margarintescu as described here
 // https://github.com/etishor/ConcurrencyUtilities

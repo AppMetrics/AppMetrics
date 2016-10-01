@@ -5,6 +5,9 @@
 // Java Version repo: https://github.com/HdrHistogram/HdrHistogram
 // Latest ported version is available in the Java submodule in the root of the repo
 
+// Ported to.NET Standard Library by Allan Hardy
+
+
 using System;
 using App.Metrics.App_Packages.Concurrency;
 

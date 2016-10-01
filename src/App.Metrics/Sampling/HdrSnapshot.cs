@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿// Written by Iulian Margarintescu
+// 
+// Ported to .NET Standard Library by Allan Hardy
+// Original repo: https://github.com/etishor/Metrics.NET
+
+using System.Collections.Generic;
 using App.Metrics.App_Packages.HdrHistogram;
 using System.Linq;
 

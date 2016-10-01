@@ -1,4 +1,9 @@
-﻿using App.Metrics.App_Packages.Concurrency;
+﻿// Written by Iulian Margarintescu
+// 
+// Ported to .NET Standard Library by Allan Hardy
+// Original repo: https://github.com/etishor/Metrics.NET
+
+using App.Metrics.App_Packages.Concurrency;
 using App.Metrics.App_Packages.HdrHistogram;
 
 namespace App.Metrics.Sampling
