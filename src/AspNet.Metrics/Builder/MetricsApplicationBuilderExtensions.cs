@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
+using App.Metrics;
+using App.Metrics.Core;
+using App.Metrics.Utils;
 using AspNet.Metrics;
 using AspNet.Metrics.Internal;
 using AspNet.Metrics.Middleware;
-using Metrics;
-using Metrics.Core;
-using Metrics.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -49,7 +49,6 @@ namespace Microsoft.AspNet.Builder
                 app.Use(next => new PingEndpointEndpointMiddleware(next, options).Invoke);
                 app.Use(next => new HealthEndpointEndpointMiddleware(next, options, metricsContext).Invoke);
                 app.Use(next => new MetricsEndpointTextEndpointMiddleware(next, options, metricsContext).Invoke);
-                app.Use(next => new MetricsEndpointVisualizationEndpointMiddleware(next, options).Invoke);
 
                 // Web Metrics Middleware
                 app.Use(next => new ErrorRequestMeterMiddleware(next, options, metricsContext).Invoke);

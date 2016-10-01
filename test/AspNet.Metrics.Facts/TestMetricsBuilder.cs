@@ -1,10 +1,9 @@
 ﻿using System;
-using Metrics;
-using Metrics.Core;
-using Metrics.MetricData;
-using Metrics.PerfCounters;
-using Metrics.Sampling;
-using Metrics.Utils;
+using App.Metrics;
+using App.Metrics.Core;
+using App.Metrics.MetricData;
+using App.Metrics.Sampling;
+using App.Metrics.Utils;
 
 namespace AspNet.Metrics.Facts
 {
@@ -42,12 +41,6 @@ namespace AspNet.Metrics.Facts
         public MeterImplementation BuildMeter(string name, Unit unit, TimeUnit rateUnit)
         {
             return new MeterMetric(_clock, _scheduler);
-        }
-
-        public MetricValueProvider<double> BuildPerformanceCounter(string name, Unit unit, string counterCategory, string counterName,
-            string counterInstance)
-        {
-            return new PerformanceCounterGauge(counterCategory, counterName, counterInstance);
         }
 
         public TimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, SamplingType samplingType)

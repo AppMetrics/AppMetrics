@@ -64,7 +64,7 @@ namespace Mvc.Sample
                     options.MetricsVisualisationEnabled = false;
                     options.MetricsEndpoint = new PathString("/metrics");
                 })
-                .WithSystemPerforrmanceCounters()
+                //.WithSystemPerforrmanceCounters()
                 .AddHealthChecks();
         }
     }

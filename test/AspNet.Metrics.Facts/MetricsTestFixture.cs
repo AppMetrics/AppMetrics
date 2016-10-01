@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Http;
+using App.Metrics;
 using AspNet.Metrics.Infrastructure;
-using Metrics;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

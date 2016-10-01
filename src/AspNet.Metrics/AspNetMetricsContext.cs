@@ -1,6 +1,6 @@
 using System;
-using Metrics;
-using Metrics.Utils;
+using App.Metrics;
+using App.Metrics.Utils;
 
 namespace AspNet.Metrics
 {

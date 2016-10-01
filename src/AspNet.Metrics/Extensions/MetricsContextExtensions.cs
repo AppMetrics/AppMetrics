@@ -1,6 +1,6 @@
-// ReSharper disable CheckNamespace
 
-namespace Metrics
+// ReSharper disable CheckNamespace
+namespace App.Metrics
 // ReSharper restore CheckNamespace
 {
     internal static class MetricsContextExtensions

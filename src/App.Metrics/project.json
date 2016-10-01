@@ -1,17 +1,21 @@
-﻿{
+{
+  "title": "App.Metrics",
+  "copyright": "Allan Hardy 2016",
   "version": "1.0.0-*",
-  "authors": [ "Allan Hardy" ],
+  "authors": ["Allan Hardy"],
   "description": "Provides application instrumentation abilities with custom metrics",
 
   "packOptions": {
-    "tags": [ "Metrics", "Monitoring", "Instrumentation" ],
+    "tags": ["Metrics", "Monitoring", "Instrumentation"],
     "projectUrl": "https://github.com/alhardy/aspnet-metrics",
     "licenseUrl": "https://github.com/alhardy/aspnet-metrics/blob/master/LICENSE",
     "iconUrl": "http://www.erata.net/Metrics.NET/metrics_32.png"
   },
 
   "dependencies": {
-    "NETStandard.Library": "1.6.0"
+    "Microsoft.DotNet.InternalAbstractions": "1.0.1-beta-003206",
+    "NETStandard.Library": "1.6.0",
+    "System.Net.NameResolution": "4.0.0"
   },
 
   "frameworks": {
@@ -22,9 +26,12 @@
       ],
       "dependencies": {
         "System.Collections.Specialized": "4.0.1",
-        "System.Diagnostics.Process": "4.1.0"
+        "System.Diagnostics.Process": "4.1.0",
+        "Microsoft.Extensions.Logging": "1.0.0",
+        "System.Threading.Thread":  "4.0.0" 
+
       }
-    },
-    "net452": {}
+    }
+    //"net452": {}
   }
 }

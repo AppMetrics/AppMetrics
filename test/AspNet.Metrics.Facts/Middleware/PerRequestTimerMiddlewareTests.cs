@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace AspNet.Metrics.Facts.Middleware
@@ -20,7 +20,7 @@ namespace AspNet.Metrics.Facts.Middleware
             await _fixture.Client.GetAsync("/api/test/error");
 
 
-            var timer1 =  _fixture.TestContext.TimerValue("Application.WebRequests", "GET api/test");
+            var timer1 = _fixture.TestContext.TimerValue("Application.WebRequests", "GET api/test");
             timer1.Histogram.Count.Should().Be(1);
 
             var timer2 = _fixture.TestContext.TimerValue("Application.WebRequests", "GET api/test/error");

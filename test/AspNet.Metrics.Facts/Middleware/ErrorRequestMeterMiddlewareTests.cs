@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace AspNet.Metrics.Facts.Middleware
@@ -31,25 +31,6 @@ namespace AspNet.Metrics.Facts.Middleware
         }
 
         [Fact]
-        public async Task can_count_total_400_401_and_500_error_requests_per_endpoint()
-        {
-            await _fixture.Client.GetAsync("/api/test");
-            await _fixture.Client.GetAsync("/api/test/unauth");
-            await _fixture.Client.GetAsync("/api/test/bad");
-            await _fixture.Client.GetAsync("/api/test/bad");
-            await _fixture.Client.GetAsync("/api/test/bad");
-            await _fixture.Client.GetAsync("/api/test/error");
-            await _fixture.Client.GetAsync("/api/test/error");
-
-
-            _fixture.TestContext.MeterValue("Application.WebRequests", "GET api/test/bad Bad Requests").Count.Should().Be(3);
-            _fixture.TestContext.MeterValue("Application.WebRequests", "GET api/test/error Internal Server Error Requests").Count.Should().Be(2);
-            _fixture.TestContext.MeterValue("Application.WebRequests", "GET api/test/unauth Unauthorized Requests").Count.Should().Be(1);
-            _fixture.TestContext.MeterValue("Application.WebRequests", "Total Error Requests").Count.Should().Be(6);
-            _fixture.TestContext.TimerValue("Application.WebRequests", "Web Requests").Histogram.Count.Should().Be(7);
-        }
-
-        [Fact]
         public async Task can_count_overall_400_401_and_500_error_requests()
         {
             await _fixture.Client.GetAsync("/api/test");
@@ -64,6 +45,25 @@ namespace AspNet.Metrics.Facts.Middleware
             _fixture.TestContext.MeterValue("Application.WebRequests", "Total Bad Requests").Count.Should().Be(3);
             _fixture.TestContext.MeterValue("Application.WebRequests", "Total Internal Server Error Requests").Count.Should().Be(2);
             _fixture.TestContext.MeterValue("Application.WebRequests", "Total Unauthorized Requests").Count.Should().Be(1);
+            _fixture.TestContext.MeterValue("Application.WebRequests", "Total Error Requests").Count.Should().Be(6);
+            _fixture.TestContext.TimerValue("Application.WebRequests", "Web Requests").Histogram.Count.Should().Be(7);
+        }
+
+        [Fact]
+        public async Task can_count_total_400_401_and_500_error_requests_per_endpoint()
+        {
+            await _fixture.Client.GetAsync("/api/test");
+            await _fixture.Client.GetAsync("/api/test/unauth");
+            await _fixture.Client.GetAsync("/api/test/bad");
+            await _fixture.Client.GetAsync("/api/test/bad");
+            await _fixture.Client.GetAsync("/api/test/bad");
+            await _fixture.Client.GetAsync("/api/test/error");
+            await _fixture.Client.GetAsync("/api/test/error");
+
+
+            _fixture.TestContext.MeterValue("Application.WebRequests", "GET api/test/bad Bad Requests").Count.Should().Be(3);
+            _fixture.TestContext.MeterValue("Application.WebRequests", "GET api/test/error Internal Server Error Requests").Count.Should().Be(2);
+            _fixture.TestContext.MeterValue("Application.WebRequests", "GET api/test/unauth Unauthorized Requests").Count.Should().Be(1);
             _fixture.TestContext.MeterValue("Application.WebRequests", "Total Error Requests").Count.Should().Be(6);
             _fixture.TestContext.TimerValue("Application.WebRequests", "Web Requests").Histogram.Count.Should().Be(7);
         }

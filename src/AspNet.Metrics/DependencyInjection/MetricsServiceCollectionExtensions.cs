@@ -1,6 +1,5 @@
 ﻿using System;
 using AspNet.Metrics;
-using Metrics;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 // ReSharper disable CheckNamespace

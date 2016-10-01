@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
+using App.Metrics;
+using App.Metrics.Reporters;
 using AspNet.Metrics;
 using AspNet.Metrics.Infrastructure;
 using AspNet.Metrics.Internal;
-using Metrics;
-using Metrics.Reports;
 using Microsoft.AspNetCore.Hosting;
 
 // ReSharper disable CheckNamespace

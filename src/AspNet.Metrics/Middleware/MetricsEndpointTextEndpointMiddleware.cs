@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Metrics.Reporters;
+using App.Metrics.Reporters;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Metrics.Middleware

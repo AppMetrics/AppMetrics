@@ -1,7 +1,7 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using Metrics.Json;
+using App.Metrics.Json;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Metrics.Middleware

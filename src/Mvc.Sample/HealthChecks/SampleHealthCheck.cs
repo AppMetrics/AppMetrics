@@ -1,9 +1,8 @@
-﻿using Metrics;
-using Metrics.Core;
+﻿using App.Metrics;
 
 namespace Mvc.Sample.HealthChecks
 {
-    public class SampleHealthCheck : Metrics.Core.HealthCheck
+    public class SampleHealthCheck : App.Metrics.Core.HealthCheck
     {
         public SampleHealthCheck() : base("Sample Healthy")
         {

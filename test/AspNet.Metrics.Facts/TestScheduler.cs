@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Metrics.Utils;
+using App.Metrics.Utils;
 
 namespace AspNet.Metrics.Facts
 {

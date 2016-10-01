@@ -1,10 +1,10 @@
 ﻿using System;
-using Metrics;
+using App.Metrics;
 
 namespace HealthCheck.Samples
 {
     [Obsolete]
-    public class IgnoreAttributeHealthCheck : Metrics.Core.HealthCheck
+    public class IgnoreAttributeHealthCheck : App.Metrics.Core.HealthCheck
     {
         public IgnoreAttributeHealthCheck() : base("Referencing Assembly - Sample Healthy")
         {

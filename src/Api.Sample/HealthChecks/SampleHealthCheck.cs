@@ -1,5 +1,5 @@
-﻿using Metrics;
-using Metrics.Core;
+﻿using App.Metrics;
+using App.Metrics.Core;
 
 namespace Api.Sample.HealthChecks
 {

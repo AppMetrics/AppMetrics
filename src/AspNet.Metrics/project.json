@@ -21,7 +21,6 @@
     "xmlDoc": true
   },
   "dependencies": {
-    "Metrics.NET": "0.3.7",
     "Microsoft.AspNetCore.Mvc": "1.0.1",
     "Microsoft.AspNetCore.Routing": "1.0.1",
     "Microsoft.Extensions.DependencyInjection": "1.0.0",
@@ -29,9 +28,16 @@
     "Microsoft.Extensions.Logging": "1.0.0",
     "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
     "NETStandard.Library": "1.6.0",
-    "System.Linq": "4.1.0"
+    "System.Linq": "4.1.0",
+    "App.Metrics": "1.0.0-*"
   },
   "frameworks": {
-    "net461": { }
+    "netstandard1.6": {
+      "imports": [
+        "dotnet5.6",
+        "portable-net45+win8"
+      ]
+    }
   }
+
 }

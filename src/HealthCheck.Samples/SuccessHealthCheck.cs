@@ -1,8 +1,8 @@
-﻿using Metrics;
+﻿using App.Metrics;
 
 namespace HealthCheck.Samples
 {
-    public class SuccessHealthCheck : Metrics.Core.HealthCheck
+    public class SuccessHealthCheck : App.Metrics.Core.HealthCheck
     {
         public SuccessHealthCheck() : base("Referencing Assembly - Sample Healthy")
         {

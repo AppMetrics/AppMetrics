@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
-using Metrics;
+using App.Metrics;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspNet.Metrics.Facts

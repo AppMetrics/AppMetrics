@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace AspNet.Metrics.Facts.Middleware

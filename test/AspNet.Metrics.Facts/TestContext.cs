@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using App.Metrics;
+using App.Metrics.Core;
+using App.Metrics.MetricData;
 using FluentAssertions;
-using Metrics;
-using Metrics.Core;
-using Metrics.MetricData;
 
 namespace AspNet.Metrics.Facts
 {

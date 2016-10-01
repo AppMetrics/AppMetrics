@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Metrics.Json;
+using App.Metrics.Json;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Metrics.Middleware
@@ -11,7 +11,7 @@ namespace AspNet.Metrics.Middleware
         private readonly RequestDelegate _next;
         private readonly MetricsOptions _options;
 
-        public MetricsEndpointMiddleware(RequestDelegate next, MetricsOptions options, 
+        public MetricsEndpointMiddleware(RequestDelegate next, MetricsOptions options,
             AspNetMetricsContext metricsContext)
         {
             if (next == null)
