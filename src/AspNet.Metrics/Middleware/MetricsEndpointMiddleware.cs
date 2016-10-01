@@ -37,9 +37,9 @@ namespace AspNet.Metrics.Middleware
         {
             if (_options.MetricsEnabled && _options.MetricsEndpoint.HasValue && _options.MetricsEndpoint == context.Request.Path)
             {
-                var json = JsonBuilderV2.BuildJson(_metricsContext.Context.DataProvider.CurrentMetricsData);
+                var json = JsonBuilderV1.BuildJson(_metricsContext.Context.DataProvider.CurrentMetricsData);
 
-                return WriteResponse(context, json, JsonBuilderV2.MetricsMimeType);
+                return WriteResponse(context, json, JsonBuilderV1.MetricsMimeType);
             }
 
             return _next(context);

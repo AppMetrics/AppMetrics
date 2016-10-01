@@ -13,15 +13,13 @@ namespace AspNet.Metrics
             RouteNameResolver = new DefaultRouteTemplateResolver();
 
             HealthEndpoint = new PathString("/health");
-            MetricsEndpoint = new PathString("/json");
-            MetricsVisualizationEndpoint = new PathString("/metrics-visual");
+            MetricsEndpoint = new PathString("/metrics");
             MetricsTextEndpoint = new PathString("/metrics-text");
             PingEndpoint = new PathString("/ping");
 
             HealthEnabled = true;
             MetricsEnabled = true;
             MetricsTextEnabled = true;
-            MetricsVisualisationEnabled = true;
             PingEnabled = true;
 
             IgnoredRequestPatterns.Add(new Regex(@"\.(jpg|gif|css|js|png|woff|ttf|txt|eot|svg)$"));
@@ -47,10 +45,6 @@ namespace AspNet.Metrics
         public bool MetricsTextEnabled { get; set; }
 
         public PathString MetricsTextEndpoint { get; set; }
-
-        public bool MetricsVisualisationEnabled { get; set; }
-
-        public PathString MetricsVisualizationEndpoint { get; set; }
 
         public bool PingEnabled { get; set; }
 

@@ -61,7 +61,6 @@ namespace Mvc.Sample
             services
                 .AddMetrics(options =>
                 {
-                    options.MetricsVisualisationEnabled = false;
                     options.MetricsEndpoint = new PathString("/metrics");
                 })
                 //.WithSystemPerforrmanceCounters()
