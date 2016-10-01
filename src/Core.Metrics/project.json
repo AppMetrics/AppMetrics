@@ -1,0 +1,30 @@
+﻿{
+  "version": "1.0.0-*",
+  "authors": [ "Allan Hardy" ],
+  "description": "Provides application instrumentation abilities with custom metrics",
+
+  "packOptions": {
+    "tags": [ "Metrics", "Monitoring", "Instrumentation" ],
+    "projectUrl": "https://github.com/alhardy/aspnet-metrics",
+    "licenseUrl": "https://github.com/alhardy/aspnet-metrics/blob/master/LICENSE",
+    "iconUrl": "http://www.erata.net/Metrics.NET/metrics_32.png"
+  },
+
+  "dependencies": {
+    "NETStandard.Library": "1.6.0"
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": [
+        "dotnet5.6",
+        "portable-net45+win8"
+      ],
+      "dependencies": {
+        "System.Collections.Specialized": "4.0.1",
+        "System.Diagnostics.Process": "4.1.0"
+      }
+    },
+    "net452": {}
+  }
+}
