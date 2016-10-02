@@ -64,6 +64,7 @@ WebPublish/*
 *.dbmdl
 logs/*
 .vs/*
+*.project.lock.json
 
 #Temp folders
 temp/
