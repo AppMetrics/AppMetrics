@@ -1,17 +1,14 @@
 using System;
-using System.Linq;
 using App.Metrics;
 using App.Metrics.Health;
 using App.Metrics.Infrastructure;
 using App.Metrics.Reporters;
-using AspNet.Metrics;
-using Microsoft.AspNetCore.Hosting;
 
 // ReSharper disable CheckNamespace
+
 namespace Microsoft.Extensions.DependencyInjection
 // ReSharper restore CheckNamespace
 {
-    //TODO: AH - make internal to this and AspNet.Metrics
     public static class MetricsCoreBuilderExtensions
     {
         public static IMetricsBuilder AddHealthChecks(this IMetricsBuilder builder)
@@ -21,21 +18,15 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(builder));
             }
 
-            var environment = GetServiceFromCollection<IHostingEnvironment>(builder.Services);
-            if (environment == null)
-            {
-                return builder;
-            }
-
             HealthChecksAsServices.AddHealthChecksAsServices(builder.Services,
-                DefaultMetricsAssemblyDiscoveryProvider.DiscoverAssemblies(environment.ApplicationName));
+                DefaultMetricsAssemblyDiscoveryProvider.DiscoverAssemblies(builder.Environment.ApplicationName));
 
             return builder;
         }
 
         public static IMetricsBuilder AddMetricsOptions(
             this IMetricsBuilder builder,
-            Action<AspNetMetricsOptions> setupAction)
+            Action<AppMetricsOptions> setupAction)
         {
             if (builder == null)
             {
@@ -47,7 +38,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(setupAction));
             }
 
-            builder.Services.Configure<AspNetMetricsOptions>(setupAction);
+            builder.Services.Configure<AppMetricsOptions>(setupAction);
             return builder;
         }
 
@@ -75,13 +66,6 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.AddReporter(reportsAction, Metric.Config);
 
             return builder;
-        }
-
-        private static T GetServiceFromCollection<T>(IServiceCollection services)
-        {
-            return (T)services
-                .FirstOrDefault(d => d.ServiceType == typeof(T))
-                ?.ImplementationInstance;
         }
     }
 }

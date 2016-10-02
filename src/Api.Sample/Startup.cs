@@ -60,9 +60,10 @@ namespace Api.Sample
                 .AddRouting(options => { options.LowercaseUrls = true; });
 
             services.AddMvc(options => { options.Filters.Add(new MetricsResourceFilter(new DefaultRouteTemplateResolver())); });
-
+            
             services
                 .AddMetrics()
+                .AddAspNetMetrics()
                 //.WithAllPerformanceCounters()
                 .AddHealthChecks();
         }

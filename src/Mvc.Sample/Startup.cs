@@ -61,6 +61,11 @@ namespace Mvc.Sample
             services
                 .AddMetrics(options =>
                 {
+                    options.CompletelyDisableMetrics = false;
+                    options.GlobalContextName = "Mvc.Sample";
+                })
+                .AddAspNetMetrics(options =>
+                {
                     options.MetricsEndpoint = new PathString("/metrics");
                 })
                 //.WithSystemPerforrmanceCounters()
