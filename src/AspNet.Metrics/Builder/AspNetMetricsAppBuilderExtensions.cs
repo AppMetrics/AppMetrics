@@ -2,20 +2,19 @@ using System;
 using System.Linq;
 using App.Metrics;
 using App.Metrics.Core;
+using App.Metrics.Internal;
 using App.Metrics.Utils;
 using AspNet.Metrics;
-using AspNet.Metrics.Internal;
 using AspNet.Metrics.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 // ReSharper disable CheckNamespace
-
 namespace Microsoft.AspNet.Builder
 // ReSharper restore CheckNamespace
 {
-    public static class MetricsAppBuilderExtensions
+    public static class AspNetMetricsAppBuilderExtensions
     {
         public static IApplicationBuilder UseMetrics(this IApplicationBuilder app)
         {
@@ -38,7 +37,7 @@ namespace Microsoft.AspNet.Builder
             // We use the MetricsMarkerService to make sure if all the services were added.
             MetricsServicesHelper.ThrowIfMetricsNotRegistered(app.ApplicationServices);
 
-            var options = app.ApplicationServices.GetService<IOptions<MetricsOptions>>().Value;
+            var options = app.ApplicationServices.GetService<IOptions<AspNetMetricsOptions>>().Value;
 
             config.WithConfigExtension((ctx, hs) =>
             {
@@ -46,8 +45,8 @@ namespace Microsoft.AspNet.Builder
 
                 // Metrics Endpoint Middleware
                 app.Use(next => new MetricsEndpointMiddleware(next, options, metricsContext).Invoke);
-                app.Use(next => new PingEndpointEndpointMiddleware(next, options).Invoke);
-                app.Use(next => new HealthEndpointEndpointMiddleware(next, options, metricsContext).Invoke);
+                app.Use(next => new PingEndpointMiddleware(next, options).Invoke);
+                app.Use(next => new HealthCheckEndpointMiddleware(next, options, metricsContext).Invoke);
                 app.Use(next => new MetricsEndpointTextEndpointMiddleware(next, options, metricsContext).Invoke);
 
                 // Web Metrics Middleware

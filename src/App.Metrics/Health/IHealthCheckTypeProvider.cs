@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace AspNet.Metrics.Health
+namespace App.Metrics.Health
 {
     public interface IHealthCheckTypeProvider
     {

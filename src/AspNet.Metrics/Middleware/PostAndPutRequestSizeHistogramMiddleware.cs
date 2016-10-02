@@ -11,7 +11,7 @@ namespace AspNet.Metrics.Middleware
         private readonly Histogram _histogram;
         private readonly RequestDelegate _next;
 
-        public PostAndPutRequestSizeHistogramMiddleware(RequestDelegate next, MetricsOptions options, AspNetMetricsContext metricsContext)
+        public PostAndPutRequestSizeHistogramMiddleware(RequestDelegate next, AspNetMetricsOptions options, AspNetMetricsContext metricsContext)
             : base(options)
         {
             if (next == null)

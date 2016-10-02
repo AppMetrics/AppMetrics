@@ -1,4 +1,5 @@
 using System;
+using App.Metrics.Internal;
 using AspNet.Metrics;
 using AspNet.Metrics.Internal;
 using Microsoft.Extensions.Options;
@@ -21,7 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
 
         public static IMetricsBuilder AddMetricsCore(
             this IServiceCollection services,
-            Action<MetricsOptions> setupAction)
+            Action<AspNetMetricsOptions> setupAction)
         {
             if (services == null)
             {
@@ -42,7 +43,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
 
         internal static void AddMetricsCoreServices(IServiceCollection services)
         {
-            services.TryAddSingleton<IConfigureOptions<MetricsOptions>, MetricsCoreOptionsSetup>();
+            services.TryAddSingleton<IConfigureOptions<AspNetMetricsOptions>, AspNetMetricsCoreOptionsSetup>();
             services.TryAddSingleton<MetricsMarkerService, MetricsMarkerService>();
         }
 

@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Metrics.Middleware
 {
-    public class PingEndpointEndpointMiddleware : MetricsEndpointMiddlewareBase
+    public class PingEndpointMiddleware : MetricsEndpointMiddlewareBase
     {
         private readonly RequestDelegate _next;
-        private readonly MetricsOptions _options;
+        private readonly AspNetMetricsOptions _options;
 
-        public PingEndpointEndpointMiddleware(RequestDelegate next, MetricsOptions options)
+        public PingEndpointMiddleware(RequestDelegate next, AspNetMetricsOptions options)
         {
             if (next == null)
             {

@@ -11,7 +11,7 @@ namespace AspNet.Metrics.Middleware
         private readonly RequestDelegate _next;
         private readonly Timer _requestTimer;
 
-        public RequestTimerMiddleware(RequestDelegate next, MetricsOptions options, AspNetMetricsContext metricsContext)
+        public RequestTimerMiddleware(RequestDelegate next, AspNetMetricsOptions options, AspNetMetricsContext metricsContext)
             : base(options)
         {
             if (next == null)

@@ -10,7 +10,7 @@ namespace AspNet.Metrics.Middleware
         private readonly Counter _activeRequests;
         private readonly RequestDelegate _next;
 
-        public ActiveRequestCounterEndpointMiddleware(RequestDelegate next, MetricsOptions options, AspNetMetricsContext metricsContext)
+        public ActiveRequestCounterEndpointMiddleware(RequestDelegate next, AspNetMetricsOptions options, AspNetMetricsContext metricsContext)
             : base(options)
         {
             if (next == null)

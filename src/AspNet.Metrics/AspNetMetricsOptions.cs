@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Metrics
 {
-    public class MetricsOptions
+    public class AspNetMetricsOptions
     {
-        public MetricsOptions()
+        public AspNetMetricsOptions()
         {
             IgnoredRequestPatterns = new List<Regex>();
             RouteNameResolver = new DefaultRouteTemplateResolver();

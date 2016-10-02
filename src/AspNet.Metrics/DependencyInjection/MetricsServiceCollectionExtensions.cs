@@ -14,7 +14,7 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         public static IMetricsBuilder AddMetrics(this IServiceCollection services, 
-            Action<MetricsOptions> setupAction)
+            Action<AspNetMetricsOptions> setupAction)
         {
             var builder = services.AddMetricsCore(setupAction);
 

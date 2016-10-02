@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 
-namespace AspNet.Metrics.Infrastructure
+namespace App.Metrics.Infrastructure
 {
     /// <summary>
     ///     Specifies the contract for discovering assemblies that may contain Metrics.Net specific types such as health

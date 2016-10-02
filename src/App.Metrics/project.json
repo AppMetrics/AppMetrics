@@ -14,6 +14,11 @@
 
   "dependencies": {
     "Microsoft.DotNet.InternalAbstractions": "1.0.1-beta-003206",
+    "Microsoft.Extensions.DependencyInjection": "1.0.0",
+    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0",
+    "Microsoft.Extensions.DependencyModel": "1.0.1-*",
+    "Microsoft.Extensions.Options": "1.0.0",
+    "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
     "NETStandard.Library": "1.6.0",
     "System.Net.NameResolution": "4.0.0"
   },

@@ -3,15 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using App.Metrics.Core;
-using AspNet.Metrics.Health;
-using AspNet.Metrics.Infrastructure;
+using App.Metrics.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace AspNet.Metrics.Internal
+namespace App.Metrics.Health
 {
-    internal static class HealthChecksAsServices
+    public static class HealthChecksAsServices
     {
+        /// <summary>
+        ///     Adds the health checks as services.
+        /// </summary>
+        /// <param name="services">The services.</param>
+        /// <param name="types">The types.</param>
+        /// <exception cref="System.ArgumentNullException"></exception>
         public static void AddHealthChecksAsServices(IServiceCollection services, IEnumerable<Type> types)
         {
             if (services == null)

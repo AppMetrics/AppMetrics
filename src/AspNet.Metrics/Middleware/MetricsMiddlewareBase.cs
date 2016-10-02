@@ -6,9 +6,9 @@ namespace AspNet.Metrics.Middleware
 {
     public abstract class MetricsMiddlewareBase
     {
-        private readonly MetricsOptions _options;
+        private readonly AspNetMetricsOptions _options;
 
-        protected MetricsMiddlewareBase(MetricsOptions options)
+        protected MetricsMiddlewareBase(AspNetMetricsOptions options)
         {
             if (options == null)
             {

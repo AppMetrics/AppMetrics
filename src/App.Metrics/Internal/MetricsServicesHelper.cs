@@ -1,6 +1,6 @@
 using System;
 
-namespace AspNet.Metrics.Internal
+namespace App.Metrics.Internal
 {
     public static class MetricsServicesHelper
     {

@@ -1,9 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using AspNet.Metrics.Internal;
+using App.Metrics.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -43,7 +42,6 @@ namespace AspNet.Metrics.Infrastructure
 
         private void EnsureServices(HttpContext context)
         {
-
             if (_logger == null)
             {
                 var factory = context.RequestServices.GetRequiredService<ILoggerFactory>();

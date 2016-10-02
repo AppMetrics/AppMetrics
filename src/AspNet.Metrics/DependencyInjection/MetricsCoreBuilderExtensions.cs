@@ -1,17 +1,17 @@
 using System;
 using System.Linq;
 using App.Metrics;
+using App.Metrics.Health;
+using App.Metrics.Infrastructure;
 using App.Metrics.Reporters;
 using AspNet.Metrics;
-using AspNet.Metrics.Infrastructure;
-using AspNet.Metrics.Internal;
 using Microsoft.AspNetCore.Hosting;
 
 // ReSharper disable CheckNamespace
-
 namespace Microsoft.Extensions.DependencyInjection
 // ReSharper restore CheckNamespace
 {
+    //TODO: AH - make internal to this and AspNet.Metrics
     public static class MetricsCoreBuilderExtensions
     {
         public static IMetricsBuilder AddHealthChecks(this IMetricsBuilder builder)
@@ -35,7 +35,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IMetricsBuilder AddMetricsOptions(
             this IMetricsBuilder builder,
-            Action<MetricsOptions> setupAction)
+            Action<AspNetMetricsOptions> setupAction)
         {
             if (builder == null)
             {
@@ -47,7 +47,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(setupAction));
             }
 
-            builder.Services.Configure<MetricsOptions>(setupAction);
+            builder.Services.Configure<AspNetMetricsOptions>(setupAction);
             return builder;
         }
 

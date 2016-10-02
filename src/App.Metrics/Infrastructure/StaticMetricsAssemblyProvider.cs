@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 
-namespace AspNet.Metrics.Infrastructure
+namespace App.Metrics.Infrastructure
 {
     /// <summary>
     ///     A <see cref="IMetricsAssemblyProvider" /> with a fixed set of candidate assemblies.

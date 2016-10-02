@@ -16,7 +16,7 @@ namespace AspNet.Metrics.Middleware
         private readonly AspNetMetricsContext _metricsContext;
         private readonly RequestDelegate _next;
 
-        public ErrorRequestMeterMiddleware(RequestDelegate next, MetricsOptions options,
+        public ErrorRequestMeterMiddleware(RequestDelegate next, AspNetMetricsOptions options,
             AspNetMetricsContext metricsContext)
             : base(options)
         {

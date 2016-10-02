@@ -14,7 +14,7 @@ namespace AspNet.Metrics.Middleware
         private readonly AspNetMetricsContext _metricsContext;
         private readonly RequestDelegate _next;
 
-        public OAuth2ClientWebRequestMeterMiddleware(RequestDelegate next, MetricsOptions options,
+        public OAuth2ClientWebRequestMeterMiddleware(RequestDelegate next, AspNetMetricsOptions options,
             AspNetMetricsContext metricsContext)
             : base(options)
         {

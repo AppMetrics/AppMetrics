@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using AspNet.Metrics.Infrastructure;
+using App.Metrics.Infrastructure;
 
-namespace AspNet.Metrics.Health
+namespace App.Metrics.Health
 {
     public class DefaultHealthCheckTypeProvider : IHealthCheckTypeProvider
     {

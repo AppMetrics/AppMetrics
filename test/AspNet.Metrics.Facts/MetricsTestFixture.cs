@@ -31,7 +31,7 @@ namespace AspNet.Metrics.Facts
                 })
                 .Configure(app =>
                 {
-                    app.UseMetrics(MetricsConfig, TestContext.Clock);
+                    app.UseMetrics(MetricsConfig, TestContext.Clock);                    
                     app.UseMvc();
                 }));
 

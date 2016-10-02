@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Metrics.Middleware
 {
-    public class HealthEndpointEndpointMiddleware : MetricsEndpointMiddlewareBase
+    public class HealthCheckEndpointMiddleware : MetricsEndpointMiddlewareBase
     {
         private readonly AspNetMetricsContext _metricsContext;
         private readonly RequestDelegate _next;
-        private readonly MetricsOptions _options;
+        private readonly AspNetMetricsOptions _options;
 
-        public HealthEndpointEndpointMiddleware(RequestDelegate next, MetricsOptions options, AspNetMetricsContext metricsContext)
+        public HealthCheckEndpointMiddleware(RequestDelegate next, AspNetMetricsOptions options, AspNetMetricsContext metricsContext)
         {
             if (next == null)
             {

@@ -5,17 +5,18 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.DependencyModel;
 
-namespace AspNet.Metrics.Infrastructure
+namespace App.Metrics.Infrastructure
 {
-    internal static class DefaultMetricsAssemblyDiscoveryProvider
+    //TODO: AH - make internal to this and AspNet.Metrics
+    public static class DefaultMetricsAssemblyDiscoveryProvider
     {
         internal static HashSet<string> ReferenceAssemblies { get; } = new HashSet<string>(StringComparer.Ordinal)
         {
-            "Metrics.NET",
+            "App.Metrics",
             "AspNet.Metrics"
         };
 
-        internal static IEnumerable<Assembly> DiscoverAssemblies(string entryPointAssemblyName)
+        public static IEnumerable<Assembly> DiscoverAssemblies(string entryPointAssemblyName)
         {
             var entryAssembly = Assembly.Load(new AssemblyName(entryPointAssemblyName));
             var context = DependencyContext.Load(Assembly.Load(new AssemblyName(entryPointAssemblyName)));
@@ -23,7 +24,7 @@ namespace AspNet.Metrics.Infrastructure
             return GetCandidateAssemblies(entryAssembly, context);
         }
 
-        internal static IEnumerable<Assembly> GetCandidateAssemblies(Assembly entryAssembly, DependencyContext dependencyContext)
+        public static IEnumerable<Assembly> GetCandidateAssemblies(Assembly entryAssembly, DependencyContext dependencyContext)
         {
             if (dependencyContext == null)
             {
@@ -36,7 +37,7 @@ namespace AspNet.Metrics.Infrastructure
                 .Select(Assembly.Load);
         }
 
-        internal static IEnumerable<RuntimeLibrary> GetCandidateLibraries(DependencyContext dependencyContext)
+        public static IEnumerable<RuntimeLibrary> GetCandidateLibraries(DependencyContext dependencyContext)
         {
             if (ReferenceAssemblies == null)
             {

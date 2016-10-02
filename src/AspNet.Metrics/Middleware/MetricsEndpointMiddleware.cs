@@ -9,9 +9,9 @@ namespace AspNet.Metrics.Middleware
     {
         private readonly AspNetMetricsContext _metricsContext;
         private readonly RequestDelegate _next;
-        private readonly MetricsOptions _options;
+        private readonly AspNetMetricsOptions _options;
 
-        public MetricsEndpointMiddleware(RequestDelegate next, MetricsOptions options,
+        public MetricsEndpointMiddleware(RequestDelegate next, AspNetMetricsOptions options,
             AspNetMetricsContext metricsContext)
         {
             if (next == null)
