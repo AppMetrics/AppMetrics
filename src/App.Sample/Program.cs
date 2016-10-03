@@ -1,8 +1,9 @@
 ﻿using System;
 using App.Metrics;
+using App.Metrics.Utils;
+using Metrics.Samples;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.PlatformAbstractions;
 
 namespace App.Sample
 {
@@ -15,11 +16,30 @@ namespace App.Sample
 
             var application = new Application(serviceCollection);
 
+            using (var scheduler = new ActionScheduler())
+            {
+                SampleMetrics.RunSomeRequests();
 
-            // Run
-            // ...
+                scheduler.Start(TimeSpan.FromMilliseconds(500), () =>
+                {
+                    SetCounterSample.RunSomeRequests();
+                    SetMeterSample.RunSomeRequests();
+                    UserValueHistogramSample.RunSomeRequests();
+                    UserValueTimerSample.RunSomeRequests();
+                    SampleMetrics.RunSomeRequests();
+                });
 
-            Console.ReadKey();
+                Metric.Gauge("Errors", () => 1, Unit.None);
+                Metric.Gauge("% Percent/Gauge|test", () => 1, Unit.None);
+                Metric.Gauge("& AmpGauge", () => 1, Unit.None);
+                Metric.Gauge("()[]{} ParantesisGauge", () => 1, Unit.None);
+                Metric.Gauge("Gauge With No Value", () => double.NaN, Unit.None);
+
+                HealthChecksSample.RegisterHealthChecks();
+
+                Console.WriteLine("done setting things up");
+                Console.ReadKey();
+            }
         }
 
         private static void ConfigureServices(IServiceCollection serviceCollection)
@@ -29,31 +49,29 @@ namespace App.Sample
                 var logFactory = new LoggerFactory();
                 logFactory.AddConsole();
                 return logFactory;
-                ;
             });
         }
     }
 
     public class Application
     {
-        public Application(IServiceCollection serviceCollection)
+        public Application(IServiceCollection services)
         {
-            ConfigureServices(serviceCollection);
-            Services = serviceCollection.BuildServiceProvider();
+            ConfigureServices(services);
+            Services = services.BuildServiceProvider();
             Logger = Services.GetRequiredService<ILoggerFactory>().CreateLogger<Application>();
             Logger.LogInformation("Application created successfully.");
-
-            var app = Services.GetRequiredService<ApplicationEnvironment>();
-
         }
 
         public ILogger Logger { get; set; }
 
-        public IServiceProvider Services { get; set; }        
+        public IServiceProvider Services { get; set; }
 
 
-        private void ConfigureServices(IServiceCollection serviceCollection)
+        private void ConfigureServices(IServiceCollection services)
         {
+            services.AddMetrics()
+                .AddReporter(reports => reports.WithConsoleReport(TimeSpan.FromSeconds(2)));
         }
     }
 }

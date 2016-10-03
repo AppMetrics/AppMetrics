@@ -9,7 +9,7 @@ using Microsoft.Extensions.PlatformAbstractions;
 namespace Microsoft.Extensions.DependencyInjection.Extensions
 // ReSharper restore CheckNamespace
 {
-    public static class MetricsCoreServiceCollectionExtensions
+    internal static class MetricsCoreServiceCollectionExtensions
     {
         public static IMetricsBuilder AddMetricsCore(this IServiceCollection services)
         {

@@ -15,7 +15,8 @@
       "type": "platform",
       "version": "1.0.1"
     },
-    "Microsoft.Extensions.Logging.Console": "1.0.0"
+    "Microsoft.Extensions.Logging.Console": "1.0.0",
+    "Metrics.Samples": "1.0.0-*"
   },
 
   "frameworks": {
