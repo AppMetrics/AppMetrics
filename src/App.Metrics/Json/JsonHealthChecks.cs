@@ -7,7 +7,7 @@ namespace App.Metrics.Json
 {
     public class JsonHealthChecks
     {
-        public const string HealthChecksMimeType = "application/vnd.metrics.net.v1.health+json";
+        public const string HealthChecksMimeType = "application/vnd.app.metrics.v1.health+json";
         public const int Version = 1;
 
         private readonly List<JsonProperty> root = new List<JsonProperty>();

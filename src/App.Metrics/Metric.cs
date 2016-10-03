@@ -23,7 +23,7 @@ namespace App.Metrics
             if (MetricsConfig.GloballyDisabledMetrics)
             {
                 globalContext.CompletelyDisableMetrics();
-                Log.LogInformation("Metrics: Metrics.NET Library is completely disabled. Set Metrics.CompletelyDisableMetrics to false to re-enable.");
+                Log.LogInformation("Metrics: App.Metrics Library is completely disabled. Set Metrics.CompletelyDisableMetrics to false to re-enable.");
             }
             Config = new MetricsConfig(globalContext);
             Config.ApplySettingsFromConfigFile();
@@ -36,23 +36,10 @@ namespace App.Metrics
 
         /// <summary>
         ///     Entrypoint for Global Metrics Configuration.
-        /// </summary>
-        /// <example>
-        ///     <code>
-        /// Metric.Config
-        ///     .WithHttpEndpoint("http://localhost:1234/")
-        ///     .WithErrorHandler(x => Console.WriteLine(x.ToString()))
-        ///     .WithAllCounters()
-        ///     .WithReporting(config => config
-        ///         .WithConsoleReport(TimeSpan.FromSeconds(30))
-        ///         .WithCSVReports(@"c:\temp\reports\", TimeSpan.FromSeconds(10))
-        ///         .WithTextFileReport(@"C:\temp\reports\metrics.txt", TimeSpan.FromSeconds(10))
-        ///     );
-        /// </code>
-        /// </example>
+        /// </summary>  
         public static MetricsConfig Config { get; }
 
-        internal static MetricsContext Internal { get; } = new DefaultMetricsContext("Metrics.NET");
+        internal static MetricsContext Internal { get; } = new DefaultMetricsContext("App.Metrics");
 
         /// <summary>
         ///     Create a new child metrics context. Metrics added to the child context are kept separate from the metrics in the
