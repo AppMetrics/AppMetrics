@@ -75,3 +75,4 @@ artifacts
 artifacts/*
 packages
 packages/*
+*.lock.json
