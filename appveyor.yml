@@ -8,7 +8,7 @@ build_script:
 - cmd: build.cmd
 test: off
 artifacts:
-- path: artifacts/packages/release/*.nupkg
+- path: artifacts/packages/*.nupkg
 deploy:
 - provider: NuGet
   server: https://www.myget.org/F/alhardy/api/v2/package
