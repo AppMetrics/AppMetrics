@@ -1,9 +1,9 @@
 ﻿{
-  "version": "1.0.0-rtm",
+  "version": "1.0.0",
   "description": "The library provides support for registring windows performance counts with AspNet.Metrics (https://nuget.org/packages/AspNet.Metrics/)",
   "authors": [ "Allan Hardy" ],
   "packOptions": {
-    "releaseNotes": "Added ASP NET And SQL Performance Counters.",
+    "releaseNotes": "Stable version using Metrics.NET, requires full .NET framework",
     "tags": [ "mvc measurements charts timer histogram duration graphite influxdb health checks metrics performance counters" ],
     "repository": {
       "type": "git",
@@ -23,7 +23,7 @@
   },
 
   "dependencies": {
-    "AspNet.Metrics": "1.0.0-rtm",
+    "AspNet.Metrics": "1.0.0",
     "NETStandard.Library": "1.6.0"
   },
 
