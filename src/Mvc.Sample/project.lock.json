@@ -2019,7 +2019,7 @@
           "lib/net46/System.Xml.XPath.XDocument.dll": {}
         }
       },
-      "AspNet.Metrics/1.0.0-rtm": {
+      "AspNet.Metrics/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
@@ -2040,11 +2040,11 @@
           "net461/AspNet.Metrics.dll": {}
         }
       },
-      "AspNet.Metrics.PerformanceCounters/1.0.0-rtm": {
+      "AspNet.Metrics.PerformanceCounters/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
-          "AspNet.Metrics": "1.0.0-rtm",
+          "AspNet.Metrics": "1.0.0",
           "NETStandard.Library": "1.6.0"
         },
         "compile": {
@@ -6427,12 +6427,12 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "AspNet.Metrics/1.0.0-rtm": {
+    "AspNet.Metrics/1.0.0": {
       "type": "project",
       "path": "../AspNet.Metrics/project.json",
       "msbuildProject": "../AspNet.Metrics/AspNet.Metrics.xproj"
     },
-    "AspNet.Metrics.PerformanceCounters/1.0.0-rtm": {
+    "AspNet.Metrics.PerformanceCounters/1.0.0": {
       "type": "project",
       "path": "../AspNet.Metrics.PerformanceCounters/project.json",
       "msbuildProject": "../AspNet.Metrics.PerformanceCounters/AspNet.Metrics.PerformanceCounters.xproj"
