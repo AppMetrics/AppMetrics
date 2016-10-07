@@ -6,7 +6,7 @@ namespace Metrics.Samples
 {
     public class SetMeterSample
     {
-        private readonly Meter errorMeter = Metric.Meter("Errors", Unit.Errors);
+        private readonly IMeter errorMeter = Metric.Meter("Errors", Unit.Errors);
 
         public interface Command { }
         public class SendEmail : Command { }

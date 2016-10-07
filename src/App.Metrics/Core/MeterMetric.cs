@@ -7,7 +7,7 @@ using App.Metrics.Utils;
 
 namespace App.Metrics.Core
 {
-    public interface MeterImplementation : Meter, MetricValueProvider<MeterValue>
+    public interface MeterImplementation : IMeter, IMetricValueProvider<MeterValue>
     {
     }
 

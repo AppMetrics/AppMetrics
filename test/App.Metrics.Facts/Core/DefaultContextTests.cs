@@ -2,6 +2,7 @@
 using System.Linq;
 using App.Metrics.Core;
 using App.Metrics.MetricData;
+using App.Metrics.Utils;
 using FluentAssertions;
 using Xunit;
 
@@ -9,17 +10,14 @@ namespace App.Metrics.Facts.Core
 {
     public class DefaultContextTests
     {
-        private readonly MetricsContext context = new DefaultMetricsContext();
+        private readonly IMetricsContext _context = new DefaultMetricsContext(Clock.Default);
 
-        public MetricsData CurrentData
-        {
-            get { return this.context.DataProvider.CurrentMetricsData; }
-        }
+        public MetricsData CurrentData => _context.DataProvider.CurrentMetricsData;
 
         [Fact]
         public void MetricsContext_CanCreateSubcontext()
         {
-            context.Context("test").Counter("counter", Unit.Requests);
+            _context.Context("test").Counter("counter", Unit.Requests);
 
             var counterValue = CurrentData.ChildMetrics.SelectMany(c => c.Counters).Single();
 
@@ -29,24 +27,24 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void MetricsContext_CanPropagateValueTags()
         {
-            context.Counter("test", Unit.None, "tag");
-            context.DataProvider.CurrentMetricsData.Counters.Single().Tags.Should().Equal(new[] { "tag" });
+            _context.Counter("test", Unit.None, "tag");
+            _context.DataProvider.CurrentMetricsData.Counters.Single().Tags.Should().Equal("tag");
 
-            context.Meter("test", Unit.None, tags: "tag");
-            context.DataProvider.CurrentMetricsData.Meters.Single().Tags.Should().Equal(new[] { "tag" });
+            _context.Meter("test", Unit.None, tags: "tag");
+            _context.DataProvider.CurrentMetricsData.Meters.Single().Tags.Should().Equal("tag");
 
-            context.Histogram("test", Unit.None, tags: "tag");
-            context.DataProvider.CurrentMetricsData.Histograms.Single().Tags.Should().Equal(new[] { "tag" });
+            _context.Histogram("test", Unit.None, tags: "tag");
+            _context.DataProvider.CurrentMetricsData.Histograms.Single().Tags.Should().Equal("tag");
 
-            context.Timer("test", Unit.None, tags: "tag");
-            context.DataProvider.CurrentMetricsData.Timers.Single().Tags.Should().Equal(new[] { "tag" });
+            _context.Timer("test", Unit.None, tags: "tag");
+            _context.DataProvider.CurrentMetricsData.Timers.Single().Tags.Should().Equal("tag");
         }
 
         [Fact]
         public void MetricsContext_ChildWithSameNameAreSameInstance()
         {
-            var first = context.Context("test");
-            var second = context.Context("test");
+            var first = _context.Context("test");
+            var second = _context.Context("test");
 
             ReferenceEquals(first, second).Should().BeTrue();
         }
@@ -54,9 +52,9 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void MetricsContext_DataProviderReflectsChildContxts()
         {
-            var provider = context.DataProvider;
+            var provider = _context.DataProvider;
 
-            var counter = context
+            var counter = _context
                 .Context("test")
                 .Counter("test", Unit.Bytes);
 
@@ -74,9 +72,9 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void MetricsContext_DataProviderReflectsNewMetrics()
         {
-            var provider = context.DataProvider;
+            var provider = _context.DataProvider;
 
-            context.Counter("test", Unit.Bytes).Increment();
+            _context.Counter("test", Unit.Bytes).Increment();
 
             provider.CurrentMetricsData.Counters.Should().HaveCount(1);
             provider.CurrentMetricsData.Counters.Single().Name.Should().Be("test");
@@ -86,12 +84,12 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void MetricsContext_DisabledChildContextDoesNotShowInData()
         {
-            context.Context("test").Counter("test", Unit.Bytes).Increment();
+            _context.Context("test").Counter("test", Unit.Bytes).Increment();
 
             CurrentData.ChildMetrics.Single()
                 .Counters.Single().Name.Should().Be("test");
 
-            context.ShutdownContext("test");
+            _context.ShutdownContext("test");
 
             CurrentData.ChildMetrics.Should().BeEmpty();
         }
@@ -102,35 +100,35 @@ namespace App.Metrics.Facts.Core
             ((Action)(() =>
             {
                 var name = "Test";
-                context.Gauge(name, () => 0.0, Unit.Calls);
-                context.Counter(name, Unit.Calls);
-                context.Meter(name, Unit.Calls);
-                context.Histogram(name, Unit.Calls);
-                context.Timer(name, Unit.Calls);
+                _context.Gauge(name, () => 0.0, Unit.Calls);
+                _context.Counter(name, Unit.Calls);
+                _context.Meter(name, Unit.Calls);
+                _context.Histogram(name, Unit.Calls);
+                _context.Timer(name, Unit.Calls);
             })).ShouldNotThrow();
         }
 
         [Fact]
         public void MetricsContext_EmptyChildContextIsSameContext()
         {
-            var child = context.Context(string.Empty);
-            ReferenceEquals(context, child).Should().BeTrue();
-            child = context.Context(null);
-            ReferenceEquals(context, child).Should().BeTrue();
+            var child = _context.Context(string.Empty);
+            ReferenceEquals(_context, child).Should().BeTrue();
+            child = _context.Context(null);
+            ReferenceEquals(_context, child).Should().BeTrue();
         }
 
         [Fact]
         public void MetricsContext_MetricsAddedAreVisibleInTheDataProvider()
         {
-            context.DataProvider.CurrentMetricsData.Counters.Should().BeEmpty();
-            context.Counter("test", Unit.Bytes);
-            context.DataProvider.CurrentMetricsData.Counters.Should().HaveCount(1);
+            _context.DataProvider.CurrentMetricsData.Counters.Should().BeEmpty();
+            _context.Counter("test", Unit.Bytes);
+            _context.DataProvider.CurrentMetricsData.Counters.Should().HaveCount(1);
         }
 
         [Fact]
         public void MetricsContext_MetricsArePresentInMetricsData()
         {
-            var counter = context.Counter("test", Unit.Requests);
+            var counter = _context.Counter("test", Unit.Requests);
 
             counter.Increment();
 

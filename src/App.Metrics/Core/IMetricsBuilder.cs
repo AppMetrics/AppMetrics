@@ -4,11 +4,11 @@ using App.Metrics.Sampling;
 
 namespace App.Metrics.Core
 {
-    public interface MetricsBuilder
+    public interface IMetricsBuilder
     {
         CounterImplementation BuildCounter(string name, Unit unit);
 
-        MetricValueProvider<double> BuildGauge(string name, Unit unit, Func<double> valueProvider);
+        IMetricValueProvider<double> BuildGauge(string name, Unit unit, Func<double> valueProvider);
 
         HistogramImplementation BuildHistogram(string name, Unit unit, SamplingType samplingType);
 

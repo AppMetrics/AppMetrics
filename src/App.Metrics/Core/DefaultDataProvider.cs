@@ -5,18 +5,18 @@ using App.Metrics.MetricData;
 
 namespace App.Metrics.Core
 {
-    public class DefaultDataProvider : MetricsDataProvider
+    public class DefaultDataProvider : IMetricsDataProvider
     {
-        private readonly Func<IEnumerable<MetricsDataProvider>> _childProviders;
+        private readonly Func<IEnumerable<IMetricsDataProvider>> _childProviders;
         private readonly string _context;
         private readonly IEnumerable<EnvironmentEntry> _environment;
-        private readonly RegistryDataProvider _registryDataProvider;
+        private readonly IRegistryDataProvider _registryDataProvider;
         private readonly Func<DateTime> _timestampProvider;
 
         public DefaultDataProvider(string context,
             Func<DateTime> timestampProvider,
-            RegistryDataProvider registryDataProvider,
-            Func<IEnumerable<MetricsDataProvider>> childProviders)
+            IRegistryDataProvider registryDataProvider,
+            Func<IEnumerable<IMetricsDataProvider>> childProviders)
             : this(context, timestampProvider, Enumerable.Empty<EnvironmentEntry>(), registryDataProvider, childProviders)
         {
         }
@@ -24,8 +24,8 @@ namespace App.Metrics.Core
         public DefaultDataProvider(string context,
             Func<DateTime> timestampProvider,
             IEnumerable<EnvironmentEntry> environment,
-            RegistryDataProvider registryDataProvider,
-            Func<IEnumerable<MetricsDataProvider>> childProviders)
+            IRegistryDataProvider registryDataProvider,
+            Func<IEnumerable<IMetricsDataProvider>> childProviders)
         {
             _context = context;
             _timestampProvider = timestampProvider;

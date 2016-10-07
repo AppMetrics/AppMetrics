@@ -4,9 +4,9 @@ namespace App.Metrics
 {
     /// <summary>
     ///     A timer is basically a histogram of the duration of a type of event and a meter of the rate of its occurrence.
-    ///     <seealso cref="Histogram" /> and <seealso cref="Meter" />
+    ///     <seealso cref="IHistogram" /> and <seealso cref="IMeter" />
     /// </summary>
-    public interface Timer : ResetableMetric
+    public interface ITimer : ResetableMetric
     {
         /// <summary>
         ///     This is part of advanced timer API. Use Timer.NewContext() by default.
@@ -98,10 +98,10 @@ namespace App.Metrics
     public struct TimerContext : IDisposable
     {
         private readonly long _start;
-        private Timer _timer;
+        private ITimer _timer;
         private string _userValue;
 
-        public TimerContext(Timer timer, string userValue)
+        public TimerContext(ITimer timer, string userValue)
         {
             _start = timer.StartRecording();
             _timer = timer;

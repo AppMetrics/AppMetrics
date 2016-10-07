@@ -2,30 +2,23 @@ using System;
 using System.Threading.Tasks;
 using App.Metrics;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace AspNet.Metrics.Middleware
 {
-    public class RequestTimerMiddleware : MetricsMiddlewareBase
+    public class RequestTimerMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
         private const string TimerItemsKey = "__Mertics.RequestTimer__";
-        private readonly RequestDelegate _next;
-        private readonly Timer _requestTimer;
+        private readonly ITimer _requestTimer;
 
-        public RequestTimerMiddleware(RequestDelegate next, AspNetMetricsOptions options, AspNetMetricsContext metricsContext)
-            : base(options)
+        public RequestTimerMiddleware(RequestDelegate next,
+            IOptions<AspNetMetricsOptions> options,
+            ILoggerFactory loggerFactory,
+            IMetricsContext metricsContext)
+            : base(next, options, loggerFactory, metricsContext)
         {
-            if (next == null)
-            {
-                throw new ArgumentNullException(nameof(next));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            _next = next;
-            _requestTimer = metricsContext.Context.GetWebApplicationContext()
+            _requestTimer = MetricsContext.GetWebApplicationContext()
                 .Timer("Web Requests", Unit.Requests);
         }
 
@@ -35,7 +28,7 @@ namespace AspNet.Metrics.Middleware
             {
                 context.Items[TimerItemsKey] = _requestTimer.NewContext();
 
-                await _next(context);
+                await Next(context);
 
                 var timer = context.Items[TimerItemsKey];
                 using (timer as IDisposable)
@@ -45,7 +38,7 @@ namespace AspNet.Metrics.Middleware
             }
             else
             {
-                await _next(context);
+                await Next(context);
             }
         }
     }

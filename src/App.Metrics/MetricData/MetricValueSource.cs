@@ -8,7 +8,7 @@ namespace App.Metrics.MetricData
     ///     This is the raw value. Consumers should use <see cref="MetricValueSource{T}" />
     /// </summary>
     /// <typeparam name="T">Type of the value returned by the metric</typeparam>
-    public interface MetricValueProvider<T> : IHideObjectMembers
+    public interface IMetricValueProvider<T> : IHideObjectMembers
     {
         /// <summary>
         ///     The current value of the metric.
@@ -25,22 +25,19 @@ namespace App.Metrics.MetricData
         T GetValue(bool resetMetric = false);
     }
 
-    public sealed class ScaledValueProvider<T> : MetricValueProvider<T>
+    public sealed class ScaledValueProvider<T> : IMetricValueProvider<T>
     {
         private readonly Func<T, T> scalingFunction;
 
-        public ScaledValueProvider(MetricValueProvider<T> valueProvider, Func<T, T> transformation)
+        public ScaledValueProvider(IMetricValueProvider<T> valueProvider, Func<T, T> transformation)
         {
             ValueProvider = valueProvider;
             scalingFunction = transformation;
         }
 
-        public T Value
-        {
-            get { return scalingFunction(ValueProvider.Value); }
-        }
+        public T Value => scalingFunction(ValueProvider.Value);
 
-        public MetricValueProvider<T> ValueProvider { get; }
+        public IMetricValueProvider<T> ValueProvider { get; }
 
         public T GetValue(bool resetMetric = false)
         {
@@ -55,7 +52,7 @@ namespace App.Metrics.MetricData
     /// <typeparam name="T">Type of the metric value</typeparam>
     public abstract class MetricValueSource<T> : IHideObjectMembers
     {
-        protected MetricValueSource(string name, MetricValueProvider<T> valueProvider, Unit unit, MetricTags tags)
+        protected MetricValueSource(string name, IMetricValueProvider<T> valueProvider, Unit unit, MetricTags tags)
         {
             Name = name;
             Unit = unit;
@@ -81,14 +78,11 @@ namespace App.Metrics.MetricData
         /// <summary>
         ///     The current value of the metric.
         /// </summary>
-        public T Value
-        {
-            get { return ValueProvider.Value; }
-        }
+        public T Value => ValueProvider.Value;
 
         /// <summary>
         ///     Instance capable of returning the current value for the metric.
         /// </summary>
-        public MetricValueProvider<T> ValueProvider { get; }
+        public IMetricValueProvider<T> ValueProvider { get; }
     }
 }

@@ -8,12 +8,12 @@ namespace App.Metrics
         private const string OAuth2ClientWebRequestsContextName = "Application.OAuth2Client.WebRequests";
         private const string WebApplicationRequestsContextName = "Application.WebRequests";
 
-        public static MetricsContext GetOAuth2ClientWebRequestsContext(this MetricsContext context)
+        public static IMetricsContext GetOAuth2ClientWebRequestsContext(this IMetricsContext context)
         {
             return context.Context(OAuth2ClientWebRequestsContextName);
         }
 
-        public static MetricsContext GetWebApplicationContext(this MetricsContext context)
+        public static IMetricsContext GetWebApplicationContext(this IMetricsContext context)
         {
             return context.Context(WebApplicationRequestsContextName);
         }

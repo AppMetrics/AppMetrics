@@ -8,9 +8,9 @@ namespace AspNet.Metrics.Facts
     [Route("api/[controller]")]
     public class TestController : Controller
     {
-        private readonly TestContext _metricsContext;
+        private readonly IMetricsContext _metricsContext;
 
-        public TestController(TestContext metricsContext)
+        public TestController(IMetricsContext metricsContext)
         {
             _metricsContext = metricsContext;
         }
@@ -40,7 +40,7 @@ namespace AspNet.Metrics.Facts
         [HttpGet("300ms")]
         public async Task<IActionResult> Get300ms()
         {
-            _metricsContext.Clock.Advance(TimeUnit.Milliseconds, 300);
+            _metricsContext.SystemClock.Advance(TimeUnit.Milliseconds, 300);
             await Task.FromResult(0);
             return StatusCode(200);
         }
@@ -48,7 +48,7 @@ namespace AspNet.Metrics.Facts
         [HttpGet("30ms")]
         public async Task<IActionResult> Get30ms()
         {
-            _metricsContext.Clock.Advance(TimeUnit.Milliseconds, 30);
+            _metricsContext.SystemClock.Advance(TimeUnit.Milliseconds, 30);
             await Task.FromResult(0);
             return StatusCode(200);
         }

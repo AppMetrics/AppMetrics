@@ -6,7 +6,8 @@ namespace App.Metrics
 {
     public class MetricsErrorHandler
     {
-        private static readonly Meter ErrorMeter = Metric.Internal.Meter("Metrics Errors", Unit.Errors);
+        //TODO: AH - inject metrics context
+        private static readonly IMeter ErrorMeter = Metric.Internal.Meter("Metrics Errors", Unit.Errors);
 
         //TODO: AH - Inject logger
         private static readonly ILogger Log = new LoggerFactory().CreateLogger(typeof(MetricsErrorHandler));

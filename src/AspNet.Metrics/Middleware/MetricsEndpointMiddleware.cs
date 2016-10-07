@@ -1,43 +1,30 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using App.Metrics;
 using App.Metrics.Json;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace AspNet.Metrics.Middleware
 {
-    public class MetricsEndpointMiddleware : MetricsEndpointMiddlewareBase
+    public class MetricsEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
-        private readonly AspNetMetricsContext _metricsContext;
         private readonly RequestDelegate _next;
-        private readonly AspNetMetricsOptions _options;
 
-        public MetricsEndpointMiddleware(RequestDelegate next, AspNetMetricsOptions options,
-            AspNetMetricsContext metricsContext)
+        public MetricsEndpointMiddleware(RequestDelegate next,
+            IOptions<AspNetMetricsOptions> options,
+            ILoggerFactory loggerFactory,
+            IMetricsContext metricsContext)
+            : base(next, options, loggerFactory, metricsContext)
         {
-            if (next == null)
-            {
-                throw new ArgumentNullException(nameof(next));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-            if (metricsContext == null)
-            {
-                throw new ArgumentNullException(nameof(metricsContext));
-            }
-
             _next = next;
-            _options = options;
-            _metricsContext = metricsContext;
         }
 
         public Task Invoke(HttpContext context)
         {
-            if (_options.MetricsEnabled && _options.MetricsEndpoint.HasValue && _options.MetricsEndpoint == context.Request.Path)
+            if (Options.MetricsEnabled && Options.MetricsEndpoint.HasValue && Options.MetricsEndpoint == context.Request.Path)
             {
-                var json = JsonBuilderV1.BuildJson(_metricsContext.Context.DataProvider.CurrentMetricsData);
+                var json = JsonBuilderV1.BuildJson(MetricsContext.DataProvider.CurrentMetricsData);
 
                 return WriteResponse(context, json, JsonBuilderV1.MetricsMimeType);
             }

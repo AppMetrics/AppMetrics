@@ -3,6 +3,8 @@ using System.Net;
 using System.Threading.Tasks;
 using App.Metrics;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace AspNet.Metrics.Middleware
 {
@@ -10,15 +12,14 @@ namespace AspNet.Metrics.Middleware
     ///     Measures the overall error request rate as well as the rate per endpoint.
     ///     Also measures these error rates per OAuth2 Client as a separate metric
     /// </summary>
-    /// <seealso cref="AspNet.Metrics.Middleware.MetricsMiddlewareBase" />
-    public class ErrorRequestMeterMiddleware : MetricsMiddlewareBase
+    public class ErrorRequestMeterMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
-        private readonly AspNetMetricsContext _metricsContext;
-        private readonly RequestDelegate _next;
+        public ErrorRequestMeterMiddleware(RequestDelegate next,
+            IOptions<AspNetMetricsOptions> options,
+            ILoggerFactory loggerFactory,
+            IMetricsContext metricsContext)
+            : base(next, options, loggerFactory, metricsContext)
 
-        public ErrorRequestMeterMiddleware(RequestDelegate next, AspNetMetricsOptions options,
-            AspNetMetricsContext metricsContext)
-            : base(options)
         {
             if (next == null)
             {
@@ -34,14 +35,12 @@ namespace AspNet.Metrics.Middleware
             {
                 throw new ArgumentNullException(nameof(metricsContext));
             }
-
-            _next = next;
-            _metricsContext = metricsContext;
         }
 
         public async Task Invoke(HttpContext context)
         {
-            await _next(context);
+            //TODO: AH - does oauth2 client tracking belong here?
+            await Next(context);
 
             if (PerformMetric(context))
             {
@@ -73,20 +72,20 @@ namespace AspNet.Metrics.Middleware
         {
             if (clientId.IsPresent())
             {
-                _metricsContext.Context.GetOAuth2ClientWebRequestsContext()
+                MetricsContext.GetOAuth2ClientWebRequestsContext()
                     .Meter($"{routeTemplate} Bad Requests", Unit.Custom("400 Errors"))
                     .Mark(clientId);
 
-                _metricsContext.Context.GetOAuth2ClientWebRequestsContext()
+                MetricsContext.GetOAuth2ClientWebRequestsContext()
                     .Meter("Total Bad Requests", Unit.Custom("400 Errors"))
                     .Mark(clientId);
             }
 
-            _metricsContext.Context.GetWebApplicationContext()
+            MetricsContext.GetWebApplicationContext()
                 .Meter($"{routeTemplate} Bad Requests", Unit.Custom("400 Errors"))
                 .Mark();
 
-            _metricsContext.Context.GetWebApplicationContext()
+            MetricsContext.GetWebApplicationContext()
                 .Meter("Total Bad Requests", Unit.Custom("400 Errors"))
                 .Mark();
         }
@@ -95,20 +94,20 @@ namespace AspNet.Metrics.Middleware
         {
             if (clientId.IsPresent())
             {
-                _metricsContext.Context.GetOAuth2ClientWebRequestsContext()
+                MetricsContext.GetOAuth2ClientWebRequestsContext()
                     .Meter($"{routeTemplate} Internal Server Error Requests", Unit.Custom("500 Errors"))
                     .Mark(clientId);
 
-                _metricsContext.Context.GetOAuth2ClientWebRequestsContext()
+                MetricsContext.GetOAuth2ClientWebRequestsContext()
                     .Meter("Total Internal Server Error Requests", Unit.Custom("500 Errors"))
                     .Mark(clientId);
             }
 
-            _metricsContext.Context.GetWebApplicationContext()
+            MetricsContext.GetWebApplicationContext()
                 .Meter($"{routeTemplate} Internal Server Error Requests", Unit.Custom("500 Errors"))
                 .Mark();
 
-            _metricsContext.Context.GetWebApplicationContext()
+            MetricsContext.GetWebApplicationContext()
                 .Meter("Total Internal Server Error Requests", Unit.Custom("500 Errors"))
                 .Mark();
         }
@@ -117,19 +116,19 @@ namespace AspNet.Metrics.Middleware
         {
             if (clientId.IsPresent())
             {
-                _metricsContext.Context.GetOAuth2ClientWebRequestsContext()
+                MetricsContext.GetOAuth2ClientWebRequestsContext()
                     .Meter("Total Error Requests", Unit.Errors)
                     .Mark(clientId);
 
-                _metricsContext.Context.GetOAuth2ClientWebRequestsContext()
+                MetricsContext.GetOAuth2ClientWebRequestsContext()
                     .Meter($"{routeTemplate} Total Error Requests", Unit.Errors)
                     .Mark(clientId);
             }
 
-            _metricsContext.Context.GetWebApplicationContext()
+            MetricsContext.GetWebApplicationContext()
                 .Meter("Total Error Requests", Unit.Errors).Mark();
 
-            _metricsContext.Context.GetWebApplicationContext()
+            MetricsContext.GetWebApplicationContext()
                 .Meter($"{routeTemplate} Total Error Requests", Unit.Errors).Mark();
         }
 
@@ -137,20 +136,20 @@ namespace AspNet.Metrics.Middleware
         {
             if (clientId.IsPresent())
             {
-                _metricsContext.Context.GetOAuth2ClientWebRequestsContext()
+                MetricsContext.GetOAuth2ClientWebRequestsContext()
                     .Meter($"{routeTemplate} Unauthorized Requests", Unit.Custom("401 Errors"))
                     .Mark(clientId);
 
-                _metricsContext.Context.GetOAuth2ClientWebRequestsContext()
+                MetricsContext.GetOAuth2ClientWebRequestsContext()
                     .Meter("Total Unauthorized Requests", Unit.Custom("401 Errors"))
                     .Mark(clientId);
             }
 
-            _metricsContext.Context.GetWebApplicationContext()
+            MetricsContext.GetWebApplicationContext()
                 .Meter($"{routeTemplate} Unauthorized Requests", Unit.Custom("401 Errors"))
                 .Mark();
 
-            _metricsContext.Context.GetWebApplicationContext()
+            MetricsContext.GetWebApplicationContext()
                 .Meter("Total Unauthorized Requests", Unit.Custom("401 Errors"))
                 .Mark();
         }

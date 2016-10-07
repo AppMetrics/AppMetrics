@@ -3,35 +3,46 @@ using System.Collections.Concurrent;
 using System.Linq;
 using App.Metrics.MetricData;
 using App.Metrics.Sampling;
+using App.Metrics.Utils;
 
 namespace App.Metrics.Core
 {
-    public abstract class BaseMetricsContext : MetricsContext, AdvancedMetricsContext
+    public abstract class BaseMetricsContext : IMetricsContext, IAdvancedMetricsContext
     {
-        private readonly ConcurrentDictionary<string, MetricsContext> _childContexts = new ConcurrentDictionary<string, MetricsContext>();
+        private readonly ConcurrentDictionary<string, IMetricsContext> _childContexts = new ConcurrentDictionary<string, IMetricsContext>();
 
         private bool _isDisabled;
-        private MetricsBuilder _metricsBuilder;
+        private IMetricsBuilder _metricsBuilder;
 
-        private MetricsRegistry _registry;
+        private IMetricsRegistry _registry;
 
-        protected BaseMetricsContext(string context, MetricsRegistry registry, MetricsBuilder metricsBuilder, Func<DateTime> timestampProvider)
+        protected BaseMetricsContext(string context, 
+            IMetricsRegistry registry,
+            IMetricsBuilder metricsBuilder, 
+            IClock systemClock,
+            Func<DateTime> timestampProvider)
         {
             _registry = registry;
             _metricsBuilder = metricsBuilder;
             DataProvider = new DefaultDataProvider(context, timestampProvider, _registry.DataProvider,
                 () => _childContexts.Values.Select(c => c.DataProvider));
+            HealthStatus = HealthChecks.GetStatus;
+            SystemClock = systemClock;
         }
 
         public event EventHandler ContextDisabled;
 
         public event EventHandler ContextShuttingDown;
 
-        public AdvancedMetricsContext Advanced => this;
+        public IAdvancedMetricsContext Advanced => this;
 
-        public MetricsDataProvider DataProvider { get; }
+        public IClock SystemClock { get; }
 
-        public bool AttachContext(string contextName, MetricsContext context)
+        public Func<HealthStatus> HealthStatus { get; }
+
+        public IMetricsDataProvider DataProvider { get; }
+
+        public bool AttachContext(string contextName, IMetricsContext context)
         {
             if (_isDisabled)
             {
@@ -68,12 +79,12 @@ namespace App.Metrics.Core
             ContextDisabled?.Invoke(this, EventArgs.Empty);
         }
 
-        public MetricsContext Context(string contextName)
+        public IMetricsContext Context(string contextName)
         {
             return Context(contextName, c => CreateChildContextInstance(contextName));
         }
 
-        public MetricsContext Context(string contextName, Func<string, MetricsContext> contextCreator)
+        public IMetricsContext Context(string contextName, Func<string, IMetricsContext> contextCreator)
         {
             if (_isDisabled)
             {
@@ -88,12 +99,12 @@ namespace App.Metrics.Core
             return _childContexts.GetOrAdd(contextName, contextCreator);
         }
 
-        public Counter Counter(string name, Unit unit, MetricTags tags)
+        public ICounter Counter(string name, Unit unit, MetricTags tags)
         {
             return Counter(name, unit, () => _metricsBuilder.BuildCounter(name, unit), tags);
         }
 
-        public Counter Counter<T>(string name, Unit unit, Func<T> builder, MetricTags tags)
+        public ICounter Counter<T>(string name, Unit unit, Func<T> builder, MetricTags tags)
             where T : CounterImplementation
         {
             return _registry.Counter(name, builder, unit, tags);
@@ -110,33 +121,33 @@ namespace App.Metrics.Core
             Gauge(name, () => _metricsBuilder.BuildGauge(name, unit, valueProvider), unit, tags);
         }
 
-        public void Gauge(string name, Func<MetricValueProvider<double>> valueProvider, Unit unit, MetricTags tags)
+        public void Gauge(string name, Func<IMetricValueProvider<double>> valueProvider, Unit unit, MetricTags tags)
         {
             _registry.Gauge(name, valueProvider, unit, tags);
         }
 
-        public Histogram Histogram(string name, Unit unit, SamplingType samplingType, MetricTags tags)
+        public IHistogram Histogram(string name, Unit unit, SamplingType samplingType, MetricTags tags)
         {
             return Histogram(name, unit, () => _metricsBuilder.BuildHistogram(name, unit, samplingType), tags);
         }
 
-        public Histogram Histogram<T>(string name, Unit unit, Func<T> builder, MetricTags tags)
+        public IHistogram Histogram<T>(string name, Unit unit, Func<T> builder, MetricTags tags)
             where T : HistogramImplementation
         {
             return _registry.Histogram(name, builder, unit, tags);
         }
 
-        public Histogram Histogram(string name, Unit unit, Func<Reservoir> builder, MetricTags tags)
+        public IHistogram Histogram(string name, Unit unit, Func<Reservoir> builder, MetricTags tags)
         {
             return Histogram(name, unit, () => _metricsBuilder.BuildHistogram(name, unit, builder()), tags);
         }
 
-        public Meter Meter(string name, Unit unit, TimeUnit rateUnit, MetricTags tags)
+        public IMeter Meter(string name, Unit unit, TimeUnit rateUnit, MetricTags tags)
         {
             return Meter(name, unit, () => _metricsBuilder.BuildMeter(name, unit, rateUnit), rateUnit, tags);
         }
 
-        public Meter Meter<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit, MetricTags tags)
+        public IMeter Meter<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit, MetricTags tags)
             where T : MeterImplementation
         {
             return _registry.Meter(name, builder, unit, rateUnit, tags);
@@ -155,7 +166,7 @@ namespace App.Metrics.Core
                 throw new ArgumentException("contextName must not be null or empty", contextName);
             }
 
-            MetricsContext context;
+            IMetricsContext context;
             if (_childContexts.TryRemove(contextName, out context))
             {
                 using (context)
@@ -164,35 +175,35 @@ namespace App.Metrics.Core
             }
         }
 
-        public Timer Timer(string name, Unit unit, SamplingType samplingType, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
+        public ITimer Timer(string name, Unit unit, SamplingType samplingType, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
         {
             return _registry.Timer(name, () => _metricsBuilder.BuildTimer(name, unit, rateUnit, durationUnit, samplingType), unit, rateUnit,
                 durationUnit, tags);
         }
 
-        public Timer Timer<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
+        public ITimer Timer<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
             where T : TimerImplementation
         {
             return _registry.Timer(name, builder, unit, rateUnit, durationUnit, tags);
         }
 
-        public Timer Timer(string name, Unit unit, Func<HistogramImplementation> builder, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
+        public ITimer Timer(string name, Unit unit, Func<HistogramImplementation> builder, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
         {
             return Timer(name, unit, () => _metricsBuilder.BuildTimer(name, unit, rateUnit, durationUnit, builder()), rateUnit, durationUnit, tags);
         }
 
-        public Timer Timer(string name, Unit unit, Func<Reservoir> builder, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
+        public ITimer Timer(string name, Unit unit, Func<Reservoir> builder, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
         {
             return Timer(name, unit, () => _metricsBuilder.BuildTimer(name, unit, rateUnit, durationUnit, builder()), rateUnit, durationUnit, tags);
         }
 
-        public void WithCustomMetricsBuilder(MetricsBuilder metricsBuilder)
+        public void WithCustomMetricsBuilder(IMetricsBuilder metricsBuilder)
         {
             _metricsBuilder = metricsBuilder;
             ForAllChildContexts(c => c.Advanced.WithCustomMetricsBuilder(metricsBuilder));
         }
 
-        protected abstract MetricsContext CreateChildContextInstance(string contextName);
+        protected abstract IMetricsContext CreateChildContextInstance(string contextName);
 
         protected virtual void Dispose(bool disposing)
         {
@@ -205,7 +216,7 @@ namespace App.Metrics.Core
             }
         }
 
-        private void ForAllChildContexts(Action<MetricsContext> action)
+        private void ForAllChildContexts(Action<IMetricsContext> action)
         {
             foreach (var context in _childContexts.Values)
             {

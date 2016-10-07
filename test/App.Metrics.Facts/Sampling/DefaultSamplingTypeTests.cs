@@ -12,7 +12,7 @@ namespace App.Metrics.Facts.Sampling
         private static readonly FieldInfo reservoirField = typeof(HistogramMetric).GetField("_reservoir",
             BindingFlags.Instance | BindingFlags.NonPublic);
 
-        [Fact]
+        [Fact(Skip = "Allow default sampling type to be set")]
         public void SamplingType_CanUseConfiguredDefaultSamplingType()
         {
             GetReservoir(new HistogramMetric()).Should().BeOfType<ExponentiallyDecayingReservoir>();

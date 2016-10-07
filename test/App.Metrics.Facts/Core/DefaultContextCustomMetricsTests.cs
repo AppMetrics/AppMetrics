@@ -3,6 +3,7 @@ using System.Linq;
 using App.Metrics.Core;
 using App.Metrics.MetricData;
 using App.Metrics.Sampling;
+using App.Metrics.Utils;
 using FluentAssertions;
 using Xunit;
 
@@ -10,7 +11,7 @@ namespace App.Metrics.Facts.Core
 {
     public class DefaultContextCustomMetricsTests
     {
-        private readonly MetricsContext context = new DefaultMetricsContext();
+        private readonly IMetricsContext context = new DefaultMetricsContext(Clock.Default);
 
         [Fact]
         public void MetricsContext_CanRegisterCustomCounter()
@@ -90,7 +91,7 @@ namespace App.Metrics.Facts.Core
             {
             }
 
-            public bool Merge(MetricValueProvider<CounterValue> other)
+            public bool Merge(IMetricValueProvider<CounterValue> other)
             {
                 return true;
             }

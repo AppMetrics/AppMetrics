@@ -4,7 +4,7 @@
     ///     A Histogram measures the distribution of values in a stream of data: e.g., the number of results returned by a
     ///     search.
     /// </summary>
-    public interface Histogram : ResetableMetric
+    public interface IHistogram : ResetableMetric
     {
         /// <summary>
         ///     Records a value.

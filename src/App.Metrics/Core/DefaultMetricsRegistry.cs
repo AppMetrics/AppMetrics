@@ -6,19 +6,19 @@ using App.Metrics.MetricData;
 
 namespace App.Metrics.Core
 {
-    public sealed class DefaultMetricsRegistry : MetricsRegistry
+    public sealed class DefaultMetricsRegistry : IMetricsRegistry
     {
-        private readonly MetricMetaCatalog<Counter, CounterValueSource, CounterValue> _counters =
-            new MetricMetaCatalog<Counter, CounterValueSource, CounterValue>();
+        private readonly MetricMetaCatalog<ICounter, CounterValueSource, CounterValue> _counters =
+            new MetricMetaCatalog<ICounter, CounterValueSource, CounterValue>();
 
-        private readonly MetricMetaCatalog<MetricValueProvider<double>, GaugeValueSource, double> _gauges =
-            new MetricMetaCatalog<MetricValueProvider<double>, GaugeValueSource, double>();
+        private readonly MetricMetaCatalog<IMetricValueProvider<double>, GaugeValueSource, double> _gauges =
+            new MetricMetaCatalog<IMetricValueProvider<double>, GaugeValueSource, double>();
 
-        private readonly MetricMetaCatalog<Histogram, HistogramValueSource, HistogramValue> _histograms =
-            new MetricMetaCatalog<Histogram, HistogramValueSource, HistogramValue>();
+        private readonly MetricMetaCatalog<IHistogram, HistogramValueSource, HistogramValue> _histograms =
+            new MetricMetaCatalog<IHistogram, HistogramValueSource, HistogramValue>();
 
-        private readonly MetricMetaCatalog<Meter, MeterValueSource, MeterValue> _meters = new MetricMetaCatalog<Meter, MeterValueSource, MeterValue>();
-        private readonly MetricMetaCatalog<Timer, TimerValueSource, TimerValue> _timers = new MetricMetaCatalog<Timer, TimerValueSource, TimerValue>();
+        private readonly MetricMetaCatalog<IMeter, MeterValueSource, MeterValue> _meters = new MetricMetaCatalog<IMeter, MeterValueSource, MeterValue>();
+        private readonly MetricMetaCatalog<ITimer, TimerValueSource, TimerValue> _timers = new MetricMetaCatalog<ITimer, TimerValueSource, TimerValue>();
 
         public DefaultMetricsRegistry()
         {
@@ -26,7 +26,7 @@ namespace App.Metrics.Core
                 () => _histograms.All, () => _timers.All);
         }
 
-        public RegistryDataProvider DataProvider { get; }
+        public IRegistryDataProvider DataProvider { get; }
 
         public void ClearAllMetrics()
         {
@@ -37,17 +37,17 @@ namespace App.Metrics.Core
             _timers.Clear();
         }
 
-        public Counter Counter<T>(string name, Func<T> builder, Unit unit, MetricTags tags)
+        public ICounter Counter<T>(string name, Func<T> builder, Unit unit, MetricTags tags)
             where T : CounterImplementation
         {
             return _counters.GetOrAdd(name, () =>
             {
                 var counter = builder();
-                return Tuple.Create((Counter)counter, new CounterValueSource(name, counter, unit, tags));
+                return Tuple.Create((ICounter)counter, new CounterValueSource(name, counter, unit, tags));
             });
         }
 
-        public void Gauge(string name, Func<MetricValueProvider<double>> valueProvider, Unit unit, MetricTags tags)
+        public void Gauge(string name, Func<IMetricValueProvider<double>> valueProvider, Unit unit, MetricTags tags)
         {
             _gauges.GetOrAdd(name, () =>
             {
@@ -56,23 +56,23 @@ namespace App.Metrics.Core
             });
         }
 
-        public Histogram Histogram<T>(string name, Func<T> builder, Unit unit, MetricTags tags)
+        public IHistogram Histogram<T>(string name, Func<T> builder, Unit unit, MetricTags tags)
             where T : HistogramImplementation
         {
             return _histograms.GetOrAdd(name, () =>
             {
                 var histogram = builder();
-                return Tuple.Create((Histogram)histogram, new HistogramValueSource(name, histogram, unit, tags));
+                return Tuple.Create((IHistogram)histogram, new HistogramValueSource(name, histogram, unit, tags));
             });
         }
 
-        public Meter Meter<T>(string name, Func<T> builder, Unit unit, TimeUnit rateUnit, MetricTags tags)
+        public IMeter Meter<T>(string name, Func<T> builder, Unit unit, TimeUnit rateUnit, MetricTags tags)
             where T : MeterImplementation
         {
             return _meters.GetOrAdd(name, () =>
             {
                 var meter = builder();
-                return Tuple.Create((Meter)meter, new MeterValueSource(name, meter, unit, rateUnit, tags));
+                return Tuple.Create((IMeter)meter, new MeterValueSource(name, meter, unit, rateUnit, tags));
             });
         }
 
@@ -85,13 +85,13 @@ namespace App.Metrics.Core
             _timers.Reset();
         }
 
-        public Timer Timer<T>(string name, Func<T> builder, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
+        public ITimer Timer<T>(string name, Func<T> builder, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
             where T : TimerImplementation
         {
             return _timers.GetOrAdd(name, () =>
             {
                 var timer = builder();
-                return Tuple.Create((Timer)timer, new TimerValueSource(name, timer, unit, rateUnit, durationUnit, tags));
+                return Tuple.Create((ITimer)timer, new TimerValueSource(name, timer, unit, rateUnit, durationUnit, tags));
             });
         }
 

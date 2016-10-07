@@ -1,48 +1,33 @@
-using System;
 using System.Net;
 using System.Threading.Tasks;
+using App.Metrics;
 using App.Metrics.Json;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace AspNet.Metrics.Middleware
 {
-    public class HealthCheckEndpointMiddleware : MetricsEndpointMiddlewareBase
+    public class HealthCheckEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
-        private readonly AspNetMetricsContext _metricsContext;
-        private readonly RequestDelegate _next;
-        private readonly AspNetMetricsOptions _options;
-
-        public HealthCheckEndpointMiddleware(RequestDelegate next, AspNetMetricsOptions options, AspNetMetricsContext metricsContext)
+        public HealthCheckEndpointMiddleware(RequestDelegate next,
+            IOptions<AspNetMetricsOptions> options,
+            ILoggerFactory loggerFactory,
+            IMetricsContext metricsContext)
+            : base(next, options, loggerFactory, metricsContext)
         {
-            if (next == null)
-            {
-                throw new ArgumentNullException(nameof(next));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-            if (metricsContext == null)
-            {
-                throw new ArgumentNullException(nameof(metricsContext));
-            }
-
-            _next = next;
-            _options = options;
-            _metricsContext = metricsContext;
         }
 
         public Task Invoke(HttpContext context)
         {
-            if (_options.HealthEnabled && _options.HealthEndpoint.HasValue && _options.HealthEndpoint == context.Request.Path)
+            if (Options.HealthEnabled && Options.HealthEndpoint.HasValue && Options.HealthEndpoint == context.Request.Path)
             {
-                var healthStatus = _metricsContext.HealthStatus();
+                var healthStatus = MetricsContext.HealthStatus();
                 var responseStatusCode = healthStatus.IsHealthy ? HttpStatusCode.OK : HttpStatusCode.InternalServerError;
                 return WriteResponse(context, JsonHealthChecks.BuildJson(healthStatus), "application/json", responseStatusCode);
             }
 
-            return _next(context);
+            return Next(context);
         }
     }
 }

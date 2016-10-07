@@ -70,7 +70,7 @@ namespace App.Metrics.MetricData
     /// </summary>
     public sealed class CounterValueSource : MetricValueSource<CounterValue>
     {
-        public CounterValueSource(string name, MetricValueProvider<CounterValue> value, Unit unit, MetricTags tags)
+        public CounterValueSource(string name, IMetricValueProvider<CounterValue> value, Unit unit, MetricTags tags)
             : base(name, value, unit, tags)
         {
         }

@@ -4,7 +4,7 @@ using App.Metrics.Sampling;
 
 namespace App.Metrics.Core
 {
-    public interface HistogramImplementation : Histogram, MetricValueProvider<HistogramValue>
+    public interface HistogramImplementation : IHistogram, IMetricValueProvider<HistogramValue>
     {
     }
 
@@ -62,8 +62,11 @@ namespace App.Metrics.Core
                 switch (samplingType)
                 {
                     case SamplingType.Default:
-                        samplingType = Metric.Config.DefaultSamplingType;
-                        continue;
+                        //samplingType = Metric.Config.DefaultSamplingType;
+                        //continue;
+                        //TODO: AH allow setting of defalt sampling type
+                        return new ExponentiallyDecayingReservoir();
+
                     case SamplingType.HighDynamicRange:
                         return new HdrHistogramReservoir();
                     case SamplingType.ExponentiallyDecaying:

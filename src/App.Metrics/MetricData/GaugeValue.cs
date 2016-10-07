@@ -5,7 +5,7 @@
     /// </summary>
     public sealed class GaugeValueSource : MetricValueSource<double>
     {
-        public GaugeValueSource(string name, MetricValueProvider<double> value, Unit unit, MetricTags tags)
+        public GaugeValueSource(string name, IMetricValueProvider<double> value, Unit unit, MetricTags tags)
             : base(name, value, unit, tags)
         {
         }

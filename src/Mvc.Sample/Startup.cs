@@ -61,7 +61,7 @@ namespace Mvc.Sample
             services
                 .AddMetrics(options =>
                 {
-                    options.CompletelyDisableMetrics = false;
+                    options.DisableMetrics = false;
                     options.GlobalContextName = "Mvc.Sample";
                 })
                 .AddAspNetMetrics(options =>

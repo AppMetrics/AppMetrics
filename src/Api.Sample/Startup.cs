@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using App.Metrics;
 using AspNet.Metrics.Infrastructure;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
@@ -13,7 +14,7 @@ namespace Api.Sample
 {
     public class Startup
     {
-        static Random _random = new Random();
+        static readonly Random Random = new Random();
 
         public Startup(IHostingEnvironment env)
         {
@@ -43,7 +44,7 @@ namespace Api.Sample
                     {
                         new ClaimsIdentity(new[]
                         {
-                            new Claim("client_id", "client" + _random.Next(1, 10))
+                            new Claim("client_id", "client" + Random.Next(1, 10))
                         })
                     });
                 return func();
@@ -59,10 +60,18 @@ namespace Api.Sample
                 .AddLogging()
                 .AddRouting(options => { options.LowercaseUrls = true; });
 
-            services.AddMvc(options => { options.Filters.Add(new MetricsResourceFilter(new DefaultRouteTemplateResolver())); });
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new MetricsResourceFilter(new DefaultRouteTemplateResolver()));
+            });
             
             services
-                .AddMetrics()
+                .AddMetrics(options =>
+                {
+                    options.DefaultSamplingType = SamplingType.ExponentiallyDecaying;
+                    options.DisableMetrics = false;
+                    options.GlobalContextName = "Test";
+                })
                 .AddAspNetMetrics()
                 //.WithAllPerformanceCounters()
                 .AddHealthChecks();

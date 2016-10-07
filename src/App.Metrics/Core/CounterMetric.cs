@@ -7,7 +7,7 @@ using App.Metrics.MetricData;
 
 namespace App.Metrics.Core
 {
-    public interface CounterImplementation : Counter, MetricValueProvider<CounterValue>
+    public interface CounterImplementation : ICounter, IMetricValueProvider<CounterValue>
     {
     }
 

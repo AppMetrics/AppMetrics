@@ -2,25 +2,20 @@
 using System.Diagnostics;
 using App.Metrics.Reporters;
 using App.Metrics.Utils;
-using Microsoft.Extensions.Logging;
 
 namespace App.Metrics
 {
     public sealed class MetricsConfig : IDisposable, IHideObjectMembers
     {
-        private static readonly ILogger Log = new LoggerFactory().CreateLogger(typeof(MetricsConfig));
         public static readonly bool GloballyDisabledMetrics = ReadGloballyDisableMetricsSetting();
-        //TODO: AH - Inject Logger
-
-
-        private readonly MetricsContext _context;
+        private readonly IMetricsContext _context;
         private readonly MetricsReports _reports;
 
         private SamplingType _defaultSamplingType = SamplingType.ExponentiallyDecaying;
         private Func<HealthStatus> _healthStatus;
         private bool _isDisabled = GloballyDisabledMetrics;
 
-        public MetricsConfig(MetricsContext context)
+        public MetricsConfig(IMetricsContext context)
         {
             _context = context;
 
@@ -56,14 +51,14 @@ namespace App.Metrics
 
         /// <summary>
         ///     This method is used for customizing the metrics configuration.
-        ///     The <paramref name="extension" /> will be called with the current MetricsContext and HealthStatus provider.
+        ///     The <paramref name="extension" /> will be called with the current IMetricsContext and HealthStatus provider.
         /// </summary>
         /// <remarks>
         ///     In general you don't need to call this method directly.
         /// </remarks>
         /// <param name="extension">Action to apply extra configuration.</param>
         /// <returns>Chain-able configuration object.</returns>
-        public MetricsConfig WithConfigExtension(Action<MetricsContext, Func<HealthStatus>> extension)
+        public MetricsConfig WithConfigExtension(Action<IMetricsContext, Func<HealthStatus>> extension)
         {
             return WithConfigExtension((m, h) =>
             {
@@ -74,14 +69,14 @@ namespace App.Metrics
 
         /// <summary>
         ///     This method is used for customizing the metrics configuration.
-        ///     The <paramref name="extension" /> will be called with the current MetricsContext and HealthStatus provider.
+        ///     The <paramref name="extension" /> will be called with the current IMetricsContext and HealthStatus provider.
         /// </summary>
         /// <remarks>
         ///     In general you don't need to call this method directly.
         /// </remarks>
         /// <param name="extension">Action to apply extra configuration.</param>
         /// <returns>The result of calling the extension.</returns>
-        public T WithConfigExtension<T>(Func<MetricsContext, Func<HealthStatus>, T> extension)
+        public T WithConfigExtension<T>(Func<IMetricsContext, Func<HealthStatus>, T> extension)
         {
             return extension(_context, _healthStatus);
         }

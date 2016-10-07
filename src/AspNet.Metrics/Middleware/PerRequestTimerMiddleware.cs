@@ -3,59 +3,46 @@ using System.Net;
 using System.Threading.Tasks;
 using App.Metrics;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace AspNet.Metrics.Middleware
 {
-    public class PerRequestTimerMiddleware : MetricsMiddlewareBase
+    public class PerRequestTimerMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
         private const string TimerItemsKey = "__Mertics.PerRequestStartTime__";
-        private readonly AspNetMetricsContext _metricsContext;
-        private readonly RequestDelegate _next;
 
-        public PerRequestTimerMiddleware(RequestDelegate next, AspNetMetricsOptions options, AspNetMetricsContext metricsContext)
-            : base(options)
+        public PerRequestTimerMiddleware(RequestDelegate next,
+            IOptions<AspNetMetricsOptions> options,
+            ILoggerFactory loggerFactory,
+            IMetricsContext metricsContext)
+            : base(next, options, loggerFactory, metricsContext)
         {
-            if (next == null)
-            {
-                throw new ArgumentNullException(nameof(next));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-            if (metricsContext == null)
-            {
-                throw new ArgumentNullException(nameof(metricsContext));
-            }
-
-            _next = next;
-            _metricsContext = metricsContext;
         }
 
         public async Task Invoke(HttpContext context)
         {
             if (PerformMetric(context))
             {
-                context.Items[TimerItemsKey] = _metricsContext.Clock.Nanoseconds;
+                context.Items[TimerItemsKey] = MetricsContext.SystemClock.Nanoseconds;
 
-                await _next(context);
+                await Next(context);
 
                 if (context.HasMetricsCurrentRouteName() && context.Response.StatusCode != (int)HttpStatusCode.NotFound)
                 {
                     var clientId = context.OAuthClientId();
 
                     var startTime = (long)context.Items[TimerItemsKey];
-                    var elapsed = _metricsContext.Clock.Nanoseconds - startTime;
+                    var elapsed = MetricsContext.SystemClock.Nanoseconds - startTime;
 
-                    _metricsContext.Context.GetWebApplicationContext()
+                    MetricsContext.GetWebApplicationContext()
                         .Timer(context.GetMetricsCurrentRouteName(), Unit.Requests)
                         .Record(elapsed, TimeUnit.Nanoseconds, clientId.IsPresent() ? clientId : null);
                 }
             }
             else
             {
-                await _next(context);
+                await Next(context);
             }
         }
     }

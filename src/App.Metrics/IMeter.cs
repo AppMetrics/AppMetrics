@@ -9,7 +9,7 @@
     ///     Luckily, meters also record three different exponentially-weighted moving average rates: the 1-, 5-, and 15-minute
     ///     moving averages.
     /// </summary>
-    public interface Meter : ResetableMetric
+    public interface IMeter : ResetableMetric
     {
         /// <summary>
         ///     Mark the occurrence of an event.

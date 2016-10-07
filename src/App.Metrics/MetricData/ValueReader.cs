@@ -12,7 +12,7 @@ namespace App.Metrics.MetricData
         private static readonly MeterValue EmptyMeter = new MeterValue(0, 0.0, 0.0, 0.0, 0.0, TimeUnit.Seconds);
         private static readonly TimerValue EmptyTimer = new TimerValue(EmptyMeter, EmptyHistogram, 0, 0, TimeUnit.Milliseconds);
 
-        public static CounterValue GetCurrentValue(Counter metric)
+        public static CounterValue GetCurrentValue(ICounter metric)
         {
             var implementation = metric as CounterImplementation;
             if (implementation != null)
@@ -22,7 +22,7 @@ namespace App.Metrics.MetricData
             return EmptyCounter;
         }
 
-        public static MeterValue GetCurrentValue(Meter metric)
+        public static MeterValue GetCurrentValue(IMeter metric)
         {
             var implementation = metric as MeterImplementation;
             if (implementation != null)
@@ -32,7 +32,7 @@ namespace App.Metrics.MetricData
             return EmptyMeter;
         }
 
-        public static HistogramValue GetCurrentValue(Histogram metric)
+        public static HistogramValue GetCurrentValue(IHistogram metric)
         {
             var implementation = metric as HistogramImplementation;
             if (implementation != null)
@@ -42,7 +42,7 @@ namespace App.Metrics.MetricData
             return EmptyHistogram;
         }
 
-        public static TimerValue GetCurrentValue(Timer metric)
+        public static TimerValue GetCurrentValue(ITimer metric)
         {
             var implementation = metric as TimerImplementation;
             if (implementation != null)

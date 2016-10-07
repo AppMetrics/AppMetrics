@@ -2,44 +2,27 @@
 using System.Threading.Tasks;
 using App.Metrics;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace AspNet.Metrics.Middleware
 {
     /// <summary>
     ///     Measures the overall request rate of each OAuth2 Client as well as the rate per endpoint
     /// </summary>
-    /// <seealso cref="AspNet.Metrics.Middleware.MetricsMiddlewareBase" />
-    public class OAuth2ClientWebRequestMeterMiddleware : MetricsMiddlewareBase
+    public class OAuth2ClientWebRequestMeterMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
-        private readonly AspNetMetricsContext _metricsContext;
-        private readonly RequestDelegate _next;
-
-        public OAuth2ClientWebRequestMeterMiddleware(RequestDelegate next, AspNetMetricsOptions options,
-            AspNetMetricsContext metricsContext)
-            : base(options)
+        public OAuth2ClientWebRequestMeterMiddleware(RequestDelegate next,
+            IOptions<AspNetMetricsOptions> options,
+            ILoggerFactory loggerFactory,
+            IMetricsContext metricsContext)
+            : base(next, options, loggerFactory, metricsContext)
         {
-            if (next == null)
-            {
-                throw new ArgumentNullException(nameof(next));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            if (metricsContext == null)
-            {
-                throw new ArgumentNullException(nameof(metricsContext));
-            }
-
-            _next = next;
-            _metricsContext = metricsContext;
         }
 
         public async Task Invoke(HttpContext context)
         {
-            await _next(context);
+            await Next(context);
 
             if (PerformMetric(context))
             {
@@ -56,11 +39,11 @@ namespace AspNet.Metrics.Middleware
 
         private void MarkWebRequest(string routeTemplate, string clientId)
         {
-            _metricsContext.Context.GetOAuth2ClientWebRequestsContext()
+            MetricsContext.GetOAuth2ClientWebRequestsContext()
                 .Meter(routeTemplate, Unit.Requests)
                 .Mark(clientId);
 
-            _metricsContext.Context.GetOAuth2ClientWebRequestsContext()
+            MetricsContext.GetOAuth2ClientWebRequestsContext()
                 .Meter("Total Web Requests", Unit.Requests)
                 .Mark(clientId);
         }

@@ -1,38 +1,29 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using App.Metrics;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace AspNet.Metrics.Middleware
 {
-    public class PingEndpointMiddleware : MetricsEndpointMiddlewareBase
+    public class PingEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
-        private readonly RequestDelegate _next;
-        private readonly AspNetMetricsOptions _options;
-
-        public PingEndpointMiddleware(RequestDelegate next, AspNetMetricsOptions options)
+        public PingEndpointMiddleware(RequestDelegate next,
+            IOptions<AspNetMetricsOptions> options,
+            ILoggerFactory loggerFactory,
+            IMetricsContext metricsContext)
+            : base(next, options, loggerFactory, metricsContext)
         {
-            if (next == null)
-            {
-                throw new ArgumentNullException(nameof(next));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            _next = next;
-            _options = options;
         }
 
         public Task Invoke(HttpContext context)
         {
-            if (_options.PingEnabled && _options.PingEndpoint.HasValue && _options.PingEndpoint == context.Request.Path)
+            if (Options.PingEnabled && Options.PingEndpoint.HasValue && Options.PingEndpoint == context.Request.Path)
             {
                 return WriteResponse(context, "pong", "text/plain");
             }
 
-            return _next(context);
+            return Next(context);
         }
     }
 }

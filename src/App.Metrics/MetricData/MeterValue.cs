@@ -83,7 +83,7 @@ namespace App.Metrics.MetricData
     /// </summary>
     public sealed class MeterValueSource : MetricValueSource<MeterValue>
     {
-        public MeterValueSource(string name, MetricValueProvider<MeterValue> value, Unit unit, TimeUnit rateUnit, MetricTags tags)
+        public MeterValueSource(string name, IMetricValueProvider<MeterValue> value, Unit unit, TimeUnit rateUnit, MetricTags tags)
             : base(name, new ScaledValueProvider<MeterValue>(value, v => v.Scale(rateUnit)), unit, tags)
         {
             RateUnit = rateUnit;

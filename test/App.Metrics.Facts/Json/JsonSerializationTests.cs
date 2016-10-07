@@ -188,12 +188,12 @@ namespace App.Metrics.Facts.Json
             result.Histograms.ShouldBeEquivalentTo(jsonContext.Histograms);
         }
 
-        private static MetricValueProvider<T> Provider<T>(T value)
+        private static IMetricValueProvider<T> Provider<T>(T value)
         {
             return new ConstantProvider<T>(value);
         }
 
-        private class ConstantProvider<T> : MetricValueProvider<T>
+        private class ConstantProvider<T> : IMetricValueProvider<T>
         {
             public ConstantProvider(T value)
             {
@@ -207,7 +207,7 @@ namespace App.Metrics.Facts.Json
                 return this.Value;
             }
 
-            public bool Merge(MetricValueProvider<T> other)
+            public bool Merge(IMetricValueProvider<T> other)
             {
                 return false;
             }

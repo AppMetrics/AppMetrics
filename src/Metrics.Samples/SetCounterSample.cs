@@ -6,7 +6,7 @@ namespace Metrics.Samples
 {
     public class SetCounterSample
     {
-        private readonly Counter commandCounter = Metric.Counter("Command Counter", Unit.Custom("Commands"));
+        private readonly ICounter commandCounter = Metric.Counter("Command Counter", Unit.Custom("Commands"));
 
         public interface Command { }
         public class SendEmail : Command { }

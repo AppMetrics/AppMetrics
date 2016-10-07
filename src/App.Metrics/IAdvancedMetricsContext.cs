@@ -6,7 +6,7 @@ using App.Metrics.Utils;
 
 namespace App.Metrics
 {
-    public interface AdvancedMetricsContext : IHideObjectMembers
+    public interface IAdvancedMetricsContext : IHideObjectMembers
     {
         /// <summary>
         ///     Event fired when the context CompletelyDisableMetrics is called.
@@ -24,7 +24,7 @@ namespace App.Metrics
         /// <param name="contextName">name of the context to attach</param>
         /// <param name="context">Existing context instance.</param>
         /// <returns>true if the context was attached, false otherwise.</returns>
-        bool AttachContext(string contextName, MetricsContext context);
+        bool AttachContext(string contextName, IMetricsContext context);
 
         /// <summary>
         ///     All metrics operations will be NO-OP.
@@ -41,7 +41,7 @@ namespace App.Metrics
         /// <param name="builder">Function used to build a custom instance.</param>
         /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
         /// <returns>Reference to the metric</returns>
-        Counter Counter<T>(string name, Unit unit, Func<T> builder, MetricTags tags = default(MetricTags))
+        ICounter Counter<T>(string name, Unit unit, Func<T> builder, MetricTags tags = default(MetricTags))
             where T : CounterImplementation;
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace App.Metrics
         /// <param name="unit">Description of what the is being measured ( Unit.Requests , Unit.Items etc ) .</param>
         /// <param name="valueProvider">Function used to build a custom instance.</param>
         /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
-        void Gauge(string name, Func<MetricValueProvider<double>> valueProvider, Unit unit, MetricTags tags = default(MetricTags));
+        void Gauge(string name, Func<IMetricValueProvider<double>> valueProvider, Unit unit, MetricTags tags = default(MetricTags));
 
         /// <summary>
         ///     Register a custom Histogram instance
@@ -61,7 +61,7 @@ namespace App.Metrics
         /// <param name="builder">Function used to build a custom instance.</param>
         /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
         /// <returns>Reference to the metric</returns>
-        Histogram Histogram<T>(string name, Unit unit, Func<T> builder, MetricTags tags = default(MetricTags))
+        IHistogram Histogram<T>(string name, Unit unit, Func<T> builder, MetricTags tags = default(MetricTags))
             where T : HistogramImplementation;
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace App.Metrics
         /// <param name="builder">Function used to build a custom reservoir instance.</param>
         /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
         /// <returns>Reference to the metric</returns>
-        Histogram Histogram(string name, Unit unit, Func<Reservoir> builder, MetricTags tags = default(MetricTags));
+        IHistogram Histogram(string name, Unit unit, Func<Reservoir> builder, MetricTags tags = default(MetricTags));
 
         /// <summary>
         ///     Register a custom Meter instance.
@@ -83,7 +83,7 @@ namespace App.Metrics
         /// <param name="rateUnit">Time unit for rates reporting. Defaults to Second ( occurrences / second ).</param>
         /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
         /// <returns>Reference to the metric</returns>
-        Meter Meter<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit = TimeUnit.Seconds, MetricTags tags = default(MetricTags))
+        IMeter Meter<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit = TimeUnit.Seconds, MetricTags tags = default(MetricTags))
             where T : MeterImplementation;
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace App.Metrics
         /// <param name="durationUnit">Time unit for reporting durations. Defaults to Milliseconds. </param>
         /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
         /// <returns>Reference to the metric</returns>
-        Timer Timer<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit = TimeUnit.Seconds, TimeUnit durationUnit = TimeUnit.Milliseconds,
+        ITimer Timer<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit = TimeUnit.Seconds, TimeUnit durationUnit = TimeUnit.Milliseconds,
             MetricTags tags = default(MetricTags))
             where T : TimerImplementation;
 
@@ -115,7 +115,7 @@ namespace App.Metrics
         /// <param name="durationUnit">Time unit for reporting durations. Defaults to Milliseconds. </param>
         /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
         /// <returns>Reference to the metric</returns>
-        Timer Timer(string name, Unit unit, Func<HistogramImplementation> builder, TimeUnit rateUnit = TimeUnit.Seconds,
+        ITimer Timer(string name, Unit unit, Func<HistogramImplementation> builder, TimeUnit rateUnit = TimeUnit.Seconds,
             TimeUnit durationUnit = TimeUnit.Milliseconds, MetricTags tags = default(MetricTags));
 
         /// <summary>
@@ -128,13 +128,13 @@ namespace App.Metrics
         /// <param name="durationUnit">Time unit for reporting durations. Defaults to Milliseconds. </param>
         /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
         /// <returns>Reference to the metric</returns>
-        Timer Timer(string name, Unit unit, Func<Reservoir> builder, TimeUnit rateUnit = TimeUnit.Seconds,
+        ITimer Timer(string name, Unit unit, Func<Reservoir> builder, TimeUnit rateUnit = TimeUnit.Seconds,
             TimeUnit durationUnit = TimeUnit.Milliseconds, MetricTags tags = default(MetricTags));
 
         /// <summary>
         ///     Replace the DefaultMetricsBuilder used in this context.
         /// </summary>
         /// <param name="metricsBuilder">The custom metrics builder.</param>
-        void WithCustomMetricsBuilder(MetricsBuilder metricsBuilder);
+        void WithCustomMetricsBuilder(IMetricsBuilder metricsBuilder);
     }
 }

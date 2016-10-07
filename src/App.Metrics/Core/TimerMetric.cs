@@ -6,7 +6,7 @@ using App.Metrics.Utils;
 
 namespace App.Metrics.Core
 {
-    public interface TimerImplementation : Timer, MetricValueProvider<TimerValue>
+    public interface TimerImplementation : ITimer, IMetricValueProvider<TimerValue>
     {
     }
 

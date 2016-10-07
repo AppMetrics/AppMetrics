@@ -2,12 +2,12 @@
 {
     public static class ConstantValue
     {
-        public static MetricValueProvider<T> Provider<T>(T value)
+        public static IMetricValueProvider<T> Provider<T>(T value)
         {
             return new ConstantValueProvider<T>(value);
         }
 
-        private sealed class ConstantValueProvider<T> : MetricValueProvider<T>
+        private sealed class ConstantValueProvider<T> : IMetricValueProvider<T>
         {
             public ConstantValueProvider(T value)
             {

@@ -6,7 +6,7 @@ namespace Metrics.Samples
 {
     public class UserValueHistogramSample
     {
-        private readonly Histogram histogram =
+        private readonly IHistogram histogram =
             Metric.Histogram("Results", Unit.Items);
 
         public void Process(string documentId)

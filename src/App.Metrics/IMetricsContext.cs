@@ -7,17 +7,23 @@ namespace App.Metrics
     /// <summary>
     ///     Represents a logical grouping of metrics
     /// </summary>
-    public interface MetricsContext : IDisposable, IHideObjectMembers
+    public interface IMetricsContext : IDisposable, IHideObjectMembers
     {
         /// <summary>
         ///     Exposes advanced operations that are possible on this metrics context.
         /// </summary>
-        AdvancedMetricsContext Advanced { get; }
+        IAdvancedMetricsContext Advanced { get; }
+
+        //TODO: AH - Does this live here and just call this clock
+        IClock SystemClock { get; }
+
+        //TODO: AH - Does this live here
+        Func<HealthStatus> HealthStatus { get; }
 
         /// <summary>
         ///     Returns a metrics data provider capable of returning the metrics in this context and any existing child contexts.
         /// </summary>
-        MetricsDataProvider DataProvider { get; }
+        IMetricsDataProvider DataProvider { get; }
 
         /// <summary>
         ///     Create a new child metrics context. Metrics added to the child context are kept separate from the metrics in the
@@ -25,7 +31,7 @@ namespace App.Metrics
         /// </summary>
         /// <param name="contextName">Name of the child context.</param>
         /// <returns>Newly created child context.</returns>
-        MetricsContext Context(string contextName);
+        IMetricsContext Context(string contextName);
 
         /// <summary>
         ///     Create a new child metrics context. Metrics added to the child context are kept separate from the metrics in the
@@ -37,7 +43,7 @@ namespace App.Metrics
         ///     contexts)
         /// </param>
         /// <returns>Newly created child context.</returns>
-        MetricsContext Context(string contextName, Func<string, MetricsContext> contextCreator);
+        IMetricsContext Context(string contextName, Func<string, IMetricsContext> contextCreator);
 
         /// <summary>
         ///     A counter is a simple incrementing and decrementing 64-bit integer. Ex number of active requests.
@@ -46,7 +52,7 @@ namespace App.Metrics
         /// <param name="unit">Description of what the is being measured ( Unit.Requests , Unit.Items etc ) .</param>
         /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
         /// <returns>Reference to the metric</returns>
-        Counter Counter(string name, Unit unit, MetricTags tags = default(MetricTags));
+        ICounter Counter(string name, Unit unit, MetricTags tags = default(MetricTags));
 
         /// <summary>
         ///     A gauge is the simplest metric type. It just returns a value. This metric is suitable for instantaneous values.
@@ -66,7 +72,7 @@ namespace App.Metrics
         /// <param name="samplingType">Type of the sampling to use (see SamplingType for details ).</param>
         /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
         /// <returns>Reference to the metric</returns>
-        Histogram Histogram(string name,
+        IHistogram Histogram(string name,
             Unit unit,
             SamplingType samplingType = SamplingType.Default,
             MetricTags tags = default(MetricTags));
@@ -88,7 +94,7 @@ namespace App.Metrics
         /// <param name="rateUnit">Time unit for rates reporting. Defaults to Second ( occurrences / second ).</param>
         /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
         /// <returns>Reference to the metric</returns>
-        Meter Meter(string name, Unit unit, TimeUnit rateUnit = TimeUnit.Seconds, MetricTags tags = default(MetricTags));
+        IMeter Meter(string name, Unit unit, TimeUnit rateUnit = TimeUnit.Seconds, MetricTags tags = default(MetricTags));
 
         /// <summary>
         ///     Remove a child context. The metrics for the child context are removed from the MetricsData of the parent context.
@@ -107,7 +113,7 @@ namespace App.Metrics
         /// <param name="durationUnit">Time unit for reporting durations. Defaults to Milliseconds. </param>
         /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
         /// <returns>Reference to the metric</returns>
-        Timer Timer(string name,
+        ITimer Timer(string name,
             Unit unit,
             SamplingType samplingType = SamplingType.Default,
             TimeUnit rateUnit = TimeUnit.Seconds,

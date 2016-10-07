@@ -13,31 +13,31 @@ namespace Metrics.Samples
         /// <summary>
         /// keep the total count of the requests
         /// </summary>
-        private readonly Counter totalRequestsCounter = Metric.Counter("Requests", Unit.Requests);
+        private readonly ICounter totalRequestsCounter = Metric.Counter("Requests", Unit.Requests);
 
         /// <summary>
         /// count the current concurrent requests
         /// </summary>
-        private readonly Counter concurrentRequestsCounter = Metric.Counter("SampleMetrics.ConcurrentRequests", Unit.Requests);
+        private readonly ICounter concurrentRequestsCounter = Metric.Counter("SampleMetrics.ConcurrentRequests", Unit.Requests);
 
-        private readonly Counter setCounter = Metric.Counter("Set Counter", Unit.Items);
+        private readonly ICounter setCounter = Metric.Counter("Set Counter", Unit.Items);
 
-        private readonly Meter setMeter = Metric.Meter("Set Meter", Unit.Items);
+        private readonly IMeter setMeter = Metric.Meter("Set Meter", Unit.Items);
 
         /// <summary>
         /// keep a histogram of the input data of our request method 
         /// </summary>
-        private readonly Histogram histogramOfData = Metric.Histogram("ResultsExample", Unit.Items);
+        private readonly IHistogram histogramOfData = Metric.Histogram("ResultsExample", Unit.Items);
 
         /// <summary>
         /// measure the rate at which requests come in
         /// </summary>
-        private readonly Meter meter = Metric.Meter("Requests", Unit.Requests);
+        private readonly IMeter meter = Metric.Meter("Requests", Unit.Requests);
 
         /// <summary>
         /// measure the time rate and duration of requests
         /// </summary>
-        private readonly App.Metrics.Timer timer = Metric.Timer("Requests", Unit.Requests);
+        private readonly App.Metrics.ITimer timer = Metric.Timer("Requests", Unit.Requests);
 
         private double someValue = 1;
 

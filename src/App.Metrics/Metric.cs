@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Text.RegularExpressions;
 using App.Metrics.Core;
 using App.Metrics.Utils;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace App.Metrics
 {
@@ -13,33 +12,48 @@ namespace App.Metrics
     /// </summary>
     public static class Metric
     {
-        private static readonly DefaultMetricsContext globalContext;
-        //TODO: AH - Inject Logger
-        private static readonly ILogger Log = new LoggerFactory().CreateLogger(typeof(Metric));
+        private static readonly IMetricsContext GlobalContext;
+        private static IServiceProvider _serviceProvider;
 
         static Metric()
         {
-            globalContext = new DefaultMetricsContext(GetGlobalContextName());
+            //TODO: AH - SEt global context name
+            //GlobalContext = new DefaultMetricsContext(GetGlobalContextName());
+            GlobalContext = _serviceProvider?.GetService<IMetricsContext>() ?? 
+                new DefaultMetricsContext(GetDefaultGlobalContextName(), Clock.Default);
+
             if (MetricsConfig.GloballyDisabledMetrics)
             {
-                globalContext.CompletelyDisableMetrics();
-                Log.LogInformation("Metrics: App.Metrics Library is completely disabled. Set Metrics.CompletelyDisableMetrics to false to re-enable.");
+                //GlobalContext.CompletelyDisableMetrics();
             }
-            Config = new MetricsConfig(globalContext);
+
+            //TODO: AH - inject ocnfig
+            Config = new MetricsConfig(GlobalContext);
             Config.ApplySettingsFromConfigFile();
+        }
+
+        /// <summary>
+        /// Initializes the specified service provider.
+        /// </summary>
+        /// <param name="serviceProvider">The service provider.</param>
+        internal static void Init(IServiceProvider serviceProvider)
+        {
+            if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
+
+            _serviceProvider = serviceProvider;
         }
 
         /// <summary>
         ///     Exposes advanced operations that are possible on this metrics context.
         /// </summary>
-        public static AdvancedMetricsContext Advanced => globalContext;
+        public static IAdvancedMetricsContext Advanced => (IAdvancedMetricsContext)GlobalContext;
 
         /// <summary>
         ///     Entrypoint for Global Metrics Configuration.
-        /// </summary>  
+        /// </summary>
         public static MetricsConfig Config { get; }
 
-        internal static MetricsContext Internal { get; } = new DefaultMetricsContext("App.Metrics");
+        internal static IMetricsContext Internal { get; } = new DefaultMetricsContext("App.Metrics", Clock.Default);
 
         /// <summary>
         ///     Create a new child metrics context. Metrics added to the child context are kept separate from the metrics in the
@@ -47,9 +61,9 @@ namespace App.Metrics
         /// </summary>
         /// <param name="contextName">Name of the child context.</param>
         /// <returns>Newly created child context.</returns>
-        public static MetricsContext Context(string contextName)
+        public static IMetricsContext Context(string contextName)
         {
-            return globalContext.Context(contextName);
+            return GlobalContext.Context(contextName);
         }
 
         /// <summary>
@@ -62,9 +76,9 @@ namespace App.Metrics
         ///     contexts)
         /// </param>
         /// <returns>Newly created child context.</returns>
-        public static MetricsContext Context(string contextName, Func<string, MetricsContext> contextCreator)
+        public static IMetricsContext Context(string contextName, Func<string, IMetricsContext> contextCreator)
         {
-            return globalContext.Context(contextName, contextCreator);
+            return GlobalContext.Context(contextName, contextCreator);
         }
 
         /// <summary>
@@ -78,9 +92,9 @@ namespace App.Metrics
         ///     ex: tags: "tag1,tag2" or tags: new[] {"tag1", "tag2"}
         /// </param>
         /// <returns>Reference to the metric</returns>
-        public static Counter Counter(string name, Unit unit, MetricTags tags = default(MetricTags))
+        public static ICounter Counter(string name, Unit unit, MetricTags tags = default(MetricTags))
         {
-            return globalContext.Counter(name, unit, tags);
+            return GlobalContext.Counter(name, unit, tags);
         }
 
         /// <summary>
@@ -93,7 +107,7 @@ namespace App.Metrics
         /// <returns>Reference to the gauge</returns>
         public static void Gauge(string name, Func<double> valueProvider, Unit unit, MetricTags tags = default(MetricTags))
         {
-            globalContext.Gauge(name, valueProvider, unit, tags);
+            GlobalContext.Gauge(name, valueProvider, unit, tags);
         }
 
         /// <summary>
@@ -105,10 +119,10 @@ namespace App.Metrics
         /// <param name="samplingType">Type of the sampling to use (see SamplingType for details ).</param>
         /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
         /// <returns>Reference to the metric</returns>
-        public static Histogram Histogram(string name, Unit unit, SamplingType samplingType = SamplingType.Default,
+        public static IHistogram Histogram(string name, Unit unit, SamplingType samplingType = SamplingType.Default,
             MetricTags tags = default(MetricTags))
         {
-            return globalContext.Histogram(name, unit, samplingType, tags);
+            return GlobalContext.Histogram(name, unit, samplingType, tags);
         }
 
         /// <summary>
@@ -128,17 +142,18 @@ namespace App.Metrics
         /// <param name="rateUnit">Time unit for rates reporting. Defaults to Second ( occurrences / second ).</param>
         /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
         /// <returns>Reference to the metric</returns>
-        public static Meter Meter(string name, Unit unit, TimeUnit rateUnit = TimeUnit.Seconds, MetricTags tags = default(MetricTags))
+        public static IMeter Meter(string name, Unit unit, TimeUnit rateUnit = TimeUnit.Seconds, MetricTags tags = default(MetricTags))
         {
-            return globalContext.Meter(name, unit, rateUnit, tags);
+            return GlobalContext.Meter(name, unit, rateUnit, tags);
         }
 
-        /// Remove a child context. The metrics for the child context are removed from the MetricsData of the parent context.
+        /// <summary>
+        ///     Remove a child context. The metrics for the child context are removed from the MetricsData of the parent context.
         /// </summary>
         /// <param name="contextName">Name of the child context to shutdown.</param>
         public static void ShutdownContext(string contextName)
         {
-            globalContext.ShutdownContext(contextName);
+            GlobalContext.ShutdownContext(contextName);
         }
 
         /// <summary>
@@ -152,15 +167,15 @@ namespace App.Metrics
         /// <param name="durationUnit">Time unit for reporting durations. Defaults to Milliseconds. </param>
         /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
         /// <returns>Reference to the metric</returns>
-        public static Timer Timer(string name, Unit unit, SamplingType samplingType = SamplingType.Default,
+        public static ITimer Timer(string name, Unit unit, SamplingType samplingType = SamplingType.Default,
             TimeUnit rateUnit = TimeUnit.Seconds, TimeUnit durationUnit = TimeUnit.Milliseconds, MetricTags tags = default(MetricTags))
         {
-            return globalContext.Timer(name, unit, samplingType, rateUnit, durationUnit, tags);
+            return GlobalContext.Timer(name, unit, samplingType, rateUnit, durationUnit, tags);
         }
 
         internal static void EnableInternalMetrics()
         {
-            globalContext.AttachContext("App.Metrics", Internal);
+            ((IAdvancedMetricsContext)GlobalContext).AttachContext("App.Metrics", Internal);
         }
 
         private static string CleanName(string name)
@@ -182,7 +197,6 @@ namespace App.Metrics
                 //TODO: AH - Inject IOptions to get global context name
                 var contextNameValue = Environment.GetEnvironmentVariable(contextNameKey); //ConfigurationManager.AppSettings[contextNameKey];
                 var name = string.IsNullOrEmpty(contextNameValue) ? GetDefaultGlobalContextName() : ParseGlobalContextName(contextNameValue);
-                Log.LogDebug("Metrics: GlobalContext Name set to " + name);
                 return name;
             }
             catch (InvalidOperationException)
@@ -192,7 +206,6 @@ namespace App.Metrics
             }
             catch (Exception x)
             {
-                Log.LogError("Metrics: Error reading config value for Metrics.GlobalContextName", x);
                 throw new InvalidOperationException("Invalid Metrics Configuration: Metrics.GlobalContextName must be non empty string", x);
             }
         }
@@ -209,48 +222,6 @@ namespace App.Metrics
             {
                 configName = Regex.Replace(configName, aspMacro, CleanName(AppEnvironment.ResolveAspSiteName()),
                     RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
-            }
-
-            configName = ReplaceRemainingTokens(configName);
-
-            return configName;
-        }
-
-        private static string ReplaceRemainingTokens(string configName)
-        {
-            // look for any tokens of the pattern $Env.<key>$ where <key> is the name of an environment variable or AppSettings variable to read.
-            var matches = Regex.Matches(configName, @"\$Env\.(.+?)\$", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
-            foreach (var match in matches.Cast<Match>())
-            {
-                // we have a match. The second group is the key to look for.
-                var key = match.Groups[1];
-
-                if (string.IsNullOrWhiteSpace(key.Value))
-                {
-                    var msg =
-                        $"Metrics: Error substituting Environment tokens in Metrics.GlobalContextName. Found token with no key. Original string {configName}";
-                    Log.LogError(msg);
-                    throw new InvalidOperationException(msg);
-                }
-
-                // first look in the runtime Environment.
-                var val = Environment.GetEnvironmentVariable(key.Value);
-
-                //TODO: AH - load from IOptions<>
-                //if (string.IsNullOrWhiteSpace(val))
-                //{
-                //    // next look in ConfigurationManager.AppSettings
-                //    val = ConfigurationManager.AppSettings[key.Value];
-                //    if (string.IsNullOrWhiteSpace(val))
-                //    {
-                //        var msg =
-                //            $"Metrics: Error substituting Environment tokens in Metrics.GlobalContextName. Found key '{key}' has no value in Environment or AppSettings. Original string {configName}";
-                //        Log.LogError(msg);
-                //        throw new InvalidOperationException(msg);
-                //    }
-                //}
-
-                configName = configName.Replace(match.Value, val);
             }
 
             return configName;

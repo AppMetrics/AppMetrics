@@ -111,7 +111,7 @@ namespace App.Metrics.MetricData
     /// </summary>
     public sealed class HistogramValueSource : MetricValueSource<HistogramValue>
     {
-        public HistogramValueSource(string name, MetricValueProvider<HistogramValue> valueProvider, Unit unit, MetricTags tags)
+        public HistogramValueSource(string name, IMetricValueProvider<HistogramValue> valueProvider, Unit unit, MetricTags tags)
             : base(name, valueProvider, unit, tags)
         {
         }

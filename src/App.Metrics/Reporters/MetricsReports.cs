@@ -8,11 +8,11 @@ namespace App.Metrics.Reporters
     public sealed class MetricsReports : IHideObjectMembers, IDisposable
     {
         private readonly Func<HealthStatus> _healthStatus;
-        private readonly MetricsDataProvider _metricsDataProvider;
+        private readonly IMetricsDataProvider _metricsDataProvider;
 
         private readonly List<ScheduledReporter> _reports = new List<ScheduledReporter>();
 
-        public MetricsReports(MetricsDataProvider metricsDataProvider, Func<HealthStatus> healthStatus)
+        public MetricsReports(IMetricsDataProvider metricsDataProvider, Func<HealthStatus> healthStatus)
         {
             _metricsDataProvider = metricsDataProvider;
             _healthStatus = healthStatus;
@@ -48,7 +48,7 @@ namespace App.Metrics.Reporters
         /// <param name="report">Function that returns an instance of a reporter</param>
         /// <param name="interval">Interval at which to run the report.</param>
         /// <param name="filter">Only report metrics that match the filter.</param>
-        public MetricsReports WithReport(MetricsReport report, TimeSpan interval, MetricsFilter filter = null)
+        public MetricsReports WithReport(IMetricsReport report, TimeSpan interval, MetricsFilter filter = null)
         {
             var newReport = new ScheduledReporter(report, _metricsDataProvider.WithFilter(filter), _healthStatus, interval);
             _reports.Add(newReport);

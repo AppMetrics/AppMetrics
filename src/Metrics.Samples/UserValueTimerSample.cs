@@ -7,7 +7,7 @@ namespace Metrics.Samples
 {
     public class UserValueTimerSample
     {
-        private readonly App.Metrics.Timer timer =
+        private readonly App.Metrics.ITimer timer =
             Metric.Timer("Requests", Unit.Requests);
 
         public void Process(string documentId)

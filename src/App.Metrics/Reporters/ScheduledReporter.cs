@@ -8,16 +8,16 @@ namespace App.Metrics.Reporters
     public sealed class ScheduledReporter : IDisposable
     {
         private readonly Func<HealthStatus> _healthStatus;
-        private readonly MetricsDataProvider _metricsDataProvider;
-        private readonly MetricsReport _report;
+        private readonly IMetricsDataProvider _metricsDataProvider;
+        private readonly IMetricsReport _report;
         private readonly Scheduler _scheduler;
 
-        public ScheduledReporter(MetricsReport reporter, MetricsDataProvider metricsDataProvider, Func<HealthStatus> healthStatus, TimeSpan interval)
+        public ScheduledReporter(IMetricsReport reporter, IMetricsDataProvider metricsDataProvider, Func<HealthStatus> healthStatus, TimeSpan interval)
             : this(reporter, metricsDataProvider, healthStatus, interval, new ActionScheduler())
         {
         }
 
-        public ScheduledReporter(MetricsReport report, MetricsDataProvider metricsDataProvider, Func<HealthStatus> healthStatus, TimeSpan interval,
+        public ScheduledReporter(IMetricsReport report, IMetricsDataProvider metricsDataProvider, Func<HealthStatus> healthStatus, TimeSpan interval,
             Scheduler scheduler)
         {
             _report = report;

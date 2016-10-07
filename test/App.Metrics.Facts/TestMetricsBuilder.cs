@@ -6,7 +6,7 @@ using App.Metrics.Utils;
 
 namespace App.Metrics.Facts
 {
-    public class TestMetricsBuilder : MetricsBuilder
+    public class TestMetricsBuilder : IMetricsBuilder
     {
         private readonly Clock clock;
         private readonly Scheduler scheduler;
@@ -22,7 +22,7 @@ namespace App.Metrics.Facts
             return new CounterMetric();
         }
 
-        public MetricValueProvider<double> BuildGauge(string name, Unit unit, Func<double> valueProvider)
+        public IMetricValueProvider<double> BuildGauge(string name, Unit unit, Func<double> valueProvider)
         {
             return new FunctionGauge(valueProvider);
         }

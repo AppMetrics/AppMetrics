@@ -4,7 +4,7 @@ using App.Metrics.MetricData;
 
 namespace App.Metrics.Core
 {
-    public sealed class DefaultRegistryDataProvider : RegistryDataProvider
+    public sealed class DefaultRegistryDataProvider : IRegistryDataProvider
     {
         private readonly Func<IEnumerable<CounterValueSource>> _counters;
         private readonly Func<IEnumerable<GaugeValueSource>> _gauges;

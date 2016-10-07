@@ -7,7 +7,7 @@ using App.Metrics.Utils;
 
 namespace App.Metrics.Reporters
 {
-    public abstract class BaseReport : MetricsReport
+    public abstract class BaseReport : IMetricsReport
     {
         private CancellationToken _token;
 
@@ -19,7 +19,7 @@ namespace App.Metrics.Reporters
         {
             _token = token;
 
-            ReportTimestamp = Clock.Default.UTCDateTime;
+            ReportTimestamp = Clock.Default.UtcDateTime;
 
             StartReport(metricsData.Context);
 

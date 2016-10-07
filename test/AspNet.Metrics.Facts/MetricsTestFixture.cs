@@ -16,22 +16,26 @@ namespace AspNet.Metrics.Facts
         {
             TestContext = new TestContext();
             TestContext.ResetMetricsValues();
-            MetricsConfig = new MetricsConfig(TestContext);
 
             Server = new TestServer(new WebHostBuilder()
                 .ConfigureServices(services =>
                 {
                     services.AddRouting(options => { options.LowercaseUrls = true; });
-                    services.AddMvc(options =>
+                    //TODO: AH set this to the default filter?
+                    services.AddMvc(options => { options.Filters.Add(new MetricsResourceFilter(new DefaultRouteTemplateResolver())); });
+                    services.AddMetrics(options =>
                     {
-                        options.Filters.Add(new MetricsResourceFilter(new DefaultRouteTemplateResolver()));
+                        //TODO: Test different app metrics options
+                        options.DefaultSamplingType = SamplingType.Default;
+                        options.GlobalContextName = "testing";
+                        options.DisableMetrics = false;
+                        options.MetricsContext = TestContext;
                     });
-                    services.AddMetrics();
-                    services.AddTransient(typeof(TestContext), delegate { return TestContext; });
                 })
                 .Configure(app =>
                 {
-                    app.UseMetrics(MetricsConfig, TestContext.Clock);                    
+                    //TODO: AH - test different aspnet metrics options
+                    app.UseMetrics();
                     app.UseMvc();
                 }));
 
@@ -39,8 +43,6 @@ namespace AspNet.Metrics.Facts
         }
 
         public HttpClient Client { get; set; }
-
-        public MetricsConfig MetricsConfig { get; set; }
 
         public TestServer Server { get; set; }
 
@@ -50,7 +52,6 @@ namespace AspNet.Metrics.Facts
         {
             TestContext.ResetMetricsValues();
             TestContext.Dispose();
-            MetricsConfig.Dispose();
             Client.Dispose();
             Server.Dispose();
         }

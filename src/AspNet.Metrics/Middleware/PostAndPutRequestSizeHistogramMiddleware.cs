@@ -1,32 +1,24 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using App.Metrics;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace AspNet.Metrics.Middleware
 {
-    public class PostAndPutRequestSizeHistogramMiddleware : MetricsMiddlewareBase
+    public class PostAndPutRequestSizeHistogramMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
-        private readonly Histogram _histogram;
-        private readonly RequestDelegate _next;
+        private readonly IHistogram _histogram;
 
-        public PostAndPutRequestSizeHistogramMiddleware(RequestDelegate next, AspNetMetricsOptions options, AspNetMetricsContext metricsContext)
-            : base(options)
+        public PostAndPutRequestSizeHistogramMiddleware(RequestDelegate next,
+            IOptions<AspNetMetricsOptions> options,
+            ILoggerFactory loggerFactory,
+            IMetricsContext metricsContext)
+            : base(next, options, loggerFactory, metricsContext)
         {
-            if (next == null)
-            {
-                throw new ArgumentNullException(nameof(next));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            _next = next;
-            _histogram = metricsContext.Context.GetWebApplicationContext()
-                .Histogram("Web Request Post & Put Size", Unit.Bytes, SamplingType.Default);
+            _histogram = MetricsContext.GetWebApplicationContext()
+                .Histogram("Web Request Post & Put Size", Unit.Bytes);
         }
 
         public async Task Invoke(HttpContext context)
@@ -44,7 +36,7 @@ namespace AspNet.Metrics.Middleware
                 }
             }
 
-            await _next(context);
+            await Next(context);
         }
     }
 }

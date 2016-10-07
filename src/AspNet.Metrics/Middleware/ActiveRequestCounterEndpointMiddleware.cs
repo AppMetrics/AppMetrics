@@ -2,16 +2,20 @@
 using System.Threading.Tasks;
 using App.Metrics;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace AspNet.Metrics.Middleware
 {
-    public class ActiveRequestCounterEndpointMiddleware : MetricsMiddlewareBase
+    public class ActiveRequestCounterEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
-        private readonly Counter _activeRequests;
-        private readonly RequestDelegate _next;
+        private readonly ICounter _activeRequests;
 
-        public ActiveRequestCounterEndpointMiddleware(RequestDelegate next, AspNetMetricsOptions options, AspNetMetricsContext metricsContext)
-            : base(options)
+        public ActiveRequestCounterEndpointMiddleware(RequestDelegate next,
+            IOptions<AspNetMetricsOptions> options,
+            ILoggerFactory loggerFactory,
+            IMetricsContext metricsContext)
+            : base(next, options, loggerFactory, metricsContext)
         {
             if (next == null)
             {
@@ -23,8 +27,7 @@ namespace AspNet.Metrics.Middleware
                 throw new ArgumentNullException(nameof(options));
             }
 
-            _next = next;
-            _activeRequests = metricsContext.Context.GetWebApplicationContext()
+            _activeRequests = metricsContext.GetWebApplicationContext()
                 .Counter("Active Requests", Unit.Custom("ActiveRequests"));
         }
 
@@ -34,13 +37,13 @@ namespace AspNet.Metrics.Middleware
             {
                 _activeRequests.Increment();
 
-                await _next(context);
+                await Next(context);
 
                 _activeRequests.Decrement();
             }
             else
             {
-                await _next(context);
+                await Next(context);
             }
         }
     }

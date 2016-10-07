@@ -3,7 +3,6 @@ using System.Linq;
 using App.Metrics;
 using App.Metrics.Core;
 using App.Metrics.Internal;
-using App.Metrics.Utils;
 using AspNet.Metrics;
 using AspNet.Metrics.Middleware;
 using Microsoft.AspNetCore.Builder;
@@ -18,15 +17,10 @@ namespace Microsoft.AspNet.Builder
     {
         public static IApplicationBuilder UseMetrics(this IApplicationBuilder app)
         {
-            return app.UseMetrics(Metric.Config);
+            return app.UseMetrics(new AspNetMetricsOptions());
         }
 
-        public static IApplicationBuilder UseMetrics(this IApplicationBuilder app, MetricsConfig config)
-        {
-            return app.UseMetrics(config, Clock.Default);
-        }
-
-        public static IApplicationBuilder UseMetrics(this IApplicationBuilder app, MetricsConfig config, Clock clock)
+        public static IApplicationBuilder UseMetrics(this IApplicationBuilder app, AspNetMetricsOptions options)
         {
             if (app == null)
             {
@@ -37,26 +31,19 @@ namespace Microsoft.AspNet.Builder
             // We use the MetricsMarkerService to make sure if all the services were added.
             MetricsServicesHelper.ThrowIfMetricsNotRegistered(app.ApplicationServices);
 
-            var options = app.ApplicationServices.GetService<IOptions<AspNetMetricsOptions>>().Value;
+            // Metrics Endpoint Middleware
+            app.UseMiddleware<HealthCheckEndpointMiddleware>(Options.Create(options));
+            app.UseMiddleware<MetricsEndpointTextEndpointMiddleware>(Options.Create(options));
+            app.UseMiddleware<MetricsEndpointMiddleware>(Options.Create(options));
+            app.UseMiddleware<PingEndpointMiddleware>(Options.Create(options));
 
-            config.WithConfigExtension((ctx, hs) =>
-            {
-                var metricsContext = new AspNetMetricsContext(ctx, hs, clock);
-
-                // Metrics Endpoint Middleware
-                app.Use(next => new MetricsEndpointMiddleware(next, options, metricsContext).Invoke);
-                app.Use(next => new PingEndpointMiddleware(next, options).Invoke);
-                app.Use(next => new HealthCheckEndpointMiddleware(next, options, metricsContext).Invoke);
-                app.Use(next => new MetricsEndpointTextEndpointMiddleware(next, options, metricsContext).Invoke);
-
-                // Web Metrics Middleware
-                app.Use(next => new ErrorRequestMeterMiddleware(next, options, metricsContext).Invoke);
-                app.Use(next => new OAuth2ClientWebRequestMeterMiddleware(next, options, metricsContext).Invoke);
-                app.Use(next => new PerRequestTimerMiddleware(next, options, metricsContext).Invoke);
-                app.Use(next => new RequestTimerMiddleware(next, options, metricsContext).Invoke);
-                app.Use(next => new ActiveRequestCounterEndpointMiddleware(next, options, metricsContext).Invoke);
-                app.Use(next => new PostAndPutRequestSizeHistogramMiddleware(next, options, metricsContext).Invoke);
-            });
+            // Web Metrics Middleware
+            app.UseMiddleware<ActiveRequestCounterEndpointMiddleware>(Options.Create(options));
+            app.UseMiddleware<ErrorRequestMeterMiddleware>(Options.Create(options));
+            app.UseMiddleware<OAuth2ClientWebRequestMeterMiddleware>(Options.Create(options));
+            app.UseMiddleware<PerRequestTimerMiddleware>(Options.Create(options));
+            app.UseMiddleware<PostAndPutRequestSizeHistogramMiddleware>(Options.Create(options));
+            app.UseMiddleware<RequestTimerMiddleware>(Options.Create(options));
 
             UseHealthChecks(app);
 

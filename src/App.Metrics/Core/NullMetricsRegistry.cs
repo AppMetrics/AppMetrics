@@ -4,29 +4,29 @@ using App.Metrics.MetricData;
 
 namespace App.Metrics.Core
 {
-    public sealed class NullMetricsRegistry : MetricsRegistry
+    public sealed class NullMetricsRegistry : IMetricsRegistry
     {
-        public RegistryDataProvider DataProvider => NullMetric.Instance;
+        public IRegistryDataProvider DataProvider => NullMetric.Instance;
 
         public void ClearAllMetrics()
         {
         }
 
-        public Counter Counter<T>(string name, Func<T> builder, Unit unit, MetricTags tags) where T : CounterImplementation
+        public ICounter Counter<T>(string name, Func<T> builder, Unit unit, MetricTags tags) where T : CounterImplementation
         {
             return NullMetric.Instance;
         }
 
-        public void Gauge(string name, Func<MetricValueProvider<double>> valueProvider, Unit unit, MetricTags tags)
+        public void Gauge(string name, Func<IMetricValueProvider<double>> valueProvider, Unit unit, MetricTags tags)
         {
         }
 
-        public Histogram Histogram<T>(string name, Func<T> builder, Unit unit, MetricTags tags) where T : HistogramImplementation
+        public IHistogram Histogram<T>(string name, Func<T> builder, Unit unit, MetricTags tags) where T : HistogramImplementation
         {
             return NullMetric.Instance;
         }
 
-        public Meter Meter<T>(string name, Func<T> builder, Unit unit, TimeUnit rateUnit, MetricTags tags) where T : MeterImplementation
+        public IMeter Meter<T>(string name, Func<T> builder, Unit unit, TimeUnit rateUnit, MetricTags tags) where T : MeterImplementation
         {
             return NullMetric.Instance;
         }
@@ -35,13 +35,13 @@ namespace App.Metrics.Core
         {
         }
 
-        public Timer Timer<T>(string name, Func<T> builder, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
+        public ITimer Timer<T>(string name, Func<T> builder, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
             where T : TimerImplementation
         {
             return NullMetric.Instance;
         }
 
-        private struct NullMetric : Counter, Meter, Histogram, Timer, RegistryDataProvider
+        private struct NullMetric : ICounter, IMeter, IHistogram, ITimer, IRegistryDataProvider
         {
             public static readonly NullMetric Instance = new NullMetric();
             private static readonly TimerContext NullContext = new TimerContext(Instance, null);

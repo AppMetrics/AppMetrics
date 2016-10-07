@@ -41,7 +41,7 @@ namespace App.Metrics.Json
 
         public JsonHealthChecks AddTimestamp(Clock clock)
         {
-            root.Add(new JsonProperty("Timestamp", Clock.FormatTimestamp(clock.UTCDateTime)));
+            root.Add(new JsonProperty("Timestamp", Clock.FormatTimestamp(clock.UtcDateTime)));
             return this;
         }
 

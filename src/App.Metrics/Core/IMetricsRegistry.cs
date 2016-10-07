@@ -4,7 +4,7 @@ using App.Metrics.MetricData;
 
 namespace App.Metrics.Core
 {
-    public interface RegistryDataProvider
+    public interface IRegistryDataProvider
     {
         IEnumerable<CounterValueSource> Counters { get; }
 
@@ -17,26 +17,26 @@ namespace App.Metrics.Core
         IEnumerable<TimerValueSource> Timers { get; }
     }
 
-    public interface MetricsRegistry
+    public interface IMetricsRegistry
     {
-        RegistryDataProvider DataProvider { get; }
+        IRegistryDataProvider DataProvider { get; }
 
         void ClearAllMetrics();
 
-        Counter Counter<T>(string name, Func<T> builder, Unit unit, MetricTags tags)
+        ICounter Counter<T>(string name, Func<T> builder, Unit unit, MetricTags tags)
             where T : CounterImplementation;
 
-        void Gauge(string name, Func<MetricValueProvider<double>> valueProvider, Unit unit, MetricTags tags);
+        void Gauge(string name, Func<IMetricValueProvider<double>> valueProvider, Unit unit, MetricTags tags);
 
-        Histogram Histogram<T>(string name, Func<T> builder, Unit unit, MetricTags tags)
+        IHistogram Histogram<T>(string name, Func<T> builder, Unit unit, MetricTags tags)
             where T : HistogramImplementation;
 
-        Meter Meter<T>(string name, Func<T> builder, Unit unit, TimeUnit rateUnit, MetricTags tags)
+        IMeter Meter<T>(string name, Func<T> builder, Unit unit, TimeUnit rateUnit, MetricTags tags)
             where T : MeterImplementation;
 
         void ResetMetricsValues();
 
-        Timer Timer<T>(string name, Func<T> builder, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
+        ITimer Timer<T>(string name, Func<T> builder, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
             where T : TimerImplementation;
     }
 }

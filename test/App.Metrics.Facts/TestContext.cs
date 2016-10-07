@@ -9,7 +9,7 @@ namespace App.Metrics.Facts
     public class TestContext : BaseMetricsContext
     {
         public TestContext(string contextName, TestClock clock, TestScheduler scheduler)
-            : base(contextName, new DefaultMetricsRegistry(), new TestMetricsBuilder(clock, scheduler), () => clock.UTCDateTime)
+            : base(contextName, new DefaultMetricsRegistry(), new TestMetricsBuilder(clock, scheduler), clock, () => clock.UtcDateTime)
         {
             this.Clock = clock;
             this.Scheduler = scheduler;
@@ -69,7 +69,7 @@ namespace App.Metrics.Facts
             return ValueFor<TimerValue>(GetDataFor(nameWithContext).Timers, nameWithContext);
         }
 
-        protected override MetricsContext CreateChildContextInstance(string contextName)
+        protected override IMetricsContext CreateChildContextInstance(string contextName)
         {
             return new TestContext(contextName, this.Clock, this.Scheduler);
         }

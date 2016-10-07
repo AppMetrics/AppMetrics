@@ -3,7 +3,7 @@ using App.Metrics.MetricData;
 
 namespace App.Metrics.Core
 {
-    public interface GaugeImplementation : MetricValueProvider<double>
+    public interface GaugeImplementation : IMetricValueProvider<double>
     {
     }
 
@@ -40,10 +40,10 @@ namespace App.Metrics.Core
 
     public sealed class DerivedGauge : GaugeImplementation
     {
-        private readonly MetricValueProvider<double> _gauge;
+        private readonly IMetricValueProvider<double> _gauge;
         private readonly Func<double, double> _transformation;
 
-        public DerivedGauge(MetricValueProvider<double> gauge, Func<double, double> transformation)
+        public DerivedGauge(IMetricValueProvider<double> gauge, Func<double, double> transformation)
         {
             _gauge = gauge;
             _transformation = transformation;
@@ -87,7 +87,7 @@ namespace App.Metrics.Core
         /// </summary>
         /// <param name="hitMeter"></param>
         /// <param name="totalMeter"></param>
-        public HitRatioGauge(Meter hitMeter, Meter totalMeter)
+        public HitRatioGauge(IMeter hitMeter, IMeter totalMeter)
             : this(hitMeter, totalMeter, value => value.OneMinuteRate)
         {
         }
@@ -102,7 +102,7 @@ namespace App.Metrics.Core
         ///     The function to extract a value from the MeterValue. Will be applied to both the numerator
         ///     and denominator meters.
         /// </param>
-        public HitRatioGauge(Meter hitMeter, Meter totalMeter, Func<MeterValue, double> meterRateFunc)
+        public HitRatioGauge(IMeter hitMeter, IMeter totalMeter, Func<MeterValue, double> meterRateFunc)
             : base(() => meterRateFunc(ValueReader.GetCurrentValue(hitMeter)), () => meterRateFunc(ValueReader.GetCurrentValue(totalMeter)))
         {
         }
@@ -114,7 +114,7 @@ namespace App.Metrics.Core
         /// </summary>
         /// <param name="hitMeter">The numerator meter to use for the ratio.</param>
         /// <param name="totalTimer">The denominator meter to use for the ratio.</param>
-        public HitRatioGauge(Meter hitMeter, Timer totalTimer)
+        public HitRatioGauge(IMeter hitMeter, ITimer totalTimer)
             : this(hitMeter, totalTimer, value => value.OneMinuteRate)
         {
         }
@@ -130,7 +130,7 @@ namespace App.Metrics.Core
         ///     The function to extract a value from the MeterValue. Will be applied to both the numerator
         ///     and denominator meters.
         /// </param>
-        public HitRatioGauge(Meter hitMeter, Timer totalTimer, Func<MeterValue, double> meterRateFunc)
+        public HitRatioGauge(IMeter hitMeter, ITimer totalTimer, Func<MeterValue, double> meterRateFunc)
             : base(() => meterRateFunc(ValueReader.GetCurrentValue(hitMeter)), () => meterRateFunc(ValueReader.GetCurrentValue(totalTimer).Rate))
         {
         }

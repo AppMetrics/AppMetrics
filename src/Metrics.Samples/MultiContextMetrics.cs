@@ -5,10 +5,10 @@ namespace Metrics.Samples
 {
     public class MultiContextMetrics
     {
-        private readonly Counter firstCounter = Metric.Context("First Context").Counter("Counter", Unit.Requests);
+        private readonly ICounter firstCounter = Metric.Context("First Context").Counter("Counter", Unit.Requests);
 
-        private readonly Counter secondCounter = Metric.Context("Second Context").Counter("Counter", Unit.Requests);
-        private readonly Meter secondMeter = Metric.Context("Second Context").Meter("Meter", Unit.Errors, TimeUnit.Seconds);
+        private readonly ICounter secondCounter = Metric.Context("Second Context").Counter("Counter", Unit.Requests);
+        private readonly IMeter secondMeter = Metric.Context("Second Context").Meter("Meter", Unit.Errors, TimeUnit.Seconds);
 
         public void Run()
         {
@@ -20,8 +20,8 @@ namespace Metrics.Samples
 
     public class MultiContextInstanceMetrics
     {
-        private readonly Counter instanceCounter;
-        private readonly Timer instanceTimer;
+        private readonly ICounter instanceCounter;
+        private readonly ITimer instanceTimer;
 
         public MultiContextInstanceMetrics(string instanceName)
         {
