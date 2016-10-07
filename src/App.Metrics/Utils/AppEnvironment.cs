@@ -11,12 +11,22 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Utils
 {
-    public static class AppEnvironment
+    //TODO: AH - make internal?
+    public class AppEnvironment
     {
-        //TODO: AH - Inject Logger
-        private static readonly ILogger log = new LoggerFactory().CreateLogger(typeof(AppEnvironment));
+        private static ILogger _logger;
 
-        public static IEnumerable<EnvironmentEntry> Current
+        public AppEnvironment(ILoggerFactory loggerFactory)
+        {
+            if (loggerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(loggerFactory));
+            }
+
+            _logger = loggerFactory.CreateLogger<AppEnvironment>();
+        }
+
+        public IEnumerable<EnvironmentEntry> Current
         {
             get
             {
@@ -44,8 +54,9 @@ namespace App.Metrics.Utils
         ///     Try to resolve Asp site name without compile-time linking System.Web assembly.
         /// </summary>
         /// <returns>Site name if able to identify</returns>
-        public static string ResolveAspSiteName()
+        public string ResolveAspSiteName()
         {
+            //TODO: AH - review this
             const string UnknownName = "UnknownSiteName";
             try
             {
@@ -57,42 +68,42 @@ namespace App.Metrics.Utils
                     if (result != null)
                     {
                         result = result.Trim('/');
-                        if (result != String.Empty)
+                        if (result != string.Empty)
                         {
                             return result;
                         }
 
-                        log.LogDebug("HttpRuntime.AppDomainAppVirtualPath is empty, trying AppDomainAppId");
+                        _logger.LogDebug("HttpRuntime.AppDomainAppVirtualPath is empty, trying AppDomainAppId");
 
                         result = runtimeType.GetProperty("AppDomainAppId").GetValue(null) as string;
                         if (result != null)
                         {
                             result = result.Trim('/');
-                            if (result != String.Empty)
+                            if (result != string.Empty)
                             {
                                 return result;
                             }
                         }
                         else
                         {
-                            log.LogWarning("Unable to find property System.Web.HttpRuntime.AppDomainAppId to resolve AspSiteName");
+                            _logger.LogWarning("Unable to find property System.Web.HttpRuntime.AppDomainAppId to resolve AspSiteName");
                         }
 
-                        log.LogWarning("HttpRuntime.AppDomainAppId is also empty, giving up trying to find site name");
+                        _logger.LogWarning("HttpRuntime.AppDomainAppId is also empty, giving up trying to find site name");
                     }
                     else
                     {
-                        log.LogWarning("Unable to find property System.Web.HttpRuntime.AppDomainAppVirtualPath to resolve AspSiteName");
+                        _logger.LogWarning("Unable to find property System.Web.HttpRuntime.AppDomainAppVirtualPath to resolve AspSiteName");
                     }
                 }
                 else
                 {
-                    log.LogWarning("Unable to find type System.Web.HttpRuntime to resolve $Env.AppDomainAppVirtualPath$ macro");
+                    _logger.LogWarning("Unable to find type System.Web.HttpRuntime to resolve $Env.AppDomainAppVirtualPath$ macro");
                 }
             }
             catch (Exception e)
             {
-                log.LogWarning("Unable to find type System.Web.HttpRuntime to resolve AspSiteName $Env.AppDomainAppVirtualPath$ macro", e);
+                _logger.LogWarning("Unable to find type System.Web.HttpRuntime to resolve AspSiteName $Env.AppDomainAppVirtualPath$ macro", e);
             }
 
             return UnknownName;
@@ -118,7 +129,7 @@ namespace App.Metrics.Utils
             {
                 if (x.SocketErrorCode == SocketError.HostNotFound)
                 {
-                    log.LogWarning("Unable to resolve hostname " + hostName);
+                    _logger.LogWarning("Unable to resolve hostname " + hostName);
                     return string.Empty;
                 }
                 throw;

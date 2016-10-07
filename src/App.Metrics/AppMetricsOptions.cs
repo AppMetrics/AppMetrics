@@ -3,6 +3,7 @@ using System.Diagnostics;
 using App.Metrics.Core;
 using App.Metrics.Reporters;
 using App.Metrics.Utils;
+using AspNet.Metrics;
 
 namespace App.Metrics
 {
@@ -26,6 +27,8 @@ namespace App.Metrics
         public bool DisableMetrics { get; set; }
 
         public string GlobalContextName { get; set; }
+
+        public JsonSchemeVersion JsonSchemeVersion { get; set; } = JsonSchemeVersion.AlwaysLatest;
 
         public IMetricsContext MetricsContext { get; set; } = new DefaultMetricsContext(DefaultGlobalContextName, Clock.Default);
 

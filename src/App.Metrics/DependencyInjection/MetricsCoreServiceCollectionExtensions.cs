@@ -1,8 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using App.Metrics;
-using App.Metrics.Core;
 using App.Metrics.Internal;
+using App.Metrics.Json;
 using App.Metrics.Reporters;
+using App.Metrics.Utils;
+using AspNet.Metrics;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
 
@@ -13,6 +17,13 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
 {
     internal static class MetricsCoreServiceCollectionExtensions
     {
+        private static readonly IReadOnlyDictionary<JsonSchemeVersion, Type> MetricsJsonBuilderVersionMapping =
+            new ReadOnlyDictionary<JsonSchemeVersion, Type>(new Dictionary<JsonSchemeVersion, Type>
+            {
+                { JsonSchemeVersion.AlwaysLatest, typeof(MetricsJsonBuilderV1) },
+                { JsonSchemeVersion.Version1, typeof(MetricsJsonBuilderV1) }
+            });
+
         public static IMetricsBuilder AddMetricsCore(this IServiceCollection services)
         {
             if (services == null)
@@ -46,8 +57,17 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
         internal static void AddMetricsCoreServices(IServiceCollection services, IMetricsEnvironment environment)
         {
             //TODO: AH - is this still needed
-            services.TryAddSingleton<IConfigureOptions<AppMetricsOptions>, AppMetricsCoreOptionsSetup>();
             services.TryAddSingleton<MetricsMarkerService, MetricsMarkerService>();
+            services.TryAddSingleton<IConfigureOptions<AppMetricsOptions>, AppMetricsCoreOptionsSetup>();
+            services.TryAddSingleton<AppEnvironment, AppEnvironment>();
+            services.TryAddSingleton<MetricsJsonBuilderV1, MetricsJsonBuilderV1>();
+            services.TryAddSingleton(typeof(IMetricsJsonBuilder), provider =>
+            {
+                var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
+                var jsonBuilderType = MetricsJsonBuilderVersionMapping[options.Value.JsonSchemeVersion];
+                return provider.GetRequiredService(jsonBuilderType);
+            });
+
             services.TryAddSingleton(typeof(IMetricsContext), provider =>
             {
                 var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
@@ -55,7 +75,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                 options.Value.Reporters(reporters);
                 return options.Value.MetricsContext;
             });
-            
+
             services.TryAddSingleton(provider => environment);
         }
 

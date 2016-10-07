@@ -10,13 +10,16 @@ namespace AspNet.Metrics.Middleware
     public class MetricsEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
         private readonly RequestDelegate _next;
+        private readonly IMetricsJsonBuilder _jsonBuilder;
 
         public MetricsEndpointMiddleware(RequestDelegate next,
             IOptions<AspNetMetricsOptions> options,
             ILoggerFactory loggerFactory,
-            IMetricsContext metricsContext)
+            IMetricsContext metricsContext,
+            IMetricsJsonBuilder jsonBuilder)
             : base(next, options, loggerFactory, metricsContext)
         {
+            _jsonBuilder = jsonBuilder;
             _next = next;
         }
 
@@ -24,9 +27,10 @@ namespace AspNet.Metrics.Middleware
         {
             if (Options.MetricsEnabled && Options.MetricsEndpoint.HasValue && Options.MetricsEndpoint == context.Request.Path)
             {
-                var json = JsonBuilderV1.BuildJson(MetricsContext.DataProvider.CurrentMetricsData);
+                var json = _jsonBuilder.BuildJson(MetricsContext.DataProvider.CurrentMetricsData);
 
-                return WriteResponse(context, json, JsonBuilderV1.MetricsMimeType);
+                //TODO: AH - can't hard code the schme version here
+                return WriteResponse(context, json, MetricsJsonBuilderV1.MetricsMimeType);
             }
 
             return _next(context);

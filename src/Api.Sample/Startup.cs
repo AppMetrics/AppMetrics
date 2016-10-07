@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using App.Metrics;
+using AspNet.Metrics;
 using AspNet.Metrics.Infrastructure;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
@@ -60,19 +61,17 @@ namespace Api.Sample
                 .AddLogging()
                 .AddRouting(options => { options.LowercaseUrls = true; });
 
-            services.AddMvc(options =>
-            {
-                options.Filters.Add(new MetricsResourceFilter(new DefaultRouteTemplateResolver()));
-            });
-            
+            services.AddMvc(options => { options.Filters.Add(new MetricsResourceFilter(new DefaultRouteTemplateResolver())); });
+
             services
                 .AddMetrics(options =>
                 {
                     options.DefaultSamplingType = SamplingType.ExponentiallyDecaying;
                     options.DisableMetrics = false;
                     options.GlobalContextName = "Test";
+                    options.JsonSchemeVersion = JsonSchemeVersion.AlwaysLatest;
                 })
-                .AddAspNetMetrics()
+                .AddAspNetMetrics(options => { })
                 //.WithAllPerformanceCounters()
                 .AddHealthChecks();
         }

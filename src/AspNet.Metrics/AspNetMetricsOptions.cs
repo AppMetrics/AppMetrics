@@ -37,7 +37,6 @@ namespace AspNet.Metrics
         public PathString HealthEndpoint { get; set; }
 
         public IList<Regex> IgnoredRequestPatterns { get; }
-
         public bool MetricsEnabled { get; set; }
 
         public PathString MetricsEndpoint { get; set; }
