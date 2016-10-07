@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using App.Metrics;
@@ -11,84 +10,100 @@ namespace Metrics.Samples
     public class SampleMetrics
     {
         /// <summary>
-        /// keep the total count of the requests
+        ///     count the current concurrent requests
         /// </summary>
-        private readonly ICounter totalRequestsCounter = Metric.Counter("Requests", Unit.Requests);
+        private readonly ICounter _concurrentRequestsCounter;
 
         /// <summary>
-        /// count the current concurrent requests
+        ///     keep a histogram of the input data of our request method
         /// </summary>
-        private readonly ICounter concurrentRequestsCounter = Metric.Counter("SampleMetrics.ConcurrentRequests", Unit.Requests);
-
-        private readonly ICounter setCounter = Metric.Counter("Set Counter", Unit.Items);
-
-        private readonly IMeter setMeter = Metric.Meter("Set Meter", Unit.Items);
+        private readonly IHistogram _histogramOfData;
 
         /// <summary>
-        /// keep a histogram of the input data of our request method 
+        ///     measure the rate at which requests come in
         /// </summary>
-        private readonly IHistogram histogramOfData = Metric.Histogram("ResultsExample", Unit.Items);
+        private readonly IMeter _meter;
+
+        private readonly ICounter _setCounter;
+
+        private readonly IMeter _setMeter;
 
         /// <summary>
-        /// measure the rate at which requests come in
+        ///     measure the time rate and duration of requests
         /// </summary>
-        private readonly IMeter meter = Metric.Meter("Requests", Unit.Requests);
+        private readonly ITimer _timer;
 
         /// <summary>
-        /// measure the time rate and duration of requests
+        ///     keep the total count of the requests
         /// </summary>
-        private readonly App.Metrics.ITimer timer = Metric.Timer("Requests", Unit.Requests);
+        private readonly ICounter _totalRequestsCounter;
 
-        private double someValue = 1;
+        private static IMetricsContext _metricsContext;
 
-        public SampleMetrics()
+        private double _someValue = 1;
+
+        public SampleMetrics(IMetricsContext metricsContext)
         {
-            // define a simple gauge that will provide the instant value of this.someValue when requested
-            Metric.Gauge("SampleMetrics.DataValue", () => this.someValue, Unit.Custom("$"));
+            _metricsContext = metricsContext;
+            _concurrentRequestsCounter = _metricsContext.Counter("SampleMetrics.ConcurrentRequests", Unit.Requests);
+            _histogramOfData = _metricsContext.Histogram("ResultsExample", Unit.Items);
+            _meter = _metricsContext.Meter("Requests", Unit.Requests);
+            _setCounter = _metricsContext.Counter("Set Counter", Unit.Items);
+            _setMeter = _metricsContext.Meter("Set Meter", Unit.Items);
+            _timer = _metricsContext.Timer("Requests", Unit.Requests);
+            _totalRequestsCounter = _metricsContext.Counter("Requests", Unit.Requests);
 
-            Metric.Gauge("Custom Ratio", () => ValueReader.GetCurrentValue(totalRequestsCounter).Count / ValueReader.GetCurrentValue(meter).FiveMinuteRate, Unit.Percent);
-
-            Metric.Advanced.Gauge("Ratio", () => new HitRatioGauge(meter, timer, m => m.OneMinuteRate), Unit.Percent);
+            // define a simple gauge that will provide the instant value of someValue when requested
+            _metricsContext.Gauge("SampleMetrics.DataValue", () => _someValue, Unit.Custom("$"));
+            _metricsContext.Gauge("Custom Ratio",
+                () => ValueReader.GetCurrentValue(_totalRequestsCounter).Count / ValueReader.GetCurrentValue(_meter).FiveMinuteRate, Unit.Percent);
+            _metricsContext.Advanced.Gauge("Ratio", () => new HitRatioGauge(_meter, _timer, m => m.OneMinuteRate), Unit.Percent);
         }
 
         public void Request(int i)
         {
-            new MultiContextMetrics().Run();
-            MultiContextInstanceMetrics.RunSample();
+            var multiContextMetrics = new MultiContextMetrics(_metricsContext);
+            multiContextMetrics.Run();
 
-            using (this.timer.NewContext(i.ToString())) // measure until disposed
+            for (var j = 0; j < 5; j++)
             {
-                someValue *= (i + 1); // will be reflected in the gauge 
+                var multiContextInstanceMetrics = new MultiContextInstanceMetrics("Sample Instance " + i.ToString(), _metricsContext);
+                multiContextInstanceMetrics.Run();
+            }
 
-                this.concurrentRequestsCounter.Increment(); // increment concurrent requests counter
+            using (_timer.NewContext(i.ToString())) // measure until disposed
+            {
+                _someValue *= (i + 1); // will be reflected in the gauge 
 
-                this.totalRequestsCounter.Increment(); // increment total requests counter 
+                _concurrentRequestsCounter.Increment(); // increment concurrent requests counter
 
-                this.meter.Mark(); // signal a new request to the meter
+                _totalRequestsCounter.Increment(); // increment total requests counter 
 
-                this.histogramOfData.Update(new Random().Next(5000), i.ToString()); // update the histogram with the input data
+                _meter.Mark(); // signal a new request to the meter
+
+                _histogramOfData.Update(new Random().Next(5000), i.ToString()); // update the histogram with the input data
 
                 var item = "Item " + new Random().Next(5);
-                this.setCounter.Increment(item);
+                _setCounter.Increment(item);
 
-                this.setMeter.Mark(item);
+                _setMeter.Mark(item);
 
                 // simulate doing some work
-                int ms = Math.Abs((int)(new Random().Next(3000)));
+                var ms = Math.Abs((int)(new Random().Next(3000)));
                 Thread.Sleep(ms);
 
-                this.concurrentRequestsCounter.Decrement(); // decrement number of concurrent requests
+                _concurrentRequestsCounter.Decrement(); // decrement number of concurrent requests
             }
         }
 
 
-        public static void RunSomeRequests()
+        public void RunSomeRequests()
         {
-            SampleMetrics test = new SampleMetrics();
-            List<Thread> tasks = new List<Thread>();
-            for (int i = 0; i < 10; i++)
+            var test = new SampleMetrics(_metricsContext);
+            var tasks = new List<Thread>();
+            for (var i = 0; i < 10; i++)
             {
-                int j = i;
+                var j = i;
                 tasks.Add(new Thread(() => test.Request(j)));
             }
 

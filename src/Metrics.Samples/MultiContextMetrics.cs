@@ -1,49 +1,57 @@
-﻿
-using App.Metrics;
+﻿using App.Metrics;
 
 namespace Metrics.Samples
 {
     public class MultiContextMetrics
     {
-        private readonly ICounter firstCounter = Metric.Context("First Context").Counter("Counter", Unit.Requests);
+        private readonly ICounter _firstCounter;
+        private readonly ICounter _secondCounter;
+        private readonly IMeter _secondMeter;
 
-        private readonly ICounter secondCounter = Metric.Context("Second Context").Counter("Counter", Unit.Requests);
-        private readonly IMeter secondMeter = Metric.Context("Second Context").Meter("Meter", Unit.Errors, TimeUnit.Seconds);
+        public MultiContextMetrics(IMetricsContext metricsContext)
+        {
+            _firstCounter = metricsContext.Context("First Context").Counter("Counter", Unit.Requests);
+            _secondCounter = metricsContext.Context("Second Context").Counter("Counter", Unit.Requests);
+            _secondMeter = metricsContext.Context("Second Context").Meter("Meter", Unit.Errors, TimeUnit.Seconds);
+        }
 
         public void Run()
         {
-            this.firstCounter.Increment();
-            this.secondCounter.Increment();
-            this.secondMeter.Mark();
+            _firstCounter.Increment();
+            _secondCounter.Increment();
+            _secondMeter.Mark();
         }
     }
 
     public class MultiContextInstanceMetrics
     {
-        private readonly ICounter instanceCounter;
-        private readonly ITimer instanceTimer;
+        private readonly ICounter _instanceCounter;
+        private readonly ITimer _instanceTimer;
+        private static IMetricsContext _metricsContext;
 
-        public MultiContextInstanceMetrics(string instanceName)
+        public MultiContextInstanceMetrics(string instanceName, IMetricsContext metricsContext)
         {
-            var context = Metric.Context(instanceName);
+            _metricsContext = metricsContext;
 
-            this.instanceCounter = context.Counter("Sample Counter", Unit.Errors);
-            this.instanceTimer = context.Timer("Sample Timer", Unit.Requests);
+            var context = _metricsContext.Context(instanceName);
+
+            _instanceCounter = context.Counter("Sample Counter", Unit.Errors);
+            _instanceTimer = context.Timer("Sample Timer", Unit.Requests);
         }
 
         public void Run()
         {
-            using (var context = this.instanceTimer.NewContext())
+            using (var context = this._instanceTimer.NewContext())
             {
-                this.instanceCounter.Increment();
+                _instanceCounter.Increment();
             }
         }
 
-        public static void RunSample()
+        public void RunSample()
         {
-            for (int i = 0; i < 5; i++)
+            for (var i = 0; i < 5; i++)
             {
-                new MultiContextInstanceMetrics("Sample Instance " + i.ToString()).Run();
+                new MultiContextInstanceMetrics("Sample Instance " + i.ToString(), _metricsContext).Run();
             }
         }
     }

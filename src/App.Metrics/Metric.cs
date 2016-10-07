@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Text.RegularExpressions;
 using App.Metrics.Core;
 using App.Metrics.Utils;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace App.Metrics
 {
@@ -17,30 +17,16 @@ namespace App.Metrics
 
         static Metric()
         {
-            //TODO: AH - SEt global context name
-            //GlobalContext = new DefaultMetricsContext(GetGlobalContextName());
-            GlobalContext = _serviceProvider?.GetService<IMetricsContext>() ?? 
-                new DefaultMetricsContext(GetDefaultGlobalContextName(), Clock.Default);
+            GlobalContext = _serviceProvider?.GetService<IMetricsContext>() ??
+                            new DefaultMetricsContext(GetDefaultGlobalContextName(), Clock.Default);
 
-            if (MetricsConfig.GloballyDisabledMetrics)
+            var options = _serviceProvider?.GetService<IOptions<AppMetricsOptions>>()?.Value ??
+                          new AppMetricsOptions();
+
+            if (options.DisableMetrics)
             {
-                //GlobalContext.CompletelyDisableMetrics();
+                GlobalContext.CompletelyDisableMetrics();
             }
-
-            //TODO: AH - inject ocnfig
-            Config = new MetricsConfig(GlobalContext);
-            Config.ApplySettingsFromConfigFile();
-        }
-
-        /// <summary>
-        /// Initializes the specified service provider.
-        /// </summary>
-        /// <param name="serviceProvider">The service provider.</param>
-        internal static void Init(IServiceProvider serviceProvider)
-        {
-            if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
-
-            _serviceProvider = serviceProvider;
         }
 
         /// <summary>
@@ -51,8 +37,6 @@ namespace App.Metrics
         /// <summary>
         ///     Entrypoint for Global Metrics Configuration.
         /// </summary>
-        public static MetricsConfig Config { get; }
-
         internal static IMetricsContext Internal { get; } = new DefaultMetricsContext("App.Metrics", Clock.Default);
 
         /// <summary>
@@ -178,6 +162,17 @@ namespace App.Metrics
             ((IAdvancedMetricsContext)GlobalContext).AttachContext("App.Metrics", Internal);
         }
 
+        /// <summary>
+        ///     Initializes the specified service provider.
+        /// </summary>
+        /// <param name="serviceProvider">The service provider.</param>
+        internal static void Init(IServiceProvider serviceProvider)
+        {
+            if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
+
+            _serviceProvider = serviceProvider;
+        }
+
         private static string CleanName(string name)
         {
             return name.Replace('.', '_');
@@ -186,45 +181,6 @@ namespace App.Metrics
         private static string GetDefaultGlobalContextName()
         {
             return $@"{CleanName(Environment.MachineName)}.{CleanName(Process.GetCurrentProcess().ProcessName)}";
-        }
-
-        private static string GetGlobalContextName()
-        {
-            try
-            {
-                const string contextNameKey = "Metrics.GlobalContextName";
-                // look in the runtime environment first, then in ConfigurationManager.AppSettings
-                //TODO: AH - Inject IOptions to get global context name
-                var contextNameValue = Environment.GetEnvironmentVariable(contextNameKey); //ConfigurationManager.AppSettings[contextNameKey];
-                var name = string.IsNullOrEmpty(contextNameValue) ? GetDefaultGlobalContextName() : ParseGlobalContextName(contextNameValue);
-                return name;
-            }
-            catch (InvalidOperationException)
-            {
-                // these are thrown by sub functions and will already be logged.
-                throw;
-            }
-            catch (Exception x)
-            {
-                throw new InvalidOperationException("Invalid Metrics Configuration: Metrics.GlobalContextName must be non empty string", x);
-            }
-        }
-
-        private static string ParseGlobalContextName(string configName)
-        {
-            configName = Regex.Replace(configName, @"\$Env\.MachineName\$", CleanName(Environment.MachineName),
-                RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
-            configName = Regex.Replace(configName, @"\$Env\.ProcessName\$", CleanName(Process.GetCurrentProcess().ProcessName),
-                RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
-
-            const string aspMacro = @"\$Env\.AppDomainAppVirtualPath\$";
-            if (Regex.IsMatch(configName, aspMacro, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase))
-            {
-                configName = Regex.Replace(configName, aspMacro, CleanName(AppEnvironment.ResolveAspSiteName()),
-                    RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
-            }
-
-            return configName;
         }
     }
 }

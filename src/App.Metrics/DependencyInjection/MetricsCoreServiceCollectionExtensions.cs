@@ -2,6 +2,7 @@ using System;
 using App.Metrics;
 using App.Metrics.Core;
 using App.Metrics.Internal;
+using App.Metrics.Reporters;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
 
@@ -50,16 +51,12 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             services.TryAddSingleton(typeof(IMetricsContext), provider =>
             {
                 var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
+                var reporters = new MetricsReports(options.Value.MetricsContext.DataProvider, options.Value.MetricsContext.HealthStatus);
+                options.Value.Reporters(reporters);
                 return options.Value.MetricsContext;
             });
             
             services.TryAddSingleton(provider => environment);
-            services.TryAddSingleton(typeof(Metric), provider =>
-            {
-                //TODO: AH - inject
-                Metric.Init(provider);
-                return new object();
-            });
         }
 
         private static void ConfigureDefaultServices(IServiceCollection services)

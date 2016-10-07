@@ -16,25 +16,32 @@ namespace App.Sample
 
             var application = new Application(serviceCollection);
 
+            var simpleMetrics = new SampleMetrics(application.MetricsContext);
+            var setCounterSample = new SetCounterSample(application.MetricsContext);
+            var setMeterSample = new SetMeterSample(application.MetricsContext);
+            var userValueHistogramSample = new UserValueHistogramSample(application.MetricsContext);
+            var userValueTimerSample = new UserValueTimerSample(application.MetricsContext);
+
             using (var scheduler = new ActionScheduler())
             {
-                SampleMetrics.RunSomeRequests();
+                simpleMetrics.RunSomeRequests();
 
                 scheduler.Start(TimeSpan.FromMilliseconds(500), () =>
                 {
-                    SetCounterSample.RunSomeRequests();
-                    SetMeterSample.RunSomeRequests();
-                    UserValueHistogramSample.RunSomeRequests();
-                    UserValueTimerSample.RunSomeRequests();
-                    SampleMetrics.RunSomeRequests();
+                    setCounterSample.RunSomeRequests();
+                    setMeterSample.RunSomeRequests();
+                    userValueHistogramSample.RunSomeRequests();
+                    userValueTimerSample.RunSomeRequests();
+                    simpleMetrics.RunSomeRequests();
                 });
 
-                Metric.Gauge("Errors", () => 1, Unit.None);
-                Metric.Gauge("% Percent/Gauge|test", () => 1, Unit.None);
-                Metric.Gauge("& AmpGauge", () => 1, Unit.None);
-                Metric.Gauge("()[]{} ParantesisGauge", () => 1, Unit.None);
-                Metric.Gauge("Gauge With No Value", () => double.NaN, Unit.None);
+                application.MetricsContext.Gauge("Errors", () => 1, Unit.None);
+                application.MetricsContext.Gauge("% Percent/Gauge|test", () => 1, Unit.None);
+                application.MetricsContext.Gauge("& AmpGauge", () => 1, Unit.None);
+                application.MetricsContext.Gauge("()[]{} ParantesisGauge", () => 1, Unit.None);
+                application.MetricsContext.Gauge("Gauge With No Value", () => double.NaN, Unit.None);
 
+                //TODO: AH - health checks here?
                 HealthChecksSample.RegisterHealthChecks();
 
                 Console.WriteLine("done setting things up");
@@ -60,18 +67,19 @@ namespace App.Sample
             ConfigureServices(services);
             Services = services.BuildServiceProvider();
             Logger = Services.GetRequiredService<ILoggerFactory>().CreateLogger<Application>();
+            MetricsContext = Services.GetRequiredService<IMetricsContext>();
             Logger.LogInformation("Application created successfully.");
         }
 
         public ILogger Logger { get; set; }
 
-        public IServiceProvider Services { get; set; }
+        public IMetricsContext MetricsContext { get; set; }
 
+        public IServiceProvider Services { get; set; }
 
         private void ConfigureServices(IServiceCollection services)
         {
-            services.AddMetrics()
-                .AddReporter(reports => reports.WithConsoleReport(TimeSpan.FromSeconds(2)));
+            services.AddMetrics(options => { options.Reporters = reports => { reports.WithConsoleReport(TimeSpan.FromSeconds(3)); }; });
         }
     }
 }

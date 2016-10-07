@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Threading;
 using App.Metrics;
 
@@ -7,12 +6,20 @@ namespace Metrics.Samples
 {
     public class UserValueTimerSample
     {
-        private readonly App.Metrics.ITimer timer =
-            Metric.Timer("Requests", Unit.Requests);
+        private readonly ITimer _timer;
+
+        private static IMetricsContext _metricsContext;
+
+        public UserValueTimerSample(IMetricsContext metricsContext)
+        {
+            _metricsContext = metricsContext;
+
+            _timer = _metricsContext.Timer("Requests", Unit.Requests);
+        }
 
         public void Process(string documentId)
         {
-            using (var context = timer.NewContext(documentId))
+            using (var context = _timer.NewContext(documentId))
             {
                 ActualProcessingOfTheRequest(documentId);
 
@@ -20,8 +27,13 @@ namespace Metrics.Samples
             }
         }
 
-        private void LogDuration(TimeSpan time)
+        public void RunSomeRequests()
         {
+            for (var i = 0; i < 30; i++)
+            {
+                var documentId = new Random().Next(10);
+                new UserValueTimerSample(_metricsContext).Process("document-" + documentId.ToString());
+            }
         }
 
         private void ActualProcessingOfTheRequest(string documentId)
@@ -29,13 +41,8 @@ namespace Metrics.Samples
             Thread.Sleep(new Random().Next(1000));
         }
 
-        public static void RunSomeRequests()
+        private void LogDuration(TimeSpan time)
         {
-            for (int i = 0; i < 30; i++)
-            {
-                var documentId = new Random().Next(10);
-                new UserValueTimerSample().Process("document-" + documentId.ToString());
-            }
         }
     }
 }

@@ -2,10 +2,8 @@ using System;
 using App.Metrics;
 using App.Metrics.Health;
 using App.Metrics.Infrastructure;
-using App.Metrics.Reporters;
 
 // ReSharper disable CheckNamespace
-
 namespace Microsoft.Extensions.DependencyInjection
 // ReSharper restore CheckNamespace
 {
@@ -38,32 +36,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(setupAction));
             }
 
-            builder.Services.Configure<AppMetricsOptions>(setupAction);
-            return builder;
-        }
-
-        public static IMetricsBuilder AddReporter(this IMetricsBuilder builder,
-            Action<MetricsReports> reportsAction, MetricsConfig config)
-        {
-            if (builder == null)
-            {
-                throw new ArgumentNullException(nameof(builder));
-            }
-
-            config.WithReporting(reportsAction);
-
-            return builder;
-        }
-
-        public static IMetricsBuilder AddReporter(this IMetricsBuilder builder,
-            Action<MetricsReports> reportsAction)
-        {
-            if (builder == null)
-            {
-                throw new ArgumentNullException(nameof(builder));
-            }
-
-            builder.AddReporter(reportsAction, Metric.Config);
+            builder.Services.Configure(setupAction);
 
             return builder;
         }

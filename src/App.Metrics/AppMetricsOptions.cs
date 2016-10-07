@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using App.Metrics.Core;
 using App.Metrics.Reporters;
@@ -11,13 +10,15 @@ namespace App.Metrics
     {
         public IAppMetricsEvents Events = new AppMetricsEvents();
 
-        private static readonly string DefaultGlobalContextName = $@"{CleanName(Environment.MachineName)}.{CleanName(Process.GetCurrentProcess().ProcessName)}";
+        private static readonly string DefaultGlobalContextName =
+            $@"{CleanName(Environment.MachineName)}.{CleanName(Process.GetCurrentProcess().ProcessName)}";
 
         public AppMetricsOptions()
         {
             GlobalContextName = DefaultGlobalContextName;
             DisableMetrics = false;
             DefaultSamplingType = SamplingType.ExponentiallyDecaying;
+            Reporters = reports => { };
         }
 
         public SamplingType DefaultSamplingType { get; set; }
@@ -26,11 +27,11 @@ namespace App.Metrics
 
         public string GlobalContextName { get; set; }
 
-        public IClock SystemClock { get; set; } = Clock.Default;
-
         public IMetricsContext MetricsContext { get; set; } = new DefaultMetricsContext(DefaultGlobalContextName, Clock.Default);
 
-        public IList<IMetricsReport> Reporters { get; } = new List<IMetricsReport>();
+        public Action<MetricsReports> Reporters { get; set; }
+
+        public IClock SystemClock { get; set; } = Clock.Default;
 
         private static string CleanName(string name)
         {

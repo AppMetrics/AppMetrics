@@ -20,6 +20,9 @@ namespace App.Metrics
         //TODO: AH - Does this live here
         Func<HealthStatus> HealthStatus { get; }
 
+        //TODO: AH - move this to Advanced?
+        void CompletelyDisableMetrics();
+
         /// <summary>
         ///     Returns a metrics data provider capable of returning the metrics in this context and any existing child contexts.
         /// </summary>

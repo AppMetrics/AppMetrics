@@ -1,32 +1,39 @@
-﻿
-using System;
+﻿using System;
 using App.Metrics;
 
 namespace Metrics.Samples
 {
     public class UserValueHistogramSample
     {
-        private readonly IHistogram histogram =
-            Metric.Histogram("Results", Unit.Items);
+        private readonly IHistogram _histogram;
+
+        private static IMetricsContext _metricsContext;
+
+        public UserValueHistogramSample(IMetricsContext metricsContext)
+        {
+            _metricsContext = metricsContext;
+
+            _histogram = _metricsContext.Histogram("Results", Unit.Items);
+        }
 
         public void Process(string documentId)
         {
             var results = GetResultsForDocument(documentId);
-            this.histogram.Update(results.Length, documentId);
+            _histogram.Update(results.Length, documentId);
+        }
+
+        public void RunSomeRequests()
+        {
+            for (var i = 0; i < 30; i++)
+            {
+                var documentId = new Random().Next() % 10;
+                new UserValueHistogramSample(_metricsContext).Process("document-" + documentId.ToString());
+            }
         }
 
         private int[] GetResultsForDocument(string documentId)
         {
             return new int[new Random().Next() % 100];
-        }
-
-        public static void RunSomeRequests()
-        {
-            for (int i = 0; i < 30; i++)
-            {
-                var documentId = new Random().Next() % 10;
-                new UserValueHistogramSample().Process("document-" + documentId.ToString());
-            }
         }
     }
 }
