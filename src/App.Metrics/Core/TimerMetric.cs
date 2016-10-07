@@ -6,15 +6,15 @@ using App.Metrics.Utils;
 
 namespace App.Metrics.Core
 {
-    public interface TimerImplementation : ITimer, IMetricValueProvider<TimerValue>
+    public interface ITimerImplementation : ITimer, IMetricValueProvider<TimerValue>
     {
     }
 
-    public sealed class TimerMetric : TimerImplementation, IDisposable
+    public sealed class TimerMetric : ITimerImplementation, IDisposable
     {
         private readonly StripedLongAdder _activeSessionsCounter = new StripedLongAdder();
         private readonly Clock _clock;
-        private readonly HistogramImplementation _histogram;
+        private readonly IHistogramImplementation _histogram;
         private readonly MeterImplementation _meter;
         private readonly StripedLongAdder _totalRecordedTime = new StripedLongAdder();
 
@@ -28,12 +28,12 @@ namespace App.Metrics.Core
         {
         }
 
-        public TimerMetric(HistogramImplementation histogram)
+        public TimerMetric(IHistogramImplementation histogram)
             : this(histogram, new MeterMetric(), Clock.Default)
         {
         }
 
-        public TimerMetric(Reservoir reservoir)
+        public TimerMetric(IReservoir reservoir)
             : this(new HistogramMetric(reservoir), new MeterMetric(), Clock.Default)
         {
         }
@@ -43,7 +43,7 @@ namespace App.Metrics.Core
         {
         }
 
-        public TimerMetric(HistogramImplementation histogram, MeterImplementation meter, Clock clock)
+        public TimerMetric(IHistogramImplementation histogram, MeterImplementation meter, Clock clock)
         {
             _clock = clock;
             _meter = meter;

@@ -32,9 +32,9 @@ namespace App.Metrics.Facts.Sampling
             //Assert.Throws<ArgumentException>(() => { Metric.Config.WithDefaultSamplingType(SamplingType.Default); });
         }
 
-        private static Reservoir GetReservoir(HistogramMetric histogram)
+        private static IReservoir GetReservoir(HistogramMetric histogram)
         {
-            return reservoirField.GetValue(histogram) as Reservoir;
+            return reservoirField.GetValue(histogram) as IReservoir;
         }
     }
 }

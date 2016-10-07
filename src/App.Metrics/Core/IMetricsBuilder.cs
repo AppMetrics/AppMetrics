@@ -10,16 +10,16 @@ namespace App.Metrics.Core
 
         IMetricValueProvider<double> BuildGauge(string name, Unit unit, Func<double> valueProvider);
 
-        HistogramImplementation BuildHistogram(string name, Unit unit, SamplingType samplingType);
+        IHistogramImplementation BuildHistogram(string name, Unit unit, SamplingType samplingType);
 
-        HistogramImplementation BuildHistogram(string name, Unit unit, Reservoir reservoir);
+        IHistogramImplementation BuildHistogram(string name, Unit unit, IReservoir reservoir);
 
         MeterImplementation BuildMeter(string name, Unit unit, TimeUnit rateUnit);
 
-        TimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, SamplingType samplingType);
+        ITimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, SamplingType samplingType);
 
-        TimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, HistogramImplementation histogram);
+        ITimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, IHistogramImplementation histogram);
 
-        TimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, Reservoir reservoir);
+        ITimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, IReservoir reservoir);
     }
 }

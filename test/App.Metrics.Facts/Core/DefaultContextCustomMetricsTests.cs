@@ -27,7 +27,7 @@ namespace App.Metrics.Facts.Core
         {
             var histogram = new CustomHistogram();
 
-            var timer = context.Advanced.Timer("custom", Unit.Calls, () => (HistogramImplementation)histogram);
+            var timer = context.Advanced.Timer("custom", Unit.Calls, () => (IHistogramImplementation)histogram);
 
             timer.Record(10L, TimeUnit.Nanoseconds);
 
@@ -39,7 +39,7 @@ namespace App.Metrics.Facts.Core
         public void MetricsContext_CanRegisterTimerWithCustomReservoir()
         {
             var reservoir = new CustomReservoir();
-            var timer = context.Advanced.Timer("custom", Unit.Calls, () => (Reservoir)reservoir);
+            var timer = context.Advanced.Timer("custom", Unit.Calls, () => (IReservoir)reservoir);
 
             timer.Record(10L, TimeUnit.Nanoseconds);
 
@@ -101,7 +101,7 @@ namespace App.Metrics.Facts.Core
             }
         }
 
-        public class CustomHistogram : HistogramImplementation
+        public class CustomHistogram : IHistogramImplementation
         {
             public CustomReservoir Reservoir { get; } = new CustomReservoir();
 
@@ -126,7 +126,7 @@ namespace App.Metrics.Facts.Core
             }
         }
 
-        public class CustomReservoir : Reservoir
+        public class CustomReservoir : IReservoir
         {
             private readonly List<long> _values = new List<long>();
 
@@ -145,7 +145,7 @@ namespace App.Metrics.Facts.Core
                 get { return _values; }
             }
 
-            public Snapshot GetSnapshot(bool resetReservoir = false)
+            public ISnapshot GetSnapshot(bool resetReservoir = false)
             {
                 return new UniformSnapshot(_values.Count, _values);
             }

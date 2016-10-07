@@ -19,35 +19,35 @@ namespace App.Metrics.Facts.Sampling
         [Fact]
         public void WeightedSnapshot_CalculatesAMaxOfZeroForAnEmptySnapshot()
         {
-            Snapshot snapshot = MakeSanpshot(new long[0], new double[0]);
+            ISnapshot snapshot = MakeSanpshot(new long[0], new double[0]);
             snapshot.Max.Should().Be(0);
         }
 
         [Fact]
         public void WeightedSnapshot_CalculatesAMeanOfZeroForAnEmptySnapshot()
         {
-            Snapshot snapshot = MakeSanpshot(new long[0], new double[0]);
+            ISnapshot snapshot = MakeSanpshot(new long[0], new double[0]);
             snapshot.Mean.Should().Be(0);
         }
 
         [Fact]
         public void WeightedSnapshot_CalculatesAMinOfZeroForAnEmptySnapshot()
         {
-            Snapshot snapshot = MakeSanpshot(new long[0], new double[0]);
+            ISnapshot snapshot = MakeSanpshot(new long[0], new double[0]);
             snapshot.Min.Should().Be(0);
         }
 
         [Fact]
         public void WeightedSnapshot_CalculatesAStdDevOfZeroForAnEmptySnapshot()
         {
-            Snapshot snapshot = MakeSanpshot(new long[0], new double[0]);
+            ISnapshot snapshot = MakeSanpshot(new long[0], new double[0]);
             snapshot.StdDev.Should().Be(0);
         }
 
         [Fact]
         public void WeightedSnapshot_CalculatesAStdDevOfZeroForASingletonSnapshot()
         {
-            Snapshot snapshot = MakeSanpshot(new long[0], new double[0]);
+            ISnapshot snapshot = MakeSanpshot(new long[0], new double[0]);
             snapshot.StdDev.Should().Be(0);
         }
 

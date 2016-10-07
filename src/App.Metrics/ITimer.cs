@@ -6,7 +6,7 @@ namespace App.Metrics
     ///     A timer is basically a histogram of the duration of a type of event and a meter of the rate of its occurrence.
     ///     <seealso cref="IHistogram" /> and <seealso cref="IMeter" />
     /// </summary>
-    public interface ITimer : ResetableMetric
+    public interface ITimer : IResetableMetric
     {
         /// <summary>
         ///     This is part of advanced timer API. Use Timer.NewContext() by default.

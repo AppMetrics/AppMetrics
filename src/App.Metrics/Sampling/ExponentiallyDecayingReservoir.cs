@@ -9,7 +9,7 @@ using App.Metrics.Utils;
 
 namespace App.Metrics.Sampling
 {
-    public sealed class ExponentiallyDecayingReservoir : Reservoir, IDisposable
+    public sealed class ExponentiallyDecayingReservoir : IReservoir, IDisposable
     {
         private const double DefaultAlpha = 0.015;
         private const int DefaultSize = 1028;
@@ -19,7 +19,7 @@ namespace App.Metrics.Sampling
 
         private readonly Clock _clock;
 
-        private readonly Scheduler _rescaleScheduler;
+        private readonly IScheduler _rescaleScheduler;
         private readonly int _size;
 
         private readonly SortedList<double, WeightedSample> _values;
@@ -38,12 +38,12 @@ namespace App.Metrics.Sampling
         {
         }
 
-        public ExponentiallyDecayingReservoir(Clock clock, Scheduler scheduler)
+        public ExponentiallyDecayingReservoir(Clock clock, IScheduler scheduler)
             : this(DefaultSize, DefaultAlpha, clock, scheduler)
         {
         }
 
-        public ExponentiallyDecayingReservoir(int size, double alpha, Clock clock, Scheduler scheduler)
+        public ExponentiallyDecayingReservoir(int size, double alpha, Clock clock, IScheduler scheduler)
         {
             _size = size;
             _alpha = alpha;
@@ -69,7 +69,7 @@ namespace App.Metrics.Sampling
             }
         }
 
-        public Snapshot GetSnapshot(bool resetReservoir = false)
+        public ISnapshot GetSnapshot(bool resetReservoir = false)
         {
             var lockTaken = false;
             try

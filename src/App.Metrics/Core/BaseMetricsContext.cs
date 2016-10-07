@@ -132,12 +132,12 @@ namespace App.Metrics.Core
         }
 
         public IHistogram Histogram<T>(string name, Unit unit, Func<T> builder, MetricTags tags)
-            where T : HistogramImplementation
+            where T : IHistogramImplementation
         {
             return _registry.Histogram(name, builder, unit, tags);
         }
 
-        public IHistogram Histogram(string name, Unit unit, Func<Reservoir> builder, MetricTags tags)
+        public IHistogram Histogram(string name, Unit unit, Func<IReservoir> builder, MetricTags tags)
         {
             return Histogram(name, unit, () => _metricsBuilder.BuildHistogram(name, unit, builder()), tags);
         }
@@ -182,17 +182,17 @@ namespace App.Metrics.Core
         }
 
         public ITimer Timer<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
-            where T : TimerImplementation
+            where T : ITimerImplementation
         {
             return _registry.Timer(name, builder, unit, rateUnit, durationUnit, tags);
         }
 
-        public ITimer Timer(string name, Unit unit, Func<HistogramImplementation> builder, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
+        public ITimer Timer(string name, Unit unit, Func<IHistogramImplementation> builder, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
         {
             return Timer(name, unit, () => _metricsBuilder.BuildTimer(name, unit, rateUnit, durationUnit, builder()), rateUnit, durationUnit, tags);
         }
 
-        public ITimer Timer(string name, Unit unit, Func<Reservoir> builder, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
+        public ITimer Timer(string name, Unit unit, Func<IReservoir> builder, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
         {
             return Timer(name, unit, () => _metricsBuilder.BuildTimer(name, unit, rateUnit, durationUnit, builder()), rateUnit, durationUnit, tags);
         }

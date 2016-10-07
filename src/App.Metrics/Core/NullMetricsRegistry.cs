@@ -21,7 +21,7 @@ namespace App.Metrics.Core
         {
         }
 
-        public IHistogram Histogram<T>(string name, Func<T> builder, Unit unit, MetricTags tags) where T : HistogramImplementation
+        public IHistogram Histogram<T>(string name, Func<T> builder, Unit unit, MetricTags tags) where T : IHistogramImplementation
         {
             return NullMetric.Instance;
         }
@@ -36,7 +36,7 @@ namespace App.Metrics.Core
         }
 
         public ITimer Timer<T>(string name, Func<T> builder, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
-            where T : TimerImplementation
+            where T : ITimerImplementation
         {
             return NullMetric.Instance;
         }

@@ -34,7 +34,7 @@ namespace App.Metrics.MetricData
 
         public static HistogramValue GetCurrentValue(IHistogram metric)
         {
-            var implementation = metric as HistogramImplementation;
+            var implementation = metric as IHistogramImplementation;
             if (implementation != null)
             {
                 return implementation.Value;
@@ -44,7 +44,7 @@ namespace App.Metrics.MetricData
 
         public static TimerValue GetCurrentValue(ITimer metric)
         {
-            var implementation = metric as TimerImplementation;
+            var implementation = metric as ITimerImplementation;
             if (implementation != null)
             {
                 return implementation.Value;

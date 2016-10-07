@@ -11,7 +11,7 @@ namespace App.Metrics.Utils
     ///     The scheduling code is inspired form Daniel Crenna's metrics port
     ///     https://github.com/danielcrenna/metrics-net/blob/master/src/metrics/Reporting/ReporterBase.cs
     /// </remarks>
-    public sealed class ActionScheduler : Scheduler
+    public sealed class ActionScheduler : IScheduler
     {
         private CancellationTokenSource token;
 

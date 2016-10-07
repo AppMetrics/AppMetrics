@@ -16,7 +16,7 @@ namespace App.Metrics.Core
         private static readonly TimeSpan TickInterval = TimeSpan.FromSeconds(5);
 
         private readonly Clock _clock;
-        private readonly Scheduler _tickScheduler;
+        private readonly IScheduler _tickScheduler;
 
         private ConcurrentDictionary<string, SimpleMeter> _setMeters;
 
@@ -27,7 +27,7 @@ namespace App.Metrics.Core
         {
         }
 
-        public MeterMetric(Clock clock, Scheduler scheduler)
+        public MeterMetric(Clock clock, IScheduler scheduler)
         {
             _clock = clock;
             _startTime = _clock.Nanoseconds;

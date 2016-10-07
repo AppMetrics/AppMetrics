@@ -9,7 +9,7 @@ using App.Metrics.App_Packages.Concurrency;
 
 namespace App.Metrics.Sampling
 {
-    public sealed class UniformReservoir : Reservoir
+    public sealed class UniformReservoir : IReservoir
     {
         private const int DefaultSize = 1028;
 
@@ -29,7 +29,7 @@ namespace App.Metrics.Sampling
 
         public int Size => Math.Min((int)_count.GetValue(), _values.Length);
 
-        public Snapshot GetSnapshot(bool resetReservoir = false)
+        public ISnapshot GetSnapshot(bool resetReservoir = false)
         {
             var size = Size;
             if (size == 0)

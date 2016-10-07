@@ -10,7 +10,7 @@ namespace App.Metrics.Reporters
         private readonly Func<HealthStatus> _healthStatus;
         private readonly IMetricsDataProvider _metricsDataProvider;
         private readonly IMetricsReport _report;
-        private readonly Scheduler _scheduler;
+        private readonly IScheduler _scheduler;
 
         public ScheduledReporter(IMetricsReport reporter, IMetricsDataProvider metricsDataProvider, Func<HealthStatus> healthStatus, TimeSpan interval)
             : this(reporter, metricsDataProvider, healthStatus, interval, new ActionScheduler())
@@ -18,7 +18,7 @@ namespace App.Metrics.Reporters
         }
 
         public ScheduledReporter(IMetricsReport report, IMetricsDataProvider metricsDataProvider, Func<HealthStatus> healthStatus, TimeSpan interval,
-            Scheduler scheduler)
+            IScheduler scheduler)
         {
             _report = report;
             _metricsDataProvider = metricsDataProvider;

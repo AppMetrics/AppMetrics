@@ -13,7 +13,7 @@ namespace App.Metrics.Sampling
     ///     Based on the java version from Marshall Pierce
     ///     https://bitbucket.org/marshallpierce/hdrhistogram-metrics-reservoir/src/83a8ec568a1e?at=master
     /// </summary>
-    public sealed class HdrHistogramReservoir : Reservoir
+    public sealed class HdrHistogramReservoir : IReservoir
     {
         private readonly object _maxValueLock = new object();
         private readonly object _minValueLock = new object();
@@ -41,7 +41,7 @@ namespace App.Metrics.Sampling
             _runningTotals = new App_Packages.HdrHistogram.Histogram(_intervalHistogram.NumberOfSignificantValueDigits);
         }
 
-        public Snapshot GetSnapshot(bool resetReservoir = false)
+        public ISnapshot GetSnapshot(bool resetReservoir = false)
         {
             var snapshot = new HdrSnapshot(UpdateTotals(), _minValue.GetValue(), _minUserValue, _maxValue.GetValue(),
                 _maxUserValue);

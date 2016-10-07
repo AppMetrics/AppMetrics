@@ -11,7 +11,7 @@ namespace AspNet.Metrics.Facts
     /// <remarks>
     /// This class is useful for testing.
     /// </remarks>
-    public sealed class TestScheduler : Scheduler
+    public sealed class TestScheduler : IScheduler
     {
         private readonly TestClock clock;
         private TimeSpan interval;

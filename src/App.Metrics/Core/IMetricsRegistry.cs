@@ -29,7 +29,7 @@ namespace App.Metrics.Core
         void Gauge(string name, Func<IMetricValueProvider<double>> valueProvider, Unit unit, MetricTags tags);
 
         IHistogram Histogram<T>(string name, Func<T> builder, Unit unit, MetricTags tags)
-            where T : HistogramImplementation;
+            where T : IHistogramImplementation;
 
         IMeter Meter<T>(string name, Func<T> builder, Unit unit, TimeUnit rateUnit, MetricTags tags)
             where T : MeterImplementation;
@@ -37,6 +37,6 @@ namespace App.Metrics.Core
         void ResetMetricsValues();
 
         ITimer Timer<T>(string name, Func<T> builder, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
-            where T : TimerImplementation;
+            where T : ITimerImplementation;
     }
 }

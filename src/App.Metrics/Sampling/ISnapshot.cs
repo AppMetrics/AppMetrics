@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace App.Metrics.Sampling
 {
-    public interface Snapshot
+    public interface ISnapshot
     {
         long Count { get; }
 

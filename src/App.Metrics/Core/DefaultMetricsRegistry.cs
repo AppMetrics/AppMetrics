@@ -57,7 +57,7 @@ namespace App.Metrics.Core
         }
 
         public IHistogram Histogram<T>(string name, Func<T> builder, Unit unit, MetricTags tags)
-            where T : HistogramImplementation
+            where T : IHistogramImplementation
         {
             return _histograms.GetOrAdd(name, () =>
             {
@@ -86,7 +86,7 @@ namespace App.Metrics.Core
         }
 
         public ITimer Timer<T>(string name, Func<T> builder, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
-            where T : TimerImplementation
+            where T : ITimerImplementation
         {
             return _timers.GetOrAdd(name, () =>
             {
@@ -131,7 +131,7 @@ namespace App.Metrics.Core
             {
                 foreach (var metric in metrics.Values)
                 {
-                    var resetable = metric.Metric as ResetableMetric;
+                    var resetable = metric.Metric as IResetableMetric;
                     resetable?.Reset();
                 }
             }

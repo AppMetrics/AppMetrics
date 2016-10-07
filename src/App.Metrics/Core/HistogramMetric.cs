@@ -4,13 +4,13 @@ using App.Metrics.Sampling;
 
 namespace App.Metrics.Core
 {
-    public interface HistogramImplementation : IHistogram, IMetricValueProvider<HistogramValue>
+    public interface IHistogramImplementation : IHistogram, IMetricValueProvider<HistogramValue>
     {
     }
 
-    public sealed class HistogramMetric : HistogramImplementation
+    public sealed class HistogramMetric : IHistogramImplementation
     {
-        private readonly Reservoir _reservoir;
+        private readonly IReservoir _reservoir;
         private UserValueWrapper _last;
 
         public HistogramMetric()
@@ -23,7 +23,7 @@ namespace App.Metrics.Core
         {
         }
 
-        public HistogramMetric(Reservoir reservoir)
+        public HistogramMetric(IReservoir reservoir)
         {
             _reservoir = reservoir;
         }
@@ -55,7 +55,7 @@ namespace App.Metrics.Core
             _reservoir.Update(value, userValue);
         }
 
-        private static Reservoir SamplingTypeToReservoir(SamplingType samplingType)
+        private static IReservoir SamplingTypeToReservoir(SamplingType samplingType)
         {
             while (true)
             {

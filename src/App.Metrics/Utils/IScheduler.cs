@@ -7,7 +7,7 @@ namespace App.Metrics.Utils
     /// <summary>
     ///     Indicates the ability to schedule the execution of an Action at a specified interval
     /// </summary>
-    public interface Scheduler : IDisposable
+    public interface IScheduler : IDisposable
     {
         /// <summary>
         ///     Schedule the <paramref name="action" /> to be executed at <paramref name="interval" />.

@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace App.Metrics.Sampling
 {
-    public sealed class UniformSnapshot : Snapshot
+    public sealed class UniformSnapshot : ISnapshot
     {
         private readonly long[] _values;
 

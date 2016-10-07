@@ -19,35 +19,35 @@ namespace App.Metrics.Facts.Sampling
         [Fact]
         public void UniformSnapshot_CalculatesAMaxOfZeroForAnEmptySnapshot()
         {
-            Snapshot snapshot = new UniformSnapshot(0, Enumerable.Empty<long>());
+            ISnapshot snapshot = new UniformSnapshot(0, Enumerable.Empty<long>());
             snapshot.Max.Should().Be(0);
         }
 
         [Fact]
         public void UniformSnapshot_CalculatesAMeanOfZeroForAnEmptySnapshot()
         {
-            Snapshot snapshot = new UniformSnapshot(0, Enumerable.Empty<long>());
+            ISnapshot snapshot = new UniformSnapshot(0, Enumerable.Empty<long>());
             snapshot.Mean.Should().Be(0);
         }
 
         [Fact]
         public void UniformSnapshot_CalculatesAMinOfZeroForAnEmptySnapshot()
         {
-            Snapshot snapshot = new UniformSnapshot(0, Enumerable.Empty<long>());
+            ISnapshot snapshot = new UniformSnapshot(0, Enumerable.Empty<long>());
             snapshot.Min.Should().Be(0);
         }
 
         [Fact]
         public void UniformSnapshot_CalculatesAStdDevOfZeroForAnEmptySnapshot()
         {
-            Snapshot snapshot = new UniformSnapshot(0, Enumerable.Empty<long>());
+            ISnapshot snapshot = new UniformSnapshot(0, Enumerable.Empty<long>());
             snapshot.StdDev.Should().Be(0);
         }
 
         [Fact]
         public void UniformSnapshot_CalculatesAStdDevOfZeroForASingletonSnapshot()
         {
-            Snapshot snapshot = new UniformSnapshot(0, new[] { 1L });
+            ISnapshot snapshot = new UniformSnapshot(0, new[] { 1L });
             snapshot.StdDev.Should().Be(0);
         }
 

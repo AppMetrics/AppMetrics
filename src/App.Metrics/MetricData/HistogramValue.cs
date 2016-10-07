@@ -25,7 +25,7 @@ namespace App.Metrics.MetricData
         public readonly int SampleSize;
         public readonly double StdDev;
 
-        public HistogramValue(double lastValue, string lastUserValue, Snapshot snapshot)
+        public HistogramValue(double lastValue, string lastUserValue, ISnapshot snapshot)
             : this(snapshot.Count,
                 lastValue,
                 lastUserValue,

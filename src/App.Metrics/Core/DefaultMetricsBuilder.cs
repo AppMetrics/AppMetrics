@@ -16,12 +16,12 @@ namespace App.Metrics.Core
             return new FunctionGauge(valueProvider);
         }
 
-        public HistogramImplementation BuildHistogram(string name, Unit unit, SamplingType samplingType)
+        public IHistogramImplementation BuildHistogram(string name, Unit unit, SamplingType samplingType)
         {
             return new HistogramMetric(samplingType);
         }
 
-        public HistogramImplementation BuildHistogram(string name, Unit unit, Reservoir reservoir)
+        public IHistogramImplementation BuildHistogram(string name, Unit unit, IReservoir reservoir)
         {
             return new HistogramMetric(reservoir);
         }
@@ -31,17 +31,17 @@ namespace App.Metrics.Core
             return new MeterMetric();
         }
 
-        public TimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, SamplingType samplingType)
+        public ITimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, SamplingType samplingType)
         {
             return new TimerMetric(samplingType);
         }
 
-        public TimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, HistogramImplementation histogram)
+        public ITimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, IHistogramImplementation histogram)
         {
             return new TimerMetric(histogram);
         }
 
-        public TimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, Reservoir reservoir)
+        public ITimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, IReservoir reservoir)
         {
             return new TimerMetric(reservoir);
         }

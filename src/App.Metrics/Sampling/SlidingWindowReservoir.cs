@@ -9,7 +9,7 @@ using App.Metrics.App_Packages.Concurrency;
 
 namespace App.Metrics.Sampling
 {
-    public sealed class SlidingWindowReservoir : Reservoir
+    public sealed class SlidingWindowReservoir : IReservoir
     {
         private const int DefaultSize = 1028;
 
@@ -26,7 +26,7 @@ namespace App.Metrics.Sampling
             _values = new UserValueWrapper[size];
         }
 
-        public Snapshot GetSnapshot(bool resetReservoir = false)
+        public ISnapshot GetSnapshot(bool resetReservoir = false)
         {
             var size = Math.Min((int)count.GetValue(), _values.Length);
             if (size == 0)

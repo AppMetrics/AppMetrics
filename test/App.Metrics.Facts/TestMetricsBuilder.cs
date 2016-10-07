@@ -9,9 +9,9 @@ namespace App.Metrics.Facts
     public class TestMetricsBuilder : IMetricsBuilder
     {
         private readonly Clock clock;
-        private readonly Scheduler scheduler;
+        private readonly IScheduler scheduler;
 
-        public TestMetricsBuilder(Clock clock, Scheduler scheduler)
+        public TestMetricsBuilder(Clock clock, IScheduler scheduler)
         {
             this.clock = clock;
             this.scheduler = scheduler;
@@ -27,12 +27,12 @@ namespace App.Metrics.Facts
             return new FunctionGauge(valueProvider);
         }
 
-        public HistogramImplementation BuildHistogram(string name, Unit unit, SamplingType samplingType)
+        public IHistogramImplementation BuildHistogram(string name, Unit unit, SamplingType samplingType)
         {
             return new HistogramMetric(new UniformReservoir());
         }
 
-        public HistogramImplementation BuildHistogram(string name, Unit unit, Reservoir reservoir)
+        public IHistogramImplementation BuildHistogram(string name, Unit unit, IReservoir reservoir)
         {
             return new HistogramMetric(new UniformReservoir());
         }
@@ -42,17 +42,17 @@ namespace App.Metrics.Facts
             return new MeterMetric(this.clock, this.scheduler);
         }
 
-        public TimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, SamplingType samplingType)
+        public ITimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, SamplingType samplingType)
         {
             return new TimerMetric(new HistogramMetric(new UniformReservoir()), new MeterMetric(this.clock, this.scheduler), this.clock);
         }
 
-        public TimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, HistogramImplementation histogram)
+        public ITimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, IHistogramImplementation histogram)
         {
             return new TimerMetric(new HistogramMetric(new UniformReservoir()), new MeterMetric(this.clock, this.scheduler), this.clock);
         }
 
-        public TimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, Reservoir reservoir)
+        public ITimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, IReservoir reservoir)
         {
             return new TimerMetric(new HistogramMetric(new UniformReservoir()), new MeterMetric(this.clock, this.scheduler), this.clock);
         }

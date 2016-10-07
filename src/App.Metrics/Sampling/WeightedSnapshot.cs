@@ -23,7 +23,7 @@ namespace App.Metrics.Sampling
         }
     }
 
-    public sealed class WeightedSnapshot : Snapshot
+    public sealed class WeightedSnapshot : ISnapshot
     {
         private readonly double[] _normWeights;
         private readonly double[] _quantiles;

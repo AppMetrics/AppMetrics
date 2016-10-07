@@ -62,7 +62,7 @@ namespace App.Metrics
         /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
         /// <returns>Reference to the metric</returns>
         IHistogram Histogram<T>(string name, Unit unit, Func<T> builder, MetricTags tags = default(MetricTags))
-            where T : HistogramImplementation;
+            where T : IHistogramImplementation;
 
         /// <summary>
         ///     Register a Histogram metric with a custom Reservoir instance
@@ -72,7 +72,7 @@ namespace App.Metrics
         /// <param name="builder">Function used to build a custom reservoir instance.</param>
         /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
         /// <returns>Reference to the metric</returns>
-        IHistogram Histogram(string name, Unit unit, Func<Reservoir> builder, MetricTags tags = default(MetricTags));
+        IHistogram Histogram(string name, Unit unit, Func<IReservoir> builder, MetricTags tags = default(MetricTags));
 
         /// <summary>
         ///     Register a custom Meter instance.
@@ -103,7 +103,7 @@ namespace App.Metrics
         /// <returns>Reference to the metric</returns>
         ITimer Timer<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit = TimeUnit.Seconds, TimeUnit durationUnit = TimeUnit.Milliseconds,
             MetricTags tags = default(MetricTags))
-            where T : TimerImplementation;
+            where T : ITimerImplementation;
 
         /// <summary>
         ///     Register a Timer metric with a custom Histogram implementation.
@@ -115,7 +115,7 @@ namespace App.Metrics
         /// <param name="durationUnit">Time unit for reporting durations. Defaults to Milliseconds. </param>
         /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
         /// <returns>Reference to the metric</returns>
-        ITimer Timer(string name, Unit unit, Func<HistogramImplementation> builder, TimeUnit rateUnit = TimeUnit.Seconds,
+        ITimer Timer(string name, Unit unit, Func<IHistogramImplementation> builder, TimeUnit rateUnit = TimeUnit.Seconds,
             TimeUnit durationUnit = TimeUnit.Milliseconds, MetricTags tags = default(MetricTags));
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace App.Metrics
         /// <param name="durationUnit">Time unit for reporting durations. Defaults to Milliseconds. </param>
         /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
         /// <returns>Reference to the metric</returns>
-        ITimer Timer(string name, Unit unit, Func<Reservoir> builder, TimeUnit rateUnit = TimeUnit.Seconds,
+        ITimer Timer(string name, Unit unit, Func<IReservoir> builder, TimeUnit rateUnit = TimeUnit.Seconds,
             TimeUnit durationUnit = TimeUnit.Milliseconds, MetricTags tags = default(MetricTags));
 
         /// <summary>

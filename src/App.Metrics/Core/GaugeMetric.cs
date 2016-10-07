@@ -3,11 +3,11 @@ using App.Metrics.MetricData;
 
 namespace App.Metrics.Core
 {
-    public interface GaugeImplementation : IMetricValueProvider<double>
+    public interface IGaugeImplementation : IMetricValueProvider<double>
     {
     }
 
-    public class FunctionGauge : GaugeImplementation
+    public class FunctionGauge : IGaugeImplementation
     {
         private readonly Func<double> _valueProvider;
 
@@ -38,7 +38,7 @@ namespace App.Metrics.Core
         }
     }
 
-    public sealed class DerivedGauge : GaugeImplementation
+    public sealed class DerivedGauge : IGaugeImplementation
     {
         private readonly IMetricValueProvider<double> _gauge;
         private readonly Func<double, double> _transformation;

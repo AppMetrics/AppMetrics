@@ -5,7 +5,7 @@
     ///     Each operation can also be applied to a item from a set and the counter will store individual count for each set
     ///     item.
     /// </summary>
-    public interface ICounter : ResetableMetric
+    public interface ICounter : IResetableMetric
     {
         /// <summary>
         ///     Decrement the counter value.

@@ -5,9 +5,9 @@
 
 namespace App.Metrics.Sampling
 {
-    public interface Reservoir
+    public interface IReservoir
     {
-        Snapshot GetSnapshot(bool resetReservoir = false);
+        ISnapshot GetSnapshot(bool resetReservoir = false);
 
         void Reset();
 

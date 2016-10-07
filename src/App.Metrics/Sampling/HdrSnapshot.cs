@@ -9,7 +9,7 @@ using App.Metrics.App_Packages.HdrHistogram;
 
 namespace App.Metrics.Sampling
 {
-    internal sealed class HdrSnapshot : Snapshot
+    internal sealed class HdrSnapshot : ISnapshot
     {
         private readonly AbstractHistogram _histogram;
 
