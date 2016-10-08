@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
 using App.Metrics.Core;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc.Internal;
 using Xunit;
 
 namespace App.Metrics.Facts.HealthChecksTests
@@ -12,54 +14,58 @@ namespace App.Metrics.Facts.HealthChecksTests
         {
             HealthChecks.UnregisterAllHealthChecks();
 
-            HealthChecks.RegisterHealthCheck(new HealthCheck("test", () => { }));
+            HealthChecks.RegisterHealthCheck(new HealthCheck("test", () => Task.FromResult(HealthCheckResult.Healthy())));
 
-            Action action = () => HealthChecks.RegisterHealthCheck(new HealthCheck("test", () => { }));
+            Action action = () => HealthChecks.RegisterHealthCheck(new HealthCheck("test", () => Task.FromResult(HealthCheckResult.Healthy())));
             action.ShouldNotThrow<InvalidOperationException>();
         }
 
         [Fact]
-        public void HealthCheck_RegistryExecutesCheckOnEachGetStatus()
+        public async Task HealthCheck_RegistryExecutesCheckOnEachGetStatus()
         {
             HealthChecks.UnregisterAllHealthChecks();
             var count = 0;
 
-            HealthChecks.RegisterHealthCheck(new HealthCheck("test", () => { count++; }));
+            HealthChecks.RegisterHealthCheck(new HealthCheck("test", () =>
+            {
+                count++;
+                return Task.FromResult(HealthCheckResult.Healthy());
+            }));
 
             count.Should().Be(0);
 
-            HealthChecks.GetStatus();
+            await HealthChecks.GetStatus();
 
             count.Should().Be(1);
 
-            HealthChecks.GetStatus();
+            await HealthChecks.GetStatus();
 
             count.Should().Be(2);
         }
 
         [Fact]
-        public void HealthCheck_RegistryStatusIsFailedIfOneCheckFails()
+        public async Task HealthCheck_RegistryStatusIsFailedIfOneCheckFails()
         {
             HealthChecks.UnregisterAllHealthChecks();
 
-            HealthChecks.RegisterHealthCheck(new HealthCheck("ok", () => { }));
-            HealthChecks.RegisterHealthCheck(new HealthCheck("bad", () => HealthCheckResult.Unhealthy()));
+            HealthChecks.RegisterHealthCheck(new HealthCheck("ok", () => Task.FromResult(HealthCheckResult.Healthy())));
+            HealthChecks.RegisterHealthCheck(new HealthCheck("bad", () => Task.FromResult(HealthCheckResult.Unhealthy())));
 
-            var status = HealthChecks.GetStatus();
+            var status = await HealthChecks.GetStatus();
 
             status.IsHealthy.Should().BeFalse();
             status.Results.Length.Should().Be(2);
         }
 
         [Fact]
-        public void HealthCheck_RegistryStatusIsHealthyIfAllChecksAreHealthy()
+        public async Task HealthCheck_RegistryStatusIsHealthyIfAllChecksAreHealthy()
         {
             HealthChecks.UnregisterAllHealthChecks();
 
-            HealthChecks.RegisterHealthCheck(new HealthCheck("ok", () => { }));
-            HealthChecks.RegisterHealthCheck(new HealthCheck("another", () => HealthCheckResult.Healthy()));
+            HealthChecks.RegisterHealthCheck(new HealthCheck("ok", () => Task.FromResult(HealthCheckResult.Healthy())));
+            HealthChecks.RegisterHealthCheck(new HealthCheck("another", () => Task.FromResult(HealthCheckResult.Healthy())));
 
-            var status = HealthChecks.GetStatus();
+            var status = await HealthChecks.GetStatus();
 
             status.IsHealthy.Should().BeTrue();
             status.Results.Length.Should().Be(2);

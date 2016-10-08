@@ -1,43 +1,36 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace App.Metrics.Core
 {
     public class HealthCheck
     {
-        private readonly Func<HealthCheckResult> _check;
+        private readonly Func<Task<HealthCheckResult>> _check;
 
-        public HealthCheck(string name, Action check)
-            : this(name, () =>
-            {
-                check();
-                return string.Empty;
-            })
+        public HealthCheck(string name, Func<Task<string>> check)
+            : this(name, async () => HealthCheckResult.Healthy(await check()))
         {
         }
 
-        public HealthCheck(string name, Func<string> check)
-            : this(name, () => HealthCheckResult.Healthy(check()))
-        {
-        }
-
-        public HealthCheck(string name, Func<HealthCheckResult> check)
+        public HealthCheck(string name, Func<Task<HealthCheckResult>> check)
         {
             Name = name;
             _check = check;
         }
 
         protected HealthCheck(string name)
-            : this(name, () => { })
         {
+            Name = name;
+            _check = () => Task.FromResult(HealthCheckResult.Healthy());
         }
 
         public string Name { get; }
 
-        public Result Execute()
+        public async Task<Result> ExecuteAsync()
         {
             try
             {
-                return new Result(Name, Check());
+                return new Result(Name, await CheckAsync());
             }
             catch (Exception x)
             {
@@ -45,7 +38,7 @@ namespace App.Metrics.Core
             }
         }
 
-        protected virtual HealthCheckResult Check()
+        protected virtual Task<HealthCheckResult> CheckAsync()
         {
             return _check();
         }

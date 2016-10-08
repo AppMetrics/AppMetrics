@@ -18,16 +18,17 @@ namespace AspNet.Metrics.Middleware
         {
         }
 
-        public Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context)
         {
             if (Options.HealthEnabled && Options.HealthEndpoint.HasValue && Options.HealthEndpoint == context.Request.Path)
             {
-                var healthStatus = MetricsContext.HealthStatus();
+                var healthStatus = await MetricsContext.HealthStatus();
                 var responseStatusCode = healthStatus.IsHealthy ? HttpStatusCode.OK : HttpStatusCode.InternalServerError;
-                return WriteResponse(context, JsonHealthChecks.BuildJson(healthStatus), "application/json", responseStatusCode);
+                await Task.FromResult(WriteResponse(context, JsonHealthChecks.BuildJson(healthStatus), "application/json", responseStatusCode));
+                return;
             }
 
-            return Next(context);
+            await Next(context);
         }
     }
 }

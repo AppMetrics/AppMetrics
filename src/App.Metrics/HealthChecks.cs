@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using App.Metrics.Core;
 
 namespace App.Metrics
@@ -45,21 +46,12 @@ namespace App.Metrics
         ///     Execute all registered checks and return overall.
         /// </summary>
         /// <returns>Status of the system.</returns>
-        public static HealthStatus GetStatus()
+        public static async Task<HealthStatus> GetStatus()
         {
-            var results = checks.Values.Select(v => v.Execute()).OrderBy(r => r.Name);
+            var results = await Task.WhenAll(checks.Values.OrderBy(v => v.Name).Select(v => v.ExecuteAsync()));
             return new HealthStatus(results);
         }
-
-        /// <summary>
-        ///     Registers an action to monitor. If the action throws the health check fails, otherwise is successful.
-        /// </summary>
-        /// <param name="name">Name of the health check.</param>
-        /// <param name="check">Action to execute.</param>
-        public static void RegisterHealthCheck(string name, Action check)
-        {
-            RegisterHealthCheck(new HealthCheck(name, check));
-        }
+       
 
         /// <summary>
         ///     Registers an action to monitor. If the action throws the health check fails,
@@ -67,7 +59,7 @@ namespace App.Metrics
         /// </summary>
         /// <param name="name">Name of the health check.</param>
         /// <param name="check">Function to execute.</param>
-        public static void RegisterHealthCheck(string name, Func<string> check)
+        public static void RegisterHealthCheck(string name, Func<Task<string>> check)
         {
             RegisterHealthCheck(new HealthCheck(name, check));
         }
@@ -78,7 +70,7 @@ namespace App.Metrics
         /// </summary>
         /// <param name="name">Name of the health check.</param>
         /// <param name="check">Function to execute</param>
-        public static void RegisterHealthCheck(string name, Func<HealthCheckResult> check)
+        public static void RegisterHealthCheck(string name, Func<Task<HealthCheckResult>> check)
         {
             RegisterHealthCheck(new HealthCheck(name, check));
         }

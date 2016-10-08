@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using App.Metrics.Core;
 using FluentAssertions;
 using Xunit;
@@ -8,80 +9,123 @@ namespace App.Metrics.Facts.HealthChecksTests
     public class HealthCheckTests
     {
         [Fact]
-        public void HealthCheck_FailedAndDoesNotThrowUnhandledExceptionIfActionThrowsExceptionWithBracketsInMessage()
+        public async Task HealthCheck_FailedAndDoesNotThrowUnhandledExceptionIfActionThrowsExceptionWithBracketsInMessage()
         {
             var name = "test";
-            new HealthCheck(name, () => ThrowExceptionWithBracketsInMessage()).Execute().Check.IsHealthy.Should().BeFalse();
-            new HealthCheck(name, () =>
+
+            var check1 = new HealthCheck(name, () => ThrowExceptionWithBracketsInMessage());
+            var result1 = await check1.ExecuteAsync();
+            result1.Check.IsHealthy.Should().BeFalse();
+
+            var check2 = new HealthCheck(name, () =>
             {
                 ThrowExceptionWithBracketsInMessage();
-                return "string";
-            }).Execute().Check.IsHealthy.Should().BeFalse();
-            new HealthCheck(name, () =>
+                return Task.FromResult("string");
+            });
+            var result2 = await check2.ExecuteAsync();
+            result2.Check.IsHealthy.Should().BeFalse();
+
+            var check3 = new HealthCheck(name, () =>
             {
                 ThrowExceptionWithBracketsInMessage();
-                HealthCheckResult.Healthy();
-            }).Execute().Check.IsHealthy.Should().BeFalse();
+                return Task.FromResult(HealthCheckResult.Healthy());
+            });
+            var result3 = await check3.ExecuteAsync();
+            result3.Check.IsHealthy.Should().BeFalse();
         }
 
         [Fact]
-        public void HealthCheck_FailedIfActionThrows()
+        public async Task HealthCheck_FailedIfActionThrows()
         {
             var name = "test";
-            new HealthCheck(name, () => ThrowException()).Execute().Check.IsHealthy.Should().BeFalse();
-            new HealthCheck(name, () =>
+            var check1 = new HealthCheck(name, () => ThrowException());
+            var result1 = await check1.ExecuteAsync();
+            result1.Check.IsHealthy.Should().BeFalse();
+
+            var check2 = new HealthCheck(name, () =>
             {
                 ThrowException();
-                return "string";
-            }).Execute().Check.IsHealthy.Should().BeFalse();
-            new HealthCheck(name, () =>
+                return Task.FromResult("string");
+            });
+            var result2 = await check2.ExecuteAsync();
+            result2.Check.IsHealthy.Should().BeFalse();
+
+            var check3 = new HealthCheck(name, () =>
             {
                 ThrowException();
-                HealthCheckResult.Healthy();
-            }).Execute().Check.IsHealthy.Should().BeFalse();
+                return Task.FromResult(HealthCheckResult.Healthy());
+            });
+            var result3 = await check3.ExecuteAsync();
+            result3.Check.IsHealthy.Should().BeFalse();
         }
 
         [Fact]
-        public void HealthCheck_FailedIfResultUnhealthy()
+        public async Task HealthCheck_FailedIfResultUnhealthy()
         {
-            new HealthCheck("test", () => HealthCheckResult.Unhealthy()).Execute().Check.IsHealthy.Should().BeFalse();
+            var check = new HealthCheck("test", () => Task.FromResult(HealthCheckResult.Unhealthy()));
+            var result = await check.ExecuteAsync();
+            result.Check.IsHealthy.Should().BeFalse();
         }
 
         [Fact]
-        public void HealthCheck_ReturnsCorrectMessage()
+        public async Task HealthCheck_ReturnsCorrectMessage()
         {
             var message = "message";
-            new HealthCheck("test", () => HealthCheckResult.Unhealthy(message)).Execute().Check.Message.Should().Be(message);
-            new HealthCheck("test", () => HealthCheckResult.Healthy(message)).Execute().Check.Message.Should().Be(message);
-            new HealthCheck("test", () => { return message; }).Execute().Check.Message.Should().Be(message);
+            var check1 = new HealthCheck("test", () => Task.FromResult(HealthCheckResult.Unhealthy(message)));
+            var result1 = await check1.ExecuteAsync();
+            result1.Check.Message.Should().Be(message);
+
+            var check2 = new HealthCheck("test", () => Task.FromResult(HealthCheckResult.Healthy(message)));
+            var result2 = await check2.ExecuteAsync();
+            result2.Check.Message.Should().Be(message);
+
+            var check3 = new HealthCheck("test", () => Task.FromResult(message));
+            var result3 = await check3.ExecuteAsync();
+            result3.Check.Message.Should().Be(message);
         }
 
         [Fact]
-        public void HealthCheck_ReturnsResultWithCorrectName()
+        public async Task HealthCheck_ReturnsResultWithCorrectName()
         {
             var name = "test";
-            new HealthCheck(name, () => { }).Execute().Name.Should().Be(name);
-            new HealthCheck(name, () => { return "string"; }).Execute().Name.Should().Be(name);
-            new HealthCheck(name, () => { HealthCheckResult.Healthy(); }).Execute().Name.Should().Be(name);
+            var check1 = new HealthCheck(name, () => Task.FromResult(HealthCheckResult.Healthy()));
+            var result1 = await check1.ExecuteAsync();
+            result1.Name.Should().Be(name);
+
+            var check2 = new HealthCheck(name, () => Task.FromResult("string"));
+            var result2 = await check2.ExecuteAsync();
+            result2.Name.Should().Be(name);
+
+            var check3 = new HealthCheck(name, () => Task.FromResult(HealthCheckResult.Healthy()));
+            var result3 = await check3.ExecuteAsync();
+            result3.Name.Should().Be(name);
         }
 
         [Fact]
-        public void HealthCheck_SuccessIfActionDoesNotThrow()
+        public async Task HealthCheck_SuccessIfActionDoesNotThrow()
         {
             var name = "test";
-            new HealthCheck(name, () => { }).Execute().Check.IsHealthy.Should().BeTrue();
-            new HealthCheck(name, () => { return "string"; }).Execute().Check.IsHealthy.Should().BeTrue();
-            new HealthCheck(name, () => { HealthCheckResult.Healthy(); }).Execute().Check.IsHealthy.Should().BeTrue();
+            var check1 = new HealthCheck(name, () => Task.FromResult(HealthCheckResult.Healthy()));
+            var result1 = await check1.ExecuteAsync();
+            result1.Check.IsHealthy.Should().BeTrue();
+
+            var check2 = new HealthCheck(name, () => Task.FromResult("string"));
+            var result2 = await check2.ExecuteAsync();
+            result2.Check.IsHealthy.Should().BeTrue();
+
+            var check3 = new HealthCheck(name, () => Task.FromResult(HealthCheckResult.Healthy()));
+            var result3 = await check3.ExecuteAsync();
+            result3.Check.IsHealthy.Should().BeTrue();
         }
 
-        private static void ThrowException()
+        private static Task<HealthCheckResult> ThrowException()
         {
             throw new InvalidOperationException();
         }
 
-        private static void ThrowExceptionWithBracketsInMessage()
+        private static Task<HealthCheckResult> ThrowExceptionWithBracketsInMessage()
         {
-            throw new InvalidOperationException("an {example message}");
+            throw new InvalidOperationException("an {example message}");            
         }
     }
 }

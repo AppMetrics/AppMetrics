@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using App.Metrics.MetricData;
 using App.Metrics.Utils;
 
@@ -7,17 +8,17 @@ namespace App.Metrics.Reporters
 {
     public sealed class ScheduledReporter : IDisposable
     {
-        private readonly Func<HealthStatus> _healthStatus;
+        private readonly Func<Task<HealthStatus>> _healthStatus;
         private readonly IMetricsDataProvider _metricsDataProvider;
         private readonly IMetricsReport _report;
         private readonly IScheduler _scheduler;
 
-        public ScheduledReporter(IMetricsReport reporter, IMetricsDataProvider metricsDataProvider, Func<HealthStatus> healthStatus, TimeSpan interval)
+        public ScheduledReporter(IMetricsReport reporter, IMetricsDataProvider metricsDataProvider, Func<Task<HealthStatus>> healthStatus, TimeSpan interval)
             : this(reporter, metricsDataProvider, healthStatus, interval, new ActionScheduler())
         {
         }
 
-        public ScheduledReporter(IMetricsReport report, IMetricsDataProvider metricsDataProvider, Func<HealthStatus> healthStatus, TimeSpan interval,
+        public ScheduledReporter(IMetricsReport report, IMetricsDataProvider metricsDataProvider, Func<Task<HealthStatus>> healthStatus, TimeSpan interval,
             IScheduler scheduler)
         {
             if (report == null)

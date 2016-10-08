@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using App.Metrics.MetricData;
 using Microsoft.Extensions.Logging;
 
@@ -17,7 +18,7 @@ namespace App.Metrics.Reporters
 
         public string Result => _buffer.ToString();
 
-        public string RenderMetrics(MetricsData metricsData, Func<HealthStatus> healthStatus)
+        public string RenderMetrics(MetricsData metricsData, Func<Task<HealthStatus>> healthStatus)
         {
             RunReport(metricsData, healthStatus, CancellationToken.None);
             return Result;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using System.Threading.Tasks;
 using App.Metrics.MetricData;
 using App.Metrics.Sampling;
 using App.Metrics.Utils;
@@ -40,7 +41,7 @@ namespace App.Metrics.Core
 
         public IClock SystemClock { get; }
 
-        public Func<HealthStatus> HealthStatus { get; }
+        public Func<Task<HealthStatus>> HealthStatus { get; }
 
         public IMetricsDataProvider DataProvider { get; }
 

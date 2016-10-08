@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Core;
 
@@ -11,9 +12,9 @@ namespace AspNet.Metrics.Facts
         {
         }
 
-        protected override HealthCheckResult Check()
+        protected override Task<HealthCheckResult> CheckAsync()
         {
-            return HealthCheckResult.Healthy("OK");
+            return Task.FromResult(HealthCheckResult.Healthy("OK"));
         }
     }
 }

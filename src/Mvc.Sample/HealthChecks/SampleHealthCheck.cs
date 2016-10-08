@@ -1,4 +1,5 @@
-﻿using App.Metrics;
+﻿using System.Threading.Tasks;
+using App.Metrics;
 
 namespace Mvc.Sample.HealthChecks
 {
@@ -8,9 +9,9 @@ namespace Mvc.Sample.HealthChecks
         {
         }
 
-        protected override HealthCheckResult Check()
+        protected override Task<HealthCheckResult> CheckAsync()
         {
-            return HealthCheckResult.Healthy("OK");
+            return Task.FromResult(HealthCheckResult.Healthy("OK"));
         }
     }
 }

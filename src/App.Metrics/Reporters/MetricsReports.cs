@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using App.Metrics.MetricData;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
@@ -8,7 +9,7 @@ namespace App.Metrics.Reporters
 {
     public sealed class MetricsReports : IHideObjectMembers, IDisposable
     {
-        private readonly Func<HealthStatus> _healthStatus;
+        private readonly Func<Task<HealthStatus>> _healthStatus;
         private readonly ILoggerFactory _loggerFactory;
         private readonly IMetricsDataProvider _metricsDataProvider;
 
@@ -18,7 +19,7 @@ namespace App.Metrics.Reporters
             ILoggerFactory loggerFactory,
             IMetricsDataProvider metricsDataProvider, 
             //MetricsErrorHandler errorHandler,
-            Func<HealthStatus> healthStatus)
+            Func<Task<HealthStatus>> healthStatus)
         {
             if (loggerFactory == null)
             {

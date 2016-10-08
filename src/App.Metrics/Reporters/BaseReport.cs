@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
+using App.Metrics.Internal;
 using App.Metrics.MetricData;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
@@ -28,7 +30,7 @@ namespace App.Metrics.Reporters
 
         protected DateTime ReportTimestamp { get; private set; }
 
-        public void RunReport(MetricsData metricsData, Func<HealthStatus> healthStatus, CancellationToken token)
+        public void RunReport(MetricsData metricsData, Func<Task<HealthStatus>> healthStatus, CancellationToken token)
         {
             _token = token;
 
@@ -123,9 +125,9 @@ namespace App.Metrics.Reporters
             EndContext(contextName);
         }
 
-        private void ReportHealthStatus(Func<HealthStatus> healthStatus)
+        private async Task ReportHealthStatus(Func<Task<HealthStatus>> healthStatus)
         {
-            var status = healthStatus();
+            var status = await healthStatus();
             if (!status.HasRegisteredChecks)
             {
                 return;

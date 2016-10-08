@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Core;
 
@@ -19,19 +20,20 @@ namespace Metrics.Samples
                 HealthChecks.RegisterHealthCheck(this);
             }
 
-            protected override HealthCheckResult Check()
+            protected override Task<HealthCheckResult> CheckAsync()
             {
                 // exceptions will be caught and 
                 // the result will be unhealthy
 
                 if (database == null)
                 {
-                    return HealthCheckResult.Unhealthy();
+                    return Task.FromResult(HealthCheckResult.Unhealthy());
                 }
 
                 this.database.Ping();
 
-                return HealthCheckResult.Healthy();
+                //TODO: AH - Add healthly and unhealthy to task cache
+                return Task.FromResult(HealthCheckResult.Healthy());
             }
         }
 
@@ -42,7 +44,7 @@ namespace Metrics.Samples
             HealthChecks.RegisterHealthCheck("DatabaseConnected", () =>
             {
                 CheckDbIsConnected();
-                return "Database Connection OK";
+                return Task.FromResult("Database Connection OK");
             });
 
             HealthChecks.RegisterHealthCheck("DiskSpace", () =>
@@ -51,16 +53,11 @@ namespace Metrics.Samples
 
                 if (freeDiskSpace <= 512)
                 {
-                    return HealthCheckResult.Unhealthy("Not enough disk space: {0}", freeDiskSpace);
+                    return Task.FromResult(HealthCheckResult.Unhealthy("Not enough disk space: {0}", freeDiskSpace));
                 }
-                else
-                {
-                    return HealthCheckResult.Unhealthy("Disk space ok: {0}", freeDiskSpace);
-                }
-            });
 
-            //HealthChecks.RegisterHealthCheck("SampleOperation", () => SampleOperation());
-            //HealthChecks.RegisterHealthCheck("AggregateSampleOperation", () => AggregateSampleOperation());
+                return Task.FromResult(HealthCheckResult.Unhealthy("Disk space ok: {0}", freeDiskSpace));
+            });            
         }
 
         private static void SampleOperation()

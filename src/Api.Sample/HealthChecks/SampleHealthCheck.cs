@@ -1,4 +1,5 @@
-﻿using App.Metrics;
+﻿using System.Threading.Tasks;
+using App.Metrics;
 using App.Metrics.Core;
 
 namespace Api.Sample.HealthChecks
@@ -9,9 +10,9 @@ namespace Api.Sample.HealthChecks
         {
         }
 
-        protected override HealthCheckResult Check()
+        protected override Task<HealthCheckResult> CheckAsync()
         {
-            return HealthCheckResult.Healthy("OK");
+            return Task.FromResult(HealthCheckResult.Healthy("OK"));
         }
     }
 }

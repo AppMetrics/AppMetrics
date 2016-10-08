@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using App.Metrics.MetricData;
 using App.Metrics.Utils;
 
@@ -20,7 +21,7 @@ namespace App.Metrics
         IClock SystemClock { get; }
 
         //TODO: AH - Does this live here
-        Func<HealthStatus> HealthStatus { get; }
+        Func<Task<HealthStatus>> HealthStatus { get; }
 
         //TODO: AH - move this to Advanced?
         void CompletelyDisableMetrics();
