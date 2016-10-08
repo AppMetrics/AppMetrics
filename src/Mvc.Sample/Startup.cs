@@ -67,9 +67,8 @@ namespace Mvc.Sample
                 .AddAspNetMetrics(options =>
                 {
                     options.MetricsEndpoint = new PathString("/metrics");
-                })
-                //.WithSystemPerforrmanceCounters()
-                .AddHealthChecks();
+                });
+            //.WithSystemPerforrmanceCounters()
         }
     }
 }

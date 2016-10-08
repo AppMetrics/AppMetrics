@@ -1,15 +1,12 @@
 using System;
-using System.Linq;
-using App.Metrics;
-using App.Metrics.Core;
 using App.Metrics.Internal;
 using AspNet.Metrics;
 using AspNet.Metrics.Middleware;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 // ReSharper disable CheckNamespace
+
 namespace Microsoft.AspNet.Builder
 // ReSharper restore CheckNamespace
 {
@@ -45,25 +42,7 @@ namespace Microsoft.AspNet.Builder
             app.UseMiddleware<PostAndPutRequestSizeHistogramMiddleware>(Options.Create(options));
             app.UseMiddleware<RequestTimerMiddleware>(Options.Create(options));
 
-            UseHealthChecks(app);
-
             return app;
-        }
-
-        private static void UseHealthChecks(IApplicationBuilder app)
-        {
-            var healthChecks = app.ApplicationServices.GetServices<HealthCheck>();
-            var healthCheckRegistry = app.ApplicationServices.GetRequiredService<HealthChecks>();
-
-            if (healthChecks == null || !healthChecks.Any())
-            {
-                return;
-            }
-
-            foreach (var check in healthChecks)
-            {
-                healthCheckRegistry.RegisterHealthCheck(check);
-            }
         }
     }
 }

@@ -9,6 +9,14 @@ namespace Metrics.Samples
         void Ping();
     }
 
+    public class Database : IDatabase
+    {
+        public void Ping()
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
     public class DatabaseHealthCheck : HealthCheck
     {
         private readonly IDatabase _database;
@@ -23,13 +31,7 @@ namespace Metrics.Samples
         {
             // exceptions will be caught and 
             // the result will be unhealthy
-
-            if (_database == null)
-            {
-                return Task.FromResult(HealthCheckResult.Unhealthy());
-            }
-
-            this._database.Ping();
+            _database.Ping();
 
             //TODO: AH - Add healthly and unhealthy to task cache
             return Task.FromResult(HealthCheckResult.Healthy());

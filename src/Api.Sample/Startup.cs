@@ -72,9 +72,8 @@ namespace Api.Sample
                     options.JsonSchemeVersion = JsonSchemeVersion.AlwaysLatest;
                     options.EnableInternalMetrics = true;
                 })
-                .AddAspNetMetrics(options => { })
-                //.WithAllPerformanceCounters()
-                .AddHealthChecks();
+                .AddAspNetMetrics(options => { });
+            //.WithAllPerformanceCounters()
         }
     }
 }

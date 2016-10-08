@@ -50,7 +50,7 @@ namespace App.Metrics
         ///     Registers a custom health check.
         /// </summary>
         /// <param name="healthCheck">Custom health check to register.</param>
-        public void RegisterHealthCheck(HealthCheck healthCheck)
+        internal void RegisterHealthCheck(HealthCheck healthCheck)
         {
             Checks.TryAdd(healthCheck.Name, healthCheck);
         }

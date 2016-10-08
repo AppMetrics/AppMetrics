@@ -47,14 +47,16 @@ namespace App.Sample
             }
         }
 
-        private static void ConfigureServices(IServiceCollection serviceCollection)
+        private static void ConfigureServices(IServiceCollection services)
         {
-            serviceCollection.AddSingleton<ILoggerFactory>(provider =>
+            services.AddSingleton<ILoggerFactory>(provider =>
             {
                 var logFactory = new LoggerFactory();
                 logFactory.AddConsole();
                 return logFactory;
             });
+
+            services.AddTransient<IDatabase, Database>();
         }
     }
 
@@ -96,7 +98,6 @@ namespace App.Sample
                             ? HealthCheckResult.Unhealthy("Not enough disk space: {0}", freeDiskSpace)
                             : HealthCheckResult.Unhealthy("Disk space ok: {0}", freeDiskSpace));
                     });
-                    checks.RegisterHealthCheck(new DatabaseHealthCheck(null));
                 };
             });
         }

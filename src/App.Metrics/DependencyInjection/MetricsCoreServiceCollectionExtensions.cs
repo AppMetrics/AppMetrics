@@ -11,6 +11,7 @@ using AspNet.Metrics;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
+using System.Linq;
 
 // ReSharper disable CheckNamespace
 
@@ -58,11 +59,12 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
 
         internal static void AddMetricsCoreServices(IServiceCollection services, IMetricsEnvironment environment)
         {
-            //TODO: AH - is this still needed
             services.TryAddSingleton<MetricsMarkerService, MetricsMarkerService>();
+            //TODO: AH - is this still needed
             services.TryAddSingleton<IConfigureOptions<AppMetricsOptions>, AppMetricsCoreOptionsSetup>();
             services.TryAddSingleton<AppEnvironment, AppEnvironment>();
             services.TryAddSingleton<MetricsJsonBuilderV1, MetricsJsonBuilderV1>();
+            services.AddHealthChecks(environment);
             services.TryAddSingleton<HealthChecks, HealthChecks>();
             services.TryAddSingleton<StringReport, StringReport>();
 
@@ -77,6 +79,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             {
                 var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
                 var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
+                var healthChecks = provider.GetServices<HealthCheck>();
                 var healthCheckRegistry = provider.GetRequiredService<HealthChecks>();
 
                 var reporters = new MetricsReports(
@@ -87,6 +90,14 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                 options.Value.Reporters(reporters);
 
                 options.Value.HealthChecks(healthCheckRegistry);
+
+                if (healthChecks != null && healthChecks.Any())
+                {
+                    foreach (var check in healthChecks)
+                    {
+                        healthCheckRegistry.RegisterHealthCheck(check);
+                    }
+                }
 
                 if (options.Value.EnableInternalMetrics)
                 {

@@ -21,9 +21,9 @@ namespace App.Metrics.Facts.HealthChecksTests
         {
             _healthCheckRegistry.UnregisterAllHealthChecks();
 
-            _healthCheckRegistry.RegisterHealthCheck(new HealthCheck("test", () => Task.FromResult(HealthCheckResult.Healthy())));
+            _healthCheckRegistry.RegisterHealthCheck("test", () => Task.FromResult(HealthCheckResult.Healthy()));
 
-            Action action = () => _healthCheckRegistry.RegisterHealthCheck(new HealthCheck("test", () => Task.FromResult(HealthCheckResult.Healthy())));
+            Action action = () => _healthCheckRegistry.RegisterHealthCheck("test", () => Task.FromResult(HealthCheckResult.Healthy()));
             action.ShouldNotThrow<InvalidOperationException>();
         }
 
@@ -33,11 +33,11 @@ namespace App.Metrics.Facts.HealthChecksTests
             _healthCheckRegistry.UnregisterAllHealthChecks();
             var count = 0;
 
-            _healthCheckRegistry.RegisterHealthCheck(new HealthCheck("test", () =>
+            _healthCheckRegistry.RegisterHealthCheck("test", () =>
             {
                 count++;
                 return Task.FromResult(HealthCheckResult.Healthy());
-            }));
+            });
 
             count.Should().Be(0);
 
@@ -55,8 +55,8 @@ namespace App.Metrics.Facts.HealthChecksTests
         {
             _healthCheckRegistry.UnregisterAllHealthChecks();
 
-            _healthCheckRegistry.RegisterHealthCheck(new HealthCheck("ok", () => Task.FromResult(HealthCheckResult.Healthy())));
-            _healthCheckRegistry.RegisterHealthCheck(new HealthCheck("bad", () => Task.FromResult(HealthCheckResult.Unhealthy())));
+            _healthCheckRegistry.RegisterHealthCheck("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
+            _healthCheckRegistry.RegisterHealthCheck("bad", () => Task.FromResult(HealthCheckResult.Unhealthy()));
 
             var status = await _healthCheckRegistry.GetStatusAsync();
 
@@ -69,8 +69,8 @@ namespace App.Metrics.Facts.HealthChecksTests
         {
             _healthCheckRegistry.UnregisterAllHealthChecks();
 
-            _healthCheckRegistry.RegisterHealthCheck(new HealthCheck("ok", () => Task.FromResult(HealthCheckResult.Healthy())));
-            _healthCheckRegistry.RegisterHealthCheck(new HealthCheck("another", () => Task.FromResult(HealthCheckResult.Healthy())));
+            _healthCheckRegistry.RegisterHealthCheck("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
+            _healthCheckRegistry.RegisterHealthCheck("another", () => Task.FromResult(HealthCheckResult.Healthy()));
 
             var status = await _healthCheckRegistry.GetStatusAsync();
 
