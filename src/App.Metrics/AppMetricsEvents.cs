@@ -6,8 +6,8 @@ namespace App.Metrics
 {
     public class AppMetricsEvents : IAppMetricsEvents
     {
-        public Func<Exception, Task> OnError { get; set; } = context => TaskCache.CompletedTask;
+        //public Func<Exception, Task> OnError { get; set; } = context => AppMetricsTaskCache.CompletedTask;
 
-        public virtual Task Error(Exception context) => OnError(context);
+        //public virtual Task Error(Exception context) => OnError(context);
     }
 }

@@ -20,7 +20,7 @@ namespace AspNet.Metrics.Middleware
         {
             if (Options.PingEnabled && Options.PingEndpoint.HasValue && Options.PingEndpoint == context.Request.Path)
             {
-                return WriteResponse(context, "pong", "text/plain");
+                return WriteResponseAsync(context, "pong", "text/plain");
             }
 
             return Next(context);

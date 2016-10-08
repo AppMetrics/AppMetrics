@@ -66,7 +66,8 @@ namespace AspNet.Metrics.Middleware
             return !Options.IgnoredRequestPatterns.Any(ignorePattern => ignorePattern.IsMatch(context.Request.Path.ToString().TrimStart('/')));
         }
 
-        protected Task WriteResponse(HttpContext context, string content, string contentType, HttpStatusCode code = HttpStatusCode.OK)
+        protected Task WriteResponseAsync(HttpContext context, string content, string contentType, 
+            HttpStatusCode code = HttpStatusCode.OK)
         {
             context.Response.Headers["Content-Type"] = new[] { contentType };
             context.Response.Headers["Cache-Control"] = new[] { "no-cache, no-store, must-revalidate" };

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using App.Metrics;
+using App.Metrics.Json;
 using AspNet.Metrics.Infrastructure;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
@@ -30,6 +31,7 @@ namespace AspNet.Metrics.Facts
                         options.GlobalContextName = "testing";
                         options.DisableMetrics = false;
                         options.MetricsContext = TestContext;
+                        options.JsonSchemeVersion = JsonSchemeVersion.Version1;
                     });
                 })
                 .Configure(app =>

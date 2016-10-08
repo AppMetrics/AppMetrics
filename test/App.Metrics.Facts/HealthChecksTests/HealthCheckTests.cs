@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using App.Metrics.Core;
+using App.Metrics.Internal;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc.Internal;
 using Xunit;
 
 namespace App.Metrics.Facts.HealthChecksTests
@@ -28,7 +30,7 @@ namespace App.Metrics.Facts.HealthChecksTests
             var check3 = new HealthCheck(name, () =>
             {
                 ThrowExceptionWithBracketsInMessage();
-                return Task.FromResult(HealthCheckResult.Healthy());
+                return AppMetricsTaskCache.CompletedHealthyTask;
             });
             var result3 = await check3.ExecuteAsync();
             result3.Check.IsHealthy.Should().BeFalse();
@@ -53,7 +55,7 @@ namespace App.Metrics.Facts.HealthChecksTests
             var check3 = new HealthCheck(name, () =>
             {
                 ThrowException();
-                return Task.FromResult(HealthCheckResult.Healthy());
+                return AppMetricsTaskCache.CompletedHealthyTask;
             });
             var result3 = await check3.ExecuteAsync();
             result3.Check.IsHealthy.Should().BeFalse();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using App.Metrics;
+using App.Metrics.Internal;
 
 namespace HealthCheck.Samples
 {
@@ -33,8 +34,7 @@ namespace HealthCheck.Samples
             // the result will be unhealthy
             _database.Ping();
 
-            //TODO: AH - Add healthly and unhealthy to task cache
-            return Task.FromResult(HealthCheckResult.Healthy());
+            return AppMetricsTaskCache.CompletedHealthyTask;
         }
     }
 }

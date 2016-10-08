@@ -28,7 +28,7 @@ namespace App.Metrics
             AddHandler((x, msg) => _logger.LogError("Metrics: Unhandled exception in App.Metrics Library {0} {1}", x, msg, x.Message));
             AddHandler((x, msg) => _logger.LogError("Metrics: Unhandled exception in App.Metrics Library " + x.ToString()));
 
-            //TODO: AH - Console logging if UserInteractive
+            //TODO: Review enableing internal metrics
             //if (Environment.UserInteractive)
             //{
             //    AddHandler((x, msg) => Console.WriteLine("Metrics: Unhandled exception in App.Metrics Library {0} {1}", msg, x.ToString()));

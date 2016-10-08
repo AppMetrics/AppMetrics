@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using App.Metrics.Internal;
 
 namespace App.Metrics.Core
 {
@@ -21,7 +22,7 @@ namespace App.Metrics.Core
         protected HealthCheck(string name)
         {
             Name = name;
-            _check = () => Task.FromResult(HealthCheckResult.Healthy());
+            _check = () => AppMetricsTaskCache.CompletedHealthyTask;
         }
 
         public string Name { get; }

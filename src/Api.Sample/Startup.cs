@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using App.Metrics;
-using AspNet.Metrics;
+using App.Metrics.Json;
 using AspNet.Metrics.Infrastructure;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;

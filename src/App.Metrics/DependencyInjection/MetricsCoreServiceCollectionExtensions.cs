@@ -7,11 +7,11 @@ using App.Metrics.Internal;
 using App.Metrics.Json;
 using App.Metrics.Reporters;
 using App.Metrics.Utils;
-using AspNet.Metrics;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
 using System.Linq;
+using App.Metrics.Infrastructure;
 
 // ReSharper disable CheckNamespace
 
@@ -60,9 +60,8 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
         internal static void AddMetricsCoreServices(IServiceCollection services, IMetricsEnvironment environment)
         {
             services.TryAddSingleton<MetricsMarkerService, MetricsMarkerService>();
-            //TODO: AH - is this still needed
-            services.TryAddSingleton<IConfigureOptions<AppMetricsOptions>, AppMetricsCoreOptionsSetup>();
-            services.TryAddSingleton<AppEnvironment, AppEnvironment>();
+            services.TryAddSingleton(typeof(IClock), provider => Clock.Default);
+            services.TryAddSingleton<EnvironmentInfoBuilder, EnvironmentInfoBuilder>();
             services.TryAddSingleton<MetricsJsonBuilderV1, MetricsJsonBuilderV1>();
             services.AddHealthChecks(environment);
             services.TryAddSingleton<HealthChecks, HealthChecks>();

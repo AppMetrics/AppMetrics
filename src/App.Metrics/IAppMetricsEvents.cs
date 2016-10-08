@@ -5,6 +5,6 @@ namespace App.Metrics
 {
     public interface IAppMetricsEvents
     {
-        Task Error(Exception context);
+        //Task Error(Exception context);
     }
 }

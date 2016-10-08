@@ -1,9 +1,9 @@
 using System;
 using System.Diagnostics;
 using App.Metrics.Core;
+using App.Metrics.Json;
 using App.Metrics.Reporters;
 using App.Metrics.Utils;
-using AspNet.Metrics;
 
 namespace App.Metrics
 {

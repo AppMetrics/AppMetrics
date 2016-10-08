@@ -87,7 +87,7 @@ namespace App.Metrics.Utils
                         }
                         catch (Exception x)
                         {
-                            //TODO: AH - add metrics error handler
+                            //TODO: Review enableing internal metrics
                             //MetricsErrorHandler.Handle(x, "Error while executing action scheduler.");
                             token.Cancel();
                         }

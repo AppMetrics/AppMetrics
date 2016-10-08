@@ -24,7 +24,7 @@ namespace AspNet.Metrics.Middleware
             {
                 var healthStatus = await MetricsContext.HealthStatus();
                 var responseStatusCode = healthStatus.IsHealthy ? HttpStatusCode.OK : HttpStatusCode.InternalServerError;
-                await Task.FromResult(WriteResponse(context, JsonHealthChecks.BuildJson(healthStatus), "application/json", responseStatusCode));
+                await Task.FromResult(WriteResponseAsync(context, JsonHealthChecks.BuildJson(healthStatus), "application/json", responseStatusCode));
                 return;
             }
 

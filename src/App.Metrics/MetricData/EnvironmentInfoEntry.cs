@@ -1,11 +1,11 @@
 ﻿namespace App.Metrics.MetricData
 {
-    public struct EnvironmentEntry
+    public struct EnvironmentInfoEntry
     {
         public readonly string Name;
         public readonly string Value;
 
-        public EnvironmentEntry(string name, string value)
+        public EnvironmentInfoEntry(string name, string value)
         {
             Name = name;
             Value = value;

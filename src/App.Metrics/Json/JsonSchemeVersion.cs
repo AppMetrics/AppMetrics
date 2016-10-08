@@ -1,4 +1,4 @@
-namespace AspNet.Metrics
+namespace App.Metrics.Json
 {
     public enum JsonSchemeVersion
     {

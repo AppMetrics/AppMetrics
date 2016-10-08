@@ -32,7 +32,7 @@ namespace AspNet.Metrics.Middleware
             if (Options.MetricsTextEnabled && Options.MetricsTextEndpoint.HasValue && Options.MetricsTextEndpoint == context.Request.Path)
             {
                 var content = _stringReport.RenderMetrics(MetricsContext.DataProvider.CurrentMetricsData, MetricsContext.HealthStatus);
-                return WriteResponse(context, content, "text/plain");
+                return WriteResponseAsync(context, content, "text/plain");
             }
 
             return Next(context);

@@ -7,7 +7,7 @@ namespace App.Metrics.MetricData
     public sealed class MetricsData
     {
         public static readonly MetricsData Empty = new MetricsData(string.Empty, DateTime.MinValue,
-            Enumerable.Empty<EnvironmentEntry>(),
+            Enumerable.Empty<EnvironmentInfoEntry>(),
             Enumerable.Empty<GaugeValueSource>(),
             Enumerable.Empty<CounterValueSource>(),
             Enumerable.Empty<MeterValueSource>(),
@@ -20,7 +20,7 @@ namespace App.Metrics.MetricData
         public readonly string Context;
         public readonly IEnumerable<CounterValueSource> Counters;
 
-        public readonly IEnumerable<EnvironmentEntry> Environment;
+        public readonly IEnumerable<EnvironmentInfoEntry> Environment;
 
         public readonly IEnumerable<GaugeValueSource> Gauges;
         public readonly IEnumerable<HistogramValueSource> Histograms;
@@ -29,7 +29,7 @@ namespace App.Metrics.MetricData
         public readonly DateTime Timestamp;
 
         public MetricsData(string context, DateTime timestamp,
-            IEnumerable<EnvironmentEntry> environment,
+            IEnumerable<EnvironmentInfoEntry> environment,
             IEnumerable<GaugeValueSource> gauges,
             IEnumerable<CounterValueSource> counters,
             IEnumerable<MeterValueSource> meters,
@@ -124,7 +124,7 @@ namespace App.Metrics.MetricData
                 .Union(ChildMetrics.SelectMany(m => m.OldFormat(FormatPrefix(prefix, m.Context)).Timers));
 
             var environment = Environment
-                .Select(e => new EnvironmentEntry(FormatName(prefix, e.Name), e.Value))
+                .Select(e => new EnvironmentInfoEntry(FormatName(prefix, e.Name), e.Value))
                 .Union(ChildMetrics.SelectMany(e => e.OldFormat(FormatPrefix(prefix, e.Context)).Environment));
 
             return new MetricsData(Context, Timestamp, environment, gauges, counters, meters, histograms, timers,

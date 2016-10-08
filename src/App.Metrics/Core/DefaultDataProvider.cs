@@ -9,7 +9,7 @@ namespace App.Metrics.Core
     {
         private readonly Func<IEnumerable<IMetricsDataProvider>> _childProviders;
         private readonly string _context;
-        private readonly IEnumerable<EnvironmentEntry> _environment;
+        private readonly IEnumerable<EnvironmentInfoEntry> _environment;
         private readonly IRegistryDataProvider _registryDataProvider;
         private readonly Func<DateTime> _timestampProvider;
 
@@ -17,13 +17,13 @@ namespace App.Metrics.Core
             Func<DateTime> timestampProvider,
             IRegistryDataProvider registryDataProvider,
             Func<IEnumerable<IMetricsDataProvider>> childProviders)
-            : this(context, timestampProvider, Enumerable.Empty<EnvironmentEntry>(), registryDataProvider, childProviders)
+            : this(context, timestampProvider, Enumerable.Empty<EnvironmentInfoEntry>(), registryDataProvider, childProviders)
         {
         }
 
         public DefaultDataProvider(string context,
             Func<DateTime> timestampProvider,
-            IEnumerable<EnvironmentEntry> environment,
+            IEnumerable<EnvironmentInfoEntry> environment,
             IRegistryDataProvider registryDataProvider,
             Func<IEnumerable<IMetricsDataProvider>> childProviders)
         {

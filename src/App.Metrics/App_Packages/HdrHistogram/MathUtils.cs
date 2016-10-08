@@ -50,7 +50,7 @@ namespace App.Metrics.App_Packages.HdrHistogram
 
         public static double ULP(double value)
         {
-            // TODO: double check this is correct
+            // TODO: HdrHistogram
 
             // This is actually a constant in the same static class as this method, but 
             // we put it here for brevity of this example.

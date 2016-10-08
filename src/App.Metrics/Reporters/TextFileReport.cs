@@ -28,7 +28,7 @@ namespace App.Metrics.Reporters
             catch (Exception x)
             {
                 Logger.LogError(new EventId(), x, "Error writing text file " + _fileName);
-                //TODO: AH - Log internal metric error
+                //TODO: Review enableing internal metrics
             }
 
             base.EndReport(contextName);

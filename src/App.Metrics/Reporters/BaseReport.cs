@@ -84,7 +84,7 @@ namespace App.Metrics.Reporters
             return string.Concat("[", context, "] ", metric.Name);
         }
 
-        protected virtual void ReportEnvironment(string name, IEnumerable<EnvironmentEntry> environment)
+        protected virtual void ReportEnvironment(string name, IEnumerable<EnvironmentInfoEntry> environment)
         {
         }
 

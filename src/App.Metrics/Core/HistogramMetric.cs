@@ -64,7 +64,7 @@ namespace App.Metrics.Core
                     case SamplingType.Default:
                         //samplingType = Metric.Config.DefaultSamplingType;
                         //continue;
-                        //TODO: AH allow setting of defalt sampling type
+                        //TODO: Default sampling type
                         return new ExponentiallyDecayingReservoir();
 
                     case SamplingType.HighDynamicRange:

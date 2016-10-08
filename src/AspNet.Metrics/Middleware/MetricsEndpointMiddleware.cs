@@ -1,7 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using App.Metrics;
+using App.Metrics.Infrastructure;
 using App.Metrics.Json;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -11,29 +14,42 @@ namespace AspNet.Metrics.Middleware
     {
         private readonly RequestDelegate _next;
         private readonly IMetricsJsonBuilder _jsonBuilder;
+        private readonly EnvironmentInfoBuilder _environmentInfoBuilder;
 
         public MetricsEndpointMiddleware(RequestDelegate next,
             IOptions<AspNetMetricsOptions> options,
             ILoggerFactory loggerFactory,
             IMetricsContext metricsContext,
-            IMetricsJsonBuilder jsonBuilder)
+            IMetricsJsonBuilder jsonBuilder, 
+            EnvironmentInfoBuilder environmentInfoBuilder)
             : base(next, options, loggerFactory, metricsContext)
         {
+            if (next == null)
+            {
+                throw new ArgumentNullException(nameof(next));
+            }
+            if (environmentInfoBuilder == null)
+            {
+                throw new ArgumentNullException(nameof(environmentInfoBuilder));
+            }
+
             _jsonBuilder = jsonBuilder;
+            _environmentInfoBuilder = environmentInfoBuilder;
             _next = next;
         }
 
-        public Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context)
         {
             if (Options.MetricsEnabled && Options.MetricsEndpoint.HasValue && Options.MetricsEndpoint == context.Request.Path)
             {
-                var json = _jsonBuilder.BuildJson(MetricsContext.DataProvider.CurrentMetricsData);
+                var environmentInfo = await _environmentInfoBuilder.BuildAsync();
+                var json = _jsonBuilder.BuildJson(MetricsContext.DataProvider.CurrentMetricsData, environmentInfo);
 
-                //TODO: AH - can't hard code the schme version here
-                return WriteResponse(context, json, MetricsJsonBuilderV1.MetricsMimeType);
+                await WriteResponseAsync(context, json, _jsonBuilder.MetricsMimeType);
+                return;
             }
 
-            return _next(context);
+            await _next(context);
         }
     }
 }

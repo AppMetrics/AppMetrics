@@ -7,8 +7,7 @@ using Microsoft.Extensions.DependencyModel;
 
 namespace App.Metrics.Infrastructure
 {
-    //TODO: AH - make internal to this and AspNet.Metrics
-    public static class DefaultMetricsAssemblyDiscoveryProvider
+    internal static class DefaultMetricsAssemblyDiscoveryProvider
     {
         internal static HashSet<string> ReferenceAssemblies { get; } = new HashSet<string>(StringComparer.Ordinal)
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using App.Metrics.Infrastructure;
 using App.Metrics.MetricData;
 using App.Metrics.Utils;
 
@@ -10,7 +11,7 @@ namespace App.Metrics.Json
     {
         private JsonMetricsContext[] _childContexts = new JsonMetricsContext[0];
         private JsonCounter[] _counters = new JsonCounter[0];
-        private Dictionary<string, string> _environment = new Dictionary<string, string>();
+        private IDictionary<string, string>_environment = new Dictionary<string, string>();
         private JsonGauge[] _gauges = new JsonGauge[0];
         private JsonHistogram[] _histograms = new JsonHistogram[0];
         private JsonMeter[] _meters = new JsonMeter[0];
@@ -30,10 +31,10 @@ namespace App.Metrics.Json
             set { _counters = value ?? new JsonCounter[0]; }
         }
 
-        public Dictionary<string, string> Environment
+        public IDictionary<string, string> Environment
         {
             get { return _environment; }
-            set { _environment = value ?? new Dictionary<string, string>(); }
+            set { _environment = value ?? new Dictionary<string, string>(); ; }
         }
 
         public JsonGauge[] Gauges
@@ -71,16 +72,16 @@ namespace App.Metrics.Json
 
         public static JsonMetricsContext FromContext(MetricsData contextData, string version)
         {
-            return FromContext(contextData, Enumerable.Empty<EnvironmentEntry>(), version);
+            return FromContext(contextData, EnvironmentInfo.Empty, version);
         }
 
-        public static JsonMetricsContext FromContext(MetricsData contextData, IEnumerable<EnvironmentEntry> environment, string version)
+        public static JsonMetricsContext FromContext(MetricsData contextData, EnvironmentInfo environment, string version)
         {
             return new JsonMetricsContext
             {
                 Version = version,
                 Timestamp = contextData.Timestamp,
-                Environment = contextData.Environment.Union(environment).ToDictionary(e => e.Name, e => e.Value),
+                Environment = environment.Entries.Any() ? contextData.Environment.Union(environment.Entries).ToDictionary(d => d.Name, d => d.Value) : contextData.Environment.ToDictionary(d => d.Name, d => d.Value),
                 Context = contextData.Context,
                 Gauges = contextData.Gauges.Select(JsonGauge.FromGauge).ToArray(),
                 Counters = contextData.Counters.Select(JsonCounter.FromCounter).ToArray(),
@@ -99,7 +100,7 @@ namespace App.Metrics.Json
         public MetricsData ToMetricsData()
         {
             return new MetricsData(Context, Timestamp,
-                Environment.Select(e => new EnvironmentEntry(e.Key, e.Value)),
+                Environment.Select(e => new EnvironmentInfoEntry(e.Key, e.Value)),
                 Gauges.Select(g => g.ToValueSource()),
                 Counters.Select(c => c.ToValueSource()),
                 Meters.Select(m => m.ToValueSource()),
@@ -120,7 +121,7 @@ namespace App.Metrics.Json
                 yield return new JsonProperty("Timestamp", Clock.FormatTimestamp(Timestamp));
             }
 
-            if (Environment.Count > 0)
+            if (Environment.Any())
             {
                 yield return new JsonProperty("Environment", Environment.Select(e => new JsonProperty(e.Key, e.Value)));
             }

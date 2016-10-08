@@ -5,10 +5,8 @@ namespace App.Metrics.Core
 {
     public sealed class NullMetricsContext : BaseMetricsContext
     {
-        //TODO: AH - default clock ok?
-        //TODO: AH - null builder?
-        public NullMetricsContext(string context) 
-            : base(context, new NullMetricsRegistry(), new DefaultMetricsBuilder(), new HealthChecks(), Clock.Default, () => Clock.Default.UtcDateTime)
+        public NullMetricsContext(string context, IClock systemClock) 
+            : base(context, new NullMetricsRegistry(), new DefaultMetricsBuilder(), new HealthChecks(), systemClock, () => systemClock.UtcDateTime)
         {
         }
 

@@ -110,7 +110,7 @@ namespace App.Metrics.App_Packages.HdrHistogram
                 {
                     if (yieldTimeNsec == 0)
                     {
-                        //TODO: AH - confirm this is the correct replacement for Thread.Yeild()
+                        //TODO: HdrHistogram
                         Task.Yield();
                     }
                     else

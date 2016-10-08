@@ -17,14 +17,9 @@ namespace App.Metrics
 
         IMetricsContext Internal { get; }
 
-        //TODO: AH - Does this live here and just call this clock
         IClock SystemClock { get; }
 
-        //TODO: AH - Does this live here
         Func<Task<HealthStatus>> HealthStatus { get; }
-
-        //TODO: AH - move this to Advanced?
-        void CompletelyDisableMetrics();
 
         /// <summary>
         ///     Returns a metrics data provider capable of returning the metrics in this context and any existing child contexts.
