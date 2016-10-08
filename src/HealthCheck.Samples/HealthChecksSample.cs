@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using App.Metrics;
-using App.Metrics.Core;
 
-namespace Metrics.Samples
+namespace HealthCheck.Samples
 {
     public interface IDatabase
     {
@@ -13,11 +13,11 @@ namespace Metrics.Samples
     {
         public void Ping()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 
-    public class DatabaseHealthCheck : HealthCheck
+    public class DatabaseHealthCheck : App.Metrics.Core.HealthCheck
     {
         private readonly IDatabase _database;
 

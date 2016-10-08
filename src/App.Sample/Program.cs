@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Utils;
+using HealthCheck.Samples;
 using Metrics.Samples;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
