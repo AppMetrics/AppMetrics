@@ -14,10 +14,13 @@ namespace App.Metrics.Utils
     //TODO: AH - make internal?
     public class AppEnvironment
     {
+        private readonly MetricsErrorHandler _errorHandler;
         private static ILogger _logger;
 
-        public AppEnvironment(ILoggerFactory loggerFactory)
+        public AppEnvironment(ILoggerFactory loggerFactory, 
+            MetricsErrorHandler errorHandler)
         {
+            _errorHandler = errorHandler;
             if (loggerFactory == null)
             {
                 throw new ArgumentNullException(nameof(loggerFactory));
@@ -109,7 +112,7 @@ namespace App.Metrics.Utils
             return UnknownName;
         }
 
-        private static string GetIpAddress()
+        private string GetIpAddress()
         {
             var hostName = SafeGetString(Dns.GetHostName);
             try
@@ -136,7 +139,7 @@ namespace App.Metrics.Utils
             }
         }
 
-        private static string SafeGetString(Func<string> action)
+        private string SafeGetString(Func<string> action)
         {
             try
             {
@@ -144,7 +147,7 @@ namespace App.Metrics.Utils
             }
             catch (Exception x)
             {
-                MetricsErrorHandler.Handle(x, "Error retrieving environment value");
+                _errorHandler.Handle(x, "Error retrieving environment value");
                 return string.Empty;
             }
         }

@@ -6,18 +6,27 @@ namespace App.Metrics
 {
     public class MetricsErrorHandler
     {
-        //TODO: AH - inject metrics context
-        private static readonly IMeter ErrorMeter = Metric.Internal.Meter("Metrics Errors", Unit.Errors);
+        private readonly IMeter _errorMeter;
+        private readonly ConcurrentBag<Action<Exception, string>> _handlers = new ConcurrentBag<Action<Exception, string>>();
+        private readonly ILogger _logger;
 
-        //TODO: AH - Inject logger
-        private static readonly ILogger Log = new LoggerFactory().CreateLogger(typeof(MetricsErrorHandler));
-
-        private readonly ConcurrentBag<Action<Exception, string>> handlers = new ConcurrentBag<Action<Exception, string>>();
-
-        private MetricsErrorHandler()
+        public MetricsErrorHandler(ILoggerFactory loggerFactory, IMetricsContext metricsContext)
         {
-            AddHandler((x, msg) => Log.LogError("Metrics: Unhandled exception in App.Metrics Library {0} {1}", x, msg, x.Message));
-            AddHandler((x, msg) => Log.LogError("Metrics: Unhandled exception in App.Metrics Library " + x.ToString()));
+            if (loggerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(loggerFactory));
+            }
+
+            if (metricsContext == null)
+            {
+                throw new ArgumentNullException(nameof(metricsContext));
+            }
+
+            _logger = loggerFactory.CreateLogger<MetricsErrorHandler>();
+            _errorMeter = metricsContext.Internal.Meter("Metrics Errors", Unit.Errors);
+
+            AddHandler((x, msg) => _logger.LogError("Metrics: Unhandled exception in App.Metrics Library {0} {1}", x, msg, x.Message));
+            AddHandler((x, msg) => _logger.LogError("Metrics: Unhandled exception in App.Metrics Library " + x.ToString()));
 
             //TODO: AH - Console logging if UserInteractive
             //if (Environment.UserInteractive)
@@ -26,16 +35,14 @@ namespace App.Metrics
             //}
         }
 
-        internal static MetricsErrorHandler Handler { get; } = new MetricsErrorHandler();
-
-        public static void Handle(Exception exception)
+        public void Handle(Exception exception)
         {
             Handle(exception, string.Empty);
         }
 
-        public static void Handle(Exception exception, string message)
+        public void Handle(Exception exception, string message)
         {
-            Handler.InternalHandle(exception, message);
+            InternalHandle(exception, message);
         }
 
         internal void AddHandler(Action<Exception> handler)
@@ -45,23 +52,23 @@ namespace App.Metrics
 
         internal void AddHandler(Action<Exception, string> handler)
         {
-            handlers.Add(handler);
+            _handlers.Add(handler);
         }
 
         internal void ClearHandlers()
         {
-            while (!handlers.IsEmpty)
+            while (!_handlers.IsEmpty)
             {
                 Action<Exception, string> item;
-                handlers.TryTake(out item);
+                _handlers.TryTake(out item);
             }
         }
 
         private void InternalHandle(Exception exception, string message)
         {
-            ErrorMeter.Mark();
+            _errorMeter.Mark();
 
-            foreach (var handler in handlers)
+            foreach (var handler in _handlers)
             {
                 try
                 {

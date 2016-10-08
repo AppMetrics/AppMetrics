@@ -24,7 +24,7 @@ namespace App.Metrics.MetricData
 
         public static MeterValue GetCurrentValue(IMeter metric)
         {
-            var implementation = metric as MeterImplementation;
+            var implementation = metric as IMeterImplementation;
             if (implementation != null)
             {
                 return implementation.Value;

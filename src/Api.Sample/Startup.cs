@@ -70,6 +70,7 @@ namespace Api.Sample
                     options.DisableMetrics = false;
                     options.GlobalContextName = "Test";
                     options.JsonSchemeVersion = JsonSchemeVersion.AlwaysLatest;
+                    options.EnableInternalMetrics = true;
                 })
                 .AddAspNetMetrics(options => { })
                 //.WithAllPerformanceCounters()

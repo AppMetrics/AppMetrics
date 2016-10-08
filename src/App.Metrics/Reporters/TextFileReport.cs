@@ -1,16 +1,20 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporters
 {
     public class TextFileReport : HumanReadableReport
     {
         private readonly string _fileName;
-
         private StringBuilder _buffer;
 
-        public TextFileReport(string fileName)
+        public TextFileReport(string fileName,
+            ILoggerFactory loggerFactory,
+            MetricsErrorHandler errorHandler)
+            :base(loggerFactory, errorHandler)
+
         {
             Directory.CreateDirectory(Path.GetDirectoryName(fileName));
             _fileName = fileName;
@@ -24,7 +28,7 @@ namespace App.Metrics.Reporters
             }
             catch (Exception x)
             {
-                MetricsErrorHandler.Handle(x, "Error writing text file " + _fileName);
+                ErrorHandler.Handle(x, "Error writing text file " + _fileName);
             }
 
             base.EndReport(contextName);

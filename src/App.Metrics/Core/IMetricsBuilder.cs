@@ -14,7 +14,7 @@ namespace App.Metrics.Core
 
         IHistogramImplementation BuildHistogram(string name, Unit unit, IReservoir reservoir);
 
-        MeterImplementation BuildMeter(string name, Unit unit, TimeUnit rateUnit);
+        IMeterImplementation BuildMeter(string name, Unit unit, TimeUnit rateUnit);
 
         ITimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, SamplingType samplingType);
 

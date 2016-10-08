@@ -26,7 +26,7 @@ namespace App.Metrics.Core
             return NullMetric.Instance;
         }
 
-        public IMeter Meter<T>(string name, Func<T> builder, Unit unit, TimeUnit rateUnit, MetricTags tags) where T : MeterImplementation
+        public IMeter Meter<T>(string name, Func<T> builder, Unit unit, TimeUnit rateUnit, MetricTags tags) where T : IMeterImplementation
         {
             return NullMetric.Instance;
         }

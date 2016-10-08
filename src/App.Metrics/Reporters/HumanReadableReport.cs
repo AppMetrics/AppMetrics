@@ -1,16 +1,18 @@
 ﻿using System.Linq;
 using App.Metrics.MetricData;
 using App.Metrics.Utils;
+using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporters
 {
     public abstract class HumanReadableReport : BaseReport
     {
-        private readonly int _padding;
+        private readonly int _padding = 20;
 
-        protected HumanReadableReport(int padding = 20)
+        protected HumanReadableReport(ILoggerFactory loggerFactory,
+            MetricsErrorHandler errorHandler)
+            : base(loggerFactory, errorHandler)
         {
-            _padding = padding;
         }
 
         public void WriteValue(string label, string value, string sign = "=")

@@ -37,7 +37,7 @@ namespace App.Metrics.Facts
             return new HistogramMetric(new UniformReservoir());
         }
 
-        public MeterImplementation BuildMeter(string name, Unit unit, TimeUnit rateUnit)
+        public IMeterImplementation BuildMeter(string name, Unit unit, TimeUnit rateUnit)
         {
             return new MeterMetric(this.clock, this.scheduler);
         }

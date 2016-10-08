@@ -2,19 +2,42 @@
 using System.Collections.Generic;
 using App.Metrics.MetricData;
 using App.Metrics.Utils;
+using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporters
 {
     public sealed class MetricsReports : IHideObjectMembers, IDisposable
     {
         private readonly Func<HealthStatus> _healthStatus;
+        private readonly ILoggerFactory _loggerFactory;
         private readonly IMetricsDataProvider _metricsDataProvider;
+        private readonly MetricsErrorHandler _errorHandler;
 
         private readonly List<ScheduledReporter> _reports = new List<ScheduledReporter>();
 
-        public MetricsReports(IMetricsDataProvider metricsDataProvider, Func<HealthStatus> healthStatus)
+        public MetricsReports(
+            ILoggerFactory loggerFactory,
+            IMetricsDataProvider metricsDataProvider, 
+            MetricsErrorHandler errorHandler,
+            Func<HealthStatus> healthStatus)
         {
+            if (loggerFactory == null)
+            {
+
+                throw new ArgumentNullException(nameof(loggerFactory));
+            }
+            if (metricsDataProvider == null)
+            {
+                throw new ArgumentNullException(nameof(metricsDataProvider));
+            }
+            if (errorHandler == null)
+            {
+                throw new ArgumentNullException(nameof(errorHandler));
+            }
+
+            _loggerFactory = loggerFactory;
             _metricsDataProvider = metricsDataProvider;
+            _errorHandler = errorHandler;
             _healthStatus = healthStatus;
         }
 
@@ -39,7 +62,7 @@ namespace App.Metrics.Reporters
         /// <param name="filter">Only report metrics that match the filter.</param>
         public MetricsReports WithConsoleReport(TimeSpan interval, MetricsFilter filter = null)
         {
-            return WithReport(new ConsoleReport(), interval, filter);
+            return WithReport(new ConsoleReport(_loggerFactory, _errorHandler), interval, filter);
         }
 
         /// <summary>
@@ -63,7 +86,7 @@ namespace App.Metrics.Reporters
         /// <param name="filter">Only report metrics that match the filter.</param>
         public MetricsReports WithTextFileReport(string filePath, TimeSpan interval, MetricsFilter filter = null)
         {
-            return WithReport(new TextFileReport(filePath), interval, filter);
+            return WithReport(new TextFileReport(filePath, _loggerFactory, _errorHandler), interval, filter);
         }
     }
 }

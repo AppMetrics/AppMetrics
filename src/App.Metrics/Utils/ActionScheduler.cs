@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Utils
 {
@@ -68,10 +69,7 @@ namespace App.Metrics.Utils
 
         public void Stop()
         {
-            if (token != null)
-            {
-                token.Cancel();
-            }
+            token?.Cancel();
         }
 
         private static void RunScheduler(TimeSpan interval, Func<CancellationToken, Task> action, CancellationTokenSource token)
@@ -89,7 +87,8 @@ namespace App.Metrics.Utils
                         }
                         catch (Exception x)
                         {
-                            MetricsErrorHandler.Handle(x, "Error while executing action scheduler.");
+                            //TODO: AH - add metrics error handler
+                            //MetricsErrorHandler.Handle(x, "Error while executing action scheduler.");
                             token.Cancel();
                         }
                     }

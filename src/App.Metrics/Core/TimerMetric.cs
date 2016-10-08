@@ -15,7 +15,7 @@ namespace App.Metrics.Core
         private readonly StripedLongAdder _activeSessionsCounter = new StripedLongAdder();
         private readonly Clock _clock;
         private readonly IHistogramImplementation _histogram;
-        private readonly MeterImplementation _meter;
+        private readonly IMeterImplementation _meter;
         private readonly StripedLongAdder _totalRecordedTime = new StripedLongAdder();
 
         public TimerMetric()
@@ -38,12 +38,12 @@ namespace App.Metrics.Core
         {
         }
 
-        public TimerMetric(SamplingType samplingType, MeterImplementation meter, Clock clock)
+        public TimerMetric(SamplingType samplingType, IMeterImplementation meter, Clock clock)
             : this(new HistogramMetric(samplingType), meter, clock)
         {
         }
 
-        public TimerMetric(IHistogramImplementation histogram, MeterImplementation meter, Clock clock)
+        public TimerMetric(IHistogramImplementation histogram, IMeterImplementation meter, Clock clock)
         {
             _clock = clock;
             _meter = meter;

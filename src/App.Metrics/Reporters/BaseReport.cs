@@ -4,12 +4,32 @@ using System.Linq;
 using System.Threading;
 using App.Metrics.MetricData;
 using App.Metrics.Utils;
+using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporters
 {
     public abstract class BaseReport : IMetricsReport
     {
+        protected readonly MetricsErrorHandler ErrorHandler;
+        protected readonly ILogger Logger;
         private CancellationToken _token;
+
+        protected BaseReport(ILoggerFactory loggerFactory,
+            MetricsErrorHandler errorHandler)
+        {
+            if (loggerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(loggerFactory));
+            }
+
+            if (errorHandler == null)
+            {
+                throw new ArgumentNullException(nameof(errorHandler));
+            }
+
+            ErrorHandler = errorHandler;
+            Logger = loggerFactory.CreateLogger(GetType());
+        }
 
         protected DateTime CurrentContextTimestamp { get; private set; }
 

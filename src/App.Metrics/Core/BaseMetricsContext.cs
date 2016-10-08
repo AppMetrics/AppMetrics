@@ -10,7 +10,7 @@ namespace App.Metrics.Core
     public abstract class BaseMetricsContext : IMetricsContext, IAdvancedMetricsContext
     {
         private readonly ConcurrentDictionary<string, IMetricsContext> _childContexts = new ConcurrentDictionary<string, IMetricsContext>();
-
+        public const string InternalMetricsContextName = "App.Metrics.Internal";
         private bool _isDisabled;
         private IMetricsBuilder _metricsBuilder;
 
@@ -35,6 +35,8 @@ namespace App.Metrics.Core
         public event EventHandler ContextShuttingDown;
 
         public IAdvancedMetricsContext Advanced => this;
+
+        public IMetricsContext Internal { get; }
 
         public IClock SystemClock { get; }
 
@@ -148,7 +150,7 @@ namespace App.Metrics.Core
         }
 
         public IMeter Meter<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit, MetricTags tags)
-            where T : MeterImplementation
+            where T : IMeterImplementation
         {
             return _registry.Meter(name, builder, unit, rateUnit, tags);
         }

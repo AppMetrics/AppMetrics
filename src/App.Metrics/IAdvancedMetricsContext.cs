@@ -84,7 +84,7 @@ namespace App.Metrics
         /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
         /// <returns>Reference to the metric</returns>
         IMeter Meter<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit = TimeUnit.Seconds, MetricTags tags = default(MetricTags))
-            where T : MeterImplementation;
+            where T : IMeterImplementation;
 
         /// <summary>
         ///     Clear all collected data for all the metrics in this context

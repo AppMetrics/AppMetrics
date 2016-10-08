@@ -67,7 +67,7 @@ namespace App.Metrics.Core
         }
 
         public IMeter Meter<T>(string name, Func<T> builder, Unit unit, TimeUnit rateUnit, MetricTags tags)
-            where T : MeterImplementation
+            where T : IMeterImplementation
         {
             return _meters.GetOrAdd(name, () =>
             {

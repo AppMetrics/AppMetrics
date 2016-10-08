@@ -26,6 +26,8 @@ namespace App.Metrics
 
         public bool DisableMetrics { get; set; }
 
+        public bool EnableInternalMetrics { get; set; }
+
         public string GlobalContextName { get; set; }
 
         public JsonSchemeVersion JsonSchemeVersion { get; set; } = JsonSchemeVersion.AlwaysLatest;

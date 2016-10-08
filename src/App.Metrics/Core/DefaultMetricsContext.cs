@@ -18,5 +18,7 @@ namespace App.Metrics.Core
         {
             return new DefaultMetricsContext(contextName, SystemClock);
         }
+
+        internal IMetricsContext Internal { get; } = new NullMetricsContext(InternalMetricsContextName);
     }
 }

@@ -26,7 +26,6 @@ namespace App.Metrics.Core
                 }
                 catch (Exception x)
                 {
-                    MetricsErrorHandler.Handle(x, "Error executing Functional Gauge");
                     return double.NaN;
                 }
             }
@@ -59,7 +58,6 @@ namespace App.Metrics.Core
                 }
                 catch (Exception x)
                 {
-                    MetricsErrorHandler.Handle(x, "Error executing Derived Gauge");
                     return double.NaN;
                 }
             }

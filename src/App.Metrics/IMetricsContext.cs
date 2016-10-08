@@ -14,6 +14,8 @@ namespace App.Metrics
         /// </summary>
         IAdvancedMetricsContext Advanced { get; }
 
+        IMetricsContext Internal { get; }
+
         //TODO: AH - Does this live here and just call this clock
         IClock SystemClock { get; }
 

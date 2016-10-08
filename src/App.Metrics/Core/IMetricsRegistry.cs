@@ -32,7 +32,7 @@ namespace App.Metrics.Core
             where T : IHistogramImplementation;
 
         IMeter Meter<T>(string name, Func<T> builder, Unit unit, TimeUnit rateUnit, MetricTags tags)
-            where T : MeterImplementation;
+            where T : IMeterImplementation;
 
         void ResetMetricsValues();
 

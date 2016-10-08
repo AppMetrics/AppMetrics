@@ -20,6 +20,19 @@ namespace App.Metrics.Reporters
         public ScheduledReporter(IMetricsReport report, IMetricsDataProvider metricsDataProvider, Func<HealthStatus> healthStatus, TimeSpan interval,
             IScheduler scheduler)
         {
+            if (report == null)
+            {
+                throw new ArgumentNullException(nameof(report));
+            }
+            if (metricsDataProvider == null)
+            {
+                throw new ArgumentNullException(nameof(metricsDataProvider));
+            }
+            if (scheduler == null)
+            {
+                throw new ArgumentNullException(nameof(scheduler));
+            }
+
             _report = report;
             _metricsDataProvider = metricsDataProvider;
             _healthStatus = healthStatus;

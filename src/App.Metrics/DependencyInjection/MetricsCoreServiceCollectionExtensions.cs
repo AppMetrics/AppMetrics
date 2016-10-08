@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using App.Metrics;
+using App.Metrics.Core;
 using App.Metrics.Internal;
 using App.Metrics.Json;
 using App.Metrics.Reporters;
 using App.Metrics.Utils;
 using AspNet.Metrics;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
 
@@ -61,6 +63,9 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             services.TryAddSingleton<IConfigureOptions<AppMetricsOptions>, AppMetricsCoreOptionsSetup>();
             services.TryAddSingleton<AppEnvironment, AppEnvironment>();
             services.TryAddSingleton<MetricsJsonBuilderV1, MetricsJsonBuilderV1>();
+            services.TryAddSingleton<MetricsErrorHandler, MetricsErrorHandler>();
+            services.TryAddSingleton<StringReport, StringReport>();
+
             services.TryAddSingleton(typeof(IMetricsJsonBuilder), provider =>
             {
                 var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
@@ -71,8 +76,25 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             services.TryAddSingleton(typeof(IMetricsContext), provider =>
             {
                 var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
-                var reporters = new MetricsReports(options.Value.MetricsContext.DataProvider, options.Value.MetricsContext.HealthStatus);
+                var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
+                //TODO: AH - refactor error handling
+                var errorHandler = provider.GetRequiredService<MetricsErrorHandler>();
+                var reporters = new MetricsReports(
+                    loggerFactory,                    
+                    options.Value.MetricsContext.DataProvider,
+                    errorHandler,
+                    options.Value.MetricsContext.HealthStatus);
+
                 options.Value.Reporters(reporters);
+
+                if (options.Value.EnableInternalMetrics)
+                {
+                    //TODO: Review enableing internal metrics
+                    var internalMetricsContexxt = new DefaultMetricsContext(BaseMetricsContext.InternalMetricsContextName, options.Value.SystemClock);
+                    options.Value.MetricsContext.Advanced.AttachContext(BaseMetricsContext.InternalMetricsContextName,
+                        internalMetricsContexxt);
+                }
+
                 return options.Value.MetricsContext;
             });
 
