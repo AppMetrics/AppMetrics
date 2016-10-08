@@ -18,8 +18,10 @@ namespace App.Metrics
         {
             GlobalContextName = DefaultGlobalContextName;
             DisableMetrics = false;
+            DisableHealthChecks = false;
             DefaultSamplingType = SamplingType.ExponentiallyDecaying;
             Reporters = reports => { };
+            MetricsContext = new DefaultMetricsContext(DefaultGlobalContextName, SystemClock);
             HealthChecks = checks => { };
         }
 
@@ -27,13 +29,15 @@ namespace App.Metrics
 
         public bool DisableMetrics { get; set; }
 
+        public bool DisableHealthChecks { get; set; }
+
         public bool EnableInternalMetrics { get; set; }
 
         public string GlobalContextName { get; set; }
 
         public JsonSchemeVersion JsonSchemeVersion { get; set; } = JsonSchemeVersion.AlwaysLatest;
 
-        public IMetricsContext MetricsContext { get; set; } = new DefaultMetricsContext(DefaultGlobalContextName, Clock.Default);
+        public IMetricsContext MetricsContext { get; set; }
 
         public Action<MetricsReports> Reporters { get; set; }
 

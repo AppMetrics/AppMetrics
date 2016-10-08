@@ -68,6 +68,7 @@ namespace Api.Sample
                 {
                     options.DefaultSamplingType = SamplingType.ExponentiallyDecaying;
                     options.DisableMetrics = false;
+                    options.DisableHealthChecks = false;
                     options.GlobalContextName = "Test";
                     options.JsonSchemeVersion = JsonSchemeVersion.AlwaysLatest;
                     options.EnableInternalMetrics = true;

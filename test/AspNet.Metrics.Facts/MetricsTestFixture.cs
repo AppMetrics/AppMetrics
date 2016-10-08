@@ -13,8 +13,22 @@ namespace AspNet.Metrics.Facts
 {
     public class MetricsTestFixture : IDisposable
     {
-        public MetricsTestFixture()
+        private static readonly AppMetricsOptions TestOptions = new AppMetricsOptions
         {
+            DefaultSamplingType = SamplingType.Default,
+            GlobalContextName = "testing",
+            DisableMetrics = false,
+            DisableHealthChecks = false,
+            JsonSchemeVersion = JsonSchemeVersion.Version1
+        };
+
+        public MetricsTestFixture(AppMetricsOptions testOptions = null)
+        {
+            if (testOptions == null)
+            {
+                testOptions = TestOptions;
+            }
+
             TestContext = new TestContext();
             TestContext.ResetMetricsValues();
 
@@ -25,13 +39,13 @@ namespace AspNet.Metrics.Facts
                     //TODO: AH set this to the default filter?
                     services.AddMvc(options => { options.Filters.Add(new MetricsResourceFilter(new DefaultRouteTemplateResolver())); });
                     services.AddMetrics(options =>
-                    {
-                        //TODO: Test different app metrics options
-                        options.DefaultSamplingType = SamplingType.Default;
-                        options.GlobalContextName = "testing";
-                        options.DisableMetrics = false;
+                    {                        
+                        options.DefaultSamplingType = testOptions.DefaultSamplingType;
+                        options.GlobalContextName = testOptions.GlobalContextName;
+                        options.DisableMetrics = testOptions.DisableMetrics;
+                        options.DisableHealthChecks = testOptions.DisableHealthChecks;
                         options.MetricsContext = TestContext;
-                        options.JsonSchemeVersion = JsonSchemeVersion.Version1;
+                        options.JsonSchemeVersion = testOptions.JsonSchemeVersion;
                     });
                 })
                 .Configure(app =>
@@ -42,7 +56,7 @@ namespace AspNet.Metrics.Facts
                 }));
 
             Client = Server.CreateClient();
-        }
+        }    
 
         public HttpClient Client { get; set; }
 

@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using App.Metrics;
 using App.Metrics.Core;
+using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.Json;
 using App.Metrics.Reporters;
@@ -10,8 +12,6 @@ using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
-using System.Linq;
-using App.Metrics.Infrastructure;
 
 // ReSharper disable CheckNamespace
 
@@ -82,19 +82,22 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                 var healthCheckRegistry = provider.GetRequiredService<HealthChecks>();
 
                 var reporters = new MetricsReports(
-                    loggerFactory,                    
+                    loggerFactory,
                     options.Value.MetricsContext.DataProvider,
                     options.Value.MetricsContext.HealthStatus);
 
                 options.Value.Reporters(reporters);
 
-                options.Value.HealthChecks(healthCheckRegistry);
-
-                if (healthChecks != null && healthChecks.Any())
+                if (!options.Value.DisableHealthChecks)
                 {
-                    foreach (var check in healthChecks)
+                    options.Value.HealthChecks(healthCheckRegistry);
+
+                    if (healthChecks != null && healthChecks.Any())
                     {
-                        healthCheckRegistry.RegisterHealthCheck(check);
+                        foreach (var check in healthChecks)
+                        {
+                            healthCheckRegistry.RegisterHealthCheck(check);
+                        }
                     }
                 }
 
@@ -104,6 +107,11 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                     var internalMetricsContexxt = new DefaultMetricsContext(BaseMetricsContext.InternalMetricsContextName, options.Value.SystemClock);
                     options.Value.MetricsContext.Advanced.AttachContext(BaseMetricsContext.InternalMetricsContextName,
                         internalMetricsContexxt);
+                }
+
+                if (options.Value.DisableMetrics)
+                {
+                    options.Value.MetricsContext.Advanced.CompletelyDisableMetrics();
                 }
 
                 return options.Value.MetricsContext;

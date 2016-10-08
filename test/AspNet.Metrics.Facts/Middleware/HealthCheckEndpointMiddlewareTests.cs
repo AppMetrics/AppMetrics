@@ -1,5 +1,7 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
+using App.Metrics;
+using App.Metrics.Json;
 using FluentAssertions;
 using Xunit;
 
@@ -7,7 +9,7 @@ namespace AspNet.Metrics.Facts.Middleware
 {
     public class HealthCheckEndpointMiddlewareTests
     {
-        private readonly MetricsTestFixture _fixture;
+        private MetricsTestFixture _fixture;
 
         public HealthCheckEndpointMiddlewareTests()
         {
@@ -20,6 +22,23 @@ namespace AspNet.Metrics.Facts.Middleware
            var result = await _fixture.Client.GetAsync("/health");
 
             result.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task can_disable_health_checks()
+        {
+            _fixture = new MetricsTestFixture(new AppMetricsOptions
+            {
+                DefaultSamplingType = SamplingType.Default,
+                GlobalContextName = "testing",
+                DisableMetrics = false,
+                DisableHealthChecks = true,
+                JsonSchemeVersion = JsonSchemeVersion.Version1
+            });
+
+            var result = await _fixture.Client.GetAsync("/health");
+
+            result.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
     }
 }
