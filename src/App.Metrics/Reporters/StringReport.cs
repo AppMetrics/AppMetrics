@@ -10,9 +10,8 @@ namespace App.Metrics.Reporters
     {
         private StringBuilder _buffer;
 
-        public StringReport(ILoggerFactory loggerFactory, 
-            MetricsErrorHandler errorHandler)
-            : base(loggerFactory, errorHandler)
+        public StringReport(ILoggerFactory loggerFactory)
+            : base(loggerFactory)
         {
         }
 

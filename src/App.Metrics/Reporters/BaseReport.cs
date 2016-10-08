@@ -10,24 +10,17 @@ namespace App.Metrics.Reporters
 {
     public abstract class BaseReport : IMetricsReport
     {
-        protected readonly MetricsErrorHandler ErrorHandler;
         protected readonly ILogger Logger;
         private CancellationToken _token;
 
-        protected BaseReport(ILoggerFactory loggerFactory,
-            MetricsErrorHandler errorHandler)
+        protected BaseReport(ILoggerFactory loggerFactory)
         {
             if (loggerFactory == null)
             {
                 throw new ArgumentNullException(nameof(loggerFactory));
             }
 
-            if (errorHandler == null)
-            {
-                throw new ArgumentNullException(nameof(errorHandler));
-            }
-
-            ErrorHandler = errorHandler;
+            
             Logger = loggerFactory.CreateLogger(GetType());
         }
 

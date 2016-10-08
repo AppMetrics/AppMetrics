@@ -9,9 +9,8 @@ namespace App.Metrics.Reporters
     {
         private readonly int _padding = 20;
 
-        protected HumanReadableReport(ILoggerFactory loggerFactory,
-            MetricsErrorHandler errorHandler)
-            : base(loggerFactory, errorHandler)
+        protected HumanReadableReport(ILoggerFactory loggerFactory)
+            : base(loggerFactory)
         {
         }
 

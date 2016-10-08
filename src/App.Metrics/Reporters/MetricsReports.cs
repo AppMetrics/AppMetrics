@@ -11,14 +11,13 @@ namespace App.Metrics.Reporters
         private readonly Func<HealthStatus> _healthStatus;
         private readonly ILoggerFactory _loggerFactory;
         private readonly IMetricsDataProvider _metricsDataProvider;
-        private readonly MetricsErrorHandler _errorHandler;
 
         private readonly List<ScheduledReporter> _reports = new List<ScheduledReporter>();
 
         public MetricsReports(
             ILoggerFactory loggerFactory,
             IMetricsDataProvider metricsDataProvider, 
-            MetricsErrorHandler errorHandler,
+            //MetricsErrorHandler errorHandler,
             Func<HealthStatus> healthStatus)
         {
             if (loggerFactory == null)
@@ -30,14 +29,9 @@ namespace App.Metrics.Reporters
             {
                 throw new ArgumentNullException(nameof(metricsDataProvider));
             }
-            if (errorHandler == null)
-            {
-                throw new ArgumentNullException(nameof(errorHandler));
-            }
 
             _loggerFactory = loggerFactory;
             _metricsDataProvider = metricsDataProvider;
-            _errorHandler = errorHandler;
             _healthStatus = healthStatus;
         }
 
@@ -62,7 +56,7 @@ namespace App.Metrics.Reporters
         /// <param name="filter">Only report metrics that match the filter.</param>
         public MetricsReports WithConsoleReport(TimeSpan interval, MetricsFilter filter = null)
         {
-            return WithReport(new ConsoleReport(_loggerFactory, _errorHandler), interval, filter);
+            return WithReport(new ConsoleReport(_loggerFactory), interval, filter);
         }
 
         /// <summary>
@@ -86,7 +80,7 @@ namespace App.Metrics.Reporters
         /// <param name="filter">Only report metrics that match the filter.</param>
         public MetricsReports WithTextFileReport(string filePath, TimeSpan interval, MetricsFilter filter = null)
         {
-            return WithReport(new TextFileReport(filePath, _loggerFactory, _errorHandler), interval, filter);
+            return WithReport(new TextFileReport(filePath, _loggerFactory), interval, filter);
         }
     }
 }

@@ -11,9 +11,8 @@ namespace App.Metrics.Reporters
         private StringBuilder _buffer;
 
         public TextFileReport(string fileName,
-            ILoggerFactory loggerFactory,
-            MetricsErrorHandler errorHandler)
-            :base(loggerFactory, errorHandler)
+            ILoggerFactory loggerFactory)
+            :base(loggerFactory)
 
         {
             Directory.CreateDirectory(Path.GetDirectoryName(fileName));
@@ -28,7 +27,8 @@ namespace App.Metrics.Reporters
             }
             catch (Exception x)
             {
-                ErrorHandler.Handle(x, "Error writing text file " + _fileName);
+                Logger.LogError(new EventId(), x, "Error writing text file " + _fileName);
+                //TODO: AH - Log internal metric error
             }
 
             base.EndReport(contextName);

@@ -14,13 +14,10 @@ namespace App.Metrics.Utils
     //TODO: AH - make internal?
     public class AppEnvironment
     {
-        private readonly MetricsErrorHandler _errorHandler;
         private static ILogger _logger;
 
-        public AppEnvironment(ILoggerFactory loggerFactory, 
-            MetricsErrorHandler errorHandler)
+        public AppEnvironment(ILoggerFactory loggerFactory)
         {
-            _errorHandler = errorHandler;
             if (loggerFactory == null)
             {
                 throw new ArgumentNullException(nameof(loggerFactory));
@@ -147,7 +144,8 @@ namespace App.Metrics.Utils
             }
             catch (Exception x)
             {
-                _errorHandler.Handle(x, "Error retrieving environment value");
+                _logger.LogError(new EventId(), x, "Error retrieving environment value");
+                //TODO: AH - log internal metric error
                 return string.Empty;
             }
         }

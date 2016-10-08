@@ -5,9 +5,8 @@ namespace App.Metrics.Reporters
 {
     public class ConsoleReport : HumanReadableReport
     {
-        public ConsoleReport(ILoggerFactory loggerFactory,
-            MetricsErrorHandler errorHandler) 
-            : base(loggerFactory, errorHandler)
+        public ConsoleReport(ILoggerFactory loggerFactory) 
+            : base(loggerFactory)
         {
             
         }

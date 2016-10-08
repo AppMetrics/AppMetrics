@@ -63,7 +63,6 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             services.TryAddSingleton<IConfigureOptions<AppMetricsOptions>, AppMetricsCoreOptionsSetup>();
             services.TryAddSingleton<AppEnvironment, AppEnvironment>();
             services.TryAddSingleton<MetricsJsonBuilderV1, MetricsJsonBuilderV1>();
-            services.TryAddSingleton<MetricsErrorHandler, MetricsErrorHandler>();
             services.TryAddSingleton<StringReport, StringReport>();
 
             services.TryAddSingleton(typeof(IMetricsJsonBuilder), provider =>
@@ -77,12 +76,9 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             {
                 var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
                 var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
-                //TODO: AH - refactor error handling
-                var errorHandler = provider.GetRequiredService<MetricsErrorHandler>();
                 var reporters = new MetricsReports(
                     loggerFactory,                    
                     options.Value.MetricsContext.DataProvider,
-                    errorHandler,
                     options.Value.MetricsContext.HealthStatus);
 
                 options.Value.Reporters(reporters);
