@@ -63,6 +63,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             services.TryAddSingleton<IConfigureOptions<AppMetricsOptions>, AppMetricsCoreOptionsSetup>();
             services.TryAddSingleton<AppEnvironment, AppEnvironment>();
             services.TryAddSingleton<MetricsJsonBuilderV1, MetricsJsonBuilderV1>();
+            services.TryAddSingleton<HealthChecks, HealthChecks>();
             services.TryAddSingleton<StringReport, StringReport>();
 
             services.TryAddSingleton(typeof(IMetricsJsonBuilder), provider =>
@@ -76,12 +77,16 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             {
                 var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
                 var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
+                var healthCheckRegistry = provider.GetRequiredService<HealthChecks>();
+
                 var reporters = new MetricsReports(
                     loggerFactory,                    
                     options.Value.MetricsContext.DataProvider,
                     options.Value.MetricsContext.HealthStatus);
 
                 options.Value.Reporters(reporters);
+
+                options.Value.HealthChecks(healthCheckRegistry);
 
                 if (options.Value.EnableInternalMetrics)
                 {

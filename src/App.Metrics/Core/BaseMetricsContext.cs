@@ -14,12 +14,12 @@ namespace App.Metrics.Core
         public const string InternalMetricsContextName = "App.Metrics.Internal";
         private bool _isDisabled;
         private IMetricsBuilder _metricsBuilder;
-
         private IMetricsRegistry _registry;
 
         protected BaseMetricsContext(string context, 
             IMetricsRegistry registry,
             IMetricsBuilder metricsBuilder, 
+            HealthChecks healthChecks,
             IClock systemClock,
             Func<DateTime> timestampProvider)
         {
@@ -27,7 +27,7 @@ namespace App.Metrics.Core
             _metricsBuilder = metricsBuilder;
             DataProvider = new DefaultDataProvider(context, timestampProvider, _registry.DataProvider,
                 () => _childContexts.Values.Select(c => c.DataProvider));
-            HealthStatus = HealthChecks.GetStatus;
+            HealthStatus = healthChecks.GetStatusAsync;
             SystemClock = systemClock;
         }
 

@@ -8,11 +8,18 @@ namespace App.Metrics.Facts
 {
     public class TestContext : BaseMetricsContext
     {
-        public TestContext(string contextName, TestClock clock, TestScheduler scheduler)
-            : base(contextName, new DefaultMetricsRegistry(), new TestMetricsBuilder(clock, scheduler), clock, () => clock.UtcDateTime)
+        public TestContext(string contextName,
+            TestClock clock,
+            TestScheduler scheduler)
+            : base(contextName,
+                new DefaultMetricsRegistry(),
+                new TestMetricsBuilder(clock, scheduler),
+                new HealthChecks(),
+                clock,
+                () => clock.UtcDateTime)
         {
-            this.Clock = clock;
-            this.Scheduler = scheduler;
+            Clock = clock;
+            Scheduler = scheduler;
         }
 
         public TestContext()
@@ -25,18 +32,18 @@ namespace App.Metrics.Facts
         {
         }
 
-        public TestClock Clock { get; private set; }
+        public TestClock Clock { get; }
 
-        public TestScheduler Scheduler { get; private set; }
+        public TestScheduler Scheduler { get; }
 
         public CounterValue CounterValue(params string[] nameWithContext)
         {
-            return ValueFor<CounterValue>(GetDataFor(nameWithContext).Counters, nameWithContext);
+            return ValueFor(GetDataFor(nameWithContext).Counters, nameWithContext);
         }
 
         public double GaugeValue(params string[] nameWithContext)
         {
-            return ValueFor<double>(GetDataFor(nameWithContext).Gauges, nameWithContext);
+            return ValueFor(GetDataFor(nameWithContext).Gauges, nameWithContext);
         }
 
         public TestContext GetContextFor(params string[] nameWithContext)
@@ -46,7 +53,7 @@ namespace App.Metrics.Facts
                 return this;
             }
 
-            return (this.Context(nameWithContext.First()) as TestContext).GetContextFor(nameWithContext.Skip(1).ToArray());
+            return (Context(nameWithContext.First()) as TestContext).GetContextFor(nameWithContext.Skip(1).ToArray());
         }
 
         public MetricsData GetDataFor(params string[] nameWithContext)
@@ -56,17 +63,17 @@ namespace App.Metrics.Facts
 
         public HistogramValue HistogramValue(params string[] nameWithContext)
         {
-            return ValueFor<HistogramValue>(GetDataFor(nameWithContext).Histograms, nameWithContext);
+            return ValueFor(GetDataFor(nameWithContext).Histograms, nameWithContext);
         }
 
         public MeterValue MeterValue(params string[] nameWithContext)
         {
-            return ValueFor<MeterValue>(GetDataFor(nameWithContext).Meters, nameWithContext);
+            return ValueFor(GetDataFor(nameWithContext).Meters, nameWithContext);
         }
 
         public TimerValue TimerValue(params string[] nameWithContext)
         {
-            return ValueFor<TimerValue>(GetDataFor(nameWithContext).Timers, nameWithContext);
+            return ValueFor(GetDataFor(nameWithContext).Timers, nameWithContext);
         }
 
         protected override IMetricsContext CreateChildContextInstance(string contextName)

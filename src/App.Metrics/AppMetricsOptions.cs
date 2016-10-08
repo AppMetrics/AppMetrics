@@ -20,6 +20,7 @@ namespace App.Metrics
             DisableMetrics = false;
             DefaultSamplingType = SamplingType.ExponentiallyDecaying;
             Reporters = reports => { };
+            HealthChecks = checks => { };
         }
 
         public SamplingType DefaultSamplingType { get; set; }
@@ -35,6 +36,8 @@ namespace App.Metrics
         public IMetricsContext MetricsContext { get; set; } = new DefaultMetricsContext(DefaultGlobalContextName, Clock.Default);
 
         public Action<MetricsReports> Reporters { get; set; }
+
+        public Action<HealthChecks> HealthChecks { get; set; }
 
         public IClock SystemClock { get; set; } = Clock.Default;
 

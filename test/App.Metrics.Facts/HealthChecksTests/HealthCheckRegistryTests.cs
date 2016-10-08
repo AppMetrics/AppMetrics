@@ -9,24 +9,31 @@ namespace App.Metrics.Facts.HealthChecksTests
 {
     public class HealthCheckRegistryTests
     {
+        private HealthChecks _healthCheckRegistry;
+
+        public HealthCheckRegistryTests()
+        {
+            _healthCheckRegistry = new HealthChecks();    
+        }
+
         [Fact]
         public void HealthCheck_RegistryDoesNotThrowOnDuplicateRegistration()
         {
-            HealthChecks.UnregisterAllHealthChecks();
+            _healthCheckRegistry.UnregisterAllHealthChecks();
 
-            HealthChecks.RegisterHealthCheck(new HealthCheck("test", () => Task.FromResult(HealthCheckResult.Healthy())));
+            _healthCheckRegistry.RegisterHealthCheck(new HealthCheck("test", () => Task.FromResult(HealthCheckResult.Healthy())));
 
-            Action action = () => HealthChecks.RegisterHealthCheck(new HealthCheck("test", () => Task.FromResult(HealthCheckResult.Healthy())));
+            Action action = () => _healthCheckRegistry.RegisterHealthCheck(new HealthCheck("test", () => Task.FromResult(HealthCheckResult.Healthy())));
             action.ShouldNotThrow<InvalidOperationException>();
         }
 
         [Fact]
         public async Task HealthCheck_RegistryExecutesCheckOnEachGetStatus()
         {
-            HealthChecks.UnregisterAllHealthChecks();
+            _healthCheckRegistry.UnregisterAllHealthChecks();
             var count = 0;
 
-            HealthChecks.RegisterHealthCheck(new HealthCheck("test", () =>
+            _healthCheckRegistry.RegisterHealthCheck(new HealthCheck("test", () =>
             {
                 count++;
                 return Task.FromResult(HealthCheckResult.Healthy());
@@ -34,11 +41,11 @@ namespace App.Metrics.Facts.HealthChecksTests
 
             count.Should().Be(0);
 
-            await HealthChecks.GetStatus();
+            await _healthCheckRegistry.GetStatusAsync();
 
             count.Should().Be(1);
 
-            await HealthChecks.GetStatus();
+            await _healthCheckRegistry.GetStatusAsync();
 
             count.Should().Be(2);
         }
@@ -46,12 +53,12 @@ namespace App.Metrics.Facts.HealthChecksTests
         [Fact]
         public async Task HealthCheck_RegistryStatusIsFailedIfOneCheckFails()
         {
-            HealthChecks.UnregisterAllHealthChecks();
+            _healthCheckRegistry.UnregisterAllHealthChecks();
 
-            HealthChecks.RegisterHealthCheck(new HealthCheck("ok", () => Task.FromResult(HealthCheckResult.Healthy())));
-            HealthChecks.RegisterHealthCheck(new HealthCheck("bad", () => Task.FromResult(HealthCheckResult.Unhealthy())));
+            _healthCheckRegistry.RegisterHealthCheck(new HealthCheck("ok", () => Task.FromResult(HealthCheckResult.Healthy())));
+            _healthCheckRegistry.RegisterHealthCheck(new HealthCheck("bad", () => Task.FromResult(HealthCheckResult.Unhealthy())));
 
-            var status = await HealthChecks.GetStatus();
+            var status = await _healthCheckRegistry.GetStatusAsync();
 
             status.IsHealthy.Should().BeFalse();
             status.Results.Length.Should().Be(2);
@@ -60,12 +67,12 @@ namespace App.Metrics.Facts.HealthChecksTests
         [Fact]
         public async Task HealthCheck_RegistryStatusIsHealthyIfAllChecksAreHealthy()
         {
-            HealthChecks.UnregisterAllHealthChecks();
+            _healthCheckRegistry.UnregisterAllHealthChecks();
 
-            HealthChecks.RegisterHealthCheck(new HealthCheck("ok", () => Task.FromResult(HealthCheckResult.Healthy())));
-            HealthChecks.RegisterHealthCheck(new HealthCheck("another", () => Task.FromResult(HealthCheckResult.Healthy())));
+            _healthCheckRegistry.RegisterHealthCheck(new HealthCheck("ok", () => Task.FromResult(HealthCheckResult.Healthy())));
+            _healthCheckRegistry.RegisterHealthCheck(new HealthCheck("another", () => Task.FromResult(HealthCheckResult.Healthy())));
 
-            var status = await HealthChecks.GetStatus();
+            var status = await _healthCheckRegistry.GetStatusAsync();
 
             status.IsHealthy.Should().BeTrue();
             status.Results.Length.Should().Be(2);

@@ -10,7 +10,7 @@ namespace App.Metrics.Core
         }
 
         public DefaultMetricsContext(string context, IClock systemClock)
-            : base(context, new DefaultMetricsRegistry(), new DefaultMetricsBuilder(), systemClock, () => systemClock.UtcDateTime)
+            : base(context, new DefaultMetricsRegistry(), new DefaultMetricsBuilder(), new HealthChecks(), systemClock, () => systemClock.UtcDateTime)
         {
         }
 

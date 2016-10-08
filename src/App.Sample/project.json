@@ -16,7 +16,8 @@
       "version": "1.0.1"
     },
     "Microsoft.Extensions.Logging.Console": "1.0.0",
-    "Metrics.Samples": "1.0.0-*"
+    "Metrics.Samples": "1.0.0-*",
+    "HealthCheck.Samples": "1.0.0-*"
   },
 
   "frameworks": {

@@ -53,6 +53,7 @@ namespace Microsoft.AspNet.Builder
         private static void UseHealthChecks(IApplicationBuilder app)
         {
             var healthChecks = app.ApplicationServices.GetServices<HealthCheck>();
+            var healthCheckRegistry = app.ApplicationServices.GetRequiredService<HealthChecks>();
 
             if (healthChecks == null || !healthChecks.Any())
             {
@@ -61,7 +62,7 @@ namespace Microsoft.AspNet.Builder
 
             foreach (var check in healthChecks)
             {
-                HealthChecks.RegisterHealthCheck(check);
+                healthCheckRegistry.RegisterHealthCheck(check);
             }
         }
     }

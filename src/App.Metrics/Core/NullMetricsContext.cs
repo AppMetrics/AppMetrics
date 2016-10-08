@@ -8,7 +8,7 @@ namespace App.Metrics.Core
         //TODO: AH - default clock ok?
         //TODO: AH - null builder?
         public NullMetricsContext(string context) 
-            : base(context, new NullMetricsRegistry(), new DefaultMetricsBuilder(), Clock.Default, () => Clock.Default.UtcDateTime)
+            : base(context, new NullMetricsRegistry(), new DefaultMetricsBuilder(), new HealthChecks(), Clock.Default, () => Clock.Default.UtcDateTime)
         {
         }
 
