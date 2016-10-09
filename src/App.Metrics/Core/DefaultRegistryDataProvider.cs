@@ -26,29 +26,14 @@ namespace App.Metrics.Core
             _timers = timers;
         }
 
-        public IEnumerable<CounterValueSource> Counters
-        {
-            get { return _counters(); }
-        }
+        public IEnumerable<CounterValueSource> Counters => _counters();
 
-        public IEnumerable<GaugeValueSource> Gauges
-        {
-            get { return _gauges(); }
-        }
+        public IEnumerable<GaugeValueSource> Gauges => _gauges();
 
-        public IEnumerable<HistogramValueSource> Histograms
-        {
-            get { return _histograms(); }
-        }
+        public IEnumerable<HistogramValueSource> Histograms => _histograms();
 
-        public IEnumerable<MeterValueSource> Meters
-        {
-            get { return _meters(); }
-        }
+        public IEnumerable<MeterValueSource> Meters => _meters();
 
-        public IEnumerable<TimerValueSource> Timers
-        {
-            get { return _timers(); }
-        }
+        public IEnumerable<TimerValueSource> Timers => _timers();
     }
 }

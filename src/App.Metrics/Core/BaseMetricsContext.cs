@@ -108,7 +108,7 @@ namespace App.Metrics.Core
         }
 
         public ICounter Counter<T>(string name, Unit unit, Func<T> builder, MetricTags tags)
-            where T : CounterImplementation
+            where T : ICounterImplementation
         {
             return _registry.Counter(name, builder, unit, tags);
         }

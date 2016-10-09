@@ -50,10 +50,7 @@ namespace App.Metrics.Core
             _histogram = histogram;
         }
 
-        public TimerValue Value
-        {
-            get { return GetValue(); }
-        }
+        public TimerValue Value => GetValue();
 
         public long CurrentTime()
         {
@@ -91,12 +88,11 @@ namespace App.Metrics.Core
         public void Record(long duration, TimeUnit unit, string userValue = null)
         {
             var nanos = unit.ToNanoseconds(duration);
-            if (nanos >= 0)
-            {
-                _histogram.Update(nanos, userValue);
-                _meter.Mark(userValue);
-                _totalRecordedTime.Add(nanos);
-            }
+            if (nanos < 0) return;
+
+            _histogram.Update(nanos, userValue);
+            _meter.Mark(userValue);
+            _totalRecordedTime.Add(nanos);
         }
 
         public void Reset()

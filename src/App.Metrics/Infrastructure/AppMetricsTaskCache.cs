@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace App.Metrics.Internal
+namespace App.Metrics.Infrastructure
 {
     public static class AppMetricsTaskCache
     { 

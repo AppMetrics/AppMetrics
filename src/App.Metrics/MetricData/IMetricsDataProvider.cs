@@ -15,10 +15,10 @@ namespace App.Metrics.MetricData
 
     public sealed class FilteredMetrics : IMetricsDataProvider
     {
-        private readonly MetricsFilter _filter;
+        private readonly IMetricsFilter _filter;
         private readonly IMetricsDataProvider _provider;
 
-        public FilteredMetrics(IMetricsDataProvider provider, MetricsFilter filter)
+        public FilteredMetrics(IMetricsDataProvider provider, IMetricsFilter filter)
         {
             this._provider = provider;
             this._filter = filter;
@@ -32,7 +32,7 @@ namespace App.Metrics.MetricData
 
     public static class FilteredMetricsExtensions
     {
-        public static IMetricsDataProvider WithFilter(this IMetricsDataProvider provider, MetricsFilter filter)
+        public static IMetricsDataProvider WithFilter(this IMetricsDataProvider provider, IMetricsFilter filter)
         {
             if (filter == null)
             {

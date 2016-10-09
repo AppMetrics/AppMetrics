@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using App.Metrics;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Sample.Controllers
@@ -6,6 +8,20 @@ namespace Api.Sample.Controllers
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+        private readonly IMetricsContext _metricsContext;
+
+        public ValuesController(IMetricsContext metricsContext)
+        {
+            if (metricsContext == null)
+            {
+                throw new ArgumentNullException(nameof(metricsContext));
+            }
+
+            _metricsContext = metricsContext;
+        }
+
+        
+
         // DELETE api/values/5
         [HttpDelete("{id}")]
         public void Delete(int id)
@@ -16,6 +32,8 @@ namespace Api.Sample.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
+            _metricsContext.Counter("Test Counter in GET", Unit.Calls).Increment();
+
             return new string[] { "value1", "value2" };
         }
 

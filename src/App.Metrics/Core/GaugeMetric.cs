@@ -3,10 +3,6 @@ using App.Metrics.MetricData;
 
 namespace App.Metrics.Core
 {
-    public interface IGaugeImplementation : IMetricValueProvider<double>
-    {
-    }
-
     public class FunctionGauge : IGaugeImplementation
     {
         private readonly Func<double> _valueProvider;
@@ -24,7 +20,7 @@ namespace App.Metrics.Core
                 {
                     return _valueProvider();
                 }
-                catch (Exception x)
+                catch (Exception)
                 {
                     return double.NaN;
                 }
@@ -56,7 +52,7 @@ namespace App.Metrics.Core
                 {
                     return _transformation(_gauge.Value);
                 }
-                catch (Exception x)
+                catch (Exception)
                 {
                     return double.NaN;
                 }

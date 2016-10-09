@@ -2,7 +2,7 @@ using System;
 
 namespace App.Metrics.Internal
 {
-    public static class MetricsServicesHelper
+    internal static class MetricsServicesHelper
     {
         /// <summary>
         /// Throws InvalidOperationException when MetricsMarkerService is not present

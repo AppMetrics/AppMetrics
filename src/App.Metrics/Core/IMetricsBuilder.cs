@@ -6,7 +6,7 @@ namespace App.Metrics.Core
 {
     public interface IMetricsBuilder
     {
-        CounterImplementation BuildCounter(string name, Unit unit);
+        ICounterImplementation BuildCounter(string name, Unit unit);
 
         IMetricValueProvider<double> BuildGauge(string name, Unit unit, Func<double> valueProvider);
 

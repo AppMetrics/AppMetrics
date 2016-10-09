@@ -1,22 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using App.Metrics.MetricData;
 
 namespace App.Metrics.Core
 {
-    public interface IRegistryDataProvider
-    {
-        IEnumerable<CounterValueSource> Counters { get; }
-
-        IEnumerable<GaugeValueSource> Gauges { get; }
-
-        IEnumerable<HistogramValueSource> Histograms { get; }
-
-        IEnumerable<MeterValueSource> Meters { get; }
-
-        IEnumerable<TimerValueSource> Timers { get; }
-    }
-
     public interface IMetricsRegistry
     {
         IRegistryDataProvider DataProvider { get; }
@@ -24,7 +10,7 @@ namespace App.Metrics.Core
         void ClearAllMetrics();
 
         ICounter Counter<T>(string name, Func<T> builder, Unit unit, MetricTags tags)
-            where T : CounterImplementation;
+            where T : ICounterImplementation;
 
         void Gauge(string name, Func<IMetricValueProvider<double>> valueProvider, Unit unit, MetricTags tags);
 

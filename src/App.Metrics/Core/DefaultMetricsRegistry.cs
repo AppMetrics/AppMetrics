@@ -17,8 +17,11 @@ namespace App.Metrics.Core
         private readonly MetricMetaCatalog<IHistogram, HistogramValueSource, HistogramValue> _histograms =
             new MetricMetaCatalog<IHistogram, HistogramValueSource, HistogramValue>();
 
-        private readonly MetricMetaCatalog<IMeter, MeterValueSource, MeterValue> _meters = new MetricMetaCatalog<IMeter, MeterValueSource, MeterValue>();
-        private readonly MetricMetaCatalog<ITimer, TimerValueSource, TimerValue> _timers = new MetricMetaCatalog<ITimer, TimerValueSource, TimerValue>();
+        private readonly MetricMetaCatalog<IMeter, MeterValueSource, MeterValue> _meters =
+            new MetricMetaCatalog<IMeter, MeterValueSource, MeterValue>();
+
+        private readonly MetricMetaCatalog<ITimer, TimerValueSource, TimerValue> _timers =
+            new MetricMetaCatalog<ITimer, TimerValueSource, TimerValue>();
 
         public DefaultMetricsRegistry()
         {
@@ -38,7 +41,7 @@ namespace App.Metrics.Core
         }
 
         public ICounter Counter<T>(string name, Func<T> builder, Unit unit, MetricTags tags)
-            where T : CounterImplementation
+            where T : ICounterImplementation
         {
             return _counters.GetOrAdd(name, () =>
             {
@@ -136,7 +139,7 @@ namespace App.Metrics.Core
                 }
             }
 
-            public class MetricMeta
+            private class MetricMeta
             {
                 public MetricMeta(TMetric metric, TValue valueUnit)
                 {

@@ -6,7 +6,7 @@ namespace App.Metrics.Core
 {
     public sealed class DefaultMetricsBuilder : IMetricsBuilder
     {
-        public CounterImplementation BuildCounter(string name, Unit unit)
+        public ICounterImplementation BuildCounter(string name, Unit unit)
         {
             return new CounterMetric();
         }

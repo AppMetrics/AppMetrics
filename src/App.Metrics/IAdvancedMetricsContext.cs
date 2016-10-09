@@ -42,7 +42,7 @@ namespace App.Metrics
         /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
         /// <returns>Reference to the metric</returns>
         ICounter Counter<T>(string name, Unit unit, Func<T> builder, MetricTags tags = default(MetricTags))
-            where T : CounterImplementation;
+            where T : ICounterImplementation;
 
         /// <summary>
         ///     Register a custom Gauge instance.

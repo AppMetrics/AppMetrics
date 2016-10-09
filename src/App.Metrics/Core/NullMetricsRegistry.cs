@@ -12,7 +12,7 @@ namespace App.Metrics.Core
         {
         }
 
-        public ICounter Counter<T>(string name, Func<T> builder, Unit unit, MetricTags tags) where T : CounterImplementation
+        public ICounter Counter<T>(string name, Func<T> builder, Unit unit, MetricTags tags) where T : ICounterImplementation
         {
             return NullMetric.Instance;
         }

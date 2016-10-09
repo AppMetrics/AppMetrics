@@ -55,7 +55,7 @@ namespace App.Metrics.Reporters
         /// </summary>
         /// <param name="interval">Interval at which to display the report on the Console.</param>
         /// <param name="filter">Only report metrics that match the filter.</param>
-        public MetricsReports WithConsoleReport(TimeSpan interval, MetricsFilter filter = null)
+        public MetricsReports WithConsoleReport(TimeSpan interval, IMetricsFilter filter = null)
         {
             return WithReport(new ConsoleReport(_loggerFactory), interval, filter);
         }
@@ -66,7 +66,7 @@ namespace App.Metrics.Reporters
         /// <param name="report">Function that returns an instance of a reporter</param>
         /// <param name="interval">Interval at which to run the report.</param>
         /// <param name="filter">Only report metrics that match the filter.</param>
-        public MetricsReports WithReport(IMetricsReport report, TimeSpan interval, MetricsFilter filter = null)
+        public MetricsReports WithReport(IMetricsReport report, TimeSpan interval, IMetricsFilter filter = null)
         {
             var newReport = new ScheduledReporter(report, _metricsDataProvider.WithFilter(filter), _healthStatus, interval);
             _reports.Add(newReport);
@@ -79,7 +79,7 @@ namespace App.Metrics.Reporters
         /// <param name="filePath">File where to append the report.</param>
         /// <param name="interval">Interval at which to run the report.</param>
         /// <param name="filter">Only report metrics that match the filter.</param>
-        public MetricsReports WithTextFileReport(string filePath, TimeSpan interval, MetricsFilter filter = null)
+        public MetricsReports WithTextFileReport(string filePath, TimeSpan interval, IMetricsFilter filter = null)
         {
             return WithReport(new TextFileReport(filePath, _loggerFactory), interval, filter);
         }

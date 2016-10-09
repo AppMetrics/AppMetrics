@@ -48,7 +48,7 @@ namespace App.Metrics.MetricData
             ChildMetrics = childMetrics;
         }
 
-        public MetricsData Filter(MetricsFilter filter)
+        public MetricsData Filter(IMetricsFilter filter)
         {
             if (!filter.IsMatch(Context))
             {

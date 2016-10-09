@@ -26,20 +26,11 @@ namespace App.Metrics.Core
 
         private AtomicLong _total = new AtomicLong(0L);
 
-        private double FifteenMinuteRate
-        {
-            get { return _m15Rate.GetValue() * NanosInSecond; }
-        }
+        private double FifteenMinuteRate => _m15Rate.GetValue() * NanosInSecond;
 
-        private double FiveMinuteRate
-        {
-            get { return _m5Rate.GetValue() * NanosInSecond; }
-        }
+        private double FiveMinuteRate => _m5Rate.GetValue() * NanosInSecond;
 
-        private double OneMinuteRate
-        {
-            get { return _m1Rate.GetValue() * NanosInSecond; }
-        }
+        private double OneMinuteRate => _m1Rate.GetValue() * NanosInSecond;
 
         public MeterValue GetValue(double elapsed)
         {

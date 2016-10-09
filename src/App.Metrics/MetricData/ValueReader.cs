@@ -14,7 +14,7 @@ namespace App.Metrics.MetricData
 
         public static CounterValue GetCurrentValue(ICounter metric)
         {
-            var implementation = metric as CounterImplementation;
+            var implementation = metric as ICounterImplementation;
             if (implementation != null)
             {
                 return implementation.Value;

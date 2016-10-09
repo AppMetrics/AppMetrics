@@ -4,10 +4,6 @@ using App.Metrics.Sampling;
 
 namespace App.Metrics.Core
 {
-    public interface IHistogramImplementation : IHistogram, IMetricValueProvider<HistogramValue>
-    {
-    }
-
     public sealed class HistogramMetric : IHistogramImplementation
     {
         private readonly IReservoir _reservoir;
@@ -28,10 +24,7 @@ namespace App.Metrics.Core
             _reservoir = reservoir;
         }
 
-        public HistogramValue Value
-        {
-            get { return GetValue(); }
-        }
+        public HistogramValue Value => GetValue();
 
         public HistogramValue GetValue(bool resetMetric = false)
         {

@@ -47,7 +47,7 @@ namespace App.Metrics.Facts.Core
             reservoir.Values.Single().Should().Be(10L);
         }
 
-        public class CustomCounter : CounterImplementation
+        public class CustomCounter : ICounterImplementation
         {
             public CounterValue Value
             {

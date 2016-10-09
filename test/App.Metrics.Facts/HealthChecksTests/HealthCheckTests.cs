@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using App.Metrics.Core;
+using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Internal;

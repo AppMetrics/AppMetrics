@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using App.Metrics;
+using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 
 namespace HealthCheck.Samples

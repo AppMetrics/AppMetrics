@@ -17,7 +17,7 @@ namespace App.Metrics.Facts
             this.scheduler = scheduler;
         }
 
-        public CounterImplementation BuildCounter(string name, Unit unit)
+        public ICounterImplementation BuildCounter(string name, Unit unit)
         {
             return new CounterMetric();
         }

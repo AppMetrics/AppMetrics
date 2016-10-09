@@ -5,7 +5,7 @@ using App.Metrics;
 namespace Microsoft.Extensions.DependencyInjection
 // ReSharper restore CheckNamespace
 {
-    public class MetricsBuilder : IMetricsBuilder
+    internal class MetricsBuilder : IMetricsBuilder
     {
         public MetricsBuilder(IServiceCollection services, IMetricsEnvironment environment)
         {

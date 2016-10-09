@@ -144,9 +144,9 @@ namespace App.Metrics.Facts.Core
         {
             //TODO: AH - FluentAssertions no longer has MonitorEvents
 
-            //context.MonitorEvents();
-            //context.Dispose();
-            //context.ShouldRaise("ContextShuttingDown");
+            //_context.MonitorEvents();
+            //_context.Dispose();
+            //_context.ShouldRaise("ContextShuttingDown");
         }
 
         [Fact]

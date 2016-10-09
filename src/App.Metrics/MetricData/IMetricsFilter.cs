@@ -4,16 +4,7 @@ using App.Metrics.Utils;
 
 namespace App.Metrics.MetricData
 {
-    public enum MetricType
-    {
-        Gauge,
-        Counter,
-        Meter,
-        Histogram,
-        Timer
-    }
-
-    public interface MetricsFilter : IHideObjectMembers
+    public interface IMetricsFilter : IHideObjectMembers
     {
         bool IsMatch(string context);
 
@@ -28,9 +19,9 @@ namespace App.Metrics.MetricData
         bool IsMatch(TimerValueSource timer);
     }
 
-    public class Filter : MetricsFilter
+    public class Filter : IMetricsFilter
     {
-        public static MetricsFilter All = new NoOpFilter();
+        public static IMetricsFilter All = new NoOpFilter();
         private Predicate<string> _context;
         private Predicate<string> _name;
         private HashSet<MetricType> _types;
@@ -137,7 +128,7 @@ namespace App.Metrics.MetricData
             return true;
         }
 
-        private class NoOpFilter : MetricsFilter
+        private class NoOpFilter : IMetricsFilter
         {
             public bool IsMatch(string context)
             {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using App.Metrics.Internal;
+using App.Metrics.Infrastructure;
 
 namespace App.Metrics.Core
 {
@@ -33,9 +33,9 @@ namespace App.Metrics.Core
             {
                 return new Result(Name, await CheckAsync());
             }
-            catch (Exception x)
+            catch (Exception ex)
             {
-                return new Result(Name, HealthCheckResult.Unhealthy(x));
+                return new Result(Name, HealthCheckResult.Unhealthy(ex));
             }
         }
 

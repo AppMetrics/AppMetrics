@@ -7,11 +7,7 @@ using App.Metrics.MetricData;
 
 namespace App.Metrics.Core
 {
-    public interface CounterImplementation : ICounter, IMetricValueProvider<CounterValue>
-    {
-    }
-
-    public sealed class CounterMetric : CounterImplementation
+    public sealed class CounterMetric : ICounterImplementation
     {
         private readonly StripedLongAdder _counter = new StripedLongAdder();
         private ConcurrentDictionary<string, StripedLongAdder> _setCounters;
