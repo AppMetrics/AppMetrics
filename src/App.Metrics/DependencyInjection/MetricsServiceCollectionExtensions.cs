@@ -3,6 +3,7 @@ using App.Metrics;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 // ReSharper disable CheckNamespace
+
 namespace Microsoft.Extensions.DependencyInjection
 // ReSharper restore CheckNamespace
 {
@@ -15,18 +16,18 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(services));
             }
 
-            return services.AddMetricsCore(null);
+            return services.AddMetrics(null, default(IMetricsContext));
         }
 
         public static IMetricsBuilder AddMetrics(this IServiceCollection services,
-            Action<AppMetricsOptions> setupAction)
+            Action<AppMetricsOptions> setupAction, IMetricsContext metricsContext)
         {
             if (services == null)
             {
                 throw new ArgumentNullException(nameof(services));
             }
 
-            var builder = services.AddMetricsCore(setupAction);
+            var builder = services.AddMetricsCore(setupAction, metricsContext);
 
             if (setupAction != null)
             {
@@ -34,6 +35,12 @@ namespace Microsoft.Extensions.DependencyInjection
             }
 
             return builder;
+        }
+
+        public static IMetricsBuilder AddMetrics(this IServiceCollection services,
+            Action<AppMetricsOptions> setupAction)
+        {
+            return services.AddMetrics(setupAction, default(IMetricsContext));
         }
     }
 }

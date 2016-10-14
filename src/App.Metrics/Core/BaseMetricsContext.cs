@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Metrics.DataProviders;
 using App.Metrics.MetricData;
 using App.Metrics.Sampling;
 using App.Metrics.Utils;
@@ -19,7 +20,7 @@ namespace App.Metrics.Core
         protected BaseMetricsContext(string context, 
             IMetricsRegistry registry,
             IMetricsBuilder metricsBuilder, 
-            HealthChecks healthChecks,
+            IHealthCheckDataProvider healthCheckDataProvider,
             IClock systemClock,
             Func<DateTime> timestampProvider)
         {
@@ -27,7 +28,7 @@ namespace App.Metrics.Core
             _metricsBuilder = metricsBuilder;
             DataProvider = new DefaultDataProvider(context, timestampProvider, _registry.DataProvider,
                 () => _childContexts.Values.Select(c => c.DataProvider));
-            HealthStatus = healthChecks.GetStatusAsync;
+            HealthStatus = healthCheckDataProvider.GetStatusAsync;
             SystemClock = systemClock;
         }
 

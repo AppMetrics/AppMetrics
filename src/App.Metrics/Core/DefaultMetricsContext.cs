@@ -1,27 +1,32 @@
-﻿using App.Metrics.Utils;
+﻿using App.Metrics.DataProviders;
+using App.Metrics.Utils;
 
 namespace App.Metrics.Core
 {
     public sealed class DefaultMetricsContext : BaseMetricsContext
     {
+        private readonly IHealthCheckDataProvider _healthCheckDataProvider;
         private readonly IClock _systemClock;
 
-        public DefaultMetricsContext(IClock systemClock)
-            : this(string.Empty, systemClock)
+        public DefaultMetricsContext(IClock systemClock, IHealthCheckDataProvider healthCheckDataProvider)
+            : this(string.Empty, systemClock, healthCheckDataProvider)
         {
         }
 
-        public DefaultMetricsContext(string context, IClock systemClock)
-            : base(context, new DefaultMetricsRegistry(), new DefaultMetricsBuilder(), new HealthChecks(), systemClock, () => systemClock.UtcDateTime)
+        public DefaultMetricsContext(string context, IClock systemClock, IHealthCheckDataProvider healthCheckDataProvider)
+            : base(
+                context, new DefaultMetricsRegistry(), new DefaultMetricsBuilder(), healthCheckDataProvider, systemClock,
+                () => systemClock.UtcDateTime)
         {
             _systemClock = systemClock;
-        }
-
-        protected override IMetricsContext CreateChildContextInstance(string contextName)
-        {
-            return new DefaultMetricsContext(contextName, SystemClock);
+            _healthCheckDataProvider = healthCheckDataProvider;
         }
 
         internal IMetricsContext Internal => new NullMetricsContext(InternalMetricsContextName, _systemClock);
+
+        protected override IMetricsContext CreateChildContextInstance(string contextName)
+        {
+            return new DefaultMetricsContext(contextName, SystemClock, _healthCheckDataProvider);
+        }
     }
 }

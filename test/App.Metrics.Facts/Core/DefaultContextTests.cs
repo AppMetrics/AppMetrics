@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Linq;
 using App.Metrics.Core;
+using App.Metrics.DataProviders;
 using App.Metrics.MetricData;
+using App.Metrics.Registries;
 using App.Metrics.Utils;
 using FluentAssertions;
+using Microsoft.Extensions.Options;
 using Xunit;
 
 namespace App.Metrics.Facts.Core
 {
     public class DefaultContextTests
     {
-        private readonly IMetricsContext _context = new DefaultMetricsContext(Clock.Default);
+        private readonly IMetricsContext _context = new DefaultMetricsContext(Clock.Default,
+              new HealthCheckDataProvider(new HealthCheckRegistry(Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))));
 
         public MetricsData CurrentData => _context.DataProvider.CurrentMetricsData;
 

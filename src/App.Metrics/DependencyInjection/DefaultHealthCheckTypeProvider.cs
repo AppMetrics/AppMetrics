@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using App.Metrics.Health;
 using App.Metrics.Infrastructure;
 
-namespace App.Metrics.Health
+namespace App.Metrics.DependencyInjection
 {
     public class DefaultHealthCheckTypeProvider : IHealthCheckTypeProvider
     {

@@ -2,8 +2,11 @@
 using System.Linq;
 using App.Metrics;
 using App.Metrics.Core;
+using App.Metrics.DataProviders;
 using App.Metrics.MetricData;
+using App.Metrics.Registries;
 using FluentAssertions;
+using Microsoft.Extensions.Options;
 
 namespace AspNet.Metrics.Facts
 {
@@ -15,7 +18,7 @@ namespace AspNet.Metrics.Facts
             : base(contextName,
                 new DefaultMetricsRegistry(),
                 new TestMetricsBuilder(clock, scheduler),
-                new HealthChecks(),
+                new HealthCheckDataProvider(new HealthCheckRegistry(Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))), 
                 clock,
                 () => clock.UtcDateTime)
         {

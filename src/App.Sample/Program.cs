@@ -88,10 +88,10 @@ namespace App.Sample
             services.AddMetrics(options =>
             {
                 options.Reporters = reports => { reports.WithConsoleReport(TimeSpan.FromSeconds(3)); };
-                options.HealthChecks = checks =>
+                options.HealthCheckRegistry = checks =>
                 {
-                    checks.RegisterHealthCheck("DatabaseConnected", () => Task.FromResult("Database Connection OK"));
-                    checks.RegisterHealthCheck("DiskSpace", () =>
+                    checks.Register("DatabaseConnected", () => Task.FromResult("Database Connection OK"));
+                    checks.Register("DiskSpace", () =>
                     {
                         var freeDiskSpace = GetFreeDiskSpace();
 

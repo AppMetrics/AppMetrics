@@ -1,6 +1,6 @@
 using System;
 using App.Metrics;
-using App.Metrics.Health;
+using App.Metrics.DependencyInjection;
 using App.Metrics.Infrastructure;
 
 // ReSharper disable CheckNamespace

@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using App.Metrics;
 using App.Metrics.Core;
+using App.Metrics.DataProviders;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.Json;
+using App.Metrics.Registries;
 using App.Metrics.Reporters;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
@@ -34,12 +35,13 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                 throw new ArgumentNullException(nameof(services));
             }
 
-            return AddMetricsCore(services, setupAction: null);
+            return AddMetricsCore(services, setupAction: null, metricsContext: default(IMetricsContext));
         }
 
         public static IMetricsBuilder AddMetricsCore(
             this IServiceCollection services,
-            Action<AppMetricsOptions> setupAction)
+            Action<AppMetricsOptions> setupAction,
+            IMetricsContext metricsContext)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
@@ -47,7 +49,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
 
             ConfigureDefaultServices(services);
 
-            AddMetricsCoreServices(services, metricsEnvironment);
+            AddMetricsCoreServices(services, metricsEnvironment, metricsContext);
 
             if (setupAction != null)
             {
@@ -57,14 +59,16 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             return new MetricsBuilder(services, metricsEnvironment);
         }
 
-        internal static void AddMetricsCoreServices(IServiceCollection services, IMetricsEnvironment environment)
+        internal static void AddMetricsCoreServices(IServiceCollection services,
+            IMetricsEnvironment environment, IMetricsContext metricsContext)
         {
             services.TryAddSingleton<MetricsMarkerService, MetricsMarkerService>();
             services.TryAddSingleton(typeof(IClock), provider => Clock.Default);
             services.TryAddSingleton<EnvironmentInfoBuilder, EnvironmentInfoBuilder>();
             services.TryAddSingleton<MetricsJsonBuilderV1, MetricsJsonBuilderV1>();
+            services.TryAddSingleton<IHealthCheckRegistry, HealthCheckRegistry>();
+            services.TryAddSingleton<IHealthCheckDataProvider, HealthCheckDataProvider>();
             services.AddHealthChecks(environment);
-            services.TryAddSingleton<HealthChecks, HealthChecks>();
             services.TryAddSingleton<StringReport, StringReport>();
 
             services.TryAddSingleton(typeof(IMetricsJsonBuilder), provider =>
@@ -78,43 +82,51 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             {
                 var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
                 var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
-                var healthChecks = provider.GetServices<HealthCheck>();
-                var healthCheckRegistry = provider.GetRequiredService<HealthChecks>();
+                var healthCheckRegistry = provider.GetRequiredService<IHealthCheckRegistry>();
+                var healthCheckDataProvider = provider.GetRequiredService<IHealthCheckDataProvider>();
 
-                var reporters = new MetricsReports(
-                    loggerFactory,
-                    options.Value.MetricsContext.DataProvider,
-                    options.Value.MetricsContext.HealthStatus);
-
-                options.Value.Reporters(reporters);
 
                 if (!options.Value.DisableHealthChecks)
                 {
-                    options.Value.HealthChecks(healthCheckRegistry);
+                    options.Value.HealthCheckRegistry(healthCheckRegistry);
 
-                    if (healthChecks != null && healthChecks.Any())
-                    {
-                        foreach (var check in healthChecks)
-                        {
-                            healthCheckRegistry.RegisterHealthCheck(check);
-                        }
-                    }
+                    //if (healthChecks != null && healthChecks.Any())
+                    //{
+                    //    foreach (var check in healthChecks)
+                    //    {
+                    //        healthCheckRegistry.Register(check);
+                    //    }
+                    //}
                 }
 
                 if (options.Value.EnableInternalMetrics)
                 {
                     //TODO: Review enableing internal metrics
-                    var internalMetricsContexxt = new DefaultMetricsContext(BaseMetricsContext.InternalMetricsContextName, options.Value.SystemClock);
-                    options.Value.MetricsContext.Advanced.AttachContext(BaseMetricsContext.InternalMetricsContextName,
-                        internalMetricsContexxt);
+                    //var internalMetricsContexxt = new DefaultMetricsContext(BaseMetricsContext.InternalMetricsContextName, options.Value.SystemClock);
+                    //options.Value.MetricsContext.Advanced.AttachContext(BaseMetricsContext.InternalMetricsContextName,
+                    //    internalMetricsContexxt);
                 }
+
+                if (metricsContext == default(IMetricsContext))
+                {
+                    metricsContext = new DefaultMetricsContext(options.Value.GlobalContextName,
+                        options.Value.SystemClock, healthCheckDataProvider);
+                }
+
 
                 if (options.Value.DisableMetrics)
                 {
-                    options.Value.MetricsContext.Advanced.CompletelyDisableMetrics();
+                    metricsContext.Advanced.CompletelyDisableMetrics();
                 }
 
-                return options.Value.MetricsContext;
+                var reporters = new MetricsReports(
+                    loggerFactory,
+                    metricsContext.DataProvider,
+                    metricsContext.HealthStatus);
+
+                options.Value.Reporters(reporters);
+
+                return metricsContext;
             });
 
             services.TryAddSingleton(provider => environment);

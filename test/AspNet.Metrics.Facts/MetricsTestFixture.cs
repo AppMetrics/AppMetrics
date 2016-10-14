@@ -39,14 +39,13 @@ namespace AspNet.Metrics.Facts
                     //TODO: AH set this to the default filter?
                     services.AddMvc(options => { options.Filters.Add(new MetricsResourceFilter(new DefaultRouteTemplateResolver())); });
                     services.AddMetrics(options =>
-                    {                        
+                    {
                         options.DefaultSamplingType = testOptions.DefaultSamplingType;
                         options.GlobalContextName = testOptions.GlobalContextName;
                         options.DisableMetrics = testOptions.DisableMetrics;
                         options.DisableHealthChecks = testOptions.DisableHealthChecks;
-                        options.MetricsContext = TestContext;
                         options.JsonSchemeVersion = testOptions.JsonSchemeVersion;
-                    });
+                    }, TestContext);
                 })
                 .Configure(app =>
                 {
@@ -56,7 +55,7 @@ namespace AspNet.Metrics.Facts
                 }));
 
             Client = Server.CreateClient();
-        }    
+        }
 
         public HttpClient Client { get; set; }
 

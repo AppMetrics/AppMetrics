@@ -1,25 +1,29 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Core;
+using App.Metrics.DataProviders;
 using App.Metrics.MetricData;
+using App.Metrics.Registries;
 using App.Metrics.Sampling;
 using App.Metrics.Utils;
 using FluentAssertions;
+using Microsoft.Extensions.Options;
 using Xunit;
 
 namespace App.Metrics.Facts.Core
 {
     public class DefaultContextCustomMetricsTests
     {
-        private readonly IMetricsContext context = new DefaultMetricsContext(Clock.Default);
+        private readonly IMetricsContext _context = new DefaultMetricsContext(Clock.Default,
+              new HealthCheckDataProvider(new HealthCheckRegistry(Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))));
 
         [Fact]
         public void MetricsContext_CanRegisterCustomCounter()
         {
-            var counter = context.Advanced.Counter("custom", Unit.Calls, () => new CustomCounter());
+            var counter = _context.Advanced.Counter("custom", Unit.Calls, () => new CustomCounter());
             counter.Should().BeOfType<CustomCounter>();
             counter.Increment();
-            context.DataProvider.CurrentMetricsData.Counters.Single().Value.Count.Should().Be(10L);
+            _context.DataProvider.CurrentMetricsData.Counters.Single().Value.Count.Should().Be(10L);
         }
 
         [Fact]
@@ -27,7 +31,7 @@ namespace App.Metrics.Facts.Core
         {
             var histogram = new CustomHistogram();
 
-            var timer = context.Advanced.Timer("custom", Unit.Calls, () => (IHistogramImplementation)histogram);
+            var timer = _context.Advanced.Timer("custom", Unit.Calls, () => (IHistogramImplementation)histogram);
 
             timer.Record(10L, TimeUnit.Nanoseconds);
 
@@ -39,7 +43,7 @@ namespace App.Metrics.Facts.Core
         public void MetricsContext_CanRegisterTimerWithCustomReservoir()
         {
             var reservoir = new CustomReservoir();
-            var timer = context.Advanced.Timer("custom", Unit.Calls, () => (IReservoir)reservoir);
+            var timer = _context.Advanced.Timer("custom", Unit.Calls, () => (IReservoir)reservoir);
 
             timer.Record(10L, TimeUnit.Nanoseconds);
 

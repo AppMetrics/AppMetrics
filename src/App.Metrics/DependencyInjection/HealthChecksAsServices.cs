@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using App.Metrics.Core;
+using App.Metrics.Health;
 using App.Metrics.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace App.Metrics.Health
+namespace App.Metrics.DependencyInjection
 {
     public static class HealthChecksAsServices
     {
