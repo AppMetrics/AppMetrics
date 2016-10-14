@@ -8,7 +8,7 @@ using FluentAssertions;
 using Microsoft.Extensions.Options;
 using Xunit;
 
-namespace App.Metrics.Facts.HealthChecksTests
+namespace App.Metrics.Facts.Health
 {
     public class HealthCheckRegistryTests
     {

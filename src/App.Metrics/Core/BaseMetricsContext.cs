@@ -28,7 +28,7 @@ namespace App.Metrics.Core
             _metricsBuilder = metricsBuilder;
             DataProvider = new DefaultDataProvider(context, timestampProvider, _registry.DataProvider,
                 () => _childContexts.Values.Select(c => c.DataProvider));
-            HealthStatus = healthCheckDataProvider.GetStatusAsync;
+            GetHealthStatusAsync = healthCheckDataProvider.GetStatusAsync;
             SystemClock = systemClock;
         }
 
@@ -42,7 +42,7 @@ namespace App.Metrics.Core
 
         public IClock SystemClock { get; }
 
-        public Func<Task<HealthStatus>> HealthStatus { get; }
+        public Func<Task<HealthStatus>> GetHealthStatusAsync { get; }
 
         public IMetricsDataProvider DataProvider { get; }
 

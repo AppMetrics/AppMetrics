@@ -19,7 +19,7 @@ namespace App.Metrics
 
         IClock SystemClock { get; }
 
-        Func<Task<HealthStatus>> HealthStatus { get; }
+        Func<Task<HealthStatus>> GetHealthStatusAsync { get; }
 
         /// <summary>
         ///     Returns a metrics data provider capable of returning the metrics in this context and any existing child contexts.

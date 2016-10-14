@@ -68,6 +68,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             services.TryAddSingleton<MetricsJsonBuilderV1, MetricsJsonBuilderV1>();
             services.TryAddSingleton<IHealthCheckRegistry, HealthCheckRegistry>();
             services.TryAddSingleton<IHealthCheckDataProvider, HealthCheckDataProvider>();
+            services.TryAddSingleton<ILoggerFactory, LoggerFactory>(); //TODO: AH - don't register here
             services.AddHealthChecks(environment);
             services.TryAddSingleton<StringReport, StringReport>();
 
@@ -84,7 +85,6 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                 var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
                 var healthCheckRegistry = provider.GetRequiredService<IHealthCheckRegistry>();
                 var healthCheckDataProvider = provider.GetRequiredService<IHealthCheckDataProvider>();
-
 
                 if (!options.Value.DisableHealthChecks)
                 {
@@ -122,7 +122,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                 var reporters = new MetricsReports(
                     loggerFactory,
                     metricsContext.DataProvider,
-                    metricsContext.HealthStatus);
+                    metricsContext.GetHealthStatusAsync);
 
                 options.Value.Reporters(reporters);
 

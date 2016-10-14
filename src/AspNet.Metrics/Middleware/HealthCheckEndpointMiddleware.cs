@@ -22,7 +22,7 @@ namespace AspNet.Metrics.Middleware
         {
             if (Options.HealthEnabled && Options.HealthEndpoint.HasValue && Options.HealthEndpoint == context.Request.Path)
             {
-                var healthStatus = await MetricsContext.HealthStatus();
+                var healthStatus = await MetricsContext.GetHealthStatusAsync();
                 var responseStatusCode = healthStatus.IsHealthy ? HttpStatusCode.OK : HttpStatusCode.InternalServerError;
                 await Task.FromResult(WriteResponseAsync(context, JsonHealthChecks.BuildJson(healthStatus), "application/json", responseStatusCode));
                 return;
