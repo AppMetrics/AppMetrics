@@ -1,29 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using App.Metrics.DataProviders;
 using App.Metrics.MetricData;
+using App.Metrics.Reporters;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 
-namespace App.Metrics.Reporters
+namespace App.Metrics.Registries
 {
-    public sealed class MetricsReports : IHideObjectMembers, IDisposable
+    public class MetricReporterRegistry : IMetricReporterRegistry, IHideObjectMembers, IDisposable
     {
-        private readonly Func<Task<HealthStatus>> _healthStatus;
+        private readonly IHealthCheckDataProvider _healthCheckDataProvider;
         private readonly ILoggerFactory _loggerFactory;
         private readonly IMetricsDataProvider _metricsDataProvider;
 
-        private readonly List<ScheduledReporter> _reports = new List<ScheduledReporter>();
+        private bool _disposed = false;
 
-        public MetricsReports(
+        public MetricReporterRegistry(
             ILoggerFactory loggerFactory,
-            IMetricsDataProvider metricsDataProvider, 
+            IMetricsDataProvider metricsDataProvider,
             //MetricsErrorHandler errorHandler,
-            Func<Task<HealthStatus>> healthStatus)
+            IHealthCheckDataProvider healthCheckDataProvider)
         {
             if (loggerFactory == null)
             {
-
                 throw new ArgumentNullException(nameof(loggerFactory));
             }
             if (metricsDataProvider == null)
@@ -33,12 +33,15 @@ namespace App.Metrics.Reporters
 
             _loggerFactory = loggerFactory;
             _metricsDataProvider = metricsDataProvider;
-            _healthStatus = healthStatus;
+            _healthCheckDataProvider = healthCheckDataProvider;
         }
+
+        public List<ScheduledReporter> Reports { get; } = new List<ScheduledReporter>();
 
         public void Dispose()
         {
-            StopAndClearAllReports();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -46,8 +49,17 @@ namespace App.Metrics.Reporters
         /// </summary>
         public void StopAndClearAllReports()
         {
-            _reports.ForEach(r => r.Dispose());
-            _reports.Clear();
+            if (Reports == null) return;
+
+            Reports.ForEach(r =>
+            {
+                if (r != default(ScheduledReporter))
+                {
+                    r.Dispose();
+                }
+            });
+
+            Reports.Clear();
         }
 
         /// <summary>
@@ -55,7 +67,7 @@ namespace App.Metrics.Reporters
         /// </summary>
         /// <param name="interval">Interval at which to display the report on the Console.</param>
         /// <param name="filter">Only report metrics that match the filter.</param>
-        public MetricsReports WithConsoleReport(TimeSpan interval, IMetricsFilter filter = null)
+        public IMetricReporterRegistry WithConsoleReport(TimeSpan interval, IMetricsFilter filter = null)
         {
             return WithReport(new ConsoleReport(_loggerFactory), interval, filter);
         }
@@ -66,10 +78,10 @@ namespace App.Metrics.Reporters
         /// <param name="report">Function that returns an instance of a reporter</param>
         /// <param name="interval">Interval at which to run the report.</param>
         /// <param name="filter">Only report metrics that match the filter.</param>
-        public MetricsReports WithReport(IMetricsReport report, TimeSpan interval, IMetricsFilter filter = null)
+        public IMetricReporterRegistry WithReport(IMetricsReport report, TimeSpan interval, IMetricsFilter filter = null)
         {
-            var newReport = new ScheduledReporter(report, _metricsDataProvider.WithFilter(filter), _healthStatus, interval);
-            _reports.Add(newReport);
+            var newReport = new ScheduledReporter(report, _metricsDataProvider.WithFilter(filter), _healthCheckDataProvider, interval);
+            Reports.Add(newReport);
             return this;
         }
 
@@ -79,9 +91,24 @@ namespace App.Metrics.Reporters
         /// <param name="filePath">File where to append the report.</param>
         /// <param name="interval">Interval at which to run the report.</param>
         /// <param name="filter">Only report metrics that match the filter.</param>
-        public MetricsReports WithTextFileReport(string filePath, TimeSpan interval, IMetricsFilter filter = null)
+        public IMetricReporterRegistry WithTextFileReport(string filePath, TimeSpan interval, IMetricsFilter filter = null)
         {
             return WithReport(new TextFileReport(filePath, _loggerFactory), interval, filter);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // Free any other managed objects here.
+                }
+
+                StopAndClearAllReports();
+            }
+
+            _disposed = true;
         }
     }
 }

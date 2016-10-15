@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Utils;
@@ -70,6 +71,7 @@ namespace App.Sample
             Logger = Services.GetRequiredService<ILoggerFactory>().CreateLogger<Application>();
             MetricsContext = Services.GetRequiredService<IMetricsContext>();
             Logger.LogInformation("Application created successfully.");
+            Token = new CancellationToken();
         }
 
         public ILogger Logger { get; set; }
@@ -78,6 +80,8 @@ namespace App.Sample
 
         public IServiceProvider Services { get; set; }
 
+        public CancellationToken Token { get; set; }
+
         private static int GetFreeDiskSpace()
         {
             return 1024;
@@ -85,7 +89,7 @@ namespace App.Sample
 
         private void ConfigureServices(IServiceCollection services)
         {
-            services.AddMetrics(options =>
+            var builder = services.AddMetrics(options =>
             {
                 options.Reporters = reports => { reports.WithConsoleReport(TimeSpan.FromSeconds(3)); };
                 options.HealthCheckRegistry = checks =>
@@ -101,6 +105,9 @@ namespace App.Sample
                     });
                 };
             });
+
+
+            builder.RunReports(Token);
         }
     }
 }

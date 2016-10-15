@@ -1,7 +1,10 @@
 using System;
+using System.Threading;
 using App.Metrics;
+using App.Metrics.Registries;
 
 // ReSharper disable CheckNamespace
+
 namespace Microsoft.Extensions.DependencyInjection
 // ReSharper restore CheckNamespace
 {
@@ -17,8 +20,14 @@ namespace Microsoft.Extensions.DependencyInjection
             Environment = environment;
         }
 
+        public IMetricsEnvironment Environment { get; }
+
         public IServiceCollection Services { get; }
 
-        public IMetricsEnvironment Environment { get; }
+        public void RunReports(CancellationToken token)
+        {
+            var reportRegistry = Services.BuildServiceProvider().GetRequiredService<IMetricReporterRegistry>();
+            reportRegistry.Reports.ForEach(r => r.Start(token));
+        }
     }
 }

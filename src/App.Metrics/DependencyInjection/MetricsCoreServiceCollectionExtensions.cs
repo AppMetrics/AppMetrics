@@ -15,7 +15,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
 
 // ReSharper disable CheckNamespace
-
 namespace Microsoft.Extensions.DependencyInjection.Extensions
 // ReSharper restore CheckNamespace
 {
@@ -79,24 +78,32 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                 return provider.GetRequiredService(jsonBuilderType);
             });
 
+            services.TryAddSingleton(typeof(IMetricReporterRegistry), provider =>
+            {
+                var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
+                var context = provider.GetRequiredService<IMetricsContext>();
+                var healthCheckDataProvider = provider.GetRequiredService<IHealthCheckDataProvider>();
+                var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
+
+                var registry = new MetricReporterRegistry(
+                   loggerFactory,
+                   context.DataProvider,
+                   healthCheckDataProvider);
+
+                options.Value.Reporters(registry);
+
+                return registry;
+            });
+
             services.TryAddSingleton(typeof(IMetricsContext), provider =>
             {
                 var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
-                var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
                 var healthCheckRegistry = provider.GetRequiredService<IHealthCheckRegistry>();
                 var healthCheckDataProvider = provider.GetRequiredService<IHealthCheckDataProvider>();
 
                 if (!options.Value.DisableHealthChecks)
                 {
                     options.Value.HealthCheckRegistry(healthCheckRegistry);
-
-                    //if (healthChecks != null && healthChecks.Any())
-                    //{
-                    //    foreach (var check in healthChecks)
-                    //    {
-                    //        healthCheckRegistry.Register(check);
-                    //    }
-                    //}
                 }
 
                 if (options.Value.EnableInternalMetrics)
@@ -109,8 +116,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
 
                 if (metricsContext == default(IMetricsContext))
                 {
-                    metricsContext = new DefaultMetricsContext(options.Value.GlobalContextName,
-                        options.Value.SystemClock, healthCheckDataProvider);
+                    metricsContext = new DefaultMetricsContext(options.Value.GlobalContextName, options.Value.SystemClock, healthCheckDataProvider);
                 }
 
 
@@ -118,13 +124,6 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                 {
                     metricsContext.Advanced.CompletelyDisableMetrics();
                 }
-
-                var reporters = new MetricsReports(
-                    loggerFactory,
-                    metricsContext.DataProvider,
-                    metricsContext.GetHealthStatusAsync);
-
-                options.Value.Reporters(reporters);
 
                 return metricsContext;
             });

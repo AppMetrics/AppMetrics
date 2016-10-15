@@ -2,6 +2,7 @@
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using App.Metrics.DataProviders;
 using App.Metrics.MetricData;
 using Microsoft.Extensions.Logging;
 
@@ -9,18 +10,21 @@ namespace App.Metrics.Reporters
 {
     public class StringReport : HumanReadableReport
     {
+        private readonly IHealthCheckDataProvider _healthCheckDataProvider;
         private StringBuilder _buffer;
 
-        public StringReport(ILoggerFactory loggerFactory)
+        public StringReport(ILoggerFactory loggerFactory,
+            IHealthCheckDataProvider healthCheckDataProvider)
             : base(loggerFactory)
         {
+            _healthCheckDataProvider = healthCheckDataProvider;
         }
 
         public string Result => _buffer.ToString();
 
-        public string RenderMetrics(MetricsData metricsData, Func<Task<HealthStatus>> healthStatus)
+        public async Task<string> RenderMetrics(MetricsData metricsData)
         {
-            RunReport(metricsData, healthStatus, CancellationToken.None);
+            await RunReport(metricsData, _healthCheckDataProvider, CancellationToken.None);
             return Result;
         }
 

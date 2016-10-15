@@ -3,7 +3,6 @@ using App.Metrics;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 // ReSharper disable CheckNamespace
-
 namespace Microsoft.Extensions.DependencyInjection
 // ReSharper restore CheckNamespace
 {
@@ -11,7 +10,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IMetricsBuilder AddMetrics(this IServiceCollection services)
         {
-            if (services == null)
+            if (services == null) 
             {
                 throw new ArgumentNullException(nameof(services));
             }

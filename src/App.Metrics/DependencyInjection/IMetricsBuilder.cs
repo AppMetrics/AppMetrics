@@ -1,5 +1,6 @@
 // ReSharper disable CheckNamespace
 
+using System.Threading;
 using App.Metrics;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -10,5 +11,7 @@ namespace Microsoft.Extensions.DependencyInjection
         IServiceCollection Services { get; }
 
         IMetricsEnvironment Environment { get; }
+
+        void RunReports(CancellationToken token);
     }
 }

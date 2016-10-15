@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Internal;
+using App.Metrics.DataProviders;
 using App.Metrics.MetricData;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
@@ -13,6 +13,7 @@ namespace App.Metrics.Reporters
     public abstract class BaseReport : IMetricsReport
     {
         protected readonly ILogger Logger;
+        private bool _disposed = false;
         private CancellationToken _token;
 
         protected BaseReport(ILoggerFactory loggerFactory)
@@ -22,7 +23,7 @@ namespace App.Metrics.Reporters
                 throw new ArgumentNullException(nameof(loggerFactory));
             }
 
-            
+
             Logger = loggerFactory.CreateLogger(GetType());
         }
 
@@ -30,7 +31,13 @@ namespace App.Metrics.Reporters
 
         protected DateTime ReportTimestamp { get; private set; }
 
-        public void RunReport(MetricsData metricsData, Func<Task<HealthStatus>> healthStatus, CancellationToken token)
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public async Task RunReport(MetricsData metricsData, IHealthCheckDataProvider healthCheckDataProvider, CancellationToken token)
         {
             _token = token;
 
@@ -40,7 +47,7 @@ namespace App.Metrics.Reporters
 
             ReportContext(metricsData, Enumerable.Empty<string>());
 
-            ReportHealthStatus(healthStatus);
+            await ReportHealthStatus(healthCheckDataProvider);
 
             EndReport(metricsData.Context);
         }
@@ -56,6 +63,19 @@ namespace App.Metrics.Reporters
         protected abstract void ReportMeter(string name, MeterValue value, Unit unit, TimeUnit rateUnit, MetricTags tags);
 
         protected abstract void ReportTimer(string name, TimerValue value, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags);
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // Free any other managed objects here.
+                }
+            }
+
+            _disposed = true;
+        }
 
         protected virtual void EndContext(string contextName)
         {
@@ -125,9 +145,10 @@ namespace App.Metrics.Reporters
             EndContext(contextName);
         }
 
-        private async Task ReportHealthStatus(Func<Task<HealthStatus>> healthStatus)
+        private async Task ReportHealthStatus(IHealthCheckDataProvider healthCheckDataProvider)
         {
-            var status = await healthStatus();
+            var status = await healthCheckDataProvider.GetStatusAsync();
+
             if (!status.HasRegisteredChecks)
             {
                 return;

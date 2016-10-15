@@ -27,15 +27,16 @@ namespace AspNet.Metrics.Middleware
             _stringReport = stringReport;
         }
 
-        public Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context)
         {
             if (Options.MetricsTextEnabled && Options.MetricsTextEndpoint.HasValue && Options.MetricsTextEndpoint == context.Request.Path)
             {
-                var content = _stringReport.RenderMetrics(MetricsContext.DataProvider.CurrentMetricsData, MetricsContext.GetHealthStatusAsync);
-                return WriteResponseAsync(context, content, "text/plain");
+                var content = await _stringReport.RenderMetrics(MetricsContext.DataProvider.CurrentMetricsData);
+                await WriteResponseAsync(context, content, "text/plain");
+                return;
             }
 
-            return Next(context);
+            await Next(context);
         }
     }
 }

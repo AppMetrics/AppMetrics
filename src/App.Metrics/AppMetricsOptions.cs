@@ -38,7 +38,7 @@ namespace App.Metrics
 
         public JsonSchemeVersion JsonSchemeVersion { get; set; } = JsonSchemeVersion.AlwaysLatest;
 
-        public Action<MetricsReports> Reporters { get; set; }
+        public Action<IMetricReporterRegistry> Reporters { get; set; }
 
         public IClock SystemClock { get; set; } = Clock.Default;
 

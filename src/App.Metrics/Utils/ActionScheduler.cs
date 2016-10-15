@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Utils
 {
@@ -14,15 +13,14 @@ namespace App.Metrics.Utils
     /// </remarks>
     public sealed class ActionScheduler : IScheduler
     {
-        private CancellationTokenSource token;
+        private CancellationTokenSource _token;
 
         public void Dispose()
         {
-            if (token != null)
-            {
-                token.Cancel();
-                token.Dispose();
-            }
+            if (_token == null) return;
+
+            _token.Cancel();
+            _token.Dispose();
         }
 
         public void Start(TimeSpan interval, Action action)
@@ -57,22 +55,22 @@ namespace App.Metrics.Utils
                 throw new ArgumentException("interval must be > 0 seconds", nameof(interval));
             }
 
-            if (token != null)
+            if (_token != null)
             {
                 throw new InvalidOperationException("Scheduler is already started.");
             }
 
-            token = new CancellationTokenSource();
+            _token = new CancellationTokenSource();
 
-            RunScheduler(interval, action, token);
+            RunScheduler(interval, action, _token);
         }
 
         public void Stop()
         {
-            token?.Cancel();
+            _token?.Cancel();
         }
 
-        private static void RunScheduler(TimeSpan interval, Func<CancellationToken, Task> action, CancellationTokenSource token)
+        private void RunScheduler(TimeSpan interval, Func<CancellationToken, Task> action, CancellationTokenSource token)
         {
             Task.Factory.StartNew(async () =>
             {
@@ -85,7 +83,7 @@ namespace App.Metrics.Utils
                         {
                             await action(token.Token).ConfigureAwait(false);
                         }
-                        catch (Exception x)
+                        catch (Exception ex)
                         {
                             //TODO: Review enableing internal metrics
                             //MetricsErrorHandler.Handle(x, "Error while executing action scheduler.");
@@ -96,7 +94,7 @@ namespace App.Metrics.Utils
                     {
                     }
                 }
-            }, token.Token);
+            }, token.Token, TaskCreationOptions.LongRunning, TaskScheduler.Current);
         }
     }
 }

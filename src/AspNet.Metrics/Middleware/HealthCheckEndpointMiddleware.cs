@@ -1,6 +1,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using App.Metrics;
+using App.Metrics.DataProviders;
 using App.Metrics.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -10,19 +11,23 @@ namespace AspNet.Metrics.Middleware
 {
     public class HealthCheckEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
+        private readonly IHealthCheckDataProvider _healthCheckDataProvider;
+
         public HealthCheckEndpointMiddleware(RequestDelegate next,
             IOptions<AspNetMetricsOptions> options,
             ILoggerFactory loggerFactory,
-            IMetricsContext metricsContext)
+            IMetricsContext metricsContext,
+            IHealthCheckDataProvider healthCheckDataProvider)
             : base(next, options, loggerFactory, metricsContext)
         {
+            _healthCheckDataProvider = healthCheckDataProvider;
         }
 
         public async Task Invoke(HttpContext context)
         {
             if (Options.HealthEnabled && Options.HealthEndpoint.HasValue && Options.HealthEndpoint == context.Request.Path)
             {
-                var healthStatus = await MetricsContext.GetHealthStatusAsync();
+                var healthStatus = await _healthCheckDataProvider.GetStatusAsync();
                 var responseStatusCode = healthStatus.IsHealthy ? HttpStatusCode.OK : HttpStatusCode.InternalServerError;
                 await Task.FromResult(WriteResponseAsync(context, JsonHealthChecks.BuildJson(healthStatus), "application/json", responseStatusCode));
                 return;
