@@ -1,6 +1,7 @@
-﻿using App.Metrics.Utils;
+﻿using App.Metrics.MetricData;
+using App.Metrics.Utils;
 
-namespace App.Metrics.MetricData
+namespace App.Metrics.DataProviders
 {
     /// <summary>
     ///     A provider capable of returning the current values for a set of metrics
@@ -13,23 +14,6 @@ namespace App.Metrics.MetricData
         MetricsData CurrentMetricsData { get; }
     }
 
-    public sealed class FilteredMetrics : IMetricsDataProvider
-    {
-        private readonly IMetricsFilter _filter;
-        private readonly IMetricsDataProvider _provider;
-
-        public FilteredMetrics(IMetricsDataProvider provider, IMetricsFilter filter)
-        {
-            this._provider = provider;
-            this._filter = filter;
-        }
-
-        public MetricsData CurrentMetricsData
-        {
-            get { return this._provider.CurrentMetricsData.Filter(this._filter); }
-        }
-    }
-
     public static class FilteredMetricsExtensions
     {
         public static IMetricsDataProvider WithFilter(this IMetricsDataProvider provider, IMetricsFilter filter)
@@ -38,7 +22,7 @@ namespace App.Metrics.MetricData
             {
                 return provider;
             }
-            return new FilteredMetrics(provider, filter);
+            return new FilteredMetricsDataProvider(provider, filter);
         }
     }
 }

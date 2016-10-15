@@ -21,7 +21,7 @@ namespace App.Metrics.MetricData
         /// </summary>
         public readonly SetItem[] Items;
 
-        private static readonly SetItem[] noItems = new SetItem[0];
+        private static readonly SetItem[] NoItems = new SetItem[0];
 
         public CounterValue(long count, SetItem[] items)
         {
@@ -34,7 +34,7 @@ namespace App.Metrics.MetricData
             Items = items;
         }
 
-        internal CounterValue(long count) : this(count, noItems)
+        internal CounterValue(long count) : this(count, NoItems)
         {
         }
 

@@ -51,11 +51,9 @@ namespace App.Metrics
 
         public string FormatCount(long value)
         {
-            if (!string.IsNullOrEmpty(Name))
-            {
-                return $"{value.ToString(CultureInfo.InvariantCulture)} {Name}";
-            }
-            return value.ToString();
+            return !string.IsNullOrEmpty(Name) 
+                ? $"{value.ToString(CultureInfo.InvariantCulture)} {Name}" 
+                : value.ToString();
         }
 
         public string FormatDuration(double value, TimeUnit? timeUnit)
@@ -70,11 +68,9 @@ namespace App.Metrics
 
         public string FormatValue(double value)
         {
-            if (!string.IsNullOrEmpty(Name))
-            {
-                return $"{value.ToString("F2", CultureInfo.InvariantCulture)} {Name}";
-            }
-            return value.ToString("F2", CultureInfo.InvariantCulture);
+            return !string.IsNullOrEmpty(Name) 
+                ? $"{value.ToString("F2", CultureInfo.InvariantCulture)} {Name}" 
+                : value.ToString("F2", CultureInfo.InvariantCulture);
         }
     }
 }

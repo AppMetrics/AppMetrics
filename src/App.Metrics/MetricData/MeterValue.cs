@@ -22,7 +22,7 @@ namespace App.Metrics.MetricData
         public readonly double MeanRate;
         public readonly double OneMinuteRate;
         public readonly TimeUnit RateUnit;
-        private static readonly SetItem[] noItems = new SetItem[0];
+        private static readonly SetItem[] NoItems = new SetItem[0];
 
         public MeterValue(long count, double meanRate, double oneMinuteRate, double fiveMinuteRate, double fifteenMinuteRate, TimeUnit rateUnit,
             SetItem[] items)
@@ -42,7 +42,7 @@ namespace App.Metrics.MetricData
         }
 
         internal MeterValue(long count, double meanRate, double oneMinuteRate, double fiveMinuteRate, double fifteenMinuteRate, TimeUnit rateUnit)
-            : this(count, meanRate, oneMinuteRate, fiveMinuteRate, fifteenMinuteRate, rateUnit, noItems)
+            : this(count, meanRate, oneMinuteRate, fiveMinuteRate, fifteenMinuteRate, rateUnit, NoItems)
         {
         }
 
