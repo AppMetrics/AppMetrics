@@ -15,7 +15,7 @@ namespace App.Metrics.Infrastructure
             "AspNet.Metrics"
         };
 
-        public static IEnumerable<Assembly> DiscoverAssemblies(string entryPointAssemblyName)
+        internal static IEnumerable<Assembly> DiscoverAssemblies(string entryPointAssemblyName)
         {
             var entryAssembly = Assembly.Load(new AssemblyName(entryPointAssemblyName));
             var context = DependencyContext.Load(Assembly.Load(new AssemblyName(entryPointAssemblyName)));
@@ -23,7 +23,7 @@ namespace App.Metrics.Infrastructure
             return GetCandidateAssemblies(entryAssembly, context);
         }
 
-        public static IEnumerable<Assembly> GetCandidateAssemblies(Assembly entryAssembly, DependencyContext dependencyContext)
+        internal static IEnumerable<Assembly> GetCandidateAssemblies(Assembly entryAssembly, DependencyContext dependencyContext)
         {
             if (dependencyContext == null)
             {
@@ -36,7 +36,7 @@ namespace App.Metrics.Infrastructure
                 .Select(Assembly.Load);
         }
 
-        public static IEnumerable<RuntimeLibrary> GetCandidateLibraries(DependencyContext dependencyContext)
+        internal static IEnumerable<RuntimeLibrary> GetCandidateLibraries(DependencyContext dependencyContext)
         {
             if (ReferenceAssemblies == null)
             {

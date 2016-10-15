@@ -4,7 +4,7 @@ using App.Metrics.MetricData;
 
 namespace App.Metrics.Json
 {
-    public class JsonMeter : JsonMetric
+    public sealed class JsonMeter : JsonMetric
     {
         private SetItem[] items = new SetItem[0];
 

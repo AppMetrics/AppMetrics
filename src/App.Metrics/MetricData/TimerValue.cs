@@ -31,7 +31,7 @@
     /// <summary>
     ///     Combines the value of the timer with the defined unit and the time units for rate and duration.
     /// </summary>
-    public class TimerValueSource : MetricValueSource<TimerValue>
+    public sealed class TimerValueSource : MetricValueSource<TimerValue>
     {
         public TimerValueSource(string name, IMetricValueProvider<TimerValue> value, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit,
             MetricTags tags)

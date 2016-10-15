@@ -57,5 +57,9 @@ namespace AspNet.Metrics.Facts
         {
             return new TimerMetric(new HistogramMetric(new UniformReservoir()), new MeterMetric(_clock, _scheduler), _clock);
         }
+
+        public void Dispose()
+        {
+        }
     }
 }

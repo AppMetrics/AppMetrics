@@ -6,6 +6,8 @@ namespace App.Metrics.Core
 {
     public sealed class DefaultMetricsBuilder : IMetricsBuilder
     {
+        private bool _disposed = false;
+
         public ICounterImplementation BuildCounter(string name, Unit unit)
         {
             return new CounterMetric();
@@ -44,6 +46,25 @@ namespace App.Metrics.Core
         public ITimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, IReservoir reservoir)
         {
             return new TimerMetric(reservoir);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // Free any other managed objects here.
+                }
+            }
+
+            _disposed = true;
         }
     }
 }

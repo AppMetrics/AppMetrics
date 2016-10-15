@@ -27,6 +27,11 @@ namespace App.Metrics.Reporters
             Logger = loggerFactory.CreateLogger(GetType());
         }
 
+        ~BaseReport()
+        {
+            Dispose(false);
+        }
+
         protected DateTime CurrentContextTimestamp { get; private set; }
 
         protected DateTime ReportTimestamp { get; private set; }

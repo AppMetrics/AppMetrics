@@ -7,7 +7,7 @@ using App.Metrics.Utils;
 
 namespace App.Metrics.Json
 {
-    public class JsonMetricsContext
+    public sealed class JsonMetricsContext
     {
         private JsonMetricsContext[] _childContexts = new JsonMetricsContext[0];
         private JsonCounter[] _counters = new JsonCounter[0];
@@ -111,26 +111,24 @@ namespace App.Metrics.Json
 
         private IEnumerable<JsonProperty> ToJsonProperties()
         {
-            if (!string.IsNullOrEmpty(Version))
+            foreach (var jsonProperty in EnvironmentJsonProperties())
             {
-                yield return new JsonProperty("Version", Version);
+                yield return jsonProperty;
             }
 
-            if (Timestamp != default(DateTime))
+            foreach (var jsonProperty1 in MetricsJsonProperties())
             {
-                yield return new JsonProperty("Timestamp", Clock.FormatTimestamp(Timestamp));
+                yield return jsonProperty1;
             }
 
-            if (Environment.Any())
+            if (ChildContexts.Length > 0)
             {
-                yield return new JsonProperty("Environment", Environment.Select(e => new JsonProperty(e.Key, e.Value)));
+                yield return new JsonProperty("ChildContexts", ChildContexts.Select(c => c.ToJsonObject()));
             }
+        }
 
-            if (!string.IsNullOrEmpty(Context))
-            {
-                yield return new JsonProperty("Context", Context);
-            }
-
+        private IEnumerable<JsonProperty> MetricsJsonProperties()
+        {
             if (Gauges.Length > 0)
             {
                 yield return new JsonProperty("Gauges", Gauges.Select(g => g.ToJsonObject()));
@@ -155,10 +153,28 @@ namespace App.Metrics.Json
             {
                 yield return new JsonProperty("Timers", Timers.Select(t => t.ToJsonTimer()));
             }
+        }
 
-            if (ChildContexts.Length > 0)
+        private IEnumerable<JsonProperty> EnvironmentJsonProperties()
+        {
+            if (!string.IsNullOrEmpty(Version))
             {
-                yield return new JsonProperty("ChildContexts", ChildContexts.Select(c => c.ToJsonObject()));
+                yield return new JsonProperty("Version", Version);
+            }
+
+            if (Timestamp != default(DateTime))
+            {
+                yield return new JsonProperty("Timestamp", Clock.FormatTimestamp(Timestamp));
+            }
+
+            if (Environment.Any())
+            {
+                yield return new JsonProperty("Environment", Environment.Select(e => new JsonProperty(e.Key, e.Value)));
+            }
+
+            if (!string.IsNullOrEmpty(Context))
+            {
+                yield return new JsonProperty("Context", Context);
             }
         }
     }

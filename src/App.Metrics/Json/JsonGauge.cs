@@ -3,7 +3,7 @@ using App.Metrics.MetricData;
 
 namespace App.Metrics.Json
 {
-    public class JsonGauge : JsonMetric
+    public sealed class JsonGauge : JsonMetric
     {
         private double _value;
 

@@ -19,7 +19,7 @@ namespace App.Metrics.MetricData
         bool IsMatch(TimerValueSource timer);
     }
 
-    public class Filter : IMetricsFilter
+    public sealed class Filter : IMetricsFilter
     {
         public static IMetricsFilter All = new NoOpFilter();
         private Predicate<string> _context;

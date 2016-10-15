@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -17,8 +18,10 @@ using System.Runtime.InteropServices;
 
 [assembly: ComVisible(false)]
 
+
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
 [assembly: Guid("7ad4f2aa-a152-4092-b79f-2648cbedffbc")]
-
 [assembly: InternalsVisibleTo("AspNet.Metrics")]
+[assembly: InternalsVisibleTo("App.Metrics.Facts")]
+[assembly: InternalsVisibleTo("AspNet.Metrics.Facts")]

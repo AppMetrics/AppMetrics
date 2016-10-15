@@ -22,6 +22,7 @@ namespace App.Metrics.Core
             _healthCheckDataProvider = healthCheckDataProvider;
         }
 
+        //TODO: AH - review internal metrics
         internal IMetricsContext Internal => new NullMetricsContext(InternalMetricsContextName, _systemClock);
 
         protected override IMetricsContext CreateChildContextInstance(string contextName)

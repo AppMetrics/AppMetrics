@@ -8,6 +8,7 @@ namespace App.Metrics.Reporters
     public abstract class HumanReadableReport : BaseReport
     {
         private readonly int _padding = 20;
+        private bool _disposed = false;
 
         protected HumanReadableReport(ILoggerFactory loggerFactory)
             : base(loggerFactory)
@@ -27,6 +28,23 @@ namespace App.Metrics.Reporters
         }
 
         protected abstract void WriteLine(string line, params string[] args);
+
+        protected override void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // Release managed resources
+                }
+
+                // Release unmanaged resources.
+                // Set large fields to null.
+                _disposed = true;
+            }
+
+            base.Dispose(disposing);
+        }
 
         protected override void ReportCounter(string name, CounterValue value, Unit unit, MetricTags tags)
         {
@@ -118,12 +136,17 @@ namespace App.Metrics.Reporters
         {
             WriteLine();
             WriteLine();
+            //TODO: AH - Inject Clock
             WriteLine("***** {0} - {1} *****", metricType, Clock.FormatTimestamp(CurrentContextTimestamp));
+
+            base.StartMetricGroup(metricType);
         }
 
         protected override void StartReport(string contextName)
         {
             WriteLine("{0} - {1}", contextName, Clock.FormatTimestamp(ReportTimestamp));
+
+            base.StartReport(contextName);
         }
 
         protected void WriteMetricName(string name)

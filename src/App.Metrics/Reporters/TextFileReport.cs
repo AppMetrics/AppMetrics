@@ -5,10 +5,11 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporters
 {
-    public class TextFileReport : HumanReadableReport
+    public sealed class TextFileReport : HumanReadableReport
     {
         private readonly string _fileName;
         private StringBuilder _buffer;
+        private bool _disposed = false;
 
         public TextFileReport(string fileName,
             ILoggerFactory loggerFactory)
@@ -34,6 +35,25 @@ namespace App.Metrics.Reporters
             base.EndReport(contextName);
             _buffer = null;
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // Release managed resources                    
+                }
+
+                // Release unmanaged resources.
+                // Set large fields to null.
+                _buffer = null;
+                _disposed = true;
+            }
+
+            base.Dispose(disposing);
+        }
+
 
         protected override void StartReport(string contextName)
         {

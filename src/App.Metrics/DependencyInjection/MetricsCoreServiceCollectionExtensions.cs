@@ -27,7 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                 { JsonSchemeVersion.Version1, typeof(MetricsJsonBuilderV1) }
             });
 
-        public static IMetricsBuilder AddMetricsCore(this IServiceCollection services)
+        internal static IMetricsBuilder AddMetricsCore(this IServiceCollection services)
         {
             if (services == null)
             {
@@ -37,7 +37,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             return AddMetricsCore(services, setupAction: null, metricsContext: default(IMetricsContext));
         }
 
-        public static IMetricsBuilder AddMetricsCore(
+        internal static IMetricsBuilder AddMetricsCore(
             this IServiceCollection services,
             Action<AppMetricsOptions> setupAction,
             IMetricsContext metricsContext)
@@ -46,9 +46,13 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
 
             var metricsEnvironment = new MetricsAppEnvironment(PlatformServices.Default.Application);
 
-            ConfigureDefaultServices(services);
+            services.TryAddSingleton<MetricsMarkerService, MetricsMarkerService>();
 
-            AddMetricsCoreServices(services, metricsEnvironment, metricsContext);
+            services.ConfigureDefaultServices();
+            services.AddDefaultHealthCheckServices(metricsEnvironment);
+            services.AddDefaultReporterServices();
+            services.AddDefaultJsonServices();
+            services.AddMetricsCoreServices(metricsEnvironment, metricsContext);            
 
             if (setupAction != null)
             {
@@ -58,26 +62,18 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             return new MetricsBuilder(services, metricsEnvironment);
         }
 
-        internal static void AddMetricsCoreServices(IServiceCollection services,
-            IMetricsEnvironment environment, IMetricsContext metricsContext)
+        internal static void AddDefaultHealthCheckServices(this IServiceCollection services,
+            IMetricsEnvironment environment)
         {
-            services.TryAddSingleton<MetricsMarkerService, MetricsMarkerService>();
-            services.TryAddSingleton(typeof(IClock), provider => Clock.Default);
-            services.TryAddSingleton<EnvironmentInfoBuilder, EnvironmentInfoBuilder>();
-            services.TryAddSingleton<MetricsJsonBuilderV1, MetricsJsonBuilderV1>();
             services.TryAddSingleton<IHealthCheckRegistry, HealthCheckRegistry>();
             services.TryAddSingleton<IHealthCheckDataProvider, HealthCheckDataProvider>();
-            services.TryAddSingleton<ILoggerFactory, LoggerFactory>(); //TODO: AH - don't register here
+
             services.AddHealthChecks(environment);
+        }
+
+        internal static void AddDefaultReporterServices(this IServiceCollection services)
+        {
             services.TryAddSingleton<StringReport, StringReport>();
-
-            services.TryAddSingleton(typeof(IMetricsJsonBuilder), provider =>
-            {
-                var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
-                var jsonBuilderType = MetricsJsonBuilderVersionMapping[options.Value.JsonSchemeVersion];
-                return provider.GetRequiredService(jsonBuilderType);
-            });
-
             services.TryAddSingleton(typeof(IMetricReporterRegistry), provider =>
             {
                 var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
@@ -94,6 +90,24 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
 
                 return registry;
             });
+        }
+
+        internal static void AddDefaultJsonServices(this IServiceCollection services)
+        {
+            services.TryAddSingleton<MetricsJsonBuilderV1, MetricsJsonBuilderV1>();
+            services.TryAddSingleton(typeof(IMetricsJsonBuilder), provider =>
+            {
+                var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
+                var jsonBuilderType = MetricsJsonBuilderVersionMapping[options.Value.JsonSchemeVersion];
+                return provider.GetRequiredService(jsonBuilderType);
+            });
+        }
+
+        internal static void AddMetricsCoreServices(this IServiceCollection services,
+            IMetricsEnvironment environment, IMetricsContext metricsContext)
+        {
+            services.TryAddSingleton(typeof(IClock), provider => provider.GetRequiredService<IOptions<AppMetricsOptions>>().Value.SystemClock);
+            services.TryAddSingleton<EnvironmentInfoBuilder, EnvironmentInfoBuilder>();
 
             services.TryAddSingleton(typeof(IMetricsContext), provider =>
             {
@@ -131,8 +145,9 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             services.TryAddSingleton(provider => environment);
         }
 
-        private static void ConfigureDefaultServices(IServiceCollection services)
+        private static void ConfigureDefaultServices(this IServiceCollection services)
         {
+            services.TryAddSingleton<ILoggerFactory, LoggerFactory>(); //TODO: AH - don't register here
             services.AddOptions();
         }
     }

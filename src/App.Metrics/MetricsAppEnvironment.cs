@@ -3,7 +3,7 @@ using Microsoft.Extensions.PlatformAbstractions;
 
 namespace App.Metrics
 {
-    public class MetricsAppEnvironment : IMetricsEnvironment
+    public sealed class MetricsAppEnvironment : IMetricsEnvironment
     {
         public MetricsAppEnvironment(ApplicationEnvironment applicationEnvironment)
         {

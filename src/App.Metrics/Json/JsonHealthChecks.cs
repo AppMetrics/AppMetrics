@@ -5,7 +5,7 @@ using App.Metrics.Utils;
 
 namespace App.Metrics.Json
 {
-    public class JsonHealthChecks
+    public sealed class JsonHealthChecks
     {
         public const string HealthChecksMimeType = "application/vnd.app.metrics.v1.health+json";
         public const int Version = 1;

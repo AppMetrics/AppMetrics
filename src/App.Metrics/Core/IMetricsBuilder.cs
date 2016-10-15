@@ -4,7 +4,7 @@ using App.Metrics.Sampling;
 
 namespace App.Metrics.Core
 {
-    public interface IMetricsBuilder
+    public interface IMetricsBuilder : IDisposable
     {
         ICounterImplementation BuildCounter(string name, Unit unit);
 

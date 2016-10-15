@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace App.Metrics.Json
 {
-    public class JsonObject
+    public sealed class JsonObject
     {
         public JsonObject(IEnumerable<JsonProperty> properties)
         {

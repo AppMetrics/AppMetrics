@@ -3,7 +3,7 @@ using App.Metrics.MetricData;
 
 namespace App.Metrics.Json
 {
-    public class JsonHistogram : JsonMetric
+    public sealed class JsonHistogram : JsonMetric
     {
         public long Count { get; set; }
 
@@ -70,30 +70,13 @@ namespace App.Metrics.Json
 
         public IEnumerable<JsonProperty> ToJsonProperties()
         {
-            var hasUserValues = LastUserValue != null || MinUserValue != null || MaxUserValue != null;
-
             yield return new JsonProperty("Name", Name);
             yield return new JsonProperty("Count", Count);
             yield return new JsonProperty("LastValue", LastValue);
 
-            if (hasUserValues)
+            foreach (var userValueProperty in UserValueProperties())
             {
-                yield return new JsonProperty("LastUserValue", LastUserValue);
-            }
-            yield return new JsonProperty("Min", Min);
-            if (hasUserValues)
-            {
-                yield return new JsonProperty("MinUserValue", MinUserValue);
-            }
-            yield return new JsonProperty("Max", Max);
-            if (hasUserValues)
-            {
-                yield return new JsonProperty("MaxUserValue", MaxUserValue);
-            }
-            yield return new JsonProperty("Mean", Mean);
-            if (hasUserValues)
-            {
-                yield return new JsonProperty("MaxUserValue", MaxUserValue);
+                yield return userValueProperty;
             }
 
             yield return new JsonProperty("StdDev", StdDev);
@@ -112,6 +95,8 @@ namespace App.Metrics.Json
             }
         }
 
+        private bool HasUserValues => LastUserValue != null || MinUserValue != null || MaxUserValue != null;
+
         public HistogramValueSource ToValueSource()
         {
             var histogramValue = new HistogramValue(Count, LastValue, LastUserValue,
@@ -119,6 +104,32 @@ namespace App.Metrics.Json
                 Percentile75, Percentile95, Percentile98, Percentile99, Percentile999, SampleSize);
 
             return new HistogramValueSource(Name, ConstantValue.Provider(histogramValue), Unit, Tags);
+        }
+
+        private IEnumerable<JsonProperty> UserValueProperties()
+        {
+            if (HasUserValues)
+            {
+                yield return new JsonProperty("LastUserValue", LastUserValue);
+            }
+            yield return new JsonProperty("Min", Min);
+
+            if (HasUserValues)
+            {
+                yield return new JsonProperty("MinUserValue", MinUserValue);
+            }
+            yield return new JsonProperty("Max", Max);
+
+            if (HasUserValues)
+            {
+                yield return new JsonProperty("MaxUserValue", MaxUserValue);
+            }
+            yield return new JsonProperty("Mean", Mean);
+
+            if (HasUserValues)
+            {
+                yield return new JsonProperty("MaxUserValue", MaxUserValue);
+            }
         }
     }
 }

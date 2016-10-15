@@ -10,12 +10,10 @@ namespace App.Metrics.Core
     public sealed class MeterMetric : SimpleMeter, IMeterImplementation, IDisposable
     {
         private static readonly TimeSpan TickInterval = TimeSpan.FromSeconds(5);
-
         private readonly Clock _clock;
         private readonly IScheduler _tickScheduler;
-
         private ConcurrentDictionary<string, SimpleMeter> _setMeters;
-
+        private bool _disposed = false;
         private long _startTime;
 
         public MeterMetric()
@@ -31,24 +29,44 @@ namespace App.Metrics.Core
             _tickScheduler.Start(TickInterval, (Action)Tick);
         }
 
-        public MeterValue Value
+        public MeterValue Value => GetValue();
+
+        ~MeterMetric()
         {
-            get { return GetValue(); }
+            Dispose(false);
         }
 
         public void Dispose()
         {
-            _tickScheduler.Stop();
-            using (_tickScheduler)
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public void Dispose(bool disposing)
+        {
+            if (!_disposed)
             {
+                if (disposing)
+                {
+                    // Free any other managed objects here.
+
+                    if (_tickScheduler != null)
+                    {
+                        _tickScheduler.Stop();
+                        _tickScheduler.Dispose();
+                    }
+
+                    if (_setMeters != null)
+                    {
+                        _setMeters.Clear();
+                        _setMeters = null;
+                    }
+                }
             }
 
-            if (_setMeters != null)
-            {
-                _setMeters.Clear();
-                _setMeters = null;
-            }
+            _disposed = true;
         }
+
 
         public MeterValue GetValue(bool resetMetric = false)
         {

@@ -77,58 +77,5 @@ namespace App.Metrics.MetricData
                 Enumerable.Empty<MetricsData>()
             );
         }
-
-        public MetricsData OldFormat()
-        {
-            return OldFormat(string.Empty);
-        }
-
-        private static string FormatName(string prefix, string name)
-        {
-            if (string.IsNullOrWhiteSpace(prefix))
-            {
-                return name;
-            }
-            return $"[{prefix}] {name}";
-        }
-
-        private static string FormatPrefix(string prefix, string context)
-        {
-            if (string.IsNullOrWhiteSpace(prefix))
-            {
-                return context;
-            }
-            return prefix + " - " + context;
-        }
-
-        private MetricsData OldFormat(string prefix)
-        {
-            var gauges = Gauges
-                .Select(g => new GaugeValueSource(FormatName(prefix, g.Name), g.ValueProvider, g.Unit, g.Tags))
-                .Union(ChildMetrics.SelectMany(m => m.OldFormat(FormatPrefix(prefix, m.Context)).Gauges));
-
-            var counters = Counters
-                .Select(c => new CounterValueSource(FormatName(prefix, c.Name), c.ValueProvider, c.Unit, c.Tags))
-                .Union(ChildMetrics.SelectMany(m => m.OldFormat(FormatPrefix(prefix, m.Context)).Counters));
-
-            var meters = Meters
-                .Select(m => new MeterValueSource(FormatName(prefix, m.Name), m.ValueProvider, m.Unit, m.RateUnit, m.Tags))
-                .Union(ChildMetrics.SelectMany(m => m.OldFormat(FormatPrefix(prefix, m.Context)).Meters));
-
-            var histograms = Histograms
-                .Select(h => new HistogramValueSource(FormatName(prefix, h.Name), h.ValueProvider, h.Unit, h.Tags))
-                .Union(ChildMetrics.SelectMany(m => m.OldFormat(FormatPrefix(prefix, m.Context)).Histograms));
-
-            var timers = Timers
-                .Select(t => new TimerValueSource(FormatName(prefix, t.Name), t.ValueProvider, t.Unit, t.RateUnit, t.DurationUnit, t.Tags))
-                .Union(ChildMetrics.SelectMany(m => m.OldFormat(FormatPrefix(prefix, m.Context)).Timers));
-
-            var environment = Environment
-                .Select(e => new EnvironmentInfoEntry(FormatName(prefix, e.Name), e.Value))
-                .Union(ChildMetrics.SelectMany(e => e.OldFormat(FormatPrefix(prefix, e.Context)).Environment));
-
-            return new MetricsData(Context, Timestamp, environment, gauges, counters, meters, histograms, timers,
-                Enumerable.Empty<MetricsData>());
-        }
     }
 }

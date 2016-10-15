@@ -1,13 +1,38 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 // ReSharper disable CheckNamespace
-
 namespace App.Metrics
-    // ReSharper restore CheckNamespace
+// ReSharper restore CheckNamespace
 {
     public static class TimeUnitExtensions
     {
-        private static readonly long[,] conversionFactors = BuildConversionFactorsMatrix();
+        private static readonly long[,] ConversionFactors = BuildConversionFactorsMatrix();
+
+        private static readonly IReadOnlyDictionary<string, TimeUnit> TimeUnitValueMapping =
+            new ReadOnlyDictionary<string, TimeUnit>(new Dictionary<string, TimeUnit>
+            {
+                { "ns", TimeUnit.Nanoseconds },
+                { "us", TimeUnit.Microseconds },
+                { "ms", TimeUnit.Milliseconds },
+                { "s", TimeUnit.Seconds },
+                { "min", TimeUnit.Minutes },
+                { "h", TimeUnit.Hours },
+                { "days", TimeUnit.Days }
+            });
+
+        private static readonly IReadOnlyDictionary<TimeUnit, string> ValueTimeUnitMapping =
+            new ReadOnlyDictionary<TimeUnit, string>(new Dictionary<TimeUnit, string>
+            {
+                { TimeUnit.Nanoseconds, "ns" },
+                { TimeUnit.Microseconds, "us" },
+                { TimeUnit.Milliseconds, "ms" },
+                { TimeUnit.Seconds, "s" },
+                { TimeUnit.Minutes, "min" },
+                { TimeUnit.Hours, "h" },
+                { TimeUnit.Days, "days" }
+            });
 
         public static long Convert(this TimeUnit sourceUnit, TimeUnit targetUnit, long value)
         {
@@ -21,25 +46,12 @@ namespace App.Metrics
 
         public static TimeUnit FromUnit(string unit)
         {
-            switch (unit)
+            if (!TimeUnitValueMapping.ContainsKey(unit))
             {
-                case "ns":
-                    return TimeUnit.Nanoseconds;
-                case "us":
-                    return TimeUnit.Microseconds;
-                case "ms":
-                    return TimeUnit.Milliseconds;
-                case "s":
-                    return TimeUnit.Seconds;
-                case "min":
-                    return TimeUnit.Minutes;
-                case "h":
-                    return TimeUnit.Hours;
-                case "days":
-                    return TimeUnit.Days;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(unit));
+                throw new ArgumentOutOfRangeException(nameof(unit));
             }
+
+            return TimeUnitValueMapping[unit];
         }
 
         public static double ScalingFactorFor(this TimeUnit sourceUnit, TimeUnit targetUnit)
@@ -54,11 +66,11 @@ namespace App.Metrics
 
             if (sourceIndex < targetIndex)
             {
-                return 1 / (double)conversionFactors[targetIndex, sourceIndex];
+                return 1 / (double)ConversionFactors[targetIndex, sourceIndex];
             }
             else
             {
-                return conversionFactors[sourceIndex, targetIndex];
+                return ConversionFactors[sourceIndex, targetIndex];
             }
         }
 
@@ -99,25 +111,12 @@ namespace App.Metrics
 
         public static string Unit(this TimeUnit unit)
         {
-            switch (unit)
+            if (!ValueTimeUnitMapping.ContainsKey(unit))
             {
-                case TimeUnit.Nanoseconds:
-                    return "ns";
-                case TimeUnit.Microseconds:
-                    return "us";
-                case TimeUnit.Milliseconds:
-                    return "ms";
-                case TimeUnit.Seconds:
-                    return "s";
-                case TimeUnit.Minutes:
-                    return "min";
-                case TimeUnit.Hours:
-                    return "h";
-                case TimeUnit.Days:
-                    return "days";
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(unit));
+                throw new ArgumentOutOfRangeException(nameof(unit));
             }
+
+            return ValueTimeUnitMapping[unit];
         }
 
         private static long[,] BuildConversionFactorsMatrix()

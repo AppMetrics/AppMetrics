@@ -3,7 +3,7 @@ using App.Metrics.MetricData;
 
 namespace App.Metrics.Json
 {
-    public class JsonTimer : JsonMetric
+    public sealed class JsonTimer : JsonMetric
     {
         public long ActiveSessions { get; set; }
 

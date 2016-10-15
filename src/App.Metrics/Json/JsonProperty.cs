@@ -2,7 +2,7 @@
 
 namespace App.Metrics.Json
 {
-    public class JsonProperty
+    public sealed class JsonProperty
     {
         public JsonProperty(string name, IEnumerable<JsonObject> objects)
             : this(name, new CollectionJsonValue(objects))

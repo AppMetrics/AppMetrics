@@ -2,12 +2,11 @@ using System;
 using System.Diagnostics;
 using App.Metrics.Json;
 using App.Metrics.Registries;
-using App.Metrics.Reporters;
 using App.Metrics.Utils;
 
 namespace App.Metrics
 {
-    public class AppMetricsOptions
+    public sealed class AppMetricsOptions
     {
         public IAppMetricsEvents Events = new AppMetricsEvents();
 

@@ -5,15 +5,7 @@ using App.Metrics.Registries;
 
 namespace App.Metrics.DataProviders
 {
-    public class NullHealthCheckDataProvider : IHealthCheckDataProvider
-    {
-        public Task<HealthStatus> GetStatusAsync()
-        {
-            return Task.FromResult(new HealthStatus());
-        }
-    }
-
-    public class HealthCheckDataProvider : IHealthCheckDataProvider
+    public sealed class HealthCheckDataProvider : IHealthCheckDataProvider
     {
         private readonly IHealthCheckRegistry _healthCheckRegistry;
 

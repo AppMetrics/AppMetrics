@@ -7,7 +7,7 @@ using App.Metrics.Infrastructure;
 
 namespace App.Metrics.DependencyInjection
 {
-    public class DefaultHealthCheckTypeProvider : IHealthCheckTypeProvider
+    internal sealed class DefaultHealthCheckTypeProvider : IHealthCheckTypeProvider
     {
         private const string HealthCheckTypeName = "HealthCheck";
         private static readonly TypeInfo ObjectTypeInfo = typeof(object).GetTypeInfo();
@@ -19,7 +19,7 @@ namespace App.Metrics.DependencyInjection
         }
 
         /// <inheritdoc />
-        public virtual IEnumerable<TypeInfo> HealthCheckTypes
+        public IEnumerable<TypeInfo> HealthCheckTypes
         {
             get
             {
@@ -29,7 +29,7 @@ namespace App.Metrics.DependencyInjection
             }
         }
 
-        protected internal virtual bool IsHealthCheck(
+        internal bool IsHealthCheck(
             TypeInfo typeInfo,
             ISet<Assembly> candidateAssemblies)
         {
@@ -74,7 +74,7 @@ namespace App.Metrics.DependencyInjection
             return true;
         }
 
-        private bool DerivesFromHealthCheck(TypeInfo typeInfo, ISet<Assembly> candidateAssemblies)
+        private static bool DerivesFromHealthCheck(TypeInfo typeInfo, ISet<Assembly> candidateAssemblies)
         {
             while (typeInfo != ObjectTypeInfo)
             {

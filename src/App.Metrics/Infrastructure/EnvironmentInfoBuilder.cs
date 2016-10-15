@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Infrastructure
 {
-    public class EnvironmentInfoBuilder
+    public sealed class EnvironmentInfoBuilder
     {
         private readonly ILogger _logger;
 
@@ -58,23 +58,6 @@ namespace App.Metrics.Infrastructure
                 os, osVersion, processName, processorCount);
         }
 
-        private async Task<IPAddress> ResolveIpAddressAsync(string host)
-        {            
-            var hostAddresses = await Dns.GetHostAddressesAsync(host).ConfigureAwait(false);
-
-            var address = hostAddresses
-                .Where(a => a.AddressFamily == AddressFamily.InterNetwork)
-                .OrderBy(a => Guid.NewGuid())
-                .FirstOrDefault();
-
-            if (address == null)
-            {
-                _logger.LogWarning("Unable to resolve IPAddress for host" + host);
-            }
-
-            return address;
-        }
-
         private async Task<string> GetIpAddressAsync()
         {
             var hostName = SafeGetString(Dns.GetHostName);
@@ -93,6 +76,23 @@ namespace App.Metrics.Infrastructure
 
                 return string.Empty;
             }
+        }
+
+        private async Task<IPAddress> ResolveIpAddressAsync(string host)
+        {
+            var hostAddresses = await Dns.GetHostAddressesAsync(host).ConfigureAwait(false);
+
+            var address = hostAddresses
+                .Where(a => a.AddressFamily == AddressFamily.InterNetwork)
+                .OrderBy(a => Guid.NewGuid())
+                .FirstOrDefault();
+
+            if (address == null)
+            {
+                _logger.LogWarning("Unable to resolve IPAddress for host" + host);
+            }
+
+            return address;
         }
     }
 }

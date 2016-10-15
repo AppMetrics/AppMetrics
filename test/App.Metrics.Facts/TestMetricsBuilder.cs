@@ -56,5 +56,10 @@ namespace App.Metrics.Facts
         {
             return new TimerMetric(new HistogramMetric(new UniformReservoir()), new MeterMetric(this.clock, this.scheduler), this.clock);
         }
+
+        public void Dispose()
+        {
+            
+        }
     }
 }

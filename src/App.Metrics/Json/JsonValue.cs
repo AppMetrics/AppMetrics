@@ -18,7 +18,7 @@ namespace App.Metrics.Json
         public abstract string AsJson(bool indented = true, int indent = 0);
     }
 
-    public class StringJsonValue : JsonValue
+    public sealed class StringJsonValue : JsonValue
     {
         private readonly string _value;
 
@@ -33,7 +33,7 @@ namespace App.Metrics.Json
         }
     }
 
-    public class LongJsonValue : JsonValue
+    public sealed class LongJsonValue : JsonValue
     {
         private readonly long _value;
 
@@ -48,7 +48,7 @@ namespace App.Metrics.Json
         }
     }
 
-    public class DoubleJsonValue : JsonValue
+    public sealed class DoubleJsonValue : JsonValue
     {
         private readonly double _value;
 
@@ -68,7 +68,7 @@ namespace App.Metrics.Json
         }
     }
 
-    public class BoolJsonValue : JsonValue
+    public sealed class BoolJsonValue : JsonValue
     {
         private readonly bool _value;
 
@@ -83,7 +83,7 @@ namespace App.Metrics.Json
         }
     }
 
-    public class ObjectJsonValue : JsonValue
+    public sealed class ObjectJsonValue : JsonValue
     {
         private readonly JsonObject _value;
 
@@ -103,7 +103,7 @@ namespace App.Metrics.Json
         }
     }
 
-    public class CollectionJsonValue : JsonValue
+    public sealed class CollectionJsonValue : JsonValue
     {
         private readonly IEnumerable<JsonObject> _values;
 
@@ -118,7 +118,7 @@ namespace App.Metrics.Json
         }
     }
 
-    public class StringArrayJsonValue : JsonValue
+    public sealed class StringArrayJsonValue : JsonValue
     {
         private readonly IEnumerable<string> _values;
 
@@ -133,7 +133,7 @@ namespace App.Metrics.Json
         }
     }
 
-    public class JsonValueArray : JsonValue
+    public sealed class JsonValueArray : JsonValue
     {
         private readonly IEnumerable<JsonValue> _values;
 

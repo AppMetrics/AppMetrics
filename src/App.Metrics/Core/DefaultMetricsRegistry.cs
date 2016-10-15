@@ -6,7 +6,7 @@ using App.Metrics.MetricData;
 
 namespace App.Metrics.Core
 {
-    public sealed class DefaultMetricsRegistry : IMetricsRegistry
+    internal sealed class DefaultMetricsRegistry : IMetricsRegistry
     {
         private readonly MetricMetaCatalog<ICounter, CounterValueSource, CounterValue> _counters =
             new MetricMetaCatalog<ICounter, CounterValueSource, CounterValue>();

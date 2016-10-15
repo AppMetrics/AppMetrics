@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace App.Metrics.DependencyInjection
 {
-    public static class HealthChecksAsServices
+    internal static class HealthChecksAsServices
     {
         /// <summary>
         ///     Adds the health checks as services.

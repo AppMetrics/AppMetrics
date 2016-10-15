@@ -6,7 +6,7 @@ using App.Metrics.Health;
 
 namespace App.Metrics.DependencyInjection
 {
-    public class StaticHealthCheckTypeProvider : IHealthCheckTypeProvider
+    public sealed class StaticHealthCheckTypeProvider : IHealthCheckTypeProvider
     {
         /// <summary>
         /// Initializes a new instance of <see cref="StaticHealthCheckTypeProvider"/>.

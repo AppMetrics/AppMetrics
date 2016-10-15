@@ -106,7 +106,6 @@ namespace App.Sample
                 };
             });
 
-
             builder.RunReports(Token);
         }
     }

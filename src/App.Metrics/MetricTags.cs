@@ -30,10 +30,7 @@ namespace App.Metrics
         {
         }
 
-        public string[] Tags
-        {
-            get { return _tags ?? Empty; }
-        }
+        public string[] Tags => _tags ?? Empty;
 
         public static implicit operator MetricTags(string commaSeparatedTags)
         {

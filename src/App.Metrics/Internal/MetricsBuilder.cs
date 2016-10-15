@@ -4,13 +4,12 @@ using App.Metrics;
 using App.Metrics.Registries;
 
 // ReSharper disable CheckNamespace
-
 namespace Microsoft.Extensions.DependencyInjection
 // ReSharper restore CheckNamespace
 {
     internal class MetricsBuilder : IMetricsBuilder
     {
-        public MetricsBuilder(IServiceCollection services, IMetricsEnvironment environment)
+        internal MetricsBuilder(IServiceCollection services, IMetricsEnvironment environment)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
