@@ -8,7 +8,7 @@ namespace App.Metrics.Core
     {
         public NullMetricsContext(string context, IClock systemClock)
             : base(
-                context, new NullMetricsRegistry(), new DefaultMetricsBuilder(), new NullHealthCheckDataProvider(), systemClock,
+                context, new NullMetricsRegistry(), new DefaultMetricsBuilder(systemClock), new NullHealthCheckDataProvider(), systemClock,
                 () => systemClock.UtcDateTime)
         {
         }

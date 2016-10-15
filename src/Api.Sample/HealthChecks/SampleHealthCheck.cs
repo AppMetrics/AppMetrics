@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Core;
+using App.Metrics.Health;
 
 namespace Api.Sample.HealthChecks
 {

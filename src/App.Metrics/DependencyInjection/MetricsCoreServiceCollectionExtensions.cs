@@ -77,13 +77,14 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             services.TryAddSingleton(typeof(IMetricReporterRegistry), provider =>
             {
                 var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
-                var context = provider.GetRequiredService<IMetricsContext>();
+                var context = provider.GetRequiredService<IMetricsContext>();                
                 var healthCheckDataProvider = provider.GetRequiredService<IHealthCheckDataProvider>();
                 var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
 
                 var registry = new MetricReporterRegistry(
                    loggerFactory,
                    context.DataProvider,
+                   options.Value.SystemClock,
                    healthCheckDataProvider);
 
                 options.Value.Reporters(registry);

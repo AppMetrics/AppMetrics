@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Core;
 using App.Metrics.DataProviders;
@@ -15,7 +16,7 @@ namespace App.Metrics.Facts.Core
     public class DefaultContextCustomMetricsTests
     {
         private readonly IMetricsContext _context = new DefaultMetricsContext(Clock.Default,
-              new HealthCheckDataProvider(new HealthCheckRegistry(Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))));
+            new HealthCheckDataProvider(new HealthCheckRegistry(Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))));
 
         [Fact]
         public void MetricsContext_CanRegisterCustomCounter()
@@ -107,11 +108,37 @@ namespace App.Metrics.Facts.Core
 
         public class CustomHistogram : IHistogramImplementation
         {
+            private bool _disposed = false;
+
+            ~CustomHistogram()
+            {
+                Dispose(false);
+            }
+
             public CustomReservoir Reservoir { get; } = new CustomReservoir();
 
             public HistogramValue Value
             {
                 get { return new HistogramValue(Reservoir.Values.Last(), null, Reservoir.GetSnapshot()); }
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            public void Dispose(bool disposing)
+            {
+                if (!_disposed)
+                {
+                    if (disposing)
+                    {
+                        // Free any other managed objects here.
+                    }
+                }
+
+                _disposed = true;
             }
 
             public HistogramValue GetValue(bool resetMetric = false)

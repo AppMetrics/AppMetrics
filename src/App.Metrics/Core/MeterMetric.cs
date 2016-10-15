@@ -7,21 +7,21 @@ using App.Metrics.Utils;
 
 namespace App.Metrics.Core
 {
-    public sealed class MeterMetric : SimpleMeter, IMeterImplementation, IDisposable
+    public sealed class MeterMetric : SimpleMeter, IMeterImplementation
     {
         private static readonly TimeSpan TickInterval = TimeSpan.FromSeconds(5);
-        private readonly Clock _clock;
+        private readonly IClock _clock;
         private readonly IScheduler _tickScheduler;
-        private ConcurrentDictionary<string, SimpleMeter> _setMeters;
         private bool _disposed = false;
+        private ConcurrentDictionary<string, SimpleMeter> _setMeters;
         private long _startTime;
 
-        public MeterMetric()
-            : this(Clock.Default, new ActionScheduler())
+        public MeterMetric(IClock systemClock)
+            : this(systemClock, new ActionScheduler())
         {
         }
 
-        public MeterMetric(Clock clock, IScheduler scheduler)
+        public MeterMetric(IClock clock, IScheduler scheduler)
         {
             _clock = clock;
             _startTime = _clock.Nanoseconds;
@@ -29,12 +29,12 @@ namespace App.Metrics.Core
             _tickScheduler.Start(TickInterval, (Action)Tick);
         }
 
-        public MeterValue Value => GetValue();
-
         ~MeterMetric()
         {
             Dispose(false);
         }
+
+        public MeterValue Value => GetValue();
 
         public void Dispose()
         {
@@ -66,7 +66,6 @@ namespace App.Metrics.Core
 
             _disposed = true;
         }
-
 
         public MeterValue GetValue(bool resetMetric = false)
         {

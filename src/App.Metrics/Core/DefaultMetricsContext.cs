@@ -15,7 +15,7 @@ namespace App.Metrics.Core
 
         public DefaultMetricsContext(string context, IClock systemClock, IHealthCheckDataProvider healthCheckDataProvider)
             : base(
-                context, new DefaultMetricsRegistry(), new DefaultMetricsBuilder(), healthCheckDataProvider, systemClock,
+                context, new DefaultMetricsRegistry(), new DefaultMetricsBuilder(systemClock), healthCheckDataProvider, systemClock,
                 () => systemClock.UtcDateTime)
         {
             _systemClock = systemClock;

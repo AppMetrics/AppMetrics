@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using App.Metrics.Health;
 using App.Metrics.Utils;
 
 namespace App.Metrics.Json
@@ -12,18 +13,13 @@ namespace App.Metrics.Json
 
         private readonly List<JsonProperty> root = new List<JsonProperty>();
 
-        public static string BuildJson(HealthStatus status)
-        {
-            return BuildJson(status, Clock.Default, indented: false);
-        }
-
-        public static string BuildJson(HealthStatus status, Clock clock, bool indented = true)
+        public static string BuildJson(HealthStatus status, IClock clock, bool indented)
         {
             return new JsonHealthChecks()
                 .AddVersion(Version)
-                .AddTimestamp(Clock.Default)
+                .AddTimestamp(clock)
                 .AddObject(status)
-                .GetJson(indented);
+                .GetJson();
         }
 
         public JsonHealthChecks AddObject(HealthStatus status)
@@ -39,7 +35,7 @@ namespace App.Metrics.Json
             return this;
         }
 
-        public JsonHealthChecks AddTimestamp(Clock clock)
+        public JsonHealthChecks AddTimestamp(IClock clock)
         {
             root.Add(new JsonProperty("Timestamp", Clock.FormatTimestamp(clock.UtcDateTime)));
             return this;

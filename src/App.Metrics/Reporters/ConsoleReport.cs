@@ -1,4 +1,5 @@
 ﻿using System;
+using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporters
@@ -7,8 +8,8 @@ namespace App.Metrics.Reporters
     {
         private bool _disposed = false;
 
-        public ConsoleReport(ILoggerFactory loggerFactory)
-            : base(loggerFactory)
+        public ConsoleReport(ILoggerFactory loggerFactory, IClock systemClock)
+            : base(loggerFactory, systemClock)
         {
         }
 

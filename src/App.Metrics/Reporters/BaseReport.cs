@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.DataProviders;
+using App.Metrics.Health;
 using App.Metrics.MetricData;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
@@ -13,17 +14,23 @@ namespace App.Metrics.Reporters
     public abstract class BaseReport : IMetricsReport
     {
         protected readonly ILogger Logger;
+        protected readonly IClock SystemClock;
         private bool _disposed = false;
         private CancellationToken _token;
 
-        protected BaseReport(ILoggerFactory loggerFactory)
+        protected BaseReport(ILoggerFactory loggerFactory, IClock systemClock)
         {
             if (loggerFactory == null)
             {
                 throw new ArgumentNullException(nameof(loggerFactory));
             }
 
+            if (systemClock == null)
+            {
+                throw new ArgumentNullException(nameof(systemClock));
+            }
 
+            SystemClock = systemClock;
             Logger = loggerFactory.CreateLogger(GetType());
         }
 
@@ -46,7 +53,7 @@ namespace App.Metrics.Reporters
         {
             _token = token;
 
-            ReportTimestamp = Clock.Default.UtcDateTime;
+            ReportTimestamp = SystemClock.UtcDateTime;
 
             StartReport(metricsData.Context);
 

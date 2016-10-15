@@ -6,44 +6,41 @@ using App.Metrics.Utils;
 
 namespace App.Metrics.Core
 {
-    public interface ITimerImplementation : ITimer, IMetricValueProvider<TimerValue>
-    {
-    }
-
     public sealed class TimerMetric : ITimerImplementation, IDisposable
     {
         private readonly StripedLongAdder _activeSessionsCounter = new StripedLongAdder();
-        private readonly Clock _clock;
+        private bool _disposed = false;
+        private readonly IClock _clock;
         private readonly IHistogramImplementation _histogram;
         private readonly IMeterImplementation _meter;
         private readonly StripedLongAdder _totalRecordedTime = new StripedLongAdder();
 
-        public TimerMetric()
-            : this(new HistogramMetric(), new MeterMetric(), Clock.Default)
+        public TimerMetric(IClock systemClock)
+            : this(new HistogramMetric(), new MeterMetric(systemClock), systemClock)
         {
         }
 
-        public TimerMetric(SamplingType samplingType)
-            : this(new HistogramMetric(samplingType), new MeterMetric(), Clock.Default)
+        public TimerMetric(SamplingType samplingType, IClock systemClock)
+            : this(new HistogramMetric(samplingType), new MeterMetric(systemClock), systemClock)
         {
         }
 
-        public TimerMetric(IHistogramImplementation histogram)
-            : this(histogram, new MeterMetric(), Clock.Default)
+        public TimerMetric(IHistogramImplementation histogram, IClock systemClock)
+            : this(histogram, new MeterMetric(systemClock), systemClock)
         {
         }
 
-        public TimerMetric(IReservoir reservoir)
-            : this(new HistogramMetric(reservoir), new MeterMetric(), Clock.Default)
+        public TimerMetric(IReservoir reservoir, IClock systemClock)
+            : this(new HistogramMetric(reservoir), new MeterMetric(systemClock), systemClock)
         {
         }
 
-        public TimerMetric(SamplingType samplingType, IMeterImplementation meter, Clock clock)
+        public TimerMetric(SamplingType samplingType, IMeterImplementation meter, IClock clock)
             : this(new HistogramMetric(samplingType), meter, clock)
         {
         }
 
-        public TimerMetric(IHistogramImplementation histogram, IMeterImplementation meter, Clock clock)
+        public TimerMetric(IHistogramImplementation histogram, IMeterImplementation meter, IClock clock)
         {
             _clock = clock;
             _meter = meter;
@@ -57,14 +54,32 @@ namespace App.Metrics.Core
             return _clock.Nanoseconds;
         }
 
+        ~TimerMetric()
+        {
+            Dispose(false);
+        }
+
         public void Dispose()
         {
-            using (_histogram as IDisposable)
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public void Dispose(bool disposing)
+        {
+            if (!_disposed)
             {
+                if (disposing)
+                {
+                    // Free any other managed objects here.
+
+                    _histogram?.Dispose();
+
+                    _meter?.Dispose();
+                }
             }
-            using (_meter as IDisposable)
-            {
-            }
+
+            _disposed = true;
         }
 
         public long EndRecording()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using App.Metrics.Health;
 using App.Metrics.Infrastructure;
 
 namespace App.Metrics.Core

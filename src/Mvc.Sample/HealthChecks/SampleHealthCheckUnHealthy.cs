@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using App.Metrics;
+using App.Metrics.Health;
 
 namespace Mvc.Sample.HealthChecks
 {

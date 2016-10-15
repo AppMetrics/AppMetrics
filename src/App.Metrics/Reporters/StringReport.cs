@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.DataProviders;
 using App.Metrics.MetricData;
+using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporters
@@ -15,8 +16,9 @@ namespace App.Metrics.Reporters
 
 
         public StringReport(ILoggerFactory loggerFactory,
-            IHealthCheckDataProvider healthCheckDataProvider)
-            : base(loggerFactory)
+            IHealthCheckDataProvider healthCheckDataProvider,
+            IClock systemClock)
+            : base(loggerFactory, systemClock)
         {
             _healthCheckDataProvider = healthCheckDataProvider;
         }

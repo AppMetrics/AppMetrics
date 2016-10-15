@@ -7,6 +7,7 @@ namespace App.Metrics.Core
     public sealed class HistogramMetric : IHistogramImplementation
     {
         private readonly IReservoir _reservoir;
+        private bool _disposed = false;
         private UserValueWrapper _last;
 
         public HistogramMetric()
@@ -24,7 +25,31 @@ namespace App.Metrics.Core
             _reservoir = reservoir;
         }
 
+        ~HistogramMetric()
+        {
+            Dispose(false);
+        }
+
         public HistogramValue Value => GetValue();
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // Free any other managed objects here.
+                }
+            }
+
+            _disposed = true;
+        }
 
         public HistogramValue GetValue(bool resetMetric = false)
         {

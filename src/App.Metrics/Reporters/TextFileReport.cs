@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporters
@@ -12,28 +13,13 @@ namespace App.Metrics.Reporters
         private bool _disposed = false;
 
         public TextFileReport(string fileName,
-            ILoggerFactory loggerFactory)
-            :base(loggerFactory)
+            ILoggerFactory loggerFactory,
+            IClock systemClock)
+            : base(loggerFactory, systemClock)
 
         {
             Directory.CreateDirectory(Path.GetDirectoryName(fileName));
             _fileName = fileName;
-        }
-
-        protected override void EndReport(string contextName)
-        {
-            try
-            {
-                File.WriteAllText(_fileName, _buffer.ToString());
-            }
-            catch (Exception x)
-            {
-                Logger.LogError(new EventId(), x, "Error writing text file " + _fileName);
-                //TODO: Review enableing internal metrics
-            }
-
-            base.EndReport(contextName);
-            _buffer = null;
         }
 
         protected override void Dispose(bool disposing)
@@ -52,6 +38,22 @@ namespace App.Metrics.Reporters
             }
 
             base.Dispose(disposing);
+        }
+
+        protected override void EndReport(string contextName)
+        {
+            try
+            {
+                File.WriteAllText(_fileName, _buffer.ToString());
+            }
+            catch (Exception x)
+            {
+                Logger.LogError(new EventId(), x, "Error writing text file " + _fileName);
+                //TODO: Review enableing internal metrics
+            }
+
+            base.EndReport(contextName);
+            _buffer = null;
         }
 
 

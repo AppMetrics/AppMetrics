@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using App.Metrics.Health;
 using App.Metrics.MetricData;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
@@ -10,8 +11,8 @@ namespace App.Metrics.Reporters
         private readonly int _padding = 20;
         private bool _disposed = false;
 
-        protected HumanReadableReport(ILoggerFactory loggerFactory)
-            : base(loggerFactory)
+        protected HumanReadableReport(ILoggerFactory loggerFactory, IClock systemClock)
+            : base(loggerFactory, systemClock)
         {
         }
 

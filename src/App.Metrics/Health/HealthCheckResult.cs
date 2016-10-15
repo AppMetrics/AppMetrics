@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 
-namespace App.Metrics
+namespace App.Metrics.Health
 {
     /// <summary>
     ///     Result of a health check

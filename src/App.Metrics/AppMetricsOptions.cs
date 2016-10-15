@@ -6,7 +6,7 @@ using App.Metrics.Utils;
 
 namespace App.Metrics
 {
-    public sealed class AppMetricsOptions
+    public class AppMetricsOptions
     {
         public IAppMetricsEvents Events = new AppMetricsEvents();
 

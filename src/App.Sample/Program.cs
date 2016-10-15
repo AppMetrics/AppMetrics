@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
+using App.Metrics.Health;
 using App.Metrics.Utils;
 using HealthCheck.Samples;
 using Metrics.Samples;

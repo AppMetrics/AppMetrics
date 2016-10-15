@@ -13,12 +13,14 @@ namespace App.Metrics.Registries
         private readonly IHealthCheckDataProvider _healthCheckDataProvider;
         private readonly ILoggerFactory _loggerFactory;
         private readonly IMetricsDataProvider _metricsDataProvider;
+        private readonly IClock _systemClock;
 
         private bool _disposed = false;
 
         public MetricReporterRegistry(
             ILoggerFactory loggerFactory,
             IMetricsDataProvider metricsDataProvider,
+            IClock systemClock,
             //MetricsErrorHandler errorHandler,
             IHealthCheckDataProvider healthCheckDataProvider)
         {
@@ -30,12 +32,18 @@ namespace App.Metrics.Registries
             {
                 throw new ArgumentNullException(nameof(metricsDataProvider));
             }
+            if (systemClock == null)
+            {
+                throw new ArgumentNullException(nameof(systemClock));
+            }
 
             _loggerFactory = loggerFactory;
             _metricsDataProvider = metricsDataProvider;
+            _systemClock = systemClock;
             _healthCheckDataProvider = healthCheckDataProvider;
         }
 
+        //TODO: AH - make readonly list
         public List<ScheduledReporter> Reports { get; } = new List<ScheduledReporter>();
 
         public void Dispose()
@@ -69,7 +77,7 @@ namespace App.Metrics.Registries
         /// <param name="filter">Only report metrics that match the filter.</param>
         public IMetricReporterRegistry WithConsoleReport(TimeSpan interval, IMetricsFilter filter = null)
         {
-            return WithReport(new ConsoleReport(_loggerFactory), interval, filter);
+            return WithReport(new ConsoleReport(_loggerFactory, _systemClock), interval, filter);
         }
 
         /// <summary>
@@ -93,7 +101,7 @@ namespace App.Metrics.Registries
         /// <param name="filter">Only report metrics that match the filter.</param>
         public IMetricReporterRegistry WithTextFileReport(string filePath, TimeSpan interval, IMetricsFilter filter = null)
         {
-            return WithReport(new TextFileReport(filePath, _loggerFactory), interval, filter);
+            return WithReport(new TextFileReport(filePath, _loggerFactory, _systemClock), interval, filter);
         }
 
         protected virtual void Dispose(bool disposing)
