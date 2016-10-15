@@ -6,11 +6,11 @@ using App.Metrics.Registries;
 
 namespace App.Metrics.DataProviders
 {
-    public sealed class HealthCheckDataProvider : IHealthCheckDataProvider
+    public sealed class DefaultHealthCheckDataProvider : IHealthCheckDataProvider
     {
         private readonly IHealthCheckRegistry _healthCheckRegistry;
 
-        public HealthCheckDataProvider(IHealthCheckRegistry healthCheckRegistry)
+        public DefaultHealthCheckDataProvider(IHealthCheckRegistry healthCheckRegistry)
         {
             if (healthCheckRegistry == null)
             {

@@ -5,7 +5,7 @@ using App.Metrics.MetricData;
 
 namespace App.Metrics.DataProviders
 {
-    public class DefaultDataProvider : IMetricsDataProvider
+    public class DefaultMetricsDataProvider : IMetricsDataProvider
     {
         private readonly Func<IEnumerable<IMetricsDataProvider>> _childProviders;
         private readonly string _context;
@@ -13,7 +13,7 @@ namespace App.Metrics.DataProviders
         private readonly IRegistryDataProvider _registryDataProvider;
         private readonly Func<DateTime> _timestampProvider;
 
-        public DefaultDataProvider(string context,
+        public DefaultMetricsDataProvider(string context,
             Func<DateTime> timestampProvider,
             IRegistryDataProvider registryDataProvider,
             Func<IEnumerable<IMetricsDataProvider>> childProviders)
@@ -21,7 +21,7 @@ namespace App.Metrics.DataProviders
         {
         }
 
-        public DefaultDataProvider(string context,
+        public DefaultMetricsDataProvider(string context,
             Func<DateTime> timestampProvider,
             IEnumerable<EnvironmentInfoEntry> environment,
             IRegistryDataProvider registryDataProvider,

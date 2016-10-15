@@ -15,7 +15,7 @@ namespace App.Metrics.Facts.Core
     public class DefaultContextTests
     {
         private readonly IMetricsContext _context = new DefaultMetricsContext(Clock.Default,
-              new HealthCheckDataProvider(new HealthCheckRegistry(Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))));
+              new DefaultHealthCheckDataProvider(new HealthCheckRegistry(Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))));
 
         public MetricsData CurrentData => _context.DataProvider.CurrentMetricsData;
 

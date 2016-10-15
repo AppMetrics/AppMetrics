@@ -28,7 +28,7 @@ namespace App.Metrics.Core
         {
             _registry = registry;
             _metricsBuilder = metricsBuilder;
-            DataProvider = new DefaultDataProvider(context, timestampProvider, _registry.DataProvider,
+            DataProvider = new DefaultMetricsDataProvider(context, timestampProvider, _registry.DataProvider,
                 () => _childContexts.Values.Select(c => c.DataProvider));
             GetHealthStatusAsync = healthCheckDataProvider.GetStatusAsync;
             SystemClock = systemClock;

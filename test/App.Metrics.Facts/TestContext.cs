@@ -18,7 +18,7 @@ namespace App.Metrics.Facts
             : base(contextName,
                 new DefaultMetricsRegistry(),
                 new TestMetricsBuilder(clock, scheduler),
-                  new HealthCheckDataProvider(new HealthCheckRegistry(Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))),
+                  new DefaultHealthCheckDataProvider(new HealthCheckRegistry(Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))),
                 clock,
                 () => clock.UtcDateTime)
         {

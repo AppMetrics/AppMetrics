@@ -20,7 +20,7 @@ namespace App.Metrics.Facts.Health
         {
             _healthCheckRegistry = new HealthCheckRegistry(Enumerable.Empty<HealthCheck>(),
                 Options.Create(new AppMetricsOptions()));
-            _healthCheckDataProvider = new HealthCheckDataProvider(_healthCheckRegistry);
+            _healthCheckDataProvider = new DefaultHealthCheckDataProvider(_healthCheckRegistry);
         }
 
         [Fact]

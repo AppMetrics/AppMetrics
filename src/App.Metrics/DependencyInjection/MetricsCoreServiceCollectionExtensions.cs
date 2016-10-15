@@ -66,7 +66,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             IMetricsEnvironment environment)
         {
             services.TryAddSingleton<IHealthCheckRegistry, HealthCheckRegistry>();
-            services.TryAddSingleton<IHealthCheckDataProvider, HealthCheckDataProvider>();
+            services.TryAddSingleton<IHealthCheckDataProvider, DefaultHealthCheckDataProvider>();
 
             services.AddHealthChecks(environment);
         }
