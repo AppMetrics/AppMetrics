@@ -13,12 +13,12 @@ namespace App.Metrics.Facts
     /// </remarks>
     public sealed class TestScheduler : IScheduler
     {
-        private readonly TestClock clock;
+        private readonly Clock.TestClock clock;
         private Action<CancellationToken> action;
         private TimeSpan interval;
         private long lastRun = 0;
 
-        public TestScheduler(TestClock clock)
+        public TestScheduler(Clock.TestClock clock)
         {
             this.clock = clock;
             this.clock.Advanced += (s, l) => this.RunIfNeeded();

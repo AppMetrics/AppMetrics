@@ -1,4 +1,5 @@
 ﻿using App.Metrics.Core;
+using App.Metrics.Utils;
 using FluentAssertions;
 using Xunit;
 
@@ -6,50 +7,49 @@ namespace App.Metrics.Facts.Metrics
 {
     public class MeterMetricTests
     {
-        private readonly TestClock clock = new TestClock();
-        private readonly MeterMetric meter;
-        private readonly TestScheduler scheduler;
+        private readonly Clock.TestClock _clock = new Clock.TestClock();
+        private readonly MeterMetric _meter;
 
         public MeterMetricTests()
         {
-            this.scheduler = new TestScheduler(this.clock);
-            this.meter = new MeterMetric(this.clock, this.scheduler);
+            var scheduler = new TestScheduler(_clock);
+            _meter = new MeterMetric(this._clock, scheduler);
         }
 
         [Fact]
         public void MeterMetric_CanCalculateMeanRate()
         {
-            meter.Mark();
-            clock.Advance(TimeUnit.Seconds, 1);
+            _meter.Mark();
+            _clock.Advance(TimeUnit.Seconds, 1);
 
-            meter.Value.MeanRate.Should().Be(1);
+            _meter.Value.MeanRate.Should().Be(1);
 
-            clock.Advance(TimeUnit.Seconds, 1);
+            _clock.Advance(TimeUnit.Seconds, 1);
 
-            meter.Value.MeanRate.Should().Be(0.5);
+            _meter.Value.MeanRate.Should().Be(0.5);
         }
 
         [Fact]
         public void MeterMetric_CanComputePercentWithZeroTotal()
         {
-            meter.Mark("A");
-            meter.Mark("A", -1);
+            _meter.Mark("A");
+            _meter.Mark("A", -1);
 
-            meter.Value.Count.Should().Be(0);
+            _meter.Value.Count.Should().Be(0);
 
-            meter.Value.Items[0].Item.Should().Be("A");
-            meter.Value.Items[0].Value.Count.Should().Be(0);
-            meter.Value.Items[0].Percent.Should().Be(0);
+            _meter.Value.Items[0].Item.Should().Be("A");
+            _meter.Value.Items[0].Value.Count.Should().Be(0);
+            _meter.Value.Items[0].Percent.Should().Be(0);
         }
 
         [Fact]
         public void MeterMetric_CanComputeRates()
         {
-            meter.Mark();
-            clock.Advance(TimeUnit.Seconds, 10);
-            meter.Mark(2);
+            _meter.Mark();
+            _clock.Advance(TimeUnit.Seconds, 10);
+            _meter.Mark(2);
 
-            var value = meter.Value;
+            var value = _meter.Value;
 
             value.MeanRate.Should().BeApproximately(0.3, 0.001);
             value.OneMinuteRate.Should().BeApproximately(0.1840, 0.001);
@@ -60,89 +60,89 @@ namespace App.Metrics.Facts.Metrics
         [Fact]
         public void MeterMetric_CanCount()
         {
-            meter.Mark();
+            _meter.Mark();
 
-            meter.Value.Count.Should().Be(1L);
+            _meter.Value.Count.Should().Be(1L);
 
-            meter.Mark();
-            meter.Value.Count.Should().Be(2L);
+            _meter.Mark();
+            _meter.Value.Count.Should().Be(2L);
 
-            meter.Mark(8L);
-            meter.Value.Count.Should().Be(10L);
+            _meter.Mark(8L);
+            _meter.Value.Count.Should().Be(10L);
         }
 
         [Fact]
         public void MeterMetric_CanCountForMultipleSetItem()
         {
-            meter.Mark("A");
-            meter.Mark("B");
+            _meter.Mark("A");
+            _meter.Mark("B");
 
-            meter.Value.Count.Should().Be(2L);
-            meter.Value.Items.Should().HaveCount(2);
+            _meter.Value.Count.Should().Be(2L);
+            _meter.Value.Items.Should().HaveCount(2);
 
-            meter.Value.Items[0].Item.Should().Be("A");
-            meter.Value.Items[0].Value.Count.Should().Be(1);
-            meter.Value.Items[0].Percent.Should().Be(50);
+            _meter.Value.Items[0].Item.Should().Be("A");
+            _meter.Value.Items[0].Value.Count.Should().Be(1);
+            _meter.Value.Items[0].Percent.Should().Be(50);
 
-            meter.Value.Items[1].Item.Should().Be("B");
-            meter.Value.Items[1].Value.Count.Should().Be(1);
-            meter.Value.Items[1].Percent.Should().Be(50);
+            _meter.Value.Items[1].Item.Should().Be("B");
+            _meter.Value.Items[1].Value.Count.Should().Be(1);
+            _meter.Value.Items[1].Percent.Should().Be(50);
         }
 
         [Fact]
         public void MeterMetric_CanCountForSetItem()
         {
-            meter.Mark("A");
-            meter.Value.Count.Should().Be(1L);
-            meter.Value.Items.Should().HaveCount(1);
+            _meter.Mark("A");
+            _meter.Value.Count.Should().Be(1L);
+            _meter.Value.Items.Should().HaveCount(1);
 
-            meter.Value.Items[0].Item.Should().Be("A");
-            meter.Value.Items[0].Value.Count.Should().Be(1);
-            meter.Value.Items[0].Percent.Should().Be(100);
+            _meter.Value.Items[0].Item.Should().Be("A");
+            _meter.Value.Items[0].Value.Count.Should().Be(1);
+            _meter.Value.Items[0].Percent.Should().Be(100);
         }
 
         [Fact]
         public void MeterMetric_CanReset()
         {
-            meter.Mark();
-            meter.Mark();
-            clock.Advance(TimeUnit.Seconds, 10);
-            meter.Mark(2);
+            _meter.Mark();
+            _meter.Mark();
+            _clock.Advance(TimeUnit.Seconds, 10);
+            _meter.Mark(2);
 
-            meter.Reset();
-            meter.Value.Count.Should().Be(0L);
-            meter.Value.OneMinuteRate.Should().Be(0);
-            meter.Value.FiveMinuteRate.Should().Be(0);
-            meter.Value.FifteenMinuteRate.Should().Be(0);
+            _meter.Reset();
+            _meter.Value.Count.Should().Be(0L);
+            _meter.Value.OneMinuteRate.Should().Be(0);
+            _meter.Value.FiveMinuteRate.Should().Be(0);
+            _meter.Value.FifteenMinuteRate.Should().Be(0);
         }
 
         [Fact]
         public void MeterMetric_CanResetSetItem()
         {
-            meter.Mark("A");
-            meter.Value.Items[0].Value.Count.Should().Be(1);
-            meter.Reset();
-            meter.Value.Items[0].Value.Count.Should().Be(0L);
+            _meter.Mark("A");
+            _meter.Value.Items[0].Value.Count.Should().Be(1);
+            _meter.Reset();
+            _meter.Value.Items[0].Value.Count.Should().Be(0L);
         }
 
         [Fact]
         public void MeterMetric_StartsAtZero()
         {
-            meter.Value.MeanRate.Should().Be(0L);
-            meter.Value.OneMinuteRate.Should().Be(0L);
-            meter.Value.FiveMinuteRate.Should().Be(0L);
-            meter.Value.FifteenMinuteRate.Should().Be(0L);
+            _meter.Value.MeanRate.Should().Be(0L);
+            _meter.Value.OneMinuteRate.Should().Be(0L);
+            _meter.Value.FiveMinuteRate.Should().Be(0L);
+            _meter.Value.FifteenMinuteRate.Should().Be(0L);
         }
 
         [Fact]
         public void MeterMetric_ValueCanScaleDown()
         {
-            this.meter.Mark();
-            this.clock.Advance(TimeUnit.Milliseconds, 1);
-            this.meter.Mark();
-            this.clock.Advance(TimeUnit.Milliseconds, 1);
+            this._meter.Mark();
+            this._clock.Advance(TimeUnit.Milliseconds, 1);
+            this._meter.Mark();
+            this._clock.Advance(TimeUnit.Milliseconds, 1);
 
-            var scaledValue = this.meter.Value.Scale(TimeUnit.Milliseconds);
+            var scaledValue = this._meter.Value.Scale(TimeUnit.Milliseconds);
 
             scaledValue.MeanRate.Should().Be(1);
         }
@@ -150,12 +150,12 @@ namespace App.Metrics.Facts.Metrics
         [Fact]
         public void MeterMetric_ValueCanScaleDownToDecimals()
         {
-            this.meter.Mark();
-            this.clock.Advance(TimeUnit.Seconds, 1);
-            this.meter.Mark();
-            this.clock.Advance(TimeUnit.Seconds, 1);
+            this._meter.Mark();
+            this._clock.Advance(TimeUnit.Seconds, 1);
+            this._meter.Mark();
+            this._clock.Advance(TimeUnit.Seconds, 1);
 
-            var scaledValue = this.meter.Value.Scale(TimeUnit.Milliseconds);
+            var scaledValue = this._meter.Value.Scale(TimeUnit.Milliseconds);
 
             scaledValue.MeanRate.Should().Be(0.001);
         }
@@ -163,12 +163,12 @@ namespace App.Metrics.Facts.Metrics
         [Fact]
         public void MeterMetric_ValueCanScaleUp()
         {
-            this.meter.Mark();
-            this.clock.Advance(TimeUnit.Minutes, 1);
-            this.meter.Mark();
-            this.clock.Advance(TimeUnit.Minutes, 1);
+            this._meter.Mark();
+            this._clock.Advance(TimeUnit.Minutes, 1);
+            this._meter.Mark();
+            this._clock.Advance(TimeUnit.Minutes, 1);
 
-            var scaledValue = this.meter.Value.Scale(TimeUnit.Minutes);
+            var scaledValue = this._meter.Value.Scale(TimeUnit.Minutes);
 
             scaledValue.MeanRate.Should().Be(1);
         }

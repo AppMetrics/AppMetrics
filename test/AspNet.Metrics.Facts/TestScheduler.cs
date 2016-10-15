@@ -13,12 +13,12 @@ namespace AspNet.Metrics.Facts
     /// </remarks>
     public sealed class TestScheduler : IScheduler
     {
-        private readonly TestClock clock;
+        private readonly Clock.TestClock clock;
         private TimeSpan interval;
         private Action<CancellationToken> action;
         private long lastRun = 0;
 
-        public TestScheduler(TestClock clock)
+        public TestScheduler(Clock.TestClock clock)
         {
             this.clock = clock;
             this.clock.Advanced += (s, l) => this.RunIfNeeded();

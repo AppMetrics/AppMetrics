@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.Sampling;
+using App.Metrics.Utils;
 using FluentAssertions;
 using Xunit;
 
@@ -8,7 +10,7 @@ namespace App.Metrics.Facts.Metrics
 {
     public class TimerMetricTests
     {
-        private readonly TestClock clock = new TestClock();
+        private readonly Clock.TestClock clock = new Clock.TestClock();
         private readonly TimerMetric timer;
 
         public TimerMetricTests()
@@ -62,6 +64,15 @@ namespace App.Metrics.Facts.Metrics
 
             timer.Value.Histogram.Count.Should().Be(1);
             timer.Value.Histogram.Max.Should().Be(TimeUnit.Milliseconds.ToNanoseconds(100));
+
+            using (timer.NewContext())
+            {
+                clock.Advance(TimeUnit.Milliseconds, 300);
+            }
+
+            timer.Value.Histogram.Count.Should().Be(2);
+            timer.Value.Histogram.Min.Should().Be(TimeUnit.Milliseconds.ToNanoseconds(100));
+            timer.Value.Histogram.Max.Should().Be(TimeUnit.Milliseconds.ToNanoseconds(300));
         }
 
         [Fact]

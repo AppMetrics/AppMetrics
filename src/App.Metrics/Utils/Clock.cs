@@ -12,7 +12,7 @@ namespace App.Metrics.Utils
 
         public event EventHandler Advanced;
 
-        public abstract long Nanoseconds { get; protected set; }
+        public abstract long Nanoseconds { get; }
 
         public abstract DateTime UtcDateTime { get; }
 
@@ -23,47 +23,62 @@ namespace App.Metrics.Utils
             return timestamp.ToString("yyyy-MM-ddTHH:mm:ss.ffffK", CultureInfo.InvariantCulture);
         }
 
-        public void Advance(TimeUnit unit, long value)
+        public virtual void Advance(TimeUnit unit, long value)
         {
-            Nanoseconds += unit.ToNanoseconds(value);
-            Advanced?.Invoke(this, EventArgs.Empty);
+            throw new NotImplementedException($"Unable to advance {GetType()} Clock Type");
+        }
+
+        public sealed class TestClock : Clock
+        {
+            private long _nanoseconds = 0;
+
+            public override long Nanoseconds => _nanoseconds;
+
+            public override DateTime UtcDateTime => new DateTime(_nanoseconds / 100L, DateTimeKind.Utc);
+
+            public override void Advance(TimeUnit unit, long value)
+            {
+                _nanoseconds += unit.ToNanoseconds(value);
+                Advanced?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         private sealed class StopwatchClock : Clock
         {
-            private static readonly long Factor = (1000L * 1000L * 1000L) / Stopwatch.Frequency;
-            private static long _nanoseconds = Stopwatch.GetTimestamp() * Factor;
+            private static readonly long factor = (1000L * 1000L * 1000L) / Stopwatch.Frequency;
 
             public override long Nanoseconds
             {
-                get { return _nanoseconds; }
-                protected set { _nanoseconds = value; }
+                get { return Stopwatch.GetTimestamp() * factor; }
             }
 
-            public override DateTime UtcDateTime => DateTime.UtcNow;
+            public override DateTime UtcDateTime
+            {
+                get { return DateTime.UtcNow; }
+            }
         }
 
         private sealed class SystemClock : Clock
         {
-            private static long _nanoseconds = DateTime.UtcNow.Ticks * 100L;
-
             public override long Nanoseconds
             {
-                get { return _nanoseconds; }
-                protected set { _nanoseconds = value; }
+                get { return DateTime.UtcNow.Ticks * 100L; }
             }
 
-            public override DateTime UtcDateTime => DateTime.UtcNow;
+            public override DateTime UtcDateTime
+            {
+                get { return DateTime.UtcNow; }
+            }
         }
     }
 
     public static class DateTimeExtensions
     {
-        private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime().ToUniversalTime();
+        private static readonly DateTime unixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime().ToUniversalTime();
 
         public static long ToUnixTime(this DateTime date)
         {
-            return Convert.ToInt64((date.ToUniversalTime() - UnixEpoch).TotalSeconds);
+            return Convert.ToInt64((date.ToUniversalTime() - unixEpoch).TotalSeconds);
         }
     }
 }

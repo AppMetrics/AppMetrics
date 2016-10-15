@@ -5,6 +5,7 @@ using App.Metrics.DataProviders;
 using App.Metrics.Health;
 using App.Metrics.MetricData;
 using App.Metrics.Registries;
+using App.Metrics.Utils;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
 
@@ -13,7 +14,7 @@ namespace App.Metrics.Facts
     public class TestContext : BaseMetricsContext
     {
         public TestContext(string contextName,
-            TestClock clock,
+            Clock.TestClock clock,
             TestScheduler scheduler)
             : base(contextName,
                 new DefaultMetricsRegistry(),
@@ -27,16 +28,16 @@ namespace App.Metrics.Facts
         }
 
         public TestContext()
-            : this("TestContext", new TestClock())
+            : this("TestContext", new Clock.TestClock())
         {
         }
 
-        private TestContext(string contextName, TestClock clock)
+        private TestContext(string contextName, Clock.TestClock clock)
             : this(contextName, clock, new TestScheduler(clock))
         {
         }
 
-        public TestClock Clock { get; }
+        public Clock.TestClock Clock { get; }
 
         public TestScheduler Scheduler { get; }
 

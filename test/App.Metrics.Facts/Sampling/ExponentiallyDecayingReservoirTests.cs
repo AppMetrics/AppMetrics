@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using App.Metrics.Sampling;
+using App.Metrics.Utils;
 using FluentAssertions;
 using Xunit;
 
@@ -7,7 +8,7 @@ namespace App.Metrics.Facts.Sampling
 {
     public class ExponentiallyDecayingReservoirTests
     {
-        private readonly TestClock clock = new TestClock();
+        private readonly Clock.TestClock clock = new Clock.TestClock();
         private readonly TestScheduler scheduler;
 
         public ExponentiallyDecayingReservoirTests()
