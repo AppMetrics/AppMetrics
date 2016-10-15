@@ -1,8 +1,8 @@
-﻿using AspNet.Metrics.Infrastructure;
-using Microsoft.AspNet.Builder;
+﻿using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -56,7 +56,7 @@ namespace Mvc.Sample
                 .AddLogging()
                 .AddRouting(options => { options.LowercaseUrls = true; });
 
-            services.AddMvc(options => { options.Filters.Add(new MetricsResourceFilter(new DefaultRouteTemplateResolver())); });
+            services.AddMvc(options => options.AddMetricsResourceFilter());
 
             services
                 .AddMetrics(options =>
@@ -64,10 +64,7 @@ namespace Mvc.Sample
                     options.DisableMetrics = false;
                     options.GlobalContextName = "Mvc.Sample";
                 })
-                .AddAspNetMetrics(options =>
-                {
-                    options.MetricsEndpoint = new PathString("/metrics");
-                });
+                .AddAspNetMetrics(options => { options.MetricsEndpoint = new PathString("/metrics"); });
             //.WithSystemPerforrmanceCounters()
         }
     }

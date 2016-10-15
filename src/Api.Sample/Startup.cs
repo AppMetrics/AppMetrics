@@ -7,6 +7,7 @@ using AspNet.Metrics.Infrastructure;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -61,7 +62,7 @@ namespace Api.Sample
                 .AddLogging()
                 .AddRouting(options => { options.LowercaseUrls = true; });
 
-            services.AddMvc(options => { options.Filters.Add(new MetricsResourceFilter(new DefaultRouteTemplateResolver())); });
+            services.AddMvc(options => options.AddMetricsResourceFilter());
 
             services
                 .AddMetrics(options =>
