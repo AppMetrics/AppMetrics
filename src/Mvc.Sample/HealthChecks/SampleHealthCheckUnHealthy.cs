@@ -4,7 +4,7 @@ using App.Metrics.Health;
 
 namespace Mvc.Sample.HealthChecks
 {
-    public class SampleHealthCheckUnHealthy : App.Metrics.Core.HealthCheck
+    public class SampleHealthCheckUnHealthy : App.Metrics.Health.HealthCheck
     {
         public SampleHealthCheckUnHealthy() : base("Sample UnHealthy")
         {

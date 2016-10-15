@@ -5,7 +5,7 @@ using App.Metrics.Health;
 namespace App.Metrics.Facts
 {
     [Obsolete]
-    public class IgnoreAttributeHealthCheck : App.Metrics.Core.HealthCheck
+    public class IgnoreAttributeHealthCheck : HealthCheck
     {
         public IgnoreAttributeHealthCheck() : base("Referencing Assembly - Sample Healthy")
         {

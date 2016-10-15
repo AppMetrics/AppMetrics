@@ -4,7 +4,7 @@ using App.Metrics.Health;
 
 namespace HealthCheck.Samples
 {
-    public class HealthCheckUnHealthy : App.Metrics.Core.HealthCheck
+    public class HealthCheckUnHealthy : App.Metrics.Health.HealthCheck
     {
         public HealthCheckUnHealthy() : base("Referencing Assembly - Sample UnHealthy")
         {

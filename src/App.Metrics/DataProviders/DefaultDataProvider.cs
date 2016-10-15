@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using App.Metrics.DataProviders;
 using App.Metrics.MetricData;
 
-namespace App.Metrics.Core
+namespace App.Metrics.DataProviders
 {
     public class DefaultDataProvider : IMetricsDataProvider
     {

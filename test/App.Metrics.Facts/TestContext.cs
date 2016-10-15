@@ -2,6 +2,7 @@
 using System.Linq;
 using App.Metrics.Core;
 using App.Metrics.DataProviders;
+using App.Metrics.Health;
 using App.Metrics.MetricData;
 using App.Metrics.Registries;
 using FluentAssertions;

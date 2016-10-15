@@ -6,7 +6,7 @@ using App.Metrics.Health;
 namespace HealthCheck.Samples
 {
     [Obsolete]
-    public class IgnoreAttributeHealthCheck : App.Metrics.Core.HealthCheck
+    public class IgnoreAttributeHealthCheck : App.Metrics.Health.HealthCheck
     {
         public IgnoreAttributeHealthCheck() : base("Referencing Assembly - Sample Healthy")
         {

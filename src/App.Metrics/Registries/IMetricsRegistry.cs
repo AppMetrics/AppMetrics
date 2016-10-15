@@ -1,7 +1,9 @@
-﻿using System;
+using System;
+using App.Metrics.Core;
+using App.Metrics.DataProviders;
 using App.Metrics.MetricData;
 
-namespace App.Metrics.Core
+namespace App.Metrics.Registries
 {
     public interface IMetricsRegistry
     {

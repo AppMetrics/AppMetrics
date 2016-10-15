@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using App.Metrics.MetricData;
 
-namespace App.Metrics.Core
+namespace App.Metrics.DataProviders
 {
     public interface IRegistryDataProvider
     {
