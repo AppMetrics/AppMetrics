@@ -35,7 +35,7 @@ namespace App.Metrics.Json
             var version = Version.ToString(CultureInfo.InvariantCulture);
 
             return JsonMetricsContext.FromContext(data, environmentInfo, version)
-                .ToJsonObject()
+                .ToJsonObject(clock)
                 .AsJson(indented);
         }
     }

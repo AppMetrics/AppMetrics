@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using App.Metrics.Health;
 using App.Metrics.MetricData;
 using App.Metrics.Utils;
@@ -9,11 +10,23 @@ namespace App.Metrics.Reporters
     public abstract class HumanReadableReport : BaseReport
     {
         private readonly int _padding = 20;
+        private readonly IClock _systemClock;
         private bool _disposed = false;
 
         protected HumanReadableReport(ILoggerFactory loggerFactory, IClock systemClock)
             : base(loggerFactory, systemClock)
         {
+            if (loggerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(loggerFactory));
+            }
+
+            if (systemClock == null)
+            {
+                throw new ArgumentNullException(nameof(systemClock));
+            }
+
+            _systemClock = systemClock;
         }
 
         public void WriteValue(string label, string value, string sign = "=")
@@ -137,15 +150,14 @@ namespace App.Metrics.Reporters
         {
             WriteLine();
             WriteLine();
-            //TODO: AH - Inject Clock
-            WriteLine("***** {0} - {1} *****", metricType, Clock.FormatTimestamp(CurrentContextTimestamp));
+            WriteLine("***** {0} - {1} *****", metricType, _systemClock.FormatTimestamp(CurrentContextTimestamp));
 
             base.StartMetricGroup(metricType);
         }
 
         protected override void StartReport(string contextName)
         {
-            WriteLine("{0} - {1}", contextName, Clock.FormatTimestamp(ReportTimestamp));
+            WriteLine("{0} - {1}", contextName, _systemClock.FormatTimestamp(ReportTimestamp));
 
             base.StartReport(contextName);
         }

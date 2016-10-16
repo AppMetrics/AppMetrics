@@ -11,5 +11,7 @@ namespace App.Metrics.Utils
         DateTime UtcDateTime { get; }
 
         void Advance(TimeUnit unit, long value);
+
+        string FormatTimestamp(DateTime timestamp);
     }
 }

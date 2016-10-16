@@ -26,7 +26,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public void RunReports(CancellationToken token)
         {
             var reportRegistry = Services.BuildServiceProvider().GetRequiredService<IMetricReporterRegistry>();
-            reportRegistry.Reports.ForEach(r => r.Start(token));
+            reportRegistry.RunReports(token);
         }
     }
 }

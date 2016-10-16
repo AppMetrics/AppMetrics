@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Threading;
 using App.Metrics.MetricData;
 using App.Metrics.Reporters;
 
@@ -7,9 +7,9 @@ namespace App.Metrics.Registries
 {
     public interface IMetricReporterRegistry
     {
-        List<ScheduledReporter> Reports { get; }
-
         void Dispose();
+
+        void RunReports(CancellationToken token);
 
         /// <summary>
         ///     Stop all registered reports and clear the registrations.

@@ -18,7 +18,7 @@ namespace App.Metrics.Utils
 
         public long Seconds => TimeUnit.Nanoseconds.ToSeconds(Nanoseconds);
 
-        public static string FormatTimestamp(DateTime timestamp)
+        public string FormatTimestamp(DateTime timestamp)
         {
             return timestamp.ToString("yyyy-MM-ddTHH:mm:ss.ffffK", CultureInfo.InvariantCulture);
         }
@@ -47,28 +47,16 @@ namespace App.Metrics.Utils
         {
             private static readonly long factor = (1000L * 1000L * 1000L) / Stopwatch.Frequency;
 
-            public override long Nanoseconds
-            {
-                get { return Stopwatch.GetTimestamp() * factor; }
-            }
+            public override long Nanoseconds => Stopwatch.GetTimestamp() * factor;
 
-            public override DateTime UtcDateTime
-            {
-                get { return DateTime.UtcNow; }
-            }
+            public override DateTime UtcDateTime => DateTime.UtcNow;
         }
 
         private sealed class SystemClock : Clock
         {
-            public override long Nanoseconds
-            {
-                get { return DateTime.UtcNow.Ticks * 100L; }
-            }
+            public override long Nanoseconds => DateTime.UtcNow.Ticks * 100L;
 
-            public override DateTime UtcDateTime
-            {
-                get { return DateTime.UtcNow; }
-            }
+            public override DateTime UtcDateTime => DateTime.UtcNow;
         }
     }
 

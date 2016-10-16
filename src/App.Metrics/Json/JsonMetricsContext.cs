@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using App.Metrics.Infrastructure;
 using App.Metrics.MetricData;
@@ -92,9 +93,9 @@ namespace App.Metrics.Json
             };
         }
 
-        public JsonObject ToJsonObject()
+        public JsonObject ToJsonObject(IClock clock)
         {
-            return new JsonObject(ToJsonProperties());
+            return new JsonObject(ToJsonProperties(clock));
         }
 
         public MetricsData ToMetricsData()
@@ -109,9 +110,9 @@ namespace App.Metrics.Json
                 ChildContexts.Select(c => c.ToMetricsData()));
         }
 
-        private IEnumerable<JsonProperty> ToJsonProperties()
+        private IEnumerable<JsonProperty> ToJsonProperties(IClock clock)
         {
-            foreach (var jsonProperty in EnvironmentJsonProperties())
+            foreach (var jsonProperty in EnvironmentJsonProperties(clock))
             {
                 yield return jsonProperty;
             }
@@ -123,7 +124,7 @@ namespace App.Metrics.Json
 
             if (ChildContexts.Length > 0)
             {
-                yield return new JsonProperty("ChildContexts", ChildContexts.Select(c => c.ToJsonObject()));
+                yield return new JsonProperty("ChildContexts", ChildContexts.Select(c => c.ToJsonObject(clock)));
             }
         }
 
@@ -155,7 +156,7 @@ namespace App.Metrics.Json
             }
         }
 
-        private IEnumerable<JsonProperty> EnvironmentJsonProperties()
+        private IEnumerable<JsonProperty> EnvironmentJsonProperties(IClock clock)
         {
             if (!string.IsNullOrEmpty(Version))
             {
@@ -164,7 +165,7 @@ namespace App.Metrics.Json
 
             if (Timestamp != default(DateTime))
             {
-                yield return new JsonProperty("Timestamp", Clock.FormatTimestamp(Timestamp));
+                yield return new JsonProperty("Timestamp", clock.FormatTimestamp(Timestamp));
             }
 
             if (Environment.Any())

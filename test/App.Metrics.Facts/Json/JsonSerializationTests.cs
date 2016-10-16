@@ -2,6 +2,7 @@
 using System.Linq;
 using App.Metrics.Json;
 using App.Metrics.MetricData;
+using App.Metrics.Utils;
 using FluentAssertions;
 using Newtonsoft.Json;
 using Xunit;
@@ -11,6 +12,7 @@ namespace App.Metrics.Facts.Json
     public class JsonSerializationTests
     {
         private readonly CounterValueSource _counter;
+        private static readonly IClock Clock = new Clock.TestClock();
 
         private readonly CounterValue _counterValue = new CounterValue(7, new[]
         {
@@ -55,7 +57,7 @@ namespace App.Metrics.Facts.Json
             _jsonContext.Environment.Should().HaveCount(1);
             _jsonContext.Environment.Single().Key.Should().Be("name");
 
-            var json = _jsonContext.ToJsonObject().AsJson(true);
+            var json = _jsonContext.ToJsonObject(Clock).AsJson(true);
 
             var result = JsonConvert.DeserializeObject<JsonMetricsContext>(json);
 
@@ -76,7 +78,7 @@ namespace App.Metrics.Facts.Json
             _jsonContext.Counters[0].Items[0].Count.Should().Be(6);
             _jsonContext.Counters[0].Items[0].Percent.Should().Be(0.9);
 
-            var json = _jsonContext.ToJsonObject().AsJson(true);
+            var json = _jsonContext.ToJsonObject(Clock).AsJson(true);
 
             var result = JsonConvert.DeserializeObject<JsonMetricsContext>(json);
 
@@ -91,7 +93,7 @@ namespace App.Metrics.Facts.Json
             _jsonContext.Gauges[0].Value.Should().Be(_gauge.Value);
             _jsonContext.Gauges[0].Unit.Should().Be(_gauge.Unit.Name);
 
-            var json = _jsonContext.ToJsonObject().AsJson(true);
+            var json = _jsonContext.ToJsonObject(Clock).AsJson(true);
 
             var result = JsonConvert.DeserializeObject<JsonMetricsContext>(json);
 
@@ -130,7 +132,7 @@ namespace App.Metrics.Facts.Json
             _jsonContext.Histograms[0].Unit.Should().Be(_histogram.Unit.Name);
 
 
-            var json = _jsonContext.ToJsonObject().AsJson(true);
+            var json = _jsonContext.ToJsonObject(Clock).AsJson(true);
 
             var result = JsonConvert.DeserializeObject<JsonMetricsContext>(json);
 
@@ -160,7 +162,7 @@ namespace App.Metrics.Facts.Json
             _jsonContext.Meters[0].Items[0].FiveMinuteRate.Should().Be(4);
             _jsonContext.Meters[0].Items[0].FifteenMinuteRate.Should().Be(5);
 
-            var json = _jsonContext.ToJsonObject().AsJson(true);
+            var json = _jsonContext.ToJsonObject(Clock).AsJson(true);
 
             var result = JsonConvert.DeserializeObject<JsonMetricsContext>(json);
 
@@ -177,7 +179,7 @@ namespace App.Metrics.Facts.Json
             _jsonContext.Timers[0].RateUnit.Should().Be(_timer.RateUnit.Unit());
             _jsonContext.Timers[0].DurationUnit.Should().Be(_timer.DurationUnit.Unit());
 
-            var json = _jsonContext.ToJsonObject().AsJson(true);
+            var json = _jsonContext.ToJsonObject(Clock).AsJson(true);
 
             var result = JsonConvert.DeserializeObject<JsonMetricsContext>(json);
 

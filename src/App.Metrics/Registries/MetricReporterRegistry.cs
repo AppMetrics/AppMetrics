@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using App.Metrics.DataProviders;
 using App.Metrics.Extensions;
 using App.Metrics.MetricData;
 using App.Metrics.Reporters;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Primitives;
 
 namespace App.Metrics.Registries
 {
@@ -14,6 +16,7 @@ namespace App.Metrics.Registries
         private readonly IHealthCheckDataProvider _healthCheckDataProvider;
         private readonly ILoggerFactory _loggerFactory;
         private readonly IMetricsDataProvider _metricsDataProvider;
+        private readonly List<ScheduledReporter> _reports = new List<ScheduledReporter>();
         private readonly IClock _systemClock;
 
         private bool _disposed = false;
@@ -44,13 +47,15 @@ namespace App.Metrics.Registries
             _healthCheckDataProvider = healthCheckDataProvider;
         }
 
-        //TODO: AH - make readonly list
-        public List<ScheduledReporter> Reports { get; } = new List<ScheduledReporter>();
-
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public void RunReports(CancellationToken token)
+        {
+            _reports.ForEach(r => r.Start(token));
         }
 
         /// <summary>
@@ -58,9 +63,9 @@ namespace App.Metrics.Registries
         /// </summary>
         public void StopAndClearAllReports()
         {
-            if (Reports == null) return;
+            if (_reports == null) return;
 
-            Reports.ForEach(r =>
+            _reports.ForEach(r =>
             {
                 if (r != default(ScheduledReporter))
                 {
@@ -68,7 +73,7 @@ namespace App.Metrics.Registries
                 }
             });
 
-            Reports.Clear();
+            _reports.Clear();
         }
 
         /// <summary>
@@ -90,7 +95,7 @@ namespace App.Metrics.Registries
         public IMetricReporterRegistry WithReport(IMetricsReport report, TimeSpan interval, IMetricsFilter filter = null)
         {
             var newReport = new ScheduledReporter(report, _metricsDataProvider.WithFilter(filter), _healthCheckDataProvider, interval);
-            Reports.Add(newReport);
+            _reports.Add(newReport);
             return this;
         }
 
