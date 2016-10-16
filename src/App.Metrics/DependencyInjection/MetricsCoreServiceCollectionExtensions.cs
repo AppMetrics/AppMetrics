@@ -27,7 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                 { JsonSchemeVersion.Version1, typeof(MetricsJsonBuilderV1) }
             });
 
-        internal static IMetricsBuilder AddMetricsCore(this IServiceCollection services)
+        internal static IMetricsHost AddMetricsCore(this IServiceCollection services)
         {
             if (services == null)
             {
@@ -37,7 +37,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             return AddMetricsCore(services, setupAction: null, metricsContext: default(IMetricsContext));
         }
 
-        internal static IMetricsBuilder AddMetricsCore(
+        internal static IMetricsHost AddMetricsCore(
             this IServiceCollection services,
             Action<AppMetricsOptions> setupAction,
             IMetricsContext metricsContext)
@@ -59,7 +59,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                 services.Configure(setupAction);
             }
 
-            return new MetricsBuilder(services, metricsEnvironment);
+            return new MetricsHost(services, metricsEnvironment);
         }
 
         internal static void AddDefaultHealthCheckServices(this IServiceCollection services,
@@ -107,6 +107,8 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
         internal static void AddMetricsCoreServices(this IServiceCollection services,
             IMetricsEnvironment environment, IMetricsContext metricsContext)
         {
+            services.TryAddTransient<IMetricsRegistry, DefaultMetricsRegistry>();
+            services.TryAddSingleton<IMetricsBuilder, DefaultMetricsBuilder>();
             services.TryAddSingleton(typeof(IClock), provider => provider.GetRequiredService<IOptions<AppMetricsOptions>>().Value.SystemClock);
             services.TryAddSingleton<EnvironmentInfoBuilder, EnvironmentInfoBuilder>();
 
@@ -115,6 +117,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                 var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
                 var healthCheckRegistry = provider.GetRequiredService<IHealthCheckRegistry>();
                 var healthCheckDataProvider = provider.GetRequiredService<IHealthCheckDataProvider>();
+                var metricsBuilder = provider.GetRequiredService<IMetricsBuilder>();
 
                 if (!options.Value.DisableHealthChecks)
                 {
@@ -124,14 +127,15 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                 if (options.Value.EnableInternalMetrics)
                 {
                     //TODO: Review enableing internal metrics
-                    //var internalMetricsContexxt = new DefaultMetricsContext(BaseMetricsContext.InternalMetricsContextName, options.Value.SystemClock);
+                    //var internalMetricsContexxt = new MetricsContext(BaseMetricsContext.InternalMetricsContextName, options.Value.SystemClock);
                     //options.Value.MetricsContext.Advanced.AttachContext(BaseMetricsContext.InternalMetricsContextName,
                     //    internalMetricsContexxt);
                 }
 
                 if (metricsContext == default(IMetricsContext))
                 {
-                    metricsContext = new DefaultMetricsContext(options.Value.GlobalContextName, options.Value.SystemClock, healthCheckDataProvider);
+                    metricsContext = new MetricsContext(options.Value.GlobalContextName, options.Value.SystemClock,
+                        provider.GetRequiredService<IMetricsRegistry>, metricsBuilder, healthCheckDataProvider);
                 }
 
 

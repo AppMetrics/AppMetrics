@@ -8,7 +8,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class MetricsServiceCollectionExtensions
     {
-        public static IMetricsBuilder AddMetrics(this IServiceCollection services)
+        public static IMetricsHost AddMetrics(this IServiceCollection services)
         {
             if (services == null) 
             {
@@ -18,7 +18,7 @@ namespace Microsoft.Extensions.DependencyInjection
             return services.AddMetrics(null, default(IMetricsContext));
         }
 
-        public static IMetricsBuilder AddMetrics(this IServiceCollection services,
+        public static IMetricsHost AddMetrics(this IServiceCollection services,
             Action<AppMetricsOptions> setupAction, IMetricsContext metricsContext)
         {
             if (services == null)
@@ -36,7 +36,7 @@ namespace Microsoft.Extensions.DependencyInjection
             return builder;
         }
 
-        public static IMetricsBuilder AddMetrics(this IServiceCollection services,
+        public static IMetricsHost AddMetrics(this IServiceCollection services,
             Action<AppMetricsOptions> setupAction)
         {
             return services.AddMetrics(setupAction, default(IMetricsContext));

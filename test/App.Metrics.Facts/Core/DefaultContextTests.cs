@@ -5,7 +5,6 @@ using App.Metrics.DataProviders;
 using App.Metrics.Health;
 using App.Metrics.MetricData;
 using App.Metrics.Registries;
-using App.Metrics.Utils;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
 using Xunit;
@@ -14,8 +13,16 @@ namespace App.Metrics.Facts.Core
 {
     public class DefaultContextTests
     {
-        private readonly IMetricsContext _context = new DefaultMetricsContext(Clock.Default,
-              new DefaultHealthCheckDataProvider(new HealthCheckRegistry(Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))));
+        private static readonly IOptions<AppMetricsOptions> Options = Microsoft.Extensions.Options.Options.Create(new AppMetricsOptions());
+
+        private static readonly IHealthCheckDataProvider HealthCheckDataProvider =
+            new DefaultHealthCheckDataProvider(new HealthCheckRegistry(Enumerable.Empty<HealthCheck>(), Options));
+
+        private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.SystemClock);
+        private static readonly Func<IMetricsRegistry> MetricsRegistry = () => new DefaultMetricsRegistry();
+
+        private readonly IMetricsContext _context = new MetricsContext(Options.Value.GlobalContextName,
+            Options.Value.SystemClock, MetricsRegistry, MetricsBuilder, HealthCheckDataProvider);
 
         public MetricsData CurrentData => _context.DataProvider.CurrentMetricsData;
 

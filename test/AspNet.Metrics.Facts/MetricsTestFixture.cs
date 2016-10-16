@@ -29,8 +29,9 @@ namespace AspNet.Metrics.Facts
                 testOptions = TestOptions;
             }
 
-            TestContext = new TestContext();
-            TestContext.ResetMetricsValues();
+            TestContext = TestContextHelper.Instance();
+
+            TestContext.Advanced.ResetMetricsValues();
 
             Server = new TestServer(new WebHostBuilder()
                 .ConfigureServices(services =>
@@ -61,11 +62,11 @@ namespace AspNet.Metrics.Facts
 
         public TestServer Server { get; set; }
 
-        public TestContext TestContext { get; set; }
+        public IMetricsContext TestContext { get; set; }
 
         public void Dispose()
         {
-            TestContext.ResetMetricsValues();
+            TestContext.Advanced.ResetMetricsValues();
             TestContext.Dispose();
             Client.Dispose();
             Server.Dispose();

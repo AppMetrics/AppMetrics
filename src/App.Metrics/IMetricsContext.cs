@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using App.Metrics.DataProviders;
 using App.Metrics.Health;
-using App.Metrics.MetricData;
 using App.Metrics.Utils;
 
 namespace App.Metrics
@@ -17,16 +16,16 @@ namespace App.Metrics
         /// </summary>
         IAdvancedMetricsContext Advanced { get; }
 
-        IMetricsContext Internal { get; }
-
-        IClock SystemClock { get; }
-
-        Func<Task<HealthStatus>> GetHealthStatusAsync { get; }
-
         /// <summary>
         ///     Returns a metrics data provider capable of returning the metrics in this context and any existing child contexts.
         /// </summary>
         IMetricsDataProvider DataProvider { get; }
+
+        Func<Task<HealthStatus>> GetHealthStatusAsync { get; }
+
+        IMetricsContext Internal { get; }
+
+        IClock SystemClock { get; }
 
         /// <summary>
         ///     Create a new child metrics context. Metrics added to the child context are kept separate from the metrics in the

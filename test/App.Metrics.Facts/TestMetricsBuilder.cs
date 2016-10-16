@@ -8,10 +8,10 @@ namespace App.Metrics.Facts
 {
     public class TestMetricsBuilder : IMetricsBuilder
     {
-        private readonly Clock clock;
+        private readonly IClock clock;
         private readonly IScheduler scheduler;
 
-        public TestMetricsBuilder(Clock clock, IScheduler scheduler)
+        public TestMetricsBuilder(IClock clock, IScheduler scheduler)
         {
             this.clock = clock;
             this.scheduler = scheduler;

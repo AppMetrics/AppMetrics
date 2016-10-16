@@ -13,15 +13,15 @@ namespace AspNet.Metrics.Facts
     /// </remarks>
     public sealed class TestScheduler : IScheduler
     {
-        private readonly Clock.TestClock clock;
-        private TimeSpan interval;
-        private Action<CancellationToken> action;
-        private long lastRun = 0;
+        private readonly IClock _clock;
+        private TimeSpan _interval;
+        private Action<CancellationToken> _action;
+        private long _lastRun = 0;
 
-        public TestScheduler(Clock.TestClock clock)
+        public TestScheduler(IClock clock)
         {
-            this.clock = clock;
-            this.clock.Advanced += (s, l) => this.RunIfNeeded();
+            _clock = clock;
+            _clock.Advanced += (s, l) => RunIfNeeded();
         }
 
         public void Start(TimeSpan interval, Func<CancellationToken, Task> task)
@@ -46,21 +46,21 @@ namespace AspNet.Metrics.Facts
                 throw new ArgumentException("interval must be > 0 seconds", "interval");
             }
 
-            this.interval = interval;
-            this.lastRun = this.clock.Seconds;
-            this.action = action;
+            _interval = interval;
+            _lastRun = _clock.Seconds;
+            _action = action;
         }
 
         private void RunIfNeeded()
         {
-            long clockSeconds = clock.Seconds;
-            long elapsed = clockSeconds - lastRun;
-            var times = elapsed / interval.TotalSeconds;
+            var clockSeconds = _clock.Seconds;
+            var elapsed = clockSeconds - _lastRun;
+            var times = elapsed / _interval.TotalSeconds;
             using (CancellationTokenSource ts = new CancellationTokenSource())
                 while (times-- >= 1)
                 {
-                    lastRun = clockSeconds;
-                    action(ts.Token);
+                    _lastRun = clockSeconds;
+                    _action(ts.Token);
                 }
         }
 

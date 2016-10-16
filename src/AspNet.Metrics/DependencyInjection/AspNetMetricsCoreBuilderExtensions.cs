@@ -10,29 +10,29 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class AspNetMetricsCoreBuilderExtensions
     {
-        public static IMetricsBuilder AddAspNetMetrics(
-            this IMetricsBuilder builder)
+        public static IMetricsHost AddAspNetMetrics(
+            this IMetricsHost host)
         {
-            builder.AddAspNetMetrics(setupAction: null);
-            return builder;
+            host.AddAspNetMetrics(setupAction: null);
+            return host;
         }
 
-        public static IMetricsBuilder AddAspNetMetrics(
-            this IMetricsBuilder builder,
+        public static IMetricsHost AddAspNetMetrics(
+            this IMetricsHost host,
             Action<AspNetMetricsOptions> setupAction)
         {
-            if (builder == null) throw new ArgumentNullException(nameof(builder));
+            if (host == null) throw new ArgumentNullException(nameof(host));
 
-            ConfigureDefaultServices(builder.Services);
+            ConfigureDefaultServices(host.Services);
 
-            AddAspNetMetricsCoreServices(builder.Services);
+            AddAspNetMetricsCoreServices(host.Services);
 
             if (setupAction != null)
             {
-                builder.Services.Configure(setupAction);
+                host.Services.Configure(setupAction);
             }
 
-            return builder;
+            return host;
         }
 
         internal static void AddAspNetMetricsCoreServices(IServiceCollection services)

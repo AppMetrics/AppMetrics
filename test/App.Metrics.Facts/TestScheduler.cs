@@ -6,26 +6,22 @@ using App.Metrics.Utils;
 namespace App.Metrics.Facts
 {
     /// <summary>
-    ///     Utility class for manually executing the scheduled task.
+    /// Utility class for manually executing the scheduled task.
     /// </summary>
     /// <remarks>
-    ///     This class is useful for testing.
+    /// This class is useful for testing.
     /// </remarks>
     public sealed class TestScheduler : IScheduler
     {
-        private readonly Clock.TestClock clock;
-        private Action<CancellationToken> action;
-        private TimeSpan interval;
-        private long lastRun = 0;
+        private readonly IClock _clock;
+        private TimeSpan _interval;
+        private Action<CancellationToken> _action;
+        private long _lastRun = 0;
 
-        public TestScheduler(Clock.TestClock clock)
+        public TestScheduler(IClock clock)
         {
-            this.clock = clock;
-            this.clock.Advanced += (s, l) => this.RunIfNeeded();
-        }
-
-        public void Dispose()
-        {
+            _clock = clock;
+            _clock.Advanced += (s, l) => RunIfNeeded();
         }
 
         public void Start(TimeSpan interval, Func<CancellationToken, Task> task)
@@ -50,26 +46,26 @@ namespace App.Metrics.Facts
                 throw new ArgumentException("interval must be > 0 seconds", "interval");
             }
 
-            this.interval = interval;
-            this.lastRun = this.clock.Seconds;
-            this.action = action;
-        }
-
-        public void Stop()
-        {
+            _interval = interval;
+            _lastRun = _clock.Seconds;
+            _action = action;
         }
 
         private void RunIfNeeded()
         {
-            var clockSeconds = clock.Seconds;
-            var elapsed = clockSeconds - lastRun;
-            var times = elapsed / interval.TotalSeconds;
-            using (var ts = new CancellationTokenSource())
+            var clockSeconds = _clock.Seconds;
+            var elapsed = clockSeconds - _lastRun;
+            var times = elapsed / _interval.TotalSeconds;
+            using (CancellationTokenSource ts = new CancellationTokenSource())
                 while (times-- >= 1)
                 {
-                    lastRun = clockSeconds;
-                    action(ts.Token);
+                    _lastRun = clockSeconds;
+                    _action(ts.Token);
                 }
         }
+
+        public void Stop() { }
+        public void Dispose() { }
     }
+
 }

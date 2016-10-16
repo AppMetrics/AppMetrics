@@ -134,7 +134,7 @@ namespace App.Metrics
         /// <summary>
         ///     Replace the DefaultMetricsBuilder used in this context.
         /// </summary>
-        /// <param name="metricsBuilder">The custom metrics builder.</param>
+        /// <param name="metricsBuilder">The custom metrics host.</param>
         void WithCustomMetricsBuilder(IMetricsBuilder metricsBuilder);
     }
 }

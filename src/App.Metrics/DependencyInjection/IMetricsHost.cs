@@ -1,12 +1,11 @@
-// ReSharper disable CheckNamespace
-
 using System.Threading;
 using App.Metrics;
 
+// ReSharper disable CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
 // ReSharper restore CheckNamespace
 {
-    public interface IMetricsBuilder
+    public interface IMetricsHost
     {
         IServiceCollection Services { get; }
 

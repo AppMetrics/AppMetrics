@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using App.Metrics;
+using FluentAssertions;
 using System.Threading.Tasks;
 using Xunit;
 

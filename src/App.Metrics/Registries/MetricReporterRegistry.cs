@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using App.Metrics.DataProviders;
+using App.Metrics.Extensions;
 using App.Metrics.MetricData;
 using App.Metrics.Reporters;
 using App.Metrics.Utils;

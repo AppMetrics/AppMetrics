@@ -9,10 +9,10 @@ namespace AspNet.Metrics.Facts
 {
     public class TestMetricsBuilder : IMetricsBuilder
     {
-        private readonly Clock _clock;
+        private readonly IClock _clock;
         private readonly IScheduler _scheduler;
 
-        public TestMetricsBuilder(Clock clock, IScheduler scheduler)
+        public TestMetricsBuilder(IClock clock, IScheduler scheduler)
         {
             _clock = clock;
             _scheduler = scheduler;
