@@ -6,6 +6,7 @@ using AspNet.Metrics.Infrastructure;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -36,9 +37,9 @@ namespace AspNet.Metrics.Facts
             Server = new TestServer(new WebHostBuilder()
                 .ConfigureServices(services =>
                 {
+                    services.AddLogging();
                     services.AddRouting(options => { options.LowercaseUrls = true; });
-                    //TODO: AH set this to the default filter?
-                    services.AddMvc(options => { options.Filters.Add(new MetricsResourceFilter(new DefaultRouteTemplateResolver())); });
+                    services.AddMvc(options => { options.AddMetricsResourceFilter(); });
                     services.AddMetrics(options =>
                     {
                         options.DefaultSamplingType = testOptions.DefaultSamplingType;

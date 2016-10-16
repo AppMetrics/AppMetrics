@@ -151,8 +151,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
         }
 
         private static void ConfigureDefaultServices(this IServiceCollection services)
-        {
-            services.TryAddSingleton<ILoggerFactory, LoggerFactory>(); //TODO: AH - don't register here
+        {            
             services.AddOptions();
         }
     }
