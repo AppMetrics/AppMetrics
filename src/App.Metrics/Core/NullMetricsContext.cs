@@ -16,7 +16,6 @@ namespace App.Metrics.Core
         internal const string InternalMetricsContextName = "App.Metrics.Internal";
         private readonly ConcurrentDictionary<string, IMetricsContext> _childContexts = new ConcurrentDictionary<string, IMetricsContext>();
         private readonly IMetricsContext _metricsContext;
-        private bool _isDisabled;
 
         public NullMetricsContext(string context, IClock systemClock)
         {
@@ -26,12 +25,12 @@ namespace App.Metrics.Core
             var healthCheckDataProvider = new NullHealthCheckDataProvider();
 
             DataProvider = new DefaultMetricsDataProvider(context,
-                () => SystemClock.UtcDateTime,
-                metricsRegistry.DataProvider,
+                SystemClock, metricsRegistry.DataProvider,
                 () => _childContexts.Values.Select(c => c.DataProvider));
 
 
-            _metricsContext = new MetricsContext(context, systemClock, setupMetricsRegistry, metricsBuilder, healthCheckDataProvider);
+            _metricsContext = new MetricsContext(context, systemClock, 
+                setupMetricsRegistry, metricsBuilder, healthCheckDataProvider);
         }
 
         public event EventHandler ContextDisabled;

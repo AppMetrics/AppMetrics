@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.MetricData;
+using App.Metrics.Utils;
 
 namespace App.Metrics.DataProviders
 {
@@ -11,24 +12,24 @@ namespace App.Metrics.DataProviders
         private readonly string _context;
         private readonly IEnumerable<EnvironmentInfoEntry> _environment;
         private readonly IRegistryDataProvider _registryDataProvider;
-        private readonly Func<DateTime> _timestampProvider;
+        private readonly IClock _clock;
 
         public DefaultMetricsDataProvider(string context,
-            Func<DateTime> timestampProvider,
+            IClock clock,
             IRegistryDataProvider registryDataProvider,
             Func<IEnumerable<IMetricsDataProvider>> childProviders)
-            : this(context, timestampProvider, Enumerable.Empty<EnvironmentInfoEntry>(), registryDataProvider, childProviders)
+            : this(context, clock, Enumerable.Empty<EnvironmentInfoEntry>(), registryDataProvider, childProviders)
         {
         }
 
         public DefaultMetricsDataProvider(string context,
-            Func<DateTime> timestampProvider,
+            IClock clock,
             IEnumerable<EnvironmentInfoEntry> environment,
             IRegistryDataProvider registryDataProvider,
             Func<IEnumerable<IMetricsDataProvider>> childProviders)
         {
             _context = context;
-            _timestampProvider = timestampProvider;
+            _clock = clock;
             _environment = environment;
             _registryDataProvider = registryDataProvider;
             _childProviders = childProviders;
@@ -38,7 +39,7 @@ namespace App.Metrics.DataProviders
         {
             get
             {
-                return new MetricsData(_context, _timestampProvider(),
+                return new MetricsData(_context, _clock.UtcDateTime,
                     _environment,
                     _registryDataProvider.Gauges.ToArray(),
                     _registryDataProvider.Counters.ToArray(),

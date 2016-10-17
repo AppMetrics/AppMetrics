@@ -64,8 +64,7 @@ namespace App.Metrics.Core
 
             SystemClock = systemClock;
 
-            DataProvider = new DefaultMetricsDataProvider(context,
-                () => SystemClock.UtcDateTime,
+            DataProvider = new DefaultMetricsDataProvider(context, SystemClock,
                 _metricsRegistry.DataProvider,
                 () => _childContexts.Values.Select(c => c.DataProvider));
 
