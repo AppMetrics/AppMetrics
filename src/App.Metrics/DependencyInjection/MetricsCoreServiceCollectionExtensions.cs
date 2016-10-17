@@ -83,7 +83,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
 
                 var registry = new MetricReporterRegistry(
                    loggerFactory,
-                   context.DataProvider,
+                   context.Advanced.MetricsDataProvider,
                    options.Value.SystemClock,
                    healthCheckDataProvider);
 

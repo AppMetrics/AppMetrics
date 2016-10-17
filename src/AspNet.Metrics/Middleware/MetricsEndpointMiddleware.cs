@@ -43,7 +43,7 @@ namespace AspNet.Metrics.Middleware
             if (Options.MetricsEnabled && Options.MetricsEndpoint.HasValue && Options.MetricsEndpoint == context.Request.Path)
             {
                 var environmentInfo = await _environmentInfoBuilder.BuildAsync();
-                var json = _jsonBuilder.BuildJson(MetricsContext.DataProvider.CurrentMetricsData, environmentInfo);
+                var json = _jsonBuilder.BuildJson(MetricsContext.Advanced.MetricsDataProvider.CurrentMetricsData, environmentInfo);
 
                 await WriteResponseAsync(context, json, _jsonBuilder.MetricsMimeType);
                 return;

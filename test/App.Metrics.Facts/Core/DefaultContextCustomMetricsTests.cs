@@ -34,7 +34,7 @@ namespace App.Metrics.Facts.Core
             var counter = _context.Advanced.Counter("custom", Unit.Calls, () => new CustomCounter());
             counter.Should().BeOfType<CustomCounter>();
             counter.Increment();
-            _context.DataProvider.CurrentMetricsData.Counters.Single().Value.Count.Should().Be(10L);
+            _context.Advanced.MetricsDataProvider.CurrentMetricsData.Counters.Single().Value.Count.Should().Be(10L);
         }
 
         [Fact]

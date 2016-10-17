@@ -24,7 +24,7 @@ namespace App.Metrics.Facts.Core
         private readonly IMetricsContext _context = new MetricsContext(Options.Value.GlobalContextName,
             Options.Value.SystemClock, MetricsRegistry, MetricsBuilder, HealthCheckDataProvider);
 
-        public MetricsData CurrentData => _context.DataProvider.CurrentMetricsData;
+        public MetricsData CurrentData => _context.Advanced.MetricsDataProvider.CurrentMetricsData;
 
         [Fact]
         public void MetricsContext_CanCreateSubcontext()
@@ -40,16 +40,16 @@ namespace App.Metrics.Facts.Core
         public void MetricsContext_CanPropagateValueTags()
         {
             _context.Counter("test", Unit.None, "tag");
-            _context.DataProvider.CurrentMetricsData.Counters.Single().Tags.Should().Equal("tag");
+            _context.Advanced.MetricsDataProvider.CurrentMetricsData.Counters.Single().Tags.Should().Equal("tag");
 
             _context.Meter("test", Unit.None, tags: "tag");
-            _context.DataProvider.CurrentMetricsData.Meters.Single().Tags.Should().Equal("tag");
+            _context.Advanced.MetricsDataProvider.CurrentMetricsData.Meters.Single().Tags.Should().Equal("tag");
 
             _context.Histogram("test", Unit.None, tags: "tag");
-            _context.DataProvider.CurrentMetricsData.Histograms.Single().Tags.Should().Equal("tag");
+            _context.Advanced.MetricsDataProvider.CurrentMetricsData.Histograms.Single().Tags.Should().Equal("tag");
 
             _context.Timer("test", Unit.None, tags: "tag");
-            _context.DataProvider.CurrentMetricsData.Timers.Single().Tags.Should().Equal("tag");
+            _context.Advanced.MetricsDataProvider.CurrentMetricsData.Timers.Single().Tags.Should().Equal("tag");
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void MetricsContext_DataProviderReflectsChildContxts()
         {
-            var provider = _context.DataProvider;
+            var provider = _context.Advanced.MetricsDataProvider;
 
             var counter = _context
                 .Context("test")
@@ -84,7 +84,7 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void MetricsContext_DataProviderReflectsNewMetrics()
         {
-            var provider = _context.DataProvider;
+            var provider = _context.Advanced.MetricsDataProvider;
 
             _context.Counter("test", Unit.Bytes).Increment();
 
@@ -132,9 +132,9 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void MetricsContext_MetricsAddedAreVisibleInTheDataProvider()
         {
-            _context.DataProvider.CurrentMetricsData.Counters.Should().BeEmpty();
+            _context.Advanced.MetricsDataProvider.CurrentMetricsData.Counters.Should().BeEmpty();
             _context.Counter("test", Unit.Bytes);
-            _context.DataProvider.CurrentMetricsData.Counters.Should().HaveCount(1);
+            _context.Advanced.MetricsDataProvider.CurrentMetricsData.Counters.Should().HaveCount(1);
         }
 
         [Fact]

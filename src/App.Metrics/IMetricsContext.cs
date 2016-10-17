@@ -16,11 +16,6 @@ namespace App.Metrics
         /// </summary>
         IAdvancedMetricsContext Advanced { get; }
 
-        /// <summary>
-        ///     Returns a metrics data provider capable of returning the metrics in this context and any existing child contexts.
-        /// </summary>
-        IMetricsDataProvider DataProvider { get; }
-
         IMetricsContext Internal { get; }
 
         IClock SystemClock { get; }

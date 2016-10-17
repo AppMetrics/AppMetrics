@@ -9,8 +9,6 @@ namespace App.Metrics
 {
     public interface IAdvancedMetricsContext : IHideObjectMembers
     {
-        IHealthCheckDataProvider HealthCheckDataProvider { get; }
-
         /// <summary>
         ///     Event fired when the context CompletelyDisableMetrics is called.
         /// </summary>
@@ -20,6 +18,13 @@ namespace App.Metrics
         ///     Event fired when the context is disposed or shutdown or the CompletelyDisableMetrics is called.
         /// </summary>
         event EventHandler ContextShuttingDown;
+
+        /// <summary>
+        ///     Returns a metrics data provider capable of returning the metrics in this context and any existing child contexts.
+        /// </summary>
+        IMetricsDataProvider MetricsDataProvider { get; }
+
+        IHealthCheckDataProvider HealthCheckDataProvider { get; }
 
         /// <summary>
         ///     Attach a context that has already been created (ex: by a library exposing internal metrics)

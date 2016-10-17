@@ -32,7 +32,7 @@ namespace App.Metrics
 
         public static MetricsData GetDataFor(this IMetricsContext metricsContext, params string[] nameWithContext)
         {
-            return metricsContext.GetContextFor(nameWithContext).DataProvider.CurrentMetricsData;
+            return metricsContext.GetContextFor(nameWithContext).Advanced.MetricsDataProvider.CurrentMetricsData;
         }
 
 

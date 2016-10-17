@@ -25,9 +25,9 @@ namespace App.Metrics.Core
             var healthCheckDataProvider = new NullHealthCheckDataProvider();
 
             HealthCheckDataProvider = healthCheckDataProvider;
-            DataProvider = new DefaultMetricsDataProvider(context,
+            MetricsDataProvider = new DefaultMetricsDataProvider(context,
                 SystemClock, metricsRegistry.DataProvider,
-                () => _childContexts.Values.Select(c => c.DataProvider));
+                () => _childContexts.Values.Select(c => c.Advanced.MetricsDataProvider));
 
 
             _metricsContext = new MetricsContext(context, systemClock, 
@@ -42,7 +42,7 @@ namespace App.Metrics.Core
 
         public IAdvancedMetricsContext Advanced => this;
 
-        public IMetricsDataProvider DataProvider { get; }
+        public IMetricsDataProvider MetricsDataProvider { get; }
 
         public IMetricsContext Internal => _metricsContext.Internal;
 
