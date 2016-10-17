@@ -21,8 +21,6 @@ namespace App.Metrics
         /// </summary>
         IMetricsDataProvider DataProvider { get; }
 
-        Func<Task<HealthStatus>> GetHealthStatusAsync { get; }
-
         IMetricsContext Internal { get; }
 
         IClock SystemClock { get; }

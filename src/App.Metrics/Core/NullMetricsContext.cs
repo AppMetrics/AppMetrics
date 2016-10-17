@@ -24,6 +24,7 @@ namespace App.Metrics.Core
             var metricsBuilder = new DefaultMetricsBuilder(systemClock);
             var healthCheckDataProvider = new NullHealthCheckDataProvider();
 
+            HealthCheckDataProvider = healthCheckDataProvider;
             DataProvider = new DefaultMetricsDataProvider(context,
                 SystemClock, metricsRegistry.DataProvider,
                 () => _childContexts.Values.Select(c => c.DataProvider));
@@ -33,6 +34,8 @@ namespace App.Metrics.Core
                 setupMetricsRegistry, metricsBuilder, healthCheckDataProvider);
         }
 
+        public IHealthCheckDataProvider HealthCheckDataProvider { get; }
+
         public event EventHandler ContextDisabled;
 
         public event EventHandler ContextShuttingDown;
@@ -40,8 +43,6 @@ namespace App.Metrics.Core
         public IAdvancedMetricsContext Advanced => this;
 
         public IMetricsDataProvider DataProvider { get; }
-
-        public Func<Task<HealthStatus>> GetHealthStatusAsync => _metricsContext.GetHealthStatusAsync;
 
         public IMetricsContext Internal => _metricsContext.Internal;
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using App.Metrics.Core;
+using App.Metrics.DataProviders;
 using App.Metrics.MetricData;
 using App.Metrics.Sampling;
 using App.Metrics.Utils;
@@ -8,6 +9,8 @@ namespace App.Metrics
 {
     public interface IAdvancedMetricsContext : IHideObjectMembers
     {
+        IHealthCheckDataProvider HealthCheckDataProvider { get; }
+
         /// <summary>
         ///     Event fired when the context CompletelyDisableMetrics is called.
         /// </summary>

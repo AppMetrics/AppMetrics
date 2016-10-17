@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Linq;
-using System.Threading.Tasks;
 using App.Metrics.DataProviders;
-using App.Metrics.Health;
 using App.Metrics.MetricData;
 using App.Metrics.Registries;
 using App.Metrics.Sampling;
@@ -14,11 +12,13 @@ namespace App.Metrics.Core
     public sealed class MetricsContext : IMetricsContext, IAdvancedMetricsContext
     {
         internal const string InternalMetricsContextName = "App.Metrics.Internal";
-        private readonly ConcurrentDictionary<string, IMetricsContext> _childContexts = new ConcurrentDictionary<string, IMetricsContext>();
-        private readonly IHealthCheckDataProvider _healthCheckDataProvider;
+
+        private readonly ConcurrentDictionary<string, IMetricsContext> _childContexts =
+            new ConcurrentDictionary<string, IMetricsContext>();
+
+        private readonly IMetricsBuilder _metricsBuilder;
         private readonly Func<IMetricsRegistry> _setupMetricsRegistry;
         private bool _isDisabled;
-        private IMetricsBuilder _metricsBuilder;
         private IMetricsRegistry _metricsRegistry;
 
         public MetricsContext(string context,
@@ -60,15 +60,13 @@ namespace App.Metrics.Core
             _setupMetricsRegistry = setupMetricsRegistry;
             _metricsRegistry = _setupMetricsRegistry();
             _metricsBuilder = metricsBuilder;
-            _healthCheckDataProvider = healthCheckDataProvider;
 
             SystemClock = systemClock;
+            HealthCheckDataProvider = healthCheckDataProvider;
 
             DataProvider = new DefaultMetricsDataProvider(context, SystemClock,
                 _metricsRegistry.DataProvider,
                 () => _childContexts.Values.Select(c => c.DataProvider));
-
-            GetHealthStatusAsync = healthCheckDataProvider.GetStatusAsync;
         }
 
         public event EventHandler ContextDisabled;
@@ -79,7 +77,7 @@ namespace App.Metrics.Core
 
         public IMetricsDataProvider DataProvider { get; }
 
-        public Func<Task<HealthStatus>> GetHealthStatusAsync { get; }
+        public IHealthCheckDataProvider HealthCheckDataProvider { get; }
 
         //TODO: AH - Allow internal metrics
         public IMetricsContext Internal => this;
@@ -135,7 +133,8 @@ namespace App.Metrics.Core
                 return this;
             }
 
-            return string.IsNullOrEmpty(contextName) ? this 
+            return string.IsNullOrEmpty(contextName)
+                ? this
                 : _childContexts.GetOrAdd(contextName, contextCreator);
         }
 
@@ -152,7 +151,7 @@ namespace App.Metrics.Core
 
         public IMetricsContext CreateChildContextInstance(string contextName)
         {
-            return new MetricsContext(contextName, SystemClock, _setupMetricsRegistry, _metricsBuilder, _healthCheckDataProvider);
+            return new MetricsContext(contextName, SystemClock, _setupMetricsRegistry, _metricsBuilder, HealthCheckDataProvider);
         }
 
         public void Dispose()
