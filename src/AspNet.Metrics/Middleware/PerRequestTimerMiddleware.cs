@@ -24,7 +24,7 @@ namespace AspNet.Metrics.Middleware
         {
             if (PerformMetric(context))
             {
-                context.Items[TimerItemsKey] = MetricsContext.SystemClock.Nanoseconds;
+                context.Items[TimerItemsKey] = MetricsContext.Advanced.Clock.Nanoseconds;
 
                 await Next(context);
 
@@ -33,7 +33,7 @@ namespace AspNet.Metrics.Middleware
                     var clientId = context.OAuthClientId();
 
                     var startTime = (long)context.Items[TimerItemsKey];
-                    var elapsed = MetricsContext.SystemClock.Nanoseconds - startTime;
+                    var elapsed = MetricsContext.Advanced.Clock.Nanoseconds - startTime;
 
                     MetricsContext.GetWebApplicationContext()
                         .Timer(context.GetMetricsCurrentRouteName(), Unit.Requests)

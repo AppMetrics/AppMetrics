@@ -61,10 +61,10 @@ namespace App.Metrics.Core
             _metricsRegistry = _setupMetricsRegistry();
             _metricsBuilder = metricsBuilder;
 
-            SystemClock = systemClock;
+            Clock = systemClock;
             HealthCheckDataProvider = healthCheckDataProvider;
 
-            MetricsDataProvider = new DefaultMetricsDataProvider(context, SystemClock,
+            MetricsDataProvider = new DefaultMetricsDataProvider(context, Clock,
                 _metricsRegistry.DataProvider,
                 () => _childContexts.Values.Select(c => c.Advanced.MetricsDataProvider));
         }
@@ -82,7 +82,7 @@ namespace App.Metrics.Core
         //TODO: AH - Allow internal metrics
         public IMetricsContext Internal => this;
 
-        public IClock SystemClock { get; }
+        public IClock Clock { get; }
 
         public bool AttachContext(string contextName, IMetricsContext context)
         {
@@ -151,7 +151,7 @@ namespace App.Metrics.Core
 
         public IMetricsContext CreateChildContextInstance(string contextName)
         {
-            return new MetricsContext(contextName, SystemClock, _setupMetricsRegistry, _metricsBuilder, HealthCheckDataProvider);
+            return new MetricsContext(contextName, Clock, _setupMetricsRegistry, _metricsBuilder, HealthCheckDataProvider);
         }
 
         public void Dispose()

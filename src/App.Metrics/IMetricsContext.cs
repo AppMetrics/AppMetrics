@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
-using App.Metrics.DataProviders;
-using App.Metrics.Health;
 using App.Metrics.Utils;
 
 namespace App.Metrics
@@ -17,8 +14,6 @@ namespace App.Metrics
         IAdvancedMetricsContext Advanced { get; }
 
         IMetricsContext Internal { get; }
-
-        IClock SystemClock { get; }
 
         /// <summary>
         ///     Create a new child metrics context. Metrics added to the child context are kept separate from the metrics in the

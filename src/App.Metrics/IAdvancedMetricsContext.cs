@@ -26,6 +26,8 @@ namespace App.Metrics
 
         IHealthCheckDataProvider HealthCheckDataProvider { get; }
 
+        IClock Clock { get; }
+
         /// <summary>
         ///     Attach a context that has already been created (ex: by a library exposing internal metrics)
         /// </summary>

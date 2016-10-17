@@ -127,7 +127,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                 if (options.Value.EnableInternalMetrics)
                 {
                     //TODO: Review enableing internal metrics
-                    //var internalMetricsContexxt = new MetricsContext(BaseMetricsContext.InternalMetricsContextName, options.Value.SystemClock);
+                    //var internalMetricsContexxt = new MetricsContext(BaseMetricsContext.InternalMetricsContextName, options.Value.Clock);
                     //options.Value.MetricsContext.Advanced.AttachContext(BaseMetricsContext.InternalMetricsContextName,
                     //    internalMetricsContexxt);
                 }
