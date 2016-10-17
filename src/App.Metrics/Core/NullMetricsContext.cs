@@ -153,10 +153,5 @@ namespace App.Metrics.Core
         {
             return _metricsContext.Advanced.Timer(name, unit, builder, rateUnit, durationUnit, tags);
         }
-
-        public void WithCustomMetricsBuilder(IMetricsBuilder metricsBuilder)
-        {
-            _metricsContext.Advanced.WithCustomMetricsBuilder(metricsBuilder);
-        }
     }
 }

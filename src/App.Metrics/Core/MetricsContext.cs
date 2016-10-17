@@ -254,12 +254,6 @@ namespace App.Metrics.Core
             return Timer(name, unit, () => _metricsBuilder.BuildTimer(name, unit, rateUnit, durationUnit, builder()), rateUnit, durationUnit, tags);
         }
 
-        public void WithCustomMetricsBuilder(IMetricsBuilder metricsBuilder)
-        {
-            _metricsBuilder = metricsBuilder;
-            ForAllChildContexts(c => c.Advanced.WithCustomMetricsBuilder(metricsBuilder));
-        }
-
         private void ForAllChildContexts(Action<IMetricsContext> action)
         {
             foreach (var context in _childContexts.Values)

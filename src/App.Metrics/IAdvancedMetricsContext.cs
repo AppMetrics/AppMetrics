@@ -130,11 +130,5 @@ namespace App.Metrics
         /// <returns>Reference to the metric</returns>
         ITimer Timer(string name, Unit unit, Func<IReservoir> builder, TimeUnit rateUnit = TimeUnit.Seconds,
             TimeUnit durationUnit = TimeUnit.Milliseconds, MetricTags tags = default(MetricTags));
-
-        /// <summary>
-        ///     Replace the DefaultMetricsBuilder used in this context.
-        /// </summary>
-        /// <param name="metricsBuilder">The custom metrics host.</param>
-        void WithCustomMetricsBuilder(IMetricsBuilder metricsBuilder);
     }
 }
