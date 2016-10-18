@@ -57,10 +57,7 @@ namespace App.Metrics.Sampling
             _startTime = new AtomicLong(clock.Seconds);
         }
 
-        public int Size
-        {
-            get { return Math.Min(_size, (int)_count.GetValue()); }
-        }
+        public int Size => Math.Min(_size, (int)_count.GetValue());
 
         public void Dispose()
         {

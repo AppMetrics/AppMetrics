@@ -26,7 +26,7 @@ namespace AspNet.Metrics.Facts
 
         public void Start(TimeSpan interval, Func<CancellationToken, Task> task)
         {
-            Start(interval, (t) => task(t).Wait());
+            Start(interval, (t) => task(t).Wait(t));
         }
 
         public void Start(TimeSpan interval, Func<Task> task)
@@ -43,7 +43,7 @@ namespace AspNet.Metrics.Facts
         {
             if (interval.TotalSeconds == 0)
             {
-                throw new ArgumentException("interval must be > 0 seconds", "interval");
+                throw new ArgumentException("interval must be > 0 seconds", nameof(interval));
             }
 
             _interval = interval;

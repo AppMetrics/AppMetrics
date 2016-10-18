@@ -1,27 +1,25 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Utils;
 
-namespace App.Metrics.Facts
+namespace App.Metrics.Benchmarks
 {
-    /// <summary>
-    /// Utility class for manually executing the scheduled task.
-    /// </summary>
-    /// <remarks>
-    /// This class is useful for testing.
-    /// </remarks>
     public sealed class TestScheduler : IScheduler
     {
         private readonly IClock _clock;
-        private TimeSpan _interval;
         private Action<CancellationToken> _action;
+        private TimeSpan _interval;
         private long _lastRun = 0;
 
         public TestScheduler(IClock clock)
         {
             _clock = clock;
             _clock.Advanced += (s, l) => RunIfNeeded();
+        }
+
+        public void Dispose()
+        {
         }
 
         public void Start(TimeSpan interval, Func<CancellationToken, Task> task)
@@ -51,21 +49,21 @@ namespace App.Metrics.Facts
             _action = action;
         }
 
+        public void Stop()
+        {
+        }
+
         private void RunIfNeeded()
         {
             var clockSeconds = _clock.Seconds;
             var elapsed = clockSeconds - _lastRun;
             var times = elapsed / _interval.TotalSeconds;
-            using (CancellationTokenSource ts = new CancellationTokenSource())
+            using (var ts = new CancellationTokenSource())
                 while (times-- >= 1)
                 {
                     _lastRun = clockSeconds;
                     _action(ts.Token);
                 }
         }
-
-        public void Stop() { }
-        public void Dispose() { }
     }
-
 }
