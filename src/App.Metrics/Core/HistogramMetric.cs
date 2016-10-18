@@ -10,11 +10,6 @@ namespace App.Metrics.Core
         private bool _disposed = false;
         private UserValueWrapper _last;
 
-        public HistogramMetric()
-            : this(SamplingType.Default)
-        {
-        }
-
         public HistogramMetric(SamplingType samplingType)
             : this(SamplingTypeToReservoir(samplingType))
         {
@@ -79,12 +74,6 @@ namespace App.Metrics.Core
             {
                 switch (samplingType)
                 {
-                    case SamplingType.Default:
-                        //samplingType = Metric.Config.DefaultSamplingType;
-                        //continue;
-                        //TODO: Default sampling type
-                        return new ExponentiallyDecayingReservoir();
-
                     case SamplingType.HighDynamicRange:
                         return new HdrHistogramReservoir();
                     case SamplingType.ExponentiallyDecaying:
@@ -93,8 +82,9 @@ namespace App.Metrics.Core
                         return new UniformReservoir();
                     case SamplingType.SlidingWindow:
                         return new SlidingWindowReservoir();
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(samplingType), samplingType, "Sampling type not implemented " + samplingType);
                 }
-                throw new InvalidOperationException("Sampling type not implemented " + samplingType);
             }
         }
     }

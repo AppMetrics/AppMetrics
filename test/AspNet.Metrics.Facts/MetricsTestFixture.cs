@@ -15,7 +15,6 @@ namespace AspNet.Metrics.Facts
     {
         private static readonly AppMetricsOptions TestOptions = new AppMetricsOptions
         {
-            DefaultSamplingType = SamplingType.Default,
             GlobalContextName = "testing",
             DisableMetrics = false,
             DisableHealthChecks = false,

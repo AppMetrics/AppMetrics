@@ -12,14 +12,16 @@ namespace App.Metrics.Core
 {
     public sealed class NullMetricsContext : IMetricsContext, IAdvancedMetricsContext
     {
+        private readonly SamplingType _defaultSamplingType;
         internal const string InternalMetricsContextName = "App.Metrics.Internal";
         private readonly ConcurrentDictionary<string, IMetricsContext> _childContexts = new ConcurrentDictionary<string, IMetricsContext>();
         private readonly IMetricsContext _metricsContext;
 
-        public NullMetricsContext(string context, IClock systemClock)
+        public NullMetricsContext(string context, IClock systemClock, SamplingType defaultSamplingType)
         {
+            _defaultSamplingType = defaultSamplingType;
             Func<IMetricsRegistry> setupMetricsRegistry = () => new NullMetricsRegistry();
-            var metricsBuilder = new DefaultMetricsBuilder(systemClock);
+            var metricsBuilder = new DefaultMetricsBuilder(systemClock, defaultSamplingType);
             var healthCheckDataProvider = new NullHealthCheckDataProvider();
             IMetricsDataProvider metricsDataProvider
                 = new NullMetricsDataProvider();
@@ -29,7 +31,7 @@ namespace App.Metrics.Core
             MetricsDataProvider = metricsDataProvider;
             RegistryDataProvider = setupMetricsRegistry().DataProvider;
 
-            _metricsContext = new MetricsContext(context, systemClock,
+            _metricsContext = new MetricsContext(context, systemClock, defaultSamplingType,
                 setupMetricsRegistry, metricsBuilder,
                 healthCheckDataProvider, metricsDataProvider);
         }
@@ -99,9 +101,14 @@ namespace App.Metrics.Core
             _metricsContext.Advanced.Gauge(name, valueProvider, unit, tags);
         }
 
-        public IHistogram Histogram(string name, Unit unit, SamplingType samplingType = SamplingType.Default, MetricTags tags = default(MetricTags))
+        public IHistogram Histogram(string name, Unit unit, SamplingType samplingType, MetricTags tags = default(MetricTags))
         {
             return _metricsContext.Histogram(name, unit, samplingType, tags);
+        }
+
+        public IHistogram Histogram(string name, Unit unit, MetricTags tags = default(MetricTags))
+        {
+            return Histogram(name, unit, _defaultSamplingType, tags);
         }
 
         public IHistogram Histogram<T>(string name, Unit unit, Func<T> builder, MetricTags tags = default(MetricTags))
@@ -136,10 +143,16 @@ namespace App.Metrics.Core
             _metricsContext.ShutdownContext(contextName);
         }
 
-        public ITimer Timer(string name, Unit unit, SamplingType samplingType = SamplingType.Default, TimeUnit rateUnit = TimeUnit.Seconds,
+        public ITimer Timer(string name, Unit unit, SamplingType samplingType, TimeUnit rateUnit = TimeUnit.Seconds,
             TimeUnit durationUnit = TimeUnit.Milliseconds, MetricTags tags = default(MetricTags))
         {
             return _metricsContext.Timer(name, unit, samplingType, rateUnit, durationUnit, tags);
+        }
+
+        public ITimer Timer(string name, Unit unit, TimeUnit rateUnit = TimeUnit.Seconds,
+           TimeUnit durationUnit = TimeUnit.Milliseconds, MetricTags tags = default(MetricTags))
+        {
+            return Timer(name, unit, _defaultSamplingType, rateUnit, durationUnit, tags);
         }
 
         public ITimer Timer<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit = TimeUnit.Seconds,

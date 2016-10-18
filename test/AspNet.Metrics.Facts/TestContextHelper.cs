@@ -14,7 +14,7 @@ namespace AspNet.Metrics.Facts
     {
         public static IMetricsContext Instance(string context, IClock clock, IScheduler scheduler)
         {
-            return new MetricsContext(context, clock, () => new DefaultMetricsRegistry(),
+            return new MetricsContext(context, clock, SamplingType.ExponentiallyDecaying, () => new DefaultMetricsRegistry(),
                 new TestMetricsBuilder(clock, scheduler),
                 new DefaultHealthCheckDataProvider(new HealthCheckRegistry(Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))),
                 new DefaultMetricsDataProvider(clock, Enumerable.Empty<EnvironmentInfoEntry>()));

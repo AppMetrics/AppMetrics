@@ -31,7 +31,6 @@ namespace AspNet.Metrics.Facts.Middleware
         {
             _fixture = new MetricsTestFixture(new AppMetricsOptions
             {
-                DefaultSamplingType = SamplingType.Default,
                 GlobalContextName = "testing",
                 DisableMetrics = true,
                 DisableHealthChecks = false,
@@ -48,7 +47,6 @@ namespace AspNet.Metrics.Facts.Middleware
         {
             _fixture = new MetricsTestFixture(new AppMetricsOptions
             {
-                DefaultSamplingType = SamplingType.Default,
                 GlobalContextName = "testing",
                 DisableMetrics = false,
                 DisableHealthChecks = false,
@@ -65,7 +63,6 @@ namespace AspNet.Metrics.Facts.Middleware
         {
             _fixture = new MetricsTestFixture(new AppMetricsOptions
             {
-                DefaultSamplingType = SamplingType.Default,
                 GlobalContextName = "testing",
                 DisableMetrics = false,
                 DisableHealthChecks = true,

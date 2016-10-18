@@ -3,12 +3,6 @@
     public enum SamplingType
     {
         /// <summary>
-        ///     Sampling will be done using the default configured SamplingType.
-        ///     Call Metric.Config.WithDefaultSamplingType() to set the default value.
-        /// </summary>
-        Default,
-
-        /// <summary>
         ///     Sampling will be done with a A High Dynamic Range (HDR) Histogram. Note: The HDR Histogram implementation is in
         ///     beta stage, some issues might still be present.
         /// </summary>

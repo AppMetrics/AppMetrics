@@ -102,7 +102,12 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             IMetricsEnvironment environment, IMetricsContext metricsContext)
         {
             services.TryAddTransient<IMetricsRegistry, DefaultMetricsRegistry>();
-            services.TryAddSingleton<IMetricsBuilder, DefaultMetricsBuilder>();
+            services.TryAddSingleton<IMetricsBuilder>(provider =>
+            {
+                var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>().Value;
+
+                return new DefaultMetricsBuilder(options.SystemClock, options.DefaultSamplingType);
+            });
             services.TryAddSingleton<IMetricsDataProvider, DefaultMetricsDataProvider>();
             services.TryAddSingleton(typeof(IClock), provider => provider.GetRequiredService<IOptions<AppMetricsOptions>>().Value.SystemClock);
             services.TryAddSingleton<EnvironmentInfoBuilder, EnvironmentInfoBuilder>();
@@ -130,8 +135,8 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                 if (metricsContext == default(IMetricsContext))
                 {
                     metricsContext = new MetricsContext(options.Value.GlobalContextName, options.Value.SystemClock,
-                        provider.GetRequiredService<IMetricsRegistry>, metricsBuilder, healthCheckDataProvider,
-                        provider.GetRequiredService<IMetricsDataProvider>());
+                        options.Value.DefaultSamplingType, provider.GetRequiredService<IMetricsRegistry>, 
+                        metricsBuilder, healthCheckDataProvider, provider.GetRequiredService<IMetricsDataProvider>());
                 }
 
 

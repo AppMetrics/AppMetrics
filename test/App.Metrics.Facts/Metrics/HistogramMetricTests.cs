@@ -6,7 +6,7 @@ namespace App.Metrics.Facts.Metrics
 {
     public class HistogramMetricTests
     {
-        private readonly HistogramMetric _histogram = new HistogramMetric();
+        private readonly HistogramMetric _histogram = new HistogramMetric(SamplingType.ExponentiallyDecaying);
 
         [Fact]
         public void HistogramMetric_CanCount()

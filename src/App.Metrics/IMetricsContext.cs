@@ -66,7 +66,20 @@ namespace App.Metrics
         /// <returns>Reference to the metric</returns>
         IHistogram Histogram(string name,
             Unit unit,
-            SamplingType samplingType = SamplingType.Default,
+            SamplingType samplingType,
+            MetricTags tags = default(MetricTags));
+
+        /// <summary>
+        ///     A Histogram measures the distribution of values in a stream of data: e.g., the number of results returned by a
+        ///     search.
+        /// </summary>
+        /// <param name="name">Name of the metric. Must be unique across all histograms in this context.</param>
+        /// <param name="unit">Description of what the is being measured ( Unit.Requests , Unit.Items etc ) .</param>
+        /// <param name="samplingType">Type of the sampling to use (see SamplingType for details ).</param>
+        /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
+        /// <returns>Reference to the metric</returns>
+        IHistogram Histogram(string name,
+            Unit unit,
             MetricTags tags = default(MetricTags));
 
         /// <summary>
@@ -107,7 +120,24 @@ namespace App.Metrics
         /// <returns>Reference to the metric</returns>
         ITimer Timer(string name,
             Unit unit,
-            SamplingType samplingType = SamplingType.Default,
+            SamplingType samplingType,
+            TimeUnit rateUnit = TimeUnit.Seconds,
+            TimeUnit durationUnit = TimeUnit.Milliseconds,
+            MetricTags tags = default(MetricTags));
+
+        /// <summary>
+        ///     A timer is basically a histogram of the duration of a type of event and a meter of the rate of its occurrence.
+        ///     <seealso cref="Histogram" /> and <seealso cref="Meter" />
+        /// </summary>
+        /// <param name="name">Name of the metric. Must be unique across all timers in this context.</param>
+        /// <param name="unit">Description of what the is being measured ( Unit.Requests , Unit.Items etc ) .</param>
+        /// <param name="samplingType">Type of the sampling to use (see SamplingType for details ).</param>
+        /// <param name="rateUnit">Time unit for rates reporting. Defaults to Second ( occurrences / second ).</param>
+        /// <param name="durationUnit">Time unit for reporting durations. Defaults to Milliseconds. </param>
+        /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
+        /// <returns>Reference to the metric</returns>
+        ITimer Timer(string name,
+            Unit unit,
             TimeUnit rateUnit = TimeUnit.Seconds,
             TimeUnit durationUnit = TimeUnit.Milliseconds,
             MetricTags tags = default(MetricTags));

@@ -8,9 +8,11 @@ namespace App.Metrics.Core
     public sealed class DefaultMetricsBuilder : IMetricsBuilder
     {
         private readonly IClock _systemClock;
+        private readonly SamplingType _defaultSamplingType;
         private bool _disposed = false;
 
-        public DefaultMetricsBuilder(IClock systemClock)
+        public DefaultMetricsBuilder(IClock systemClock, 
+            SamplingType defaultSamplingType)
         {
             if (systemClock == null)
             {
@@ -18,6 +20,7 @@ namespace App.Metrics.Core
             }
 
             _systemClock = systemClock;
+            _defaultSamplingType = defaultSamplingType;
         }
 
         ~DefaultMetricsBuilder()

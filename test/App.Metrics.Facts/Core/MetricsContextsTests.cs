@@ -19,13 +19,14 @@ namespace App.Metrics.Facts.Core
         private static readonly IHealthCheckDataProvider HealthCheckDataProvider =
             new DefaultHealthCheckDataProvider(new HealthCheckRegistry(Enumerable.Empty<HealthCheck>(), Options));
 
-        private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.SystemClock);
+        private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.SystemClock, SamplingType.ExponentiallyDecaying);
         private static readonly Func<IMetricsRegistry> MetricsRegistry = () => new DefaultMetricsRegistry();
         private static readonly IMetricsDataProvider MetricsDataProvider = 
            new DefaultMetricsDataProvider(Options.Value.SystemClock, Enumerable.Empty<EnvironmentInfoEntry>());
 
         private readonly IMetricsContext _context = new MetricsContext(Options.Value.GlobalContextName,
-            Options.Value.SystemClock, MetricsRegistry, MetricsBuilder, HealthCheckDataProvider, MetricsDataProvider);
+            Options.Value.SystemClock, Options.Value.DefaultSamplingType,
+            MetricsRegistry, MetricsBuilder, HealthCheckDataProvider, MetricsDataProvider);
 
         public Func<IMetricsContext, MetricsData> CurrentData => ctx => _context.Advanced.MetricsDataProvider.GetMetricsData(ctx);
         public Func<IMetricsContext, IMetricsFilter, MetricsData> CurrentDataWithFilter => (ctx, filter) => 

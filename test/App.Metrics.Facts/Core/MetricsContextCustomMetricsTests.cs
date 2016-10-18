@@ -13,7 +13,7 @@ using Xunit;
 
 namespace App.Metrics.Facts.Core
 {
-    public class DefaultContextCustomMetricsTests
+    public class MetricsContextCustomMetricsTests
     {
         private static readonly IOptions<AppMetricsOptions> Options
             = Microsoft.Extensions.Options.Options.Create(new AppMetricsOptions());
@@ -22,15 +22,16 @@ namespace App.Metrics.Facts.Core
             new DefaultHealthCheckDataProvider(new HealthCheckRegistry(Enumerable.Empty<HealthCheck>(), Options));
         private static readonly IMetricsDataProvider MetricsDataProvider =
             new DefaultMetricsDataProvider(Options.Value.SystemClock, Enumerable.Empty<EnvironmentInfoEntry>());
-        private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.SystemClock);
+        private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.SystemClock, Options.Value.DefaultSamplingType);
         private static readonly Func<IMetricsRegistry> MetricsRegistry = () => new DefaultMetricsRegistry();
 
 
         private readonly IMetricsContext _context = new MetricsContext(Options.Value.GlobalContextName,
-            Options.Value.SystemClock, MetricsRegistry, MetricsBuilder, HealthCheckDataProvider, MetricsDataProvider);
+            Options.Value.SystemClock, Options.Value.DefaultSamplingType,
+            MetricsRegistry, MetricsBuilder, HealthCheckDataProvider, MetricsDataProvider);
 
         [Fact]
-        public void MetricsContext_CanRegisterCustomCounter()
+        public void can_register_custom_counter()
         {
             var counter = _context.Advanced.Counter("custom", Unit.Calls, () => new CustomCounter());
             counter.Should().BeOfType<CustomCounter>();
@@ -39,7 +40,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void MetricsContext_CanRegisterTimerWithCustomHistogram()
+        public void can_register_timer_with_custom_histogram()
         {
             var histogram = new CustomHistogram();
 
@@ -52,7 +53,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void MetricsContext_CanRegisterTimerWithCustomReservoir()
+        public void can_register_timer_with_custom_reservoir()
         {
             var reservoir = new CustomReservoir();
             var timer = _context.Advanced.Timer("custom", Unit.Calls, () => (IReservoir)reservoir);

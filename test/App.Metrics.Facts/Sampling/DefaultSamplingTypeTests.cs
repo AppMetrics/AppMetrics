@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using App.Metrics.Core;
 using App.Metrics.Sampling;
 using FluentAssertions;
@@ -7,34 +6,23 @@ using Xunit;
 
 namespace App.Metrics.Facts.Sampling
 {
-    public class DefaultSamplingTypeTests
+    public class HistogramMetricSamplingTypeTests
     {
-        private static readonly FieldInfo reservoirField = typeof(HistogramMetric).GetField("_reservoir",
+        private static readonly FieldInfo ReservoirField = typeof(HistogramMetric).GetField("_reservoir",
             BindingFlags.Instance | BindingFlags.NonPublic);
 
-        [Fact(Skip = "Allow default sampling type to be set")]
-        public void SamplingType_CanUseConfiguredDefaultSamplingType()
+        [Fact]
+        public void maps_correct_sampling_type_to_reservoir()
         {
-            //GetReservoir(new HistogramMetric()).Should().BeOfType<ExponentiallyDecayingReservoir>();
-
-            //Metric.Config.WithDefaultSamplingType(SamplingType.HighDynamicRange);
-
-            //GetReservoir(new HistogramMetric()).Should().BeOfType<HdrHistogramReservoir>();
-
-            //Metric.Config.WithDefaultSamplingType(SamplingType.LongTerm);
-
-            //GetReservoir(new HistogramMetric()).Should().BeOfType<UniformReservoir>();
-        }
-
-        [Fact(Skip = "Refactor static metrics class")]
-        public void SamplingType_SettingDefaultValueMustBeConcreteValue()
-        {
-            //Assert.Throws<ArgumentException>(() => { Metric.Config.WithDefaultSamplingType(SamplingType.Default); });
+            GetReservoir(new HistogramMetric(SamplingType.ExponentiallyDecaying)).Should().BeOfType<ExponentiallyDecayingReservoir>();
+            GetReservoir(new HistogramMetric(SamplingType.LongTerm)).Should().BeOfType<UniformReservoir>();
+            GetReservoir(new HistogramMetric(SamplingType.HighDynamicRange)).Should().BeOfType<HdrHistogramReservoir>();
+            GetReservoir(new HistogramMetric(SamplingType.SlidingWindow)).Should().BeOfType<SlidingWindowReservoir>();
         }
 
         private static IReservoir GetReservoir(HistogramMetric histogram)
         {
-            return reservoirField.GetValue(histogram) as IReservoir;
+            return ReservoirField.GetValue(histogram) as IReservoir;
         }
     }
 }

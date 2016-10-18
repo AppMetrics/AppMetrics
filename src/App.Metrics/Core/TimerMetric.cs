@@ -15,11 +15,6 @@ namespace App.Metrics.Core
         private readonly IMeterImplementation _meter;
         private readonly StripedLongAdder _totalRecordedTime = new StripedLongAdder();
 
-        public TimerMetric(IClock systemClock)
-            : this(new HistogramMetric(), new MeterMetric(systemClock), systemClock)
-        {
-        }
-
         public TimerMetric(SamplingType samplingType, IClock systemClock)
             : this(new HistogramMetric(samplingType), new MeterMetric(systemClock), systemClock)
         {

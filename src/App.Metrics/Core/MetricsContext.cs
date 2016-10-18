@@ -17,12 +17,14 @@ namespace App.Metrics.Core
             new ConcurrentDictionary<string, IMetricsContext>();
 
         private readonly IMetricsBuilder _metricsBuilder;
+        private readonly SamplingType _defaultSamplingType;
         private readonly Func<IMetricsRegistry> _setupMetricsRegistry;
         private bool _isDisabled;
         private IMetricsRegistry _metricsRegistry;
 
         public MetricsContext(string context,
             IClock systemClock,
+            SamplingType defaultSamplingType,
             Func<IMetricsRegistry> setupMetricsRegistry,
             IMetricsBuilder metricsBuilder,
             IHealthCheckDataProvider healthCheckDataProvider,
@@ -63,6 +65,7 @@ namespace App.Metrics.Core
                 throw new ArgumentNullException(nameof(metricsDataProvider));
             }
 
+            _defaultSamplingType = defaultSamplingType;
             _setupMetricsRegistry = setupMetricsRegistry;
             _metricsRegistry = _setupMetricsRegistry();
             _metricsBuilder = metricsBuilder;
@@ -161,7 +164,9 @@ namespace App.Metrics.Core
 
         public IMetricsContext CreateChildContextInstance(string contextName)
         {
-            return new MetricsContext(contextName, Clock, _setupMetricsRegistry, _metricsBuilder, HealthCheckDataProvider, MetricsDataProvider);
+            return new MetricsContext(contextName, Clock, _defaultSamplingType,
+                _setupMetricsRegistry, _metricsBuilder, 
+                HealthCheckDataProvider, MetricsDataProvider);
         }
 
         public void Dispose()
@@ -193,6 +198,11 @@ namespace App.Metrics.Core
         public IHistogram Histogram(string name, Unit unit, SamplingType samplingType, MetricTags tags)
         {
             return Histogram(name, unit, () => _metricsBuilder.BuildHistogram(name, unit, samplingType), tags);
+        }
+
+        public IHistogram Histogram(string name, Unit unit, MetricTags tags)
+        {
+            return Histogram(name, unit, _defaultSamplingType, tags);
         }
 
         public IHistogram Histogram<T>(string name, Unit unit, Func<T> builder, MetricTags tags)
@@ -241,6 +251,11 @@ namespace App.Metrics.Core
         {
             return _metricsRegistry.Timer(name, () => _metricsBuilder.BuildTimer(name, unit, rateUnit, durationUnit, samplingType), unit, rateUnit,
                 durationUnit, tags);
+        }
+
+        public ITimer Timer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
+        {
+            return Timer(name, unit, _defaultSamplingType, rateUnit, durationUnit, tags);
         }
 
         public ITimer Timer<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
