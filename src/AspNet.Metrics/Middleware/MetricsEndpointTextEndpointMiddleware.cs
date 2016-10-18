@@ -1,6 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using App.Metrics;
+using App.Metrics.MetricData;
 using App.Metrics.Reporters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -13,26 +13,23 @@ namespace AspNet.Metrics.Middleware
         private readonly StringReport _stringReport;
 
         public MetricsEndpointTextEndpointMiddleware(RequestDelegate next,
-            StringReport stringReport,
+            IMetricsFilter metricsFilter,
             IOptions<AspNetMetricsOptions> options,
             ILoggerFactory loggerFactory,
             IMetricsContext metricsContext)
             : base(next, options, loggerFactory, metricsContext)
         {
-            if (stringReport == null)
-            {
-                throw new ArgumentNullException(nameof(stringReport));
-            }
-
-            _stringReport = stringReport;
+            _stringReport = new StringReport(loggerFactory, metricsContext, metricsFilter);
         }
 
         public async Task Invoke(HttpContext context)
         {
             if (Options.MetricsTextEnabled && Options.MetricsTextEndpoint.HasValue && Options.MetricsTextEndpoint == context.Request.Path)
             {
-                var content = await _stringReport.RenderMetrics(MetricsContext.Advanced.MetricsDataProvider.CurrentMetricsData);
+                var content = await _stringReport.RenderMetrics(MetricsContext);
+
                 await WriteResponseAsync(context, content, "text/plain");
+
                 return;
             }
 

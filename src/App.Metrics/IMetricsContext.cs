@@ -8,6 +8,8 @@ namespace App.Metrics
     /// </summary>
     public interface IMetricsContext : IDisposable, IHideObjectMembers
     {
+        string Name { get; }
+
         /// <summary>
         ///     Exposes advanced operations that are possible on this metrics context.
         /// </summary>

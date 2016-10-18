@@ -1,16 +1,30 @@
 ﻿using System;
-using App.Metrics.Utils;
+using App.Metrics.MetricData;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporters
 {
     public sealed class ConsoleReport : HumanReadableReport
     {
+        private readonly IMetricsContext _metricsContext;
         private bool _disposed = false;
 
-        public ConsoleReport(ILoggerFactory loggerFactory, IClock systemClock)
-            : base(loggerFactory, systemClock)
+        public ConsoleReport(IMetricsContext metricsContext,
+            IMetricsFilter filter,
+            ILoggerFactory loggerFactory)
+            : base(loggerFactory, filter, metricsContext.Advanced.Clock)
         {
+            if (metricsContext == null)
+            {
+                throw new ArgumentNullException(nameof(metricsContext));
+            }
+
+            if (loggerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(loggerFactory));
+            }
+
+            _metricsContext = metricsContext;
         }
 
         protected override void Dispose(bool disposing)
@@ -26,7 +40,7 @@ namespace App.Metrics.Reporters
                 // Set large fields to null.
                 _disposed = true;
             }
-            
+
             base.Dispose(disposing);
         }
 

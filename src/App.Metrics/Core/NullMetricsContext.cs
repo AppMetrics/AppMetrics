@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using App.Metrics.DataProviders;
-using App.Metrics.Health;
 using App.Metrics.MetricData;
 using App.Metrics.Registries;
 using App.Metrics.Sampling;
@@ -20,21 +19,20 @@ namespace App.Metrics.Core
         public NullMetricsContext(string context, IClock systemClock)
         {
             Func<IMetricsRegistry> setupMetricsRegistry = () => new NullMetricsRegistry();
-            var metricsRegistry = setupMetricsRegistry();
             var metricsBuilder = new DefaultMetricsBuilder(systemClock);
             var healthCheckDataProvider = new NullHealthCheckDataProvider();
+            IMetricsDataProvider metricsDataProvider
+                = new NullMetricsDataProvider();
 
             HealthCheckDataProvider = healthCheckDataProvider;
-            MetricsDataProvider = new DefaultMetricsDataProvider(context,
-                Clock, metricsRegistry.DataProvider,
-                () => _childContexts.Values.Select(c => c.Advanced.MetricsDataProvider));
+            Name = context;
+            MetricsDataProvider = metricsDataProvider;
+            RegistryDataProvider = setupMetricsRegistry().DataProvider;
 
-
-            _metricsContext = new MetricsContext(context, systemClock, 
-                setupMetricsRegistry, metricsBuilder, healthCheckDataProvider);
+            _metricsContext = new MetricsContext(context, systemClock,
+                setupMetricsRegistry, metricsBuilder,
+                healthCheckDataProvider, metricsDataProvider);
         }
-
-        public IHealthCheckDataProvider HealthCheckDataProvider { get; }
 
         public event EventHandler ContextDisabled;
 
@@ -42,11 +40,19 @@ namespace App.Metrics.Core
 
         public IAdvancedMetricsContext Advanced => this;
 
-        public IMetricsDataProvider MetricsDataProvider { get; }
+        public IReadOnlyDictionary<string, IMetricsContext> ChildContexts => _childContexts;
+
+        public IClock Clock => _metricsContext.Advanced.Clock;
+
+        public IHealthCheckDataProvider HealthCheckDataProvider { get; }
+
+        public IRegistryDataProvider RegistryDataProvider { get; }
 
         public IMetricsContext Internal => _metricsContext.Internal;
 
-        public IClock Clock => _metricsContext.Advanced.Clock;
+        public IMetricsDataProvider MetricsDataProvider { get; }
+
+        public string Name { get; }
 
         public bool AttachContext(string contextName, IMetricsContext context)
         {

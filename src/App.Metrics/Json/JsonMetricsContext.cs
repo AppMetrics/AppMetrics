@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using App.Metrics.Infrastructure;
 using App.Metrics.MetricData;
@@ -12,7 +11,7 @@ namespace App.Metrics.Json
     {
         private JsonMetricsContext[] _childContexts = new JsonMetricsContext[0];
         private JsonCounter[] _counters = new JsonCounter[0];
-        private IDictionary<string, string>_environment = new Dictionary<string, string>();
+        private IDictionary<string, string> _environment = new Dictionary<string, string>();
         private JsonGauge[] _gauges = new JsonGauge[0];
         private JsonHistogram[] _histograms = new JsonHistogram[0];
         private JsonMeter[] _meters = new JsonMeter[0];
@@ -35,7 +34,11 @@ namespace App.Metrics.Json
         public IDictionary<string, string> Environment
         {
             get { return _environment; }
-            set { _environment = value ?? new Dictionary<string, string>(); ; }
+            set
+            {
+                _environment = value ?? new Dictionary<string, string>();
+                ;
+            }
         }
 
         public JsonGauge[] Gauges
@@ -82,7 +85,10 @@ namespace App.Metrics.Json
             {
                 Version = version,
                 Timestamp = contextData.Timestamp,
-                Environment = environment.Entries.Any() ? contextData.Environment.Union(environment.Entries).ToDictionary(d => d.Name, d => d.Value) : contextData.Environment.ToDictionary(d => d.Name, d => d.Value),
+                Environment =
+                    environment.Entries.Any()
+                        ? contextData.Environment.Union(environment.Entries).ToDictionary(d => d.Name, d => d.Value)
+                        : contextData.Environment.ToDictionary(d => d.Name, d => d.Value),
                 Context = contextData.Context,
                 Gauges = contextData.Gauges.Select(JsonGauge.FromGauge).ToArray(),
                 Counters = contextData.Counters.Select(JsonCounter.FromCounter).ToArray(),
@@ -110,21 +116,26 @@ namespace App.Metrics.Json
                 ChildContexts.Select(c => c.ToMetricsData()));
         }
 
-        private IEnumerable<JsonProperty> ToJsonProperties(IClock clock)
+        private IEnumerable<JsonProperty> EnvironmentJsonProperties(IClock clock)
         {
-            foreach (var jsonProperty in EnvironmentJsonProperties(clock))
+            if (!string.IsNullOrEmpty(Version))
             {
-                yield return jsonProperty;
+                yield return new JsonProperty("Version", Version);
             }
 
-            foreach (var jsonProperty1 in MetricsJsonProperties())
+            if (Timestamp != default(DateTime))
             {
-                yield return jsonProperty1;
+                yield return new JsonProperty("Timestamp", clock.FormatTimestamp(Timestamp));
             }
 
-            if (ChildContexts.Length > 0)
+            if (Environment.Any())
             {
-                yield return new JsonProperty("ChildContexts", ChildContexts.Select(c => c.ToJsonObject(clock)));
+                yield return new JsonProperty("Environment", Environment.Select(e => new JsonProperty(e.Key, e.Value)));
+            }
+
+            if (!string.IsNullOrEmpty(Context))
+            {
+                yield return new JsonProperty("Context", Context);
             }
         }
 
@@ -156,26 +167,21 @@ namespace App.Metrics.Json
             }
         }
 
-        private IEnumerable<JsonProperty> EnvironmentJsonProperties(IClock clock)
+        private IEnumerable<JsonProperty> ToJsonProperties(IClock clock)
         {
-            if (!string.IsNullOrEmpty(Version))
+            foreach (var jsonProperty in EnvironmentJsonProperties(clock))
             {
-                yield return new JsonProperty("Version", Version);
+                yield return jsonProperty;
             }
 
-            if (Timestamp != default(DateTime))
+            foreach (var jsonProperty1 in MetricsJsonProperties())
             {
-                yield return new JsonProperty("Timestamp", clock.FormatTimestamp(Timestamp));
+                yield return jsonProperty1;
             }
 
-            if (Environment.Any())
+            if (ChildContexts.Length > 0)
             {
-                yield return new JsonProperty("Environment", Environment.Select(e => new JsonProperty(e.Key, e.Value)));
-            }
-
-            if (!string.IsNullOrEmpty(Context))
-            {
-                yield return new JsonProperty("Context", Context);
+                yield return new JsonProperty("ChildContexts", ChildContexts.Select(c => c.ToJsonObject(clock)));
             }
         }
     }

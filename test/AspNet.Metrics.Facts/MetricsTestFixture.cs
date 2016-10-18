@@ -2,7 +2,6 @@
 using System.Net.Http;
 using App.Metrics;
 using App.Metrics.Json;
-using AspNet.Metrics.Infrastructure;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,11 +22,25 @@ namespace AspNet.Metrics.Facts
             JsonSchemeVersion = JsonSchemeVersion.Version1
         };
 
-        public MetricsTestFixture(AppMetricsOptions testOptions = null)
+        private static readonly AspNetMetricsOptions TestAspNetOptions = new AspNetMetricsOptions
+        {
+            MetricsTextEnabled = true,
+            HealthEnabled = true,
+            MetricsEnabled = true,
+            PingEnabled = true
+        };
+
+        public MetricsTestFixture(AppMetricsOptions testOptions = null,
+            AspNetMetricsOptions testAspNetOptions = null)
         {
             if (testOptions == null)
             {
                 testOptions = TestOptions;
+            }
+
+            if (testAspNetOptions == null)
+            {
+                testAspNetOptions = TestAspNetOptions;
             }
 
             TestContext = TestContextHelper.Instance();
@@ -47,11 +60,21 @@ namespace AspNet.Metrics.Facts
                         options.DisableMetrics = testOptions.DisableMetrics;
                         options.DisableHealthChecks = testOptions.DisableHealthChecks;
                         options.JsonSchemeVersion = testOptions.JsonSchemeVersion;
-                    }, TestContext);
+                    }, TestContext)
+                    .AddAspNetMetrics(options =>
+                        {
+                            options.HealthEnabled = testAspNetOptions.HealthEnabled;
+                            options.MetricsEnabled = testAspNetOptions.MetricsEnabled;
+                            options.MetricsTextEnabled = testAspNetOptions.MetricsTextEnabled;
+                            options.PingEnabled = testAspNetOptions.PingEnabled;
+                            options.HealthEndpoint = testAspNetOptions.HealthEndpoint;
+                            options.MetricsEndpoint = testAspNetOptions.MetricsEndpoint;
+                            options.MetricsTextEndpoint = testAspNetOptions.MetricsTextEndpoint;
+                            options.PingEndpoint = testAspNetOptions.PingEndpoint;
+                        });
                 })
                 .Configure(app =>
                 {
-                    //TODO: AH - test different aspnet metrics options
                     app.UseMetrics();
                     app.UseMvc();
                 }));

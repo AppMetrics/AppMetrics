@@ -73,19 +73,13 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
 
         internal static void AddDefaultReporterServices(this IServiceCollection services)
         {
-            services.TryAddSingleton<StringReport, StringReport>();
             services.TryAddSingleton(typeof(IMetricReporterRegistry), provider =>
             {
                 var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
                 var context = provider.GetRequiredService<IMetricsContext>();                
-                var healthCheckDataProvider = provider.GetRequiredService<IHealthCheckDataProvider>();
                 var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
 
-                var registry = new MetricReporterRegistry(
-                   loggerFactory,
-                   context.Advanced.MetricsDataProvider,
-                   options.Value.SystemClock,
-                   healthCheckDataProvider);
+                var registry = new MetricReporterRegistry(context, loggerFactory);
 
                 options.Value.Reporters(registry);
 
@@ -109,6 +103,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
         {
             services.TryAddTransient<IMetricsRegistry, DefaultMetricsRegistry>();
             services.TryAddSingleton<IMetricsBuilder, DefaultMetricsBuilder>();
+            services.TryAddSingleton<IMetricsDataProvider, DefaultMetricsDataProvider>();
             services.TryAddSingleton(typeof(IClock), provider => provider.GetRequiredService<IOptions<AppMetricsOptions>>().Value.SystemClock);
             services.TryAddSingleton<EnvironmentInfoBuilder, EnvironmentInfoBuilder>();
 
@@ -135,7 +130,8 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                 if (metricsContext == default(IMetricsContext))
                 {
                     metricsContext = new MetricsContext(options.Value.GlobalContextName, options.Value.SystemClock,
-                        provider.GetRequiredService<IMetricsRegistry>, metricsBuilder, healthCheckDataProvider);
+                        provider.GetRequiredService<IMetricsRegistry>, metricsBuilder, healthCheckDataProvider,
+                        provider.GetRequiredService<IMetricsDataProvider>());
                 }
 
 

@@ -8,18 +8,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 // ReSharper disable CheckNamespace
-
 namespace Microsoft.AspNet.Builder
 // ReSharper restore CheckNamespace
 {
     public static class AspNetMetricsAppBuilderExtensions
     {
         public static IApplicationBuilder UseMetrics(this IApplicationBuilder app)
-        {
-            return app.UseMetrics(new AspNetMetricsOptions());
-        }
-
-        public static IApplicationBuilder UseMetrics(this IApplicationBuilder app, AspNetMetricsOptions options)
         {
             if (app == null)
             {
@@ -31,27 +25,37 @@ namespace Microsoft.AspNet.Builder
             MetricsServicesHelper.ThrowIfMetricsNotRegistered(app.ApplicationServices);
 
             var appMetricsOptions = app.ApplicationServices.GetRequiredService<IOptions<AppMetricsOptions>>().Value;
+            var aspNetMetricsOptions = app.ApplicationServices.GetRequiredService<IOptions<AspNetMetricsOptions>>().Value;
 
-            app.UseMiddleware<PingEndpointMiddleware>(Options.Create(options));
+
+            app.UseMiddleware<PingEndpointMiddleware>();
 
 
-            if (!appMetricsOptions.DisableHealthChecks)
+            if (aspNetMetricsOptions.HealthEnabled && !appMetricsOptions.DisableHealthChecks)
             {
-                app.UseMiddleware<HealthCheckEndpointMiddleware>(Options.Create(options));
+                app.UseMiddleware<HealthCheckEndpointMiddleware>();
+            }
+
+            if (aspNetMetricsOptions.MetricsTextEnabled && !appMetricsOptions.DisableMetrics)
+            {
+                app.UseMiddleware<MetricsEndpointTextEndpointMiddleware>(appMetricsOptions.MetricsFilter);
+            }
+
+            if (aspNetMetricsOptions.MetricsEnabled && !appMetricsOptions.DisableMetrics)
+            {
+                app.UseMiddleware<MetricsEndpointMiddleware>(appMetricsOptions.MetricsFilter);
             }
 
             if (!appMetricsOptions.DisableMetrics)
             {
-                app.UseMiddleware<MetricsEndpointTextEndpointMiddleware>(Options.Create(options));
-                app.UseMiddleware<MetricsEndpointMiddleware>(Options.Create(options));
-                app.UseMiddleware<ActiveRequestCounterEndpointMiddleware>(Options.Create(options));
-                app.UseMiddleware<ErrorRequestMeterMiddleware>(Options.Create(options));
-                app.UseMiddleware<OAuth2ClientWebRequestMeterMiddleware>(Options.Create(options));
-                app.UseMiddleware<PerRequestTimerMiddleware>(Options.Create(options));
-                app.UseMiddleware<PostAndPutRequestSizeHistogramMiddleware>(Options.Create(options));
-                app.UseMiddleware<RequestTimerMiddleware>(Options.Create(options));
-            }            
-           
+                app.UseMiddleware<ActiveRequestCounterEndpointMiddleware>();
+                app.UseMiddleware<ErrorRequestMeterMiddleware>();
+                app.UseMiddleware<OAuth2ClientWebRequestMeterMiddleware>();
+                app.UseMiddleware<PerRequestTimerMiddleware>();
+                app.UseMiddleware<PostAndPutRequestSizeHistogramMiddleware>();
+                app.UseMiddleware<RequestTimerMiddleware>();
+            }
+
 
             return app;
         }

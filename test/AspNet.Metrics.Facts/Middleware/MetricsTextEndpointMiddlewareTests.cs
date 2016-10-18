@@ -4,31 +4,30 @@ using App.Metrics;
 using App.Metrics.Json;
 using App.Metrics.MetricData;
 using FluentAssertions;
-using Microsoft.AspNetCore.Http;
 using Xunit;
 
 namespace AspNet.Metrics.Facts.Middleware
 {
-    public class MetricsEndpointMiddlewareTests
+    public class MetricsTextEndpointMiddlewareTests
     {
         private MetricsTestFixture _fixture;
 
-        public MetricsEndpointMiddlewareTests()
+        public MetricsTextEndpointMiddlewareTests()
         {
             _fixture = new MetricsTestFixture();
         }
 
         [Fact]
-        public async Task uses_correct_mimetype_for_json_version()
+        public async Task uses_correct_mimetype()
         {
-            var result = await _fixture.Client.GetAsync("/metrics");
+            var result = await _fixture.Client.GetAsync("/metrics-text");
 
             result.StatusCode.Should().Be(HttpStatusCode.OK);
-            result.Content.Headers.ContentType.ToString().Should().Match<string>(s => s == "application/vnd.app.metrics.v1.metrics+json");
+            result.Content.Headers.ContentType.ToString().Should().Match<string>(s => s == "text/plain");
         }
 
         [Fact]
-        public async Task can_disable_metrics()
+        public async Task can_disable_metrics_text_endpoint_when_metrics_disabled()
         {
             _fixture = new MetricsTestFixture(new AppMetricsOptions
             {
@@ -39,13 +38,13 @@ namespace AspNet.Metrics.Facts.Middleware
                 JsonSchemeVersion = JsonSchemeVersion.Version1
             });
 
-            var result = await _fixture.Client.GetAsync("/metrics");
+            var result = await _fixture.Client.GetAsync("/metrics-text");
 
             result.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
         [Fact]
-        public async Task can_change_metrics_endpoint()
+        public async Task can_disable_metrics_text_endpoint_when_metrics_enabled()
         {
             _fixture = new MetricsTestFixture(new AppMetricsOptions
             {
@@ -54,33 +53,15 @@ namespace AspNet.Metrics.Facts.Middleware
                 DisableMetrics = false,
                 DisableHealthChecks = false,
                 JsonSchemeVersion = JsonSchemeVersion.Version1
-            }, new AspNetMetricsOptions { MetricsEndpoint = new PathString("/metrics-json") });
+            }, new AspNetMetricsOptions { MetricsTextEnabled = false});
 
-            var result = await _fixture.Client.GetAsync("/metrics");
-            result.StatusCode.Should().Be(HttpStatusCode.NotFound);
-            result = await _fixture.Client.GetAsync("/metrics-json");
-            result.StatusCode.Should().Be(HttpStatusCode.OK);
-        }
-
-        [Fact]
-        public async Task can_disable_metrics_endpoint_when_metrics_enabled()
-        {
-            _fixture = new MetricsTestFixture(new AppMetricsOptions
-            {
-                DefaultSamplingType = SamplingType.Default,
-                GlobalContextName = "testing",
-                DisableMetrics = false,
-                DisableHealthChecks = false,
-                JsonSchemeVersion = JsonSchemeVersion.Version1
-            }, new AspNetMetricsOptions { MetricsEnabled = false });
-
-            var result = await _fixture.Client.GetAsync("/metrics");
+            var result = await _fixture.Client.GetAsync("/metrics-text");
 
             result.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
         [Fact]
-        public async Task can_filter_metrics()
+        public async Task can_filter_metrics_text()
         {
             _fixture = new MetricsTestFixture(new AppMetricsOptions
             {
@@ -92,7 +73,7 @@ namespace AspNet.Metrics.Facts.Middleware
                 MetricsFilter = new MetricsFilter().WhereType(MetricType.Counter)
             });
 
-            var result = await _fixture.Client.GetAsync("/metrics");
+            var result = await _fixture.Client.GetAsync("/metrics-text");
 
             //TODO: AH - Deserialize to JsonMetricsContext and convert to MetricsData to confirm results
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Builder;
+﻿using App.Metrics.MetricData;
+using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -64,8 +65,11 @@ namespace Mvc.Sample
                     options.DisableMetrics = false;
                     options.GlobalContextName = "Mvc.Sample";
                 })
-                .AddAspNetMetrics(options => { options.MetricsEndpoint = new PathString("/metrics"); });
-            //.WithSystemPerforrmanceCounters()
+                .AddAspNetMetrics(options =>
+                {                  
+                    options.MetricsEndpoint = new PathString("/metrics");                    
+                    //.WithSystemPerforrmanceCounters()
+                });
         }
     }
 }

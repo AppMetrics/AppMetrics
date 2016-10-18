@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using App.Metrics;
 using App.Metrics.Json;
-using AspNet.Metrics.Infrastructure;
+using App.Metrics.MetricData;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +36,7 @@ namespace Api.Sample
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            //TODO: AH - Should all metrics options be passed in here or in the service collection extensions?
             app.UseMetrics();
 
             // DEVNOTE: Fake a client being authorized to test oauth2 client request rate middleare

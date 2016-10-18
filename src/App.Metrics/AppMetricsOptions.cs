@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using App.Metrics.Json;
+using App.Metrics.MetricData;
 using App.Metrics.Registries;
 using App.Metrics.Utils;
 
@@ -21,6 +22,7 @@ namespace App.Metrics
             DefaultSamplingType = SamplingType.ExponentiallyDecaying;
             Reporters = reports => { };
             HealthCheckRegistry = checks => { };
+            MetricsFilter = new MetricsFilter();
         }
 
         public SamplingType DefaultSamplingType { get; set; }
@@ -36,6 +38,8 @@ namespace App.Metrics
         public Action<IHealthCheckRegistry> HealthCheckRegistry { get; set; }
 
         public JsonSchemeVersion JsonSchemeVersion { get; set; } = JsonSchemeVersion.AlwaysLatest;
+
+        public IMetricsFilter MetricsFilter { get; set; }
 
         public Action<IMetricReporterRegistry> Reporters { get; set; }
 

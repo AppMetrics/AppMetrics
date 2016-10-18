@@ -1,6 +1,5 @@
 using App.Metrics.Infrastructure;
 using App.Metrics.MetricData;
-using App.Metrics.Utils;
 
 namespace App.Metrics.Json
 {
@@ -8,8 +7,12 @@ namespace App.Metrics.Json
     {
         string MetricsMimeType { get; }
 
-        string BuildJson(MetricsData data, EnvironmentInfo environmentInfo);
+        string BuildJson(IMetricsContext metricsContext,
+            EnvironmentInfo environmentInfo,
+             IMetricsFilter filter);
 
-        string BuildJson(MetricsData data, EnvironmentInfo environmentInfo, IClock clock, bool indented = true);
+        string BuildJson(IMetricsContext metricsContext, EnvironmentInfo environmentInfo,
+            IMetricsFilter filter,
+            bool indented);
     }
 }

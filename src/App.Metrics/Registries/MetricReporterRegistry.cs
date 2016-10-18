@@ -1,50 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using App.Metrics.DataProviders;
-using App.Metrics.Extensions;
 using App.Metrics.MetricData;
 using App.Metrics.Reporters;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Primitives;
 
 namespace App.Metrics.Registries
 {
     public class MetricReporterRegistry : IMetricReporterRegistry, IHideObjectMembers, IDisposable
     {
-        private readonly IHealthCheckDataProvider _healthCheckDataProvider;
         private readonly ILoggerFactory _loggerFactory;
-        private readonly IMetricsDataProvider _metricsDataProvider;
+        private readonly IMetricsContext _metricsContext;
         private readonly List<ScheduledReporter> _reports = new List<ScheduledReporter>();
-        private readonly IClock _systemClock;
 
         private bool _disposed = false;
 
         public MetricReporterRegistry(
-            ILoggerFactory loggerFactory,
-            IMetricsDataProvider metricsDataProvider,
-            IClock systemClock,
-            //MetricsErrorHandler errorHandler,
-            IHealthCheckDataProvider healthCheckDataProvider)
+                IMetricsContext metricsContext,
+                ILoggerFactory loggerFactory)
+            //MetricsErrorHandler errorHandler)
         {
             if (loggerFactory == null)
             {
                 throw new ArgumentNullException(nameof(loggerFactory));
             }
-            if (metricsDataProvider == null)
+
+            if (metricsContext == null)
             {
-                throw new ArgumentNullException(nameof(metricsDataProvider));
-            }
-            if (systemClock == null)
-            {
-                throw new ArgumentNullException(nameof(systemClock));
+                throw new ArgumentNullException(nameof(metricsContext));
             }
 
+            _metricsContext = metricsContext;
             _loggerFactory = loggerFactory;
-            _metricsDataProvider = metricsDataProvider;
-            _systemClock = systemClock;
-            _healthCheckDataProvider = healthCheckDataProvider;
         }
 
         public void Dispose()
@@ -83,7 +71,7 @@ namespace App.Metrics.Registries
         /// <param name="filter">Only report metrics that match the filter.</param>
         public IMetricReporterRegistry WithConsoleReport(TimeSpan interval, IMetricsFilter filter = null)
         {
-            return WithReport(new ConsoleReport(_loggerFactory, _systemClock), interval, filter);
+            return WithReport(new ConsoleReport(_metricsContext, filter, _loggerFactory), interval, filter);
         }
 
         /// <summary>
@@ -92,9 +80,10 @@ namespace App.Metrics.Registries
         /// <param name="report">Function that returns an instance of a reporter</param>
         /// <param name="interval">Interval at which to run the report.</param>
         /// <param name="filter">Only report metrics that match the filter.</param>
-        public IMetricReporterRegistry WithReport(IMetricsReport report, TimeSpan interval, IMetricsFilter filter = null)
+        public IMetricReporterRegistry WithReport(IMetricsReport report, TimeSpan interval,
+            IMetricsFilter filter = null)
         {
-            var newReport = new ScheduledReporter(report, _metricsDataProvider.WithFilter(filter), _healthCheckDataProvider, interval);
+            var newReport = new ScheduledReporter(_metricsContext, report, interval);
             _reports.Add(newReport);
             return this;
         }
@@ -105,9 +94,11 @@ namespace App.Metrics.Registries
         /// <param name="filePath">File where to append the report.</param>
         /// <param name="interval">Interval at which to run the report.</param>
         /// <param name="filter">Only report metrics that match the filter.</param>
-        public IMetricReporterRegistry WithTextFileReport(string filePath, TimeSpan interval, IMetricsFilter filter = null)
+        public IMetricReporterRegistry WithTextFileReport(string filePath, TimeSpan interval, 
+            IMetricsFilter filter = null)
         {
-            return WithReport(new TextFileReport(filePath, _loggerFactory, _systemClock), interval, filter);
+            return WithReport(new TextFileReport(filePath, _loggerFactory, filter, 
+                _metricsContext.Advanced.Clock), interval, filter);
         }
 
         protected virtual void Dispose(bool disposing)

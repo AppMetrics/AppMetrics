@@ -11,7 +11,6 @@ namespace AspNet.Metrics
         {
             IgnoredRequestPatterns = new List<Regex>();
             RouteNameResolver = new DefaultRouteTemplateResolver();
-
             HealthEndpoint = new PathString("/health");
             MetricsEndpoint = new PathString("/metrics");
             MetricsTextEndpoint = new PathString("/metrics-text");
@@ -37,6 +36,7 @@ namespace AspNet.Metrics
         public PathString HealthEndpoint { get; set; }
 
         public IList<Regex> IgnoredRequestPatterns { get; }
+
         public bool MetricsEnabled { get; set; }
 
         public PathString MetricsEndpoint { get; set; }

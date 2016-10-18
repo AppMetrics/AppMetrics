@@ -6,7 +6,8 @@ namespace App.Metrics.MetricData
 {
     public sealed class MetricsData
     {
-        public static readonly MetricsData Empty = new MetricsData(string.Empty, DateTime.MinValue,
+        public static readonly MetricsData Empty = new MetricsData(string.Empty, 
+            DateTime.MinValue,
             Enumerable.Empty<EnvironmentInfoEntry>(),
             Enumerable.Empty<GaugeValueSource>(),
             Enumerable.Empty<CounterValueSource>(),
@@ -16,12 +17,9 @@ namespace App.Metrics.MetricData
             Enumerable.Empty<MetricsData>());
 
         public readonly IEnumerable<MetricsData> ChildMetrics;
-
         public readonly string Context;
         public readonly IEnumerable<CounterValueSource> Counters;
-
         public readonly IEnumerable<EnvironmentInfoEntry> Environment;
-
         public readonly IEnumerable<GaugeValueSource> Gauges;
         public readonly IEnumerable<HistogramValueSource> Histograms;
         public readonly IEnumerable<MeterValueSource> Meters;

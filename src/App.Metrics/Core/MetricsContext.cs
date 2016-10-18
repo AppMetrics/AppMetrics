@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Linq;
+using System.Collections.Generic;
 using App.Metrics.DataProviders;
 using App.Metrics.MetricData;
 using App.Metrics.Registries;
@@ -25,7 +25,8 @@ namespace App.Metrics.Core
             IClock systemClock,
             Func<IMetricsRegistry> setupMetricsRegistry,
             IMetricsBuilder metricsBuilder,
-            IHealthCheckDataProvider healthCheckDataProvider)
+            IHealthCheckDataProvider healthCheckDataProvider,
+            IMetricsDataProvider metricsDataProvider)
         {
             if (context == null)
             {
@@ -57,23 +58,30 @@ namespace App.Metrics.Core
                 throw new ArgumentNullException(nameof(healthCheckDataProvider));
             }
 
+            if (metricsDataProvider == null)
+            {
+                throw new ArgumentNullException(nameof(metricsDataProvider));
+            }
+
             _setupMetricsRegistry = setupMetricsRegistry;
             _metricsRegistry = _setupMetricsRegistry();
             _metricsBuilder = metricsBuilder;
+            MetricsDataProvider = metricsDataProvider;
 
+            Name = context;
             Clock = systemClock;
             HealthCheckDataProvider = healthCheckDataProvider;
-
-            MetricsDataProvider = new DefaultMetricsDataProvider(context, Clock,
-                _metricsRegistry.DataProvider,
-                () => _childContexts.Values.Select(c => c.Advanced.MetricsDataProvider));
         }
 
         public event EventHandler ContextDisabled;
 
         public event EventHandler ContextShuttingDown;
 
+        public string Name { get; }
+
         public IAdvancedMetricsContext Advanced => this;
+
+        public IRegistryDataProvider RegistryDataProvider => _metricsRegistry.DataProvider;
 
         public IMetricsDataProvider MetricsDataProvider { get; }
 
@@ -83,6 +91,8 @@ namespace App.Metrics.Core
         public IMetricsContext Internal => this;
 
         public IClock Clock { get; }
+
+        public IReadOnlyDictionary<string, IMetricsContext> ChildContexts => _childContexts;
 
         public bool AttachContext(string contextName, IMetricsContext context)
         {
@@ -151,7 +161,7 @@ namespace App.Metrics.Core
 
         public IMetricsContext CreateChildContextInstance(string contextName)
         {
-            return new MetricsContext(contextName, Clock, _setupMetricsRegistry, _metricsBuilder, HealthCheckDataProvider);
+            return new MetricsContext(contextName, Clock, _setupMetricsRegistry, _metricsBuilder, HealthCheckDataProvider, MetricsDataProvider);
         }
 
         public void Dispose()
@@ -162,12 +172,11 @@ namespace App.Metrics.Core
 
         public void Dispose(bool disposing)
         {
-            if (disposing)
+            if (!disposing) return;
+
+            if (!_isDisabled)
             {
-                if (!_isDisabled)
-                {
-                    ContextShuttingDown?.Invoke(this, EventArgs.Empty);
-                }
+                ContextShuttingDown?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -224,9 +233,7 @@ namespace App.Metrics.Core
             IMetricsContext context;
             if (_childContexts.TryRemove(contextName, out context))
             {
-                using (context)
-                {
-                }
+                context.Dispose();
             }
         }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using App.Metrics.Internal;
+using AspNet.Metrics.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,9 +26,11 @@ namespace AspNet.Metrics.Infrastructure
 
         public async Task OnResourceExecutionAsync(ResourceExecutingContext context, ResourceExecutionDelegate next)
         {
-            // Verify if AddMetrics was done before calling UseMetricsWithMvc
-            // We use the MetricsMarkerService to make sure if all the services were added.
+            // Verify if AddMetrics and AddAspNetMetrics was done before calling UseMetrics
+            // We use the MetricsMarkerService and AspNetMetricsMarkerService to make sure if all the services were added.
             MetricsServicesHelper.ThrowIfMetricsNotRegistered(context.HttpContext.RequestServices);
+            AspNetMetricsServicesHelper.ThrowIfMetricsNotRegistered(context.HttpContext.RequestServices);
+
             EnsureServices(context.HttpContext);
 
             var templateRoute = await _routeNameResolver.ResolveMatchingTemplateRoute(context.RouteData);

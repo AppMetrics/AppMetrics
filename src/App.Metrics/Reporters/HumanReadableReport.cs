@@ -10,23 +10,17 @@ namespace App.Metrics.Reporters
     public abstract class HumanReadableReport : BaseReport
     {
         private readonly int _padding = 20;
-        private readonly IClock _systemClock;
         private bool _disposed = false;
 
-        protected HumanReadableReport(ILoggerFactory loggerFactory, IClock systemClock)
-            : base(loggerFactory, systemClock)
+        protected HumanReadableReport(ILoggerFactory loggerFactory,
+            IMetricsFilter filter,
+            IClock clock)
+            : base(loggerFactory, clock, filter)
         {
             if (loggerFactory == null)
             {
                 throw new ArgumentNullException(nameof(loggerFactory));
             }
-
-            if (systemClock == null)
-            {
-                throw new ArgumentNullException(nameof(systemClock));
-            }
-
-            _systemClock = systemClock;
         }
 
         public void WriteValue(string label, string value, string sign = "=")
@@ -150,14 +144,14 @@ namespace App.Metrics.Reporters
         {
             WriteLine();
             WriteLine();
-            WriteLine("***** {0} - {1} *****", metricType, _systemClock.FormatTimestamp(CurrentContextTimestamp));
+            WriteLine("***** {0} - {1} *****", metricType, Clock.FormatTimestamp(CurrentContextTimestamp));
 
             base.StartMetricGroup(metricType);
         }
 
         protected override void StartReport(string contextName)
         {
-            WriteLine("{0} - {1}", contextName, _systemClock.FormatTimestamp(ReportTimestamp));
+            WriteLine("{0} - {1}", contextName, Clock.FormatTimestamp(ReportTimestamp));
 
             base.StartReport(contextName);
         }

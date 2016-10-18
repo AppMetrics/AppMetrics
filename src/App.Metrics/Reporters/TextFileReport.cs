@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using App.Metrics.MetricData;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 
@@ -14,8 +15,9 @@ namespace App.Metrics.Reporters
 
         public TextFileReport(string fileName,
             ILoggerFactory loggerFactory,
-            IClock systemClock)
-            : base(loggerFactory, systemClock)
+            IMetricsFilter filter,
+            IClock clock)
+            : base(loggerFactory, filter, clock)
 
         {
             Directory.CreateDirectory(Path.GetDirectoryName(fileName));

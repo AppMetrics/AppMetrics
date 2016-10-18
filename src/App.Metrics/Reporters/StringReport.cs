@@ -1,7 +1,7 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.DataProviders;
 using App.Metrics.MetricData;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
@@ -10,24 +10,35 @@ namespace App.Metrics.Reporters
 {
     public sealed class StringReport : HumanReadableReport
     {
-        private readonly IHealthCheckDataProvider _healthCheckDataProvider;
+        private readonly IMetricsContext _metricsContext;
         private StringBuilder _buffer;
         private bool _disposed = false;
 
 
         public StringReport(ILoggerFactory loggerFactory,
-            IHealthCheckDataProvider healthCheckDataProvider,
-            IClock systemClock)
-            : base(loggerFactory, systemClock)
+            IMetricsContext metricsContext,
+            IMetricsFilter filter)
+            : base(loggerFactory, filter, metricsContext.Advanced.Clock)
         {
-            _healthCheckDataProvider = healthCheckDataProvider;
+            if (loggerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(loggerFactory));
+            }
+
+            if (metricsContext == null)
+            {
+                throw new ArgumentNullException(nameof(metricsContext));
+            }
+
+            _metricsContext = metricsContext;
         }
 
         public string Result => _buffer.ToString();
 
-        public async Task<string> RenderMetrics(MetricsData metricsData)
+        public async Task<string> RenderMetrics(IMetricsContext metricsContext)
         {
-            await RunReport(metricsData, _healthCheckDataProvider, CancellationToken.None);
+            await RunReport(metricsContext, CancellationToken.None);
+
             return Result;
         }
 

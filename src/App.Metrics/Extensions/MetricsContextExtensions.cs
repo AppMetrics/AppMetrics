@@ -4,6 +4,7 @@ using System.Linq;
 using App.Metrics.MetricData;
 
 // ReSharper disable CheckNamespace
+
 namespace App.Metrics
 // ReSharper restore CheckNamespace
 {
@@ -32,9 +33,9 @@ namespace App.Metrics
 
         public static MetricsData GetDataFor(this IMetricsContext metricsContext, params string[] nameWithContext)
         {
-            return metricsContext.GetContextFor(nameWithContext).Advanced.MetricsDataProvider.CurrentMetricsData;
+            var context = metricsContext.GetContextFor(nameWithContext);
+            return context.Advanced.MetricsDataProvider.GetMetricsData(context);
         }
-
 
         public static HistogramValue HistogramValue(this IMetricsContext metricsContext, params string[] nameWithContext)
         {

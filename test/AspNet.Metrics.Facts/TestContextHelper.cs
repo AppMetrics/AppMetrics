@@ -3,6 +3,7 @@ using App.Metrics;
 using App.Metrics.Core;
 using App.Metrics.DataProviders;
 using App.Metrics.Health;
+using App.Metrics.MetricData;
 using App.Metrics.Registries;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Options;
@@ -15,7 +16,8 @@ namespace AspNet.Metrics.Facts
         {
             return new MetricsContext(context, clock, () => new DefaultMetricsRegistry(),
                 new TestMetricsBuilder(clock, scheduler),
-                new DefaultHealthCheckDataProvider(new HealthCheckRegistry(Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))));
+                new DefaultHealthCheckDataProvider(new HealthCheckRegistry(Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))),
+                new DefaultMetricsDataProvider(clock, Enumerable.Empty<EnvironmentInfoEntry>()));
         }
 
         public static IMetricsContext Instance()

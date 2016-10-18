@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.DataProviders;
+using App.Metrics.Extensions;
 using App.Metrics.Health;
 using App.Metrics.MetricData;
 using App.Metrics.Utils;
@@ -14,30 +15,36 @@ namespace App.Metrics.Reporters
     public abstract class BaseReport : IMetricsReport
     {
         protected readonly ILogger Logger;
-        protected readonly IClock SystemClock;
         private bool _disposed = false;
         private CancellationToken _token;
 
-        protected BaseReport(ILoggerFactory loggerFactory, IClock systemClock)
+        protected BaseReport(ILoggerFactory loggerFactory,
+            IClock clock,
+            IMetricsFilter filter)
         {
             if (loggerFactory == null)
             {
                 throw new ArgumentNullException(nameof(loggerFactory));
             }
 
-            if (systemClock == null)
+            if (clock == null)
             {
-                throw new ArgumentNullException(nameof(systemClock));
+                throw new ArgumentNullException(nameof(clock));
             }
 
-            SystemClock = systemClock;
             Logger = loggerFactory.CreateLogger(GetType());
+            Filter = filter;
+            Clock = clock;
         }
 
         ~BaseReport()
         {
             Dispose(false);
         }
+
+        public IMetricsFilter Filter { get; }
+
+        protected IClock Clock { get; }
 
         protected DateTime CurrentContextTimestamp { get; private set; }
 
@@ -49,17 +56,26 @@ namespace App.Metrics.Reporters
             GC.SuppressFinalize(this);
         }
 
-        public async Task RunReport(MetricsData metricsData, IHealthCheckDataProvider healthCheckDataProvider, CancellationToken token)
+        public async Task RunReport(IMetricsContext metricsContext, CancellationToken token)
         {
+            var dataProvider = metricsContext.Advanced.MetricsDataProvider;
+
+            if (Filter != default(IMetricsFilter))
+            {
+                dataProvider = dataProvider.WithFilter(Filter);
+            }
+
+            var metricsData = dataProvider.GetMetricsData(metricsContext);
+
             _token = token;
 
-            ReportTimestamp = SystemClock.UtcDateTime;
+            ReportTimestamp = metricsContext.Advanced.Clock.UtcDateTime;
 
             StartReport(metricsData.Context);
 
             ReportContext(metricsData, Enumerable.Empty<string>());
 
-            await ReportHealthStatus(healthCheckDataProvider);
+            await ReportHealthStatus(metricsContext.Advanced.HealthCheckDataProvider);
 
             EndReport(metricsData.Context);
         }
@@ -141,14 +157,23 @@ namespace App.Metrics.Reporters
 
             ReportEnvironment(contextName, data.Environment);
 
-            ReportSection("Gauges", data.Gauges, g => ReportGauge(FormatMetricName(contextName, g), g.Value, g.Unit, g.Tags));
-            ReportSection("Counters", data.Counters, c => ReportCounter(FormatMetricName(contextName, c), c.Value, c.Unit, c.Tags));
-            ReportSection("Meters", data.Meters, m => ReportMeter(FormatMetricName(contextName, m), m.Value, m.Unit, m.RateUnit, m.Tags));
-            ReportSection("Histograms", data.Histograms, h => ReportHistogram(FormatMetricName(contextName, h), h.Value, h.Unit, h.Tags));
-            ReportSection("Timers", data.Timers,
-                t => ReportTimer(FormatMetricName(contextName, t), t.Value, t.Unit, t.RateUnit, t.DurationUnit, t.Tags));
+            ReportSection("Gauges", data.Gauges, g => ReportGauge(FormatMetricName(contextName, g),
+                g.Value, g.Unit, g.Tags));
+
+            ReportSection("Counters", data.Counters, c => ReportCounter(FormatMetricName(contextName, c),
+                c.Value, c.Unit, c.Tags));
+
+            ReportSection("Meters", data.Meters, m => ReportMeter(FormatMetricName(contextName, m),
+                m.Value, m.Unit, m.RateUnit, m.Tags));
+
+            ReportSection("Histograms", data.Histograms, h => ReportHistogram(FormatMetricName(contextName, h),
+                h.Value, h.Unit, h.Tags));
+
+            ReportSection("Timers", data.Timers, t => ReportTimer(FormatMetricName(contextName, t),
+                t.Value, t.Unit, t.RateUnit, t.DurationUnit, t.Tags));
 
             var stack = contextStack.Concat(new[] { data.Context });
+
             foreach (var child in data.ChildMetrics)
             {
                 ReportContext(child, stack);
@@ -176,20 +201,19 @@ namespace App.Metrics.Reporters
                 return;
             }
 
-            if (metrics.Any())
-            {
-                StartMetricGroup(name);
-                foreach (var metric in metrics)
-                {
-                    if (_token.IsCancellationRequested)
-                    {
-                        break;
-                    }
+            if (!metrics.Any()) return;
 
-                    reporter(metric);
+            StartMetricGroup(name);
+            foreach (var metric in metrics)
+            {
+                if (_token.IsCancellationRequested)
+                {
+                    break;
                 }
-                EndMetricGroup(name);
+
+                reporter(metric);
             }
+            EndMetricGroup(name);
         }
     }
 }

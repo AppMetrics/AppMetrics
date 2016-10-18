@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 
 // ReSharper disable CheckNamespace
+
 namespace Microsoft.Extensions.DependencyInjection
 // ReSharper restore CheckNamespace
 {
@@ -37,7 +38,10 @@ namespace Microsoft.Extensions.DependencyInjection
 
         internal static void AddAspNetMetricsCoreServices(IServiceCollection services)
         {
-            services.TryAddSingleton<IConfigureOptions<AspNetMetricsOptions>, AspNetMetricsCoreOptionsSetup>();
+            services.TryAddSingleton<AspNetMetricsMarkerService, AspNetMetricsMarkerService>();
+
+            //services.TryAddEnumerable(
+            //    ServiceDescriptor.Transient<IConfigureOptions<AspNetMetricsOptions>, AspNetMetricsOptionsSetup>());
         }
 
         private static void ConfigureDefaultServices(IServiceCollection services)

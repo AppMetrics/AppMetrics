@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using App.Metrics.DataProviders;
 using App.Metrics.MetricData;
 using App.Metrics.Utils;
 
@@ -8,40 +7,34 @@ namespace App.Metrics.Reporters
 {
     public sealed class ScheduledReporter : IDisposable
     {
-        private readonly IHealthCheckDataProvider _healthCheckDataProvider;
         private readonly TimeSpan _interval;
-        private readonly IMetricsDataProvider _metricsDataProvider;
+        private readonly IMetricsContext _metricsContext;
         private readonly IMetricsReport _report;
         private readonly IScheduler _scheduler;
         private bool _disposed = false;
 
-        public ScheduledReporter(IMetricsReport reporter,
-            IMetricsDataProvider metricsDataProvider,
-            IHealthCheckDataProvider healthCheckDataProvider,
+        public ScheduledReporter(
+            IMetricsContext metricsContext,
+            IMetricsReport reporter,
             TimeSpan interval)
-            : this(reporter, metricsDataProvider, healthCheckDataProvider, interval, new ActionScheduler())
+            : this(metricsContext, reporter, interval, new ActionScheduler())
         {
         }
 
-        public ScheduledReporter(IMetricsReport report,
-            IMetricsDataProvider metricsDataProvider,
-            IHealthCheckDataProvider healthCheckDataProvider,
+        public ScheduledReporter(
+            IMetricsContext metricsContext,
+            IMetricsReport report,
             TimeSpan interval,
             IScheduler scheduler)
         {
+            if (metricsContext == null)
+            {
+                throw new ArgumentNullException(nameof(metricsContext));
+            }
+
             if (report == null)
             {
                 throw new ArgumentNullException(nameof(report));
-            }
-
-            if (metricsDataProvider == null)
-            {
-                throw new ArgumentNullException(nameof(metricsDataProvider));
-            }
-
-            if (healthCheckDataProvider == null)
-            {
-                throw new ArgumentNullException(nameof(healthCheckDataProvider));
             }
 
             if (scheduler == null)
@@ -49,9 +42,8 @@ namespace App.Metrics.Reporters
                 throw new ArgumentNullException(nameof(scheduler));
             }
 
+            _metricsContext = metricsContext;
             _report = report;
-            _metricsDataProvider = metricsDataProvider;
-            _healthCheckDataProvider = healthCheckDataProvider;
             _interval = interval;
             _scheduler = scheduler;
         }
@@ -59,6 +51,11 @@ namespace App.Metrics.Reporters
         public void Dispose()
         {
             Dispose(true);
+        }
+
+        public void Start(CancellationToken token)
+        {
+            _scheduler.Start(_interval, t => ReportAction(t));
         }
 
         private void Dispose(bool disposing)
@@ -79,12 +76,7 @@ namespace App.Metrics.Reporters
 
         private void ReportAction(CancellationToken token)
         {
-            _report.RunReport(_metricsDataProvider.CurrentMetricsData, _healthCheckDataProvider, token);
-        }
-
-        public void Start(CancellationToken token)
-        {
-            _scheduler.Start(_interval, t => ReportAction(t));
+            _report.RunReport(_metricsContext, token);
         }
     }
 }

@@ -19,30 +19,16 @@ namespace App.Metrics.MetricData
         bool IsMatch(TimerValueSource timer);
     }
 
-    public sealed class Filter : IMetricsFilter
+    public sealed class MetricsFilter : IMetricsFilter
     {
         public static IMetricsFilter All = new NoOpFilter();
         private Predicate<string> _context;
         private Predicate<string> _name;
         private HashSet<MetricType> _types;
 
-        private Filter()
-        {
-        }
-
-        public static Filter New
-        {
-            get { return new Filter(); }
-        }
-
         public bool IsMatch(string context)
         {
-            if (context != null && !_context(context))
-            {
-                return false;
-            }
-
-            return true;
+            return _context == null || _context(context);
         }
 
         public bool IsMatch(GaugeValueSource gauge)
@@ -90,29 +76,29 @@ namespace App.Metrics.MetricData
             return IsNameMatch(timer.Name);
         }
 
-        public Filter WhereContext(Predicate<string> condition)
+        public MetricsFilter WhereContext(Predicate<string> condition)
         {
             _context = condition;
             return this;
         }
 
-        public Filter WhereContext(string context)
+        public MetricsFilter WhereContext(string context)
         {
             return WhereContext(c => c.Equals(context, StringComparison.OrdinalIgnoreCase));
         }
 
-        public Filter WhereName(Predicate<string> condition)
+        public MetricsFilter WhereName(Predicate<string> condition)
         {
             _name = condition;
             return this;
         }
 
-        public Filter WhereNameStartsWith(string name)
+        public MetricsFilter WhereNameStartsWith(string name)
         {
             return WhereName(n => n.StartsWith(name, StringComparison.OrdinalIgnoreCase));
         }
 
-        public Filter WhereType(params MetricType[] types)
+        public MetricsFilter WhereType(params MetricType[] types)
         {
             _types = new HashSet<MetricType>(types);
             return this;
@@ -120,12 +106,7 @@ namespace App.Metrics.MetricData
 
         private bool IsNameMatch(string name)
         {
-            if (name != null && !_name(name))
-            {
-                return false;
-            }
-
-            return true;
+            return _name == null || _name(name);
         }
 
         private class NoOpFilter : IMetricsFilter

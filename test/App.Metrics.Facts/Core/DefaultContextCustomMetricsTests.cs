@@ -20,13 +20,14 @@ namespace App.Metrics.Facts.Core
 
         private static readonly IHealthCheckDataProvider HealthCheckDataProvider =
             new DefaultHealthCheckDataProvider(new HealthCheckRegistry(Enumerable.Empty<HealthCheck>(), Options));
-
+        private static readonly IMetricsDataProvider MetricsDataProvider =
+            new DefaultMetricsDataProvider(Options.Value.SystemClock, Enumerable.Empty<EnvironmentInfoEntry>());
         private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.SystemClock);
         private static readonly Func<IMetricsRegistry> MetricsRegistry = () => new DefaultMetricsRegistry();
 
 
         private readonly IMetricsContext _context = new MetricsContext(Options.Value.GlobalContextName,
-            Options.Value.SystemClock, MetricsRegistry, MetricsBuilder, HealthCheckDataProvider);
+            Options.Value.SystemClock, MetricsRegistry, MetricsBuilder, HealthCheckDataProvider, MetricsDataProvider);
 
         [Fact]
         public void MetricsContext_CanRegisterCustomCounter()
@@ -34,7 +35,7 @@ namespace App.Metrics.Facts.Core
             var counter = _context.Advanced.Counter("custom", Unit.Calls, () => new CustomCounter());
             counter.Should().BeOfType<CustomCounter>();
             counter.Increment();
-            _context.Advanced.MetricsDataProvider.CurrentMetricsData.Counters.Single().Value.Count.Should().Be(10L);
+            _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Counters.Single().Value.Count.Should().Be(10L);
         }
 
         [Fact]
@@ -64,10 +65,7 @@ namespace App.Metrics.Facts.Core
 
         public class CustomCounter : ICounterImplementation
         {
-            public CounterValue Value
-            {
-                get { return new CounterValue(10L, new CounterValue.SetItem[0]); }
-            }
+            public CounterValue Value => new CounterValue(10L, new CounterValue.SetItem[0]);
 
             public void Decrement()
             {

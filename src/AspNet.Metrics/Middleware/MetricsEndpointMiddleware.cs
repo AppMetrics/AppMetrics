@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Infrastructure;
 using App.Metrics.Json;
+using App.Metrics.MetricData;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -12,15 +12,17 @@ namespace AspNet.Metrics.Middleware
 {
     public class MetricsEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
-        private readonly RequestDelegate _next;
-        private readonly IMetricsJsonBuilder _jsonBuilder;
         private readonly EnvironmentInfoBuilder _environmentInfoBuilder;
+        private readonly IMetricsJsonBuilder _jsonBuilder;
+        private readonly RequestDelegate _next;
+        private readonly IMetricsFilter _metricsFilter;
 
         public MetricsEndpointMiddleware(RequestDelegate next,
+            IMetricsFilter metricsFilter,
             IOptions<AspNetMetricsOptions> options,
             ILoggerFactory loggerFactory,
             IMetricsContext metricsContext,
-            IMetricsJsonBuilder jsonBuilder, 
+            IMetricsJsonBuilder jsonBuilder,
             EnvironmentInfoBuilder environmentInfoBuilder)
             : base(next, options, loggerFactory, metricsContext)
         {
@@ -28,6 +30,11 @@ namespace AspNet.Metrics.Middleware
             {
                 throw new ArgumentNullException(nameof(next));
             }
+            if (metricsFilter == null)
+            {
+                throw new ArgumentNullException(nameof(metricsFilter));
+            }
+
             if (environmentInfoBuilder == null)
             {
                 throw new ArgumentNullException(nameof(environmentInfoBuilder));
@@ -36,6 +43,7 @@ namespace AspNet.Metrics.Middleware
             _jsonBuilder = jsonBuilder;
             _environmentInfoBuilder = environmentInfoBuilder;
             _next = next;
+            _metricsFilter = metricsFilter;
         }
 
         public async Task Invoke(HttpContext context)
@@ -43,7 +51,7 @@ namespace AspNet.Metrics.Middleware
             if (Options.MetricsEnabled && Options.MetricsEndpoint.HasValue && Options.MetricsEndpoint == context.Request.Path)
             {
                 var environmentInfo = await _environmentInfoBuilder.BuildAsync();
-                var json = _jsonBuilder.BuildJson(MetricsContext.Advanced.MetricsDataProvider.CurrentMetricsData, environmentInfo);
+                var json = _jsonBuilder.BuildJson(MetricsContext, environmentInfo, _metricsFilter);
 
                 await WriteResponseAsync(context, json, _jsonBuilder.MetricsMimeType);
                 return;

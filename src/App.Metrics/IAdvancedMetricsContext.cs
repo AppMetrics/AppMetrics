@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using App.Metrics.Core;
 using App.Metrics.DataProviders;
 using App.Metrics.MetricData;
@@ -19,14 +20,18 @@ namespace App.Metrics
         /// </summary>
         event EventHandler ContextShuttingDown;
 
+        IReadOnlyDictionary<string, IMetricsContext> ChildContexts { get; }
+
+        IClock Clock { get; }
+
+        IHealthCheckDataProvider HealthCheckDataProvider { get; }
+
+        IRegistryDataProvider RegistryDataProvider { get; }
+
         /// <summary>
         ///     Returns a metrics data provider capable of returning the metrics in this context and any existing child contexts.
         /// </summary>
         IMetricsDataProvider MetricsDataProvider { get; }
-
-        IHealthCheckDataProvider HealthCheckDataProvider { get; }
-
-        IClock Clock { get; }
 
         /// <summary>
         ///     Attach a context that has already been created (ex: by a library exposing internal metrics)
