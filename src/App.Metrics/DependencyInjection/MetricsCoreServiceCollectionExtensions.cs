@@ -124,14 +124,6 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                     options.Value.HealthCheckRegistry(healthCheckRegistry);
                 }
 
-                if (options.Value.EnableInternalMetrics)
-                {
-                    //TODO: Review enableing internal metrics
-                    //var internalMetricsContexxt = new MetricsContext(BaseMetricsContext.InternalMetricsContextName, options.Value.Clock);
-                    //options.Value.MetricsContext.Advanced.AttachContext(BaseMetricsContext.InternalMetricsContextName,
-                    //    internalMetricsContexxt);
-                }
-
                 if (metricsContext == default(IMetricsContext))
                 {
                     metricsContext = new MetricsContext(options.Value.GlobalContextName, options.Value.SystemClock,

@@ -23,7 +23,6 @@ namespace App.Metrics
             }
 
             _logger = loggerFactory.CreateLogger<MetricsErrorHandler>();
-            _errorMeter = metricsContext.Internal.Meter("Metrics Errors", Unit.Errors);
 
             AddHandler((x, msg) => _logger.LogError("Metrics: Unhandled exception in App.Metrics Library {0} {1}", x, msg, x.Message));
             AddHandler((x, msg) => _logger.LogError("Metrics: Unhandled exception in App.Metrics Library " + x.ToString()));

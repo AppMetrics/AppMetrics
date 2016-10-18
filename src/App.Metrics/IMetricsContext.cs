@@ -15,8 +15,6 @@ namespace App.Metrics
         /// </summary>
         IAdvancedMetricsContext Advanced { get; }
 
-        IMetricsContext Internal { get; }
-
         /// <summary>
         ///     Create a new child metrics context. Metrics added to the child context are kept separate from the metrics in the
         ///     parent context.

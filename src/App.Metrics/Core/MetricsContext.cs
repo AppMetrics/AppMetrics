@@ -90,9 +90,6 @@ namespace App.Metrics.Core
 
         public IHealthCheckDataProvider HealthCheckDataProvider { get; }
 
-        //TODO: AH - Allow internal metrics
-        public IMetricsContext Internal => this;
-
         public IClock Clock { get; }
 
         public IReadOnlyDictionary<string, IMetricsContext> ChildContexts => _childContexts;

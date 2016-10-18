@@ -50,8 +50,6 @@ namespace App.Metrics.Core
 
         public IRegistryDataProvider RegistryDataProvider { get; }
 
-        public IMetricsContext Internal => _metricsContext.Internal;
-
         public IMetricsDataProvider MetricsDataProvider { get; }
 
         public string Name { get; }
