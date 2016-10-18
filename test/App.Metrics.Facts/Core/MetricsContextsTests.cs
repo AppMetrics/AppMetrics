@@ -2,6 +2,7 @@
 using System.Linq;
 using App.Metrics.Core;
 using App.Metrics.DataProviders;
+using App.Metrics.Extensions;
 using App.Metrics.Health;
 using App.Metrics.MetricData;
 using App.Metrics.Registries;
@@ -11,7 +12,7 @@ using Xunit;
 
 namespace App.Metrics.Facts.Core
 {
-    public class DefaultContextTests
+    public class MetricsContextsTests
     {
         private static readonly IOptions<AppMetricsOptions> Options = Microsoft.Extensions.Options.Options.Create(new AppMetricsOptions());
 
@@ -27,9 +28,12 @@ namespace App.Metrics.Facts.Core
             Options.Value.SystemClock, MetricsRegistry, MetricsBuilder, HealthCheckDataProvider, MetricsDataProvider);
 
         public Func<IMetricsContext, MetricsData> CurrentData => ctx => _context.Advanced.MetricsDataProvider.GetMetricsData(ctx);
+        public Func<IMetricsContext, IMetricsFilter, MetricsData> CurrentDataWithFilter => (ctx, filter) => 
+        _context.Advanced.MetricsDataProvider.WithFilter(filter).GetMetricsData(ctx);
+
 
         [Fact]
-        public void MetricsContext_CanCreateSubcontext()
+        public void can_create_child_context()
         {
             _context.Context("test").Counter("counter", Unit.Requests);
 
@@ -39,7 +43,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void MetricsContext_CanPropagateValueTags()
+        public void can_propergate_value_tags()
         {
             _context.Counter("test", Unit.None, "tag");
             _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Counters.Single().Tags.Should().Equal("tag");
@@ -55,7 +59,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void MetricsContext_ChildWithSameNameAreSameInstance()
+        public void child_with_same_name_are_same_context()
         {
             var first = _context.Context("test");
             var second = _context.Context("test");
@@ -64,7 +68,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void MetricsContext_DataProviderReflectsChildContxts()
+        public void data_provider_reflects_child_contexts()
         {
             var counter = _context
                 .Context("test")
@@ -82,7 +86,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void MetricsContext_DataProviderReflectsNewMetrics()
+        public void data_provider_reflects_new_metrics()
         {
             _context.Counter("test", Unit.Bytes).Increment();
 
@@ -92,7 +96,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void MetricsContext_DisabledChildContextDoesNotShowInData()
+        public void disabled_child_context_does_not_show_in_metrics_data()
         {
             _context.Context("test").Counter("test", Unit.Bytes).Increment();
 
@@ -105,7 +109,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void MetricsContext_DowsNotThrowOnMetricsOfDifferentTypeWithSameName()
+        public void does_not_throw_on_metrics_of_different_type_with_same_name()
         {
             ((Action)(() =>
             {
@@ -128,7 +132,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void MetricsContext_MetricsAddedAreVisibleInTheDataProvider()
+        public void metrics_added_are_visible_in_the_data_provider()
         {
             _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Counters.Should().BeEmpty();
             _context.Counter("test", Unit.Bytes);
@@ -136,7 +140,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void MetricsContext_MetricsArePresentInMetricsData()
+        public void metrics_are_present_in_metrics_data()
         {
             var counter = _context.Counter("test", Unit.Requests);
 
@@ -150,7 +154,30 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void MetricsContext_RaisesShutdownEventOnDispose()
+        public void can_filter_metrics_by_type()
+        {
+            var counter = _context.Counter("test", Unit.Requests);
+            var meter = _context.Meter("test", Unit.None, tags: "tag");
+
+            var filter = new MetricsFilter().WhereType(MetricType.Counter);
+
+            counter.Increment();
+            meter.Mark(1);
+
+            var currentData = CurrentDataWithFilter(_context, filter);
+
+            var counterValue = currentData.Counters.Single();
+            var meterValue = currentData.Meters.FirstOrDefault();
+
+            counterValue.Name.Should().Be("test");
+            counterValue.Unit.Should().Be(Unit.Requests);
+            counterValue.Value.Count.Should().Be(1);
+
+            Assert.Null(meterValue);
+        }
+
+        [Fact]
+        public void raises_shutdown_event_on_dispose()
         {
             //TODO: AH - FluentAssertions no longer has MonitorEvents
 
@@ -160,7 +187,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void MetricsContext_RaisesShutdownEventOnMetricsDisable()
+        public void raises_shutdown_even_on_metrics_disable()
         {
             //TODO: AH - FluentAssertions no longer has MonitorEvents
             //context.MonitorEvents();

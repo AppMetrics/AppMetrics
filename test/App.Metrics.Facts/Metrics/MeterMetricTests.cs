@@ -13,7 +13,7 @@ namespace App.Metrics.Facts.Metrics
         public MeterMetricTests()
         {
             var scheduler = new TestScheduler(_clock);
-            _meter = new MeterMetric(this._clock, scheduler);
+            _meter = new MeterMetric(_clock, scheduler);
         }
 
         [Fact]
