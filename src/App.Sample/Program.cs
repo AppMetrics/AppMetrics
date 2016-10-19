@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
@@ -8,6 +9,9 @@ using HealthCheck.Samples;
 using Metrics.Samples;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.PlatformAbstractions;
+using Serilog;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace App.Sample
 {
@@ -52,10 +56,18 @@ namespace App.Sample
 
         private static void ConfigureServices(IServiceCollection services)
         {
+            var env = PlatformServices.Default.Application;
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.RollingFile(Path.Combine($@"C:\logs\{env.ApplicationName}", "log-{Date}.txt"))
+                .CreateLogger();
+
             services.AddSingleton<ILoggerFactory>(provider =>
             {
                 var logFactory = new LoggerFactory();
                 logFactory.AddConsole();
+                logFactory.AddSerilog(Log.Logger);
                 return logFactory;
             });
 

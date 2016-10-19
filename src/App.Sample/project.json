@@ -16,6 +16,8 @@
       "version": "1.0.1"
     },
     "Microsoft.Extensions.Logging.Console": "1.0.0",
+    "Serilog.Extensions.Logging": "1.2.0",
+    "Serilog.Sinks.RollingFile": "2.1.0",
     "Metrics.Samples": "1.0.0-*",
     "HealthCheck.Samples": "1.0.0-*"
   },
