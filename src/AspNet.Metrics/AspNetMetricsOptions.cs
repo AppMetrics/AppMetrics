@@ -20,6 +20,7 @@ namespace AspNet.Metrics
             MetricsEnabled = true;
             MetricsTextEnabled = true;
             PingEnabled = true;
+            OAuth2TrackingEnabled = true;
 
             IgnoredRequestPatterns.Add(new Regex(@"\.(jpg|gif|css|js|png|woff|ttf|txt|eot|svg)$"));
             IgnoredRequestPatterns.Add(new Regex("(?i)^swagger"));
@@ -30,6 +31,8 @@ namespace AspNet.Metrics
             IgnoredRequestPatterns.Add(new Regex("(?i)^ping"));
             IgnoredRequestPatterns.Add(new Regex("(?i)^favicon.ico"));
         }
+
+        public bool OAuth2TrackingEnabled { get; set; }
 
         public bool HealthEnabled { get; set; }
 

@@ -24,7 +24,7 @@ namespace AspNet.Metrics.Middleware
         {
             await Next(context);
 
-            if (PerformMetric(context))
+            if (PerformMetric(context) && Options.OAuth2TrackingEnabled)
             {
                 Logger.MiddlewareExecuting(GetType());
 
