@@ -1,8 +1,8 @@
-// Written by Iulian Margarintescu
+// Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
 // Ported to .NET Standard Library by Allan Hardy
 
 // This is a collection of .NET concurrency utilities, inspired by the classes
-// available in java. This utilities are written by Iulian Margarintescu as described here
+// available in java. This utilities are Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET as described here
 // https://github.com/etishor/ConcurrencyUtilities
 // 
 //

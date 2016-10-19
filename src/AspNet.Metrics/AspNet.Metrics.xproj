@@ -19,4 +19,9 @@
     <ProduceOutputsOnBuild>True</ProduceOutputsOnBuild>
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.targets" Condition="'$(VSToolsPath)' != ''" />
+  <ItemGroup>
+    <Content Include="..\..\aspnet-metrics.licenseheader">
+      <Link>aspnet-metrics.licenseheader</Link>
+    </Content>
+  </ItemGroup>
 </Project>

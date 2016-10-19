@@ -1,7 +1,13 @@
-﻿using System;
+﻿// Copyright (c) Allan hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
+// Ported/Refactored to .NET Standard Library by Allan Hardy
+
+
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using App.Metrics.DataProviders;
 using App.Metrics.MetricData;
 using App.Metrics.Registries;
@@ -12,9 +18,9 @@ namespace App.Metrics.Core
 {
     public sealed class NullMetricsContext : IMetricsContext, IAdvancedMetricsContext
     {
-        private readonly SamplingType _defaultSamplingType;
         internal const string InternalMetricsContextName = "App.Metrics.Internal";
         private readonly ConcurrentDictionary<string, IMetricsContext> _childContexts = new ConcurrentDictionary<string, IMetricsContext>();
+        private readonly SamplingType _defaultSamplingType;
         private readonly IMetricsContext _metricsContext;
 
         public NullMetricsContext(string context, IClock systemClock, SamplingType defaultSamplingType)
@@ -48,11 +54,11 @@ namespace App.Metrics.Core
 
         public IHealthCheckDataProvider HealthCheckDataProvider { get; }
 
-        public IRegistryDataProvider RegistryDataProvider { get; }
-
         public IMetricsDataProvider MetricsDataProvider { get; }
 
         public string Name { get; }
+
+        public IRegistryDataProvider RegistryDataProvider { get; }
 
         public bool AttachContext(string contextName, IMetricsContext context)
         {
@@ -148,7 +154,7 @@ namespace App.Metrics.Core
         }
 
         public ITimer Timer(string name, Unit unit, TimeUnit rateUnit = TimeUnit.Seconds,
-           TimeUnit durationUnit = TimeUnit.Milliseconds, MetricTags tags = default(MetricTags))
+            TimeUnit durationUnit = TimeUnit.Milliseconds, MetricTags tags = default(MetricTags))
         {
             return Timer(name, unit, _defaultSamplingType, rateUnit, durationUnit, tags);
         }

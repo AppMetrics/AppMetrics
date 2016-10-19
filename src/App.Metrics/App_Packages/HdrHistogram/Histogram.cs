@@ -5,7 +5,7 @@
 // Java Version repo: https://github.com/HdrHistogram/HdrHistogram
 // Latest ported version is available in the Java submodule in the root of the repo
 
-// Written by Iulian Margarintescu
+// Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
 // 
 // Ported to .NET Standard Library by Allan Hardy
 // Original repo: https://github.com/etishor/Metrics.NET
