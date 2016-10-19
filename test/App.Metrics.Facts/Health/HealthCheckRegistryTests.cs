@@ -6,6 +6,7 @@ using App.Metrics.DataProviders;
 using App.Metrics.Health;
 using App.Metrics.Registries;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Xunit;
 
@@ -13,14 +14,15 @@ namespace App.Metrics.Facts.Health
 {
     public class HealthCheckRegistryTests
     {
+        private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
         private readonly IHealthCheckRegistry _healthCheckRegistry;
         private readonly IHealthCheckDataProvider _healthCheckDataProvider;
 
         public HealthCheckRegistryTests()
         {
-            _healthCheckRegistry = new HealthCheckRegistry(Enumerable.Empty<HealthCheck>(),
+            _healthCheckRegistry = new HealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(),
                 Options.Create(new AppMetricsOptions()));
-            _healthCheckDataProvider = new DefaultHealthCheckDataProvider(_healthCheckRegistry);
+            _healthCheckDataProvider = new DefaultHealthCheckDataProvider(LoggerFactory, _healthCheckRegistry);
         }
 
         [Fact]

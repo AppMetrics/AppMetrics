@@ -12,6 +12,7 @@ namespace App.Metrics.Facts.DependencyInjection
         public async Task can_register_inline_health_checks()
         {
             var services = new ServiceCollection();
+            services.AddLogging();
             services.AddSingleton<IDatabase, Database>();
             services.AddMetrics(
                 options =>
@@ -31,6 +32,7 @@ namespace App.Metrics.Facts.DependencyInjection
         public async Task should_report_healthy_when_all_checks_pass()
         {
             var services = new ServiceCollection();
+            services.AddLogging();
             services.AddSingleton<IDatabase, Database>();
             services.AddMetrics();
 
@@ -46,6 +48,7 @@ namespace App.Metrics.Facts.DependencyInjection
         public async Task should_report_unhealthy_when_all_checks_pass()
         {
             var services = new ServiceCollection();
+            services.AddLogging();
             services.AddSingleton<IDatabase, Database>();
             services.AddMetrics(
                 options =>
@@ -65,6 +68,7 @@ namespace App.Metrics.Facts.DependencyInjection
         public async Task should_scan_assembly_and_register_health_checks_and_ignore_obsolete_checks()
         {
             var services = new ServiceCollection();
+            services.AddLogging();
             services.AddSingleton<IDatabase, Database>();
             services.AddMetrics();
 

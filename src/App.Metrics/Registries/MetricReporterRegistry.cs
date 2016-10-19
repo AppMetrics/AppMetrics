@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using App.Metrics.MetricData;
 using App.Metrics.Reporters;
@@ -92,7 +91,7 @@ namespace App.Metrics.Registries
         public IMetricReporterRegistry WithReport(IMetricsReport report, TimeSpan interval,
             IMetricsFilter filter = null)
         {
-            var newReport = new ScheduledReporter(_metricsContext, report, interval);
+            var newReport = new ScheduledReporter(_loggerFactory, _metricsContext, report, interval);
             _reports.Add(newReport);
             return this;
         }

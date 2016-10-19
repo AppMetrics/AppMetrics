@@ -1,24 +1,28 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
-using App.Metrics.MetricData;
 using App.Metrics.Utils;
+using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporters
 {
-    public sealed class ScheduledReporter : IDisposable
+    public sealed class ScheduledReporter : IScheduledReporter
     {
         private readonly TimeSpan _interval;
         private readonly IMetricsContext _metricsContext;
         private readonly IMetricsReport _report;
         private readonly IScheduler _scheduler;
+        private readonly ILogger _logger;
         private bool _disposed = false;
 
         public ScheduledReporter(
+            ILoggerFactory loggerFactory,
             IMetricsContext metricsContext,
             IMetricsReport reporter,
             TimeSpan interval)
             : this(metricsContext, reporter, interval, new ActionScheduler())
         {
+            _logger = loggerFactory.CreateLogger<ScheduledReporter>();
         }
 
         public ScheduledReporter(
@@ -76,7 +80,13 @@ namespace App.Metrics.Reporters
 
         private void ReportAction(CancellationToken token)
         {
+            _logger.ReportRunning(_report);
+
+            var startTimestamp = _logger.IsEnabled(LogLevel.Information) ? Stopwatch.GetTimestamp() : 0;
+
             _report.RunReport(_metricsContext, token);
+
+            _logger.ReportRan(_report, startTimestamp);
         }
     }
 }

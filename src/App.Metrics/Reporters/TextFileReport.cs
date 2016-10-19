@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using App.Metrics.MetricData;
@@ -10,6 +11,7 @@ namespace App.Metrics.Reporters
     public sealed class TextFileReport : HumanReadableReport
     {
         private readonly string _fileName;
+        private readonly ILogger _logger;
         private StringBuilder _buffer;
         private bool _disposed = false;
 
@@ -22,6 +24,7 @@ namespace App.Metrics.Reporters
         {
             Directory.CreateDirectory(Path.GetDirectoryName(fileName));
             _fileName = fileName;
+            _logger = loggerFactory.CreateLogger<ConsoleReport>();
         }
 
         protected override void Dispose(bool disposing)
@@ -61,8 +64,14 @@ namespace App.Metrics.Reporters
 
         protected override void StartReport(string contextName)
         {
+            _logger.ReportStarting<TextFileReport>();
+
+            var startTimestamp = _logger.IsEnabled(LogLevel.Information) ? Stopwatch.GetTimestamp() : 0;
+
             _buffer = new StringBuilder();
             base.StartReport(contextName);
+
+            _logger.ReportedStarted<TextFileReport>(startTimestamp);
         }
 
         protected override void WriteLine(string line, params string[] args)

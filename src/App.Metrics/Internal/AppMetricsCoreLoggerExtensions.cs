@@ -60,6 +60,18 @@ namespace Microsoft.Extensions.Logging
                formatString:
                $"Executed {nameof(IMetricsRegistry)} RunReports in {{elapsedMilliseconds}}ms");
 
+            _reportStarted = LoggerMessage.Define<string, double>(
+               LogLevel.Information,
+               eventId: MetricsEventIds.Reports.Schedule,
+               formatString:
+               $"Report {{reportType}} started in {{elapsedMilliseconds}}ms");
+
+            _reportRan = LoggerMessage.Define<string, double>(
+               LogLevel.Information,
+               eventId: MetricsEventIds.Reports.Schedule,
+               formatString:
+               $"Report {{reportType}} ran in {{elapsedMilliseconds}}ms");
+
             _healthGetStatusExecutedNoResults = LoggerMessage.Define(
                 LogLevel.Information,
                 eventId: MetricsEventIds.HealthChecks.Status,
@@ -123,6 +135,40 @@ namespace Microsoft.Extensions.Logging
             logger.LogInformation(MetricsEventIds.Reports.Schedule, "Executing Run Reports");
         }
 
+        public static void ReportRunning(this ILogger logger, IMetricsReport report)
+        {
+            logger.LogInformation(MetricsEventIds.Reports.Schedule, $"Running {report.GetType()}");
+        }
+
+        public static void ReportRan(this ILogger logger, IMetricsReport report, long startTimestamp)
+        {
+            if (!logger.IsEnabled(LogLevel.Information)) return;
+            if (startTimestamp == 0) return;
+
+            var currentTimestamp = Stopwatch.GetTimestamp();
+            var elapsed = new TimeSpan((long)(TimestampToTicks * (currentTimestamp - startTimestamp)));
+
+            _reportRan(logger, report.GetType().FullName, elapsed.TotalMilliseconds, null);
+        }
+
+        public static void ReportStarting<TReport>(this ILogger logger)
+            where TReport : IMetricsReport
+        {
+            logger.LogInformation(MetricsEventIds.Reports.Schedule, $"Starting {typeof(TReport)}");
+        }
+
+        public static void ReportedStarted<TReport>(this ILogger logger, long startTimestamp)
+            where TReport : IMetricsReport
+        {
+            if (!logger.IsEnabled(LogLevel.Information)) return;
+            if (startTimestamp == 0) return;
+
+            var currentTimestamp = Stopwatch.GetTimestamp();
+            var elapsed = new TimeSpan((long)(TimestampToTicks * (currentTimestamp - startTimestamp)));
+
+            _reportStarted(logger, typeof(TReport).FullName, elapsed.TotalMilliseconds, null);
+        }
+
         public static void RunReportsExecuted(this ILogger logger, long startTimestamp)
         {
             if (!logger.IsEnabled(LogLevel.Information)) return;
@@ -140,6 +186,8 @@ namespace Microsoft.Extensions.Logging
         private static readonly Action<ILogger, double, int, Exception> _healthGetStatusExecuted;
         private static readonly Action<ILogger, double, int, int, IEnumerable<string>, Exception> _healthGetStatusExecutedFailed;
         private static readonly Action<ILogger, double, Exception> _runReportsExecuted;
+        private static readonly Action<ILogger, string, double, Exception> _reportStarted;
+        private static readonly Action<ILogger, string, double, Exception> _reportRan;
         private static readonly Action<ILogger, Exception> _healthGetStatusExecutedNoResults;
         private static readonly double TimestampToTicks = TimeSpan.TicksPerSecond / (double)Stopwatch.Frequency;
         // ReSharper restore InconsistentNaming

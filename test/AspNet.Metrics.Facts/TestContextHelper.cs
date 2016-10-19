@@ -6,18 +6,21 @@ using App.Metrics.Health;
 using App.Metrics.MetricData;
 using App.Metrics.Registries;
 using App.Metrics.Utils;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace AspNet.Metrics.Facts
 {
     public static class TestContextHelper
     {
+        private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
+
         public static IMetricsContext Instance(string context, IClock clock, IScheduler scheduler)
         {
             return new MetricsContext(context, clock, SamplingType.ExponentiallyDecaying, () => new DefaultMetricsRegistry(),
                 new TestMetricsBuilder(clock, scheduler),
-                new DefaultHealthCheckDataProvider(new HealthCheckRegistry(Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))),
-                new DefaultMetricsDataProvider(clock, Enumerable.Empty<EnvironmentInfoEntry>()));
+                new DefaultHealthCheckDataProvider(LoggerFactory, new HealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))),
+                new DefaultMetricsDataProvider(LoggerFactory, clock, Enumerable.Empty<EnvironmentInfoEntry>()));
         }
 
         public static IMetricsContext Instance()

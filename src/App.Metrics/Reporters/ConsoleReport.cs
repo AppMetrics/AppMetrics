@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using App.Metrics.MetricData;
 using Microsoft.Extensions.Logging;
 
@@ -8,6 +9,7 @@ namespace App.Metrics.Reporters
     {
         private readonly IMetricsContext _metricsContext;
         private bool _disposed = false;
+        private readonly ILogger _logger;
 
         public ConsoleReport(IMetricsContext metricsContext,
             IMetricsFilter filter,
@@ -25,6 +27,7 @@ namespace App.Metrics.Reporters
             }
 
             _metricsContext = metricsContext;
+            _logger = loggerFactory.CreateLogger<ConsoleReport>();
         }
 
         protected override void Dispose(bool disposing)
@@ -46,9 +49,15 @@ namespace App.Metrics.Reporters
 
         protected override void StartReport(string contextName)
         {
+            _logger.ReportStarting<ConsoleReport>();
+
+            var startTimestamp = _logger.IsEnabled(LogLevel.Information) ? Stopwatch.GetTimestamp() : 0;
+
             Console.Clear();
 
             base.StartReport(contextName);
+
+            _logger.ReportedStarted<ConsoleReport>(startTimestamp);
         }
 
         protected override void WriteLine(string line, params string[] args)

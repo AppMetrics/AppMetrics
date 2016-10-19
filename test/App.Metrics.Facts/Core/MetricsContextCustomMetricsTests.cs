@@ -8,6 +8,7 @@ using App.Metrics.MetricData;
 using App.Metrics.Registries;
 using App.Metrics.Sampling;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Xunit;
 
@@ -18,10 +19,12 @@ namespace App.Metrics.Facts.Core
         private static readonly IOptions<AppMetricsOptions> Options
             = Microsoft.Extensions.Options.Options.Create(new AppMetricsOptions());
 
+        private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
+
         private static readonly IHealthCheckDataProvider HealthCheckDataProvider =
-            new DefaultHealthCheckDataProvider(new HealthCheckRegistry(Enumerable.Empty<HealthCheck>(), Options));
+            new DefaultHealthCheckDataProvider(LoggerFactory, new HealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options));
         private static readonly IMetricsDataProvider MetricsDataProvider =
-            new DefaultMetricsDataProvider(Options.Value.SystemClock, Enumerable.Empty<EnvironmentInfoEntry>());
+            new DefaultMetricsDataProvider(LoggerFactory, Options.Value.SystemClock, Enumerable.Empty<EnvironmentInfoEntry>());
         private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.SystemClock, Options.Value.DefaultSamplingType);
         private static readonly Func<IMetricsRegistry> MetricsRegistry = () => new DefaultMetricsRegistry();
 

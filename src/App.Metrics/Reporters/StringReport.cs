@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace App.Metrics.Reporters
         private readonly IMetricsContext _metricsContext;
         private StringBuilder _buffer;
         private bool _disposed = false;
-
+        private ILogger _logger;
 
         public StringReport(ILoggerFactory loggerFactory,
             IMetricsContext metricsContext,
@@ -31,6 +32,7 @@ namespace App.Metrics.Reporters
             }
 
             _metricsContext = metricsContext;
+            _logger = loggerFactory.CreateLogger<StringReport>();
         }
 
         public string Result => _buffer.ToString();
@@ -62,8 +64,14 @@ namespace App.Metrics.Reporters
 
         protected override void StartReport(string contextName)
         {
+            _logger.ReportStarting<StringReport>();
+
+            var startTimestamp = _logger.IsEnabled(LogLevel.Information) ? Stopwatch.GetTimestamp() : 0;
+
             _buffer = new StringBuilder();
             base.StartReport(contextName);
+
+            _logger.ReportedStarted<StringReport>(startTimestamp);
         }
 
         protected override void WriteLine(string line, params string[] args)
