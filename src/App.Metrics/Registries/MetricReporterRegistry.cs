@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using App.Metrics.MetricData;
 using App.Metrics.Reporters;
@@ -10,6 +12,7 @@ namespace App.Metrics.Registries
 {
     public class MetricReporterRegistry : IMetricReporterRegistry, IHideObjectMembers, IDisposable
     {
+        private readonly ILogger _logger;
         private readonly ILoggerFactory _loggerFactory;
         private readonly IMetricsContext _metricsContext;
         private readonly List<ScheduledReporter> _reports = new List<ScheduledReporter>();
@@ -17,9 +20,8 @@ namespace App.Metrics.Registries
         private bool _disposed = false;
 
         public MetricReporterRegistry(
-                IMetricsContext metricsContext,
-                ILoggerFactory loggerFactory)
-            //MetricsErrorHandler errorHandler)
+            IMetricsContext metricsContext,
+            ILoggerFactory loggerFactory)
         {
             if (loggerFactory == null)
             {
@@ -33,6 +35,7 @@ namespace App.Metrics.Registries
 
             _metricsContext = metricsContext;
             _loggerFactory = loggerFactory;
+            _logger = loggerFactory.CreateLogger<MetricReporterRegistry>();
         }
 
         public void Dispose()
@@ -43,7 +46,13 @@ namespace App.Metrics.Registries
 
         public void RunReports(CancellationToken token)
         {
+            _logger.RunReportsExecuting();
+
+            var startTimestamp = _logger.IsEnabled(LogLevel.Information) ? Stopwatch.GetTimestamp() : 0;
+
             _reports.ForEach(r => r.Start(token));
+
+            _logger.RunReportsExecuted(startTimestamp);
         }
 
         /// <summary>
@@ -94,10 +103,10 @@ namespace App.Metrics.Registries
         /// <param name="filePath">File where to append the report.</param>
         /// <param name="interval">Interval at which to run the report.</param>
         /// <param name="filter">Only report metrics that match the filter.</param>
-        public IMetricReporterRegistry WithTextFileReport(string filePath, TimeSpan interval, 
+        public IMetricReporterRegistry WithTextFileReport(string filePath, TimeSpan interval,
             IMetricsFilter filter = null)
         {
-            return WithReport(new TextFileReport(filePath, _loggerFactory, filter, 
+            return WithReport(new TextFileReport(filePath, _loggerFactory, filter,
                 _metricsContext.Advanced.Clock), interval, filter);
         }
 
