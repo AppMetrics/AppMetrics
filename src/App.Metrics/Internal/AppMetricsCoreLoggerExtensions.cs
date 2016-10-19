@@ -11,70 +11,48 @@ using App.Metrics.Reporters;
 namespace Microsoft.Extensions.Logging
 // ReSharper restore CheckNamespace
 {
-    internal static class MetricsEventIds
-    {
-        public static class HealthChecks
-        {
-            public const int Status = HealthCheckStart + 1;
-            public const int Registration = HealthCheckStart + 2;
-            private const int HealthCheckStart = 999;
-        }
-
-        public static class Metrics
-        {
-            public const int Data = MetricsDataStart + 1;
-            private const int MetricsDataStart = 1999;
-        }
-
-        public static class Reports
-        {
-            public const int Schedule = ReportStart + 1;
-            private const int ReportStart = 2999;
-        }
-    }
-
     internal static class AppMetricsCoreLoggerExtensions
     {
         static AppMetricsCoreLoggerExtensions()
         {
             _healthCheckRegistered = LoggerMessage.Define<string>(
                 LogLevel.Information,
-                eventId: MetricsEventIds.HealthChecks.Registration,
+                eventId: AppMetricsEventIds.HealthChecks.Registration,
                 formatString: $"Health Check Registered: {{name}}");
 
             _healthGetStatusExecuted = LoggerMessage.Define<double, int>(
                 LogLevel.Information,
-                eventId: MetricsEventIds.HealthChecks.Status,
+                eventId: AppMetricsEventIds.HealthChecks.Status,
                 formatString:
                 $"Executed {nameof(HealthStatus)}, in {{elapsedMilliseconds}}ms, IsHealthy: True. {{checksPassed}} health check results passed.");
 
             _healthGetStatusExecutedFailed = LoggerMessage.Define<double, int, int, IEnumerable<string>>(
                 LogLevel.Information,
-                eventId: MetricsEventIds.HealthChecks.Status,
+                eventId: AppMetricsEventIds.HealthChecks.Status,
                 formatString:
                 $"Executed {nameof(HealthStatus)}, in {{elapsedMilliseconds}}ms, IsHealthy: False. {{checksPassed}} health check results passed. {{checksFailed}} health check results failed. Failed Checks: {{failedChecks}}");
 
             _runReportsExecuted = LoggerMessage.Define<double>(
-               LogLevel.Information,
-               eventId: MetricsEventIds.Reports.Schedule,
-               formatString:
-               $"Executed {nameof(IMetricsRegistry)} RunReports in {{elapsedMilliseconds}}ms");
+                LogLevel.Information,
+                eventId: AppMetricsEventIds.Reports.Schedule,
+                formatString:
+                $"Executed {nameof(IMetricsRegistry)} RunReports in {{elapsedMilliseconds}}ms");
 
             _reportStarted = LoggerMessage.Define<string, double>(
-               LogLevel.Information,
-               eventId: MetricsEventIds.Reports.Schedule,
-               formatString:
-               $"Report {{reportType}} started in {{elapsedMilliseconds}}ms");
+                LogLevel.Information,
+                eventId: AppMetricsEventIds.Reports.Schedule,
+                formatString:
+                $"Report {{reportType}} started in {{elapsedMilliseconds}}ms");
 
             _reportRan = LoggerMessage.Define<string, double>(
-               LogLevel.Information,
-               eventId: MetricsEventIds.Reports.Schedule,
-               formatString:
-               $"Report {{reportType}} ran in {{elapsedMilliseconds}}ms");
+                LogLevel.Information,
+                eventId: AppMetricsEventIds.Reports.Schedule,
+                formatString:
+                $"Report {{reportType}} ran in {{elapsedMilliseconds}}ms");
 
             _healthGetStatusExecutedNoResults = LoggerMessage.Define(
                 LogLevel.Information,
-                eventId: MetricsEventIds.HealthChecks.Status,
+                eventId: AppMetricsEventIds.HealthChecks.Status,
                 formatString: $"Executed {nameof(HealthStatus)}, 0 health check results.");
         }
 
@@ -107,7 +85,7 @@ namespace Microsoft.Extensions.Logging
 
         public static void HealthCheckGetStatusExecuting(this ILogger logger)
         {
-            logger.LogDebug(MetricsEventIds.HealthChecks.Status, "Executing HealthCheck Get Status");
+            logger.LogDebug(AppMetricsEventIds.HealthChecks.Status, "Executing HealthCheck Get Status");
         }
 
         public static void HealthCheckRegistered(this ILogger logger, string name)
@@ -122,39 +100,12 @@ namespace Microsoft.Extensions.Logging
 
         public static void MetricsDataGetExecuted(this ILogger logger)
         {
-            logger.LogDebug(MetricsEventIds.Metrics.Data, "Executed GetMetricsData");
+            logger.LogDebug(AppMetricsEventIds.Metrics.Data, "Executed GetMetricsData");
         }
 
         public static void MetricsDataGetExecuting(this ILogger logger)
         {
-            logger.LogDebug(MetricsEventIds.Metrics.Data, "Executing GetMetricsData");
-        }
-
-        public static void RunReportsExecuting(this ILogger logger)
-        {
-            logger.LogInformation(MetricsEventIds.Reports.Schedule, "Executing Run Reports");
-        }
-
-        public static void ReportRunning(this ILogger logger, IMetricsReport report)
-        {
-            logger.LogInformation(MetricsEventIds.Reports.Schedule, $"Running {report.GetType()}");
-        }
-
-        public static void ReportRan(this ILogger logger, IMetricsReport report, long startTimestamp)
-        {
-            if (!logger.IsEnabled(LogLevel.Information)) return;
-            if (startTimestamp == 0) return;
-
-            var currentTimestamp = Stopwatch.GetTimestamp();
-            var elapsed = new TimeSpan((long)(TimestampToTicks * (currentTimestamp - startTimestamp)));
-
-            _reportRan(logger, report.GetType().FullName, elapsed.TotalMilliseconds, null);
-        }
-
-        public static void ReportStarting<TReport>(this ILogger logger)
-            where TReport : IMetricsReport
-        {
-            logger.LogInformation(MetricsEventIds.Reports.Schedule, $"Starting {typeof(TReport)}");
+            logger.LogDebug(AppMetricsEventIds.Metrics.Data, "Executing GetMetricsData");
         }
 
         public static void ReportedStarted<TReport>(this ILogger logger, long startTimestamp)
@@ -169,6 +120,28 @@ namespace Microsoft.Extensions.Logging
             _reportStarted(logger, typeof(TReport).FullName, elapsed.TotalMilliseconds, null);
         }
 
+        public static void ReportRan(this ILogger logger, IMetricsReport report, long startTimestamp)
+        {
+            if (!logger.IsEnabled(LogLevel.Information)) return;
+            if (startTimestamp == 0) return;
+
+            var currentTimestamp = Stopwatch.GetTimestamp();
+            var elapsed = new TimeSpan((long)(TimestampToTicks * (currentTimestamp - startTimestamp)));
+
+            _reportRan(logger, report.GetType().FullName, elapsed.TotalMilliseconds, null);
+        }
+
+        public static void ReportRunning(this ILogger logger, IMetricsReport report)
+        {
+            logger.LogInformation(AppMetricsEventIds.Reports.Schedule, $"Running {report.GetType()}");
+        }
+
+        public static void ReportStarting<TReport>(this ILogger logger)
+            where TReport : IMetricsReport
+        {
+            logger.LogInformation(AppMetricsEventIds.Reports.Schedule, $"Starting {typeof(TReport)}");
+        }
+
         public static void RunReportsExecuted(this ILogger logger, long startTimestamp)
         {
             if (!logger.IsEnabled(LogLevel.Information)) return;
@@ -178,6 +151,32 @@ namespace Microsoft.Extensions.Logging
             var elapsed = new TimeSpan((long)(TimestampToTicks * (currentTimestamp - startTimestamp)));
 
             _runReportsExecuted(logger, elapsed.TotalMilliseconds, null);
+        }
+
+        public static void RunReportsExecuting(this ILogger logger)
+        {
+            logger.LogInformation(AppMetricsEventIds.Reports.Schedule, "Executing Run Reports");
+        }
+
+        internal static class AppMetricsEventIds
+        {
+            public static class HealthChecks
+            {
+                public const int Registration = MetricsStart + 3;
+                public const int Status = MetricsStart + 3;
+            }
+
+            public static class Metrics
+            {
+                public const int Data = MetricsStart + 1;
+            }
+
+            public static class Reports
+            {
+                public const int Schedule = MetricsStart + 2;
+            }
+
+            private const int MetricsStart = 9999;
         }
 
 

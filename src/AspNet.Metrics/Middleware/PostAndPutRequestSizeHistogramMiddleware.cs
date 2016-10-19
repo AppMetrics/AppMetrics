@@ -25,6 +25,8 @@ namespace AspNet.Metrics.Middleware
         {
             if (PerformMetric(context))
             {
+                Logger.MiddlewareExecuting(GetType());
+
                 var httpMethod = context.Request.Method.ToUpperInvariant();
 
                 if (httpMethod == "POST" || httpMethod == "PUT")
@@ -34,6 +36,8 @@ namespace AspNet.Metrics.Middleware
                         _histogram.Update(long.Parse(context.Request.Headers["Content-Length"].First()));
                     }
                 }
+
+                Logger.MiddlewareExecuted(GetType());
             }
 
             await Next(context);

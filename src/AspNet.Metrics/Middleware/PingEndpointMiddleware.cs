@@ -16,14 +16,20 @@ namespace AspNet.Metrics.Middleware
         {
         }
 
-        public Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context)
         {
             if (Options.PingEnabled && Options.PingEndpoint.HasValue && Options.PingEndpoint == context.Request.Path)
             {
-                return WriteResponseAsync(context, "pong", "text/plain");
+                Logger.MiddlewareExecuting(GetType());
+
+                await WriteResponseAsync(context, "pong", "text/plain");
+
+                Logger.MiddlewareExecuted(GetType());
+
+                return;
             }
 
-            return Next(context);
+            await Next(context);
         }
     }
 }

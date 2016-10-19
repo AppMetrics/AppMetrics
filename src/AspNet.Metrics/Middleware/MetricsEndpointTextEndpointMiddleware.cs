@@ -26,9 +26,13 @@ namespace AspNet.Metrics.Middleware
         {
             if (Options.MetricsTextEnabled && Options.MetricsTextEndpoint.HasValue && Options.MetricsTextEndpoint == context.Request.Path)
             {
+                Logger.MiddlewareExecuting(GetType());
+
                 var content = await _stringReport.RenderMetrics(MetricsContext);
 
                 await WriteResponseAsync(context, content, "text/plain");
+
+                Logger.MiddlewareExecuted(GetType());
 
                 return;
             }

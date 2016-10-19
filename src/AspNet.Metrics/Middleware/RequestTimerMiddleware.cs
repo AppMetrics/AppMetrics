@@ -26,6 +26,8 @@ namespace AspNet.Metrics.Middleware
         {
             if (PerformMetric(context))
             {
+                Logger.MiddlewareExecuting(GetType());
+
                 context.Items[TimerItemsKey] = _requestTimer.NewContext();
 
                 await Next(context);
@@ -35,6 +37,8 @@ namespace AspNet.Metrics.Middleware
                 {
                 }
                 context.Items.Remove(TimerItemsKey);
+
+                Logger.MiddlewareExecuted(GetType());
             }
             else
             {

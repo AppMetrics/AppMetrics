@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using App.Metrics;
+using AspNet.Metrics.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -35,11 +36,15 @@ namespace AspNet.Metrics.Middleware
         {
             if (PerformMetric(context))
             {
+                Logger.MiddlewareExecuting(GetType());
+
                 _activeRequests.Increment();
 
                 await Next(context);
 
                 _activeRequests.Decrement();
+
+                Logger.MiddlewareExecuted(GetType());
             }
             else
             {

@@ -24,6 +24,8 @@ namespace AspNet.Metrics.Middleware
         {
             if (PerformMetric(context))
             {
+                Logger.MiddlewareExecuting(GetType());
+
                 context.Items[TimerItemsKey] = MetricsContext.Advanced.Clock.Nanoseconds;
 
                 await Next(context);
@@ -39,6 +41,8 @@ namespace AspNet.Metrics.Middleware
                         .Timer(context.GetMetricsCurrentRouteName(), Unit.Requests)
                         .Record(elapsed, TimeUnit.Nanoseconds, clientId.IsPresent() ? clientId : null);
                 }
+
+                Logger.MiddlewareExecuted(GetType());
             }
             else
             {

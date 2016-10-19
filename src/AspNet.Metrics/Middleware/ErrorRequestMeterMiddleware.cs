@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using App.Metrics;
+using AspNet.Metrics.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -44,6 +45,8 @@ namespace AspNet.Metrics.Middleware
 
             if (PerformMetric(context))
             {
+                Logger.MiddlewareExecuting(GetType());
+
                 var clientId = context.OAuthClientId();
 
                 var routeTemplate = context.GetMetricsCurrentRouteName();
@@ -66,6 +69,8 @@ namespace AspNet.Metrics.Middleware
                     }
                 }
             }
+
+            Logger.MiddlewareExecuted(GetType());
         }
 
         private void MarkBadRequest(string routeTemplate, string clientId)

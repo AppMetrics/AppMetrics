@@ -50,10 +50,15 @@ namespace AspNet.Metrics.Middleware
         {
             if (Options.MetricsEnabled && Options.MetricsEndpoint.HasValue && Options.MetricsEndpoint == context.Request.Path)
             {
+                Logger.MiddlewareExecuting(GetType());
+
                 var environmentInfo = await _environmentInfoBuilder.BuildAsync();
                 var json = _jsonBuilder.BuildJson(MetricsContext, environmentInfo, _metricsFilter);
 
                 await WriteResponseAsync(context, json, _jsonBuilder.MetricsMimeType);
+
+                Logger.MiddlewareExecuted(GetType());
+
                 return;
             }
 

@@ -26,6 +26,8 @@ namespace AspNet.Metrics.Middleware
 
             if (PerformMetric(context))
             {
+                Logger.MiddlewareExecuting(GetType());
+
                 var clientId = context.OAuthClientId();
 
                 if (clientId.IsPresent())
@@ -34,6 +36,8 @@ namespace AspNet.Metrics.Middleware
 
                     MarkWebRequest(routeTemplate, clientId);
                 }
+
+                Logger.MiddlewareExecuted(GetType());
             }
         }
 

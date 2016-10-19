@@ -31,11 +31,16 @@ namespace AspNet.Metrics.Middleware
         {
             if (Options.HealthEnabled && Options.HealthEndpoint.HasValue && Options.HealthEndpoint == context.Request.Path)
             {
+                Logger.MiddlewareExecuting(GetType());
+
                 var healthStatus = await _healthCheckDataProvider.GetStatusAsync();
                 var responseStatusCode = healthStatus.IsHealthy ? HttpStatusCode.OK : HttpStatusCode.InternalServerError;
                 await
                     Task.FromResult(WriteResponseAsync(context, JsonHealthChecks.BuildJson(healthStatus, _systemClock, true), "application/json",
                         responseStatusCode));
+
+                Logger.MiddlewareExecuted(GetType());
+
                 return;
             }
 
