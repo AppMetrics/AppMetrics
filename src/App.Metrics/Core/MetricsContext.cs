@@ -193,6 +193,27 @@ namespace App.Metrics.Core
                 .Mark();
         }
 
+        public void Mark(MeterOptions options, long amount)
+        {
+            _registry.Meter(options,
+                    () => _builder.BuildMeter(options.Name, options.MeasurementUnit, options.RateUnit))
+                .Mark(amount);
+        }
+
+        public void Mark(MeterOptions options, string item)
+        {
+            _registry.Meter(options,
+                    () => _builder.BuildMeter(options.Name, options.MeasurementUnit, options.RateUnit))
+                .Mark(item);
+        }
+
+        public void Mark(MeterOptions options, long amount, string item)
+        {
+            _registry.Meter(options,
+                    () => _builder.BuildMeter(options.Name, options.MeasurementUnit, options.RateUnit))
+                .Mark(item, amount);
+        }
+
         public void Time(TimerOptions options, Action action, string userValue = null)
         {
             using (_registry.Timer(options,

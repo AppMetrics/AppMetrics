@@ -37,6 +37,12 @@ namespace App.Metrics
 
         void Increment(CounterOptions options, long amount, string item);
 
+        void Mark(MeterOptions options, long amount);
+
+        void Mark(MeterOptions options, string item);
+
+        void Mark(MeterOptions options, long amount, string item);
+
         void Mark(MeterOptions options);
 
         void Time(TimerOptions options, Action action, string userValue = null);

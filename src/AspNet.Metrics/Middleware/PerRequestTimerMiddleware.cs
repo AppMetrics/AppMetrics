@@ -6,6 +6,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using App.Metrics;
+using AppMetrics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -41,9 +42,7 @@ namespace AspNet.Metrics.Middleware
                     var startTime = (long)context.Items[TimerItemsKey];
                     var elapsed = MetricsContext.Advanced.Clock.Nanoseconds - startTime;
 
-                    MetricsContext.GetWebApplicationContext().Advanced
-                        .Timer(context.GetMetricsCurrentRouteName(), Unit.Requests)
-                        .Record(elapsed, TimeUnit.Nanoseconds, clientId.IsPresent() ? clientId : null);
+                    MetricsContext.RecordEndpointRequestTime(clientId, context.GetMetricsCurrentRouteName(), elapsed);
                 }
 
                 Logger.MiddlewareExecuted(GetType());

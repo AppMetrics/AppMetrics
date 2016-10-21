@@ -51,6 +51,7 @@
     {
         public HistogramOptions()
         {
+            //TODO: AH - default set globally should be able to overriide this
             SamplingType = SamplingType.ExponentiallyDecaying;    
         }
 

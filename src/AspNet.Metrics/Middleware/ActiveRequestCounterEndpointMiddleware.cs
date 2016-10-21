@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using System.Threading.Tasks;
 using App.Metrics;
+using AppMetrics;
 using AspNet.Metrics.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -14,8 +14,6 @@ namespace AspNet.Metrics.Middleware
 {
     public class ActiveRequestCounterEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
-        private readonly ICounter _activeRequests;
-
         public ActiveRequestCounterEndpointMiddleware(RequestDelegate next,
             IOptions<AspNetMetricsOptions> options,
             ILoggerFactory loggerFactory,
@@ -30,10 +28,7 @@ namespace AspNet.Metrics.Middleware
             if (options == null)
             {
                 throw new ArgumentNullException(nameof(options));
-            }
-
-            _activeRequests = metricsContext.GetWebApplicationContext().Advanced
-                .Counter(AspNetMetricsRegistry.Groups.WebRequests.Counters.ActiveRequests);
+            }            
         }
 
         public async Task Invoke(HttpContext context)
@@ -42,11 +37,11 @@ namespace AspNet.Metrics.Middleware
             {
                 Logger.MiddlewareExecuting(GetType());
 
-                _activeRequests.Increment();
+                MetricsContext.IncrementActiveRequests();
 
                 await Next(context);
 
-                _activeRequests.Decrement();
+                MetricsContext.DecrementActiveRequests();
 
                 Logger.MiddlewareExecuted(GetType());
             }

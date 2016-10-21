@@ -111,6 +111,21 @@ namespace App.Metrics.Core
             _metricsContext.Mark(options);
         }
 
+        public void Mark(MeterOptions options, long amount)
+        {
+            _metricsContext.Mark(options, amount);
+        }
+
+        public void Mark(MeterOptions options, string item)
+        {
+            _metricsContext.Mark(options, item);
+        }
+
+        public void Mark(MeterOptions options, long amount, string item)
+        {
+            _metricsContext.Mark(options, amount, item);
+        }
+
         public void Time(TimerOptions options, Action action, string userValue = null)
         {
             _metricsContext.Time(options, action, userValue);

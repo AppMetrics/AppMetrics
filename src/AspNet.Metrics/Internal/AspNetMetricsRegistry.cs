@@ -90,6 +90,15 @@ namespace AspNet.Metrics.Internal
                     };
                 }
 
+                public static class Histograms
+                {
+                    public static HistogramOptions PostAndPutRequestSize = new HistogramOptions
+                    {
+                        Name = "Web Request Post & Put Size",
+                        MeasurementUnit = Unit.Bytes
+                    };
+                }
+
                 public static class Meters
                 {
                     public static Func<string, MeterOptions> EndpointBadRequests = routeTemplate => new MeterOptions
