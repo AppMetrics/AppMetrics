@@ -70,7 +70,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             IMetricsEnvironment environment)
         {
             services.TryAddSingleton<IHealthCheckRegistry, HealthCheckRegistry>();
-            services.TryAddSingleton<IHealthCheckDataProvider, DefaultHealthCheckDataProvider>();
+            services.TryAddSingleton<IHealthCheckManager, DefaultHealthCheckManager>();
 
             services.AddHealthChecks(environment);
         }
@@ -112,7 +112,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
 
                 return new DefaultMetricsBuilder(options.SystemClock, options.DefaultSamplingType);
             });
-            services.TryAddSingleton<IMetricsDataProvider, DefaultMetricsDataProvider>();
+            services.TryAddSingleton<IMetricsDataManager, DefaultMetricsDataManager>();
             services.TryAddSingleton(typeof(IClock), provider => provider.GetRequiredService<IOptions<AppMetricsOptions>>().Value.SystemClock);
             services.TryAddSingleton<EnvironmentInfoBuilder, EnvironmentInfoBuilder>();
 
@@ -120,7 +120,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             {
                 var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
                 var healthCheckRegistry = provider.GetRequiredService<IHealthCheckRegistry>();
-                var healthCheckDataProvider = provider.GetRequiredService<IHealthCheckDataProvider>();
+                var healthCheckDataProvider = provider.GetRequiredService<IHealthCheckManager>();
                 var metricsBuilder = provider.GetRequiredService<IMetricsBuilder>();
 
                 if (!options.Value.DisableHealthChecks)
@@ -132,7 +132,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                 {
                     metricsContext = new MetricsContext(options.Value.GlobalContextName, options.Value.SystemClock,
                         options.Value.DefaultSamplingType, provider.GetRequiredService<IMetricsRegistry>, 
-                        metricsBuilder, healthCheckDataProvider, provider.GetRequiredService<IMetricsDataProvider>());
+                        metricsBuilder, healthCheckDataProvider, provider.GetRequiredService<IMetricsDataManager>());
                 }
 
 

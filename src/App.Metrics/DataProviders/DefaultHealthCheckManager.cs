@@ -12,12 +12,12 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.DataProviders
 {
-    public sealed class DefaultHealthCheckDataProvider : IHealthCheckDataProvider
+    public sealed class DefaultHealthCheckManager : IHealthCheckManager
     {
         private readonly IHealthCheckRegistry _healthCheckRegistry;
         private readonly ILogger _logger;
 
-        public DefaultHealthCheckDataProvider(ILoggerFactory loggerFactory,
+        public DefaultHealthCheckManager(ILoggerFactory loggerFactory,
             IHealthCheckRegistry healthCheckRegistry)
         {
             if (loggerFactory == null)
@@ -31,7 +31,7 @@ namespace App.Metrics.DataProviders
             }
 
             _healthCheckRegistry = healthCheckRegistry;
-            _logger = loggerFactory.CreateLogger<DefaultHealthCheckDataProvider>();
+            _logger = loggerFactory.CreateLogger<DefaultHealthCheckManager>();
         }
 
         public async Task<HealthStatus> GetStatusAsync()

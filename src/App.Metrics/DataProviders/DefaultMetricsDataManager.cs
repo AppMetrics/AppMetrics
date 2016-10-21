@@ -11,13 +11,13 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.DataProviders
 {
-    public class DefaultMetricsDataProvider : IMetricsDataProvider
+    public class DefaultMetricsDataManager : IMetricsDataManager
     {
         private readonly IClock _clock;
         private readonly ILogger _logger;
         private readonly IEnumerable<EnvironmentInfoEntry> _environment;
 
-        public DefaultMetricsDataProvider(
+        public DefaultMetricsDataManager(
             ILoggerFactory loggerFactory,
             IClock clock,
             IEnumerable<EnvironmentInfoEntry> environment)
@@ -32,7 +32,7 @@ namespace App.Metrics.DataProviders
                 throw new ArgumentNullException(nameof(environment));
             }
 
-            _logger = loggerFactory.CreateLogger<DefaultMetricsDataProvider>();
+            _logger = loggerFactory.CreateLogger<DefaultMetricsDataManager>();
             _clock = clock;
             _environment = environment;
         }
@@ -41,7 +41,7 @@ namespace App.Metrics.DataProviders
         {
             _logger.MetricsDataGetExecuting();
 
-            var registryDataProvider = metricsContext.Advanced.RegistryDataProvider;
+            var registryDataProvider = metricsContext.Advanced.MetricRegistryManager;
 
             var metricsData = new MetricsData(metricsContext.GroupName, _clock.UtcDateTime,
                 _environment,
@@ -50,7 +50,7 @@ namespace App.Metrics.DataProviders
                 registryDataProvider.Meters.ToArray(),
                 registryDataProvider.Histograms.ToArray(),
                 registryDataProvider.Timers.ToArray(),
-                metricsContext.Advanced.ChildContexts.Values.Select(p => p.Advanced.MetricsDataProvider.GetMetricsData(p)));
+                metricsContext.Advanced.ChildContexts.Values.Select(p => p.Advanced.MetricsDataManager.GetMetricsData(p)));
 
             _logger.MetricsDataGetExecuted();
 

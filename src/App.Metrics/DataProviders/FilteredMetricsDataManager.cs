@@ -7,16 +7,16 @@ using App.Metrics.MetricData;
 
 namespace App.Metrics.DataProviders
 {
-    public sealed class FilteredMetricsDataProvider : IMetricsDataProvider
+    public sealed class FilteredMetricsDataManager : IMetricsDataManager
     {
         private readonly IMetricsFilter _filter;
-        private readonly IMetricsDataProvider _provider;
+        private readonly IMetricsDataManager _manager;
 
-        public FilteredMetricsDataProvider(IMetricsDataProvider provider, IMetricsFilter filter)
+        public FilteredMetricsDataManager(IMetricsDataManager manager, IMetricsFilter filter)
         {
-            if (provider == null)
+            if (manager == null)
             {
-                throw new ArgumentNullException(nameof(provider));
+                throw new ArgumentNullException(nameof(manager));
             }
 
             if (filter == null)
@@ -24,13 +24,13 @@ namespace App.Metrics.DataProviders
                 throw new ArgumentNullException(nameof(filter));
             }
 
-            _provider = provider;
+            _manager = manager;
             _filter = filter;
         }
 
         public MetricsData GetMetricsData(IMetricsContext metricsContext)
         {
-            return _provider.GetMetricsData(metricsContext).Filter(_filter);
+            return _manager.GetMetricsData(metricsContext).Filter(_filter);
         }
     }
 }

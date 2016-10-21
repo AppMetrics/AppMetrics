@@ -15,7 +15,7 @@ namespace App.Metrics.Registries
 {
     public sealed class NullMetricsRegistry : IMetricsRegistry
     {
-        public IRegistryDataProvider DataProvider => NullMetric.Instance;
+        public IMetricRegistryManager DataProvider => NullMetric.Instance;
 
         public void ClearAllMetrics()
         {
@@ -50,7 +50,7 @@ namespace App.Metrics.Registries
             return NullMetric.Instance;
         }
 
-        private struct NullMetric : ICounter, IMeter, IHistogram, ITimer, IRegistryDataProvider
+        private struct NullMetric : ICounter, IMeter, IHistogram, ITimer, IMetricRegistryManager
         {
             public static readonly NullMetric Instance = new NullMetric();
             private static readonly TimerContext NullContext = new TimerContext(Instance, null);

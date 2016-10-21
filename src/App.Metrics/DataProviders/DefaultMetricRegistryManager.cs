@@ -8,7 +8,7 @@ using App.Metrics.MetricData;
 
 namespace App.Metrics.DataProviders
 {
-    public sealed class DefaultRegistryDataProvider : IRegistryDataProvider
+    public sealed class DefaultMetricRegistryManager : IMetricRegistryManager
     {
         private readonly Func<IEnumerable<CounterValueSource>> _counters;
         private readonly Func<IEnumerable<GaugeValueSource>> _gauges;
@@ -16,7 +16,7 @@ namespace App.Metrics.DataProviders
         private readonly Func<IEnumerable<MeterValueSource>> _meters;
         private readonly Func<IEnumerable<TimerValueSource>> _timers;
 
-        public DefaultRegistryDataProvider(
+        public DefaultMetricRegistryManager(
             Func<IEnumerable<GaugeValueSource>> gauges,
             Func<IEnumerable<CounterValueSource>> counters,
             Func<IEnumerable<MeterValueSource>> meters,

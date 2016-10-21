@@ -7,7 +7,7 @@ using App.Metrics.Health;
 
 namespace App.Metrics.DataProviders
 {
-    public interface IHealthCheckDataProvider
+    public interface IHealthCheckManager
     {
         Task<HealthStatus> GetStatusAsync();
     }

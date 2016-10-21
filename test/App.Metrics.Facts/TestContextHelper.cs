@@ -18,8 +18,8 @@ namespace App.Metrics.Facts
         {
             return new MetricsContext(context, clock, SamplingType.ExponentiallyDecaying, () => new DefaultMetricsRegistry(),
                 new TestMetricsBuilder(clock, scheduler),
-                new DefaultHealthCheckDataProvider(LoggerFactory, new HealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))),
-                new DefaultMetricsDataProvider(LoggerFactory, clock, Enumerable.Empty<EnvironmentInfoEntry>()));
+                new DefaultHealthCheckManager(LoggerFactory, new HealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))),
+                new DefaultMetricsDataManager(LoggerFactory, clock, Enumerable.Empty<EnvironmentInfoEntry>()));
         }
 
         public static IMetricsContext Instance()

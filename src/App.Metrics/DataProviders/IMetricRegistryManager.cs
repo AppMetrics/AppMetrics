@@ -7,7 +7,7 @@ using App.Metrics.MetricData;
 
 namespace App.Metrics.DataProviders
 {
-    public interface IRegistryDataProvider
+    public interface IMetricRegistryManager
     {
         IEnumerable<CounterValueSource> Counters { get; }
 

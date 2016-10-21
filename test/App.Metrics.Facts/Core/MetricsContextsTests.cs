@@ -18,27 +18,27 @@ namespace App.Metrics.Facts.Core
         private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
         private static readonly IOptions<AppMetricsOptions> Options = Microsoft.Extensions.Options.Options.Create(new AppMetricsOptions());
 
-        private static readonly IHealthCheckDataProvider HealthCheckDataProvider =
-            new DefaultHealthCheckDataProvider(LoggerFactory, new HealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options));
+        private static readonly IHealthCheckManager HealthCheckManager =
+            new DefaultHealthCheckManager(LoggerFactory, new HealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options));
 
 
         private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.SystemClock,
             SamplingType.ExponentiallyDecaying);
 
-        private static readonly IMetricsDataProvider MetricsDataProvider =
-            new DefaultMetricsDataProvider(LoggerFactory, Options.Value.SystemClock, Enumerable.Empty<EnvironmentInfoEntry>());
+        private static readonly IMetricsDataManager MetricsDataManager =
+            new DefaultMetricsDataManager(LoggerFactory, Options.Value.SystemClock, Enumerable.Empty<EnvironmentInfoEntry>());
 
         private static readonly Func<IMetricsRegistry> MetricsRegistry = () => new DefaultMetricsRegistry();
 
 
         private readonly IMetricsContext _context = new MetricsContext(Options.Value.GlobalContextName,
             Options.Value.SystemClock, Options.Value.DefaultSamplingType,
-            MetricsRegistry, MetricsBuilder, HealthCheckDataProvider, MetricsDataProvider);
+            MetricsRegistry, MetricsBuilder, HealthCheckManager, MetricsDataManager);
 
-        public Func<IMetricsContext, MetricsData> CurrentData => ctx => _context.Advanced.MetricsDataProvider.GetMetricsData(ctx);
+        public Func<IMetricsContext, MetricsData> CurrentData => ctx => _context.Advanced.MetricsDataManager.GetMetricsData(ctx);
 
         public Func<IMetricsContext, IMetricsFilter, MetricsData> CurrentDataWithFilter => (ctx, filter) =>
-                _context.Advanced.MetricsDataProvider.WithFilter(filter).GetMetricsData(ctx);
+                _context.Advanced.MetricsDataManager.WithFilter(filter).GetMetricsData(ctx);
 
 
         [Fact]
@@ -112,16 +112,16 @@ namespace App.Metrics.Facts.Core
             };
 
             _context.Advanced.Counter(counterOptions);
-            _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Counters.Single().Tags.Should().Equal("tag");
+            _context.Advanced.MetricsDataManager.GetMetricsData(_context).Counters.Single().Tags.Should().Equal("tag");
 
             _context.Advanced.Meter(meterOptions);
-            _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Meters.Single().Tags.Should().Equal("tag");
+            _context.Advanced.MetricsDataManager.GetMetricsData(_context).Meters.Single().Tags.Should().Equal("tag");
 
             _context.Advanced.Histogram("test", Unit.None, tags: "tag");
-            _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Histograms.Single().Tags.Should().Equal("tag");
+            _context.Advanced.MetricsDataManager.GetMetricsData(_context).Histograms.Single().Tags.Should().Equal("tag");
 
             _context.Advanced.Timer("test", Unit.None, tags: "tag");
-            _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Timers.Single().Tags.Should().Equal("tag");
+            _context.Advanced.MetricsDataManager.GetMetricsData(_context).Timers.Single().Tags.Should().Equal("tag");
         }
 
         [Fact]
@@ -148,13 +148,13 @@ namespace App.Metrics.Facts.Core
 
             counter.Increment();
 
-            _context.Advanced.MetricsDataProvider.GetMetricsData(_context).ChildMetrics.Should().HaveCount(1);
-            _context.Advanced.MetricsDataProvider.GetMetricsData(_context).ChildMetrics.Single().Counters.Should().HaveCount(1);
-            _context.Advanced.MetricsDataProvider.GetMetricsData(_context).ChildMetrics.Single().Counters.Single().Value.Count.Should().Be(1);
+            _context.Advanced.MetricsDataManager.GetMetricsData(_context).ChildMetrics.Should().HaveCount(1);
+            _context.Advanced.MetricsDataManager.GetMetricsData(_context).ChildMetrics.Single().Counters.Should().HaveCount(1);
+            _context.Advanced.MetricsDataManager.GetMetricsData(_context).ChildMetrics.Single().Counters.Single().Value.Count.Should().Be(1);
 
             counter.Increment();
 
-            _context.Advanced.MetricsDataProvider.GetMetricsData(_context).ChildMetrics.Single().Counters.Single().Value.Count.Should().Be(2);
+            _context.Advanced.MetricsDataManager.GetMetricsData(_context).ChildMetrics.Single().Counters.Single().Value.Count.Should().Be(2);
         }
 
         [Fact]
@@ -168,9 +168,9 @@ namespace App.Metrics.Facts.Core
 
             _context.Advanced.Counter(counterOptions).Increment();
 
-            _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Counters.Should().HaveCount(1);
-            _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Counters.Single().Name.Should().Be("test");
-            _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Counters.Single().Value.Count.Should().Be(1L);
+            _context.Advanced.MetricsDataManager.GetMetricsData(_context).Counters.Should().HaveCount(1);
+            _context.Advanced.MetricsDataManager.GetMetricsData(_context).Counters.Single().Name.Should().Be("test");
+            _context.Advanced.MetricsDataManager.GetMetricsData(_context).Counters.Single().Value.Count.Should().Be(1L);
         }
 
         [Fact]
@@ -229,9 +229,9 @@ namespace App.Metrics.Facts.Core
                 MeasurementUnit = Unit.Bytes,
             };
 
-            _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Counters.Should().BeEmpty();
+            _context.Advanced.MetricsDataManager.GetMetricsData(_context).Counters.Should().BeEmpty();
             _context.Advanced.Counter(counterOptions);
-            _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Counters.Should().HaveCount(1);
+            _context.Advanced.MetricsDataManager.GetMetricsData(_context).Counters.Should().HaveCount(1);
         }
 
         [Fact]

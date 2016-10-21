@@ -21,17 +21,17 @@ namespace App.Metrics.Facts.Core
 
         private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
 
-        private static readonly IHealthCheckDataProvider HealthCheckDataProvider =
-            new DefaultHealthCheckDataProvider(LoggerFactory, new HealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options));
-        private static readonly IMetricsDataProvider MetricsDataProvider =
-            new DefaultMetricsDataProvider(LoggerFactory, Options.Value.SystemClock, Enumerable.Empty<EnvironmentInfoEntry>());
+        private static readonly IHealthCheckManager HealthCheckManager =
+            new DefaultHealthCheckManager(LoggerFactory, new HealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options));
+        private static readonly IMetricsDataManager MetricsDataManager =
+            new DefaultMetricsDataManager(LoggerFactory, Options.Value.SystemClock, Enumerable.Empty<EnvironmentInfoEntry>());
         private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.SystemClock, Options.Value.DefaultSamplingType);
         private static readonly Func<IMetricsRegistry> MetricsRegistry = () => new DefaultMetricsRegistry();
 
 
         private readonly IMetricsContext _context = new MetricsContext(Options.Value.GlobalContextName,
             Options.Value.SystemClock, Options.Value.DefaultSamplingType,
-            MetricsRegistry, MetricsBuilder, HealthCheckDataProvider, MetricsDataProvider);
+            MetricsRegistry, MetricsBuilder, HealthCheckManager, MetricsDataManager);
 
         [Fact]
         public void can_register_custom_counter()
@@ -39,7 +39,7 @@ namespace App.Metrics.Facts.Core
             var counter = _context.Advanced.Counter("custom", Unit.Calls, () => new CustomCounter());
             counter.Should().BeOfType<CustomCounter>();
             counter.Increment();
-            _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Counters.Single().Value.Count.Should().Be(10L);
+            _context.Advanced.MetricsDataManager.GetMetricsData(_context).Counters.Single().Value.Count.Should().Be(10L);
         }
 
         [Fact]

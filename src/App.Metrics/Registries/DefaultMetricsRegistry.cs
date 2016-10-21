@@ -34,11 +34,11 @@ namespace App.Metrics.Registries
 
         public DefaultMetricsRegistry()
         {
-            DataProvider = new DefaultRegistryDataProvider(() => _gauges.All, () => _counters.All, () => _meters.All,
+            DataProvider = new DefaultMetricRegistryManager(() => _gauges.All, () => _counters.All, () => _meters.All,
                 () => _histograms.All, () => _timers.All);
         }
 
-        public IRegistryDataProvider DataProvider { get; }
+        public IMetricRegistryManager DataProvider { get; }
 
         public void ClearAllMetrics()
         {

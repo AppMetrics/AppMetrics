@@ -26,18 +26,18 @@ namespace App.Metrics.Core
         {
             Func<IMetricsRegistry> setupMetricsRegistry = () => new NullMetricsRegistry();
             var metricsBuilder = new DefaultMetricsBuilder(systemClock, defaultSamplingType);
-            var healthCheckDataProvider = new NullHealthCheckDataProvider();
-            IMetricsDataProvider metricsDataProvider
-                = new NullMetricsDataProvider();
+            var healthCheckDataProvider = new NullHealthCheckManager();
+            IMetricsDataManager metricsDataManager
+                = new NullMetricsDataManager();
 
-            HealthCheckDataProvider = healthCheckDataProvider;
+            HealthCheckManager = healthCheckDataProvider;
             GroupName = context;
-            MetricsDataProvider = metricsDataProvider;
-            RegistryDataProvider = setupMetricsRegistry().DataProvider;
+            MetricsDataManager = metricsDataManager;
+            MetricRegistryManager = setupMetricsRegistry().DataProvider;
 
             _metricsContext = new MetricsContext(context, systemClock, defaultSamplingType,
                 setupMetricsRegistry, metricsBuilder,
-                healthCheckDataProvider, metricsDataProvider);
+                healthCheckDataProvider, metricsDataManager);
         }
 
         public IAdvancedMetricsContext Advanced => this;
@@ -144,11 +144,11 @@ namespace App.Metrics.Core
 
         public event EventHandler ContextShuttingDown;
 
-        public IHealthCheckDataProvider HealthCheckDataProvider { get; }
+        public IHealthCheckManager HealthCheckManager { get; }
 
-        public IMetricsDataProvider MetricsDataProvider { get; }
+        public IMetricsDataManager MetricsDataManager { get; }
 
-        public IRegistryDataProvider RegistryDataProvider { get; }
+        public IMetricRegistryManager MetricRegistryManager { get; }
 
         public bool AttachContext(string contextName, IMetricsContext context)
         {

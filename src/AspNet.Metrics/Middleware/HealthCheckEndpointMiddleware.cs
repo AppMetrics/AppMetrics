@@ -16,7 +16,7 @@ namespace AspNet.Metrics.Middleware
 {
     public class HealthCheckEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
-        private readonly IHealthCheckDataProvider _healthCheckDataProvider;
+        private readonly IHealthCheckManager _healthCheckManager;
         private readonly IClock _systemClock;
 
         public HealthCheckEndpointMiddleware(RequestDelegate next,
@@ -24,11 +24,11 @@ namespace AspNet.Metrics.Middleware
             IClock systemClock,
             ILoggerFactory loggerFactory,
             IMetricsContext metricsContext,
-            IHealthCheckDataProvider healthCheckDataProvider)
+            IHealthCheckManager healthCheckManager)
             : base(next, options, loggerFactory, metricsContext)
         {
             _systemClock = systemClock;
-            _healthCheckDataProvider = healthCheckDataProvider;
+            _healthCheckManager = healthCheckManager;
         }
 
         public async Task Invoke(HttpContext context)
@@ -37,7 +37,7 @@ namespace AspNet.Metrics.Middleware
             {
                 Logger.MiddlewareExecuting(GetType());
 
-                var healthStatus = await _healthCheckDataProvider.GetStatusAsync();
+                var healthStatus = await _healthCheckManager.GetStatusAsync();
                 var responseStatusCode = healthStatus.IsHealthy ? HttpStatusCode.OK : HttpStatusCode.InternalServerError;
                 await
                     Task.FromResult(WriteResponseAsync(context, JsonHealthChecks.BuildJson(healthStatus, _systemClock, true), "application/json",

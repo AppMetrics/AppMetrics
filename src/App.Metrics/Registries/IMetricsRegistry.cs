@@ -11,7 +11,7 @@ namespace App.Metrics.Registries
 {
     public interface IMetricsRegistry
     {
-        IRegistryDataProvider DataProvider { get; }
+        IMetricRegistryManager DataProvider { get; }
 
         void ClearAllMetrics();
 

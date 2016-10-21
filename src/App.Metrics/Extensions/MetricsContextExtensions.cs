@@ -38,7 +38,7 @@ namespace App.Metrics
         public static MetricsData GetDataFor(this IMetricsContext metricsContext, params string[] nameWithContext)
         {
             var context = metricsContext.GetContextFor(nameWithContext);
-            return context.Advanced.MetricsDataProvider.GetMetricsData(context);
+            return context.Advanced.MetricsDataManager.GetMetricsData(context);
         }
 
         public static HistogramValue HistogramValue(this IMetricsContext metricsContext, params string[] nameWithContext)

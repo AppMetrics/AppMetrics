@@ -16,13 +16,13 @@ namespace App.Metrics.Facts.Health
     {
         private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
         private readonly IHealthCheckRegistry _healthCheckRegistry;
-        private readonly IHealthCheckDataProvider _healthCheckDataProvider;
+        private readonly IHealthCheckManager _healthCheckManager;
 
         public HealthCheckRegistryTests()
         {
             _healthCheckRegistry = new HealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(),
                 Options.Create(new AppMetricsOptions()));
-            _healthCheckDataProvider = new DefaultHealthCheckDataProvider(LoggerFactory, _healthCheckRegistry);
+            _healthCheckManager = new DefaultHealthCheckManager(LoggerFactory, _healthCheckRegistry);
         }
 
         [Fact]
@@ -50,11 +50,11 @@ namespace App.Metrics.Facts.Health
 
             count.Should().Be(0);
 
-            await _healthCheckDataProvider.GetStatusAsync();
+            await _healthCheckManager.GetStatusAsync();
 
             count.Should().Be(1);
 
-            await _healthCheckDataProvider.GetStatusAsync();
+            await _healthCheckManager.GetStatusAsync();
 
             count.Should().Be(2);
         }
@@ -67,7 +67,7 @@ namespace App.Metrics.Facts.Health
             _healthCheckRegistry.Register("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
             _healthCheckRegistry.Register("bad", () => Task.FromResult(HealthCheckResult.Unhealthy()));
 
-            var status = await _healthCheckDataProvider.GetStatusAsync();
+            var status = await _healthCheckManager.GetStatusAsync();
 
             status.IsHealthy.Should().BeFalse();
             status.Results.Length.Should().Be(2);
@@ -81,7 +81,7 @@ namespace App.Metrics.Facts.Health
             _healthCheckRegistry.Register("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
             _healthCheckRegistry.Register("another", () => Task.FromResult(HealthCheckResult.Healthy()));
 
-            var status = await _healthCheckDataProvider.GetStatusAsync();
+            var status = await _healthCheckManager.GetStatusAsync();
 
             status.IsHealthy.Should().BeTrue();
             status.Results.Length.Should().Be(2);

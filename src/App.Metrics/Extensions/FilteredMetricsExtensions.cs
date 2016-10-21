@@ -9,13 +9,13 @@ namespace App.Metrics.Extensions
 {
     public static class FilteredMetricsExtensions
     {
-        public static IMetricsDataProvider WithFilter(this IMetricsDataProvider provider, IMetricsFilter filter)
+        public static IMetricsDataManager WithFilter(this IMetricsDataManager manager, IMetricsFilter filter)
         {
             if (filter == null)
             {
-                return provider;
+                return manager;
             }
-            return new FilteredMetricsDataProvider(provider, filter);
+            return new FilteredMetricsDataManager(manager, filter);
         }
     }
 }

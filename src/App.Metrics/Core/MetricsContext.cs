@@ -34,8 +34,8 @@ namespace App.Metrics.Core
             SamplingType defaultSamplingType,
             Func<IMetricsRegistry> newRegistry,
             IMetricsBuilder builder,
-            IHealthCheckDataProvider healthCheckDataProvider,
-            IMetricsDataProvider metricsDataProvider)
+            IHealthCheckManager healthCheckManager,
+            IMetricsDataManager metricsDataManager)
         {
             if (context == null)
             {
@@ -62,25 +62,25 @@ namespace App.Metrics.Core
                 throw new ArgumentNullException(nameof(builder));
             }
 
-            if (healthCheckDataProvider == null)
+            if (healthCheckManager == null)
             {
-                throw new ArgumentNullException(nameof(healthCheckDataProvider));
+                throw new ArgumentNullException(nameof(healthCheckManager));
             }
 
-            if (metricsDataProvider == null)
+            if (metricsDataManager == null)
             {
-                throw new ArgumentNullException(nameof(metricsDataProvider));
+                throw new ArgumentNullException(nameof(metricsDataManager));
             }
 
             _defaultSamplingType = defaultSamplingType;
             _newRegistry = newRegistry;
             _registry = _newRegistry();
             _builder = builder;
-            MetricsDataProvider = metricsDataProvider;
+            MetricsDataManager = metricsDataManager;
 
             GroupName = context;
             Clock = systemClock;
-            HealthCheckDataProvider = healthCheckDataProvider;
+            HealthCheckManager = healthCheckManager;
         }
 
         public IAdvancedMetricsContext Advanced => this;
@@ -253,7 +253,7 @@ namespace App.Metrics.Core
         {
             return new MetricsContext(contextName, Clock, _defaultSamplingType,
                 _newRegistry, _builder,
-                HealthCheckDataProvider, MetricsDataProvider);
+                HealthCheckManager, MetricsDataManager);
         }
 
         private void ForAllChildContexts(Action<IMetricsContext> action)
@@ -348,11 +348,11 @@ namespace App.Metrics.Core
         }
 
 
-        public IRegistryDataProvider RegistryDataProvider => _registry.DataProvider;
+        public IMetricRegistryManager MetricRegistryManager => _registry.DataProvider;
 
-        public IMetricsDataProvider MetricsDataProvider { get; }
+        public IMetricsDataManager MetricsDataManager { get; }
 
-        public IHealthCheckDataProvider HealthCheckDataProvider { get; }
+        public IHealthCheckManager HealthCheckManager { get; }
 
         public event EventHandler ContextDisabled;
 

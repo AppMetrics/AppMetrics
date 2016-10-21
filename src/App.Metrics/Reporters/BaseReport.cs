@@ -65,7 +65,7 @@ namespace App.Metrics.Reporters
 
         public async Task RunReport(IMetricsContext metricsContext, CancellationToken token)
         {
-            var dataProvider = metricsContext.Advanced.MetricsDataProvider;
+            var dataProvider = metricsContext.Advanced.MetricsDataManager;
 
             if (Filter != default(IMetricsFilter))
             {
@@ -82,7 +82,7 @@ namespace App.Metrics.Reporters
 
             ReportContext(metricsData, Enumerable.Empty<string>());
 
-            await ReportHealthStatus(metricsContext.Advanced.HealthCheckDataProvider);
+            await ReportHealthStatus(metricsContext.Advanced.HealthCheckManager);
 
             EndReport(metricsData.Context);
         }
@@ -189,9 +189,9 @@ namespace App.Metrics.Reporters
             EndContext(contextName);
         }
 
-        private async Task ReportHealthStatus(IHealthCheckDataProvider healthCheckDataProvider)
+        private async Task ReportHealthStatus(IHealthCheckManager healthCheckManager)
         {
-            var status = await healthCheckDataProvider.GetStatusAsync();
+            var status = await healthCheckManager.GetStatusAsync();
 
             if (!status.HasRegisteredChecks)
             {
