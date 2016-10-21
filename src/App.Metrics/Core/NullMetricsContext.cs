@@ -83,7 +83,7 @@ namespace App.Metrics.Core
 
         public IMetricsContext Group(string groupName)
         {
-            return _metricsContext.Group(groupName);
+            return _metricsContext.Advanced.Group(groupName);
         }
 
         public void Increment(CounterOptions options)
@@ -126,12 +126,12 @@ namespace App.Metrics.Core
             _metricsContext.Mark(options, amount, item);
         }
 
-        public void Time(TimerOptions options, Action action, string userValue = null)
+        public void Time(TimerOptions options, Action action, string userValue)
         {
             _metricsContext.Time(options, action, userValue);
         }
 
-        public void Update(HistogramOptions options, long value, string userValue = null)
+        public void Update(HistogramOptions options, long value, string userValue)
         {
             _metricsContext.Update(options, value, userValue);
         }
@@ -251,6 +251,16 @@ namespace App.Metrics.Core
         public IMetricsContext Group(string groupName, Func<string, IMetricsContext> groupCreator)
         {
             return _metricsContext.Advanced.Group(groupName, groupCreator);
+        }
+
+        public void Time(TimerOptions options, Action action)
+        {
+            _metricsContext.Time(options, action);
+        }
+
+        public void Update(HistogramOptions options, long value)
+        {
+            _metricsContext.Update(options, value);
         }
 
         #endregion

@@ -14,13 +14,13 @@ namespace App.Metrics
     {
         public static IMetricsContext GetOAuth2ClientWebRequestsContext(this IMetricsContext context)
         {
-            return context.Group(AspNetMetricsRegistry.Groups.OAuth2.GroupName);
+            return context.Advanced.Group(AspNetMetricsRegistry.Groups.OAuth2.GroupName);
         }
 
         public static IMetricsContext GetWebApplicationContext(this IMetricsContext context)
         {
             //TODO: AH - Anyway to add this to the metrics options?
-            return context.Group(AspNetMetricsRegistry.Groups.WebRequests.GroupName);
+            return context.Advanced.Group(AspNetMetricsRegistry.Groups.WebRequests.GroupName);
         }
     }
 }

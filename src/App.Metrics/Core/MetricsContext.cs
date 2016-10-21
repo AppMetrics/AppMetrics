@@ -214,7 +214,17 @@ namespace App.Metrics.Core
                 .Mark(item, amount);
         }
 
-        public void Time(TimerOptions options, Action action, string userValue = null)
+        public void Time(TimerOptions options, Action action)
+        {
+            using (_registry.Timer(options,
+                    () => _builder.BuildTimer(options.Name, options.MeasurementUnit, options.RateUnit, options.DurationUnit, options.SamplingType))
+                .NewContext())
+            {
+                action();
+            }
+        }
+
+        public void Time(TimerOptions options, Action action, string userValue)
         {
             using (_registry.Timer(options,
                     () => _builder.BuildTimer(options.Name, options.MeasurementUnit, options.RateUnit, options.DurationUnit, options.SamplingType))
@@ -224,7 +234,14 @@ namespace App.Metrics.Core
             }
         }
 
-        public void Update(HistogramOptions options, long value, string userValue = null)
+        public void Update(HistogramOptions options, long value)
+        {
+            _registry.Histogram(options,
+                    () => _builder.BuildHistogram(options.Name, options.MeasurementUnit, options.SamplingType))
+                .Update(value);
+        }
+
+        public void Update(HistogramOptions options, long value, string userValue)
         {
             _registry.Histogram(options,
                     () => _builder.BuildHistogram(options.Name, options.MeasurementUnit, options.SamplingType))
@@ -319,7 +336,7 @@ namespace App.Metrics.Core
 
         public IMeter Meter(MeterOptions options)
         {
-            return Meter(options.Name, options.MeasurementUnit, 
+            return Meter(options.Name, options.MeasurementUnit,
                 () => _builder.BuildMeter(options.Name, options.MeasurementUnit, options.RateUnit),
                 options.RateUnit, options.Tags);
         }

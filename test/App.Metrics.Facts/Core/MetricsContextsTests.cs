@@ -50,7 +50,7 @@ namespace App.Metrics.Facts.Core
                 MeasurementUnit = Unit.Requests,
             };
 
-            _context.Group("test").Advanced.Counter(counterOptions);
+            _context.Advanced.Group("test").Advanced.Counter(counterOptions);
 
             var counterValue = CurrentData(_context).ChildMetrics.SelectMany(c => c.Counters).Single();
 
@@ -127,8 +127,8 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void child_with_same_name_are_same_context()
         {
-            var first = _context.Group("test");
-            var second = _context.Group("test");
+            var first = _context.Advanced.Group("test");
+            var second = _context.Advanced.Group("test");
 
             ReferenceEquals(first, second).Should().BeTrue();
         }
@@ -143,7 +143,7 @@ namespace App.Metrics.Facts.Core
             };
 
             var counter = _context
-                .Group("test").Advanced
+                .Advanced.Group("test").Advanced
                 .Counter(counterOptions);
 
             counter.Increment();
@@ -182,7 +182,7 @@ namespace App.Metrics.Facts.Core
                 MeasurementUnit = Unit.Bytes
             };
 
-            _context.Group("test").Advanced.Counter(counterOptions).Increment();
+            _context.Advanced.Group("test").Advanced.Counter(counterOptions).Increment();
 
             CurrentData(_context).ChildMetrics.Single()
                 .Counters.Single().Name.Should().Be("test");
@@ -256,9 +256,9 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void MetricsContext_EmptyChildContextIsSameContext()
         {
-            var child = _context.Group(string.Empty);
+            var child = _context.Advanced.Group(string.Empty);
             ReferenceEquals(_context, child).Should().BeTrue();
-            child = _context.Group(null);
+            child = _context.Advanced.Group(null);
             ReferenceEquals(_context, child).Should().BeTrue();
         }
 

@@ -17,8 +17,6 @@ namespace App.Metrics
 
         string GroupName { get; }
 
-        IMetricsContext Group(string groupName);
-
         void Decrement(CounterOptions options);
 
         void Decrement(CounterOptions options, long amount);
@@ -28,6 +26,7 @@ namespace App.Metrics
         void Decrement(CounterOptions options, long amount, string item);
 
         void Gauge(GaugeOptions options, Func<double> valueProvider);
+       
 
         void Increment(CounterOptions options);
 
@@ -45,9 +44,12 @@ namespace App.Metrics
 
         void Mark(MeterOptions options);
 
-        void Time(TimerOptions options, Action action, string userValue = null);
+        void Time(TimerOptions options, Action action);
 
-        void Update(HistogramOptions options, long value, string userValue = null);
+        void Time(TimerOptions options, Action action, string userValue);
 
+        void Update(HistogramOptions options, long value);
+
+        void Update(HistogramOptions options, long value, string userValue);
     }
 }
