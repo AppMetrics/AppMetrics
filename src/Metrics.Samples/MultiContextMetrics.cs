@@ -10,9 +10,12 @@ namespace Metrics.Samples
 
         public MultiContextMetrics(IMetricsContext metricsContext)
         {
-            _firstCounter = metricsContext.Group("First Group").Advanced.Counter("Counter", Unit.Requests);
-            _secondCounter = metricsContext.Group("Second Group").Advanced.Counter("Counter", Unit.Requests);
-            _secondMeter = metricsContext.Group("Second Group").Advanced.Meter("Meter", Unit.Errors, TimeUnit.Seconds);
+            _firstCounter = metricsContext.Group(SampleMetricsRegistry.Groups.FirstGroup.GroupName).Advanced.Counter(SampleMetricsRegistry.Groups.FirstGroup.Counters.Counter);
+
+            _secondCounter = metricsContext.Group(SampleMetricsRegistry.Groups.SecondGroup.GroupName).Advanced.Counter(SampleMetricsRegistry.Groups.SecondGroup.Counters.Counter);
+
+
+            _secondMeter = metricsContext.Group(SampleMetricsRegistry.Groups.SecondGroup.GroupName).Advanced.Meter(SampleMetricsRegistry.Groups.SecondGroup.Meters.Requests);
         }
 
         public void Run()
@@ -35,7 +38,7 @@ namespace Metrics.Samples
 
             var context = _metricsContext.Group(instanceName);
 
-            _instanceCounter = context.Advanced.Counter("Sample Counter", Unit.Errors);
+            _instanceCounter = context.Advanced.Counter(SampleMetricsRegistry.Counters.SampleCounter);
             _instanceTimer = context.Advanced.Timer("Sample Timer", Unit.Requests);
         }
 

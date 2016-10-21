@@ -211,7 +211,7 @@ namespace Api.Sample
             public static HistogramOptions TestHistogram { get; } = new HistogramOptions
             {
                 Name = "Test Histogram",
-                SamplingType = SamplingType.HighDynamicRange,
+                SamplingType = SamplingType.ExponentiallyDecaying,
                 MeasurementUnit = Unit.MegaBytes,
                 Tags = MetricTags.None
             };
@@ -219,7 +219,7 @@ namespace Api.Sample
             public static HistogramOptions TestHistogramWithUserValue { get; } = new HistogramOptions
             {
                 Name = "Test Histogram With User Value",
-                SamplingType = SamplingType.HighDynamicRange,
+                SamplingType = SamplingType.ExponentiallyDecaying,
                 MeasurementUnit = Unit.Bytes,
                 Tags = MetricTags.None
             };

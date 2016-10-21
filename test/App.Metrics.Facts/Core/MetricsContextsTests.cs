@@ -15,31 +15,42 @@ namespace App.Metrics.Facts.Core
 {
     public class MetricsContextsTests
     {
-        private static readonly IOptions<AppMetricsOptions> Options = Microsoft.Extensions.Options.Options.Create(new AppMetricsOptions());
-
         private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
+        private static readonly IOptions<AppMetricsOptions> Options = Microsoft.Extensions.Options.Options.Create(new AppMetricsOptions());
 
         private static readonly IHealthCheckDataProvider HealthCheckDataProvider =
             new DefaultHealthCheckDataProvider(LoggerFactory, new HealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options));
 
-        private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.SystemClock, SamplingType.ExponentiallyDecaying);
+
+        private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.SystemClock,
+            SamplingType.ExponentiallyDecaying);
+
+        private static readonly IMetricsDataProvider MetricsDataProvider =
+            new DefaultMetricsDataProvider(LoggerFactory, Options.Value.SystemClock, Enumerable.Empty<EnvironmentInfoEntry>());
+
         private static readonly Func<IMetricsRegistry> MetricsRegistry = () => new DefaultMetricsRegistry();
-        private static readonly IMetricsDataProvider MetricsDataProvider = 
-           new DefaultMetricsDataProvider(LoggerFactory, Options.Value.SystemClock, Enumerable.Empty<EnvironmentInfoEntry>());
+
 
         private readonly IMetricsContext _context = new MetricsContext(Options.Value.GlobalContextName,
             Options.Value.SystemClock, Options.Value.DefaultSamplingType,
             MetricsRegistry, MetricsBuilder, HealthCheckDataProvider, MetricsDataProvider);
 
         public Func<IMetricsContext, MetricsData> CurrentData => ctx => _context.Advanced.MetricsDataProvider.GetMetricsData(ctx);
-        public Func<IMetricsContext, IMetricsFilter, MetricsData> CurrentDataWithFilter => (ctx, filter) => 
-        _context.Advanced.MetricsDataProvider.WithFilter(filter).GetMetricsData(ctx);
+
+        public Func<IMetricsContext, IMetricsFilter, MetricsData> CurrentDataWithFilter => (ctx, filter) =>
+                _context.Advanced.MetricsDataProvider.WithFilter(filter).GetMetricsData(ctx);
 
 
         [Fact]
         public void can_create_child_context()
         {
-            _context.Group("test").Advanced.Counter("counter", Unit.Requests);
+            var counterOptions = new CounterOptions
+            {
+                Name = "counter",
+                MeasurementUnit = Unit.Requests,
+            };
+
+            _context.Group("test").Advanced.Counter(counterOptions);
 
             var counterValue = CurrentData(_context).ChildMetrics.SelectMany(c => c.Counters).Single();
 
@@ -47,12 +58,63 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
+        public void can_filter_metrics_by_type()
+        {
+            var counterOptions = new CounterOptions
+            {
+                Name = "test",
+                MeasurementUnit = Unit.Requests,
+            };
+
+
+            var meterOptions = new MeterOptions
+            {
+                Name = "test",
+                MeasurementUnit = Unit.None,
+                Tags = "tag"
+            };
+
+            var counter = _context.Advanced.Counter(counterOptions);
+            var meter = _context.Advanced.Meter(meterOptions);
+
+            var filter = new MetricsFilter().WhereType(MetricType.Counter);
+
+            counter.Increment();
+            meter.Mark(1);
+
+            var currentData = CurrentDataWithFilter(_context, filter);
+
+            var counterValue = currentData.Counters.Single();
+            var meterValue = currentData.Meters.FirstOrDefault();
+
+            counterValue.Name.Should().Be("test");
+            counterValue.Unit.Should().Be(Unit.Requests);
+            counterValue.Value.Count.Should().Be(1);
+
+            Assert.Null(meterValue);
+        }
+
+        [Fact]
         public void can_propergate_value_tags()
         {
-            _context.Advanced.Counter("test", Unit.None, "tag");
+            var counterOptions = new CounterOptions
+            {
+                Name = "test",
+                MeasurementUnit = Unit.None,
+                Tags = "tag"
+            };
+
+            var meterOptions = new MeterOptions
+            {
+                Name = "test",
+                MeasurementUnit = Unit.None,
+                Tags = "tag"
+            };
+
+            _context.Advanced.Counter(counterOptions);
             _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Counters.Single().Tags.Should().Equal("tag");
 
-            _context.Advanced.Meter("test", Unit.None, tags: "tag");
+            _context.Advanced.Meter(meterOptions);
             _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Meters.Single().Tags.Should().Equal("tag");
 
             _context.Advanced.Histogram("test", Unit.None, tags: "tag");
@@ -74,9 +136,15 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void data_provider_reflects_child_contexts()
         {
+            var counterOptions = new CounterOptions
+            {
+                Name = "test",
+                MeasurementUnit = Unit.Bytes
+            };
+
             var counter = _context
                 .Group("test").Advanced
-                .Counter("test", Unit.Bytes);
+                .Counter(counterOptions);
 
             counter.Increment();
 
@@ -92,7 +160,13 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void data_provider_reflects_new_metrics()
         {
-            _context.Advanced.Counter("test", Unit.Bytes).Increment();
+            var counterOptions = new CounterOptions
+            {
+                Name = "test",
+                MeasurementUnit = Unit.Bytes,
+            };
+
+            _context.Advanced.Counter(counterOptions).Increment();
 
             _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Counters.Should().HaveCount(1);
             _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Counters.Single().Name.Should().Be("test");
@@ -102,7 +176,13 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void disabled_child_context_does_not_show_in_metrics_data()
         {
-            _context.Group("test").Advanced.Counter("test", Unit.Bytes).Increment();
+            var counterOptions = new CounterOptions
+            {
+                Name = "test",
+                MeasurementUnit = Unit.Bytes
+            };
+
+            _context.Group("test").Advanced.Counter(counterOptions).Increment();
 
             CurrentData(_context).ChildMetrics.Single()
                 .Counters.Single().Name.Should().Be("test");
@@ -118,12 +198,59 @@ namespace App.Metrics.Facts.Core
             ((Action)(() =>
             {
                 var name = "Test";
+
+                var counterOptions = new CounterOptions
+                {
+                    Name = name,
+                    MeasurementUnit = Unit.Calls,
+                };
+
+
+                var meterOptions = new MeterOptions
+                {
+                    Name = name,
+                    MeasurementUnit = Unit.Calls
+                };
+
                 _context.Advanced.Gauge(name, () => 0.0, Unit.Calls);
-                _context.Advanced.Counter(name, Unit.Calls);
-                _context.Advanced.Meter(name, Unit.Calls);
+                _context.Advanced.Counter(counterOptions);
+                _context.Advanced.Meter(meterOptions);
                 _context.Advanced.Histogram(name, Unit.Calls);
                 _context.Advanced.Timer(name, Unit.Calls);
             })).ShouldNotThrow();
+        }
+
+        [Fact]
+        public void metrics_added_are_visible_in_the_data_provider()
+        {
+            var counterOptions = new CounterOptions
+            {
+                Name = "test",
+                MeasurementUnit = Unit.Bytes,
+            };
+
+            _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Counters.Should().BeEmpty();
+            _context.Advanced.Counter(counterOptions);
+            _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Counters.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public void metrics_are_present_in_metrics_data()
+        {
+            var counterOptions = new CounterOptions
+            {
+                Name = "test",
+                MeasurementUnit = Unit.Requests,
+            };
+            var counter = _context.Advanced.Counter(counterOptions);
+
+            counter.Increment();
+
+            var counterValue = CurrentData(_context).Counters.Single();
+
+            counterValue.Name.Should().Be("test");
+            counterValue.Unit.Should().Be(Unit.Requests);
+            counterValue.Value.Count.Should().Be(1);
         }
 
         [Fact]
@@ -136,48 +263,12 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void metrics_added_are_visible_in_the_data_provider()
+        public void raises_shutdown_even_on_metrics_disable()
         {
-            _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Counters.Should().BeEmpty();
-            _context.Advanced.Counter("test", Unit.Bytes);
-            _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Counters.Should().HaveCount(1);
-        }
-
-        [Fact]
-        public void metrics_are_present_in_metrics_data()
-        {
-            var counter = _context.Advanced.Counter("test", Unit.Requests);
-
-            counter.Increment();
-
-            var counterValue = CurrentData(_context).Counters.Single();
-
-            counterValue.Name.Should().Be("test");
-            counterValue.Unit.Should().Be(Unit.Requests);
-            counterValue.Value.Count.Should().Be(1);
-        }
-
-        [Fact]
-        public void can_filter_metrics_by_type()
-        {
-            var counter = _context.Advanced.Counter("test", Unit.Requests);
-            var meter = _context.Advanced.Meter("test", Unit.None, tags: "tag");
-
-            var filter = new MetricsFilter().WhereType(MetricType.Counter);
-
-            counter.Increment();
-            meter.Mark(1);
-
-            var currentData = CurrentDataWithFilter(_context, filter);
-
-            var counterValue = currentData.Counters.Single();
-            var meterValue = currentData.Meters.FirstOrDefault();
-
-            counterValue.Name.Should().Be("test");
-            counterValue.Unit.Should().Be(Unit.Requests);
-            counterValue.Value.Count.Should().Be(1);
-
-            Assert.Null(meterValue);
+            //TODO: AH - FluentAssertions no longer has MonitorEvents
+            //context.MonitorEvents();
+            //context.Advanced.CompletelyDisableMetrics();
+            //context.ShouldRaise("ContextShuttingDown");
         }
 
         [Fact]
@@ -188,15 +279,6 @@ namespace App.Metrics.Facts.Core
             //_context.MonitorEvents();
             //_context.Dispose();
             //_context.ShouldRaise("ContextShuttingDown");
-        }
-
-        [Fact]
-        public void raises_shutdown_even_on_metrics_disable()
-        {
-            //TODO: AH - FluentAssertions no longer has MonitorEvents
-            //context.MonitorEvents();
-            //context.Advanced.CompletelyDisableMetrics();
-            //context.ShouldRaise("ContextShuttingDown");
         }
     }
 }

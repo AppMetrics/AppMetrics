@@ -45,18 +45,21 @@ namespace Metrics.Samples
         public SampleMetrics(IMetricsContext metricsContext)
         {
             _metricsContext = metricsContext;
-            _concurrentRequestsCounter = _metricsContext.Advanced.Counter("SampleMetrics.ConcurrentRequests", Unit.Requests);
+            _concurrentRequestsCounter = _metricsContext.Advanced.Counter(SampleMetricsRegistry.Counters.ConcurrentRequestsCounter);
             _histogramOfData = _metricsContext.Advanced.Histogram("ResultsExample", Unit.Items);
-            _meter = _metricsContext.Advanced.Meter("Requests", Unit.Requests);
-            _setCounter = _metricsContext.Advanced.Counter("Set Counter", Unit.Items);
-            _setMeter = _metricsContext.Advanced.Meter("Set Meter", Unit.Items);
+            _meter = _metricsContext.Advanced.Meter(SampleMetricsRegistry.Meters.Requests);
+            _setCounter = _metricsContext.Advanced.Counter(SampleMetricsRegistry.Counters.SetCounter);
+            _setMeter = _metricsContext.Advanced.Meter(SampleMetricsRegistry.Meters.SetMeter);
             _timer = _metricsContext.Advanced.Timer("Requests", Unit.Requests);
-            _totalRequestsCounter = _metricsContext.Advanced.Counter("Requests", Unit.Requests);
+            _totalRequestsCounter = _metricsContext.Advanced.Counter(SampleMetricsRegistry.Counters.Requests);
 
             // define a simple gauge that will provide the instant value of someValue when requested
-            _metricsContext.Advanced.Gauge("SampleMetrics.DataValue", () => _someValue, Unit.Custom("$"));
-            _metricsContext.Advanced.Gauge("Custom Ratio",
-                () => ValueReader.GetCurrentValue(_totalRequestsCounter).Count / ValueReader.GetCurrentValue(_meter).FiveMinuteRate, Unit.Percent);
+            _metricsContext.Gauge(SampleMetricsRegistry.Gauges.DataValue, () => _someValue);
+
+
+            _metricsContext.Gauge(SampleMetricsRegistry.Gauges.CustomRatioGauge, 
+                () => ValueReader.GetCurrentValue(_totalRequestsCounter).Count / ValueReader.GetCurrentValue(_meter).FiveMinuteRate);
+            
             _metricsContext.Advanced.Gauge("Ratio", () => new HitRatioGauge(_meter, _timer, m => m.OneMinuteRate), Unit.Percent);
         }
 

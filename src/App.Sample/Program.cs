@@ -104,7 +104,11 @@ namespace App.Sample
         {
             var builder = services.AddMetrics(options =>
             {
-                options.Reporters = reports => { reports.WithConsoleReport(TimeSpan.FromSeconds(3)); };
+                options.Reporters = reports =>
+                {
+                    reports.WithConsoleReport(TimeSpan.FromSeconds(3));
+                    reports.WithTextFileReport(@"C:\metrics-sample.txt", TimeSpan.FromSeconds(3));
+                };
                 options.HealthCheckRegistry = checks =>
                 {
                     checks.Register("DatabaseConnected", () => Task.FromResult("Database Connection OK"));

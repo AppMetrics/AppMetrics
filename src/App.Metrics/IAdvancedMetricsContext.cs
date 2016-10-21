@@ -71,7 +71,7 @@ namespace App.Metrics
         IMetricsContext Group(string groupName, Func<string, IMetricsContext> groupCreator);
 
 
-        ICounter Counter(string name, Unit unit, MetricTags tags = default(MetricTags));
+        ICounter Counter(CounterOptions options);
 
         /// <summary>
         ///     A gauge is the simplest metric type. It just returns a value. This metric is suitable for instantaneous values.
@@ -120,13 +120,9 @@ namespace App.Metrics
         ///     divided by the number of seconds the process has been running), it doesn’t offer a sense of recency.
         ///     Luckily, meters also record three different exponentially-weighted moving average rates: the 1-, 5-, and 15-minute
         ///     moving averages.
-        /// </remarks>
-        /// <param name="name">Name of the metric. Must be unique across all meters in this context.</param>
-        /// <param name="unit">Description of what the is being measured ( Unit.Requests , Unit.Items etc ) .</param>
-        /// <param name="rateUnit">Time unit for rates reporting. Defaults to Second ( occurrences / second ).</param>
-        /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
+        /// </remarks>        
         /// <returns>Reference to the metric</returns>
-        IMeter Meter(string name, Unit unit, TimeUnit rateUnit = TimeUnit.Seconds, MetricTags tags = default(MetricTags));
+        IMeter Meter(MeterOptions options);
 
         /// <summary>
         ///     A timer is basically a histogram of the duration of a type of event and a meter of the rate of its occurrence.

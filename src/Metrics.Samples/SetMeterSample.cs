@@ -12,7 +12,7 @@ namespace Metrics.Samples
         {
             _metricsContext = metricsContext;
 
-            _errorMeter = _metricsContext.Advanced.Meter("Errors", Unit.Errors);
+            _errorMeter = _metricsContext.Advanced.Meter(SampleMetricsRegistry.Meters.Errors);
         }
 
         public void Process(Command command)

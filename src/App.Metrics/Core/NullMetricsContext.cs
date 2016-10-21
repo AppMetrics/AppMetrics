@@ -155,14 +155,9 @@ namespace App.Metrics.Core
             _metricsContext.Advanced.ShutdownContext(contextName);
         }
 
-        public IMetricsContext Context(string contextName, Func<string, IMetricsContext> contextCreator)
+        public ICounter Counter(CounterOptions options)
         {
-            throw new NotImplementedException();
-        }
-
-        public ICounter Counter(string name, Unit unit, MetricTags tags = new MetricTags())
-        {
-            throw new NotImplementedException();
+            return _metricsContext.Advanced.Counter(options);
         }
 
         public ITimer Timer(string name, Unit unit, SamplingType samplingType, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
@@ -177,7 +172,7 @@ namespace App.Metrics.Core
 
         public ICounter Counter<T>(string name, Unit unit, Func<T> builder, MetricTags tags = new MetricTags()) where T : ICounterImplementation
         {
-            throw new NotImplementedException();
+            return _metricsContext.Advanced.Counter(name, unit, builder, tags);
         }
 
         public ITimer Timer<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
@@ -227,9 +222,9 @@ namespace App.Metrics.Core
             return _metricsContext.Advanced.Histogram(name, unit, builder, tags);
         }
 
-        public IMeter Meter(string name, Unit unit, TimeUnit rateUnit, MetricTags tags)
+        public IMeter Meter(MeterOptions options)
         {
-            return _metricsContext.Advanced.Meter(name, unit, rateUnit, tags);
+            return _metricsContext.Advanced.Meter(options);
         }
 
         public IMeter Meter<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit, MetricTags tags)

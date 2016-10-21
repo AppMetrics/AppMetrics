@@ -21,6 +21,10 @@
 
     public class MeterOptions : MetricValueOptions
     {
+        public MeterOptions()
+        {
+            RateUnit = TimeUnit.Milliseconds;
+        }
         public TimeUnit RateUnit { get; set; }
     }
 
@@ -30,6 +34,12 @@
 
     public class TimerOptions : MetricValueOptions
     {
+        public TimerOptions()
+        {
+            DurationUnit = TimeUnit.Milliseconds;
+            RateUnit = TimeUnit.Milliseconds;
+            SamplingType = SamplingType.ExponentiallyDecaying;
+        }
         public TimeUnit DurationUnit { get; set; }
 
         public TimeUnit RateUnit { get; set; }
@@ -39,6 +49,11 @@
 
     public class HistogramOptions : MetricValueOptions
     {
+        public HistogramOptions()
+        {
+            SamplingType = SamplingType.ExponentiallyDecaying;    
+        }
+
         public SamplingType SamplingType { get; set; }
     }
 }

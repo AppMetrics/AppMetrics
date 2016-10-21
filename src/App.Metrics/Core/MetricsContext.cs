@@ -260,9 +260,9 @@ namespace App.Metrics.Core
             return Timer(name, unit, () => _builder.BuildTimer(name, unit, rateUnit, durationUnit, builder()), rateUnit, durationUnit, tags);
         }
 
-        public ICounter Counter(string name, Unit unit, MetricTags tags = new MetricTags())
+        public ICounter Counter(CounterOptions options)
         {
-            return Counter(name, unit, () => _builder.BuildCounter(name, unit), tags);
+            return Counter(options.Name, options.MeasurementUnit, () => _builder.BuildCounter(options.Name, options.MeasurementUnit), options.Tags);
         }
 
         public void Gauge(string name, Func<double> valueProvider, Unit unit, MetricTags tags)
@@ -296,9 +296,11 @@ namespace App.Metrics.Core
             return Histogram(name, unit, () => _builder.BuildHistogram(name, unit, builder()), tags);
         }
 
-        public IMeter Meter(string name, Unit unit, TimeUnit rateUnit, MetricTags tags)
+        public IMeter Meter(MeterOptions options)
         {
-            return Meter(name, unit, () => _builder.BuildMeter(name, unit, rateUnit), rateUnit, tags);
+            return Meter(options.Name, options.MeasurementUnit, 
+                () => _builder.BuildMeter(options.Name, options.MeasurementUnit, options.RateUnit),
+                options.RateUnit, options.Tags);
         }
 
         public IMeter Meter<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit, MetricTags tags)

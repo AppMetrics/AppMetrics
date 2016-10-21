@@ -5,6 +5,7 @@
 using System;
 using System.Threading.Tasks;
 using App.Metrics;
+using AspNet.Metrics.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -48,11 +49,11 @@ namespace AspNet.Metrics.Middleware
         private void MarkWebRequest(string routeTemplate, string clientId)
         {
             MetricsContext.GetOAuth2ClientWebRequestsContext().Advanced
-                .Meter(routeTemplate, Unit.Requests)
+                .Meter(AspNetMetricsRegistry.Groups.OAuth2.Meters.EndpointWebRequests(routeTemplate))
                 .Mark(clientId);
 
             MetricsContext.GetOAuth2ClientWebRequestsContext().Advanced
-                .Meter("Total Web Requests", Unit.Requests)
+                .Meter(AspNetMetricsRegistry.Groups.OAuth2.Meters.WebRequests)
                 .Mark(clientId);
         }
     }
