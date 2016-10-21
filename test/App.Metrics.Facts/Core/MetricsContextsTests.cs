@@ -39,7 +39,7 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void can_create_child_context()
         {
-            _context.Context("test").Counter("counter", Unit.Requests);
+            _context.Group("test").Advanced.Counter("counter", Unit.Requests);
 
             var counterValue = CurrentData(_context).ChildMetrics.SelectMany(c => c.Counters).Single();
 
@@ -49,24 +49,24 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void can_propergate_value_tags()
         {
-            _context.Counter("test", Unit.None, "tag");
+            _context.Advanced.Counter("test", Unit.None, "tag");
             _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Counters.Single().Tags.Should().Equal("tag");
 
-            _context.Meter("test", Unit.None, tags: "tag");
+            _context.Advanced.Meter("test", Unit.None, tags: "tag");
             _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Meters.Single().Tags.Should().Equal("tag");
 
-            _context.Histogram("test", Unit.None, tags: "tag");
+            _context.Advanced.Histogram("test", Unit.None, tags: "tag");
             _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Histograms.Single().Tags.Should().Equal("tag");
 
-            _context.Timer("test", Unit.None, tags: "tag");
+            _context.Advanced.Timer("test", Unit.None, tags: "tag");
             _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Timers.Single().Tags.Should().Equal("tag");
         }
 
         [Fact]
         public void child_with_same_name_are_same_context()
         {
-            var first = _context.Context("test");
-            var second = _context.Context("test");
+            var first = _context.Group("test");
+            var second = _context.Group("test");
 
             ReferenceEquals(first, second).Should().BeTrue();
         }
@@ -75,7 +75,7 @@ namespace App.Metrics.Facts.Core
         public void data_provider_reflects_child_contexts()
         {
             var counter = _context
-                .Context("test")
+                .Group("test").Advanced
                 .Counter("test", Unit.Bytes);
 
             counter.Increment();
@@ -92,7 +92,7 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void data_provider_reflects_new_metrics()
         {
-            _context.Counter("test", Unit.Bytes).Increment();
+            _context.Advanced.Counter("test", Unit.Bytes).Increment();
 
             _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Counters.Should().HaveCount(1);
             _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Counters.Single().Name.Should().Be("test");
@@ -102,12 +102,12 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void disabled_child_context_does_not_show_in_metrics_data()
         {
-            _context.Context("test").Counter("test", Unit.Bytes).Increment();
+            _context.Group("test").Advanced.Counter("test", Unit.Bytes).Increment();
 
             CurrentData(_context).ChildMetrics.Single()
                 .Counters.Single().Name.Should().Be("test");
 
-            _context.ShutdownContext("test");
+            _context.Advanced.ShutdownContext("test");
 
             CurrentData(_context).ChildMetrics.Should().BeEmpty();
         }
@@ -118,20 +118,20 @@ namespace App.Metrics.Facts.Core
             ((Action)(() =>
             {
                 var name = "Test";
-                _context.Gauge(name, () => 0.0, Unit.Calls);
-                _context.Counter(name, Unit.Calls);
-                _context.Meter(name, Unit.Calls);
-                _context.Histogram(name, Unit.Calls);
-                _context.Timer(name, Unit.Calls);
+                _context.Advanced.Gauge(name, () => 0.0, Unit.Calls);
+                _context.Advanced.Counter(name, Unit.Calls);
+                _context.Advanced.Meter(name, Unit.Calls);
+                _context.Advanced.Histogram(name, Unit.Calls);
+                _context.Advanced.Timer(name, Unit.Calls);
             })).ShouldNotThrow();
         }
 
         [Fact]
         public void MetricsContext_EmptyChildContextIsSameContext()
         {
-            var child = _context.Context(string.Empty);
+            var child = _context.Group(string.Empty);
             ReferenceEquals(_context, child).Should().BeTrue();
-            child = _context.Context(null);
+            child = _context.Group(null);
             ReferenceEquals(_context, child).Should().BeTrue();
         }
 
@@ -139,14 +139,14 @@ namespace App.Metrics.Facts.Core
         public void metrics_added_are_visible_in_the_data_provider()
         {
             _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Counters.Should().BeEmpty();
-            _context.Counter("test", Unit.Bytes);
+            _context.Advanced.Counter("test", Unit.Bytes);
             _context.Advanced.MetricsDataProvider.GetMetricsData(_context).Counters.Should().HaveCount(1);
         }
 
         [Fact]
         public void metrics_are_present_in_metrics_data()
         {
-            var counter = _context.Counter("test", Unit.Requests);
+            var counter = _context.Advanced.Counter("test", Unit.Requests);
 
             counter.Increment();
 
@@ -160,8 +160,8 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void can_filter_metrics_by_type()
         {
-            var counter = _context.Counter("test", Unit.Requests);
-            var meter = _context.Meter("test", Unit.None, tags: "tag");
+            var counter = _context.Advanced.Counter("test", Unit.Requests);
+            var meter = _context.Advanced.Meter("test", Unit.None, tags: "tag");
 
             var filter = new MetricsFilter().WhereType(MetricType.Counter);
 

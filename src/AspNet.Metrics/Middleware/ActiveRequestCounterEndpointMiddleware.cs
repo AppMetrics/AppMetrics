@@ -32,7 +32,7 @@ namespace AspNet.Metrics.Middleware
                 throw new ArgumentNullException(nameof(options));
             }
 
-            _activeRequests = metricsContext.GetWebApplicationContext()
+            _activeRequests = metricsContext.GetWebApplicationContext().Advanced
                 .Counter("Active Requests", Unit.Custom("ActiveRequests"));
         }
 

@@ -13,7 +13,7 @@ namespace Metrics.Samples
         {
             _metricsContext = metricsContext;
 
-            _histogram = _metricsContext.Histogram("Results", Unit.Items);
+            _histogram = _metricsContext.Advanced.Histogram("Results", Unit.Items);
         }
 
         public void Process(string documentId)

@@ -32,9 +32,14 @@ namespace Api.Sample.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            _metricsContext.Counter("Test Counter in GET", Unit.Calls).Increment();
 
-            return new string[] { "value1", "value2" };
+            _metricsContext.Increment(Metrics.Counters.TestCounter);
+            _metricsContext.Increment(Metrics.Counters.TestCounter, 4);
+            _metricsContext.Decrement(Metrics.Counters.TestCounter, 2);
+
+            _metricsContext.Update(Metrics.Histograms.TestHistogram, 20);
+
+            return new[] { "value1", "value2" };
         }
 
         // GET api/values/5

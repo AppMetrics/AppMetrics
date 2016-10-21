@@ -41,7 +41,7 @@ namespace AspNet.Metrics.Middleware
                     var startTime = (long)context.Items[TimerItemsKey];
                     var elapsed = MetricsContext.Advanced.Clock.Nanoseconds - startTime;
 
-                    MetricsContext.GetWebApplicationContext()
+                    MetricsContext.GetWebApplicationContext().Advanced
                         .Timer(context.GetMetricsCurrentRouteName(), Unit.Requests)
                         .Record(elapsed, TimeUnit.Nanoseconds, clientId.IsPresent() ? clientId : null);
                 }

@@ -21,7 +21,7 @@ namespace AspNet.Metrics.Middleware
             IMetricsContext metricsContext)
             : base(next, options, loggerFactory, metricsContext)
         {
-            _histogram = MetricsContext.GetWebApplicationContext()
+            _histogram = MetricsContext.GetWebApplicationContext().Advanced
                 .Histogram("Web Request Post & Put Size", Unit.Bytes);
         }
 

@@ -20,12 +20,10 @@ namespace App.Metrics.Core
     {
         internal const string InternalMetricsContextName = "App.Metrics.Internal";
         private readonly ConcurrentDictionary<string, IMetricsContext> _childContexts = new ConcurrentDictionary<string, IMetricsContext>();
-        private readonly SamplingType _defaultSamplingType;
         private readonly IMetricsContext _metricsContext;
 
         public NullMetricsContext(string context, IClock systemClock, SamplingType defaultSamplingType)
         {
-            _defaultSamplingType = defaultSamplingType;
             Func<IMetricsRegistry> setupMetricsRegistry = () => new NullMetricsRegistry();
             var metricsBuilder = new DefaultMetricsBuilder(systemClock, defaultSamplingType);
             var healthCheckDataProvider = new NullHealthCheckDataProvider();
@@ -33,7 +31,7 @@ namespace App.Metrics.Core
                 = new NullMetricsDataProvider();
 
             HealthCheckDataProvider = healthCheckDataProvider;
-            Name = context;
+            GroupName = context;
             MetricsDataProvider = metricsDataProvider;
             RegistryDataProvider = setupMetricsRegistry().DataProvider;
 
@@ -42,21 +40,98 @@ namespace App.Metrics.Core
                 healthCheckDataProvider, metricsDataProvider);
         }
 
-        public event EventHandler ContextDisabled;
-
-        public event EventHandler ContextShuttingDown;
-
         public IAdvancedMetricsContext Advanced => this;
 
         public IReadOnlyDictionary<string, IMetricsContext> ChildContexts => _childContexts;
 
         public IClock Clock => _metricsContext.Advanced.Clock;
 
+
+        public string GroupName { get; }
+
+
+        public void Decrement(CounterOptions options)
+        {
+            _metricsContext.Decrement(options);
+        }
+
+        public void Decrement(CounterOptions options, long amount)
+        {
+            _metricsContext.Decrement(options, amount);
+        }
+
+        public void Decrement(CounterOptions options, string item)
+        {
+            _metricsContext.Decrement(options, item);
+        }
+
+        public void Decrement(CounterOptions options, long amount, string item)
+        {
+            _metricsContext.Decrement(options, amount, item);
+        }
+
+
+        public void Dispose()
+        {
+            _metricsContext.Dispose();
+        }
+
+        public void Gauge(GaugeOptions options, Func<double> valueProvider)
+        {
+            _metricsContext.Gauge(options, valueProvider);
+        }
+
+        public IMetricsContext Group(string groupName)
+        {
+            return _metricsContext.Group(groupName);
+        }
+
+        public void Increment(CounterOptions options)
+        {
+            _metricsContext.Increment(options);
+        }
+
+        public void Increment(CounterOptions options, long amount)
+        {
+            _metricsContext.Increment(options, amount);
+        }
+
+        public void Increment(CounterOptions options, string item)
+        {
+            _metricsContext.Increment(options, item);
+        }
+
+        public void Increment(CounterOptions options, long amount, string item)
+        {
+            _metricsContext.Increment(options, amount, item);
+        }
+
+        public void Mark(MeterOptions options)
+        {
+            _metricsContext.Mark(options);
+        }
+
+        public void Time(TimerOptions options, Action action, string userValue = null)
+        {
+            _metricsContext.Time(options, action, userValue);
+        }
+
+        public void Update(HistogramOptions options, long value, string userValue = null)
+        {
+            _metricsContext.Update(options, value, userValue);
+        }
+
+        #region advanced
+
+        //TODO: Move advanced into separate class
+
+        public event EventHandler ContextDisabled;
+
+        public event EventHandler ContextShuttingDown;
+
         public IHealthCheckDataProvider HealthCheckDataProvider { get; }
 
         public IMetricsDataProvider MetricsDataProvider { get; }
-
-        public string Name { get; }
 
         public IRegistryDataProvider RegistryDataProvider { get; }
 
@@ -70,73 +145,6 @@ namespace App.Metrics.Core
             _metricsContext.Advanced.CompletelyDisableMetrics();
         }
 
-        public IMetricsContext Context(string contextName)
-        {
-            return _metricsContext.Context(contextName);
-        }
-
-        public IMetricsContext Context(string contextName, Func<string, IMetricsContext> contextCreator)
-        {
-            return _metricsContext.Context(contextName, contextCreator);
-        }
-
-        public ICounter Counter(string name, Unit unit, MetricTags tags = default(MetricTags))
-        {
-            return _metricsContext.Counter(name, unit, tags);
-        }
-
-        public ICounter Counter<T>(string name, Unit unit, Func<T> builder, MetricTags tags = default(MetricTags)) where T : ICounterImplementation
-        {
-            return _metricsContext.Advanced.Counter(name, unit, builder, tags);
-        }
-
-        public void Dispose()
-        {
-            _metricsContext.Dispose();
-        }
-
-        public void Gauge(string name, Func<double> valueProvider, Unit unit, MetricTags tags = default(MetricTags))
-        {
-            _metricsContext.Gauge(name, valueProvider, unit, tags);
-        }
-
-        public void Gauge(string name, Func<IMetricValueProvider<double>> valueProvider, Unit unit, MetricTags tags = default(MetricTags))
-        {
-            _metricsContext.Advanced.Gauge(name, valueProvider, unit, tags);
-        }
-
-        public IHistogram Histogram(string name, Unit unit, SamplingType samplingType, MetricTags tags = default(MetricTags))
-        {
-            return _metricsContext.Histogram(name, unit, samplingType, tags);
-        }
-
-        public IHistogram Histogram(string name, Unit unit, MetricTags tags = default(MetricTags))
-        {
-            return Histogram(name, unit, _defaultSamplingType, tags);
-        }
-
-        public IHistogram Histogram<T>(string name, Unit unit, Func<T> builder, MetricTags tags = default(MetricTags))
-            where T : IHistogramImplementation
-        {
-            return _metricsContext.Advanced.Histogram(name, unit, builder, tags);
-        }
-
-        public IHistogram Histogram(string name, Unit unit, Func<IReservoir> builder, MetricTags tags = default(MetricTags))
-        {
-            return _metricsContext.Advanced.Histogram(name, unit, builder, tags);
-        }
-
-        public IMeter Meter(string name, Unit unit, TimeUnit rateUnit = TimeUnit.Seconds, MetricTags tags = default(MetricTags))
-        {
-            return _metricsContext.Meter(name, unit, rateUnit, tags);
-        }
-
-        public IMeter Meter<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit = TimeUnit.Seconds, MetricTags tags = default(MetricTags))
-            where T : IMeterImplementation
-        {
-            return _metricsContext.Advanced.Meter(name, unit, builder, rateUnit, tags);
-        }
-
         public void ResetMetricsValues()
         {
             _metricsContext.Advanced.ResetMetricsValues();
@@ -144,37 +152,97 @@ namespace App.Metrics.Core
 
         public void ShutdownContext(string contextName)
         {
-            _metricsContext.ShutdownContext(contextName);
+            _metricsContext.Advanced.ShutdownContext(contextName);
         }
 
-        public ITimer Timer(string name, Unit unit, SamplingType samplingType, TimeUnit rateUnit = TimeUnit.Seconds,
-            TimeUnit durationUnit = TimeUnit.Milliseconds, MetricTags tags = default(MetricTags))
+        public IMetricsContext Context(string contextName, Func<string, IMetricsContext> contextCreator)
         {
-            return _metricsContext.Timer(name, unit, samplingType, rateUnit, durationUnit, tags);
+            throw new NotImplementedException();
         }
 
-        public ITimer Timer(string name, Unit unit, TimeUnit rateUnit = TimeUnit.Seconds,
-            TimeUnit durationUnit = TimeUnit.Milliseconds, MetricTags tags = default(MetricTags))
+        public ICounter Counter(string name, Unit unit, MetricTags tags = new MetricTags())
         {
-            return Timer(name, unit, _defaultSamplingType, rateUnit, durationUnit, tags);
+            throw new NotImplementedException();
         }
 
-        public ITimer Timer<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit = TimeUnit.Seconds,
-            TimeUnit durationUnit = TimeUnit.Milliseconds, MetricTags tags = default(MetricTags)) where T : ITimerImplementation
+        public ITimer Timer(string name, Unit unit, SamplingType samplingType, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
+        {
+            return _metricsContext.Advanced.Timer(name, unit, samplingType, rateUnit, durationUnit, tags);
+        }
+
+        public ITimer Timer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
+        {
+            return _metricsContext.Advanced.Timer(name, unit, rateUnit, durationUnit, tags);
+        }
+
+        public ICounter Counter<T>(string name, Unit unit, Func<T> builder, MetricTags tags = new MetricTags()) where T : ICounterImplementation
+        {
+            throw new NotImplementedException();
+        }
+
+        public ITimer Timer<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
+            where T : ITimerImplementation
         {
             return _metricsContext.Advanced.Timer(name, unit, builder, rateUnit, durationUnit, tags);
         }
 
-        public ITimer Timer(string name, Unit unit, Func<IHistogramImplementation> builder, TimeUnit rateUnit = TimeUnit.Seconds,
-            TimeUnit durationUnit = TimeUnit.Milliseconds, MetricTags tags = default(MetricTags))
+        public ITimer Timer(string name, Unit unit, Func<IHistogramImplementation> builder, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
         {
             return _metricsContext.Advanced.Timer(name, unit, builder, rateUnit, durationUnit, tags);
         }
 
-        public ITimer Timer(string name, Unit unit, Func<IReservoir> builder, TimeUnit rateUnit = TimeUnit.Seconds,
-            TimeUnit durationUnit = TimeUnit.Milliseconds, MetricTags tags = default(MetricTags))
+        public ITimer Timer(string name, Unit unit, Func<IReservoir> builder, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
         {
             return _metricsContext.Advanced.Timer(name, unit, builder, rateUnit, durationUnit, tags);
         }
+
+        public void Gauge(string name, Func<double> valueProvider, Unit unit, MetricTags tags)
+        {
+            _metricsContext.Advanced.Gauge(name, valueProvider, unit, tags);
+        }
+
+        public void Gauge(string name, Func<IMetricValueProvider<double>> valueProvider, Unit unit, MetricTags tags)
+        {
+            _metricsContext.Advanced.Gauge(name, valueProvider, unit, tags);
+        }
+
+        public IHistogram Histogram(string name, Unit unit, SamplingType samplingType, MetricTags tags)
+        {
+            return _metricsContext.Advanced.Histogram(name, unit, samplingType, tags);
+        }
+
+        public IHistogram Histogram(string name, Unit unit, MetricTags tags)
+        {
+            return _metricsContext.Advanced.Histogram(name, unit, tags);
+        }
+
+        public IHistogram Histogram<T>(string name, Unit unit, Func<T> builder, MetricTags tags)
+            where T : IHistogramImplementation
+        {
+            return _metricsContext.Advanced.Histogram(name, unit, builder, tags);
+        }
+
+        public IHistogram Histogram(string name, Unit unit, Func<IReservoir> builder, MetricTags tags)
+        {
+            return _metricsContext.Advanced.Histogram(name, unit, builder, tags);
+        }
+
+        public IMeter Meter(string name, Unit unit, TimeUnit rateUnit, MetricTags tags)
+        {
+            return _metricsContext.Advanced.Meter(name, unit, rateUnit, tags);
+        }
+
+        public IMeter Meter<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit, MetricTags tags)
+            where T : IMeterImplementation
+        {
+            return _metricsContext.Advanced.Meter(name, unit, builder, rateUnit, tags);
+        }
+
+        public IMetricsContext Group(string groupName, Func<string, IMetricsContext> groupCreator)
+        {
+            return _metricsContext.Advanced.Group(groupName, groupCreator);
+        }
+
+        #endregion
     }
 }

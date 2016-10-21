@@ -170,5 +170,33 @@ namespace App.Metrics.Registries
             {
             }
         }
+
+        #region new contract
+
+        public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterImplementation
+        {
+            return NullMetric.Instance;
+        }
+
+        public void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider)
+        {
+        }
+
+        public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramImplementation
+        {
+            return NullMetric.Instance;
+        }
+
+        public IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterImplementation
+        {
+            return NullMetric.Instance;
+        }
+
+        public ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerImplementation
+        {
+            return NullMetric.Instance;
+        }
+
+        #endregion
     }
 }

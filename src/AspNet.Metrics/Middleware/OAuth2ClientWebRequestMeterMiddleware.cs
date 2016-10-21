@@ -47,11 +47,11 @@ namespace AspNet.Metrics.Middleware
 
         private void MarkWebRequest(string routeTemplate, string clientId)
         {
-            MetricsContext.GetOAuth2ClientWebRequestsContext()
+            MetricsContext.GetOAuth2ClientWebRequestsContext().Advanced
                 .Meter(routeTemplate, Unit.Requests)
                 .Mark(clientId);
 
-            MetricsContext.GetOAuth2ClientWebRequestsContext()
+            MetricsContext.GetOAuth2ClientWebRequestsContext().Advanced
                 .Meter("Total Web Requests", Unit.Requests)
                 .Mark(clientId);
         }

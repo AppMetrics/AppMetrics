@@ -45,17 +45,17 @@ namespace Metrics.Samples
         public SampleMetrics(IMetricsContext metricsContext)
         {
             _metricsContext = metricsContext;
-            _concurrentRequestsCounter = _metricsContext.Counter("SampleMetrics.ConcurrentRequests", Unit.Requests);
-            _histogramOfData = _metricsContext.Histogram("ResultsExample", Unit.Items);
-            _meter = _metricsContext.Meter("Requests", Unit.Requests);
-            _setCounter = _metricsContext.Counter("Set Counter", Unit.Items);
-            _setMeter = _metricsContext.Meter("Set Meter", Unit.Items);
-            _timer = _metricsContext.Timer("Requests", Unit.Requests);
-            _totalRequestsCounter = _metricsContext.Counter("Requests", Unit.Requests);
+            _concurrentRequestsCounter = _metricsContext.Advanced.Counter("SampleMetrics.ConcurrentRequests", Unit.Requests);
+            _histogramOfData = _metricsContext.Advanced.Histogram("ResultsExample", Unit.Items);
+            _meter = _metricsContext.Advanced.Meter("Requests", Unit.Requests);
+            _setCounter = _metricsContext.Advanced.Counter("Set Counter", Unit.Items);
+            _setMeter = _metricsContext.Advanced.Meter("Set Meter", Unit.Items);
+            _timer = _metricsContext.Advanced.Timer("Requests", Unit.Requests);
+            _totalRequestsCounter = _metricsContext.Advanced.Counter("Requests", Unit.Requests);
 
             // define a simple gauge that will provide the instant value of someValue when requested
-            _metricsContext.Gauge("SampleMetrics.DataValue", () => _someValue, Unit.Custom("$"));
-            _metricsContext.Gauge("Custom Ratio",
+            _metricsContext.Advanced.Gauge("SampleMetrics.DataValue", () => _someValue, Unit.Custom("$"));
+            _metricsContext.Advanced.Gauge("Custom Ratio",
                 () => ValueReader.GetCurrentValue(_totalRequestsCounter).Count / ValueReader.GetCurrentValue(_meter).FiveMinuteRate, Unit.Percent);
             _metricsContext.Advanced.Gauge("Ratio", () => new HitRatioGauge(_meter, _timer, m => m.OneMinuteRate), Unit.Percent);
         }

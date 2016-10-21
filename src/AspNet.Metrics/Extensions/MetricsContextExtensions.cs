@@ -14,12 +14,12 @@ namespace App.Metrics
 
         public static IMetricsContext GetOAuth2ClientWebRequestsContext(this IMetricsContext context)
         {
-            return context.Context(OAuth2ClientWebRequestsContextName);
+            return context.Group(OAuth2ClientWebRequestsContextName);
         }
 
         public static IMetricsContext GetWebApplicationContext(this IMetricsContext context)
         {
-            return context.Context(WebApplicationRequestsContextName);
+            return context.Group(WebApplicationRequestsContextName);
         }
     }
 }

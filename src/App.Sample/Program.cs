@@ -43,11 +43,11 @@ namespace App.Sample
                     simpleMetrics.RunSomeRequests();
                 });
 
-                application.MetricsContext.Gauge("Errors", () => 1, Unit.None);
-                application.MetricsContext.Gauge("% Percent/Gauge|test", () => 1, Unit.None);
-                application.MetricsContext.Gauge("& AmpGauge", () => 1, Unit.None);
-                application.MetricsContext.Gauge("()[]{} ParantesisGauge", () => 1, Unit.None);
-                application.MetricsContext.Gauge("Gauge With No Value", () => double.NaN, Unit.None);
+                application.MetricsContext.Advanced.Gauge("Errors", () => 1, Unit.None);
+                application.MetricsContext.Advanced.Gauge("% Percent/Gauge|test", () => 1, Unit.None);
+                application.MetricsContext.Advanced.Gauge("& AmpGauge", () => 1, Unit.None);
+                application.MetricsContext.Advanced.Gauge("()[]{} ParantesisGauge", () => 1, Unit.None);
+                application.MetricsContext.Advanced.Gauge("Gauge With No Value", () => double.NaN, Unit.None);
 
                 Console.WriteLine("done setting things up");
                 Console.ReadKey();

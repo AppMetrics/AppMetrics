@@ -31,7 +31,7 @@ namespace App.Metrics
                 return metricsContext;
             }
 
-            var context = metricsContext.Context(nameWithContext.First());
+            var context = metricsContext.Group(nameWithContext.First());
             return context.GetContextFor(nameWithContext.Skip(1).ToArray());
         }
 

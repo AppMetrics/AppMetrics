@@ -12,7 +12,7 @@ namespace Metrics.Samples
         {
             _metricsContext = metricsContext;
 
-            _commandCounter = _metricsContext.Counter("Command Counter", Unit.Custom("Commands"));
+            _commandCounter = _metricsContext.Advanced.Counter("Command Counter", Unit.Custom("Commands"));
         }
 
         public void Process(Command command)

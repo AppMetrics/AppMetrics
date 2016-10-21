@@ -107,6 +107,62 @@ namespace App.Metrics.Registries
             });
         }
 
+        #region new contract
+
+        public ICounter Counter<T>(CounterOptions options, Func<T> builder)
+            where T : ICounterImplementation
+        {
+            return _counters.GetOrAdd(options.Name, () =>
+            {
+                var counter = builder();
+
+                return Tuple.Create((ICounter)counter,
+                    new CounterValueSource(options.Name, counter, options.MeasurementUnit, options.Tags));
+            });
+        }
+
+        public void Gauge(GaugeOptions gaugeOptions, Func<IMetricValueProvider<double>> valueProvider)
+        {
+            _gauges.GetOrAdd(gaugeOptions.Name, () =>
+            {
+                var gauge = valueProvider();
+                return Tuple.Create(gauge, new GaugeValueSource(gaugeOptions.Name, gauge, gaugeOptions.MeasurementUnit, gaugeOptions.Tags));
+            });
+        }
+
+        public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder)
+            where T : IHistogramImplementation
+        {
+            return _histograms.GetOrAdd(options.Name, () =>
+            {
+                var histogram = builder();
+                return Tuple.Create((IHistogram)histogram, new HistogramValueSource(options.Name, histogram, options.MeasurementUnit, options.Tags));
+            });
+        }
+
+        public IMeter Meter<T>(MeterOptions options, Func<T> builder)
+            where T : IMeterImplementation
+        {
+            return _meters.GetOrAdd(options.Name, () =>
+            {
+                var meter = builder();
+                return Tuple.Create((IMeter)meter, new MeterValueSource(options.Name, meter, options.MeasurementUnit, options.RateUnit, options.Tags));
+            });
+        }
+
+        public ITimer Timer<T>(TimerOptions options, Func<T> builder)
+           where T : ITimerImplementation
+        {
+            return _timers.GetOrAdd(options.Name, () =>
+            {
+                var timer = builder();
+                return Tuple.Create((ITimer)timer,
+                    new TimerValueSource(options.Name, timer, options.MeasurementUnit, options.RateUnit, options.DurationUnit, options.Tags));
+            });
+        }
+
+        #endregion
+
         private class MetricMetaCatalog<TMetric, TValue, TMetricValue>
             where TValue : MetricValueSource<TMetricValue>
         {

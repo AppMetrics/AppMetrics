@@ -22,7 +22,7 @@ namespace AspNet.Metrics.Middleware
             IMetricsContext metricsContext)
             : base(next, options, loggerFactory, metricsContext)
         {
-            _requestTimer = MetricsContext.GetWebApplicationContext()
+            _requestTimer = MetricsContext.GetWebApplicationContext().Advanced
                 .Timer("Web Requests", Unit.Requests);
         }
 

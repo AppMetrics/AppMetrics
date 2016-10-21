@@ -30,5 +30,23 @@ namespace App.Metrics.Registries
 
         ITimer Timer<T>(string name, Func<T> builder, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
             where T : ITimerImplementation;
+
+        #region new contract
+
+        ICounter Counter<T>(CounterOptions options, Func<T> builder)
+           where T : ICounterImplementation;
+
+        void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider);
+
+        IHistogram Histogram<T>(HistogramOptions options, Func<T> builder)
+            where T : IHistogramImplementation;
+
+        IMeter Meter<T>(MeterOptions options, Func<T> builder)
+            where T : IMeterImplementation;
+
+        ITimer Timer<T>(TimerOptions options, Func<T> builder)
+            where T : ITimerImplementation;
+
+        #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿using App.Metrics.MetricData;
+using HealthCheck.Samples;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -58,6 +59,8 @@ namespace Mvc.Sample
                 .AddRouting(options => { options.LowercaseUrls = true; });
 
             services.AddMvc(options => options.AddMetricsResourceFilter());
+
+            services.AddTransient<IDatabase, Database>();
 
             services
                 .AddMetrics(options =>

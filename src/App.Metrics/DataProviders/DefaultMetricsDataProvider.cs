@@ -43,7 +43,7 @@ namespace App.Metrics.DataProviders
 
             var registryDataProvider = metricsContext.Advanced.RegistryDataProvider;
 
-            var metricsData = new MetricsData(metricsContext.Name, _clock.UtcDateTime,
+            var metricsData = new MetricsData(metricsContext.GroupName, _clock.UtcDateTime,
                 _environment,
                 registryDataProvider.Gauges.ToArray(),
                 registryDataProvider.Counters.ToArray(),
