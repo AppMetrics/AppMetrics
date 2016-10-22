@@ -148,15 +148,12 @@ namespace App.Metrics.Core
 
         public IMeter Meter(MeterOptions options)
         {
-            return Meter(options.Name, options.MeasurementUnit,
-                () => _builder.BuildMeter(options.Name, options.MeasurementUnit, options.RateUnit),
-                options.RateUnit, options.Tags);
+            return Meter(options, () => _builder.BuildMeter(options.Name, options.MeasurementUnit, options.RateUnit));
         }
 
-        public IMeter Meter<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit, MetricTags tags)
-            where T : IMeterImplementation
+        public IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterImplementation
         {
-            return _registry.Meter(name, builder, unit, rateUnit, tags);
+            return _registry.Meter(options.Name, builder, options.MeasurementUnit, options.RateUnit, options.Tags);
         }
 
         public void ResetMetricsValues()

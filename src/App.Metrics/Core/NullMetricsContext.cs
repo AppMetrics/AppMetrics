@@ -229,10 +229,9 @@ namespace App.Metrics.Core
             return _metricsContext.Advanced.Meter(options);
         }
 
-        public IMeter Meter<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit, MetricTags tags)
-            where T : IMeterImplementation
+        public IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterImplementation
         {
-            return _metricsContext.Advanced.Meter(name, unit, builder, rateUnit, tags);
+            return _metricsContext.Advanced.Meter(options, builder);
         }
 
         public IMetricsContext Group(string groupName, Func<string, IMetricsContext> groupCreator)

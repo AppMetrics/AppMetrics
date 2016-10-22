@@ -48,8 +48,7 @@ namespace App.Metrics.Core
 
         IMeter Meter(MeterOptions options);
 
-        IMeter Meter<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit = TimeUnit.Seconds, MetricTags tags = default(MetricTags))
-            where T : IMeterImplementation;
+        IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterImplementation;
 
         void ResetMetricsValues();
 
