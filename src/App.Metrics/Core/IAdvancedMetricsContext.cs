@@ -30,8 +30,7 @@ namespace App.Metrics.Core
 
         ICounter Counter(CounterOptions options);
 
-        ICounter Counter<T>(string name, Unit unit, Func<T> builder, MetricTags tags = default(MetricTags))
-            where T : ICounterImplementation;
+        ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterImplementation;
 
         void Gauge(GaugeOptions options, Func<double> valueProvider);
 

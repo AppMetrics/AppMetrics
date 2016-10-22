@@ -183,9 +183,9 @@ namespace App.Metrics.Core
             return _metricsContext.Advanced.Timer(name, unit, rateUnit, durationUnit, tags);
         }
 
-        public ICounter Counter<T>(string name, Unit unit, Func<T> builder, MetricTags tags = new MetricTags()) where T : ICounterImplementation
+        public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterImplementation
         {
-            return _metricsContext.Advanced.Counter(name, unit, builder, tags);
+            return _metricsContext.Advanced.Counter(options, builder);
         }
 
         public ITimer Timer<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)

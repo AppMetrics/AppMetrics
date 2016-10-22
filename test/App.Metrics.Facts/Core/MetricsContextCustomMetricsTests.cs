@@ -36,7 +36,12 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void can_register_custom_counter()
         {
-            var counter = _context.Advanced.Counter("custom", Unit.Calls, () => new CustomCounter());
+            var counterOptions = new CounterOptions
+            {
+                Name = "Custom Counter",
+                MeasurementUnit = Unit.Calls
+            };
+            var counter = _context.Advanced.Counter(counterOptions, () => new CustomCounter());
             counter.Should().BeOfType<CustomCounter>();
             counter.Increment();
             _context.Advanced.MetricsDataManager.GetMetricsData(_context).Counters.Single().Value.Count.Should().Be(10L);

@@ -88,14 +88,14 @@ namespace App.Metrics.Core
             ContextDisabled?.Invoke(this, EventArgs.Empty);
         }
 
-        public ICounter Counter<T>(string name, Unit unit, Func<T> builder, MetricTags tags = new MetricTags()) where T : ICounterImplementation
+        public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterImplementation
         {
-            return _registry.Counter(name, builder, unit, tags);
+            return _registry.Counter(options.Name, builder, options.MeasurementUnit, options.Tags);
         }
 
         public ICounter Counter(CounterOptions options)
         {
-            return Counter(options.Name, options.MeasurementUnit, () => _builder.BuildCounter(options.Name, options.MeasurementUnit), options.Tags);
+            return Counter(options, () => _builder.BuildCounter(options.Name, options.MeasurementUnit));
         }
 
         public void Gauge(GaugeOptions options, Func<double> valueProvider)
