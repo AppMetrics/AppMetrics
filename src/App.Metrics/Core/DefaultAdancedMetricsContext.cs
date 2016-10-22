@@ -98,14 +98,14 @@ namespace App.Metrics.Core
             return Counter(options.Name, options.MeasurementUnit, () => _builder.BuildCounter(options.Name, options.MeasurementUnit), options.Tags);
         }
 
-        public void Gauge(string name, Func<double> valueProvider, Unit unit, MetricTags tags)
+        public void Gauge(GaugeOptions options, Func<double> valueProvider)
         {
-            Gauge(name, () => _builder.BuildGauge(name, unit, valueProvider), unit, tags);
+            Gauge(options, () => _builder.BuildGauge(options.Name, options.MeasurementUnit, valueProvider));
         }
 
-        public void Gauge(string name, Func<IMetricValueProvider<double>> valueProvider, Unit unit, MetricTags tags)
+        public void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider)
         {
-            _registry.Gauge(name, valueProvider, unit, tags);
+            _registry.Gauge(options.Name, valueProvider, options.MeasurementUnit, options.Tags);
         }
 
         public IMetricsContext Group(string groupName)

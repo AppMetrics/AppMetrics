@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using App.Metrics.DataProviders;
 using App.Metrics.MetricData;
 using App.Metrics.Registries;
@@ -41,12 +40,12 @@ namespace App.Metrics.Core
 
         public IAdvancedMetricsContext Advanced => this;
 
-        public ConcurrentDictionary<string, IMetricsContext> Groups { get; } = new ConcurrentDictionary<string, IMetricsContext>();
-
         public IClock Clock => _metricsContext.Advanced.Clock;
 
 
         public string GroupName { get; }
+
+        public ConcurrentDictionary<string, IMetricsContext> Groups { get; } = new ConcurrentDictionary<string, IMetricsContext>();
 
 
         public void Decrement(CounterOptions options)
@@ -205,14 +204,9 @@ namespace App.Metrics.Core
             return _metricsContext.Advanced.Timer(name, unit, builder, rateUnit, durationUnit, tags);
         }
 
-        public void Gauge(string name, Func<double> valueProvider, Unit unit, MetricTags tags)
+        public void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider)
         {
-            _metricsContext.Advanced.Gauge(name, valueProvider, unit, tags);
-        }
-
-        public void Gauge(string name, Func<IMetricValueProvider<double>> valueProvider, Unit unit, MetricTags tags)
-        {
-            _metricsContext.Advanced.Gauge(name, valueProvider, unit, tags);
+            _metricsContext.Advanced.Gauge(options, valueProvider);
         }
 
         public IHistogram Histogram(string name, Unit unit, SamplingType samplingType, MetricTags tags)

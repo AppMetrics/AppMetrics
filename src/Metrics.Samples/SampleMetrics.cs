@@ -60,7 +60,7 @@ namespace Metrics.Samples
             _metricsContext.Gauge(SampleMetricsRegistry.Gauges.CustomRatioGauge, 
                 () => ValueReader.GetCurrentValue(_totalRequestsCounter).Count / ValueReader.GetCurrentValue(_meter).FiveMinuteRate);
             
-            _metricsContext.Advanced.Gauge("Ratio", () => new HitRatioGauge(_meter, _timer, m => m.OneMinuteRate), Unit.Percent);
+            _metricsContext.Advanced.Gauge(SampleMetricsRegistry.Gauges.Ratio, () => new HitRatioGauge(_meter, _timer, m => m.OneMinuteRate));
         }
 
         public void Request(int i)

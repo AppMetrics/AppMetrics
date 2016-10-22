@@ -212,7 +212,13 @@ namespace App.Metrics.Facts.Core
                     MeasurementUnit = Unit.Calls
                 };
 
-                _context.Advanced.Gauge(name, () => 0.0, Unit.Calls);
+                var gaugeOptions = new GaugeOptions
+                {
+                    Name = name,
+                    MeasurementUnit = Unit.Calls
+                };
+
+                _context.Advanced.Gauge(gaugeOptions, () => 0.0);
                 _context.Advanced.Counter(counterOptions);
                 _context.Advanced.Meter(meterOptions);
                 _context.Advanced.Histogram(name, Unit.Calls);

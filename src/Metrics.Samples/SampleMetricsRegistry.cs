@@ -18,6 +18,12 @@ namespace Metrics.Samples
                 Name = "SampleMetrics.DataValue",
                 MeasurementUnit = Unit.Custom("$")
             };
+
+            public static GaugeOptions Ratio = new GaugeOptions
+            {
+                Name = "Ratio",
+                MeasurementUnit = Unit.Percent
+            };
         }
 
         public static class Meters
