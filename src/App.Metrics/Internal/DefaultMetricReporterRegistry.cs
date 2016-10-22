@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using App.Metrics.MetricData;
 using App.Metrics.Registries;
 using App.Metrics.Reporters;
 using App.Metrics.Utils;

@@ -25,9 +25,9 @@ namespace AspNet.Metrics.Facts
             });
             Func<string, IMetricGroupRegistry> newGroupRegistry = name => new DefaultMetricGroupRegistry(name);
             var registry = new DefaultMetricsRegistry(options, new EnvironmentInfo(), newGroupRegistry);
-            return new DefaultMetricsContext(clock, registry,
+            return new DefaultMetricsContext(options, registry,
                 new TestMetricsBuilder(clock, scheduler),
-                new DefaultHealthCheckManager(LoggerFactory,
+                new DefaultHealthCheckManager(options, LoggerFactory,
                     new DefaultHealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))),
                 new DefaultMetricsDataManager(LoggerFactory, registry));
         }

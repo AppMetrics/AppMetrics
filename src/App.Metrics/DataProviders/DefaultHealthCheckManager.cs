@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using App.Metrics.Health;
 using App.Metrics.Registries;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace App.Metrics.DataProviders
 {
@@ -17,7 +18,8 @@ namespace App.Metrics.DataProviders
         private readonly IHealthCheckRegistry _healthCheckRegistry;
         private readonly ILogger _logger;
 
-        public DefaultHealthCheckManager(ILoggerFactory loggerFactory,
+        public DefaultHealthCheckManager(IOptions<AppMetricsOptions> options,
+            ILoggerFactory loggerFactory,
             IHealthCheckRegistry healthCheckRegistry)
         {
             if (loggerFactory == null)
@@ -31,6 +33,7 @@ namespace App.Metrics.DataProviders
             }
 
             _healthCheckRegistry = healthCheckRegistry;
+            options.Value.HealthCheckRegistry(_healthCheckRegistry);
             _logger = loggerFactory.CreateLogger<DefaultHealthCheckManager>();
         }
 

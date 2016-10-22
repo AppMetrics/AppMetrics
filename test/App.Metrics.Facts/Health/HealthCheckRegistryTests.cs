@@ -20,9 +20,9 @@ namespace App.Metrics.Facts.Health
 
         public HealthCheckRegistryTests()
         {
-            _healthCheckRegistry = new DefaultHealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(),
-                Options.Create(new AppMetricsOptions()));
-            _healthCheckManager = new DefaultHealthCheckManager(LoggerFactory, _healthCheckRegistry);
+            var options = Options.Create(new AppMetricsOptions());
+            _healthCheckRegistry = new DefaultHealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), options);
+            _healthCheckManager = new DefaultHealthCheckManager(options, LoggerFactory, _healthCheckRegistry);
         }
 
         [Fact]

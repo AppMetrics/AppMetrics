@@ -25,6 +25,7 @@ namespace App.Metrics
             Reporters = reports => { };
             HealthCheckRegistry = checks => { };
             MetricsFilter = new DefaultMetricsFilter();
+            Clock = Utils.Clock.Default;
         }
 
         public SamplingType DefaultSamplingType { get; set; }
@@ -43,7 +44,7 @@ namespace App.Metrics
 
         public Action<IMetricReporterRegistry> Reporters { get; set; }
 
-        public IClock Clock { get; set; } = Utils.Clock.Default;
+        public IClock Clock { get; set; }
 
         private static string CleanName(string name)
         {

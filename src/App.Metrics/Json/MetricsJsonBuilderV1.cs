@@ -30,7 +30,7 @@ namespace App.Metrics.Json
         {
           
             var version = Version.ToString(CultureInfo.InvariantCulture);
-            var metricsData = metricsContext.Advanced.MetricsDataManager
+            var metricsData = metricsContext.Advanced.DataManager
                 .GetMetricsData()
                 .Filter(filter);
 

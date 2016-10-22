@@ -4,7 +4,7 @@
 using System;
 using App.Metrics.DataProviders;
 using App.Metrics.Internal;
-using App.Metrics.Utils;
+using Microsoft.Extensions.Options;
 
 namespace App.Metrics.Core
 {
@@ -15,7 +15,7 @@ namespace App.Metrics.Core
         private readonly IMetricsRegistry _registry;
 
         public DefaultMetricsContext(
-            IClock clock,
+            IOptions<AppMetricsOptions> options,
             IMetricsRegistry registry,
             IMetricsBuilder builder,
             IHealthCheckManager healthCheckManager,
@@ -24,7 +24,7 @@ namespace App.Metrics.Core
             _registry = registry;
             _builder = builder;
 
-            Advanced = new DefaultAdancedMetricsContext(this, clock, _registry, builder, healthCheckManager, metricsDataManager);
+            Advanced = new DefaultAdancedMetricsContext(this, options, _registry, builder, healthCheckManager, metricsDataManager);
         }
 
         public IAdvancedMetricsContext Advanced { get; }

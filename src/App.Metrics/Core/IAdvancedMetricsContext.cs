@@ -1,4 +1,4 @@
-﻿// Copyright (c) Allan hardy. All rights reserved.
+// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
@@ -73,15 +73,11 @@ namespace App.Metrics.Core
 
     public interface IAdvancedMetricsContext : IHideObjectMembers
     {
-        event EventHandler ContextDisabled;
-
-        event EventHandler ContextShuttingDown;
-
         IClock Clock { get; }
 
         IHealthCheckManager HealthCheckManager { get; }
 
-        IMetricsDataManager MetricsDataManager { get; }
+        IMetricsDataManager DataManager { get; }
 
         void CompletelyDisableMetrics();
 

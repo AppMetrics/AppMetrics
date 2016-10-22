@@ -64,7 +64,7 @@ namespace App.Metrics.Reporters
 
         public async Task RunReport(IMetricsContext metricsContext, CancellationToken token)
         {
-            var dataProvider = metricsContext.Advanced.MetricsDataManager;
+            var dataProvider = metricsContext.Advanced.DataManager;
 
             if (Filter != default(IMetricsFilter))
             {

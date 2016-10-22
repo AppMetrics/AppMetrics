@@ -4,7 +4,6 @@
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
 // Ported/Refactored to .NET Standard Library by Allan Hardy
 
-
 using System;
 using App.Metrics.MetricData;
 using App.Metrics.Sampling;
@@ -15,11 +14,9 @@ namespace App.Metrics.Core
     public sealed class DefaultMetricsBuilder : IMetricsBuilder
     {
         private readonly IClock _systemClock;
-        private readonly SamplingType _defaultSamplingType;
         private bool _disposed = false;
 
-        public DefaultMetricsBuilder(IClock systemClock, 
-            SamplingType defaultSamplingType)
+        public DefaultMetricsBuilder(IClock systemClock)
         {
             if (systemClock == null)
             {
@@ -27,7 +24,6 @@ namespace App.Metrics.Core
             }
 
             _systemClock = systemClock;
-            _defaultSamplingType = defaultSamplingType;
         }
 
         ~DefaultMetricsBuilder()

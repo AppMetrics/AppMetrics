@@ -2,44 +2,46 @@ using System;
 using App.Metrics.DataProviders;
 using App.Metrics.Internal;
 using App.Metrics.MetricData;
-using App.Metrics.Registries;
 using App.Metrics.Sampling;
 using App.Metrics.Utils;
+using Microsoft.Extensions.Options;
 
 namespace App.Metrics.Core
 {
     internal sealed class DefaultAdancedMetricsContext : IAdvancedMetricsContext
     {
         private readonly IMetricsBuilder _builder;
-        private bool _isDisabled = false;
+        private bool _isDisabled;
         private IMetricsRegistry _registry;
 
         public DefaultAdancedMetricsContext(IMetricsContext context,
-            IClock clock,
+            IOptions<AppMetricsOptions> options,
             IMetricsRegistry registry,
             IMetricsBuilder builder,
             IHealthCheckManager healthCheckManager,
-            IMetricsDataManager metricsDataManager)
+            IMetricsDataManager dataManagerManager)
         {
             if (context == null) throw new ArgumentNullException(nameof(context));
 
             _registry = registry;
             _builder = builder;
             HealthCheckManager = healthCheckManager;
-            MetricsDataManager = metricsDataManager;
-            Clock = clock;
+            DataManager = dataManagerManager;
+            Clock = options.Value.Clock;
+            _isDisabled = options.Value.DisableMetrics;
+
+            if (_isDisabled)
+            {
+                CompletelyDisableMetrics();
+            }
         }
 
-
-        public event EventHandler ContextDisabled;
-
-        public event EventHandler ContextShuttingDown;
 
         public IClock Clock { get; }
 
         public IHealthCheckManager HealthCheckManager { get; }
 
-        public IMetricsDataManager MetricsDataManager { get; }
+        public IMetricsDataManager DataManager { get; }
 
         public void CompletelyDisableMetrics()
         {
@@ -57,9 +59,6 @@ namespace App.Metrics.Core
             using (oldRegistry as IDisposable)
             {
             }
-
-            ContextShuttingDown?.Invoke(this, EventArgs.Empty);
-            ContextDisabled?.Invoke(this, EventArgs.Empty);
         }
 
         public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterImplementation

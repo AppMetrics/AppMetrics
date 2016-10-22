@@ -23,7 +23,7 @@ namespace App.Metrics.Facts.Core
         private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
         
         private static readonly IHealthCheckManager HealthCheckManager =
-            new DefaultHealthCheckManager(LoggerFactory, new DefaultHealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options));
+            new DefaultHealthCheckManager(Options, LoggerFactory, new DefaultHealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options));
 
         private static readonly Func<string, IMetricGroupRegistry> NewMetricsGroupRegistry = name => new DefaultMetricGroupRegistry(name);
 
@@ -33,11 +33,10 @@ namespace App.Metrics.Facts.Core
         private static readonly IMetricsDataManager MetricsDataManager =
             new DefaultMetricsDataManager(LoggerFactory, Registry);
 
-        private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.Clock, Options.Value.DefaultSamplingType);
+        private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.Clock);
        
 
-        private readonly IMetricsContext _context = new DefaultMetricsContext(Options.Value.Clock, Registry, 
-            MetricsBuilder, HealthCheckManager, MetricsDataManager);
+        private readonly IMetricsContext _context = new DefaultMetricsContext(Options, Registry, MetricsBuilder, HealthCheckManager, MetricsDataManager);
 
         public MetricsContextCustomMetricsTests()
         {
@@ -55,7 +54,7 @@ namespace App.Metrics.Facts.Core
             var counter = _context.Advanced.Counter(counterOptions, () => new CustomCounter());
             counter.Should().BeOfType<CustomCounter>();
             counter.Increment();
-            _context.Advanced.MetricsDataManager.GetMetricsData().Counters.Single().Value.Count.Should().Be(10L);
+            _context.Advanced.DataManager.GetMetricsData().Counters.Single().Value.Count.Should().Be(10L);
         }
 
         [Fact]

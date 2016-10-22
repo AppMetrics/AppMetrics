@@ -21,7 +21,7 @@ namespace App.Metrics.Facts.Core
         private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
 
         private static readonly IHealthCheckManager HealthCheckManager =
-            new DefaultHealthCheckManager(LoggerFactory, new DefaultHealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options));
+            new DefaultHealthCheckManager(Options, LoggerFactory, new DefaultHealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options));
         private static readonly Func<string, IMetricGroupRegistry> NewMetricsGroupRegistry = name => new DefaultMetricGroupRegistry(name);
 
         private static readonly IMetricsRegistry Registry = new DefaultMetricsRegistry(Options, new EnvironmentInfo(), NewMetricsGroupRegistry);
@@ -29,16 +29,15 @@ namespace App.Metrics.Facts.Core
         private static readonly IMetricsDataManager MetricsDataManager =
             new DefaultMetricsDataManager(LoggerFactory, Registry);
 
-        private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.Clock, Options.Value.DefaultSamplingType);
+        private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.Clock);
       
 
-        private readonly IMetricsContext _context = new DefaultMetricsContext(
-            Options.Value.Clock, Registry, MetricsBuilder, HealthCheckManager, MetricsDataManager);
+        private readonly IMetricsContext _context = new DefaultMetricsContext(Options, Registry, MetricsBuilder, HealthCheckManager, MetricsDataManager);
 
-        public Func<IMetricsContext, MetricsData> CurrentData => ctx => _context.Advanced.MetricsDataManager.GetMetricsData();
+        public Func<IMetricsContext, MetricsData> CurrentData => ctx => _context.Advanced.DataManager.GetMetricsData();
 
         public Func<IMetricsContext, IMetricsFilter, MetricsData> CurrentDataWithFilter => (ctx, filter) =>
-                _context.Advanced.MetricsDataManager.WithFilter(filter).GetMetricsData();
+                _context.Advanced.DataManager.WithFilter(filter).GetMetricsData();
 
         public MetricsContextsTests()
         {
@@ -131,16 +130,16 @@ namespace App.Metrics.Facts.Core
             };
 
             _context.Advanced.Counter(counterOptions);
-            _context.Advanced.MetricsDataManager.GetMetricsData().Counters.Single().Tags.Should().Equal("tag");
+            _context.Advanced.DataManager.GetMetricsData().Counters.Single().Tags.Should().Equal("tag");
 
             _context.Advanced.Meter(meterOptions);
-            _context.Advanced.MetricsDataManager.GetMetricsData().Meters.Single().Tags.Should().Equal("tag");
+            _context.Advanced.DataManager.GetMetricsData().Meters.Single().Tags.Should().Equal("tag");
 
             _context.Advanced.Histogram(histogramOptions);
-            _context.Advanced.MetricsDataManager.GetMetricsData().Histograms.Single().Tags.Should().Equal("tag");
+            _context.Advanced.DataManager.GetMetricsData().Histograms.Single().Tags.Should().Equal("tag");
 
             _context.Advanced.Timer(timerOptions);
-            _context.Advanced.MetricsDataManager.GetMetricsData().Timers.Single().Tags.Should().Equal("tag");
+            _context.Advanced.DataManager.GetMetricsData().Timers.Single().Tags.Should().Equal("tag");
         }
 
         [Fact]
@@ -172,13 +171,13 @@ namespace App.Metrics.Facts.Core
 
             counter.Increment();
 
-            _context.Advanced.MetricsDataManager.GetMetricsData().ChildMetrics.Should().HaveCount(1);
-            _context.Advanced.MetricsDataManager.GetMetricsData().ChildMetrics.Single().Counters.Should().HaveCount(1);
-            _context.Advanced.MetricsDataManager.GetMetricsData().ChildMetrics.Single().Counters.Single().Value.Count.Should().Be(1);
+            _context.Advanced.DataManager.GetMetricsData().ChildMetrics.Should().HaveCount(1);
+            _context.Advanced.DataManager.GetMetricsData().ChildMetrics.Single().Counters.Should().HaveCount(1);
+            _context.Advanced.DataManager.GetMetricsData().ChildMetrics.Single().Counters.Single().Value.Count.Should().Be(1);
 
             counter.Increment();
 
-            _context.Advanced.MetricsDataManager.GetMetricsData().ChildMetrics.Single().Counters.Single().Value.Count.Should().Be(2);
+            _context.Advanced.DataManager.GetMetricsData().ChildMetrics.Single().Counters.Single().Value.Count.Should().Be(2);
         }
 
         [Fact]
@@ -192,9 +191,9 @@ namespace App.Metrics.Facts.Core
 
             _context.Advanced.Counter(counterOptions).Increment();
 
-            _context.Advanced.MetricsDataManager.GetMetricsData().Counters.Should().HaveCount(1);
-            _context.Advanced.MetricsDataManager.GetMetricsData().Counters.Single().Name.Should().Be("bytes-counter");
-            _context.Advanced.MetricsDataManager.GetMetricsData().Counters.Single().Value.Count.Should().Be(1L);
+            _context.Advanced.DataManager.GetMetricsData().Counters.Should().HaveCount(1);
+            _context.Advanced.DataManager.GetMetricsData().Counters.Single().Name.Should().Be("bytes-counter");
+            _context.Advanced.DataManager.GetMetricsData().Counters.Single().Value.Count.Should().Be(1L);
         }
 
         [Fact]
@@ -272,9 +271,9 @@ namespace App.Metrics.Facts.Core
                 MeasurementUnit = Unit.Bytes,
             };
 
-            _context.Advanced.MetricsDataManager.GetMetricsData().Counters.Should().BeEmpty();
+            _context.Advanced.DataManager.GetMetricsData().Counters.Should().BeEmpty();
             _context.Advanced.Counter(counterOptions);
-            _context.Advanced.MetricsDataManager.GetMetricsData().Counters.Should().HaveCount(1);
+            _context.Advanced.DataManager.GetMetricsData().Counters.Should().HaveCount(1);
         }
 
         [Fact]

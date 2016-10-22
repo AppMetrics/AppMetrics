@@ -2,6 +2,7 @@
 using System.Net.Http;
 using App.Metrics;
 using App.Metrics.Json;
+using App.Metrics.Utils;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -18,7 +19,8 @@ namespace AspNet.Metrics.Facts
             DefaultGroupName = "testing",
             DisableMetrics = false,
             DisableHealthChecks = false,
-            JsonSchemeVersion = JsonSchemeVersion.Version1
+            JsonSchemeVersion = JsonSchemeVersion.Version1,
+            Clock = new Clock.TestClock()
         };
 
         private static readonly AspNetMetricsOptions TestAspNetOptions = new AspNetMetricsOptions
