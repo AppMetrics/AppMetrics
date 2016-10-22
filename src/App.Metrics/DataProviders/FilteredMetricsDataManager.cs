@@ -28,9 +28,9 @@ namespace App.Metrics.DataProviders
             _filter = filter;
         }
 
-        public MetricsData GetMetricsData(IMetricsContext metricsContext)
+        public MetricsData GetMetricsData()
         {
-            return _manager.GetMetricsData(metricsContext).Filter(_filter);
+            return _manager.GetMetricsData().Filter(_filter);
         }
     }
 }

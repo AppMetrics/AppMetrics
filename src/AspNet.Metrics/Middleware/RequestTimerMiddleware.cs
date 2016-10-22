@@ -13,7 +13,7 @@ namespace AspNet.Metrics.Middleware
 {
     public class RequestTimerMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
-        private const string TimerItemsKey = "__Mertics.RequestTimer__";
+        private const string TimerItemsKey = "__App.Mertics.RequestTimer__";
         private readonly ITimer _requestTimer;
 
         public RequestTimerMiddleware(RequestDelegate next,
@@ -22,7 +22,7 @@ namespace AspNet.Metrics.Middleware
             IMetricsContext metricsContext)
             : base(next, options, loggerFactory, metricsContext)
         {
-            _requestTimer = MetricsContext.GetWebApplicationContext().Advanced
+            _requestTimer = MetricsContext.Advanced
                 .Timer(AspNetMetricsRegistry.Groups.WebRequests.Timers.WebRequestTimer);
         }
 

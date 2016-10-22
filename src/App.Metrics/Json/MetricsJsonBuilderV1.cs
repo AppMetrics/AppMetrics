@@ -31,7 +31,7 @@ namespace App.Metrics.Json
           
             var version = Version.ToString(CultureInfo.InvariantCulture);
             var metricsData = metricsContext.Advanced.MetricsDataManager
-                .GetMetricsData(metricsContext)
+                .GetMetricsData()
                 .Filter(filter);
 
             return JsonMetricsContext.FromContext(metricsData, environmentInfo, version)

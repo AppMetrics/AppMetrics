@@ -10,9 +10,9 @@ namespace Metrics.Samples
 
         public MultiContextMetrics(IMetricsContext metricsContext)
         {
-            _firstCounter = metricsContext.Advanced.Group(SampleMetricsRegistry.Groups.FirstGroup.GroupName).Advanced.Counter(SampleMetricsRegistry.Groups.FirstGroup.Counters.Counter);
-            _secondCounter = metricsContext.Advanced.Group(SampleMetricsRegistry.Groups.SecondGroup.GroupName).Advanced.Counter(SampleMetricsRegistry.Groups.SecondGroup.Counters.Counter);
-            _secondMeter = metricsContext.Advanced.Group(SampleMetricsRegistry.Groups.SecondGroup.GroupName).Advanced.Meter(SampleMetricsRegistry.Groups.SecondGroup.Meters.Requests);
+            _firstCounter = metricsContext.Advanced.Counter(SampleMetricsRegistry.Groups.FirstGroup.Counters.Counter);
+            _secondCounter = metricsContext.Advanced.Counter(SampleMetricsRegistry.Groups.SecondGroup.Counters.Counter);
+            _secondMeter = metricsContext.Advanced.Meter(SampleMetricsRegistry.Groups.SecondGroup.Meters.Requests);
         }
 
         public void Run()
@@ -33,10 +33,11 @@ namespace Metrics.Samples
         {
             _metricsContext = metricsContext;
 
-            var context = _metricsContext.Advanced.Group(instanceName);
+            //TODO: AH - no longer valid?
+            //var context = _metricsContext.Advanced.Group(instanceName);
 
-            _instanceCounter = context.Advanced.Counter(SampleMetricsRegistry.Counters.SampleCounter);
-            _instanceTimer = context.Advanced.Timer(SampleMetricsRegistry.Timers.SampleTimer);
+            _instanceCounter = _metricsContext.Advanced.Counter(SampleMetricsRegistry.Counters.SampleCounter);
+            _instanceTimer = _metricsContext.Advanced.Timer(SampleMetricsRegistry.Timers.SampleTimer);
         }
 
         public void Run()

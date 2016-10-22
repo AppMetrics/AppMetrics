@@ -10,13 +10,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using App.Metrics.MetricData;
+using App.Metrics.Registries;
 using App.Metrics.Reporters;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 
-namespace App.Metrics.Registries
+namespace App.Metrics.Internal
 {
-    public class MetricReporterRegistry : IMetricReporterRegistry, IHideObjectMembers, IDisposable
+    internal sealed class DefaultMetricReporterRegistry : IMetricReporterRegistry, IHideObjectMembers, IDisposable
     {
         private readonly ILogger _logger;
         private readonly ILoggerFactory _loggerFactory;
@@ -25,7 +26,7 @@ namespace App.Metrics.Registries
 
         private bool _disposed = false;
 
-        public MetricReporterRegistry(
+        public DefaultMetricReporterRegistry(
             IMetricsContext metricsContext,
             ILoggerFactory loggerFactory)
         {
@@ -41,7 +42,7 @@ namespace App.Metrics.Registries
 
             _metricsContext = metricsContext;
             _loggerFactory = loggerFactory;
-            _logger = loggerFactory.CreateLogger<MetricReporterRegistry>();
+            _logger = loggerFactory.CreateLogger<DefaultMetricReporterRegistry>();
         }
 
         public void Dispose()
@@ -116,7 +117,7 @@ namespace App.Metrics.Registries
                 _metricsContext.Advanced.Clock), interval, filter);
         }
 
-        protected virtual void Dispose(bool disposing)
+        public void Dispose(bool disposing)
         {
             if (!_disposed)
             {

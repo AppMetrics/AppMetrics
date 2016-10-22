@@ -72,7 +72,7 @@ namespace App.Metrics.Reporters
                 dataProvider = dataProvider.WithFilter(Filter);
             }
 
-            var metricsData = dataProvider.GetMetricsData(metricsContext);
+            var metricsData = dataProvider.GetMetricsData();
 
             _token = token;
 

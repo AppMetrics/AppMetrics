@@ -40,7 +40,7 @@ namespace Microsoft.Extensions.Logging
                 LogLevel.Information,
                 eventId: AppMetricsEventIds.Reports.Schedule,
                 formatString:
-                $"Executed {nameof(IMetricsRegistry)} RunReports in {{elapsedMilliseconds}}ms");
+                $"Executed {nameof(IMetricGroupRegistry)} RunReports in {{elapsedMilliseconds}}ms");
 
             _reportStarted = LoggerMessage.Define<string, double>(
                 LogLevel.Information,

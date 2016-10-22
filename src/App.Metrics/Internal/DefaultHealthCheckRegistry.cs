@@ -7,16 +7,17 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using App.Metrics.Health;
+using App.Metrics.Registries;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace App.Metrics.Registries
+namespace App.Metrics.Internal
 {
-    public class HealthCheckRegistry : IHealthCheckRegistry
+    internal sealed class DefaultHealthCheckRegistry : IHealthCheckRegistry
     {
         private readonly ILogger _logger;
 
-        public HealthCheckRegistry(ILoggerFactory loggerFactory,
+        public DefaultHealthCheckRegistry(ILoggerFactory loggerFactory,
             IEnumerable<HealthCheck> healthChecks,
             IOptions<AppMetricsOptions> options)
         {
@@ -30,7 +31,7 @@ namespace App.Metrics.Registries
                 throw new ArgumentNullException(nameof(options));
             }
 
-            _logger = loggerFactory.CreateLogger<HealthCheckRegistry>();
+            _logger = loggerFactory.CreateLogger<DefaultHealthCheckRegistry>();
 
             Checks = new ConcurrentDictionary<string, HealthCheck>();
 

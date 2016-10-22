@@ -8,6 +8,8 @@
             MeasurementUnit = Unit.None;
         }
 
+        public string GroupName { get; set; }
+
         public Unit MeasurementUnit { get; set; }
 
         public string Name { get; set; }
@@ -32,7 +34,12 @@
     {
     }
 
-    public class TimerOptions : MetricValueOptions
+    public abstract class MetricValueWithSamplingOption : MetricValueOptions
+    {
+        public SamplingType SamplingType { get; set; }
+    }
+
+    public class TimerOptions : MetricValueWithSamplingOption
     {
         public TimerOptions()
         {
@@ -44,16 +51,13 @@
 
         public TimeUnit RateUnit { get; set; }
 
-        public SamplingType SamplingType { get; set; }
     }
 
-    public class HistogramOptions : MetricValueOptions
+    public class HistogramOptions : MetricValueWithSamplingOption
     {
         public HistogramOptions()
         {            
             SamplingType = SamplingType.Default;    
         }
-
-        public SamplingType SamplingType { get; set; }
     }
 }

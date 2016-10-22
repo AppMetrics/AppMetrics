@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(services));
             }
 
-            return services.AddMetrics(null, default(IMetricsContext));
+            return services.AddMetrics(options => {}, default(IMetricsContext));
         }
 
         public static IMetricsHost AddMetrics(this IServiceCollection services,
@@ -31,11 +31,6 @@ namespace Microsoft.Extensions.DependencyInjection
             }
 
             var builder = services.AddMetricsCore(setupAction, metricsContext);
-
-            if (setupAction != null)
-            {
-                builder.Services.Configure(setupAction);
-            }
 
             return builder;
         }

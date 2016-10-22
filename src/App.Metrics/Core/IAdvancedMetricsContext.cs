@@ -9,6 +9,68 @@ using App.Metrics.Utils;
 
 namespace App.Metrics.Core
 {
+
+    #region data manager
+
+    //public interface IAppMetricsDataManager
+    //{
+    //    Task<MetricsData> GetMetricsAsync();
+
+    //    Task<HealthCheckResult> GetHealthAsync();
+    //}
+
+    //public sealed class DefaultAppMetricsDataManager : IAppMetricsDataManager
+    //{
+    //    private readonly EnvironmentInfo _environmentInfo;
+    //    private readonly IMetricRegistryManager _registry;
+    //    private readonly ILogger _logger;
+
+    //    public DefaultAppMetricsDataManager(ILoggerFactory loggerFactory,
+    //        EnvironmentInfo environmentInfo,
+    //        IMetricRegistryManager registry)
+    //    {
+    //        if (loggerFactory == null)
+    //        {
+    //            throw new ArgumentNullException(nameof(loggerFactory));
+    //        }
+
+    //        if (registry == null)
+    //        {
+    //            throw new ArgumentNullException(nameof(registry));
+    //        }
+
+    //        _logger = loggerFactory.CreateLogger<DefaultAppMetricsDataManager>();
+    //        _environmentInfo = environmentInfo;
+    //        _registry = registry;
+    //    }
+
+
+    //    public Task<MetricsData> GetMetricsAsync()
+    //    {
+    //        _logger.MetricsDataGetExecuting();
+
+    //        var metricsData = new MetricsData(metricsContext.GroupName, _clock.UtcDateTime,
+    //            _environmentInfo.Entries,
+    //            _registry.Gauges.ToArray(),
+    //            _registry.Counters.ToArray(),
+    //            _registry.Meters.ToArray(),
+    //            _registry.Histograms.ToArray(),
+    //            _registry.Timers.ToArray(),
+    //            metricsContext.Groups.Values.Select(p => p.Advanced.MetricsDataManager.GetMetricsData(p)));
+
+    //        _logger.MetricsDataGetExecuted();
+
+    //        return metricsData;
+    //    }
+
+    //    public Task<HealthCheckResult> GetHealthAsync()
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}
+
+    #endregion
+
     public interface IAdvancedMetricsContext : IHideObjectMembers
     {
         event EventHandler ContextDisabled;
@@ -19,11 +81,7 @@ namespace App.Metrics.Core
 
         IHealthCheckManager HealthCheckManager { get; }
 
-        IMetricRegistryManager MetricRegistryManager { get; }
-
         IMetricsDataManager MetricsDataManager { get; }
-
-        bool AttachGroup(string groupName, IMetricsContext context);
 
         void CompletelyDisableMetrics();
 
@@ -34,10 +92,6 @@ namespace App.Metrics.Core
         void Gauge(GaugeOptions options, Func<double> valueProvider);
 
         void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider);
-
-        IMetricsContext Group(string groupName, Func<string, IMetricsContext> groupCreator);
-
-        IMetricsContext Group(string groupName);
 
         IHistogram Histogram(HistogramOptions options);
 

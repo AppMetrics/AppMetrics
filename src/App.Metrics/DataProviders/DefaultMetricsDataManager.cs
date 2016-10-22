@@ -6,21 +6,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.MetricData;
+using App.Metrics.Registries;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.DataProviders
 {
-    public class DefaultMetricsDataManager : IMetricsDataManager
+    internal class DefaultMetricsDataManager : IMetricsDataManager
     {
         private readonly IClock _clock;
         private readonly ILogger _logger;
         private readonly IEnumerable<EnvironmentInfoEntry> _environment;
+        private readonly IMetricsRegistry _registry;
 
         public DefaultMetricsDataManager(
             ILoggerFactory loggerFactory,
             IClock clock,
-            IEnumerable<EnvironmentInfoEntry> environment)
+            IEnumerable<EnvironmentInfoEntry> environment,
+            IMetricsRegistry registry)
         {
             if (clock == null)
             {
@@ -35,22 +38,14 @@ namespace App.Metrics.DataProviders
             _logger = loggerFactory.CreateLogger<DefaultMetricsDataManager>();
             _clock = clock;
             _environment = environment;
+            _registry = registry;
         }
 
-        public MetricsData GetMetricsData(IMetricsContext metricsContext)
+        public MetricsData GetMetricsData()
         {
             _logger.MetricsDataGetExecuting();
 
-            var registryDataProvider = metricsContext.Advanced.MetricRegistryManager;
-
-            var metricsData = new MetricsData(metricsContext.GroupName, _clock.UtcDateTime,
-                _environment,
-                registryDataProvider.Gauges.ToArray(),
-                registryDataProvider.Counters.ToArray(),
-                registryDataProvider.Meters.ToArray(),
-                registryDataProvider.Histograms.ToArray(),
-                registryDataProvider.Timers.ToArray(),
-                metricsContext.Groups.Values.Select(p => p.Advanced.MetricsDataManager.GetMetricsData(p)));
+            var metricsData =_registry.GetData();
 
             _logger.MetricsDataGetExecuted();
 

@@ -91,6 +91,7 @@ namespace Metrics.Samples
                 {
                     public static CounterOptions Counter = new CounterOptions
                     {
+                        GroupName = FirstGroup.GroupName,
                         Name = "Counter",
                         MeasurementUnit = Unit.Requests
                     };
@@ -105,6 +106,7 @@ namespace Metrics.Samples
                 {
                     public static CounterOptions Counter = new CounterOptions
                     {
+                        GroupName = SecondGroup.GroupName,
                         Name = "Counter",
                         MeasurementUnit = Unit.Requests
                     };
@@ -114,6 +116,7 @@ namespace Metrics.Samples
                 {
                     public static MeterOptions Requests = new MeterOptions
                     {
+                        GroupName = SecondGroup.GroupName,
                         Name = "Meter",
                         MeasurementUnit = Unit.Errors,
                         RateUnit = TimeUnit.Seconds

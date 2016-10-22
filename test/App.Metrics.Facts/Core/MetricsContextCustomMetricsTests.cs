@@ -4,6 +4,8 @@ using System.Linq;
 using App.Metrics.Core;
 using App.Metrics.DataProviders;
 using App.Metrics.Health;
+using App.Metrics.Infrastructure;
+using App.Metrics.Internal;
 using App.Metrics.MetricData;
 using App.Metrics.Registries;
 using App.Metrics.Sampling;
@@ -20,18 +22,30 @@ namespace App.Metrics.Facts.Core
             = Microsoft.Extensions.Options.Options.Create(new AppMetricsOptions());
 
         private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
-
+        
         private static readonly IHealthCheckManager HealthCheckManager =
-            new DefaultHealthCheckManager(LoggerFactory, new HealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options));
-        private static readonly IMetricsDataManager MetricsDataManager =
-            new DefaultMetricsDataManager(LoggerFactory, Options.Value.SystemClock, Enumerable.Empty<EnvironmentInfoEntry>());
-        private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.SystemClock, Options.Value.DefaultSamplingType);
-        private static readonly Func<IMetricsRegistry> MetricsRegistry = () => new DefaultMetricsRegistry();
+            new DefaultHealthCheckManager(LoggerFactory, new DefaultHealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options));
 
+        private static readonly Func<string, IMetricGroupRegistry> NewMetricsGroupRegistry = name => new DefaultMetricGroupRegistry(name);
+
+
+        private static readonly IMetricsRegistry Registry = new DefaultMetricsRegistry(Options.Value.GlobalContextName,
+
+           Options.Value.DefaultSamplingType, Options.Value.SystemClock, new EnvironmentInfo(), NewMetricsGroupRegistry);
+
+        private static readonly IMetricsDataManager MetricsDataManager =
+            new DefaultMetricsDataManager(LoggerFactory, Options.Value.SystemClock, Enumerable.Empty<EnvironmentInfoEntry>(), Registry);
+
+        private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.SystemClock, Options.Value.DefaultSamplingType);
+       
 
         private readonly IMetricsContext _context = new DefaultMetricsContext(Options.Value.GlobalContextName,
-            Options.Value.SystemClock, Options.Value.DefaultSamplingType,
-            MetricsRegistry, MetricsBuilder, HealthCheckManager, MetricsDataManager);
+            Options.Value.SystemClock, Registry, MetricsBuilder, HealthCheckManager, MetricsDataManager);
+
+        public MetricsContextCustomMetricsTests()
+        {
+            _context.Advanced.ResetMetricsValues();
+        }
 
         [Fact]
         public void can_register_custom_counter()
@@ -44,7 +58,7 @@ namespace App.Metrics.Facts.Core
             var counter = _context.Advanced.Counter(counterOptions, () => new CustomCounter());
             counter.Should().BeOfType<CustomCounter>();
             counter.Increment();
-            _context.Advanced.MetricsDataManager.GetMetricsData(_context).Counters.Single().Value.Count.Should().Be(10L);
+            _context.Advanced.MetricsDataManager.GetMetricsData().Counters.Single().Value.Count.Should().Be(10L);
         }
 
         [Fact]

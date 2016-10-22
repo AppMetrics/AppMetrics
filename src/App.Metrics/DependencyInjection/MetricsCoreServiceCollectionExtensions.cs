@@ -17,6 +17,7 @@ using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection.Extensions
@@ -69,7 +70,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
         internal static void AddDefaultHealthCheckServices(this IServiceCollection services,
             IMetricsEnvironment environment)
         {
-            services.TryAddSingleton<IHealthCheckRegistry, HealthCheckRegistry>();
+            services.TryAddSingleton<IHealthCheckRegistry, DefaultHealthCheckRegistry>();
             services.TryAddSingleton<IHealthCheckManager, DefaultHealthCheckManager>();
 
             services.AddHealthChecks(environment);
@@ -83,7 +84,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                 var context = provider.GetRequiredService<IMetricsContext>();                
                 var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
 
-                var registry = new MetricReporterRegistry(context, loggerFactory);
+                var registry = new DefaultMetricReporterRegistry(context, loggerFactory);
 
                 options.Value.Reporters(registry);
 
@@ -105,15 +106,26 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
         internal static void AddMetricsCoreServices(this IServiceCollection services,
             IMetricsEnvironment environment, IMetricsContext metricsContext)
         {
-            services.TryAddTransient<IMetricsRegistry, DefaultMetricsRegistry>();
+            services.TryAddTransient<Func<string, IMetricGroupRegistry>>(provider =>
+            {
+                return group => new DefaultMetricGroupRegistry(group);
+            });
             services.TryAddSingleton<IMetricsBuilder>(provider =>
             {
                 var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>().Value;
 
                 return new DefaultMetricsBuilder(options.SystemClock, options.DefaultSamplingType);
             });
+            services.TryAddSingleton(typeof(IMetricsRegistry), provider =>
+            {
+                //TODO: AH - need to resolve env info. Create a test as well?
+                var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
+                return new DefaultMetricsRegistry(options.Value.GlobalContextName, options.Value.DefaultSamplingType,
+                    options.Value.SystemClock, EnvironmentInfo.Empty, provider.GetRequiredService<Func<string, IMetricGroupRegistry>>());
+            });
             services.TryAddSingleton<IMetricsDataManager, DefaultMetricsDataManager>();
             services.TryAddSingleton(typeof(IClock), provider => provider.GetRequiredService<IOptions<AppMetricsOptions>>().Value.SystemClock);
+           
             services.TryAddSingleton<EnvironmentInfoBuilder, EnvironmentInfoBuilder>();
 
             services.TryAddSingleton(typeof(IMetricsContext), provider =>
@@ -131,7 +143,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                 if (metricsContext == default(IMetricsContext))
                 {
                     metricsContext = new DefaultMetricsContext(options.Value.GlobalContextName, options.Value.SystemClock,
-                        options.Value.DefaultSamplingType, provider.GetRequiredService<IMetricsRegistry>, 
+                        provider.GetRequiredService<IMetricsRegistry>(), 
                         metricsBuilder, healthCheckDataProvider, provider.GetRequiredService<IMetricsDataManager>());
                 }
 

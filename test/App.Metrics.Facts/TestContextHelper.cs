@@ -1,7 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using App.Metrics.Core;
 using App.Metrics.DataProviders;
 using App.Metrics.Health;
+using App.Metrics.Infrastructure;
+using App.Metrics.Internal;
 using App.Metrics.MetricData;
 using App.Metrics.Registries;
 using App.Metrics.Utils;
@@ -16,10 +19,14 @@ namespace App.Metrics.Facts
 
         public static IMetricsContext Instance(string context, IClock clock, IScheduler scheduler)
         {
-            return new DefaultMetricsContext(context, clock, SamplingType.ExponentiallyDecaying, () => new DefaultMetricsRegistry(),
+            Func<string, IMetricGroupRegistry> newGroupRegistry = name => new DefaultMetricGroupRegistry(name);
+            var registry = new DefaultMetricsRegistry(context, SamplingType.ExponentiallyDecaying, clock,
+                new EnvironmentInfo(), newGroupRegistry);
+            return new DefaultMetricsContext(context, clock, registry,
                 new TestMetricsBuilder(clock, scheduler),
-                new DefaultHealthCheckManager(LoggerFactory, new HealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))),
-                new DefaultMetricsDataManager(LoggerFactory, clock, Enumerable.Empty<EnvironmentInfoEntry>()));
+                new DefaultHealthCheckManager(LoggerFactory,
+                    new DefaultHealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))),
+                new DefaultMetricsDataManager(LoggerFactory, clock, Enumerable.Empty<EnvironmentInfoEntry>(), registry));
         }
 
         public static IMetricsContext Instance()

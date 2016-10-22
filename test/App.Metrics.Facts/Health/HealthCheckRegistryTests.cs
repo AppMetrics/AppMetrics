@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using App.Metrics.Core;
 using App.Metrics.DataProviders;
 using App.Metrics.Health;
+using App.Metrics.Internal;
 using App.Metrics.Registries;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
@@ -15,12 +15,12 @@ namespace App.Metrics.Facts.Health
     public class HealthCheckRegistryTests
     {
         private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
-        private readonly IHealthCheckRegistry _healthCheckRegistry;
         private readonly IHealthCheckManager _healthCheckManager;
+        private readonly IHealthCheckRegistry _healthCheckRegistry;
 
         public HealthCheckRegistryTests()
         {
-            _healthCheckRegistry = new HealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(),
+            _healthCheckRegistry = new DefaultHealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(),
                 Options.Create(new AppMetricsOptions()));
             _healthCheckManager = new DefaultHealthCheckManager(LoggerFactory, _healthCheckRegistry);
         }

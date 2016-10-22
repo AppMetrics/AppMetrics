@@ -15,6 +15,6 @@ namespace App.Metrics.DataProviders
         /// <summary>
         ///     Returns the current metrics data for the context for which this provider has been created.
         /// </summary>
-        MetricsData GetMetricsData(IMetricsContext metricsContext);
+        MetricsData GetMetricsData();
     }
 }

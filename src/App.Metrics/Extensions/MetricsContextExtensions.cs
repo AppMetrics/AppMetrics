@@ -14,60 +14,58 @@ namespace App.Metrics
 {
     internal static class MetricsContextExtensions
     {
-        public static CounterValue CounterValue(this IMetricsContext metricsContext, params string[] nameWithContext)
+        public static CounterValue CounterValue(this IMetricsContext metricsContext, string groupName, string metricName)
         {
-            return ValueFor(metricsContext.GetDataFor(nameWithContext).Counters, nameWithContext);
+            return ValueFor(metricsContext.GetDataFor(groupName).Counters, groupName, metricName);
         }
 
-        public static double GaugeValue(this IMetricsContext metricsContext, params string[] nameWithContext)
+        public static double GaugeValue(this IMetricsContext metricsContext, string groupName, string metricName)
         {
-            return ValueFor(metricsContext.GetDataFor(nameWithContext).Gauges, nameWithContext);
+            return ValueFor(metricsContext.GetDataFor(groupName).Gauges, groupName, metricName);
         }
 
-        public static IMetricsContext GetContextFor(this IMetricsContext metricsContext, params string[] nameWithContext)
+        public static MetricsData GetDataFor(this IMetricsContext metricsContext, string groupName)
         {
-            if (nameWithContext.Length == 1)
+            var data = metricsContext.Advanced.MetricsDataManager.GetMetricsData();
+
+            if (data.Context == groupName)
             {
-                return metricsContext;
+                return data;
             }
 
-            var context = metricsContext.Advanced.Group(nameWithContext.First());
-            return context.GetContextFor(nameWithContext.Skip(1).ToArray());
+            if (data.ChildMetrics.Any(m => m.Context == groupName))
+            {
+                return data.ChildMetrics.First(m => m.Context == groupName);
+            }
+
+            return MetricsData.Empty;
         }
 
-        public static MetricsData GetDataFor(this IMetricsContext metricsContext, params string[] nameWithContext)
+        public static HistogramValue HistogramValue(this IMetricsContext metricsContext, string groupName, string metricName)
         {
-            var context = metricsContext.GetContextFor(nameWithContext);
-            return context.Advanced.MetricsDataManager.GetMetricsData(context);
+            return ValueFor(metricsContext.GetDataFor(groupName).Histograms, groupName, metricName);
         }
 
-        public static HistogramValue HistogramValue(this IMetricsContext metricsContext, params string[] nameWithContext)
+        public static MeterValue MeterValue(this IMetricsContext metricsContext, string groupName, string metricName)
         {
-            return ValueFor(metricsContext.GetDataFor(nameWithContext).Histograms, nameWithContext);
+            return ValueFor(metricsContext.GetDataFor(groupName).Meters, groupName, metricName);
         }
 
-        public static MeterValue MeterValue(this IMetricsContext metricsContext, params string[] nameWithContext)
+        public static TimerValue TimerValue(this IMetricsContext metricsContext, string groupName, string metricName)
         {
-            return ValueFor(metricsContext.GetDataFor(nameWithContext).Meters, nameWithContext);
+            return ValueFor(metricsContext.GetDataFor(groupName).Timers, groupName, metricName);
         }
 
-        public static TimerValue TimerValue(this IMetricsContext metricsContext, params string[] nameWithContext)
-        {
-            return ValueFor(metricsContext.GetDataFor(nameWithContext).Timers, nameWithContext);
-        }
-
-        private static T ValueFor<T>(IEnumerable<MetricValueSource<T>> values, string[] nameWithContext)
+        private static T ValueFor<T>(IEnumerable<MetricValueSource<T>> values, string groupName, string metricName)
         {
             var metricValueSources = values as MetricValueSource<T>[] ?? values.ToArray();
 
-            var value = metricValueSources.Where(t => t.Name == nameWithContext.Last()).Select(t => t.Value).ToList();
+            var value = metricValueSources.Where(t => t.Name == metricName).Select(t => t.Value).ToList();
 
             if (value.Any() && value.Count() <= 1) return value.Single();
 
-            var name = nameWithContext.Last();
-            var context = string.Join(".", nameWithContext.Take(nameWithContext.Length - 1));
             var availableNames = string.Join(",", metricValueSources.Select(v => v.Name));
-            throw new InvalidOperationException($"No metric found with name {name} in context {context}. Available names: {availableNames}");
+            throw new InvalidOperationException($"No metric found with name {metricName} in group {groupName} Available names: {availableNames}");
         }
     }
 }
