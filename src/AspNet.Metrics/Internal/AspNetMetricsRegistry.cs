@@ -11,6 +11,7 @@ namespace AspNet.Metrics.Internal
             public static class OAuth2
             { 
                 //TODO: AH - alot of these metrics across groups are the same
+                //TODO: AH - instead of having a separate metric per http status code, tag the metrics with the code instead
                 public static string GroupName = "Application.OAuth2Client.WebRequests";
 
                 public static class Meters

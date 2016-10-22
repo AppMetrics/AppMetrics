@@ -50,7 +50,7 @@ namespace App.Metrics.DataProviders
                 registryDataProvider.Meters.ToArray(),
                 registryDataProvider.Histograms.ToArray(),
                 registryDataProvider.Timers.ToArray(),
-                metricsContext.Advanced.ChildContexts.Values.Select(p => p.Advanced.MetricsDataManager.GetMetricsData(p)));
+                metricsContext.Groups.Values.Select(p => p.Advanced.MetricsDataManager.GetMetricsData(p)));
 
             _logger.MetricsDataGetExecuted();
 

@@ -31,7 +31,7 @@ namespace App.Metrics.Facts.Core
         private static readonly Func<IMetricsRegistry> MetricsRegistry = () => new DefaultMetricsRegistry();
 
 
-        private readonly IMetricsContext _context = new MetricsContext(Options.Value.GlobalContextName,
+        private readonly IMetricsContext _context = new DefaultMetricsContext(Options.Value.GlobalContextName,
             Options.Value.SystemClock, Options.Value.DefaultSamplingType,
             MetricsRegistry, MetricsBuilder, HealthCheckManager, MetricsDataManager);
 
@@ -187,7 +187,7 @@ namespace App.Metrics.Facts.Core
             CurrentData(_context).ChildMetrics.Single()
                 .Counters.Single().Name.Should().Be("test");
 
-            _context.Advanced.ShutdownContext("test");
+            _context.Advanced.ShutdownGroup("test");
 
             CurrentData(_context).ChildMetrics.Should().BeEmpty();
         }

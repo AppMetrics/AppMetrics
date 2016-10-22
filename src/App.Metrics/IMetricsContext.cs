@@ -3,6 +3,7 @@
 
 
 using System;
+using System.Collections.Concurrent;
 using App.Metrics.Core;
 using App.Metrics.Utils;
 
@@ -17,6 +18,8 @@ namespace App.Metrics
 
         string GroupName { get; }
 
+        ConcurrentDictionary<string, IMetricsContext> Groups { get; }
+
         void Decrement(CounterOptions options);
 
         void Decrement(CounterOptions options, long amount);
@@ -26,8 +29,6 @@ namespace App.Metrics
         void Decrement(CounterOptions options, long amount, string item);
 
         void Gauge(GaugeOptions options, Func<double> valueProvider);
-       
-
         void Increment(CounterOptions options);
 
         void Increment(CounterOptions options, long amount);

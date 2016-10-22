@@ -130,7 +130,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
 
                 if (metricsContext == default(IMetricsContext))
                 {
-                    metricsContext = new MetricsContext(options.Value.GlobalContextName, options.Value.SystemClock,
+                    metricsContext = new DefaultMetricsContext(options.Value.GlobalContextName, options.Value.SystemClock,
                         options.Value.DefaultSamplingType, provider.GetRequiredService<IMetricsRegistry>, 
                         metricsBuilder, healthCheckDataProvider, provider.GetRequiredService<IMetricsDataManager>());
                 }

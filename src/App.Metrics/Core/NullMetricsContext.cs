@@ -19,7 +19,6 @@ namespace App.Metrics.Core
     public sealed class NullMetricsContext : IMetricsContext, IAdvancedMetricsContext
     {
         internal const string InternalMetricsContextName = "App.Metrics.Internal";
-        private readonly ConcurrentDictionary<string, IMetricsContext> _childContexts = new ConcurrentDictionary<string, IMetricsContext>();
         private readonly IMetricsContext _metricsContext;
 
         public NullMetricsContext(string context, IClock systemClock, SamplingType defaultSamplingType)
@@ -35,14 +34,14 @@ namespace App.Metrics.Core
             MetricsDataManager = metricsDataManager;
             MetricRegistryManager = setupMetricsRegistry().DataProvider;
 
-            _metricsContext = new MetricsContext(context, systemClock, defaultSamplingType,
+            _metricsContext = new DefaultMetricsContext(context, systemClock, defaultSamplingType,
                 setupMetricsRegistry, metricsBuilder,
                 healthCheckDataProvider, metricsDataManager);
         }
 
         public IAdvancedMetricsContext Advanced => this;
 
-        public IReadOnlyDictionary<string, IMetricsContext> ChildContexts => _childContexts;
+        public ConcurrentDictionary<string, IMetricsContext> Groups { get; } = new ConcurrentDictionary<string, IMetricsContext>();
 
         public IClock Clock => _metricsContext.Advanced.Clock;
 
@@ -150,9 +149,9 @@ namespace App.Metrics.Core
 
         public IMetricRegistryManager MetricRegistryManager { get; }
 
-        public bool AttachContext(string contextName, IMetricsContext context)
+        public bool AttachGroup(string groupName, IMetricsContext context)
         {
-            return _metricsContext.Advanced.AttachContext(contextName, context);
+            return _metricsContext.Advanced.AttachGroup(groupName, context);
         }
 
         public void CompletelyDisableMetrics()
@@ -165,9 +164,9 @@ namespace App.Metrics.Core
             _metricsContext.Advanced.ResetMetricsValues();
         }
 
-        public void ShutdownContext(string contextName)
+        public void ShutdownGroup(string groupName)
         {
-            _metricsContext.Advanced.ShutdownContext(contextName);
+            _metricsContext.Advanced.ShutdownGroup(groupName);
         }
 
         public ICounter Counter(CounterOptions options)

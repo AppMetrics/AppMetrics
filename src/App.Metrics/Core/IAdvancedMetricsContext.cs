@@ -3,13 +3,12 @@
 
 using System;
 using System.Collections.Generic;
-using App.Metrics.Core;
 using App.Metrics.DataProviders;
 using App.Metrics.MetricData;
 using App.Metrics.Sampling;
 using App.Metrics.Utils;
 
-namespace App.Metrics
+namespace App.Metrics.Core
 {
 
     public interface IAdvancedMetricsContext : IHideObjectMembers
@@ -18,8 +17,6 @@ namespace App.Metrics
 
         event EventHandler ContextShuttingDown;
 
-        IReadOnlyDictionary<string, IMetricsContext> ChildContexts { get; }
-
         IClock Clock { get; }
 
         IHealthCheckManager HealthCheckManager { get; }
@@ -27,11 +24,11 @@ namespace App.Metrics
         IMetricRegistryManager MetricRegistryManager { get; }
         IMetricsDataManager MetricsDataManager { get; }
 
-        bool AttachContext(string contextName, IMetricsContext context);
+        bool AttachGroup(string groupName, IMetricsContext context);
 
         void CompletelyDisableMetrics();
 
-        void ShutdownContext(string contextName);
+        void ShutdownGroup(string groupName);
 
         IMetricsContext Group(string groupName, Func<string, IMetricsContext> groupCreator);
 
