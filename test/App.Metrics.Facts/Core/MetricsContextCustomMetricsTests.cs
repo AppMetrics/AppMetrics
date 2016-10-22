@@ -34,7 +34,7 @@ namespace App.Metrics.Facts.Core
            Options.Value.DefaultSamplingType, Options.Value.SystemClock, new EnvironmentInfo(), NewMetricsGroupRegistry);
 
         private static readonly IMetricsDataManager MetricsDataManager =
-            new DefaultMetricsDataManager(LoggerFactory, Options.Value.SystemClock, Enumerable.Empty<EnvironmentInfoEntry>(), Registry);
+            new DefaultMetricsDataManager(LoggerFactory, Registry);
 
         private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.SystemClock, Options.Value.DefaultSamplingType);
        

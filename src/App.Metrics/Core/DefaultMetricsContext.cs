@@ -4,7 +4,7 @@
 
 using System;
 using App.Metrics.DataProviders;
-using App.Metrics.Registries;
+using App.Metrics.Internal;
 using App.Metrics.Utils;
 
 namespace App.Metrics.Core

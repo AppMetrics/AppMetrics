@@ -4,8 +4,8 @@
 
 using System;
 using System.Diagnostics;
+using App.Metrics.Internal;
 using App.Metrics.Json;
-using App.Metrics.MetricData;
 using App.Metrics.Registries;
 using App.Metrics.Utils;
 
@@ -13,8 +13,6 @@ namespace App.Metrics
 {
     public class AppMetricsOptions
     {
-        public IAppMetricsEvents Events = new AppMetricsEvents();
-
         private static readonly string DefaultGlobalContextName =
             $@"{CleanName(Environment.MachineName)}.{CleanName(Process.GetCurrentProcess().ProcessName)}";
 
@@ -26,7 +24,7 @@ namespace App.Metrics
             DefaultSamplingType = SamplingType.ExponentiallyDecaying;
             Reporters = reports => { };
             HealthCheckRegistry = checks => { };
-            MetricsFilter = new MetricsFilter();
+            MetricsFilter = new DefaultMetricsFilter();
         }
 
         public SamplingType DefaultSamplingType { get; set; }

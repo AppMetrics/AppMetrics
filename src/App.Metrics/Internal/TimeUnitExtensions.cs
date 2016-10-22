@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,7 +9,7 @@ using System.Collections.ObjectModel;
 namespace App.Metrics
 // ReSharper restore CheckNamespace
 {
-    public static class TimeUnitExtensions
+    internal static class TimeUnitExtensions
     {
         private static readonly long[,] ConversionFactors = BuildConversionFactorsMatrix();
 

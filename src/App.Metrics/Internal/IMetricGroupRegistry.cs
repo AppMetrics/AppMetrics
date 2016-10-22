@@ -7,9 +7,9 @@ using App.Metrics.Core;
 using App.Metrics.DataProviders;
 using App.Metrics.MetricData;
 
-namespace App.Metrics.Registries
+namespace App.Metrics.Internal
 {
-    public interface IMetricGroupRegistry
+    internal interface IMetricGroupRegistry
     {
         IMetricRegistryManager DataProvider { get; }
 

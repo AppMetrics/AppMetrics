@@ -2,7 +2,7 @@ using System;
 using App.Metrics.Core;
 using App.Metrics.MetricData;
 
-namespace App.Metrics.Registries
+namespace App.Metrics.Internal
 {
     internal interface IMetricsRegistry
     {

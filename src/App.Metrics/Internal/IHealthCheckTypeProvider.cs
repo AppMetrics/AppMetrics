@@ -5,9 +5,9 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace App.Metrics.Health
+namespace App.Metrics.Internal
 {
-    public interface IHealthCheckTypeProvider
+    internal interface IHealthCheckTypeProvider
     {
         IEnumerable<TypeInfo> HealthCheckTypes { get; }
     }

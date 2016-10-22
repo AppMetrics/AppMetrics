@@ -2,13 +2,14 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using System.Threading.Tasks;
-using App.Metrics.Health;
+using System.Threading;
 
-namespace App.Metrics.DataProviders
+namespace App.Metrics
 {
-    public interface IHealthCheckManager
+    public interface IScheduledReporter
     {
-        Task<HealthStatus> GetStatusAsync();
+        void Dispose();
+
+        void Start(CancellationToken token);
     }
 }

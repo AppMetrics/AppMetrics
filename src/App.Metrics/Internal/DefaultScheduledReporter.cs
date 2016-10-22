@@ -8,12 +8,13 @@
 using System;
 using System.Diagnostics;
 using System.Threading;
+using App.Metrics.Reporters;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 
-namespace App.Metrics.Reporters
+namespace App.Metrics.Internal
 {
-    public sealed class ScheduledReporter : IScheduledReporter
+    internal sealed class DefaultScheduledReporter : IScheduledReporter
     {
         private readonly TimeSpan _interval;
         private readonly IMetricsContext _metricsContext;
@@ -22,17 +23,17 @@ namespace App.Metrics.Reporters
         private readonly ILogger _logger;
         private bool _disposed = false;
 
-        public ScheduledReporter(
+        public DefaultScheduledReporter(
             ILoggerFactory loggerFactory,
             IMetricsContext metricsContext,
             IMetricsReport reporter,
             TimeSpan interval)
             : this(metricsContext, reporter, interval, new ActionScheduler())
         {
-            _logger = loggerFactory.CreateLogger<ScheduledReporter>();
+            _logger = loggerFactory.CreateLogger<DefaultScheduledReporter>();
         }
 
-        public ScheduledReporter(
+        public DefaultScheduledReporter(
             IMetricsContext metricsContext,
             IMetricsReport report,
             TimeSpan interval,

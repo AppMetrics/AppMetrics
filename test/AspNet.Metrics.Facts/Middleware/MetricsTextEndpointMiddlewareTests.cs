@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 using App.Metrics;
+using App.Metrics.Internal;
 using App.Metrics.Json;
 using App.Metrics.MetricData;
 using FluentAssertions;
@@ -67,7 +68,7 @@ namespace AspNet.Metrics.Facts.Middleware
                 DisableMetrics = false,
                 DisableHealthChecks = true,
                 JsonSchemeVersion = JsonSchemeVersion.Version1,
-                MetricsFilter = new MetricsFilter().WhereType(MetricType.Counter)
+                MetricsFilter = new DefaultMetricsFilter().WhereType(MetricType.Counter)
             });
 
             var result = await _fixture.Client.GetAsync("/metrics-text");

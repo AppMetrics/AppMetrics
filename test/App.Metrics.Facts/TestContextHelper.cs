@@ -5,8 +5,6 @@ using App.Metrics.DataProviders;
 using App.Metrics.Health;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
-using App.Metrics.MetricData;
-using App.Metrics.Registries;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -26,7 +24,7 @@ namespace App.Metrics.Facts
                 new TestMetricsBuilder(clock, scheduler),
                 new DefaultHealthCheckManager(LoggerFactory,
                     new DefaultHealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))),
-                new DefaultMetricsDataManager(LoggerFactory, clock, Enumerable.Empty<EnvironmentInfoEntry>(), registry));
+                new DefaultMetricsDataManager(LoggerFactory, registry));
         }
 
         public static IMetricsContext Instance()

@@ -2,12 +2,10 @@
 using System.Linq;
 using App.Metrics.Core;
 using App.Metrics.DataProviders;
-using App.Metrics.Extensions;
 using App.Metrics.Health;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.MetricData;
-using App.Metrics.Registries;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -30,7 +28,7 @@ namespace App.Metrics.Facts.Core
             Options.Value.DefaultSamplingType, Options.Value.SystemClock, new EnvironmentInfo(), NewMetricsGroupRegistry);
 
         private static readonly IMetricsDataManager MetricsDataManager =
-            new DefaultMetricsDataManager(LoggerFactory, Options.Value.SystemClock, Enumerable.Empty<EnvironmentInfoEntry>(), Registry);
+            new DefaultMetricsDataManager(LoggerFactory, Registry);
 
         private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.SystemClock, Options.Value.DefaultSamplingType);
       
@@ -85,7 +83,7 @@ namespace App.Metrics.Facts.Core
             var counter = _context.Advanced.Counter(counterOptions);
             var meter = _context.Advanced.Meter(meterOptions);
 
-            var filter = new MetricsFilter().WhereType(MetricType.Counter);
+            var filter = new DefaultMetricsFilter().WhereType(MetricType.Counter);
 
             counter.Increment();
             meter.Mark(1);

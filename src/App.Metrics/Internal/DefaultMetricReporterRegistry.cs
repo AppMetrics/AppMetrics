@@ -22,7 +22,7 @@ namespace App.Metrics.Internal
         private readonly ILogger _logger;
         private readonly ILoggerFactory _loggerFactory;
         private readonly IMetricsContext _metricsContext;
-        private readonly List<ScheduledReporter> _reports = new List<ScheduledReporter>();
+        private readonly List<DefaultScheduledReporter> _reports = new List<DefaultScheduledReporter>();
 
         private bool _disposed = false;
 
@@ -71,7 +71,7 @@ namespace App.Metrics.Internal
 
             _reports.ForEach(r =>
             {
-                if (r != default(ScheduledReporter))
+                if (r != default(DefaultScheduledReporter))
                 {
                     r.Dispose();
                 }
@@ -99,7 +99,7 @@ namespace App.Metrics.Internal
         public IMetricReporterRegistry WithReport(IMetricsReport report, TimeSpan interval,
             IMetricsFilter filter = null)
         {
-            var newReport = new ScheduledReporter(_loggerFactory, _metricsContext, report, interval);
+            var newReport = new DefaultScheduledReporter(_loggerFactory, _metricsContext, report, interval);
             _reports.Add(newReport);
             return this;
         }

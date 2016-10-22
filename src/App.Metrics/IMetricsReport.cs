@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using App.Metrics.MetricData;
 using App.Metrics.Utils;
 
-namespace App.Metrics.Reporters
+namespace App.Metrics
 {
     public interface IMetricsReport : IHideObjectMembers, IDisposable
     {

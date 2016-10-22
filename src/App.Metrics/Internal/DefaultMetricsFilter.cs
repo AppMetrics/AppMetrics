@@ -1,32 +1,10 @@
-﻿// Copyright (c) Allan hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
-// Ported/Refactored to .NET Standard Library by Allan Hardy
-
-
 using System;
 using System.Collections.Generic;
-using App.Metrics.Utils;
+using App.Metrics.MetricData;
 
-namespace App.Metrics.MetricData
+namespace App.Metrics.Internal
 {
-    public interface IMetricsFilter : IHideObjectMembers
-    {
-        bool IsMatch(string context);
-
-        bool IsMatch(GaugeValueSource gauge);
-
-        bool IsMatch(CounterValueSource counter);
-
-        bool IsMatch(MeterValueSource meter);
-
-        bool IsMatch(HistogramValueSource histogram);
-
-        bool IsMatch(TimerValueSource timer);
-    }
-
-    public sealed class MetricsFilter : IMetricsFilter
+    internal sealed class DefaultMetricsFilter : IMetricsFilter
     {
         public static IMetricsFilter All = new NoOpFilter();
         private Predicate<string> _context;
@@ -83,29 +61,29 @@ namespace App.Metrics.MetricData
             return IsNameMatch(timer.Name);
         }
 
-        public MetricsFilter WhereContext(Predicate<string> condition)
+        public DefaultMetricsFilter WhereContext(Predicate<string> condition)
         {
             _context = condition;
             return this;
         }
 
-        public MetricsFilter WhereContext(string context)
+        public DefaultMetricsFilter WhereContext(string context)
         {
             return WhereContext(c => c.Equals(context, StringComparison.OrdinalIgnoreCase));
         }
 
-        public MetricsFilter WhereName(Predicate<string> condition)
+        public DefaultMetricsFilter WhereName(Predicate<string> condition)
         {
             _name = condition;
             return this;
         }
 
-        public MetricsFilter WhereNameStartsWith(string name)
+        public DefaultMetricsFilter WhereNameStartsWith(string name)
         {
             return WhereName(n => n.StartsWith(name, StringComparison.OrdinalIgnoreCase));
         }
 
-        public MetricsFilter WhereType(params MetricType[] types)
+        public DefaultMetricsFilter WhereType(params MetricType[] types)
         {
             _types = new HashSet<MetricType>(types);
             return this;
