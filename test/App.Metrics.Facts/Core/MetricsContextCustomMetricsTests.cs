@@ -51,8 +51,13 @@ namespace App.Metrics.Facts.Core
         public void can_register_timer_with_custom_histogram()
         {
             var histogram = new CustomHistogram();
+            var timerOptions = new TimerOptions
+            {
+                Name = "custom",
+                MeasurementUnit = Unit.Calls
+            };
 
-            var timer = _context.Advanced.Timer("custom", Unit.Calls, () => (IHistogramImplementation)histogram);
+            var timer = _context.Advanced.Timer(timerOptions, () => (IHistogramImplementation)histogram);
 
             timer.Record(10L, TimeUnit.Nanoseconds);
 
@@ -64,7 +69,12 @@ namespace App.Metrics.Facts.Core
         public void can_register_timer_with_custom_reservoir()
         {
             var reservoir = new CustomReservoir();
-            var timer = _context.Advanced.Timer("custom", Unit.Calls, () => (IReservoir)reservoir);
+            var timerOptions = new TimerOptions
+            {
+                Name = "custom",
+                MeasurementUnit = Unit.Calls
+            };
+            var timer = _context.Advanced.Timer(timerOptions, () => (IReservoir)reservoir);
 
             timer.Record(10L, TimeUnit.Nanoseconds);
 

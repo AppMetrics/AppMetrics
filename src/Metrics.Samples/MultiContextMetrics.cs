@@ -36,7 +36,7 @@ namespace Metrics.Samples
             var context = _metricsContext.Advanced.Group(instanceName);
 
             _instanceCounter = context.Advanced.Counter(SampleMetricsRegistry.Counters.SampleCounter);
-            _instanceTimer = context.Advanced.Timer("Sample Timer", Unit.Requests);
+            _instanceTimer = context.Advanced.Timer(SampleMetricsRegistry.Timers.SampleTimer);
         }
 
         public void Run()

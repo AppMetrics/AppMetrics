@@ -27,7 +27,6 @@ namespace App.Metrics.Core
 
         void CompletelyDisableMetrics();
 
-
         ICounter Counter(CounterOptions options);
 
         ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterImplementation;
@@ -54,28 +53,12 @@ namespace App.Metrics.Core
 
         void ShutdownGroup(string groupName);
 
-        ITimer Timer(string name,
-            Unit unit,
-            SamplingType samplingType,
-            TimeUnit rateUnit = TimeUnit.Seconds,
-            TimeUnit durationUnit = TimeUnit.Milliseconds,
-            MetricTags tags = default(MetricTags));
+        ITimer Timer(TimerOptions options);
 
-        ITimer Timer(string name,
-            Unit unit,
-            TimeUnit rateUnit = TimeUnit.Seconds,
-            TimeUnit durationUnit = TimeUnit.Milliseconds,
-            MetricTags tags = default(MetricTags));
+        ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerImplementation;
 
-        ITimer Timer<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit = TimeUnit.Seconds, TimeUnit durationUnit = TimeUnit.Milliseconds,
-            MetricTags tags = default(MetricTags))
-            where T : ITimerImplementation;
+        ITimer Timer(TimerOptions options, Func<IHistogramImplementation> builder);
 
-        ITimer Timer(string name, Unit unit, Func<IHistogramImplementation> builder, TimeUnit rateUnit = TimeUnit.Seconds,
-            TimeUnit durationUnit = TimeUnit.Milliseconds, MetricTags tags = default(MetricTags));
-
-
-        ITimer Timer(string name, Unit unit, Func<IReservoir> builder, TimeUnit rateUnit = TimeUnit.Seconds,
-            TimeUnit durationUnit = TimeUnit.Milliseconds, MetricTags tags = default(MetricTags));
+        ITimer Timer(TimerOptions options, Func<IReservoir> builder);
     }
 }

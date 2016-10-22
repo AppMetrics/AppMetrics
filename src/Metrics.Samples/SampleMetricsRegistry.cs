@@ -137,5 +137,20 @@ namespace Metrics.Samples
                 MeasurementUnit = Unit.Items
             };
         }
+
+        public static class Timers
+        {
+            public static TimerOptions Requests = new TimerOptions
+            {
+                Name = "Requests",
+                MeasurementUnit = Unit.Requests
+            };
+
+            public static TimerOptions SampleTimer = new TimerOptions
+            {
+                Name = "Sample Timer",
+                MeasurementUnit = Unit.Requests
+            };
+        }
     }
 }

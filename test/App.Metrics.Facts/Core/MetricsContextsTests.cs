@@ -118,6 +118,13 @@ namespace App.Metrics.Facts.Core
                 Tags = "tag"
             };
 
+            var timerOptions = new TimerOptions
+            {
+                Name = "test",
+                MeasurementUnit = Unit.None,
+                Tags = "tag"
+            };
+
             _context.Advanced.Counter(counterOptions);
             _context.Advanced.MetricsDataManager.GetMetricsData(_context).Counters.Single().Tags.Should().Equal("tag");
 
@@ -127,7 +134,7 @@ namespace App.Metrics.Facts.Core
             _context.Advanced.Histogram(histogramOptions);
             _context.Advanced.MetricsDataManager.GetMetricsData(_context).Histograms.Single().Tags.Should().Equal("tag");
 
-            _context.Advanced.Timer("test", Unit.None, tags: "tag");
+            _context.Advanced.Timer(timerOptions);
             _context.Advanced.MetricsDataManager.GetMetricsData(_context).Timers.Single().Tags.Should().Equal("tag");
         }
 
@@ -231,11 +238,17 @@ namespace App.Metrics.Facts.Core
                     MeasurementUnit = Unit.Calls
                 };
 
+                var timerOptions = new TimerOptions
+                {
+                    Name = name,
+                    MeasurementUnit = Unit.Calls
+                };
+
                 _context.Advanced.Gauge(gaugeOptions, () => 0.0);
                 _context.Advanced.Counter(counterOptions);
                 _context.Advanced.Meter(meterOptions);
                 _context.Advanced.Histogram(histogramOptions);
-                _context.Advanced.Timer(name, Unit.Calls);
+                _context.Advanced.Timer(timerOptions);
             })).ShouldNotThrow();
         }
 

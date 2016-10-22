@@ -176,31 +176,29 @@ namespace App.Metrics.Core
             }
         }
 
-        public ITimer Timer(string name, Unit unit, SamplingType samplingType, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
+        public ITimer Timer(TimerOptions options)
         {
-            return _registry.Timer(name, () => _builder.BuildTimer(name, unit, rateUnit, durationUnit, samplingType), unit, rateUnit,
-                durationUnit, tags);
+            var samplingType = options.SamplingType == SamplingType.Default ? _defaultSamplingType : options.SamplingType;
+            return _registry.Timer(options.Name, 
+                () => _builder.BuildTimer(options.Name, options.MeasurementUnit, options.RateUnit, options.DurationUnit, samplingType), 
+                options.MeasurementUnit, options.RateUnit, options.DurationUnit, options.Tags);
         }
 
-        public ITimer Timer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
+        public ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerImplementation
         {
-            return Timer(name, unit, _defaultSamplingType, rateUnit, durationUnit, tags);
+            //TODO: AH - ^ bit confusing
+            return _registry.Timer(options, builder);
         }
 
-        public ITimer Timer<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
-            where T : ITimerImplementation
+        public ITimer Timer(TimerOptions options, Func<IHistogramImplementation> builder)
         {
-            return _registry.Timer(name, builder, unit, rateUnit, durationUnit, tags);
+            //TODO: AH - ^ bit confusing
+            return Timer(options, () => _builder.BuildTimer(options.Name, options.MeasurementUnit, options.RateUnit, options.DurationUnit, builder()));
         }
 
-        public ITimer Timer(string name, Unit unit, Func<IHistogramImplementation> builder, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
+        public ITimer Timer(TimerOptions options, Func<IReservoir> builder)
         {
-            return Timer(name, unit, () => _builder.BuildTimer(name, unit, rateUnit, durationUnit, builder()), rateUnit, durationUnit, tags);
-        }
-
-        public ITimer Timer(string name, Unit unit, Func<IReservoir> builder, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
-        {
-            return Timer(name, unit, () => _builder.BuildTimer(name, unit, rateUnit, durationUnit, builder()), rateUnit, durationUnit, tags);
+            return Timer(options, () => _builder.BuildTimer(options.Name, options.MeasurementUnit, options.RateUnit, options.DurationUnit, builder()));
         }
 
         private IMetricsContext CreateChildContextInstance(string contextName)

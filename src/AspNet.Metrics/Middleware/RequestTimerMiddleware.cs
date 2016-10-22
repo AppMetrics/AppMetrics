@@ -1,10 +1,10 @@
 // Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using System.Threading.Tasks;
 using App.Metrics;
+using AspNet.Metrics.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -23,7 +23,7 @@ namespace AspNet.Metrics.Middleware
             : base(next, options, loggerFactory, metricsContext)
         {
             _requestTimer = MetricsContext.GetWebApplicationContext().Advanced
-                .Timer("Web Requests", Unit.Requests);
+                .Timer(AspNetMetricsRegistry.Groups.WebRequests.Timers.WebRequestTimer);
         }
 
         public async Task Invoke(HttpContext context)

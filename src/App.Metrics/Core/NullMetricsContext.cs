@@ -1,9 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
-// Ported/Refactored to .NET Standard Library by Allan Hardy
-
 
 using System;
 using System.Collections.Concurrent;
@@ -38,6 +35,11 @@ namespace App.Metrics.Core
                 healthCheckDataProvider, metricsDataManager);
         }
 
+
+        public event EventHandler ContextDisabled;
+
+        public event EventHandler ContextShuttingDown;
+
         public IAdvancedMetricsContext Advanced => this;
 
         public IClock Clock => _metricsContext.Advanced.Clock;
@@ -46,6 +48,32 @@ namespace App.Metrics.Core
         public string GroupName { get; }
 
         public ConcurrentDictionary<string, IMetricsContext> Groups { get; } = new ConcurrentDictionary<string, IMetricsContext>();
+
+        public IHealthCheckManager HealthCheckManager { get; }
+
+        public IMetricRegistryManager MetricRegistryManager { get; }
+
+        public IMetricsDataManager MetricsDataManager { get; }
+
+        public bool AttachGroup(string groupName, IMetricsContext context)
+        {
+            return _metricsContext.Advanced.AttachGroup(groupName, context);
+        }
+
+        public void CompletelyDisableMetrics()
+        {
+            _metricsContext.Advanced.CompletelyDisableMetrics();
+        }
+
+        public ICounter Counter(CounterOptions options)
+        {
+            return _metricsContext.Advanced.Counter(options);
+        }
+
+        public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterImplementation
+        {
+            return _metricsContext.Advanced.Counter(options, builder);
+        }
 
 
         public void Decrement(CounterOptions options)
@@ -79,9 +107,34 @@ namespace App.Metrics.Core
             _metricsContext.Gauge(options, valueProvider);
         }
 
+        public void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider)
+        {
+            _metricsContext.Advanced.Gauge(options, valueProvider);
+        }
+
         public IMetricsContext Group(string groupName)
         {
             return _metricsContext.Advanced.Group(groupName);
+        }
+
+        public IMetricsContext Group(string groupName, Func<string, IMetricsContext> groupCreator)
+        {
+            return _metricsContext.Advanced.Group(groupName, groupCreator);
+        }
+
+        public IHistogram Histogram(HistogramOptions options)
+        {
+            return _metricsContext.Advanced.Histogram(options);
+        }
+
+        public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramImplementation
+        {
+            return _metricsContext.Advanced.Histogram(options, builder);
+        }
+
+        public IHistogram Histogram(HistogramOptions options, Func<IReservoir> builder)
+        {
+            return _metricsContext.Advanced.Histogram(options, builder);
         }
 
         public void Increment(CounterOptions options)
@@ -124,38 +177,14 @@ namespace App.Metrics.Core
             _metricsContext.Mark(options, amount, item);
         }
 
-        public void Time(TimerOptions options, Action action, string userValue)
+        public IMeter Meter(MeterOptions options)
         {
-            _metricsContext.Time(options, action, userValue);
+            return _metricsContext.Advanced.Meter(options);
         }
 
-        public void Update(HistogramOptions options, long value, string userValue)
+        public IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterImplementation
         {
-            _metricsContext.Update(options, value, userValue);
-        }
-
-        #region advanced
-
-        //TODO: Move advanced into separate class
-
-        public event EventHandler ContextDisabled;
-
-        public event EventHandler ContextShuttingDown;
-
-        public IHealthCheckManager HealthCheckManager { get; }
-
-        public IMetricsDataManager MetricsDataManager { get; }
-
-        public IMetricRegistryManager MetricRegistryManager { get; }
-
-        public bool AttachGroup(string groupName, IMetricsContext context)
-        {
-            return _metricsContext.Advanced.AttachGroup(groupName, context);
-        }
-
-        public void CompletelyDisableMetrics()
-        {
-            _metricsContext.Advanced.CompletelyDisableMetrics();
+            return _metricsContext.Advanced.Meter(options, builder);
         }
 
         public void ResetMetricsValues()
@@ -168,75 +197,9 @@ namespace App.Metrics.Core
             _metricsContext.Advanced.ShutdownGroup(groupName);
         }
 
-        public ICounter Counter(CounterOptions options)
+        public void Time(TimerOptions options, Action action, string userValue)
         {
-            return _metricsContext.Advanced.Counter(options);
-        }
-
-        public ITimer Timer(string name, Unit unit, SamplingType samplingType, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
-        {
-            return _metricsContext.Advanced.Timer(name, unit, samplingType, rateUnit, durationUnit, tags);
-        }
-
-        public ITimer Timer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
-        {
-            return _metricsContext.Advanced.Timer(name, unit, rateUnit, durationUnit, tags);
-        }
-
-        public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterImplementation
-        {
-            return _metricsContext.Advanced.Counter(options, builder);
-        }
-
-        public ITimer Timer<T>(string name, Unit unit, Func<T> builder, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
-            where T : ITimerImplementation
-        {
-            return _metricsContext.Advanced.Timer(name, unit, builder, rateUnit, durationUnit, tags);
-        }
-
-        public ITimer Timer(string name, Unit unit, Func<IHistogramImplementation> builder, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
-        {
-            return _metricsContext.Advanced.Timer(name, unit, builder, rateUnit, durationUnit, tags);
-        }
-
-        public ITimer Timer(string name, Unit unit, Func<IReservoir> builder, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
-        {
-            return _metricsContext.Advanced.Timer(name, unit, builder, rateUnit, durationUnit, tags);
-        }
-
-        public void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider)
-        {
-            _metricsContext.Advanced.Gauge(options, valueProvider);
-        }
-
-        public IHistogram Histogram(HistogramOptions options)
-        {
-            return _metricsContext.Advanced.Histogram(options);
-        }
-
-        public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramImplementation
-        {
-            return _metricsContext.Advanced.Histogram(options, builder);
-        }
-
-        public IHistogram Histogram(HistogramOptions options, Func<IReservoir> builder)
-        {
-            return _metricsContext.Advanced.Histogram(options, builder);
-        }
-
-        public IMeter Meter(MeterOptions options)
-        {
-            return _metricsContext.Advanced.Meter(options);
-        }
-
-        public IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterImplementation
-        {
-            return _metricsContext.Advanced.Meter(options, builder);
-        }
-
-        public IMetricsContext Group(string groupName, Func<string, IMetricsContext> groupCreator)
-        {
-            return _metricsContext.Advanced.Group(groupName, groupCreator);
+            _metricsContext.Time(options, action, userValue);
         }
 
         public void Time(TimerOptions options, Action action)
@@ -244,11 +207,34 @@ namespace App.Metrics.Core
             _metricsContext.Time(options, action);
         }
 
+        public ITimer Timer(TimerOptions options)
+        {
+            return _metricsContext.Advanced.Timer(options);
+        }
+
+        public ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerImplementation
+        {
+            return _metricsContext.Advanced.Timer(options);
+        }
+
+        public ITimer Timer(TimerOptions options, Func<IHistogramImplementation> builder)
+        {
+            return _metricsContext.Advanced.Timer(options, builder);
+        }
+
+        public ITimer Timer(TimerOptions options, Func<IReservoir> builder)
+        {
+            return _metricsContext.Advanced.Timer(options, builder);
+        }
+
+        public void Update(HistogramOptions options, long value, string userValue)
+        {
+            _metricsContext.Update(options, value, userValue);
+        }
+
         public void Update(HistogramOptions options, long value)
         {
             _metricsContext.Update(options, value);
         }
-
-        #endregion
     }
 }

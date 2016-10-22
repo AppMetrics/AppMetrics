@@ -150,6 +150,21 @@ namespace AspNet.Metrics.Internal
                         MeasurementUnit = Unit.Errors
                     };
                 }
+
+                public static class Timers
+                {
+                    public static Func<string, TimerOptions> EndpointPerRequestTimer = routeTemplate => new TimerOptions
+                    {
+                        Name = routeTemplate,
+                        MeasurementUnit = Unit.Requests
+                    };
+
+                    public static TimerOptions WebRequestTimer = new TimerOptions
+                    {
+                        Name = "Web Requests",
+                        MeasurementUnit = Unit.Requests
+                    };
+                }
             }
         }
     }

@@ -50,7 +50,7 @@ namespace Metrics.Samples
             _meter = _metricsContext.Advanced.Meter(SampleMetricsRegistry.Meters.Requests);
             _setCounter = _metricsContext.Advanced.Counter(SampleMetricsRegistry.Counters.SetCounter);
             _setMeter = _metricsContext.Advanced.Meter(SampleMetricsRegistry.Meters.SetMeter);
-            _timer = _metricsContext.Advanced.Timer("Requests", Unit.Requests);
+            _timer = _metricsContext.Advanced.Timer(SampleMetricsRegistry.Timers.Requests);
             _totalRequestsCounter = _metricsContext.Advanced.Counter(SampleMetricsRegistry.Counters.Requests);
 
             // define a simple gauge that will provide the instant value of someValue when requested

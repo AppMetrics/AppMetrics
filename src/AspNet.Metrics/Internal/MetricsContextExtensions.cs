@@ -122,7 +122,7 @@ namespace AppMetrics
         public static IMetricsContext RecordEndpointRequestTime(this IMetricsContext metrics, string clientId, string routeTemplate, long elapsed)
         {
             metrics.GetWebApplicationContext().Advanced
-                .Timer(routeTemplate, Unit.Requests)
+                .Timer(AspNetMetricsRegistry.Groups.WebRequests.Timers.EndpointPerRequestTimer(routeTemplate))
                 .Record(elapsed, TimeUnit.Nanoseconds, clientId.IsPresent() ? clientId : null);
 
             return metrics;

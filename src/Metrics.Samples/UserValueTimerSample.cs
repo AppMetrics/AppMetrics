@@ -14,7 +14,7 @@ namespace Metrics.Samples
         {
             _metricsContext = metricsContext;
 
-            _timer = _metricsContext.Advanced.Timer("Requests", Unit.Requests);
+            _timer = _metricsContext.Advanced.Timer(SampleMetricsRegistry.Timers.Requests);
         }
 
         public void Process(string documentId)
