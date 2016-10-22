@@ -114,17 +114,16 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             {
                 var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>().Value;
 
-                return new DefaultMetricsBuilder(options.SystemClock, options.DefaultSamplingType);
+                return new DefaultMetricsBuilder(options.Clock, options.DefaultSamplingType);
             });
             services.TryAddSingleton(typeof(IMetricsRegistry), provider =>
             {
                 //TODO: AH - need to resolve env info. Create a test as well?
                 var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
-                return new DefaultMetricsRegistry(options.Value.GlobalContextName, options.Value.DefaultSamplingType,
-                    options.Value.SystemClock, EnvironmentInfo.Empty, provider.GetRequiredService<Func<string, IMetricGroupRegistry>>());
+                return new DefaultMetricsRegistry(options, EnvironmentInfo.Empty, provider.GetRequiredService<Func<string, IMetricGroupRegistry>>());
             });
             services.TryAddSingleton<IMetricsDataManager, DefaultMetricsDataManager>();
-            services.TryAddSingleton(typeof(IClock), provider => provider.GetRequiredService<IOptions<AppMetricsOptions>>().Value.SystemClock);
+            services.TryAddSingleton(typeof(IClock), provider => provider.GetRequiredService<IOptions<AppMetricsOptions>>().Value.Clock);
            
             services.TryAddSingleton<EnvironmentInfoBuilder, EnvironmentInfoBuilder>();
 
@@ -142,7 +141,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
 
                 if (metricsContext == default(IMetricsContext))
                 {
-                    metricsContext = new DefaultMetricsContext(options.Value.GlobalContextName, options.Value.SystemClock,
+                    metricsContext = new DefaultMetricsContext(options.Value.Clock,
                         provider.GetRequiredService<IMetricsRegistry>(), 
                         metricsBuilder, healthCheckDataProvider, provider.GetRequiredService<IMetricsDataManager>());
                 }

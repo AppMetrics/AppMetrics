@@ -10,8 +10,8 @@ using App.Metrics.Core;
 using App.Metrics.DataProviders;
 using App.Metrics.Infrastructure;
 using App.Metrics.MetricData;
-using App.Metrics.Registries;
 using App.Metrics.Utils;
+using Microsoft.Extensions.Options;
 
 namespace App.Metrics.Internal
 {
@@ -20,22 +20,20 @@ namespace App.Metrics.Internal
         private readonly IClock _clock;
         private readonly string _defaultGroupName;
         private readonly SamplingType _defaultSamplingType;
+
         private readonly EnvironmentInfo _environment;
         private readonly ConcurrentDictionary<string, IMetricGroupRegistry> _groups = new ConcurrentDictionary<string, IMetricGroupRegistry>();
         private readonly Func<string, IMetricGroupRegistry> _newGroupRegistry;
 
-        public DefaultMetricsRegistry(string defaultGroupName,
-            SamplingType defaultSamplingType,
-            IClock clock,
+        public DefaultMetricsRegistry(IOptions<AppMetricsOptions> options,
             EnvironmentInfo environment,
             Func<string, IMetricGroupRegistry> newGroupRegistry)
         {
-            _defaultGroupName = defaultGroupName;
-            _defaultSamplingType = defaultSamplingType;
-            _clock = clock;
             _environment = environment;
             _newGroupRegistry = newGroupRegistry;
-
+            _defaultGroupName = options.Value.DefaultGroupName;
+            _defaultSamplingType = options.Value.DefaultSamplingType;
+            _clock = options.Value.Clock;
             _groups.TryAdd(_defaultGroupName, newGroupRegistry(_defaultGroupName));
         }
 
@@ -62,14 +60,34 @@ namespace App.Metrics.Internal
 
         public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterImplementation
         {
-            options.EnsureGroupName(_defaultGroupName);
+            EnsureGroupName(options);
             var registry = _groups.GetOrAdd(options.GroupName, _newGroupRegistry);
             return registry.Counter(options, builder);
         }
 
+        public MetricValueOptions EnsureGroupName(MetricValueOptions options)
+        {
+            if (options.GroupName.IsMissing())
+            {
+                options.GroupName = _defaultGroupName;
+            }
+
+            return options;
+        }
+
+        public MetricValueWithSamplingOption EnsureSamplingType(MetricValueWithSamplingOption options)
+        {
+            if (options.SamplingType == SamplingType.Default)
+            {
+                options.SamplingType = _defaultSamplingType;
+            }
+
+            return options;
+        }
+
         public void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider)
         {
-            options.EnsureGroupName(_defaultGroupName);
+            EnsureGroupName(options);
             var registry = _groups.GetOrAdd(options.GroupName, _newGroupRegistry);
             registry.Gauge(options, valueProvider);
         }
@@ -129,15 +147,15 @@ namespace App.Metrics.Internal
 
         public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramImplementation
         {
-            options.EnsureGroupName(_defaultGroupName);
-            options.EnsureSamplingType(_defaultSamplingType);
+            EnsureGroupName(options);
+            EnsureSamplingType(options);
             var registry = _groups.GetOrAdd(options.GroupName, _newGroupRegistry);
             return registry.Histogram(options, builder);
         }
 
         public IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterImplementation
         {
-            options.EnsureGroupName(_defaultGroupName);
+            EnsureGroupName(options);
             var registry = _groups.GetOrAdd(options.GroupName, _newGroupRegistry);
             return registry.Meter(options, builder);
         }
@@ -159,8 +177,8 @@ namespace App.Metrics.Internal
 
         public ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerImplementation
         {
-            options.EnsureGroupName(_defaultGroupName);
-            options.EnsureSamplingType(_defaultSamplingType);
+            EnsureGroupName(options);
+            EnsureSamplingType(options);
             var registry = _groups.GetOrAdd(options.GroupName, _newGroupRegistry);
             return registry.Timer(options, builder);
         }

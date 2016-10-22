@@ -18,7 +18,7 @@ namespace App.Metrics
 
         public AppMetricsOptions()
         {
-            GlobalContextName = DefaultGlobalContextName;
+            DefaultGroupName = DefaultGlobalContextName;
             DisableMetrics = false;
             DisableHealthChecks = false;
             DefaultSamplingType = SamplingType.ExponentiallyDecaying;
@@ -33,7 +33,7 @@ namespace App.Metrics
 
         public bool DisableMetrics { get; set; }
 
-        public string GlobalContextName { get; set; }
+        public string DefaultGroupName { get; set; }
 
         public Action<IHealthCheckRegistry> HealthCheckRegistry { get; set; }
 
@@ -43,7 +43,7 @@ namespace App.Metrics
 
         public Action<IMetricReporterRegistry> Reporters { get; set; }
 
-        public IClock SystemClock { get; set; } = Clock.Default;
+        public IClock Clock { get; set; } = Utils.Clock.Default;
 
         private static string CleanName(string name)
         {

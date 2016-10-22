@@ -15,7 +15,7 @@ namespace AspNet.Metrics.Facts
     {
         private static readonly AppMetricsOptions TestOptions = new AppMetricsOptions
         {
-            GlobalContextName = "testing",
+            DefaultGroupName = "testing",
             DisableMetrics = false,
             DisableHealthChecks = false,
             JsonSchemeVersion = JsonSchemeVersion.Version1
@@ -55,7 +55,7 @@ namespace AspNet.Metrics.Facts
                     services.AddMetrics(options =>
                     {
                         options.DefaultSamplingType = testOptions.DefaultSamplingType;
-                        options.GlobalContextName = testOptions.GlobalContextName;
+                        options.DefaultGroupName = testOptions.DefaultGroupName;
                         options.DisableMetrics = testOptions.DisableMetrics;
                         options.DisableHealthChecks = testOptions.DisableHealthChecks;
                         options.JsonSchemeVersion = testOptions.JsonSchemeVersion;

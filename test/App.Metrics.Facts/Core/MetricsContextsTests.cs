@@ -24,17 +24,16 @@ namespace App.Metrics.Facts.Core
             new DefaultHealthCheckManager(LoggerFactory, new DefaultHealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options));
         private static readonly Func<string, IMetricGroupRegistry> NewMetricsGroupRegistry = name => new DefaultMetricGroupRegistry(name);
 
-        private static readonly IMetricsRegistry Registry = new DefaultMetricsRegistry(Options.Value.GlobalContextName,
-            Options.Value.DefaultSamplingType, Options.Value.SystemClock, new EnvironmentInfo(), NewMetricsGroupRegistry);
+        private static readonly IMetricsRegistry Registry = new DefaultMetricsRegistry(Options, new EnvironmentInfo(), NewMetricsGroupRegistry);
 
         private static readonly IMetricsDataManager MetricsDataManager =
             new DefaultMetricsDataManager(LoggerFactory, Registry);
 
-        private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.SystemClock, Options.Value.DefaultSamplingType);
+        private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.Clock, Options.Value.DefaultSamplingType);
       
 
-        private readonly IMetricsContext _context = new DefaultMetricsContext(Options.Value.GlobalContextName,
-            Options.Value.SystemClock, Registry, MetricsBuilder, HealthCheckManager, MetricsDataManager);
+        private readonly IMetricsContext _context = new DefaultMetricsContext(
+            Options.Value.Clock, Registry, MetricsBuilder, HealthCheckManager, MetricsDataManager);
 
         public Func<IMetricsContext, MetricsData> CurrentData => ctx => _context.Advanced.MetricsDataManager.GetMetricsData();
 

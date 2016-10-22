@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using App.Metrics.DataProviders;
 using App.Metrics.Internal;
@@ -15,8 +14,7 @@ namespace App.Metrics.Core
         private readonly IMetricsBuilder _builder;
         private readonly IMetricsRegistry _registry;
 
-
-        public DefaultMetricsContext(string defaultGroupName,
+        public DefaultMetricsContext(
             IClock clock,
             IMetricsRegistry registry,
             IMetricsBuilder builder,
@@ -26,13 +24,10 @@ namespace App.Metrics.Core
             _registry = registry;
             _builder = builder;
 
-            DefaultGroupName = defaultGroupName;
             Advanced = new DefaultAdancedMetricsContext(this, clock, _registry, builder, healthCheckManager, metricsDataManager);
         }
 
         public IAdvancedMetricsContext Advanced { get; }
-
-        public string DefaultGroupName { get; }
 
         public void Decrement(CounterOptions options, long amount)
         {
@@ -66,12 +61,7 @@ namespace App.Metrics.Core
 
         public void Dispose(bool disposing)
         {
-            if (!disposing) return;
-
-            //if (!_isDisabled)
-            //{
-            //    ContextShuttingDown?.Invoke(this, EventArgs.Empty);
-            //}
+            //TODO: AH - need to dispose anything?
         }
 
         public void Gauge(GaugeOptions options, Func<double> valueProvider)

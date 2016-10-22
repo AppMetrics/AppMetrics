@@ -32,7 +32,7 @@ namespace AspNet.Metrics.Facts.Middleware
         {
             _fixture = new MetricsTestFixture(new AppMetricsOptions
             {
-                GlobalContextName = "testing",
+                DefaultGroupName = "testing",
                 DisableMetrics = true,
                 DisableHealthChecks = false,
                 JsonSchemeVersion = JsonSchemeVersion.Version1
@@ -48,7 +48,7 @@ namespace AspNet.Metrics.Facts.Middleware
         {
             _fixture = new MetricsTestFixture(new AppMetricsOptions
             {
-                GlobalContextName = "testing",
+                DefaultGroupName = "testing",
                 DisableMetrics = false,
                 DisableHealthChecks = false,
                 JsonSchemeVersion = JsonSchemeVersion.Version1
@@ -64,7 +64,7 @@ namespace AspNet.Metrics.Facts.Middleware
         {
             _fixture = new MetricsTestFixture(new AppMetricsOptions
             {
-                GlobalContextName = "testing",
+                DefaultGroupName = "testing",
                 DisableMetrics = false,
                 DisableHealthChecks = true,
                 JsonSchemeVersion = JsonSchemeVersion.Version1,

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using App.Metrics;
 using App.Metrics.Core;
 using App.Metrics.DataProviders;
@@ -17,15 +18,18 @@ namespace AspNet.Metrics.Facts
 
         public static IMetricsContext Instance(string defaultGroupName, IClock clock, IScheduler scheduler)
         {
-            var metricsRegistry = new DefaultMetricsRegistry(defaultGroupName, SamplingType.ExponentiallyDecaying, clock,
-                new EnvironmentInfo(),
-                group => new DefaultMetricGroupRegistry(group));
-
-            return new DefaultMetricsContext(defaultGroupName, clock, metricsRegistry,
+            var options = Options.Create(new AppMetricsOptions
+            {
+                Clock = clock,
+                DefaultGroupName = defaultGroupName
+            });
+            Func<string, IMetricGroupRegistry> newGroupRegistry = name => new DefaultMetricGroupRegistry(name);
+            var registry = new DefaultMetricsRegistry(options, new EnvironmentInfo(), newGroupRegistry);
+            return new DefaultMetricsContext(clock, registry,
                 new TestMetricsBuilder(clock, scheduler),
-                new DefaultHealthCheckManager(LoggerFactory, 
-                new DefaultHealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))),
-                new DefaultMetricsDataManager(LoggerFactory, metricsRegistry));
+                new DefaultHealthCheckManager(LoggerFactory,
+                    new DefaultHealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))),
+                new DefaultMetricsDataManager(LoggerFactory, registry));
         }
 
         public static IMetricsContext Instance()
@@ -40,7 +44,7 @@ namespace AspNet.Metrics.Facts
 
         public static IMetricsContext Instance(string defaultGroupName, IClock clock)
         {
-            return Instance("TestContext", clock, new TestScheduler(clock));
+            return Instance(defaultGroupName, clock, new TestScheduler(clock));
         }
     }
 }

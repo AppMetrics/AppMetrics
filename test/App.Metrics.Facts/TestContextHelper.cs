@@ -15,12 +15,16 @@ namespace App.Metrics.Facts
     {
         private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
 
-        public static IMetricsContext Instance(string context, IClock clock, IScheduler scheduler)
+        public static IMetricsContext Instance(string defaultGroupName, IClock clock, IScheduler scheduler)
         {
+            var options = Options.Create(new AppMetricsOptions
+            {
+                Clock = clock,
+                DefaultGroupName = defaultGroupName
+            });
             Func<string, IMetricGroupRegistry> newGroupRegistry = name => new DefaultMetricGroupRegistry(name);
-            var registry = new DefaultMetricsRegistry(context, SamplingType.ExponentiallyDecaying, clock,
-                new EnvironmentInfo(), newGroupRegistry);
-            return new DefaultMetricsContext(context, clock, registry,
+            var registry = new DefaultMetricsRegistry(options, new EnvironmentInfo(), newGroupRegistry);
+            return new DefaultMetricsContext(clock, registry,
                 new TestMetricsBuilder(clock, scheduler),
                 new DefaultHealthCheckManager(LoggerFactory,
                     new DefaultHealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))),
@@ -37,9 +41,9 @@ namespace App.Metrics.Facts
             return Instance("TestContext", clock, scheduler);
         }
 
-        public static IMetricsContext Instance(string context, IClock clock)
+        public static IMetricsContext Instance(string defaultGroupName, IClock clock)
         {
-            return Instance("TestContext", clock, new TestScheduler(clock));
+            return Instance(defaultGroupName, clock, new TestScheduler(clock));
         }
     }
 }
