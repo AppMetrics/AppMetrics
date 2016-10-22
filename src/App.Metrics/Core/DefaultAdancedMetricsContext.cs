@@ -125,25 +125,25 @@ namespace App.Metrics.Core
                 : _context.Groups.GetOrAdd(groupName, groupCreator);
         }
 
-        public IHistogram Histogram(string name, Unit unit, SamplingType samplingType, MetricTags tags)
+        public IHistogram Histogram(HistogramOptions options)
         {
-            return Histogram(name, unit, () => _builder.BuildHistogram(name, unit, samplingType), tags);
+            var samplingType = options.SamplingType == SamplingType.Default ? _defaultSamplingType : options.SamplingType;
+
+            return Histogram(options, () => _builder.BuildHistogram(options.Name, options.MeasurementUnit, samplingType));
         }
 
-        public IHistogram Histogram(string name, Unit unit, MetricTags tags)
+        public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramImplementation
         {
-            return Histogram(name, unit, _defaultSamplingType, tags);
+            //NOTE: Options Resevoir will be ignored the builder should specify
+            //TODO: AH - ^ bit confusing
+            return _registry.Histogram(options.Name, builder, options.MeasurementUnit, options.Tags);
         }
 
-        public IHistogram Histogram<T>(string name, Unit unit, Func<T> builder, MetricTags tags)
-            where T : IHistogramImplementation
+        public IHistogram Histogram(HistogramOptions options, Func<IReservoir> builder)
         {
-            return _registry.Histogram(name, builder, unit, tags);
-        }
-
-        public IHistogram Histogram(string name, Unit unit, Func<IReservoir> builder, MetricTags tags)
-        {
-            return Histogram(name, unit, () => _builder.BuildHistogram(name, unit, builder()), tags);
+            //NOTE: Options Resevoir will be ignored since we're defining it with the builder
+            //TODO: AH - ^ bit confusing
+            return Histogram(options, () => _builder.BuildHistogram(options.Name, options.MeasurementUnit, builder()));
         }
 
         public IMeter Meter(MeterOptions options)

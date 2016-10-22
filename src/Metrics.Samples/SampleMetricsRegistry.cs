@@ -122,5 +122,20 @@ namespace Metrics.Samples
                 }
             }
         }
+
+        public static class Histograms
+        {
+            public static HistogramOptions ResultsExample = new HistogramOptions
+            {
+                Name = "ResultExample",
+                MeasurementUnit = Unit.Items
+            };
+
+            public static HistogramOptions Results = new HistogramOptions
+            {
+                Name = "Results",
+                MeasurementUnit = Unit.Items
+            };
+        }
     }
 }

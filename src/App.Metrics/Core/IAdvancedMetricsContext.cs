@@ -40,19 +40,11 @@ namespace App.Metrics.Core
 
         IMetricsContext Group(string groupName);
 
-        IHistogram Histogram(string name,
-            Unit unit,
-            SamplingType samplingType,
-            MetricTags tags = default(MetricTags));
+        IHistogram Histogram(HistogramOptions options);
 
-        IHistogram Histogram(string name,
-            Unit unit,
-            MetricTags tags = default(MetricTags));
+        IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramImplementation;
 
-        IHistogram Histogram<T>(string name, Unit unit, Func<T> builder, MetricTags tags = default(MetricTags))
-            where T : IHistogramImplementation;
-
-        IHistogram Histogram(string name, Unit unit, Func<IReservoir> builder, MetricTags tags = default(MetricTags));
+        IHistogram Histogram(HistogramOptions options, Func<IReservoir> builder);
 
         IMeter Meter(MeterOptions options);
 

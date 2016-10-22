@@ -216,6 +216,14 @@ namespace Api.Sample
                 Tags = MetricTags.None
             };
 
+            public static HistogramOptions TestHAdvancedistogram { get; } = new HistogramOptions
+            {
+                Name = "Test Advanced Histogram",
+                SamplingType = SamplingType.ExponentiallyDecaying,
+                MeasurementUnit = Unit.MegaBytes,
+                Tags = MetricTags.None
+            };
+
             public static HistogramOptions TestHistogramWithUserValue { get; } = new HistogramOptions
             {
                 Name = "Test Histogram With User Value",

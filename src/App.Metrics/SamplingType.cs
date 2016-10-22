@@ -6,6 +6,8 @@ namespace App.Metrics
 {
     public enum SamplingType
     {
+        Default = 0,
+
         /// <summary>
         ///     Sampling will be done with a A High Dynamic Range (HDR) Histogram. Note: The HDR Histogram implementation is in
         ///     beta stage, some issues might still be present.

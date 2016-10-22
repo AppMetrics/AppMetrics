@@ -50,9 +50,8 @@
     public class HistogramOptions : MetricValueOptions
     {
         public HistogramOptions()
-        {
-            //TODO: AH - default set globally should be able to overriide this
-            SamplingType = SamplingType.ExponentiallyDecaying;    
+        {            
+            SamplingType = SamplingType.Default;    
         }
 
         public SamplingType SamplingType { get; set; }

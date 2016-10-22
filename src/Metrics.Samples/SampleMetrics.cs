@@ -46,7 +46,7 @@ namespace Metrics.Samples
         {
             _metricsContext = metricsContext;
             _concurrentRequestsCounter = _metricsContext.Advanced.Counter(SampleMetricsRegistry.Counters.ConcurrentRequestsCounter);
-            _histogramOfData = _metricsContext.Advanced.Histogram("ResultsExample", Unit.Items);
+            _histogramOfData = _metricsContext.Advanced.Histogram(SampleMetricsRegistry.Histograms.ResultsExample);
             _meter = _metricsContext.Advanced.Meter(SampleMetricsRegistry.Meters.Requests);
             _setCounter = _metricsContext.Advanced.Counter(SampleMetricsRegistry.Counters.SetCounter);
             _setMeter = _metricsContext.Advanced.Meter(SampleMetricsRegistry.Meters.SetMeter);

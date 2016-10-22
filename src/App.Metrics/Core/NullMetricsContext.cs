@@ -209,25 +209,19 @@ namespace App.Metrics.Core
             _metricsContext.Advanced.Gauge(options, valueProvider);
         }
 
-        public IHistogram Histogram(string name, Unit unit, SamplingType samplingType, MetricTags tags)
+        public IHistogram Histogram(HistogramOptions options)
         {
-            return _metricsContext.Advanced.Histogram(name, unit, samplingType, tags);
+            return _metricsContext.Advanced.Histogram(options);
         }
 
-        public IHistogram Histogram(string name, Unit unit, MetricTags tags)
+        public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramImplementation
         {
-            return _metricsContext.Advanced.Histogram(name, unit, tags);
+            return _metricsContext.Advanced.Histogram(options, builder);
         }
 
-        public IHistogram Histogram<T>(string name, Unit unit, Func<T> builder, MetricTags tags)
-            where T : IHistogramImplementation
+        public IHistogram Histogram(HistogramOptions options, Func<IReservoir> builder)
         {
-            return _metricsContext.Advanced.Histogram(name, unit, builder, tags);
-        }
-
-        public IHistogram Histogram(string name, Unit unit, Func<IReservoir> builder, MetricTags tags)
-        {
-            return _metricsContext.Advanced.Histogram(name, unit, builder, tags);
+            return _metricsContext.Advanced.Histogram(options, builder);
         }
 
         public IMeter Meter(MeterOptions options)
