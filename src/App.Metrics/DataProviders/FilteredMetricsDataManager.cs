@@ -3,6 +3,7 @@
 
 
 using System;
+using System.Threading.Tasks;
 using App.Metrics.MetricData;
 
 namespace App.Metrics.DataProviders
@@ -28,9 +29,10 @@ namespace App.Metrics.DataProviders
             _filter = filter;
         }
 
-        public MetricsData GetMetricsData()
+        public async Task<MetricsData> GetMetricsDataAsync()
         {
-            return _manager.GetMetricsData().Filter(_filter);
+            var data = await _manager.GetMetricsDataAsync();
+            return data.Filter(_filter);
         }
     }
 }

@@ -17,7 +17,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
 
 // ReSharper disable CheckNamespace
-
 namespace Microsoft.Extensions.DependencyInjection.Extensions
 // ReSharper restore CheckNamespace
 {
@@ -106,12 +105,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
         {
             services.TryAddTransient<Func<string, IMetricGroupRegistry>>(provider => { return group => new DefaultMetricGroupRegistry(group); });
             services.TryAddSingleton<IMetricsBuilder, DefaultMetricsBuilder>();
-            services.TryAddSingleton(typeof(IMetricsRegistry), provider =>
-            {
-                //TODO: AH - need to resolve env info. Create a test as well?
-                var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
-                return new DefaultMetricsRegistry(options, EnvironmentInfo.Empty, provider.GetRequiredService<Func<string, IMetricGroupRegistry>>());
-            });
+            services.TryAddSingleton<IMetricsRegistry, DefaultMetricsRegistry>();
             services.TryAddSingleton<IMetricsDataManager, DefaultMetricsDataManager>();
             services.TryAddSingleton(typeof(IClock), provider => provider.GetRequiredService<IOptions<AppMetricsOptions>>().Value.Clock);
             services.TryAddSingleton<EnvironmentInfoBuilder, EnvironmentInfoBuilder>();

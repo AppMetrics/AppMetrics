@@ -24,11 +24,11 @@ namespace AspNet.Metrics.Facts.Middleware
             await _fixture.Client.GetAsync("/api/test/error");
 
 
-            _fixture.TestContext.MeterValue("Application.WebRequests", "GET api/test/bad Total Error Requests").Count.Should().Be(1);
-            _fixture.TestContext.MeterValue("Application.WebRequests", "GET api/test/error Internal Server Error Requests").Count.Should().Be(2);
-            _fixture.TestContext.MeterValue("Application.WebRequests", "GET api/test/unauth Total Error Requests").Count.Should().Be(1);
-            _fixture.TestContext.MeterValue("Application.WebRequests", "Total Error Requests").Count.Should().Be(4);
-            _fixture.TestContext.TimerValue("Application.WebRequests", "Web Requests").Histogram.Count.Should().Be(5);
+            (await _fixture.TestContext.MeterValueAsync("Application.WebRequests", "GET api/test/bad Total Error Requests")).Count.Should().Be(1);
+            (await _fixture.TestContext.MeterValueAsync("Application.WebRequests", "GET api/test/error Internal Server Error Requests")).Count.Should().Be(2);
+            (await _fixture.TestContext.MeterValueAsync("Application.WebRequests", "GET api/test/unauth Total Error Requests")).Count.Should().Be(1);
+            (await _fixture.TestContext.MeterValueAsync("Application.WebRequests", "Total Error Requests")).Count.Should().Be(4);
+            (await _fixture.TestContext.TimerValueAsync("Application.WebRequests", "Web Requests")).Histogram.Count.Should().Be(5);
         }
 
         [Fact]
@@ -43,11 +43,11 @@ namespace AspNet.Metrics.Facts.Middleware
             await _fixture.Client.GetAsync("/api/test/error");
 
 
-            _fixture.TestContext.MeterValue("Application.WebRequests", "Total Bad Requests").Count.Should().Be(3);
-            _fixture.TestContext.MeterValue("Application.WebRequests", "Total Internal Server Error Requests").Count.Should().Be(2);
-            _fixture.TestContext.MeterValue("Application.WebRequests", "Total UnAuthorized Requests").Count.Should().Be(1);
-            _fixture.TestContext.MeterValue("Application.WebRequests", "Total Error Requests").Count.Should().Be(6);
-            _fixture.TestContext.TimerValue("Application.WebRequests", "Web Requests").Histogram.Count.Should().Be(7);
+            (await _fixture.TestContext.MeterValueAsync("Application.WebRequests", "Total Bad Requests")).Count.Should().Be(3);
+            (await _fixture.TestContext.MeterValueAsync("Application.WebRequests", "Total Internal Server Error Requests")).Count.Should().Be(2);
+            (await _fixture.TestContext.MeterValueAsync("Application.WebRequests", "Total UnAuthorized Requests")).Count.Should().Be(1);
+            (await _fixture.TestContext.MeterValueAsync("Application.WebRequests", "Total Error Requests")).Count.Should().Be(6);
+            (await _fixture.TestContext.TimerValueAsync("Application.WebRequests", "Web Requests")).Histogram.Count.Should().Be(7);
         }
 
         [Fact]
@@ -62,11 +62,11 @@ namespace AspNet.Metrics.Facts.Middleware
             await _fixture.Client.GetAsync("/api/test/error");
 
 
-            _fixture.TestContext.MeterValue("Application.WebRequests", "GET api/test/bad Bad Requests").Count.Should().Be(3);
-            _fixture.TestContext.MeterValue("Application.WebRequests", "GET api/test/error Internal Server Error Requests").Count.Should().Be(2);
-            _fixture.TestContext.MeterValue("Application.WebRequests", "GET api/test/unauth UnAuthorized Requests").Count.Should().Be(1);
-            _fixture.TestContext.MeterValue("Application.WebRequests", "Total Error Requests").Count.Should().Be(6);
-            _fixture.TestContext.TimerValue("Application.WebRequests", "Web Requests").Histogram.Count.Should().Be(7);
+            (await _fixture.TestContext.MeterValueAsync("Application.WebRequests", "GET api/test/bad Bad Requests")).Count.Should().Be(3);
+            (await _fixture.TestContext.MeterValueAsync("Application.WebRequests", "GET api/test/error Internal Server Error Requests")).Count.Should().Be(2);
+            (await _fixture.TestContext.MeterValueAsync("Application.WebRequests", "GET api/test/unauth UnAuthorized Requests")).Count.Should().Be(1);
+            (await _fixture.TestContext.MeterValueAsync("Application.WebRequests", "Total Error Requests")).Count.Should().Be(6);
+            (await _fixture.TestContext.TimerValueAsync("Application.WebRequests", "Web Requests")).Histogram.Count.Should().Be(7);
         }
     }
 }

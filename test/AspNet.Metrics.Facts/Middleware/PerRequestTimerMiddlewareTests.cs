@@ -21,14 +21,14 @@ namespace AspNet.Metrics.Facts.Middleware
             await _fixture.Client.GetAsync("/api/test/error");
 
 
-            var timer1 = _fixture.TestContext.TimerValue("Application.WebRequests", "GET api/test");
+            var timer1 = await _fixture.TestContext.TimerValueAsync("Application.WebRequests", "GET api/test");
             timer1.Histogram.Count.Should().Be(1);
 
-            var timer2 = _fixture.TestContext.TimerValue("Application.WebRequests", "GET api/test/error");
+            var timer2 = await _fixture.TestContext.TimerValueAsync("Application.WebRequests", "GET api/test/error");
             timer2.Histogram.Count.Should().Be(1);
 
 
-            var timer3 = _fixture.TestContext.TimerValue("Application.WebRequests", "Web Requests");
+            var timer3 = await _fixture.TestContext.TimerValueAsync("Application.WebRequests", "Web Requests");
             timer3.Histogram.Count.Should().Be(2);
         }
 
@@ -39,7 +39,7 @@ namespace AspNet.Metrics.Facts.Middleware
             await _fixture.Client.GetAsync("/api/test/30ms");
 
 
-            var timer1 = _fixture.TestContext.TimerValue("Application.WebRequests", "GET api/test/30ms");
+            var timer1 = await _fixture.TestContext.TimerValueAsync("Application.WebRequests", "GET api/test/30ms");
             timer1.Histogram.Min.Should().Be(30);
             timer1.Histogram.Max.Should().Be(30);
             timer1.Histogram.Mean.Should().Be(30);
@@ -49,7 +49,7 @@ namespace AspNet.Metrics.Facts.Middleware
             timer1.Histogram.Percentile999.Should().Be(30);
             timer1.TotalTime.Should().Be(30);
 
-            var timer2 = _fixture.TestContext.TimerValue("Application.WebRequests", "GET api/test/300ms");
+            var timer2 = await _fixture.TestContext.TimerValueAsync("Application.WebRequests", "GET api/test/300ms");
             timer2.Histogram.Min.Should().Be(300);
             timer2.Histogram.Max.Should().Be(300);
             timer2.Histogram.Mean.Should().Be(300);
@@ -60,7 +60,7 @@ namespace AspNet.Metrics.Facts.Middleware
             timer2.Histogram.Percentile999.Should().Be(300);
             timer2.TotalTime.Should().Be(300);
 
-            var timer3 = _fixture.TestContext.TimerValue("Application.WebRequests", "Web Requests");
+            var timer3 = await _fixture.TestContext.TimerValueAsync("Application.WebRequests", "Web Requests");
             timer3.Histogram.Min.Should().Be(30);
             timer3.Histogram.Max.Should().Be(300);
             timer3.TotalTime.Should().Be(330);

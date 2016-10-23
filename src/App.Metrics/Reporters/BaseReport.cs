@@ -71,7 +71,7 @@ namespace App.Metrics.Reporters
                 dataProvider = dataProvider.WithFilter(Filter);
             }
 
-            var metricsData = dataProvider.GetMetricsData();
+            var metricsData = await dataProvider.GetMetricsDataAsync();
 
             _token = token;
 

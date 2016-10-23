@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using System.Threading.Tasks;
 using App.Metrics.MetricData;
 using App.Metrics.Utils;
 
@@ -15,6 +16,6 @@ namespace App.Metrics.DataProviders
         /// <summary>
         ///     Returns the current metrics data for the context for which this provider has been created.
         /// </summary>
-        MetricsData GetMetricsData();
+        Task<MetricsData> GetMetricsDataAsync();
     }
 }

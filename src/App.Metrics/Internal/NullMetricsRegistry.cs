@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.DataProviders;
+using App.Metrics.Infrastructure;
 using App.Metrics.MetricData;
 
 namespace App.Metrics.Internal
@@ -26,9 +28,9 @@ namespace App.Metrics.Internal
         {
         }
 
-        public MetricsData GetData()
+        public Task<MetricsData> GetDataAsync()
         {
-            return MetricsData.Empty;
+            return AppMetricsTaskCache.EmptyMetricsDataTask;
         }
 
         public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramImplementation

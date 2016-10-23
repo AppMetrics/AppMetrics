@@ -10,6 +10,7 @@ using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Xunit;
+using System.Threading.Tasks;
 
 namespace App.Metrics.Facts.Core
 {
@@ -24,20 +25,19 @@ namespace App.Metrics.Facts.Core
             new DefaultHealthCheckManager(Options, LoggerFactory, new DefaultHealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options));
         private static readonly Func<string, IMetricGroupRegistry> NewMetricsGroupRegistry = name => new DefaultMetricGroupRegistry(name);
 
-        private static readonly IMetricsRegistry Registry = new DefaultMetricsRegistry(Options, new EnvironmentInfo(), NewMetricsGroupRegistry);
+        private static readonly IMetricsRegistry Registry = new DefaultMetricsRegistry(LoggerFactory, Options, 
+            new EnvironmentInfoBuilder(LoggerFactory), NewMetricsGroupRegistry);
 
-        private static readonly IMetricsDataManager MetricsDataManager =
-            new DefaultMetricsDataManager(LoggerFactory, Registry);
+        private static readonly IMetricsDataManager MetricsDataManager = new DefaultMetricsDataManager(Registry);
 
         private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.Clock);
       
 
         private readonly IMetricsContext _context = new DefaultMetricsContext(Options, Registry, MetricsBuilder, HealthCheckManager, MetricsDataManager);
 
-        public Func<IMetricsContext, MetricsData> CurrentData => ctx => _context.Advanced.DataManager.GetMetricsData();
+        public Func<IMetricsContext, Task<MetricsData>> CurrentData => async ctx => await _context.Advanced.DataManager.GetMetricsDataAsync();
 
-        public Func<IMetricsContext, IMetricsFilter, MetricsData> CurrentDataWithFilter => (ctx, filter) =>
-                _context.Advanced.DataManager.WithFilter(filter).GetMetricsData();
+        public Func<IMetricsContext, IMetricsFilter, Task<MetricsData>> CurrentDataWithFilter => async (ctx, filter) => await  _context.Advanced.DataManager.WithFilter(filter).GetMetricsDataAsync();
 
         public MetricsContextsTests()
         {
@@ -45,7 +45,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void can_create_child_context()
+        public async Task can_create_child_context()
         {
             var counterOptions = new CounterOptions
             {
@@ -56,13 +56,15 @@ namespace App.Metrics.Facts.Core
 
             _context.Advanced.Counter(counterOptions);
 
-            var counterValue = CurrentData(_context).ChildMetrics.SelectMany(c => c.Counters).Single();
+            var data = await CurrentData(_context);
+
+            var counterValue = data.ChildMetrics.SelectMany(c => c.Counters).Single();
 
             counterValue.Name.Should().Be("counter");
         }
 
         [Fact]
-        public void can_filter_metrics_by_type()
+        public async Task can_filter_metrics_by_type()
         {
             var counterOptions = new CounterOptions
             {
@@ -86,7 +88,7 @@ namespace App.Metrics.Facts.Core
             counter.Increment();
             meter.Mark(1);
 
-            var currentData = CurrentDataWithFilter(_context, filter);
+            var currentData = await CurrentDataWithFilter(_context, filter);
 
             var counterValue = currentData.Counters.Single();
             var meterValue = currentData.Meters.FirstOrDefault();
@@ -99,7 +101,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void can_propergate_value_tags()
+        public async Task can_propergate_value_tags()
         {
             var counterOptions = new CounterOptions
             {
@@ -130,16 +132,16 @@ namespace App.Metrics.Facts.Core
             };
 
             _context.Advanced.Counter(counterOptions);
-            _context.Advanced.DataManager.GetMetricsData().Counters.Single().Tags.Should().Equal("tag");
-
             _context.Advanced.Meter(meterOptions);
-            _context.Advanced.DataManager.GetMetricsData().Meters.Single().Tags.Should().Equal("tag");
-
             _context.Advanced.Histogram(histogramOptions);
-            _context.Advanced.DataManager.GetMetricsData().Histograms.Single().Tags.Should().Equal("tag");
-
             _context.Advanced.Timer(timerOptions);
-            _context.Advanced.DataManager.GetMetricsData().Timers.Single().Tags.Should().Equal("tag");
+
+            var data = await CurrentData(_context);
+
+            data.Counters.Single().Tags.Should().Equal("tag");
+            data.Meters.Single().Tags.Should().Equal("tag");
+            data.Histograms.Single().Tags.Should().Equal("tag");
+            data.Timers.Single().Tags.Should().Equal("tag");
         }
 
         [Fact]
@@ -158,7 +160,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void data_provider_reflects_child_contexts()
+        public async Task data_provider_reflects_child_contexts()
         {
             var counterOptions = new CounterOptions
             {
@@ -171,17 +173,21 @@ namespace App.Metrics.Facts.Core
 
             counter.Increment();
 
-            _context.Advanced.DataManager.GetMetricsData().ChildMetrics.Should().HaveCount(1);
-            _context.Advanced.DataManager.GetMetricsData().ChildMetrics.Single().Counters.Should().HaveCount(1);
-            _context.Advanced.DataManager.GetMetricsData().ChildMetrics.Single().Counters.Single().Value.Count.Should().Be(1);
+            var data = await CurrentData(_context);
+
+            data.ChildMetrics.Should().HaveCount(1);
+            data.ChildMetrics.Single().Counters.Should().HaveCount(1);
+            data.ChildMetrics.Single().Counters.Single().Value.Count.Should().Be(1);
 
             counter.Increment();
 
-            _context.Advanced.DataManager.GetMetricsData().ChildMetrics.Single().Counters.Single().Value.Count.Should().Be(2);
+            data = await _context.Advanced.DataManager.GetMetricsDataAsync();
+
+            data.ChildMetrics.Single().Counters.Single().Value.Count.Should().Be(2);
         }
 
         [Fact]
-        public void data_provider_reflects_new_metrics()
+        public async Task data_provider_reflects_new_metrics()
         {
             var counterOptions = new CounterOptions
             {
@@ -191,13 +197,15 @@ namespace App.Metrics.Facts.Core
 
             _context.Advanced.Counter(counterOptions).Increment();
 
-            _context.Advanced.DataManager.GetMetricsData().Counters.Should().HaveCount(1);
-            _context.Advanced.DataManager.GetMetricsData().Counters.Single().Name.Should().Be("bytes-counter");
-            _context.Advanced.DataManager.GetMetricsData().Counters.Single().Value.Count.Should().Be(1L);
+            var data = await CurrentData(_context);
+
+            data.Counters.Should().HaveCount(1);
+            data.Counters.Single().Name.Should().Be("bytes-counter");
+            data.Counters.Single().Value.Count.Should().Be(1L);
         }
 
         [Fact]
-        public void disabled_child_context_does_not_show_in_metrics_data()
+        public async Task disabled_child_context_does_not_show_in_metrics_data()
         {
             var counterOptions = new CounterOptions
             {
@@ -208,12 +216,15 @@ namespace App.Metrics.Facts.Core
 
             _context.Advanced.Counter(counterOptions).Increment();
 
-            CurrentData(_context).ChildMetrics.Single()
-                .Counters.Single().Name.Should().Be("test");
+            var data = await CurrentData(_context);
+
+            data.ChildMetrics.Single().Counters.Single().Name.Should().Be("test");
 
             _context.Advanced.ShutdownGroup("test");
 
-            CurrentData(_context).ChildMetrics.Should().BeEmpty();
+            data = await CurrentData(_context);
+
+            data.ChildMetrics.Should().BeEmpty();
         }
 
         [Fact]
@@ -263,21 +274,26 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void metrics_added_are_visible_in_the_data_provider()
+        public async Task metrics_added_are_visible_in_the_data_provider()
         {
             var counterOptions = new CounterOptions
             {
                 Name = "test",
                 MeasurementUnit = Unit.Bytes,
             };
+            var dataManager = _context.Advanced.DataManager;
 
-            _context.Advanced.DataManager.GetMetricsData().Counters.Should().BeEmpty();
+            var data = await dataManager.GetMetricsDataAsync();
+            
+            data.Counters.Should().BeEmpty();
             _context.Advanced.Counter(counterOptions);
-            _context.Advanced.DataManager.GetMetricsData().Counters.Should().HaveCount(1);
+
+            data = await dataManager.GetMetricsDataAsync();
+            data.Counters.Should().HaveCount(1);
         }
 
         [Fact]
-        public void metrics_are_present_in_metrics_data()
+        public async Task metrics_are_present_in_metrics_data()
         {
             var counterOptions = new CounterOptions
             {
@@ -288,7 +304,9 @@ namespace App.Metrics.Facts.Core
 
             counter.Increment();
 
-            var counterValue = CurrentData(_context).Counters.Single();
+            var data = await CurrentData(_context);
+
+            var counterValue = data.Counters.Single();
 
             counterValue.Name.Should().Be("request counter");
             counterValue.Unit.Should().Be(Unit.Requests);

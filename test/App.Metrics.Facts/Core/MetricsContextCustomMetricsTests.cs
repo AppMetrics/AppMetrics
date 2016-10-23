@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.DataProviders;
 using App.Metrics.Health;
@@ -28,10 +29,10 @@ namespace App.Metrics.Facts.Core
         private static readonly Func<string, IMetricGroupRegistry> NewMetricsGroupRegistry = name => new DefaultMetricGroupRegistry(name);
 
 
-        private static readonly IMetricsRegistry Registry = new DefaultMetricsRegistry(Options, new EnvironmentInfo(), NewMetricsGroupRegistry);
+        private static readonly IMetricsRegistry Registry = new DefaultMetricsRegistry(LoggerFactory, Options, 
+            new EnvironmentInfoBuilder(LoggerFactory), NewMetricsGroupRegistry);
 
-        private static readonly IMetricsDataManager MetricsDataManager =
-            new DefaultMetricsDataManager(LoggerFactory, Registry);
+        private static readonly IMetricsDataManager MetricsDataManager =  new DefaultMetricsDataManager(Registry);
 
         private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.Clock);
        
@@ -44,7 +45,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void can_register_custom_counter()
+        public async Task can_register_custom_counter()
         {
             var counterOptions = new CounterOptions
             {
@@ -54,7 +55,10 @@ namespace App.Metrics.Facts.Core
             var counter = _context.Advanced.Counter(counterOptions, () => new CustomCounter());
             counter.Should().BeOfType<CustomCounter>();
             counter.Increment();
-            _context.Advanced.DataManager.GetMetricsData().Counters.Single().Value.Count.Should().Be(10L);
+
+            var data = await _context.Advanced.DataManager.GetMetricsDataAsync();
+
+            data.Counters.Single().Value.Count.Should().Be(10L);
         }
 
         [Fact]

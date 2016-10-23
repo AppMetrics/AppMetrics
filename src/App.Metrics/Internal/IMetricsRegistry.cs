@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.MetricData;
 
@@ -14,7 +15,7 @@ namespace App.Metrics.Internal
 
         void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider);
 
-        MetricsData GetData();
+        Task<MetricsData> GetDataAsync();
 
         IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramImplementation;
 

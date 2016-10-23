@@ -1,9 +1,7 @@
 // Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-using App.Metrics.Infrastructure;
-using App.Metrics.MetricData;
+using System.Threading.Tasks;
 
 namespace App.Metrics.Json
 {
@@ -11,12 +9,8 @@ namespace App.Metrics.Json
     {
         string MetricsMimeType { get; }
 
-        string BuildJson(IMetricsContext metricsContext,
-            EnvironmentInfo environmentInfo,
-             IMetricsFilter filter);
+        Task<string> BuildJsonAsync(IMetricsContext metricsContext, IMetricsFilter filter);
 
-        string BuildJson(IMetricsContext metricsContext, EnvironmentInfo environmentInfo,
-            IMetricsFilter filter,
-            bool indented);
+        Task<string> BuildJsonAsync(IMetricsContext metricsContext, IMetricsFilter filter, bool indented);
     }
 }

@@ -80,22 +80,14 @@ namespace App.Metrics.Json
         {
             return FromContext(contextData, null);
         }
-
+       
         public static JsonMetricsContext FromContext(MetricsData contextData, string version)
-        {
-            return FromContext(contextData, EnvironmentInfo.Empty, version);
-        }
-
-        public static JsonMetricsContext FromContext(MetricsData contextData, EnvironmentInfo environment, string version)
         {
             return new JsonMetricsContext
             {
                 Version = version,
                 Timestamp = contextData.Timestamp,
-                Environment =
-                    environment.Entries.Any()
-                        ? contextData.Environment.Union(environment.Entries).ToDictionary(d => d.Name, d => d.Value)
-                        : contextData.Environment.ToDictionary(d => d.Name, d => d.Value),
+                Environment =  contextData.Environment.ToDictionary(d => d.Name, d => d.Value),
                 Context = contextData.Context,
                 Gauges = contextData.Gauges.Select(JsonGauge.FromGauge).ToArray(),
                 Counters = contextData.Counters.Select(JsonCounter.FromCounter).ToArray(),

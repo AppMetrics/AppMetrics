@@ -23,12 +23,12 @@ namespace App.Metrics.Facts
                 DefaultGroupName = defaultGroupName
             });
             Func<string, IMetricGroupRegistry> newGroupRegistry = name => new DefaultMetricGroupRegistry(name);
-            var registry = new DefaultMetricsRegistry(options, new EnvironmentInfo(), newGroupRegistry);
+            var registry = new DefaultMetricsRegistry(LoggerFactory, options, new EnvironmentInfoBuilder(LoggerFactory), newGroupRegistry);
             return new DefaultMetricsContext(options, registry,
                 new TestMetricsBuilder(clock, scheduler),
                 new DefaultHealthCheckManager(options, LoggerFactory,
                     new DefaultHealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))),
-                new DefaultMetricsDataManager(LoggerFactory, registry));
+                new DefaultMetricsDataManager(registry));
         }
 
         public static IMetricsContext Instance()

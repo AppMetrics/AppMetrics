@@ -56,8 +56,7 @@ namespace AspNet.Metrics.Middleware
             {
                 Logger.MiddlewareExecuting(GetType());
 
-                var environmentInfo = await _environmentInfoBuilder.BuildAsync();
-                var json = _jsonBuilder.BuildJson(MetricsContext, environmentInfo, _metricsFilter);
+                var json = await _jsonBuilder.BuildJsonAsync(MetricsContext, _metricsFilter);
 
                 await WriteResponseAsync(context, json, _jsonBuilder.MetricsMimeType);
 
