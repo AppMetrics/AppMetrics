@@ -3,7 +3,9 @@
 
 using System;
 using App.Metrics.DataProviders;
+using App.Metrics.Internal;
 using App.Metrics.MetricData;
+using App.Metrics.Registries;
 using App.Metrics.Sampling;
 using App.Metrics.Utils;
 
@@ -78,6 +80,8 @@ namespace App.Metrics.Core
         IHealthCheckManager HealthCheckManager { get; }
 
         IMetricsDataManager DataManager { get; }
+
+        IMetricReporterRegistry ReportManager { get; }
 
         void CompletelyDisableMetrics();
 

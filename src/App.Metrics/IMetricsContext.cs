@@ -13,6 +13,8 @@ namespace App.Metrics
     /// </summary>
     public interface IMetricsContext : IDisposable, IHideObjectMembers
     {
+        string ContextName { get; }
+
         IAdvancedMetricsContext Advanced { get; }
 
         void Decrement(CounterOptions options);

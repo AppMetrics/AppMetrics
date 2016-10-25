@@ -12,6 +12,34 @@ namespace App.Metrics.Infrastructure
     {
         private readonly IEnumerable<EnvironmentInfoEntry> _entries;
 
+        public EnvironmentInfo(IDictionary<string, string> entries)
+        {
+            MachineName = entries.FirstOrDefault(e => e.Key == "MachineName").Value;
+            ProcessName = entries.FirstOrDefault(e => e.Key == "ProcessName").Value;
+            OperatingSystem = entries.FirstOrDefault(e => e.Key == "OS").Value;
+            OperatingSystemVersion = entries.FirstOrDefault(e => e.Key == "OSVersion").Value;
+            ProcessorCount = int.Parse(entries.FirstOrDefault(e => e.Key == "CPUCount").Value);
+            HostName = entries.FirstOrDefault(e => e.Key == "HostName").Value;
+            IpAddress = entries.FirstOrDefault(e => e.Key == "IPAddress").Value;
+            LocalTimeString = entries.FirstOrDefault(e => e.Key == "LocalTime").Value;
+            EntryAssemblyName = entries.FirstOrDefault(e => e.Key == "EntryAssemblyName").Value;
+            EntryAssemblyVersion = entries.FirstOrDefault(e => e.Key == "EntryAssemblyVersion").Value;
+
+            _entries = new[]
+            {
+                new EnvironmentInfoEntry("MachineName", MachineName),
+                new EnvironmentInfoEntry("ProcessName", ProcessName),
+                new EnvironmentInfoEntry("OS", OperatingSystem),
+                new EnvironmentInfoEntry("OSVersion", OperatingSystemVersion),
+                new EnvironmentInfoEntry("CPUCount", ProcessorCount.ToString()),
+                new EnvironmentInfoEntry("HostName", HostName),
+                new EnvironmentInfoEntry("IPAddress", IpAddress),
+                new EnvironmentInfoEntry("LocalTime", LocalTimeString),
+                new EnvironmentInfoEntry("EntryAssemblyName", EntryAssemblyName),
+                new EnvironmentInfoEntry("EntryAssemblyVersion", EntryAssemblyVersion)
+            };
+        }
+
         public EnvironmentInfo(string entryAssemblyName,
             string entryAssemblyVersion,
             string hostName,

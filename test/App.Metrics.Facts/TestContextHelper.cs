@@ -5,6 +5,7 @@ using App.Metrics.DataProviders;
 using App.Metrics.Health;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
+using App.Metrics.Registries;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -23,12 +24,15 @@ namespace App.Metrics.Facts
                 DefaultGroupName = defaultGroupName
             });
             Func<string, IMetricGroupRegistry> newGroupRegistry = name => new DefaultMetricGroupRegistry(name);
-            var registry = new DefaultMetricsRegistry(LoggerFactory, options, new EnvironmentInfoBuilder(LoggerFactory), newGroupRegistry);
+
+              Func<IMetricsContext, IMetricReporterRegistry> newReportManager = context => new DefaultMetricReporterRegistry(options, context, LoggerFactory);
+
+        var registry = new DefaultMetricsRegistry(LoggerFactory, options, new EnvironmentInfoBuilder(LoggerFactory), newGroupRegistry);
             return new DefaultMetricsContext(options, registry,
                 new TestMetricsBuilder(clock, scheduler),
                 new DefaultHealthCheckManager(options, LoggerFactory,
                     new DefaultHealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))),
-                new DefaultMetricsDataManager(registry));
+                new DefaultMetricsDataManager(registry), newReportManager);
         }
 
         public static IMetricsContext Instance()

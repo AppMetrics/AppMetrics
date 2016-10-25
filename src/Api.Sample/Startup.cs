@@ -71,7 +71,6 @@ namespace Api.Sample
                     options.DefaultSamplingType = SamplingType.ExponentiallyDecaying;
                     options.DisableMetrics = false;
                     options.DisableHealthChecks = false;
-                    options.DefaultGroupName = "Test";
                     options.JsonSchemeVersion = JsonSchemeVersion.AlwaysLatest;
                 })
                 .AddAspNetMetrics(options => { });

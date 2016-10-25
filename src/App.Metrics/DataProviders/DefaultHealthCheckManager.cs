@@ -43,6 +43,7 @@ namespace App.Metrics.DataProviders
 
             _logger.HealthCheckGetStatusExecuting();
 
+            //TODO: AH - can the registry be internal or make checks readonly
             var results = await Task.WhenAll(_healthCheckRegistry.Checks.Values.OrderBy(v => v.Name)
                 .Select(v => v.ExecuteAsync()));
 

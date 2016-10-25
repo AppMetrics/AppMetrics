@@ -7,14 +7,12 @@
 
 using System;
 using System.Diagnostics;
-using App.Metrics.MetricData;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporters
 {
     public sealed class ConsoleReport : HumanReadableReport
     {
-        private readonly IMetricsContext _metricsContext;
         private bool _disposed = false;
         private readonly ILogger _logger;
 
@@ -33,7 +31,6 @@ namespace App.Metrics.Reporters
                 throw new ArgumentNullException(nameof(loggerFactory));
             }
 
-            _metricsContext = metricsContext;
             _logger = loggerFactory.CreateLogger<ConsoleReport>();
         }
 

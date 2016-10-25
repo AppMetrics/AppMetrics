@@ -37,7 +37,9 @@ namespace Api.Sample.Controllers
             _metricsContext.Increment(Metrics.Counters.TestCounter, 4);
             _metricsContext.Decrement(Metrics.Counters.TestCounter, 2);
 
-            _metricsContext.Advanced.Histogram(Metrics.Histograms.TestHAdvancedistogram).Update(20);
+            var histogram = _metricsContext.Advanced.Histogram(Metrics.Histograms.TestHAdvancedistogram);
+            histogram.Update(20);
+
             _metricsContext.Update(Metrics.Histograms.TestHistogram, 20);
 
             return new[] { "value1", "value2" };

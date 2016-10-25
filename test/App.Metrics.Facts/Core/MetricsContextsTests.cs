@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Xunit;
 using System.Threading.Tasks;
+using App.Metrics.Registries;
 
 namespace App.Metrics.Facts.Core
 {
@@ -32,8 +33,9 @@ namespace App.Metrics.Facts.Core
 
         private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.Clock);
       
+        private static readonly Func<IMetricsContext, IMetricReporterRegistry> NewReportManager = context => new DefaultMetricReporterRegistry(Options, context, LoggerFactory);
 
-        private readonly IMetricsContext _context = new DefaultMetricsContext(Options, Registry, MetricsBuilder, HealthCheckManager, MetricsDataManager);
+        private readonly IMetricsContext _context = new DefaultMetricsContext(Options, Registry, MetricsBuilder, HealthCheckManager, MetricsDataManager, NewReportManager);
 
         public Func<IMetricsContext, Task<MetricsData>> CurrentData => async ctx => await _context.Advanced.DataManager.GetMetricsDataAsync();
 
@@ -58,7 +60,7 @@ namespace App.Metrics.Facts.Core
 
             var data = await CurrentData(_context);
 
-            var counterValue = data.ChildMetrics.SelectMany(c => c.Counters).Single();
+            var counterValue = data.Groups.SelectMany(c => c.Counters).Single();
 
             counterValue.Name.Should().Be("counter");
         }
@@ -89,9 +91,10 @@ namespace App.Metrics.Facts.Core
             meter.Mark(1);
 
             var currentData = await CurrentDataWithFilter(_context, filter);
+            var group = currentData.Groups.Single();
 
-            var counterValue = currentData.Counters.Single();
-            var meterValue = currentData.Meters.FirstOrDefault();
+            var counterValue = group.Counters.Single();
+            var meterValue = group.Meters.FirstOrDefault();
 
             counterValue.Name.Should().Be("test");
             counterValue.Unit.Should().Be(Unit.Requests);
@@ -137,11 +140,12 @@ namespace App.Metrics.Facts.Core
             _context.Advanced.Timer(timerOptions);
 
             var data = await CurrentData(_context);
+            var group = data.Groups.Single();
 
-            data.Counters.Single().Tags.Should().Equal("tag");
-            data.Meters.Single().Tags.Should().Equal("tag");
-            data.Histograms.Single().Tags.Should().Equal("tag");
-            data.Timers.Single().Tags.Should().Equal("tag");
+            group.Counters.Single().Tags.Should().Equal("tag");
+            group.Meters.Single().Tags.Should().Equal("tag");
+            group.Histograms.Single().Tags.Should().Equal("tag");
+            group.Timers.Single().Tags.Should().Equal("tag");
         }
 
         [Fact]
@@ -162,28 +166,32 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public async Task data_provider_reflects_child_contexts()
         {
-            var counterOptions = new CounterOptions
-            {
-                Name = "test",
-                GroupName = "test",
-                MeasurementUnit = Unit.Bytes
-            };
+            //TODO: AH - still need this since there are no longer child metrics
+            //var counterOptions = new CounterOptions
+            //{
+            //    Name = "test",
+            //    GroupName = "test",
+            //    MeasurementUnit = Unit.Bytes
+            //};
 
-            var counter = _context.Advanced.Counter(counterOptions);
+            //var counter = _context.Advanced.Counter(counterOptions);
 
-            counter.Increment();
+            //counter.Increment();
 
-            var data = await CurrentData(_context);
+            //var data = await CurrentData(_context);
+            //var group = data.Groups.Single();
 
-            data.ChildMetrics.Should().HaveCount(1);
-            data.ChildMetrics.Single().Counters.Should().HaveCount(1);
-            data.ChildMetrics.Single().Counters.Single().Value.Count.Should().Be(1);
+            //group.ChildMetrics.Should().HaveCount(1);
+            //group.ChildMetrics.Single().Counters.Should().HaveCount(1);
+            //group.ChildMetrics.Single().Counters.Single().Value.Count.Should().Be(1);
 
-            counter.Increment();
+            //counter.Increment();
 
-            data = await _context.Advanced.DataManager.GetMetricsDataAsync();
+            //data = await _context.Advanced.DataManager.GetMetricsDataAsync();
 
-            data.ChildMetrics.Single().Counters.Single().Value.Count.Should().Be(2);
+            //group = data.Groups.Single();
+
+            //group.ChildMetrics.Single().Counters.Single().Value.Count.Should().Be(2);
         }
 
         [Fact]
@@ -198,10 +206,11 @@ namespace App.Metrics.Facts.Core
             _context.Advanced.Counter(counterOptions).Increment();
 
             var data = await CurrentData(_context);
+            var group = data.Groups.Single();
 
-            data.Counters.Should().HaveCount(1);
-            data.Counters.Single().Name.Should().Be("bytes-counter");
-            data.Counters.Single().Value.Count.Should().Be(1L);
+            group.Counters.Should().HaveCount(1);
+            group.Counters.Single().Name.Should().Be("bytes-counter");
+            group.Counters.Single().Value.Count.Should().Be(1L);
         }
 
         [Fact]
@@ -218,13 +227,13 @@ namespace App.Metrics.Facts.Core
 
             var data = await CurrentData(_context);
 
-            data.ChildMetrics.Single().Counters.Single().Name.Should().Be("test");
+            data.Groups.Single().Counters.Single().Name.Should().Be("test");
 
             _context.Advanced.ShutdownGroup("test");
 
             data = await CurrentData(_context);
 
-            data.ChildMetrics.Should().BeEmpty();
+            data.Groups.Should().BeEmpty();
         }
 
         [Fact]
@@ -284,12 +293,12 @@ namespace App.Metrics.Facts.Core
             var dataManager = _context.Advanced.DataManager;
 
             var data = await dataManager.GetMetricsDataAsync();
-            
-            data.Counters.Should().BeEmpty();
+
+            data.Groups.Should().BeEmpty();
             _context.Advanced.Counter(counterOptions);
 
             data = await dataManager.GetMetricsDataAsync();
-            data.Counters.Should().HaveCount(1);
+            data.Groups.Single().Counters.Should().HaveCount(1);
         }
 
         [Fact]
@@ -306,7 +315,7 @@ namespace App.Metrics.Facts.Core
 
             var data = await CurrentData(_context);
 
-            var counterValue = data.Counters.Single();
+            var counterValue = data.Groups.Single().Counters.Single();
 
             counterValue.Name.Should().Be("request counter");
             counterValue.Unit.Should().Be(Unit.Requests);

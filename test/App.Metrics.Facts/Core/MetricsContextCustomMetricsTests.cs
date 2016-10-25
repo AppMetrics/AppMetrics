@@ -8,6 +8,7 @@ using App.Metrics.Health;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.MetricData;
+using App.Metrics.Registries;
 using App.Metrics.Sampling;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
@@ -36,8 +37,10 @@ namespace App.Metrics.Facts.Core
 
         private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.Clock);
        
+        private static readonly Func<IMetricsContext, IMetricReporterRegistry> NewReportManager = 
+            context => new DefaultMetricReporterRegistry(Options, context, LoggerFactory);
 
-        private readonly IMetricsContext _context = new DefaultMetricsContext(Options, Registry, MetricsBuilder, HealthCheckManager, MetricsDataManager);
+        private readonly IMetricsContext _context = new DefaultMetricsContext(Options, Registry, MetricsBuilder, HealthCheckManager, MetricsDataManager, NewReportManager);
 
         public MetricsContextCustomMetricsTests()
         {
@@ -57,8 +60,9 @@ namespace App.Metrics.Facts.Core
             counter.Increment();
 
             var data = await _context.Advanced.DataManager.GetMetricsDataAsync();
+            var group = data.Groups.Single();
 
-            data.Counters.Single().Value.Count.Should().Be(10L);
+            group.Counters.Single().Value.Count.Should().Be(10L);
         }
 
         [Fact]

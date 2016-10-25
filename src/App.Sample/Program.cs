@@ -11,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
 using Serilog;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace App.Sample
 {
@@ -21,8 +20,12 @@ namespace App.Sample
         {
             IServiceCollection serviceCollection = new ServiceCollection();
             ConfigureServices(serviceCollection);
+            ConfigureMetrics(serviceCollection);
 
-            var application = new Application(serviceCollection);
+            var provider = serviceCollection.BuildServiceProvider();
+
+            var application = new Application(provider);
+            application.RunReports();
 
             var simpleMetrics = new SampleMetrics(application.MetricsContext);
             var setCounterSample = new SetCounterSample(application.MetricsContext);
@@ -54,55 +57,9 @@ namespace App.Sample
             }
         }
 
-        private static void ConfigureServices(IServiceCollection services)
+        private static void ConfigureMetrics(IServiceCollection services)
         {
-            var env = PlatformServices.Default.Application;
-
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.RollingFile(Path.Combine($@"C:\logs\{env.ApplicationName}", "log-{Date}.txt"))
-                .CreateLogger();
-
-            services.AddSingleton<ILoggerFactory>(provider =>
-            {
-                var logFactory = new LoggerFactory();
-                logFactory.AddConsole();
-                logFactory.AddSerilog(Log.Logger);
-                return logFactory;
-            });
-
-            services.AddTransient<IDatabase, Database>();
-        }
-    }
-
-    public class Application
-    {
-        public Application(IServiceCollection services)
-        {
-            ConfigureServices(services);
-            Services = services.BuildServiceProvider();
-            Logger = Services.GetRequiredService<ILoggerFactory>().CreateLogger<Application>();
-            MetricsContext = Services.GetRequiredService<IMetricsContext>();
-            Logger.LogInformation("Application created successfully.");
-            Token = new CancellationToken();
-        }
-
-        public ILogger Logger { get; set; }
-
-        public IMetricsContext MetricsContext { get; set; }
-
-        public IServiceProvider Services { get; set; }
-
-        public CancellationToken Token { get; set; }
-
-        private static int GetFreeDiskSpace()
-        {
-            return 1024;
-        }
-
-        private void ConfigureServices(IServiceCollection services)
-        {
-            var builder = services.AddMetrics(options =>
+            services.AddMetrics(options =>
             {
                 options.Reporters = reports =>
                 {
@@ -122,8 +79,50 @@ namespace App.Sample
                     });
                 };
             });
+        }
 
-            builder.RunReports(Token);
+        private static void ConfigureServices(IServiceCollection services)
+        {
+            var env = PlatformServices.Default.Application;
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.RollingFile(Path.Combine($@"C:\logs\{env.ApplicationName}", "log-{Date}.txt"))
+                .CreateLogger();
+
+            services.AddSingleton<ILoggerFactory>(provider =>
+            {
+                var logFactory = new LoggerFactory();
+                logFactory.AddConsole();
+                logFactory.AddSerilog(Log.Logger);
+                return logFactory;
+            });
+
+            services.AddTransient<IDatabase, Database>();
+        }
+
+        private static int GetFreeDiskSpace()
+        {
+            return 1024;
+        }
+    }
+
+    public class Application
+    {
+        public Application(IServiceProvider provider)
+        {
+            MetricsContext = provider.GetRequiredService<IMetricsContext>();
+
+            Token = new CancellationToken();
+        }
+
+        public IMetricsContext MetricsContext { get; set; }
+
+        public CancellationToken Token { get; set; }
+
+        public void RunReports()
+        {
+            MetricsContext.Advanced.ReportManager.RunReports(Token);
         }
     }
 }

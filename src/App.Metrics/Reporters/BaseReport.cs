@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.DataProviders;
 using App.Metrics.Health;
 using App.Metrics.MetricData;
 using App.Metrics.Utils;
@@ -77,13 +76,13 @@ namespace App.Metrics.Reporters
 
             ReportTimestamp = metricsContext.Advanced.Clock.UtcDateTime;
 
-            StartReport(metricsData.Context);
+            StartReport(metricsData.ContextName);
 
             ReportContext(metricsData, Enumerable.Empty<string>());
 
             await ReportHealthStatus(metricsContext.Advanced.HealthCheckManager);
 
-            EndReport(metricsData.Context);
+            EndReport(metricsData.ContextName);
         }
 
         protected abstract void ReportCounter(string name, CounterValue value, Unit unit, MetricTags tags);
@@ -157,35 +156,32 @@ namespace App.Metrics.Reporters
         private void ReportContext(MetricsData data, IEnumerable<string> contextStack)
         {
             CurrentContextTimestamp = data.Timestamp;
-            var contextName = FormatContextName(contextStack, data.Context);
+            var contextName = FormatContextName(contextStack, data.ContextName);
+            ReportEnvironment(contextName, data.Environment.Entries);
 
-            StartContext(contextName);
+            foreach (var group in data.Groups)
+            {
+                StartContext(group.GroupName);
 
-            ReportEnvironment(contextName, data.Environment);
-
-            ReportSection("Gauges", data.Gauges, g => ReportGauge(FormatMetricName(contextName, g),
+                ReportSection("Gauges", group.Gauges, g => ReportGauge(FormatMetricName(group.GroupName, g),
                 g.Value, g.Unit, g.Tags));
 
-            ReportSection("Counters", data.Counters, c => ReportCounter(FormatMetricName(contextName, c),
-                c.Value, c.Unit, c.Tags));
+                ReportSection("Counters", group.Counters, c => ReportCounter(FormatMetricName(group.GroupName, c),
+                    c.Value, c.Unit, c.Tags));
 
-            ReportSection("Meters", data.Meters, m => ReportMeter(FormatMetricName(contextName, m),
-                m.Value, m.Unit, m.RateUnit, m.Tags));
+                ReportSection("Meters", group.Meters, m => ReportMeter(FormatMetricName(group.GroupName, m),
+                    m.Value, m.Unit, m.RateUnit, m.Tags));
 
-            ReportSection("Histograms", data.Histograms, h => ReportHistogram(FormatMetricName(contextName, h),
-                h.Value, h.Unit, h.Tags));
+                ReportSection("Histograms", group.Histograms, h => ReportHistogram(FormatMetricName(group.GroupName, h),
+                    h.Value, h.Unit, h.Tags));
 
-            ReportSection("Timers", data.Timers, t => ReportTimer(FormatMetricName(contextName, t),
-                t.Value, t.Unit, t.RateUnit, t.DurationUnit, t.Tags));
+                ReportSection("Timers", group.Timers, t => ReportTimer(FormatMetricName(group.GroupName, t),
+                    t.Value, t.Unit, t.RateUnit, t.DurationUnit, t.Tags));
 
-            var stack = contextStack.Concat(new[] { data.Context });
+                EndContext(group.GroupName);
 
-            foreach (var child in data.ChildMetrics)
-            {
-                ReportContext(child, stack);
             }
 
-            EndContext(contextName);
         }
 
         private async Task ReportHealthStatus(IHealthCheckManager healthCheckManager)

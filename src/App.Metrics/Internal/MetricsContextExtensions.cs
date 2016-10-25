@@ -25,21 +25,16 @@ namespace App.Metrics
             return ValueFor(data.Gauges, groupName, metricName);
         }
 
-        public static async Task<MetricsData> GetDataForAsync(this IMetricsContext metricsContext, string groupName)
+        public static async Task<MetricsDataGroup> GetDataForAsync(this IMetricsContext metricsContext, string groupName)
         {
             var data = await metricsContext.Advanced.DataManager.GetMetricsDataAsync();
 
-            if (data.Context == groupName)
+            if (data.Groups.Any(m => m.GroupName == groupName))
             {
-                return data;
+                return data.Groups.Single(m => m.GroupName == groupName);
             }
 
-            if (data.ChildMetrics.Any(m => m.Context == groupName))
-            {
-                return data.ChildMetrics.First(m => m.Context == groupName);
-            }
-
-            return MetricsData.Empty;
+            return MetricsDataGroup.Empty;
         }
 
         public static async Task<HistogramValue> HistogramValueAsync(this IMetricsContext metricsContext, string groupName, string metricName)

@@ -15,6 +15,7 @@ using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection.Extensions
@@ -51,18 +52,18 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
 
         internal static void AddDefaultReporterServices(this IServiceCollection services)
         {
-            services.TryAddSingleton(typeof(IMetricReporterRegistry), provider =>
-            {
-                var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
-                var context = provider.GetRequiredService<IMetricsContext>();
-                var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
+            //services.TryAddSingleton(typeof(IMetricReporterRegistry), provider =>
+            //{
+            //    var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
+            //    var context = provider.GetRequiredService<IMetricsContext>();
+            //    var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
 
-                var registry = new DefaultMetricReporterRegistry(context, loggerFactory);
+            //    var registry = new DefaultMetricReporterRegistry(context, loggerFactory);
 
-                options.Value.Reporters(registry);
+            //    options.Value.Reporters(registry);
 
-                return registry;
-            });
+            //    return registry;
+            //});
         }
 
         internal static IMetricsHost AddMetricsCore(this IServiceCollection services)
@@ -103,7 +104,16 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
         internal static void AddMetricsCoreServices(this IServiceCollection services,
             IMetricsEnvironment environment, IMetricsContext metricsContext)
         {
-            services.TryAddTransient<Func<string, IMetricGroupRegistry>>(provider => { return group => new DefaultMetricGroupRegistry(group); });
+            services.TryAddTransient<Func<string, IMetricGroupRegistry>>(provider =>
+            {
+                return group => new DefaultMetricGroupRegistry(group);
+            });
+            services.TryAddTransient<Func<IMetricsContext, IMetricReporterRegistry>>(provider =>
+            {
+                var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
+                var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
+                return context => new DefaultMetricReporterRegistry(options, context, loggerFactory);
+            });
             services.TryAddSingleton<IMetricsBuilder, DefaultMetricsBuilder>();
             services.TryAddSingleton<IMetricsRegistry, DefaultMetricsRegistry>();
             services.TryAddSingleton<IMetricsDataManager, DefaultMetricsDataManager>();

@@ -7,13 +7,13 @@ namespace App.Metrics.Internal
     internal sealed class DefaultMetricsFilter : IMetricsFilter
     {
         public static IMetricsFilter All = new NoOpFilter();
-        private Predicate<string> _context;
+        private Predicate<string> _group;
         private Predicate<string> _name;
         private HashSet<MetricType> _types;
 
-        public bool IsMatch(string context)
+        public bool IsMatch(string group)
         {
-            return _context == null || _context(context);
+            return _group == null || _group(group);
         }
 
         public bool IsMatch(GaugeValueSource gauge)
@@ -61,15 +61,15 @@ namespace App.Metrics.Internal
             return IsNameMatch(timer.Name);
         }
 
-        public DefaultMetricsFilter WhereContext(Predicate<string> condition)
+        public DefaultMetricsFilter WhereGroup(Predicate<string> condition)
         {
-            _context = condition;
+            _group = condition;
             return this;
         }
 
-        public DefaultMetricsFilter WhereContext(string context)
+        public DefaultMetricsFilter WhereGroup(string group)
         {
-            return WhereContext(c => c.Equals(context, StringComparison.OrdinalIgnoreCase));
+            return WhereGroup(c => c.Equals(group, StringComparison.OrdinalIgnoreCase));
         }
 
         public DefaultMetricsFilter WhereName(Predicate<string> condition)
@@ -96,7 +96,7 @@ namespace App.Metrics.Internal
 
         private class NoOpFilter : IMetricsFilter
         {
-            public bool IsMatch(string context)
+            public bool IsMatch(string @group)
             {
                 return true;
             }

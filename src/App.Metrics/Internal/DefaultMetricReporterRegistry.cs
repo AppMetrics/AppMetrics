@@ -13,6 +13,7 @@ using App.Metrics.Registries;
 using App.Metrics.Reporters;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace App.Metrics.Internal
 {
@@ -26,6 +27,7 @@ namespace App.Metrics.Internal
         private bool _disposed = false;
 
         public DefaultMetricReporterRegistry(
+            IOptions<AppMetricsOptions> options,
             IMetricsContext metricsContext,
             ILoggerFactory loggerFactory)
         {
@@ -42,6 +44,7 @@ namespace App.Metrics.Internal
             _metricsContext = metricsContext;
             _loggerFactory = loggerFactory;
             _logger = loggerFactory.CreateLogger<DefaultMetricReporterRegistry>();
+            options.Value.Reporters(this);
         }
 
         public void Dispose()
@@ -84,7 +87,8 @@ namespace App.Metrics.Internal
         /// </summary>
         /// <param name="interval">Interval at which to display the report on the Console.</param>
         /// <param name="filter">Only report metrics that match the filter.</param>
-        public IMetricReporterRegistry WithConsoleReport(TimeSpan interval, IMetricsFilter filter = null)
+        public IMetricReporterRegistry WithConsoleReport(TimeSpan interval, 
+            IMetricsFilter filter = null)
         {
             return WithReport(new ConsoleReport(_metricsContext, filter, _loggerFactory), interval, filter);
         }

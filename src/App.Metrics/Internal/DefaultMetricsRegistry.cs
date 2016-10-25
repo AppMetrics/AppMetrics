@@ -17,6 +17,7 @@ namespace App.Metrics.Internal
         private readonly ILogger _logger;
         private readonly string _defaultGroupName;
         private readonly SamplingType _defaultSamplingType;
+        private readonly string _globalContextName;
         private readonly EnvironmentInfoBuilder _environmentInfoBuilder;
 
         private readonly ConcurrentDictionary<string, IMetricGroupRegistry> _groups = new ConcurrentDictionary<string, IMetricGroupRegistry>();
@@ -33,6 +34,7 @@ namespace App.Metrics.Internal
             _newGroupRegistry = newGroupRegistry;
             _defaultGroupName = options.Value.DefaultGroupName;
             _defaultSamplingType = options.Value.DefaultSamplingType;
+            _globalContextName = options.Value.GlobalContextName;
             _clock = options.Value.Clock;
             _groups.TryAdd(_defaultGroupName, newGroupRegistry(_defaultGroupName));
         }
@@ -98,52 +100,21 @@ namespace App.Metrics.Internal
 
             var environment = await _environmentInfoBuilder.BuildAsync();
 
-            //TODO: AH - clean this up
-
             if (_groups.Count == 0)
             {
                 return MetricsData.Empty;
             }
 
-            //TODO: AH- Remove concept of ChildContext (groups) dont see much need in having parent child relationship
-            var parentRegistry = _groups.Values.FirstOrDefault(g => g.GroupName == _defaultGroupName);
+            var metricDataGroups = _groups.Values.Select(g => new MetricsDataGroup(
+                g.GroupName,
+                g.DataProvider.Gauges.ToArray(),
+                g.DataProvider.Counters.ToArray(),
+                g.DataProvider.Meters.ToArray(),
+                g.DataProvider.Histograms.ToArray(),
+                g.DataProvider.Timers.ToArray()
+            ));
 
-            if (parentRegistry == null)
-            {
-                parentRegistry = _newGroupRegistry(_defaultGroupName);
-                parentRegistry = _groups.GetOrAdd(_defaultGroupName, parentRegistry);
-            }
-
-            MetricsData data;
-
-            if (_groups.Count > 1)
-            {
-                var childRegistries = _groups.Values.Where(g => g.GroupName != _defaultGroupName).Select(g =>
-                    new MetricsData(g.GroupName, _clock.UtcDateTime, environment.Entries,
-                        g.DataProvider.Gauges.ToArray(),
-                        g.DataProvider.Counters.ToArray(),
-                        g.DataProvider.Meters.ToArray(),
-                        g.DataProvider.Histograms.ToArray(),
-                        g.DataProvider.Timers.ToArray(), Enumerable.Empty<MetricsData>()));
-
-                data = new MetricsData(parentRegistry.GroupName, _clock.UtcDateTime, environment.Entries,
-                    parentRegistry.DataProvider.Gauges.ToArray(),
-                    parentRegistry.DataProvider.Counters.ToArray(),
-                    parentRegistry.DataProvider.Meters.ToArray(),
-                    parentRegistry.DataProvider.Histograms.ToArray(),
-                    parentRegistry.DataProvider.Timers.ToArray(),
-                    childRegistries);
-            }
-            else
-            {
-                data = new MetricsData(parentRegistry.GroupName, _clock.UtcDateTime, environment.Entries,
-                    parentRegistry.DataProvider.Gauges.ToArray(),
-                    parentRegistry.DataProvider.Counters.ToArray(),
-                    parentRegistry.DataProvider.Meters.ToArray(),
-                    parentRegistry.DataProvider.Histograms.ToArray(),
-                    parentRegistry.DataProvider.Timers.ToArray(),
-                    Enumerable.Empty<MetricsData>());
-            }
+            var data = new MetricsData(_globalContextName, _clock.UtcDateTime, environment, metricDataGroups);
 
             _logger.MetricsDataGetExecuted();
 
