@@ -16,14 +16,14 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporters
 {
-    public sealed class StringReport : HumanReadableReport
+    public sealed class StringReporter : HumanReadableReporter
     {
         private readonly IMetricsContext _metricsContext;
         private StringBuilder _buffer;
         private bool _disposed = false;
         private ILogger _logger;
 
-        public StringReport(ILoggerFactory loggerFactory,
+        public StringReporter(ILoggerFactory loggerFactory,
             IMetricsContext metricsContext,
             IMetricsFilter filter)
             : base(loggerFactory, filter, metricsContext.Advanced.Clock)
@@ -39,7 +39,7 @@ namespace App.Metrics.Reporters
             }
 
             _metricsContext = metricsContext;
-            _logger = loggerFactory.CreateLogger<StringReport>();
+            _logger = loggerFactory.CreateLogger<StringReporter>();
         }
 
         public string Result => _buffer.ToString();
@@ -69,16 +69,16 @@ namespace App.Metrics.Reporters
             base.Dispose(disposing);
         }
 
-        protected override void StartReport(string contextName)
+        public override void StartReport(string contextName)
         {
-            _logger.ReportStarting<StringReport>();
+            _logger.ReportStarting<StringReporter>();
 
             var startTimestamp = _logger.IsEnabled(LogLevel.Information) ? Stopwatch.GetTimestamp() : 0;
 
             _buffer = new StringBuilder();
             base.StartReport(contextName);
 
-            _logger.ReportedStarted<StringReport>(startTimestamp);
+            _logger.ReportedStarted<StringReporter>(startTimestamp);
         }
 
         protected override void WriteLine(string line, params string[] args)

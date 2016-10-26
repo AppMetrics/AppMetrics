@@ -30,10 +30,10 @@ namespace App.Metrics.Registries
         /// <summary>
         ///     Schedule a generic reporter to be executed at a fixed <paramref name="interval" />
         /// </summary>
-        /// <param name="report">Function that returns an instance of a reporter</param>
+        /// <param name="reporter">Function that returns an instance of a reporter</param>
         /// <param name="interval">Interval at which to run the report.</param>
         /// <param name="filter">Only report metrics that match the filter.</param>
-        IMetricReporterRegistry WithReport(IMetricsReport report, TimeSpan interval, IMetricsFilter filter = null);
+        IMetricReporterRegistry WithReport(IMetricReporter reporter, TimeSpan interval, IMetricsFilter filter = null);
 
         /// <summary>
         ///     Schedule a Human Readable report to be executed and appended to a text file.

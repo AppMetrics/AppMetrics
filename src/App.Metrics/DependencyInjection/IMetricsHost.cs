@@ -2,7 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using System.Threading;
 using App.Metrics;
 
 // ReSharper disable CheckNamespace
@@ -14,7 +13,5 @@ namespace Microsoft.Extensions.DependencyInjection
         IServiceCollection Services { get; }
 
         IMetricsEnvironment Environment { get; }
-
-        void RunReports(CancellationToken token);
     }
 }

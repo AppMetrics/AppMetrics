@@ -15,14 +15,14 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporters
 {
-    public sealed class TextFileReport : HumanReadableReport
+    public sealed class TextFileReporter : HumanReadableReporter
     {
         private readonly string _fileName;
         private readonly ILogger _logger;
         private StringBuilder _buffer;
         private bool _disposed = false;
 
-        public TextFileReport(string fileName,
+        public TextFileReporter(string fileName,
             ILoggerFactory loggerFactory,
             IMetricsFilter filter,
             IClock clock)
@@ -31,7 +31,7 @@ namespace App.Metrics.Reporters
         {
             Directory.CreateDirectory(Path.GetDirectoryName(fileName));
             _fileName = fileName;
-            _logger = loggerFactory.CreateLogger<ConsoleReport>();
+            _logger = loggerFactory.CreateLogger<ConsoleMetricReporter>();
         }
 
         protected override void Dispose(bool disposing)
@@ -52,7 +52,7 @@ namespace App.Metrics.Reporters
             base.Dispose(disposing);
         }
 
-        protected override void EndReport(string contextName)
+        public override void EndReport(string contextName)
         {
             try
             {
@@ -69,16 +69,16 @@ namespace App.Metrics.Reporters
         }
 
 
-        protected override void StartReport(string contextName)
+        public override void StartReport(string contextName)
         {
-            _logger.ReportStarting<TextFileReport>();
+            _logger.ReportStarting<TextFileReporter>();
 
             var startTimestamp = _logger.IsEnabled(LogLevel.Information) ? Stopwatch.GetTimestamp() : 0;
 
             _buffer = new StringBuilder();
             base.StartReport(contextName);
 
-            _logger.ReportedStarted<TextFileReport>(startTimestamp);
+            _logger.ReportedStarted<TextFileReporter>(startTimestamp);
         }
 
         protected override void WriteLine(string line, params string[] args)

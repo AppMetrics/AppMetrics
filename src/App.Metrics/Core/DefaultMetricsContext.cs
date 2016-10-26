@@ -4,7 +4,6 @@
 using System;
 using App.Metrics.DataProviders;
 using App.Metrics.Internal;
-using App.Metrics.Registries;
 using Microsoft.Extensions.Options;
 
 namespace App.Metrics.Core
@@ -20,8 +19,7 @@ namespace App.Metrics.Core
             IMetricsRegistry registry,
             IMetricsBuilder builder,
             IHealthCheckManager healthCheckManager,
-            IMetricsDataManager metricsDataManager,
-            Func<IMetricsContext, IMetricReporterRegistry> newReportManager)
+            IMetricsDataManager metricsDataManager)
         {
             _registry = registry;
             _builder = builder;
@@ -29,7 +27,7 @@ namespace App.Metrics.Core
             ContextName = options.Value.GlobalContextName;
 
             Advanced = new DefaultAdancedMetricsContext(this, options, _registry, builder, 
-                healthCheckManager, metricsDataManager, newReportManager);
+                healthCheckManager, metricsDataManager);
         }
 
         public string ContextName { get; }

@@ -4,6 +4,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Health;
+using App.Metrics.Reporting;
+using App.Metrics.Reporting.Console;
+using App.Metrics.Reporting.DependencyInjection;
+using App.Metrics.Reporting.TextFile;
 using App.Metrics.Utils;
 using HealthCheck.Samples;
 using Metrics.Samples;
@@ -25,7 +29,6 @@ namespace App.Sample
             var provider = serviceCollection.BuildServiceProvider();
 
             var application = new Application(provider);
-            application.RunReports();
 
             var simpleMetrics = new SampleMetrics(application.MetricsContext);
             var setCounterSample = new SetCounterSample(application.MetricsContext);
@@ -44,6 +47,7 @@ namespace App.Sample
                     userValueHistogramSample.RunSomeRequests();
                     userValueTimerSample.RunSomeRequests();
                     simpleMetrics.RunSomeRequests();
+
                 });
 
                 application.MetricsContext.Gauge(AppMetricsRegistry.Gauges.Errors, () => 1);
@@ -53,32 +57,66 @@ namespace App.Sample
                 application.MetricsContext.Gauge(AppMetricsRegistry.Gauges.GaugeWithNoValue, () => double.NaN);
 
                 Console.WriteLine("done setting things up");
+
+            }
+
+            //TODO: AH - encapsulate scheduling in framework
+            using (var scheduler = new ActionScheduler())
+            {
+                scheduler.Start(TimeSpan.FromSeconds(5), () =>
+                {
+                    application.Reporter.RunReports(application.MetricsContext, CancellationToken.None);
+                });
+
                 Console.ReadKey();
             }
+
         }
 
         private static void ConfigureMetrics(IServiceCollection services)
         {
-            services.AddMetrics(options =>
-            {
-                options.Reporters = reports =>
+            services
+                .AddMetrics(options =>
                 {
-                    reports.WithConsoleReport(TimeSpan.FromSeconds(3));
-                    reports.WithTextFileReport(@"C:\metrics-sample.txt", TimeSpan.FromSeconds(3));
-                };
-                options.HealthCheckRegistry = checks =>
-                {
-                    checks.Register("DatabaseConnected", () => Task.FromResult("Database Connection OK"));
-                    checks.Register("DiskSpace", () =>
+                    options.Reporters = reports =>
                     {
-                        var freeDiskSpace = GetFreeDiskSpace();
+                        reports.WithConsoleReport(TimeSpan.FromSeconds(3));
+                        reports.WithTextFileReport(@"C:\metrics-sample.txt", TimeSpan.FromSeconds(3));
+                    };
+                    options.HealthCheckRegistry = checks =>
+                    {
+                        checks.Register("DatabaseConnected", () => Task.FromResult("Database Connection OK"));
+                        checks.Register("DiskSpace", () =>
+                        {
+                            var freeDiskSpace = GetFreeDiskSpace();
 
-                        return Task.FromResult(freeDiskSpace <= 512
-                            ? HealthCheckResult.Unhealthy("Not enough disk space: {0}", freeDiskSpace)
-                            : HealthCheckResult.Unhealthy("Disk space ok: {0}", freeDiskSpace));
-                    });
-                };
-            });
+                            return Task.FromResult(freeDiskSpace <= 512
+                                ? HealthCheckResult.Unhealthy("Not enough disk space: {0}", freeDiskSpace)
+                                : HealthCheckResult.Unhealthy("Disk space ok: {0}", freeDiskSpace));
+                        });
+                    };
+                })
+                .AddReporting(options =>
+                {
+                    options.Reporters = factory =>
+                    {
+                        var consoleSettings = new ConsoleReporterSettings
+                        {
+                            Interval = TimeSpan.FromSeconds(1),
+                            Disabled = false
+                        };
+                        factory.AddConsole(consoleSettings);
+
+                        var textFileSettings = new TextFileReporterSettings
+                        {
+                            Interval = TimeSpan.FromSeconds(10),
+                            Disabled = false,
+                            FileReportingFolder = @"C\app-metrics\"
+                        };
+
+                        factory.AddTextFile(textFileSettings);
+                    };
+                });
         }
 
         private static void ConfigureServices(IServiceCollection services)
@@ -93,7 +131,7 @@ namespace App.Sample
             services.AddSingleton<ILoggerFactory>(provider =>
             {
                 var logFactory = new LoggerFactory();
-                logFactory.AddConsole();
+                logFactory.AddConsole((l, s) => s == LogLevel.Trace);
                 logFactory.AddSerilog(Log.Logger);
                 return logFactory;
             });
@@ -113,16 +151,16 @@ namespace App.Sample
         {
             MetricsContext = provider.GetRequiredService<IMetricsContext>();
 
+            var reporterFactory = provider.GetRequiredService<IReportFactory>();
+            Reporter = reporterFactory.CreateReporter("asdf");
+
             Token = new CancellationToken();
         }
 
         public IMetricsContext MetricsContext { get; set; }
 
-        public CancellationToken Token { get; set; }
+        public IReporter Reporter { get; set; }
 
-        public void RunReports()
-        {
-            MetricsContext.Advanced.ReportManager.RunReports(Token);
-        }
+        public CancellationToken Token { get; set; }
     }
 }

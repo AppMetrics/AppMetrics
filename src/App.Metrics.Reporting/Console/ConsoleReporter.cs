@@ -1,25 +1,26 @@
-﻿// Copyright (c) Allan hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
-// Ported/Refactored to .NET Standard Library by Allan Hardy
-
-
 using System;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
+using System.Threading;
+using System.Threading.Tasks;
 using App.Metrics.Health;
+using App.Metrics.Internal;
 using App.Metrics.MetricData;
+using App.Metrics.Reporters;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
+using ILogger = Serilog.ILogger;
 
-namespace App.Metrics.Reporters
+namespace App.Metrics.Reporting.Console
 {
-    public abstract class HumanReadableReport : BaseReport
+    #region old reporter
+
+    public class ReadableReporter : BaseReporter
     {
         private readonly int _padding = 20;
         private bool _disposed = false;
 
-        protected HumanReadableReport(ILoggerFactory loggerFactory,
+        public ReadableReporter(ILoggerFactory loggerFactory,
             IMetricsFilter filter,
             IClock clock)
             : base(loggerFactory, clock, filter)
@@ -27,8 +28,7 @@ namespace App.Metrics.Reporters
             if (loggerFactory == null)
             {
                 throw new ArgumentNullException(nameof(loggerFactory));
-            }
-        }
+            }        }
 
         public void WriteValue(string label, string value, string sign = "=")
         {
@@ -42,7 +42,10 @@ namespace App.Metrics.Reporters
             WriteLine("{0}{1} {2} {3}", pad, label, sign, value);
         }
 
-        protected abstract void WriteLine(string line, params string[] args);
+        public void WriteLine(string line, params string[] args)
+        {
+            System.Console.WriteLine(line, args);
+        }
 
         protected override void Dispose(bool disposing)
         {
@@ -61,7 +64,7 @@ namespace App.Metrics.Reporters
             base.Dispose(disposing);
         }
 
-        protected override void ReportCounter(string name, CounterValue value, Unit unit, MetricTags tags)
+        public override void ReportCounter(string name, CounterValue value, Unit unit, MetricTags tags)
         {
             WriteMetricName(name);
             WriteValue("Count", unit.FormatCount(value.Count));
@@ -78,13 +81,13 @@ namespace App.Metrics.Reporters
             }
         }
 
-        protected override void ReportGauge(string name, double value, Unit unit, MetricTags tags)
+        public override void ReportGauge(string name, double value, Unit unit, MetricTags tags)
         {
             WriteMetricName(name);
             WriteValue("value", unit.FormatValue(value));
         }
 
-        protected override void ReportHealth(HealthStatus status)
+        public override void ReportHealth(HealthStatus status)
         {
             WriteLine();
             WriteValue("Is Healthy", status.IsHealthy ? "Yes" : "No");
@@ -113,13 +116,13 @@ namespace App.Metrics.Reporters
             }
         }
 
-        protected override void ReportHistogram(string name, HistogramValue value, Unit unit, MetricTags tags)
+        public override void ReportHistogram(string name, HistogramValue value, Unit unit, MetricTags tags)
         {
             WriteMetricName(name);
             WriteHistogram(value, unit);
         }
 
-        protected override void ReportMeter(string name, MeterValue value, Unit unit, TimeUnit rateUnit, MetricTags tags)
+        public override void ReportMeter(string name, MeterValue value, Unit unit, TimeUnit rateUnit, MetricTags tags)
         {
             WriteMetricName(name);
             WriteMeter(value, unit, rateUnit);
@@ -138,7 +141,7 @@ namespace App.Metrics.Reporters
             }
         }
 
-        protected override void ReportTimer(string name, TimerValue value, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
+        public override void ReportTimer(string name, TimerValue value, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags)
         {
             WriteMetricName(name);
             WriteValue("Active Sessions", value.ActiveSessions.ToString());
@@ -147,7 +150,7 @@ namespace App.Metrics.Reporters
             WriteHistogram(value.Histogram, unit, durationUnit);
         }
 
-        protected override void StartMetricGroup(string metricType)
+        public override void StartMetricGroup(string metricType)
         {
             WriteLine();
             WriteLine();
@@ -156,14 +159,14 @@ namespace App.Metrics.Reporters
             base.StartMetricGroup(metricType);
         }
 
-        protected override void StartReport(string contextName)
+        public override void StartReport(string contextName)
         {
             WriteLine("{0} - {1}", contextName, Clock.FormatTimestamp(ReportTimestamp));
 
             base.StartReport(contextName);
         }
 
-        protected void WriteMetricName(string name)
+        public void WriteMetricName(string name)
         {
             WriteLine();
             WriteLine("    {0}", name);
@@ -216,5 +219,42 @@ namespace App.Metrics.Reporters
             WriteValue("5 Minute Rate", unit.FormatRate(value.FiveMinuteRate, rateUnit));
             WriteValue("15 Minute Rate", unit.FormatRate(value.FifteenMinuteRate, rateUnit));
         }
+    }
+
+    #endregion
+
+    public class ConsoleReporter : IReporter
+    {
+        private ReadableReporter _reporter;
+        public ConsoleReporter(string name, TimeSpan interval,
+            bool isEnabled, IMetricsFilter filter)
+        {
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            Name = name;
+            Filter = filter ?? new NoOpFilter();
+            Interval = interval;
+            IsEnabled = isEnabled;
+            _reporter = new ReadableReporter(new LoggerFactory(), filter, Clock.Default);
+
+        }
+
+        public string Name { get; }
+
+        public TimeSpan Interval { get; }
+
+        public IMetricsFilter Filter { get;  }
+
+        public bool IsEnabled { get; }
+
+        public async Task RunReports(IMetricsContext context, CancellationToken token)
+        {
+            var data = await context.Advanced.DataManager.GetMetricsDataAsync();
+            _reporter.RunReport(context, token);
+        }
+
     }
 }

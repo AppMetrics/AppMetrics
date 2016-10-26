@@ -1,18 +1,19 @@
-{
-  "title": "App.Metrics",
+﻿{
+  "title": "App.Metrics.Reporting",
   "copyright": "Allan Hardy 2016",
   "version": "1.0.0-*",
-  "authors": ["Allan Hardy"],
-  "description": "Provides application instrumentation abilities with custom metrics",
+  "authors": [ "Allan Hardy" ],
+  "description": "Provides reporting capabilities to App.Metrics",
 
   "packOptions": {
-    "tags": [ "Metrics", "Monitoring", "Instrumentation" ],
+    "tags": [ "Metrics", "Monitoring", "Instrumentation", "Reporting" ],
     "projectUrl": "https://github.com/alhardy/app-metrics",
     "licenseUrl": "https://github.com/alhardy/app-metrics/blob/master/LICENSE",
     "iconUrl": "http://www.erata.net/Metrics.NET/metrics_32.png"
   },
 
   "dependencies": {
+    "App.Metrics": "1.0.0-*",
     "Microsoft.DotNet.InternalAbstractions": "1.0.1-*",
     "Microsoft.Extensions.DependencyInjection": "1.0.0",
     "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0",
@@ -20,7 +21,7 @@
     "Microsoft.Extensions.Options": "1.0.0",
     "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
     "NETStandard.Library": "1.6.0",
-    "System.Net.NameResolution": "4.0.0"
+
   },
 
   "frameworks": {

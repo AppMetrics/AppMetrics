@@ -2,7 +2,6 @@ using System;
 using App.Metrics.DataProviders;
 using App.Metrics.Internal;
 using App.Metrics.MetricData;
-using App.Metrics.Registries;
 using App.Metrics.Sampling;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Options;
@@ -20,8 +19,7 @@ namespace App.Metrics.Core
             IMetricsRegistry registry,
             IMetricsBuilder builder,
             IHealthCheckManager healthCheckManager,
-            IMetricsDataManager dataManagerManager,
-            Func<IMetricsContext, IMetricReporterRegistry> newReportManager)
+            IMetricsDataManager dataManagerManager)
         {
             if (context == null) throw new ArgumentNullException(nameof(context));
 
@@ -29,7 +27,6 @@ namespace App.Metrics.Core
             _builder = builder;
             HealthCheckManager = healthCheckManager;
             DataManager = dataManagerManager;
-            ReportManager = newReportManager(context);
             Clock = options.Value.Clock;
             _isDisabled = options.Value.DisableMetrics;
 
@@ -45,8 +42,6 @@ namespace App.Metrics.Core
         public IHealthCheckManager HealthCheckManager { get; }
 
         public IMetricsDataManager DataManager { get; }
-
-        public IMetricReporterRegistry ReportManager { get; }
 
         public void CompletelyDisableMetrics()
         {

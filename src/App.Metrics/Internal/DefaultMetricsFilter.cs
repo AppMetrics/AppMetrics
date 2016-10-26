@@ -4,6 +4,39 @@ using App.Metrics.MetricData;
 
 namespace App.Metrics.Internal
 {
+    internal sealed class NoOpFilter : IMetricsFilter
+    {
+        public bool IsMatch(string @group)
+        {
+            return true;
+        }
+
+        public bool IsMatch(GaugeValueSource gauge)
+        {
+            return true;
+        }
+
+        public bool IsMatch(CounterValueSource counter)
+        {
+            return true;
+        }
+
+        public bool IsMatch(MeterValueSource meter)
+        {
+            return true;
+        }
+
+        public bool IsMatch(HistogramValueSource histogram)
+        {
+            return true;
+        }
+
+        public bool IsMatch(TimerValueSource timer)
+        {
+            return true;
+        }
+    }
+
     internal sealed class DefaultMetricsFilter : IMetricsFilter
     {
         public static IMetricsFilter All = new NoOpFilter();
@@ -92,39 +125,6 @@ namespace App.Metrics.Internal
         private bool IsNameMatch(string name)
         {
             return _name == null || _name(name);
-        }
-
-        private class NoOpFilter : IMetricsFilter
-        {
-            public bool IsMatch(string @group)
-            {
-                return true;
-            }
-
-            public bool IsMatch(GaugeValueSource gauge)
-            {
-                return true;
-            }
-
-            public bool IsMatch(CounterValueSource counter)
-            {
-                return true;
-            }
-
-            public bool IsMatch(MeterValueSource meter)
-            {
-                return true;
-            }
-
-            public bool IsMatch(HistogramValueSource histogram)
-            {
-                return true;
-            }
-
-            public bool IsMatch(TimerValueSource timer)
-            {
-                return true;
-            }
         }
     }
 }

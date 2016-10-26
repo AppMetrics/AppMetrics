@@ -5,12 +5,11 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.MetricData;
 using App.Metrics.Utils;
 
 namespace App.Metrics
 {
-    public interface IMetricsReport : IHideObjectMembers, IDisposable
+    public interface IMetricReporter : IHideObjectMembers, IDisposable
     {
         IMetricsFilter Filter { get; }
 

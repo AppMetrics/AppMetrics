@@ -112,7 +112,7 @@ namespace Microsoft.Extensions.Logging
         }
 
         public static void ReportedStarted<TReport>(this ILogger logger, long startTimestamp)
-            where TReport : IMetricsReport
+            where TReport : IMetricReporter
         {
             if (!logger.IsEnabled(LogLevel.Information)) return;
             if (startTimestamp == 0) return;
@@ -123,7 +123,7 @@ namespace Microsoft.Extensions.Logging
             _reportStarted(logger, typeof(TReport).FullName, elapsed.TotalMilliseconds, null);
         }
 
-        public static void ReportRan(this ILogger logger, IMetricsReport report, long startTimestamp)
+        public static void ReportRan(this ILogger logger, IMetricReporter reporter, long startTimestamp)
         {
             if (!logger.IsEnabled(LogLevel.Information)) return;
             if (startTimestamp == 0) return;
@@ -131,16 +131,16 @@ namespace Microsoft.Extensions.Logging
             var currentTimestamp = Stopwatch.GetTimestamp();
             var elapsed = new TimeSpan((long)(TimestampToTicks * (currentTimestamp - startTimestamp)));
 
-            _reportRan(logger, report.GetType().FullName, elapsed.TotalMilliseconds, null);
+            _reportRan(logger, reporter.GetType().FullName, elapsed.TotalMilliseconds, null);
         }
 
-        public static void ReportRunning(this ILogger logger, IMetricsReport report)
+        public static void ReportRunning(this ILogger logger, IMetricReporter reporter)
         {
-            logger.LogInformation(AppMetricsEventIds.Reports.Schedule, $"Running {report.GetType()}");
+            logger.LogInformation(AppMetricsEventIds.Reports.Schedule, $"Running {reporter.GetType()}");
         }
 
         public static void ReportStarting<TReport>(this ILogger logger)
-            where TReport : IMetricsReport
+            where TReport : IMetricReporter
         {
             logger.LogInformation(AppMetricsEventIds.Reports.Schedule, $"Starting {typeof(TReport)}");
         }

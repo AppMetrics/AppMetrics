@@ -35,7 +35,7 @@ namespace App.Metrics.Facts.Core
       
         private static readonly Func<IMetricsContext, IMetricReporterRegistry> NewReportManager = context => new DefaultMetricReporterRegistry(Options, context, LoggerFactory);
 
-        private readonly IMetricsContext _context = new DefaultMetricsContext(Options, Registry, MetricsBuilder, HealthCheckManager, MetricsDataManager, NewReportManager);
+        private readonly IMetricsContext _context = new DefaultMetricsContext(Options, Registry, MetricsBuilder, HealthCheckManager, MetricsDataManager);
 
         public Func<IMetricsContext, Task<MetricsData>> CurrentData => async ctx => await _context.Advanced.DataManager.GetMetricsDataAsync();
 

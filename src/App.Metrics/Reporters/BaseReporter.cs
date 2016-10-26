@@ -17,13 +17,13 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporters
 {
-    public abstract class BaseReport : IMetricsReport
+    public abstract class BaseReporter : IMetricReporter
     {
         protected readonly ILogger Logger;
         private bool _disposed = false;
         private CancellationToken _token;
 
-        protected BaseReport(ILoggerFactory loggerFactory,
+        protected BaseReporter(ILoggerFactory loggerFactory,
             IClock clock,
             IMetricsFilter filter)
         {
@@ -42,7 +42,7 @@ namespace App.Metrics.Reporters
             Clock = clock;
         }
 
-        ~BaseReport()
+        ~BaseReporter()
         {
             Dispose(false);
         }
@@ -85,17 +85,12 @@ namespace App.Metrics.Reporters
             EndReport(metricsData.ContextName);
         }
 
-        protected abstract void ReportCounter(string name, CounterValue value, Unit unit, MetricTags tags);
-
-        protected abstract void ReportGauge(string name, double value, Unit unit, MetricTags tags);
-
-        protected abstract void ReportHealth(HealthStatus status);
-
-        protected abstract void ReportHistogram(string name, HistogramValue value, Unit unit, MetricTags tags);
-
-        protected abstract void ReportMeter(string name, MeterValue value, Unit unit, TimeUnit rateUnit, MetricTags tags);
-
-        protected abstract void ReportTimer(string name, TimerValue value, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags);
+        public abstract void ReportCounter(string name, CounterValue value, Unit unit, MetricTags tags);
+        public abstract void ReportGauge(string name, double value, Unit unit, MetricTags tags);
+        public abstract void ReportHealth(HealthStatus status);
+        public abstract void ReportHistogram(string name, HistogramValue value, Unit unit, MetricTags tags);
+        public abstract void ReportMeter(string name, MeterValue value, Unit unit, TimeUnit rateUnit, MetricTags tags);
+        public abstract void ReportTimer(string name, TimerValue value, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, MetricTags tags);
 
         protected virtual void Dispose(bool disposing)
         {
@@ -110,19 +105,19 @@ namespace App.Metrics.Reporters
             _disposed = true;
         }
 
-        protected virtual void EndContext(string contextName)
+        public virtual void EndContext(string contextName)
         {
         }
 
-        protected virtual void EndMetricGroup(string metricName)
+        public virtual void EndMetricGroup(string metricName)
         {
         }
 
-        protected virtual void EndReport(string contextName)
+        public virtual void EndReport(string contextName)
         {
         }
 
-        protected virtual string FormatContextName(IEnumerable<string> contextStack, string contextName)
+        public virtual string FormatContextName(IEnumerable<string> contextStack, string contextName)
         {
             var stack = string.Join(" - ", contextStack);
             if (stack.Length == 0)
@@ -132,24 +127,24 @@ namespace App.Metrics.Reporters
             return string.Concat(stack, " - ", contextName);
         }
 
-        protected virtual string FormatMetricName<T>(string context, MetricValueSource<T> metric)
+        public virtual string FormatMetricName<T>(string context, MetricValueSource<T> metric)
         {
             return string.Concat("[", context, "] ", metric.Name);
         }
 
-        protected virtual void ReportEnvironment(string name, IEnumerable<EnvironmentInfoEntry> environment)
+        public virtual void ReportEnvironment(string name, IEnumerable<EnvironmentInfoEntry> environment)
         {
         }
 
-        protected virtual void StartContext(string contextName)
+        public virtual void StartContext(string contextName)
         {
         }
 
-        protected virtual void StartMetricGroup(string metricName)
+        public virtual void StartMetricGroup(string metricName)
         {
         }
 
-        protected virtual void StartReport(string contextName)
+        public virtual void StartReport(string contextName)
         {
         }
 

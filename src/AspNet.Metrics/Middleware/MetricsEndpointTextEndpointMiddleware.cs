@@ -14,7 +14,7 @@ namespace AspNet.Metrics.Middleware
 {
     public class MetricsEndpointTextEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
-        private readonly StringReport _stringReport;
+        private readonly StringReporter _stringReporter;
 
         public MetricsEndpointTextEndpointMiddleware(RequestDelegate next,
             IMetricsFilter metricsFilter,
@@ -23,7 +23,7 @@ namespace AspNet.Metrics.Middleware
             IMetricsContext metricsContext)
             : base(next, options, loggerFactory, metricsContext)
         {
-            _stringReport = new StringReport(loggerFactory, metricsContext, metricsFilter);
+            _stringReporter = new StringReporter(loggerFactory, metricsContext, metricsFilter);
         }
 
         public async Task Invoke(HttpContext context)
@@ -32,7 +32,7 @@ namespace AspNet.Metrics.Middleware
             {
                 Logger.MiddlewareExecuting(GetType());
 
-                var content = await _stringReport.RenderMetrics(MetricsContext);
+                var content = await _stringReporter.RenderMetrics(MetricsContext);
 
                 await WriteResponseAsync(context, content, "text/plain");
 

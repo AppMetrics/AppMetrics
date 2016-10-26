@@ -18,7 +18,7 @@ namespace App.Metrics.Internal
     {
         private readonly TimeSpan _interval;
         private readonly IMetricsContext _metricsContext;
-        private readonly IMetricsReport _report;
+        private readonly IMetricReporter _reporter;
         private readonly IScheduler _scheduler;
         private readonly ILogger _logger;
         private bool _disposed = false;
@@ -26,7 +26,7 @@ namespace App.Metrics.Internal
         public DefaultScheduledReporter(
             ILoggerFactory loggerFactory,
             IMetricsContext metricsContext,
-            IMetricsReport reporter,
+            IMetricReporter reporter,
             TimeSpan interval)
             : this(metricsContext, reporter, interval, new ActionScheduler())
         {
@@ -35,7 +35,7 @@ namespace App.Metrics.Internal
 
         public DefaultScheduledReporter(
             IMetricsContext metricsContext,
-            IMetricsReport report,
+            IMetricReporter reporter,
             TimeSpan interval,
             IScheduler scheduler)
         {
@@ -44,9 +44,9 @@ namespace App.Metrics.Internal
                 throw new ArgumentNullException(nameof(metricsContext));
             }
 
-            if (report == null)
+            if (reporter == null)
             {
-                throw new ArgumentNullException(nameof(report));
+                throw new ArgumentNullException(nameof(reporter));
             }
 
             if (scheduler == null)
@@ -55,7 +55,7 @@ namespace App.Metrics.Internal
             }
 
             _metricsContext = metricsContext;
-            _report = report;
+            _reporter = reporter;
             _interval = interval;
             _scheduler = scheduler;
         }
@@ -80,7 +80,7 @@ namespace App.Metrics.Internal
                 }
 
                 _scheduler.Dispose();
-                _report.Dispose();
+                _reporter.Dispose();
             }
 
             _disposed = true;
@@ -88,13 +88,13 @@ namespace App.Metrics.Internal
 
         private void ReportAction(CancellationToken token)
         {
-            _logger.ReportRunning(_report);
+            _logger.ReportRunning(_reporter);
 
             var startTimestamp = _logger.IsEnabled(LogLevel.Information) ? Stopwatch.GetTimestamp() : 0;
 
-            _report.RunReport(_metricsContext, token);
+            _reporter.RunReport(_metricsContext, token);
 
-            _logger.ReportRan(_report, startTimestamp);
+            _logger.ReportRan(_reporter, startTimestamp);
         }
     }
 }

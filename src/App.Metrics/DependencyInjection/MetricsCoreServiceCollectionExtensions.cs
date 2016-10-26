@@ -108,12 +108,6 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             {
                 return group => new DefaultMetricGroupRegistry(group);
             });
-            services.TryAddTransient<Func<IMetricsContext, IMetricReporterRegistry>>(provider =>
-            {
-                var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
-                var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
-                return context => new DefaultMetricReporterRegistry(options, context, loggerFactory);
-            });
             services.TryAddSingleton<IMetricsBuilder, DefaultMetricsBuilder>();
             services.TryAddSingleton<IMetricsRegistry, DefaultMetricsRegistry>();
             services.TryAddSingleton<IMetricsDataManager, DefaultMetricsDataManager>();

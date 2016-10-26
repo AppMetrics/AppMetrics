@@ -11,12 +11,12 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporters
 {
-    public sealed class ConsoleReport : HumanReadableReport
+    public sealed class ConsoleMetricReporter : HumanReadableReporter
     {
         private bool _disposed = false;
         private readonly ILogger _logger;
 
-        public ConsoleReport(IMetricsContext metricsContext,
+        public ConsoleMetricReporter(IMetricsContext metricsContext,
             IMetricsFilter filter,
             ILoggerFactory loggerFactory)
             : base(loggerFactory, filter, metricsContext.Advanced.Clock)
@@ -31,7 +31,7 @@ namespace App.Metrics.Reporters
                 throw new ArgumentNullException(nameof(loggerFactory));
             }
 
-            _logger = loggerFactory.CreateLogger<ConsoleReport>();
+            _logger = loggerFactory.CreateLogger<ConsoleMetricReporter>();
         }
 
         protected override void Dispose(bool disposing)
@@ -51,9 +51,9 @@ namespace App.Metrics.Reporters
             base.Dispose(disposing);
         }
 
-        protected override void StartReport(string contextName)
+        public override void StartReport(string contextName)
         {
-            _logger.ReportStarting<ConsoleReport>();
+            _logger.ReportStarting<ConsoleMetricReporter>();
 
             var startTimestamp = _logger.IsEnabled(LogLevel.Information) ? Stopwatch.GetTimestamp() : 0;
 
@@ -61,7 +61,7 @@ namespace App.Metrics.Reporters
 
             base.StartReport(contextName);
 
-            _logger.ReportedStarted<ConsoleReport>(startTimestamp);
+            _logger.ReportedStarted<ConsoleMetricReporter>(startTimestamp);
         }
 
         protected override void WriteLine(string line, params string[] args)

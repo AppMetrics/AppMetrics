@@ -53,6 +53,21 @@ namespace App.Metrics.Internal
             GC.SuppressFinalize(this);
         }
 
+        public void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // Free any other managed objects here.
+                }
+
+                StopAndClearAllReports();
+            }
+
+            _disposed = true;
+        }
+
         public void RunReports(CancellationToken token)
         {
             _logger.RunReportsExecuting();
@@ -87,22 +102,22 @@ namespace App.Metrics.Internal
         /// </summary>
         /// <param name="interval">Interval at which to display the report on the Console.</param>
         /// <param name="filter">Only report metrics that match the filter.</param>
-        public IMetricReporterRegistry WithConsoleReport(TimeSpan interval, 
+        public IMetricReporterRegistry WithConsoleReport(TimeSpan interval,
             IMetricsFilter filter = null)
         {
-            return WithReport(new ConsoleReport(_metricsContext, filter, _loggerFactory), interval, filter);
+            return WithReport(new ConsoleMetricReporter(_metricsContext, filter, _loggerFactory), interval, filter);
         }
 
         /// <summary>
         ///     Schedule a generic reporter to be executed at a fixed <paramref name="interval" />
         /// </summary>
-        /// <param name="report">Function that returns an instance of a reporter</param>
+        /// <param name="reporter">Function that returns an instance of a reporter</param>
         /// <param name="interval">Interval at which to run the report.</param>
         /// <param name="filter">Only report metrics that match the filter.</param>
-        public IMetricReporterRegistry WithReport(IMetricsReport report, TimeSpan interval,
+        public IMetricReporterRegistry WithReport(IMetricReporter reporter, TimeSpan interval,
             IMetricsFilter filter = null)
         {
-            var newReport = new DefaultScheduledReporter(_loggerFactory, _metricsContext, report, interval);
+            var newReport = new DefaultScheduledReporter(_loggerFactory, _metricsContext, reporter, interval);
             _reports.Add(newReport);
             return this;
         }
@@ -116,23 +131,8 @@ namespace App.Metrics.Internal
         public IMetricReporterRegistry WithTextFileReport(string filePath, TimeSpan interval,
             IMetricsFilter filter = null)
         {
-            return WithReport(new TextFileReport(filePath, _loggerFactory, filter,
+            return WithReport(new TextFileReporter(filePath, _loggerFactory, filter,
                 _metricsContext.Advanced.Clock), interval, filter);
-        }
-
-        public void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    // Free any other managed objects here.
-                }
-
-                StopAndClearAllReports();
-            }
-
-            _disposed = true;
         }
     }
 }
