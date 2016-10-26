@@ -9,11 +9,10 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using App.Metrics.MetricData;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 
-namespace App.Metrics.Reporters
+namespace App.Metrics.Reporting._Legacy
 {
     public sealed class TextFileReporter : HumanReadableReporter
     {

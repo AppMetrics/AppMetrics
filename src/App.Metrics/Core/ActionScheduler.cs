@@ -9,7 +9,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace App.Metrics.Utils
+namespace App.Metrics.Core
 {
     /// <summary>
     ///     Utility class to schedule an Action to be executed repeatedly according to the interval.

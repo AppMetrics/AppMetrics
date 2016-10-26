@@ -23,7 +23,6 @@ namespace App.Metrics
             DisableMetrics = false;
             DisableHealthChecks = false;
             DefaultSamplingType = SamplingType.ExponentiallyDecaying;
-            Reporters = reports => { };
             HealthCheckRegistry = checks => { };
             MetricsFilter = new DefaultMetricsFilter();
             Clock = Utils.Clock.Default;
@@ -44,8 +43,6 @@ namespace App.Metrics
         public JsonSchemeVersion JsonSchemeVersion { get; set; } = JsonSchemeVersion.AlwaysLatest;
 
         public IMetricsFilter MetricsFilter { get; set; }
-
-        public Action<IMetricReporterRegistry> Reporters { get; set; }
 
         public IClock Clock { get; set; }
 

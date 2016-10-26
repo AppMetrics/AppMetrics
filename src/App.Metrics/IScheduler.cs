@@ -6,7 +6,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace App.Metrics.Utils
+namespace App.Metrics
 {
     /// <summary>
     ///     Indicates the ability to schedule the execution of an Action at a specified interval

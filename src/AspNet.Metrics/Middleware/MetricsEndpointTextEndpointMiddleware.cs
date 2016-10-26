@@ -4,8 +4,7 @@
 
 using System.Threading.Tasks;
 using App.Metrics;
-using App.Metrics.MetricData;
-using App.Metrics.Reporters;
+using App.Metrics.Reporting._Legacy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

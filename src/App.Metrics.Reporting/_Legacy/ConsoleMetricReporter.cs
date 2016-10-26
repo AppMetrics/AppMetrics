@@ -7,48 +7,31 @@
 
 using System;
 using System.Diagnostics;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using App.Metrics.MetricData;
-using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 
-namespace App.Metrics.Reporters
+namespace App.Metrics.Reporting._Legacy
 {
-    public sealed class StringReporter : HumanReadableReporter
+    public sealed class ConsoleMetricReporter : HumanReadableReporter
     {
-        private readonly IMetricsContext _metricsContext;
-        private StringBuilder _buffer;
         private bool _disposed = false;
-        private ILogger _logger;
+        private readonly ILogger _logger;
 
-        public StringReporter(ILoggerFactory loggerFactory,
-            IMetricsContext metricsContext,
-            IMetricsFilter filter)
+        public ConsoleMetricReporter(IMetricsContext metricsContext,
+            IMetricsFilter filter,
+            ILoggerFactory loggerFactory)
             : base(loggerFactory, filter, metricsContext.Advanced.Clock)
         {
-            if (loggerFactory == null)
-            {
-                throw new ArgumentNullException(nameof(loggerFactory));
-            }
-
             if (metricsContext == null)
             {
                 throw new ArgumentNullException(nameof(metricsContext));
             }
 
-            _metricsContext = metricsContext;
-            _logger = loggerFactory.CreateLogger<StringReporter>();
-        }
+            if (loggerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(loggerFactory));
+            }
 
-        public string Result => _buffer.ToString();
-
-        public async Task<string> RenderMetrics(IMetricsContext metricsContext)
-        {
-            await RunReport(metricsContext, CancellationToken.None);
-
-            return Result;
+            _logger = loggerFactory.CreateLogger<ConsoleMetricReporter>();
         }
 
         protected override void Dispose(bool disposing)
@@ -57,12 +40,11 @@ namespace App.Metrics.Reporters
             {
                 if (disposing)
                 {
-                    // Release managed resources                    
+                    // Release managed resources
                 }
 
                 // Release unmanaged resources.
                 // Set large fields to null.
-                _buffer = null;
                 _disposed = true;
             }
 
@@ -71,19 +53,20 @@ namespace App.Metrics.Reporters
 
         public override void StartReport(string contextName)
         {
-            _logger.ReportStarting<StringReporter>();
+            _logger.ReportStarting<ConsoleMetricReporter>();
 
             var startTimestamp = _logger.IsEnabled(LogLevel.Information) ? Stopwatch.GetTimestamp() : 0;
 
-            _buffer = new StringBuilder();
+            System.Console.Clear();
+
             base.StartReport(contextName);
 
-            _logger.ReportedStarted<StringReporter>(startTimestamp);
+            _logger.ReportedStarted<ConsoleMetricReporter>(startTimestamp);
         }
 
         protected override void WriteLine(string line, params string[] args)
         {
-            _buffer.AppendLine(string.Format(line, args));
+            System.Console.WriteLine(line, args);
         }
     }
 }

@@ -37,9 +37,6 @@ namespace App.Metrics.Facts.Core
 
         private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.Clock);
        
-        private static readonly Func<IMetricsContext, IMetricReporterRegistry> NewReportManager = 
-            context => new DefaultMetricReporterRegistry(Options, context, LoggerFactory);
-
         private readonly IMetricsContext _context = new DefaultMetricsContext(Options, Registry, MetricsBuilder, HealthCheckManager, MetricsDataManager);
 
         public MetricsContextCustomMetricsTests()

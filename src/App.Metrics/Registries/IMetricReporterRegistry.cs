@@ -4,8 +4,6 @@
 
 using System;
 using System.Threading;
-using App.Metrics.MetricData;
-using App.Metrics.Reporters;
 
 namespace App.Metrics.Registries
 {

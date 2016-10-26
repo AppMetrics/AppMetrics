@@ -39,6 +39,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "App.Metrics.Benchmarks", "s
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "App.Metrics.Reporting", "src\App.Metrics.Reporting\App.Metrics.Reporting.xproj", "{3CE5EF8A-A10D-4773-87F8-A85CACBB803D}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "App.Metrics.Reporting.Facts", "test\App.Metrics.Reporting.Facts\App.Metrics.Reporting.Facts.xproj", "{71D34732-2496-4740-A2EF-E6A1492DB1F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -89,6 +91,10 @@ Global
 		{3CE5EF8A-A10D-4773-87F8-A85CACBB803D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CE5EF8A-A10D-4773-87F8-A85CACBB803D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CE5EF8A-A10D-4773-87F8-A85CACBB803D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71D34732-2496-4740-A2EF-E6A1492DB1F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71D34732-2496-4740-A2EF-E6A1492DB1F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71D34732-2496-4740-A2EF-E6A1492DB1F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71D34732-2496-4740-A2EF-E6A1492DB1F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,5 +113,6 @@ Global
 		{8CC1F492-CD20-4270-8BD7-C2BDCD0EA892} = {2D805782-756E-4C98-B22E-F502BEE95318}
 		{C967EA87-325E-4C06-9CDC-1343C11CB62B} = {8CC1F492-CD20-4270-8BD7-C2BDCD0EA892}
 		{3CE5EF8A-A10D-4773-87F8-A85CACBB803D} = {2D805782-756E-4C98-B22E-F502BEE95318}
+		{71D34732-2496-4740-A2EF-E6A1492DB1F1} = {DD2E4647-7125-4CE3-9BA5-B45A26113A31}
 	EndGlobalSection
 EndGlobal

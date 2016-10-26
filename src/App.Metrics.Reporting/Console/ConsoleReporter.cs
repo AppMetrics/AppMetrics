@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using App.Metrics.Health;
 using App.Metrics.Internal;
 using App.Metrics.MetricData;
-using App.Metrics.Reporters;
+using App.Metrics.Reporting._Legacy;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 using ILogger = Serilog.ILogger;

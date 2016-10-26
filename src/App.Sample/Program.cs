@@ -3,11 +3,13 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
+using App.Metrics.Core;
 using App.Metrics.Health;
 using App.Metrics.Reporting;
 using App.Metrics.Reporting.Console;
 using App.Metrics.Reporting.DependencyInjection;
 using App.Metrics.Reporting.TextFile;
+using App.Metrics.Reporting._Legacy;
 using App.Metrics.Utils;
 using HealthCheck.Samples;
 using Metrics.Samples;
@@ -78,11 +80,6 @@ namespace App.Sample
             services
                 .AddMetrics(options =>
                 {
-                    options.Reporters = reports =>
-                    {
-                        reports.WithConsoleReport(TimeSpan.FromSeconds(3));
-                        reports.WithTextFileReport(@"C:\metrics-sample.txt", TimeSpan.FromSeconds(3));
-                    };
                     options.HealthCheckRegistry = checks =>
                     {
                         checks.Register("DatabaseConnected", () => Task.FromResult("Database Connection OK"));
@@ -117,6 +114,14 @@ namespace App.Sample
                         factory.AddTextFile(textFileSettings);
                     };
                 });
+
+            //Metrics.Collector = new CollectorConfiguration()
+            //   .Tag.With("host", Environment.GetEnvironmentVariable("COMPUTERNAME"))
+            //   .Tag.With("os", Environment.GetEnvironmentVariable("OS"))
+            //   .Tag.With("process", Path.GetFileName(process.MainModule.FileName))
+            //   .Batch.AtInterval(TimeSpan.FromSeconds(2))
+            //   .WriteTo.InfluxDB("http://192.168.99.100:8086", "data")
+            //   .CreateCollector();
         }
 
         private static void ConfigureServices(IServiceCollection services)

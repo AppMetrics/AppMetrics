@@ -8,11 +8,10 @@
 using System;
 using System.Diagnostics;
 using System.Threading;
-using App.Metrics.Reporters;
-using App.Metrics.Utils;
+using App.Metrics.Core;
 using Microsoft.Extensions.Logging;
 
-namespace App.Metrics.Internal
+namespace App.Metrics.Reporting._Legacy
 {
     internal sealed class DefaultScheduledReporter : IScheduledReporter
     {
