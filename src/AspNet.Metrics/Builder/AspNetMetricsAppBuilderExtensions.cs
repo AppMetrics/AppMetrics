@@ -30,22 +30,25 @@ namespace Microsoft.AspNet.Builder
 
             var appMetricsOptions = app.ApplicationServices.GetRequiredService<IOptions<AppMetricsOptions>>().Value;
             var aspNetMetricsOptions = app.ApplicationServices.GetRequiredService<IOptions<AspNetMetricsOptions>>().Value;
+            var healthCheckOptions = app.ApplicationServices.GetRequiredService<IOptions<AppMetricsHealthCheckOptions>>().Value;
 
 
             app.UseMiddleware<PingEndpointMiddleware>();
 
 
-            if (aspNetMetricsOptions.HealthEnabled && !appMetricsOptions.DisableHealthChecks)
+            if (aspNetMetricsOptions.HealthEndpointEnabled)
             {
+                HealthServicesHelper.ThrowIfMetricsNotRegistered(app.ApplicationServices);
+
                 app.UseMiddleware<HealthCheckEndpointMiddleware>();
             }
 
-            if (aspNetMetricsOptions.MetricsTextEnabled && !appMetricsOptions.DisableMetrics)
+            if (aspNetMetricsOptions.MetricsTextEndpointEnabled && !appMetricsOptions.DisableMetrics)
             {
                 app.UseMiddleware<MetricsEndpointTextEndpointMiddleware>(appMetricsOptions.MetricsFilter);
             }
 
-            if (aspNetMetricsOptions.MetricsEnabled && !appMetricsOptions.DisableMetrics)
+            if (aspNetMetricsOptions.MetricsEndpointEnabled && !appMetricsOptions.DisableMetrics)
             {
                 app.UseMiddleware<MetricsEndpointMiddleware>(appMetricsOptions.MetricsFilter);
             }

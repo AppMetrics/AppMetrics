@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,9 +24,9 @@ namespace App.Metrics.Facts.Core
             = Microsoft.Extensions.Options.Options.Create(new AppMetricsOptions());
 
         private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
-        
+
         private static readonly IHealthCheckManager HealthCheckManager =
-            new DefaultHealthCheckManager(Options, LoggerFactory, new DefaultHealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options));
+            new DefaultHealthCheckManager(LoggerFactory, () => new ConcurrentDictionary<string, HealthCheck>());
 
         private static readonly Func<string, IMetricGroupRegistry> NewMetricsGroupRegistry = name => new DefaultMetricGroupRegistry(name);
 

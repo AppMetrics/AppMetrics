@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using App.Metrics;
+using App.Metrics.DependencyInjection;
 using App.Metrics.Json;
 using App.Metrics.Utils;
 using Microsoft.AspNet.Builder;
@@ -18,21 +19,20 @@ namespace AspNet.Metrics.Facts
         {
             DefaultGroupName = "testing",
             DisableMetrics = false,
-            DisableHealthChecks = false,
             JsonSchemeVersion = JsonSchemeVersion.Version1,
             Clock = new Clock.TestClock()
         };
 
         private static readonly AspNetMetricsOptions TestAspNetOptions = new AspNetMetricsOptions
         {
-            MetricsTextEnabled = true,
-            HealthEnabled = true,
-            MetricsEnabled = true,
-            PingEnabled = true
+            MetricsTextEndpointEnabled = true,
+            HealthEndpointEnabled = true,
+            MetricsEndpointEnabled = true,
+            PingEndpointEnabled = true
         };
 
         public MetricsTestFixture(AppMetricsOptions testOptions = null,
-            AspNetMetricsOptions testAspNetOptions = null)
+            AspNetMetricsOptions testAspNetOptions = null, bool enableHealthChecks = true)
         {
             if (testOptions == null)
             {
@@ -59,15 +59,18 @@ namespace AspNet.Metrics.Facts
                         options.DefaultSamplingType = testOptions.DefaultSamplingType;
                         options.DefaultGroupName = testOptions.DefaultGroupName;
                         options.DisableMetrics = testOptions.DisableMetrics;
-                        options.DisableHealthChecks = testOptions.DisableHealthChecks;
                         options.JsonSchemeVersion = testOptions.JsonSchemeVersion;
                     }, TestContext)
+                    .AddHealthChecks(options =>
+                        {
+                            options.IsEnabled = enableHealthChecks;
+                        })
                     .AddAspNetMetrics(options =>
                         {
-                            options.HealthEnabled = testAspNetOptions.HealthEnabled;
-                            options.MetricsEnabled = testAspNetOptions.MetricsEnabled;
-                            options.MetricsTextEnabled = testAspNetOptions.MetricsTextEnabled;
-                            options.PingEnabled = testAspNetOptions.PingEnabled;
+                            options.HealthEndpointEnabled = testAspNetOptions.HealthEndpointEnabled;
+                            options.MetricsEndpointEnabled = testAspNetOptions.MetricsEndpointEnabled;
+                            options.MetricsTextEndpointEnabled = testAspNetOptions.MetricsTextEndpointEnabled;
+                            options.PingEndpointEnabled = testAspNetOptions.PingEndpointEnabled;
                             options.HealthEndpoint = testAspNetOptions.HealthEndpoint;
                             options.MetricsEndpoint = testAspNetOptions.MetricsEndpoint;
                             options.MetricsTextEndpoint = testAspNetOptions.MetricsTextEndpoint;

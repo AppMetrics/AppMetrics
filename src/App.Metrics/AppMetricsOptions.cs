@@ -21,24 +21,18 @@ namespace App.Metrics
             GlobalContextName = DefaultGlobalContextName;
             DefaultGroupName = "_default";
             DisableMetrics = false;
-            DisableHealthChecks = false;
             DefaultSamplingType = SamplingType.ExponentiallyDecaying;
-            HealthCheckRegistry = checks => { };
             MetricsFilter = new DefaultMetricsFilter();
             Clock = Utils.Clock.Default;
         }
 
         public SamplingType DefaultSamplingType { get; set; }
 
-        public bool DisableHealthChecks { get; set; }
-
         public bool DisableMetrics { get; set; }
 
         public string DefaultGroupName { get; set; }
 
         public string GlobalContextName { get; set; }
-
-        public Action<IHealthCheckRegistry> HealthCheckRegistry { get; set; }
 
         public JsonSchemeVersion JsonSchemeVersion { get; set; } = JsonSchemeVersion.AlwaysLatest;
 

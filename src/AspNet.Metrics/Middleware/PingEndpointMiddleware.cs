@@ -22,7 +22,7 @@ namespace AspNet.Metrics.Middleware
 
         public async Task Invoke(HttpContext context)
         {
-            if (Options.PingEnabled && Options.PingEndpoint.HasValue && Options.PingEndpoint == context.Request.Path)
+            if (Options.PingEndpointEnabled && Options.PingEndpoint.HasValue && Options.PingEndpoint == context.Request.Path)
             {
                 Logger.MiddlewareExecuting(GetType());
 

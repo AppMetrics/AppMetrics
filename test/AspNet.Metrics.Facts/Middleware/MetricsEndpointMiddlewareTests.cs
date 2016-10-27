@@ -35,7 +35,6 @@ namespace AspNet.Metrics.Facts.Middleware
             {
                 DefaultGroupName = "testing",
                 DisableMetrics = true,
-                DisableHealthChecks = false,
                 JsonSchemeVersion = JsonSchemeVersion.Version1
             });
 
@@ -51,7 +50,6 @@ namespace AspNet.Metrics.Facts.Middleware
             {
                 DefaultGroupName = "testing",
                 DisableMetrics = false,
-                DisableHealthChecks = false,
                 JsonSchemeVersion = JsonSchemeVersion.Version1
             }, new AspNetMetricsOptions { MetricsEndpoint = new PathString("/metrics-json") });
 
@@ -69,9 +67,8 @@ namespace AspNet.Metrics.Facts.Middleware
                 DefaultSamplingType = SamplingType.ExponentiallyDecaying,
                 DefaultGroupName = "testing",
                 DisableMetrics = false,
-                DisableHealthChecks = false,
                 JsonSchemeVersion = JsonSchemeVersion.Version1
-            }, new AspNetMetricsOptions { MetricsEnabled = false });
+            }, new AspNetMetricsOptions { MetricsEndpointEnabled = false });
 
             var result = await _fixture.Client.GetAsync("/metrics");
 
@@ -86,7 +83,6 @@ namespace AspNet.Metrics.Facts.Middleware
                 DefaultSamplingType = SamplingType.ExponentiallyDecaying,
                 DefaultGroupName = "testing",
                 DisableMetrics = false,
-                DisableHealthChecks = true,
                 JsonSchemeVersion = JsonSchemeVersion.Version1,
                 MetricsFilter = new DefaultMetricsFilter().WhereType(MetricType.Counter)
             });

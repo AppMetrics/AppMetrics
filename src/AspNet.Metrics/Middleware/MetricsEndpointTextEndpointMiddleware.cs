@@ -27,7 +27,7 @@ namespace AspNet.Metrics.Middleware
 
         public async Task Invoke(HttpContext context)
         {
-            if (Options.MetricsTextEnabled && Options.MetricsTextEndpoint.HasValue && Options.MetricsTextEndpoint == context.Request.Path)
+            if (Options.MetricsTextEndpointEnabled && Options.MetricsTextEndpoint.HasValue && Options.MetricsTextEndpoint == context.Request.Path)
             {
                 Logger.MiddlewareExecuting(GetType());
 

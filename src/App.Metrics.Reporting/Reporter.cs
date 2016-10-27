@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Infrastructure;
-using Serilog;
-using Serilog.Events;
 
 namespace App.Metrics.Reporting
 {
     internal sealed class Reporter : IReporter
     {
-        private readonly ReportFactory _reportFactory;
         private readonly string _name;
+        private readonly ReportFactory _reportFactory;
         private IReporter[] _reporters;
 
         public Reporter(ReportFactory reportFactory, string name)

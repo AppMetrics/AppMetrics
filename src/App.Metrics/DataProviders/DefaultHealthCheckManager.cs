@@ -1,40 +1,32 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using App.Metrics.Health;
-using App.Metrics.Registries;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace App.Metrics.DataProviders
 {
-    public sealed class DefaultHealthCheckManager : IHealthCheckManager
+    internal sealed class DefaultHealthCheckManager : IHealthCheckManager
     {
-        private readonly IHealthCheckRegistry _healthCheckRegistry;
+        private Func<IReadOnlyDictionary<string, HealthCheck>> _healthChecks;
         private readonly ILogger _logger;
 
-        public DefaultHealthCheckManager(IOptions<AppMetricsOptions> options,
-            ILoggerFactory loggerFactory,
-            IHealthCheckRegistry healthCheckRegistry)
+        public DefaultHealthCheckManager(ILoggerFactory loggerFactory,
+            Func<IReadOnlyDictionary<string, HealthCheck>> healthChecks)
         {
             if (loggerFactory == null)
             {
-                throw new ArgumentNullException(nameof(loggerFactory));    
+                throw new ArgumentNullException(nameof(loggerFactory));
             }
 
-            if (healthCheckRegistry == null)
-            {
-                throw new ArgumentNullException(nameof(healthCheckRegistry));
-            }
-
-            _healthCheckRegistry = healthCheckRegistry;
-            options.Value.HealthCheckRegistry(_healthCheckRegistry);
             _logger = loggerFactory.CreateLogger<DefaultHealthCheckManager>();
+            _healthChecks = healthChecks;
         }
 
         public async Task<HealthStatus> GetStatusAsync()
@@ -43,8 +35,9 @@ namespace App.Metrics.DataProviders
 
             _logger.HealthCheckGetStatusExecuting();
 
-            //TODO: AH - can the registry be internal or make checks readonly
-            var results = await Task.WhenAll(_healthCheckRegistry.Checks.Values.OrderBy(v => v.Name)
+            var checks = _healthChecks();
+
+            var results = await Task.WhenAll(checks.Values.OrderBy(v => v.Name)
                 .Select(v => v.ExecuteAsync()));
 
             var healthStatus = new HealthStatus(results);

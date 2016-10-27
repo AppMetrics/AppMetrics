@@ -1,4 +1,5 @@
-﻿using App.Metrics.MetricData;
+﻿using App.Metrics.DependencyInjection;
+using App.Metrics.MetricData;
 using HealthCheck.Samples;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
@@ -68,8 +69,10 @@ namespace Mvc.Sample
                     options.DisableMetrics = false;
                     options.DefaultGroupName = "Mvc.Sample";
                 })
+                .AddHealthChecks()
                 .AddAspNetMetrics(options =>
-                {                  
+                {
+                    options.HealthEndpointEnabled = false;           
                     options.MetricsEndpoint = new PathString("/metrics");                    
                     //.WithSystemPerforrmanceCounters()
                 });

@@ -14,7 +14,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     internal static class MetricsCoreBuilderExtensions
     {
-        public static IServiceCollection AddHealthChecks(this IServiceCollection services, IMetricsEnvironment environment)
+        internal static IServiceCollection AddHealthChecks(this IServiceCollection services, IMetricsEnvironment environment)
         {
             if (services == null)
             {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using App.Metrics;
+using App.Metrics.DependencyInjection;
 using App.Metrics.Json;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
@@ -69,9 +70,9 @@ namespace Api.Sample
                 {
                     options.DefaultSamplingType = SamplingType.ExponentiallyDecaying;
                     options.DisableMetrics = false;
-                    options.DisableHealthChecks = false;
                     options.JsonSchemeVersion = JsonSchemeVersion.AlwaysLatest;
                 })
+                .AddHealthChecks()
                 .AddAspNetMetrics(options => { });
             //.WithAllPerformanceCounters()
         }

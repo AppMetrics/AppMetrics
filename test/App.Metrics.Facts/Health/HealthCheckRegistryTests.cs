@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using App.Metrics.DataProviders;
 using App.Metrics.Health;
 using App.Metrics.Internal;
-using App.Metrics.Registries;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Xunit;
 
 namespace App.Metrics.Facts.Health
@@ -15,57 +13,32 @@ namespace App.Metrics.Facts.Health
     public class HealthCheckRegistryTests
     {
         private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
+        private readonly HealthCheckFactory _healthCheckFactory;
         private readonly IHealthCheckManager _healthCheckManager;
-        private readonly IHealthCheckRegistry _healthCheckRegistry;
+        private readonly List<HealthCheck> _healthChecks = new List<HealthCheck>();
 
         public HealthCheckRegistryTests()
         {
-            var options = Options.Create(new AppMetricsOptions());
-            _healthCheckRegistry = new DefaultHealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), options);
-            _healthCheckManager = new DefaultHealthCheckManager(options, LoggerFactory, _healthCheckRegistry);
+            _healthCheckFactory = new HealthCheckFactory(_healthChecks);
+            _healthCheckManager = new DefaultHealthCheckManager(LoggerFactory,
+                () => _healthCheckFactory.Checks);
         }
 
         [Fact]
         public void HealthCheck_RegistryDoesNotThrowOnDuplicateRegistration()
         {
-            _healthCheckRegistry.UnregisterAllHealthChecks();
+            _healthCheckFactory.Register("test", () => Task.FromResult(HealthCheckResult.Healthy()));
 
-            _healthCheckRegistry.Register("test", () => Task.FromResult(HealthCheckResult.Healthy()));
-
-            Action action = () => _healthCheckRegistry.Register("test", () => Task.FromResult(HealthCheckResult.Healthy()));
+            Action action = () => _healthCheckFactory.Register("test", () => Task.FromResult(HealthCheckResult.Healthy()));
             action.ShouldNotThrow<InvalidOperationException>();
         }
 
-        [Fact]
-        public async Task HealthCheck_RegistryExecutesCheckOnEachGetStatus()
-        {
-            _healthCheckRegistry.UnregisterAllHealthChecks();
-            var count = 0;
-
-            _healthCheckRegistry.Register("test", () =>
-            {
-                count++;
-                return Task.FromResult(HealthCheckResult.Healthy());
-            });
-
-            count.Should().Be(0);
-
-            await _healthCheckManager.GetStatusAsync();
-
-            count.Should().Be(1);
-
-            await _healthCheckManager.GetStatusAsync();
-
-            count.Should().Be(2);
-        }
 
         [Fact]
         public async Task HealthCheck_RegistryStatusIsFailedIfOneCheckFails()
         {
-            _healthCheckRegistry.UnregisterAllHealthChecks();
-
-            _healthCheckRegistry.Register("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
-            _healthCheckRegistry.Register("bad", () => Task.FromResult(HealthCheckResult.Unhealthy()));
+            _healthCheckFactory.Register("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
+            _healthCheckFactory.Register("bad", () => Task.FromResult(HealthCheckResult.Unhealthy()));
 
             var status = await _healthCheckManager.GetStatusAsync();
 
@@ -76,10 +49,8 @@ namespace App.Metrics.Facts.Health
         [Fact]
         public async Task HealthCheck_RegistryStatusIsHealthyIfAllChecksAreHealthy()
         {
-            _healthCheckRegistry.UnregisterAllHealthChecks();
-
-            _healthCheckRegistry.Register("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
-            _healthCheckRegistry.Register("another", () => Task.FromResult(HealthCheckResult.Healthy()));
+            _healthCheckFactory.Register("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
+            _healthCheckFactory.Register("another", () => Task.FromResult(HealthCheckResult.Healthy()));
 
             var status = await _healthCheckManager.GetStatusAsync();
 

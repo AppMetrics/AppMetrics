@@ -20,10 +20,10 @@ namespace AspNet.Metrics
             MetricsTextEndpoint = new PathString("/metrics-text");
             PingEndpoint = new PathString("/ping");
 
-            HealthEnabled = true;
-            MetricsEnabled = true;
-            MetricsTextEnabled = true;
-            PingEnabled = true;
+            HealthEndpointEnabled = true;
+            MetricsEndpointEnabled = true;
+            MetricsTextEndpointEnabled = true;
+            PingEndpointEnabled = true;
             OAuth2TrackingEnabled = true;
 
             IgnoredRequestPatterns.Add(new Regex(@"\.(jpg|gif|css|js|png|woff|ttf|txt|eot|svg)$"));
@@ -38,21 +38,21 @@ namespace AspNet.Metrics
 
         public bool OAuth2TrackingEnabled { get; set; }
 
-        public bool HealthEnabled { get; set; }
+        public bool HealthEndpointEnabled { get; set; }
 
         public PathString HealthEndpoint { get; set; }
 
         public IList<Regex> IgnoredRequestPatterns { get; }
 
-        public bool MetricsEnabled { get; set; }
+        public bool MetricsEndpointEnabled { get; set; }
 
         public PathString MetricsEndpoint { get; set; }
 
-        public bool MetricsTextEnabled { get; set; }
+        public bool MetricsTextEndpointEnabled { get; set; }
 
         public PathString MetricsTextEndpoint { get; set; }
 
-        public bool PingEnabled { get; set; }
+        public bool PingEndpointEnabled { get; set; }
 
         public PathString PingEndpoint { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Linq;
 using App.Metrics.Core;
 using App.Metrics.DataProviders;
@@ -29,8 +30,7 @@ namespace App.Metrics.Facts
         var registry = new DefaultMetricsRegistry(LoggerFactory, options, new EnvironmentInfoBuilder(LoggerFactory), newGroupRegistry);
             return new DefaultMetricsContext(options, registry,
                 new TestMetricsBuilder(clock, scheduler),
-                new DefaultHealthCheckManager(options, LoggerFactory,
-                    new DefaultHealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options.Create(new AppMetricsOptions()))),
+                new DefaultHealthCheckManager(LoggerFactory, () => new ConcurrentDictionary<string, HealthCheck>()),
                 new DefaultMetricsDataManager(registry));
         }
 

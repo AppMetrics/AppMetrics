@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using App.Metrics.DependencyInjection;
 using App.Metrics.Health;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,11 +15,12 @@ namespace App.Metrics.Facts.DependencyInjection
             var services = new ServiceCollection();
             services.AddLogging();
             services.AddSingleton<IDatabase, Database>();
-            services.AddMetrics(
-                options =>
-                {
-                    options.HealthCheckRegistry = checks => { checks.Register("DatabaseConnected", () => Task.FromResult("Database Connection OK")); };
-                });
+            services.AddMetrics()
+                .AddHealthChecks(
+                    options =>
+                    {
+                        options.HealthChecks = checks => { checks.Register("DatabaseConnected", () => Task.FromResult("Database Connection OK")); };
+                    });
             var provider = services.BuildServiceProvider();
             var metricsContext = provider.GetRequiredService<IMetricsContext>();
 
@@ -34,7 +36,7 @@ namespace App.Metrics.Facts.DependencyInjection
             var services = new ServiceCollection();
             services.AddLogging();
             services.AddSingleton<IDatabase, Database>();
-            services.AddMetrics();
+            services.AddMetrics().AddHealthChecks();
 
             var provider = services.BuildServiceProvider();
             var metricsContext = provider.GetRequiredService<IMetricsContext>();
@@ -50,11 +52,14 @@ namespace App.Metrics.Facts.DependencyInjection
             var services = new ServiceCollection();
             services.AddLogging();
             services.AddSingleton<IDatabase, Database>();
-            services.AddMetrics(
-                options =>
+            services.AddMetrics()
+                .AddHealthChecks(options =>
                 {
-                    options.HealthCheckRegistry =
-                        checks => { checks.Register("DatabaseConnected", () => Task.FromResult(HealthCheckResult.Unhealthy("Failed"))); };
+                    options.HealthChecks = checks =>
+                    {
+                        checks.Register("DatabaseConnected", 
+                            () => Task.FromResult(HealthCheckResult.Unhealthy("Failed")));
+                    };
                 });
             var provider = services.BuildServiceProvider();
             var metricsContext = provider.GetRequiredService<IMetricsContext>();
@@ -70,7 +75,7 @@ namespace App.Metrics.Facts.DependencyInjection
             var services = new ServiceCollection();
             services.AddLogging();
             services.AddSingleton<IDatabase, Database>();
-            services.AddMetrics();
+            services.AddMetrics().AddHealthChecks();
 
             var provider = services.BuildServiceProvider();
             var metricsContext = provider.GetRequiredService<IMetricsContext>();

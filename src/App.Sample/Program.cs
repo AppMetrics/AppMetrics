@@ -4,13 +4,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Core;
+using App.Metrics.DependencyInjection;
 using App.Metrics.Health;
 using App.Metrics.Reporting;
 using App.Metrics.Reporting.Console;
 using App.Metrics.Reporting.DependencyInjection;
 using App.Metrics.Reporting.TextFile;
-using App.Metrics.Reporting._Legacy;
-using App.Metrics.Utils;
 using HealthCheck.Samples;
 using Metrics.Samples;
 using Microsoft.Extensions.DependencyInjection;
@@ -49,7 +48,6 @@ namespace App.Sample
                     userValueHistogramSample.RunSomeRequests();
                     userValueTimerSample.RunSomeRequests();
                     simpleMetrics.RunSomeRequests();
-
                 });
 
                 application.MetricsContext.Gauge(AppMetricsRegistry.Gauges.Errors, () => 1);
@@ -59,31 +57,29 @@ namespace App.Sample
                 application.MetricsContext.Gauge(AppMetricsRegistry.Gauges.GaugeWithNoValue, () => double.NaN);
 
                 Console.WriteLine("done setting things up");
-
             }
 
             //TODO: AH - encapsulate scheduling in framework
             using (var scheduler = new ActionScheduler())
             {
-                scheduler.Start(TimeSpan.FromSeconds(5), () =>
-                {
-                    application.Reporter.RunReports(application.MetricsContext, CancellationToken.None);
-                });
+                scheduler.Start(TimeSpan.FromSeconds(5),
+                    () => { application.Reporter.RunReports(application.MetricsContext, CancellationToken.None); });
 
                 Console.ReadKey();
             }
-
         }
 
         private static void ConfigureMetrics(IServiceCollection services)
         {
             services
-                .AddMetrics(options =>
+                .AddMetrics(options => { })
+                .AddHealthChecks(options =>
                 {
-                    options.HealthCheckRegistry = checks =>
+                    options.IsEnabled = true;
+                    options.HealthChecks = factory =>
                     {
-                        checks.Register("DatabaseConnected", () => Task.FromResult("Database Connection OK"));
-                        checks.Register("DiskSpace", () =>
+                        factory.Register("DatabaseConnected", () => Task.FromResult("Database Connection OK"));
+                        factory.Register("DiskSpace", () =>
                         {
                             var freeDiskSpace = GetFreeDiskSpace();
 
@@ -114,14 +110,6 @@ namespace App.Sample
                         factory.AddTextFile(textFileSettings);
                     };
                 });
-
-            //Metrics.Collector = new CollectorConfiguration()
-            //   .Tag.With("host", Environment.GetEnvironmentVariable("COMPUTERNAME"))
-            //   .Tag.With("os", Environment.GetEnvironmentVariable("OS"))
-            //   .Tag.With("process", Path.GetFileName(process.MainModule.FileName))
-            //   .Batch.AtInterval(TimeSpan.FromSeconds(2))
-            //   .WriteTo.InfluxDB("http://192.168.99.100:8086", "data")
-            //   .CreateCollector();
         }
 
         private static void ConfigureServices(IServiceCollection services)

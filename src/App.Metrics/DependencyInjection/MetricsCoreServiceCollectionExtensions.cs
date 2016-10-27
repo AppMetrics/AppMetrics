@@ -10,14 +10,12 @@ using App.Metrics.DataProviders;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.Json;
-using App.Metrics.Registries;
 using App.Metrics.Utils;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 // ReSharper disable CheckNamespace
+
 namespace Microsoft.Extensions.DependencyInjection.Extensions
 // ReSharper restore CheckNamespace
 {
@@ -30,15 +28,6 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                 { JsonSchemeVersion.Version1, typeof(MetricsJsonBuilderV1) }
             });
 
-        internal static void AddDefaultHealthCheckServices(this IServiceCollection services,
-            IMetricsEnvironment environment)
-        {
-            services.TryAddSingleton<IHealthCheckRegistry, DefaultHealthCheckRegistry>();
-            services.TryAddSingleton<IHealthCheckManager, DefaultHealthCheckManager>();
-
-            services.AddHealthChecks(environment);
-        }
-
         internal static void AddDefaultJsonServices(this IServiceCollection services)
         {
             services.TryAddSingleton<MetricsJsonBuilderV1, MetricsJsonBuilderV1>();
@@ -50,27 +39,11 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             });
         }
 
-        internal static void AddDefaultReporterServices(this IServiceCollection services)
-        {
-            //services.TryAddSingleton(typeof(IMetricReporterRegistry), provider =>
-            //{
-            //    var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
-            //    var context = provider.GetRequiredService<IMetricsContext>();
-            //    var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
-
-            //    var registry = new DefaultMetricReporterRegistry(context, loggerFactory);
-
-            //    options.Value.Reporters(registry);
-
-            //    return registry;
-            //});
-        }
-
         internal static IMetricsHost AddMetricsCore(this IServiceCollection services)
         {
             if (services == null)
             {
-                throw new ArgumentNullException(nameof(services)); 
+                throw new ArgumentNullException(nameof(services));
             }
 
             return AddMetricsCore(services, setupAction: null, metricsContext: default(IMetricsContext));
@@ -88,8 +61,6 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             services.TryAddSingleton<MetricsMarkerService, MetricsMarkerService>();
 
             services.ConfigureDefaultServices();
-            services.AddDefaultHealthCheckServices(metricsEnvironment);
-            services.AddDefaultReporterServices();
             services.AddDefaultJsonServices();
             services.AddMetricsCoreServices(metricsEnvironment, metricsContext);
 
@@ -104,10 +75,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
         internal static void AddMetricsCoreServices(this IServiceCollection services,
             IMetricsEnvironment environment, IMetricsContext metricsContext)
         {
-            services.TryAddTransient<Func<string, IMetricGroupRegistry>>(provider =>
-            {
-                return group => new DefaultMetricGroupRegistry(group);
-            });
+            services.TryAddTransient<Func<string, IMetricGroupRegistry>>(provider => { return group => new DefaultMetricGroupRegistry(group); });
             services.TryAddSingleton<IMetricsBuilder, DefaultMetricsBuilder>();
             services.TryAddSingleton<IMetricsRegistry, DefaultMetricsRegistry>();
             services.TryAddSingleton<IMetricsDataManager, DefaultMetricsDataManager>();

@@ -23,7 +23,9 @@ namespace AspNet.Metrics.Middleware
 
         public async Task Invoke(HttpContext context)
         {
-            if (Options.HealthEnabled && Options.HealthEndpoint.HasValue && Options.HealthEndpoint == context.Request.Path)
+            if (Options.HealthEndpointEnabled && 
+                Options.HealthEndpoint.HasValue && 
+                Options.HealthEndpoint == context.Request.Path)
             {
                 Logger.MiddlewareExecuting(GetType());
 

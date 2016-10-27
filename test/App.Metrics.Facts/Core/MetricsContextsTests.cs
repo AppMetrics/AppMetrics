@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Linq;
+using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.DataProviders;
 using App.Metrics.Health;
@@ -10,39 +12,42 @@ using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Xunit;
-using System.Threading.Tasks;
-using App.Metrics.Registries;
 
 namespace App.Metrics.Facts.Core
 {
     public class MetricsContextsTests
     {
-        private static readonly IOptions<AppMetricsOptions> Options
-           = Microsoft.Extensions.Options.Options.Create(new AppMetricsOptions());
-
         private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
 
         private static readonly IHealthCheckManager HealthCheckManager =
-            new DefaultHealthCheckManager(Options, LoggerFactory, new DefaultHealthCheckRegistry(LoggerFactory, Enumerable.Empty<HealthCheck>(), Options));
+            new DefaultHealthCheckManager(LoggerFactory, () => new ConcurrentDictionary<string, HealthCheck>());
+
+
+        private static readonly IOptions<AppMetricsOptions> Options
+            = Microsoft.Extensions.Options.Options.Create(new AppMetricsOptions());
+
+        private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.Clock);
+
         private static readonly Func<string, IMetricGroupRegistry> NewMetricsGroupRegistry = name => new DefaultMetricGroupRegistry(name);
 
-        private static readonly IMetricsRegistry Registry = new DefaultMetricsRegistry(LoggerFactory, Options, 
+        private static readonly IMetricsRegistry Registry = new DefaultMetricsRegistry(LoggerFactory, Options,
             new EnvironmentInfoBuilder(LoggerFactory), NewMetricsGroupRegistry);
 
         private static readonly IMetricsDataManager MetricsDataManager = new DefaultMetricsDataManager(Registry);
 
-        private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.Clock);
-      
-        private readonly IMetricsContext _context = new DefaultMetricsContext(Options, Registry, MetricsBuilder, HealthCheckManager, MetricsDataManager);
 
-        public Func<IMetricsContext, Task<MetricsData>> CurrentData => async ctx => await _context.Advanced.DataManager.GetMetricsDataAsync();
-
-        public Func<IMetricsContext, IMetricsFilter, Task<MetricsData>> CurrentDataWithFilter => async (ctx, filter) => await  _context.Advanced.DataManager.WithFilter(filter).GetMetricsDataAsync();
+        private readonly IMetricsContext _context = new DefaultMetricsContext(Options, Registry, MetricsBuilder, HealthCheckManager,
+            MetricsDataManager);
 
         public MetricsContextsTests()
         {
             _context.Advanced.ResetMetricsValues();
         }
+
+        public Func<IMetricsContext, Task<MetricsData>> CurrentData => async ctx => await _context.Advanced.DataManager.GetMetricsDataAsync();
+
+        public Func<IMetricsContext, IMetricsFilter, Task<MetricsData>> CurrentDataWithFilter
+            => async (ctx, filter) => await _context.Advanced.DataManager.WithFilter(filter).GetMetricsDataAsync();
 
         [Fact]
         public async Task can_create_child_context()
