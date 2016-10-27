@@ -30,11 +30,8 @@ namespace Microsoft.AspNet.Builder
 
             var appMetricsOptions = app.ApplicationServices.GetRequiredService<IOptions<AppMetricsOptions>>().Value;
             var aspNetMetricsOptions = app.ApplicationServices.GetRequiredService<IOptions<AspNetMetricsOptions>>().Value;
-            var healthCheckOptions = app.ApplicationServices.GetRequiredService<IOptions<AppMetricsHealthCheckOptions>>().Value;
-
 
             app.UseMiddleware<PingEndpointMiddleware>();
-
 
             if (aspNetMetricsOptions.HealthEndpointEnabled)
             {
@@ -62,7 +59,6 @@ namespace Microsoft.AspNet.Builder
                 app.UseMiddleware<PostAndPutRequestSizeHistogramMiddleware>();
                 app.UseMiddleware<RequestTimerMiddleware>();
             }
-
 
             return app;
         }

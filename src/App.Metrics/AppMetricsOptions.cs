@@ -6,7 +6,6 @@ using System;
 using System.Diagnostics;
 using App.Metrics.Internal;
 using App.Metrics.Json;
-using App.Metrics.Registries;
 using App.Metrics.Utils;
 
 namespace App.Metrics

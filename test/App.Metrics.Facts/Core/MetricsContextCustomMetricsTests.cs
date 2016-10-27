@@ -9,7 +9,6 @@ using App.Metrics.Health;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.MetricData;
-using App.Metrics.Registries;
 using App.Metrics.Sampling;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;

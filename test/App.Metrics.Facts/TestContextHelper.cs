@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Linq;
 using App.Metrics.Core;
 using App.Metrics.DataProviders;
 using App.Metrics.Health;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
-using App.Metrics.Registries;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -27,7 +25,7 @@ namespace App.Metrics.Facts
             Func<string, IMetricGroupRegistry> newGroupRegistry = name => new DefaultMetricGroupRegistry(name);
 
 
-        var registry = new DefaultMetricsRegistry(LoggerFactory, options, new EnvironmentInfoBuilder(LoggerFactory), newGroupRegistry);
+            var registry = new DefaultMetricsRegistry(LoggerFactory, options, new EnvironmentInfoBuilder(LoggerFactory), newGroupRegistry);
             return new DefaultMetricsContext(options, registry,
                 new TestMetricsBuilder(clock, scheduler),
                 new DefaultHealthCheckManager(LoggerFactory, () => new ConcurrentDictionary<string, HealthCheck>()),

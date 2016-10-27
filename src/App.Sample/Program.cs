@@ -59,7 +59,7 @@ namespace App.Sample
                 Console.WriteLine("done setting things up");
             }
 
-            //TODO: AH - encapsulate scheduling in framework
+            //TODO: AH - encapsulate scheduling in framework, reports should run at their own configured interval
             using (var scheduler = new ActionScheduler())
             {
                 scheduler.Start(TimeSpan.FromSeconds(5),

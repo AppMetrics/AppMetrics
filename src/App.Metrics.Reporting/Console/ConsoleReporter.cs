@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Health;
@@ -9,18 +8,19 @@ using App.Metrics.MetricData;
 using App.Metrics.Reporting._Legacy;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
-using ILogger = Serilog.ILogger;
 
 namespace App.Metrics.Reporting.Console
 {
+
     #region old reporter
 
-    public class ReadableReporter : BaseReporter
+    public class ReadableFormatter : BaseReporter
     {
         private readonly int _padding = 20;
         private bool _disposed = false;
+        private readonly ILogger _logger;
 
-        public ReadableReporter(ILoggerFactory loggerFactory,
+        public ReadableFormatter(ILoggerFactory loggerFactory,
             IMetricsFilter filter,
             IClock clock)
             : base(loggerFactory, clock, filter)
@@ -28,40 +28,9 @@ namespace App.Metrics.Reporting.Console
             if (loggerFactory == null)
             {
                 throw new ArgumentNullException(nameof(loggerFactory));
-            }        }
-
-        public void WriteValue(string label, string value, string sign = "=")
-        {
-            var pad = string.Empty;
-
-            if (label.Length + 2 + sign.Length < _padding)
-            {
-                pad = new string(' ', _padding - label.Length - 1 - sign.Length);
             }
 
-            WriteLine("{0}{1} {2} {3}", pad, label, sign, value);
-        }
-
-        public void WriteLine(string line, params string[] args)
-        {
-            System.Console.WriteLine(line, args);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    // Release managed resources
-                }
-
-                // Release unmanaged resources.
-                // Set large fields to null.
-                _disposed = true;
-            }
-
-            base.Dispose(disposing);
+            _logger = loggerFactory.CreateLogger<ReadableFormatter>();
         }
 
         public override void ReportCounter(string name, CounterValue value, Unit unit, MetricTags tags)
@@ -161,15 +130,53 @@ namespace App.Metrics.Reporting.Console
 
         public override void StartReport(string contextName)
         {
+            //_logger.ReportStarting<ConsoleMetricReporter>();
+
+            System.Console.Clear();
+
             WriteLine("{0} - {1}", contextName, Clock.FormatTimestamp(ReportTimestamp));
 
             base.StartReport(contextName);
+        }
+
+        public void WriteLine(string line, params string[] args)
+        {
+            System.Console.WriteLine(line, args);
         }
 
         public void WriteMetricName(string name)
         {
             WriteLine();
             WriteLine("    {0}", name);
+        }
+
+        public void WriteValue(string label, string value, string sign = "=")
+        {
+            var pad = string.Empty;
+
+            if (label.Length + 2 + sign.Length < _padding)
+            {
+                pad = new string(' ', _padding - label.Length - 1 - sign.Length);
+            }
+
+            WriteLine("{0}{1} {2} {3}", pad, label, sign, value);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // Release managed resources
+                }
+
+                // Release unmanaged resources.
+                // Set large fields to null.
+                _disposed = true;
+            }
+
+            base.Dispose(disposing);
         }
 
         private void WriteHistogram(HistogramValue value, Unit unit, TimeUnit? durationUnit = null)
@@ -225,7 +232,8 @@ namespace App.Metrics.Reporting.Console
 
     public class ConsoleReporter : IReporter
     {
-        private ReadableReporter _reporter;
+        private readonly ReadableFormatter _formatter;
+
         public ConsoleReporter(string name, TimeSpan interval,
             bool isEnabled, IMetricsFilter filter)
         {
@@ -238,23 +246,21 @@ namespace App.Metrics.Reporting.Console
             Filter = filter ?? new NoOpFilter();
             Interval = interval;
             IsEnabled = isEnabled;
-            _reporter = new ReadableReporter(new LoggerFactory(), filter, Clock.Default);
-
+            _formatter = new ReadableFormatter(new LoggerFactory(), filter, Clock.Default);
         }
 
-        public string Name { get; }
+        public IMetricsFilter Filter { get; }
 
         public TimeSpan Interval { get; }
 
-        public IMetricsFilter Filter { get;  }
-
         public bool IsEnabled { get; }
+
+        public string Name { get; }
 
         public async Task RunReports(IMetricsContext context, CancellationToken token)
         {
             var data = await context.Advanced.DataManager.GetMetricsDataAsync();
-            _reporter.RunReport(context, token);
+            _formatter.RunReport(context, token);
         }
-
     }
 }

@@ -1,11 +1,8 @@
 // Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
-using System.Threading;
 using App.Metrics;
-using App.Metrics.Registries;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
@@ -26,11 +23,5 @@ namespace Microsoft.Extensions.DependencyInjection
         public IMetricsEnvironment Environment { get; }
 
         public IServiceCollection Services { get; }
-
-        public void RunReports(CancellationToken token)
-        {
-            var reportRegistry = Services.BuildServiceProvider().GetRequiredService<IMetricReporterRegistry>();
-            reportRegistry.RunReports(token);
-        }
     }
 }
