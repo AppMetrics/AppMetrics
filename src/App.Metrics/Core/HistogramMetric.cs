@@ -11,7 +11,7 @@ using App.Metrics.Sampling;
 
 namespace App.Metrics.Core
 {
-    public sealed class HistogramMetric : IHistogramImplementation
+    public sealed class HistogramMetric : IHistogramMetric
     {
         private readonly IReservoir _reservoir;
         private bool _disposed = false;

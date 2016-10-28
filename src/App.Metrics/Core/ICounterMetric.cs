@@ -4,12 +4,11 @@
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
 // Ported/Refactored to .NET Standard Library by Allan Hardy
 
-
 using App.Metrics.MetricData;
 
 namespace App.Metrics.Core
 {
-    public interface IGaugeImplementation : IMetricValueProvider<double>
+    public interface ICounterMetric : ICounter, IMetricValueProvider<CounterValue>
     {
     }
 }

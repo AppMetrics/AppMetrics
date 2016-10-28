@@ -5,12 +5,11 @@
 // Ported/Refactored to .NET Standard Library by Allan Hardy
 
 
-using System;
 using App.Metrics.MetricData;
 
 namespace App.Metrics.Core
 {
-    public interface IMeterImplementation : IMeter, IMetricValueProvider<MeterValue>, IDisposable
+    public interface IGaugeMetric : IMetricValueProvider<double>
     {
     }
 }

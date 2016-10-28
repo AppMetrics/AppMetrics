@@ -60,7 +60,7 @@ namespace App.Metrics.Internal
             });
         }
 
-        public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterImplementation
+        public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterMetric
         {
             EnsureGroupName(options);
             var registry = _groups.GetOrAdd(options.GroupName, _newGroupRegistry);
@@ -121,7 +121,7 @@ namespace App.Metrics.Internal
             return data;
         }
 
-        public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramImplementation
+        public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramMetric
         {
             EnsureGroupName(options);
             EnsureSamplingType(options);
@@ -129,7 +129,7 @@ namespace App.Metrics.Internal
             return registry.Histogram(options, builder);
         }
 
-        public IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterImplementation
+        public IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterMetric
         {
             EnsureGroupName(options);
             var registry = _groups.GetOrAdd(options.GroupName, _newGroupRegistry);
@@ -151,7 +151,7 @@ namespace App.Metrics.Internal
             }
         }
 
-        public ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerImplementation
+        public ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerMetric
         {
             EnsureGroupName(options);
             EnsureSamplingType(options);

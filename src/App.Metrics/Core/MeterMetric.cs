@@ -14,7 +14,7 @@ using App.Metrics.Utils;
 
 namespace App.Metrics.Core
 {
-    public sealed class MeterMetric : SimpleMeter, IMeterImplementation
+    public sealed class MeterMetric : SimpleMeter, IMeterMetric
     {
         private static readonly TimeSpan TickInterval = TimeSpan.FromSeconds(5);
         private readonly IClock _clock;

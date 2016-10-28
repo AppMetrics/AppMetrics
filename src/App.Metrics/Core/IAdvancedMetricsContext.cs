@@ -21,7 +21,7 @@ namespace App.Metrics.Core
 
         ICounter Counter(CounterOptions options);
 
-        ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterImplementation;
+        ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterMetric;
 
         void Gauge(GaugeOptions options, Func<double> valueProvider);
 
@@ -29,13 +29,13 @@ namespace App.Metrics.Core
 
         IHistogram Histogram(HistogramOptions options);
 
-        IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramImplementation;
+        IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramMetric;
 
         IHistogram Histogram(HistogramOptions options, Func<IReservoir> builder);
 
         IMeter Meter(MeterOptions options);
 
-        IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterImplementation;
+        IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterMetric;
 
         void ResetMetricsValues();
 
@@ -43,9 +43,9 @@ namespace App.Metrics.Core
 
         ITimer Timer(TimerOptions options);
 
-        ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerImplementation;
+        ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerMetric;
 
-        ITimer Timer(TimerOptions options, Func<IHistogramImplementation> builder);
+        ITimer Timer(TimerOptions options, Func<IHistogramMetric> builder);
 
         ITimer Timer(TimerOptions options, Func<IReservoir> builder);
     }

@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using App.Metrics;
-using App.Metrics.Health;
 using App.Metrics.Internal;
 
 // ReSharper disable CheckNamespace

@@ -59,7 +59,7 @@ namespace App.Metrics.Internal
             _timers.Clear();
         }
 
-        public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterImplementation
+        public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterMetric
         {
             return _counters.GetOrAdd(options.Name, () =>
             {
@@ -79,7 +79,7 @@ namespace App.Metrics.Internal
             });
         }
 
-        public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramImplementation
+        public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramMetric
         {
             return _histograms.GetOrAdd(options.Name, () =>
             {
@@ -88,7 +88,7 @@ namespace App.Metrics.Internal
             });
         }
 
-        public IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterImplementation
+        public IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterMetric
         {
             return _meters.GetOrAdd(options.Name, () =>
             {
@@ -106,7 +106,7 @@ namespace App.Metrics.Internal
             _timers.Reset();
         }
 
-        public ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerImplementation
+        public ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerMetric
         {
             return _timers.GetOrAdd(options.Name, () =>
             {

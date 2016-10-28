@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Core;
 using App.Metrics.DependencyInjection;
-using App.Metrics.Health;
 using App.Metrics.Reporting;
 using App.Metrics.Reporting.Console;
 using App.Metrics.Reporting.DependencyInjection;

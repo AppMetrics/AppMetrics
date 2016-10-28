@@ -13,7 +13,7 @@ using App.Metrics.MetricData;
 
 namespace App.Metrics.Core
 {
-    public sealed class CounterMetric : ICounterImplementation
+    public sealed class CounterMetric : ICounterMetric
     {
         private readonly StripedLongAdder _counter = new StripedLongAdder();
         private ConcurrentDictionary<string, StripedLongAdder> _setCounters;

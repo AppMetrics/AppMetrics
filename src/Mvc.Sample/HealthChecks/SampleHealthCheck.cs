@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using App.Metrics;
-using App.Metrics.Health;
 
 namespace Mvc.Sample.HealthChecks
 {
-    public class SampleHealthCheck : App.Metrics.Health.HealthCheck
+    public class SampleHealthCheck : App.Metrics.HealthCheck
     {
         public SampleHealthCheck() : base("Sample Healthy")
         {

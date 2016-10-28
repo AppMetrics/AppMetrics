@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Health;
 using App.Metrics.Internal;
 using App.Metrics.MetricData;
 using App.Metrics.Reporting._Legacy;

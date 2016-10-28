@@ -31,7 +31,7 @@ namespace App.Metrics.Core
             Dispose(false);
         }
 
-        public ICounterImplementation BuildCounter(string name, Unit unit)
+        public ICounterMetric BuildCounter(string name, Unit unit)
         {
             return new CounterMetric();
         }
@@ -41,32 +41,32 @@ namespace App.Metrics.Core
             return new FunctionGauge(valueProvider);
         }
 
-        public IHistogramImplementation BuildHistogram(string name, Unit unit, SamplingType samplingType)
+        public IHistogramMetric BuildHistogram(string name, Unit unit, SamplingType samplingType)
         {
             return new HistogramMetric(samplingType);
         }
 
-        public IHistogramImplementation BuildHistogram(string name, Unit unit, IReservoir reservoir)
+        public IHistogramMetric BuildHistogram(string name, Unit unit, IReservoir reservoir)
         {
             return new HistogramMetric(reservoir);
         }
 
-        public IMeterImplementation BuildMeter(string name, Unit unit, TimeUnit rateUnit)
+        public IMeterMetric BuildMeter(string name, Unit unit, TimeUnit rateUnit)
         {
             return new MeterMetric(_systemClock);
         }
 
-        public ITimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, SamplingType samplingType)
+        public ITimerMetric BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, SamplingType samplingType)
         {
             return new TimerMetric(samplingType, _systemClock);
         }
 
-        public ITimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, IHistogramImplementation histogram)
+        public ITimerMetric BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, IHistogramMetric histogram)
         {
             return new TimerMetric(histogram, _systemClock);
         }
 
-        public ITimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, IReservoir reservoir)
+        public ITimerMetric BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, IReservoir reservoir)
         {
             return new TimerMetric(reservoir, _systemClock);
         }

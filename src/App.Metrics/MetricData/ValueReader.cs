@@ -21,7 +21,7 @@ namespace App.Metrics.MetricData
 
         public static CounterValue GetCurrentValue(ICounter metric)
         {
-            var implementation = metric as ICounterImplementation;
+            var implementation = metric as ICounterMetric;
             if (implementation != null)
             {
                 return implementation.Value;
@@ -31,7 +31,7 @@ namespace App.Metrics.MetricData
 
         public static MeterValue GetCurrentValue(IMeter metric)
         {
-            var implementation = metric as IMeterImplementation;
+            var implementation = metric as IMeterMetric;
             if (implementation != null)
             {
                 return implementation.Value;
@@ -41,7 +41,7 @@ namespace App.Metrics.MetricData
 
         public static HistogramValue GetCurrentValue(IHistogram metric)
         {
-            var implementation = metric as IHistogramImplementation;
+            var implementation = metric as IHistogramMetric;
             if (implementation != null)
             {
                 return implementation.Value;
@@ -51,7 +51,7 @@ namespace App.Metrics.MetricData
 
         public static TimerValue GetCurrentValue(ITimer metric)
         {
-            var implementation = metric as ITimerImplementation;
+            var implementation = metric as ITimerMetric;
             if (implementation != null)
             {
                 return implementation.Value;

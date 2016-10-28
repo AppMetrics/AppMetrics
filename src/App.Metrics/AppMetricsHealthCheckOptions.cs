@@ -1,5 +1,4 @@
 using System;
-using App.Metrics.DependencyInjection;
 
 namespace App.Metrics
 {

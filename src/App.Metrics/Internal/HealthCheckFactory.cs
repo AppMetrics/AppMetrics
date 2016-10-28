@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using App.Metrics.DependencyInjection;
-using App.Metrics.Health;
 
 namespace App.Metrics.Internal
 {

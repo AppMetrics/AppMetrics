@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using App.Metrics.Health;
 using App.Metrics.Internal;
 
 namespace App.Metrics.DependencyInjection

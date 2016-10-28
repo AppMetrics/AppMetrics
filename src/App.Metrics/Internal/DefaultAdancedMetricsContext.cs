@@ -1,12 +1,12 @@
 using System;
+using App.Metrics.Core;
 using App.Metrics.DataProviders;
-using App.Metrics.Internal;
 using App.Metrics.MetricData;
 using App.Metrics.Sampling;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Options;
 
-namespace App.Metrics.Core
+namespace App.Metrics.Internal
 {
     internal sealed class DefaultAdancedMetricsContext : IAdvancedMetricsContext
     {
@@ -39,9 +39,9 @@ namespace App.Metrics.Core
 
         public IClock Clock { get; }
 
-        public IHealthCheckManager HealthCheckManager { get; }
-
         public IMetricsDataManager DataManager { get; }
+
+        public IHealthCheckManager HealthCheckManager { get; }
 
         public void CompletelyDisableMetrics()
         {
@@ -61,7 +61,7 @@ namespace App.Metrics.Core
             }
         }
 
-        public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterImplementation
+        public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterMetric
         {
             return _registry.Counter(options, builder);
         }
@@ -86,7 +86,7 @@ namespace App.Metrics.Core
             return Histogram(options, () => _builder.BuildHistogram(options.Name, options.MeasurementUnit, options.SamplingType));
         }
 
-        public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramImplementation
+        public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramMetric
         {
             //NOTE: Options Resevoir will be ignored the builder should specify
             //TODO: AH - ^ bit confusing
@@ -105,7 +105,7 @@ namespace App.Metrics.Core
             return Meter(options, () => _builder.BuildMeter(options.Name, options.MeasurementUnit, options.RateUnit));
         }
 
-        public IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterImplementation
+        public IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterMetric
         {
             return _registry.Meter(options, builder);
         }
@@ -117,7 +117,7 @@ namespace App.Metrics.Core
 
         public void ShutdownGroup(string groupName)
         {
-           _registry.RemoveGroup(groupName);
+            _registry.RemoveGroup(groupName);
         }
 
         public ITimer Timer(TimerOptions options)
@@ -126,12 +126,12 @@ namespace App.Metrics.Core
                 () => _builder.BuildTimer(options.Name, options.MeasurementUnit, options.RateUnit, options.DurationUnit, options.SamplingType));
         }
 
-        public ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerImplementation
+        public ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerMetric
         {
             return _registry.Timer(options, builder);
         }
 
-        public ITimer Timer(TimerOptions options, Func<IHistogramImplementation> builder)
+        public ITimer Timer(TimerOptions options, Func<IHistogramMetric> builder)
         {
             return Timer(options, () => _builder.BuildTimer(options.Name, options.MeasurementUnit, options.RateUnit, options.DurationUnit, builder()));
         }

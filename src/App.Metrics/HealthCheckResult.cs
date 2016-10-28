@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using System.Text;
 
-namespace App.Metrics.Health
+namespace App.Metrics
 {
     /// <summary>
     ///     Result of a health check

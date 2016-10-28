@@ -9,7 +9,7 @@ using App.Metrics.MetricData;
 
 namespace App.Metrics.Core
 {
-    public interface ITimerImplementation : ITimer, IMetricValueProvider<TimerValue>
+    public interface ITimerMetric : ITimer, IMetricValueProvider<TimerValue>
     {
     }
 }

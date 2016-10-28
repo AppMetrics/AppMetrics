@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using App.Metrics;
-using App.Metrics.Health;
 
 namespace HealthCheck.Samples
 {
-    public class SuccessHealthCheck : App.Metrics.Health.HealthCheck
+    public class SuccessHealthCheck : App.Metrics.HealthCheck
     {
         public SuccessHealthCheck() : base("Referencing Assembly - Sample Healthy")
         {

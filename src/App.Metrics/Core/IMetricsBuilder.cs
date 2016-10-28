@@ -13,20 +13,20 @@ namespace App.Metrics.Core
 {
     public interface IMetricsBuilder : IDisposable
     {
-        ICounterImplementation BuildCounter(string name, Unit unit);
+        ICounterMetric BuildCounter(string name, Unit unit);
 
         IMetricValueProvider<double> BuildGauge(string name, Unit unit, Func<double> valueProvider);
 
-        IHistogramImplementation BuildHistogram(string name, Unit unit, SamplingType samplingType);
+        IHistogramMetric BuildHistogram(string name, Unit unit, SamplingType samplingType);
 
-        IHistogramImplementation BuildHistogram(string name, Unit unit, IReservoir reservoir);
+        IHistogramMetric BuildHistogram(string name, Unit unit, IReservoir reservoir);
 
-        IMeterImplementation BuildMeter(string name, Unit unit, TimeUnit rateUnit);
+        IMeterMetric BuildMeter(string name, Unit unit, TimeUnit rateUnit);
 
-        ITimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, SamplingType samplingType);
+        ITimerMetric BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, SamplingType samplingType);
 
-        ITimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, IHistogramImplementation histogram);
+        ITimerMetric BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, IHistogramMetric histogram);
 
-        ITimerImplementation BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, IReservoir reservoir);
+        ITimerMetric BuildTimer(string name, Unit unit, TimeUnit rateUnit, TimeUnit durationUnit, IReservoir reservoir);
     }
 }

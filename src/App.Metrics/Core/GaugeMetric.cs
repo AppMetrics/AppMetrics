@@ -9,7 +9,7 @@ using App.Metrics.MetricData;
 
 namespace App.Metrics.Core
 {
-    public class FunctionGauge : IGaugeImplementation
+    public class FunctionGauge : IGaugeMetric
     {
         private readonly Func<double> _valueProvider;
 
@@ -39,7 +39,7 @@ namespace App.Metrics.Core
         }
     }
 
-    public sealed class DerivedGauge : IGaugeImplementation
+    public sealed class DerivedGauge : IGaugeMetric
     {
         private readonly IMetricValueProvider<double> _gauge;
         private readonly Func<double, double> _transformation;

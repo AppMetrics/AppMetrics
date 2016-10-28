@@ -8,7 +8,6 @@ using System.Linq;
 using System.Reflection;
 using App.Metrics.Core;
 using App.Metrics.DependencyInjection;
-using App.Metrics.Health;
 using App.Metrics.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;

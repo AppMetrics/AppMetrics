@@ -11,18 +11,18 @@ namespace App.Metrics.Internal
 
         void Clear();
 
-        ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterImplementation;
+        ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterMetric;
 
         void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider);
 
         Task<MetricsData> GetDataAsync();
 
-        IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramImplementation;
+        IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramMetric;
 
-        IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterImplementation;
+        IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterMetric;
 
         void RemoveGroup(string groupName);
 
-        ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerImplementation;
+        ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerMetric;
     }
 }

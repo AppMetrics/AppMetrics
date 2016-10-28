@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace App.Metrics.Health
+namespace App.Metrics
 {
     /// <summary>
     ///     Structure describing the status of executing all the health checks operations.

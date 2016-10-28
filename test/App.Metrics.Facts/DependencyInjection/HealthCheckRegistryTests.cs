@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using App.Metrics.DependencyInjection;
-using App.Metrics.Health;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;

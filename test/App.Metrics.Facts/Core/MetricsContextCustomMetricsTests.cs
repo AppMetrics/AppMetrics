@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.DataProviders;
-using App.Metrics.Health;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.MetricData;
@@ -72,7 +71,7 @@ namespace App.Metrics.Facts.Core
                 MeasurementUnit = Unit.Calls
             };
 
-            var timer = _context.Advanced.Timer(timerOptions, () => (IHistogramImplementation)histogram);
+            var timer = _context.Advanced.Timer(timerOptions, () => (IHistogramMetric)histogram);
 
             timer.Record(10L, TimeUnit.Nanoseconds);
 
@@ -97,7 +96,7 @@ namespace App.Metrics.Facts.Core
             reservoir.Values.Single().Should().Be(10L);
         }
 
-        public class CustomCounter : ICounterImplementation
+        public class CustomCounter : ICounterMetric
         {
             public CounterValue Value => new CounterValue(10L, new CounterValue.SetItem[0]);
 
@@ -148,7 +147,7 @@ namespace App.Metrics.Facts.Core
             }
         }
 
-        public class CustomHistogram : IHistogramImplementation
+        public class CustomHistogram : IHistogramMetric
         {
             private bool _disposed = false;
 

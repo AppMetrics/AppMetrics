@@ -19,7 +19,7 @@ namespace App.Metrics.Internal
         {
         }
 
-        public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterImplementation
+        public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterMetric
         {
             return NullMetric.Instance;
         }
@@ -33,12 +33,12 @@ namespace App.Metrics.Internal
             return AppMetricsTaskCache.EmptyMetricsDataTask;
         }
 
-        public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramImplementation
+        public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramMetric
         {
             return NullMetric.Instance;
         }
 
-        public IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterImplementation
+        public IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterMetric
         {
             return NullMetric.Instance;
         }
@@ -51,7 +51,7 @@ namespace App.Metrics.Internal
         {
         }
 
-        public ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerImplementation
+        public ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerMetric
         {
             return NullMetric.Instance;
         }

@@ -8,7 +8,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using App.Metrics.Health;
 using App.Metrics.Utils;
 
 namespace App.Metrics.Json

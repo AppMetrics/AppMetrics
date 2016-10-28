@@ -9,7 +9,7 @@ using System;
 using System.Threading.Tasks;
 using App.Metrics.Infrastructure;
 
-namespace App.Metrics.Health
+namespace App.Metrics
 {
     public class HealthCheck
     {
