@@ -1,9 +1,6 @@
-﻿// Written by Gil Tene of Azul Systems, and released to the public domain,
-// as explained at http://creativecommons.org/publicdomain/zero/1.0/
-// 
-// Ported to .NET by Iulian Margarintescu under the same license and terms as the java version
-// Java Version repo: https://github.com/HdrHistogram/HdrHistogram
-// Latest ported version is available in the Java submodule in the root of the repo
+﻿// Copyright (c) Allan hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
 
 // Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
 // 

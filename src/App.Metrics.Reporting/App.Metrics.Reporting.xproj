@@ -18,4 +18,9 @@
     <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.targets" Condition="'$(VSToolsPath)' != ''" />
-</Project>
+<ItemGroup>
+    <Content Include="..\..\app-metrics-reporting.licenseheader">
+      <Link>app-metrics-reporting.licenseheader</Link>
+    </Content>
+  </ItemGroup>
+  </Project>
