@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using App.Metrics.MetricData;
 using App.Metrics.Utils;
 
-namespace App.Metrics.DataProviders
+namespace App.Metrics
 {
     /// <summary>
     ///     A provider capable of returning the current values for a set of metrics

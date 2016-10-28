@@ -4,10 +4,11 @@
 
 using System;
 using System.Collections.Concurrent;
-using App.Metrics.DataProviders;
 using App.Metrics.MetricData;
 using App.Metrics.Sampling;
 using App.Metrics.Utils;
+
+//TODO: AH - verify still needed
 
 namespace App.Metrics.Core
 {

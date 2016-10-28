@@ -3,9 +3,9 @@
 
 using System.Threading.Tasks;
 
-namespace App.Metrics.DataProviders
+namespace App.Metrics.Internal
 {
-    public sealed class NullHealthCheckManager : IHealthCheckManager
+    internal sealed class NullHealthCheckManager : IHealthCheckManager
     {
         public Task<HealthStatus> GetStatusAsync()
         {

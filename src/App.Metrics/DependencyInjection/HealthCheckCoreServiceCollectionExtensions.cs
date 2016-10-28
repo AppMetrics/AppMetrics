@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using App.Metrics.DataProviders;
 using App.Metrics.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;

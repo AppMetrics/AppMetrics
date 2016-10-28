@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
 using App.Metrics.Core;
-using App.Metrics.DataProviders;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.MetricData;

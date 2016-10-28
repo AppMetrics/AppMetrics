@@ -3,7 +3,6 @@
 
 
 using System.Threading.Tasks;
-using App.Metrics.DataProviders;
 using App.Metrics.MetricData;
 
 namespace App.Metrics.Internal

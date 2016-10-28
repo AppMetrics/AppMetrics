@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using App.Metrics.MetricData;
 
-namespace App.Metrics.DataProviders
+namespace App.Metrics.Internal
 {
     internal interface IMetricRegistryManager
     {

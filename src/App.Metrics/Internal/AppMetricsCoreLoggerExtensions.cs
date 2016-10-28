@@ -34,24 +34,6 @@ namespace Microsoft.Extensions.Logging
                 formatString:
                 $"Executed {nameof(HealthStatus)}, in {{elapsedMilliseconds}}ms, IsHealthy: False. {{checksPassed}} health check results passed. {{checksFailed}} health check results failed. Failed Checks: {{failedChecks}}");
 
-            _runReportsExecuted = LoggerMessage.Define<double>(
-                LogLevel.Information,
-                eventId: AppMetricsEventIds.Reports.Schedule,
-                formatString:
-                $"Executed {nameof(IMetricGroupRegistry)} RunReports in {{elapsedMilliseconds}}ms");
-
-            _reportStarted = LoggerMessage.Define<string, double>(
-                LogLevel.Information,
-                eventId: AppMetricsEventIds.Reports.Schedule,
-                formatString:
-                $"Report {{reportType}} started in {{elapsedMilliseconds}}ms");
-
-            _reportRan = LoggerMessage.Define<string, double>(
-                LogLevel.Information,
-                eventId: AppMetricsEventIds.Reports.Schedule,
-                formatString:
-                $"Report {{reportType}} ran in {{elapsedMilliseconds}}ms");
-
             _healthGetStatusExecutedNoResults = LoggerMessage.Define(
                 LogLevel.Information,
                 eventId: AppMetricsEventIds.HealthChecks.Status,
@@ -110,56 +92,6 @@ namespace Microsoft.Extensions.Logging
             logger.LogDebug(AppMetricsEventIds.Metrics.Data, "Executing GetMetricsData");
         }
 
-        public static void ReportedStarted<TReport>(this ILogger logger, long startTimestamp)
-            where TReport : IMetricReporter
-        {
-            if (!logger.IsEnabled(LogLevel.Information)) return;
-            if (startTimestamp == 0) return;
-
-            var currentTimestamp = Stopwatch.GetTimestamp();
-            var elapsed = new TimeSpan((long)(TimestampToTicks * (currentTimestamp - startTimestamp)));
-
-            _reportStarted(logger, typeof(TReport).FullName, elapsed.TotalMilliseconds, null);
-        }
-
-        public static void ReportRan(this ILogger logger, IMetricReporter reporter, long startTimestamp)
-        {
-            if (!logger.IsEnabled(LogLevel.Information)) return;
-            if (startTimestamp == 0) return;
-
-            var currentTimestamp = Stopwatch.GetTimestamp();
-            var elapsed = new TimeSpan((long)(TimestampToTicks * (currentTimestamp - startTimestamp)));
-
-            _reportRan(logger, reporter.GetType().FullName, elapsed.TotalMilliseconds, null);
-        }
-
-        public static void ReportRunning(this ILogger logger, IMetricReporter reporter)
-        {
-            logger.LogInformation(AppMetricsEventIds.Reports.Schedule, $"Running {reporter.GetType()}");
-        }
-
-        public static void ReportStarting<TReport>(this ILogger logger)
-            where TReport : IMetricReporter
-        {
-            logger.LogInformation(AppMetricsEventIds.Reports.Schedule, $"Starting {typeof(TReport)}");
-        }
-
-        public static void RunReportsExecuted(this ILogger logger, long startTimestamp)
-        {
-            if (!logger.IsEnabled(LogLevel.Information)) return;
-            if (startTimestamp == 0) return;
-
-            var currentTimestamp = Stopwatch.GetTimestamp();
-            var elapsed = new TimeSpan((long)(TimestampToTicks * (currentTimestamp - startTimestamp)));
-
-            _runReportsExecuted(logger, elapsed.TotalMilliseconds, null);
-        }
-
-        public static void RunReportsExecuting(this ILogger logger)
-        {
-            logger.LogInformation(AppMetricsEventIds.Reports.Schedule, "Executing Run Reports");
-        }
-
         internal static class AppMetricsEventIds
         {
             public static class HealthChecks
@@ -186,9 +118,6 @@ namespace Microsoft.Extensions.Logging
         private static readonly Action<ILogger, string, Exception> _healthCheckRegistered;
         private static readonly Action<ILogger, double, int, Exception> _healthGetStatusExecuted;
         private static readonly Action<ILogger, double, int, int, IEnumerable<string>, Exception> _healthGetStatusExecutedFailed;
-        private static readonly Action<ILogger, double, Exception> _runReportsExecuted;
-        private static readonly Action<ILogger, string, double, Exception> _reportStarted;
-        private static readonly Action<ILogger, string, double, Exception> _reportRan;
         private static readonly Action<ILogger, Exception> _healthGetStatusExecutedNoResults;
         private static readonly double TimestampToTicks = TimeSpan.TicksPerSecond / (double)Stopwatch.Frequency;
         // ReSharper restore InconsistentNaming

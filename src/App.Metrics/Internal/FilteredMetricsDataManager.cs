@@ -1,14 +1,13 @@
 // Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using System.Threading.Tasks;
 using App.Metrics.MetricData;
 
-namespace App.Metrics.DataProviders
+namespace App.Metrics.Internal
 {
-    public sealed class FilteredMetricsDataManager : IMetricsDataManager
+    internal sealed class FilteredMetricsDataManager : IMetricsDataManager
     {
         private readonly IMetricsFilter _filter;
         private readonly IMetricsDataManager _manager;

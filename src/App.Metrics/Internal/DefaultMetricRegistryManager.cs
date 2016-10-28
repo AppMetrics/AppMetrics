@@ -6,9 +6,9 @@ using System;
 using System.Collections.Generic;
 using App.Metrics.MetricData;
 
-namespace App.Metrics.DataProviders
+namespace App.Metrics.Internal
 {
-    public sealed class DefaultMetricRegistryManager : IMetricRegistryManager
+    internal sealed class DefaultMetricRegistryManager : IMetricRegistryManager
     {
         private readonly Func<IEnumerable<CounterValueSource>> _counters;
         private readonly Func<IEnumerable<GaugeValueSource>> _gauges;

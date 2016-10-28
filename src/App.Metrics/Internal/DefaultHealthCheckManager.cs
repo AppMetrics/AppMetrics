@@ -2,19 +2,18 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-namespace App.Metrics.DataProviders
+namespace App.Metrics.Internal
 {
     internal sealed class DefaultHealthCheckManager : IHealthCheckManager
     {
-        private Func<IReadOnlyDictionary<string, HealthCheck>> _healthChecks;
         private readonly ILogger _logger;
+        private readonly Func<IReadOnlyDictionary<string, HealthCheck>> _healthChecks;
 
         public DefaultHealthCheckManager(ILoggerFactory loggerFactory,
             Func<IReadOnlyDictionary<string, HealthCheck>> healthChecks)
