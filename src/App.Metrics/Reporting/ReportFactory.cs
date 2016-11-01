@@ -15,6 +15,7 @@ namespace App.Metrics.Reporting
         private volatile bool _disposed;
         private readonly object _syncLock = new object();
 
+        //TODO: AH - don't need a name?
         public IReporter CreateReporter(string name)
         {
             if (CheckDisposed())

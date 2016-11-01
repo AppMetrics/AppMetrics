@@ -125,6 +125,16 @@ namespace App.Sample
                             Disabled = false
                         };
                         factory.AddConsole(consoleSettings);
+
+                        var textFileSettings = new TextFileReporterSettings
+                        {
+                            //TODO: AH - report interval not yet applied, it's currently set on the task created outside
+                            Interval = TimeSpan.FromSeconds(1),
+                            Disabled = false,
+                            FileName = @"C:\metrics\sample.txt"
+                        };
+
+                        factory.AddTextFile(textFileSettings);
                     };
                 });
         }

@@ -22,7 +22,8 @@
         "Metrics.Samples": "1.0.0-*",
         "HealthCheck.Samples": "1.0.0-*",
         "App.Metrics.Reporting.Console": "1.0.0.0",
-        "Serilog.Sinks.Console": "2.1.0"
+      "Serilog.Sinks.Console": "2.1.0",
+      "App.Metrics.Reporting.TextFile": "1.0.0-*"
     },
 
     "frameworks": {
