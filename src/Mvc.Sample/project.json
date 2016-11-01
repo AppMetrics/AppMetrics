@@ -1,10 +1,10 @@
 {
-  "dependencies": {
+    "dependencies": {
     "Microsoft.NETCore.App": {
       "version": "1.0.0",
       "type": "platform"
     },
-    "AspNet.Metrics": "1.0.0-rtm",
+    "AspNet.Metrics": "1.0.0-*",
     "HealthCheck.Samples": "1.0.0-*",
     "Microsoft.AspNetCore.Diagnostics": "1.0.0",
     "Microsoft.AspNetCore.Mvc": "1.0.1",
@@ -37,7 +37,8 @@
 
   "buildOptions": {
     "emitEntryPoint": true,
-    "preserveCompilationContext": true
+    "preserveCompilationContext": true,
+    "debugType": "portable"
   },
 
   "publishOptions": {

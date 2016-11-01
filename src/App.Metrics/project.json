@@ -1,42 +1,51 @@
 {
-  "title": "App.Metrics",
-  "copyright": "Allan Hardy 2016",
-  "version": "1.0.0-*",
-  "authors": ["Allan Hardy"],
-  "description": "Provides application instrumentation abilities with custom metrics",
+    "title": "App.Metrics",
+    "copyright": "Allan Hardy 2016",
+    "version": "1.0.0-*",
+    "authors": ["Allan Hardy"],
+    "description": "Provides application instrumentation abilities with custom metrics",
 
-  "packOptions": {
-    "tags": [ "Metrics", "Monitoring", "Instrumentation" ],
-    "projectUrl": "https://github.com/alhardy/app-metrics",
-    "licenseUrl": "https://github.com/alhardy/app-metrics/blob/master/LICENSE",
-    "iconUrl": "http://www.erata.net/Metrics.NET/metrics_32.png"
-  },
+    "buildOptions": {
+        "warningsAsErrors": true,
+        "nowarn": [
+            "CS1591", "CS1570"
+        ],
+        "xmlDoc": true,
+        "debugType": "portable"
+    },
 
-  "dependencies": {
-    "Microsoft.DotNet.InternalAbstractions": "1.0.1-*",
-    "Microsoft.Extensions.DependencyInjection": "1.0.0",
-    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0",
-    "Microsoft.Extensions.DependencyModel": "1.0.1-*",
-    "Microsoft.Extensions.Options": "1.0.0",
-    "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
-    "NETStandard.Library": "1.6.0",
-    "System.Net.NameResolution": "4.0.0"
-  },
+    "packOptions": {
+        "tags": ["Metrics", "Monitoring", "Instrumentation"],
+        "projectUrl": "https://github.com/alhardy/app-metrics",
+        "licenseUrl": "https://github.com/alhardy/app-metrics/blob/master/LICENSE",
+        "iconUrl": "http://www.erata.net/Metrics.NET/metrics_32.png"
+    },
 
-  "frameworks": {
-    "netstandard1.6": {
-      "imports": [
-        "dotnet5.6",
-        "portable-net45+win8"
-      ],
-      "dependencies": {
-        "System.Collections.Specialized": "4.0.1",
-        "System.Diagnostics.Process": "4.1.0",
-        "Microsoft.Extensions.Logging": "1.0.0",
-        "System.Threading.Thread": "4.0.0"
+    "dependencies": {
+        "Microsoft.DotNet.InternalAbstractions": "1.0.1-*",
+        "Microsoft.Extensions.DependencyInjection": "1.0.0",
+        "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0",
+        "Microsoft.Extensions.DependencyModel": "1.0.1-*",
+        "Microsoft.Extensions.Options": "1.0.0",
+        "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
+        "NETStandard.Library": "1.6.0",
+        "System.Net.NameResolution": "4.0.0"
+    },
 
-      }
+    "frameworks": {
+        "netstandard1.6": {
+            "imports": [
+                "dotnet5.6",
+                "portable-net45+win8"
+            ],
+            "dependencies": {
+                "System.Collections.Specialized": "4.0.1",
+                "System.Diagnostics.Process": "4.1.0",
+                "Microsoft.Extensions.Logging": "1.0.0",
+                "System.Threading.Thread": "4.0.0"
+
+            }
+        }
+        //"net452": {}
     }
-    //"net452": {}
-  }
 }

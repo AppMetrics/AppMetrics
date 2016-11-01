@@ -1,0 +1,32 @@
+// Copyright (c) Allan hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+
+using System;
+using System.Text;
+using App.Metrics.MetricData;
+
+namespace App.Metrics.Formatting.Humanize
+{
+    public class HumanizeCounterMetricFormatter : ICustomFormatter
+    {
+        public string Format(string format, object arg, IFormatProvider formatProvider)
+        {
+            if (arg == null)
+            {
+                return string.Empty;
+            }
+
+            if (!(arg is CounterValueSource))
+            {
+                return arg.ToString();
+            }
+
+            var counter = (CounterValueSource)arg;
+
+            var sb = new StringBuilder();
+            sb.HumanizeCounter(counter);
+            return sb.ToString();
+        }
+    }
+}

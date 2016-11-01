@@ -15,7 +15,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
 
 // ReSharper disable CheckNamespace
-
 namespace Microsoft.Extensions.DependencyInjection.Extensions
 // ReSharper restore CheckNamespace
 {

@@ -32,11 +32,11 @@ namespace Metrics.Samples
             for (var i = 0; i < 30; i++)
             {
                 var commandIndex = new Random().Next() % 5;
-                if (commandIndex == 0) new SetMeterSample(_metricsContext).Process(new SendEmail());
-                if (commandIndex == 1) new SetMeterSample(_metricsContext).Process(new ShipProduct());
-                if (commandIndex == 2) new SetMeterSample(_metricsContext).Process(new BillCustomer());
-                if (commandIndex == 3) new SetMeterSample(_metricsContext).Process(new MakeInvoice());
-                if (commandIndex == 4) new SetMeterSample(_metricsContext).Process(new MarkAsPreffered());
+                if (commandIndex == 0) Process(new SendEmail());
+                if (commandIndex == 1) Process(new ShipProduct());
+                if (commandIndex == 2) Process(new BillCustomer());
+                if (commandIndex == 3) Process(new MakeInvoice());
+                if (commandIndex == 4) Process(new MarkAsPreffered());
             }
         }
 

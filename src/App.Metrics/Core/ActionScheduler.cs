@@ -91,7 +91,7 @@ namespace App.Metrics.Core
                         {
                             await action(token.Token).ConfigureAwait(false);
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             //TODO: Review enableing internal metrics
                             //MetricsErrorHandler.Handle(x, "Error while executing action scheduler.");

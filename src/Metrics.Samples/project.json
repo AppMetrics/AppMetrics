@@ -3,6 +3,8 @@
   "description": "Metrics.Samples Class Library",
   "authors": [ "allan.hardy" ],
 
+  "buildOptions": { "debugType": "portable" },
+
   "dependencies": {
     "App.Metrics": "1.0.0-*"
   },

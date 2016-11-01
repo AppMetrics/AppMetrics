@@ -4,7 +4,7 @@
 
 using System.Threading.Tasks;
 using App.Metrics;
-using App.Metrics.Reporting._Legacy;
+using App.Metrics.Reporting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -13,6 +13,7 @@ namespace AspNet.Metrics.Middleware
 {
     public class MetricsEndpointTextEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
+        private readonly DefaultReportGenerator _reportGenerator;
         private readonly StringReporter _stringReporter;
 
         public MetricsEndpointTextEndpointMiddleware(RequestDelegate next,
@@ -22,7 +23,8 @@ namespace AspNet.Metrics.Middleware
             IMetricsContext metricsContext)
             : base(next, options, loggerFactory, metricsContext)
         {
-            _stringReporter = new StringReporter(loggerFactory, metricsContext, metricsFilter);
+            _stringReporter = new StringReporter();
+            _reportGenerator = new DefaultReportGenerator();
         }
 
         public async Task Invoke(HttpContext context)
@@ -31,9 +33,9 @@ namespace AspNet.Metrics.Middleware
             {
                 Logger.MiddlewareExecuting(GetType());
 
-                var content = await _stringReporter.RenderMetrics(MetricsContext);
+                await _reportGenerator.Generate(_stringReporter, MetricsContext, context.RequestAborted);
 
-                await WriteResponseAsync(context, content, "text/plain");
+                await WriteResponseAsync(context, _stringReporter.Result, "text/plain");
 
                 Logger.MiddlewareExecuted(GetType());
 

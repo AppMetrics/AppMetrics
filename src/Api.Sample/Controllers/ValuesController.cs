@@ -8,6 +8,8 @@ namespace Api.Sample.Controllers
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+        private static readonly Random Rnd = new Random();
+
         private readonly IMetricsContext _metricsContext;
 
         public ValuesController(IMetricsContext metricsContext)
@@ -38,9 +40,9 @@ namespace Api.Sample.Controllers
             _metricsContext.Decrement(Metrics.Counters.TestCounter, 2);
 
             var histogram = _metricsContext.Advanced.Histogram(Metrics.Histograms.TestHAdvancedistogram);
-            histogram.Update(20);
+            histogram.Update(Rnd.Next(1, 20));
 
-            _metricsContext.Update(Metrics.Histograms.TestHistogram, 20);
+            _metricsContext.Update(Metrics.Histograms.TestHistogram, Rnd.Next(20, 40));
 
             return new[] { "value1", "value2" };
         }

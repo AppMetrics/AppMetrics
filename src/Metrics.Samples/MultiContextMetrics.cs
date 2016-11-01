@@ -32,10 +32,6 @@ namespace Metrics.Samples
         public MultiContextInstanceMetrics(string instanceName, IMetricsContext metricsContext)
         {
             _metricsContext = metricsContext;
-
-            //TODO: AH - no longer valid?
-            //var context = _metricsContext.Advanced.Group(instanceName);
-
             _instanceCounter = _metricsContext.Advanced.Counter(SampleMetricsRegistry.Counters.SampleCounter);
             _instanceTimer = _metricsContext.Advanced.Timer(SampleMetricsRegistry.Timers.SampleTimer);
         }

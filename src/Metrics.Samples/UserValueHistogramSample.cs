@@ -27,8 +27,9 @@ namespace Metrics.Samples
             for (var i = 0; i < 30; i++)
             {
                 var documentId = new Random().Next() % 10;
-                new UserValueHistogramSample(_metricsContext).Process("document-" + documentId.ToString());
-            }
+                var sample = new UserValueHistogramSample(_metricsContext);
+                sample.Process("document-" + documentId);
+        }
         }
 
         private int[] GetResultsForDocument(string documentId)

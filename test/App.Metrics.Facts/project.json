@@ -6,8 +6,11 @@
     "ubuntu.14.04-x64": {},
     "win10-x64": {}
   },
+
+  "buildOptions": { "debugType": "portable" },
+
   "dependencies": {
-    "AspNet.Metrics": "1.0.0-rtm",
+    "AspNet.Metrics": "1.0.0-*",
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
     "FluentAssertions": "4.14.0",
     "Microsoft.AspNetCore.Routing": "1.0.1",

@@ -1,44 +1,47 @@
 {
-  "version": "1.0.0",
-  "description": "The library provides support for integrating ASP.NET Core with the Metrics.NET Library",
-  "authors": [ "Allan Hardy" ],
-  "packOptions": {
-    "releaseNotes": "Stable version using Metrics.NET, requires full .NET framework, version 2 will support .NET Standard and .NET Standard port of Metrics.NET",
-    "tags": [ "mvc", "measurements", "charts", "timer", "histogram", "graphite", "influxdb", "health checks", "metrics" ],
-    "repository": {
-      "type": "git",
-      "url": "git://github.com/alhardy/aspnet-metrics"
+    "version": "1.0.0",
+    "description": "The library provides support for integrating ASP.NET Core with the Metrics.NET Library",
+    "authors": ["Allan Hardy"],
+    "packOptions": {
+        "releaseNotes":
+            "Stable version using Metrics.NET, requires full .NET framework, version 2 will support .NET Standard and .NET Standard port of Metrics.NET",
+        "tags": [
+            "mvc", "measurements", "charts", "timer", "histogram", "graphite", "influxdb", "health checks", "metrics"
+        ],
+        "repository": {
+            "type": "git",
+            "url": "git://github.com/alhardy/aspnet-metrics"
+        },
+        "projectUrl": "https://github.com/alhardy/aspnet-metrics",
+        "licenseUrl": "https://github.com/alhardy/aspnet-metrics/blob/master/LICENSE",
+        "iconUrl": "http://www.erata.net/Metrics.NET/metrics_32.png"
     },
-    "projectUrl": "https://github.com/alhardy/aspnet-metrics",
-    "licenseUrl": "https://github.com/alhardy/aspnet-metrics/blob/master/LICENSE",
-    "iconUrl": "http://www.erata.net/Metrics.NET/metrics_32.png"
-  },
-  "buildOptions": {
-    "warningsAsErrors": true,
-    "nowarn": [
-      "CS1591"
-    ],
-    "xmlDoc": true
-  },
-  "dependencies": {
-    "Microsoft.AspNetCore.Mvc": "1.0.1",
-    "Microsoft.AspNetCore.Routing": "1.0.1",
-    "Microsoft.Extensions.DependencyInjection": "1.0.0",
-    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0",
-    "Microsoft.Extensions.Logging": "1.0.0",
-    "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
-    "NETStandard.Library": "1.6.0",
-    "System.Linq": "4.1.0",
-    "App.Metrics": "1.0.0-*",
-    "App.Metrics.Reporting": "1.0.0-*"
-  },
-  "frameworks": {
-    "netstandard1.6": {
-      "imports": [
-        "dotnet5.6",
-        "portable-net45+win8"
-      ]
+    "buildOptions": {
+        "warningsAsErrors": true,
+        "nowarn": [
+            "CS1591"
+        ],
+        "xmlDoc": true,
+        "debugType": "portable"
+    },
+    "dependencies": {
+        "Microsoft.AspNetCore.Mvc": "1.0.1",
+        "Microsoft.AspNetCore.Routing": "1.0.1",
+        "Microsoft.Extensions.DependencyInjection": "1.0.0",
+        "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0",
+        "Microsoft.Extensions.Logging": "1.0.0",
+        "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
+        "NETStandard.Library": "1.6.0",
+        "System.Linq": "4.1.0",
+        "App.Metrics": "1.0.0-*"
+    },
+    "frameworks": {
+        "netstandard1.6": {
+            "imports": [
+                "dotnet5.6",
+                "portable-net45+win8"
+            ]
+        }
     }
-  }
 
 }

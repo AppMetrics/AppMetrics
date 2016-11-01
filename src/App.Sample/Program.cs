@@ -3,21 +3,51 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
-using App.Metrics.Core;
 using App.Metrics.DependencyInjection;
 using App.Metrics.Reporting;
-using App.Metrics.Reporting.Console;
-using App.Metrics.Reporting.DependencyInjection;
-using App.Metrics.Reporting.TextFile;
 using HealthCheck.Samples;
 using Metrics.Samples;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
 using Serilog;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace App.Sample
 {
+    internal static class Repeat
+    {
+        public static Task Interval(
+            TimeSpan pollInterval,
+            Action action,
+            CancellationToken token)
+        {
+            // We don't use Observable.Interval:
+            // If we block, the values start bunching up behind each other.
+            return Task.Factory.StartNew(
+                () =>
+                {
+                    for (;;)
+                    {
+                        if (token.WaitCancellationRequested(pollInterval))
+                            break;
+
+                        action();
+                    }
+                }, token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+        }
+    }
+
+    static class CancellationTokenExtensions
+    {
+        public static bool WaitCancellationRequested(
+            this CancellationToken token,
+            TimeSpan timeout)
+        {
+            return token.WaitHandle.WaitOne(timeout);
+        }
+    }
+
     public class Host
     {
         public static void Main()
@@ -36,42 +66,38 @@ namespace App.Sample
             var userValueHistogramSample = new UserValueHistogramSample(application.MetricsContext);
             var userValueTimerSample = new UserValueTimerSample(application.MetricsContext);
 
-            using (var scheduler = new ActionScheduler())
-            {
-                simpleMetrics.RunSomeRequests();
-
-                scheduler.Start(TimeSpan.FromMilliseconds(500), () =>
+            var cancellationTokenSource = new CancellationTokenSource();
+            var task = Repeat.Interval(
+                TimeSpan.FromMilliseconds(300), () =>
                 {
                     setCounterSample.RunSomeRequests();
                     setMeterSample.RunSomeRequests();
                     userValueHistogramSample.RunSomeRequests();
-                    userValueTimerSample.RunSomeRequests();
+                    //userValueTimerSample.RunSomeRequests(); //TODO: AH - why's this taking so long?
                     simpleMetrics.RunSomeRequests();
-                });
 
-                application.MetricsContext.Gauge(AppMetricsRegistry.Gauges.Errors, () => 1);
-                application.MetricsContext.Gauge(AppMetricsRegistry.Gauges.PercentGauge, () => 1);
-                application.MetricsContext.Gauge(AppMetricsRegistry.Gauges.ApmGauge, () => 1);
-                application.MetricsContext.Gauge(AppMetricsRegistry.Gauges.ParenthesisGauge, () => 1);
-                application.MetricsContext.Gauge(AppMetricsRegistry.Gauges.GaugeWithNoValue, () => double.NaN);
+                    application.MetricsContext.Gauge(AppMetricsRegistry.Gauges.Errors, () => 1);
+                    application.MetricsContext.Gauge(AppMetricsRegistry.Gauges.PercentGauge, () => 1);
+                    application.MetricsContext.Gauge(AppMetricsRegistry.Gauges.ApmGauge, () => 1);
+                    application.MetricsContext.Gauge(AppMetricsRegistry.Gauges.ParenthesisGauge, () => 1);
+                    application.MetricsContext.Gauge(AppMetricsRegistry.Gauges.GaugeWithNoValue, () => double.NaN);
+                }, cancellationTokenSource.Token);
 
-                Console.WriteLine("done setting things up");
-            }
+            var reportingTask = Repeat.Interval(TimeSpan.FromSeconds(30),
+                () => { application.Reporter.RunReports(application.MetricsContext, cancellationTokenSource.Token); }, cancellationTokenSource.Token);
 
-            //TODO: AH - encapsulate scheduling in framework, reports should run at their own configured interval
-            using (var scheduler = new ActionScheduler())
-            {
-                scheduler.Start(TimeSpan.FromSeconds(5),
-                    () => { application.Reporter.RunReports(application.MetricsContext, CancellationToken.None); });
 
-                Console.ReadKey();
-            }
+            Console.WriteLine("Setup Complete, waiting for report run...");
+
+            Console.ReadKey();
         }
 
         private static void ConfigureMetrics(IServiceCollection services)
         {
             services
-                .AddMetrics(options => { })
+                .AddMetrics(options =>
+                {          
+                })
                 .AddHealthChecks(options =>
                 {
                     options.IsEnabled = true;
@@ -94,19 +120,11 @@ namespace App.Sample
                     {
                         var consoleSettings = new ConsoleReporterSettings
                         {
+                            //TODO: AH - report interval not yet applied, it's currently set on the task created outside
                             Interval = TimeSpan.FromSeconds(1),
                             Disabled = false
                         };
                         factory.AddConsole(consoleSettings);
-
-                        var textFileSettings = new TextFileReporterSettings
-                        {
-                            Interval = TimeSpan.FromSeconds(10),
-                            Disabled = false,
-                            FileReportingFolder = @"C\app-metrics\"
-                        };
-
-                        factory.AddTextFile(textFileSettings);
                     };
                 });
         }

@@ -102,12 +102,11 @@ namespace Metrics.Samples
 
         public void RunSomeRequests()
         {
-            var test = new SampleMetrics(_metricsContext);
             var tasks = new List<Thread>();
             for (var i = 0; i < 10; i++)
             {
                 var j = i;
-                tasks.Add(new Thread(() => test.Request(j)));
+                tasks.Add(new Thread(() => Request(j)));
             }
 
             tasks.ForEach(t => t.Start());
