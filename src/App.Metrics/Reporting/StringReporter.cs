@@ -17,13 +17,22 @@ namespace App.Metrics.Reporting
         private StringBuilder _buffer;
         private bool _disposed;
 
-        public StringReporter()
+        public StringReporter() :
+            this("String Reporter")
         {
+        }
+
+        public StringReporter(string name)
+        {
+            if (name == null) throw new ArgumentNullException(nameof(name));
+
+            Name = name;
             _buffer = new StringBuilder();
         }
 
-        //TODO: AH - is name required?
-        public string Name { get; } = "Test";
+        public string Name { get; }
+
+        public string Result => _buffer.ToString();
 
         public void Dispose()
         {
@@ -49,8 +58,6 @@ namespace App.Metrics.Reporting
 
             _disposed = true;
         }
-
-        public string Result => _buffer.ToString();
 
         public void EndMetricTypeReport(Type metricType)
         {

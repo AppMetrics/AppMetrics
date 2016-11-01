@@ -13,6 +13,12 @@ namespace App.Metrics.Reporting
 {
     public class ConsoleReporter : IMetricReporter
     {
+        public ConsoleReporter()
+            : this("Console Reporter")
+        {
+            
+        }
+
         public ConsoleReporter(string name)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
