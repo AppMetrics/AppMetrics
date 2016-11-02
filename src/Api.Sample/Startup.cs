@@ -1,25 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Threading;
 using App.Metrics;
 using App.Metrics.DependencyInjection;
 using App.Metrics.Json;
+using App.Metrics.Reporting;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 
 namespace Api.Sample
-{    
+{
     public class Startup
     {
         static readonly Random Random = new Random();
 
         public Startup(IHostingEnvironment env)
-        {            
+        {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -53,6 +56,11 @@ namespace Api.Sample
                 return func();
             });
 
+            var reportFactory = app.ApplicationServices.GetRequiredService<IReportFactory>();
+            var metrics = app.ApplicationServices.GetRequiredService<IMetricsContext>();
+            var reporter = reportFactory.CreateReporter("AspNet Reporter");
+            reporter.RunReports(metrics, CancellationToken.None);
+
             app.UseMvc();
         }
 
@@ -71,6 +79,20 @@ namespace Api.Sample
                     options.DefaultSamplingType = SamplingType.ExponentiallyDecaying;
                     options.DisableMetrics = false;
                     options.JsonSchemeVersion = JsonSchemeVersion.AlwaysLatest;
+                })
+                .AddReporting(options =>
+                {
+                    options.Reporters = factory =>
+                    {
+                        var textFileSettings = new TextFileReporterSettings
+                        {
+                            ReportInterval = TimeSpan.FromSeconds(30),
+                            Disabled = false,
+                            FileName = @"C:\metrics\aspnet-sample.txt"
+                        };
+
+                        factory.AddTextFile(textFileSettings);
+                    };
                 })
                 .AddHealthChecks()
                 .AddAspNetMetrics(options => { });
