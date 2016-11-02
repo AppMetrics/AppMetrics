@@ -33,7 +33,7 @@ namespace App.Metrics.Reporting
 
         private TextFileReporter CreateReporterImplementation(string name)
         {
-            return new TextFileReporter(name, _settings.FileName);
+            return new TextFileReporter(name, _settings.FileName, _settings.ReportInterval);
         }
     }
 }

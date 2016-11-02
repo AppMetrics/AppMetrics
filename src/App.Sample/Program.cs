@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.DependencyInjection;
 using App.Metrics.Reporting;
+using App.Metrics.Scheduling;
 using HealthCheck.Samples;
 using Metrics.Samples;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,39 +16,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace App.Sample
 {
-    internal static class Repeat
-    {
-        public static Task Interval(
-            TimeSpan pollInterval,
-            Action action,
-            CancellationToken token)
-        {
-            // We don't use Observable.Interval:
-            // If we block, the values start bunching up behind each other.
-            return Task.Factory.StartNew(
-                () =>
-                {
-                    for (;;)
-                    {
-                        if (token.WaitCancellationRequested(pollInterval))
-                            break;
-
-                        action();
-                    }
-                }, token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
-        }
-    }
-
-    static class CancellationTokenExtensions
-    {
-        public static bool WaitCancellationRequested(
-            this CancellationToken token,
-            TimeSpan timeout)
-        {
-            return token.WaitHandle.WaitOne(timeout);
-        }
-    }
-
     public class Host
     {
         public static void Main()
@@ -59,6 +27,7 @@ namespace App.Sample
             var provider = serviceCollection.BuildServiceProvider();
 
             var application = new Application(provider);
+            var scheduler = new DefaultTaskScheduler();
 
             var simpleMetrics = new SampleMetrics(application.MetricsContext);
             var setCounterSample = new SetCounterSample(application.MetricsContext);
@@ -67,7 +36,7 @@ namespace App.Sample
             var userValueTimerSample = new UserValueTimerSample(application.MetricsContext);
 
             var cancellationTokenSource = new CancellationTokenSource();
-            var task = Repeat.Interval(
+            var task = scheduler.Interval(
                 TimeSpan.FromMilliseconds(300), () =>
                 {
                     setCounterSample.RunSomeRequests();
@@ -83,9 +52,7 @@ namespace App.Sample
                     application.MetricsContext.Gauge(AppMetricsRegistry.Gauges.GaugeWithNoValue, () => double.NaN);
                 }, cancellationTokenSource.Token);
 
-            var reportingTask = Repeat.Interval(TimeSpan.FromSeconds(30),
-                () => { application.Reporter.RunReports(application.MetricsContext, cancellationTokenSource.Token); }, cancellationTokenSource.Token);
-
+            application.Reporter.RunReports(application.MetricsContext, cancellationTokenSource.Token);
 
             Console.WriteLine("Setup Complete, waiting for report run...");
 
@@ -120,16 +87,14 @@ namespace App.Sample
                     {
                         var consoleSettings = new ConsoleReporterSettings
                         {
-                            //TODO: AH - report interval not yet applied, it's currently set on the task created outside
-                            Interval = TimeSpan.FromSeconds(1),
+                            ReportInterval = TimeSpan.FromSeconds(5),
                             Disabled = false
                         };
                         factory.AddConsole(consoleSettings);
 
                         var textFileSettings = new TextFileReporterSettings
                         {
-                            //TODO: AH - report interval not yet applied, it's currently set on the task created outside
-                            Interval = TimeSpan.FromSeconds(1),
+                            ReportInterval = TimeSpan.FromSeconds(30),
                             Disabled = false,
                             FileName = @"C:\metrics\sample.txt"
                         };

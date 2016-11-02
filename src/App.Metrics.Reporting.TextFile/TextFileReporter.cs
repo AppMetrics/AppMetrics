@@ -16,17 +16,18 @@ namespace App.Metrics.Reporting
         private readonly StringReporter _stringReporter;
         private bool _disposed;
 
-        public TextFileReporter(string file)
-            : this("Text File Reporter", file)
+        public TextFileReporter(string file, TimeSpan interval)
+            : this("Text File Reporter", file, interval)
         {
         }
 
-        public TextFileReporter(string name, string file)
+        public TextFileReporter(string name, string file, TimeSpan interval)
         {
             if (file == null) throw new ArgumentNullException(nameof(file));
 
             _file = file;
             _stringReporter = new StringReporter(name);
+            ReportInterval = interval;
         }
 
 
@@ -50,6 +51,8 @@ namespace App.Metrics.Reporting
 
             _disposed = true;
         }
+
+        public TimeSpan ReportInterval { get; }
 
         public void EndMetricTypeReport(Type metricType)
         {

@@ -14,7 +14,7 @@ namespace AspNet.Metrics.Facts
     {
         private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
 
-        public static IMetricsContext Instance(string defaultGroupName, IClock clock, IScheduler scheduler)
+        public static IMetricsContext Instance(string defaultGroupName, IClock clock)
         {
             var options = Options.Create(new AppMetricsOptions
             {
@@ -25,7 +25,7 @@ namespace AspNet.Metrics.Facts
             var registry = new DefaultMetricsRegistry(LoggerFactory, options, new EnvironmentInfoBuilder(LoggerFactory), newGroupRegistry);
 
             return new DefaultMetricsContext(options, registry,
-                new TestMetricsBuilder(clock, scheduler),
+                new TestMetricsBuilder(clock),
                 new DefaultHealthCheckManager(LoggerFactory, () => new ConcurrentDictionary<string, HealthCheck>()),
                 new DefaultMetricsDataManager(registry));
         }
@@ -33,16 +33,6 @@ namespace AspNet.Metrics.Facts
         public static IMetricsContext Instance()
         {
             return Instance("TestContext", new Clock.TestClock());
-        }
-
-        public static IMetricsContext Instance(IClock clock, IScheduler scheduler)
-        {
-            return Instance("TestContext", clock, scheduler);
-        }
-
-        public static IMetricsContext Instance(string defaultGroupName, IClock clock)
-        {
-            return Instance(defaultGroupName, clock, new TestScheduler(clock));
         }
     }
 }

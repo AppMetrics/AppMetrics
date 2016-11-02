@@ -12,7 +12,7 @@ namespace App.Metrics.Reporting
 
         public IMetricsFilter Filter { get; set; }
 
-        public TimeSpan Interval { get; set; } = TimeSpan.FromSeconds(5);
+        public TimeSpan ReportInterval { get; set; } = TimeSpan.FromSeconds(5);
 
         public string FileName { get; set; }
     }

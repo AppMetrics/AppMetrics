@@ -1,30 +1,29 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Core;
-using App.Metrics.Utils;
+using App.Metrics.Scheduling;
 using FluentAssertions;
 using Xunit;
 
 namespace App.Metrics.Facts.Utils
 {
-    public class ActionSchedulerTests
+    public class DefaultTaskSchedulerTests
     {
         [Fact]
-        public void ActionScheduler_ExecutesScheduledAction()
+        public void can_execute_scheduled_action()
         {
-            using (var scheduler = new ActionScheduler())
+            using (var scheduler = new DefaultTaskScheduler())
             {
-                var tcs = new TaskCompletionSource<bool>();
+                var completionSource = new TaskCompletionSource<bool>();
                 var data = 0;
 
-                scheduler.Start(TimeSpan.FromMilliseconds(10), t =>
+                scheduler.Interval(TimeSpan.FromMilliseconds(10), () =>
                 {
                     data++;
-                    tcs.SetResult(true);
+                    completionSource.SetResult(true);
                 });
 
-                tcs.Task.Wait();
+                completionSource.Task.Wait();
                 scheduler.Stop();
 
                 data.Should().Be(1);
@@ -32,24 +31,24 @@ namespace App.Metrics.Facts.Utils
         }
 
         [Fact]
-        public void ActionScheduler_ExecutesScheduledActionMultipleTimes()
+        public void executes_scheduled_action_muliple_times()
         {
-            using (var scheduler = new ActionScheduler())
+            using (var scheduler = new DefaultTaskScheduler())
             {
                 var data = 0;
-                var tcs = new TaskCompletionSource<bool>();
+                var completionSource = new TaskCompletionSource<bool>();
 
-                scheduler.Start(TimeSpan.FromMilliseconds(10), () =>
+                scheduler.Interval(TimeSpan.FromMilliseconds(10), () =>
                 {
                     data++;
-                    tcs.SetResult(true);
+                    completionSource.SetResult(true);
                 });
 
-                tcs.Task.Wait();
+                completionSource.Task.Wait();
                 data.Should().Be(1);
 
-                tcs = new TaskCompletionSource<bool>();
-                tcs.Task.Wait();
+                completionSource = new TaskCompletionSource<bool>();
+                completionSource.Task.Wait();
                 data.Should().Be(2);
 
                 scheduler.Stop();
@@ -57,68 +56,24 @@ namespace App.Metrics.Facts.Utils
         }
 
         [Fact]
-        public void ActionScheduler_ExecutesScheduledActionWithToken()
+        public void executes_scheduled_action_with_token()
         {
-            using (var scheduler = new ActionScheduler())
+            using (var scheduler = new DefaultTaskScheduler())
             {
                 var data = 0;
-                var tcs = new TaskCompletionSource<bool>();
+                var token = new CancellationTokenSource();                
+                var completionSource = new TaskCompletionSource<bool>();
 
-                scheduler.Start(TimeSpan.FromMilliseconds(10), t =>
+                scheduler.Interval(TimeSpan.FromMilliseconds(10), () =>
                 {
                     data++;
-                    tcs.SetResult(true);
-                });
+                    completionSource.SetResult(true);
+                }, token.Token);
 
-                tcs.Task.Wait();
+                completionSource.Task.Wait();
                 scheduler.Stop();
                 data.Should().Be(1);
             }
-        }
-
-        [Fact]
-        public void ActionScheduler_ExecutesScheduledFunction()
-        {
-            using (var scheduler = new ActionScheduler())
-            {
-                var tcs = new TaskCompletionSource<bool>();
-                var data = 0;
-
-                Func<CancellationToken, Task> function = (t) => Task.Factory.StartNew(() =>
-                {
-                    data++;
-                    tcs.SetResult(true);
-                });
-
-                scheduler.Start(TimeSpan.FromMilliseconds(10), function);
-                tcs.Task.Wait();
-                scheduler.Stop();
-
-                data.Should().Be(1);
-            }
-        }
-
-        [Fact(Skip = "refactor static metrics class and allow error handler to be added")]
-        public void ActionScheduler_ReportsExceptionWithGlobalMetricHandler()
-        {
-            //Exception x = null;
-            //var tcs = new TaskCompletionSource<bool>();
-
-            //Metric.Config.WithErrorHandler(e =>
-            //{
-            //    x = e;
-            //    tcs.SetResult(true);
-            //});
-
-            //using (var scheduler = new ActionScheduler())
-            //{
-            //    scheduler.Start(TimeSpan.FromMilliseconds(10), t => { throw new InvalidOperationException("boom"); });
-
-            //    tcs.Task.Wait(1000);
-            //    scheduler.Stop();
-            //}
-
-            //x.Should().NotBeNull();
-        }
+        }        
     }
 }

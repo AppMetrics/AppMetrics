@@ -13,17 +13,18 @@ namespace App.Metrics.Reporting
 {
     public class ConsoleReporter : IMetricReporter
     {
-        public ConsoleReporter()
-            : this("Console Reporter")
+        public ConsoleReporter(TimeSpan reportInterval)
+            : this("Console Reporter", reportInterval)
         {
             
         }
 
-        public ConsoleReporter(string name)
+        public ConsoleReporter(string name, TimeSpan reportInterval)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
 
             Name = name;
+            ReportInterval = reportInterval;
         }
 
         public string Name { get; }
@@ -31,6 +32,8 @@ namespace App.Metrics.Reporting
         public void Dispose()
         {
         }
+
+        public TimeSpan ReportInterval { get; }
 
         public void EndMetricTypeReport(Type metricType)
         {

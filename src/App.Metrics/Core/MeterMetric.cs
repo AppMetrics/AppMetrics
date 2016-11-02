@@ -11,6 +11,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
 using App.Metrics.MetricData;
+using App.Metrics.Scheduling;
 using App.Metrics.Utils;
 
 namespace App.Metrics.Core
@@ -25,7 +26,7 @@ namespace App.Metrics.Core
         private long _startTime;
 
         public MeterMetric(IClock systemClock)
-            : this(systemClock, new ActionScheduler())
+            : this(systemClock, new DefaultTaskScheduler())
         {
         }
 
@@ -34,7 +35,7 @@ namespace App.Metrics.Core
             _clock = clock;
             _startTime = _clock.Nanoseconds;
             _tickScheduler = scheduler;
-            _tickScheduler.Start(TickInterval, (Action)Tick);
+            _tickScheduler.Interval(TickInterval, Tick);
         }
 
         ~MeterMetric()

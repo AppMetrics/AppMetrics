@@ -33,7 +33,7 @@ namespace App.Metrics.Reporting
 
         private ConsoleReporter CreateReporterImplementation(string name)
         {
-            return new ConsoleReporter(name);
+            return new ConsoleReporter(name, _settings.ReportInterval);
         }
     }
 }

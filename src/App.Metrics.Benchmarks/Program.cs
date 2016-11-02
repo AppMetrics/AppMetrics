@@ -6,7 +6,7 @@ namespace App.Metrics.Benchmarks
     {
         public static void Main(string[] args)
         {
-            var summary = BenchmarkRunner.Run<ExponentiallyDecayingResevoirBenchmarks>();
+            //var summary = BenchmarkRunner.Run<ExponentiallyDecayingResevoirBenchmarks>();
         }
     }
 }

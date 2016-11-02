@@ -2,6 +2,8 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using System;
+
 namespace App.Metrics.Reporting
 {
     public static class ConsoleReporterExtensions
@@ -13,7 +15,8 @@ namespace App.Metrics.Reporting
             return factory;
         }
 
-        public static IReportFactory AddConsole(this IReportFactory factory)
+        public static IReportFactory AddConsole(this IReportFactory factory,
+            TimeSpan interval)
         {
             var settings = new ConsoleReporterSettings();
             factory.AddConsole(settings);

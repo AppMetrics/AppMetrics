@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using App.Metrics.App_Packages.Concurrency;
-using App.Metrics.Core;
+using App.Metrics.Scheduling;
 using App.Metrics.Utils;
 
 namespace App.Metrics.Sampling
@@ -32,6 +32,7 @@ namespace App.Metrics.Sampling
 
         private SpinLock _lock = new SpinLock();
         private AtomicLong _startTime;
+        private bool _disposed;
 
         public ExponentiallyDecayingReservoir()
             : this(DefaultSize, DefaultAlpha)
@@ -39,7 +40,7 @@ namespace App.Metrics.Sampling
         }
 
         public ExponentiallyDecayingReservoir(int size, double alpha)
-            : this(size, alpha, Clock.Default, new ActionScheduler())
+            : this(size, alpha, Clock.Default, new DefaultTaskScheduler())
         {
         }
 
@@ -57,7 +58,7 @@ namespace App.Metrics.Sampling
             _values = new SortedList<double, WeightedSample>(size, ReverseOrderDoubleComparer.Instance);
 
             _rescaleScheduler = scheduler;
-            _rescaleScheduler.Start(RescaleInterval, () => Rescale());
+            _rescaleScheduler.Interval(RescaleInterval, Rescale);
 
             _startTime = new AtomicLong(clock.Seconds);
         }
@@ -66,9 +67,23 @@ namespace App.Metrics.Sampling
 
         public void Dispose()
         {
-            using (_rescaleScheduler)
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public void Dispose(bool disposing)
+        {
+            if (!_disposed)
             {
+                if (disposing)
+                {
+                    // Free any other managed objects here.
+
+                    _rescaleScheduler?.Dispose();
+                }
             }
+
+            _disposed = true;
         }
 
         public ISnapshot GetSnapshot(bool resetReservoir = false)

@@ -6,19 +6,23 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using App.Metrics.Infrastructure;
+using App.Metrics.Scheduling;
 
 namespace App.Metrics.Reporting
-{
+{   
     internal sealed class Reporter : IReporter
     {
         private readonly string _name;
         private readonly DefaultReportGenerator _reportGenerator;
+        private readonly Scheduling.IScheduler _scheduler;
         private IMetricReporter[] _reporters;
 
         public Reporter(ReportFactory reportFactory, string name)
         {
             _name = name;
             _reportGenerator = new DefaultReportGenerator();
+            _scheduler = new DefaultTaskScheduler();
 
             var providers = reportFactory.GetProviders();
 
@@ -45,7 +49,8 @@ namespace App.Metrics.Reporting
             {
                 try
                 {
-                    await _reportGenerator.Generate(reporter, context, token);
+                    var task = _scheduler.Interval(reporter.ReportInterval, async () =>
+                            await _reportGenerator.Generate(reporter, context, token), token);
                 }
                 catch (Exception ex)
                 {
@@ -61,25 +66,27 @@ namespace App.Metrics.Reporting
             if (exceptions != null && exceptions.Count > 0)
             {
                 throw new AggregateException(
-                    message: "An error occurred while running reporter(s).", innerExceptions: exceptions);
+                    message: "An error occurred while running reporter(s).",
+                    innerExceptions: exceptions);
             }
+            await AppMetricsTaskCache.EmptyTask;
         }
 
         internal void AddProvider(IReporterProvider provider)
         {
             var reporter = provider.CreateMetricReporter(_name);
-            int logIndex;
+            int reporterIndex;
             if (_reporters == null)
             {
-                logIndex = 0;
+                reporterIndex = 0;
                 _reporters = new IMetricReporter[1];
             }
             else
             {
-                logIndex = _reporters.Length;
-                Array.Resize(ref _reporters, logIndex + 1);
+                reporterIndex = _reporters.Length;
+                Array.Resize(ref _reporters, reporterIndex + 1);
             }
-            _reporters[logIndex] = reporter;
+            _reporters[reporterIndex] = reporter;
         }
     }
 }

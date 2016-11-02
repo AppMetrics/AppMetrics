@@ -1,8 +1,10 @@
 ﻿using System;
 using App.Metrics;
 using App.Metrics.Core;
+using App.Metrics.Internal.Test;
 using App.Metrics.MetricData;
 using App.Metrics.Sampling;
+using App.Metrics.Scheduling;
 using App.Metrics.Utils;
 
 namespace AspNet.Metrics.Facts
@@ -12,10 +14,10 @@ namespace AspNet.Metrics.Facts
         private readonly IClock _clock;
         private readonly IScheduler _scheduler;
 
-        public TestMetricsBuilder(IClock clock, IScheduler scheduler)
+        public TestMetricsBuilder(IClock clock)
         {
             _clock = clock;
-            _scheduler = scheduler;
+            _scheduler = new TestTaskScheduler(_clock);
         }
 
         public ICounterMetric BuildCounter(string name, Unit unit)

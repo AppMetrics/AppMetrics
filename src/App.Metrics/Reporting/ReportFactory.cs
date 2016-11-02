@@ -5,40 +5,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using App.Metrics.Scheduling;
 
 namespace App.Metrics.Reporting
 {
     public class ReportFactory : IReportFactory
     {
         private readonly Dictionary<string, Reporter> _reporters = new Dictionary<string, Reporter>(StringComparer.Ordinal);
-        private IReporterProvider[] _providers = new IReporterProvider[0];
-        private volatile bool _disposed;
         private readonly object _syncLock = new object();
-
-        //TODO: AH - don't need a name?
-        public IReporter CreateReporter(string name)
-        {
-            if (CheckDisposed())
-            {
-                throw new ObjectDisposedException(nameof(ReportFactory));
-            }
-
-            Reporter reporter;
-            lock (_syncLock)
-            {
-                if (!_reporters.TryGetValue(name, out reporter))
-                {
-                    reporter = new Reporter(this, name);
-                    _reporters[name] = reporter;
-                }
-            }
-            return reporter;
-        }
-
-        internal IReporterProvider[] GetProviders()
-        {
-            return _providers;
-        }
+        private volatile bool _disposed;
+        private IReporterProvider[] _providers = new IReporterProvider[0];
 
         public void AddProvider(IReporterProvider provider)
         {
@@ -57,7 +33,30 @@ namespace App.Metrics.Reporting
             }
         }
 
-        protected virtual bool CheckDisposed() => _disposed;
+        //TODO: AH - don't need a name?
+        public IReporter CreateReporter(string name)
+        {
+            return CreateReporter(name, new DefaultTaskScheduler());
+        }
+
+        public IReporter CreateReporter(string name, IScheduler scheduler)
+        {
+            if (CheckDisposed())
+            {
+                throw new ObjectDisposedException(nameof(ReportFactory));
+            }
+
+            Reporter reporter;
+            lock (_syncLock)
+            {
+                if (!_reporters.TryGetValue(name, out reporter))
+                {
+                    reporter = new Reporter(this, name);
+                    _reporters[name] = reporter;
+                }
+            }
+            return reporter;
+        }
 
         public void Dispose()
         {
@@ -77,5 +76,12 @@ namespace App.Metrics.Reporting
                 }
             }
         }
+
+        internal IReporterProvider[] GetProviders()
+        {
+            return _providers;
+        }
+
+        protected virtual bool CheckDisposed() => _disposed;
     }
 }

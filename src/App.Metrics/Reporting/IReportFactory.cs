@@ -3,13 +3,16 @@
 
 
 using System;
+using App.Metrics.Scheduling;
 
 namespace App.Metrics.Reporting
 {
     public interface IReportFactory : IDisposable
     {
+        void AddProvider(IReporterProvider provider);
+
         IReporter CreateReporter(string name);
 
-        void AddProvider(IReporterProvider provider);
+        IReporter CreateReporter(string name, IScheduler scheduler);
     }
 }

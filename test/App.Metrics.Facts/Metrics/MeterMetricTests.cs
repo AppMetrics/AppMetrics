@@ -1,4 +1,5 @@
 ﻿using App.Metrics.Core;
+using App.Metrics.Internal.Test;
 using App.Metrics.Utils;
 using FluentAssertions;
 using Xunit;
@@ -12,7 +13,7 @@ namespace App.Metrics.Facts.Metrics
 
         public MeterMetricTests()
         {
-            var scheduler = new TestScheduler(_clock);
+            var scheduler = new TestTaskScheduler(_clock);
             _meter = new MeterMetric(_clock, scheduler);
         }
 
