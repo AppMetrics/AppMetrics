@@ -39,9 +39,9 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "App.Metrics.Benchmarks", "s
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "App.Metrics.Reporting.Facts", "test\App.Metrics.Reporting.Facts\App.Metrics.Reporting.Facts.xproj", "{71D34732-2496-4740-A2EF-E6A1492DB1F1}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "App.Metrics.Reporting.Console", "src\App.Metrics.Reporting.Console\App.Metrics.Reporting.Console.xproj", "{2D60D9CD-78B2-4AB8-BD30-54D12643151B}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "App.Metrics.Extensions.Reporting.Console", "src\App.Metrics.Reporting.Console\App.Metrics.Extensions.Reporting.Console.xproj", "{2D60D9CD-78B2-4AB8-BD30-54D12643151B}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "App.Metrics.Reporting.TextFile", "src\App.Metrics.Reporting.TextFile\App.Metrics.Reporting.TextFile.xproj", "{ECF4744B-5207-494E-A503-46CFCA98D8F2}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "App.Metrics.Extensions.Reporting.TextFile", "src\App.Metrics.Reporting.TextFile\App.Metrics.Extensions.Reporting.TextFile.xproj", "{ECF4744B-5207-494E-A503-46CFCA98D8F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

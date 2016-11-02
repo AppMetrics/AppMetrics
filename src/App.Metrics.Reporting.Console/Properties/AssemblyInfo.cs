@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("App.Metrics.Reporting.Console")]
+[assembly: AssemblyProduct("App.Metrics.Extensions.Reporting.Console")]
 [assembly: AssemblyTrademark("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
