@@ -14,8 +14,8 @@ namespace App.Metrics.Facts.Utils
         {
             using (var scheduler = new DefaultTaskScheduler())
             {
-                var completionSource = new TaskCompletionSource<bool>();
                 var data = 0;
+                var completionSource = new TaskCompletionSource<bool>();
 
                 scheduler.Interval(TimeSpan.FromMilliseconds(10), () =>
                 {
@@ -65,12 +65,12 @@ namespace App.Metrics.Facts.Utils
                 var completionSource = new TaskCompletionSource<bool>();
 
                 scheduler.Interval(TimeSpan.FromMilliseconds(10), () =>
-                {
-                    data++;
-                    completionSource.SetResult(true);
-                }, token.Token);
+                 {
+                     data++;
+                     completionSource.SetResult(true);
+                 }, token.Token);
 
-                completionSource.Task.Wait();
+                completionSource.Task.Wait(token.Token);
                 scheduler.Stop();
                 data.Should().Be(1);
             }
