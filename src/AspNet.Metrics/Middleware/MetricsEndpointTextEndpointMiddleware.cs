@@ -24,8 +24,6 @@ namespace AspNet.Metrics.Middleware
             IMetricsContext metricsContext)
             : base(next, options, loggerFactory, metricsContext)
         {
-            //TODO: AH - is the metrics filter configured on the aspnet configuration?
-
             _metricsFilter = metricsFilter;
             _stringReporter = new StringReporter();
             _reportGenerator = new DefaultReportGenerator();
