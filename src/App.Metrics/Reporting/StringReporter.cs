@@ -92,7 +92,7 @@ namespace App.Metrics.Reporting
             failed.ForEach(c => _buffer.WriteHealthCheckResult(c));
         }
 
-        public void ReportMetric<T>(string name, MetricValueSource<T> valueSource)
+        public void ReportMetric<T>(string name, MetricValueSource<T> valueSource, MetricTags globalTags)
         {
             _buffer.WriteMetricName(name, valueSource);
             _buffer.WriteMetricValue(valueSource);

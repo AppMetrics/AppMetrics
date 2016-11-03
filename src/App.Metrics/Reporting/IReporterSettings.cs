@@ -10,5 +10,7 @@ namespace App.Metrics.Reporting
         TimeSpan ReportInterval { get; }
 
         IMetricsFilter Filter { get; set; }
+
+        MetricTags GlobalTags { get; set; }
     }
 }

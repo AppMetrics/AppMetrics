@@ -10,6 +10,8 @@ namespace App.Metrics.Reporting
     {
         public IMetricsFilter Filter { get; set; }
 
+        public MetricTags GlobalTags { get; set; } = MetricTags.None;
+
         public TimeSpan ReportInterval { get; set; } = TimeSpan.FromSeconds(30);
     }
 }

@@ -68,7 +68,7 @@ namespace App.Metrics.Reporting
             failed.ForEach(c => WriteLine(c.Hummanize()));
         }
 
-        public void ReportMetric<T>(string name, MetricValueSource<T> valueSource)
+        public void ReportMetric<T>(string name, MetricValueSource<T> valueSource, MetricTags globalTags)
         {
             WriteLine(valueSource.HumanzizeName(name));
 

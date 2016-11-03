@@ -83,11 +83,14 @@ namespace App.Sample
                 })
                 .AddReporting(options =>
                 {
+                    var globalTags = new MetricTags("env=stage");
+
                     options.Reporters = factory =>
                     {
                         var consoleSettings = new ConsoleReporterSettings
                         {
                             ReportInterval = TimeSpan.FromSeconds(5),
+                            GlobalTags = globalTags,
                             Filter = new DefaultMetricsFilter()
                                 .WhereType(MetricType.Counter)
                                 .WhereTag("filter-tag1", "filter-tag2")

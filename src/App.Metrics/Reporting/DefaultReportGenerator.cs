@@ -12,7 +12,11 @@ namespace App.Metrics.Reporting
 {
     internal class DefaultReportGenerator
     {
-        public async Task Generate(IMetricReporter reporter, IMetricsContext metricsContext, IMetricsFilter filter, CancellationToken token)
+        public async Task Generate(IMetricReporter reporter, 
+            IMetricsContext metricsContext, 
+            IMetricsFilter filter, 
+            MetricTags globalTags,
+            CancellationToken token)
         {
             var reportEnvironment = true;
             var reportHealthChecks = true;
@@ -40,19 +44,19 @@ namespace App.Metrics.Reporting
             foreach (var group in data.Groups)
             {
                 ReportMetricType(reporter, group.Counters,
-                    c => { reporter.ReportMetric($"{metricsContext.ContextName}.{group.GroupName}", c); }, token);
+                    c => { reporter.ReportMetric($"{metricsContext.ContextName}.{@group.GroupName}", c, globalTags); }, token);
 
                 ReportMetricType(reporter, group.Gauges,
-                    g => { reporter.ReportMetric($"{metricsContext.ContextName}.{group.GroupName}", g); }, token);
+                    g => { reporter.ReportMetric($"{metricsContext.ContextName}.{@group.GroupName}", g, globalTags); }, token);
 
                 ReportMetricType(reporter, group.Histograms,
-                    h => { reporter.ReportMetric($"{metricsContext.ContextName}.{group.GroupName}", h); }, token);
+                    h => { reporter.ReportMetric($"{metricsContext.ContextName}.{@group.GroupName}", h, globalTags); }, token);
 
                 ReportMetricType(reporter, group.Meters,
-                    m => { reporter.ReportMetric($"{metricsContext.ContextName}.{group.GroupName}", m); }, token);
+                    m => { reporter.ReportMetric($"{metricsContext.ContextName}.{@group.GroupName}", m, globalTags); }, token);
 
                 ReportMetricType(reporter, group.Timers,
-                    t => { reporter.ReportMetric($"{metricsContext.ContextName}.{group.GroupName}", t); }, token);
+                    t => { reporter.ReportMetric($"{metricsContext.ContextName}.{@group.GroupName}", t, globalTags); }, token);
             }
 
             if (reportHealthChecks)

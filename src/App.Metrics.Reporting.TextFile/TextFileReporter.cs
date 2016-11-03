@@ -85,9 +85,9 @@ namespace App.Metrics.Reporting
             _stringReporter.ReportHealth(healthyChecks, unhealthyChecks);
         }
 
-        public void ReportMetric<T>(string name, MetricValueSource<T> valueSource)
+        public void ReportMetric<T>(string name, MetricValueSource<T> valueSource, MetricTags globalTags)
         {
-            _stringReporter.ReportMetric(name, valueSource);
+            _stringReporter.ReportMetric(name, valueSource, globalTags);
         }
 
         public void StartMetricTypeReport(Type metricType)

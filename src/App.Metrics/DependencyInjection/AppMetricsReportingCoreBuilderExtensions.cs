@@ -3,10 +3,10 @@
 
 
 using System;
-using App.Metrics.DependencyInjection;
 using App.Metrics.Reporting;
 
 // ReSharper disable CheckNamespace
+
 namespace Microsoft.Extensions.DependencyInjection.Extensions
 // ReSharper restore CheckNamespace
 {

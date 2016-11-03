@@ -13,10 +13,10 @@ namespace App.Metrics.Reporting
 {
     internal sealed class Reporter : IReporter
     {
+        private readonly Dictionary<Type, IMetricReporter> _metricReporters;
         private readonly Dictionary<Type, IReporterProvider> _providers;
         private readonly DefaultReportGenerator _reportGenerator;
         private readonly IScheduler _scheduler;
-        private readonly Dictionary<Type, IMetricReporter> _metricReporters;
 
         public Reporter(ReportFactory reportFactory)
         {
@@ -48,8 +48,10 @@ namespace App.Metrics.Reporting
             {
                 try
                 {
+                    var settings = _providers[metricReporter.Key].Settings;
                     var task = _scheduler.Interval(metricReporter.Value.ReportInterval, async () =>
-                            await _reportGenerator.Generate(metricReporter.Value, context, _providers[metricReporter.Key].Settings.Filter, token), token);
+                            await _reportGenerator.Generate(metricReporter.Value, context,
+                                settings.Filter, settings.GlobalTags, token), token);
                 }
                 catch (Exception ex)
                 {

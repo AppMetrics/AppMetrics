@@ -3,6 +3,7 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using App.Metrics.Internal;
 using App.Metrics.Json;
