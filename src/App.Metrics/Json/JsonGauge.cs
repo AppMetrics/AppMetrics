@@ -28,7 +28,7 @@ namespace App.Metrics.Json
                 Name = gauge.Name,
                 Value = gauge.Value,
                 Unit = gauge.Unit.Name,
-                Tags = gauge.Tags
+                Tags = gauge.Tags.ToDictionary()
             };
         }
 
@@ -43,10 +43,11 @@ namespace App.Metrics.Json
             yield return new JsonProperty("Value", Value.Value);
             yield return new JsonProperty("Unit", Unit);
 
-            if (Tags.Length > 0)
-            {
-                yield return new JsonProperty("Tags", Tags);
-            }
+            //TODO: AH - rather than custom serializer use json.net
+            //if (Tags.Count > 0)
+            //{
+            //    yield return new JsonProperty("Tags", Tags);
+            //}
         }
 
         public GaugeValueSource ToValueSource()

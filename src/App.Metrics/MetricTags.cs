@@ -2,59 +2,81 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Utils;
 
 namespace App.Metrics
 {
+    //TODO: Review this and write unit tests for equality
+
     /// <summary>
     ///     Collection of tags that can be attached to a metric.
     /// </summary>
     public struct MetricTags : IHideObjectMembers
     {
-        public static readonly MetricTags None = new MetricTags(Enumerable.Empty<string>());
-        private static readonly string[] Empty = new string[0];
+        private static readonly Dictionary<string, string> Empty = new Dictionary<string, string>();
+        public static readonly Dictionary<string, string> None = new Dictionary<string, string>();
 
-        private readonly string[] _tags;
+        private Dictionary<string, string> _tags;
 
-        public MetricTags(params string[] tags)
+        public MetricTags(Dictionary<string, string> tags)
         {
-            _tags = tags.ToArray();
+            _tags = tags ?? new Dictionary<string, string>();
         }
 
-        public MetricTags(IEnumerable<string> tags)
-            : this(tags.ToArray())
+        public static bool operator ==(MetricTags left, MetricTags right)
         {
+            return left.Equals(right);
         }
 
-        public MetricTags(string commaSeparatedTags)
-            : this(ToTags(commaSeparatedTags))
-        {
-        }
-
-        public string[] Tags => _tags ?? Empty;
-
-        public static implicit operator MetricTags(string commaSeparatedTags)
-        {
-            return new MetricTags(commaSeparatedTags);
-        }
-
-        public static implicit operator MetricTags(string[] tags)
+        public static implicit operator MetricTags(Dictionary<string, string> tags)
         {
             return new MetricTags(tags);
         }
 
-        private static IEnumerable<string> ToTags(string commaSeparatedTags)
+        public static bool operator !=(MetricTags left, MetricTags right)
         {
-            if (string.IsNullOrWhiteSpace(commaSeparatedTags))
+            return !left.Equals(right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is MetricTags))
             {
-                return Enumerable.Empty<string>();
+                return false;
             }
 
-            return commaSeparatedTags.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(t => t.Trim().ToLowerInvariant());
+            var tags = (MetricTags)obj;
+
+            return tags.ToDictionary().OrderBy(kvp => kvp.Key)
+                .SequenceEqual(_tags.OrderBy(kvp => kvp.Key));
+        }
+
+        public override int GetHashCode()
+        {
+            return _tags?.GetHashCode() ?? 0;
+        }
+
+        public bool Equals(MetricTags other)
+        {
+            return Equals(_tags, other._tags);
+        }
+
+        public Dictionary<string, string> ToDictionary()
+        {
+            return _tags ?? Empty;
+        }
+
+        public MetricTags With(string tag, string value)
+        {
+            if (_tags == null)
+            {
+                _tags = new Dictionary<string, string>();
+            }
+
+            _tags.Add(tag, value);
+            return _tags;
         }
     }
 }

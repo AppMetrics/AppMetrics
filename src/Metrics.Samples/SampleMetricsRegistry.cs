@@ -50,6 +50,7 @@ namespace Metrics.Samples
 
         public static class Counters
         {
+            private static readonly MetricTags Tags = new MetricTags().With("filter-tag2", "value2");
             public static CounterOptions ConcurrentRequestsCounter = new CounterOptions
             {
                 Name = "SampleMetrics.ConcurrentRequests",
@@ -72,14 +73,14 @@ namespace Metrics.Samples
             {
                 Name = "Sample Counter",
                 MeasurementUnit = Unit.Errors,
-                Tags = new MetricTags("filter-tag2")
+                Tags = Tags
             };
 
             public static CounterOptions CommandCounter = new CounterOptions
             {
                 Name = "Command Counter",
                 MeasurementUnit = Unit.Custom("Commands"),
-                Tags = new MetricTags("filter-tag1")
+                Tags = Tags
             };
         }
 

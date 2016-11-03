@@ -56,7 +56,7 @@ namespace App.Metrics.Json
                     FifteenMinuteRate = i.Value.FifteenMinuteRate,
                     Percent = i.Percent
                 }).ToArray(),
-                Tags = meter.Tags
+                Tags = meter.Tags.ToDictionary()
             };
         }
 
@@ -81,10 +81,11 @@ namespace App.Metrics.Json
                 yield return new JsonProperty("Items", Items.Select(i => new JsonObject(ToJsonProperties(i))));
             }
 
-            if (Tags.Length > 0)
-            {
-                yield return new JsonProperty("Tags", Tags);
-            }
+            //TODO: AH - rather than custom serializer use json.net
+            //if (Tags.Count > 0)
+            //{
+            //    yield return new JsonProperty("Tags", Tags);
+            //}
         }
 
         public MeterValueSource ToValueSource()

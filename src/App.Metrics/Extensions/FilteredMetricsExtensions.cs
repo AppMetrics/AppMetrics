@@ -9,7 +9,7 @@ namespace App.Metrics
 // ReSharper restore CheckNamespace
 {
     public static class FilteredMetricsExtensions
-    {
+    {        
         public static IMetricsDataManager WithFilter(this IMetricsDataManager manager, IMetricsFilter filter)
         {
             if (filter == null)

@@ -6,6 +6,7 @@
 // Ported/Refactored to .NET Standard Library by Allan Hardy
 
 
+using System.Collections.Generic;
 using App.Metrics.Utils;
 
 namespace App.Metrics.MetricData
@@ -22,7 +23,7 @@ namespace App.Metrics.MetricData
             Name = name;
             Unit = unit;
             ValueProvider = valueProvider;
-            Tags = tags.Tags;
+            Tags = tags;
         }
 
         /// <summary>
@@ -33,7 +34,7 @@ namespace App.Metrics.MetricData
         /// <summary>
         ///     Tags associated with the metric.
         /// </summary>
-        public string[] Tags { get; private set; }
+        public MetricTags Tags { get; private set; }
 
         /// <summary>
         ///     Unit representing what the metric is measuring.

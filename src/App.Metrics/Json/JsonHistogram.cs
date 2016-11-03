@@ -67,7 +67,7 @@ namespace App.Metrics.Json
                 Percentile999 = histogram.Value.Percentile999,
                 SampleSize = histogram.Value.SampleSize,
                 Unit = histogram.Unit.Name,
-                Tags = histogram.Tags
+                Tags = histogram.Tags.ToDictionary()
             };
         }
 
@@ -97,10 +97,11 @@ namespace App.Metrics.Json
             yield return new JsonProperty("SampleSize", SampleSize);
             yield return new JsonProperty("Unit", Unit);
 
-            if (Tags.Length > 0)
-            {
-                yield return new JsonProperty("Tags", Tags);
-            }
+            //TODO: AH - rather than custom serializer use json.net
+            //if (Tags.Length > 0)
+            //{
+            //    yield return new JsonProperty("Tags", Tags);
+            //}
         }
 
         private bool HasUserValues => LastUserValue != null || MinUserValue != null || MaxUserValue != null;

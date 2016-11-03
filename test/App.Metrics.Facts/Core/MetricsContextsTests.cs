@@ -80,7 +80,6 @@ namespace App.Metrics.Facts.Core
             {
                 Name = "test",
                 MeasurementUnit = Unit.None,
-                Tags = "tag"
             };
 
             var counter = _context.Advanced.Counter(counterOptions);
@@ -107,32 +106,33 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public async Task can_propergate_value_tags()
         {
+            var tags = new MetricTags().With("tag", "value");
             var counterOptions = new CounterOptions
             {
                 Name = "test",
                 MeasurementUnit = Unit.None,
-                Tags = "tag"
+                Tags = tags
             };
 
             var meterOptions = new MeterOptions
             {
                 Name = "test",
                 MeasurementUnit = Unit.None,
-                Tags = "tag"
+                Tags = tags
             };
 
             var histogramOptions = new HistogramOptions
             {
                 Name = "test",
                 MeasurementUnit = Unit.None,
-                Tags = "tag"
+                Tags = tags
             };
 
             var timerOptions = new TimerOptions
             {
                 Name = "test",
                 MeasurementUnit = Unit.None,
-                Tags = "tag"
+                Tags = tags
             };
 
             _context.Advanced.Counter(counterOptions);
@@ -143,10 +143,10 @@ namespace App.Metrics.Facts.Core
             var data = await CurrentData(_context);
             var group = data.Groups.Single();
 
-            group.Counters.Single().Tags.Should().Equal("tag");
-            group.Meters.Single().Tags.Should().Equal("tag");
-            group.Histograms.Single().Tags.Should().Equal("tag");
-            group.Timers.Single().Tags.Should().Equal("tag");
+            group.Counters.Single().Tags.Should().Equals(tags);
+            group.Meters.Single().Tags.Should().Equals("tag");
+            group.Histograms.Single().Tags.Should().Equals("tag");
+            group.Timers.Single().Tags.Should().Equals("tag");
         }
 
         [Fact]

@@ -83,7 +83,7 @@ namespace App.Sample
                 })
                 .AddReporting(options =>
                 {
-                    var globalTags = new MetricTags("env=stage");
+                    var globalTags = new MetricTags().With("env", "stage");
 
                     options.Reporters = factory =>
                     {
@@ -93,7 +93,7 @@ namespace App.Sample
                             GlobalTags = globalTags,
                             Filter = new DefaultMetricsFilter()
                                 .WhereType(MetricType.Counter)
-                                .WhereTag("filter-tag1", "filter-tag2")
+                                .WhereTaggedWith("filter-tag1", "filter-tag2")
                                 .WithHealthChecks(false)
                                 .WithEnvironmentInfo(false)
                         };

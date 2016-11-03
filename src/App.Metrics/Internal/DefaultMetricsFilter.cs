@@ -14,7 +14,7 @@ namespace App.Metrics.Internal
         public static IMetricsFilter All = new NullMetricsFilter();
         private Predicate<string> _group;
         private Predicate<string> _name;
-        private HashSet<string> _tags;
+        private HashSet<string> _tagKeys;
         private HashSet<MetricType> _types;
 
         public bool IsMatch(string group)
@@ -106,9 +106,9 @@ namespace App.Metrics.Internal
             return this;
         }
 
-        public DefaultMetricsFilter WhereTag(params string[] tags)
+        public DefaultMetricsFilter WhereTaggedWith(params string[] tagKeys)
         {
-            _tags = new HashSet<string>(tags);
+            _tagKeys = new HashSet<string>(tagKeys);
             return this;
         }
 
@@ -128,9 +128,10 @@ namespace App.Metrics.Internal
             return _name == null || _name(name);
         }
 
-        private bool IsTagMatch(string[] sourceTags)
+        private bool IsTagMatch(MetricTags sourceTags)
         {
-            return _tags == null || Array.Exists(_tags.ToArray(), t => sourceTags.Any(m => m == t));
+            var keys = sourceTags.ToDictionary().Keys;
+            return _tagKeys == null || Array.Exists(_tagKeys.ToArray(), t => keys.Any(m => m == t));
         }
     }
 }

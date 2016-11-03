@@ -40,7 +40,7 @@ namespace App.Metrics.Json
                 Unit = timer.Unit.Name,
                 RateUnit = timer.RateUnit.Unit(),
                 DurationUnit = timer.DurationUnit.Unit(),
-                Tags = timer.Tags
+                Tags = timer.Tags.ToDictionary()
             };
         }
 
@@ -58,10 +58,11 @@ namespace App.Metrics.Json
             yield return new JsonProperty("RateUnit", RateUnit);
             yield return new JsonProperty("DurationUnit", DurationUnit);
 
-            if (Tags.Length > 0)
-            {
-                yield return new JsonProperty("Tags", Tags);
-            }
+            //TODO: AH - removed json tags, rather than a custom serializer just use JSON.NET
+            //if (Tags.Count > 0)
+            //{
+            //    yield return new JsonProperty("Tags", Tags);
+            //}
         }
 
         public JsonObject ToJsonTimer()

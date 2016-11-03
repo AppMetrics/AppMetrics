@@ -30,7 +30,7 @@ namespace App.Metrics.Json
         public JsonProperty(string name, IEnumerable<string> value)
             : this(name, new StringArrayJsonValue(value))
         {
-        }
+        }      
 
         public JsonProperty(string name, string value)
             : this(name, new StringJsonValue(value))
