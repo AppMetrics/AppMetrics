@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,6 +27,8 @@ namespace App.Sample
             ConfigureServices(serviceCollection);
             ConfigureMetrics(serviceCollection);
 
+            var process = Process.GetCurrentProcess();
+
             var provider = serviceCollection.BuildServiceProvider();
 
             var application = new Application(provider);
@@ -52,6 +55,16 @@ namespace App.Sample
                     application.MetricsContext.Gauge(AppMetricsRegistry.Gauges.ApmGauge, () => 1);
                     application.MetricsContext.Gauge(AppMetricsRegistry.Gauges.ParenthesisGauge, () => 1);
                     application.MetricsContext.Gauge(AppMetricsRegistry.Gauges.GaugeWithNoValue, () => double.NaN);
+
+                    application.MetricsContext.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPagedMemorySizeGauge, () => process.PagedMemorySize64);
+                    application.MetricsContext.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPeekPagedMemorySizeGauge, () => process.PeakPagedMemorySize64);
+                    application.MetricsContext.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPeekVirtualMemorySizeGauge, () => process.PeakVirtualMemorySize64);
+                    application.MetricsContext.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPeekWorkingSetSizeGauge, () => process.WorkingSet64);
+                    application.MetricsContext.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPrivateMemorySizeGauge, () => process.PrivateMemorySize64);
+                    application.MetricsContext.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessVirtualMemorySizeGauge, () => process.VirtualMemorySize64);
+                    application.MetricsContext.Gauge(AppMetricsRegistry.ProcessMetrics.SystemNonPagedMemoryGauge, () => process.NonpagedSystemMemorySize64);
+                    application.MetricsContext.Gauge(AppMetricsRegistry.ProcessMetrics.SystemPagedMemorySizeGauge, () => process.PagedSystemMemorySize64);
+
                 }, cancellationTokenSource.Token);
 
             application.Reporter.RunReports(application.MetricsContext, cancellationTokenSource.Token);
@@ -64,7 +77,9 @@ namespace App.Sample
         private static void ConfigureMetrics(IServiceCollection services)
         {
             services
-                .AddMetrics(options => { })
+                .AddMetrics(options =>
+                {                    
+                })
                 .AddHealthChecks(options =>
                 {
                     options.IsEnabled = true;

@@ -43,11 +43,13 @@ namespace App.Metrics.Infrastructure
 
         public async Task<EnvironmentInfo> BuildAsync()
         {
-            var processName = SafeGetString(() => Process.GetCurrentProcess().ProcessName);
+            var process = Process.GetCurrentProcess();     
+                   
+            var processName = SafeGetString(() => process.ProcessName);
             var osVersion = RuntimeEnvironment.OperatingSystemVersion;
             var os = RuntimeEnvironment.OperatingSystem;
             var processorCount = Environment.ProcessorCount;
-            var machineName = Environment.MachineName;
+            var machineName = process.MachineName;
             var hostName = SafeGetString(Dns.GetHostName);
             var ipAddress = await GetIpAddressAsync();
             var localTimeString = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.ffffK", CultureInfo.InvariantCulture);

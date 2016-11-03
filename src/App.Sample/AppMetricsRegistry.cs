@@ -37,5 +37,67 @@ namespace App.Sample
                 MeasurementUnit = Unit.None
             };
         }
+
+        //https://msdn.microsoft.com/en-us/library/system.diagnostics.process(v=vs.110).aspx
+        public static class ProcessMetrics
+        {
+            private static readonly string GroupName = "Process Metrics";
+
+            public static GaugeOptions SystemNonPagedMemoryGauge = new GaugeOptions
+            {
+                GroupName = GroupName,
+                Name = "System Non-Paged Memory",
+                MeasurementUnit = Unit.Bytes
+            };
+
+            public static GaugeOptions ProcessPagedMemorySizeGauge = new GaugeOptions
+            {
+                GroupName = GroupName,
+                Name = "PagedProcess Memory Size",
+                MeasurementUnit = Unit.Bytes,
+            };
+
+            public static GaugeOptions SystemPagedMemorySizeGauge = new GaugeOptions
+            {
+                GroupName = GroupName,
+                Name = "PagedSystem Memory Size",
+                MeasurementUnit = Unit.Bytes,
+            };
+
+            public static GaugeOptions ProcessPeekPagedMemorySizeGauge = new GaugeOptions
+            {
+                GroupName = GroupName,
+                Name = "Process Peek Paged Memory Size",
+                MeasurementUnit = Unit.Bytes,
+            };
+
+            public static GaugeOptions ProcessPeekVirtualMemorySizeGauge = new GaugeOptions
+            {
+                GroupName = GroupName,
+                Name = "Process Peek Paged Memory Size",
+                MeasurementUnit = Unit.Bytes,
+            };
+
+            public static GaugeOptions ProcessPeekWorkingSetSizeGauge = new GaugeOptions
+            {
+                GroupName = GroupName,
+                Name = "Process Working Set",
+                MeasurementUnit = Unit.Bytes
+            };
+
+            public static GaugeOptions ProcessPrivateMemorySizeGauge = new GaugeOptions
+            {
+                GroupName = GroupName,
+                Name = "Process Private Memory Size",
+                MeasurementUnit = Unit.Bytes
+            };
+
+            public static GaugeOptions ProcessVirtualMemorySizeGauge = new GaugeOptions
+            {
+                GroupName = GroupName,
+                Name = "Process Virtual Memory Size",
+                MeasurementUnit = Unit.Bytes
+            };
+        }
     }
 }
