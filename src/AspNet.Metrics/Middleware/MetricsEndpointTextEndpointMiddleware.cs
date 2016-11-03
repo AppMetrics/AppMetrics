@@ -13,6 +13,7 @@ namespace AspNet.Metrics.Middleware
 {
     public class MetricsEndpointTextEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
+        private readonly IMetricsFilter _metricsFilter;
         private readonly DefaultReportGenerator _reportGenerator;
         private readonly StringReporter _stringReporter;
 
@@ -23,6 +24,9 @@ namespace AspNet.Metrics.Middleware
             IMetricsContext metricsContext)
             : base(next, options, loggerFactory, metricsContext)
         {
+            //TODO: AH - is the metrics filter configured on the aspnet configuration?
+
+            _metricsFilter = metricsFilter;
             _stringReporter = new StringReporter();
             _reportGenerator = new DefaultReportGenerator();
         }
@@ -33,7 +37,7 @@ namespace AspNet.Metrics.Middleware
             {
                 Logger.MiddlewareExecuting(GetType());
 
-                await _reportGenerator.Generate(_stringReporter, MetricsContext, context.RequestAborted);
+                await _reportGenerator.Generate(_stringReporter, MetricsContext, _metricsFilter, context.RequestAborted);
 
                 await WriteResponseAsync(context, _stringReporter.Result, "text/plain");
 

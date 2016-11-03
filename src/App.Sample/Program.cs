@@ -4,15 +4,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.DependencyInjection;
+using App.Metrics.Internal;
+using App.Metrics.MetricData;
 using App.Metrics.Reporting;
 using App.Metrics.Scheduling;
 using HealthCheck.Samples;
 using Metrics.Samples;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
 using Serilog;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace App.Sample
 {
@@ -62,9 +64,7 @@ namespace App.Sample
         private static void ConfigureMetrics(IServiceCollection services)
         {
             services
-                .AddMetrics(options =>
-                {          
-                })
+                .AddMetrics(options => { })
                 .AddHealthChecks(options =>
                 {
                     options.IsEnabled = true;
@@ -88,14 +88,17 @@ namespace App.Sample
                         var consoleSettings = new ConsoleReporterSettings
                         {
                             ReportInterval = TimeSpan.FromSeconds(5),
-                            Disabled = false
+                            Filter = new DefaultMetricsFilter()
+                                .WhereType(MetricType.Counter)
+                                .WhereTag("filter-tag1", "filter-tag2")
+                                .WithHealthChecks(false)
+                                .WithEnvironmentInfo(false)
                         };
                         factory.AddConsole(consoleSettings);
 
                         var textFileSettings = new TextFileReporterSettings
                         {
                             ReportInterval = TimeSpan.FromSeconds(30),
-                            Disabled = false,
                             FileName = @"C:\metrics\sample.txt"
                         };
 
@@ -137,7 +140,7 @@ namespace App.Sample
             MetricsContext = provider.GetRequiredService<IMetricsContext>();
 
             var reporterFactory = provider.GetRequiredService<IReportFactory>();
-            Reporter = reporterFactory.CreateReporter("asdf");
+            Reporter = reporterFactory.CreateReporter();
 
             Token = new CancellationToken();
         }

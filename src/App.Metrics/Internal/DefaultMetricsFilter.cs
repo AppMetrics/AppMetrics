@@ -4,48 +4,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using App.Metrics.MetricData;
 
 namespace App.Metrics.Internal
 {
-    internal sealed class NoOpFilter : IMetricsFilter
+    public sealed class DefaultMetricsFilter : IMetricsFilter
     {
-        public bool IsMatch(string @group)
-        {
-            return true;
-        }
-
-        public bool IsMatch(GaugeValueSource gauge)
-        {
-            return true;
-        }
-
-        public bool IsMatch(CounterValueSource counter)
-        {
-            return true;
-        }
-
-        public bool IsMatch(MeterValueSource meter)
-        {
-            return true;
-        }
-
-        public bool IsMatch(HistogramValueSource histogram)
-        {
-            return true;
-        }
-
-        public bool IsMatch(TimerValueSource timer)
-        {
-            return true;
-        }
-    }
-
-    internal sealed class DefaultMetricsFilter : IMetricsFilter
-    {
-        public static IMetricsFilter All = new NoOpFilter();
+        public static IMetricsFilter All = new NullMetricsFilter();
         private Predicate<string> _group;
         private Predicate<string> _name;
+        private string[] _tag;
         private HashSet<MetricType> _types;
 
         public bool IsMatch(string group)
@@ -59,7 +28,10 @@ namespace App.Metrics.Internal
             {
                 return false;
             }
-            return IsNameMatch(gauge.Name);
+
+
+
+            return IsNameMatch(gauge.Name) && IsTagMatch(gauge.Tags);
         }
 
         public bool IsMatch(CounterValueSource counter)
@@ -68,7 +40,8 @@ namespace App.Metrics.Internal
             {
                 return false;
             }
-            return IsNameMatch(counter.Name);
+
+            return IsNameMatch(counter.Name) && IsTagMatch(counter.Tags);
         }
 
         public bool IsMatch(MeterValueSource meter)
@@ -77,7 +50,8 @@ namespace App.Metrics.Internal
             {
                 return false;
             }
-            return IsNameMatch(meter.Name);
+
+            return IsNameMatch(meter.Name) && IsTagMatch(meter.Tags);
         }
 
         public bool IsMatch(HistogramValueSource histogram)
@@ -86,7 +60,7 @@ namespace App.Metrics.Internal
             {
                 return false;
             }
-            return IsNameMatch(histogram.Name);
+            return IsNameMatch(histogram.Name) && IsTagMatch(histogram.Tags);
         }
 
         public bool IsMatch(TimerValueSource timer)
@@ -95,7 +69,24 @@ namespace App.Metrics.Internal
             {
                 return false;
             }
-            return IsNameMatch(timer.Name);
+
+            return IsNameMatch(timer.Name) && IsTagMatch(timer.Tags);
+        }
+
+        public bool ReportEnvironment { get; private set; }
+
+        public bool ReportHealthChecks { get; private set; }
+
+        public DefaultMetricsFilter WithHealthChecks(bool report)
+        {
+            ReportHealthChecks = report;
+            return this;
+        }
+
+        public DefaultMetricsFilter WithEnvironmentInfo(bool report)
+        {
+            ReportEnvironment = report;
+            return this;
         }
 
         public DefaultMetricsFilter WhereGroup(Predicate<string> condition)
@@ -115,6 +106,12 @@ namespace App.Metrics.Internal
             return this;
         }
 
+        public DefaultMetricsFilter WhereTag(params string[] tags)
+        {
+            _tag = tags;
+            return this;
+        }
+
         public DefaultMetricsFilter WhereNameStartsWith(string name)
         {
             return WhereName(n => n.StartsWith(name, StringComparison.OrdinalIgnoreCase));
@@ -129,6 +126,11 @@ namespace App.Metrics.Internal
         private bool IsNameMatch(string name)
         {
             return _name == null || _name(name);
+        }
+
+        private bool IsTagMatch(string[] sourceTags)
+        {
+            return Array.Exists(_tag.ToArray(), t => sourceTags.Any(m => m == t));
         }
     }
 }

@@ -1,20 +1,17 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using App.Metrics.Scheduling;
 
 namespace App.Metrics.Reporting
 {
     public class ReportFactory : IReportFactory
     {
-        private readonly Dictionary<string, Reporter> _reporters = new Dictionary<string, Reporter>(StringComparer.Ordinal);
+        private readonly Dictionary<Type, IReporterProvider> _providers = new Dictionary<Type, IReporterProvider>();
         private readonly object _syncLock = new object();
         private volatile bool _disposed;
-        private IReporterProvider[] _providers = new IReporterProvider[0];
 
         public void AddProvider(IReporterProvider provider)
         {
@@ -25,37 +22,23 @@ namespace App.Metrics.Reporting
 
             lock (_syncLock)
             {
-                _providers = _providers.Concat(new[] { provider }).ToArray();
-                foreach (var reporter in _reporters)
-                {
-                    reporter.Value.AddProvider(provider);
-                }
+                _providers.Add(provider.GetType(), provider);
             }
         }
 
-        //TODO: AH - don't need a name?
-        public IReporter CreateReporter(string name)
-        {
-            return CreateReporter(name, new DefaultTaskScheduler());
-        }
-
-        public IReporter CreateReporter(string name, IScheduler scheduler)
+        public IReporter CreateReporter(IScheduler scheduler)
         {
             if (CheckDisposed())
             {
                 throw new ObjectDisposedException(nameof(ReportFactory));
             }
 
-            Reporter reporter;
-            lock (_syncLock)
-            {
-                if (!_reporters.TryGetValue(name, out reporter))
-                {
-                    reporter = new Reporter(this, name);
-                    _reporters[name] = reporter;
-                }
-            }
-            return reporter;
+            return new Reporter(this);
+        }
+
+        public IReporter CreateReporter()
+        {
+            return CreateReporter(new DefaultTaskScheduler());
         }
 
         public void Dispose()
@@ -68,7 +51,7 @@ namespace App.Metrics.Reporting
             {
                 try
                 {
-                    provider.Dispose();
+                    provider.Value.Dispose();
                 }
                 catch
                 {
@@ -77,7 +60,7 @@ namespace App.Metrics.Reporting
             }
         }
 
-        internal IReporterProvider[] GetProviders()
+        internal Dictionary<Type, IReporterProvider> GetProviders()
         {
             return _providers;
         }

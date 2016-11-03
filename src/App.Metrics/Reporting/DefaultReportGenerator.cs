@@ -1,7 +1,6 @@
 // Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,17 +12,30 @@ namespace App.Metrics.Reporting
 {
     internal class DefaultReportGenerator
     {
-        public async Task Generate(IMetricReporter reporter, IMetricsContext metricsContext, CancellationToken token)
+        public async Task Generate(IMetricReporter reporter, IMetricsContext metricsContext, IMetricsFilter filter, CancellationToken token)
         {
+            var reportEnvironment = true;
+            var reportHealthChecks = true;
+
             reporter.StartReport(metricsContext);
 
             var data = await metricsContext.Advanced.DataManager.GetMetricsDataAsync();
 
-            reporter.StartMetricTypeReport(typeof(EnvironmentInfo));
+            if (filter != default(IMetricsFilter))
+            {
+                data = data.Filter(filter);
+                reportEnvironment = filter.ReportEnvironment;
+                reportHealthChecks = filter.ReportHealthChecks;
+            }
 
-            reporter.ReportEnvironment(data.Environment);
+            if (data.Environment.Entries.Any() && reportEnvironment)
+            {
+                reporter.StartMetricTypeReport(typeof(EnvironmentInfo));
 
-            reporter.EndMetricTypeReport(typeof(EnvironmentInfo));
+                reporter.ReportEnvironment(data.Environment);
+
+                reporter.EndMetricTypeReport(typeof(EnvironmentInfo));
+            }            
 
             foreach (var group in data.Groups)
             {
@@ -43,16 +55,19 @@ namespace App.Metrics.Reporting
                     t => { reporter.ReportMetric($"{metricsContext.ContextName}.{group.GroupName}", t); }, token);
             }
 
-            var healthStatus = await metricsContext.Advanced.HealthCheckManager.GetStatusAsync();
+            if (reportHealthChecks)
+            {
+                var healthStatus = await metricsContext.Advanced.HealthCheckManager.GetStatusAsync();
 
-            reporter.StartMetricTypeReport(typeof(HealthStatus));
+                reporter.StartMetricTypeReport(typeof(HealthStatus));
 
-            var passed = healthStatus.Results.Where(r => r.Check.IsHealthy);
-            var failed = healthStatus.Results.Where(r => !r.Check.IsHealthy);
+                var passed = healthStatus.Results.Where(r => r.Check.IsHealthy);
+                var failed = healthStatus.Results.Where(r => !r.Check.IsHealthy);
 
-            reporter.ReportHealth(passed, failed);
+                reporter.ReportHealth(passed, failed);
 
-            reporter.EndMetricTypeReport(typeof(HealthStatus));
+                reporter.EndMetricTypeReport(typeof(HealthStatus));
+            }
 
             reporter.EndReport(metricsContext);
         }

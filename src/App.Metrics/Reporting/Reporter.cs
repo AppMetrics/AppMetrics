@@ -10,47 +10,46 @@ using App.Metrics.Infrastructure;
 using App.Metrics.Scheduling;
 
 namespace App.Metrics.Reporting
-{   
+{
     internal sealed class Reporter : IReporter
     {
-        private readonly string _name;
+        private readonly Dictionary<Type, IReporterProvider> _providers;
         private readonly DefaultReportGenerator _reportGenerator;
-        private readonly Scheduling.IScheduler _scheduler;
-        private IMetricReporter[] _reporters;
+        private readonly IScheduler _scheduler;
+        private readonly Dictionary<Type, IMetricReporter> _metricReporters;
 
-        public Reporter(ReportFactory reportFactory, string name)
+        public Reporter(ReportFactory reportFactory)
         {
-            _name = name;
             _reportGenerator = new DefaultReportGenerator();
             _scheduler = new DefaultTaskScheduler();
 
-            var providers = reportFactory.GetProviders();
+            _providers = reportFactory.GetProviders();
 
-            if (providers.Length <= 0) return;
+            if (_providers.Count <= 0) return;
 
-            _reporters = new IMetricReporter[providers.Length];
+            _metricReporters = new Dictionary<Type, IMetricReporter>(_providers.Count);
 
-            for (var index = 0; index < providers.Length; index++)
+            foreach (var provider in _providers)
             {
-                _reporters[index] = providers[index].CreateMetricReporter(name);
+                _metricReporters.Add(provider.Key, provider.Value.CreateMetricReporter(provider.Key.Name));
             }
         }
 
         public async Task RunReports(IMetricsContext context, CancellationToken token)
         {
-            if (_reporters == null)
+            if (_metricReporters == null)
             {
                 return;
             }
 
             List<Exception> exceptions = null;
 
-            foreach (var reporter in _reporters)
+            foreach (var metricReporter in _metricReporters)
             {
                 try
                 {
-                    var task = _scheduler.Interval(reporter.ReportInterval, async () =>
-                            await _reportGenerator.Generate(reporter, context, token), token);
+                    var task = _scheduler.Interval(metricReporter.Value.ReportInterval, async () =>
+                            await _reportGenerator.Generate(metricReporter.Value, context, _providers[metricReporter.Key].Settings.Filter, token), token);
                 }
                 catch (Exception ex)
                 {
@@ -70,23 +69,6 @@ namespace App.Metrics.Reporting
                     innerExceptions: exceptions);
             }
             await AppMetricsTaskCache.EmptyTask;
-        }
-
-        internal void AddProvider(IReporterProvider provider)
-        {
-            var reporter = provider.CreateMetricReporter(_name);
-            int reporterIndex;
-            if (_reporters == null)
-            {
-                reporterIndex = 0;
-                _reporters = new IMetricReporter[1];
-            }
-            else
-            {
-                reporterIndex = _reporters.Length;
-                Array.Resize(ref _reporters, reporterIndex + 1);
-            }
-            _reporters[reporterIndex] = reporter;
         }
     }
 }

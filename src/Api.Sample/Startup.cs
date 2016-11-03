@@ -58,7 +58,7 @@ namespace Api.Sample
 
             var reportFactory = app.ApplicationServices.GetRequiredService<IReportFactory>();
             var metrics = app.ApplicationServices.GetRequiredService<IMetricsContext>();
-            var reporter = reportFactory.CreateReporter("AspNet Reporter");
+            var reporter = reportFactory.CreateReporter();
             reporter.RunReports(metrics, CancellationToken.None);
 
             app.UseMvc();
@@ -87,7 +87,6 @@ namespace Api.Sample
                         var textFileSettings = new TextFileReporterSettings
                         {
                             ReportInterval = TimeSpan.FromSeconds(30),
-                            Disabled = false,
                             FileName = @"C:\metrics\aspnet-sample.txt"
                         };
 

@@ -40,9 +40,9 @@ namespace App.Metrics.MetricData
         public MetricsData Filter(IMetricsFilter filter)
         {
             var groups = Groups.Select(g => g.Filter(filter));
+            var environment = filter.ReportEnvironment ? EnvironmentInfo.Empty : Environment;
 
-
-            return new MetricsData(ContextName, Timestamp, Environment, groups);
+            return new MetricsData(ContextName, Timestamp, environment, groups);
         }
     }
 

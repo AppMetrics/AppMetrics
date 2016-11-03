@@ -9,8 +9,6 @@ namespace App.Metrics.Reporting
     {
         TimeSpan ReportInterval { get; }
 
-        bool Disabled { get; }
-
         IMetricsFilter Filter { get; set; }
     }
 }

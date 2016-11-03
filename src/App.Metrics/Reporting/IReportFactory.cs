@@ -11,8 +11,7 @@ namespace App.Metrics.Reporting
     {
         void AddProvider(IReporterProvider provider);
 
-        IReporter CreateReporter(string name);
-
-        IReporter CreateReporter(string name, IScheduler scheduler);
+        IReporter CreateReporter(IScheduler scheduler);
+        IReporter CreateReporter();
     }
 }

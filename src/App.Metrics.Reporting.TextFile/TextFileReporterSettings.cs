@@ -8,8 +8,6 @@ namespace App.Metrics.Reporting
 {
     public class TextFileReporterSettings : ITextFileReporterSettings
     {
-        public bool Disabled { get; set; } = false;
-
         public IMetricsFilter Filter { get; set; }
 
         public TimeSpan ReportInterval { get; set; } = TimeSpan.FromSeconds(5);

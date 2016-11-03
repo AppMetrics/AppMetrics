@@ -15,8 +15,7 @@ namespace App.Metrics.Reporting
             return factory;
         }
 
-        public static IReportFactory AddConsole(this IReportFactory factory,
-            TimeSpan interval)
+        public static IReportFactory AddConsole(this IReportFactory factory)
         {
             var settings = new ConsoleReporterSettings();
             factory.AddConsole(settings);

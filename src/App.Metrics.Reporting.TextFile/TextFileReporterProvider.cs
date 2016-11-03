@@ -22,6 +22,8 @@ namespace App.Metrics.Reporting
             _settings = settings;
         }
 
+        public IReporterSettings Settings => _settings;
+
         public IMetricReporter CreateMetricReporter(string name)
         {
             return _reporters.GetOrAdd(name, CreateReporterImplementation);

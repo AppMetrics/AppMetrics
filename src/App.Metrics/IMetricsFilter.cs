@@ -24,5 +24,9 @@ namespace App.Metrics
         bool IsMatch(HistogramValueSource histogram);
 
         bool IsMatch(TimerValueSource timer);
+
+        bool ReportEnvironment { get; }
+
+        bool ReportHealthChecks { get; }
     }
 }

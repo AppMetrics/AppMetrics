@@ -71,13 +71,15 @@ namespace Metrics.Samples
             public static CounterOptions SampleCounter = new CounterOptions
             {
                 Name = "Sample Counter",
-                MeasurementUnit = Unit.Errors
+                MeasurementUnit = Unit.Errors,
+                Tags = new MetricTags("filter-tag2")
             };
 
             public static CounterOptions CommandCounter = new CounterOptions
             {
                 Name = "Command Counter",
-                MeasurementUnit = Unit.Custom("Commands")
+                MeasurementUnit = Unit.Custom("Commands"),
+                Tags = new MetricTags("filter-tag1")
             };
         }
 
