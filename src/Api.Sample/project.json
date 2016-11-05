@@ -15,7 +15,7 @@
     "Microsoft.Extensions.Logging.Console": "1.0.0",
     "Microsoft.Extensions.Logging.Debug": "1.0.0",
     "App.Metrics": "1.0.0-*",
-    "App.Metrics.Reporting.TextFile": "1.0.0-*"
+    "App.Metrics.Extensions.Reporting.TextFile": "1.0.0-*"
   },
 
     "tools": {

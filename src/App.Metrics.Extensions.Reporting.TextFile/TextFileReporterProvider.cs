@@ -4,8 +4,9 @@
 
 using System;
 using System.Collections.Concurrent;
+using App.Metrics.Reporting;
 
-namespace App.Metrics.Reporting
+namespace App.Metrics.Extensions.Reporting.TextFile
 {
     public class TextFileReporterProvider : IReporterProvider
     {

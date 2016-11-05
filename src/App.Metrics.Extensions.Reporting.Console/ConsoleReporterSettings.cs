@@ -4,7 +4,7 @@
 
 using System;
 
-namespace App.Metrics.Reporting
+namespace App.Metrics.Extensions.Reporting.Console
 {
     public class ConsoleReporterSettings : IConsoleReporterSettings
     {

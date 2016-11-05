@@ -6,8 +6,8 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>2d60d9cd-78b2-4ab8-bd30-54d12643151b</ProjectGuid>
-    <RootNamespace>App.Metrics.Reporting</RootNamespace>
+    <ProjectGuid>66adef00-7776-4208-932d-d3d2f7eadf52</ProjectGuid>
+    <RootNamespace> App.Metrics.Formatters.Json</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
@@ -15,8 +15,11 @@
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <ProduceOutputsOnBuild>True</ProduceOutputsOnBuild>
+  </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.targets" Condition="'$(VSToolsPath)' != ''" />
-   <ItemGroup>
+  <ItemGroup>
     <Content Include="..\..\aspnet-metrics.licenseheader">
       <Link>aspnet-metrics.licenseheader</Link>
     </Content>

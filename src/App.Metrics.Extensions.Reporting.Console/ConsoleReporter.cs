@@ -8,8 +8,9 @@ using System.Linq;
 using App.Metrics.Formatting.Humanize;
 using App.Metrics.Infrastructure;
 using App.Metrics.MetricData;
+using App.Metrics.Reporting;
 
-namespace App.Metrics.Reporting
+namespace App.Metrics.Extensions.Reporting.Console
 {
     public class ConsoleReporter : IMetricReporter
     {
@@ -88,7 +89,7 @@ namespace App.Metrics.Reporting
 
         public void WriteLine(string message)
         {
-            Console.WriteLine(message);
+            System.Console.WriteLine(message);
         }
     }
 }

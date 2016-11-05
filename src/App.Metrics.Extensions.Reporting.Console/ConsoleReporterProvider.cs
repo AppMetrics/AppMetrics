@@ -4,8 +4,9 @@
 
 using System;
 using System.Collections.Concurrent;
+using App.Metrics.Reporting;
 
-namespace App.Metrics.Reporting
+namespace App.Metrics.Extensions.Reporting.Console
 {
     public class ConsoleReporterProvider : IReporterProvider
     {

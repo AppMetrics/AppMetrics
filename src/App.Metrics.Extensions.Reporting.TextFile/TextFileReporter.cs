@@ -7,8 +7,9 @@ using System.Collections.Generic;
 using System.IO;
 using App.Metrics.Infrastructure;
 using App.Metrics.MetricData;
+using App.Metrics.Reporting;
 
-namespace App.Metrics.Reporting
+namespace App.Metrics.Extensions.Reporting.TextFile
 {
     public class TextFileReporter : IMetricReporter
     {

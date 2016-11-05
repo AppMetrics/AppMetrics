@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Threading;
 using App.Metrics;
 using App.Metrics.DependencyInjection;
+using App.Metrics.Extensions.Reporting.TextFile;
 using App.Metrics.Json;
 using App.Metrics.Reporting;
 using Microsoft.AspNet.Builder;

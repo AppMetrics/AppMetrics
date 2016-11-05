@@ -5,6 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.DependencyInjection;
+using App.Metrics.Extensions.Reporting.Console;
+using App.Metrics.Extensions.Reporting.TextFile;
 using App.Metrics.Internal;
 using App.Metrics.MetricData;
 using App.Metrics.Reporting;
