@@ -5,9 +5,7 @@
 using System;
 using System.Threading.Tasks;
 using App.Metrics;
-using App.Metrics.Infrastructure;
-using App.Metrics.Json;
-using App.Metrics.MetricData;
+using App.Metrics.Formatters.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -16,18 +14,16 @@ namespace AspNet.Metrics.Middleware
 {
     public class MetricsEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
-        private readonly EnvironmentInfoBuilder _environmentInfoBuilder;
-        private readonly IMetricsJsonBuilder _jsonBuilder;
-        private readonly RequestDelegate _next;
+        private const string MetricsMimeType = "application/vnd.app.metrics.v1.metrics+json";
         private readonly IMetricsFilter _metricsFilter;
+        private readonly RequestDelegate _next;
+        private readonly MetricDataSerializer _serializer;
 
         public MetricsEndpointMiddleware(RequestDelegate next,
             IMetricsFilter metricsFilter,
             IOptions<AspNetMetricsOptions> options,
             ILoggerFactory loggerFactory,
-            IMetricsContext metricsContext,
-            IMetricsJsonBuilder jsonBuilder,
-            EnvironmentInfoBuilder environmentInfoBuilder)
+            IMetricsContext metricsContext)
             : base(next, options, loggerFactory, metricsContext)
         {
             if (next == null)
@@ -39,13 +35,7 @@ namespace AspNet.Metrics.Middleware
                 throw new ArgumentNullException(nameof(metricsFilter));
             }
 
-            if (environmentInfoBuilder == null)
-            {
-                throw new ArgumentNullException(nameof(environmentInfoBuilder));
-            }
-
-            _jsonBuilder = jsonBuilder;
-            _environmentInfoBuilder = environmentInfoBuilder;
+            _serializer = new MetricDataSerializer();
             _next = next;
             _metricsFilter = metricsFilter;
         }
@@ -56,9 +46,17 @@ namespace AspNet.Metrics.Middleware
             {
                 Logger.MiddlewareExecuting(GetType());
 
-                var json = await _jsonBuilder.BuildJsonAsync(MetricsContext, _metricsFilter);
+                var metricsData = await MetricsContext.Advanced.DataManager.GetMetricsDataAsync();
 
-                await WriteResponseAsync(context, json, _jsonBuilder.MetricsMimeType);
+                if (_metricsFilter != null)
+                {
+                    //TODO: AH - shouldn't have to apply the filter here
+                    metricsData = metricsData.Filter(_metricsFilter);
+                }
+
+                var json = _serializer.Serialize(metricsData);
+
+                await WriteResponseAsync(context, json, MetricsMimeType);
 
                 Logger.MiddlewareExecuted(GetType());
 

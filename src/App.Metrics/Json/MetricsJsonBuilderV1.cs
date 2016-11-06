@@ -26,9 +26,13 @@ namespace App.Metrics.Json
             var metricsData = await metricsContext.Advanced.DataManager.GetMetricsDataAsync();
             metricsData = metricsData.Filter(filter);
 
-            return JsonMetricsContext.FromContext(metricsData, version)
-                .ToJsonObject(metricsContext.Advanced.Clock)
-                .AsJson(indented);
+            //TODO: AH - use json.net serialization
+
+            await Task.FromResult("");
+            return "";
+            //return JsonMetricsContext.FromContext(metricsData, version)
+            //    .ToJsonObject(metricsContext.Advanced.Clock)
+            //    .AsJson(indented);
         }
     }
 }

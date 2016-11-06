@@ -48,7 +48,7 @@ namespace App.Metrics.Infrastructure
             var processName = SafeGetString(() => process.ProcessName);
             var osVersion = RuntimeEnvironment.OperatingSystemVersion;
             var os = RuntimeEnvironment.OperatingSystem;
-            var processorCount = Environment.ProcessorCount;
+            var processorCount = Environment.ProcessorCount.ToString();
             var machineName = process.MachineName;
             var hostName = SafeGetString(Dns.GetHostName);
             var ipAddress = await GetIpAddressAsync();

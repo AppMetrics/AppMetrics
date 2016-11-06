@@ -28,5 +28,6 @@ using System.Runtime.InteropServices;
 [assembly: Guid("7ad4f2aa-a152-4092-b79f-2648cbedffbc")]
 [assembly: InternalsVisibleTo("App.Metrics.Reporting")]
 [assembly: InternalsVisibleTo("AspNet.Metrics")]
+[assembly: InternalsVisibleTo("App.Metrics.Formatters.Json")]
 [assembly: InternalsVisibleTo("App.Metrics.Facts")]
 [assembly: InternalsVisibleTo("AspNet.Metrics.Facts")]

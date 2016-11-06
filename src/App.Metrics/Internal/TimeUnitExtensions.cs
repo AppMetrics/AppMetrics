@@ -48,7 +48,7 @@ namespace App.Metrics
             return System.Convert.ToInt64(value * sourceUnit.ScalingFactorFor(targetUnit));
         }
 
-        public static TimeUnit FromUnit(string unit)
+        public static TimeUnit FromUnit(this string unit)
         {
             if (!TimeUnitValueMapping.ContainsKey(unit))
             {

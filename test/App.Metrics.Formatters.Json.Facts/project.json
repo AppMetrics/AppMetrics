@@ -1,0 +1,34 @@
+﻿{
+  "version": "1.0.0-*",
+  "testRunner": "xunit",
+  "runtimes": {
+    "win7-x64": {},
+    "ubuntu.14.04-x64": {},
+    "win10-x64": {}
+  },
+
+  "buildOptions": {
+    "debugType": "portable",
+    "embed": {
+      "include": ["JsonFiles/*.json"]
+    }
+  },
+
+  "dependencies": {
+    "App.Metrics.Formatters.Json": "1.0.0-*",
+    "dotnet-test-xunit": "2.2.0-preview2-build1029",
+    "FluentAssertions": "4.16.0",
+    "FluentAssertions.Json": "4.16.0",
+    "xunit": "2.2.0-beta2-build3300",
+    "xunit.runner.visualstudio": "2.2.0-beta2-build1149"
+  },
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "imports": [
+        "dotnet5.6",
+        "portable-net45+win8"
+      ]
+    }
+  }
+}

@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.MetricData;
@@ -14,16 +15,16 @@ namespace App.Metrics.Infrastructure
 
         public EnvironmentInfo(IDictionary<string, string> entries)
         {
-            MachineName = entries.FirstOrDefault(e => e.Key == "MachineName").Value;
-            ProcessName = entries.FirstOrDefault(e => e.Key == "ProcessName").Value;
-            OperatingSystem = entries.FirstOrDefault(e => e.Key == "OS").Value;
-            OperatingSystemVersion = entries.FirstOrDefault(e => e.Key == "OSVersion").Value;
-            ProcessorCount = int.Parse(entries.FirstOrDefault(e => e.Key == "CPUCount").Value);
-            HostName = entries.FirstOrDefault(e => e.Key == "HostName").Value;
-            IpAddress = entries.FirstOrDefault(e => e.Key == "IPAddress").Value;
-            LocalTimeString = entries.FirstOrDefault(e => e.Key == "LocalTime").Value;
-            EntryAssemblyName = entries.FirstOrDefault(e => e.Key == "EntryAssemblyName").Value;
-            EntryAssemblyVersion = entries.FirstOrDefault(e => e.Key == "EntryAssemblyVersion").Value;
+            MachineName = entries.FirstOrDefault(e => string.Equals(e.Key, "MachineName", StringComparison.OrdinalIgnoreCase)).Value;
+            ProcessName = entries.FirstOrDefault(e => string.Equals(e.Key, "ProcessName", StringComparison.OrdinalIgnoreCase)).Value;
+            OperatingSystem = entries.FirstOrDefault(e => string.Equals(e.Key, "OS", StringComparison.OrdinalIgnoreCase)).Value;
+            OperatingSystemVersion = entries.FirstOrDefault(e => string.Equals(e.Key, "OSVersion", StringComparison.OrdinalIgnoreCase)).Value;
+            ProcessorCount = entries.FirstOrDefault(e => string.Equals(e.Key, "CPUCount", StringComparison.OrdinalIgnoreCase)).Value;
+            HostName = entries.FirstOrDefault(e => string.Equals(e.Key, "HostName", StringComparison.OrdinalIgnoreCase)).Value;
+            IpAddress = entries.FirstOrDefault(e => string.Equals(e.Key, "IPAddress", StringComparison.OrdinalIgnoreCase)).Value;
+            LocalTimeString = entries.FirstOrDefault(e => string.Equals(e.Key, "LocalTime", StringComparison.OrdinalIgnoreCase)).Value;
+            EntryAssemblyName = entries.FirstOrDefault(e => string.Equals(e.Key, "EntryAssemblyName", StringComparison.OrdinalIgnoreCase)).Value;
+            EntryAssemblyVersion = entries.FirstOrDefault(e => string.Equals(e.Key, "EntryAssemblyVersion", StringComparison.OrdinalIgnoreCase)).Value;
 
             _entries = new[]
             {
@@ -31,7 +32,7 @@ namespace App.Metrics.Infrastructure
                 new EnvironmentInfoEntry("ProcessName", ProcessName),
                 new EnvironmentInfoEntry("OS", OperatingSystem),
                 new EnvironmentInfoEntry("OSVersion", OperatingSystemVersion),
-                new EnvironmentInfoEntry("CPUCount", ProcessorCount.ToString()),
+                new EnvironmentInfoEntry("CPUCount", ProcessorCount),
                 new EnvironmentInfoEntry("HostName", HostName),
                 new EnvironmentInfoEntry("IPAddress", IpAddress),
                 new EnvironmentInfoEntry("LocalTime", LocalTimeString),
@@ -49,7 +50,7 @@ namespace App.Metrics.Infrastructure
             string operatingSystem,
             string operatingSystemVersion,
             string processName,
-            int processorCount)
+            string processorCount)
         {
             EntryAssemblyName = entryAssemblyName;
             EntryAssemblyVersion = entryAssemblyVersion;
@@ -99,6 +100,6 @@ namespace App.Metrics.Infrastructure
 
         public string ProcessName { get; }
 
-        public int ProcessorCount { get; }
+        public string ProcessorCount { get; }
     }
 }
