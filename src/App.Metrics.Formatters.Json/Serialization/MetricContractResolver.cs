@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using App.Metrics.MetricData;
+using App.Metrics.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -40,7 +40,7 @@ namespace App.Metrics.Formatters.Json
                 contract.Converter = new HistogramConverter();
             }
 
-            if (objectType == typeof(MetricsData))
+            if (objectType == typeof(MetricsDataValueSource))
             {
                 contract.Converter = new MetricDataConverter();
             }

@@ -3,7 +3,7 @@
 
 
 using System.Threading.Tasks;
-using App.Metrics.MetricData;
+using App.Metrics.Data;
 
 namespace App.Metrics.Internal
 {
@@ -17,7 +17,7 @@ namespace App.Metrics.Internal
             _registry = registry;
         }
 
-        public Task<MetricsData> GetMetricsDataAsync()
+        public Task<MetricsDataValueSource> GetMetricsDataAsync()
         {
             //TODO: AH - this class still needed?
             return _registry.GetDataAsync();

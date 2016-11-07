@@ -7,7 +7,7 @@ using App.Metrics;
 using App.Metrics.Core;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
-using App.Metrics.Json;
+using App.Metrics.Serialization;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;

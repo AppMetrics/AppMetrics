@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using App.Metrics.Core;
 using App.Metrics.DependencyInjection;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;

@@ -3,7 +3,7 @@
 
 
 using System;
-using App.Metrics.MetricData;
+using App.Metrics.Data;
 using App.Metrics.Sampling;
 using App.Metrics.Utils;
 

@@ -4,7 +4,7 @@
 
 using System;
 using App.Metrics.Core;
-using App.Metrics.MetricData;
+using App.Metrics.Data;
 
 namespace App.Metrics.Internal
 {

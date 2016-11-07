@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
+using App.Metrics.Data;
 using App.Metrics.Formatters.Json.Facts.Helpers;
 using App.Metrics.Formatters.Json.Facts.TestFixtures;
-using App.Metrics.MetricData;
 using FluentAssertions;
 using FluentAssertions.Json;
 using Newtonsoft.Json.Linq;

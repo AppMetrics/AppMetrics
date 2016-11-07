@@ -3,7 +3,7 @@
 
 
 using System.Collections.Generic;
-using App.Metrics.MetricData;
+using App.Metrics.Data;
 
 namespace App.Metrics.Internal
 {

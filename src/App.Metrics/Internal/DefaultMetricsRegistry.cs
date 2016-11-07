@@ -7,8 +7,8 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
 using App.Metrics.Core;
+using App.Metrics.Data;
 using App.Metrics.Infrastructure;
-using App.Metrics.MetricData;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -98,7 +98,7 @@ namespace App.Metrics.Internal
             registry.Gauge(options, valueProvider);
         }
 
-        public async Task<MetricsData> GetDataAsync()
+        public async Task<MetricsDataValueSource> GetDataAsync()
         {
             _logger.MetricsDataGetExecuting();
 
@@ -106,10 +106,10 @@ namespace App.Metrics.Internal
 
             if (_groups.Count == 0)
             {
-                return MetricsData.Empty;
+                return MetricsDataValueSource.Empty;
             }
 
-            var metricDataGroups = _groups.Values.Select(g => new MetricsDataGroup(
+            var metricDataGroups = _groups.Values.Select(g => new MetricsDataGroupValueSource(
                 g.GroupName,
                 g.DataProvider.Gauges.ToArray(),
                 g.DataProvider.Counters.ToArray(),
@@ -118,7 +118,7 @@ namespace App.Metrics.Internal
                 g.DataProvider.Timers.ToArray()
             ));
 
-            var data = new MetricsData(_globalContextName, _clock.UtcDateTime, environment, metricDataGroups);
+            var data = new MetricsDataValueSource(_globalContextName, _clock.UtcDateTime, environment, metricDataGroups);
 
             _logger.MetricsDataGetExecuted();
 

@@ -1,5 +1,4 @@
 ﻿using App.Metrics.DependencyInjection;
-using App.Metrics.MetricData;
 using HealthCheck.Samples;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;

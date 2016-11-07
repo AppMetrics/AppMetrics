@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using App.Metrics.MetricData;
+using App.Metrics.Data;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics
@@ -23,10 +23,10 @@ namespace App.Metrics
         public static async Task<double> GaugeValueAsync(this IMetricsContext metricsContext, string groupName, string metricName)
         {
             var data = await metricsContext.GetDataForAsync(groupName);
-            return ValueFor(data.Gauges, groupName, metricName);
+            return ValueFor<double>(data.Gauges, groupName, metricName);
         }
 
-        public static async Task<MetricsDataGroup> GetDataForAsync(this IMetricsContext metricsContext, string groupName)
+        public static async Task<MetricsDataGroupValueSource> GetDataForAsync(this IMetricsContext metricsContext, string groupName)
         {
             var data = await metricsContext.Advanced.DataManager.GetMetricsDataAsync();
 
@@ -35,7 +35,7 @@ namespace App.Metrics
                 return data.Groups.Single(m => m.GroupName == groupName);
             }
 
-            return MetricsDataGroup.Empty;
+            return MetricsDataGroupValueSource.Empty;
         }
 
         public static async Task<HistogramValue> HistogramValueAsync(this IMetricsContext metricsContext, string groupName, string metricName)
@@ -63,7 +63,7 @@ namespace App.Metrics
         {
             var metricValueSources = values as MetricValueSource<T>[] ?? values.ToArray();
 
-            var value = metricValueSources.Where(t => t.Name == metricName).Select(t => t.Value).ToList();
+            var value = metricValueSources.Where(t => t.Name == metricName).Select(t => t.Value).ToList<T>();
 
             if (value.Any() && value.Count() <= 1) return value.Single();
 

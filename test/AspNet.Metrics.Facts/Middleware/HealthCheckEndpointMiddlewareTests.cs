@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 using App.Metrics;
-using App.Metrics.Json;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Xunit;

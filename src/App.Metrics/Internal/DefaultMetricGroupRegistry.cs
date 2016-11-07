@@ -7,7 +7,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Core;
-using App.Metrics.MetricData;
+using App.Metrics.Data;
 
 namespace App.Metrics.Internal
 {

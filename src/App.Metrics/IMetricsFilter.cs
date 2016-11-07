@@ -6,7 +6,7 @@
 // Ported/Refactored to .NET Standard Library by Allan Hardy
 
 
-using App.Metrics.MetricData;
+using App.Metrics.Data;
 using App.Metrics.Utils;
 
 namespace App.Metrics

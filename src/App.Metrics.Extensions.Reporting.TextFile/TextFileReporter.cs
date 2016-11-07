@@ -5,8 +5,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using App.Metrics.Core;
+using App.Metrics.Data;
 using App.Metrics.Infrastructure;
-using App.Metrics.MetricData;
 using App.Metrics.Reporting;
 
 namespace App.Metrics.Extensions.Reporting.TextFile

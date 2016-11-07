@@ -6,7 +6,6 @@ using App.Metrics;
 using App.Metrics.DependencyInjection;
 using App.Metrics.Extensions.Reporting.TextFile;
 using App.Metrics.Formatters.Json;
-using App.Metrics.Json;
 using App.Metrics.Reporting;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;

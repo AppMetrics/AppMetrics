@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using App.Metrics.Data;
 using App.Metrics.Infrastructure;
-using App.Metrics.MetricData;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

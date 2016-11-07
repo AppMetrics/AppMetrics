@@ -1,4 +1,4 @@
-using App.Metrics.Json;
+using App.Metrics.Serialization;
 using Newtonsoft.Json;
 
 namespace App.Metrics.Formatters.Json

@@ -1,9 +1,8 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 using App.Metrics;
+using App.Metrics.Data;
 using App.Metrics.Internal;
-using App.Metrics.Json;
-using App.Metrics.MetricData;
 using FluentAssertions;
 using Xunit;
 

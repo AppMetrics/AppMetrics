@@ -7,9 +7,9 @@
 
 using System;
 using App.Metrics.App_Packages.Concurrency;
-using App.Metrics.MetricData;
 using App.Metrics.Sampling;
 using App.Metrics.Utils;
+using App.Metrics.Data;
 
 namespace App.Metrics.Core
 {

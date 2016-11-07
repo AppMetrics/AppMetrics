@@ -4,7 +4,7 @@
 
 using System.Threading;
 
-namespace App.Metrics.Reporting._Legacy
+namespace App.Metrics.Reporting
 {
     public interface IScheduledReporter
     {

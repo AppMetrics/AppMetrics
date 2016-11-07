@@ -4,7 +4,7 @@
 
 using System;
 using System.Threading.Tasks;
-using App.Metrics.MetricData;
+using App.Metrics.Data;
 
 namespace App.Metrics.Internal
 {
@@ -29,7 +29,7 @@ namespace App.Metrics.Internal
             _filter = filter;
         }
 
-        public async Task<MetricsData> GetMetricsDataAsync()
+        public async Task<MetricsDataValueSource> GetMetricsDataAsync()
         {
             var data = await _manager.GetMetricsDataAsync();
             return data.Filter(_filter);

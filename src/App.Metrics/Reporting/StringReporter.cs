@@ -6,9 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using App.Metrics.Core;
+using App.Metrics.Data;
 using App.Metrics.Formatting.Humanize;
 using App.Metrics.Infrastructure;
-using App.Metrics.MetricData;
 
 namespace App.Metrics.Reporting
 {

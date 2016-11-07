@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using App.Metrics.Json;
+using App.Metrics.Core;
 using App.Metrics.Utils;
 using Newtonsoft.Json;
 
@@ -23,7 +23,7 @@ namespace App.Metrics.Formatters.Json
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var source = serializer.Deserialize<JsonHealthStatus>(reader);
+            var source = serializer.Deserialize<HealthStatusData>(reader);
             var healthy = source.Healthy.Keys.Select(k => new HealthCheck.Result(k, HealthCheckResult.Healthy(source.Healthy[k])));
             var unhealthy = source.Unhealthy.Keys.Select(k => new HealthCheck.Result(k, HealthCheckResult.Unhealthy(source.Unhealthy[k])));
             var target = new HealthStatus(healthy.Concat(unhealthy));
@@ -34,7 +34,7 @@ namespace App.Metrics.Formatters.Json
         {
             var source = (HealthStatus)value;
 
-            var target = new JsonHealthStatus
+            var target = new HealthStatusData
             {
                 IsHealthy = source.IsHealthy,
                 Timestamp = _clock.FormatTimestamp(_clock.UtcDateTime)

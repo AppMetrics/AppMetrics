@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using App.Metrics.Core;
 using App.Metrics.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;

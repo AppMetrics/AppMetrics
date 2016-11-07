@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
+using App.Metrics.Data;
 using App.Metrics.Formatters.Json.Facts.Helpers;
 using App.Metrics.Formatters.Json.Facts.TestFixtures;
-using App.Metrics.MetricData;
 using FluentAssertions;
 using FluentAssertions.Json;
 using Newtonsoft.Json.Linq;
@@ -13,7 +13,7 @@ namespace App.Metrics.Formatters.Json.Facts
 {
     public class MetricsDataSerializationTests : IClassFixture<MetricProviderTestFixture>
     {
-        private readonly MetricsData _metrics;
+        private readonly MetricsDataValueSource _metrics;
         private readonly ITestOutputHelper _output;
         private readonly MetricDataSerializer _serializer;
 
@@ -29,7 +29,7 @@ namespace App.Metrics.Formatters.Json.Facts
         {
             var json = MetricDataSamples.SingleGroup.SampleJson();
 
-            var result = _serializer.Deserialize<MetricsData>(json.ToString());
+            var result = _serializer.Deserialize<MetricsDataValueSource>(json.ToString());
 
             result.ContextName.Should().BeEquivalentTo(_metrics.ContextName);
             result.Timestamp.Should().Be(_metrics.Timestamp);

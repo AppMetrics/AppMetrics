@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using App.Metrics;
+using App.Metrics.Core;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 
@@ -19,7 +20,7 @@ namespace HealthCheck.Samples
         }
     }
 
-    public class DatabaseHealthCheck : App.Metrics.HealthCheck
+    public class DatabaseHealthCheck : App.Metrics.Core.HealthCheck
     {
         private readonly IDatabase _database;
 

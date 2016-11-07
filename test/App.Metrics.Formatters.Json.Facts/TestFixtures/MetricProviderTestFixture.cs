@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using App.Metrics.Data;
 using App.Metrics.Formatters.Json.Facts.Helpers;
 using App.Metrics.Infrastructure;
-using App.Metrics.MetricData;
 
 namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 {
@@ -21,14 +21,14 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 
         public IEnumerable<CounterValueSource> Counters { get; }
 
-        public MetricsData DataWithOneGroup { get; }
+        public MetricsDataValueSource DataWithOneGroup { get; }
 
         public EnvironmentInfo Env => new EnvironmentInfo("assembly_name", "assembly_version", "host_name", "ip_address", "localtime", "machine_name",
             "os", "os_version", "process_name", "8");
 
         public IEnumerable<GaugeValueSource> Gauges { get; }
 
-        public MetricsDataGroup GroupOne { get; }
+        public MetricsDataGroupValueSource GroupOne { get; }
 
         public IEnumerable<HistogramValueSource> Histograms { get; }
 
@@ -97,14 +97,14 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
             return new[] { counter };
         }
 
-        private MetricsDataGroup SetupGroupOne()
+        private MetricsDataGroupValueSource SetupGroupOne()
         {
-            return new MetricsDataGroup("group_one", Gauges, Counters, Meters, Histograms, Timers);
+            return new MetricsDataGroupValueSource("group_one", Gauges, Counters, Meters, Histograms, Timers);
         }
 
-        private MetricsData SetupMetricsData(IEnumerable<MetricsDataGroup> groups)
+        private MetricsDataValueSource SetupMetricsData(IEnumerable<MetricsDataGroupValueSource> groups)
         {
-            return new MetricsData("test_context", new TestClock().UtcDateTime, Env, groups);
+            return new MetricsDataValueSource("test_context", new TestClock().UtcDateTime, Env, groups);
         }
     }
 }

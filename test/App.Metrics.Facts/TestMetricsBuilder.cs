@@ -1,7 +1,7 @@
 ﻿using System;
 using App.Metrics.Core;
+using App.Metrics.Data;
 using App.Metrics.Internal.Test;
-using App.Metrics.MetricData;
 using App.Metrics.Sampling;
 using App.Metrics.Scheduling;
 using App.Metrics.Utils;

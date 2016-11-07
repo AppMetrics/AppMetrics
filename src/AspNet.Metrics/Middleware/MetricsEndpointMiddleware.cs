@@ -5,7 +5,7 @@
 using System;
 using System.Threading.Tasks;
 using App.Metrics;
-using App.Metrics.Json;
+using App.Metrics.Serialization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

@@ -6,8 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using App.Metrics.Core;
+using App.Metrics.Data;
 using App.Metrics.Infrastructure;
-using App.Metrics.MetricData;
 
 namespace App.Metrics.Internal
 {
@@ -31,7 +31,7 @@ namespace App.Metrics.Internal
         {
         }
 
-        public Task<MetricsData> GetDataAsync()
+        public Task<MetricsDataValueSource> GetDataAsync()
         {
             return AppMetricsTaskCache.EmptyMetricsDataTask;
         }

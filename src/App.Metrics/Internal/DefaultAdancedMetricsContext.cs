@@ -4,7 +4,7 @@
 
 using System;
 using App.Metrics.Core;
-using App.Metrics.MetricData;
+using App.Metrics.Data;
 using App.Metrics.Sampling;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Options;

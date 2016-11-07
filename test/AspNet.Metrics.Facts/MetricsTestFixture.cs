@@ -2,7 +2,6 @@
 using System.Net.Http;
 using App.Metrics;
 using App.Metrics.DependencyInjection;
-using App.Metrics.Json;
 using App.Metrics.Utils;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;

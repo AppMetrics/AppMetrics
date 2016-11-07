@@ -3,9 +3,9 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
 using App.Metrics.Core;
+using App.Metrics.Data;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
-using App.Metrics.MetricData;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -42,9 +42,9 @@ namespace App.Metrics.Facts.Core
             _context.Advanced.ResetMetricsValues();
         }
 
-        public Func<IMetricsContext, Task<MetricsData>> CurrentData => async ctx => await _context.Advanced.DataManager.GetMetricsDataAsync();
+        public Func<IMetricsContext, Task<MetricsDataValueSource>> CurrentData => async ctx => await _context.Advanced.DataManager.GetMetricsDataAsync();
 
-        public Func<IMetricsContext, IMetricsFilter, Task<MetricsData>> CurrentDataWithFilter
+        public Func<IMetricsContext, IMetricsFilter, Task<MetricsDataValueSource>> CurrentDataWithFilter
             => async (ctx, filter) => await _context.Advanced.DataManager.WithFilter(filter).GetMetricsDataAsync();
 
         [Fact]

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using App.Metrics;
 using App.Metrics.Core;
-using App.Metrics.MetricData;
+using App.Metrics.Data;
 
 namespace Metrics.Samples
 {

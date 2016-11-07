@@ -1,4 +1,4 @@
-﻿using App.Metrics.Json;
+﻿using App.Metrics.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 

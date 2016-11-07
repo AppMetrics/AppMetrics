@@ -3,7 +3,8 @@
 
 
 using System.Threading.Tasks;
-using App.Metrics.MetricData;
+using App.Metrics.Core;
+using App.Metrics.Data;
 
 namespace App.Metrics.Infrastructure
 {
@@ -15,6 +16,6 @@ namespace App.Metrics.Infrastructure
 
         public static readonly Task<HealthCheckResult> CompletedUnHealthyTask = Task.FromResult(HealthCheckResult.Unhealthy());
 
-        public static readonly Task<MetricsData> EmptyMetricsDataTask = Task.FromResult(MetricsData.Empty);
+        public static readonly Task<MetricsDataValueSource> EmptyMetricsDataTask = Task.FromResult(MetricsDataValueSource.Empty);
     }
 }

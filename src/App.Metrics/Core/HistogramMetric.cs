@@ -7,7 +7,7 @@
 
 
 using System;
-using App.Metrics.MetricData;
+using App.Metrics.Data;
 using App.Metrics.Sampling;
 
 namespace App.Metrics.Core
