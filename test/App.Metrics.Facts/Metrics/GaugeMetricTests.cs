@@ -8,7 +8,7 @@ namespace App.Metrics.Facts.Metrics
     public class GaugeMetricTests
     {
         [Fact]
-        public void GaugeMetric_ReportsNanOnException()
+        public void should_report_nan_on_exception()
         {
             new FunctionGauge(() => { throw new InvalidOperationException("test"); }).Value.Should().Be(double.NaN);
 

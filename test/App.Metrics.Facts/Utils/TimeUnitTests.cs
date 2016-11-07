@@ -6,7 +6,7 @@ namespace App.Metrics.Facts.Utils
     public class TimeUnitTests
     {
         [Fact]
-        public void TimeUnit_CanConvertBetweenUnits()
+        public void can_convert_between_units()
         {
             TimeUnit.Nanoseconds.ToNanoseconds(10L).Should().Be(10L);
             TimeUnit.Nanoseconds.ToMicroseconds(10L * 1000L).Should().Be(10L);
@@ -66,13 +66,13 @@ namespace App.Metrics.Facts.Utils
         }
 
         [Fact]
-        public void TimeUnit_ConvertsToZeroOnFractionalUnit()
+        public void converts_to_zero_on_fractional_unit()
         {
             TimeUnit.Seconds.ToMinutes(30L).Should().Be(0);
         }
 
         [Fact]
-        public void TimeUnit_HasCorrectScalingFactor()
+        public void has_correct_scaling_factor()
         {
             TimeUnit.Nanoseconds.ScalingFactorFor(TimeUnit.Nanoseconds).Should().Be(1.0);
             TimeUnit.Nanoseconds.ScalingFactorFor(TimeUnit.Microseconds).Should().Be(1.0 * 0.001);

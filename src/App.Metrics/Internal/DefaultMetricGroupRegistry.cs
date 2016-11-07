@@ -118,18 +118,18 @@ namespace App.Metrics.Internal
         private class MetricMetaCatalog<TMetric, TValue, TMetricValue>
             where TValue : MetricValueSource<TMetricValue>
         {
-            private readonly ConcurrentDictionary<string, MetricMeta> metrics =
+            private readonly ConcurrentDictionary<string, MetricMeta> _metrics =
                 new ConcurrentDictionary<string, MetricMeta>();
 
             public IEnumerable<TValue> All
             {
-                get { return metrics.Values.OrderBy(m => m.Name).Select(v => v.Value); }
+                get { return _metrics.Values.OrderBy(m => m.Name).Select(v => v.Value); }
             }
 
             public void Clear()
             {
-                var values = metrics.Values;
-                metrics.Clear();
+                var values = _metrics.Values;
+                _metrics.Clear();
                 foreach (var value in values)
                 {
                     using (value.Metric as IDisposable)
@@ -140,7 +140,7 @@ namespace App.Metrics.Internal
 
             public TMetric GetOrAdd(string name, Func<Tuple<TMetric, TValue>> metricProvider)
             {
-                return metrics.GetOrAdd(name, n =>
+                return _metrics.GetOrAdd(name, n =>
                 {
                     var result = metricProvider();
                     return new MetricMeta(result.Item1, result.Item2);
@@ -149,7 +149,7 @@ namespace App.Metrics.Internal
 
             public void Reset()
             {
-                foreach (var metric in metrics.Values)
+                foreach (var metric in _metrics.Values)
                 {
                     var resetable = metric.Metric as IResetableMetric;
                     resetable?.Reset();

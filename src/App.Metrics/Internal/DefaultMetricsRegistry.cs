@@ -169,6 +169,6 @@ namespace App.Metrics.Internal
             {
                 action(group);
             }
-        }
+        }        
     }
 }

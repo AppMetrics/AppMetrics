@@ -24,7 +24,7 @@ namespace App.Metrics.Facts.Health
         }
 
         [Fact]
-        public void HealthCheck_RegistryDoesNotThrowOnDuplicateRegistration()
+        public void registry_does_not_throw_on_duplicate_registration()
         {
             _healthCheckFactory.Register("test", () => Task.FromResult(HealthCheckResult.Healthy()));
 
@@ -34,7 +34,7 @@ namespace App.Metrics.Facts.Health
 
 
         [Fact]
-        public async Task HealthCheck_RegistryStatusIsFailedIfOneCheckFails()
+        public async Task registry_status_is_failed_if_one_check_fails()
         {
             _healthCheckFactory.Register("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
             _healthCheckFactory.Register("bad", () => Task.FromResult(HealthCheckResult.Unhealthy()));
@@ -46,7 +46,7 @@ namespace App.Metrics.Facts.Health
         }
 
         [Fact]
-        public async Task HealthCheck_RegistryStatusIsHealthyIfAllChecksAreHealthy()
+        public async Task registry_status_is_healthy_if_all_checks_are_healthy()
         {
             _healthCheckFactory.Register("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
             _healthCheckFactory.Register("another", () => Task.FromResult(HealthCheckResult.Healthy()));

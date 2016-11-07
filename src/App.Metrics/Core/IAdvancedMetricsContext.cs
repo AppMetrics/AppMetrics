@@ -17,7 +17,7 @@ namespace App.Metrics.Core
 
         IHealthCheckManager HealthCheckManager { get; }
 
-        void CompletelyDisableMetrics();
+        void DisableMetrics();
 
         ICounter Counter(CounterOptions options);
 

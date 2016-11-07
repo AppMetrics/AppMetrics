@@ -8,9 +8,6 @@ using App.Metrics.Utils;
 
 namespace App.Metrics
 {
-    /// <summary>
-    ///     Represents a logical grouping of metrics
-    /// </summary>
     public interface IMetricsContext : IDisposable, IHideObjectMembers
     {
         string ContextName { get; }

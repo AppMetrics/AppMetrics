@@ -12,7 +12,7 @@ namespace App.Metrics.Facts.Metrics
         private readonly CounterMetric _counter = new CounterMetric();
 
         [Fact]
-        public void CounterMetric_CanBeIncrementedOnMultipleThreads()
+        public void can_be_incremented_on_multiple_threads()
         {
             const int threadCount = 16;
             const long iterations = 1000 * 100;
@@ -40,7 +40,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void CounterMetric_CanComputePercentWithZeroTotal()
+        public void can_compute_percent_with_zero_total()
         {
             _counter.Increment("A");
             _counter.Decrement("A");
@@ -53,7 +53,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void CounterMetric_CanCountForMultipleSetItem()
+        public void can_count_for_multiple_set_items()
         {
             _counter.Increment("A");
             _counter.Increment("B");
@@ -71,7 +71,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void CounterMetric_CanCountForSetItem()
+        public void can_count_for_set_item()
         {
             _counter.Increment("A");
             _counter.Value.Count.Should().Be(1L);
@@ -83,14 +83,14 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void CounterMetric_CanDecrement()
+        public void can_decrement()
         {
             _counter.Decrement();
             _counter.Value.Count.Should().Be(-1L);
         }
 
         [Fact]
-        public void CounterMetric_CanDecrementMultipleTimes()
+        public void can_decrement_multiple_times()
         {
             _counter.Decrement();
             _counter.Decrement();
@@ -99,21 +99,21 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void CounterMetric_CanDecrementWithValue()
+        public void can_decrement_with_value()
         {
             _counter.Decrement(32L);
             _counter.Value.Count.Should().Be(-32L);
         }
 
         [Fact]
-        public void CounterMetric_CanIncrement()
+        public void can_increment()
         {
             _counter.Increment();
             _counter.Value.Count.Should().Be(1L);
         }
 
         [Fact]
-        public void CounterMetric_CanIncrementMultipleTimes()
+        public void can_increment_multiple_times()
         {
             _counter.Increment();
             _counter.Increment();
@@ -122,14 +122,14 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void CounterMetric_CanIncrementWithValue()
+        public void can_increment_with_value()
         {
             _counter.Increment(32L);
             _counter.Value.Count.Should().Be(32L);
         }
 
         [Fact]
-        public void CounterMetric_CanReset()
+        public void can_reset()
         {
             _counter.Increment();
             _counter.Value.Count.Should().Be(1L);
@@ -138,7 +138,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void CounterMetric_CanResetSetItem()
+        public void can_reset_item()
         {
             _counter.Increment("A");
             _counter.Value.Items[0].Count.Should().Be(1);
@@ -147,7 +147,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void CounterMetric_StartsFromZero()
+        public void count_should_start_from_zero()
         {
             _counter.Value.Count.Should().Be(0L);
         }

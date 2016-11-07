@@ -7,7 +7,7 @@ namespace App.Metrics.Facts.Sampling
     public class UniformReservoirTests
     {
         [Fact]
-        public void UniformReservoir_Of100OutOf1000Elements()
+        public void of_100_out_of_1000_elements()
         {
             var reservoir = new UniformReservoir(100);
 
@@ -22,7 +22,7 @@ namespace App.Metrics.Facts.Sampling
         }
 
         [Fact]
-        public void UniformReservoir_RecordsUserValue()
+        public void records_user_value()
         {
             var reservoir = new UniformReservoir(100);
 

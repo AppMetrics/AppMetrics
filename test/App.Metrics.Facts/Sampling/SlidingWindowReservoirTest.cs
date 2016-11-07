@@ -6,37 +6,37 @@ namespace App.Metrics.Facts.Sampling
 {
     public class SlidingWindowReservoirTest
     {
-        private readonly SlidingWindowReservoir reservoir = new SlidingWindowReservoir(3);
+        private readonly SlidingWindowReservoir _reservoir = new SlidingWindowReservoir(3);
 
         [Fact]
-        public void SlidingWindowReservoir_CanStoreSmallSample()
+        public void can_store_small_sample()
         {
-            reservoir.Update(1L);
-            reservoir.Update(2L);
+            _reservoir.Update(1L);
+            _reservoir.Update(2L);
 
-            reservoir.GetSnapshot().Values.Should().ContainInOrder(1L, 2L);
+            _reservoir.GetSnapshot().Values.Should().ContainInOrder(1L, 2L);
         }
 
         [Fact]
-        public void SlidingWindowReservoir_OnlyStoresLastsValues()
+        public void only_stores_last_values()
         {
-            reservoir.Update(1L);
-            reservoir.Update(2L);
-            reservoir.Update(3L);
-            reservoir.Update(4L);
-            reservoir.Update(5L);
+            _reservoir.Update(1L);
+            _reservoir.Update(2L);
+            _reservoir.Update(3L);
+            _reservoir.Update(4L);
+            _reservoir.Update(5L);
 
-            reservoir.GetSnapshot().Values.Should().ContainInOrder(3L, 4L, 5L);
+            _reservoir.GetSnapshot().Values.Should().ContainInOrder(3L, 4L, 5L);
         }
 
         [Fact]
-        public void SlidingWindowReservoir_RecordsUserValue()
+        public void records_user_value()
         {
-            reservoir.Update(2L, "B");
-            reservoir.Update(1L, "A");
+            _reservoir.Update(2L, "B");
+            _reservoir.Update(1L, "A");
 
-            reservoir.GetSnapshot().MinUserValue.Should().Be("A");
-            reservoir.GetSnapshot().MaxUserValue.Should().Be("B");
+            _reservoir.GetSnapshot().MinUserValue.Should().Be("A");
+            _reservoir.GetSnapshot().MaxUserValue.Should().Be("B");
         }
     }
 }

@@ -18,7 +18,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void MeterMetric_CanCalculateMeanRate()
+        public void can_calculate_mean_rate()
         {
             _meter.Mark();
             _clock.Advance(TimeUnit.Seconds, 1);
@@ -31,7 +31,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void MeterMetric_CanComputePercentWithZeroTotal()
+        public void can_conpute_percent_with_zero_total()
         {
             _meter.Mark("A");
             _meter.Mark("A", -1);
@@ -44,7 +44,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void MeterMetric_CanComputeRates()
+        public void can_compute_multiple_rates()
         {
             _meter.Mark();
             _clock.Advance(TimeUnit.Seconds, 10);
@@ -59,7 +59,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void MeterMetric_CanCount()
+        public void can_count()
         {
             _meter.Mark();
 
@@ -73,7 +73,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void MeterMetric_CanCountForMultipleSetItem()
+        public void can_count_for_multiple_set_items()
         {
             _meter.Mark("A");
             _meter.Mark("B");
@@ -91,7 +91,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void MeterMetric_CanCountForSetItem()
+        public void can_count_for_set_item()
         {
             _meter.Mark("A");
             _meter.Value.Count.Should().Be(1L);
@@ -103,7 +103,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void MeterMetric_CanReset()
+        public void can_reset()
         {
             _meter.Mark();
             _meter.Mark();
@@ -118,7 +118,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void MeterMetric_CanResetSetItem()
+        public void can_reset_set_item()
         {
             _meter.Mark("A");
             _meter.Value.Items[0].Value.Count.Should().Be(1);
@@ -127,7 +127,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void MeterMetric_StartsAtZero()
+        public void rates_should_start_at_zero()
         {
             _meter.Value.MeanRate.Should().Be(0L);
             _meter.Value.OneMinuteRate.Should().Be(0L);
@@ -136,7 +136,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void MeterMetric_ValueCanScaleDown()
+        public void value_can_scale_down()
         {
             this._meter.Mark();
             this._clock.Advance(TimeUnit.Milliseconds, 1);
@@ -149,7 +149,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void MeterMetric_ValueCanScaleDownToDecimals()
+        public void value_can_scale_down_to_decimal()
         {
             this._meter.Mark();
             this._clock.Advance(TimeUnit.Seconds, 1);
@@ -162,7 +162,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void MeterMetric_ValueCanScaleUp()
+        public void value_can_scale_up()
         {
             this._meter.Mark();
             this._clock.Advance(TimeUnit.Minutes, 1);

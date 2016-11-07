@@ -10,7 +10,6 @@ namespace App.Metrics.Core
 {
     internal sealed class DefaultMetricsContext : IMetricsContext
     {
-        internal const string InternalMetricsContextName = "App.Metrics.Internal";
         private readonly IMetricsBuilder _builder;
         private readonly IMetricsRegistry _registry;
 

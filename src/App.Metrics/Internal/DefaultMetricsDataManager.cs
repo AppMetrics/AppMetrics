@@ -11,8 +11,7 @@ namespace App.Metrics.Internal
     {
         private readonly IMetricsRegistry _registry;
 
-        public DefaultMetricsDataManager(
-            IMetricsRegistry registry)
+        public DefaultMetricsDataManager(IMetricsRegistry registry)
         {
             _registry = registry;
         }

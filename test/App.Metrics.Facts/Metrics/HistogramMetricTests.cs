@@ -9,7 +9,7 @@ namespace App.Metrics.Facts.Metrics
         private readonly HistogramMetric _histogram = new HistogramMetric(SamplingType.ExponentiallyDecaying);
 
         [Fact]
-        public void HistogramMetric_CanCount()
+        public void can_count()
         {
             _histogram.Update(1L);
             _histogram.Value.Count.Should().Be(1);
@@ -18,7 +18,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void HistogramMetric_CanReset()
+        public void can_reset()
         {
             _histogram.Update(1L);
             _histogram.Update(10L);
@@ -35,14 +35,14 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void HistogramMetric_RecordsMeanForOneElement()
+        public void records_mean_for_one_element()
         {
             _histogram.Update(1L);
             _histogram.Value.Mean.Should().Be(1);
         }
 
         [Fact]
-        public void HistogramMetric_RecordsUserValue()
+        public void records_user_value()
         {
             _histogram.Update(1L, "A");
             _histogram.Update(10L, "B");

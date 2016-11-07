@@ -7,7 +7,7 @@ namespace App.Metrics.Facts.Utils
     public class EWMATests
     {
         [Fact]
-        public void EWMA_aFifteenMinuteEWMAWithAValueOfThree()
+        public void a_fifteen_minute_ewma_with_a_value_of_three()
         {
             var ewma = EWMA.FifteenMinuteEWMA();
             ewma.Update(3L);
@@ -77,7 +77,7 @@ namespace App.Metrics.Facts.Utils
         }
 
         [Fact]
-        public void EWMA_aFiveMinuteEWMAWithAValueOfThree()
+        public void ewma_a_five_minute_ewma_with_a_value_of_three()
         {
             var ewma = EWMA.FiveMinuteEWMA();
             ewma.Update(3L);
@@ -147,7 +147,7 @@ namespace App.Metrics.Facts.Utils
         }
 
         [Fact]
-        public void EWMA_aOneMinuteEWMAWithAValueOfThree()
+        public void a_one_minute_ewma_with_a_value_of_three()
         {
             var ewma = EWMA.OneMinuteEWMA();
             ewma.Update(3L);

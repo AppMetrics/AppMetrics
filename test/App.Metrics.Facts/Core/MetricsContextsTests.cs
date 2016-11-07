@@ -1,69 +1,67 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.Data;
-using App.Metrics.Infrastructure;
+using App.Metrics.Facts.Fixtures;
 using App.Metrics.Internal;
 using FluentAssertions;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Xunit;
 
 namespace App.Metrics.Facts.Core
 {
-    public class MetricsContextsTests
+    public class MetricsContextsTests : IDisposable
     {
-        private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
-
-        private static readonly IHealthCheckManager HealthCheckManager =
-            new DefaultHealthCheckManager(LoggerFactory, () => new ConcurrentDictionary<string, HealthCheck>());
-
-
-        private static readonly IOptions<AppMetricsOptions> Options
-            = Microsoft.Extensions.Options.Options.Create(new AppMetricsOptions());
-
-        private static readonly IMetricsBuilder MetricsBuilder = new DefaultMetricsBuilder(Options.Value.Clock);
-
-        private static readonly Func<string, IMetricGroupRegistry> NewMetricsGroupRegistry = name => new DefaultMetricGroupRegistry(name);
-
-        private static readonly IMetricsRegistry Registry = new DefaultMetricsRegistry(LoggerFactory, Options,
-            new EnvironmentInfoBuilder(LoggerFactory), NewMetricsGroupRegistry);
-
-        private static readonly IMetricsDataManager MetricsDataManager = new DefaultMetricsDataManager(Registry);
-
-
-        private readonly IMetricsContext _context = new DefaultMetricsContext(Options, Registry, MetricsBuilder, HealthCheckManager,
-            MetricsDataManager);
+        private readonly DefaultMetricsContextTestFixture _fixture;
 
         public MetricsContextsTests()
         {
-            _context.Advanced.ResetMetricsValues();
+            //DEVNOTE: Don't want Context to be shared between tests
+            _fixture = new DefaultMetricsContextTestFixture();
         }
 
-        public Func<IMetricsContext, Task<MetricsDataValueSource>> CurrentData => async ctx => await _context.Advanced.DataManager.GetMetricsDataAsync();
-
-        public Func<IMetricsContext, IMetricsFilter, Task<MetricsDataValueSource>> CurrentDataWithFilter
-            => async (ctx, filter) => await _context.Advanced.DataManager.WithFilter(filter).GetMetricsDataAsync();
-
         [Fact]
-        public async Task can_create_child_context()
+        public async Task can_clear_metrics_at_runtime()
         {
             var counterOptions = new CounterOptions
             {
-                Name = "counter",
-                GroupName = "test",
+                Name = "request counter",
                 MeasurementUnit = Unit.Requests,
             };
+            var counter = _fixture.Context.Advanced.Counter(counterOptions);
 
-            _context.Advanced.Counter(counterOptions);
+            counter.Increment();
 
-            var data = await CurrentData(_context);
+            var data = await _fixture.CurrentData(_fixture.Context);
+            var counterValue = data.Groups.Single().Counters.Single();
+            counterValue.Value.Count.Should().Be(1);
 
-            var counterValue = data.Groups.SelectMany(c => c.Counters).Single();
+            _fixture.Context.Advanced.ResetMetricsValues();
 
-            counterValue.Name.Should().Be("counter");
+            data = await _fixture.CurrentData(_fixture.Context);
+            data.Groups.Should().BeNullOrEmpty();
+        }
+
+        [Fact]
+        public async Task can_disable_metrics_at_runtime()
+        {
+            var counterOptions = new CounterOptions
+            {
+                Name = "request counter",
+                MeasurementUnit = Unit.Requests,
+            };
+            var counter = _fixture.Context.Advanced.Counter(counterOptions);
+
+            counter.Increment();
+
+            var data = await _fixture.CurrentData(_fixture.Context);
+            var counterValue = data.Groups.Single().Counters.Single();
+            counterValue.Value.Count.Should().Be(1);
+
+            _fixture.Context.Advanced.DisableMetrics();
+
+            data = await _fixture.CurrentData(_fixture.Context);
+            data.Groups.Should().BeNullOrEmpty();
         }
 
         [Fact]
@@ -82,15 +80,15 @@ namespace App.Metrics.Facts.Core
                 MeasurementUnit = Unit.None,
             };
 
-            var counter = _context.Advanced.Counter(counterOptions);
-            var meter = _context.Advanced.Meter(meterOptions);
+            var counter = _fixture.Context.Advanced.Counter(counterOptions);
+            var meter = _fixture.Context.Advanced.Meter(meterOptions);
 
             var filter = new DefaultMetricsFilter().WhereType(MetricType.Counter);
 
             counter.Increment();
             meter.Mark(1);
 
-            var currentData = await CurrentDataWithFilter(_context, filter);
+            var currentData = await _fixture.CurrentDataWithFilter(_fixture.Context, filter);
             var group = currentData.Groups.Single();
 
             var counterValue = group.Counters.Single();
@@ -135,18 +133,63 @@ namespace App.Metrics.Facts.Core
                 Tags = tags
             };
 
-            _context.Advanced.Counter(counterOptions);
-            _context.Advanced.Meter(meterOptions);
-            _context.Advanced.Histogram(histogramOptions);
-            _context.Advanced.Timer(timerOptions);
+            _fixture.Context.Increment(counterOptions);
+            _fixture.Context.Mark(meterOptions);
+            _fixture.Context.Update(histogramOptions, 1);
+            _fixture.Context.Time(timerOptions, () => { });
 
-            var data = await CurrentData(_context);
+            var data = await _fixture.CurrentData(_fixture.Context);
             var group = data.Groups.Single();
 
             group.Counters.Single().Tags.Should().Equals(tags);
             group.Meters.Single().Tags.Should().Equals("tag");
             group.Histograms.Single().Tags.Should().Equals("tag");
             group.Timers.Single().Tags.Should().Equals("tag");
+        }
+
+        [Fact]
+        public async Task can_record_metric_in_new_group()
+        {
+            var counterOptions = new CounterOptions
+            {
+                Name = "counter",
+                GroupName = "test",
+                MeasurementUnit = Unit.Requests,
+            };
+
+            _fixture.Context.Increment(counterOptions);
+
+            var data = await _fixture.CurrentData(_fixture.Context);
+
+            data.Groups.Should().Contain(g => g.GroupName == "test");
+
+            var counterValue = data.Groups.First(g => g.GroupName == "test").Counters.Single();
+
+            counterValue.Name.Should().Be("counter");
+        }
+
+        [Fact]
+        public async Task can_shutdown_metric_groups()
+        {
+            var group = "test";
+            var counterOptions = new CounterOptions
+            {
+                Name = "test",
+                GroupName = group,
+                MeasurementUnit = Unit.Bytes
+            };
+
+            _fixture.Context.Advanced.Counter(counterOptions).Increment();
+
+            var data = await _fixture.CurrentData(_fixture.Context);
+
+            data.Groups.First(g => g.GroupName == group).Counters.Single().Name.Should().Be("test");
+
+            _fixture.Context.Advanced.ShutdownGroup(group);
+
+            data = await _fixture.CurrentData(_fixture.Context);
+
+            data.Groups.FirstOrDefault(g => g.GroupName == group).Should().BeNull("because the group was shutdown");
         }
 
         [Fact]
@@ -158,41 +201,10 @@ namespace App.Metrics.Facts.Core
                 GroupName = "test"
             };
 
-            var first = _context.Advanced.Counter(counterOptions);
-            var second = _context.Advanced.Counter(counterOptions);
+            var first = _fixture.Context.Advanced.Counter(counterOptions);
+            var second = _fixture.Context.Advanced.Counter(counterOptions);
 
             ReferenceEquals(first, second).Should().BeTrue();
-        }
-
-        [Fact]
-        public async Task data_provider_reflects_child_contexts()
-        {
-            //TODO: AH - still need this since there are no longer child metrics
-            //var counterOptions = new CounterOptions
-            //{
-            //    Name = "test",
-            //    GroupName = "test",
-            //    MeasurementUnit = Unit.Bytes
-            //};
-
-            //var counter = _context.Advanced.Counter(counterOptions);
-
-            //counter.Increment();
-
-            //var data = await CurrentData(_context);
-            //var group = data.Groups.Single();
-
-            //group.ChildMetrics.Should().HaveCount(1);
-            //group.ChildMetrics.Single().Counters.Should().HaveCount(1);
-            //group.ChildMetrics.Single().Counters.Single().Value.Count.Should().Be(1);
-
-            //counter.Increment();
-
-            //data = await _context.Advanced.DataManager.GetMetricsDataAsync();
-
-            //group = data.Groups.Single();
-
-            //group.ChildMetrics.Single().Counters.Single().Value.Count.Should().Be(2);
         }
 
         [Fact]
@@ -204,9 +216,9 @@ namespace App.Metrics.Facts.Core
                 MeasurementUnit = Unit.Bytes,
             };
 
-            _context.Advanced.Counter(counterOptions).Increment();
+            _fixture.Context.Advanced.Counter(counterOptions).Increment();
 
-            var data = await CurrentData(_context);
+            var data = await _fixture.CurrentData(_fixture.Context);
             var group = data.Groups.Single();
 
             group.Counters.Should().HaveCount(1);
@@ -214,27 +226,9 @@ namespace App.Metrics.Facts.Core
             group.Counters.Single().Value.Count.Should().Be(1L);
         }
 
-        [Fact]
-        public async Task disabled_child_context_does_not_show_in_metrics_data()
+        public void Dispose()
         {
-            var counterOptions = new CounterOptions
-            {
-                Name = "test",
-                GroupName = "test",
-                MeasurementUnit = Unit.Bytes
-            };
-
-            _context.Advanced.Counter(counterOptions).Increment();
-
-            var data = await CurrentData(_context);
-
-            data.Groups.Single().Counters.Single().Name.Should().Be("test");
-
-            _context.Advanced.ShutdownGroup("test");
-
-            data = await CurrentData(_context);
-
-            data.Groups.Should().BeEmpty();
+            Dispose(true);
         }
 
         [Fact]
@@ -275,31 +269,33 @@ namespace App.Metrics.Facts.Core
                     MeasurementUnit = Unit.Calls
                 };
 
-                _context.Advanced.Gauge(gaugeOptions, () => 0.0);
-                _context.Advanced.Counter(counterOptions);
-                _context.Advanced.Meter(meterOptions);
-                _context.Advanced.Histogram(histogramOptions);
-                _context.Advanced.Timer(timerOptions);
+                _fixture.Context.Advanced.Gauge(gaugeOptions, () => 0.0);
+                _fixture.Context.Advanced.Counter(counterOptions);
+                _fixture.Context.Advanced.Meter(meterOptions);
+                _fixture.Context.Advanced.Histogram(histogramOptions);
+                _fixture.Context.Advanced.Timer(timerOptions);
             })).ShouldNotThrow();
         }
 
         [Fact]
         public async Task metrics_added_are_visible_in_the_data_provider()
         {
+            var group = "test";
             var counterOptions = new CounterOptions
             {
-                Name = "test",
+                Name = "test_counter",
+                GroupName = group,
                 MeasurementUnit = Unit.Bytes,
             };
-            var dataManager = _context.Advanced.DataManager;
+            var dataManager = _fixture.Context.Advanced.DataManager;
 
             var data = await dataManager.GetMetricsDataAsync();
 
-            data.Groups.Should().BeEmpty();
-            _context.Advanced.Counter(counterOptions);
+            data.Groups.FirstOrDefault(g => g.GroupName == group).Should().BeNull("the group hasn't been added yet");
+            _fixture.Context.Advanced.Counter(counterOptions).Increment();
 
             data = await dataManager.GetMetricsDataAsync();
-            data.Groups.Single().Counters.Should().HaveCount(1);
+            data.Groups.First(g => g.GroupName == group).Counters.Should().HaveCount(1);
         }
 
         [Fact]
@@ -310,11 +306,11 @@ namespace App.Metrics.Facts.Core
                 Name = "request counter",
                 MeasurementUnit = Unit.Requests,
             };
-            var counter = _context.Advanced.Counter(counterOptions);
+            var counter = _fixture.Context.Advanced.Counter(counterOptions);
 
             counter.Increment();
 
-            var data = await CurrentData(_context);
+            var data = await _fixture.CurrentData(_fixture.Context);
 
             var counterValue = data.Groups.Single().Counters.Single();
 
@@ -323,33 +319,12 @@ namespace App.Metrics.Facts.Core
             counterValue.Value.Count.Should().Be(1);
         }
 
-        [Fact]
-        public void MetricsContext_EmptyChildContextIsSameContext()
+        protected virtual void Dispose(bool disposing)
         {
-            //TODO: AH - similar test when only one level of groups is supported
-            //var child = _context.Advanced.Group(string.Empty);
-            //ReferenceEquals(_context, child).Should().BeTrue();
-            //child = _context.Advanced.Group(null);
-            //ReferenceEquals(_context, child).Should().BeTrue();
-        }
-
-        [Fact]
-        public void raises_shutdown_even_on_metrics_disable()
-        {
-            //TODO: AH - FluentAssertions no longer has MonitorEvents
-            //context.MonitorEvents();
-            //context.Advanced.CompletelyDisableMetrics();
-            //context.ShouldRaise("ContextShuttingDown");
-        }
-
-        [Fact]
-        public void raises_shutdown_event_on_dispose()
-        {
-            //TODO: AH - FluentAssertions no longer has MonitorEvents
-
-            //_context.MonitorEvents();
-            //_context.Dispose();
-            //_context.ShouldRaise("ContextShuttingDown");
+            if (disposing)
+            {
+                _fixture?.Dispose();
+            }
         }
     }
 }

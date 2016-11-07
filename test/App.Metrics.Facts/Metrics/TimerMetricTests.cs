@@ -20,7 +20,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void TimerMetric_CanCount()
+        public void can_count()
         {
             _timer.Value.Rate.Count.Should().Be(0);
             using (_timer.NewContext())
@@ -38,9 +38,9 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void TimerMetric_CanReset()
+        public void can_reset()
         {
-            using (var context = _timer.NewContext())
+            using (_timer.NewContext())
             {
                 _clock.Advance(TimeUnit.Milliseconds, 100);
             }
@@ -55,7 +55,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void TimerMetric_CanTrackTime()
+        public void can_track_time()
         {
             using (_timer.NewContext())
             {
@@ -76,7 +76,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void TimerMetric_ContextRecordsTimeOnlyOnFirstDispose()
+        public void context_records_time_only_on_first_dispose()
         {
             var context = _timer.NewContext();
             _clock.Advance(TimeUnit.Milliseconds, 100);
@@ -89,7 +89,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void TimerMetric_ContextReportsElapsedTime()
+        public void context_reports_elapsed_time()
         {
             using (var context = _timer.NewContext())
             {
@@ -99,7 +99,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void TimerMetric_CountsEvenIfActionThrows()
+        public void counts_even_when_action_throws()
         {
             Action action = () => this._timer.Time(() => { throw new InvalidOperationException(); });
 
@@ -109,7 +109,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void TimerMetric_RecordsActiveSessions()
+        public void records_active_sessions()
         {
             _timer.Value.ActiveSessions.Should().Be(0);
             var context1 = _timer.NewContext();
@@ -123,7 +123,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void TimerMetric_RecordsUserValue()
+        public void records_user_value()
         {
             _timer.Record(1L, TimeUnit.Milliseconds, "A");
             _timer.Record(10L, TimeUnit.Milliseconds, "B");
@@ -133,7 +133,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void TimerMetric_UserValueCanBeOverwrittenAfterContextCreation()
+        public void user_value_can_be_overwritten_after_context_creation()
         {
             using (var x = _timer.NewContext("a"))
             {
@@ -144,7 +144,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void TimerMetric_UserValueCanBeSetAfterContextCreation()
+        public void user_value_can_be_set_after_context_creation()
         {
             using (var x = _timer.NewContext())
             {

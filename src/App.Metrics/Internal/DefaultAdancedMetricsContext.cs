@@ -3,6 +3,7 @@
 
 
 using System;
+using System.Threading;
 using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.Sampling;
@@ -16,6 +17,7 @@ namespace App.Metrics.Internal
         private readonly IMetricsBuilder _builder;
         private bool _isDisabled;
         private IMetricsRegistry _registry;
+        private IMetricsDataManager _dataManager;
 
         public DefaultAdancedMetricsContext(IMetricsContext context,
             IOptions<AppMetricsOptions> options,
@@ -29,24 +31,24 @@ namespace App.Metrics.Internal
             _registry = registry;
             _builder = builder;
             HealthCheckManager = healthCheckManager;
-            DataManager = dataManagerManager;
+            _dataManager = dataManagerManager;
             Clock = options.Value.Clock;
             _isDisabled = options.Value.DisableMetrics;
 
             if (_isDisabled)
             {
-                CompletelyDisableMetrics();
+                DisableMetrics();
             }
         }
 
 
         public IClock Clock { get; }
 
-        public IMetricsDataManager DataManager { get; }
+        public IMetricsDataManager DataManager => _dataManager;
 
         public IHealthCheckManager HealthCheckManager { get; }
 
-        public void CompletelyDisableMetrics()
+        public void DisableMetrics()
         {
             if (_isDisabled)
             {
@@ -55,13 +57,10 @@ namespace App.Metrics.Internal
 
             _isDisabled = true;
 
-            var oldRegistry = _registry;
-            _registry = new NullMetricsRegistry();
-            oldRegistry.Clear();
-            //TODO: AH - does the registry need to be disposable
-            using (oldRegistry as IDisposable)
-            {
-            }
+            _registry.Clear();
+            //TODO: AH - combine data manager and registry?
+            Interlocked.Exchange(ref _registry, new NullMetricsRegistry());            
+            Interlocked.Exchange(ref _dataManager, new DefaultMetricsDataManager(_registry));
         }
 
         public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterMetric
