@@ -264,6 +264,26 @@ namespace Api.Sample
                 Tags = MetricTags.None,
                 SamplingType = SamplingType.ExponentiallyDecaying,
             };
+
+            public static TimerOptions TestTimerTwo { get; } = new TimerOptions
+            {
+                Name = "Test Timer 2",
+                MeasurementUnit = Unit.Items,
+                DurationUnit = TimeUnit.Milliseconds,
+                RateUnit = TimeUnit.Milliseconds,
+                Tags = MetricTags.None,
+                SamplingType = SamplingType.ExponentiallyDecaying,
+            };
+
+            public static TimerOptions TestTimerTwoWithUserValue { get; } = new TimerOptions
+            {
+                Name = "Test Timer 2 With User Value",
+                MeasurementUnit = Unit.Items,
+                DurationUnit = TimeUnit.Milliseconds,
+                RateUnit = TimeUnit.Milliseconds,
+                Tags = MetricTags.None,
+                SamplingType = SamplingType.ExponentiallyDecaying,
+            };
         }
     }
 }

@@ -142,6 +142,20 @@ namespace App.Metrics.Core
             }
         }
 
+        public TimerContext Time(TimerOptions options)
+        {
+            return _registry.Timer(options,
+                    () => _builder.BuildTimer(options.Name, options.MeasurementUnit, options.RateUnit, options.DurationUnit, options.SamplingType))
+                .NewContext();
+        }
+
+        public TimerContext Time(TimerOptions options, string userValue)
+        {
+            return _registry.Timer(options,
+                    () => _builder.BuildTimer(options.Name, options.MeasurementUnit, options.RateUnit, options.DurationUnit, options.SamplingType))
+                .NewContext(userValue);
+        }
+
         public void Update(HistogramOptions options, long value)
         {
             _registry.Histogram(options, () => _builder.BuildHistogram(options.Name, options.MeasurementUnit, options.SamplingType))

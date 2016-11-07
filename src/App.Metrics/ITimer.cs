@@ -130,12 +130,11 @@ namespace App.Metrics
 
         public void Dispose()
         {
-            if (_timer != null)
-            {
-                var end = _timer.EndRecording();
-                _timer.Record(end - _start, TimeUnit.Nanoseconds, _userValue);
-                _timer = null;
-            }
+            if (_timer == null) return;
+
+            var end = _timer.EndRecording();
+            _timer.Record(end - _start, TimeUnit.Nanoseconds, _userValue);
+            _timer = null;
         }
 
         /// <summary>

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using App.Metrics;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,6 +45,25 @@ namespace Api.Sample.Controllers
             histogram.Update(Rnd.Next(1, 20));
 
             _metricsContext.Update(Metrics.Histograms.TestHistogram, Rnd.Next(20, 40));
+
+            _metricsContext.Time(Metrics.Timers.TestTimer, () => Thread.Sleep(15));
+            _metricsContext.Time(Metrics.Timers.TestTimer, () => Thread.Sleep(20), "value1");
+            _metricsContext.Time(Metrics.Timers.TestTimer, () => Thread.Sleep(25), "value2");
+
+            using (_metricsContext.Time(Metrics.Timers.TestTimerTwo))
+            {
+                Thread.Sleep(15);
+            }
+
+            using (_metricsContext.Time(Metrics.Timers.TestTimerTwo, "value1"))
+            {
+                Thread.Sleep(20);
+            }            
+
+            using (_metricsContext.Time(Metrics.Timers.TestTimerTwo, "value2"))
+            {
+                Thread.Sleep(25);
+            }
 
             return new[] { "value1", "value2" };
         }

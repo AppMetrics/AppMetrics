@@ -47,6 +47,10 @@ namespace App.Metrics
 
         void Time(TimerOptions options, Action action, string userValue);
 
+        TimerContext Time(TimerOptions options, string userValue);
+
+        TimerContext Time(TimerOptions options);
+
         void Update(HistogramOptions options, long value);
 
         void Update(HistogramOptions options, long value, string userValue);
