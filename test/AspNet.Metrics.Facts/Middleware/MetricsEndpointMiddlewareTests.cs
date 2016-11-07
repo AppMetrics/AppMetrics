@@ -34,8 +34,7 @@ namespace AspNet.Metrics.Facts.Middleware
             _fixture = new MetricsTestFixture(new AppMetricsOptions
             {
                 DefaultGroupName = "testing",
-                DisableMetrics = true,
-                JsonSchemeVersion = JsonSchemeVersion.Version1
+                DisableMetrics = true
             });
 
             var result = await _fixture.Client.GetAsync("/metrics");
@@ -49,8 +48,7 @@ namespace AspNet.Metrics.Facts.Middleware
             _fixture = new MetricsTestFixture(new AppMetricsOptions
             {
                 DefaultGroupName = "testing",
-                DisableMetrics = false,
-                JsonSchemeVersion = JsonSchemeVersion.Version1
+                DisableMetrics = false
             }, new AspNetMetricsOptions { MetricsEndpoint = new PathString("/metrics-json") });
 
             var result = await _fixture.Client.GetAsync("/metrics");
@@ -66,8 +64,7 @@ namespace AspNet.Metrics.Facts.Middleware
             {
                 DefaultSamplingType = SamplingType.ExponentiallyDecaying,
                 DefaultGroupName = "testing",
-                DisableMetrics = false,
-                JsonSchemeVersion = JsonSchemeVersion.Version1
+                DisableMetrics = false
             }, new AspNetMetricsOptions { MetricsEndpointEnabled = false });
 
             var result = await _fixture.Client.GetAsync("/metrics");
@@ -83,7 +80,6 @@ namespace AspNet.Metrics.Facts.Middleware
                 DefaultSamplingType = SamplingType.ExponentiallyDecaying,
                 DefaultGroupName = "testing",
                 DisableMetrics = false,
-                JsonSchemeVersion = JsonSchemeVersion.Version1,
                 MetricsFilter = new DefaultMetricsFilter().WhereType(MetricType.Counter)
             });
 

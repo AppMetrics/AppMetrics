@@ -3,8 +3,6 @@
 
 
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using App.Metrics;
 using App.Metrics.Core;
 using App.Metrics.Infrastructure;
@@ -15,29 +13,12 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
 
 // ReSharper disable CheckNamespace
+
 namespace Microsoft.Extensions.DependencyInjection.Extensions
 // ReSharper restore CheckNamespace
 {
     internal static class MetricsCoreServiceCollectionExtensions
     {
-        private static readonly IReadOnlyDictionary<JsonSchemeVersion, Type> MetricsJsonBuilderVersionMapping =
-            new ReadOnlyDictionary<JsonSchemeVersion, Type>(new Dictionary<JsonSchemeVersion, Type>
-            {
-                { JsonSchemeVersion.AlwaysLatest, typeof(MetricsJsonBuilderV1) },
-                { JsonSchemeVersion.Version1, typeof(MetricsJsonBuilderV1) }
-            });
-
-        internal static void AddDefaultJsonServices(this IServiceCollection services)
-        {
-            services.TryAddSingleton<MetricsJsonBuilderV1, MetricsJsonBuilderV1>();
-            services.TryAddSingleton(typeof(IMetricsJsonBuilder), provider =>
-            {
-                var options = provider.GetRequiredService<IOptions<AppMetricsOptions>>();
-                var jsonBuilderType = MetricsJsonBuilderVersionMapping[options.Value.JsonSchemeVersion];
-                return provider.GetRequiredService(jsonBuilderType);
-            });
-        }
-
         internal static IMetricsHost AddMetricsCore(this IServiceCollection services)
         {
             if (services == null)
@@ -60,7 +41,6 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             services.TryAddSingleton<MetricsMarkerService, MetricsMarkerService>();
 
             services.ConfigureDefaultServices();
-            services.AddDefaultJsonServices();
             services.AddMetricsCoreServices(metricsEnvironment, metricsContext);
 
             if (setupAction != null)
@@ -80,6 +60,8 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             services.TryAddSingleton<IMetricsDataManager, DefaultMetricsDataManager>();
             services.TryAddSingleton(typeof(IClock), provider => provider.GetRequiredService<IOptions<AppMetricsOptions>>().Value.Clock);
             services.TryAddSingleton<EnvironmentInfoBuilder, EnvironmentInfoBuilder>();
+            services.TryAddSingleton<IMetricDataSerializer, NullMetricDataSerializer>();
+            services.TryAddSingleton<IHealthStatusSerializer, NullHealthStatusSerializer>();
 
             if (metricsContext == null)
             {

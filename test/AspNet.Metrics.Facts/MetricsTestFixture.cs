@@ -19,7 +19,6 @@ namespace AspNet.Metrics.Facts
         {
             DefaultGroupName = "testing",
             DisableMetrics = false,
-            JsonSchemeVersion = JsonSchemeVersion.Version1,
             Clock = new Clock.TestClock()
         };
 
@@ -59,7 +58,6 @@ namespace AspNet.Metrics.Facts
                         options.DefaultSamplingType = testOptions.DefaultSamplingType;
                         options.DefaultGroupName = testOptions.DefaultGroupName;
                         options.DisableMetrics = testOptions.DisableMetrics;
-                        options.JsonSchemeVersion = testOptions.JsonSchemeVersion;
                     }, TestContext)
                     .AddHealthChecks(options =>
                         {

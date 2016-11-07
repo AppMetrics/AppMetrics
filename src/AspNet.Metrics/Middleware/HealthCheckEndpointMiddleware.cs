@@ -2,10 +2,11 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using App.Metrics;
-using App.Metrics.Formatters.Json;
+using App.Metrics.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -14,15 +15,21 @@ namespace AspNet.Metrics.Middleware
 {
     public class HealthCheckEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
-        private readonly HealthStatusSerializer _serializer;
+        private readonly IHealthStatusSerializer _serializer;
 
         public HealthCheckEndpointMiddleware(RequestDelegate next,
             IOptions<AspNetMetricsOptions> options,
             ILoggerFactory loggerFactory,
-            IMetricsContext metricsContext)
+            IMetricsContext metricsContext,
+            IHealthStatusSerializer serializer)
             : base(next, options, loggerFactory, metricsContext)
         {
-            _serializer = new HealthStatusSerializer(MetricsContext.Advanced.Clock);
+            if (serializer == null)
+            {
+                throw new ArgumentNullException(nameof(serializer));
+            }
+
+            _serializer = serializer;
         }
 
         public async Task Invoke(HttpContext context)

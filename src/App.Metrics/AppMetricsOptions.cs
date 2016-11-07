@@ -3,10 +3,8 @@
 
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using App.Metrics.Internal;
-using App.Metrics.Json;
 using App.Metrics.Utils;
 
 namespace App.Metrics
@@ -26,19 +24,17 @@ namespace App.Metrics
             Clock = Utils.Clock.Default;
         }
 
+        public IClock Clock { get; set; }
+
+        public string DefaultGroupName { get; set; }
+
         public SamplingType DefaultSamplingType { get; set; }
 
         public bool DisableMetrics { get; set; }
 
-        public string DefaultGroupName { get; set; }
-
         public string GlobalContextName { get; set; }
 
-        public JsonSchemeVersion JsonSchemeVersion { get; set; } = JsonSchemeVersion.AlwaysLatest;
-
         public IMetricsFilter MetricsFilter { get; set; }
-
-        public IClock Clock { get; set; }
 
         private static string CleanName(string name)
         {

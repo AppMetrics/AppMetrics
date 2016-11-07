@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using App.Metrics.Json;
 using AspNet.Metrics.Infrastructure;
 using Microsoft.AspNetCore.Http;
 

@@ -33,8 +33,7 @@ namespace AspNet.Metrics.Facts.Middleware
             _fixture = new MetricsTestFixture(new AppMetricsOptions
             {
                 DefaultGroupName = "testing",
-                DisableMetrics = true,
-                JsonSchemeVersion = JsonSchemeVersion.Version1
+                DisableMetrics = true
             });
 
             var result = await _fixture.Client.GetAsync("/metrics-text");
@@ -48,8 +47,7 @@ namespace AspNet.Metrics.Facts.Middleware
             _fixture = new MetricsTestFixture(new AppMetricsOptions
             {
                 DefaultGroupName = "testing",
-                DisableMetrics = false,
-                JsonSchemeVersion = JsonSchemeVersion.Version1
+                DisableMetrics = false
             }, new AspNetMetricsOptions { MetricsTextEndpointEnabled = false});
 
             var result = await _fixture.Client.GetAsync("/metrics-text");
@@ -64,7 +62,6 @@ namespace AspNet.Metrics.Facts.Middleware
             {
                 DefaultGroupName = "testing",
                 DisableMetrics = false,
-                JsonSchemeVersion = JsonSchemeVersion.Version1,
                 MetricsFilter = new DefaultMetricsFilter().WhereType(MetricType.Counter)
             });
 

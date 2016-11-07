@@ -1,9 +1,10 @@
+using App.Metrics.Json;
 using App.Metrics.Utils;
 using Newtonsoft.Json;
 
 namespace App.Metrics.Formatters.Json
 {
-    public class HealthStatusSerializer
+    public class HealthStatusSerializer : IHealthStatusSerializer
     {
         private readonly JsonSerializerSettings _settings;
 

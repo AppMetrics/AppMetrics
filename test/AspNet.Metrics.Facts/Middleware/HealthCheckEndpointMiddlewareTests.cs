@@ -27,7 +27,6 @@ namespace AspNet.Metrics.Facts.Middleware
             {
                 DefaultGroupName = "testing",
                 DisableMetrics = false,
-                JsonSchemeVersion = JsonSchemeVersion.Version1
             }, enableHealthChecks:false, testAspNetOptions:new AspNetMetricsOptions {HealthEndpointEnabled = false});
 
             var result = await fixture.Client.GetAsync("/health");
@@ -42,7 +41,6 @@ namespace AspNet.Metrics.Facts.Middleware
             {
                 DefaultGroupName = "testing",
                 DisableMetrics = false,
-                JsonSchemeVersion = JsonSchemeVersion.Version1
             }, enableHealthChecks: true, testAspNetOptions: new AspNetMetricsOptions { HealthEndpointEnabled = false });
 
             var result = await fixture.Client.GetAsync("/health");
@@ -57,7 +55,6 @@ namespace AspNet.Metrics.Facts.Middleware
             {
                 DefaultGroupName = "testing",
                 DisableMetrics = false,
-                JsonSchemeVersion = JsonSchemeVersion.Version1
             }, new AspNetMetricsOptions { HealthEndpointEnabled = false });
 
             var result = await fixture.Client.GetAsync("/health");
@@ -72,7 +69,6 @@ namespace AspNet.Metrics.Facts.Middleware
             {
                 DefaultGroupName = "testing",
                 DisableMetrics = false,
-                JsonSchemeVersion = JsonSchemeVersion.Version1
             }, new AspNetMetricsOptions {HealthEndpoint = new PathString("/health-check")});
 
             var result = await fixture.Client.GetAsync("/health");

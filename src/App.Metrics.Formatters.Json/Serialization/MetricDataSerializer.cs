@@ -1,8 +1,9 @@
+using App.Metrics.Json;
 using Newtonsoft.Json;
 
 namespace App.Metrics.Formatters.Json
 {
-    public class MetricDataSerializer : JsonSerializer
+    public class MetricDataSerializer : JsonSerializer, IMetricDataSerializer
     {
         private readonly JsonSerializerSettings _settings;
 

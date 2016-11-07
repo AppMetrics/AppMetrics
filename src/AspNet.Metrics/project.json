@@ -33,8 +33,7 @@
     "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
     "NETStandard.Library": "1.6.0",
     "System.Linq": "4.1.0",
-    "App.Metrics": "1.0.0-*",
-    "App.Metrics.Formatters.Json": "1.0.0-*"
+    "App.Metrics": "1.0.0-*"
   },
     "frameworks": {
         "netstandard1.6": {

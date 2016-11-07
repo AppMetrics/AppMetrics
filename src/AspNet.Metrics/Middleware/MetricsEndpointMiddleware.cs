@@ -5,7 +5,7 @@
 using System;
 using System.Threading.Tasks;
 using App.Metrics;
-using App.Metrics.Formatters.Json;
+using App.Metrics.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -17,13 +17,14 @@ namespace AspNet.Metrics.Middleware
         private const string MetricsMimeType = "application/vnd.app.metrics.v1.metrics+json";
         private readonly IMetricsFilter _metricsFilter;
         private readonly RequestDelegate _next;
-        private readonly MetricDataSerializer _serializer;
+        private readonly IMetricDataSerializer _serializer;
 
         public MetricsEndpointMiddleware(RequestDelegate next,
             IMetricsFilter metricsFilter,
             IOptions<AspNetMetricsOptions> options,
             ILoggerFactory loggerFactory,
-            IMetricsContext metricsContext)
+            IMetricsContext metricsContext,
+            IMetricDataSerializer serializer)
             : base(next, options, loggerFactory, metricsContext)
         {
             if (next == null)
@@ -34,10 +35,15 @@ namespace AspNet.Metrics.Middleware
             {
                 throw new ArgumentNullException(nameof(metricsFilter));
             }
+            if (serializer == null)
+            {
+                throw new ArgumentNullException(nameof(serializer));
+            }
 
-            _serializer = new MetricDataSerializer();
+            _serializer = serializer;
             _next = next;
             _metricsFilter = metricsFilter;
+            _serializer = serializer;
         }
 
         public async Task Invoke(HttpContext context)

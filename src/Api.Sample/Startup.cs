@@ -5,6 +5,7 @@ using System.Threading;
 using App.Metrics;
 using App.Metrics.DependencyInjection;
 using App.Metrics.Extensions.Reporting.TextFile;
+using App.Metrics.Formatters.Json;
 using App.Metrics.Json;
 using App.Metrics.Reporting;
 using Microsoft.AspNet.Builder;
@@ -79,9 +80,9 @@ namespace Api.Sample
                 {
                     options.DefaultSamplingType = SamplingType.ExponentiallyDecaying;
                     options.DisableMetrics = false;
-                    options.JsonSchemeVersion = JsonSchemeVersion.AlwaysLatest;
                     //options.MetricsFilter = new DefaultMetricsFilter().WhereType(MetricType.Counter);
                 })
+                .AddJsonSerialization()
                 .AddReporting(options =>
                 {
                     options.Reporters = factory =>
@@ -95,8 +96,8 @@ namespace Api.Sample
                         factory.AddTextFile(textFileSettings);
                     };
                 })
-                .AddHealthChecks()
-                .AddAspNetMetrics(options => { });
+                .AddHealthChecks()                
+                .AddAspNetMetrics(options => { });            
             //.WithAllPerformanceCounters()
         }
     }
