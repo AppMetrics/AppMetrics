@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
+using App.Metrics.Core;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Sample.Controllers
@@ -48,8 +49,8 @@ namespace Api.Sample.Controllers
 
             _metricsContext.Time(Metrics.Timers.TestTimer, () => Thread.Sleep(15));
             _metricsContext.Time(Metrics.Timers.TestTimer, () => Thread.Sleep(20), "value1");
-            _metricsContext.Time(Metrics.Timers.TestTimer, () => Thread.Sleep(25), "value2");            
-
+            _metricsContext.Time(Metrics.Timers.TestTimer, () => Thread.Sleep(25), "value2");     
+            
             using (_metricsContext.Time(Metrics.Timers.TestTimerTwo))
             {
                 Thread.Sleep(15);

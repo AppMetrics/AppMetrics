@@ -14,22 +14,19 @@ namespace App.Metrics.Internal
 {
     internal sealed class DefaultAdancedMetricsContext : IAdvancedMetricsContext
     {
-        private readonly IMetricsBuilder _builder;
+        private IMetricsDataManager _dataManager;
         private bool _isDisabled;
         private IMetricsRegistry _registry;
-        private IMetricsDataManager _dataManager;
 
         public DefaultAdancedMetricsContext(IMetricsContext context,
             IOptions<AppMetricsOptions> options,
             IMetricsRegistry registry,
-            IMetricsBuilder builder,
             IHealthCheckManager healthCheckManager,
             IMetricsDataManager dataManagerManager)
         {
             if (context == null) throw new ArgumentNullException(nameof(context));
 
             _registry = registry;
-            _builder = builder;
             HealthCheckManager = healthCheckManager;
             _dataManager = dataManagerManager;
             Clock = options.Value.Clock;
@@ -57,7 +54,7 @@ namespace App.Metrics.Internal
             _isDisabled = true;
 
             _registry.Clear();
-            Interlocked.Exchange(ref _registry, new NullMetricsRegistry());            
+            Interlocked.Exchange(ref _registry, new NullMetricsRegistry());
             Interlocked.Exchange(ref _dataManager, new DefaultMetricsDataManager(_registry));
         }
 
@@ -68,12 +65,12 @@ namespace App.Metrics.Internal
 
         public ICounter Counter(CounterOptions options)
         {
-            return Counter(options, () => _builder.BuildCounter(options.Name, options.MeasurementUnit));
+            return Counter(options, () => this.BuildCounter(options));
         }
 
         public void Gauge(GaugeOptions options, Func<double> valueProvider)
         {
-            Gauge(options, () => _builder.BuildGauge(options.Name, options.MeasurementUnit, valueProvider));
+            Gauge(options, () => this.BuildGauge(options, valueProvider));
         }
 
         public void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider)
@@ -83,7 +80,7 @@ namespace App.Metrics.Internal
 
         public IHistogram Histogram(HistogramOptions options)
         {
-            return Histogram(options, () => _builder.BuildHistogram(options.Name, options.MeasurementUnit, options.SamplingType));
+            return Histogram(options, () => this.BuildHistogram(options));
         }
 
         public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramMetric
@@ -97,23 +94,22 @@ namespace App.Metrics.Internal
         {
             //NOTE: Options Resevoir will be ignored since we're defining it with the builder
             //TODO: AH - ^ bit confusing
-            return Histogram(options, () => _builder.BuildHistogram(options.Name, options.MeasurementUnit, builder()));
+            return Histogram(options, () => this.BuildHistogram(options, builder()));
         }
 
         public IMeter Meter(MeterOptions options)
         {
-            return Meter(options, () => _builder.BuildMeter(options.Name, options.MeasurementUnit, options.RateUnit));
+            return Meter(options, () => this.BuildMeter(options));
         }
 
         public IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterMetric
         {
             return _registry.Meter(options, builder);
-        }       
+        }
 
         public ITimer Timer(TimerOptions options)
         {
-            return _registry.Timer(options,
-                () => _builder.BuildTimer(options.Name, options.MeasurementUnit, options.RateUnit, options.DurationUnit, options.SamplingType));
+            return _registry.Timer(options, () => this.BuildTimer(options));
         }
 
         public ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerMetric
@@ -123,12 +119,12 @@ namespace App.Metrics.Internal
 
         public ITimer Timer(TimerOptions options, Func<IHistogramMetric> builder)
         {
-            return Timer(options, () => _builder.BuildTimer(options.Name, options.MeasurementUnit, options.RateUnit, options.DurationUnit, builder()));
+            return Timer(options, () => this.BuildTimer(options, builder()));
         }
 
         public ITimer Timer(TimerOptions options, Func<IReservoir> builder)
         {
-            return Timer(options, () => _builder.BuildTimer(options.Name, options.MeasurementUnit, options.RateUnit, options.DurationUnit, builder()));
+            return Timer(options, () => this.BuildTimer(options, builder()));
         }
     }
 }

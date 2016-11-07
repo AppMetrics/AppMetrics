@@ -55,7 +55,6 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             IMetricsEnvironment environment, IMetricsContext metricsContext)
         {
             services.TryAddTransient<Func<string, IMetricGroupRegistry>>(provider => { return group => new DefaultMetricGroupRegistry(group); });
-            services.TryAddSingleton<IMetricsBuilder, DefaultMetricsBuilder>();
             services.TryAddSingleton<IMetricsRegistry, DefaultMetricsRegistry>();
             services.TryAddSingleton<IMetricsDataManager, DefaultMetricsDataManager>();
             services.TryAddSingleton(typeof(IClock), provider => provider.GetRequiredService<IOptions<AppMetricsOptions>>().Value.Clock);

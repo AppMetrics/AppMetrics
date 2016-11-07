@@ -25,11 +25,10 @@ namespace App.Metrics.Facts.Fixtures
         {
             var options = Microsoft.Extensions.Options.Options.Create(new AppMetricsOptions());
             var healthCheckManager = new DefaultHealthCheckManager(_loggerFactory, () => new ConcurrentDictionary<string, HealthCheck>());
-            var metricsBuilder = new DefaultMetricsBuilder(options.Value.Clock);
             Func<string, IMetricGroupRegistry> newMetricsGroupRegistry = name => new DefaultMetricGroupRegistry(name);
             var registry = new DefaultMetricsRegistry(_loggerFactory, options, new EnvironmentInfoBuilder(_loggerFactory), newMetricsGroupRegistry);
             var metricsDataManager = new DefaultMetricsDataManager(registry);
-            Context = new DefaultMetricsContext(options, registry, metricsBuilder, healthCheckManager, metricsDataManager);
+            Context = new DefaultMetricsContext(options, registry, healthCheckManager, metricsDataManager);
         }
 
         protected virtual void Dispose(bool disposing)

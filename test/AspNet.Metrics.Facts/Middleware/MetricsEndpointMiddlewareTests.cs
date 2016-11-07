@@ -33,7 +33,8 @@ namespace AspNet.Metrics.Facts.Middleware
             _fixture = new MetricsTestFixture(new AppMetricsOptions
             {
                 DefaultGroupName = "testing",
-                DisableMetrics = true
+                DisableMetrics = true,
+                DefaultSamplingType = SamplingType.LongTerm
             });
 
             var result = await _fixture.Client.GetAsync("/metrics");
@@ -47,7 +48,8 @@ namespace AspNet.Metrics.Facts.Middleware
             _fixture = new MetricsTestFixture(new AppMetricsOptions
             {
                 DefaultGroupName = "testing",
-                DisableMetrics = false
+                DisableMetrics = false,
+                DefaultSamplingType = SamplingType.LongTerm
             }, new AspNetMetricsOptions { MetricsEndpoint = new PathString("/metrics-json") });
 
             var result = await _fixture.Client.GetAsync("/metrics");
@@ -61,7 +63,7 @@ namespace AspNet.Metrics.Facts.Middleware
         {
             _fixture = new MetricsTestFixture(new AppMetricsOptions
             {
-                DefaultSamplingType = SamplingType.ExponentiallyDecaying,
+                DefaultSamplingType = SamplingType.LongTerm,
                 DefaultGroupName = "testing",
                 DisableMetrics = false
             }, new AspNetMetricsOptions { MetricsEndpointEnabled = false });
@@ -76,7 +78,7 @@ namespace AspNet.Metrics.Facts.Middleware
         {
             _fixture = new MetricsTestFixture(new AppMetricsOptions
             {
-                DefaultSamplingType = SamplingType.ExponentiallyDecaying,
+                DefaultSamplingType = SamplingType.LongTerm,
                 DefaultGroupName = "testing",
                 DisableMetrics = false,
                 MetricsFilter = new DefaultMetricsFilter().WhereType(MetricType.Counter)

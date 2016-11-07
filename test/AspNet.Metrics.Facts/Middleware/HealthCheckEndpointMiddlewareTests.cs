@@ -26,6 +26,7 @@ namespace AspNet.Metrics.Facts.Middleware
             {
                 DefaultGroupName = "testing",
                 DisableMetrics = false,
+                DefaultSamplingType = SamplingType.LongTerm
             }, enableHealthChecks:false, testAspNetOptions:new AspNetMetricsOptions {HealthEndpointEnabled = false});
 
             var result = await fixture.Client.GetAsync("/health");
@@ -40,6 +41,7 @@ namespace AspNet.Metrics.Facts.Middleware
             {
                 DefaultGroupName = "testing",
                 DisableMetrics = false,
+                DefaultSamplingType = SamplingType.LongTerm
             }, enableHealthChecks: true, testAspNetOptions: new AspNetMetricsOptions { HealthEndpointEnabled = false });
 
             var result = await fixture.Client.GetAsync("/health");
@@ -54,6 +56,7 @@ namespace AspNet.Metrics.Facts.Middleware
             {
                 DefaultGroupName = "testing",
                 DisableMetrics = false,
+                DefaultSamplingType = SamplingType.LongTerm
             }, new AspNetMetricsOptions { HealthEndpointEnabled = false });
 
             var result = await fixture.Client.GetAsync("/health");
@@ -68,6 +71,7 @@ namespace AspNet.Metrics.Facts.Middleware
             {
                 DefaultGroupName = "testing",
                 DisableMetrics = false,
+                DefaultSamplingType = SamplingType.LongTerm
             }, new AspNetMetricsOptions {HealthEndpoint = new PathString("/health-check")});
 
             var result = await fixture.Client.GetAsync("/health");

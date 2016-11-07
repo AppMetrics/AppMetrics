@@ -25,7 +25,6 @@ namespace App.Metrics.Facts
 
             var registry = new DefaultMetricsRegistry(LoggerFactory, options, new EnvironmentInfoBuilder(LoggerFactory), newGroupRegistry);
             return new DefaultMetricsContext(options, registry,
-                new TestMetricsBuilder(clock),
                 new DefaultHealthCheckManager(LoggerFactory, () => new ConcurrentDictionary<string, HealthCheck>()),
                 new DefaultMetricsDataManager(registry));
         }

@@ -19,13 +19,13 @@ namespace AspNet.Metrics.Facts
             var options = Options.Create(new AppMetricsOptions
             {
                 Clock = clock,
-                DefaultGroupName = defaultGroupName
+                DefaultGroupName = defaultGroupName,
+                DefaultSamplingType = SamplingType.LongTerm
             });
             Func<string, IMetricGroupRegistry> newGroupRegistry = name => new DefaultMetricGroupRegistry(name);
             var registry = new DefaultMetricsRegistry(LoggerFactory, options, new EnvironmentInfoBuilder(LoggerFactory), newGroupRegistry);
 
             return new DefaultMetricsContext(options, registry,
-                new TestMetricsBuilder(clock),
                 new DefaultHealthCheckManager(LoggerFactory, () => new ConcurrentDictionary<string, HealthCheck>()),
                 new DefaultMetricsDataManager(registry));
         }

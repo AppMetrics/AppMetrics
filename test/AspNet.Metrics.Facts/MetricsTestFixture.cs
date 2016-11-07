@@ -18,7 +18,8 @@ namespace AspNet.Metrics.Facts
         {
             DefaultGroupName = "testing",
             DisableMetrics = false,
-            Clock = new Clock.TestClock()
+            Clock = new Clock.TestClock(),
+            DefaultSamplingType = SamplingType.LongTerm
         };
 
         private static readonly AspNetMetricsOptions TestAspNetOptions = new AspNetMetricsOptions
