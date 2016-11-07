@@ -65,7 +65,11 @@ namespace App.Metrics.Core
 
         public void Dispose(bool disposing)
         {
-            //TODO: AH - need to dispose anything?
+            if (disposing)
+            {
+                Advanced.DataManager.Reset();
+                _registry?.Clear();                
+            }
         }
 
         public void Gauge(GaugeOptions options, Func<double> valueProvider)

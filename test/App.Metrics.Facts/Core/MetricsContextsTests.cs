@@ -36,7 +36,7 @@ namespace App.Metrics.Facts.Core
             var counterValue = data.Groups.Single().Counters.Single();
             counterValue.Value.Count.Should().Be(1);
 
-            _fixture.Context.Advanced.ResetMetricsValues();
+            _fixture.Context.Advanced.DataManager.Reset();
 
             data = await _fixture.CurrentData(_fixture.Context);
             data.Groups.Should().BeNullOrEmpty();
@@ -58,7 +58,7 @@ namespace App.Metrics.Facts.Core
             var counterValue = data.Groups.Single().Counters.Single();
             counterValue.Value.Count.Should().Be(1);
 
-            _fixture.Context.Advanced.DisableMetrics();
+            _fixture.Context.Advanced.ClearAndDisable();
 
             data = await _fixture.CurrentData(_fixture.Context);
             data.Groups.Should().BeNullOrEmpty();
@@ -185,7 +185,7 @@ namespace App.Metrics.Facts.Core
 
             data.Groups.First(g => g.GroupName == group).Counters.Single().Name.Should().Be("test");
 
-            _fixture.Context.Advanced.ShutdownGroup(group);
+            _fixture.Context.Advanced.DataManager.ShutdownGroup(group);
 
             data = await _fixture.CurrentData(_fixture.Context);
 
@@ -289,12 +289,12 @@ namespace App.Metrics.Facts.Core
             };
             var dataManager = _fixture.Context.Advanced.DataManager;
 
-            var data = await dataManager.GetMetricsDataAsync();
+            var data = await dataManager.GetAsync();
 
             data.Groups.FirstOrDefault(g => g.GroupName == group).Should().BeNull("the group hasn't been added yet");
             _fixture.Context.Advanced.Counter(counterOptions).Increment();
 
-            data = await dataManager.GetMetricsDataAsync();
+            data = await dataManager.GetAsync();
             data.Groups.First(g => g.GroupName == group).Counters.Should().HaveCount(1);
         }
 

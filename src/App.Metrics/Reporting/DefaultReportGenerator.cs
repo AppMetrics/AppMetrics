@@ -25,7 +25,7 @@ namespace App.Metrics.Reporting
 
             reporter.StartReport(metricsContext);
 
-            var data = await metricsContext.Advanced.DataManager.GetMetricsDataAsync();
+            var data = await metricsContext.Advanced.DataManager.GetAsync();
 
             if (filter != default(IMetricsFilter))
             {

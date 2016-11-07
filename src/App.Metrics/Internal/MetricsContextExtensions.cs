@@ -28,7 +28,7 @@ namespace App.Metrics
 
         public static async Task<MetricsDataGroupValueSource> GetDataForAsync(this IMetricsContext metricsContext, string groupName)
         {
-            var data = await metricsContext.Advanced.DataManager.GetMetricsDataAsync();
+            var data = await metricsContext.Advanced.DataManager.GetAsync();
 
             if (data.Groups.Any(m => m.GroupName == groupName))
             {

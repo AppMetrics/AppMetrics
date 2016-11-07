@@ -13,11 +13,11 @@ namespace App.Metrics.Core
     {
         IClock Clock { get; }
 
+        void ClearAndDisable();
+
         IMetricsDataManager DataManager { get; }
 
         IHealthCheckManager HealthCheckManager { get; }
-
-        void DisableMetrics();
 
         ICounter Counter(CounterOptions options);
 
@@ -36,10 +36,6 @@ namespace App.Metrics.Core
         IMeter Meter(MeterOptions options);
 
         IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterMetric;
-
-        void ResetMetricsValues();
-
-        void ShutdownGroup(string groupName);
 
         ITimer Timer(TimerOptions options);
 

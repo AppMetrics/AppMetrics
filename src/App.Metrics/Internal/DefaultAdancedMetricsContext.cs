@@ -37,10 +37,9 @@ namespace App.Metrics.Internal
 
             if (_isDisabled)
             {
-                DisableMetrics();
+                ClearAndDisable();
             }
         }
-
 
         public IClock Clock { get; }
 
@@ -48,7 +47,7 @@ namespace App.Metrics.Internal
 
         public IHealthCheckManager HealthCheckManager { get; }
 
-        public void DisableMetrics()
+        public void ClearAndDisable()
         {
             if (_isDisabled)
             {
@@ -58,7 +57,6 @@ namespace App.Metrics.Internal
             _isDisabled = true;
 
             _registry.Clear();
-            //TODO: AH - combine data manager and registry?
             Interlocked.Exchange(ref _registry, new NullMetricsRegistry());            
             Interlocked.Exchange(ref _dataManager, new DefaultMetricsDataManager(_registry));
         }
@@ -110,17 +108,7 @@ namespace App.Metrics.Internal
         public IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterMetric
         {
             return _registry.Meter(options, builder);
-        }
-
-        public void ResetMetricsValues()
-        {
-            _registry.Clear();
-        }
-
-        public void ShutdownGroup(string groupName)
-        {
-            _registry.RemoveGroup(groupName);
-        }
+        }       
 
         public ITimer Timer(TimerOptions options)
         {

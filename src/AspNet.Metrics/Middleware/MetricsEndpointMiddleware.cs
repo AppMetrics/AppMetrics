@@ -52,7 +52,7 @@ namespace AspNet.Metrics.Middleware
             {
                 Logger.MiddlewareExecuting(GetType());
 
-                var metricsData = await MetricsContext.Advanced.DataManager.GetMetricsDataAsync();
+                var metricsData = await MetricsContext.Advanced.DataManager.GetAsync();
 
                 if (_metricsFilter != null)
                 {

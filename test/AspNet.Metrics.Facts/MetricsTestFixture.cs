@@ -44,7 +44,7 @@ namespace AspNet.Metrics.Facts
 
             TestContext = TestContextHelper.Instance();
 
-            TestContext.Advanced.ResetMetricsValues();
+            TestContext.Advanced.DataManager.Reset();
 
             Server = new TestServer(new WebHostBuilder()
                 .ConfigureServices(services =>
@@ -91,7 +91,6 @@ namespace AspNet.Metrics.Facts
 
         public void Dispose()
         {
-            TestContext.Advanced.ResetMetricsValues();
             TestContext.Dispose();
             Client.Dispose();
             Server.Dispose();

@@ -29,10 +29,21 @@ namespace App.Metrics.Internal
             _filter = filter;
         }
 
-        public async Task<MetricsDataValueSource> GetMetricsDataAsync()
+        public async Task<MetricsDataValueSource> GetAsync()
         {
-            var data = await _manager.GetMetricsDataAsync();
+            var data = await _manager.GetAsync();
             return data.Filter(_filter);
+        }
+
+        public void Reset()
+        {
+            //TODO: AH - filter metrics via other means?
+            _manager.Reset();
+        }
+
+        public void ShutdownGroup(string groupName)
+        {
+            _manager.ShutdownGroup(groupName);
         }
     }
 }

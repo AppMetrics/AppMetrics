@@ -63,7 +63,7 @@ namespace Api.Sample.Controllers
             using (_metricsContext.Time(Metrics.Timers.TestTimerTwo, "value2"))
             {
                 Thread.Sleep(25);
-            }
+            }            
 
             return new[] { "value1", "value2" };
         }

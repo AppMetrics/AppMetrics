@@ -31,7 +31,7 @@ namespace App.Metrics.Facts.Core
             counter.Should().BeOfType<CustomCounter>();
             counter.Increment();
 
-            var data = await _fixture.Context.Advanced.DataManager.GetMetricsDataAsync();
+            var data = await _fixture.Context.Advanced.DataManager.GetAsync();
             var group = data.Groups.Single();
 
             group.Counters.Single().Value.Count.Should().Be(10L);

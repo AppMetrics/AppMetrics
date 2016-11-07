@@ -16,6 +16,10 @@ namespace App.Metrics
         /// <summary>
         ///     Returns the current metrics data for the context for which this provider has been created.
         /// </summary>
-        Task<MetricsDataValueSource> GetMetricsDataAsync();
+        Task<MetricsDataValueSource> GetAsync();
+
+        void Reset();
+
+        void ShutdownGroup(string groupName);
     }
 }
