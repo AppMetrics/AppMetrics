@@ -31,8 +31,6 @@ namespace App.Metrics.Core
 
         IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramMetric;
 
-        IHistogram Histogram(HistogramOptions options, Func<IReservoir> builder);
-
         IMeter Meter(MeterOptions options);
 
         IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterMetric;
@@ -42,7 +40,5 @@ namespace App.Metrics.Core
         ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerMetric;
 
         ITimer Timer(TimerOptions options, Func<IHistogramMetric> builder);
-
-        ITimer Timer(TimerOptions options, Func<IReservoir> builder);
     }
 }

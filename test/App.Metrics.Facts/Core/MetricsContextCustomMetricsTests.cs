@@ -62,9 +62,10 @@ namespace App.Metrics.Facts.Core
             var timerOptions = new TimerOptions
             {
                 Name = "custom",
-                MeasurementUnit = Unit.Calls
+                MeasurementUnit = Unit.Calls,
+                WithReservoir = () => reservoir as IReservoir
             };
-            var timer = _fixture.Context.Advanced.Timer(timerOptions, () => (IReservoir)reservoir);
+            var timer = _fixture.Context.Advanced.Timer(timerOptions);
 
             timer.Record(10L, TimeUnit.Nanoseconds);
 

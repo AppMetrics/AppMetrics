@@ -25,6 +25,11 @@ namespace App.Metrics.Core
             Advanced = new DefaultAdancedMetricsContext(this, options, _registry, healthCheckManager, metricsDataManager);
         }
 
+        ~DefaultMetricsContext()
+        {
+            Dispose(true);
+        }
+
         public IAdvancedMetricsContext Advanced { get; }
 
         public string ContextName { get; }

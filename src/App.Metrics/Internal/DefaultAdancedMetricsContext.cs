@@ -80,21 +80,17 @@ namespace App.Metrics.Internal
 
         public IHistogram Histogram(HistogramOptions options)
         {
+            if (options.WithReservoir != null)
+            {
+                return Histogram(options, () => this.BuildHistogram(options, options.WithReservoir()));
+            }
+
             return Histogram(options, () => this.BuildHistogram(options));
         }
 
         public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramMetric
-        {
-            //NOTE: Options Resevoir will be ignored the builder should specify
-            //TODO: AH - ^ bit confusing
+        {            
             return _registry.Histogram(options, builder);
-        }
-
-        public IHistogram Histogram(HistogramOptions options, Func<IReservoir> builder)
-        {
-            //NOTE: Options Resevoir will be ignored since we're defining it with the builder
-            //TODO: AH - ^ bit confusing
-            return Histogram(options, () => this.BuildHistogram(options, builder()));
         }
 
         public IMeter Meter(MeterOptions options)
@@ -109,6 +105,11 @@ namespace App.Metrics.Internal
 
         public ITimer Timer(TimerOptions options)
         {
+            if (options.WithReservoir != null)
+            {
+                return Timer(options, () => this.BuildTimer(options, options.WithReservoir()));
+            }
+
             return _registry.Timer(options, () => this.BuildTimer(options));
         }
 
@@ -121,10 +122,6 @@ namespace App.Metrics.Internal
         {
             return Timer(options, () => this.BuildTimer(options, builder()));
         }
-
-        public ITimer Timer(TimerOptions options, Func<IReservoir> builder)
-        {
-            return Timer(options, () => this.BuildTimer(options, builder()));
-        }
+      
     }
 }
