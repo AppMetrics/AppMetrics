@@ -8,18 +8,17 @@ using App.Metrics;
 using AppMetrics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace AspNet.Metrics.Middleware
 {
     public class PostAndPutRequestSizeHistogramMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
         public PostAndPutRequestSizeHistogramMiddleware(RequestDelegate next,
-            IOptions<AspNetMetricsOptions> options,
+            AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetricsContext metricsContext)
-            : base(next, options, loggerFactory, metricsContext)
-        {            
+            : base(next, aspNetOptions, loggerFactory, metricsContext)
+        {
         }
 
         public async Task Invoke(HttpContext context)

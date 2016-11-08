@@ -8,7 +8,6 @@ using App.Metrics;
 using App.Metrics.Serialization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace AspNet.Metrics.Middleware
 {
@@ -21,11 +20,11 @@ namespace AspNet.Metrics.Middleware
 
         public MetricsEndpointMiddleware(RequestDelegate next,
             IMetricsFilter metricsFilter,
-            IOptions<AspNetMetricsOptions> options,
+            AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetricsContext metricsContext,
             IMetricDataSerializer serializer)
-            : base(next, options, loggerFactory, metricsContext)
+            : base(next, aspNetOptions, loggerFactory, metricsContext)
         {
             if (next == null)
             {

@@ -24,7 +24,7 @@ namespace App.Metrics
             Clock = Utils.Clock.Default;
         }
 
-        public IClock Clock { get; set; }
+        public IClock Clock { get; set; } //TODO: AH - remove clock elsewhere
 
         public string DefaultGroupName { get; set; }
 
@@ -34,7 +34,7 @@ namespace App.Metrics
 
         public string GlobalContextName { get; set; }
 
-        public IMetricsFilter MetricsFilter { get; set; }
+        public IMetricsFilter MetricsFilter { get; set; } //TODO: AH - remove filter elsewhere
 
         private static string CleanName(string name)
         {

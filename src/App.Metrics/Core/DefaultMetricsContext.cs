@@ -4,7 +4,6 @@
 
 using System;
 using App.Metrics.Internal;
-using Microsoft.Extensions.Options;
 
 namespace App.Metrics.Core
 {
@@ -13,21 +12,19 @@ namespace App.Metrics.Core
         private readonly IMetricsRegistry _registry;
 
         public DefaultMetricsContext(
-            IOptions<AppMetricsOptions> options,
+            AppMetricsOptions options,
             IMetricsRegistry registry,
-            IHealthCheckManager healthCheckManager,
-            IMetricsDataManager metricsDataManager)
+            IAdvancedMetricsContext advancedContext)
         {
-            _registry = registry;
+            if (options == null) throw new ArgumentNullException(nameof(options));
+            if (registry == null) throw new ArgumentNullException(nameof(registry));
+            if (advancedContext == null) throw new ArgumentNullException(nameof(advancedContext));
 
-            ContextName = options.Value.GlobalContextName;
+            _registry = options.DisableMetrics ? new NullMetricsRegistry() : registry;
 
-            Advanced = new DefaultAdancedMetricsContext(this, options, _registry, healthCheckManager, metricsDataManager);
-        }
+            ContextName = options.GlobalContextName;
 
-        ~DefaultMetricsContext()
-        {
-            Dispose(true);
+            Advanced = advancedContext;
         }
 
         public IAdvancedMetricsContext Advanced { get; }
@@ -52,20 +49,6 @@ namespace App.Metrics.Core
         public void Decrement(CounterOptions options)
         {
             _registry.Counter(options, () => Advanced.BuildCounter(options)).Decrement();
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        public void Dispose(bool disposing)
-        {
-            if (!disposing) return;
-
-            Advanced.DataManager.Reset();
-            _registry?.Clear();
         }
 
         public void Gauge(GaugeOptions options, Func<double> valueProvider)

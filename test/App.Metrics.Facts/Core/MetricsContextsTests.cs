@@ -58,7 +58,7 @@ namespace App.Metrics.Facts.Core
             var counterValue = data.Groups.Single().Counters.Single();
             counterValue.Value.Count.Should().Be(1);
 
-            _fixture.Context.Advanced.ClearAndDisable();
+            _fixture.Context.Advanced.Disable();
 
             data = await _fixture.CurrentData(_fixture.Context);
             data.Groups.Should().BeNullOrEmpty();

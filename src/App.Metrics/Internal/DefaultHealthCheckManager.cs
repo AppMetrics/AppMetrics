@@ -20,11 +20,6 @@ namespace App.Metrics.Internal
         public DefaultHealthCheckManager(ILoggerFactory loggerFactory,
             Func<IReadOnlyDictionary<string, HealthCheck>> healthChecks)
         {
-            if (loggerFactory == null)
-            {
-                throw new ArgumentNullException(nameof(loggerFactory));
-            }
-
             _logger = loggerFactory.CreateLogger<DefaultHealthCheckManager>();
             _healthChecks = healthChecks;
         }

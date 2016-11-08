@@ -12,14 +12,14 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
 {
     public static class AppMetricsReportingCoreBuilderExtensions
     {
-        public static IMetricsHost AddReporting(this IMetricsHost host)
+        public static IMetricsHostBuilder AddReporting(this IMetricsHostBuilder host)
         {
             host.AddReporting(setupAction: null);
             return host;
         }
 
-        public static IMetricsHost AddReporting(
-            this IMetricsHost host,
+        public static IMetricsHostBuilder AddReporting(
+            this IMetricsHostBuilder host,
             Action<AppMetricsReportingOptions> setupAction)
         {
             if (host == null) throw new ArgumentNullException(nameof(host));

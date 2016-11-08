@@ -9,14 +9,14 @@ namespace App.Metrics.DependencyInjection
 {
     public static class AppMetricsHealthCoreBuilderExtensions
     {
-        public static IMetricsHost AddHealthChecks(this IMetricsHost host)
+        public static IMetricsHostBuilder AddHealthChecks(this IMetricsHostBuilder host)
         {
             host.AddHealthChecks(setupAction: null);
             return host;
         }
 
-        public static IMetricsHost AddHealthChecks(
-            this IMetricsHost host,
+        public static IMetricsHostBuilder AddHealthChecks(
+            this IMetricsHostBuilder host,
             Action<AppMetricsHealthCheckOptions> setupAction)
         {
             if (host == null) throw new ArgumentNullException(nameof(host));

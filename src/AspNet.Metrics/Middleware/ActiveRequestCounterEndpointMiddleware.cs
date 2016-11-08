@@ -6,30 +6,28 @@ using System;
 using System.Threading.Tasks;
 using App.Metrics;
 using AppMetrics;
-using AspNet.Metrics.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace AspNet.Metrics.Middleware
 {
     public class ActiveRequestCounterEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
         public ActiveRequestCounterEndpointMiddleware(RequestDelegate next,
-            IOptions<AspNetMetricsOptions> options,
+            AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetricsContext metricsContext)
-            : base(next, options, loggerFactory, metricsContext)
+            : base(next, aspNetOptions, loggerFactory, metricsContext)
         {
             if (next == null)
             {
                 throw new ArgumentNullException(nameof(next));
             }
 
-            if (options == null)
+            if (aspNetOptions == null)
             {
-                throw new ArgumentNullException(nameof(options));
-            }            
+                throw new ArgumentNullException(nameof(aspNetOptions));
+            }
         }
 
         public async Task Invoke(HttpContext context)

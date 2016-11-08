@@ -2,14 +2,12 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using System;
 using System.Net;
 using System.Threading.Tasks;
 using App.Metrics;
 using AppMetrics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace AspNet.Metrics.Middleware
 {
@@ -18,10 +16,10 @@ namespace AspNet.Metrics.Middleware
         private const string TimerItemsKey = "__Mertics.PerRequestStartTime__";
 
         public PerRequestTimerMiddleware(RequestDelegate next,
-            IOptions<AspNetMetricsOptions> options,
+            AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetricsContext metricsContext)
-            : base(next, options, loggerFactory, metricsContext)
+            : base(next, aspNetOptions, loggerFactory, metricsContext)
         {
         }
 

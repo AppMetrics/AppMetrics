@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading;
 using App.Metrics;
-using App.Metrics.DependencyInjection;
 using App.Metrics.Extensions.Reporting.TextFile;
-using App.Metrics.Formatters.Json;
 using App.Metrics.Reporting;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
@@ -13,8 +11,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
+using App.Metrics.Formatters.Json;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using App.Metrics.DependencyInjection;
 
 namespace Api.Sample
 {
@@ -95,8 +95,8 @@ namespace Api.Sample
                         factory.AddTextFile(textFileSettings);
                     };
                 })
-                .AddHealthChecks()                
-                .AddAspNetMetrics(options => { });            
+                .AddHealthChecks()
+                .AddAspNetMetrics(options => { });
             //.WithAllPerformanceCounters()
         }
     }

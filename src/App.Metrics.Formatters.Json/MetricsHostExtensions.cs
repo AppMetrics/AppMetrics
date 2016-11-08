@@ -10,17 +10,12 @@ namespace App.Metrics.Formatters.Json
 {
     public static class MetricsHostExtensions
     {
-        public static IMetricsHost AddJsonSerialization(this IMetricsHost host)
+        public static IMetricsHostBuilder AddJsonSerialization(this IMetricsHostBuilder host)
         {
-            AddJsonNetCoreServices(host.Services);
+            host.Services.Replace(ServiceDescriptor.Transient<IMetricDataSerializer, MetricDataSerializer>());
+            host.Services.Replace(ServiceDescriptor.Transient<IHealthStatusSerializer, HealthStatusSerializer>());
 
             return host;
-        }
-
-        internal static void AddJsonNetCoreServices(IServiceCollection services)
-        {
-            services.Replace(ServiceDescriptor.Transient<IMetricDataSerializer, MetricDataSerializer>());
-            services.Replace(ServiceDescriptor.Transient<IHealthStatusSerializer, HealthStatusSerializer>());
         }
     }
 }

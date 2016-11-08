@@ -4,7 +4,6 @@
 
 using System;
 using App.Metrics.Data;
-using App.Metrics.Sampling;
 using App.Metrics.Utils;
 
 namespace App.Metrics.Core
@@ -13,8 +12,6 @@ namespace App.Metrics.Core
     {
         IClock Clock { get; }
 
-        void ClearAndDisable();
-
         IMetricsDataManager DataManager { get; }
 
         IHealthCheckManager HealthCheckManager { get; }
@@ -22,6 +19,8 @@ namespace App.Metrics.Core
         ICounter Counter(CounterOptions options);
 
         ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterMetric;
+
+        void Disable();
 
         void Gauge(GaugeOptions options, Func<double> valueProvider);
 

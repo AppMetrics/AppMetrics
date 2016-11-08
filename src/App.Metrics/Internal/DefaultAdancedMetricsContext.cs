@@ -6,36 +6,28 @@ using System;
 using System.Threading;
 using App.Metrics.Core;
 using App.Metrics.Data;
-using App.Metrics.Sampling;
 using App.Metrics.Utils;
-using Microsoft.Extensions.Options;
 
 namespace App.Metrics.Internal
 {
     internal sealed class DefaultAdancedMetricsContext : IAdvancedMetricsContext
     {
         private IMetricsDataManager _dataManager;
-        private bool _isDisabled;
         private IMetricsRegistry _registry;
 
-        public DefaultAdancedMetricsContext(IMetricsContext context,
-            IOptions<AppMetricsOptions> options,
+        public DefaultAdancedMetricsContext(
+            AppMetricsOptions options,
             IMetricsRegistry registry,
             IHealthCheckManager healthCheckManager,
             IMetricsDataManager dataManagerManager)
         {
-            if (context == null) throw new ArgumentNullException(nameof(context));
+            if (options == null) throw new ArgumentNullException(nameof(options));
 
-            _registry = registry;
+            Clock = options.Clock;
             HealthCheckManager = healthCheckManager;
-            _dataManager = dataManagerManager;
-            Clock = options.Value.Clock;
-            _isDisabled = options.Value.DisableMetrics;
 
-            if (_isDisabled)
-            {
-                ClearAndDisable();
-            }
+            _dataManager = dataManagerManager;
+            _registry = registry;
         }
 
         public IClock Clock { get; }
@@ -44,16 +36,13 @@ namespace App.Metrics.Internal
 
         public IHealthCheckManager HealthCheckManager { get; }
 
-        public void ClearAndDisable()
+        public void Disable()
         {
-            if (_isDisabled)
+            if (_registry is NullMetricsRegistry)
             {
                 return;
             }
 
-            _isDisabled = true;
-
-            _registry.Clear();
             Interlocked.Exchange(ref _registry, new NullMetricsRegistry());
             Interlocked.Exchange(ref _dataManager, new DefaultMetricsDataManager(_registry));
         }
@@ -89,7 +78,7 @@ namespace App.Metrics.Internal
         }
 
         public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramMetric
-        {            
+        {
             return _registry.Histogram(options, builder);
         }
 
@@ -122,6 +111,5 @@ namespace App.Metrics.Internal
         {
             return Timer(options, () => this.BuildTimer(options, builder()));
         }
-      
     }
 }

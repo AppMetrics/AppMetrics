@@ -25,8 +25,8 @@ namespace App.Metrics.DependencyInjection
             services.AddHealthChecks(metricsEnvironment);
         }
 
-        internal static IMetricsHost AddMetricsHealthCheckCore(
-            this IMetricsHost host,
+        internal static IMetricsHostBuilder AddMetricsHealthCheckCore(
+            this IMetricsHostBuilder host,
             Action<AppMetricsHealthCheckOptions> setupAction)
         {
             if (host == null) throw new ArgumentNullException(nameof(host));
@@ -44,7 +44,7 @@ namespace App.Metrics.DependencyInjection
             return host;
         }
 
-        internal static IMetricsHost AddMetricsHealthCheckCore(this IMetricsHost host)
+        internal static IMetricsHostBuilder AddMetricsHealthCheckCore(this IMetricsHostBuilder host)
         {
             if (host == null)
             {

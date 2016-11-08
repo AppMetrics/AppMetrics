@@ -9,26 +9,28 @@ using App.Metrics;
 using App.Metrics.Serialization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace AspNet.Metrics.Middleware
 {
     public class HealthCheckEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
+        private readonly AppMetricsOptions _options;
         private readonly IHealthStatusSerializer _serializer;
 
         public HealthCheckEndpointMiddleware(RequestDelegate next,
-            IOptions<AspNetMetricsOptions> options,
+            AppMetricsOptions options,
+            AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetricsContext metricsContext,
             IHealthStatusSerializer serializer)
-            : base(next, options, loggerFactory, metricsContext)
+            : base(next, aspNetOptions, loggerFactory, metricsContext)
         {
             if (serializer == null)
             {
                 throw new ArgumentNullException(nameof(serializer));
             }
 
+            _options = options;
             _serializer = serializer;
         }
 

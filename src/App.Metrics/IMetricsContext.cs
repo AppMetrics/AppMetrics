@@ -8,7 +8,7 @@ using App.Metrics.Utils;
 
 namespace App.Metrics
 {
-    public interface IMetricsContext : IDisposable, IHideObjectMembers
+    public interface IMetricsContext : IHideObjectMembers
     {
         string ContextName { get; }
 

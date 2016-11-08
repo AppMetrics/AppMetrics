@@ -23,12 +23,13 @@ namespace App.Metrics.Facts.Fixtures
 
         public DefaultMetricsContextTestFixture()
         {
-            var options = Microsoft.Extensions.Options.Options.Create(new AppMetricsOptions());
-            var healthCheckManager = new DefaultHealthCheckManager(_loggerFactory, () => new ConcurrentDictionary<string, HealthCheck>());
+            var options = new AppMetricsOptions();
+            var healthCheckManager = new DefaultHealthCheckManager(_loggerFactory.CreateLogger<DefaultHealthCheckManager>(), () => new ConcurrentDictionary<string, HealthCheck>());
             Func<string, IMetricGroupRegistry> newMetricsGroupRegistry = name => new DefaultMetricGroupRegistry(name);
-            var registry = new DefaultMetricsRegistry(_loggerFactory, options, new EnvironmentInfoBuilder(_loggerFactory), newMetricsGroupRegistry);
+            var registry = new DefaultMetricsRegistry(_loggerFactory.CreateLogger<DefaultMetricsRegistry>(), options, new EnvironmentInfoBuilder(_loggerFactory), newMetricsGroupRegistry);
             var metricsDataManager = new DefaultMetricsDataManager(registry);
-            Context = new DefaultMetricsContext(options, registry, healthCheckManager, metricsDataManager);
+            var advancedContext = new DefaultAdancedMetricsContext(options, registry, healthCheckManager, metricsDataManager);
+            Context = new DefaultMetricsContext(options, registry, advancedContext);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -36,7 +37,6 @@ namespace App.Metrics.Facts.Fixtures
             if (!disposing) return;
 
             Context?.Advanced.DataManager.Reset();
-            Context?.Dispose();
         }
 
         public void Dispose()

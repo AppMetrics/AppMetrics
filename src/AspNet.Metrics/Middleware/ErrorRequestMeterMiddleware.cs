@@ -9,7 +9,6 @@ using App.Metrics;
 using AppMetrics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace AspNet.Metrics.Middleware
 {
@@ -20,10 +19,10 @@ namespace AspNet.Metrics.Middleware
     public class ErrorRequestMeterMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
         public ErrorRequestMeterMiddleware(RequestDelegate next,
-            IOptions<AspNetMetricsOptions> options,
+            AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetricsContext metricsContext)
-            : base(next, options, loggerFactory, metricsContext)
+            : base(next, aspNetOptions, loggerFactory, metricsContext)
 
         {
             if (next == null)
@@ -31,9 +30,9 @@ namespace AspNet.Metrics.Middleware
                 throw new ArgumentNullException(nameof(next));
             }
 
-            if (options == null)
+            if (aspNetOptions == null)
             {
-                throw new ArgumentNullException(nameof(options));
+                throw new ArgumentNullException(nameof(aspNetOptions));
             }
 
             if (metricsContext == null)

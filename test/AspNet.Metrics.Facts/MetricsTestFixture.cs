@@ -1,100 +1,33 @@
 ﻿using System;
 using System.Net.Http;
 using App.Metrics;
-using App.Metrics.DependencyInjection;
-using App.Metrics.Utils;
-using Microsoft.AspNet.Builder;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AspNet.Metrics.Facts
 {
-    public class MetricsTestFixture : IDisposable
+    public class MetricsHostTestFixture<TStartup> : IDisposable where TStartup : class
     {
-        private static readonly AppMetricsOptions TestOptions = new AppMetricsOptions
+        private readonly TestServer _server;
+
+        public MetricsHostTestFixture()
         {
-            DefaultGroupName = "testing",
-            DisableMetrics = false,
-            Clock = new Clock.TestClock(),
-            DefaultSamplingType = SamplingType.LongTerm
-        };
+            var builder = new WebHostBuilder().UseStartup<TStartup>();
+            _server = new TestServer(builder);
 
-        private static readonly AspNetMetricsOptions TestAspNetOptions = new AspNetMetricsOptions
-        {
-            MetricsTextEndpointEnabled = true,
-            HealthEndpointEnabled = true,
-            MetricsEndpointEnabled = true,
-            PingEndpointEnabled = true
-        };
-
-        public MetricsTestFixture(AppMetricsOptions testOptions = null,
-            AspNetMetricsOptions testAspNetOptions = null, bool enableHealthChecks = true)
-        {
-            if (testOptions == null)
-            {
-                testOptions = TestOptions;
-            }
-
-            if (testAspNetOptions == null)
-            {
-                testAspNetOptions = TestAspNetOptions;
-            }
-
-            TestContext = TestContextHelper.Instance();
-
-            TestContext.Advanced.DataManager.Reset();
-
-            Server = new TestServer(new WebHostBuilder()
-                .ConfigureServices(services =>
-                {
-                    services.AddLogging();
-                    services.AddRouting(options => { options.LowercaseUrls = true; });
-                    services.AddMvc(options => { options.AddMetricsResourceFilter(); });
-                    services.AddMetrics(options =>
-                    {
-                        options.DefaultSamplingType = testOptions.DefaultSamplingType;
-                        options.DefaultGroupName = testOptions.DefaultGroupName;
-                        options.DisableMetrics = testOptions.DisableMetrics;
-                    }, TestContext)
-                    .AddHealthChecks(options =>
-                        {
-                            options.IsEnabled = enableHealthChecks;
-                        })
-                    .AddAspNetMetrics(options =>
-                        {
-                            options.HealthEndpointEnabled = testAspNetOptions.HealthEndpointEnabled;
-                            options.MetricsEndpointEnabled = testAspNetOptions.MetricsEndpointEnabled;
-                            options.MetricsTextEndpointEnabled = testAspNetOptions.MetricsTextEndpointEnabled;
-                            options.PingEndpointEnabled = testAspNetOptions.PingEndpointEnabled;
-                            options.HealthEndpoint = testAspNetOptions.HealthEndpoint;
-                            options.MetricsEndpoint = testAspNetOptions.MetricsEndpoint;
-                            options.MetricsTextEndpoint = testAspNetOptions.MetricsTextEndpoint;
-                            options.PingEndpoint = testAspNetOptions.PingEndpoint;
-                        });
-                })
-                .Configure(app =>
-                {
-                    app.UseMetrics();
-                    app.UseMvc();
-                }));
-
-            Client = Server.CreateClient();
+            Client = _server.CreateClient();
+            Context = _server.Host.Services.GetRequiredService<IMetricsContext>();
         }
 
-        public HttpClient Client { get; set; }
+        public HttpClient Client { get; }
 
-        public TestServer Server { get; set; }
-
-        public IMetricsContext TestContext { get; set; }
+        public IMetricsContext Context { get; }
 
         public void Dispose()
         {
-            TestContext.Dispose();
             Client.Dispose();
-            Server.Dispose();
+            _server.Dispose();
         }
     }
 }

@@ -8,7 +8,6 @@ using App.Metrics;
 using AspNet.Metrics.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace AspNet.Metrics.Middleware
 {
@@ -18,10 +17,10 @@ namespace AspNet.Metrics.Middleware
         private readonly ITimer _requestTimer;
 
         public RequestTimerMiddleware(RequestDelegate next,
-            IOptions<AspNetMetricsOptions> options,
+            AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetricsContext metricsContext)
-            : base(next, options, loggerFactory, metricsContext)
+            : base(next, aspNetOptions, loggerFactory, metricsContext)
         {
             _requestTimer = MetricsContext.Advanced
                 .Timer(AspNetMetricsRegistry.Groups.WebRequests.Timers.WebRequestTimer);

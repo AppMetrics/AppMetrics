@@ -8,13 +8,12 @@ using App.Metrics.Reporting;
 using Microsoft.Extensions.Options;
 
 // ReSharper disable CheckNamespace
-
 namespace Microsoft.Extensions.DependencyInjection.Extensions
 // ReSharper restore CheckNamespace
 {
     internal static class MetricsReportingCoreServiceCollectionExtensions
     {
-        internal static IMetricsHost AddMetricsReportingCore(this IMetricsHost host)
+        internal static IMetricsHostBuilder AddMetricsReportingCore(this IMetricsHostBuilder host)
         {
             if (host == null)
             {
@@ -24,8 +23,8 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             return AddMetricsReportingCore(host, setupAction: null);
         }
 
-        internal static IMetricsHost AddMetricsReportingCore(
-            this IMetricsHost host,
+        internal static IMetricsHostBuilder AddMetricsReportingCore(
+            this IMetricsHostBuilder host,
             Action<AppMetricsReportingOptions> setupAction)
         {
             if (host == null) throw new ArgumentNullException(nameof(host));

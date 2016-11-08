@@ -9,14 +9,13 @@ using System.Threading.Tasks;
 using App.Metrics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace AspNet.Metrics.Middleware
 {
     public abstract class AppMetricsMiddleware<TOptions> where TOptions : AspNetMetricsOptions, new()
     {
         protected AppMetricsMiddleware(RequestDelegate next,
-            IOptions<TOptions> options,
+            TOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetricsContext metricsContext)
         {
@@ -25,9 +24,9 @@ namespace AspNet.Metrics.Middleware
                 throw new ArgumentNullException(nameof(next));
             }
 
-            if (options == null)
+            if (aspNetOptions == null)
             {
-                throw new ArgumentNullException(nameof(options));
+                throw new ArgumentNullException(nameof(aspNetOptions));
             }
 
             if (loggerFactory == null)
@@ -40,7 +39,7 @@ namespace AspNet.Metrics.Middleware
                 throw new ArgumentNullException(nameof(metricsContext));
             }
 
-            Options = options.Value;
+            Options = aspNetOptions;
             Logger = loggerFactory.CreateLogger(this.GetType().FullName);
             MetricsContext = metricsContext;
 
@@ -70,7 +69,7 @@ namespace AspNet.Metrics.Middleware
             return !Options.IgnoredRequestPatterns.Any(ignorePattern => ignorePattern.IsMatch(context.Request.Path.ToString().TrimStart('/')));
         }
 
-        protected Task WriteResponseAsync(HttpContext context, string content, string contentType, 
+        protected Task WriteResponseAsync(HttpContext context, string content, string contentType,
             HttpStatusCode code = HttpStatusCode.OK)
         {
             context.Response.Headers["Content-Type"] = new[] { contentType };

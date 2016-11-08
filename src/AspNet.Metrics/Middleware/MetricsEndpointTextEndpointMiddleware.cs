@@ -7,7 +7,6 @@ using App.Metrics;
 using App.Metrics.Reporting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace AspNet.Metrics.Middleware
 {
@@ -19,10 +18,10 @@ namespace AspNet.Metrics.Middleware
 
         public MetricsEndpointTextEndpointMiddleware(RequestDelegate next,
             IMetricsFilter metricsFilter,
-            IOptions<AspNetMetricsOptions> options,
+            AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetricsContext metricsContext)
-            : base(next, options, loggerFactory, metricsContext)
+            : base(next, aspNetOptions, loggerFactory, metricsContext)
         {
             _metricsFilter = metricsFilter;
             _stringReporter = new StringReporter();

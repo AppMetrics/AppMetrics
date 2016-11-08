@@ -11,35 +11,34 @@ using App.Metrics.Data;
 using App.Metrics.Infrastructure;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace App.Metrics.Internal
 {
     internal sealed class DefaultMetricsRegistry : IMetricsRegistry
     {
         private readonly IClock _clock;
-        private readonly ILogger _logger;
         private readonly string _defaultGroupName;
         private readonly SamplingType _defaultSamplingType;
-        private readonly string _globalContextName;
         private readonly EnvironmentInfoBuilder _environmentInfoBuilder;
+        private readonly string _globalContextName;
 
         private readonly ConcurrentDictionary<string, IMetricGroupRegistry> _groups = new ConcurrentDictionary<string, IMetricGroupRegistry>();
+        private readonly ILogger _logger;
         private readonly Func<string, IMetricGroupRegistry> _newGroupRegistry;
 
         public DefaultMetricsRegistry(
             ILoggerFactory loggerFactory,
-            IOptions<AppMetricsOptions> options,
+            AppMetricsOptions options,
             EnvironmentInfoBuilder environmentInfoBuilder,
             Func<string, IMetricGroupRegistry> newGroupRegistry)
         {
-            _logger = loggerFactory.CreateLogger<DefaultMetricsRegistry>();
+            _logger = loggerFactory.CreateLogger<DefaultMetricGroupRegistry>();
             _environmentInfoBuilder = environmentInfoBuilder;
             _newGroupRegistry = newGroupRegistry;
-            _defaultGroupName = options.Value.DefaultGroupName;
-            _defaultSamplingType = options.Value.DefaultSamplingType;
-            _globalContextName = options.Value.GlobalContextName;
-            _clock = options.Value.Clock;
+            _defaultGroupName = options.DefaultGroupName;
+            _defaultSamplingType = options.DefaultSamplingType;
+            _globalContextName = options.GlobalContextName;
+            _clock = options.Clock;
             _groups.TryAdd(_defaultGroupName, newGroupRegistry(_defaultGroupName));
         }
 
@@ -169,6 +168,6 @@ namespace App.Metrics.Internal
             {
                 action(group);
             }
-        }        
+        }
     }
 }

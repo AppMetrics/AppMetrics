@@ -6,6 +6,7 @@ using System;
 using AspNet.Metrics;
 using AspNet.Metrics.Internal;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
@@ -13,15 +14,15 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class AspNetMetricsCoreBuilderExtensions
     {
-        public static IMetricsHost AddAspNetMetrics(
-            this IMetricsHost host)
+        public static IMetricsHostBuilder AddAspNetMetrics(
+            this IMetricsHostBuilder host)
         {
             host.AddAspNetMetrics(setupAction: null);
             return host;
         }
 
-        public static IMetricsHost AddAspNetMetrics(
-            this IMetricsHost host,
+        public static IMetricsHostBuilder AddAspNetMetrics(
+            this IMetricsHostBuilder host,
             Action<AspNetMetricsOptions> setupAction)
         {
             if (host == null) throw new ArgumentNullException(nameof(host));
@@ -41,6 +42,7 @@ namespace Microsoft.Extensions.DependencyInjection
         internal static void AddAspNetMetricsCoreServices(IServiceCollection services)
         {
             services.TryAddSingleton<AspNetMetricsMarkerService, AspNetMetricsMarkerService>();
+            services.TryAddSingleton(provider => provider.GetRequiredService<IOptions<AspNetMetricsOptions>>().Value);
 
             //TODO: AH - remove this or add setup config here?
             //services.TryAddEnumerable(

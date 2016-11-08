@@ -8,7 +8,7 @@ using App.Metrics;
 namespace Microsoft.Extensions.DependencyInjection
 // ReSharper restore CheckNamespace
 {
-    public interface IMetricsHost
+    public interface IMetricsHostBuilder
     {
         IServiceCollection Services { get; }
 

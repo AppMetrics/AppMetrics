@@ -9,9 +9,9 @@ using App.Metrics;
 namespace Microsoft.Extensions.DependencyInjection
 // ReSharper restore CheckNamespace
 {
-    internal class MetricsHost : IMetricsHost
+    internal class MetricsHostBuilder : IMetricsHostBuilder
     {
-        internal MetricsHost(IServiceCollection services, IMetricsEnvironment environment)
+        internal MetricsHostBuilder(IServiceCollection services, IMetricsEnvironment environment)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
