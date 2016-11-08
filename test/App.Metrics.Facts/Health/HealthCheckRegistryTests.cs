@@ -19,8 +19,7 @@ namespace App.Metrics.Facts.Health
         public HealthCheckRegistryTests()
         {
             _healthCheckFactory = new HealthCheckFactory(_healthChecks);
-            _healthCheckManager = new DefaultHealthCheckManager(LoggerFactory.CreateLogger<DefaultHealthCheckManager>(),
-                () => _healthCheckFactory.Checks);
+            _healthCheckManager = new DefaultHealthCheckManager(LoggerFactory, () => _healthCheckFactory.Checks);
         }
 
         [Fact]

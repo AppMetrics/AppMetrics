@@ -24,9 +24,9 @@ namespace App.Metrics.Facts.Fixtures
         public DefaultMetricsContextTestFixture()
         {
             var options = new AppMetricsOptions();
-            var healthCheckManager = new DefaultHealthCheckManager(_loggerFactory.CreateLogger<DefaultHealthCheckManager>(), () => new ConcurrentDictionary<string, HealthCheck>());
+            var healthCheckManager = new DefaultHealthCheckManager(_loggerFactory, () => new ConcurrentDictionary<string, HealthCheck>());
             Func<string, IMetricGroupRegistry> newMetricsGroupRegistry = name => new DefaultMetricGroupRegistry(name);
-            var registry = new DefaultMetricsRegistry(_loggerFactory.CreateLogger<DefaultMetricsRegistry>(), options, new EnvironmentInfoBuilder(_loggerFactory), newMetricsGroupRegistry);
+            var registry = new DefaultMetricsRegistry(_loggerFactory, options, new EnvironmentInfoBuilder(_loggerFactory), newMetricsGroupRegistry);
             var metricsDataManager = new DefaultMetricsDataManager(registry);
             var advancedContext = new DefaultAdancedMetricsContext(options, registry, healthCheckManager, metricsDataManager);
             Context = new DefaultMetricsContext(options, registry, advancedContext);
