@@ -13,27 +13,27 @@ namespace App.Metrics
 {
     internal static class MetricsDataGroupValueSourceExtensions
     {
-        public static CounterValue CounterValue(this MetricsDataGroupValueSource valueService, string metricName)
+        public static CounterValue CounterValueFor(this MetricsDataGroupValueSource valueService, string metricName)
         {
             return valueService.Counters.ValueFor(valueService.GroupName, metricName);
         }
 
-        public static double GaugeValue(this MetricsDataGroupValueSource valueService, string metricName)
+        public static double GaugeValueFor(this MetricsDataGroupValueSource valueService, string metricName)
         {
             return valueService.Gauges.ValueFor(valueService.GroupName, metricName);
         }
 
-        public static HistogramValue HistogramValue(this MetricsDataGroupValueSource valueService, string metricName)
+        public static HistogramValue HistogramValueFor(this MetricsDataGroupValueSource valueService, string metricName)
         {
             return valueService.Histograms.ValueFor(valueService.GroupName, metricName);
         }
 
-        public static MeterValue MeterValue(this MetricsDataGroupValueSource valueService, string metricName)
+        public static MeterValue MeterValueFor(this MetricsDataGroupValueSource valueService, string metricName)
         {
             return valueService.Meters.ValueFor(valueService.GroupName, metricName);
         }
 
-        public static TimerValue TimerValue(this MetricsDataGroupValueSource valueService, string metricName)
+        public static TimerValue TimerValueFor(this MetricsDataGroupValueSource valueService, string metricName)
         {
             return valueService.Timers.ValueFor(valueService.GroupName, metricName);
         }
