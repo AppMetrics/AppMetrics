@@ -5,61 +5,40 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using App.Metrics.Data;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics
 // ReSharper restore CheckNamespace
 {
-    internal static class MetricsContextExtensions
+    internal static class MetricsDataGroupValueSourceExtensions
     {
-        public static async Task<CounterValue> CounterValueAsync(this IMetricsContext metricsContext, string groupName, string metricName)
+        public static CounterValue CounterValue(this MetricsDataGroupValueSource valueService, string metricName)
         {
-            var data = await metricsContext.GetDataForAsync(groupName);
-            return ValueFor(data.Counters, groupName, metricName);
+            return valueService.Counters.ValueFor(valueService.GroupName, metricName);
         }
 
-        public static async Task<double> GaugeValueAsync(this IMetricsContext metricsContext, string groupName, string metricName)
+        public static double GaugeValue(this MetricsDataGroupValueSource valueService, string metricName)
         {
-            var data = await metricsContext.GetDataForAsync(groupName);
-            return ValueFor<double>(data.Gauges, groupName, metricName);
+            return valueService.Gauges.ValueFor(valueService.GroupName, metricName);
         }
 
-        public static async Task<MetricsDataGroupValueSource> GetDataForAsync(this IMetricsContext metricsContext, string groupName)
+        public static HistogramValue HistogramValue(this MetricsDataGroupValueSource valueService, string metricName)
         {
-            var data = await metricsContext.Advanced.DataManager.GetAsync();
-
-            if (data.Groups.Any(m => m.GroupName == groupName))
-            {
-                return data.Groups.Single(m => m.GroupName == groupName);
-            }
-
-            return MetricsDataGroupValueSource.Empty;
+            return valueService.Histograms.ValueFor(valueService.GroupName, metricName);
         }
 
-        public static async Task<HistogramValue> HistogramValueAsync(this IMetricsContext metricsContext, string groupName, string metricName)
+        public static MeterValue MeterValue(this MetricsDataGroupValueSource valueService, string metricName)
         {
-            var data = await metricsContext.GetDataForAsync(groupName);
-
-            return ValueFor(data.Histograms, groupName, metricName);
+            return valueService.Meters.ValueFor(valueService.GroupName, metricName);
         }
 
-        public static async Task<MeterValue> MeterValueAsync(this IMetricsContext metricsContext, string groupName, string metricName)
+        public static TimerValue TimerValue(this MetricsDataGroupValueSource valueService, string metricName)
         {
-            var data = await metricsContext.GetDataForAsync(groupName);
-
-            return ValueFor(data.Meters, groupName, metricName);
+            return valueService.Timers.ValueFor(valueService.GroupName, metricName);
         }
 
-        public static async Task<TimerValue> TimerValueAsync(this IMetricsContext metricsContext, string groupName, string metricName)
-        {
-            var data = await metricsContext.GetDataForAsync(groupName);
-
-            return ValueFor(data.Timers, groupName, metricName);
-        }
-
-        private static T ValueFor<T>(IEnumerable<MetricValueSource<T>> values, string groupName, string metricName)
+        public static T ValueFor<T>(this IEnumerable<MetricValueSource<T>> values, string groupName, string metricName)
         {
             var metricValueSources = values as MetricValueSource<T>[] ?? values.ToArray();
 

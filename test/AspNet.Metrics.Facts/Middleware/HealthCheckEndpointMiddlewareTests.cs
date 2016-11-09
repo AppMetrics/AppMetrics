@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics;
+using AspNet.Metrics.Facts.Startup;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Xunit;

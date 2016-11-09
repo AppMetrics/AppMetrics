@@ -18,6 +18,11 @@ namespace App.Metrics
         /// </summary>
         Task<MetricsDataValueSource> GetAsync();
 
+        Task<MetricsDataValueSource> GetAsync(IMetricsFilter filter);
+
+        Task<MetricsDataGroupValueSource> GetByGroupAsync(string groupName);
+
+
         void Reset();
 
         void ShutdownGroup(string groupName);

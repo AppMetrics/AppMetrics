@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Data;
@@ -22,6 +23,26 @@ namespace App.Metrics.Internal
         {
             return _registry.GetDataAsync();
         }
+
+        public async Task<MetricsDataValueSource> GetAsync(IMetricsFilter filter)
+        {
+            var data = await GetAsync();
+
+            return data.Filter(filter);
+        }
+
+        public async Task<MetricsDataGroupValueSource> GetByGroupAsync(string groupName)
+        {
+            var data = await GetAsync();
+
+            var groupFilter = new DefaultMetricsFilter()
+                .WhereGroup(groupName);
+
+            var groupData = data.Filter(groupFilter);
+
+            return groupData.Groups.Single();
+        }
+
 
         public void Reset()
         {

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using App.Metrics;
+﻿using System.Threading.Tasks;
 using App.Metrics.Core;
 
-namespace AspNet.Metrics.Facts
+namespace AspNet.Metrics.Facts.Startup
 {
     public class TestHealthCheck : HealthCheck
     {

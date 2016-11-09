@@ -19,7 +19,7 @@ namespace App.Metrics.Facts.Fixtures
             async ctx => await Context.Advanced.DataManager.GetAsync();
 
         public Func<IMetricsContext, IMetricsFilter, Task<MetricsDataValueSource>> CurrentDataWithFilter
-            => async (ctx, filter) => await Context.Advanced.DataManager.WithFilter(filter).GetAsync();
+            => async (ctx, filter) => await Context.Advanced.DataManager.GetAsync(filter);
 
         public DefaultMetricsContextTestFixture()
         {

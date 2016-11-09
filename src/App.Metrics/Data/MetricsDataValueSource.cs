@@ -38,7 +38,7 @@ namespace App.Metrics.Data
 
         public MetricsDataValueSource Filter(IMetricsFilter filter)
         {
-            var groups = Groups.Select(g => g.Filter(filter));
+            var groups = Groups.Select(g => g.Filter(filter)).Where(g => g != MetricsDataGroupValueSource.Empty);
             var environment = filter.ReportEnvironment ? EnvironmentInfo.Empty : Environment;
 
             return new MetricsDataValueSource(ContextName, Timestamp, environment, groups);

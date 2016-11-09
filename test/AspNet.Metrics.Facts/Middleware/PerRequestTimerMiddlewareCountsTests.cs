@@ -1,9 +1,9 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics;
-using Xunit;
+using AspNet.Metrics.Facts.Startup;
 using FluentAssertions;
+using Xunit;
 
 namespace AspNet.Metrics.Facts.Middleware
 {
@@ -25,16 +25,11 @@ namespace AspNet.Metrics.Facts.Middleware
             await Client.GetAsync("/api/test");
             await Client.GetAsync("/api/test/error");
 
-            var timer1 = await Context.TimerValueAsync("Application.WebRequests", "GET api/test");
-            timer1.Histogram.Count.Should().Be(1);
+            var metrics = await Context.Advanced.DataManager.GetByGroupAsync("Application.WebRequests");
 
-            var timer2 = await Context.TimerValueAsync("Application.WebRequests", "GET api/test/error");
-            timer2.Histogram.Count.Should().Be(1);
-
-            var timer3 = await Context.TimerValueAsync("Application.WebRequests", "Web Requests");
-            timer3.Histogram.Count.Should().Be(2);
+            metrics.TimerValue("GET api/test").Histogram.Count.Should().Be(1);
+            metrics.TimerValue("GET api/test/error").Histogram.Count.Should().Be(1);
+            metrics.TimerValue("Web Requests").Histogram.Count.Should().Be(2);
         }
-
-             
     }
 }

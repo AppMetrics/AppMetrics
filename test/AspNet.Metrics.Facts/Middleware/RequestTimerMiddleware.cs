@@ -1,8 +1,8 @@
-﻿using System;
-using System.Net.Http;
-using App.Metrics;
-using FluentAssertions;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
+using App.Metrics;
+using AspNet.Metrics.Facts.Startup;
+using FluentAssertions;
 using Xunit;
 
 namespace AspNet.Metrics.Facts.Middleware
@@ -26,7 +26,9 @@ namespace AspNet.Metrics.Facts.Middleware
             await Client.GetAsync("/api/test/300ms");
             await Client.GetAsync("/api/test/30ms");
 
-            var timer = await Context.TimerValueAsync("Application.WebRequests", "Web Requests");
+            var metrics = await Context.Advanced.DataManager.GetByGroupAsync("Application.WebRequests");
+
+            var timer = metrics.TimerValue("Web Requests");
             timer.Histogram.Min.Should().Be(30);
             timer.Histogram.Max.Should().Be(300);
             timer.TotalTime.Should().Be(630);

@@ -1,6 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics;
+using App.Metrics.Data;
+using AspNet.Metrics.Facts.Startup;
 using FluentAssertions;
 using Xunit;
 
@@ -29,12 +34,13 @@ namespace AspNet.Metrics.Facts.Middleware
             await Client.GetAsync("/api/test/error");
             await Client.GetAsync("/api/test/error");
 
+            var metrics = await Context.Advanced.DataManager.GetByGroupAsync("Application.WebRequests");
 
-            (await Context.MeterValueAsync("Application.WebRequests", "Total Bad Requests")).Count.Should().Be(3);
-            (await Context.MeterValueAsync("Application.WebRequests", "Total Internal Server Error Requests")).Count.Should().Be(2);
-            (await Context.MeterValueAsync("Application.WebRequests", "Total UnAuthorized Requests")).Count.Should().Be(1);
-            (await Context.MeterValueAsync("Application.WebRequests", "Total Error Requests")).Count.Should().Be(6);
-            (await Context.TimerValueAsync("Application.WebRequests", "Web Requests")).Histogram.Count.Should().Be(7);
+            metrics.MeterValue("Total Bad Requests").Count.Should().Be(3);
+            metrics.MeterValue("Total Internal Server Error Requests").Count.Should().Be(2);
+            metrics.MeterValue("Total UnAuthorized Requests").Count.Should().Be(1);
+            metrics.MeterValue("Total Error Requests").Count.Should().Be(6);
+            metrics.TimerValue("Web Requests").Histogram.Count.Should().Be(7);
         }
     }
 }
