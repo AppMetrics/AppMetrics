@@ -1,4 +1,4 @@
-﻿using App.Metrics;
+using App.Metrics;
 using App.Metrics.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AspNet.Metrics.Facts.Startup
 {
-    public class DefaultTestStartup : TestStartup
+    public class DisabledHealthCheckTestStartup : TestStartup
     {
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
@@ -27,7 +27,7 @@ namespace AspNet.Metrics.Facts.Startup
             var aspNetMetricsOptions = new AspNetMetricsOptions
             {
                 MetricsTextEndpointEnabled = true,
-                HealthEndpointEnabled = true,
+                HealthEndpointEnabled = false,
                 MetricsEndpointEnabled = true,
                 PingEndpointEnabled = true
             };

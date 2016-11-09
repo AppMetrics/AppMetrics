@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AspNet.Metrics.Facts.Startup
 {
-    public class DefaultTestStartup : TestStartup
+    public class DisabledMetricsTestStartup : TestStartup
     {
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
@@ -19,7 +19,7 @@ namespace AspNet.Metrics.Facts.Startup
             var appMetricsOptions = new AppMetricsOptions
             {
                 DefaultGroupName = "testing",
-                DisableMetrics = false,
+                DisableMetrics = true,
                 Clock = new Clock.TestClock(),
                 DefaultSamplingType = SamplingType.LongTerm
             };

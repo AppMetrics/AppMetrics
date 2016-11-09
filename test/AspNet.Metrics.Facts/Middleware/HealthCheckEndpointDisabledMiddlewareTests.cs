@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics;
@@ -8,9 +8,9 @@ using Xunit;
 
 namespace AspNet.Metrics.Facts.Middleware
 {
-    public class HealthCheckEndpointMiddlewareTests : IClassFixture<MetricsHostTestFixture<DefaultTestStartup>>
+    public class HealthCheckEndpointDisabledMiddlewareTests : IClassFixture<MetricsHostTestFixture<DisabledHealthCheckTestStartup>>
     {
-        public HealthCheckEndpointMiddlewareTests(MetricsHostTestFixture<DefaultTestStartup> fixture)
+        public HealthCheckEndpointDisabledMiddlewareTests(MetricsHostTestFixture<DisabledHealthCheckTestStartup> fixture)
         {
             Client = fixture.Client;
             Context = fixture.Context;
@@ -21,11 +21,11 @@ namespace AspNet.Metrics.Facts.Middleware
         public IMetricsContext Context { get; }
 
         [Fact]
-        public async Task can_count_errors_per_endpoint_and_also_get_a_total_error_count()
+        public async Task can_disable_health_checks()
         {
             var result = await Client.GetAsync("/health");
 
-            result.StatusCode.Should().Be(HttpStatusCode.OK);
+            result.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
     }
 }

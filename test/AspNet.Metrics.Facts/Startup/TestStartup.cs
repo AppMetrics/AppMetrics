@@ -45,6 +45,12 @@ namespace AspNet.Metrics.Facts.Startup
                     options.MetricsEndpointEnabled = aspNetMetricsOptions.MetricsEndpointEnabled;
                     options.PingEndpointEnabled = aspNetMetricsOptions.PingEndpointEnabled;
                     options.OAuth2TrackingEnabled = aspNetMetricsOptions.OAuth2TrackingEnabled;
+
+                    options.HealthEndpoint = aspNetMetricsOptions.HealthEndpoint;
+                    options.MetricsEndpoint = aspNetMetricsOptions.MetricsEndpoint;
+                    options.MetricsTextEndpoint = aspNetMetricsOptions.MetricsTextEndpoint;
+                    options.PingEndpoint = aspNetMetricsOptions.PingEndpoint;
+
                 });
         }
     }

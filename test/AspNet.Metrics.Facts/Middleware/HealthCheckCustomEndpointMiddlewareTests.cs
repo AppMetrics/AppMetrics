@@ -8,9 +8,9 @@ using Xunit;
 
 namespace AspNet.Metrics.Facts.Middleware
 {
-    public class HealthCheckEndpointMiddlewareTests : IClassFixture<MetricsHostTestFixture<DefaultTestStartup>>
+    public class HealthCheckCustomEndpointMiddlewareTests : IClassFixture<MetricsHostTestFixture<CustomHealthCheckTestStartup>>
     {
-        public HealthCheckEndpointMiddlewareTests(MetricsHostTestFixture<DefaultTestStartup> fixture)
+        public HealthCheckCustomEndpointMiddlewareTests(MetricsHostTestFixture<CustomHealthCheckTestStartup> fixture)
         {
             Client = fixture.Client;
             Context = fixture.Context;
@@ -21,10 +21,11 @@ namespace AspNet.Metrics.Facts.Middleware
         public IMetricsContext Context { get; }
 
         [Fact]
-        public async Task can_count_errors_per_endpoint_and_also_get_a_total_error_count()
+        public async Task can_change_health_endpoint()
         {
             var result = await Client.GetAsync("/health");
-
+            result.StatusCode.Should().Be(HttpStatusCode.NotFound);
+            result = await Client.GetAsync("/health-status");
             result.StatusCode.Should().Be(HttpStatusCode.OK);
         }
     }

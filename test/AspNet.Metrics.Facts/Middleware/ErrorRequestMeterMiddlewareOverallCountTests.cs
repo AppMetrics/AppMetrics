@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics;
-using App.Metrics.Data;
 using AspNet.Metrics.Facts.Startup;
 using FluentAssertions;
 using Xunit;

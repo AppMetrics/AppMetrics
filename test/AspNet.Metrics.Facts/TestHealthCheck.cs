@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using App.Metrics.Core;
 
-namespace AspNet.Metrics.Facts.Startup
+namespace AspNet.Metrics.Facts
 {
     public class TestHealthCheck : HealthCheck
     {
