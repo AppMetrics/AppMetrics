@@ -35,6 +35,11 @@ namespace App.Metrics.Data
             Timers = timers;
         }
 
+        public bool IsNotEmpty()
+        {
+            return this != Empty;
+        }
+
         public MetricsContextValueSource Filter(IMetricsFilter filter)
         {
             if (!filter.IsMatch(Context))

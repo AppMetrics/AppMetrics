@@ -29,9 +29,7 @@ namespace App.Metrics.Internal
                 return false;
             }
 
-
-
-            return IsNameMatch(gauge.Name) && IsTagMatch(gauge.Tags);
+            return IsMetricNameMatch(gauge.Name) && IsTagMatch(gauge.Tags);
         }
 
         public bool IsMatch(CounterValueSource counter)
@@ -41,7 +39,7 @@ namespace App.Metrics.Internal
                 return false;
             }
 
-            return IsNameMatch(counter.Name) && IsTagMatch(counter.Tags);
+            return IsMetricNameMatch(counter.Name) && IsTagMatch(counter.Tags);
         }
 
         public bool IsMatch(MeterValueSource meter)
@@ -51,7 +49,7 @@ namespace App.Metrics.Internal
                 return false;
             }
 
-            return IsNameMatch(meter.Name) && IsTagMatch(meter.Tags);
+            return IsMetricNameMatch(meter.Name) && IsTagMatch(meter.Tags);
         }
 
         public bool IsMatch(HistogramValueSource histogram)
@@ -60,7 +58,7 @@ namespace App.Metrics.Internal
             {
                 return false;
             }
-            return IsNameMatch(histogram.Name) && IsTagMatch(histogram.Tags);
+            return IsMetricNameMatch(histogram.Name) && IsTagMatch(histogram.Tags);
         }
 
         public bool IsMatch(TimerValueSource timer)
@@ -70,7 +68,7 @@ namespace App.Metrics.Internal
                 return false;
             }
 
-            return IsNameMatch(timer.Name) && IsTagMatch(timer.Tags);
+            return IsMetricNameMatch(timer.Name) && IsTagMatch(timer.Tags);
         }
 
         public bool ReportEnvironment { get; private set; }
@@ -100,21 +98,21 @@ namespace App.Metrics.Internal
             return WhereContext(c => c.Equals(context, StringComparison.OrdinalIgnoreCase));
         }
 
-        public DefaultMetricsFilter WhereName(Predicate<string> condition)
+        public DefaultMetricsFilter WhereMetricName(Predicate<string> condition)
         {
             _name = condition;
             return this;
         }
 
-        public DefaultMetricsFilter WhereTaggedWith(params string[] tagKeys)
+        public DefaultMetricsFilter WhereMetricTaggedWith(params string[] tagKeys)
         {
             _tagKeys = new HashSet<string>(tagKeys);
             return this;
         }
 
-        public DefaultMetricsFilter WhereNameStartsWith(string name)
+        public DefaultMetricsFilter WhereMetricNameStartsWith(string name)
         {
-            return WhereName(n => n.StartsWith(name, StringComparison.OrdinalIgnoreCase));
+            return WhereMetricName(n => n.StartsWith(name, StringComparison.OrdinalIgnoreCase));
         }
 
         public DefaultMetricsFilter WhereType(params MetricType[] types)
@@ -123,7 +121,7 @@ namespace App.Metrics.Internal
             return this;
         }
 
-        private bool IsNameMatch(string name)
+        private bool IsMetricNameMatch(string name)
         {
             return _name == null || _name(name);
         }

@@ -1,10 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
-// Ported/Refactored to .NET Standard Library by Allan Hardy
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +32,7 @@ namespace App.Metrics.Data
 
         public MetricsDataValueSource Filter(IMetricsFilter filter)
         {
-            var contexts = Contexts.Select(g => g.Filter(filter)).Where(g => g != MetricsContextValueSource.Empty);
+            var contexts = Contexts.FilterBy(filter).WhereNotEmpty();
             var environment = filter.ReportEnvironment ? EnvironmentInfo.Empty : Environment;
 
             return new MetricsDataValueSource(Timestamp, environment, contexts);

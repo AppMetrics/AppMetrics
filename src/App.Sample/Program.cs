@@ -111,7 +111,7 @@ namespace App.Sample
                             GlobalTags = globalTags,
                             Filter = new DefaultMetricsFilter()
                                 .WhereType(MetricType.Counter)
-                                .WhereTaggedWith("filter-tag1", "filter-tag2")
+                                .WhereMetricTaggedWith("filter-tag1", "filter-tag2")
                                 .WithHealthChecks(false)
                                 .WithEnvironmentInfo(false)
                         };
