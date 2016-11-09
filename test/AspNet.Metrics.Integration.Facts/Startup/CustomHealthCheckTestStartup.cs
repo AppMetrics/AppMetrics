@@ -19,7 +19,7 @@ namespace AspNet.Metrics.Facts.Integration.Startup
         {
             var appMetricsOptions = new AppMetricsOptions
             {
-                DefaultGroupName = "testing",
+                DefaultContextLabel = "testing",
                 DisableMetrics = false,
                 Clock = new Clock.TestClock(),
                 DefaultSamplingType = SamplingType.LongTerm

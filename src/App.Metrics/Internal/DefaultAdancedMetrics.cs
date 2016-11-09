@@ -10,12 +10,12 @@ using App.Metrics.Utils;
 
 namespace App.Metrics.Internal
 {
-    internal sealed class DefaultAdancedMetricsContext : IAdvancedMetricsContext
+    internal sealed class DefaultAdancedMetrics : IAdvancedMetrics
     {
         private IMetricsDataManager _dataManager;
         private IMetricsRegistry _registry;
 
-        public DefaultAdancedMetricsContext(
+        public DefaultAdancedMetrics(
             AppMetricsOptions options,
             IMetricsRegistry registry,
             IHealthCheckManager healthCheckManager,

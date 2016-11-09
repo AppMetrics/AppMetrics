@@ -17,12 +17,12 @@ namespace AspNet.Metrics.Facts.Integration
             _server = new TestServer(builder);
 
             Client = _server.CreateClient();
-            Context = _server.Host.Services.GetRequiredService<IMetricsContext>();
+            Context = _server.Host.Services.GetRequiredService<IMetrics>();
         }
 
         public HttpClient Client { get; }
 
-        public IMetricsContext Context { get; }
+        public IMetrics Context { get; }
 
         public void Dispose()
         {

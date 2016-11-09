@@ -18,7 +18,7 @@ namespace AspNet.Metrics.Facts.Integration.Middleware
 
         public HttpClient Client { get; }
 
-        public IMetricsContext Context { get; }
+        public IMetrics Context { get; }
 
         [Fact]
         public async Task uses_correct_mimetype_for_json_version()

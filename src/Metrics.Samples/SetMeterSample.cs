@@ -6,13 +6,13 @@ namespace Metrics.Samples
     public class SetMeterSample
     {
         private readonly IMeter _errorMeter;
-        private static IMetricsContext _metricsContext;
+        private static IMetrics _metrics;
 
-        public SetMeterSample(IMetricsContext metricsContext)
+        public SetMeterSample(IMetrics metrics)
         {
-            _metricsContext = metricsContext;
+            _metrics = metrics;
 
-            _errorMeter = _metricsContext.Advanced.Meter(SampleMetricsRegistry.Meters.Errors);
+            _errorMeter = _metrics.Advanced.Meter(SampleMetricsRegistry.Meters.Errors);
         }
 
         public void Process(Command command)

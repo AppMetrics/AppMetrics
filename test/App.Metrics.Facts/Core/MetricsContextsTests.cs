@@ -33,13 +33,13 @@ namespace App.Metrics.Facts.Core
             counter.Increment();
 
             var data = await _fixture.CurrentData(_fixture.Context);
-            var counterValue = data.Groups.Single().Counters.Single();
+            var counterValue = data.Contexts.Single().Counters.Single();
             counterValue.Value.Count.Should().Be(1);
 
             _fixture.Context.Advanced.DataManager.Reset();
 
             data = await _fixture.CurrentData(_fixture.Context);
-            data.Groups.Should().BeNullOrEmpty();
+            data.Contexts.Should().BeNullOrEmpty();
         }
 
         [Fact]
@@ -55,13 +55,13 @@ namespace App.Metrics.Facts.Core
             counter.Increment();
 
             var data = await _fixture.CurrentData(_fixture.Context);
-            var counterValue = data.Groups.Single().Counters.Single();
+            var counterValue = data.Contexts.Single().Counters.Single();
             counterValue.Value.Count.Should().Be(1);
 
             _fixture.Context.Advanced.Disable();
 
             data = await _fixture.CurrentData(_fixture.Context);
-            data.Groups.Should().BeNullOrEmpty();
+            data.Contexts.Should().BeNullOrEmpty();
         }
 
         [Fact]
@@ -89,10 +89,10 @@ namespace App.Metrics.Facts.Core
             meter.Mark(1);
 
             var currentData = await _fixture.CurrentDataWithFilter(_fixture.Context, filter);
-            var group = currentData.Groups.Single();
+            var context = currentData.Contexts.Single();
 
-            var counterValue = group.Counters.Single();
-            var meterValue = group.Meters.FirstOrDefault();
+            var counterValue = context.Counters.Single();
+            var meterValue = context.Meters.FirstOrDefault();
 
             counterValue.Name.Should().Be("test");
             counterValue.Unit.Should().Be(Unit.Requests);
@@ -139,21 +139,21 @@ namespace App.Metrics.Facts.Core
             _fixture.Context.Time(timerOptions, () => { });
 
             var data = await _fixture.CurrentData(_fixture.Context);
-            var group = data.Groups.Single();
+            var context = data.Contexts.Single();
 
-            group.Counters.Single().Tags.Should().Equals(tags);
-            group.Meters.Single().Tags.Should().Equals("tag");
-            group.Histograms.Single().Tags.Should().Equals("tag");
-            group.Timers.Single().Tags.Should().Equals("tag");
+            context.Counters.Single().Tags.Should().Equals(tags);
+            context.Meters.Single().Tags.Should().Equals("tag");
+            context.Histograms.Single().Tags.Should().Equals("tag");
+            context.Timers.Single().Tags.Should().Equals("tag");
         }
 
         [Fact]
-        public async Task can_record_metric_in_new_group()
+        public async Task can_record_metric_in_new_context()
         {
             var counterOptions = new CounterOptions
             {
                 Name = "counter",
-                GroupName = "test",
+                Context = "test",
                 MeasurementUnit = Unit.Requests,
             };
 
@@ -161,21 +161,21 @@ namespace App.Metrics.Facts.Core
 
             var data = await _fixture.CurrentData(_fixture.Context);
 
-            data.Groups.Should().Contain(g => g.GroupName == "test");
+            data.Contexts.Should().Contain(g => g.Context == "test");
 
-            var counterValue = data.Groups.First(g => g.GroupName == "test").Counters.Single();
+            var counterValue = data.Contexts.First(g => g.Context == "test").Counters.Single();
 
             counterValue.Name.Should().Be("counter");
         }
 
         [Fact]
-        public async Task can_shutdown_metric_groups()
+        public async Task can_shutdown_metric_contexts()
         {
-            var group = "test";
+            var context = "test";
             var counterOptions = new CounterOptions
             {
                 Name = "test",
-                GroupName = group,
+                Context = context,
                 MeasurementUnit = Unit.Bytes
             };
 
@@ -183,13 +183,13 @@ namespace App.Metrics.Facts.Core
 
             var data = await _fixture.CurrentData(_fixture.Context);
 
-            data.Groups.First(g => g.GroupName == group).Counters.Single().Name.Should().Be("test");
+            data.Contexts.First(g => g.Context == context).Counters.Single().Name.Should().Be("test");
 
-            _fixture.Context.Advanced.DataManager.ShutdownGroup(group);
+            _fixture.Context.Advanced.DataManager.ShutdownContext(context);
 
             data = await _fixture.CurrentData(_fixture.Context);
 
-            data.Groups.FirstOrDefault(g => g.GroupName == group).Should().BeNull("because the group was shutdown");
+            data.Contexts.FirstOrDefault(g => g.Context == context).Should().BeNull("because the context was shutdown");
         }
 
         [Fact]
@@ -198,7 +198,7 @@ namespace App.Metrics.Facts.Core
             var counterOptions = new CounterOptions
             {
                 Name = "test",
-                GroupName = "test"
+                Context = "test"
             };
 
             var first = _fixture.Context.Advanced.Counter(counterOptions);
@@ -219,11 +219,11 @@ namespace App.Metrics.Facts.Core
             _fixture.Context.Advanced.Counter(counterOptions).Increment();
 
             var data = await _fixture.CurrentData(_fixture.Context);
-            var group = data.Groups.Single();
+            var context = data.Contexts.Single();
 
-            group.Counters.Should().HaveCount(1);
-            group.Counters.Single().Name.Should().Be("bytes-counter");
-            group.Counters.Single().Value.Count.Should().Be(1L);
+            context.Counters.Should().HaveCount(1);
+            context.Counters.Single().Name.Should().Be("bytes-counter");
+            context.Counters.Single().Value.Count.Should().Be(1L);
         }
 
         public void Dispose()
@@ -280,22 +280,22 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public async Task metrics_added_are_visible_in_the_data_provider()
         {
-            var group = "test";
+            var context = "test";
             var counterOptions = new CounterOptions
             {
                 Name = "test_counter",
-                GroupName = group,
+                Context = context,
                 MeasurementUnit = Unit.Bytes,
             };
             var dataManager = _fixture.Context.Advanced.DataManager;
 
             var data = await dataManager.GetAsync();
 
-            data.Groups.FirstOrDefault(g => g.GroupName == group).Should().BeNull("the group hasn't been added yet");
+            data.Contexts.FirstOrDefault(g => g.Context == context).Should().BeNull("the context hasn't been added yet");
             _fixture.Context.Advanced.Counter(counterOptions).Increment();
 
             data = await dataManager.GetAsync();
-            data.Groups.First(g => g.GroupName == group).Counters.Should().HaveCount(1);
+            data.Contexts.First(g => g.Context == context).Counters.Should().HaveCount(1);
         }
 
         [Fact]
@@ -312,7 +312,7 @@ namespace App.Metrics.Facts.Core
 
             var data = await _fixture.CurrentData(_fixture.Context);
 
-            var counterValue = data.Groups.Single().Counters.Single();
+            var counterValue = data.Contexts.Single().Counters.Single();
 
             counterValue.Name.Should().Be("request counter");
             counterValue.Unit.Should().Be(Unit.Requests);

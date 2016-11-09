@@ -8,7 +8,7 @@ namespace App.Metrics.Internal
 {
     internal sealed class NullMetricsFilter : IMetricsFilter
     {
-        public bool IsMatch(string @group)
+        public bool IsMatch(string context)
         {
             return true;
         }

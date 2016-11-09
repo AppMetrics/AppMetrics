@@ -22,7 +22,7 @@ namespace App.Metrics.Facts.DependencyInjection
                         options.HealthChecks = checks => { checks.Register("DatabaseConnected", () => Task.FromResult("Database Connection OK")); };
                     });
             var provider = services.BuildServiceProvider();
-            var metricsContext = provider.GetRequiredService<IMetricsContext>();
+            var metricsContext = provider.GetRequiredService<IMetrics>();
 
             var result = await metricsContext.Advanced.HealthCheckManager.GetStatusAsync();
 
@@ -39,7 +39,7 @@ namespace App.Metrics.Facts.DependencyInjection
             services.AddMetrics().AddHealthChecks();
 
             var provider = services.BuildServiceProvider();
-            var metricsContext = provider.GetRequiredService<IMetricsContext>();
+            var metricsContext = provider.GetRequiredService<IMetrics>();
 
             var result = await metricsContext.Advanced.HealthCheckManager.GetStatusAsync();
 
@@ -62,7 +62,7 @@ namespace App.Metrics.Facts.DependencyInjection
                     };
                 });
             var provider = services.BuildServiceProvider();
-            var metricsContext = provider.GetRequiredService<IMetricsContext>();
+            var metricsContext = provider.GetRequiredService<IMetrics>();
 
             var result = await metricsContext.Advanced.HealthCheckManager.GetStatusAsync();
 
@@ -78,7 +78,7 @@ namespace App.Metrics.Facts.DependencyInjection
             services.AddMetrics().AddHealthChecks();
 
             var provider = services.BuildServiceProvider();
-            var metricsContext = provider.GetRequiredService<IMetricsContext>();
+            var metricsContext = provider.GetRequiredService<IMetrics>();
 
             var result = await metricsContext.Advanced.HealthCheckManager.GetStatusAsync();
 

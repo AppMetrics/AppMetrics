@@ -22,9 +22,9 @@ namespace AspNet.Metrics.Middleware
             IMetricsFilter metricsFilter,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
-            IMetricsContext metricsContext,
+            IMetrics metrics,
             IMetricDataSerializer serializer)
-            : base(next, aspNetOptions, loggerFactory, metricsContext)
+            : base(next, aspNetOptions, loggerFactory, metrics)
         {
             if (next == null)
             {
@@ -51,7 +51,7 @@ namespace AspNet.Metrics.Middleware
             {
                 Logger.MiddlewareExecuting(GetType());
 
-                var metricsData = await MetricsContext.Advanced.DataManager.GetAsync();
+                var metricsData = await Metrics.Advanced.DataManager.GetAsync();
 
                 if (_metricsFilter != null)
                 {

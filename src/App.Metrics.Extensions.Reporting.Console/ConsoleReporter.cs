@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using App.Metrics.Core;
 using App.Metrics.Data;
@@ -13,8 +14,17 @@ using App.Metrics.Reporting;
 
 namespace App.Metrics.Extensions.Reporting.Console
 {
+
     public class ConsoleReporter : IMetricReporter
     {
+        private static readonly string GlobalName =
+            $@"{CleanName(Environment.MachineName)}.{CleanName(Process.GetCurrentProcess().ProcessName)}";
+
+        private static string CleanName(string name)
+        {
+            return name.Replace('.', '_');
+        }
+
         public ConsoleReporter(TimeSpan reportInterval)
             : this("Console Reporter", reportInterval)
         {
@@ -42,10 +52,10 @@ namespace App.Metrics.Extensions.Reporting.Console
             WriteLine(metricType.HumanzeEndMetricType());
         }
 
-        public void EndReport(IMetricsContext metricsContext)
+        public void EndReport(IMetrics metrics)
         {
             WriteLine(string.Format(Environment.NewLine + "-- End {0} Report: {1} - {2} --" + Environment.NewLine,
-                Name, metricsContext.ContextName, metricsContext.Advanced.Clock.FormatTimestamp(metricsContext.Advanced.Clock.UtcDateTime)));
+                Name, GlobalName, metrics.Advanced.Clock.FormatTimestamp(metrics.Advanced.Clock.UtcDateTime)));
         }
 
         public void ReportEnvironment(EnvironmentInfo environmentInfo)
@@ -82,10 +92,10 @@ namespace App.Metrics.Extensions.Reporting.Console
             WriteLine(metricType.HumanzeStartMetricType());
         }
 
-        public void StartReport(IMetricsContext metricsContext)
+        public void StartReport(IMetrics metrics)
         {
             WriteLine(string.Format(Environment.NewLine + "-- Start {0} Report: {1} - {2} --" + Environment.NewLine,
-                Name, metricsContext.ContextName, metricsContext.Advanced.Clock.FormatTimestamp(metricsContext.Advanced.Clock.UtcDateTime)));
+                Name, GlobalName, metrics.Advanced.Clock.FormatTimestamp(metrics.Advanced.Clock.UtcDateTime)));
         }
 
         public void WriteLine(string message)

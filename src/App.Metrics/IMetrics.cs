@@ -8,11 +8,9 @@ using App.Metrics.Utils;
 
 namespace App.Metrics
 {
-    public interface IMetricsContext : IHideObjectMembers
+    public interface IMetrics : IHideObjectMembers
     {
-        string ContextName { get; }
-
-        IAdvancedMetricsContext Advanced { get; }
+        IAdvancedMetrics Advanced { get; }
 
         void Decrement(CounterOptions options);
 

@@ -6,13 +6,13 @@ namespace Metrics.Samples
     public class SetCounterSample
     {
         private readonly ICounter _commandCounter;
-        private static IMetricsContext _metricsContext;
+        private static IMetrics _metrics;
 
-        public SetCounterSample(IMetricsContext metricsContext)
+        public SetCounterSample(IMetrics metrics)
         {
-            _metricsContext = metricsContext;
+            _metrics = metrics;
 
-            _commandCounter = _metricsContext.Advanced.Counter(SampleMetricsRegistry.Counters.CommandCounter);
+            _commandCounter = _metrics.Advanced.Counter(SampleMetricsRegistry.Counters.CommandCounter);
         }
 
         public void Process(Command command)

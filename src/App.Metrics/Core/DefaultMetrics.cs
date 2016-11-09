@@ -7,29 +7,25 @@ using App.Metrics.Internal;
 
 namespace App.Metrics.Core
 {
-    internal sealed class DefaultMetricsContext : IMetricsContext
+    internal sealed class DefaultMetrics : IMetrics
     {
         private readonly IMetricsRegistry _registry;
 
-        public DefaultMetricsContext(
+        public DefaultMetrics(
             AppMetricsOptions options,
             IMetricsRegistry registry,
-            IAdvancedMetricsContext advancedContext)
+            IAdvancedMetrics advanced)
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
             if (registry == null) throw new ArgumentNullException(nameof(registry));
-            if (advancedContext == null) throw new ArgumentNullException(nameof(advancedContext));
+            if (advanced == null) throw new ArgumentNullException(nameof(advanced));
 
             _registry = options.DisableMetrics ? new NullMetricsRegistry() : registry;
 
-            ContextName = options.GlobalContextName;
-
-            Advanced = advancedContext;
+            Advanced = advanced;
         }
 
-        public IAdvancedMetricsContext Advanced { get; }
-
-        public string ContextName { get; }
+        public IAdvancedMetrics Advanced { get; }
 
         public void Decrement(CounterOptions options, long amount)
         {

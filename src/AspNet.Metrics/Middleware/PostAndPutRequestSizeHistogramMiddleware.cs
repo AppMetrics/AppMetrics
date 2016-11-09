@@ -16,8 +16,8 @@ namespace AspNet.Metrics.Middleware
         public PostAndPutRequestSizeHistogramMiddleware(RequestDelegate next,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
-            IMetricsContext metricsContext)
-            : base(next, aspNetOptions, loggerFactory, metricsContext)
+            IMetrics metrics)
+            : base(next, aspNetOptions, loggerFactory, metrics)
         {
         }
 
@@ -33,7 +33,7 @@ namespace AspNet.Metrics.Middleware
                 {
                     if (context.Request.Headers != null && context.Request.Headers.ContainsKey("Content-Length"))
                     {
-                        MetricsContext.UpdatePostAndPutRequestSize(long.Parse(context.Request.Headers["Content-Length"].First()));
+                        Metrics.UpdatePostAndPutRequestSize(long.Parse(context.Request.Headers["Content-Length"].First()));
                     }
                 }
 

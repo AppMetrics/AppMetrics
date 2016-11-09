@@ -12,23 +12,22 @@ namespace App.Metrics.Extensions
     {
         public static MetricData ToMetric(this MetricsDataValueSource source)
         {
-            var jsonGroups = source.Groups.ToMetric();
+            var jsonContexts = source.Contexts.ToMetric();
 
             return new MetricData
             {
-                ContextName = source.ContextName,
                 Environment = source.Environment.ToEnvDictionary(),
                 Timestamp = source.Timestamp,
                 Version = "1",
-                Groups = jsonGroups.ToArray()
+                Contexts = jsonContexts.ToArray()
             };
         }
 
         public static MetricsDataValueSource ToMetricValueSource(this MetricData source)
         {
-            var groups = source.Groups.ToMetricValueSource();
+            var contexts = source.Contexts.ToMetricValueSource();
 
-            return new MetricsDataValueSource(source.ContextName, source.Timestamp, new EnvironmentInfo(source.Environment), groups);
+            return new MetricsDataValueSource(source.Timestamp, new EnvironmentInfo(source.Environment), contexts);
         }
     }
 }

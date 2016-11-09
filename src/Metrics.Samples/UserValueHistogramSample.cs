@@ -7,13 +7,13 @@ namespace Metrics.Samples
     {
         private readonly IHistogram _histogram;
 
-        private static IMetricsContext _metricsContext;
+        private static IMetrics _metrics;
 
-        public UserValueHistogramSample(IMetricsContext metricsContext)
+        public UserValueHistogramSample(IMetrics metrics)
         {
-            _metricsContext = metricsContext;
+            _metrics = metrics;
 
-            _histogram = _metricsContext.Advanced.Histogram(SampleMetricsRegistry.Histograms.Results);
+            _histogram = _metrics.Advanced.Histogram(SampleMetricsRegistry.Histograms.Results);
         }
 
         public void Process(string documentId)
@@ -27,7 +27,7 @@ namespace Metrics.Samples
             for (var i = 0; i < 30; i++)
             {
                 var documentId = new Random().Next() % 10;
-                var sample = new UserValueHistogramSample(_metricsContext);
+                var sample = new UserValueHistogramSample(_metrics);
                 sample.Process("document-" + documentId);
         }
         }

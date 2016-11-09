@@ -8,13 +8,13 @@ namespace Metrics.Samples
     {
         private readonly ITimer _timer;
 
-        private static IMetricsContext _metricsContext;
+        private static IMetrics _metrics;
 
-        public UserValueTimerSample(IMetricsContext metricsContext)
+        public UserValueTimerSample(IMetrics metrics)
         {
-            _metricsContext = metricsContext;
+            _metrics = metrics;
 
-            _timer = _metricsContext.Advanced.Timer(SampleMetricsRegistry.Timers.Requests);
+            _timer = _metrics.Advanced.Timer(SampleMetricsRegistry.Timers.Requests);
         }
 
         public void Process(string documentId)
@@ -32,7 +32,7 @@ namespace Metrics.Samples
             for (var i = 0; i < 30; i++)
             {
                 var documentId = new Random().Next(10);
-                new UserValueTimerSample(_metricsContext).Process("document-" + documentId.ToString());
+                new UserValueTimerSample(_metrics).Process("document-" + documentId.ToString());
             }
         }
 

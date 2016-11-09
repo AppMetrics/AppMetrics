@@ -19,11 +19,11 @@ namespace AspNet.Metrics.Middleware
         public RequestTimerMiddleware(RequestDelegate next,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
-            IMetricsContext metricsContext)
-            : base(next, aspNetOptions, loggerFactory, metricsContext)
+            IMetrics metrics)
+            : base(next, aspNetOptions, loggerFactory, metrics)
         {
-            _requestTimer = MetricsContext.Advanced
-                .Timer(AspNetMetricsRegistry.Groups.WebRequests.Timers.WebRequestTimer);
+            _requestTimer = Metrics.Advanced
+                .Timer(AspNetMetricsRegistry.Contexts.WebRequests.Timers.WebRequestTimer);
         }
 
         public async Task Invoke(HttpContext context)

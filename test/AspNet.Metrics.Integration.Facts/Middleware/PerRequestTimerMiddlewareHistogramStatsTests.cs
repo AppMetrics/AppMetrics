@@ -17,7 +17,7 @@ namespace AspNet.Metrics.Facts.Integration.Middleware
 
         public HttpClient Client { get; }
 
-        public IMetricsContext Context { get; }
+        public IMetrics Context { get; }
 
         [Fact]
         public async Task can_record_times_per_request()
@@ -25,7 +25,7 @@ namespace AspNet.Metrics.Facts.Integration.Middleware
             await Client.GetAsync("/api/test/300ms");
             await Client.GetAsync("/api/test/30ms");
 
-            var metrics = await Context.Advanced.DataManager.GetByGroupAsync("Application.WebRequests");
+            var metrics = await Context.Advanced.DataManager.GetContextAsync("Application.WebRequests");
 
             var timer1 = metrics.TimerValueFor("GET api/test/30ms");
             timer1.Histogram.Min.Should().Be(30);

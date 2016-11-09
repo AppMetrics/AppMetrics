@@ -11,42 +11,42 @@ namespace App.Metrics.Core
 {
     public static class AdvancedMetricsContextExtensions
     {
-        public static ICounterMetric BuildCounter(this IAdvancedMetricsContext context, CounterOptions options)
+        public static ICounterMetric BuildCounter(this IAdvancedMetrics context, CounterOptions options)
         {
             return new CounterMetric();
         }
 
-        public static IMetricValueProvider<double> BuildGauge(this IAdvancedMetricsContext context, GaugeOptions options, Func<double> valueProvider)
+        public static IMetricValueProvider<double> BuildGauge(this IAdvancedMetrics context, GaugeOptions options, Func<double> valueProvider)
         {
             return new FunctionGauge(valueProvider);
         }
 
-        public static IHistogramMetric BuildHistogram(this IAdvancedMetricsContext context, HistogramOptions options)
+        public static IHistogramMetric BuildHistogram(this IAdvancedMetrics context, HistogramOptions options)
         {
             return new HistogramMetric(options.SamplingType);
         }
 
-        public static IHistogramMetric BuildHistogram(this IAdvancedMetricsContext context, HistogramOptions options, IReservoir reservoir)
+        public static IHistogramMetric BuildHistogram(this IAdvancedMetrics context, HistogramOptions options, IReservoir reservoir)
         {
             return new HistogramMetric(reservoir);
         }
 
-        public static IMeterMetric BuildMeter(this IAdvancedMetricsContext context, MeterOptions options)
+        public static IMeterMetric BuildMeter(this IAdvancedMetrics context, MeterOptions options)
         {
             return new MeterMetric(context.Clock);
         }
 
-        public static ITimerMetric BuildTimer(this IAdvancedMetricsContext context, TimerOptions options)
+        public static ITimerMetric BuildTimer(this IAdvancedMetrics context, TimerOptions options)
         {
             return new TimerMetric(options.SamplingType, context.Clock);
         }
 
-        public static ITimerMetric BuildTimer(this IAdvancedMetricsContext context, TimerOptions options, IHistogramMetric histogram)
+        public static ITimerMetric BuildTimer(this IAdvancedMetrics context, TimerOptions options, IHistogramMetric histogram)
         {
             return new TimerMetric(histogram, context.Clock);
         }
 
-        public static ITimerMetric BuildTimer(this IAdvancedMetricsContext context, TimerOptions options, IReservoir reservoir)
+        public static ITimerMetric BuildTimer(this IAdvancedMetrics context, TimerOptions options, IReservoir reservoir)
         {
             return new TimerMetric(reservoir, context.Clock);
         }

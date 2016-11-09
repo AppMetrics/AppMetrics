@@ -11,7 +11,7 @@ namespace App.Metrics.Internal
 {
     internal interface IMetricsRegistry
     {
-        bool AddGroup(string groupName, IMetricGroupRegistry registry);
+        bool AddContext(string context, IMetricContextRegistry registry);
 
         void Clear();
 
@@ -25,7 +25,7 @@ namespace App.Metrics.Internal
 
         IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterMetric;
 
-        void RemoveGroup(string groupName);
+        void RemoveContext(string context);
 
         ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerMetric;
     }

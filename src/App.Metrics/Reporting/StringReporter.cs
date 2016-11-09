@@ -67,10 +67,10 @@ namespace App.Metrics.Reporting
             _buffer.WriteEndMetricType(metricType);
         }
 
-        public void EndReport(IMetricsContext metricsContext)
+        public void EndReport(IMetrics metrics)
         {
-            _buffer.WriteMetricEndReport(Name, metricsContext.ContextName,
-                metricsContext.Advanced.Clock.FormatTimestamp(metricsContext.Advanced.Clock.UtcDateTime));
+            _buffer.WriteMetricEndReport(Name,
+                metrics.Advanced.Clock.FormatTimestamp(metrics.Advanced.Clock.UtcDateTime));
         }
 
         public void ReportEnvironment(EnvironmentInfo environmentInfo)
@@ -105,10 +105,10 @@ namespace App.Metrics.Reporting
             _buffer.WriteStartMetricType(metricType);
         }
 
-        public void StartReport(IMetricsContext metricsContext)
+        public void StartReport(IMetrics metrics)
         {
-            _buffer.WriteMetricStartReport(Name, metricsContext.ContextName,
-                metricsContext.Advanced.Clock.FormatTimestamp(metricsContext.Advanced.Clock.UtcDateTime));
+            _buffer.WriteMetricStartReport(Name,
+                metrics.Advanced.Clock.FormatTimestamp(metrics.Advanced.Clock.UtcDateTime));
         }
     }
 }

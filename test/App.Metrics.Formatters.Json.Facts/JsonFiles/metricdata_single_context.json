@@ -1,5 +1,4 @@
 ﻿{
-  "contextName": "test_context",
   "environment": {
     "machineName": "machine_name",
     "processName": "process_name",
@@ -12,7 +11,7 @@
     "entryAssemblyName": "assembly_name",
     "entryAssemblyVersion": "assembly_version"
   },
-  "groups": [
+  "contexts": [
     {
       "counters": [
         {
@@ -53,7 +52,7 @@
           "unit": "Calls"
         }
       ],
-      "groupName": "group_one",
+      "context": "context_one",
       "histograms": [
         {
           "count": 1,

@@ -31,16 +31,16 @@ namespace App.Metrics.Internal
             return data.Filter(filter);
         }
 
-        public async Task<MetricsDataGroupValueSource> GetByGroupAsync(string groupName)
+        public async Task<MetricsContextValueSource> GetContextAsync(string context)
         {
             var data = await GetAsync();
 
-            var groupFilter = new DefaultMetricsFilter()
-                .WhereGroup(groupName);
+            var filter = new DefaultMetricsFilter()
+                .WhereContext(context);
 
-            var groupData = data.Filter(groupFilter);
+            var contextData = data.Filter(filter);
 
-            return groupData.Groups.Single();
+            return contextData.Contexts.Single();
         }
 
 
@@ -49,9 +49,9 @@ namespace App.Metrics.Internal
             _registry.Clear();
         }
 
-        public void ShutdownGroup(string groupName)
+        public void ShutdownContext(string context)
         {
-            _registry.RemoveGroup(groupName);
+            _registry.RemoveContext(context);
         }
 
         public void DisableMetrics()

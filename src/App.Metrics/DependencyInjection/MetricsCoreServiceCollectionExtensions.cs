@@ -25,13 +25,13 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                 throw new ArgumentNullException(nameof(services));
             }
 
-            return AddMetricsCore(services, setupAction: null, metricsContext: default(IMetricsContext));
+            return AddMetricsCore(services, setupAction: null, metrics: default(IMetrics));
         }
 
         internal static IMetricsHostBuilder AddMetricsCore(
             this IServiceCollection services,
             Action<AppMetricsOptions> setupAction,
-            IMetricsContext metricsContext)
+            IMetrics metrics)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
@@ -40,7 +40,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             services.TryAddSingleton<MetricsMarkerService, MetricsMarkerService>();
 
             services.ConfigureDefaultServices();
-            services.AddMetricsCoreServices(metricsEnvironment, metricsContext);
+            services.AddMetricsCoreServices(metricsEnvironment, metrics);
 
             if (setupAction != null)
             {
@@ -51,9 +51,9 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
         }
 
         internal static void AddMetricsCoreServices(this IServiceCollection services,
-            IMetricsEnvironment environment, IMetricsContext metricsContext)
+            IMetricsEnvironment environment, IMetrics metrics)
         {
-            services.TryAddTransient<Func<string, IMetricGroupRegistry>>(provider => { return group => new DefaultMetricGroupRegistry(group); });
+            services.TryAddTransient<Func<string, IMetricContextRegistry>>(provider => { return context => new DefaultMetricContextRegistry(context); });
             services.TryAddSingleton(provider => provider.GetRequiredService<IOptions<AppMetricsOptions>>().Value);
             services.TryAddSingleton(provider => provider.GetRequiredService<IOptions<AppMetricsOptions>>().Value.Clock);
             services.TryAddSingleton<IMetricsRegistry, DefaultMetricsRegistry>();
@@ -61,15 +61,15 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             services.TryAddSingleton<EnvironmentInfoBuilder, EnvironmentInfoBuilder>();
             services.TryAddSingleton<IMetricDataSerializer, NullMetricDataSerializer>();
             services.TryAddSingleton<IHealthStatusSerializer, NullHealthStatusSerializer>();
-            services.TryAddSingleton<IAdvancedMetricsContext, DefaultAdancedMetricsContext>();
+            services.TryAddSingleton<IAdvancedMetrics, DefaultAdancedMetrics>();
 
-            if (metricsContext == null)
+            if (metrics == null)
             {
-                services.TryAddSingleton<IMetricsContext, DefaultMetricsContext>();
+                services.TryAddSingleton<IMetrics, DefaultMetrics>();
             }
             else
             {
-                services.TryAddSingleton(metricsContext);
+                services.TryAddSingleton(metrics);
             }
 
             services.TryAddSingleton(provider => environment);

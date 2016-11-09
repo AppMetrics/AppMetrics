@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using App.Metrics;
-using App.Metrics.Core;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Sample.Controllers
@@ -13,19 +11,18 @@ namespace Api.Sample.Controllers
     {
         private static readonly Random Rnd = new Random();
 
-        private readonly IMetricsContext _metricsContext;
+        private readonly IMetrics _metrics;
 
-        public ValuesController(IMetricsContext metricsContext)
+        public ValuesController(IMetrics metrics)
         {
-            if (metricsContext == null)
+            if (metrics == null)
             {
-                throw new ArgumentNullException(nameof(metricsContext));
+                throw new ArgumentNullException(nameof(metrics));
             }
 
-            _metricsContext = metricsContext;
+            _metrics = metrics;
         }
 
-        
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
@@ -37,34 +34,33 @@ namespace Api.Sample.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
+            _metrics.Increment(Metrics.Counters.TestCounter);
+            _metrics.Increment(Metrics.Counters.TestCounter, 4);
+            _metrics.Decrement(Metrics.Counters.TestCounter, 2);
 
-            _metricsContext.Increment(Metrics.Counters.TestCounter);
-            _metricsContext.Increment(Metrics.Counters.TestCounter, 4);
-            _metricsContext.Decrement(Metrics.Counters.TestCounter, 2);
-
-            var histogram = _metricsContext.Advanced.Histogram(Metrics.Histograms.TestHAdvancedistogram);
+            var histogram = _metrics.Advanced.Histogram(Metrics.Histograms.TestHAdvancedistogram);
             histogram.Update(Rnd.Next(1, 20));
 
-            _metricsContext.Update(Metrics.Histograms.TestHistogram, Rnd.Next(20, 40));
+            _metrics.Update(Metrics.Histograms.TestHistogram, Rnd.Next(20, 40));
 
-            _metricsContext.Time(Metrics.Timers.TestTimer, () => Thread.Sleep(15));
-            _metricsContext.Time(Metrics.Timers.TestTimer, () => Thread.Sleep(20), "value1");
-            _metricsContext.Time(Metrics.Timers.TestTimer, () => Thread.Sleep(25), "value2");     
-            
-            using (_metricsContext.Time(Metrics.Timers.TestTimerTwo))
+            _metrics.Time(Metrics.Timers.TestTimer, () => Thread.Sleep(15));
+            _metrics.Time(Metrics.Timers.TestTimer, () => Thread.Sleep(20), "value1");
+            _metrics.Time(Metrics.Timers.TestTimer, () => Thread.Sleep(25), "value2");
+
+            using (_metrics.Time(Metrics.Timers.TestTimerTwo))
             {
                 Thread.Sleep(15);
             }
 
-            using (_metricsContext.Time(Metrics.Timers.TestTimerTwo, "value1"))
+            using (_metrics.Time(Metrics.Timers.TestTimerTwo, "value1"))
             {
                 Thread.Sleep(20);
-            }            
+            }
 
-            using (_metricsContext.Time(Metrics.Timers.TestTimerTwo, "value2"))
+            using (_metrics.Time(Metrics.Timers.TestTimerTwo, "value2"))
             {
                 Thread.Sleep(25);
-            }            
+            }
 
             return new[] { "value1", "value2" };
         }
@@ -76,10 +72,10 @@ namespace Api.Sample.Controllers
             return "value";
         }
 
-        [HttpGet("error")]
-        public IActionResult Get500()
+        [HttpGet("bad")]
+        public IActionResult Get400()
         {
-            return StatusCode(500);
+            return StatusCode(400);
         }
 
         [HttpGet("unauth")]
@@ -88,10 +84,10 @@ namespace Api.Sample.Controllers
             return StatusCode(401);
         }
 
-        [HttpGet("bad")]
-        public IActionResult Get400()
+        [HttpGet("error")]
+        public IActionResult Get500()
         {
-            return StatusCode(400);
+            return StatusCode(500);
         }
 
         // POST api/values

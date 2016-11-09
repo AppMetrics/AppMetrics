@@ -15,7 +15,7 @@ namespace App.Metrics.Reporting
     internal class DefaultReportGenerator
     {
         public async Task Generate(IMetricReporter reporter, 
-            IMetricsContext metricsContext, 
+            IMetrics metrics, 
             IMetricsFilter filter, 
             MetricTags globalTags,
             CancellationToken token)
@@ -23,9 +23,9 @@ namespace App.Metrics.Reporting
             var reportEnvironment = true;
             var reportHealthChecks = true;
 
-            reporter.StartReport(metricsContext);
+            reporter.StartReport(metrics);
 
-            var data = await metricsContext.Advanced.DataManager.GetAsync();
+            var data = await metrics.Advanced.DataManager.GetAsync();
 
             if (filter != default(IMetricsFilter))
             {
@@ -43,27 +43,27 @@ namespace App.Metrics.Reporting
                 reporter.EndMetricTypeReport(typeof(EnvironmentInfo));
             }            
 
-            foreach (var group in data.Groups)
+            foreach (var contextValueSource in data.Contexts)
             {
-                ReportMetricType(reporter, group.Counters,
-                    c => { reporter.ReportMetric($"{metricsContext.ContextName}.{@group.GroupName}", c, globalTags); }, token);
+                ReportMetricType(reporter, contextValueSource.Counters,
+                    c => { reporter.ReportMetric($"{contextValueSource.Context}", c, globalTags); }, token);
 
-                ReportMetricType(reporter, group.Gauges,
-                    g => { reporter.ReportMetric($"{metricsContext.ContextName}.{@group.GroupName}", g, globalTags); }, token);
+                ReportMetricType(reporter, contextValueSource.Gauges,
+                    g => { reporter.ReportMetric($"{contextValueSource.Context}", g, globalTags); }, token);
 
-                ReportMetricType(reporter, group.Histograms,
-                    h => { reporter.ReportMetric($"{metricsContext.ContextName}.{@group.GroupName}", h, globalTags); }, token);
+                ReportMetricType(reporter, contextValueSource.Histograms,
+                    h => { reporter.ReportMetric($"{contextValueSource.Context}", h, globalTags); }, token);
 
-                ReportMetricType(reporter, group.Meters,
-                    m => { reporter.ReportMetric($"{metricsContext.ContextName}.{@group.GroupName}", m, globalTags); }, token);
+                ReportMetricType(reporter, contextValueSource.Meters,
+                    m => { reporter.ReportMetric($"{contextValueSource.Context}", m, globalTags); }, token);
 
-                ReportMetricType(reporter, group.Timers,
-                    t => { reporter.ReportMetric($"{metricsContext.ContextName}.{@group.GroupName}", t, globalTags); }, token);
+                ReportMetricType(reporter, contextValueSource.Timers,
+                    t => { reporter.ReportMetric($"{contextValueSource.Context}", t, globalTags); }, token);
             }
 
             if (reportHealthChecks)
             {
-                var healthStatus = await metricsContext.Advanced.HealthCheckManager.GetStatusAsync();
+                var healthStatus = await metrics.Advanced.HealthCheckManager.GetStatusAsync();
 
                 reporter.StartMetricTypeReport(typeof(HealthStatus));
 
@@ -75,7 +75,7 @@ namespace App.Metrics.Reporting
                 reporter.EndMetricTypeReport(typeof(HealthStatus));
             }
 
-            reporter.EndReport(metricsContext);
+            reporter.EndReport(metrics);
         }
 
         private static void ReportMetricType<T>(IMetricReporter reporter, IEnumerable<T> metrics, Action<T> report, CancellationToken token)

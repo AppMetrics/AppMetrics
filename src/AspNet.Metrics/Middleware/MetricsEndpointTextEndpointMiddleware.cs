@@ -20,8 +20,8 @@ namespace AspNet.Metrics.Middleware
             IMetricsFilter metricsFilter,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
-            IMetricsContext metricsContext)
-            : base(next, aspNetOptions, loggerFactory, metricsContext)
+            IMetrics metrics)
+            : base(next, aspNetOptions, loggerFactory, metrics)
         {
             _metricsFilter = metricsFilter;
             _stringReporter = new StringReporter();
@@ -36,7 +36,7 @@ namespace AspNet.Metrics.Middleware
 
                 //DEVNOTE: MetricsTags.None as it's not very useful here are the moment, if filtering was provided via the url it could be useful
                 // this would also allow filtering when pulling metrics rather than pushing
-                await _reportGenerator.Generate(_stringReporter, MetricsContext, _metricsFilter, MetricTags.None, context.RequestAborted);
+                await _reportGenerator.Generate(_stringReporter, Metrics, _metricsFilter, MetricTags.None, context.RequestAborted);
 
                 await WriteResponseAsync(context, _stringReporter.Result, "text/plain");
 

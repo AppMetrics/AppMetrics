@@ -8,7 +8,7 @@ using App.Metrics.Utils;
 
 namespace App.Metrics.Core
 {
-    public interface IAdvancedMetricsContext : IHideObjectMembers
+    public interface IAdvancedMetrics : IHideObjectMembers
     {
         IClock Clock { get; }
 

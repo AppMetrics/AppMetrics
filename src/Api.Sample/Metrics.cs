@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using App.Metrics;
+﻿using App.Metrics;
 using App.Metrics.Core;
 
 namespace Api.Sample
 {
     public static class Metrics
     {
-        public static class Groups
+        public static class Contexts
         {
-            public static class TestGroup
+            public static class TestContext
             {
-                public static readonly string TestGroupName = "Test Group";
+                public static readonly string TestContextName = "Test Context";
 
                 public static class Counters
                 {
@@ -94,9 +90,9 @@ namespace Api.Sample
                 }
             }
 
-            public static class TestGroupTwo
+            public static class TestContextTwo
             {
-                public static readonly string TestGroupName = "Test Group Two";
+                public static readonly string TestContextName = "Test Context Two";
 
                 public static class Counters
                 {
@@ -208,17 +204,17 @@ namespace Api.Sample
 
         public static class Histograms
         {
-            public static HistogramOptions TestHistogram { get; } = new HistogramOptions
+            public static HistogramOptions TestHAdvancedistogram { get; } = new HistogramOptions
             {
-                Name = "Test Histogram",
+                Name = "Test Advanced Histogram",
                 SamplingType = SamplingType.ExponentiallyDecaying,
                 MeasurementUnit = Unit.MegaBytes,
                 Tags = MetricTags.None
             };
 
-            public static HistogramOptions TestHAdvancedistogram { get; } = new HistogramOptions
+            public static HistogramOptions TestHistogram { get; } = new HistogramOptions
             {
-                Name = "Test Advanced Histogram",
+                Name = "Test Histogram",
                 SamplingType = SamplingType.ExponentiallyDecaying,
                 MeasurementUnit = Unit.MegaBytes,
                 Tags = MetricTags.None
@@ -255,16 +251,6 @@ namespace Api.Sample
                 SamplingType = SamplingType.ExponentiallyDecaying,
             };
 
-            public static TimerOptions TestTimerWithUserValue { get; } = new TimerOptions
-            {
-                Name = "Test Timer With User Value",
-                MeasurementUnit = Unit.Items,
-                DurationUnit = TimeUnit.Milliseconds,
-                RateUnit = TimeUnit.Milliseconds,
-                Tags = MetricTags.None,
-                SamplingType = SamplingType.ExponentiallyDecaying,
-            };
-
             public static TimerOptions TestTimerTwo { get; } = new TimerOptions
             {
                 Name = "Test Timer 2",
@@ -278,6 +264,16 @@ namespace Api.Sample
             public static TimerOptions TestTimerTwoWithUserValue { get; } = new TimerOptions
             {
                 Name = "Test Timer 2 With User Value",
+                MeasurementUnit = Unit.Items,
+                DurationUnit = TimeUnit.Milliseconds,
+                RateUnit = TimeUnit.Milliseconds,
+                Tags = MetricTags.None,
+                SamplingType = SamplingType.ExponentiallyDecaying,
+            };
+
+            public static TimerOptions TestTimerWithUserValue { get; } = new TimerOptions
+            {
+                Name = "Test Timer With User Value",
                 MeasurementUnit = Unit.Items,
                 DurationUnit = TimeUnit.Milliseconds,
                 RateUnit = TimeUnit.Milliseconds,

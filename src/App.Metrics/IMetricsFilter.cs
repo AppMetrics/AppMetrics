@@ -13,7 +13,7 @@ namespace App.Metrics
 {
     public interface IMetricsFilter : IHideObjectMembers
     {
-        bool IsMatch(string group);
+        bool IsMatch(string context);
 
         bool IsMatch(GaugeValueSource gauge);
 

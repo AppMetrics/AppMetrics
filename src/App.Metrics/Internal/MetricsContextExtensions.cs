@@ -11,34 +11,34 @@ using App.Metrics.Data;
 namespace App.Metrics
 // ReSharper restore CheckNamespace
 {
-    internal static class MetricsDataGroupValueSourceExtensions
+    internal static class MetricsContextValueSourceExtensions
     {
-        public static CounterValue CounterValueFor(this MetricsDataGroupValueSource valueService, string metricName)
+        public static CounterValue CounterValueFor(this MetricsContextValueSource valueService, string metricName)
         {
-            return valueService.Counters.ValueFor(valueService.GroupName, metricName);
+            return valueService.Counters.ValueFor(valueService.Context, metricName);
         }
 
-        public static double GaugeValueFor(this MetricsDataGroupValueSource valueService, string metricName)
+        public static double GaugeValueFor(this MetricsContextValueSource valueService, string metricName)
         {
-            return valueService.Gauges.ValueFor(valueService.GroupName, metricName);
+            return valueService.Gauges.ValueFor(valueService.Context, metricName);
         }
 
-        public static HistogramValue HistogramValueFor(this MetricsDataGroupValueSource valueService, string metricName)
+        public static HistogramValue HistogramValueFor(this MetricsContextValueSource valueService, string metricName)
         {
-            return valueService.Histograms.ValueFor(valueService.GroupName, metricName);
+            return valueService.Histograms.ValueFor(valueService.Context, metricName);
         }
 
-        public static MeterValue MeterValueFor(this MetricsDataGroupValueSource valueService, string metricName)
+        public static MeterValue MeterValueFor(this MetricsContextValueSource valueService, string metricName)
         {
-            return valueService.Meters.ValueFor(valueService.GroupName, metricName);
+            return valueService.Meters.ValueFor(valueService.Context, metricName);
         }
 
-        public static TimerValue TimerValueFor(this MetricsDataGroupValueSource valueService, string metricName)
+        public static TimerValue TimerValueFor(this MetricsContextValueSource valueService, string metricName)
         {
-            return valueService.Timers.ValueFor(valueService.GroupName, metricName);
+            return valueService.Timers.ValueFor(valueService.Context, metricName);
         }
 
-        public static T ValueFor<T>(this IEnumerable<MetricValueSource<T>> values, string groupName, string metricName)
+        public static T ValueFor<T>(this IEnumerable<MetricValueSource<T>> values, string context, string metricName)
         {
             var metricValueSources = values as MetricValueSource<T>[] ?? values.ToArray();
 
@@ -47,7 +47,7 @@ namespace App.Metrics
             if (value.Any() && value.Count() <= 1) return value.Single();
 
             var availableNames = string.Join(",", metricValueSources.Select(v => v.Name));
-            throw new InvalidOperationException($"No metric found with name {metricName} in group {groupName} Available names: {availableNames}");
+            throw new InvalidOperationException($"No metric found with name {metricName} in context {context} Available names: {availableNames}");
         }
     }
 }

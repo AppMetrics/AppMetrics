@@ -20,25 +20,25 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(services));
             }
 
-            return services.AddMetrics(options => { }, default(IMetricsContext));
+            return services.AddMetrics(options => { }, default(IMetrics));
         }
 
         public static IMetricsHostBuilder AddMetrics(this IServiceCollection services,
-            Action<AppMetricsOptions> setupAction, IMetricsContext metricsContext)
+            Action<AppMetricsOptions> setupAction, IMetrics metrics)
         {
             if (services == null)
             {
                 throw new ArgumentNullException(nameof(services));
             }
 
-            var builder = services.AddMetricsCore(setupAction, metricsContext);
+            var builder = services.AddMetricsCore(setupAction, metrics);
 
             return builder;
         }
 
         public static IMetricsHostBuilder AddMetrics(this IServiceCollection services, Action<AppMetricsOptions> setupAction)
         {
-            return services.AddMetrics(setupAction, default(IMetricsContext));
+            return services.AddMetrics(setupAction, default(IMetrics));
         }
     }
 }

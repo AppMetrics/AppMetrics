@@ -32,9 +32,9 @@ namespace App.Metrics.Facts.Core
             counter.Increment();
 
             var data = await _fixture.Context.Advanced.DataManager.GetAsync();
-            var group = data.Groups.Single();
+            var context = data.Contexts.Single();
 
-            group.Counters.Single().Value.Count.Should().Be(10L);
+            context.Counters.Single().Value.Count.Should().Be(10L);
         }
 
         [Fact]

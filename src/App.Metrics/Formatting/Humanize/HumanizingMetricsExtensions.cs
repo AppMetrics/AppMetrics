@@ -37,9 +37,9 @@ namespace App.Metrics.Formatting.Humanize
             return string.Format(Environment.NewLine + "***** Start - {0} *****" + Environment.NewLine + Environment.NewLine, metricTypeDisplay);
         }
 
-        public static string HumanzizeName<T>(this MetricValueSource<T> valueSource, string contextGroupName)
+        public static string HumanzizeName<T>(this MetricValueSource<T> valueSource, string context)
         {
-            return $"\t[{contextGroupName}] {valueSource.Name}";
+            return $"\t[{context}] {valueSource.Name}";
         }
 
         public static string Hummanize<T>(this MetricValueSource<T> valueSource)

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace App.Metrics
 {
-    public class Metric
+    public abstract class Metric
     {
         private Dictionary<string, string> _tags = MetricTags.None;
 

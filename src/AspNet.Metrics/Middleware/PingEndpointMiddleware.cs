@@ -14,8 +14,8 @@ namespace AspNet.Metrics.Middleware
         public PingEndpointMiddleware(RequestDelegate next,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
-            IMetricsContext metricsContext)
-            : base(next, aspNetOptions, loggerFactory, metricsContext)
+            IMetrics metrics)
+            : base(next, aspNetOptions, loggerFactory, metrics)
         {
         }
 

@@ -37,11 +37,11 @@ namespace App.Sample
             var application = new Application(provider);
             var scheduler = new DefaultTaskScheduler();
 
-            var simpleMetrics = new SampleMetrics(application.MetricsContext);
-            var setCounterSample = new SetCounterSample(application.MetricsContext);
-            var setMeterSample = new SetMeterSample(application.MetricsContext);
-            var userValueHistogramSample = new UserValueHistogramSample(application.MetricsContext);
-            var userValueTimerSample = new UserValueTimerSample(application.MetricsContext);
+            var simpleMetrics = new SampleMetrics(application.Metrics);
+            var setCounterSample = new SetCounterSample(application.Metrics);
+            var setMeterSample = new SetMeterSample(application.Metrics);
+            var userValueHistogramSample = new UserValueHistogramSample(application.Metrics);
+            var userValueTimerSample = new UserValueTimerSample(application.Metrics);
 
             var cancellationTokenSource = new CancellationTokenSource();
             var task = scheduler.Interval(
@@ -53,24 +53,24 @@ namespace App.Sample
                     //userValueTimerSample.RunSomeRequests(); //TODO: AH - why's this taking so long?
                     simpleMetrics.RunSomeRequests();
 
-                    application.MetricsContext.Gauge(AppMetricsRegistry.Gauges.Errors, () => 1);
-                    application.MetricsContext.Gauge(AppMetricsRegistry.Gauges.PercentGauge, () => 1);
-                    application.MetricsContext.Gauge(AppMetricsRegistry.Gauges.ApmGauge, () => 1);
-                    application.MetricsContext.Gauge(AppMetricsRegistry.Gauges.ParenthesisGauge, () => 1);
-                    application.MetricsContext.Gauge(AppMetricsRegistry.Gauges.GaugeWithNoValue, () => double.NaN);
+                    application.Metrics.Gauge(AppMetricsRegistry.Gauges.Errors, () => 1);
+                    application.Metrics.Gauge(AppMetricsRegistry.Gauges.PercentGauge, () => 1);
+                    application.Metrics.Gauge(AppMetricsRegistry.Gauges.ApmGauge, () => 1);
+                    application.Metrics.Gauge(AppMetricsRegistry.Gauges.ParenthesisGauge, () => 1);
+                    application.Metrics.Gauge(AppMetricsRegistry.Gauges.GaugeWithNoValue, () => double.NaN);
 
-                    application.MetricsContext.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPagedMemorySizeGauge, () => process.PagedMemorySize64);
-                    application.MetricsContext.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPeekPagedMemorySizeGauge, () => process.PeakPagedMemorySize64);
-                    application.MetricsContext.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPeekVirtualMemorySizeGauge, () => process.PeakVirtualMemorySize64);
-                    application.MetricsContext.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPeekWorkingSetSizeGauge, () => process.WorkingSet64);
-                    application.MetricsContext.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPrivateMemorySizeGauge, () => process.PrivateMemorySize64);
-                    application.MetricsContext.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessVirtualMemorySizeGauge, () => process.VirtualMemorySize64);
-                    application.MetricsContext.Gauge(AppMetricsRegistry.ProcessMetrics.SystemNonPagedMemoryGauge, () => process.NonpagedSystemMemorySize64);
-                    application.MetricsContext.Gauge(AppMetricsRegistry.ProcessMetrics.SystemPagedMemorySizeGauge, () => process.PagedSystemMemorySize64);
+                    application.Metrics.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPagedMemorySizeGauge, () => process.PagedMemorySize64);
+                    application.Metrics.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPeekPagedMemorySizeGauge, () => process.PeakPagedMemorySize64);
+                    application.Metrics.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPeekVirtualMemorySizeGauge, () => process.PeakVirtualMemorySize64);
+                    application.Metrics.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPeekWorkingSetSizeGauge, () => process.WorkingSet64);
+                    application.Metrics.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPrivateMemorySizeGauge, () => process.PrivateMemorySize64);
+                    application.Metrics.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessVirtualMemorySizeGauge, () => process.VirtualMemorySize64);
+                    application.Metrics.Gauge(AppMetricsRegistry.ProcessMetrics.SystemNonPagedMemoryGauge, () => process.NonpagedSystemMemorySize64);
+                    application.Metrics.Gauge(AppMetricsRegistry.ProcessMetrics.SystemPagedMemorySizeGauge, () => process.PagedSystemMemorySize64);
 
                 }, cancellationTokenSource.Token);
 
-            application.Reporter.RunReports(application.MetricsContext, cancellationTokenSource.Token);
+            application.Reporter.RunReports(application.Metrics, cancellationTokenSource.Token);
 
             Console.WriteLine("Setup Complete, waiting for report run...");
 
@@ -158,7 +158,7 @@ namespace App.Sample
     {
         public Application(IServiceProvider provider)
         {
-            MetricsContext = provider.GetRequiredService<IMetricsContext>();
+            Metrics = provider.GetRequiredService<IMetrics>();
 
             var reporterFactory = provider.GetRequiredService<IReportFactory>();
             Reporter = reporterFactory.CreateReporter();
@@ -166,7 +166,7 @@ namespace App.Sample
             Token = new CancellationToken();
         }
 
-        public IMetricsContext MetricsContext { get; set; }
+        public IMetrics Metrics { get; set; }
 
         public IReporter Reporter { get; set; }
 

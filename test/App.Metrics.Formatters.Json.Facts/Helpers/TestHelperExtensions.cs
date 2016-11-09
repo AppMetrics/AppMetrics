@@ -17,7 +17,7 @@ namespace App.Metrics.Formatters.Json.Facts.Helpers
 
     public enum MetricDataSamples
     {
-        SingleGroup
+        SingleContext
     }
 
     public static class TestHelperExtensions
@@ -31,7 +31,7 @@ namespace App.Metrics.Formatters.Json.Facts.Helpers
 
         private static readonly Dictionary<MetricDataSamples, string> MetricDataFileSampleMapping = new Dictionary<MetricDataSamples, string>
         {
-            { MetricDataSamples.SingleGroup, "metricdata_singlegroup" }
+            { MetricDataSamples.SingleContext, "metricdata_single_context" }
         };
 
         public static JToken ExtractHealthStatusSampleFromResourceFile(this HealthStatusSamples sample)

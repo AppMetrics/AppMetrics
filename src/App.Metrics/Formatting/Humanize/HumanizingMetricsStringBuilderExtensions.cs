@@ -37,21 +37,21 @@ namespace App.Metrics.Formatting.Humanize
             buffer.AppendLine(Environment.NewLine + "\tIs Healthy = " + (isHealthy ? "Yes" : "No") + Environment.NewLine);
         }
 
-        public static void WriteMetricEndReport(this StringBuilder buffer, string reportName, string context, string timeStamp)
+        public static void WriteMetricEndReport(this StringBuilder buffer, string reportName, string timeStamp)
         {
-            buffer.AppendFormat(Environment.NewLine + "-- End {0} Report: {1} - {2} --" + Environment.NewLine,
-                reportName, context, timeStamp);
+            buffer.AppendFormat(Environment.NewLine + "-- End {0} Report: {1} --" + Environment.NewLine,
+                reportName, timeStamp);
         }
 
-        public static void WriteMetricName<T>(this StringBuilder buffer, string contextGroupName, MetricValueSource<T> valueSource)
+        public static void WriteMetricName<T>(this StringBuilder buffer, string context, MetricValueSource<T> valueSource)
         {
-            buffer.AppendLine(valueSource.HumanzizeName(contextGroupName));
+            buffer.AppendLine(valueSource.HumanzizeName(context));
         }
 
-        public static void WriteMetricStartReport(this StringBuilder buffer, string reportName, string context, string timeStamp)
+        public static void WriteMetricStartReport(this StringBuilder buffer, string reportName, string timeStamp)
         {
-            buffer.AppendFormat(Environment.NewLine + "-- Start {0} Report: {1} - {2} --" + Environment.NewLine,
-                reportName, context, timeStamp);
+            buffer.AppendFormat(Environment.NewLine + "-- Start {0} Report: {1} --" + Environment.NewLine,
+                reportName, timeStamp);
         }
 
         public static void WriteMetricValue<T>(this StringBuilder buffer, MetricValueSource<T> valueSource)

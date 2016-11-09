@@ -18,8 +18,8 @@ namespace AspNet.Metrics.Middleware
         public PerRequestTimerMiddleware(RequestDelegate next,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
-            IMetricsContext metricsContext)
-            : base(next, aspNetOptions, loggerFactory, metricsContext)
+            IMetrics metrics)
+            : base(next, aspNetOptions, loggerFactory, metrics)
         {
         }
 
@@ -29,7 +29,7 @@ namespace AspNet.Metrics.Middleware
             {
                 Logger.MiddlewareExecuting(GetType());
 
-                context.Items[TimerItemsKey] = MetricsContext.Advanced.Clock.Nanoseconds;
+                context.Items[TimerItemsKey] = Metrics.Advanced.Clock.Nanoseconds;
 
                 await Next(context);
 
@@ -38,9 +38,9 @@ namespace AspNet.Metrics.Middleware
                     var clientId = context.OAuthClientId();
 
                     var startTime = (long)context.Items[TimerItemsKey];
-                    var elapsed = MetricsContext.Advanced.Clock.Nanoseconds - startTime;
+                    var elapsed = Metrics.Advanced.Clock.Nanoseconds - startTime;
 
-                    MetricsContext.RecordEndpointRequestTime(clientId, context.GetMetricsCurrentRouteName(), elapsed);
+                    Metrics.RecordEndpointRequestTime(clientId, context.GetMetricsCurrentRouteName(), elapsed);
                 }
 
                 Logger.MiddlewareExecuted(GetType());

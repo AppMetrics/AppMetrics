@@ -61,9 +61,9 @@ namespace App.Metrics.Extensions.Reporting.TextFile
             _stringReporter.EndMetricTypeReport(metricType);
         }
 
-        public void EndReport(IMetricsContext metricsContext)
+        public void EndReport(IMetrics metrics)
         {
-            _stringReporter.EndReport(metricsContext);
+            _stringReporter.EndReport(metrics);
 
             try
             {
@@ -97,9 +97,9 @@ namespace App.Metrics.Extensions.Reporting.TextFile
             _stringReporter.StartMetricTypeReport(metricType);
         }
 
-        public void StartReport(IMetricsContext metricsContext)
+        public void StartReport(IMetrics metrics)
         {
-            _stringReporter.StartReport(metricsContext);
+            _stringReporter.StartReport(metrics);
         }
     }
 }

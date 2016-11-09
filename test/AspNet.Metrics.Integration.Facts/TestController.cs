@@ -8,11 +8,11 @@ namespace AspNet.Metrics.Facts.Integration
     [Route("api/[controller]")]
     public class TestController : Controller
     {
-        private readonly IMetricsContext _metricsContext;
+        private readonly IMetrics _metrics;
 
-        public TestController(IMetricsContext metricsContext)
+        public TestController(IMetrics metrics)
         {
-            _metricsContext = metricsContext;
+            _metrics = metrics;
         }
 
         [HttpDelete("{id}")]
@@ -35,7 +35,7 @@ namespace AspNet.Metrics.Facts.Integration
         [HttpGet("300ms")]
         public async Task<IActionResult> Get300ms()
         {
-            _metricsContext.Advanced.Clock.Advance(TimeUnit.Milliseconds, 300);
+            _metrics.Advanced.Clock.Advance(TimeUnit.Milliseconds, 300);
             await Task.FromResult(0);
             return StatusCode(200);
         }
@@ -43,7 +43,7 @@ namespace AspNet.Metrics.Facts.Integration
         [HttpGet("30ms")]
         public async Task<IActionResult> Get30ms()
         {
-            _metricsContext.Advanced.Clock.Advance(TimeUnit.Milliseconds, 30);
+            _metrics.Advanced.Clock.Advance(TimeUnit.Milliseconds, 30);
             await Task.FromResult(0);
             return StatusCode(200);
         }

@@ -38,39 +38,39 @@ namespace Metrics.Samples
         /// </summary>
         private readonly ICounter _totalRequestsCounter;
 
-        private static IMetricsContext _metricsContext;
+        private static IMetrics _metrics;
 
         private double _someValue = 1;
 
-        public SampleMetrics(IMetricsContext metricsContext)
+        public SampleMetrics(IMetrics metrics)
         {
-            _metricsContext = metricsContext;
-            _concurrentRequestsCounter = _metricsContext.Advanced.Counter(SampleMetricsRegistry.Counters.ConcurrentRequestsCounter);
-            _histogramOfData = _metricsContext.Advanced.Histogram(SampleMetricsRegistry.Histograms.ResultsExample);
-            _meter = _metricsContext.Advanced.Meter(SampleMetricsRegistry.Meters.Requests);
-            _setCounter = _metricsContext.Advanced.Counter(SampleMetricsRegistry.Counters.SetCounter);
-            _setMeter = _metricsContext.Advanced.Meter(SampleMetricsRegistry.Meters.SetMeter);
-            _timer = _metricsContext.Advanced.Timer(SampleMetricsRegistry.Timers.Requests);
-            _totalRequestsCounter = _metricsContext.Advanced.Counter(SampleMetricsRegistry.Counters.Requests);
+            _metrics = metrics;
+            _concurrentRequestsCounter = _metrics.Advanced.Counter(SampleMetricsRegistry.Counters.ConcurrentRequestsCounter);
+            _histogramOfData = _metrics.Advanced.Histogram(SampleMetricsRegistry.Histograms.ResultsExample);
+            _meter = _metrics.Advanced.Meter(SampleMetricsRegistry.Meters.Requests);
+            _setCounter = _metrics.Advanced.Counter(SampleMetricsRegistry.Counters.SetCounter);
+            _setMeter = _metrics.Advanced.Meter(SampleMetricsRegistry.Meters.SetMeter);
+            _timer = _metrics.Advanced.Timer(SampleMetricsRegistry.Timers.Requests);
+            _totalRequestsCounter = _metrics.Advanced.Counter(SampleMetricsRegistry.Counters.Requests);
 
             // define a simple gauge that will provide the instant value of someValue when requested
-            _metricsContext.Gauge(SampleMetricsRegistry.Gauges.DataValue, () => _someValue);
+            _metrics.Gauge(SampleMetricsRegistry.Gauges.DataValue, () => _someValue);
 
 
-            _metricsContext.Gauge(SampleMetricsRegistry.Gauges.CustomRatioGauge, 
+            _metrics.Gauge(SampleMetricsRegistry.Gauges.CustomRatioGauge, 
                 () => ValueReader.GetCurrentValue(_totalRequestsCounter).Count / ValueReader.GetCurrentValue(_meter).FiveMinuteRate);
             
-            _metricsContext.Advanced.Gauge(SampleMetricsRegistry.Gauges.Ratio, () => new HitRatioGauge(_meter, _timer, m => m.OneMinuteRate));
+            _metrics.Advanced.Gauge(SampleMetricsRegistry.Gauges.Ratio, () => new HitRatioGauge(_meter, _timer, m => m.OneMinuteRate));
         }
 
         public void Request(int i)
         {
-            var multiContextMetrics = new MultiContextMetrics(_metricsContext);
+            var multiContextMetrics = new MultiContextMetrics(_metrics);
             multiContextMetrics.Run();
 
             for (var j = 0; j < 5; j++)
             {
-                var multiContextInstanceMetrics = new MultiContextInstanceMetrics("Sample Instance " + i.ToString(), _metricsContext);
+                var multiContextInstanceMetrics = new MultiContextInstanceMetrics("Sample Instance " + i.ToString(), _metrics);
                 multiContextInstanceMetrics.Run();
             }
 

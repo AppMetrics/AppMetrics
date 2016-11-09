@@ -15,81 +15,31 @@ namespace App.Metrics.Data
     public sealed class MetricsDataValueSource
     {
         public static readonly MetricsDataValueSource Empty = new MetricsDataValueSource(
-            string.Empty,
             DateTime.MinValue,
             EnvironmentInfo.Empty,
-            Enumerable.Empty<MetricsDataGroupValueSource>());
+            Enumerable.Empty<MetricsContextValueSource>());
 
-        public readonly string ContextName;
+        public readonly IEnumerable<MetricsContextValueSource> Contexts;
+
         public readonly EnvironmentInfo Environment;
-        public readonly IEnumerable<MetricsDataGroupValueSource> Groups;
         public readonly DateTime Timestamp;
 
-        public MetricsDataValueSource(string contextName,
+        public MetricsDataValueSource(
             DateTime timestamp,
             EnvironmentInfo environment,
-            IEnumerable<MetricsDataGroupValueSource> groups)
+            IEnumerable<MetricsContextValueSource> contexts)
         {
-            ContextName = contextName;
             Timestamp = timestamp;
             Environment = environment;
-            Groups = groups;
+            Contexts = contexts;
         }
 
         public MetricsDataValueSource Filter(IMetricsFilter filter)
         {
-            var groups = Groups.Select(g => g.Filter(filter)).Where(g => g != MetricsDataGroupValueSource.Empty);
+            var contexts = Contexts.Select(g => g.Filter(filter)).Where(g => g != MetricsContextValueSource.Empty);
             var environment = filter.ReportEnvironment ? EnvironmentInfo.Empty : Environment;
 
-            return new MetricsDataValueSource(ContextName, Timestamp, environment, groups);
-        }
-    }
-
-    public sealed class MetricsDataGroupValueSource
-    {
-        public static readonly MetricsDataGroupValueSource Empty = new MetricsDataGroupValueSource(string.Empty,
-            Enumerable.Empty<GaugeValueSource>(),
-            Enumerable.Empty<CounterValueSource>(),
-            Enumerable.Empty<MeterValueSource>(),
-            Enumerable.Empty<HistogramValueSource>(),
-            Enumerable.Empty<TimerValueSource>());
-
-        public readonly IEnumerable<CounterValueSource> Counters;
-        public readonly IEnumerable<GaugeValueSource> Gauges;
-
-        public readonly string GroupName;
-        public readonly IEnumerable<HistogramValueSource> Histograms;
-        public readonly IEnumerable<MeterValueSource> Meters;
-        public readonly IEnumerable<TimerValueSource> Timers;
-
-        public MetricsDataGroupValueSource(string groupName,
-            IEnumerable<GaugeValueSource> gauges,
-            IEnumerable<CounterValueSource> counters,
-            IEnumerable<MeterValueSource> meters,
-            IEnumerable<HistogramValueSource> histograms,
-            IEnumerable<TimerValueSource> timers)
-        {
-            GroupName = groupName;
-            Gauges = gauges;
-            Counters = counters;
-            Meters = meters;
-            Histograms = histograms;
-            Timers = timers;
-        }
-
-        public MetricsDataGroupValueSource Filter(IMetricsFilter filter)
-        {
-            if (!filter.IsMatch(GroupName))
-            {
-                return Empty;
-            }
-
-            return new MetricsDataGroupValueSource(GroupName,
-                Gauges.Where(filter.IsMatch),
-                Counters.Where(filter.IsMatch),
-                Meters.Where(filter.IsMatch),
-                Histograms.Where(filter.IsMatch),
-                Timers.Where(filter.IsMatch));
+            return new MetricsDataValueSource(Timestamp, environment, contexts);
         }
     }
 }

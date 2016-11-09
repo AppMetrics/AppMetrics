@@ -8,11 +8,11 @@ using App.Metrics.Data;
 
 namespace App.Metrics.Internal
 {
-    internal interface IMetricGroupRegistry
+    internal interface IMetricContextRegistry
     {
         IMetricRegistryManager DataProvider { get; }
 
-        string GroupName { get; }
+        string Context { get; }
 
         void ClearAllMetrics();
 

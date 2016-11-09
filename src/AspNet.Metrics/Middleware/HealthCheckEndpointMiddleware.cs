@@ -21,9 +21,9 @@ namespace AspNet.Metrics.Middleware
             AppMetricsOptions options,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
-            IMetricsContext metricsContext,
+            IMetrics metrics,
             IHealthStatusSerializer serializer)
-            : base(next, aspNetOptions, loggerFactory, metricsContext)
+            : base(next, aspNetOptions, loggerFactory, metrics)
         {
             if (serializer == null)
             {
@@ -42,7 +42,7 @@ namespace AspNet.Metrics.Middleware
             {
                 Logger.MiddlewareExecuting(GetType());
 
-                var healthStatus = await MetricsContext.Advanced.HealthCheckManager.GetStatusAsync();
+                var healthStatus = await Metrics.Advanced.HealthCheckManager.GetStatusAsync();
                 var responseStatusCode = healthStatus.IsHealthy ? HttpStatusCode.OK : HttpStatusCode.InternalServerError;
 
                 var json = _serializer.Serialize(healthStatus);

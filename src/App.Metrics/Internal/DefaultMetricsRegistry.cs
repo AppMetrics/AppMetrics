@@ -17,64 +17,62 @@ namespace App.Metrics.Internal
     internal sealed class DefaultMetricsRegistry : IMetricsRegistry
     {
         private readonly IClock _clock;
-        private readonly string _defaultGroupName;
+        private readonly string _defaultContextLabel;
         private readonly SamplingType _defaultSamplingType;
         private readonly EnvironmentInfoBuilder _environmentInfoBuilder;
-        private readonly string _globalContextName;
 
-        private readonly ConcurrentDictionary<string, IMetricGroupRegistry> _groups = new ConcurrentDictionary<string, IMetricGroupRegistry>();
+        private readonly ConcurrentDictionary<string, IMetricContextRegistry> _contexts = new ConcurrentDictionary<string, IMetricContextRegistry>();
         private readonly ILogger _logger;
-        private readonly Func<string, IMetricGroupRegistry> _newGroupRegistry;
+        private readonly Func<string, IMetricContextRegistry> _newContextRegistry;
 
         public DefaultMetricsRegistry(
             ILoggerFactory loggerFactory,
             AppMetricsOptions options,
             EnvironmentInfoBuilder environmentInfoBuilder,
-            Func<string, IMetricGroupRegistry> newGroupRegistry)
+            Func<string, IMetricContextRegistry> newContextRegistry)
         {
-            _logger = loggerFactory.CreateLogger<DefaultMetricGroupRegistry>();
+            _logger = loggerFactory.CreateLogger<DefaultMetricContextRegistry>();
             _environmentInfoBuilder = environmentInfoBuilder;
-            _newGroupRegistry = newGroupRegistry;
-            _defaultGroupName = options.DefaultGroupName;
+            _newContextRegistry = newContextRegistry;
+            _defaultContextLabel = options.DefaultContextLabel;
             _defaultSamplingType = options.DefaultSamplingType;
-            _globalContextName = options.GlobalContextName;
             _clock = options.Clock;
-            _groups.TryAdd(_defaultGroupName, newGroupRegistry(_defaultGroupName));
+            _contexts.TryAdd(_defaultContextLabel, newContextRegistry(_defaultContextLabel));
         }
 
-        public bool AddGroup(string groupName, IMetricGroupRegistry registry)
+        public bool AddContext(string context, IMetricContextRegistry registry)
         {
-            if (groupName.IsMissing())
+            if (context.IsMissing())
             {
-                throw new ArgumentException("Registry GroupName cannot be null or empty", nameof(groupName));
+                throw new ArgumentException("Registry Context cannot be null or empty", nameof(context));
             }
 
-            var attached = _groups.GetOrAdd(groupName, registry);
+            var attached = _contexts.GetOrAdd(context, registry);
 
             return ReferenceEquals(attached, registry);
         }
 
         public void Clear()
         {
-            ForAllGroups(c =>
+            ForAllContexts(c =>
             {
                 c.ClearAllMetrics();
-                _groups.TryRemove(c.GroupName, out c);
+                _contexts.TryRemove(c.Context, out c);
             });
         }
 
         public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterMetric
         {
-            EnsureGroupName(options);
-            var registry = _groups.GetOrAdd(options.GroupName, _newGroupRegistry);
+            EnsureContextLabel(options);
+            var registry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
             return registry.Counter(options, builder);
         }
 
-        public MetricValueOptions EnsureGroupName(MetricValueOptions options)
+        public MetricValueOptions EnsureContextLabel(MetricValueOptions options)
         {
-            if (options.GroupName.IsMissing())
+            if (options.Context.IsMissing())
             {
-                options.GroupName = _defaultGroupName;
+                options.Context = _defaultContextLabel;
             }
 
             return options;
@@ -92,8 +90,8 @@ namespace App.Metrics.Internal
 
         public void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider)
         {
-            EnsureGroupName(options);
-            var registry = _groups.GetOrAdd(options.GroupName, _newGroupRegistry);
+            EnsureContextLabel(options);
+            var registry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
             registry.Gauge(options, valueProvider);
         }
 
@@ -103,13 +101,13 @@ namespace App.Metrics.Internal
 
             var environment = await _environmentInfoBuilder.BuildAsync();
 
-            if (_groups.Count == 0)
+            if (_contexts.Count == 0)
             {
                 return MetricsDataValueSource.Empty;
             }
 
-            var metricDataGroups = _groups.Values.Select(g => new MetricsDataGroupValueSource(
-                g.GroupName,
+            var contexts = _contexts.Values.Select(g => new MetricsContextValueSource(
+                g.Context,
                 g.DataProvider.Gauges.ToArray(),
                 g.DataProvider.Counters.ToArray(),
                 g.DataProvider.Meters.ToArray(),
@@ -117,7 +115,7 @@ namespace App.Metrics.Internal
                 g.DataProvider.Timers.ToArray()
             ));
 
-            var data = new MetricsDataValueSource(_globalContextName, _clock.UtcDateTime, environment, metricDataGroups);
+            var data = new MetricsDataValueSource(_clock.UtcDateTime, environment, contexts);
 
             _logger.MetricsDataGetExecuted();
 
@@ -126,28 +124,28 @@ namespace App.Metrics.Internal
 
         public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramMetric
         {
-            EnsureGroupName(options);
+            EnsureContextLabel(options);
             EnsureSamplingType(options);
-            var registry = _groups.GetOrAdd(options.GroupName, _newGroupRegistry);
+            var registry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
             return registry.Histogram(options, builder);
         }
 
         public IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterMetric
         {
-            EnsureGroupName(options);
-            var registry = _groups.GetOrAdd(options.GroupName, _newGroupRegistry);
+            EnsureContextLabel(options);
+            var registry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
             return registry.Meter(options, builder);
         }
 
-        public void RemoveGroup(string groupName)
+        public void RemoveContext(string context)
         {
-            if (groupName.IsMissing())
+            if (context.IsMissing())
             {
-                throw new ArgumentException("Registry GroupName cannot be null or empty", nameof(groupName));
+                throw new ArgumentException("Registry Context cannot be null or empty", nameof(context));
             }
 
-            IMetricGroupRegistry registry;
-            if (_groups.TryRemove(groupName, out registry))
+            IMetricContextRegistry registry;
+            if (_contexts.TryRemove(context, out registry))
             {
                 //TODO: AH - should this dispose the registry?
                 registry.ClearAllMetrics();
@@ -156,17 +154,17 @@ namespace App.Metrics.Internal
 
         public ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerMetric
         {
-            EnsureGroupName(options);
+            EnsureContextLabel(options);
             EnsureSamplingType(options);
-            var registry = _groups.GetOrAdd(options.GroupName, _newGroupRegistry);
+            var registry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
             return registry.Timer(options, builder);
         }
 
-        private void ForAllGroups(Action<IMetricGroupRegistry> action)
+        private void ForAllContexts(Action<IMetricContextRegistry> action)
         {
-            foreach (var group in _groups.Values)
+            foreach (var context in _contexts.Values)
             {
-                action(group);
+                action(context);
             }
         }
     }

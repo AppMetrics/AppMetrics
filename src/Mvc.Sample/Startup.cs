@@ -66,7 +66,7 @@ namespace Mvc.Sample
                 .AddMetrics(options =>
                 {
                     options.DisableMetrics = false;
-                    options.DefaultGroupName = "Mvc.Sample";
+                    options.DefaultContextLabel = "Mvc.Sample";
                 })
                 .AddHealthChecks()
                 .AddAspNetMetrics(options =>

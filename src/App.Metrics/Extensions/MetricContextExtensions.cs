@@ -8,9 +8,9 @@ using App.Metrics.Data;
 
 namespace App.Metrics.Extensions
 {
-    public static class MetricGroupExtensions
+    public static class MetricContextExtensions
     {
-        public static MetricGroup ToMetric(this MetricsDataGroupValueSource source)
+        public static MetricsContext ToMetric(this MetricsContextValueSource source)
         {
             var jsonCoutners = source.Counters.ToMetric();
             var jsonMeters = source.Meters.ToMetric();
@@ -18,28 +18,28 @@ namespace App.Metrics.Extensions
             var jsonHistograms = source.Histograms.ToMetric();
             var jsonTimers = source.Timers.ToMetric();
 
-            return new MetricGroup
+            return new MetricsContext
             {
                 Counters = jsonCoutners,
                 Meters = jsonMeters,
                 Gauges = jsonGauges,
                 Histograms = jsonHistograms,
                 Timers = jsonTimers,
-                GroupName = source.GroupName
+                Context = source.Context
             };
         }
 
-        public static IEnumerable<MetricGroup> ToMetric(this IEnumerable<MetricsDataGroupValueSource> source)
+        public static IEnumerable<MetricsContext> ToMetric(this IEnumerable<MetricsContextValueSource> source)
         {
             return source.Select(ToMetric);
         }
 
-        public static IEnumerable<MetricsDataGroupValueSource> ToMetricValueSource(this IEnumerable<MetricGroup> source)
+        public static IEnumerable<MetricsContextValueSource> ToMetricValueSource(this IEnumerable<MetricsContext> source)
         {
             return source.Select(x => x.ToMetricValueSource());
         }
 
-        public static MetricsDataGroupValueSource ToMetricValueSource(this MetricGroup source)
+        public static MetricsContextValueSource ToMetricValueSource(this MetricsContext source)
         {
             var jsonCoutners = source.Counters.ToMetricValueSource();
             var jsonMeters = source.Meters.ToMetricValueSource();
@@ -47,7 +47,7 @@ namespace App.Metrics.Extensions
             var jsonHistograms = source.Histograms.ToMetricValueSource();
             var jsonTimers = source.Timers.ToMetricValueSource();
 
-            return new MetricsDataGroupValueSource(source.GroupName, jsonGauges, jsonCoutners, jsonMeters, jsonHistograms, jsonTimers);
+            return new MetricsContextValueSource(source.Context, jsonGauges, jsonCoutners, jsonMeters, jsonHistograms, jsonTimers);
         }
     }
 }

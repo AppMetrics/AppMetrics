@@ -15,20 +15,20 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
             Gauges = SetupGauges();
             Timers = SetupTimers();
             Histograms = SetupHistograms();
-            GroupOne = SetupGroupOne();
-            DataWithOneGroup = SetupMetricsData(new[] { GroupOne });
+            ContextOne = SetupContextOne();
+            DataWithOneContext = SetupMetricsData(new[] { ContextOne });
         }
+
+        public MetricsContextValueSource ContextOne { get; }
 
         public IEnumerable<CounterValueSource> Counters { get; }
 
-        public MetricsDataValueSource DataWithOneGroup { get; }
+        public MetricsDataValueSource DataWithOneContext { get; }
 
         public EnvironmentInfo Env => new EnvironmentInfo("assembly_name", "assembly_version", "host_name", "ip_address", "localtime", "machine_name",
             "os", "os_version", "process_name", "8");
 
         public IEnumerable<GaugeValueSource> Gauges { get; }
-
-        public MetricsDataGroupValueSource GroupOne { get; }
 
         public IEnumerable<HistogramValueSource> Histograms { get; }
 
@@ -82,6 +82,11 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
             return new[] { timer };
         }
 
+        private MetricsContextValueSource SetupContextOne()
+        {
+            return new MetricsContextValueSource("context_one", Gauges, Counters, Meters, Histograms, Timers);
+        }
+
         private IEnumerable<CounterValueSource> SetupCounters()
         {
             var items = new[]
@@ -97,14 +102,9 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
             return new[] { counter };
         }
 
-        private MetricsDataGroupValueSource SetupGroupOne()
+        private MetricsDataValueSource SetupMetricsData(IEnumerable<MetricsContextValueSource> contextValueSources)
         {
-            return new MetricsDataGroupValueSource("group_one", Gauges, Counters, Meters, Histograms, Timers);
-        }
-
-        private MetricsDataValueSource SetupMetricsData(IEnumerable<MetricsDataGroupValueSource> groups)
-        {
-            return new MetricsDataValueSource("test_context", new TestClock().UtcDateTime, Env, groups);
+            return new MetricsDataValueSource(new TestClock().UtcDateTime, Env, contextValueSources);
         }
     }
 }

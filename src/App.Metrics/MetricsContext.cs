@@ -7,13 +7,13 @@ using System.Linq;
 
 namespace App.Metrics
 {
-    public sealed class MetricGroup
+    public sealed class MetricsContext
     {
         public IEnumerable<Counter> Counters { get; set; } = Enumerable.Empty<Counter>();
 
         public IEnumerable<Gauge> Gauges { get; set; } = Enumerable.Empty<Gauge>();
 
-        public string GroupName { get; set; }
+        public string Context { get; set; }
 
         public IEnumerable<Histogram> Histograms { get; set; } = Enumerable.Empty<Histogram>();
 

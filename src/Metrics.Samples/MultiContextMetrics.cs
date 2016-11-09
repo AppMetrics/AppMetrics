@@ -8,11 +8,11 @@ namespace Metrics.Samples
         private readonly ICounter _secondCounter;
         private readonly IMeter _secondMeter;
 
-        public MultiContextMetrics(IMetricsContext metricsContext)
+        public MultiContextMetrics(IMetrics metrics)
         {
-            _firstCounter = metricsContext.Advanced.Counter(SampleMetricsRegistry.Groups.FirstGroup.Counters.Counter);
-            _secondCounter = metricsContext.Advanced.Counter(SampleMetricsRegistry.Groups.SecondGroup.Counters.Counter);
-            _secondMeter = metricsContext.Advanced.Meter(SampleMetricsRegistry.Groups.SecondGroup.Meters.Requests);
+            _firstCounter = metrics.Advanced.Counter(SampleMetricsRegistry.Contexts.FirstContext.Counters.Counter);
+            _secondCounter = metrics.Advanced.Counter(SampleMetricsRegistry.Contexts.SecondContext.Counters.Counter);
+            _secondMeter = metrics.Advanced.Meter(SampleMetricsRegistry.Contexts.SecondContext.Meters.Requests);
         }
 
         public void Run()
@@ -27,13 +27,13 @@ namespace Metrics.Samples
     {
         private readonly ICounter _instanceCounter;
         private readonly ITimer _instanceTimer;
-        private static IMetricsContext _metricsContext;
+        private static IMetrics _metrics;
 
-        public MultiContextInstanceMetrics(string instanceName, IMetricsContext metricsContext)
+        public MultiContextInstanceMetrics(string instanceName, IMetrics metrics)
         {
-            _metricsContext = metricsContext;
-            _instanceCounter = _metricsContext.Advanced.Counter(SampleMetricsRegistry.Counters.SampleCounter);
-            _instanceTimer = _metricsContext.Advanced.Timer(SampleMetricsRegistry.Timers.SampleTimer);
+            _metrics = metrics;
+            _instanceCounter = _metrics.Advanced.Counter(SampleMetricsRegistry.Counters.SampleCounter);
+            _instanceTimer = _metrics.Advanced.Timer(SampleMetricsRegistry.Timers.SampleTimer);
         }
 
         public void Run()
@@ -48,7 +48,7 @@ namespace Metrics.Samples
         {
             for (var i = 0; i < 5; i++)
             {
-                new MultiContextInstanceMetrics("Sample Instance " + i.ToString(), _metricsContext).Run();
+                new MultiContextInstanceMetrics("Sample Instance " + i.ToString(), _metrics).Run();
             }
         }
     }

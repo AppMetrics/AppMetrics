@@ -21,26 +21,25 @@ namespace App.Metrics.Formatters.Json.Facts
         {
             _output = output;
             _serializer = new MetricDataSerializer();
-            _metrics = fixture.DataWithOneGroup;
+            _metrics = fixture.DataWithOneContext;
         }
 
         [Fact]
         public void can_deserialize()
         {
-            var json = MetricDataSamples.SingleGroup.SampleJson();
+            var json = MetricDataSamples.SingleContext.SampleJson();
 
             var result = _serializer.Deserialize<MetricsDataValueSource>(json.ToString());
 
-            result.ContextName.Should().BeEquivalentTo(_metrics.ContextName);
             result.Timestamp.Should().Be(_metrics.Timestamp);
-            result.Groups.Count().Should().Be(_metrics.Groups.Count());
+            result.Contexts.Count().Should().Be(_metrics.Contexts.Count());
             result.Environment.Entries.Count().Should().Be(_metrics.Environment.Entries.Count());
         }
 
         [Fact]
         public void produces_expected_json()
         {
-            var expected = MetricDataSamples.SingleGroup.SampleJson();
+            var expected = MetricDataSamples.SingleContext.SampleJson();
 
             var result = _serializer.Serialize(_metrics).ParseAsJson();
 

@@ -31,11 +31,10 @@ namespace AspNet.Metrics.Facts.Integration.Startup
             services
                 .AddMetrics(options =>
                 {
-                    options.DefaultGroupName = appMetricsOptions.DefaultGroupName;
+                    options.DefaultContextLabel = appMetricsOptions.DefaultContextLabel;
                     options.DisableMetrics = appMetricsOptions.DisableMetrics;
                     options.Clock = appMetricsOptions.Clock;
                     options.DefaultSamplingType = appMetricsOptions.DefaultSamplingType;
-                    options.GlobalContextName = appMetricsOptions.GlobalContextName;
                 })
                 .AddHealthChecks()
                 .AddAspNetMetrics(options =>

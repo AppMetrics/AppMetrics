@@ -18,7 +18,7 @@ namespace AspNet.Metrics.Facts.Integration.Middleware
 
         public HttpClient Client { get; }
 
-        public IMetricsContext Context { get; }
+        public IMetrics Context { get; }
 
         [Fact]
         public async Task can_change_metrics_endpoint()

@@ -17,7 +17,7 @@ namespace AspNet.Metrics.Middleware
         protected AppMetricsMiddleware(RequestDelegate next,
             TOptions aspNetOptions,
             ILoggerFactory loggerFactory,
-            IMetricsContext metricsContext)
+            IMetrics metrics)
         {
             if (next == null)
             {
@@ -34,21 +34,21 @@ namespace AspNet.Metrics.Middleware
                 throw new ArgumentNullException(nameof(loggerFactory));
             }
 
-            if (metricsContext == null)
+            if (metrics == null)
             {
-                throw new ArgumentNullException(nameof(metricsContext));
+                throw new ArgumentNullException(nameof(metrics));
             }
 
             Options = aspNetOptions;
             Logger = loggerFactory.CreateLogger(this.GetType().FullName);
-            MetricsContext = metricsContext;
+            Metrics = metrics;
 
             Next = next;
         }
 
         public ILogger Logger { get; set; }
 
-        public IMetricsContext MetricsContext { get; set; }
+        public IMetrics Metrics { get; set; }
 
         public RequestDelegate Next { get; set; }
 

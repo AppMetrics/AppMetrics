@@ -12,14 +12,14 @@ namespace App.Metrics.Internal
     public sealed class DefaultMetricsFilter : IMetricsFilter
     {
         public static IMetricsFilter All = new NullMetricsFilter();
-        private Predicate<string> _group;
+        private Predicate<string> _context;
         private Predicate<string> _name;
         private HashSet<string> _tagKeys;
         private HashSet<MetricType> _types;
 
-        public bool IsMatch(string group)
+        public bool IsMatch(string context)
         {
-            return _group == null || _group(group);
+            return _context == null || _context(context);
         }
 
         public bool IsMatch(GaugeValueSource gauge)
@@ -89,15 +89,15 @@ namespace App.Metrics.Internal
             return this;
         }
 
-        public DefaultMetricsFilter WhereGroup(Predicate<string> condition)
+        public DefaultMetricsFilter WhereContext(Predicate<string> condition)
         {
-            _group = condition;
+            _context = condition;
             return this;
         }
 
-        public DefaultMetricsFilter WhereGroup(string group)
+        public DefaultMetricsFilter WhereContext(string context)
         {
-            return WhereGroup(c => c.Equals(group, StringComparison.OrdinalIgnoreCase));
+            return WhereContext(c => c.Equals(context, StringComparison.OrdinalIgnoreCase));
         }
 
         public DefaultMetricsFilter WhereName(Predicate<string> condition)

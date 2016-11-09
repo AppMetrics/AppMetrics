@@ -13,7 +13,7 @@ namespace App.Metrics.Internal
 {
     internal sealed class NullMetricsRegistry : IMetricsRegistry
     {
-        public bool AddGroup(string groupName, IMetricGroupRegistry registry)
+        public bool AddContext(string context, IMetricContextRegistry registry)
         {
             return true;
         }
@@ -46,7 +46,7 @@ namespace App.Metrics.Internal
             return NullMetric.Instance;
         }
 
-        public void RemoveGroup(string groupName)
+        public void RemoveContext(string context)
         {
         }
 

@@ -18,7 +18,7 @@ namespace App.Metrics.Reporting
 
         void EndMetricTypeReport(Type metricType);
 
-        void EndReport(IMetricsContext metricsContext);
+        void EndReport(IMetrics metrics);
 
         void ReportEnvironment(EnvironmentInfo environmentInfo);
 
@@ -28,6 +28,6 @@ namespace App.Metrics.Reporting
 
         void StartMetricTypeReport(Type metricType);
 
-        void StartReport(IMetricsContext metricsContext);
+        void StartReport(IMetrics metrics);
     }
 }

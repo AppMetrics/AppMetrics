@@ -21,8 +21,8 @@ namespace AspNet.Metrics.Middleware
         public ErrorRequestMeterMiddleware(RequestDelegate next,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
-            IMetricsContext metricsContext)
-            : base(next, aspNetOptions, loggerFactory, metricsContext)
+            IMetrics metrics)
+            : base(next, aspNetOptions, loggerFactory, metrics)
 
         {
             if (next == null)
@@ -35,9 +35,9 @@ namespace AspNet.Metrics.Middleware
                 throw new ArgumentNullException(nameof(aspNetOptions));
             }
 
-            if (metricsContext == null)
+            if (metrics == null)
             {
-                throw new ArgumentNullException(nameof(metricsContext));
+                throw new ArgumentNullException(nameof(metrics));
             }
         }
 
@@ -56,18 +56,18 @@ namespace AspNet.Metrics.Middleware
 
                 if (!context.Response.IsSuccessfulResponse())
                 {
-                    MetricsContext.MarkOverallWebRequestError(clientId, routeTemplate);
+                    Metrics.MarkOverallWebRequestError(clientId, routeTemplate);
 
                     switch (context.Response.StatusCode)
                     {
                         case (int)HttpStatusCode.InternalServerError:
-                            MetricsContext.MarkInternalServerErrorRequest(clientId, routeTemplate);
+                            Metrics.MarkInternalServerErrorRequest(clientId, routeTemplate);
                             break;
                         case (int)HttpStatusCode.BadRequest:
-                            MetricsContext.MarkBadRequest(clientId, routeTemplate);
+                            Metrics.MarkBadRequest(clientId, routeTemplate);
                             break;
                         case (int)HttpStatusCode.Unauthorized:
-                            MetricsContext.MarkUnAuthorizedRequest(clientId, routeTemplate);
+                            Metrics.MarkUnAuthorizedRequest(clientId, routeTemplate);
                             break;
                     }
                 }

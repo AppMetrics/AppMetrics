@@ -35,7 +35,7 @@ namespace App.Metrics.Reporting
             }
         }
 
-        public async Task RunReports(IMetricsContext context, CancellationToken token)
+        public async Task RunReports(IMetrics context, CancellationToken token)
         {
             if (_metricReporters == null)
             {

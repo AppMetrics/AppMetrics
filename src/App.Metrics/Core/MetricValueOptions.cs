@@ -12,7 +12,7 @@ namespace App.Metrics.Core
             MeasurementUnit = Unit.None;
         }
 
-        public string GroupName { get; set; }
+        public string Context { get; set; }
 
         public Unit MeasurementUnit { get; set; }
 

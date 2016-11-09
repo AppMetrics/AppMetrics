@@ -11,7 +11,7 @@ using App.Metrics.Data;
 
 namespace App.Metrics.Internal
 {
-    internal sealed class DefaultMetricGroupRegistry : IMetricGroupRegistry
+    internal sealed class DefaultMetricContextRegistry : IMetricContextRegistry
     {
         private readonly MetricMetaCatalog<ICounter, CounterValueSource, CounterValue> _counters =
             new MetricMetaCatalog<ICounter, CounterValueSource, CounterValue>();
@@ -28,14 +28,14 @@ namespace App.Metrics.Internal
         private readonly MetricMetaCatalog<ITimer, TimerValueSource, TimerValue> _timers =
             new MetricMetaCatalog<ITimer, TimerValueSource, TimerValue>();
 
-        public DefaultMetricGroupRegistry(string groupName)
+        public DefaultMetricContextRegistry(string context)
         {
-            if (groupName.IsMissing())
+            if (context.IsMissing())
             {
-                throw new ArgumentException("Registry GroupName cannot be null or empty", nameof(groupName));
+                throw new ArgumentException("Registry Context cannot be null or empty", nameof(context));
             }
 
-            GroupName = groupName;
+            Context = context;
 
             DataProvider = new DefaultMetricRegistryManager(
                 () => _gauges.All,
@@ -47,7 +47,7 @@ namespace App.Metrics.Internal
 
         public IMetricRegistryManager DataProvider { get; }
 
-        public string GroupName { get; }
+        public string Context { get; }
 
         public void ClearAllMetrics()
         {

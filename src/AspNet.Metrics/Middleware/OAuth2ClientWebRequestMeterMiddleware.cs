@@ -19,8 +19,8 @@ namespace AspNet.Metrics.Middleware
         public OAuth2ClientWebRequestMeterMiddleware(RequestDelegate next,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
-            IMetricsContext metricsContext)
-            : base(next, aspNetOptions, loggerFactory, metricsContext)
+            IMetrics metrics)
+            : base(next, aspNetOptions, loggerFactory, metrics)
         {
         }
 
@@ -38,8 +38,8 @@ namespace AspNet.Metrics.Middleware
                 {
                     var routeTemplate = context.GetMetricsCurrentRouteName();
 
-                    MetricsContext.MarkEndpointRequest(routeTemplate, clientId);
-                    MetricsContext.MarkRequest(clientId);
+                    Metrics.MarkEndpointRequest(routeTemplate, clientId);
+                    Metrics.MarkRequest(clientId);
                 }
 
                 Logger.MiddlewareExecuted(GetType());

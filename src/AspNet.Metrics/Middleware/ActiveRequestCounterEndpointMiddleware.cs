@@ -16,8 +16,8 @@ namespace AspNet.Metrics.Middleware
         public ActiveRequestCounterEndpointMiddleware(RequestDelegate next,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
-            IMetricsContext metricsContext)
-            : base(next, aspNetOptions, loggerFactory, metricsContext)
+            IMetrics metrics)
+            : base(next, aspNetOptions, loggerFactory, metrics)
         {
             if (next == null)
             {
@@ -36,11 +36,11 @@ namespace AspNet.Metrics.Middleware
             {
                 Logger.MiddlewareExecuting(GetType());
 
-                MetricsContext.IncrementActiveRequests();
+                Metrics.IncrementActiveRequests();
 
                 await Next(context);
 
-                MetricsContext.DecrementActiveRequests();
+                Metrics.DecrementActiveRequests();
 
                 Logger.MiddlewareExecuted(GetType());
             }
