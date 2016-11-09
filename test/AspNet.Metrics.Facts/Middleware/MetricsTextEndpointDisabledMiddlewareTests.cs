@@ -8,9 +8,9 @@ using Xunit;
 
 namespace AspNet.Metrics.Facts.Middleware
 {
-    public class MetricsTextEndpointMiddlewareTests : IClassFixture<MetricsHostTestFixture<DefaultTestStartup>>
+    public class MetricsTextEndpointDisabledMiddlewareTests : IClassFixture<MetricsHostTestFixture<DisabledTextEndpointTestStartup>>
     {
-        public MetricsTextEndpointMiddlewareTests(MetricsHostTestFixture<DefaultTestStartup> fixture)
+        public MetricsTextEndpointDisabledMiddlewareTests(MetricsHostTestFixture<DisabledTextEndpointTestStartup> fixture)
         {
             Client = fixture.Client;
             Context = fixture.Context;
@@ -21,12 +21,11 @@ namespace AspNet.Metrics.Facts.Middleware
         public IMetricsContext Context { get; }
 
         [Fact]
-        public async Task uses_correct_mimetype()
+        public async Task can_disable_metrics_text_endpoint_when_metrics_enabled()
         {
             var result = await Client.GetAsync("/metrics-text");
 
-            result.StatusCode.Should().Be(HttpStatusCode.OK);
-            result.Content.Headers.ContentType.ToString().Should().Match<string>(s => s == "text/plain");
+            result.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
     }
 }
