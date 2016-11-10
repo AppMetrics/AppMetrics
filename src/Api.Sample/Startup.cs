@@ -82,7 +82,7 @@ namespace Api.Sample
                     options.DefaultSamplingType = SamplingType.ExponentiallyDecaying;
                     options.DisableMetrics = false;
                 })
-                .AddGlobalFilter(new DefaultMetricsFilter().WhereType(MetricType.Counter))
+                //.AddGlobalFilter(new DefaultMetricsFilter().WhereType(MetricType.Counter))
                 .AddJsonSerialization()
                 .AddReporting(options =>
                 {

@@ -8,6 +8,7 @@ using App.Metrics.Core;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.Serialization;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
 
@@ -57,12 +58,26 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             services.TryAddSingleton(provider => provider.GetRequiredService<IOptions<AppMetricsOptions>>().Value);
             services.TryAddSingleton(provider => provider.GetRequiredService<IOptions<AppMetricsOptions>>().Value.Clock);
             services.TryAddSingleton<IMetricsRegistry, DefaultMetricsRegistry>();         
-            //TODO: AH - should be configurable
             services.TryAddSingleton<IMetricsFilter, DefaultMetricsFilter>();
             services.TryAddSingleton<EnvironmentInfoBuilder, EnvironmentInfoBuilder>();
             services.TryAddSingleton<IMetricDataSerializer, NullMetricDataSerializer>();
             services.TryAddSingleton<IHealthStatusSerializer, NullHealthStatusSerializer>();
             services.TryAddSingleton<IAdvancedMetrics, DefaultAdvancedMetrics>();
+            services.TryAddSingleton<IMetricsRegistry>(provider =>
+            {
+                var options = provider.GetRequiredService<AppMetricsOptions>();
+
+                if (options.DisableMetrics)
+                {
+                    return new NullMetricsRegistry();
+                }
+
+                var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
+                var envBuilder = provider.GetRequiredService<EnvironmentInfoBuilder>();
+                var newContextRegistry = provider.GetRequiredService<Func<string, IMetricContextRegistry>>();
+
+                return new DefaultMetricsRegistry(loggerFactory, options, envBuilder, newContextRegistry);
+            });
 
             if (metrics == null)
             {

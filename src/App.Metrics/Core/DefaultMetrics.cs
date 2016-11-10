@@ -20,8 +20,7 @@ namespace App.Metrics.Core
             if (registry == null) throw new ArgumentNullException(nameof(registry));
             if (advanced == null) throw new ArgumentNullException(nameof(advanced));
 
-            _registry = options.DisableMetrics ? new NullMetricsRegistry() : registry;
-
+            _registry = registry;
             Advanced = advanced;
         }
 
