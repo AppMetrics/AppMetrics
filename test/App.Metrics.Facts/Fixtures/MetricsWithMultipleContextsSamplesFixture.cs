@@ -2,9 +2,9 @@ using App.Metrics.Core;
 
 namespace App.Metrics.Facts.Fixtures
 {
-    public class MetricsWithSamplesFixture : MetricsFixture
+    public class MetricsWithMultipleContextsSamplesFixture : MetricsFixture
     {
-        public MetricsWithSamplesFixture()
+        public MetricsWithMultipleContextsSamplesFixture()
         {
             RecordSomeMetrics();
         }
@@ -15,7 +15,8 @@ namespace App.Metrics.Facts.Fixtures
             {
                 Name = "test_counter",
                 MeasurementUnit = Unit.Requests,
-                Tags = new MetricTags().With("tag1", "value")
+                Tags = new MetricTags().With("tag1", "value"),
+                Context = "test_context1"
             };
 
             var meterOptions = new MeterOptions
@@ -28,7 +29,8 @@ namespace App.Metrics.Facts.Fixtures
             var timerOptions = new TimerOptions
             {
                 Name = "test_timer",
-                MeasurementUnit = Unit.Requests
+                MeasurementUnit = Unit.Requests,
+                Context = "test_context2"
             };
 
             var histogramOptions = new HistogramOptions

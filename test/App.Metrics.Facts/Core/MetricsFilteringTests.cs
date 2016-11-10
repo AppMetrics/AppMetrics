@@ -101,5 +101,60 @@ namespace App.Metrics.Facts.Core
             Assert.Null(context.Timers.FirstOrDefault());
             Assert.Null(context.Meters.FirstOrDefault());
         }
+
+        [Fact]
+        public async Task can_filter_metrics_by_tags()
+        {
+            var filter = new DefaultMetricsFilter().WhereMetricTaggedWith("tag1", "tag2");
+            var currentData = await _metrics.Advanced.Data.ReadDataAsync(filter);
+            var context = currentData.Contexts.Single();
+
+            var counterValue = context.Counters.Single();
+            var meterValue = context.Meters.Single();
+
+            counterValue.Tags.ToDictionary().Should().ContainKey("tag1");
+            meterValue.Tags.ToDictionary().Should().ContainKey("tag2");
+
+            Assert.Null(context.Gauges.FirstOrDefault());
+            Assert.Null(context.Histograms.FirstOrDefault());
+            Assert.Null(context.Timers.FirstOrDefault());
+        }
+
+        [Fact]
+        public async Task can_filter_metrics_by_context()
+        {
+            var filter = new DefaultMetricsFilter().WhereMetricName(name => name == "test_gauge");
+            var currentData = await _metrics.Advanced.Data.ReadDataAsync(filter);
+            var context = currentData.Contexts.Single();
+
+            var gaugeValue = context.Gauges.FirstOrDefault();
+
+            gaugeValue.Should().NotBeNull();
+
+            Assert.Null(context.Counters.FirstOrDefault());
+            Assert.Null(context.Meters.FirstOrDefault());
+            Assert.Null(context.Histograms.FirstOrDefault());
+            Assert.Null(context.Timers.FirstOrDefault());
+        }
+
+        [Fact]
+        public async Task can_filter_metrics_by_name_starting_with()
+        {
+            var filter = new DefaultMetricsFilter().WhereMetricNameStartsWith("test_");
+            var currentData = await _metrics.Advanced.Data.ReadDataAsync(filter);
+            var context = currentData.Contexts.Single();
+
+            var counterValue = context.Counters.FirstOrDefault();
+            var gaugeValue = context.Gauges.FirstOrDefault();
+            var meterValue = context.Meters.FirstOrDefault();
+            var histogramValue = context.Histograms.FirstOrDefault();
+            var timerValue = context.Timers.FirstOrDefault();
+
+            counterValue.Should().NotBeNull();
+            gaugeValue.Should().NotBeNull();
+            meterValue.Should().NotBeNull();
+            histogramValue.Should().NotBeNull();
+            timerValue.Should().NotBeNull();
+        }
     }
 }
