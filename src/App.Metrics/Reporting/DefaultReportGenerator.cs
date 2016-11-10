@@ -9,21 +9,36 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.Infrastructure;
+using App.Metrics.Internal;
 
 namespace App.Metrics.Reporting
 {
     internal class DefaultReportGenerator
     {
-        public async Task Generate(IMetricReporter reporter, 
-            IMetrics metrics, 
+        public Task Generate(IMetricReporter reporter,
+            IMetrics metrics,
             MetricTags globalTags,
             CancellationToken token)
         {
+            return Generate(reporter, metrics, new NullMetricsFilter(), globalTags, token);
+        }
+
+        public async Task Generate(IMetricReporter reporter, 
+            IMetrics metrics, 
+            IMetricsFilter reporterMetricsFilter,
+            MetricTags globalTags,
+            CancellationToken token)
+        {
+            if (reporterMetricsFilter == default(IMetricsFilter))
+            {
+                reporterMetricsFilter = new NullMetricsFilter();
+            }
+
             reporter.StartReport(metrics);
 
-            var data = await metrics.Advanced.Data.ReadDataAsync();
+            var data = await metrics.Advanced.Data.ReadDataAsync(reporterMetricsFilter);
 
-            if (data.Environment.Entries.Any() && metrics.Advanced.GlobalFilter.ReportEnvironment)
+            if (data.Environment.Entries.Any() && reporterMetricsFilter.ReportEnvironment)
             {
                 reporter.StartMetricTypeReport(typeof(EnvironmentInfo));
 
@@ -50,7 +65,7 @@ namespace App.Metrics.Reporting
                     t => { reporter.ReportMetric($"{contextValueSource.Context}", t, globalTags); }, token);
             }
 
-            if (metrics.Advanced.GlobalFilter.ReportHealthChecks)
+            if (reporterMetricsFilter.ReportHealthChecks)
             {
                 var healthStatus = await metrics.Advanced.Health.ReadStatusAsync();
 

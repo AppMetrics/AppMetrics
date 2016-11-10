@@ -38,8 +38,8 @@ namespace App.Metrics.Internal
             return true;
         }
 
-        public bool ReportEnvironment => false;
+        public bool ReportEnvironment => true;
 
-        public bool ReportHealthChecks => false;
+        public bool ReportHealthChecks => true;
     }
 }

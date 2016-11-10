@@ -17,6 +17,12 @@ namespace App.Metrics.Internal
         private HashSet<string> _tagKeys;
         private HashSet<MetricType> _types;
 
+        public DefaultMetricsFilter()
+        {
+            ReportHealthChecks = true;
+            ReportEnvironment = true;
+        }
+
         public bool IsMatch(string context)
         {
             return _context == null || _context(context);

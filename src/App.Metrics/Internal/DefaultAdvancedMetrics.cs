@@ -14,21 +14,22 @@ namespace App.Metrics.Internal
 {
     internal sealed class DefaultAdvancedMetrics : IAdvancedMetrics
     {
+        private readonly IHealthCheckFactory _healthCheckFactory;
         private IMetricsRegistry _registry;
 
         public DefaultAdvancedMetrics(
             AppMetricsOptions options,
             IMetricsFilter globalFilter,
             IMetricsRegistry registry,
-            IHealthStatusProvider heathStatusProvider)
+            IHealthCheckFactory healthCheckFactory)
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
 
             Clock = options.Clock;
-            Health = heathStatusProvider;
             GlobalFilter = globalFilter ?? new DefaultMetricsFilter();
 
             _registry = registry;
+            _healthCheckFactory = healthCheckFactory;
         }
 
         public IClock Clock { get; }
@@ -37,7 +38,7 @@ namespace App.Metrics.Internal
 
         public IMetricsFilter GlobalFilter { get; }
 
-        public IHealthStatusProvider Health { get; }
+        public IHealthStatusProvider Health => this;
 
         public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterMetric
         {
@@ -113,10 +114,25 @@ namespace App.Metrics.Internal
 
         public async Task<MetricsDataValueSource> ReadDataAsync(IMetricsFilter filter)
         {
-            var data = await ReadDataAsync();
-
+            var data = await _registry.GetDataAsync();
             return data.Filter(filter);
-        }      
+        }
+
+        public async Task<HealthStatus> ReadStatusAsync()
+        {
+            //var startTimestamp = _logger.IsEnabled(LogLevel.Information) ? Stopwatch.GetTimestamp() : 0;
+
+            //_logger.HealthCheckGetStatusExecuting();
+
+            var results = await Task.WhenAll(_healthCheckFactory.Checks.Values.OrderBy(v => v.Name)
+                .Select(v => v.ExecuteAsync()));
+
+            var healthStatus = new HealthStatus(results);
+
+            //_logger.HealthCheckGetStatusExecuted(healthStatus, startTimestamp);
+
+            return healthStatus;
+        }
 
         public void Reset()
         {

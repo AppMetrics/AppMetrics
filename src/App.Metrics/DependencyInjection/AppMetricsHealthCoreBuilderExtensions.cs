@@ -11,17 +11,17 @@ namespace App.Metrics.DependencyInjection
     {
         public static IMetricsHostBuilder AddHealthChecks(this IMetricsHostBuilder host)
         {
-            host.AddHealthChecks(setupAction: null);
+            host.AddHealthChecks(setupFactory: null);
             return host;
         }
 
         public static IMetricsHostBuilder AddHealthChecks(
             this IMetricsHostBuilder host,
-            Action<AppMetricsHealthCheckOptions> setupAction)
+            Action<IHealthCheckFactory> setupFactory)
         {
             if (host == null) throw new ArgumentNullException(nameof(host));
 
-            host.AddMetricsHealthCheckCore(setupAction);
+            host.AddMetricsHealthCheckCore(setupFactory);
 
             return host;
         }

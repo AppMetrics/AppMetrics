@@ -83,21 +83,17 @@ namespace App.Sample
                 .AddMetrics(options =>
                 {                    
                 })
-                .AddHealthChecks(options =>
+                .AddHealthChecks(factory =>
                 {
-                    options.IsEnabled = true;
-                    options.HealthChecks = factory =>
+                    factory.Register("DatabaseConnected", () => Task.FromResult("Database Connection OK"));
+                    factory.Register("DiskSpace", () =>
                     {
-                        factory.Register("DatabaseConnected", () => Task.FromResult("Database Connection OK"));
-                        factory.Register("DiskSpace", () =>
-                        {
-                            var freeDiskSpace = GetFreeDiskSpace();
+                        var freeDiskSpace = GetFreeDiskSpace();
 
-                            return Task.FromResult(freeDiskSpace <= 512
-                                ? HealthCheckResult.Unhealthy("Not enough disk space: {0}", freeDiskSpace)
-                                : HealthCheckResult.Unhealthy("Disk space ok: {0}", freeDiskSpace));
-                        });
-                    };
+                        return Task.FromResult(freeDiskSpace <= 512
+                            ? HealthCheckResult.Unhealthy("Not enough disk space: {0}", freeDiskSpace)
+                            : HealthCheckResult.Unhealthy("Disk space ok: {0}", freeDiskSpace));
+                    });
                 })
                 .AddReporting(options =>
                 {
@@ -107,13 +103,13 @@ namespace App.Sample
                     {
                         var consoleSettings = new ConsoleReporterSettings
                         {
-                            ReportInterval = TimeSpan.FromSeconds(5),
+                            ReportInterval = TimeSpan.FromSeconds(30),
                             GlobalTags = globalTags,
                             Filter = new DefaultMetricsFilter()
                                 .WhereType(MetricType.Counter)
                                 .WhereMetricTaggedWith("filter-tag1", "filter-tag2")
-                                .WithHealthChecks(false)
-                                .WithEnvironmentInfo(false)
+                                .WithHealthChecks(true)
+                                .WithEnvironmentInfo(true)
                         };
                         factory.AddConsole(consoleSettings);
 

@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using App.Metrics.Core;
+using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
@@ -12,14 +12,19 @@ namespace App.Metrics.Facts.Health
     public class HealthCheckRegistryTests
     {
         private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
-        private readonly HealthCheckFactory _healthCheckFactory;
-        private readonly IHealthStatusProvider _healthCheckManager;
-        private readonly List<HealthCheck> _healthChecks = new List<HealthCheck>();
+        private readonly HealthCheckFactory _healthCheckFactory = new HealthCheckFactory();
+        private readonly Func<IHealthCheckFactory, IMetrics> _metircsSetup;
 
         public HealthCheckRegistryTests()
         {
-            _healthCheckFactory = new HealthCheckFactory(_healthChecks);
-            _healthCheckManager = new DefaultHealthCheckManager(LoggerFactory, () => _healthCheckFactory.Checks);
+            _metircsSetup = healthCheckFactory =>
+            {
+                var options = new AppMetricsOptions();
+                Func<string, IMetricContextRegistry> newContextRegistry = name => new DefaultMetricContextRegistry(name);
+                var registry = new DefaultMetricsRegistry(LoggerFactory, options, new EnvironmentInfoBuilder(LoggerFactory), newContextRegistry);
+                var advancedContext = new DefaultAdvancedMetrics(options, new DefaultMetricsFilter(), registry, healthCheckFactory);
+                return new DefaultMetrics(options, registry, advancedContext);
+            };
         }
 
         [Fact]
@@ -38,7 +43,9 @@ namespace App.Metrics.Facts.Health
             _healthCheckFactory.Register("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
             _healthCheckFactory.Register("bad", () => Task.FromResult(HealthCheckResult.Unhealthy()));
 
-            var status = await _healthCheckManager.ReadStatusAsync();
+            var metrics = _metircsSetup(_healthCheckFactory);
+
+            var status = await metrics.Advanced.Health.ReadStatusAsync();
 
             status.IsHealthy.Should().BeFalse();
             status.Results.Length.Should().Be(2);
@@ -50,7 +57,9 @@ namespace App.Metrics.Facts.Health
             _healthCheckFactory.Register("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
             _healthCheckFactory.Register("another", () => Task.FromResult(HealthCheckResult.Healthy()));
 
-            var status = await _healthCheckManager.ReadStatusAsync();
+            var metrics = _metircsSetup(_healthCheckFactory);
+
+            var status = await metrics.Advanced.ReadStatusAsync();
 
             status.IsHealthy.Should().BeTrue();
             status.Results.Length.Should().Be(2);

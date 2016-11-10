@@ -20,26 +20,19 @@ namespace App.Metrics.DependencyInjection
             //TODO: AH - this is already instantiated as part of caore metrics
             var metricsEnvironment = new MetricsAppEnvironment(PlatformServices.Default.Application);
 
-            services.TryAddSingleton<IHealthStatusProvider, DefaultHealthCheckManager>();
-
             services.AddHealthChecks(metricsEnvironment);
         }
 
         internal static IMetricsHostBuilder AddMetricsHealthCheckCore(
             this IMetricsHostBuilder host,
-            Action<AppMetricsHealthCheckOptions> setupAction)
+            Action<IHealthCheckFactory> registerHealthChecks)
         {
             if (host == null) throw new ArgumentNullException(nameof(host));
 
             host.Services.TryAddSingleton<HealthCheckMarkerService, HealthCheckMarkerService>();
 
-            host.Services.AddMetricsHealthCheckCoreServices();
+            host.Services.AddMetricsHealthCheckCoreServices(registerHealthChecks);
             host.Services.AddDefaultHealthCheckServices();
-
-            if (setupAction != null)
-            {
-                host.Services.Configure(setupAction);
-            }
 
             return host;
         }
@@ -51,18 +44,17 @@ namespace App.Metrics.DependencyInjection
                 throw new ArgumentNullException(nameof(host));
             }
 
-            return AddMetricsHealthCheckCore(host, setupAction: null);
+            return AddMetricsHealthCheckCore(host, registerHealthChecks: null);
         }
 
-        private static void AddMetricsHealthCheckCoreServices(this IServiceCollection services)
+        private static void AddMetricsHealthCheckCoreServices(this IServiceCollection services, Action<IHealthCheckFactory> registerHealthChecks)
         {
-            services.TryAddTransient<Func<IReadOnlyDictionary<string, HealthCheck>>>(provider =>
+            services.TryAddTransient<IHealthCheckFactory>(provider =>
             {
-                var options = provider.GetRequiredService<IOptions<AppMetricsHealthCheckOptions>>();
                 var autoScannedHealthChecks = provider.GetRequiredService<IEnumerable<HealthCheck>>();
                 var factory = new HealthCheckFactory(autoScannedHealthChecks);
-                options.Value.HealthChecks(factory);
-                return () => factory.Checks;
+                registerHealthChecks?.Invoke(factory);
+                return factory;
             });
         }
     }

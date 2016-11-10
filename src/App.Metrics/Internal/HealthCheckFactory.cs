@@ -28,7 +28,7 @@ namespace App.Metrics.Internal
         {
         }
 
-        internal IReadOnlyDictionary<string, HealthCheck> Checks => _checks;
+        public IReadOnlyDictionary<string, HealthCheck> Checks => _checks;
 
         public void Dispose()
         {
