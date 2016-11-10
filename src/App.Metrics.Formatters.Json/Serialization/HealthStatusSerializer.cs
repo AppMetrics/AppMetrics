@@ -24,6 +24,11 @@ namespace App.Metrics.Formatters.Json
             _settings.Converters.Add(new HealthStatusConverter(clock));
         }
 
+        public HealthStatusSerializer(JsonSerializerSettings serializerSettings)
+        {
+            _settings = serializerSettings;
+        }
+
         public virtual T Deserialize<T>(string json)
         {
             return JsonConvert.DeserializeObject<T>(json, _settings);

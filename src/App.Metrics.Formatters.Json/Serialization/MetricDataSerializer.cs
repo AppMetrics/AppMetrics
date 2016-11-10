@@ -21,6 +21,11 @@ namespace App.Metrics.Formatters.Json
             };
         }
 
+        public MetricDataSerializer(JsonSerializerSettings jsonSerializerSettings)
+        {
+            _settings = jsonSerializerSettings;
+        }
+
         public virtual T Deserialize<T>(string json)
         {
             return JsonConvert.DeserializeObject<T>(json, _settings);
