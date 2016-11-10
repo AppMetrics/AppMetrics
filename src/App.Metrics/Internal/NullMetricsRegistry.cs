@@ -31,7 +31,7 @@ namespace App.Metrics.Internal
         {
         }
 
-        public Task<MetricsDataValueSource> GetDataAsync()
+        public Task<MetricsDataValueSource> GetDataAsync(IMetricsFilter filter)
         {
             return AppMetricsTaskCache.EmptyMetricsDataTask;
         }

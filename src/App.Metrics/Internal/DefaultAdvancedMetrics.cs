@@ -106,16 +106,14 @@ namespace App.Metrics.Internal
             return contextData.Contexts.Single();
         }
 
-        public async Task<MetricsDataValueSource> ReadDataAsync()
+        public Task<MetricsDataValueSource> ReadDataAsync()
         {
-            var data = await _registry.GetDataAsync();
-            return data.Filter(GlobalFilter);
+            return _registry.GetDataAsync(GlobalFilter);
         }
 
-        public async Task<MetricsDataValueSource> ReadDataAsync(IMetricsFilter filter)
+        public Task<MetricsDataValueSource> ReadDataAsync(IMetricsFilter overrideGlobalFilter)
         {
-            var data = await _registry.GetDataAsync();
-            return data.Filter(filter);
+            return _registry.GetDataAsync(overrideGlobalFilter);
         }
 
         public async Task<HealthStatus> ReadStatusAsync()

@@ -95,7 +95,7 @@ namespace App.Metrics.Internal
             registry.Gauge(options, valueProvider);
         }
 
-        public async Task<MetricsDataValueSource> GetDataAsync()
+        public async Task<MetricsDataValueSource> GetDataAsync(IMetricsFilter filter)
         {
             _logger.MetricsDataGetExecuting();
 
@@ -119,7 +119,7 @@ namespace App.Metrics.Internal
 
             _logger.MetricsDataGetExecuted();
 
-            return data;
+            return data.Filter(filter);
         }
 
         public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramMetric

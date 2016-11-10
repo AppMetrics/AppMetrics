@@ -10,7 +10,7 @@ namespace App.Metrics.Core
         /// </summary>
         Task<MetricsDataValueSource> ReadDataAsync();
 
-        Task<MetricsDataValueSource> ReadDataAsync(IMetricsFilter filter);
+        Task<MetricsDataValueSource> ReadDataAsync(IMetricsFilter overrideGlobalFilter);
 
         Task<MetricsContextValueSource> ReadContextAsync(string context);
 

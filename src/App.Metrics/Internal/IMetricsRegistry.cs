@@ -19,7 +19,7 @@ namespace App.Metrics.Internal
 
         void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider);
 
-        Task<MetricsDataValueSource> GetDataAsync();
+        Task<MetricsDataValueSource> GetDataAsync(IMetricsFilter filter);
 
         IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramMetric;
 
