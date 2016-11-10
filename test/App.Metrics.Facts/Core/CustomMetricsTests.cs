@@ -9,14 +9,14 @@ using Xunit;
 
 namespace App.Metrics.Facts.Core
 {
-    public class MetricsContextCustomMetricsTests : IDisposable
+    public class CustomMetricsTests : IDisposable
     {
-        private readonly DefaultMetricsContextTestFixture _fixture;
+        private readonly MetricsFixture _fixture;
 
-        public MetricsContextCustomMetricsTests()
+        public CustomMetricsTests()
         {
-            //DEVNOTE: Don't want Context to be shared between tests
-            _fixture = new DefaultMetricsContextTestFixture();
+            //DEVNOTE: Don't want Metrics to be shared between tests
+            _fixture = new MetricsFixture();
         }
 
         [Fact]
@@ -27,11 +27,11 @@ namespace App.Metrics.Facts.Core
                 Name = "Custom Counter",
                 MeasurementUnit = Unit.Calls
             };
-            var counter = _fixture.Context.Advanced.Counter(counterOptions, () => new CustomCounter());
+            var counter = _fixture.Metrics.Advanced.Counter(counterOptions, () => new CustomCounter());
             counter.Should().BeOfType<CustomCounter>();
             counter.Increment();
 
-            var data = await _fixture.Context.Advanced.Data.ReadDataAsync();
+            var data = await _fixture.Metrics.Advanced.Data.ReadDataAsync();
             var context = data.Contexts.Single();
 
             context.Counters.Single().Value.Count.Should().Be(10L);
@@ -47,7 +47,7 @@ namespace App.Metrics.Facts.Core
                 MeasurementUnit = Unit.Calls
             };
 
-            var timer = _fixture.Context.Advanced.Timer(timerOptions, () => (IHistogramMetric)histogram);
+            var timer = _fixture.Metrics.Advanced.Timer(timerOptions, () => (IHistogramMetric)histogram);
 
             timer.Record(10L, TimeUnit.Nanoseconds);
 
@@ -65,7 +65,7 @@ namespace App.Metrics.Facts.Core
                 MeasurementUnit = Unit.Calls,
                 WithReservoir = () => reservoir as IReservoir
             };
-            var timer = _fixture.Context.Advanced.Timer(timerOptions);
+            var timer = _fixture.Metrics.Advanced.Timer(timerOptions);
 
             timer.Record(10L, TimeUnit.Nanoseconds);
 

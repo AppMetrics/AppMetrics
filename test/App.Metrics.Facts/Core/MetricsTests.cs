@@ -2,22 +2,20 @@
 using System.Linq;
 using System.Threading.Tasks;
 using App.Metrics.Core;
-using App.Metrics.Data;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Internal;
 using FluentAssertions;
 using Xunit;
 
 namespace App.Metrics.Facts.Core
 {
-    public class MetricsContextsTests : IDisposable
+    public class MetricsTests : IDisposable
     {
-        private readonly DefaultMetricsContextTestFixture _fixture;
+        private readonly MetricsFixture _fixture;
 
-        public MetricsContextsTests()
+        public MetricsTests()
         {
-            //DEVNOTE: Don't want Context to be shared between tests
-            _fixture = new DefaultMetricsContextTestFixture();
+            //DEVNOTE: Don't want Metrics to be shared between tests
+            _fixture = new MetricsFixture();
         }
 
         [Fact]
@@ -28,17 +26,17 @@ namespace App.Metrics.Facts.Core
                 Name = "request counter",
                 MeasurementUnit = Unit.Requests,
             };
-            var counter = _fixture.Context.Advanced.Counter(counterOptions);
+            var counter = _fixture.Metrics.Advanced.Counter(counterOptions);
 
             counter.Increment();
 
-            var data = await _fixture.CurrentData(_fixture.Context);
+            var data = await _fixture.CurrentData(_fixture.Metrics);
             var counterValue = data.Contexts.Single().Counters.Single();
             counterValue.Value.Count.Should().Be(1);
 
-            _fixture.Context.Advanced.Data.Reset();
+            _fixture.Metrics.Advanced.Data.Reset();
 
-            data = await _fixture.CurrentData(_fixture.Context);
+            data = await _fixture.CurrentData(_fixture.Metrics);
             data.Contexts.Should().BeNullOrEmpty();
         }
 
@@ -50,55 +48,18 @@ namespace App.Metrics.Facts.Core
                 Name = "request counter",
                 MeasurementUnit = Unit.Requests,
             };
-            var counter = _fixture.Context.Advanced.Counter(counterOptions);
+            var counter = _fixture.Metrics.Advanced.Counter(counterOptions);
 
             counter.Increment();
 
-            var data = await _fixture.CurrentData(_fixture.Context);
+            var data = await _fixture.CurrentData(_fixture.Metrics);
             var counterValue = data.Contexts.Single().Counters.Single();
             counterValue.Value.Count.Should().Be(1);
 
-            _fixture.Context.Advanced.Disable();
+            _fixture.Metrics.Advanced.Disable();
 
-            data = await _fixture.CurrentData(_fixture.Context);
+            data = await _fixture.CurrentData(_fixture.Metrics);
             data.Contexts.Should().BeNullOrEmpty();
-        }
-
-        [Fact]
-        public async Task can_filter_metrics_by_type()
-        {
-            var counterOptions = new CounterOptions
-            {
-                Name = "test",
-                MeasurementUnit = Unit.Requests,
-            };
-
-
-            var meterOptions = new MeterOptions
-            {
-                Name = "test",
-                MeasurementUnit = Unit.None,
-            };
-
-            var counter = _fixture.Context.Advanced.Counter(counterOptions);
-            var meter = _fixture.Context.Advanced.Meter(meterOptions);
-
-            var filter = new DefaultMetricsFilter().WhereType(MetricType.Counter);
-
-            counter.Increment();
-            meter.Mark(1);
-
-            var currentData = await _fixture.CurrentDataWithFilter(_fixture.Context, filter);
-            var context = currentData.Contexts.Single();
-
-            var counterValue = context.Counters.Single();
-            var meterValue = context.Meters.FirstOrDefault();
-
-            counterValue.Name.Should().Be("test");
-            counterValue.Unit.Should().Be(Unit.Requests);
-            counterValue.Value.Count.Should().Be(1);
-
-            Assert.Null(meterValue);
         }
 
         [Fact]
@@ -133,12 +94,12 @@ namespace App.Metrics.Facts.Core
                 Tags = tags
             };
 
-            _fixture.Context.Increment(counterOptions);
-            _fixture.Context.Mark(meterOptions);
-            _fixture.Context.Update(histogramOptions, 1);
-            _fixture.Context.Time(timerOptions, () => { });
+            _fixture.Metrics.Increment(counterOptions);
+            _fixture.Metrics.Mark(meterOptions);
+            _fixture.Metrics.Update(histogramOptions, 1);
+            _fixture.Metrics.Time(timerOptions, () => { });
 
-            var data = await _fixture.CurrentData(_fixture.Context);
+            var data = await _fixture.CurrentData(_fixture.Metrics);
             var context = data.Contexts.Single();
 
             context.Counters.Single().Tags.Should().Equals(tags);
@@ -157,9 +118,9 @@ namespace App.Metrics.Facts.Core
                 MeasurementUnit = Unit.Requests,
             };
 
-            _fixture.Context.Increment(counterOptions);
+            _fixture.Metrics.Increment(counterOptions);
 
-            var data = await _fixture.CurrentData(_fixture.Context);
+            var data = await _fixture.CurrentData(_fixture.Metrics);
 
             data.Contexts.Should().Contain(g => g.Context == "test");
 
@@ -179,15 +140,15 @@ namespace App.Metrics.Facts.Core
                 MeasurementUnit = Unit.Bytes
             };
 
-            _fixture.Context.Advanced.Counter(counterOptions).Increment();
+            _fixture.Metrics.Advanced.Counter(counterOptions).Increment();
 
-            var data = await _fixture.CurrentData(_fixture.Context);
+            var data = await _fixture.CurrentData(_fixture.Metrics);
 
             data.Contexts.First(g => g.Context == context).Counters.Single().Name.Should().Be("test");
 
-            _fixture.Context.Advanced.Data.ShutdownContext(context);
+            _fixture.Metrics.Advanced.Data.ShutdownContext(context);
 
-            data = await _fixture.CurrentData(_fixture.Context);
+            data = await _fixture.CurrentData(_fixture.Metrics);
 
             data.Contexts.FirstOrDefault(g => g.Context == context).Should().BeNull("because the context was shutdown");
         }
@@ -201,8 +162,8 @@ namespace App.Metrics.Facts.Core
                 Context = "test"
             };
 
-            var first = _fixture.Context.Advanced.Counter(counterOptions);
-            var second = _fixture.Context.Advanced.Counter(counterOptions);
+            var first = _fixture.Metrics.Advanced.Counter(counterOptions);
+            var second = _fixture.Metrics.Advanced.Counter(counterOptions);
 
             ReferenceEquals(first, second).Should().BeTrue();
         }
@@ -216,9 +177,9 @@ namespace App.Metrics.Facts.Core
                 MeasurementUnit = Unit.Bytes,
             };
 
-            _fixture.Context.Advanced.Counter(counterOptions).Increment();
+            _fixture.Metrics.Advanced.Counter(counterOptions).Increment();
 
-            var data = await _fixture.CurrentData(_fixture.Context);
+            var data = await _fixture.CurrentData(_fixture.Metrics);
             var context = data.Contexts.Single();
 
             context.Counters.Should().HaveCount(1);
@@ -269,11 +230,11 @@ namespace App.Metrics.Facts.Core
                     MeasurementUnit = Unit.Calls
                 };
 
-                _fixture.Context.Advanced.Gauge(gaugeOptions, () => 0.0);
-                _fixture.Context.Advanced.Counter(counterOptions);
-                _fixture.Context.Advanced.Meter(meterOptions);
-                _fixture.Context.Advanced.Histogram(histogramOptions);
-                _fixture.Context.Advanced.Timer(timerOptions);
+                _fixture.Metrics.Advanced.Gauge(gaugeOptions, () => 0.0);
+                _fixture.Metrics.Advanced.Counter(counterOptions);
+                _fixture.Metrics.Advanced.Meter(meterOptions);
+                _fixture.Metrics.Advanced.Histogram(histogramOptions);
+                _fixture.Metrics.Advanced.Timer(timerOptions);
             })).ShouldNotThrow();
         }
 
@@ -287,12 +248,12 @@ namespace App.Metrics.Facts.Core
                 Context = context,
                 MeasurementUnit = Unit.Bytes,
             };
-            var dataProvider = _fixture.Context.Advanced.Data;
+            var dataProvider = _fixture.Metrics.Advanced.Data;
 
             var data = await dataProvider.ReadDataAsync();
 
             data.Contexts.FirstOrDefault(g => g.Context == context).Should().BeNull("the context hasn't been added yet");
-            _fixture.Context.Advanced.Counter(counterOptions).Increment();
+            _fixture.Metrics.Advanced.Counter(counterOptions).Increment();
 
             data = await dataProvider.ReadDataAsync();
             data.Contexts.First(g => g.Context == context).Counters.Should().HaveCount(1);
@@ -306,11 +267,11 @@ namespace App.Metrics.Facts.Core
                 Name = "request counter",
                 MeasurementUnit = Unit.Requests,
             };
-            var counter = _fixture.Context.Advanced.Counter(counterOptions);
+            var counter = _fixture.Metrics.Advanced.Counter(counterOptions);
 
             counter.Increment();
 
-            var data = await _fixture.CurrentData(_fixture.Context);
+            var data = await _fixture.CurrentData(_fixture.Metrics);
 
             var counterValue = data.Contexts.Single().Counters.Single();
 
