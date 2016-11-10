@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading;
 using App.Metrics;
+using App.Metrics.Data;
 using App.Metrics.Extensions.Reporting.TextFile;
 using App.Metrics.Reporting;
 using Microsoft.AspNet.Builder;
@@ -15,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using App.Metrics.Formatters.Json;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using App.Metrics.DependencyInjection;
+using App.Metrics.Internal;
 
 namespace Api.Sample
 {
@@ -79,8 +81,8 @@ namespace Api.Sample
                 {
                     options.DefaultSamplingType = SamplingType.ExponentiallyDecaying;
                     options.DisableMetrics = false;
-                    //options.MetricsFilter = new DefaultMetricsFilter().WhereType(MetricType.Counter);
                 })
+                .AddGlobalFilter(new DefaultMetricsFilter().WhereType(MetricType.Counter))
                 .AddJsonSerialization()
                 .AddReporting(options =>
                 {

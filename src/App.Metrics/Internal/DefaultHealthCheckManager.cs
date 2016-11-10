@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Internal
 {
-    internal sealed class DefaultHealthCheckManager : IHealthCheckManager
+    internal sealed class DefaultHealthCheckManager : IHealthStatusProvider
     {
         private readonly ILogger _logger;
         private readonly Func<IReadOnlyDictionary<string, HealthCheck>> _healthChecks;
@@ -24,7 +24,7 @@ namespace App.Metrics.Internal
             _healthChecks = healthChecks;
         }
 
-        public async Task<HealthStatus> GetStatusAsync()
+        public async Task<HealthStatus> ReadStatusAsync()
         {
             var startTimestamp = _logger.IsEnabled(LogLevel.Information) ? Stopwatch.GetTimestamp() : 0;
 

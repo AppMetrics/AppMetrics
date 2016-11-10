@@ -8,13 +8,15 @@ using App.Metrics.Utils;
 
 namespace App.Metrics.Core
 {
-    public interface IAdvancedMetrics : IHideObjectMembers
+    public interface IAdvancedMetrics : IMetricsDataProvider, IHideObjectMembers
     {
+        IMetricsFilter GlobalFilter { get; }
+
         IClock Clock { get; }
 
-        IMetricsDataManager DataManager { get; }
+        IMetricsDataProvider Data { get; }
 
-        IHealthCheckManager HealthCheckManager { get; }
+        IHealthStatusProvider Health { get; }
 
         ICounter Counter(CounterOptions options);
 

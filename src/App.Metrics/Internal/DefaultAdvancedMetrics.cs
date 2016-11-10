@@ -3,49 +3,41 @@
 
 
 using System;
+using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.Utils;
 
 namespace App.Metrics.Internal
 {
-    internal sealed class DefaultAdancedMetrics : IAdvancedMetrics
+    internal sealed class DefaultAdvancedMetrics : IAdvancedMetrics
     {
-        private IMetricsDataManager _dataManager;
         private IMetricsRegistry _registry;
 
-        public DefaultAdancedMetrics(
+        public DefaultAdvancedMetrics(
             AppMetricsOptions options,
+            IMetricsFilter globalFilter,
             IMetricsRegistry registry,
-            IHealthCheckManager healthCheckManager,
-            IMetricsDataManager dataManagerManager)
+            IHealthStatusProvider heathStatusProvider)
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
 
             Clock = options.Clock;
-            HealthCheckManager = healthCheckManager;
+            Health = heathStatusProvider;
+            GlobalFilter = globalFilter ?? new DefaultMetricsFilter();
 
-            _dataManager = dataManagerManager;
             _registry = registry;
         }
 
         public IClock Clock { get; }
 
-        public IMetricsDataManager DataManager => _dataManager;
+        public IMetricsDataProvider Data => this;
 
-        public IHealthCheckManager HealthCheckManager { get; }
+        public IMetricsFilter GlobalFilter { get; }
 
-        public void Disable()
-        {
-            if (_registry is NullMetricsRegistry)
-            {
-                return;
-            }
-
-            Interlocked.Exchange(ref _registry, new NullMetricsRegistry());
-            Interlocked.Exchange(ref _dataManager, new DefaultMetricsDataManager(_registry));
-        }
+        public IHealthStatusProvider Health { get; }
 
         public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterMetric
         {
@@ -55,6 +47,16 @@ namespace App.Metrics.Internal
         public ICounter Counter(CounterOptions options)
         {
             return Counter(options, () => this.BuildCounter(options));
+        }
+
+        public void Disable()
+        {
+            if (_registry is NullMetricsRegistry)
+            {
+                return;
+            }
+
+            Interlocked.Exchange(ref _registry, new NullMetricsRegistry());
         }
 
         public void Gauge(GaugeOptions options, Func<double> valueProvider)
@@ -90,6 +92,40 @@ namespace App.Metrics.Internal
         public IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterMetric
         {
             return _registry.Meter(options, builder);
+        }
+
+        public async Task<MetricsContextValueSource> ReadContextAsync(string context)
+        {
+            var data = await ReadDataAsync();
+
+            var filter = new DefaultMetricsFilter().WhereContext(context);
+
+            var contextData = data.Filter(filter);
+
+            return contextData.Contexts.Single();
+        }
+
+        public async Task<MetricsDataValueSource> ReadDataAsync()
+        {
+            var data = await _registry.GetDataAsync();
+            return data.Filter(GlobalFilter);
+        }
+
+        public async Task<MetricsDataValueSource> ReadDataAsync(IMetricsFilter filter)
+        {
+            var data = await ReadDataAsync();
+
+            return data.Filter(filter);
+        }      
+
+        public void Reset()
+        {
+            _registry.Clear();
+        }
+
+        public void ShutdownContext(string context)
+        {
+            _registry.RemoveContext(context);
         }
 
         public ITimer Timer(TimerOptions options)

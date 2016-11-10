@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using App.Metrics;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AspNet.Metrics.Facts.Integration
+namespace AspNet.Metrics.Integration.Facts
 {
     [Route("api/[controller]")]
     public class TestController : Controller

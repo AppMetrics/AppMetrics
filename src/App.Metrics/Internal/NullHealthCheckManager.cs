@@ -7,9 +7,9 @@ using App.Metrics.Core;
 
 namespace App.Metrics.Internal
 {
-    internal sealed class NullHealthCheckManager : IHealthCheckManager
+    internal sealed class NullHealthCheckManager : IHealthStatusProvider
     {
-        public Task<HealthStatus> GetStatusAsync()
+        public Task<HealthStatus> ReadStatusAsync()
         {
             return Task.FromResult(new HealthStatus());
         }

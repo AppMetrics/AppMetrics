@@ -14,12 +14,10 @@ namespace AspNet.Metrics.Middleware
     public class MetricsEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
         private const string MetricsMimeType = "application/vnd.app.metrics.v1.metrics+json";
-        private readonly IMetricsFilter _metricsFilter;
         private readonly RequestDelegate _next;
         private readonly IMetricDataSerializer _serializer;
 
         public MetricsEndpointMiddleware(RequestDelegate next,
-            IMetricsFilter metricsFilter,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics,
@@ -30,10 +28,6 @@ namespace AspNet.Metrics.Middleware
             {
                 throw new ArgumentNullException(nameof(next));
             }
-            if (metricsFilter == null)
-            {
-                throw new ArgumentNullException(nameof(metricsFilter));
-            }
             if (serializer == null)
             {
                 throw new ArgumentNullException(nameof(serializer));
@@ -41,7 +35,6 @@ namespace AspNet.Metrics.Middleware
 
             _serializer = serializer;
             _next = next;
-            _metricsFilter = metricsFilter;
             _serializer = serializer;
         }
 
@@ -51,12 +44,12 @@ namespace AspNet.Metrics.Middleware
             {
                 Logger.MiddlewareExecuting(GetType());
 
-                var metricsData = await Metrics.Advanced.DataManager.GetAsync();
+                var metricsData = await Metrics.Advanced.Data.ReadDataAsync();
 
-                if (_metricsFilter != null)
+                if (Metrics.Advanced.GlobalFilter != null)
                 {
                     //TODO: AH - shouldn't have to apply the filter here
-                    metricsData = metricsData.Filter(_metricsFilter);
+                    metricsData = metricsData.Filter(Metrics.Advanced.GlobalFilter);
                 }
 
                 var json = _serializer.Serialize(metricsData);

@@ -1,11 +1,11 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics;
-using AspNet.Metrics.Facts.Integration.Startup;
-using Xunit;
+using AspNet.Metrics.Integration.Facts.Startup;
 using FluentAssertions;
+using Xunit;
 
-namespace AspNet.Metrics.Facts.Integration.Middleware
+namespace AspNet.Metrics.Integration.Facts.Middleware
 {
     public class ErrorRequestMeterMiddlewarePerEndPointTests : IClassFixture<MetricsHostTestFixture<DefaultTestStartup>>
     {
@@ -28,7 +28,7 @@ namespace AspNet.Metrics.Facts.Integration.Middleware
             await Client.GetAsync("/api/test/error");
             await Client.GetAsync("/api/test/error");
 
-            var metrics = await Context.Advanced.DataManager.GetContextAsync("Application.WebRequests");
+            var metrics = await Context.Advanced.Data.ReadContextAsync("Application.WebRequests");
 
             metrics.MeterValueFor("GET api/test/bad Total Error Requests").Count.Should().Be(1);
             metrics.MeterValueFor("GET api/test/error Internal Server Error Requests").Count.Should().Be(2);

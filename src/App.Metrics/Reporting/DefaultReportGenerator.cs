@@ -16,25 +16,14 @@ namespace App.Metrics.Reporting
     {
         public async Task Generate(IMetricReporter reporter, 
             IMetrics metrics, 
-            IMetricsFilter filter, 
             MetricTags globalTags,
             CancellationToken token)
         {
-            var reportEnvironment = true;
-            var reportHealthChecks = true;
-
             reporter.StartReport(metrics);
 
-            var data = await metrics.Advanced.DataManager.GetAsync();
+            var data = await metrics.Advanced.Data.ReadDataAsync();
 
-            if (filter != default(IMetricsFilter))
-            {
-                data = data.Filter(filter);
-                reportEnvironment = filter.ReportEnvironment;
-                reportHealthChecks = filter.ReportHealthChecks;
-            }
-
-            if (data.Environment.Entries.Any() && reportEnvironment)
+            if (data.Environment.Entries.Any() && metrics.Advanced.GlobalFilter.ReportEnvironment)
             {
                 reporter.StartMetricTypeReport(typeof(EnvironmentInfo));
 
@@ -61,9 +50,9 @@ namespace App.Metrics.Reporting
                     t => { reporter.ReportMetric($"{contextValueSource.Context}", t, globalTags); }, token);
             }
 
-            if (reportHealthChecks)
+            if (metrics.Advanced.GlobalFilter.ReportHealthChecks)
             {
-                var healthStatus = await metrics.Advanced.HealthCheckManager.GetStatusAsync();
+                var healthStatus = await metrics.Advanced.Health.ReadStatusAsync();
 
                 reporter.StartMetricTypeReport(typeof(HealthStatus));
 

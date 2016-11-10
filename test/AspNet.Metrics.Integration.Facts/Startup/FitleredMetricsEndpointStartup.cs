@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace AspNet.Metrics.Facts.Integration.Startup
+namespace AspNet.Metrics.Integration.Facts.Startup
 {
     public class FitleredMetricsEndpointStartup : TestStartup
     {
@@ -18,17 +18,19 @@ namespace AspNet.Metrics.Facts.Integration.Startup
 
         public void ConfigureServices(IServiceCollection services)
         {
+            //TODO: AH - Need to setup global filtering option
+
             var appMetricsOptions = new AppMetricsOptions
             {
                 Clock = new Clock.TestClock(),
                 DefaultSamplingType = SamplingType.LongTerm,
                 DisableMetrics = false,
-                MetricsFilter = new DefaultMetricsFilter().WhereType(MetricType.Counter)
             };
 
             var aspNetMetricsOptions = new AspNetMetricsOptions();
 
-            SetupServices(services, appMetricsOptions, aspNetMetricsOptions);
+            SetupServices(services, appMetricsOptions, aspNetMetricsOptions, 
+                new DefaultMetricsFilter().WhereType(MetricType.Counter));
         }
     }
 }

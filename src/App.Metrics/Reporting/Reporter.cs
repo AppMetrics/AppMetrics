@@ -50,8 +50,7 @@ namespace App.Metrics.Reporting
                 {
                     var settings = _providers[metricReporter.Key].Settings;
                     var task = _scheduler.Interval(metricReporter.Value.ReportInterval, async () =>
-                            await _reportGenerator.Generate(metricReporter.Value, context,
-                                settings.Filter, settings.GlobalTags, token), token);
+                            await _reportGenerator.Generate(metricReporter.Value, context, settings.GlobalTags, token), token);
                 }
                 catch (Exception ex)
                 {

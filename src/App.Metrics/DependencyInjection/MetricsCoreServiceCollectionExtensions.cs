@@ -56,12 +56,13 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             services.TryAddTransient<Func<string, IMetricContextRegistry>>(provider => { return context => new DefaultMetricContextRegistry(context); });
             services.TryAddSingleton(provider => provider.GetRequiredService<IOptions<AppMetricsOptions>>().Value);
             services.TryAddSingleton(provider => provider.GetRequiredService<IOptions<AppMetricsOptions>>().Value.Clock);
-            services.TryAddSingleton<IMetricsRegistry, DefaultMetricsRegistry>();
-            services.TryAddSingleton<IMetricsDataManager, DefaultMetricsDataManager>();
+            services.TryAddSingleton<IMetricsRegistry, DefaultMetricsRegistry>();         
+            //TODO: AH - should be configurable
+            services.TryAddSingleton<IMetricsFilter, DefaultMetricsFilter>();
             services.TryAddSingleton<EnvironmentInfoBuilder, EnvironmentInfoBuilder>();
             services.TryAddSingleton<IMetricDataSerializer, NullMetricDataSerializer>();
             services.TryAddSingleton<IHealthStatusSerializer, NullHealthStatusSerializer>();
-            services.TryAddSingleton<IAdvancedMetrics, DefaultAdancedMetrics>();
+            services.TryAddSingleton<IAdvancedMetrics, DefaultAdvancedMetrics>();
 
             if (metrics == null)
             {

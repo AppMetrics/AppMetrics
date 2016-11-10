@@ -1,5 +1,6 @@
 using App.Metrics;
 using App.Metrics.DependencyInjection;
+using App.Metrics.Internal;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace AspNet.Metrics.Facts.Integration.Startup
+namespace AspNet.Metrics.Integration.Facts.Startup
 {
     public abstract class TestStartup
     {
@@ -20,7 +21,8 @@ namespace AspNet.Metrics.Facts.Integration.Startup
 
         protected void SetupServices(IServiceCollection services,
             AppMetricsOptions appMetricsOptions,
-            AspNetMetricsOptions aspNetMetricsOptions)
+            AspNetMetricsOptions aspNetMetricsOptions,
+            IMetricsFilter filter = null)
         {
             services
                 .AddLogging()
@@ -28,7 +30,7 @@ namespace AspNet.Metrics.Facts.Integration.Startup
 
             services.AddMvc(options => options.AddMetricsResourceFilter());
 
-            services
+            var builder = services
                 .AddMetrics(options =>
                 {
                     options.DefaultContextLabel = appMetricsOptions.DefaultContextLabel;
@@ -50,6 +52,11 @@ namespace AspNet.Metrics.Facts.Integration.Startup
                     options.MetricsTextEndpoint = aspNetMetricsOptions.MetricsTextEndpoint;
                     options.PingEndpoint = aspNetMetricsOptions.PingEndpoint;
                 });
+
+            if (filter != null)
+            {
+                builder.AddGlobalFilter(filter);
+            }
         }
     }
 }

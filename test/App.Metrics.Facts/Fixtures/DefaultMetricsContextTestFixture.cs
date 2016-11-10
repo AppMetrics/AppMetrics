@@ -16,10 +16,10 @@ namespace App.Metrics.Facts.Fixtures
         public IMetrics Context { get; }
 
         public Func<IMetrics, Task<MetricsDataValueSource>> CurrentData => 
-            async ctx => await Context.Advanced.DataManager.GetAsync();
+            async ctx => await Context.Advanced.Data.ReadDataAsync();
 
         public Func<IMetrics, IMetricsFilter, Task<MetricsDataValueSource>> CurrentDataWithFilter
-            => async (ctx, filter) => await Context.Advanced.DataManager.GetAsync(filter);
+            => async (ctx, filter) => await Context.Advanced.Data.ReadDataAsync(filter);
 
         public DefaultMetricsContextTestFixture()
         {
@@ -27,8 +27,7 @@ namespace App.Metrics.Facts.Fixtures
             var healthCheckManager = new DefaultHealthCheckManager(_loggerFactory, () => new ConcurrentDictionary<string, HealthCheck>());
             Func<string, IMetricContextRegistry> newContextRegistry = name => new DefaultMetricContextRegistry(name);
             var registry = new DefaultMetricsRegistry(_loggerFactory, options, new EnvironmentInfoBuilder(_loggerFactory), newContextRegistry);
-            var metricsDataManager = new DefaultMetricsDataManager(registry);
-            var advancedContext = new DefaultAdancedMetrics(options, registry, healthCheckManager, metricsDataManager);
+            var advancedContext = new DefaultAdvancedMetrics(options, new DefaultMetricsFilter(),  registry, healthCheckManager);
             Context = new DefaultMetrics(options, registry, advancedContext);
         }
 
@@ -36,7 +35,7 @@ namespace App.Metrics.Facts.Fixtures
         {
             if (!disposing) return;
 
-            Context?.Advanced.DataManager.Reset();
+            Context?.Advanced.Data.Reset();
         }
 
         public void Dispose()

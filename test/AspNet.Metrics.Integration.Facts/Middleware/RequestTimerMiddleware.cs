@@ -1,11 +1,11 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics;
-using AspNet.Metrics.Facts.Integration.Startup;
-using Xunit;
+using AspNet.Metrics.Integration.Facts.Startup;
 using FluentAssertions;
+using Xunit;
 
-namespace AspNet.Metrics.Facts.Integration.Middleware
+namespace AspNet.Metrics.Integration.Facts.Middleware
 {
     public class RequestTimerMiddlewareTests : IClassFixture<MetricsHostTestFixture<DefaultTestStartup>>
     {
@@ -26,7 +26,7 @@ namespace AspNet.Metrics.Facts.Integration.Middleware
             await Client.GetAsync("/api/test/300ms");
             await Client.GetAsync("/api/test/30ms");
 
-            var metrics = await Context.Advanced.DataManager.GetContextAsync("Application.WebRequests");
+            var metrics = await Context.Advanced.Data.ReadContextAsync("Application.WebRequests");
 
             var timer = metrics.TimerValueFor("Web Requests");
             timer.Histogram.Min.Should().Be(30);

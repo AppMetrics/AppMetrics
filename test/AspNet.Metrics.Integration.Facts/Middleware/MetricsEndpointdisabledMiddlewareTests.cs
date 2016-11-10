@@ -2,15 +2,15 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics;
-using AspNet.Metrics.Facts.Integration.Startup;
-using Xunit;
+using AspNet.Metrics.Integration.Facts.Startup;
 using FluentAssertions;
+using Xunit;
 
-namespace AspNet.Metrics.Facts.Integration.Middleware
+namespace AspNet.Metrics.Integration.Facts.Middleware
 {
-    public class MetricsEndpointdisabledMiddlewareTests : IClassFixture<MetricsHostTestFixture<DisabledMetricsEndpointStartup>>
+    public class MetricsEndpointDisabledMiddlewareTests : IClassFixture<MetricsHostTestFixture<DisabledMetricsEndpointStartup>>
     {
-        public MetricsEndpointdisabledMiddlewareTests(MetricsHostTestFixture<DisabledMetricsEndpointStartup> fixture)
+        public MetricsEndpointDisabledMiddlewareTests(MetricsHostTestFixture<DisabledMetricsEndpointStartup> fixture)
         {
             Client = fixture.Client;
             Context = fixture.Context;

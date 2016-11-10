@@ -36,7 +36,7 @@ namespace App.Metrics.Facts.Core
             var counterValue = data.Contexts.Single().Counters.Single();
             counterValue.Value.Count.Should().Be(1);
 
-            _fixture.Context.Advanced.DataManager.Reset();
+            _fixture.Context.Advanced.Data.Reset();
 
             data = await _fixture.CurrentData(_fixture.Context);
             data.Contexts.Should().BeNullOrEmpty();
@@ -185,7 +185,7 @@ namespace App.Metrics.Facts.Core
 
             data.Contexts.First(g => g.Context == context).Counters.Single().Name.Should().Be("test");
 
-            _fixture.Context.Advanced.DataManager.ShutdownContext(context);
+            _fixture.Context.Advanced.Data.ShutdownContext(context);
 
             data = await _fixture.CurrentData(_fixture.Context);
 
@@ -287,14 +287,14 @@ namespace App.Metrics.Facts.Core
                 Context = context,
                 MeasurementUnit = Unit.Bytes,
             };
-            var dataManager = _fixture.Context.Advanced.DataManager;
+            var dataProvider = _fixture.Context.Advanced.Data;
 
-            var data = await dataManager.GetAsync();
+            var data = await dataProvider.ReadDataAsync();
 
             data.Contexts.FirstOrDefault(g => g.Context == context).Should().BeNull("the context hasn't been added yet");
             _fixture.Context.Advanced.Counter(counterOptions).Increment();
 
-            data = await dataManager.GetAsync();
+            data = await dataProvider.ReadDataAsync();
             data.Contexts.First(g => g.Context == context).Counters.Should().HaveCount(1);
         }
 

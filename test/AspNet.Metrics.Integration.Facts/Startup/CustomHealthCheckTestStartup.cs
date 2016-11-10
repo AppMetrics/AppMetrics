@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace AspNet.Metrics.Facts.Integration.Startup
+namespace AspNet.Metrics.Integration.Facts.Startup
 {
     public class CustomHealthCheckTestStartup : TestStartup
     {

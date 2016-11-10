@@ -42,7 +42,7 @@ namespace AspNet.Metrics.Middleware
             {
                 Logger.MiddlewareExecuting(GetType());
 
-                var healthStatus = await Metrics.Advanced.HealthCheckManager.GetStatusAsync();
+                var healthStatus = await Metrics.Advanced.Health.ReadStatusAsync();
                 var responseStatusCode = healthStatus.IsHealthy ? HttpStatusCode.OK : HttpStatusCode.InternalServerError;
 
                 var json = _serializer.Serialize(healthStatus);

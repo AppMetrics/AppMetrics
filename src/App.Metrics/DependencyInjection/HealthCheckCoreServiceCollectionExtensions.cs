@@ -20,7 +20,7 @@ namespace App.Metrics.DependencyInjection
             //TODO: AH - this is already instantiated as part of caore metrics
             var metricsEnvironment = new MetricsAppEnvironment(PlatformServices.Default.Application);
 
-            services.TryAddSingleton<IHealthCheckManager, DefaultHealthCheckManager>();
+            services.TryAddSingleton<IHealthStatusProvider, DefaultHealthCheckManager>();
 
             services.AddHealthChecks(metricsEnvironment);
         }

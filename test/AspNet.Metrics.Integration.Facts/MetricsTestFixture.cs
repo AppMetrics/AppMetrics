@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AspNet.Metrics.Facts.Integration
+namespace AspNet.Metrics.Integration.Facts
 {
     public class MetricsHostTestFixture<TStartup> : IDisposable where TStartup : class
     {

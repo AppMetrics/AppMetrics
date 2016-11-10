@@ -2,7 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using App.Metrics.Internal;
 using App.Metrics.Utils;
 
 namespace App.Metrics
@@ -16,7 +15,6 @@ namespace App.Metrics
             DefaultContextLabel = DefaultContext;
             DisableMetrics = false;
             DefaultSamplingType = SamplingType.ExponentiallyDecaying;
-            MetricsFilter = new DefaultMetricsFilter();
             Clock = Utils.Clock.Default;
         }
 
@@ -27,7 +25,5 @@ namespace App.Metrics
         public SamplingType DefaultSamplingType { get; set; }
 
         public bool DisableMetrics { get; set; }
-
-        public IMetricsFilter MetricsFilter { get; set; } //TODO: AH - remove filter elsewhere
     }
 }

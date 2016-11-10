@@ -42,12 +42,12 @@ namespace Microsoft.AspNet.Builder
 
             if (aspNetMetricsOptions.MetricsTextEndpointEnabled && !appMetricsOptions.DisableMetrics)
             {
-                app.UseMiddleware<MetricsEndpointTextEndpointMiddleware>(appMetricsOptions.MetricsFilter);
+                app.UseMiddleware<MetricsEndpointTextEndpointMiddleware>();
             }
 
             if (aspNetMetricsOptions.MetricsEndpointEnabled && !appMetricsOptions.DisableMetrics)
             {
-                app.UseMiddleware<MetricsEndpointMiddleware>(appMetricsOptions.MetricsFilter);
+                app.UseMiddleware<MetricsEndpointMiddleware>();
             }
 
             if (!appMetricsOptions.DisableMetrics)

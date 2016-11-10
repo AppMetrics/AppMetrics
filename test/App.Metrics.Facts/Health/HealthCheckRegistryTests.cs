@@ -13,7 +13,7 @@ namespace App.Metrics.Facts.Health
     {
         private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
         private readonly HealthCheckFactory _healthCheckFactory;
-        private readonly IHealthCheckManager _healthCheckManager;
+        private readonly IHealthStatusProvider _healthCheckManager;
         private readonly List<HealthCheck> _healthChecks = new List<HealthCheck>();
 
         public HealthCheckRegistryTests()
@@ -38,7 +38,7 @@ namespace App.Metrics.Facts.Health
             _healthCheckFactory.Register("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
             _healthCheckFactory.Register("bad", () => Task.FromResult(HealthCheckResult.Unhealthy()));
 
-            var status = await _healthCheckManager.GetStatusAsync();
+            var status = await _healthCheckManager.ReadStatusAsync();
 
             status.IsHealthy.Should().BeFalse();
             status.Results.Length.Should().Be(2);
@@ -50,7 +50,7 @@ namespace App.Metrics.Facts.Health
             _healthCheckFactory.Register("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
             _healthCheckFactory.Register("another", () => Task.FromResult(HealthCheckResult.Healthy()));
 
-            var status = await _healthCheckManager.GetStatusAsync();
+            var status = await _healthCheckManager.ReadStatusAsync();
 
             status.IsHealthy.Should().BeTrue();
             status.Results.Length.Should().Be(2);
