@@ -20,7 +20,7 @@ namespace App.Metrics.Reporting
             MetricTags globalTags,
             CancellationToken token)
         {
-            return Generate(reporter, metrics, new NullMetricsFilter(), globalTags, token);
+            return Generate(reporter, metrics, metrics.Advanced.GlobalFilter, globalTags, token);
         }
 
         public async Task Generate(IMetricReporter reporter, 
@@ -31,7 +31,7 @@ namespace App.Metrics.Reporting
         {
             if (reporterMetricsFilter == default(IMetricsFilter))
             {
-                reporterMetricsFilter = new NullMetricsFilter();
+                reporterMetricsFilter = metrics.Advanced.GlobalFilter;
             }
 
             reporter.StartReport(metrics);

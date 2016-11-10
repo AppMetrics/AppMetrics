@@ -13,7 +13,7 @@ namespace App.Metrics.Extensions.Reporting.Console
         private readonly ConcurrentDictionary<string, ConsoleReporter> _reporters = new ConcurrentDictionary<string, ConsoleReporter>();
         private readonly IConsoleReporterSettings _settings;
 
-        public ConsoleReporterProvider(IConsoleReporterSettings settings)
+        public ConsoleReporterProvider(IConsoleReporterSettings settings, IMetricsFilter filter)
         {
             if (settings == null)
             {
@@ -21,7 +21,11 @@ namespace App.Metrics.Extensions.Reporting.Console
             }
 
             _settings = settings;
+
+            Filter = filter;
         }
+
+        public IMetricsFilter Filter { get; }
 
         public IReporterSettings Settings => _settings;
 

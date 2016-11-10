@@ -8,6 +8,8 @@ namespace App.Metrics.Reporting
 {
     public interface IReporterProvider : IDisposable
     {
+        IMetricsFilter Filter { get; }
+
         IReporterSettings Settings { get; }
 
         IMetricReporter CreateMetricReporter(string name);

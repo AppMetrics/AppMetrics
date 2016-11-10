@@ -13,7 +13,7 @@ namespace App.Metrics.Extensions.Reporting.TextFile
         private readonly ConcurrentDictionary<string, TextFileReporter> _reporters = new ConcurrentDictionary<string, TextFileReporter>();
         private readonly ITextFileReporterSettings _settings;
 
-        public TextFileReporterProvider(ITextFileReporterSettings settings)
+        public TextFileReporterProvider(ITextFileReporterSettings settings, IMetricsFilter fitler)
         {
             if (settings == null)
             {
@@ -21,6 +21,7 @@ namespace App.Metrics.Extensions.Reporting.TextFile
             }
 
             _settings = settings;
+            Filter = fitler;
         }
 
         public IReporterSettings Settings => _settings;
@@ -38,5 +39,7 @@ namespace App.Metrics.Extensions.Reporting.TextFile
         {
             return new TextFileReporter(name, _settings.FileName, _settings.ReportInterval);
         }
+
+        public IMetricsFilter Filter { get; }
     }
 }

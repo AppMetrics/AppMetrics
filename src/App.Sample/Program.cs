@@ -101,17 +101,19 @@ namespace App.Sample
 
                     options.Reporters = factory =>
                     {
+                        var filter = new DefaultMetricsFilter()
+                            .WhereType(MetricType.Counter)
+                            .WhereMetricTaggedWith("filter-tag1", "filter-tag2")
+                            .WithHealthChecks(true)
+                            .WithEnvironmentInfo(true);
+
                         var consoleSettings = new ConsoleReporterSettings
                         {
                             ReportInterval = TimeSpan.FromSeconds(30),
                             GlobalTags = globalTags,
-                            Filter = new DefaultMetricsFilter()
-                                .WhereType(MetricType.Counter)
-                                .WhereMetricTaggedWith("filter-tag1", "filter-tag2")
-                                .WithHealthChecks(true)
-                                .WithEnvironmentInfo(true)
+                            
                         };
-                        factory.AddConsole(consoleSettings);
+                        factory.AddConsole(consoleSettings, filter);
 
                         var textFileSettings = new TextFileReporterSettings
                         {

@@ -9,16 +9,16 @@ namespace App.Metrics.Extensions.Reporting.TextFile
     public static class TextFileReporterExtensions
     {
         public static IReportFactory AddTextFile(this IReportFactory factory,
-            ITextFileReporterSettings settings)
+            ITextFileReporterSettings settings, IMetricsFilter filter = null)
         {
-            factory.AddProvider(new TextFileReporterProvider(settings));
+            factory.AddProvider(new TextFileReporterProvider(settings, filter));
             return factory;
         }
 
-        public static IReportFactory AddTextFile(this IReportFactory factory)
+        public static IReportFactory AddTextFile(this IReportFactory factory, IMetricsFilter filter = null)
         {
             var settings = new TextFileReporterSettings();
-            factory.AddTextFile(settings);
+            factory.AddTextFile(settings, filter);
             return factory;
         }
     }

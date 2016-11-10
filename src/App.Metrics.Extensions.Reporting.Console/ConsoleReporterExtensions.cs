@@ -9,16 +9,16 @@ namespace App.Metrics.Extensions.Reporting.Console
     public static class ConsoleReporterExtensions
     {
         public static IReportFactory AddConsole(this IReportFactory factory,
-            IConsoleReporterSettings settings)
+            IConsoleReporterSettings settings, IMetricsFilter filter = null)
         {
-            factory.AddProvider(new ConsoleReporterProvider(settings));
+            factory.AddProvider(new ConsoleReporterProvider(settings, filter));
             return factory;
         }
 
-        public static IReportFactory AddConsole(this IReportFactory factory)
+        public static IReportFactory AddConsole(this IReportFactory factory, IMetricsFilter filter = null)
         {
             var settings = new ConsoleReporterSettings();
-            factory.AddConsole(settings);
+            factory.AddConsole(settings, filter);
             return factory;
         }
     }
