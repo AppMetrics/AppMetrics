@@ -95,34 +95,29 @@ namespace App.Sample
                             : HealthCheckResult.Unhealthy("Disk space ok: {0}", freeDiskSpace));
                     });
                 })
-                .AddReporting(options =>
+                .AddReporting((options, factory) =>
                 {
                     var globalTags = new MetricTags().With("env", "stage");
 
-                    options.Reporters = factory =>
+                    options.IsEnabled = false;
+
+                    var filter = new DefaultMetricsFilter()
+                        .WhereType(MetricType.Counter)
+                        .WhereMetricTaggedWith("filter-tag1", "filter-tag2")
+                        .WithHealthChecks(true)
+                        .WithEnvironmentInfo(true);
+
+                    factory.AddConsole(new ConsoleReporterSettings
                     {
-                        var filter = new DefaultMetricsFilter()
-                            .WhereType(MetricType.Counter)
-                            .WhereMetricTaggedWith("filter-tag1", "filter-tag2")
-                            .WithHealthChecks(true)
-                            .WithEnvironmentInfo(true);
+                        ReportInterval = TimeSpan.FromSeconds(10),
+                        GlobalTags = globalTags
+                    }, filter);
 
-                        var consoleSettings = new ConsoleReporterSettings
-                        {
-                            ReportInterval = TimeSpan.FromSeconds(30),
-                            GlobalTags = globalTags,
-                            
-                        };
-                        factory.AddConsole(consoleSettings, filter);
-
-                        var textFileSettings = new TextFileReporterSettings
-                        {
-                            ReportInterval = TimeSpan.FromSeconds(30),
-                            FileName = @"C:\metrics\sample.txt"
-                        };
-
-                        factory.AddTextFile(textFileSettings);
-                    };
+                    factory.AddTextFile(new TextFileReporterSettings
+                    {
+                        ReportInterval = TimeSpan.FromSeconds(30),
+                        FileName = @"C:\metrics\sample.txt"
+                    });
                 });
         }
 

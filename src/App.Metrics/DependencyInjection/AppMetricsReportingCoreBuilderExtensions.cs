@@ -20,7 +20,7 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
 
         public static IMetricsHostBuilder AddReporting(
             this IMetricsHostBuilder host,
-            Action<AppMetricsReportingOptions> setupAction)
+            Action<AppMetricsReportingOptions, IReportFactory> setupAction)
         {
             if (host == null) throw new ArgumentNullException(nameof(host));
 

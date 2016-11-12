@@ -5,9 +5,9 @@
 using System;
 using App.Metrics.Internal;
 using App.Metrics.Reporting;
-using Microsoft.Extensions.Options;
 
 // ReSharper disable CheckNamespace
+
 namespace Microsoft.Extensions.DependencyInjection.Extensions
 // ReSharper restore CheckNamespace
 {
@@ -25,32 +25,36 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
 
         internal static IMetricsHostBuilder AddMetricsReportingCore(
             this IMetricsHostBuilder host,
-            Action<AppMetricsReportingOptions> setupAction)
+            Action<AppMetricsReportingOptions, IReportFactory> setupAction)
         {
             if (host == null) throw new ArgumentNullException(nameof(host));
 
             host.Services.TryAddSingleton<AppMetricsReportingMarkerService, AppMetricsReportingMarkerService>();
 
             host.Services.ConfigureDefaultReportingServices();
-            host.Services.AddMetricsReportingCoreServices();
-
-            if (setupAction != null)
-            {
-                host.Services.Configure(setupAction);
-            }
+            host.Services.AddMetricsReportingCoreServices(setupAction);
 
             return host;
         }
 
-        private static void AddMetricsReportingCoreServices(this IServiceCollection services)
+        private static void AddMetricsReportingCoreServices(this IServiceCollection services,
+            Action<AppMetricsReportingOptions, IReportFactory> setupAction)
         {
-            services.TryAddSingleton(typeof(IReportFactory), provider =>
+            var factory = new ReportFactory();
+            var options = new AppMetricsReportingOptions();
+
+            setupAction(options, factory);
+
+            if (!options.IsEnabled)
             {
-                var options = provider.GetRequiredService<IOptions<AppMetricsReportingOptions>>();
-                var factory = new ReportFactory();
-                options.Value.Reporters(factory);
-                return factory;
-            });
+                services.TryAddSingleton<IReportFactory>(new NullReportFactory());
+            }
+            else
+            {
+                services.TryAddSingleton<IReportFactory>(factory);
+            }
+
+            services.TryAddSingleton(options);
         }
 
         private static void ConfigureDefaultReportingServices(this IServiceCollection services)

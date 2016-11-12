@@ -29,6 +29,7 @@ namespace App.Metrics.Reporting
 
         public IReporter CreateReporter(IScheduler scheduler)
         {
+            //TODO: AH - doing nothing with scheduler?
             if (CheckDisposed())
             {
                 throw new ObjectDisposedException(nameof(ReportFactory));
