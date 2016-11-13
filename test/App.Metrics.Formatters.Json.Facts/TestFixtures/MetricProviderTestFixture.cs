@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
 using App.Metrics.Data;
-using App.Metrics.Formatters.Json.Facts.Helpers;
 using App.Metrics.Infrastructure;
+using App.Metrics.Utils;
 
 namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 {
     public class MetricProviderTestFixture : IDisposable
     {
+        private readonly IClock _clock = new TestClock();
+
         public MetricProviderTestFixture()
         {
             Counters = SetupCounters();
@@ -104,7 +106,7 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 
         private MetricsDataValueSource SetupMetricsData(IEnumerable<MetricsContextValueSource> contextValueSources)
         {
-            return new MetricsDataValueSource(new TestClock().UtcDateTime, Env, contextValueSources);
+            return new MetricsDataValueSource(_clock.UtcDateTime, Env, contextValueSources);
         }
     }
 }

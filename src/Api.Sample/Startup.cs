@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading;
 using App.Metrics;
-using App.Metrics.Data;
+using App.Metrics.DependencyInjection;
 using App.Metrics.Extensions.Reporting.TextFile;
+using App.Metrics.Formatters.Json;
 using App.Metrics.Reporting;
+using App.Metrics.Utils;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using App.Metrics.Formatters.Json;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using App.Metrics.DependencyInjection;
-using App.Metrics.Internal;
+using Microsoft.Extensions.Logging;
 
 namespace Api.Sample
 {
@@ -77,18 +76,14 @@ namespace Api.Sample
             services.AddMvc(options => options.AddMetricsResourceFilter());
 
             services
-                .AddMetrics(options =>
-                {
-                    options.DefaultSamplingType = SamplingType.ExponentiallyDecaying;
-                    options.DisableMetrics = false;
-                })
+                .AddMetrics(Configuration.GetSection("AppMetrics"))
                 //.AddGlobalFilter(new DefaultMetricsFilter().WhereType(MetricType.Counter))
                 .AddJsonSerialization()
-                .AddReporting((options, factory) =>
+                .AddReporting(factory =>
                 {
                     var textFileSettings = new TextFileReporterSettings
                     {
-                        ReportInterval = TimeSpan.FromSeconds(30),
+                        ReportInterval = TimeSpan.FromSeconds(5),
                         FileName = @"C:\metrics\aspnet-sample.txt"
                     };
 

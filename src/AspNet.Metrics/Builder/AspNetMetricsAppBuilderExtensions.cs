@@ -3,7 +3,8 @@
 
 
 using System;
-using App.Metrics;
+using App.Metrics.Configuration;
+using App.Metrics.DependencyInjection.Internal;
 using App.Metrics.Internal;
 using AspNet.Metrics;
 using AspNet.Metrics.Middleware;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 // ReSharper disable CheckNamespace
+
 namespace Microsoft.AspNet.Builder
 // ReSharper restore CheckNamespace
 {
@@ -40,17 +42,17 @@ namespace Microsoft.AspNet.Builder
                 app.UseMiddleware<HealthCheckEndpointMiddleware>();
             }
 
-            if (aspNetMetricsOptions.MetricsTextEndpointEnabled && !appMetricsOptions.DisableMetrics)
+            if (aspNetMetricsOptions.MetricsTextEndpointEnabled && appMetricsOptions.MetricsEnabled)
             {
                 app.UseMiddleware<MetricsEndpointTextEndpointMiddleware>();
             }
 
-            if (aspNetMetricsOptions.MetricsEndpointEnabled && !appMetricsOptions.DisableMetrics)
+            if (aspNetMetricsOptions.MetricsEndpointEnabled && appMetricsOptions.MetricsEnabled)
             {
                 app.UseMiddleware<MetricsEndpointMiddleware>();
             }
 
-            if (!appMetricsOptions.DisableMetrics)
+            if (appMetricsOptions.MetricsEnabled)
             {
                 app.UseMiddleware<ActiveRequestCounterEndpointMiddleware>();
                 app.UseMiddleware<ErrorRequestMeterMiddleware>();

@@ -7,12 +7,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using App.Metrics.Core;
-using App.Metrics.DependencyInjection;
 using App.Metrics.Infrastructure;
+using App.Metrics.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace App.Metrics.Internal
+namespace App.Metrics.DependencyInjection.Internal
 {
     internal static class HealthChecksAsServices
     {

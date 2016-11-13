@@ -1,6 +1,6 @@
 using App.Metrics;
-using App.Metrics.DependencyInjection;
-using App.Metrics.Internal;
+using App.Metrics.Configuration;
+using App.Metrics.Utils;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,10 +34,10 @@ namespace AspNet.Metrics.Integration.Facts.Startup
                 .AddMetrics(options =>
                 {
                     options.DefaultContextLabel = appMetricsOptions.DefaultContextLabel;
-                    options.DisableMetrics = appMetricsOptions.DisableMetrics;
-                    options.Clock = appMetricsOptions.Clock;
+                    options.MetricsEnabled = appMetricsOptions.MetricsEnabled;
                     options.DefaultSamplingType = appMetricsOptions.DefaultSamplingType;
                 })
+                .AddClockType<TestClock>()
                 .AddHealthChecks()
                 .AddAspNetMetrics(options =>
                 {

@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Reporting.Facts.Fixtures;
+using App.Metrics.Facts.Fixtures;
+using App.Metrics.Reporting;
 using App.Metrics.Scheduling;
 using Moq;
 using Xunit;
 
-namespace App.Metrics.Reporting.Facts
+namespace App.Metrics.Facts.Reporting
 {
-    public class ReporterTests : IClassFixture<MetricsFixture>
+    public class ReporterTests : IClassFixture<MetricsReportingFixture>
     {
-        private readonly MetricsFixture _fixture;
+        private readonly MetricsReportingFixture _fixture;
 
-        public ReporterTests(MetricsFixture fixture)
+        public ReporterTests(MetricsReportingFixture fixture)
         {
             _fixture = fixture;
         }

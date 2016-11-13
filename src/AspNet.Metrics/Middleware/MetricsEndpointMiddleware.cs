@@ -46,12 +46,6 @@ namespace AspNet.Metrics.Middleware
 
                 var metricsData = await Metrics.Advanced.Data.ReadDataAsync();
 
-                if (Metrics.Advanced.GlobalFilter != null)
-                {
-                    //TODO: AH - shouldn't have to apply the filter here
-                    metricsData = metricsData.Filter(Metrics.Advanced.GlobalFilter);
-                }
-
                 var json = _serializer.Serialize(metricsData);
 
                 await WriteResponseAsync(context, json, MetricsMimeType);

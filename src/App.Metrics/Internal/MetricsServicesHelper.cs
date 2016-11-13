@@ -3,14 +3,15 @@
 
 
 using System;
+using App.Metrics.DependencyInjection.Internal;
 
 namespace App.Metrics.Internal
 {
     internal static class MetricsServicesHelper
     {
         /// <summary>
-        /// Throws InvalidOperationException when MetricsMarkerService is not present
-        /// in the list of services.
+        ///     Throws InvalidOperationException when MetricsMarkerService is not present
+        ///     in the list of services.
         /// </summary>
         /// <param name="services">The list of services.</param>
         public static void ThrowIfMetricsNotRegistered(IServiceProvider services)

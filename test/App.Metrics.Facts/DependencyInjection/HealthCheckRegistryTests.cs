@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using App.Metrics.Core;
-using App.Metrics.DependencyInjection;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -17,10 +16,7 @@ namespace App.Metrics.Facts.DependencyInjection
             services.AddSingleton<IDatabase, Database>();
             services.AddMetrics()
                 .AddHealthChecks(
-                    factory =>
-                    {
-                        factory.Register("DatabaseConnected", () => Task.FromResult("Database Connection OK"));
-                    });
+                    factory => { factory.Register("DatabaseConnected", () => Task.FromResult("Database Connection OK")); });
             var provider = services.BuildServiceProvider();
             var metricsContext = provider.GetRequiredService<IMetrics>();
 
@@ -56,7 +52,7 @@ namespace App.Metrics.Facts.DependencyInjection
                 .AddHealthChecks(factory =>
                 {
                     factory.Register("DatabaseConnected",
-                            () => Task.FromResult(HealthCheckResult.Unhealthy("Failed")));
+                        () => Task.FromResult(HealthCheckResult.Unhealthy("Failed")));
                 });
             var provider = services.BuildServiceProvider();
             var metricsContext = provider.GetRequiredService<IMetrics>();

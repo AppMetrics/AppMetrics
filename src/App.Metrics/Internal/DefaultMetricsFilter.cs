@@ -23,6 +23,10 @@ namespace App.Metrics.Internal
             ReportEnvironment = true;
         }
 
+        public bool ReportEnvironment { get; private set; }
+
+        public bool ReportHealthChecks { get; private set; }
+
         public bool IsMatch(string context)
         {
             return _context == null || _context(context);
@@ -77,22 +81,6 @@ namespace App.Metrics.Internal
             return IsMetricNameMatch(timer.Name) && IsTagMatch(timer.Tags);
         }
 
-        public bool ReportEnvironment { get; private set; }
-
-        public bool ReportHealthChecks { get; private set; }
-
-        public DefaultMetricsFilter WithHealthChecks(bool report)
-        {
-            ReportHealthChecks = report;
-            return this;
-        }
-
-        public DefaultMetricsFilter WithEnvironmentInfo(bool report)
-        {
-            ReportEnvironment = report;
-            return this;
-        }
-
         public DefaultMetricsFilter WhereContext(Predicate<string> condition)
         {
             _context = condition;
@@ -110,20 +98,32 @@ namespace App.Metrics.Internal
             return this;
         }
 
+        public DefaultMetricsFilter WhereMetricNameStartsWith(string name)
+        {
+            return WhereMetricName(n => n.StartsWith(name, StringComparison.OrdinalIgnoreCase));
+        }
+
         public DefaultMetricsFilter WhereMetricTaggedWith(params string[] tagKeys)
         {
             _tagKeys = new HashSet<string>(tagKeys);
             return this;
         }
 
-        public DefaultMetricsFilter WhereMetricNameStartsWith(string name)
-        {
-            return WhereMetricName(n => n.StartsWith(name, StringComparison.OrdinalIgnoreCase));
-        }
-
         public DefaultMetricsFilter WhereType(params MetricType[] types)
         {
             _types = new HashSet<MetricType>(types);
+            return this;
+        }
+
+        public DefaultMetricsFilter WithEnvironmentInfo(bool report)
+        {
+            ReportEnvironment = report;
+            return this;
+        }
+
+        public DefaultMetricsFilter WithHealthChecks(bool report)
+        {
+            ReportHealthChecks = report;
             return this;
         }
 

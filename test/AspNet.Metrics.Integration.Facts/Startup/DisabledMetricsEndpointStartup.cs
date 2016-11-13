@@ -1,5 +1,5 @@
 ﻿using App.Metrics;
-using App.Metrics.Utils;
+using App.Metrics.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,9 +18,8 @@ namespace AspNet.Metrics.Integration.Facts.Startup
         {
             var appMetricsOptions = new AppMetricsOptions
             {
-                Clock = new Clock.TestClock(),
                 DefaultSamplingType = SamplingType.LongTerm,
-                DisableMetrics = false
+                MetricsEnabled = true
             };
 
             var aspNetMetricsOptions = new AspNetMetricsOptions

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 // ReSharper disable CheckNamespace
+
 namespace App.Metrics
 // ReSharper restore CheckNamespace
 {

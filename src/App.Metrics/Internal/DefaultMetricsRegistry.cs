@@ -6,6 +6,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Metrics.Configuration;
 using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.Infrastructure;
@@ -17,26 +18,27 @@ namespace App.Metrics.Internal
     internal sealed class DefaultMetricsRegistry : IMetricsRegistry
     {
         private readonly IClock _clock;
+
+        private readonly ConcurrentDictionary<string, IMetricContextRegistry> _contexts = new ConcurrentDictionary<string, IMetricContextRegistry>();
         private readonly string _defaultContextLabel;
         private readonly SamplingType _defaultSamplingType;
         private readonly EnvironmentInfoBuilder _environmentInfoBuilder;
-
-        private readonly ConcurrentDictionary<string, IMetricContextRegistry> _contexts = new ConcurrentDictionary<string, IMetricContextRegistry>();
         private readonly ILogger _logger;
         private readonly Func<string, IMetricContextRegistry> _newContextRegistry;
 
         public DefaultMetricsRegistry(
             ILoggerFactory loggerFactory,
             AppMetricsOptions options,
+            IClock clock,
             EnvironmentInfoBuilder environmentInfoBuilder,
             Func<string, IMetricContextRegistry> newContextRegistry)
         {
             _logger = loggerFactory.CreateLogger<DefaultMetricContextRegistry>();
             _environmentInfoBuilder = environmentInfoBuilder;
+            _clock = clock;
             _newContextRegistry = newContextRegistry;
             _defaultContextLabel = options.DefaultContextLabel;
             _defaultSamplingType = options.DefaultSamplingType;
-            _clock = options.Clock;
             _contexts.TryAdd(_defaultContextLabel, newContextRegistry(_defaultContextLabel));
         }
 

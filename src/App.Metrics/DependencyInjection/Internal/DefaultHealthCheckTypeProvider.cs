@@ -9,7 +9,7 @@ using System.Reflection;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 
-namespace App.Metrics.DependencyInjection
+namespace App.Metrics.DependencyInjection.Internal
 {
     internal sealed class DefaultHealthCheckTypeProvider : IHealthCheckTypeProvider
     {

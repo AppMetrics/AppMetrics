@@ -4,13 +4,13 @@
 
 using System;
 
-namespace App.Metrics.Internal
+namespace App.Metrics.DependencyInjection.Internal
 {
     internal static class HealthServicesHelper
     {
         /// <summary>
-        /// Throws InvalidOperationException when MetricsMarkerService is not present
-        /// in the list of services.
+        ///     Throws InvalidOperationException when MetricsMarkerService is not present
+        ///     in the list of services.
         /// </summary>
         /// <param name="services">The list of services.</param>
         public static void ThrowIfMetricsNotRegistered(IServiceProvider services)

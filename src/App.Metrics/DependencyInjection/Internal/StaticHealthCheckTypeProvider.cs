@@ -8,12 +8,12 @@ using System.Linq;
 using System.Reflection;
 using App.Metrics.Internal;
 
-namespace App.Metrics.DependencyInjection
+namespace App.Metrics.DependencyInjection.Internal
 {
     public sealed class StaticHealthCheckTypeProvider : IHealthCheckTypeProvider
     {
         /// <summary>
-        /// Initializes a new instance of <see cref="StaticHealthCheckTypeProvider"/>.
+        ///     Initializes a new instance of <see cref="StaticHealthCheckTypeProvider" />.
         /// </summary>
         public StaticHealthCheckTypeProvider()
             : this(Enumerable.Empty<TypeInfo>())
@@ -21,9 +21,9 @@ namespace App.Metrics.DependencyInjection
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="StaticHealthCheckTypeProvider"/>.
+        ///     Initializes a new instance of <see cref="StaticHealthCheckTypeProvider" />.
         /// </summary>
-        /// <param name="controllerTypes">The sequence of controller <see cref="TypeInfo"/>.</param>
+        /// <param name="controllerTypes">The sequence of controller <see cref="TypeInfo" />.</param>
         public StaticHealthCheckTypeProvider(IEnumerable<TypeInfo> controllerTypes)
         {
             if (controllerTypes == null)
@@ -35,7 +35,7 @@ namespace App.Metrics.DependencyInjection
         }
 
         /// <summary>
-        /// Gets the list of controller <see cref="TypeInfo"/>s.
+        ///     Gets the list of controller <see cref="TypeInfo" />s.
         /// </summary>
         public IList<TypeInfo> HealthCheckTypes { get; }
 

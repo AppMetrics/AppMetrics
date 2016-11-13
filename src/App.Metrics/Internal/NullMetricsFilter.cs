@@ -8,6 +8,10 @@ namespace App.Metrics.Internal
 {
     internal sealed class NullMetricsFilter : IMetricsFilter
     {
+        public bool ReportEnvironment => true;
+
+        public bool ReportHealthChecks => true;
+
         public bool IsMatch(string context)
         {
             return true;
@@ -37,9 +41,5 @@ namespace App.Metrics.Internal
         {
             return true;
         }
-
-        public bool ReportEnvironment => true;
-
-        public bool ReportHealthChecks => true;
     }
 }

@@ -4,6 +4,7 @@
 
 using System;
 using App.Metrics;
+using Microsoft.Extensions.PlatformAbstractions;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
@@ -11,14 +12,12 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     internal class MetricsHostBuilder : IMetricsHostBuilder
     {
-        internal MetricsHostBuilder(IServiceCollection services, IMetricsEnvironment environment)
+        internal MetricsHostBuilder(IServiceCollection services)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            if (environment == null) throw new ArgumentNullException(nameof(environment));
-
             Services = services;
-            Environment = environment;
+            Environment = new MetricsAppEnvironment(PlatformServices.Default.Application);
         }
 
         public IMetricsEnvironment Environment { get; }

@@ -3,6 +3,7 @@
 
 
 using System;
+using App.Metrics.Configuration;
 using App.Metrics.Internal;
 
 namespace App.Metrics.Core

@@ -10,9 +10,9 @@ namespace App.Metrics.Internal
 {
     internal interface IMetricContextRegistry
     {
-        IMetricRegistryManager DataProvider { get; }
-
         string Context { get; }
+
+        IMetricRegistryManager DataProvider { get; }
 
         void ClearAllMetrics();
 

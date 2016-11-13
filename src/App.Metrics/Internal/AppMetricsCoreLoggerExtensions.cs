@@ -6,10 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using App.Metrics;
 using App.Metrics.Core;
 
 // ReSharper disable CheckNamespace
+
 namespace Microsoft.Extensions.Logging
 // ReSharper restore CheckNamespace
 {
@@ -94,6 +94,8 @@ namespace Microsoft.Extensions.Logging
 
         internal static class AppMetricsEventIds
         {
+            private const int MetricsStart = 9999;
+
             public static class HealthChecks
             {
                 public const int Registration = MetricsStart + 3;
@@ -109,8 +111,6 @@ namespace Microsoft.Extensions.Logging
             {
                 public const int Schedule = MetricsStart + 2;
             }
-
-            private const int MetricsStart = 9999;
         }
 
 

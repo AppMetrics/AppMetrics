@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using App.Metrics.Configuration;
 using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.Infrastructure;
@@ -15,11 +16,12 @@ namespace App.Metrics.Reporting.Facts.Fixtures
 
         public MetricsFixture()
         {
-            var options = new AppMetricsOptions {Clock = new Clock.TestClock(), DefaultSamplingType = SamplingType.LongTerm};
+            var options = new AppMetricsOptions {DefaultSamplingType = SamplingType.LongTerm};
+            var clock = new TestClock();
             Func<string, IMetricContextRegistry> newContextRegistry = name => new DefaultMetricContextRegistry(name);
-            var registry = new DefaultMetricsRegistry(_loggerFactory, options, new EnvironmentInfoBuilder(_loggerFactory), newContextRegistry);
+            var registry = new DefaultMetricsRegistry(_loggerFactory, options, clock, new EnvironmentInfoBuilder(_loggerFactory), newContextRegistry);
             var healthCheckFactory = new HealthCheckFactory();
-            var advancedContext = new DefaultAdvancedMetrics(options, new DefaultMetricsFilter(), registry, healthCheckFactory);
+            var advancedContext = new DefaultAdvancedMetrics(options, clock, new DefaultMetricsFilter(), registry, healthCheckFactory);
             Metrics = new DefaultMetrics(options, registry, advancedContext);
             
             RecordSomeMetrics();

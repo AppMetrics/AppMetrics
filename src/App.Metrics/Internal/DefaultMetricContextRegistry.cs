@@ -45,9 +45,9 @@ namespace App.Metrics.Internal
                 () => _timers.All);
         }
 
-        public IMetricRegistryManager DataProvider { get; }
-
         public string Context { get; }
+
+        public IMetricRegistryManager DataProvider { get; }
 
         public void ClearAllMetrics()
         {

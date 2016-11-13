@@ -7,7 +7,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using App.Metrics.Core;
-using App.Metrics.DependencyInjection;
 
 namespace App.Metrics.Internal
 {

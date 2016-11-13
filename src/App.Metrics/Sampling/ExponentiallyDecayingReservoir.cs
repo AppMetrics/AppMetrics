@@ -22,7 +22,7 @@ namespace App.Metrics.Sampling
 
         private readonly double _alpha;
 
-        private readonly Clock _clock;
+        private readonly IClock _clock;
 
         private readonly IScheduler _rescaleScheduler;
         private readonly int _size;
@@ -40,16 +40,16 @@ namespace App.Metrics.Sampling
         }
 
         public ExponentiallyDecayingReservoir(int size, double alpha)
-            : this(size, alpha, Clock.Default, new DefaultTaskScheduler())
+            : this(size, alpha, new StopwatchClock(), new DefaultTaskScheduler())
         {
         }
 
-        public ExponentiallyDecayingReservoir(Clock clock, IScheduler scheduler)
+        public ExponentiallyDecayingReservoir(IClock clock, IScheduler scheduler)
             : this(DefaultSize, DefaultAlpha, clock, scheduler)
         {
         }
 
-        public ExponentiallyDecayingReservoir(int size, double alpha, Clock clock, IScheduler scheduler)
+        public ExponentiallyDecayingReservoir(int size, double alpha, IClock clock, IScheduler scheduler)
         {
             _size = size;
             _alpha = alpha;

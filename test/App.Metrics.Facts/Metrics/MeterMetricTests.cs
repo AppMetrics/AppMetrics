@@ -8,7 +8,7 @@ namespace App.Metrics.Facts.Metrics
 {
     public class MeterMetricTests
     {
-        private readonly Clock.TestClock _clock = new Clock.TestClock();
+        private readonly IClock _clock = new TestClock();
         private readonly MeterMetric _meter;
 
         public MeterMetricTests()

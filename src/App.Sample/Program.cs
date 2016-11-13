@@ -81,7 +81,8 @@ namespace App.Sample
         {
             services
                 .AddMetrics(options =>
-                {                    
+                {
+                    options.ReportingEnabled = true;
                 })
                 .AddHealthChecks(factory =>
                 {
@@ -95,11 +96,9 @@ namespace App.Sample
                             : HealthCheckResult.Unhealthy("Disk space ok: {0}", freeDiskSpace));
                     });
                 })
-                .AddReporting((options, factory) =>
+                .AddReporting(factory =>
                 {
                     var globalTags = new MetricTags().With("env", "stage");
-
-                    options.IsEnabled = false;
 
                     var filter = new DefaultMetricsFilter()
                         .WhereType(MetricType.Counter)

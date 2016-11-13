@@ -65,7 +65,7 @@ namespace Mvc.Sample
             services
                 .AddMetrics(options =>
                 {
-                    options.DisableMetrics = false;
+                    options.MetricsEnabled = true;
                     options.DefaultContextLabel = "Mvc.Sample";
                 })
                 .AddHealthChecks()

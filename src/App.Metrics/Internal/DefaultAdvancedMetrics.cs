@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using App.Metrics.Configuration;
 using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.Utils;
@@ -19,14 +20,15 @@ namespace App.Metrics.Internal
 
         public DefaultAdvancedMetrics(
             AppMetricsOptions options,
+            IClock clock,
             IMetricsFilter globalFilter,
             IMetricsRegistry registry,
             IHealthCheckFactory healthCheckFactory)
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
 
-            Clock = options.Clock;
             GlobalFilter = globalFilter ?? new DefaultMetricsFilter();
+            Clock = clock;
 
             _registry = registry;
             _healthCheckFactory = healthCheckFactory;

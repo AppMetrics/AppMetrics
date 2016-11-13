@@ -3,8 +3,8 @@
 
 
 using System;
-using App.Metrics;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+using App.Metrics.Configuration;
+using Microsoft.Extensions.Configuration;
 
 // ReSharper disable CheckNamespace
 
@@ -15,30 +15,30 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IMetricsHostBuilder AddMetrics(this IServiceCollection services)
         {
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
+            var builder = services.AddMetricsHostBuilder();
 
-            return services.AddMetrics(options => { }, default(IMetrics));
+            builder.AddRequiredPlatformServices();
+
+            builder.AddCoreServices();
+
+            return new MetricsHostBuilder(services);
         }
 
-        public static IMetricsHostBuilder AddMetrics(this IServiceCollection services,
-            Action<AppMetricsOptions> setupAction, IMetrics metrics)
+        public static IMetricsHostBuilder AddMetrics(this IServiceCollection services, IConfiguration configuration)
         {
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-
-            var builder = services.AddMetricsCore(setupAction, metrics);
-
-            return builder;
+            services.Configure<AppMetricsOptions>(configuration);
+            return services.AddMetrics();
         }
 
         public static IMetricsHostBuilder AddMetrics(this IServiceCollection services, Action<AppMetricsOptions> setupAction)
         {
-            return services.AddMetrics(setupAction, default(IMetrics));
+            services.Configure(setupAction);
+            return services.AddMetrics();
+        }
+
+        internal static IMetricsHostBuilder AddMetricsHostBuilder(this IServiceCollection services)
+        {
+            return new MetricsHostBuilder(services);
         }
     }
 }

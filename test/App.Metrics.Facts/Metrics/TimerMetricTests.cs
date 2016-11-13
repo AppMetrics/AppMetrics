@@ -10,7 +10,7 @@ namespace App.Metrics.Facts.Metrics
 {
     public class TimerMetricTests
     {
-        private readonly Clock.TestClock _clock = new Clock.TestClock();
+        private readonly IClock _clock = new TestClock();
         private readonly TimerMetric _timer;
 
         public TimerMetricTests()

@@ -10,7 +10,7 @@ namespace App.Metrics.Facts.Sampling
 {
     public class ExponentiallyDecayingReservoirTests
     {
-        private readonly Clock.TestClock _clock = new Clock.TestClock();
+        private readonly IClock _clock = new TestClock();
         private readonly IScheduler _scheduler;
 
         public ExponentiallyDecayingReservoirTests()

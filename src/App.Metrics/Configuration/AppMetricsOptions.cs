@@ -1,10 +1,7 @@
 // Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-using App.Metrics.Utils;
-
-namespace App.Metrics
+namespace App.Metrics.Configuration
 {
     public class AppMetricsOptions
     {
@@ -13,17 +10,17 @@ namespace App.Metrics
         public AppMetricsOptions()
         {
             DefaultContextLabel = DefaultContext;
-            DisableMetrics = false;
+            MetricsEnabled = true;
+            ReportingEnabled = true;
             DefaultSamplingType = SamplingType.ExponentiallyDecaying;
-            Clock = Utils.Clock.Default;
         }
-
-        public IClock Clock { get; set; } //TODO: AH - remove clock elsewhere
 
         public string DefaultContextLabel { get; set; }
 
         public SamplingType DefaultSamplingType { get; set; }
 
-        public bool DisableMetrics { get; set; }
+        public bool MetricsEnabled { get; set; }
+
+        public bool ReportingEnabled { get; set; }
     }
 }
