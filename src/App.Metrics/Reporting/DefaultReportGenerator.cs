@@ -9,7 +9,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.Infrastructure;
-using App.Metrics.Internal;
 
 namespace App.Metrics.Reporting
 {
@@ -23,8 +22,8 @@ namespace App.Metrics.Reporting
             return Generate(reporter, metrics, metrics.Advanced.GlobalFilter, globalTags, token);
         }
 
-        public async Task Generate(IMetricReporter reporter, 
-            IMetrics metrics, 
+        public async Task Generate(IMetricReporter reporter,
+            IMetrics metrics,
             IMetricsFilter reporterMetricsFilter,
             MetricTags globalTags,
             CancellationToken token)
@@ -45,7 +44,7 @@ namespace App.Metrics.Reporting
                 reporter.ReportEnvironment(data.Environment);
 
                 reporter.EndMetricTypeReport(typeof(EnvironmentInfo));
-            }            
+            }
 
             foreach (var contextValueSource in data.Contexts)
             {

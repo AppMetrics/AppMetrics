@@ -70,7 +70,7 @@ namespace App.Sample
 
                 }, cancellationTokenSource.Token);
 
-            application.Reporter.RunReports(application.Metrics, cancellationTokenSource.Token);
+            application.Reporter.RunReportsAsync(application.Metrics, cancellationTokenSource.Token);
 
             Console.WriteLine("Setup Complete, waiting for report run...");
 

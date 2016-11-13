@@ -6,7 +6,7 @@ namespace App.Metrics.Reporting
 {
     internal sealed class NullReporter : IReporter
     {
-        public Task RunReports(IMetrics context, CancellationToken token)
+        public Task RunReportsAsync(IMetrics context, CancellationToken token)
         {
             return AppMetricsTaskCache.EmptyTask;
         }

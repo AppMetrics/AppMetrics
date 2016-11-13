@@ -62,7 +62,7 @@ namespace Api.Sample
             var reportFactory = app.ApplicationServices.GetRequiredService<IReportFactory>();
             var metrics = app.ApplicationServices.GetRequiredService<IMetrics>();
             var reporter = reportFactory.CreateReporter();
-            reporter.RunReports(metrics, CancellationToken.None);
+            reporter.RunReportsAsync(metrics, CancellationToken.None);
 
             app.UseMvc();
         }

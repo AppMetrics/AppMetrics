@@ -18,10 +18,10 @@ namespace App.Metrics.Reporting
         private readonly DefaultReportGenerator _reportGenerator;
         private readonly IScheduler _scheduler;
 
-        public Reporter(ReportFactory reportFactory)
+        public Reporter(ReportFactory reportFactory, IScheduler scheduler)
         {
             _reportGenerator = new DefaultReportGenerator();
-            _scheduler = new DefaultTaskScheduler();
+            _scheduler = scheduler;
 
             _providers = reportFactory.GetProviders();
 
@@ -35,7 +35,7 @@ namespace App.Metrics.Reporting
             }
         }
 
-        public async Task RunReports(IMetrics context, CancellationToken token)
+        public async Task RunReportsAsync(IMetrics context, CancellationToken token)
         {
             if (_metricReporters == null)
             {

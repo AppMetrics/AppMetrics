@@ -13,7 +13,6 @@ namespace App.Metrics.Reporting
 {
     public interface IMetricReporter : IHideObjectMembers, IDisposable
     {
-        //TODO: AH - should report interval live here?
         TimeSpan ReportInterval { get; }
 
         void EndMetricTypeReport(Type metricType);

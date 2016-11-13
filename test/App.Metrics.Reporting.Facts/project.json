@@ -14,7 +14,8 @@
     "xunit.runner.visualstudio": "2.2.0-beta2-build1149",
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
     "FluentAssertions": "4.14.0",
-    "xunit": "2.2.0-beta2-build3300"
+    "xunit": "2.2.0-beta2-build3300",
+    "Moq": "4.6.36-*"
   },
 
   "frameworks": {

@@ -9,6 +9,6 @@ namespace App.Metrics.Reporting
 {
     public interface IReporter
     {
-        Task RunReports(IMetrics context, CancellationToken token);
+        Task RunReportsAsync(IMetrics context, CancellationToken token);
     }
 }

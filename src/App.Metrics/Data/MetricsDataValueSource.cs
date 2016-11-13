@@ -33,7 +33,7 @@ namespace App.Metrics.Data
         public MetricsDataValueSource Filter(IMetricsFilter filter)
         {
             var contexts = Contexts.FilterBy(filter).WhereNotEmpty();
-            var environment = filter.ReportEnvironment ? EnvironmentInfo.Empty : Environment;
+            var environment = filter.ReportEnvironment ? Environment : EnvironmentInfo.Empty;
 
             return new MetricsDataValueSource(Timestamp, environment, contexts);
         }

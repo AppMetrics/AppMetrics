@@ -31,3 +31,4 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("App.Metrics.Formatters.Json")]
 [assembly: InternalsVisibleTo("App.Metrics.Facts")]
 [assembly: InternalsVisibleTo("AspNet.Metrics.Integration.Facts")]
+[assembly: InternalsVisibleTo("App.Metrics.Reporting.Facts")]
