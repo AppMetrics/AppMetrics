@@ -13,6 +13,7 @@ using App.Metrics.Internal;
 using App.Metrics.Reporting;
 using App.Metrics.Utils;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
@@ -52,7 +53,9 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.TryAddTransient<IHealthCheckFactory>(provider =>
             {
                 var autoScannedHealthChecks = provider.GetRequiredService<IEnumerable<HealthCheck>>();
-                var factory = new HealthCheckFactory(autoScannedHealthChecks);
+                var logFactory = provider.GetRequiredService<ILoggerFactory>();
+                var logger = logFactory.CreateLogger<HealthCheckFactory>();
+                var factory = new HealthCheckFactory(logger, autoScannedHealthChecks);
                 setupAction?.Invoke(factory);
                 return factory;
             });
@@ -66,11 +69,12 @@ namespace Microsoft.Extensions.DependencyInjection
 
             builder.Services.TryAddSingleton<IReportFactory>(provider =>
             {
+                var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
                 var options = provider.GetRequiredService<AppMetricsOptions>();
 
                 if (!options.ReportingEnabled) return new NullReportFactory();
 
-                var factory = new ReportFactory();
+                var factory = new ReportFactory(loggerFactory);
                 setupAction?.Invoke(factory);
                 return factory;
             });

@@ -14,18 +14,19 @@ namespace App.Metrics.Facts.Health
     public class HealthCheckRegistryTests
     {
         private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
-        private readonly HealthCheckFactory _healthCheckFactory = new HealthCheckFactory();
+        private readonly HealthCheckFactory _healthCheckFactory = new HealthCheckFactory(LoggerFactory.CreateLogger<HealthCheckFactory>());
         private readonly Func<IHealthCheckFactory, IMetrics> _metircsSetup;
 
         public HealthCheckRegistryTests()
         {
             _metircsSetup = healthCheckFactory =>
             {
+                var metricsLogger = LoggerFactory.CreateLogger<DefaultAdvancedMetrics>();
                 var clock = new TestClock();
                 var options = new AppMetricsOptions();
                 Func<string, IMetricContextRegistry> newContextRegistry = name => new DefaultMetricContextRegistry(name);
                 var registry = new DefaultMetricsRegistry(LoggerFactory, options, clock, new EnvironmentInfoBuilder(LoggerFactory), newContextRegistry);
-                var advancedContext = new DefaultAdvancedMetrics(options, clock, new DefaultMetricsFilter(), registry, healthCheckFactory);
+                var advancedContext = new DefaultAdvancedMetrics(metricsLogger, options, clock, new DefaultMetricsFilter(), registry, healthCheckFactory);
                 return new DefaultMetrics(options, registry, advancedContext);
             };
         }

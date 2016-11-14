@@ -9,7 +9,6 @@ using System.Linq;
 using App.Metrics.Core;
 
 // ReSharper disable CheckNamespace
-
 namespace Microsoft.Extensions.Logging
 // ReSharper restore CheckNamespace
 {
@@ -77,19 +76,14 @@ namespace Microsoft.Extensions.Logging
             _healthCheckRegistered(logger, name, null);
         }
 
-        public static void HealthChecksUnRegistered(this ILogger logger)
+        public static void GettingMetricsData(this ILogger logger)
         {
-            logger.LogDebug("Health Checks Un-Registered");
+            logger.LogDebug(AppMetricsEventIds.Metrics.Data, "GettingMetricsData");
         }
 
-        public static void MetricsDataGetExecuted(this ILogger logger)
+        public static void RetrievedMetricsData(this ILogger logger)
         {
-            logger.LogDebug(AppMetricsEventIds.Metrics.Data, "Executed GetMetricsData");
-        }
-
-        public static void MetricsDataGetExecuting(this ILogger logger)
-        {
-            logger.LogDebug(AppMetricsEventIds.Metrics.Data, "Executing GetMetricsData");
+            logger.LogDebug(AppMetricsEventIds.Metrics.Data, "RetrievedMetricsData");
         }
 
         internal static class AppMetricsEventIds

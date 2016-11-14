@@ -4,10 +4,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Infrastructure;
 using App.Metrics.Scheduling;
+using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporting
 {
@@ -17,11 +19,20 @@ namespace App.Metrics.Reporting
         private readonly Dictionary<Type, IReporterProvider> _providers;
         private readonly DefaultReportGenerator _reportGenerator;
         private readonly IScheduler _scheduler;
+        private readonly ILoggerFactory _loggerFactory;
+        private readonly ILogger<Reporter> _logger;
 
-        public Reporter(ReportFactory reportFactory, IScheduler scheduler)
+        public Reporter(ReportFactory reportFactory, IScheduler scheduler, ILoggerFactory loggerFactory)
         {
+            if (loggerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(loggerFactory));
+            }
+
             _reportGenerator = new DefaultReportGenerator();
             _scheduler = scheduler;
+            _loggerFactory = loggerFactory;
+            _logger = loggerFactory.CreateLogger<Reporter>();
 
             _providers = reportFactory.GetProviders();
 
@@ -48,11 +59,25 @@ namespace App.Metrics.Reporting
             {
                 try
                 {
+                    var logger = _loggerFactory.CreateLogger(metricReporter.Value.GetType());
+
                     var provider = _providers[metricReporter.Key];
                     var settings = provider.Settings;
+
+                    logger.ReportRunning(metricReporter.Value);
+
                     var task = _scheduler.Interval(metricReporter.Value.ReportInterval, async () =>
-                        await _reportGenerator.Generate(metricReporter.Value, context, provider.Filter,
-                            settings.GlobalTags, token), token);
+                        {
+                            var startTimestamp = _logger.IsEnabled(LogLevel.Information) ? Stopwatch.GetTimestamp() : 0;
+
+                            logger.ReportedStarted(metricReporter.Value);
+
+                            await _reportGenerator.Generate(metricReporter.Value, context, provider.Filter,
+                                settings.GlobalTags, token);
+
+                            logger.ReportRan(metricReporter.Value, startTimestamp);
+                        },
+                        token);
                 }
                 catch (Exception ex)
                 {
@@ -67,9 +92,13 @@ namespace App.Metrics.Reporting
 
             if (exceptions != null && exceptions.Count > 0)
             {
-                throw new AggregateException(
+                var aggregateException = new AggregateException(
                     message: "An error occurred while running reporter(s).",
                     innerExceptions: exceptions);
+
+                _logger.ReportRunFailed(aggregateException);
+
+                throw aggregateException;
             }
             await AppMetricsTaskCache.EmptyTask;
         }

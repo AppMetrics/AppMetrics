@@ -4,10 +4,10 @@
 
 using System;
 using System.Diagnostics;
-using App.Metrics.Internal;
 using App.Metrics.Reporting;
 
 // ReSharper disable CheckNamespace
+
 namespace Microsoft.Extensions.Logging
 // ReSharper restore CheckNamespace
 {
@@ -15,17 +15,11 @@ namespace Microsoft.Extensions.Logging
     {
         static AppMetricsReportingLoggerExtensions()
         {
-            _runReportsExecuted = LoggerMessage.Define<double>(
+            _reportStarted = LoggerMessage.Define<string>(
                 LogLevel.Information,
                 eventId: AppMetricsEventIds.Reports.Schedule,
                 formatString:
-                $"Executed {nameof(IMetricContextRegistry)} RunReports in {{elapsedMilliseconds}}ms");
-
-            _reportStarted = LoggerMessage.Define<string, double>(
-                LogLevel.Information,
-                eventId: AppMetricsEventIds.Reports.Schedule,
-                formatString:
-                $"Report {{reportType}} started in {{elapsedMilliseconds}}ms");
+                $"Report {{reportType}} started");
 
             _reportRan = LoggerMessage.Define<string, double>(
                 LogLevel.Information,
@@ -34,16 +28,11 @@ namespace Microsoft.Extensions.Logging
                 $"Report {{reportType}} ran in {{elapsedMilliseconds}}ms");
         }
 
-        public static void ReportedStarted<TReport>(this ILogger logger, long startTimestamp)
-            where TReport : IMetricReporter
+        public static void ReportedStarted(this ILogger logger, IMetricReporter reporter)
         {
             if (!logger.IsEnabled(LogLevel.Information)) return;
-            if (startTimestamp == 0) return;
 
-            var currentTimestamp = Stopwatch.GetTimestamp();
-            var elapsed = new TimeSpan((long)(TimestampToTicks * (currentTimestamp - startTimestamp)));
-
-            _reportStarted(logger, typeof(TReport).FullName, elapsed.TotalMilliseconds, null);
+            _reportStarted(logger, reporter.GetType().FullName, null);
         }
 
         public static void ReportRan(this ILogger logger, IMetricReporter reporter, long startTimestamp)
@@ -57,32 +46,16 @@ namespace Microsoft.Extensions.Logging
             _reportRan(logger, reporter.GetType().FullName, elapsed.TotalMilliseconds, null);
         }
 
+        public static void ReportRunFailed(this ILogger<Reporter> logger, Exception ex)
+        {
+            logger.LogError(AppMetricsEventIds.Reports.Schedule, ex, "Failed to run reports");
+        }
+
         public static void ReportRunning(this ILogger logger, IMetricReporter reporter)
         {
             logger.LogInformation(AppMetricsEventIds.Reports.Schedule, $"Running {reporter.GetType()}");
         }
 
-        public static void ReportStarting<TReport>(this ILogger logger)
-            where TReport : IMetricReporter
-        {
-            logger.LogInformation(AppMetricsEventIds.Reports.Schedule, $"Starting {typeof(TReport)}");
-        }
-
-        public static void RunReportsExecuted(this ILogger logger, long startTimestamp)
-        {
-            if (!logger.IsEnabled(LogLevel.Information)) return;
-            if (startTimestamp == 0) return;
-
-            var currentTimestamp = Stopwatch.GetTimestamp();
-            var elapsed = new TimeSpan((long)(TimestampToTicks * (currentTimestamp - startTimestamp)));
-
-            _runReportsExecuted(logger, elapsed.TotalMilliseconds, null);
-        }
-
-        public static void RunReportsExecuting(this ILogger logger)
-        {
-            logger.LogInformation(AppMetricsEventIds.Reports.Schedule, "Executing Run Reports");
-        }
 
         internal static class AppMetricsEventIds
         {
@@ -107,8 +80,7 @@ namespace Microsoft.Extensions.Logging
 
 
         // ReSharper disable InconsistentNaming
-        static readonly Action<ILogger, double, Exception> _runReportsExecuted;
-        private static readonly Action<ILogger, string, double, Exception> _reportStarted;
+        private static readonly Action<ILogger, string, Exception> _reportStarted;
         private static readonly Action<ILogger, string, double, Exception> _reportRan;
         private static readonly double TimestampToTicks = TimeSpan.TicksPerSecond / (double)Stopwatch.Frequency;
         // ReSharper restore InconsistentNaming

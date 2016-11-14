@@ -5,14 +5,21 @@
 using System;
 using System.Collections.Generic;
 using App.Metrics.Scheduling;
+using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporting
 {
     public class ReportFactory : IReportFactory
     {
+        private readonly ILoggerFactory _loggerFactory;
         private readonly Dictionary<Type, IReporterProvider> _providers = new Dictionary<Type, IReporterProvider>();
         private readonly object _syncLock = new object();
         private volatile bool _disposed;
+
+        public ReportFactory(ILoggerFactory loggerFactory)
+        {
+            _loggerFactory = loggerFactory;
+        }
 
         public void AddProvider(IReporterProvider provider)
         {
@@ -34,7 +41,7 @@ namespace App.Metrics.Reporting
                 throw new ObjectDisposedException(nameof(ReportFactory));
             }
 
-            return new Reporter(this, scheduler);
+            return new Reporter(this, scheduler, _loggerFactory);
         }
 
         public IReporter CreateReporter()

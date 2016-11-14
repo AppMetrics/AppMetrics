@@ -7,24 +7,30 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using App.Metrics.Core;
+using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Internal
 {
     internal class HealthCheckFactory : IHealthCheckFactory
     {
+        private readonly ILogger<HealthCheckFactory> _logger;
+
         private readonly ConcurrentDictionary<string, HealthCheck> _checks =
             new ConcurrentDictionary<string, HealthCheck>();
 
-        public HealthCheckFactory(IEnumerable<HealthCheck> healthChecks)
+        public HealthCheckFactory(ILogger<HealthCheckFactory> logger, IEnumerable<HealthCheck> healthChecks)
         {
+            _logger = logger;
+
             foreach (var check in healthChecks)
             {
-                _checks.TryAdd(check.Name, check);
+                Register(check);
             }
         }
 
-        public HealthCheckFactory()
+        public HealthCheckFactory(ILogger<HealthCheckFactory> logger)
         {
+            _logger = logger;
         }
 
         public IReadOnlyDictionary<string, HealthCheck> Checks => _checks;
@@ -46,9 +52,10 @@ namespace App.Metrics.Internal
 
         internal void Register(HealthCheck healthCheck)
         {
-            _checks.TryAdd(healthCheck.Name, healthCheck);
-
-            //_logger.HealthCheckRegistered(healthCheck.Name);
+            if (_checks.TryAdd(healthCheck.Name, healthCheck))
+            {
+                _logger.HealthCheckRegistered(healthCheck.Name);
+            }
         }
     }
 }

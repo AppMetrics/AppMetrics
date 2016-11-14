@@ -12,6 +12,8 @@ namespace App.Metrics.Infrastructure
     {
         public static readonly Task EmptyTask = Task.FromResult(0);
 
+        public static readonly Task<string> EmptyStringTask = Task.FromResult(string.Empty);
+
         public static readonly Task<HealthCheckResult> CompletedHealthyTask = Task.FromResult(HealthCheckResult.Healthy());
 
         public static readonly Task<HealthCheckResult> CompletedUnHealthyTask = Task.FromResult(HealthCheckResult.Unhealthy());

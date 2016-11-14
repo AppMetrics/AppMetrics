@@ -99,14 +99,14 @@ namespace App.Metrics.Internal
 
         public async Task<MetricsDataValueSource> GetDataAsync(IMetricsFilter filter)
         {
-            _logger.MetricsDataGetExecuting();
-
-            var environment = await _environmentInfoBuilder.BuildAsync();
+            _logger.RetrievedMetricsData();
 
             if (_contexts.Count == 0)
             {
                 return MetricsDataValueSource.Empty;
             }
+
+            var environment = await _environmentInfoBuilder.BuildAsync();
 
             var contexts = _contexts.Values.Select(g => new MetricsContextValueSource(
                 g.Context,
@@ -119,7 +119,7 @@ namespace App.Metrics.Internal
 
             var data = new MetricsDataValueSource(_clock.UtcDateTime, environment, contexts);
 
-            _logger.MetricsDataGetExecuted();
+            _logger.GettingMetricsData();
 
             return data.Filter(filter);
         }

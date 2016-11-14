@@ -65,16 +65,9 @@ namespace App.Metrics.Extensions.Reporting.TextFile
         {
             _stringReporter.EndReport(metrics);
 
-            try
-            {
-                var file = new FileInfo(_file);
-                file.Directory.Create();
-                File.WriteAllText(_file, _stringReporter.Result);
-            }
-            catch (Exception)
-            {
-                //TODO: AH - log
-            }
+            var file = new FileInfo(_file);
+            file.Directory.Create();
+            File.WriteAllText(_file, _stringReporter.Result);
         }
 
         public void ReportEnvironment(EnvironmentInfo environmentInfo)

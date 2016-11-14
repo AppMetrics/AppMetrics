@@ -16,7 +16,9 @@
     "Microsoft.Extensions.Logging.Debug": "1.0.0",
     "App.Metrics": "1.0.0-*",
     "App.Metrics.Extensions.Reporting.TextFile": "1.0.0-*",
-    "App.Metrics.Formatters.Json": "1.0.0-*"
+    "App.Metrics.Formatters.Json": "1.0.0-*",
+    "Serilog.Extensions.Logging": "1.2.0",
+    "Serilog.Sinks.RollingFile": "2.1.0"
   },
 
     "tools": {

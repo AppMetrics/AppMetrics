@@ -16,12 +16,14 @@ namespace App.Metrics.Facts.Fixtures
 
         public MetricsFixture()
         {
+            var metricsLogger = _loggerFactory.CreateLogger<DefaultAdvancedMetrics>();
+            var healthFactoryLogger = _loggerFactory.CreateLogger<HealthCheckFactory>();
             var clock = new TestClock();
             var options = new AppMetricsOptions {DefaultSamplingType = SamplingType.LongTerm};
             Func<string, IMetricContextRegistry> newContextRegistry = name => new DefaultMetricContextRegistry(name);
             var registry = new DefaultMetricsRegistry(_loggerFactory, options, clock, new EnvironmentInfoBuilder(_loggerFactory), newContextRegistry);
-            var healthCheckFactory = new HealthCheckFactory();
-            var advancedContext = new DefaultAdvancedMetrics(options, clock, new DefaultMetricsFilter(), registry, healthCheckFactory);
+            var healthCheckFactory = new HealthCheckFactory(healthFactoryLogger);
+            var advancedContext = new DefaultAdvancedMetrics(metricsLogger, options, clock, new DefaultMetricsFilter(), registry, healthCheckFactory);
             Metrics = new DefaultMetrics(options, registry, advancedContext);
         }
 

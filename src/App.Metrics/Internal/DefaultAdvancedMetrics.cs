@@ -3,6 +3,7 @@
 
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using App.Metrics.Configuration;
 using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.Utils;
+using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Internal
 {
@@ -17,8 +19,10 @@ namespace App.Metrics.Internal
     {
         private readonly IHealthCheckFactory _healthCheckFactory;
         private IMetricsRegistry _registry;
+        private readonly ILogger<DefaultAdvancedMetrics> _logger;
 
         public DefaultAdvancedMetrics(
+            ILogger<DefaultAdvancedMetrics> logger,
             AppMetricsOptions options,
             IClock clock,
             IMetricsFilter globalFilter,
@@ -30,6 +34,7 @@ namespace App.Metrics.Internal
             GlobalFilter = globalFilter ?? new DefaultMetricsFilter();
             Clock = clock;
 
+            _logger = logger;
             _registry = registry;
             _healthCheckFactory = healthCheckFactory;
         }
@@ -120,16 +125,16 @@ namespace App.Metrics.Internal
 
         public async Task<HealthStatus> ReadStatusAsync()
         {
-            //var startTimestamp = _logger.IsEnabled(LogLevel.Information) ? Stopwatch.GetTimestamp() : 0;
+            var startTimestamp = _logger.IsEnabled(LogLevel.Information) ? Stopwatch.GetTimestamp() : 0;
 
-            //_logger.HealthCheckGetStatusExecuting();
+            _logger.HealthCheckGetStatusExecuting();
 
             var results = await Task.WhenAll(_healthCheckFactory.Checks.Values.OrderBy(v => v.Name)
                 .Select(v => v.ExecuteAsync()));
 
             var healthStatus = new HealthStatus(results);
 
-            //_logger.HealthCheckGetStatusExecuted(healthStatus, startTimestamp);
+            _logger.HealthCheckGetStatusExecuted(healthStatus, startTimestamp);
 
             return healthStatus;
         }
