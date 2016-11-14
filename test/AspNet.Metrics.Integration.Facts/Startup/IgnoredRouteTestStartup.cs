@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AspNet.Metrics.Integration.Facts.Startup
 {
-    public class DisabledMetricsTestStartup : TestStartup
+    public class IgnoredRouteTestStartup : TestStartup
     {
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
@@ -20,7 +20,7 @@ namespace AspNet.Metrics.Integration.Facts.Startup
             var appMetricsOptions = new AppMetricsOptions
             {
                 DefaultContextLabel = "testing",
-                MetricsEnabled = false,
+                MetricsEnabled = true,
                 DefaultSamplingType = SamplingType.LongTerm
             };
 
@@ -29,8 +29,10 @@ namespace AspNet.Metrics.Integration.Facts.Startup
                 MetricsTextEndpointEnabled = true,
                 HealthEndpointEnabled = true,
                 MetricsEndpointEnabled = true,
-                PingEndpointEnabled = true
+                PingEndpointEnabled = true                
             };
+
+            aspNetMetricsOptions.IgnoredRoutesRegexPatterns.Add("(?i)^api/test/ignore");
 
             SetupServices(services, appMetricsOptions, aspNetMetricsOptions);
         }

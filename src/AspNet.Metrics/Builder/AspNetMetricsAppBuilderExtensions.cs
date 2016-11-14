@@ -7,13 +7,13 @@ using App.Metrics.Configuration;
 using App.Metrics.DependencyInjection.Internal;
 using App.Metrics.Internal;
 using AspNet.Metrics;
+using AspNet.Metrics.Configuration;
 using AspNet.Metrics.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 // ReSharper disable CheckNamespace
-
 namespace Microsoft.AspNet.Builder
 // ReSharper restore CheckNamespace
 {
@@ -30,8 +30,8 @@ namespace Microsoft.AspNet.Builder
             // We use the MetricsMarkerService to make sure if all the services were added.
             MetricsServicesHelper.ThrowIfMetricsNotRegistered(app.ApplicationServices);
 
-            var appMetricsOptions = app.ApplicationServices.GetRequiredService<IOptions<AppMetricsOptions>>().Value;
-            var aspNetMetricsOptions = app.ApplicationServices.GetRequiredService<IOptions<AspNetMetricsOptions>>().Value;
+            var appMetricsOptions = app.ApplicationServices.GetRequiredService<AppMetricsOptions>();
+            var aspNetMetricsOptions = app.ApplicationServices.GetRequiredService<AspNetMetricsOptions>();
 
             app.UseMiddleware<PingEndpointMiddleware>();
 

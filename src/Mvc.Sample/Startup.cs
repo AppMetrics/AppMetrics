@@ -1,4 +1,5 @@
 ﻿using App.Metrics.DependencyInjection;
+using App.Metrics.Formatters.Json;
 using HealthCheck.Samples;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
@@ -65,16 +66,11 @@ namespace Mvc.Sample
             services
                 .AddMetrics(options =>
                 {
-                    options.MetricsEnabled = true;
                     options.DefaultContextLabel = "Mvc.Sample";
                 })
+                .AddJsonSerialization()
                 .AddHealthChecks()
-                .AddAspNetMetrics(options =>
-                {
-                    options.HealthEndpointEnabled = false;           
-                    options.MetricsEndpoint = new PathString("/metrics");                    
-                    //.WithSystemPerforrmanceCounters()
-                });
+                .AddAspNetMetrics(Configuration.GetSection("AspNetMetrics"));
         }
     }
 }

@@ -6,6 +6,7 @@ using System;
 using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Serialization;
+using AspNet.Metrics.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -40,7 +41,7 @@ namespace AspNet.Metrics.Middleware
 
         public async Task Invoke(HttpContext context)
         {
-            if (Options.MetricsEndpointEnabled && Options.MetricsEndpoint.HasValue && Options.MetricsEndpoint == context.Request.Path)
+            if (Options.MetricsEndpointEnabled && Options.MetricsEndpoint.IsPresent() && Options.MetricsEndpoint == context.Request.Path)
             {
                 Logger.MiddlewareExecuting(GetType());
 

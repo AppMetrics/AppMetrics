@@ -3,10 +3,13 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using App.Metrics;
+using AspNet.Metrics.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -14,6 +17,10 @@ namespace AspNet.Metrics.Middleware
 {
     public abstract class AppMetricsMiddleware<TOptions> where TOptions : AspNetMetricsOptions, new()
     {
+        private static IReadOnlyList<Regex> _ignoredRoutes;
+
+        private static Func<PathString, bool> _shouldRecordMetric;
+
         protected AppMetricsMiddleware(RequestDelegate next,
             TOptions aspNetOptions,
             ILoggerFactory loggerFactory,
@@ -44,6 +51,19 @@ namespace AspNet.Metrics.Middleware
             Metrics = metrics;
 
             Next = next;
+
+            _ignoredRoutes = Options.IgnoredRoutesRegexPatterns
+                .Select(p => new Regex(p, RegexOptions.Compiled | RegexOptions.IgnoreCase)).ToList();
+
+            if (_ignoredRoutes.Any())
+            {
+                _shouldRecordMetric = path => !_ignoredRoutes.Any(ignorePattern => ignorePattern.IsMatch(path.ToString()
+                    .RemoveLeadingSlash()));
+            }
+            else
+            {
+                _shouldRecordMetric = path => true;
+            }
         }
 
         public ILogger Logger { get; set; }
@@ -56,7 +76,7 @@ namespace AspNet.Metrics.Middleware
 
         protected bool PerformMetric(HttpContext context)
         {
-            if (Options.IgnoredRequestPatterns == null)
+            if (Options.IgnoredRoutesRegexPatterns == null)
             {
                 return true;
             }
@@ -66,7 +86,7 @@ namespace AspNet.Metrics.Middleware
                 return false;
             }
 
-            return !Options.IgnoredRequestPatterns.Any(ignorePattern => ignorePattern.IsMatch(context.Request.Path.ToString().TrimStart('/')));
+            return _shouldRecordMetric(context.Request.Path);
         }
 
         protected Task WriteResponseAsync(HttpContext context, string content, string contentType,

@@ -2,12 +2,14 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using App.Metrics.Formatters.Json;
 using App.Metrics.Serialization;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json;
 
-namespace App.Metrics.Formatters.Json
+// ReSharper disable CheckNamespace
+namespace Microsoft.Extensions.DependencyInjection
+// ReSharper restore CheckNamespace
 {
     public static class MetricsHostExtensions
     {

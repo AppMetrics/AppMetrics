@@ -3,10 +3,8 @@
 
 
 using System;
-using AspNet.Metrics;
-using AspNet.Metrics.Internal;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Options;
+using AspNet.Metrics.Configuration;
+using Microsoft.Extensions.Configuration;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
@@ -14,44 +12,24 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class AspNetMetricsCoreBuilderExtensions
     {
-        public static IMetricsHostBuilder AddAspNetMetrics(
-            this IMetricsHostBuilder host)
+        public static IMetricsHostBuilder AddAspNetMetrics(this IMetricsHostBuilder builder)
         {
-            host.AddAspNetMetrics(setupAction: null);
-            return host;
+            builder.AddRequiredAspNetPlatformServices();
+            builder.AddAspNetCoreServices();
+
+            return builder;
         }
 
-        public static IMetricsHostBuilder AddAspNetMetrics(
-            this IMetricsHostBuilder host,
-            Action<AspNetMetricsOptions> setupAction)
+        public static IMetricsHostBuilder AddAspNetMetrics(this IMetricsHostBuilder builder, IConfiguration configuration)
         {
-            if (host == null) throw new ArgumentNullException(nameof(host));
-
-            ConfigureDefaultServices(host.Services);
-
-            AddAspNetMetricsCoreServices(host.Services);
-
-            if (setupAction != null)
-            {
-                host.Services.Configure(setupAction);
-            }
-
-            return host;
+            builder.Services.Configure<AspNetMetricsOptions>(configuration);
+            return builder.AddAspNetMetrics();
         }
 
-        internal static void AddAspNetMetricsCoreServices(IServiceCollection services)
+        public static IMetricsHostBuilder AddAspNetMetrics(this IMetricsHostBuilder builder, Action<AspNetMetricsOptions> setupAction)
         {
-            services.TryAddSingleton<AspNetMetricsMarkerService, AspNetMetricsMarkerService>();
-            services.TryAddSingleton(provider => provider.GetRequiredService<IOptions<AspNetMetricsOptions>>().Value);
-
-            //TODO: AH - remove this or add setup config here?
-            //services.TryAddEnumerable(
-            //    ServiceDescriptor.Transient<IConfigureOptions<AspNetMetricsOptions>, AspNetMetricsOptionsSetup>());
-        }
-
-        private static void ConfigureDefaultServices(IServiceCollection services)
-        {
-            services.AddRouting();
+            builder.Services.Configure(setupAction);
+            return builder.AddAspNetMetrics();
         }
     }
 }

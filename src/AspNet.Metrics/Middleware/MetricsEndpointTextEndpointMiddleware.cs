@@ -2,9 +2,11 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using System;
 using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Reporting;
+using AspNet.Metrics.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -27,7 +29,7 @@ namespace AspNet.Metrics.Middleware
 
         public async Task Invoke(HttpContext context)
         {
-            if (Options.MetricsTextEndpointEnabled && Options.MetricsTextEndpoint.HasValue && Options.MetricsTextEndpoint == context.Request.Path)
+            if (Options.MetricsTextEndpointEnabled && Options.MetricsTextEndpoint.IsPresent() && Options.MetricsTextEndpoint == context.Request.Path)
             {
                 Logger.MiddlewareExecuting(GetType());
 

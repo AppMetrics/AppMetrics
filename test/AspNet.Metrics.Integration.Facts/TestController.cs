@@ -26,6 +26,12 @@ namespace AspNet.Metrics.Integration.Facts
             return new[] { "value1", "value2" };
         }
 
+        [HttpGet("ignore")]
+        public IEnumerable<string> Ignore()
+        {
+            return new[] { "value1", "value2" };
+        }
+
         [HttpGet("{id}")]
         public string Get(int id)
         {

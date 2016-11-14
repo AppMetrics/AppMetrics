@@ -2,8 +2,10 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using System;
 using System.Threading.Tasks;
 using App.Metrics;
+using AspNet.Metrics.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -21,7 +23,7 @@ namespace AspNet.Metrics.Middleware
 
         public async Task Invoke(HttpContext context)
         {
-            if (Options.PingEndpointEnabled && Options.PingEndpoint.HasValue && Options.PingEndpoint == context.Request.Path)
+            if (Options.PingEndpointEnabled && Options.PingEndpoint.IsPresent() && Options.PingEndpoint == context.Request.Path)
             {
                 Logger.MiddlewareExecuting(GetType());
 

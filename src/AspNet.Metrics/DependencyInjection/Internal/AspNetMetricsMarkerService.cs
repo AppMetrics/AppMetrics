@@ -2,7 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-namespace AspNet.Metrics.Internal
+namespace AspNet.Metrics.DependencyInjection.Internal
 {
     /// <summary>
     /// This is a Marker class which is used to determine if all the services were added

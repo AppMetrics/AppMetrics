@@ -16,5 +16,12 @@ namespace Microsoft.AspNetCore.Mvc
 
             return options;
         }
+
+        public static MvcOptions AddMetricsResourceFilter(this MvcOptions options, IRouteNameResolver routeNameResolver)
+        {
+            options.Filters.Add(new MetricsResourceFilter(routeNameResolver));
+
+            return options;
+        }
     }
 }

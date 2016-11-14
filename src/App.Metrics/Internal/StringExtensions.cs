@@ -5,7 +5,6 @@
 using System.Diagnostics;
 
 // ReSharper disable CheckNamespace
-
 namespace System
 // ReSharper restore CheckNamespace
 {

@@ -5,7 +5,7 @@
 using System;
 using System.Threading.Tasks;
 using App.Metrics.Internal;
-using AspNet.Metrics.Internal;
+using AspNet.Metrics.DependencyInjection.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;

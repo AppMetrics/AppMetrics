@@ -5,7 +5,6 @@
 using App.Metrics;
 
 // ReSharper disable CheckNamespace
-
 namespace Microsoft.Extensions.DependencyInjection
 // ReSharper restore CheckNamespace
 {

@@ -4,7 +4,7 @@
 
 using System;
 
-namespace AspNet.Metrics.Internal
+namespace AspNet.Metrics.DependencyInjection.Internal
 {
     internal static class AspNetMetricsServicesHelper
     {

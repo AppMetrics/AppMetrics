@@ -1,6 +1,7 @@
 using App.Metrics;
 using App.Metrics.Configuration;
 using App.Metrics.Utils;
+using AspNet.Metrics.Configuration;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,6 +38,7 @@ namespace AspNet.Metrics.Integration.Facts.Startup
                     options.MetricsEnabled = appMetricsOptions.MetricsEnabled;
                     options.DefaultSamplingType = appMetricsOptions.DefaultSamplingType;
                 })
+                .AddJsonSerialization()
                 .AddClockType<TestClock>()
                 .AddHealthChecks()
                 .AddAspNetMetrics(options =>
@@ -51,6 +53,8 @@ namespace AspNet.Metrics.Integration.Facts.Startup
                     options.MetricsEndpoint = aspNetMetricsOptions.MetricsEndpoint;
                     options.MetricsTextEndpoint = aspNetMetricsOptions.MetricsTextEndpoint;
                     options.PingEndpoint = aspNetMetricsOptions.PingEndpoint;
+
+                    options.IgnoredRoutesRegexPatterns = aspNetMetricsOptions.IgnoredRoutesRegexPatterns;
                 });
 
             if (filter != null)

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Configuration;
 using App.Metrics.Serialization;
+using AspNet.Metrics.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -38,7 +39,7 @@ namespace AspNet.Metrics.Middleware
         public async Task Invoke(HttpContext context)
         {
             if (Options.HealthEndpointEnabled &&
-                Options.HealthEndpoint.HasValue &&
+                Options.HealthEndpoint.IsPresent() &&
                 Options.HealthEndpoint == context.Request.Path)
             {
                 Logger.MiddlewareExecuting(GetType());
@@ -48,7 +49,7 @@ namespace AspNet.Metrics.Middleware
 
                 var json = _serializer.Serialize(healthStatus);
 
-                await Task.FromResult(WriteResponseAsync(context, json, "application/json", responseStatusCode));
+                await WriteResponseAsync(context, json, "application/json", responseStatusCode);
 
                 Logger.MiddlewareExecuted(GetType());
 

@@ -7,7 +7,6 @@ using App.Metrics;
 using AspNet.Metrics.Internal;
 
 // ReSharper disable CheckNamespace
-
 namespace AppMetrics
 // ReSharper restore CheckNamespace
 {
