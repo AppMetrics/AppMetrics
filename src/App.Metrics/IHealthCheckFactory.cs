@@ -10,7 +10,7 @@ using App.Metrics.Utils;
 
 namespace App.Metrics
 {
-    public interface IHealthCheckFactory : IDisposable, IHideObjectMembers
+    public interface IHealthCheckFactory : IHideObjectMembers
     {
         void Register(string name, Func<Task<string>> check);
 

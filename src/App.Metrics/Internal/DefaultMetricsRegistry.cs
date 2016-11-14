@@ -149,7 +149,6 @@ namespace App.Metrics.Internal
             IMetricContextRegistry registry;
             if (_contexts.TryRemove(context, out registry))
             {
-                //TODO: AH - should this dispose the registry?
                 registry.ClearAllMetrics();
             }
         }

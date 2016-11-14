@@ -13,10 +13,10 @@ namespace App.Metrics.Internal
 {
     internal class HealthCheckFactory : IHealthCheckFactory
     {
-        private readonly ILogger<HealthCheckFactory> _logger;
-
         private readonly ConcurrentDictionary<string, HealthCheck> _checks =
             new ConcurrentDictionary<string, HealthCheck>();
+
+        private readonly ILogger<HealthCheckFactory> _logger;
 
         public HealthCheckFactory(ILogger<HealthCheckFactory> logger, IEnumerable<HealthCheck> healthChecks)
         {
@@ -34,11 +34,6 @@ namespace App.Metrics.Internal
         }
 
         public IReadOnlyDictionary<string, HealthCheck> Checks => _checks;
-
-        public void Dispose()
-        {
-            //TODO: AH - implement dispose
-        }
 
         public void Register(string name, Func<Task<string>> check)
         {

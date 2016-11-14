@@ -1,5 +1,6 @@
 using App.Metrics;
 using App.Metrics.Configuration;
+using App.Metrics.Core;
 using App.Metrics.Utils;
 using AspNet.Metrics.Configuration;
 using Microsoft.AspNet.Builder;
@@ -16,6 +17,8 @@ namespace AspNet.Metrics.Integration.Facts.Startup
         protected void SetupAppBuilder(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             app.UseMetrics();
+
+            Metrics = app.ApplicationServices.GetRequiredService<IMetrics>();
 
             app.UseMvc();
         }
@@ -62,5 +65,7 @@ namespace AspNet.Metrics.Integration.Facts.Startup
                 builder.AddGlobalFilter(filter);
             }
         }
+
+        public IMetrics Metrics { get; private set; }        
     }
 }

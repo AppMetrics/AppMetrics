@@ -45,7 +45,6 @@ namespace Api.Sample
             loggerFactory.AddDebug();
             loggerFactory.AddSerilog();
 
-            //TODO: AH - Should all metrics options be passed in here or in the service collection extensions?
             app.UseMetrics();
 
             // DEVNOTE: Fake a client being authorized to test oauth2 client request rate middleare
