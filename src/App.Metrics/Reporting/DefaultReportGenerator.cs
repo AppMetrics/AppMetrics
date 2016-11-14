@@ -14,7 +14,7 @@ namespace App.Metrics.Reporting
 {
     internal class DefaultReportGenerator
     {
-        public Task Generate(IMetricReporter reporter,
+        internal Task Generate(IMetricReporter reporter,
             IMetrics metrics,
             MetricTags globalTags,
             CancellationToken token)
@@ -22,7 +22,7 @@ namespace App.Metrics.Reporting
             return Generate(reporter, metrics, metrics.Advanced.GlobalFilter, globalTags, token);
         }
 
-        public async Task Generate(IMetricReporter reporter,
+        internal async Task Generate(IMetricReporter reporter,
             IMetrics metrics,
             IMetricsFilter reporterMetricsFilter,
             MetricTags globalTags,

@@ -31,7 +31,7 @@ namespace App.Metrics.App_Packages.HdrHistogram
     ///     incurs allocation and copying of internal data structures.
     ///     See package description for {@link org.HdrHistogram} for details.
     /// </summary>
-    internal class ConcurrentHistogram : Histogram
+    internal class ConcurrentHistogram : HdrHistogram
     {
         private readonly WriterReaderPhaser _wrp = new WriterReaderPhaser();
         private new readonly StripedLongAdder TotalCount = new StripedLongAdder();

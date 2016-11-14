@@ -46,6 +46,35 @@ namespace App.Metrics.Data
         {
         }
 
+        public static bool operator ==(CounterValue left, CounterValue right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(CounterValue left, CounterValue right)
+        {
+            return !left.Equals(right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            return obj is CounterValue && Equals((CounterValue)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (Count.GetHashCode() * 397) ^ (Items != null ? Items.GetHashCode() : 0);
+            }
+        }
+
+        public bool Equals(CounterValue other)
+        {
+            return Count == other.Count && Equals(Items, other.Items);
+        }
+
 
         public struct SetItem
         {
@@ -70,17 +99,38 @@ namespace App.Metrics.Data
                 Count = count;
                 Percent = percent;
             }
-        }
-    }
 
-    /// <summary>
-    ///     Combines the value for a counter with the defined unit for the value.
-    /// </summary>
-    public sealed class CounterValueSource : MetricValueSource<CounterValue>
-    {
-        public CounterValueSource(string name, IMetricValueProvider<CounterValue> value, Unit unit, MetricTags tags)
-            : base(name, value, unit, tags)
-        {
+            public static bool operator ==(SetItem left, SetItem right)
+            {
+                return left.Equals(right);
+            }
+
+            public static bool operator !=(SetItem left, SetItem right)
+            {
+                return !left.Equals(right);
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(null, obj)) return false;
+                return obj is SetItem && Equals((SetItem)obj);
+            }
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    var hashCode = Count.GetHashCode();
+                    hashCode = (hashCode * 397) ^ (Item != null ? Item.GetHashCode() : 0);
+                    hashCode = (hashCode * 397) ^ Percent.GetHashCode();
+                    return hashCode;
+                }
+            }
+
+            public bool Equals(SetItem other)
+            {
+                return Count == other.Count && string.Equals(Item, other.Item) && Percent.Equals(other.Percent);
+            }
         }
     }
 }

@@ -23,7 +23,7 @@ namespace App.Metrics
 
         public string RateUnit { get; set; }
 
-        public class SetItem
+        public sealed class SetItem
         {
             public long Count { get; set; }
 

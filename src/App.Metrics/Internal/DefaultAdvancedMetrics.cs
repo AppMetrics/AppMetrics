@@ -18,8 +18,8 @@ namespace App.Metrics.Internal
     internal sealed class DefaultAdvancedMetrics : IAdvancedMetrics
     {
         private readonly IHealthCheckFactory _healthCheckFactory;
-        private IMetricsRegistry _registry;
         private readonly ILogger<DefaultAdvancedMetrics> _logger;
+        private IMetricsRegistry _registry;
 
         public DefaultAdvancedMetrics(
             ILogger<DefaultAdvancedMetrics> logger,
@@ -65,6 +65,11 @@ namespace App.Metrics.Internal
             }
 
             Interlocked.Exchange(ref _registry, new NullMetricsRegistry());
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
         }
 
         public void Gauge(GaugeOptions options, Func<double> valueProvider)
@@ -167,6 +172,14 @@ namespace App.Metrics.Internal
         public ITimer Timer(TimerOptions options, Func<IHistogramMetric> builder)
         {
             return Timer(options, () => this.BuildTimer(options, builder()));
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _healthCheckFactory?.Dispose();
+            }
         }
     }
 }

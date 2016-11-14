@@ -23,6 +23,35 @@ namespace App.Metrics.Sampling
             UserValue = userValue;
         }
 
+        public static bool operator ==(UserValueWrapper left, UserValueWrapper right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(UserValueWrapper left, UserValueWrapper right)
+        {
+            return !left.Equals(right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            return obj is UserValueWrapper && Equals((UserValueWrapper)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((UserValue?.GetHashCode() ?? 0) * 397) ^ Value.GetHashCode();
+            }
+        }
+
+        public bool Equals(UserValueWrapper other)
+        {
+            return string.Equals(UserValue, other.UserValue) && Value == other.Value;
+        }
+
         private class UserValueComparer : IComparer<UserValueWrapper>
         {
             public int Compare(UserValueWrapper x, UserValueWrapper y)

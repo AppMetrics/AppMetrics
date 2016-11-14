@@ -39,24 +39,24 @@ namespace App.Metrics.Core
 
         private double OneMinuteRate => _m1Rate.GetValue() * NanosInSecond;
 
-        public MeterValue GetValue(double elapsed)
-        {
-            var count = _total.GetValue() + _uncounted.GetValue();
-            return new MeterValue(count, GetMeanRate(count, elapsed), OneMinuteRate, FiveMinuteRate, FifteenMinuteRate, TimeUnit.Seconds);
-        }
-
-        public void Mark(long count)
+        public virtual void Mark(long count)
         {
             _uncounted.Add(count);
         }
 
-        public void Reset()
+        public virtual void Reset()
         {
             _uncounted.Reset();
             _total.SetValue(0L);
             _m1Rate.SetValue(0.0);
             _m5Rate.SetValue(0.0);
             _m15Rate.SetValue(0.0);
+        }
+
+        public MeterValue GetValue(double elapsed)
+        {
+            var count = _total.GetValue() + _uncounted.GetValue();
+            return new MeterValue(count, GetMeanRate(count, elapsed), OneMinuteRate, FiveMinuteRate, FifteenMinuteRate, TimeUnit.Seconds);
         }
 
         public void Tick()

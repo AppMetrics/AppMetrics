@@ -8,7 +8,7 @@ namespace App.Metrics.Internal
     ///     This is a Marker class which is used to determine if all the services were added
     ///     to when App.Metrics.Reporting is loaded.
     /// </summary>
-    internal class AppMetricsReportingMarkerService
+    internal sealed class AppMetricsReportingMarkerService
     {
     }
 }

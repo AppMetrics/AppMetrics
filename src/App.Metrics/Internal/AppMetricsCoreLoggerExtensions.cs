@@ -39,7 +39,7 @@ namespace Microsoft.Extensions.Logging
                 formatString: $"Executed {nameof(HealthStatus)}, 0 health check results.");
         }
 
-        public static void HealthCheckGetStatusExecuted(this ILogger logger, HealthStatus healthStatus,
+        internal static void HealthCheckGetStatusExecuted(this ILogger logger, HealthStatus healthStatus,
             long startTimestamp)
         {
             if (!logger.IsEnabled(LogLevel.Information)) return;
@@ -66,22 +66,22 @@ namespace Microsoft.Extensions.Logging
             _healthGetStatusExecutedNoResults(logger, null);
         }
 
-        public static void HealthCheckGetStatusExecuting(this ILogger logger)
+        internal static void HealthCheckGetStatusExecuting(this ILogger logger)
         {
             logger.LogDebug(AppMetricsEventIds.HealthChecks.Status, "Executing HealthCheck Get Status");
         }
 
-        public static void HealthCheckRegistered(this ILogger logger, string name)
+        internal static void HealthCheckRegistered(this ILogger logger, string name)
         {
             _healthCheckRegistered(logger, name, null);
         }
 
-        public static void GettingMetricsData(this ILogger logger)
+        internal static void GettingMetricsData(this ILogger logger)
         {
             logger.LogDebug(AppMetricsEventIds.Metrics.Data, "GettingMetricsData");
         }
 
-        public static void RetrievedMetricsData(this ILogger logger)
+        internal static void RetrievedMetricsData(this ILogger logger)
         {
             logger.LogDebug(AppMetricsEventIds.Metrics.Data, "RetrievedMetricsData");
         }

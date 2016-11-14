@@ -13,7 +13,7 @@ using App.Metrics.Infrastructure;
 
 namespace App.Metrics.Reporting
 {
-    public class StringReporter : IMetricReporter
+    public sealed class StringReporter : IMetricReporter
     {
         private StringBuilder _buffer;
         private bool _disposed;

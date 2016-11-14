@@ -17,7 +17,7 @@ namespace App.Metrics.DependencyInjection.Internal
         private static readonly TypeInfo ObjectTypeInfo = typeof(object).GetTypeInfo();
         private readonly IMetricsAssemblyProvider _assemblyProvider;
 
-        public DefaultHealthCheckTypeProvider(IMetricsAssemblyProvider assemblyProvider)
+        internal DefaultHealthCheckTypeProvider(IMetricsAssemblyProvider assemblyProvider)
         {
             _assemblyProvider = assemblyProvider;
         }
@@ -33,7 +33,7 @@ namespace App.Metrics.DependencyInjection.Internal
             }
         }
 
-        internal bool IsHealthCheck(
+        internal static bool IsHealthCheck(
             TypeInfo typeInfo,
             ISet<Assembly> candidateAssemblies)
         {

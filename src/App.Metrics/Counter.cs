@@ -13,7 +13,7 @@ namespace App.Metrics
 
         public IEnumerable<SetItem> Items { get; set; } = Enumerable.Empty<SetItem>();
 
-        public class SetItem
+        public sealed class SetItem
         {
             public long Count { get; set; }
 

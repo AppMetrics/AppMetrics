@@ -45,6 +45,18 @@ namespace App.Metrics.Core
 
         public MeterValue Value => GetValue();
 
+        public override void Reset()
+        {
+            _startTime = _clock.Nanoseconds;
+            base.Reset();
+            if (_setMeters == null) return;
+
+            foreach (var meter in _setMeters.Values)
+            {
+                meter.Reset();
+            }
+        }
+
         public void Dispose()
         {
             Dispose(true);
@@ -97,11 +109,6 @@ namespace App.Metrics.Core
             Mark(1L);
         }
 
-        public new void Mark(long count)
-        {
-            base.Mark(count);
-        }
-
         public void Mark(string item)
         {
             Mark(item, 1L);
@@ -123,19 +130,6 @@ namespace App.Metrics.Core
 
             Debug.Assert(_setMeters != null);
             _setMeters.GetOrAdd(item, v => new SimpleMeter()).Mark(count);
-        }
-
-        public new void Reset()
-        {
-            _startTime = _clock.Nanoseconds;
-            base.Reset();
-            if (_setMeters != null)
-            {
-                foreach (var meter in _setMeters.Values)
-                {
-                    meter.Reset();
-                }
-            }
         }
 
         private MeterValue GetValueWithSetItems(bool resetMetric)

@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using AspNet.Metrics.Infrastructure;
 using AspNet.Metrics.Internal;
 
 namespace AspNet.Metrics.Configuration

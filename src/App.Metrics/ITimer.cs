@@ -135,7 +135,7 @@ namespace App.Metrics
             var end = _timer.EndRecording();
             _timer.Record(end - _start, TimeUnit.Nanoseconds, _userValue);
             _timer = null;
-        }
+        }        
 
         /// <summary>
         ///     Set the user value for this timer context.

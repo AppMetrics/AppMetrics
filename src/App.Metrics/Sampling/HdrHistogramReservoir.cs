@@ -21,8 +21,8 @@ namespace App.Metrics.Sampling
         private readonly object _minValueLock = new object();
         private readonly Recorder _recorder;
 
-        private readonly App_Packages.HdrHistogram.Histogram _runningTotals;
-        private App_Packages.HdrHistogram.Histogram _intervalHistogram;
+        private readonly App_Packages.HdrHistogram.HdrHistogram _runningTotals;
+        private App_Packages.HdrHistogram.HdrHistogram _intervalHistogram;
         private string _maxUserValue;
 
         private AtomicLong _maxValue = new AtomicLong(0);
@@ -40,7 +40,7 @@ namespace App.Metrics.Sampling
             _recorder = recorder;
 
             _intervalHistogram = recorder.GetIntervalHistogram();
-            _runningTotals = new App_Packages.HdrHistogram.Histogram(_intervalHistogram.NumberOfSignificantValueDigits);
+            _runningTotals = new App_Packages.HdrHistogram.HdrHistogram(_intervalHistogram.NumberOfSignificantValueDigits);
         }
 
         public ISnapshot GetSnapshot(bool resetReservoir = false)
@@ -123,13 +123,13 @@ namespace App.Metrics.Sampling
             }
         }
 
-        private App_Packages.HdrHistogram.Histogram UpdateTotals()
+        private App_Packages.HdrHistogram.HdrHistogram UpdateTotals()
         {
             lock (_runningTotals)
             {
                 _intervalHistogram = _recorder.GetIntervalHistogram(_intervalHistogram);
                 _runningTotals.add(_intervalHistogram);
-                return _runningTotals.copy() as App_Packages.HdrHistogram.Histogram;
+                return _runningTotals.copy() as App_Packages.HdrHistogram.HdrHistogram;
             }
         }
     }

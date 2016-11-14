@@ -8,7 +8,7 @@ using App.Metrics.Data;
 
 namespace App.Metrics.Formatting.Humanize
 {
-    public class HumanizeGaugeMetricFormatter : ICustomFormatter
+    public sealed class HumanizeGaugeMetricFormatter : ICustomFormatter
     {
         public string Format(string format, object arg, IFormatProvider formatProvider)
         {

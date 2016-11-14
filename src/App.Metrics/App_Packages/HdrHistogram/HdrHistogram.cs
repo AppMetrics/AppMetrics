@@ -52,7 +52,7 @@ namespace App.Metrics.App_Packages.HdrHistogram
     ///         See package description for {@link org.HdrHistogram} for details.
     ///     </para>
     /// </summary>
-    internal class Histogram : AbstractHistogram
+    internal class HdrHistogram : AbstractHistogram
     {
         protected long[] Counts;
         protected int NormalizingIndexOffset;
@@ -67,7 +67,7 @@ namespace App.Metrics.App_Packages.HdrHistogram
         ///     digits to which the histogram will maintain value resolution and separation. Must be a non-negative integer between
         ///     0 and 5.
         /// </param>
-        public Histogram(int numberOfSignificantValueDigits)
+        public HdrHistogram(int numberOfSignificantValueDigits)
             : this(1, 2, numberOfSignificantValueDigits, sizeof(long), allocateCountsArray: true, autoResize: true)
         {
         }
@@ -85,7 +85,7 @@ namespace App.Metrics.App_Packages.HdrHistogram
         ///     digits to which the histogram will maintain value resolution and separation. Must be a non-negative integer between
         ///     0 and 5.
         /// </param>
-        public Histogram(long highestTrackableValue, int numberOfSignificantValueDigits)
+        public HdrHistogram(long highestTrackableValue, int numberOfSignificantValueDigits)
             : this(1, highestTrackableValue, numberOfSignificantValueDigits)
         {
         }
@@ -110,7 +110,7 @@ namespace App.Metrics.App_Packages.HdrHistogram
         ///     digits to which the histogram will maintain value resolution and separation. Must be a non-negative integer between
         ///     0 and 5.
         /// </param>
-        public Histogram(long lowestDiscernibleValue, long highestTrackableValue, int numberOfSignificantValueDigits)
+        public HdrHistogram(long lowestDiscernibleValue, long highestTrackableValue, int numberOfSignificantValueDigits)
             : this(
                 lowestDiscernibleValue, highestTrackableValue, numberOfSignificantValueDigits, sizeof(long), allocateCountsArray: true,
                 autoResize: false)
@@ -122,12 +122,12 @@ namespace App.Metrics.App_Packages.HdrHistogram
         ///     duplicating the source's start/end timestamps (but NOT its contents).
         /// </summary>
         /// <param name="source">The source histogram to duplicate/</param>
-        public Histogram(AbstractHistogram source)
+        public HdrHistogram(AbstractHistogram source)
             : this(source, true)
         {
         }
 
-        protected Histogram(AbstractHistogram source, bool allocateCountsArray)
+        protected HdrHistogram(AbstractHistogram source, bool allocateCountsArray)
             : base(source)
         {
             if (allocateCountsArray)
@@ -136,7 +136,7 @@ namespace App.Metrics.App_Packages.HdrHistogram
             }
         }
 
-        protected Histogram(long lowestDiscernibleValue, long highestTrackableValue, int numberOfSignificantValueDigits, int wordSizeInBytes,
+        protected HdrHistogram(long lowestDiscernibleValue, long highestTrackableValue, int numberOfSignificantValueDigits, int wordSizeInBytes,
             bool allocateCountsArray, bool autoResize)
             : base(lowestDiscernibleValue, highestTrackableValue, numberOfSignificantValueDigits, wordSizeInBytes, autoResize)
         {
@@ -148,14 +148,14 @@ namespace App.Metrics.App_Packages.HdrHistogram
 
         public override AbstractHistogram copy()
         {
-            var copy = new Histogram(this);
+            var copy = new HdrHistogram(this);
             copy.add(this);
             return copy;
         }
 
         public override AbstractHistogram copyCorrectedForCoordinatedOmission(long expectedIntervalBetweenValueSamples)
         {
-            var copy = new Histogram(this);
+            var copy = new HdrHistogram(this);
             copy.addWhileCorrectingForCoordinatedOmission(this, expectedIntervalBetweenValueSamples);
             return copy;
         }

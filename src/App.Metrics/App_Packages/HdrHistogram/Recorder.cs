@@ -32,8 +32,8 @@ namespace App.Metrics.App_Packages.HdrHistogram
 
         private readonly WriterReaderPhaser recordingPhaser = new WriterReaderPhaser();
 
-        private volatile Histogram activeHistogram;
-        private Histogram inactiveHistogram;
+        private volatile HdrHistogram activeHistogram;
+        private HdrHistogram inactiveHistogram;
 
         /// <summary>
         ///     Construct an auto-resizing Recorder with a lowest discernible value of
@@ -63,7 +63,7 @@ namespace App.Metrics.App_Packages.HdrHistogram
         ///     the value counts, and start accumulating value counts for the next interval.
         /// </summary>
         /// <returns>a histogram containing the value counts accumulated since the last interval histogram was taken.</returns>
-        public Histogram GetIntervalHistogram()
+        public HdrHistogram GetIntervalHistogram()
         {
             return GetIntervalHistogram(null);
         }
@@ -93,7 +93,7 @@ namespace App.Metrics.App_Packages.HdrHistogram
         ///     copy operations.
         /// </param>
         /// <returns>a histogram containing the value counts accumulated since the last interval histogram was taken.</returns>
-        public Histogram GetIntervalHistogram(Histogram histogramToRecycle)
+        public HdrHistogram GetIntervalHistogram(HdrHistogram histogramToRecycle)
         {
             lock (syncLock)
             {
@@ -177,7 +177,7 @@ namespace App.Metrics.App_Packages.HdrHistogram
             }
         }
 
-        private void ValidateFitAsReplacementHistogram(Histogram replacementHistogram)
+        private void ValidateFitAsReplacementHistogram(HdrHistogram replacementHistogram)
         {
             var replacementConcurrentHistogram = replacementHistogram as InternalConcurrentHistogram;
             if (replacementConcurrentHistogram != null)

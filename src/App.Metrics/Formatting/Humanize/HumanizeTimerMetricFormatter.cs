@@ -8,7 +8,7 @@ using App.Metrics.Data;
 
 namespace App.Metrics.Formatting.Humanize
 {
-    public class HumanizeTimerMetricFormatter : ICustomFormatter
+    public sealed class HumanizeTimerMetricFormatter : ICustomFormatter
     {
         public string Format(string format, object arg, IFormatProvider formatProvider)
         {

@@ -9,7 +9,7 @@ using App.Metrics.Internal;
 
 namespace App.Metrics.Scheduling
 {
-    public class DefaultTaskScheduler : IScheduler
+    public sealed class DefaultTaskScheduler : IScheduler
     {
         private bool _disposed;
         private CancellationTokenSource _token;
@@ -81,6 +81,6 @@ namespace App.Metrics.Scheduling
             _token?.Cancel();
         }
 
-        protected virtual bool CheckDisposed() => _disposed;
+        private bool CheckDisposed() => _disposed;
     }
 }

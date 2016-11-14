@@ -43,9 +43,30 @@ namespace App.Metrics
             return new Unit(name);
         }
 
+        public static bool operator ==(Unit left, Unit right)
+        {
+            return left.Equals(right);
+        }
+
         public static implicit operator Unit(string name)
         {
             return Custom(name);
+        }
+
+        public static bool operator !=(Unit left, Unit right)
+        {
+            return !left.Equals(right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            return obj is Unit && Equals((Unit)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Name?.GetHashCode() ?? 0;
         }
 
         public override string ToString()
@@ -53,10 +74,15 @@ namespace App.Metrics
             return Name;
         }
 
+        public bool Equals(Unit other)
+        {
+            return string.Equals(Name, other.Name);
+        }
+
         public string FormatCount(long value)
         {
-            return !string.IsNullOrEmpty(Name) 
-                ? $"{value.ToString(CultureInfo.InvariantCulture)} {Name}" 
+            return !string.IsNullOrEmpty(Name)
+                ? $"{value.ToString(CultureInfo.InvariantCulture)} {Name}"
                 : value.ToString();
         }
 
@@ -72,8 +98,8 @@ namespace App.Metrics
 
         public string FormatValue(double value)
         {
-            return !string.IsNullOrEmpty(Name) 
-                ? $"{value.ToString("F2", CultureInfo.InvariantCulture)} {Name}" 
+            return !string.IsNullOrEmpty(Name)
+                ? $"{value.ToString("F2", CultureInfo.InvariantCulture)} {Name}"
                 : value.ToString("F2", CultureInfo.InvariantCulture);
         }
     }

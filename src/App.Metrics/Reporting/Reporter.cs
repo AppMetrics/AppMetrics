@@ -15,12 +15,13 @@ namespace App.Metrics.Reporting
 {
     internal sealed class Reporter : IReporter
     {
+        private readonly ILogger<Reporter> _logger;
+        private readonly ILoggerFactory _loggerFactory;
+
         private readonly Dictionary<Type, IMetricReporter> _metricReporters;
         private readonly Dictionary<Type, IReporterProvider> _providers;
         private readonly DefaultReportGenerator _reportGenerator;
         private readonly IScheduler _scheduler;
-        private readonly ILoggerFactory _loggerFactory;
-        private readonly ILogger<Reporter> _logger;
 
         public Reporter(ReportFactory reportFactory, IScheduler scheduler, ILoggerFactory loggerFactory)
         {
@@ -46,6 +47,11 @@ namespace App.Metrics.Reporting
             }
         }
 
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
         public async Task RunReportsAsync(IMetrics context, CancellationToken token)
         {
             if (_metricReporters == null)
@@ -66,18 +72,7 @@ namespace App.Metrics.Reporting
 
                     logger.ReportRunning(metricReporter.Value);
 
-                    var task = _scheduler.Interval(metricReporter.Value.ReportInterval, async () =>
-                        {
-                            var startTimestamp = _logger.IsEnabled(LogLevel.Information) ? Stopwatch.GetTimestamp() : 0;
-
-                            logger.ReportedStarted(metricReporter.Value);
-
-                            await _reportGenerator.Generate(metricReporter.Value, context, provider.Filter,
-                                settings.GlobalTags, token);
-
-                            logger.ReportRan(metricReporter.Value, startTimestamp);
-                        },
-                        token);
+                    await ScheduleReport(context, token, metricReporter, logger, provider, settings);
                 }
                 catch (Exception ex)
                 {
@@ -101,6 +96,32 @@ namespace App.Metrics.Reporting
                 throw aggregateException;
             }
             await AppMetricsTaskCache.EmptyTask;
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _scheduler?.Dispose();
+            }
+        }
+
+        private Task ScheduleReport(IMetrics context, CancellationToken token, KeyValuePair<Type, IMetricReporter> metricReporter, ILogger logger,
+            IReporterProvider provider,
+            IReporterSettings settings)
+        {
+            return _scheduler.Interval(metricReporter.Value.ReportInterval, async () =>
+                {
+                    var startTimestamp = _logger.IsEnabled(LogLevel.Information) ? Stopwatch.GetTimestamp() : 0;
+
+                    logger.ReportedStarted(metricReporter.Value);
+
+                    await _reportGenerator.Generate(metricReporter.Value, context, provider.Filter,
+                        settings.GlobalTags, token);
+
+                    logger.ReportRan(metricReporter.Value, startTimestamp);
+                },
+                token);
         }
     }
 }

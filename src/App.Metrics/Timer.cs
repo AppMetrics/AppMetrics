@@ -20,7 +20,7 @@ namespace App.Metrics
 
         public long TotalTime { get; set; }
 
-        public class HistogramData
+        public sealed class HistogramData
         {
             public string LastUserValue { get; set; }
 
@@ -53,7 +53,7 @@ namespace App.Metrics
             public double StdDev { get; set; }
         }
 
-        public class RateData
+        public sealed class RateData
         {
             public double FifteenMinuteRate { get; set; }
 

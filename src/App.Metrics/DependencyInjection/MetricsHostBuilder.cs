@@ -10,7 +10,7 @@ using Microsoft.Extensions.PlatformAbstractions;
 namespace Microsoft.Extensions.DependencyInjection
 // ReSharper restore CheckNamespace
 {
-    internal class MetricsHostBuilder : IMetricsHostBuilder
+    internal sealed class MetricsHostBuilder : IMetricsHostBuilder
     {
         internal MetricsHostBuilder(IServiceCollection services)
         {

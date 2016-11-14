@@ -3,7 +3,7 @@
 
 namespace App.Metrics.Configuration
 {
-    public class AppMetricsOptions
+    public sealed class AppMetricsOptions
     {
         private const string DefaultContext = "Application";
 

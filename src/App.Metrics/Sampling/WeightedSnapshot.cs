@@ -11,20 +11,6 @@ using System.Linq;
 
 namespace App.Metrics.Sampling
 {
-    public struct WeightedSample
-    {
-        public readonly string UserValue;
-        public readonly long Value;
-        public readonly double Weight;
-
-        public WeightedSample(long value, string userValue, double weight)
-        {
-            Value = value;
-            UserValue = userValue;
-            Weight = weight;
-        }
-    }
-
     public sealed class WeightedSnapshot : ISnapshot
     {
         private readonly double[] _normWeights;

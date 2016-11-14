@@ -25,7 +25,7 @@ namespace App.Metrics.App_Packages.HdrHistogram
  */
 
 
-    internal class SynchronizedHistogram : Histogram
+    internal class SynchronizedHistogram : HdrHistogram
     {
         private static readonly object SyncLock = new object();
 

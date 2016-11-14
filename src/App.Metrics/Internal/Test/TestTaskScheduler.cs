@@ -11,14 +11,14 @@ using App.Metrics.Utils;
 
 namespace App.Metrics.Internal.Test
 {
-    internal class TestTaskScheduler : IScheduler
+    internal sealed class TestTaskScheduler : IScheduler
     {
         private readonly IClock _clock;
         private Action _action;
         private long _lastRun = 0;
         private TimeSpan _pollInterval;
 
-        public TestTaskScheduler(IClock clock)
+        internal TestTaskScheduler(IClock clock)
         {
             if (clock == null) throw new ArgumentNullException(nameof(clock));
 

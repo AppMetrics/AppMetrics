@@ -10,7 +10,7 @@ using App.Metrics.Infrastructure;
 
 namespace App.Metrics.Formatting.Humanize
 {
-    public class HumanizeMetricValueFormatProvider<T> : IFormatProvider
+    public sealed class HumanizeMetricValueFormatProvider<T> : IFormatProvider
     {
         private static readonly IDictionary<Type, Func<ICustomFormatter>> CustomFormaterTypesFactor = new Dictionary<Type, Func<ICustomFormatter>>
         {

@@ -83,6 +83,38 @@ namespace App.Metrics.Data
                 Percent = percent;
                 Value = value;
             }
+
+            public static bool operator ==(SetItem left, SetItem right)
+            {
+                return left.Equals(right);
+            }
+
+            public static bool operator !=(SetItem left, SetItem right)
+            {
+                return !left.Equals(right);
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(null, obj)) return false;
+                return obj is SetItem && Equals((SetItem)obj);
+            }
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    var hashCode = Item?.GetHashCode() ?? 0;
+                    hashCode = (hashCode * 397) ^ Percent.GetHashCode();
+                    hashCode = (hashCode * 397) ^ (Value?.GetHashCode() ?? 0);
+                    return hashCode;
+                }
+            }
+
+            public bool Equals(SetItem other)
+            {
+                return string.Equals(Item, other.Item) && Percent.Equals(other.Percent) && Equals(Value, other.Value);
+            }
         }
     }
 

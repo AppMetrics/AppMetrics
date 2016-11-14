@@ -8,7 +8,7 @@ using App.Metrics.Infrastructure;
 
 namespace App.Metrics.Formatting.Humanize
 {
-    public class HumanizeEnvironmentInfoFormatter : ICustomFormatter
+    public sealed class HumanizeEnvironmentInfoFormatter : ICustomFormatter
     {
         public string Format(string format, object arg, IFormatProvider formatProvider)
         {

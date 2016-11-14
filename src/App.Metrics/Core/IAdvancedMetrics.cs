@@ -8,7 +8,7 @@ using App.Metrics.Utils;
 
 namespace App.Metrics.Core
 {
-    public interface IAdvancedMetrics : IMetricsDataProvider, IHealthStatusProvider, IHideObjectMembers
+    public interface IAdvancedMetrics : IMetricsDataProvider, IHealthStatusProvider, IDisposable, IHideObjectMembers
     {
         IMetricsFilter GlobalFilter { get; }
 

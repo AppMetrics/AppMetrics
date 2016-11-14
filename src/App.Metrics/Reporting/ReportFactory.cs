@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporting
 {
-    public class ReportFactory : IReportFactory
+    public sealed class ReportFactory : IReportFactory
     {
         private readonly ILoggerFactory _loggerFactory;
         private readonly Dictionary<Type, IReporterProvider> _providers = new Dictionary<Type, IReporterProvider>();
@@ -73,6 +73,6 @@ namespace App.Metrics.Reporting
             return _providers;
         }
 
-        protected virtual bool CheckDisposed() => _disposed;
+        private bool CheckDisposed() => _disposed;
     }
 }

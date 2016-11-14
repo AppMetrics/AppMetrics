@@ -9,7 +9,7 @@ namespace App.Metrics.Internal
 {
     internal static class CancellationTokenExtensions
     {
-        public static bool WaitCancellationRequested(
+        internal static bool WaitCancellationRequested(
             this CancellationToken token,
             TimeSpan timeout)
         {

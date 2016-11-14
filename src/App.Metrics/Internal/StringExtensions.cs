@@ -11,7 +11,7 @@ namespace System
     internal static class StringExtensions
     {
         [DebuggerStepThrough]
-        public static string CleanUrlPath(this string url)
+        internal static string CleanUrlPath(this string url)
         {
             if (string.IsNullOrWhiteSpace(url)) url = "/";
 
@@ -24,7 +24,7 @@ namespace System
         }
 
         [DebuggerStepThrough]
-        public static string EnsureLeadingSlash(this string url)
+        internal static string EnsureLeadingSlash(this string url)
         {
             if (!url.StartsWith("/"))
             {
@@ -35,7 +35,7 @@ namespace System
         }
 
         [DebuggerStepThrough]
-        public static string EnsureTrailingSlash(this string url)
+        internal static string EnsureTrailingSlash(this string url)
         {
             if (!url.EndsWith("/"))
             {
@@ -46,13 +46,13 @@ namespace System
         }
 
         [DebuggerStepThrough]
-        public static bool IsMissing(this string value)
+        internal static bool IsMissing(this string value)
         {
             return string.IsNullOrWhiteSpace(value);
         }
 
         [DebuggerStepThrough]
-        public static bool IsMissingOrTooLong(this string value, int maxLength)
+        internal static bool IsMissingOrTooLong(this string value, int maxLength)
         {
             if (string.IsNullOrWhiteSpace(value))
             {
@@ -67,13 +67,13 @@ namespace System
         }
 
         [DebuggerStepThrough]
-        public static bool IsPresent(this string value)
+        internal static bool IsPresent(this string value)
         {
             return !string.IsNullOrWhiteSpace(value);
         }
 
         [DebuggerStepThrough]
-        public static string RemoveLeadingSlash(this string url)
+        internal static string RemoveLeadingSlash(this string url)
         {
             if (url != null && url.StartsWith("/"))
             {
@@ -84,7 +84,7 @@ namespace System
         }
 
         [DebuggerStepThrough]
-        public static string RemoveTrailingSlash(this string url)
+        internal static string RemoveTrailingSlash(this string url)
         {
             if (url != null && url.EndsWith("/"))
             {
