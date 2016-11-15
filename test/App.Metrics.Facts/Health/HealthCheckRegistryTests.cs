@@ -2,8 +2,10 @@
 using System.Threading.Tasks;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
+using App.Metrics.Data;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
+using App.Metrics.Internal.Interfaces;
 using App.Metrics.Utils;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
@@ -25,7 +27,7 @@ namespace App.Metrics.Facts.Health
                 var clock = new TestClock();
                 var options = new AppMetricsOptions();
                 Func<string, IMetricContextRegistry> newContextRegistry = name => new DefaultMetricContextRegistry(name);
-                var registry = new DefaultMetricsRegistry(LoggerFactory, options, clock, new EnvironmentInfoBuilder(LoggerFactory), newContextRegistry);
+                var registry = new DefaultMetricsRegistry(LoggerFactory, options, clock, new EnvironmentInfoProvider(LoggerFactory), newContextRegistry);
                 var advancedContext = new DefaultAdvancedMetrics(metricsLogger, options, clock, new DefaultMetricsFilter(), registry, healthCheckFactory);
                 return new DefaultMetrics(options, registry, advancedContext);
             };

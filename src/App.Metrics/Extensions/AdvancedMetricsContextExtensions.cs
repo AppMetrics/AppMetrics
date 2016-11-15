@@ -3,10 +3,13 @@
 
 
 using System;
-using App.Metrics.Data;
-using App.Metrics.Sampling;
+using App.Metrics.Core.Interfaces;
+using App.Metrics.Core.Options;
+using App.Metrics.Data.Interfaces;
+using App.Metrics.Sampling.Interfaces;
 
 // ReSharper disable CheckNamespace
+
 namespace App.Metrics.Core
 // ReSharper restore CheckNamespace
 {

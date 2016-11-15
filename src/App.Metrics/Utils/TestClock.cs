@@ -13,6 +13,8 @@ namespace App.Metrics.Utils
 
         public long Nanoseconds { get; private set; }
 
+        public long Seconds => TimeUnit.Nanoseconds.ToSeconds(Nanoseconds);
+
         public DateTime UtcDateTime => new DateTime(Nanoseconds / 100L, DateTimeKind.Utc);
 
         public void Advance(TimeUnit unit, long value)
@@ -20,7 +22,6 @@ namespace App.Metrics.Utils
             Nanoseconds += unit.ToNanoseconds(value);
             Advanced?.Invoke(this, EventArgs.Empty);
         }
-        public long Seconds => TimeUnit.Nanoseconds.ToSeconds(Nanoseconds);
 
         public string FormatTimestamp(DateTime timestamp)
         {

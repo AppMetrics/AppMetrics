@@ -16,10 +16,10 @@ namespace App.Metrics.Data
             Enumerable.Empty<HistogramValueSource>(),
             Enumerable.Empty<TimerValueSource>());
 
+        public readonly string Context;
+
         public readonly IEnumerable<CounterValueSource> Counters;
         public readonly IEnumerable<GaugeValueSource> Gauges;
-
-        public readonly string Context;
         public readonly IEnumerable<HistogramValueSource> Histograms;
         public readonly IEnumerable<MeterValueSource> Meters;
         public readonly IEnumerable<TimerValueSource> Timers;
@@ -39,11 +39,6 @@ namespace App.Metrics.Data
             Timers = timers;
         }
 
-        public bool IsNotEmpty()
-        {
-            return this != Empty;
-        }
-
         public MetricsContextValueSource Filter(IMetricsFilter filter)
         {
             if (!filter.IsMatch(Context))
@@ -57,6 +52,11 @@ namespace App.Metrics.Data
                 Meters.Where(filter.IsMatch),
                 Histograms.Where(filter.IsMatch),
                 Timers.Where(filter.IsMatch));
+        }
+
+        public bool IsNotEmpty()
+        {
+            return this != Empty;
         }
     }
 }

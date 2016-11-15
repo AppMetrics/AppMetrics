@@ -6,7 +6,8 @@ using System;
 using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Reporting;
-using AspNet.Metrics.Configuration;
+using App.Metrics.Reporting.Internal;
+using AspNet.Metrics.DependencyInjection.Options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 

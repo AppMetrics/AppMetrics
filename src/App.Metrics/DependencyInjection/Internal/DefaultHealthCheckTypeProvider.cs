@@ -6,8 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using App.Metrics.Infrastructure;
-using App.Metrics.Internal;
+using App.Metrics.Internal.Interfaces;
 
 namespace App.Metrics.DependencyInjection.Internal
 {

@@ -5,9 +5,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using App.Metrics.Core;
+using App.Metrics.Core.Interfaces;
+using App.Metrics.Core.Options;
 using App.Metrics.Data;
-using App.Metrics.Infrastructure;
+using App.Metrics.Data.Interfaces;
+using App.Metrics.DependencyInjection.Internal;
+using App.Metrics.Internal.Interfaces;
 
 namespace App.Metrics.Internal
 {

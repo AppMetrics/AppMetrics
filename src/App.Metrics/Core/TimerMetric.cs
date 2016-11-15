@@ -7,20 +7,21 @@
 
 using System;
 using App.Metrics.App_Packages.Concurrency;
-using App.Metrics.Sampling;
-using App.Metrics.Utils;
+using App.Metrics.Core.Interfaces;
 using App.Metrics.Data;
+using App.Metrics.Sampling.Interfaces;
+using App.Metrics.Utils;
 
 namespace App.Metrics.Core
 {
     public sealed class TimerMetric : ITimerMetric, IDisposable
     {
         private readonly StripedLongAdder _activeSessionsCounter = new StripedLongAdder();
-        private bool _disposed = false;
         private readonly IClock _clock;
         private readonly IHistogramMetric _histogram;
         private readonly IMeterMetric _meter;
         private readonly StripedLongAdder _totalRecordedTime = new StripedLongAdder();
+        private bool _disposed = false;
 
         public TimerMetric(SamplingType samplingType, IClock systemClock)
             : this(new HistogramMetric(samplingType), new MeterMetric(systemClock), systemClock)
@@ -49,16 +50,16 @@ namespace App.Metrics.Core
             _histogram = histogram;
         }
 
+        ~TimerMetric()
+        {
+            Dispose(false);
+        }
+
         public TimerValue Value => GetValue();
 
         public long CurrentTime()
         {
             return _clock.Nanoseconds;
-        }
-
-        ~TimerMetric()
-        {
-            Dispose(false);
         }
 
         public void Dispose()

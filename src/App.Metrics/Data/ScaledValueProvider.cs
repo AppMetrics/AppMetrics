@@ -3,6 +3,7 @@
 
 
 using System;
+using App.Metrics.Data.Interfaces;
 
 namespace App.Metrics.Data
 {

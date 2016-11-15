@@ -9,7 +9,7 @@ using System.Text;
 using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.Formatting.Humanize;
-using App.Metrics.Infrastructure;
+using App.Metrics.Reporting.Interfaces;
 
 namespace App.Metrics.Reporting
 {
@@ -32,6 +32,8 @@ namespace App.Metrics.Reporting
         }
 
         public string Name { get; }
+
+        public TimeSpan ReportInterval { get; } = TimeSpan.FromSeconds(5);
 
         public string Result => _buffer.ToString();
 
@@ -59,8 +61,6 @@ namespace App.Metrics.Reporting
 
             _disposed = true;
         }
-
-        public TimeSpan ReportInterval { get; } = TimeSpan.FromSeconds(5);
 
         public void EndMetricTypeReport(Type metricType)
         {

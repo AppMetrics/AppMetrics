@@ -3,7 +3,8 @@
 
 
 using System;
-using App.Metrics.Core;
+using App.Metrics.Core.Interfaces;
+using App.Metrics.Core.Options;
 using App.Metrics.Utils;
 
 namespace App.Metrics

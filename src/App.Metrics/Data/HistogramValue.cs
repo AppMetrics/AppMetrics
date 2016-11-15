@@ -6,7 +6,8 @@
 // Ported/Refactored to .NET Standard Library by Allan Hardy
 
 
-using App.Metrics.Sampling;
+using App.Metrics.Data.Interfaces;
+using App.Metrics.Sampling.Interfaces;
 
 namespace App.Metrics.Data
 {

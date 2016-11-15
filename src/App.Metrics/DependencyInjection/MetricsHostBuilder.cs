@@ -7,6 +7,7 @@ using App.Metrics;
 using Microsoft.Extensions.PlatformAbstractions;
 
 // ReSharper disable CheckNamespace
+
 namespace Microsoft.Extensions.DependencyInjection
 // ReSharper restore CheckNamespace
 {

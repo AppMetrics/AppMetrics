@@ -6,9 +6,8 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using App.Metrics;
-using App.Metrics.Configuration;
-using App.Metrics.Serialization;
-using AspNet.Metrics.Configuration;
+using App.Metrics.Serialization.Interfaces;
+using AspNet.Metrics.DependencyInjection.Options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -16,11 +15,9 @@ namespace AspNet.Metrics.Middleware
 {
     public class HealthCheckEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
-        private readonly AppMetricsOptions _options;
         private readonly IHealthStatusSerializer _serializer;
 
         public HealthCheckEndpointMiddleware(RequestDelegate next,
-            AppMetricsOptions options,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics,
@@ -32,7 +29,6 @@ namespace AspNet.Metrics.Middleware
                 throw new ArgumentNullException(nameof(serializer));
             }
 
-            _options = options;
             _serializer = serializer;
         }
 

@@ -1,9 +1,7 @@
 ﻿using App.Metrics;
 using App.Metrics.Configuration;
-using App.Metrics.Core;
-using App.Metrics.Data;
-using App.Metrics.Internal;
-using AspNet.Metrics.Configuration;
+using App.Metrics.Core.Options;
+using AspNet.Metrics.DependencyInjection.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;

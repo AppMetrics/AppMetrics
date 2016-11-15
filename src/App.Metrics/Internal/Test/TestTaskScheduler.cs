@@ -5,8 +5,8 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Infrastructure;
-using App.Metrics.Scheduling;
+using App.Metrics.DependencyInjection.Internal;
+using App.Metrics.Scheduling.Interfaces;
 using App.Metrics.Utils;
 
 namespace App.Metrics.Internal.Test

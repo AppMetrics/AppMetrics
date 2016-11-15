@@ -4,7 +4,9 @@
 
 using System;
 using App.Metrics.Configuration;
-using App.Metrics.Internal;
+using App.Metrics.Core.Interfaces;
+using App.Metrics.Core.Options;
+using App.Metrics.Internal.Interfaces;
 
 namespace App.Metrics.Core
 {

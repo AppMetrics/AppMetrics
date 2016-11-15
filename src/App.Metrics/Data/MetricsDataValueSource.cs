@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using App.Metrics.Infrastructure;
 
 namespace App.Metrics.Data
 {

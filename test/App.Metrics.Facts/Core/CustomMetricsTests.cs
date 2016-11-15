@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using App.Metrics.Core;
+using App.Metrics.Core.Interfaces;
+using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Sampling;
+using App.Metrics.Sampling.Interfaces;
 using FluentAssertions;
 using Xunit;
 
@@ -73,17 +74,17 @@ namespace App.Metrics.Facts.Core
             reservoir.Values.Single().Should().Be(10L);
         }
 
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)
             {
                 _fixture?.Dispose();
             }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
         }
     }
 }

@@ -5,17 +5,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Core;
-using App.Metrics.Data;
-using App.Metrics.DependencyInjection;
 using App.Metrics.Extensions.Reporting.Console;
 using App.Metrics.Extensions.Reporting.TextFile;
-using App.Metrics.Internal;
-using App.Metrics.Reporting;
+using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Scheduling;
 using HealthCheck.Samples;
 using Metrics.Samples;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
 using Serilog;
@@ -61,13 +57,13 @@ namespace App.Sample
 
                     application.Metrics.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPagedMemorySizeGauge, () => process.PagedMemorySize64);
                     application.Metrics.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPeekPagedMemorySizeGauge, () => process.PeakPagedMemorySize64);
-                    application.Metrics.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPeekVirtualMemorySizeGauge, () => process.PeakVirtualMemorySize64);
+                    application.Metrics.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPeekVirtualMemorySizeGauge,
+                        () => process.PeakVirtualMemorySize64);
                     application.Metrics.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPeekWorkingSetSizeGauge, () => process.WorkingSet64);
                     application.Metrics.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPrivateMemorySizeGauge, () => process.PrivateMemorySize64);
                     application.Metrics.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessVirtualMemorySizeGauge, () => process.VirtualMemorySize64);
                     application.Metrics.Gauge(AppMetricsRegistry.ProcessMetrics.SystemNonPagedMemoryGauge, () => process.NonpagedSystemMemorySize64);
                     application.Metrics.Gauge(AppMetricsRegistry.ProcessMetrics.SystemPagedMemorySizeGauge, () => process.PagedSystemMemorySize64);
-
                 }, cancellationTokenSource.Token);
 
             application.Reporter.RunReportsAsync(application.Metrics, cancellationTokenSource.Token);
@@ -80,10 +76,7 @@ namespace App.Sample
         private static void ConfigureMetrics(IServiceCollection services)
         {
             services
-                .AddMetrics(options =>
-                {
-                    options.ReportingEnabled = true;
-                })
+                .AddMetrics(options => { options.ReportingEnabled = true; })
                 .AddHealthChecks(factory =>
                 {
                     factory.Register("DatabaseConnected", () => Task.FromResult("Database Connection OK"));

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using App.Metrics.Sampling;
+using App.Metrics.Sampling.Interfaces;
 
 namespace App.Metrics.Facts
 {

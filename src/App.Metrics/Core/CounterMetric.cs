@@ -10,6 +10,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
 using App.Metrics.App_Packages.Concurrency;
+using App.Metrics.Core.Interfaces;
 using App.Metrics.Data;
 
 namespace App.Metrics.Core

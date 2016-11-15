@@ -3,6 +3,7 @@
 
 
 using App.Metrics.Serialization;
+using App.Metrics.Serialization.Interfaces;
 using App.Metrics.Utils;
 using Newtonsoft.Json;
 

@@ -1,5 +1,7 @@
 using App.Metrics.Core;
+using App.Metrics.Core.Interfaces;
 using App.Metrics.Data;
+using App.Metrics.Data.Interfaces;
 
 namespace App.Metrics.Facts
 {

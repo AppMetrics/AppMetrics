@@ -1,4 +1,5 @@
 using App.Metrics.Core;
+using App.Metrics.Core.Options;
 
 namespace App.Metrics.Facts.Fixtures
 {

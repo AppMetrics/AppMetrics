@@ -6,7 +6,9 @@
 // Ported/Refactored to .NET Standard Library by Allan Hardy
 
 using System;
+using App.Metrics.Core.Interfaces;
 using App.Metrics.Data;
+using App.Metrics.Data.Interfaces;
 
 namespace App.Metrics.Core
 {

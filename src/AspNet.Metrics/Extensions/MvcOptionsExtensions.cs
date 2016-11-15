@@ -5,6 +5,7 @@
 using AspNet.Metrics.Infrastructure;
 
 // ReSharper disable CheckNamespace
+
 namespace Microsoft.AspNetCore.Mvc
 // ReSharper restore CheckNamespace
 {

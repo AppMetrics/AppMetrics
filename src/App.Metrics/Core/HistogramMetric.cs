@@ -7,8 +7,10 @@
 
 
 using System;
+using App.Metrics.Core.Interfaces;
 using App.Metrics.Data;
 using App.Metrics.Sampling;
+using App.Metrics.Sampling.Interfaces;
 
 namespace App.Metrics.Core
 {

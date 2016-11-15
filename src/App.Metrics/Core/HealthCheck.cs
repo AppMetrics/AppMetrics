@@ -8,7 +8,7 @@
 
 using System;
 using System.Threading.Tasks;
-using App.Metrics.Infrastructure;
+using App.Metrics.DependencyInjection.Internal;
 
 namespace App.Metrics.Core
 {

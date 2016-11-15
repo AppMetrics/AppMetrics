@@ -8,14 +8,16 @@ using App.Metrics;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
 using App.Metrics.DependencyInjection.Internal;
-using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.Reporting;
+using App.Metrics.Reporting.Interfaces;
+using App.Metrics.Reporting.Internal;
 using App.Metrics.Utils;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable CheckNamespace
+
 namespace Microsoft.Extensions.DependencyInjection
 // ReSharper restore CheckNamespace
 {
@@ -72,7 +74,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
                 var options = provider.GetRequiredService<AppMetricsOptions>();
 
-                if (!options.ReportingEnabled) return new NullReportFactory();
+                if (!options.ReportingEnabled) return new NoOpReportFactory();
 
                 var factory = new ReportFactory(loggerFactory);
                 setupAction?.Invoke(factory);

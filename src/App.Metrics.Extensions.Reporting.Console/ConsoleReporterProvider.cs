@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Concurrent;
 using App.Metrics.Reporting;
+using App.Metrics.Reporting.Interfaces;
 
 namespace App.Metrics.Extensions.Reporting.Console
 {

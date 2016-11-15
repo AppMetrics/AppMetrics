@@ -10,15 +10,6 @@ namespace App.Metrics.Extensions
 {
     public static class HistogramExtensions
     {
-        public static HistogramValueSource ToMetricValueSource(this Histogram source)
-        {
-            var histogramValue = new HistogramValue(source.Count, source.LastValue, source.LastUserValue,
-                source.Max, source.MaxUserValue, source.Mean, source.Min, source.MinUserValue, source.StdDev, source.Median,
-                source.Percentile75, source.Percentile95, source.Percentile98, source.Percentile99, source.Percentile999, source.SampleSize);
-
-            return new HistogramValueSource(source.Name, ConstantValue.Provider(histogramValue), source.Unit, source.Tags);
-        }
-
         public static IEnumerable<Histogram> ToMetric(this IEnumerable<HistogramValueSource> source)
         {
             return source.Select(ToMetric);
@@ -48,6 +39,15 @@ namespace App.Metrics.Extensions
                 StdDev = source.Value.StdDev,
                 Tags = source.Tags.ToDictionary()
             };
+        }
+
+        public static HistogramValueSource ToMetricValueSource(this Histogram source)
+        {
+            var histogramValue = new HistogramValue(source.Count, source.LastValue, source.LastUserValue,
+                source.Max, source.MaxUserValue, source.Mean, source.Min, source.MinUserValue, source.StdDev, source.Median,
+                source.Percentile75, source.Percentile95, source.Percentile98, source.Percentile99, source.Percentile999, source.SampleSize);
+
+            return new HistogramValueSource(source.Name, ConstantValue.Provider(histogramValue), source.Unit, source.Tags);
         }
 
         public static IEnumerable<HistogramValueSource> ToMetricValueSource(this IEnumerable<Histogram> source)

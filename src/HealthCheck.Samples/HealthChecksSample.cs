@@ -36,7 +36,7 @@ namespace HealthCheck.Samples
             // the result will be unhealthy
             _database.Ping();
 
-            return AppMetricsTaskCache.CompletedHealthyTask;
+            return Task.FromResult(HealthCheckResult.Healthy());
         }
     }
 }

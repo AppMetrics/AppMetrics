@@ -5,6 +5,7 @@
 using System;
 
 // ReSharper disable CheckNamespace
+
 namespace Microsoft.Extensions.Logging
     // ReSharper restore CheckNamespace
 {

@@ -1,8 +1,10 @@
 using System;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
+using App.Metrics.Data;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
+using App.Metrics.Internal.Interfaces;
 using App.Metrics.Utils;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Attributes.Exporters;
@@ -24,7 +26,7 @@ namespace App.Metrics.Performance.Tests.Setup
             var clock = new TestClock();
             var options = new AppMetricsOptions { DefaultSamplingType = SamplingType.LongTerm };
             Func<string, IMetricContextRegistry> newContextRegistry = name => new DefaultMetricContextRegistry(name);
-            var registry = new DefaultMetricsRegistry(loggerFactory, options, clock, new EnvironmentInfoBuilder(loggerFactory), newContextRegistry);
+            var registry = new DefaultMetricsRegistry(loggerFactory, options, clock, new EnvironmentInfoProvider(loggerFactory), newContextRegistry);
             var healthCheckFactory = new HealthCheckFactory(healthFactoryLogger);
             var advancedContext = new DefaultAdvancedMetrics(metricsLogger, options, clock, new DefaultMetricsFilter(), registry, healthCheckFactory);
             Metrics = new DefaultMetrics(options, registry, advancedContext);

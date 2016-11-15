@@ -2,6 +2,8 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using App.Metrics.Data.Interfaces;
+
 namespace App.Metrics.Data
 {
     /// <summary>

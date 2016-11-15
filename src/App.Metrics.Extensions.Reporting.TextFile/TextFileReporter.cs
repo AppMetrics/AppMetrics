@@ -9,6 +9,7 @@ using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.Infrastructure;
 using App.Metrics.Reporting;
+using App.Metrics.Reporting.Interfaces;
 
 namespace App.Metrics.Extensions.Reporting.TextFile
 {

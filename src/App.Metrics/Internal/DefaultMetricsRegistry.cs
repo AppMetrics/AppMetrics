@@ -7,9 +7,12 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
 using App.Metrics.Configuration;
-using App.Metrics.Core;
+using App.Metrics.Core.Interfaces;
+using App.Metrics.Core.Options;
 using App.Metrics.Data;
+using App.Metrics.Data.Interfaces;
 using App.Metrics.Infrastructure;
+using App.Metrics.Internal.Interfaces;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 
@@ -22,7 +25,7 @@ namespace App.Metrics.Internal
         private readonly ConcurrentDictionary<string, IMetricContextRegistry> _contexts = new ConcurrentDictionary<string, IMetricContextRegistry>();
         private readonly string _defaultContextLabel;
         private readonly SamplingType _defaultSamplingType;
-        private readonly EnvironmentInfoBuilder _environmentInfoBuilder;
+        private readonly EnvironmentInfoProvider _environmentInfoProvider;
         private readonly ILogger _logger;
         private readonly Func<string, IMetricContextRegistry> _newContextRegistry;
 
@@ -30,11 +33,11 @@ namespace App.Metrics.Internal
             ILoggerFactory loggerFactory,
             AppMetricsOptions options,
             IClock clock,
-            EnvironmentInfoBuilder environmentInfoBuilder,
+            EnvironmentInfoProvider environmentInfoProvider,
             Func<string, IMetricContextRegistry> newContextRegistry)
         {
             _logger = loggerFactory.CreateLogger<DefaultMetricContextRegistry>();
-            _environmentInfoBuilder = environmentInfoBuilder;
+            _environmentInfoProvider = environmentInfoProvider;
             _clock = clock;
             _newContextRegistry = newContextRegistry;
             _defaultContextLabel = options.DefaultContextLabel;
@@ -106,7 +109,7 @@ namespace App.Metrics.Internal
                 return MetricsDataValueSource.Empty;
             }
 
-            var environment = await _environmentInfoBuilder.BuildAsync();
+            var environment = await _environmentInfoProvider.BuildAsync();
 
             var contexts = _contexts.Values.Select(g => new MetricsContextValueSource(
                 g.Context,

@@ -10,34 +10,6 @@ namespace App.Metrics.Extensions
 {
     public static class TimerExtensions
     {
-        public static TimerValueSource ToMetricValueSource(this Timer source)
-        {
-            var rateUnit = source.RateUnit.FromUnit();
-            var durationUnit = source.DurationUnit.FromUnit();
-            var rateValue = new MeterValue(source.Count, source.Rate.MeanRate, source.Rate.OneMinuteRate, source.Rate.FiveMinuteRate,
-                source.Rate.FifteenMinuteRate, rateUnit);
-            var histogramValue = new HistogramValue(source.Count,
-                source.Histogram.LastValue,
-                source.Histogram.LastUserValue,
-                source.Histogram.Max,
-                source.Histogram.MaxUserValue,
-                source.Histogram.Mean,
-                source.Histogram.Min,
-                source.Histogram.MinUserValue,
-                source.Histogram.StdDev,
-                source.Histogram.Median,
-                source.Histogram.Percentile75,
-                source.Histogram.Percentile95,
-                source.Histogram.Percentile98,
-                source.Histogram.Percentile99,
-                source.Histogram.Percentile999,
-                source.Histogram.SampleSize);
-
-            var timerValue = new TimerValue(rateValue, histogramValue, source.ActiveSessions, source.TotalTime, durationUnit);
-
-            return new TimerValueSource(source.Name, ConstantValue.Provider(timerValue), source.Unit, rateUnit, durationUnit, source.Tags);
-        }
-
         public static IEnumerable<Timer> ToMetric(this IEnumerable<TimerValueSource> source)
         {
             return source.Select(ToMetric);
@@ -85,6 +57,34 @@ namespace App.Metrics.Extensions
                 DurationUnit = source.DurationUnit.Unit(),
                 Tags = source.Tags.ToDictionary()
             };
+        }
+
+        public static TimerValueSource ToMetricValueSource(this Timer source)
+        {
+            var rateUnit = source.RateUnit.FromUnit();
+            var durationUnit = source.DurationUnit.FromUnit();
+            var rateValue = new MeterValue(source.Count, source.Rate.MeanRate, source.Rate.OneMinuteRate, source.Rate.FiveMinuteRate,
+                source.Rate.FifteenMinuteRate, rateUnit);
+            var histogramValue = new HistogramValue(source.Count,
+                source.Histogram.LastValue,
+                source.Histogram.LastUserValue,
+                source.Histogram.Max,
+                source.Histogram.MaxUserValue,
+                source.Histogram.Mean,
+                source.Histogram.Min,
+                source.Histogram.MinUserValue,
+                source.Histogram.StdDev,
+                source.Histogram.Median,
+                source.Histogram.Percentile75,
+                source.Histogram.Percentile95,
+                source.Histogram.Percentile98,
+                source.Histogram.Percentile99,
+                source.Histogram.Percentile999,
+                source.Histogram.SampleSize);
+
+            var timerValue = new TimerValue(rateValue, histogramValue, source.ActiveSessions, source.TotalTime, durationUnit);
+
+            return new TimerValueSource(source.Name, ConstantValue.Provider(timerValue), source.Unit, rateUnit, durationUnit, source.Tags);
         }
 
         public static IEnumerable<TimerValueSource> ToMetricValueSource(this IEnumerable<Timer> source)

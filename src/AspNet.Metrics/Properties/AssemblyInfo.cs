@@ -2,7 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -29,5 +28,4 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
 [assembly: Guid("eaaa166f-451b-4066-b62b-6d3fb7f4bf11")]
-
 [assembly: InternalsVisibleTo("AspNet.Metrics.Integration.Facts")]

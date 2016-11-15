@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using App.Metrics.Core;
 using App.Metrics.Sampling;
+using App.Metrics.Sampling.Interfaces;
 using FluentAssertions;
 using Xunit;
 

@@ -6,8 +6,11 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using App.Metrics.Core;
+using App.Metrics.Core.Interfaces;
+using App.Metrics.Core.Options;
 using App.Metrics.Data;
+using App.Metrics.Data.Interfaces;
+using App.Metrics.Internal.Interfaces;
 
 namespace App.Metrics.Internal
 {

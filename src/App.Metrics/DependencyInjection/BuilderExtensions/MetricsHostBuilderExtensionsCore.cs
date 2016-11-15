@@ -6,16 +6,20 @@ using System;
 using App.Metrics;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
+using App.Metrics.Core.Interfaces;
 using App.Metrics.DependencyInjection.Internal;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
+using App.Metrics.Internal.Interfaces;
 using App.Metrics.Serialization;
+using App.Metrics.Serialization.Interfaces;
 using App.Metrics.Utils;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 // ReSharper disable CheckNamespace
+
 namespace Microsoft.Extensions.DependencyInjection
 // ReSharper restore CheckNamespace
 {
@@ -36,9 +40,9 @@ namespace Microsoft.Extensions.DependencyInjection
                 provider => { return context => new DefaultMetricContextRegistry(context); });
             builder.Services.TryAddSingleton<IClock, StopwatchClock>();
             builder.Services.TryAddSingleton<IMetricsFilter, DefaultMetricsFilter>();
-            builder.Services.TryAddSingleton<EnvironmentInfoBuilder, EnvironmentInfoBuilder>();
-            builder.Services.TryAddSingleton<IMetricDataSerializer, NullMetricDataSerializer>();
-            builder.Services.TryAddSingleton<IHealthStatusSerializer, NullHealthStatusSerializer>();
+            builder.Services.TryAddSingleton<EnvironmentInfoProvider, EnvironmentInfoProvider>();
+            builder.Services.TryAddSingleton<IMetricDataSerializer, NoOpMetricDataSerializer>();
+            builder.Services.TryAddSingleton<IHealthStatusSerializer, NoOpHealthStatusSerializer>();
             builder.Services.TryAddSingleton<IAdvancedMetrics, DefaultAdvancedMetrics>();
             builder.Services.TryAddSingleton<IMetricsRegistry>(provider =>
             {
@@ -51,7 +55,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
                 var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
                 var clock = provider.GetRequiredService<IClock>();
-                var envBuilder = provider.GetRequiredService<EnvironmentInfoBuilder>();
+                var envBuilder = provider.GetRequiredService<EnvironmentInfoProvider>();
                 var newContextRegistry = provider.GetRequiredService<Func<string, IMetricContextRegistry>>();
 
                 return new DefaultMetricsRegistry(loggerFactory, options, clock, envBuilder, newContextRegistry);

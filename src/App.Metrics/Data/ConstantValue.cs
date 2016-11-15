@@ -6,6 +6,8 @@
 // Ported/Refactored to .NET Standard Library by Allan Hardy
 
 
+using App.Metrics.Data.Interfaces;
+
 namespace App.Metrics.Data
 {
     public static class ConstantValue

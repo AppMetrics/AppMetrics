@@ -1,4 +1,4 @@
-using App.Metrics.Core;
+using App.Metrics.Core.Options;
 using App.Metrics.Performance.Tests.Setup;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Attributes.Exporters;

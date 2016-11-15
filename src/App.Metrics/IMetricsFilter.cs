@@ -9,6 +9,10 @@ namespace App.Metrics
 {
     public interface IMetricsFilter : IHideObjectMembers
     {
+        bool ReportEnvironment { get; }
+
+        bool ReportHealthChecks { get; }
+
         bool IsMatch(string context);
 
         bool IsMatch(GaugeValueSource gauge);
@@ -20,9 +24,5 @@ namespace App.Metrics
         bool IsMatch(HistogramValueSource histogram);
 
         bool IsMatch(TimerValueSource timer);
-
-        bool ReportEnvironment { get; }
-
-        bool ReportHealthChecks { get; }
     }
 }

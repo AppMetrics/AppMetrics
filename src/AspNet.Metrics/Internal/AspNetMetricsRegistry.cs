@@ -4,7 +4,7 @@
 
 using System;
 using App.Metrics;
-using App.Metrics.Core;
+using App.Metrics.Core.Options;
 
 namespace AspNet.Metrics.Internal
 {

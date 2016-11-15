@@ -6,11 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using App.Metrics.Internal;
+using App.Metrics.Internal.Interfaces;
 
 namespace App.Metrics.DependencyInjection.Internal
 {
-    public sealed class StaticHealthCheckTypeProvider : IHealthCheckTypeProvider
+    internal sealed class StaticHealthCheckTypeProvider : IHealthCheckTypeProvider
     {
         /// <summary>
         ///     Initializes a new instance of <see cref="StaticHealthCheckTypeProvider" />.

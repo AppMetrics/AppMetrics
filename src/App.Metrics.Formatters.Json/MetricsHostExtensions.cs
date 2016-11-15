@@ -3,11 +3,12 @@
 
 
 using App.Metrics.Formatters.Json;
-using App.Metrics.Serialization;
+using App.Metrics.Serialization.Interfaces;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json;
 
 // ReSharper disable CheckNamespace
+
 namespace Microsoft.Extensions.DependencyInjection
 // ReSharper restore CheckNamespace
 {

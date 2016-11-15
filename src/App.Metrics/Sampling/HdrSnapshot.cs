@@ -8,6 +8,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.App_Packages.HdrHistogram;
+using App.Metrics.Sampling.Interfaces;
 
 namespace App.Metrics.Sampling
 {

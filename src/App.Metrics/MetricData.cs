@@ -9,9 +9,9 @@ namespace App.Metrics
 {
     public sealed class MetricData
     {
-        public IDictionary<string, string> Environment { get; set; }
-
         public IEnumerable<MetricsContext> Contexts { get; set; } = new MetricsContext[0];
+
+        public IDictionary<string, string> Environment { get; set; }
 
         public DateTime Timestamp { get; set; }
 

@@ -10,20 +10,6 @@ namespace App.Metrics.Extensions
 {
     public static class MeterExtensions
     {
-        public static MeterValueSource ToMetricValueSource(this Meter source)
-        {
-            var rateUnit = source.RateUnit.FromUnit();
-            var items = source.Items.Select(i =>
-                new MeterValue.SetItem(i.Item, i.Percent,
-                    new MeterValue(i.Count, i.MeanRate, i.OneMinuteRate, i.FiveMinuteRate, i.FifteenMinuteRate, rateUnit))).ToArray();
-
-            var meterValue = new MeterValue(source.Count, source.MeanRate,
-                source.OneMinuteRate, source.FiveMinuteRate,
-                source.FifteenMinuteRate, rateUnit, items);
-
-            return new MeterValueSource(source.Name, ConstantValue.Provider(meterValue), source.Unit, rateUnit, source.Tags);
-        }
-
         public static IEnumerable<Meter> ToMetric(this IEnumerable<MeterValueSource> source)
         {
             return source.Select(x => x.ToMetric());
@@ -56,6 +42,20 @@ namespace App.Metrics.Extensions
                 MeanRate = source.Value.MeanRate,
                 Tags = source.Tags.ToDictionary()
             };
+        }
+
+        public static MeterValueSource ToMetricValueSource(this Meter source)
+        {
+            var rateUnit = source.RateUnit.FromUnit();
+            var items = source.Items.Select(i =>
+                new MeterValue.SetItem(i.Item, i.Percent,
+                    new MeterValue(i.Count, i.MeanRate, i.OneMinuteRate, i.FiveMinuteRate, i.FifteenMinuteRate, rateUnit))).ToArray();
+
+            var meterValue = new MeterValue(source.Count, source.MeanRate,
+                source.OneMinuteRate, source.FiveMinuteRate,
+                source.FifteenMinuteRate, rateUnit, items);
+
+            return new MeterValueSource(source.Name, ConstantValue.Provider(meterValue), source.Unit, rateUnit, source.Tags);
         }
 
         public static IEnumerable<MeterValueSource> ToMetricValueSource(this IEnumerable<Meter> source)

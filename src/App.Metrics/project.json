@@ -2,7 +2,7 @@
   "title": "App.Metrics",
   "copyright": "Allan Hardy 2016",
   "version": "1.0.0-*",
-  "authors": [ "Allan Hardy" ],
+  "authors": ["Allan Hardy"],
   "description": "Provides application instrumentation abilities with custom metrics",
 
   "buildOptions": {
@@ -16,7 +16,7 @@
   },
 
   "packOptions": {
-    "tags": [ "Metrics", "Monitoring", "Instrumentation" ],
+    "tags": ["Metrics", "Monitoring", "Instrumentation"],
     "projectUrl": "https://github.com/alhardy/app-metrics",
     "licenseUrl": "https://github.com/alhardy/app-metrics/blob/master/LICENSE",
     "iconUrl": "http://www.erata.net/Metrics.NET/metrics_32.png"

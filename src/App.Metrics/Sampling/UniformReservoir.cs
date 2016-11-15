@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using App.Metrics.App_Packages.Concurrency;
+using App.Metrics.Sampling.Interfaces;
 
 namespace App.Metrics.Sampling
 {

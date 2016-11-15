@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using App.Metrics.Core;
+using App.Metrics.DependencyInjection.Internal;
 using App.Metrics.Infrastructure;
 using FluentAssertions;
 using Xunit;

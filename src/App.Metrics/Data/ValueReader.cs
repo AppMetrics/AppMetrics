@@ -5,7 +5,7 @@
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
 // Ported/Refactored to .NET Standard Library by Allan Hardy
 
-using App.Metrics.Core;
+using App.Metrics.Core.Interfaces;
 
 namespace App.Metrics.Data
 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using App.Metrics.Sampling;
+using App.Metrics.Sampling.Interfaces;
 using FluentAssertions;
 using Xunit;
 
@@ -8,12 +9,12 @@ namespace App.Metrics.Facts.Sampling
 {
     public class WeightedSnapshotTests
     {
-        private readonly WeightedSnapshot snapshot = MakeSanpshot(new long[] { 5, 1, 2, 3, 4 }, new double[] { 1, 2, 3, 2, 2 });
+        private readonly WeightedSnapshot _snapshot = MakeSanpshot(new long[] { 5, 1, 2, 3, 4 }, new double[] { 1, 2, 3, 2, 2 });
 
         [Fact]
         public void WeightedSnapshot_BigQuantilesAreTheLastValue()
         {
-            snapshot.GetValue(1.0).Should().Be(5.0);
+            _snapshot.GetValue(1.0).Should().Be(5.0);
         }
 
         [Fact]
@@ -54,88 +55,88 @@ namespace App.Metrics.Facts.Sampling
         [Fact]
         public void WeightedSnapshot_CalculatesTheMaximumValue()
         {
-            snapshot.Max.Should().Be(5);
+            _snapshot.Max.Should().Be(5);
         }
 
         [Fact]
         public void WeightedSnapshot_CalculatesTheMeanValue()
         {
-            snapshot.Mean.Should().Be(2.7);
+            _snapshot.Mean.Should().Be(2.7);
         }
 
         [Fact]
         public void WeightedSnapshot_CalculatesTheMinimumValue()
         {
-            snapshot.Min.Should().Be(1);
+            _snapshot.Min.Should().Be(1);
         }
 
         [Fact]
         public void WeightedSnapshot_CalculatesTheStdDev()
         {
-            snapshot.StdDev.Should().BeApproximately(1.2688, 0.0001);
+            _snapshot.StdDev.Should().BeApproximately(1.2688, 0.0001);
         }
 
         [Fact]
         public void WeightedSnapshot_HasAMedian()
         {
-            snapshot.Median.Should().Be(3.0);
+            _snapshot.Median.Should().Be(3.0);
         }
 
         [Fact]
         public void WeightedSnapshot_HasAp75()
         {
-            snapshot.Percentile75.Should().Be(4.0);
+            _snapshot.Percentile75.Should().Be(4.0);
         }
 
         [Fact]
         public void WeightedSnapshot_HasAp95()
         {
-            snapshot.Percentile95.Should().Be(5.0);
+            _snapshot.Percentile95.Should().Be(5.0);
         }
 
         [Fact]
         public void WeightedSnapshot_HasAp98()
         {
-            snapshot.Percentile98.Should().Be(5.0);
+            _snapshot.Percentile98.Should().Be(5.0);
         }
 
         [Fact]
         public void WeightedSnapshot_HasAp99()
         {
-            snapshot.Percentile99.Should().Be(5.0);
+            _snapshot.Percentile99.Should().Be(5.0);
         }
 
         [Fact]
         public void WeightedSnapshot_HasAp999()
         {
-            snapshot.Percentile999.Should().Be(5.0);
+            _snapshot.Percentile999.Should().Be(5.0);
         }
 
         [Fact]
         public void WeightedSnapshot_HasSize()
         {
-            snapshot.Size.Should().Be(5);
+            _snapshot.Size.Should().Be(5);
         }
 
         [Fact]
         public void WeightedSnapshot_HasValues()
         {
-            snapshot.Values.Should().Equal(new long[] { 1, 2, 3, 4, 5 });
+            _snapshot.Values.Should().Equal(new long[] { 1, 2, 3, 4, 5 });
         }
 
 
         [Fact]
         public void WeightedSnapshot_SmallQuantilesAreTheFirstValue()
         {
-            snapshot.GetValue(0.0).Should().Be(1.0);
+            _snapshot.GetValue(0.0).Should().Be(1.0);
         }
 
         [Fact]
         public void WeightedSnapshot_ThrowsOnBadQuantileValue()
         {
-            ((Action)(() => snapshot.GetValue(-0.5))).ShouldThrow<ArgumentException>();
-            ((Action)(() => snapshot.GetValue(1.5))).ShouldThrow<ArgumentException>();
-            ((Action)(() => snapshot.GetValue(double.NaN))).ShouldThrow<ArgumentException>();
+            ((Action)(() => _snapshot.GetValue(-0.5))).ShouldThrow<ArgumentException>();
+            ((Action)(() => _snapshot.GetValue(1.5))).ShouldThrow<ArgumentException>();
+            ((Action)(() => _snapshot.GetValue(double.NaN))).ShouldThrow<ArgumentException>();
         }
 
         private static WeightedSnapshot MakeSanpshot(long[] values, double[] weights)

@@ -5,6 +5,7 @@ using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
+using App.Metrics.Internal.Interfaces;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 
@@ -21,7 +22,7 @@ namespace App.Metrics.Facts.Fixtures
             var clock = new TestClock();
             var options = new AppMetricsOptions {DefaultSamplingType = SamplingType.LongTerm};
             Func<string, IMetricContextRegistry> newContextRegistry = name => new DefaultMetricContextRegistry(name);
-            var registry = new DefaultMetricsRegistry(_loggerFactory, options, clock, new EnvironmentInfoBuilder(_loggerFactory), newContextRegistry);
+            var registry = new DefaultMetricsRegistry(_loggerFactory, options, clock, new EnvironmentInfoProvider(_loggerFactory), newContextRegistry);
             var healthCheckFactory = new HealthCheckFactory(healthFactoryLogger);
             var advancedContext = new DefaultAdvancedMetrics(metricsLogger, options, clock, new DefaultMetricsFilter(), registry, healthCheckFactory);
             Metrics = new DefaultMetrics(options, registry, advancedContext);

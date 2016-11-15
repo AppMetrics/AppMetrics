@@ -15,8 +15,8 @@ namespace App.Metrics
     /// </summary>
     public struct MetricTags : IHideObjectMembers
     {
-        private static readonly Dictionary<string, string> Empty = new Dictionary<string, string>();
         public static readonly Dictionary<string, string> None = new Dictionary<string, string>();
+        private static readonly Dictionary<string, string> Empty = new Dictionary<string, string>();
 
         private Dictionary<string, string> _tags;
 

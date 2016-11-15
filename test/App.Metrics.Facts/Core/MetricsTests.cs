@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using App.Metrics.Core;
+using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
 using FluentAssertions;
 using Xunit;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using App.Metrics.Sampling;
+using App.Metrics.Sampling.Interfaces;
 using FluentAssertions;
 using Xunit;
 

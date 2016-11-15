@@ -25,6 +25,6 @@ namespace App.Metrics
 
         public string RuntimeFramework { get; }
 
-        public string RuntimeFrameworkVersion { get;  }
+        public string RuntimeFrameworkVersion { get; }
     }
 }

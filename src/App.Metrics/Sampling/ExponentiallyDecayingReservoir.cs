@@ -9,7 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using App.Metrics.App_Packages.Concurrency;
+using App.Metrics.Sampling.Interfaces;
 using App.Metrics.Scheduling;
+using App.Metrics.Scheduling.Interfaces;
 using App.Metrics.Utils;
 
 namespace App.Metrics.Sampling
@@ -29,10 +31,10 @@ namespace App.Metrics.Sampling
 
         private readonly SortedList<double, WeightedSample> _values;
         private AtomicLong _count = new AtomicLong();
+        private bool _disposed;
 
         private SpinLock _lock = new SpinLock();
         private AtomicLong _startTime;
-        private bool _disposed;
 
         public ExponentiallyDecayingReservoir()
             : this(DefaultSize, DefaultAlpha)

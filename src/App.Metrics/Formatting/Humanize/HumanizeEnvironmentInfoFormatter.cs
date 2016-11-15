@@ -4,7 +4,7 @@
 
 using System;
 using System.Text;
-using App.Metrics.Infrastructure;
+using App.Metrics.Data;
 
 namespace App.Metrics.Formatting.Humanize
 {

@@ -9,15 +9,14 @@ namespace App.Metrics.Utils
 {
     public sealed class SystemClock : IClock
     {
-        public long Nanoseconds => DateTime.UtcNow.Ticks * 100L;
-
-        public DateTime UtcDateTime => DateTime.UtcNow;
-
 #pragma warning disable 67
         public event EventHandler Advanced;
 #pragma warning restore 67
+        public long Nanoseconds => DateTime.UtcNow.Ticks * 100L;
 
         public long Seconds => TimeUnit.Nanoseconds.ToSeconds(Nanoseconds);
+
+        public DateTime UtcDateTime => DateTime.UtcNow;
 
         public void Advance(TimeUnit unit, long value)
         {

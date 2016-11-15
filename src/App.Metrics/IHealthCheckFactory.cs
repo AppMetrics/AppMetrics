@@ -12,10 +12,10 @@ namespace App.Metrics
 {
     public interface IHealthCheckFactory : IHideObjectMembers
     {
+        IReadOnlyDictionary<string, HealthCheck> Checks { get; }
+
         void Register(string name, Func<Task<string>> check);
 
         void Register(string name, Func<Task<HealthCheckResult>> check);
-
-        IReadOnlyDictionary<string, HealthCheck> Checks { get; }
     }
 }
