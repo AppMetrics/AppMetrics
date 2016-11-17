@@ -1,47 +1,37 @@
 {
-    "dependencies": {
-    "Microsoft.NETCore.App": {
-      "version": "1.0.0",
-      "type": "platform"
-    },
-    "AspNet.Metrics": "1.0.0-*",
-    "HealthCheck.Samples": "1.0.0-*",
-    "Microsoft.AspNetCore.Diagnostics": "1.0.0",
-    "Microsoft.AspNetCore.Mvc": "1.0.1",
-    "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
-    "Microsoft.AspNetCore.Server.Kestrel": "1.0.1",
-    "Microsoft.AspNetCore.StaticFiles": "1.0.0",
-    "Microsoft.Extensions.Configuration.FileExtensions": "1.0.0",
-    "Microsoft.Extensions.Configuration.Json": "1.0.0",
-    "Microsoft.Extensions.Logging": "1.0.0",
-    "Microsoft.Extensions.Logging.Console": "1.0.0",
-    "Microsoft.Extensions.Logging.Debug": "1.0.0",
-      "App.Metrics": "1.0.0-*",
-      "App.Metrics.Formatters.Json": "1.0.0-*"
-  },
-
-  "tools": {
-    "Microsoft.AspNetCore.Server.IISIntegration.Tools": {
-      "version": "1.0.0-preview1-final",
-      "imports": "portable-net45+win8+dnxcore50"
-    }
-  },
-
-   "frameworks": {
-    "netcoreapp1.0": {
-      "imports": [
-        "dotnet5.6",
-        "portable-net45+win8"
-      ]
-    }
-  },
-
   "buildOptions": {
     "emitEntryPoint": true,
     "preserveCompilationContext": true,
     "debugType": "portable"
   },
-
+  "dependencies": {
+    "App.Metrics": "1.0.0-*",
+    "App.Metrics.Formatters.Json": "1.0.0-*",
+    "AspNet.Metrics": "1.0.0-*",
+    "HealthCheck.Samples": "1.0.0-*",
+    "Microsoft.AspNetCore.Diagnostics": "1.1.0",
+    "Microsoft.AspNetCore.Mvc": "1.1.0",
+    "Microsoft.AspNetCore.Server.IISIntegration": "1.1.0",
+    "Microsoft.AspNetCore.Server.IISIntegration.Tools": "1.1.0-preview4-final",
+    "Microsoft.AspNetCore.Server.Kestrel": "1.1.0",
+    "Microsoft.AspNetCore.StaticFiles": "1.1.0",
+    "Microsoft.Extensions.Configuration.FileExtensions": "1.1.0",
+    "Microsoft.Extensions.Configuration.Json": "1.1.0",
+    "Microsoft.Extensions.Logging": "1.1.0",
+    "Microsoft.Extensions.Logging.Console": "1.1.0",
+    "Microsoft.Extensions.Logging.Debug": "1.1.0",
+    "Microsoft.NETCore.App": {
+      "type": "platform",
+      "version": "1.1.0"
+    }
+  },
+  "frameworks": {
+    "netcoreapp1.1": {
+      "imports": [
+        "dnxcore50"
+      ]
+    }
+  },
   "publishOptions": {
     "include": [
       "wwwroot",
@@ -50,8 +40,15 @@
       "web.config"
     ]
   },
-
+  "runtimes": {
+    "win10-x64": {}
+  },
   "scripts": {
-    "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
+    "postpublish": [
+      "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%"
+    ]
+  },
+  "tools": {
+
   }
 }

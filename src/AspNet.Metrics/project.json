@@ -25,15 +25,15 @@
     "debugType": "portable"
   },
   "dependencies": {
-    "Microsoft.AspNetCore.Mvc": "1.0.1",
-    "Microsoft.AspNetCore.Routing": "1.0.1",
-    "Microsoft.Extensions.DependencyInjection": "1.0.0",
-    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0",
-    "Microsoft.Extensions.Logging": "1.0.0",
-    "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
-    "NETStandard.Library": "1.6.0",
-    "System.Linq": "4.1.0",
-    "App.Metrics": "1.0.0-*"
+    "Microsoft.AspNetCore.Mvc": "1.1.0",
+    "Microsoft.Extensions.Logging": "1.1.0",
+    "App.Metrics": "1.0.0-*",
+    "Microsoft.AspNetCore.Routing": "1.1.0",
+    "Microsoft.Extensions.DependencyInjection": "1.1.0",
+    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
+    "Microsoft.Extensions.PlatformAbstractions": "1.1.0",
+    "NETStandard.Library": "1.6.1",
+    "System.Linq": "4.3.0"
   },
   "frameworks": {
     "netstandard1.6": {

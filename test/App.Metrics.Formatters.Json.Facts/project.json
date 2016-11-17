@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0-*",
   "testRunner": "xunit",
   "runtimes": {
@@ -17,10 +17,10 @@
   "dependencies": {
     "App.Metrics.Formatters.Json": "1.0.0-*",
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
-    "FluentAssertions": "4.16.0",
-    "FluentAssertions.Json": "4.16.0",
-    "xunit": "2.2.0-beta2-build3300",
-    "xunit.runner.visualstudio": "2.2.0-beta2-build1149"
+    "FluentAssertions": "4.17.0",
+    "FluentAssertions.Json": "4.17.0",
+    "xunit": "2.2.0-beta4-build3444",
+    "xunit.runner.visualstudio": "2.2.0-beta4-build1194"
   },
 
   "frameworks": {

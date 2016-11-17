@@ -1,37 +1,37 @@
 {
-  "version": "1.0.0-*",
   "buildOptions": {
     "emitEntryPoint": true,
     "debugType": "portable"
   },
-
   "dependencies": {
     "App.Metrics": "1.0.0-*",
-    "Microsoft.Extensions.DependencyInjection": "1.0.0",
-    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0",
-    "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
-    "NETStandard.Library": "1.6.0",
-    "System.Linq": "4.1.0",
     "Microsoft.NETCore.App": {
       "type": "platform",
-      "version": "1.0.1"
+      "version": "1.1.0"
     },
-    "Microsoft.Extensions.Logging.Console": "1.0.0",
-    "Serilog.Extensions.Logging": "1.2.0",
-    "Serilog.Sinks.Console": "2.1.0",
+    "Microsoft.Extensions.Logging.Console": "1.1.0",
     "Serilog.Extensions.Logging.File": "1.0.0",
     "Metrics.Samples": "1.0.0-*",
     "HealthCheck.Samples": "1.0.0-*",
     "App.Metrics.Extensions.Reporting.Console": "1.0.0-*",
-    "App.Metrics.Extensions.Reporting.TextFile": "1.0.0-*"
+    "App.Metrics.Extensions.Reporting.TextFile": "1.0.0-*",
+    "Microsoft.Extensions.DependencyInjection": "1.1.0",
+    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
+    "Microsoft.Extensions.PlatformAbstractions": "1.1.0",
+    "NETStandard.Library": "1.6.1",
+    "System.Linq": "4.3.0",
+    "Serilog.Extensions.Logging": "1.3.0-dev-10129",
+    "Serilog.Sinks.Console": "2.2.0-dev-00719"
   },
-
   "frameworks": {
-    "netcoreapp1.0": {
+    "netcoreapp1.1": {
       "imports": [
-        "dotnet5.6",
-        "portable-net45+win8"
+        "dnxcore50"
       ]
     }
-  }
+  },
+  "runtimes": {
+    "win10-x64": {}
+  },
+  "version": "1.0.0-*"
 }

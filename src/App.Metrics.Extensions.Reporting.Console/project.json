@@ -22,15 +22,18 @@
   },
 
   "dependencies": {
-    "Microsoft.DotNet.InternalAbstractions": "1.0.1-*",
-    "Microsoft.Extensions.DependencyInjection": "1.0.0",
-    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0",
-    "Microsoft.Extensions.DependencyModel": "1.0.1-*",
-    "Microsoft.Extensions.Options": "1.0.0",
-    "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
-    "NETStandard.Library": "1.6.0",
-    "Microsoft.Extensions.Logging.Console": "1.0.0",
-    "App.Metrics": "1.0.0-*"
+    "Microsoft.Extensions.Logging.Console": "1.1.0",
+    "App.Metrics": "1.0.0-*",
+    "Microsoft.Extensions.DependencyInjection": "1.1.0",
+    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
+    "Microsoft.Extensions.DependencyModel": "1.1.0",
+    "Microsoft.Extensions.Options": "1.1.0",
+    "Microsoft.Extensions.PlatformAbstractions": "1.1.0",
+    "NETStandard.Library": "1.6.1",
+    "System.Collections.Specialized": "4.3.0",
+    "System.Diagnostics.Process": "4.3.0",
+    "System.Threading.Thread": "4.3.0",
+    "Microsoft.DotNet.InternalAbstractions": "1.0.500-preview2-1-003177"
   },
 
   "frameworks": {
@@ -40,9 +43,6 @@
         "portable-net45+win8"
       ],
       "dependencies": {
-        "System.Collections.Specialized": "4.0.1",
-        "System.Diagnostics.Process": "4.1.0",
-        "System.Threading.Thread": "4.0.0"
 
       }
     }
