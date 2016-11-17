@@ -5,7 +5,6 @@ using System.Security.Claims;
 using System.Threading;
 using App.Metrics;
 using App.Metrics.Extensions.Reporting.TextFile;
-using App.Metrics.Reporting;
 using App.Metrics.Reporting.Interfaces;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
@@ -72,7 +71,7 @@ namespace Api.Sample
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {            
+        {
             services
                 .AddLogging()
                 .AddRouting(options => { options.LowercaseUrls = true; });

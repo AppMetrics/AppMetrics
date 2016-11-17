@@ -54,6 +54,16 @@ namespace App.Metrics.Core
             SetCounter(item).Add(-amount);
         }
 
+        public void Decrement(MetricItem item)
+        {
+            Decrement(item.ToString());
+        }
+
+        public void Decrement(MetricItem item, long amount)
+        {
+            Decrement(item.ToString(), amount);
+        }
+
         public CounterValue GetValue(bool resetMetric = false)
         {
             var value = Value;
@@ -84,6 +94,16 @@ namespace App.Metrics.Core
         {
             Increment(amount);
             SetCounter(item).Add(amount);
+        }
+
+        public void Increment(MetricItem item)
+        {
+            Increment(item.ToString());
+        }
+
+        public void Increment(MetricItem item, long amount)
+        {
+            Increment(item.ToString(), amount);
         }
 
         public void Reset()

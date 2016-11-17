@@ -21,6 +21,10 @@ namespace App.Metrics
 
         void Decrement(CounterOptions options, long amount, string item);
 
+        void Decrement(CounterOptions options, Action<MetricItem> item);
+
+        void Decrement(CounterOptions options, long amount, Action<MetricItem> item);
+
         void Gauge(GaugeOptions options, Func<double> valueProvider);
 
         void Increment(CounterOptions options);
@@ -35,7 +39,11 @@ namespace App.Metrics
 
         void Mark(MeterOptions options, string item);
 
+        void Mark(MeterOptions options, Action<MetricItem> item);
+
         void Mark(MeterOptions options, long amount, string item);
+
+        void Mark(MeterOptions options, long amount, Action<MetricItem> item);
 
         void Mark(MeterOptions options);
 

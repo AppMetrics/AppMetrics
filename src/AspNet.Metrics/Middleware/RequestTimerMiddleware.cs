@@ -24,7 +24,7 @@ namespace AspNet.Metrics.Middleware
             : base(next, aspNetOptions, loggerFactory, metrics)
         {
             _requestTimer = Metrics.Advanced
-                .Timer(AspNetMetricsRegistry.Contexts.WebRequests.Timers.WebRequestTimer);
+                .Timer(AspNetMetricsRegistry.Contexts.HttpRequests.Timers.WebRequestTimer);
         }
 
         public async Task Invoke(HttpContext context)

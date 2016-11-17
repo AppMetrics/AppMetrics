@@ -3,7 +3,6 @@
 
 
 using System;
-using System.Net;
 using System.Threading.Tasks;
 using App.Metrics;
 using AppMetrics;
@@ -44,33 +43,18 @@ namespace AspNet.Metrics.Middleware
 
         public async Task Invoke(HttpContext context)
         {
-            //TODO: AH - does oauth2 client tracking belong here?
             await Next(context);
 
             if (PerformMetric(context))
             {
                 Logger.MiddlewareExecuting(GetType());
 
-                var clientId = context.OAuthClientId();
-
                 var routeTemplate = context.GetMetricsCurrentRouteName();
 
                 if (!context.Response.IsSuccessfulResponse())
                 {
-                    Metrics.MarkOverallWebRequestError(clientId, routeTemplate);
-
-                    switch (context.Response.StatusCode)
-                    {
-                        case (int)HttpStatusCode.InternalServerError:
-                            Metrics.MarkInternalServerErrorRequest(clientId, routeTemplate);
-                            break;
-                        case (int)HttpStatusCode.BadRequest:
-                            Metrics.MarkBadRequest(clientId, routeTemplate);
-                            break;
-                        case (int)HttpStatusCode.Unauthorized:
-                            Metrics.MarkUnAuthorizedRequest(clientId, routeTemplate);
-                            break;
-                    }
+                    Metrics.MarkHttpRequestEndpointError(routeTemplate, context.Response.StatusCode);
+                    Metrics.MarkHttpRequestError(context.Response.StatusCode);
                 }
             }
 

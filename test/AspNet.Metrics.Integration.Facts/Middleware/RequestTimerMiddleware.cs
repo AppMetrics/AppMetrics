@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using App.Metrics;
 using AspNet.Metrics.Integration.Facts.Startup;
+using AspNet.Metrics.Internal;
 using FluentAssertions;
 using Xunit;
 
@@ -26,9 +27,9 @@ namespace AspNet.Metrics.Integration.Facts.Middleware
             await Client.GetAsync("/api/test/300ms");
             await Client.GetAsync("/api/test/30ms");
 
-            var metrics = await Context.Advanced.Data.ReadContextAsync("Application.WebRequests");
+            var metrics = await Context.Advanced.Data.ReadContextAsync(AspNetMetricsRegistry.Contexts.HttpRequests.ContextName);
 
-            var timer = metrics.TimerValueFor("Web Requests");
+            var timer = metrics.TimerValueFor("Http Requests");
             timer.Histogram.Min.Should().Be(30);
             timer.Histogram.Max.Should().Be(300);
             timer.TotalTime.Should().Be(630);

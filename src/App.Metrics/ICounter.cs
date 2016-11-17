@@ -25,6 +25,8 @@ namespace App.Metrics
         /// <param name="item">Item from the set for which to increment the counter value.</param>
         void Decrement(string item);
 
+        void Decrement(MetricItem item);
+
         /// <summary>
         ///     Decrement the counter value with a specified amount.
         /// </summary>
@@ -41,6 +43,8 @@ namespace App.Metrics
         /// <param name="amount">The amount with which to increment the counter.</param>
         void Decrement(string item, long amount);
 
+        void Decrement(MetricItem item, long amount);
+
         /// <summary>
         ///     Increment the counter value.
         /// </summary>
@@ -54,6 +58,8 @@ namespace App.Metrics
         /// </summary>
         /// <param name="item">Item from the set for which to increment the counter value.</param>
         void Increment(string item);
+
+        void Increment(MetricItem item);
 
         /// <summary>
         ///     Increment the counter value with a specified amount.
@@ -70,5 +76,7 @@ namespace App.Metrics
         /// <param name="item">Item from the set for which to increment the counter value.</param>
         /// <param name="amount">The amount with which to increment the counter.</param>
         void Increment(string item, long amount);
+
+        void Increment(MetricItem item, long amount);
     }
 }

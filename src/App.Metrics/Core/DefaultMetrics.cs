@@ -49,6 +49,20 @@ namespace App.Metrics.Core
             _registry.Counter(options, () => Advanced.BuildCounter(options)).Decrement();
         }
 
+        public void Decrement(CounterOptions options, Action<MetricItem> itemSetup)
+        {
+            var item = new MetricItem();
+            itemSetup(item);
+            _registry.Counter(options, () => Advanced.BuildCounter(options)).Decrement(item);
+        }
+
+        public void Decrement(CounterOptions options, long amount, Action<MetricItem> itemSetup)
+        {
+            var item = new MetricItem();
+            itemSetup(item);
+            _registry.Counter(options, () => Advanced.BuildCounter(options)).Decrement(item, amount);
+        }
+
         public void Gauge(GaugeOptions options, Func<double> valueProvider)
         {
             _registry.Gauge(options, () => Advanced.BuildGauge(options, valueProvider));
@@ -64,9 +78,24 @@ namespace App.Metrics.Core
             _registry.Counter(options, () => Advanced.BuildCounter(options)).Increment(amount);
         }
 
+
         public void Increment(CounterOptions options, string item)
         {
             _registry.Counter(options, () => Advanced.BuildCounter(options)).Increment(item);
+        }
+
+        public void Increment(CounterOptions options, Action<MetricItem> itemSetup)
+        {
+            var item = new MetricItem();
+            itemSetup(item);
+            _registry.Counter(options, () => Advanced.BuildCounter(options)).Increment(item);
+        }
+
+        public void Increment(CounterOptions options, long amount, Action<MetricItem> itemSetup)
+        {
+            var item = new MetricItem();
+            itemSetup(item);
+            _registry.Counter(options, () => Advanced.BuildCounter(options)).Increment(item, amount);
         }
 
         public void Increment(CounterOptions options, long amount, string item)
@@ -88,6 +117,21 @@ namespace App.Metrics.Core
         {
             _registry.Meter(options, () => Advanced.BuildMeter(options)).Mark(item);
         }
+
+        public void Mark(MeterOptions options, Action<MetricItem> itemSetup)
+        {
+            var item = new MetricItem();
+            itemSetup(item);
+            _registry.Meter(options, () => Advanced.BuildMeter(options)).Mark(item);
+        }
+
+        public void Mark(MeterOptions options, long amount, Action<MetricItem> itemSetup)
+        {
+            var item = new MetricItem();
+            itemSetup(item);
+            _registry.Meter(options, () => Advanced.BuildMeter(options)).Mark(item, amount);
+        }
+
 
         public void Mark(MeterOptions options, long amount, string item)
         {

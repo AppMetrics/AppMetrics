@@ -39,8 +39,8 @@ namespace AspNet.Metrics.Middleware
                 {
                     var routeTemplate = context.GetMetricsCurrentRouteName();
 
-                    Metrics.MarkEndpointRequest(routeTemplate, clientId);
-                    Metrics.MarkRequest(clientId);
+                    Metrics.MarkHttpEndpointForOAuthClient(routeTemplate, clientId, context.Response.StatusCode);
+                    Metrics.MarkHttpRequestForOAuthClient(clientId, context.Response.StatusCode);
                 }
 
                 Logger.MiddlewareExecuted(GetType());

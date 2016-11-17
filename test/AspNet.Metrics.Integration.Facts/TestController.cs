@@ -32,6 +32,20 @@ namespace AspNet.Metrics.Integration.Facts
             return new[] { "value1", "value2" };
         }
 
+        [HttpGet("oauth/{clientid}")]
+        public IActionResult OAuth(string clientId)
+        {
+            _metrics.Advanced.Clock.Advance(TimeUnit.Milliseconds, 300);
+            return StatusCode(200);
+        }
+
+        [HttpGet("oauth/error/{clientid}")]
+        public IActionResult OAuthError(string clientId)
+        {
+            _metrics.Advanced.Clock.Advance(TimeUnit.Milliseconds, 300);
+            return StatusCode(500);
+        }
+
         [HttpGet("{id}")]
         public string Get(int id)
         {

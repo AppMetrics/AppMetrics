@@ -138,7 +138,11 @@ namespace App.Metrics.Internal
             {
             }
 
-            public void Mark(long count)
+            public void Mark(MetricItem item, long amount)
+            {
+            }
+
+            public void Mark(long amount)
             {
             }
 
@@ -146,7 +150,11 @@ namespace App.Metrics.Internal
             {
             }
 
-            public void Mark(string item, long count)
+            public void Mark(MetricItem item)
+            {
+            }
+
+            public void Mark(string item, long amount)
             {
             }
 
@@ -179,6 +187,22 @@ namespace App.Metrics.Internal
             }
 
             public void Update(long value, string userValue)
+            {
+            }
+
+            public void Decrement(MetricItem item)
+            {
+            }
+
+            public void Decrement(MetricItem item, long amount)
+            {
+            }
+
+            public void Increment(MetricItem item)
+            {
+            }
+
+            public void Increment(MetricItem item, long amount)
             {
             }
         }

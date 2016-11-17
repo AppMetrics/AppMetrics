@@ -116,9 +116,19 @@ namespace App.Metrics.Core
             Mark(item, 1L);
         }
 
-        public void Mark(string item, long count)
+        public void Mark(MetricItem item)
         {
-            Mark(count);
+            Mark(item.ToString());
+        }
+
+        public void Mark(MetricItem item, long amount)
+        {
+            Mark(item.ToString(), amount);
+        }
+
+        public void Mark(string item, long amount)
+        {
+            Mark(amount);
 
             if (item == null)
             {
@@ -131,7 +141,8 @@ namespace App.Metrics.Core
             }
 
             Debug.Assert(_setMeters != null);
-            _setMeters.GetOrAdd(item, v => new SimpleMeter()).Mark(count);
+
+            _setMeters.GetOrAdd(item, v => new SimpleMeter()).Mark(amount);
         }
 
         private MeterValue GetValueWithSetItems(bool resetMetric)

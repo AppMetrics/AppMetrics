@@ -10,6 +10,8 @@ namespace App.Metrics
 {
     //TODO: Review this and write unit tests for equality
 
+    //TODO: Review this and write unit tests for equality
+
     /// <summary>
     ///     Collection of tags that can be attached to a metric.
     /// </summary>

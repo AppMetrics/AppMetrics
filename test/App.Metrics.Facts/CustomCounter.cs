@@ -1,4 +1,3 @@
-using App.Metrics.Core;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Data;
 using App.Metrics.Data.Interfaces;
@@ -25,6 +24,14 @@ namespace App.Metrics.Facts
         {
         }
 
+        public void Decrement(MetricItem item)
+        {
+        }
+
+        public void Decrement(MetricItem item, long amount)
+        {
+        }
+
         public CounterValue GetValue(bool resetMetric = false)
         {
             return Value;
@@ -43,6 +50,14 @@ namespace App.Metrics.Facts
         }
 
         public void Increment(string item, long value)
+        {
+        }
+
+        public void Increment(MetricItem item)
+        {
+        }
+
+        public void Increment(MetricItem item, long amount)
         {
         }
 

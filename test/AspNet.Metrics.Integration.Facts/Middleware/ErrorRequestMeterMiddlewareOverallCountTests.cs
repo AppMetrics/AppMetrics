@@ -2,6 +2,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics;
 using AspNet.Metrics.Integration.Facts.Startup;
+using AspNet.Metrics.Internal;
 using FluentAssertions;
 using Xunit;
 
@@ -30,13 +31,10 @@ namespace AspNet.Metrics.Integration.Facts.Middleware
             await Client.GetAsync("/api/test/error");
             await Client.GetAsync("/api/test/error");
 
-            var metrics = await Context.Advanced.Data.ReadContextAsync("Application.WebRequests");
+            var metrics = await Context.Advanced.Data.ReadContextAsync(AspNetMetricsRegistry.Contexts.HttpRequests.ContextName);
 
-            metrics.MeterValueFor("Total Bad Requests").Count.Should().Be(3);
-            metrics.MeterValueFor("Total Internal Server Error Requests").Count.Should().Be(2);
-            metrics.MeterValueFor("Total UnAuthorized Requests").Count.Should().Be(1);
-            metrics.MeterValueFor("Total Error Requests").Count.Should().Be(6);
-            metrics.TimerValueFor("Web Requests").Histogram.Count.Should().Be(7);
+            metrics.MeterValueFor("Http Error Requests").Count.Should().Be(6);
+            metrics.TimerValueFor("Http Requests").Histogram.Count.Should().Be(7);
         }
     }
 }
