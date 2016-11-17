@@ -43,7 +43,7 @@ namespace Api.Sample
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            loggerFactory.AddSerilog();
+            loggerFactory.AddSerilog(Log.Logger);
 
             app.UseMetrics();
 

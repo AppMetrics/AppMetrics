@@ -28,6 +28,7 @@ namespace App.Metrics.Internal
         private readonly EnvironmentInfoProvider _environmentInfoProvider;
         private readonly ILogger _logger;
         private readonly Func<string, IMetricContextRegistry> _newContextRegistry;
+        private readonly MetricTags _globalTags;
 
         public DefaultMetricsRegistry(
             ILoggerFactory loggerFactory,
@@ -43,6 +44,7 @@ namespace App.Metrics.Internal
             _defaultContextLabel = options.DefaultContextLabel;
             _defaultSamplingType = options.DefaultSamplingType;
             _contexts.TryAdd(_defaultContextLabel, newContextRegistry(_defaultContextLabel));
+            _globalTags = new MetricTags(options.GlobalTags);
         }
 
         public bool AddContext(string context, IMetricContextRegistry registry)
@@ -68,17 +70,20 @@ namespace App.Metrics.Internal
 
         public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterMetric
         {
-            EnsureContextLabel(options);
+            EnsureContextLabelAndGlobalTags(options);
             var registry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
             return registry.Counter(options, builder);
         }
 
-        public MetricValueOptions EnsureContextLabel(MetricValueOptions options)
+        public MetricValueOptions EnsureContextLabelAndGlobalTags(MetricValueOptions options)
         {
             if (options.Context.IsMissing())
             {
                 options.Context = _defaultContextLabel;
             }
+
+            //TODO: AH - impure method called
+            options.Tags.With(_globalTags.ToDictionary());
 
             return options;
         }
@@ -95,7 +100,7 @@ namespace App.Metrics.Internal
 
         public void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider)
         {
-            EnsureContextLabel(options);
+            EnsureContextLabelAndGlobalTags(options);
             var registry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
             registry.Gauge(options, valueProvider);
         }
@@ -129,7 +134,7 @@ namespace App.Metrics.Internal
 
         public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramMetric
         {
-            EnsureContextLabel(options);
+            EnsureContextLabelAndGlobalTags(options);
             EnsureSamplingType(options);
             var registry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
             return registry.Histogram(options, builder);
@@ -137,7 +142,7 @@ namespace App.Metrics.Internal
 
         public IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterMetric
         {
-            EnsureContextLabel(options);
+            EnsureContextLabelAndGlobalTags(options);
             var registry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
             return registry.Meter(options, builder);
         }
@@ -158,7 +163,7 @@ namespace App.Metrics.Internal
 
         public ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerMetric
         {
-            EnsureContextLabel(options);
+            EnsureContextLabelAndGlobalTags(options);
             EnsureSamplingType(options);
             var registry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
             return registry.Timer(options, builder);

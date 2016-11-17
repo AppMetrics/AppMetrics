@@ -2,6 +2,8 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using System.Collections.Generic;
+
 namespace App.Metrics.Configuration
 {
     public sealed class AppMetricsOptions
@@ -23,5 +25,8 @@ namespace App.Metrics.Configuration
         public bool MetricsEnabled { get; set; }
 
         public bool ReportingEnabled { get; set; }
+
+        public Dictionary<string, string> GlobalTags { get; set; } = new Dictionary<string, string>();
+
     }
 }

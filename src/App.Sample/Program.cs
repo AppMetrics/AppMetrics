@@ -76,7 +76,11 @@ namespace App.Sample
         private static void ConfigureMetrics(IServiceCollection services)
         {
             services
-                .AddMetrics(options => { options.ReportingEnabled = true; })
+                .AddMetrics(options =>
+                {
+                    options.ReportingEnabled = true;
+                    options.GlobalTags.Add("env", "uat");
+                })
                 .AddHealthChecks(factory =>
                 {
                     factory.Register("DatabaseConnected", () => Task.FromResult("Database Connection OK"));
@@ -122,14 +126,12 @@ namespace App.Sample
                 .WriteTo.RollingFile(Path.Combine($@"C:\logs\{env.ApplicationName}", "log-{Date}.txt"))
                 .CreateLogger();
 
-            services.AddSingleton<ILoggerFactory>(provider =>
-            {
-                var logFactory = new LoggerFactory();
-                logFactory.AddConsole((l, s) => s == LogLevel.Trace);
-                logFactory.AddSerilog(Log.Logger);
-                return logFactory;
-            });
+            var loggerFactory = new LoggerFactory();
+            loggerFactory.AddConsole((l, s) => s == LogLevel.Trace);
+            loggerFactory.AddSerilog(Log.Logger);
 
+            services.AddSingleton<ILoggerFactory, LoggerFactory>();
+            services.AddLogging();
             services.AddTransient<IDatabase, Database>();
         }
 

@@ -80,5 +80,23 @@ namespace App.Metrics
             _tags.Add(tag, value);
             return _tags;
         }
+
+        public MetricTags With(Dictionary<string, string> tags)
+        {
+            if (_tags == null)
+            {
+                _tags = new Dictionary<string, string>();
+            }
+
+            foreach (var tag in tags)
+            {
+                if (!_tags.ContainsKey(tag.Key))
+                {
+                    _tags.Add(tag.Key, tag.Value);
+                }
+            }
+
+            return _tags;
+        }
     }
 }
