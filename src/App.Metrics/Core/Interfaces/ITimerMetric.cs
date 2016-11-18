@@ -11,6 +11,12 @@ using App.Metrics.Data.Interfaces;
 
 namespace App.Metrics.Core.Interfaces
 {
+    /// <summary>
+    ///     Provides access to a timer metric implementation e.g. <see cref="TimerMetric" />, allows custom timers to be
+    ///     implemented
+    /// </summary>
+    /// <seealso cref="ITimer" />
+    /// <seealso cref="IMetricValueProvider{T}" />
     public interface ITimerMetric : ITimer, IMetricValueProvider<TimerValue>
     {
     }

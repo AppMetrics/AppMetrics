@@ -45,8 +45,10 @@ namespace App.Metrics.Core
             Dispose(false);
         }
 
+        /// <inheritdoc />
         public MeterValue Value => GetValue();
 
+        /// <inheritdoc />
         public override void Reset()
         {
             _startTime = _clock.Nanoseconds;
@@ -90,6 +92,7 @@ namespace App.Metrics.Core
             _disposed = true;
         }
 
+        /// <inheritdoc />
         public MeterValue GetValue(bool resetMetric = false)
         {
             if (_setMeters == null || _setMeters.Count == 0)
@@ -106,26 +109,31 @@ namespace App.Metrics.Core
             return GetValueWithSetItems(resetMetric);
         }
 
+        /// <inheritdoc />
         public void Mark()
         {
             Mark(1L);
         }
 
+        /// <inheritdoc />
         public void Mark(string item)
         {
             Mark(item, 1L);
         }
 
+        /// <inheritdoc />
         public void Mark(MetricItem item)
         {
             Mark(item.ToString());
         }
 
+        /// <inheritdoc />
         public void Mark(MetricItem item, long amount)
         {
             Mark(item.ToString(), amount);
         }
 
+        /// <inheritdoc />
         public void Mark(string item, long amount)
         {
             Mark(amount);

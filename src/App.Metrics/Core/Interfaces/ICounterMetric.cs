@@ -10,6 +10,12 @@ using App.Metrics.Data.Interfaces;
 
 namespace App.Metrics.Core.Interfaces
 {
+    /// <summary>
+    ///     Provides access to a counter metric implementation e.g. <see cref="CounterMetric" />, allows custom counters to be
+    ///     implemented
+    /// </summary>
+    /// <seealso cref="ICounter" />
+    /// <seealso cref="IMetricValueProvider{T}" />
     public interface ICounterMetric : ICounter, IMetricValueProvider<CounterValue>
     {
     }

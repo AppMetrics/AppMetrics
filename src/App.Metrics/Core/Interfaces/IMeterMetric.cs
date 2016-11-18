@@ -12,6 +12,11 @@ using App.Metrics.Data.Interfaces;
 
 namespace App.Metrics.Core.Interfaces
 {
+    /// <summary>
+    ///     Provides access to a meter metric implementation e.g. <see cref="MeterMetric"/>, allows custom meters to be implemented
+    /// </summary>
+    /// <seealso cref="IMeter" />
+    /// <seealso cref="IMetricValueProvider{MeterValue}" />    
     public interface IMeterMetric : IMeter, IMetricValueProvider<MeterValue>, IDisposable
     {
     }

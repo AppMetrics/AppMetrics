@@ -30,7 +30,6 @@ namespace App.Metrics.Core
         private VolatileDouble _m15Rate = new VolatileDouble(0.0);
         private VolatileDouble _m1Rate = new VolatileDouble(0.0);
         private VolatileDouble _m5Rate = new VolatileDouble(0.0);
-
         private AtomicLong _total = new AtomicLong(0L);
 
         private double FifteenMinuteRate => _m15Rate.GetValue() * NanosInSecond;
@@ -39,11 +38,13 @@ namespace App.Metrics.Core
 
         private double OneMinuteRate => _m1Rate.GetValue() * NanosInSecond;
 
+        /// <inheritdoc />
         public virtual void Mark(long count)
         {
             _uncounted.Add(count);
         }
 
+        /// <inheritdoc />
         public virtual void Reset()
         {
             _uncounted.Reset();
@@ -53,6 +54,7 @@ namespace App.Metrics.Core
             _m15Rate.SetValue(0.0);
         }
 
+        /// <inheritdoc />
         public MeterValue GetValue(double elapsed)
         {
             var count = _total.GetValue() + _uncounted.GetValue();

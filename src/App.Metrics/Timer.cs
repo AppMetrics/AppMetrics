@@ -4,6 +4,20 @@
 
 namespace App.Metrics
 {
+    /// <summary>
+    ///     <para>
+    ///         Timer metric types are essentially a special case of <see cref="Histogram" />
+    ///     </para>
+    ///     <para>
+    ///         As well as providing a <see cref="Histogram" /> of the duration of a type of event, timers also provide a
+    ///         <see cref="Meter" /> of the rate of the events occurrence.
+    ///     </para>
+    ///     <para>
+    ///         Like <see cref="Histogram" />s, timers also allow us to track user values, where for all user values provided
+    ///         the min, max and last user value values is recorded.
+    ///     </para>
+    /// </summary>
+    /// <seealso cref="App.Metrics.Metric" />
     public sealed class Timer : Metric
     {
         public long ActiveSessions { get; set; }

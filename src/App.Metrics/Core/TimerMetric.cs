@@ -23,26 +23,53 @@ namespace App.Metrics.Core
         private readonly StripedLongAdder _totalRecordedTime = new StripedLongAdder();
         private bool _disposed = false;
 
-        public TimerMetric(SamplingType samplingType, IClock systemClock)
-            : this(new HistogramMetric(samplingType), new MeterMetric(systemClock), systemClock)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="TimerMetric" /> class.
+        /// </summary>
+        /// <param name="samplingType">Type of the sampling to use to generate the resevoir of values.</param>
+        /// <param name="clock">The clock to use to measure processing duration.</param>
+        public TimerMetric(SamplingType samplingType, IClock clock)
+            : this(new HistogramMetric(samplingType), new MeterMetric(clock), clock)
         {
         }
 
-        public TimerMetric(IHistogramMetric histogram, IClock systemClock)
-            : this(histogram, new MeterMetric(systemClock), systemClock)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="TimerMetric" /> class.
+        /// </summary>
+        /// <param name="histogram">The histogram implementation to use.</param>
+        /// <param name="clock">The clock to use to measure processing duration.</param>
+        public TimerMetric(IHistogramMetric histogram, IClock clock)
+            : this(histogram, new MeterMetric(clock), clock)
         {
         }
 
-        public TimerMetric(IReservoir reservoir, IClock systemClock)
-            : this(new HistogramMetric(reservoir), new MeterMetric(systemClock), systemClock)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="TimerMetric" /> class.
+        /// </summary>
+        /// <param name="reservoir">The reservoir implementation to use for sampling values to generate the histogram.</param>
+        /// <param name="clock">The clock to use to measure processing duration.</param>
+        public TimerMetric(IReservoir reservoir, IClock clock)
+            : this(new HistogramMetric(reservoir), new MeterMetric(clock), clock)
         {
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="TimerMetric" /> class.
+        /// </summary>
+        /// <param name="samplingType">Type of the sampling to use to generate the resevoir of values.</param>
+        /// <param name="meter">The meter implementation to use to genreate the rate of events over time.</param>
+        /// <param name="clock">The clock to use to measure processing duration.</param>
         public TimerMetric(SamplingType samplingType, IMeterMetric meter, IClock clock)
             : this(new HistogramMetric(samplingType), meter, clock)
         {
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="TimerMetric" /> class.
+        /// </summary>
+        /// <param name="histogram">The histogram implementation to use.</param>
+        /// <param name="meter">The meter implementation to use to genreate the rate of events over time.</param>
+        /// <param name="clock">The clock to use to measure processing duration.</param>
         public TimerMetric(IHistogramMetric histogram, IMeterMetric meter, IClock clock)
         {
             _clock = clock;
@@ -55,8 +82,10 @@ namespace App.Metrics.Core
             Dispose(false);
         }
 
+        /// <inheritdoc />
         public TimerValue Value => GetValue();
 
+        /// <inheritdoc />
         public long CurrentTime()
         {
             return _clock.Nanoseconds;
@@ -85,12 +114,14 @@ namespace App.Metrics.Core
             _disposed = true;
         }
 
+        /// <inheritdoc />
         public long EndRecording()
         {
             _activeSessionsCounter.Decrement();
             return _clock.Nanoseconds;
         }
 
+        /// <inheritdoc />
         public TimerValue GetValue(bool resetMetric = false)
         {
             var total = resetMetric ? _totalRecordedTime.GetAndReset() : _totalRecordedTime.GetValue();
@@ -98,11 +129,13 @@ namespace App.Metrics.Core
                 TimeUnit.Nanoseconds);
         }
 
+        /// <inheritdoc />
         public TimerContext NewContext(string userValue = null)
         {
             return new TimerContext(this, userValue);
         }
 
+        /// <inheritdoc />
         public void Record(long duration, TimeUnit unit, string userValue = null)
         {
             var nanos = unit.ToNanoseconds(duration);
@@ -113,18 +146,21 @@ namespace App.Metrics.Core
             _totalRecordedTime.Add(nanos);
         }
 
+        /// <inheritdoc />
         public void Reset()
         {
             _meter.Reset();
             _histogram.Reset();
         }
 
+        /// <inheritdoc />
         public long StartRecording()
         {
             _activeSessionsCounter.Increment();
             return _clock.Nanoseconds;
         }
 
+        /// <inheritdoc />
         public void Time(Action action, string userValue = null)
         {
             var start = _clock.Nanoseconds;
@@ -140,6 +176,7 @@ namespace App.Metrics.Core
             }
         }
 
+        /// <inheritdoc />
         public T Time<T>(Func<T> action, string userValue = null)
         {
             var start = _clock.Nanoseconds;

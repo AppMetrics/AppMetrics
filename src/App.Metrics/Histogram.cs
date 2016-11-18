@@ -2,8 +2,27 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using App.Metrics.Sampling.Interfaces;
+
 namespace App.Metrics
 {
+    /// <summary>
+    ///     <para>
+    ///         Histogram metric types track the statistical distribution of a set of values. They allow you to measure the
+    ///         min, mean, max, standard deviation of values and also quantiles such as the median, 95th percentile, 98th
+    ///         percentile etc.
+    ///     </para>
+    ///     <para>
+    ///         To avoid unbound memory usage, the histogram values are genreated from a <see cref="IReservoir" /> of values.
+    ///         This is done by sampling the data as it goes through by maintaining a small manageable  reservoir which is
+    ///         statistically representative of the data stream as a whole, allowing us to quickly calculate the quantiles
+    ///         which are valid approximations of the actual quantiles. https://en.wikipedia.org/wiki/Reservoir_sampling
+    ///     </para>
+    ///     <para>
+    ///         Histograms also allow us to track user values, where for all user values provided the min, max and last user
+    ///         value values is recorded.
+    ///     </para>
+    /// </summary>
     public sealed class Histogram : Metric
     {
         public long Count { get; set; }

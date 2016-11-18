@@ -231,7 +231,7 @@ namespace App.Metrics.Facts.Core
                     MeasurementUnit = Unit.Calls
                 };
 
-                _fixture.Metrics.Advanced.Gauge(gaugeOptions, () => 0.0);
+                _fixture.Metrics.Gauge(gaugeOptions, () => 0.0);
                 _fixture.Metrics.Advanced.Counter(counterOptions);
                 _fixture.Metrics.Advanced.Meter(meterOptions);
                 _fixture.Metrics.Advanced.Histogram(histogramOptions);

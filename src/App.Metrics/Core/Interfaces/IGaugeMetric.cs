@@ -10,6 +10,10 @@ using App.Metrics.Data.Interfaces;
 
 namespace App.Metrics.Core.Interfaces
 {
+    /// <summary>
+    ///     Provides access to a gauge metric implementation e.g. <see cref="FunctionGauge"/>, <see cref="HitRatioGauge"/>, allows custom gauges to be implemented
+    /// </summary>
+    /// <seealso cref="IGaugeMetric" />
     public interface IGaugeMetric : IMetricValueProvider<double>
     {
     }

@@ -7,6 +7,10 @@ using System.Linq;
 
 namespace App.Metrics
 {
+    /// <summary>
+    ///     MetricsContext's are a way of grouping metrics withing a context, for example we can record all database related
+    ///     metrics in a "Application.Database" Context. Metric names can be duplicated across contexts
+    /// </summary>
     public sealed class MetricsContext
     {
         public string Context { get; set; }

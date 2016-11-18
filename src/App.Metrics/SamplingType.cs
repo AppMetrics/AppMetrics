@@ -2,10 +2,22 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using App.Metrics.Configuration;
+
 namespace App.Metrics
 {
+    /// <summary>
+    ///     Sampling avoids unbound memory usage, sampling is used to generate <see cref="Histogram" />'s from a reservoir of
+    ///     values
+    /// </summary>
+    /// <remarks>
+    ///     https://en.wikipedia.org/wiki/Reservoir_sampling
+    /// </remarks>
     public enum SamplingType
     {
+        /// <summary>
+        ///     If set the default sampling type configured via the <see cref="AppMetricsOptions" /> will be used.
+        /// </summary>
         Default = 0,
 
         /// <summary>

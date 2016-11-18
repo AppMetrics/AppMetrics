@@ -6,82 +6,10 @@
 // Ported/Refactored to .NET Standard Library by Allan Hardy
 
 using System;
-using App.Metrics.Core.Interfaces;
 using App.Metrics.Data;
-using App.Metrics.Data.Interfaces;
 
 namespace App.Metrics.Core
 {
-    public class FunctionGauge : IGaugeMetric
-    {
-        private readonly Func<double> _valueProvider;
-
-        public FunctionGauge(Func<double> valueProvider)
-        {
-            _valueProvider = valueProvider;
-        }
-
-        public double Value
-        {
-            get
-            {
-                try
-                {
-                    return _valueProvider();
-                }
-                catch (Exception)
-                {
-                    return double.NaN;
-                }
-            }
-        }
-
-        public double GetValue(bool resetMetric = false)
-        {
-            return Value;
-        }
-    }
-
-    public sealed class DerivedGauge : IGaugeMetric
-    {
-        private readonly IMetricValueProvider<double> _gauge;
-        private readonly Func<double, double> _transformation;
-
-        public DerivedGauge(IMetricValueProvider<double> gauge, Func<double, double> transformation)
-        {
-            _gauge = gauge;
-            _transformation = transformation;
-        }
-
-        public double Value
-        {
-            get
-            {
-                try
-                {
-                    return _transformation(_gauge.Value);
-                }
-                catch (Exception)
-                {
-                    return double.NaN;
-                }
-            }
-        }
-
-        public double GetValue(bool resetMetric = false)
-        {
-            return Value;
-        }
-    }
-
-    public class RatioGauge : FunctionGauge
-    {
-        public RatioGauge(Func<double> numerator, Func<double> denominator)
-            : base(() => numerator() / denominator())
-        {
-        }
-    }
-
     public sealed class HitRatioGauge : RatioGauge
     {
         /// <summary>

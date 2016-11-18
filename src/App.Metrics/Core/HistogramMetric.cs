@@ -56,6 +56,7 @@ namespace App.Metrics.Core
             _disposed = true;
         }
 
+        /// <inheritdoc />
         public HistogramValue GetValue(bool resetMetric = false)
         {
             var value = new HistogramValue(_last.Value, _last.UserValue, _reservoir.GetSnapshot(resetMetric));
@@ -66,12 +67,14 @@ namespace App.Metrics.Core
             return value;
         }
 
+        /// <inheritdoc />
         public void Reset()
         {
             _last = UserValueWrapper.Empty;
             _reservoir.Reset();
         }
 
+        /// <inheritdoc />
         public void Update(long value, string userValue = null)
         {
             _last = new UserValueWrapper(value, userValue);

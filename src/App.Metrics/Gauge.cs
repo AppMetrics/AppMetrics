@@ -6,6 +6,16 @@ using App.Metrics.Data;
 
 namespace App.Metrics
 {
+    /// <summary>
+    ///     <para>
+    ///         Gauge metric types measure the value of a particular thing at a particular time, it represents an instantaneous
+    ///         value.
+    ///     </para>
+    ///     <para>
+    ///         Gauges represent a double value.
+    ///     </para>
+    /// </summary>
+    /// <seealso cref="App.Metrics.Metric" />
     public sealed class Gauge : Metric
     {
         private double _value;

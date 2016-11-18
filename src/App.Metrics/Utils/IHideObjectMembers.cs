@@ -8,7 +8,7 @@ using System.ComponentModel;
 namespace App.Metrics.Utils
 {
     /// <summary>
-    ///     Helper interface to cleanup editor visible members on metrics.
+    ///     Marker interface to cleanup editor visible members on metrics.
     /// </summary>
     public interface IHideObjectMembers
     {

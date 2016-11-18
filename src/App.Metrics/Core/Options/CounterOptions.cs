@@ -4,6 +4,10 @@
 
 namespace App.Metrics.Core.Options
 {
+    /// <summary>
+    ///     Configuration of a <see cref="ICounter" /> that will be measured
+    /// </summary>
+    /// <seealso cref="App.Metrics.Core.Options.MetricValueOptions" />
     public class CounterOptions : MetricValueOptions
     {
     }
