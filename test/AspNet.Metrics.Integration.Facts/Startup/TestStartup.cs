@@ -73,7 +73,7 @@ namespace AspNet.Metrics.Integration.Facts.Startup
                 .AddJsonSerialization()
                 .AddClockType<TestClock>()
                 .AddHealthChecks()
-                .AddAspNetMetrics(options =>
+                .AddMetricsMiddleware(options =>
                 {
                     options.MetricsTextEndpointEnabled = aspNetMetricsOptions.MetricsTextEndpointEnabled;
                     options.HealthEndpointEnabled = aspNetMetricsOptions.HealthEndpointEnabled;

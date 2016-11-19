@@ -93,7 +93,7 @@ namespace Api.Sample
                     factory.AddTextFile(textFileSettings);
                 })
                 .AddHealthChecks()
-                .AddAspNetMetrics(Configuration.GetSection("AspNetMetrics"));
+                .AddMetricsMiddleware(Configuration.GetSection("AspNetMetrics"));
             //.WithAllPerformanceCounters()
         }
     }

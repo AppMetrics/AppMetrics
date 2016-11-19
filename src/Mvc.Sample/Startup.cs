@@ -70,7 +70,7 @@ namespace Mvc.Sample
                 })
                 .AddJsonSerialization()
                 .AddHealthChecks()
-                .AddAspNetMetrics(Configuration.GetSection("AspNetMetrics"));
+                .AddMetricsMiddleware(Configuration.GetSection("AspNetMetrics"));
         }
     }
 }

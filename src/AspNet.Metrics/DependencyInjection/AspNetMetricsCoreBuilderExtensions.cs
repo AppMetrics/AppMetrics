@@ -13,7 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class AspNetMetricsCoreBuilderExtensions
     {
-        public static IMetricsHostBuilder AddAspNetMetrics(this IMetricsHostBuilder builder)
+        public static IMetricsHostBuilder AddMetricsMiddleware(this IMetricsHostBuilder builder)
         {
             builder.AddRequiredAspNetPlatformServices();
             builder.AddAspNetCoreServices();
@@ -21,16 +21,16 @@ namespace Microsoft.Extensions.DependencyInjection
             return builder;
         }
 
-        public static IMetricsHostBuilder AddAspNetMetrics(this IMetricsHostBuilder builder, IConfiguration configuration)
+        public static IMetricsHostBuilder AddMetricsMiddleware(this IMetricsHostBuilder builder, IConfiguration configuration)
         {
             builder.Services.Configure<AspNetMetricsOptions>(configuration);
-            return builder.AddAspNetMetrics();
+            return builder.AddMetricsMiddleware();
         }
 
-        public static IMetricsHostBuilder AddAspNetMetrics(this IMetricsHostBuilder builder, Action<AspNetMetricsOptions> setupAction)
+        public static IMetricsHostBuilder AddMetricsMiddleware(this IMetricsHostBuilder builder, Action<AspNetMetricsOptions> setupAction)
         {
             builder.Services.Configure(setupAction);
-            return builder.AddAspNetMetrics();
+            return builder.AddMetricsMiddleware();
         }
     }
 }

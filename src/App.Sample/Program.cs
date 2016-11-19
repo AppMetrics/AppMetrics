@@ -77,7 +77,7 @@ namespace App.Sample
         {
             services
                 .AddMetrics(options =>
-                {
+                {                    
                     options.ReportingEnabled = true;
                     options.GlobalTags.Add("env", "uat");
                 })
