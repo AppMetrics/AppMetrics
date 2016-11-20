@@ -16,10 +16,10 @@
   },
 
   "packOptions": {
-    "tags": ["Metrics", "Monitoring", "Instrumentation"],
+    "tags": [ "Metrics", "Monitoring", "Instrumentation" ],
     "projectUrl": "https://github.com/alhardy/app-metrics",
     "licenseUrl": "https://github.com/alhardy/app-metrics/blob/master/LICENSE",
-    "iconUrl": "http://www.erata.net/Metrics.NET/metrics_32.png"
+    "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png"
   },
 
   "dependencies": {

@@ -6,8 +6,8 @@
   },
   "dependencies": {
     "App.Metrics": "1.0.0-*",
+    "App.Metrics.Extensions.Middleware": "1.0.0",
     "App.Metrics.Formatters.Json": "1.0.0-*",
-    "AspNet.Metrics": "1.0.0-*",
     "HealthCheck.Samples": "1.0.0-*",
     "Microsoft.AspNetCore.Diagnostics": "1.1.0",
     "Microsoft.AspNetCore.Mvc": "1.1.0",

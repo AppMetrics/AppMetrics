@@ -15,10 +15,10 @@
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
-  <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.targets" Condition="'$(VSToolsPath)' != ''" />
   <ItemGroup>
-    <Content Include="..\..\aspnet-metrics.licenseheader">
-      <Link>aspnet-metrics.licenseheader</Link>
+    <Content Include="..\..\app-metrics.licenseheader">
+      <Link>app-metrics.licenseheader</Link>
     </Content>
   </ItemGroup>
+  <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.targets" Condition="'$(VSToolsPath)' != ''" />
 </Project>

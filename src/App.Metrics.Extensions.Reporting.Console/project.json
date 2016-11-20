@@ -18,7 +18,7 @@
     "tags": [ "Metrics", "Monitoring", "Instrumentation", "Reporting", "Console" ],
     "projectUrl": "https://github.com/alhardy/app-metrics",
     "licenseUrl": "https://github.com/alhardy/app-metrics/blob/master/LICENSE",
-    "iconUrl": "http://www.erata.net/Metrics.NET/metrics_32.png"
+    "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png"
   },
 
   "dependencies": {

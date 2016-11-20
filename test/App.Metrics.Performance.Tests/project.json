@@ -4,7 +4,7 @@
     "xmlDoc": true
   },
   "dependencies": {
-    "AspNet.Metrics": "1.0.0-*",
+    "App.Metrics.Extensions.Middleware": "1.0.0-*",
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
     "Moq": "4.6.38-alpha",
     "xunit": "2.2.0-beta4-build3444",

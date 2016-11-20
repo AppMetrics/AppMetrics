@@ -3,10 +3,10 @@
   "description": "App.Metrics formatters for JSON output using Json.NET",
   "authors": ["Allan Hardy"],
   "packOptions": {
-    "releaseNotes":
-      "",
+    "releaseNotes": "",
     "tags": [
-      "app.metrics", "json"
+      "app.metrics",
+      "json"
     ],
     "repository": {
       "type": "git",
@@ -14,7 +14,7 @@
     },
     "projectUrl": "https://github.com/alhardy/aspnet-metrics",
     "licenseUrl": "https://github.com/alhardy/aspnet-metrics/blob/master/LICENSE",
-    "iconUrl": "http://www.erata.net/Metrics.NET/metrics_32.png"
+    "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png"
   },
   "buildOptions": {
     "warningsAsErrors": true,

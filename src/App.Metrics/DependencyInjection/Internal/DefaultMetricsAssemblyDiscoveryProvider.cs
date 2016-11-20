@@ -16,7 +16,7 @@ namespace App.Metrics.DependencyInjection.Internal
         internal static HashSet<string> ReferenceAssemblies { get; } = new HashSet<string>(StringComparer.Ordinal)
         {
             "App.Metrics",
-            "AspNet.Metrics"
+            "App.Metrics.Extensions.Middleware"
         };
 
         internal static IEnumerable<Assembly> DiscoverAssemblies(string entryPointAssemblyName)

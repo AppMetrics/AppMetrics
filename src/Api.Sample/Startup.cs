@@ -6,7 +6,6 @@ using System.Threading;
 using App.Metrics;
 using App.Metrics.Extensions.Reporting.TextFile;
 using App.Metrics.Reporting.Interfaces;
-using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;

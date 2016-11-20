@@ -1,7 +1,6 @@
 ﻿using App.Metrics.DependencyInjection;
 using App.Metrics.Formatters.Json;
 using HealthCheck.Samples;
-using Microsoft.AspNet.Builder;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;

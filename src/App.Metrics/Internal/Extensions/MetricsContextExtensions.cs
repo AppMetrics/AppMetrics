@@ -8,7 +8,6 @@ using System.Linq;
 using App.Metrics.Data;
 
 // ReSharper disable CheckNamespace
-
 namespace App.Metrics
 // ReSharper restore CheckNamespace
 {
