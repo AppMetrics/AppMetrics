@@ -1,7 +1,7 @@
 {
-  "version": "1.0.0-*",
+  "version": "1.0.0-alpha",
   "description": "App.Metrics formatters for JSON output using Json.NET",
-  "authors": ["Allan Hardy"],
+  "authors": [ "Allan Hardy" ],
   "packOptions": {
     "releaseNotes": "",
     "tags": [

@@ -1,7 +1,7 @@
 {
   "title": "App.Metrics",
   "copyright": "Allan Hardy 2016",
-  "version": "1.0.0-*",
+  "version": "1.0.0-alpha",
   "authors": ["Allan Hardy"],
   "description": "Provides application instrumentation abilities with custom metrics",
 

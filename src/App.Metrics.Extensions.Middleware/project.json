@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.0-alpha",
   "description": "Extends the App.Metrics library providing a set AspNet Core Middleware Components which will record things like error rates per endpoint and an overall rate, request rates per endpoint and an overall rate etc.",
   "authors": [ "Allan Hardy" ],
   "packOptions": {
