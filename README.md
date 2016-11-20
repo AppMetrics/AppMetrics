@@ -16,7 +16,17 @@ App Metrics also provides a health checking system allowing you to monitor the h
 
 ## Acknowledgements
 
-Ported from [Metrics.NET](https://github.com/etishor/Metrics.NET)
+**Built using the following open source projects**
+
+* [ASP.NET Core](https://github.com/aspnet)
+* [DocFX](https://dotnet.github.io/docfx/)
+* [Json.Net](http://www.newtonsoft.com/json)
+* [Fluent Assertions](http://www.fluentassertions.com/)
+* [XUnit](https://xunit.github.io/)
+
+----------
+
+**Ported from [Metrics.NET](https://github.com/etishor/Metrics.NET)**
 
 App Metrics is a significant redesign and .NET Standard port of the [Metrics.NET](https://github.com/etishor/Metrics.NET) library, which is a port of the Java [Metrics](https://github.com/dropwizard/metrics) library. This library for now includes the original [sampling code](https://github.com/etishor/Metrics.NET/tree/master/Src/Metrics/Sampling) written by Metrics.NET. Metrics.NET features that have been removed for now are the following:
 
@@ -33,17 +43,6 @@ The original metrics project is released under these terms
 
 "Metrics.NET is release under Apache 2.0 License 
 Copyright (c) 2014 Iulian Margarintescu"
-
-
-----------
-
-Built using the following open source projects
-
-* [ASP.NET Core](https://github.com/aspnet)
-* [DocFX](https://dotnet.github.io/docfx/)
-* [Json.Net](http://www.newtonsoft.com/json)
-* [Fluent Assertions](http://www.fluentassertions.com/)
-* [XUnit](https://xunit.github.io/)
 
 ## License
 
