@@ -3,7 +3,7 @@
   "copyright": "Allan Hardy 2016",
   "version": "1.0.0-alpha",
   "authors": [ "Allan Hardy" ],
-  "description": "Provides console reporting capability to App.Metrics",
+  "description": "Provides console reporting capability to App Metrics",
 
   "buildOptions": {
     "warningsAsErrors": true,

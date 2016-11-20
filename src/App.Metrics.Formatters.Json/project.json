@@ -1,6 +1,6 @@
 {
   "version": "1.0.0-alpha",
-  "description": "App.Metrics formatters for JSON output using Json.NET",
+  "description": "App Metrics Formattor, formatting metrics data to JSON using Json.NET",
   "authors": [ "Allan Hardy" ],
   "packOptions": {
     "releaseNotes": "",
