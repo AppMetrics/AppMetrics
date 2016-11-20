@@ -11,5 +11,6 @@ deploy:
   server: https://www.myget.org/F/alhardy/api/v2/package
   api_key:
     secure: gIAiACgNj+JzXyLLTe3rLxZyrAB9RpC8Lw81xEjdOLXqotprqEwGiFWRipEqkpps
+  symbol_server: https://www.myget.org/F/alhardy/api/v2/package
   on:
     branch: dev
