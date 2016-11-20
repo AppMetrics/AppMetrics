@@ -19,3 +19,9 @@ With App Metrics you can:
 - When securing an API with OAuth2, automatically measure the request rate and error rate per client
 - Choose where to persist captured metrics and the dashboard you wish to use to visualize these metrics
 
+### Next Steps
+
+- [Getting Started](getting-started/intro.md)
+- [Nuget Packages](getting-started/fundamentals/nuget-packages.md)
+- [Sample Applications](samples/index.md)
+

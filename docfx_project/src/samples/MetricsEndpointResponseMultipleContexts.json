@@ -1,0 +1,35 @@
+{
+  "contexts": [
+    {
+      "context": "Application",
+      "counters": [],
+      "meters": [],
+      "timers": []
+    },
+    {
+      "context": "Application.HttpRequests",
+      "counters": [],
+      "gauges": [],
+      "histograms": [],
+      "meters": [],
+      "timers": []
+    },
+    {
+      "context": "Application.OAuth2Client.HttpRequests",
+      "counters": [],
+      "gauges": [],
+      "histograms": [],
+      "meters": [],
+      "timers": []
+    },
+    {
+      "context": "Database",
+      "counters": [],
+      "meters": [],
+      "timers": []
+    }
+  ],
+  "environment": { },
+  "timestamp": "",
+  "version": "1"
+}

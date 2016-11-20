@@ -10,15 +10,11 @@ These configuration options include:
 - **MetricsEnabled**: Allows recording of all metrics to be disabled.
 - **ReportingEnabled**: Allows all configured reporters to be disabled.
 
-----------
-
-### Changing options using `Action<AppMetricOptions>`
+## Changing options using `Action<AppMetricOptions>`
 
 [!code-csharp[Main](../../src/samples/StartupWithAppMetricsOptions.cs?highlight=5)]  
 
-----------
-
-### Changing options using `Microsoft.Extensions.Configuration.IConfiguration`
+## Changing options using `Microsoft.Extensions.Configuration.IConfiguration`
 
 Below is an example `Startup.cs` using `appsettings.json` as a configuration source:
 
@@ -26,11 +22,9 @@ Below is an example `Startup.cs` using `appsettings.json` as a configuration sou
 
 And the `appsettings.json` file
 
-[!code-json[Main](../../src/samples/AppMetricsOptions.js)]    
+[!code-json[Main](../../src/samples/AppMetricsOptions.json)]    
 
-----------
-
-### Next Steps
+## Next Steps
 
 - [AspNet Core Middleware Configuration Options](middleware-configuration.md)
 - [Sample Applications](../../samples/index.md)

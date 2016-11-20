@@ -17,15 +17,11 @@ These configuration options include:
 - **PingEndpoint**: Allows customization of the ping endpoint which simply returns pong. The default path is `/ping`
 - **PingEndpointEnabled**: Allows enabling/disabling of the `/ping` endpoint, when disabled will result in a 404 status code, the default is true.
 
-----------
-
-### Changing options using `Action<AspNetMetricsOptions>`
+## Changing options using `Action<AspNetMetricsOptions>`
 
 [!code-csharp[Main](../../src/samples/StartupWithAspNetOptions.cs?highlight=8)]      	     
 
-----------
-
-### Changing options using `Microsoft.Extensions.Configuration.IConfiguration`
+## Changing options using `Microsoft.Extensions.Configuration.IConfiguration`
 
 Below is an example `Startup.cs` using `appsettings.json` as a configuration source:
 
@@ -33,11 +29,9 @@ Below is an example `Startup.cs` using `appsettings.json` as a configuration sou
 
 And the `appsettings.json` file
 
-[!code-json[Main](../../src/samples/AspNetOptions.js)]
+[!code-json[Main](../../src/samples/AspNetOptions.json)]
 
-----------
-
-### Next Steps
+## Next Steps
 
 - [App MetricsConfiguration Options](configuration.md)
 - [Sample Applications](../../samples/index.md)

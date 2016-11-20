@@ -24,6 +24,10 @@ body {
   height: 38px;
 }
 
+strong {
+  color: #03A9F4;
+}
+
 span.app-name {
   font-size: 18px;
   display: block;
@@ -42,27 +46,27 @@ article, aside, footer, header, nav, section { display: block; }
 
 button,
 a {
-  color: #039BE5;
+  color: #03A9F4;
   cursor: pointer;
 }
 button:hover,
 button:focus,
 a:hover,
 a:focus {
-  color: #01579B;
+  color: #039BE5;
   text-decoration: none;
 }
 a.disable,
 a.disable:hover {
   text-decoration: none;
   cursor: default;
-  color: #000000;
+  color: #01579B;
 }
 
 /* workaround for leave space for fixed navbar with # anchor url*/
 
 h1 {
-    font-size: 2em;
+    font-size: 30px;
     margin: .67em 0
 }
 
@@ -144,25 +148,31 @@ svg:hover path {
 }
 
 .NOTE h5 {
-    color: #0277BD;
-    font-size: 18px;
+    color: #03A9F4;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .NOTE {
  border-color: #9E9E9E;
     background: #333333;
     color: #fff;
-     padding: 18px;
-    margin-top: 8px;
-    margin-bottom: 14px;
+     padding: 12px;
+    margin-top: 25px;
+    margin-bottom: 25px;
     border-radius: 2px;
     line-height: 1.4;
-    border: 2px solid #0288D1;
+    border: 1px solid #0288D1;
 }
 
 .NOTE>:first-child {
     margin: 0 0 8px;
     padding: 0;
+}
+
+.NOTE p {
+      -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
 }
 
 .hljs {
@@ -198,8 +208,7 @@ h1,
 h2,
 .h2,
 h3,
-.h3 {
-  margin-top: 15px;
+.h3 {  
   margin-bottom: 10px;
   font-weight: 400;
 }
@@ -273,9 +282,24 @@ header .navbar {
   border-bottom: 1px solid #424242;
 }
 
-article h1, article h2, article h3, article h4{
-  margin-top: 25px;
+article {
   font-family: 'Roboto',wf_segoe-ui_light,Segoe UI Light,Segeo WP,Tahoma,Arial,Helvetica Neue,Helvetica,sans-serif;
+}
+
+article h1 {    
+  color: #BDBDBD;  
+}
+
+article h2 {     
+  border-bottom: 1px solid #424242;
+  color: #03A9F4;
+  line-height: 2;
+}
+
+article h3, article h4 {     
+  border-bottom: 1px solid #424242;
+  color: #BDBDBD;
+  line-height: 2;
 }
 
 article h4{
@@ -541,13 +565,21 @@ body .toc{
 .toc .nav > li > a {
   color: #BDBDBD;
   display: inline;
-  padding: 0px;
-  font-size: 16px;
+  padding: 0px;  
 }
 .toc .nav > li > .expand-stub + a {
   margin-left: 5px;
   display: block;
 }
+
+.toc .nav > li > .expand-stub + a:hover, .toc .nav > li > .expand-stub + a:focus {
+  color: #039BE5;
+}
+
+.toc .nav > li.in > .expand-stub + a {
+  color: #039BE5;
+}
+
 .toc .nav > li > a:hover,
 .toc .nav > li > a:focus {
   color: #0277BD;
@@ -571,6 +603,7 @@ body .toc{
 .toc .nav > li.in.active > .expand-stub::before,
 .toc .nav > li.filtered > .expand-stub::before {
     content: "-";
+    color: #039BE5;
 }
 
 .toc .nav > li > .expand-stub::before,
@@ -590,12 +623,14 @@ body .toc{
 .toc .level1 > li {
   margin-top: 15px;
   position: relative;
+  font-size: 16px;
 }
 .toc .level2 {
   font-weight: normal;
   margin-top: 10px;
   margin-left: 15px;
-  font-size: 12px;
+  font-size: 14px;  
+  line-height: 2;
 }
 .toc .level3 {
   font-size: 12px;
@@ -635,7 +670,7 @@ body .toc{
   left: 10px;
 }
 .article {
-  margin-top: 120px;
+  margin-top: 90px;
   margin-bottom: 115px;
 }
 
@@ -691,8 +726,7 @@ body .toc{
 .affix > ul.level1 {
   overflow: hidden;
   padding-bottom: 10px;
-  height: calc(100% - 100px);
-  margin-right: -20px;
+  height: calc(100% - 100px);  
 }
 .affix ul > li > a:before {
   color: #424242;
