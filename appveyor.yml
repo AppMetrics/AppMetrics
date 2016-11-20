@@ -1,7 +1,4 @@
 version: 1.0.{build}
-branches:
-  only:
-  - dev
 nuget:
   disable_publish_on_pr: true
 build_script:
@@ -14,6 +11,5 @@ deploy:
   server: https://www.myget.org/F/alhardy/api/v2/package
   api_key:
     secure: gIAiACgNj+JzXyLLTe3rLxZyrAB9RpC8Lw81xEjdOLXqotprqEwGiFWRipEqkpps
-  skip_symbols: true
   on:
     branch: dev

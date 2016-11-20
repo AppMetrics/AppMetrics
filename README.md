@@ -1,5 +1,7 @@
 # App Metrics
 
+AppVeyor: [![Build status](https://ci.appveyor.com/api/projects/status/r4x0et4g6mr5vttf?svg=true)](https://ci.appveyor.com/project/alhardy/appmetrics)
+
 ## License
 This library will always keep the same license as the original [Metrics.NET Library](https://github.com/etishor/Metrics.NET) (as long as its an open source, permisive license). 
 
