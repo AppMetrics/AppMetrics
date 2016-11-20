@@ -37,7 +37,7 @@ Copyright (c) 2014 Iulian Margarintescu"
 
 ----------
 
-Build using the following open source projects
+Built using the following open source projects
 
 * [ASP.NET Core](https://github.com/aspnet)
 * [DocFX](https://dotnet.github.io/docfx/)
