@@ -1,7 +1,6 @@
 version: 1.0.{build}
-branches:
-  only:
-  - dev
+nuget:
+  disable_publish_on_pr: true
 build_script:
 - cmd: build.cmd
 test: off
@@ -13,5 +12,6 @@ deploy:
   api_key:
     secure: gIAiACgNj+JzXyLLTe3rLxZyrAB9RpC8Lw81xEjdOLXqotprqEwGiFWRipEqkpps
   skip_symbols: true
+  symbol_server: https://www.myget.org/F/alhardy/symbol
   on:
     branch: dev

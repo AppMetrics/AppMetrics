@@ -1,0 +1,51 @@
+{
+  "title": "App.Metrics",
+  "copyright": "Allan Hardy 2016",
+  "version": "1.0.0-alpha",
+  "authors": ["Allan Hardy"],
+  "description": "Provides application instrumentation abilities with custom metrics",
+
+  "buildOptions": {
+    "warningsAsErrors": true,
+    "nowarn": [
+      "CS1591",
+      "CS1570"
+    ],
+    "xmlDoc": true,
+    "debugType": "portable"
+  },
+
+  "packOptions": {
+    "tags": [ "Metrics", "Monitoring", "Instrumentation" ],
+    "projectUrl": "https://github.com/alhardy/app-metrics",
+    "licenseUrl": "https://github.com/alhardy/app-metrics/blob/master/LICENSE",
+    "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png"
+  },
+
+  "dependencies": {
+    "Microsoft.DotNet.InternalAbstractions": "1.0.500-preview2-1-003177",
+    "Microsoft.Extensions.Configuration": "1.1.0",
+    "Microsoft.Extensions.DependencyInjection": "1.1.0",
+    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
+    "Microsoft.Extensions.DependencyModel": "1.1.0",
+    "Microsoft.Extensions.Logging": "1.1.0",
+    "Microsoft.Extensions.Options": "1.1.0",
+    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0",
+    "Microsoft.Extensions.PlatformAbstractions": "1.1.0",
+    "NETStandard.Library": "1.6.1",
+    "System.Collections.Specialized": "4.3.0",
+    "System.Diagnostics.Process": "4.3.0",
+    "System.Net.NameResolution": "4.3.0",
+    "System.Threading.Thread": "4.3.0"
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": [
+        "dotnet5.6",
+        "portable-net45+win8"
+      ]      
+    }
+    //"net452": {}
+  }
+}

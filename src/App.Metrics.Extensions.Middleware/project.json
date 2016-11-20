@@ -1,0 +1,54 @@
+{
+  "version": "1.0.0-alpha",
+  "description": "Extends the App.Metrics library providing a set AspNet Core Middleware Components which will record things like error rates per endpoint and an overall rate, request rates per endpoint and an overall rate etc.",
+  "authors": [ "Allan Hardy" ],
+  "packOptions": {
+    "releaseNotes": "Initial Release",
+    "tags": [
+      "mvc",
+      "measurements",
+      "charts",
+      "timer",
+      "histogram",
+      "graphite",
+      "influxdb",
+      "health checks",
+      "metrics"
+    ],
+    "repository": {
+      "type": "git",
+      "url": "git://github.com/alhardy/app-metrics"
+    },
+    "projectUrl": "https://github.com/alhardy/app-metrics",
+    "licenseUrl": "https://github.com/alhardy/app-metrics/blob/master/LICENSE",
+    "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png"
+  },
+  "buildOptions": {
+    "warningsAsErrors": true,
+    "nowarn": [
+      "CS1591"
+    ],
+    "xmlDoc": true,
+    "debugType": "portable"
+  },
+  "dependencies": {
+    "App.Metrics": "1.0.0-*",
+    "Microsoft.AspNetCore.Mvc": "1.1.0",
+    "Microsoft.AspNetCore.Routing": "1.1.0",
+    "Microsoft.Extensions.DependencyInjection": "1.1.0",
+    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
+    "Microsoft.Extensions.Logging": "1.1.0",
+    "Microsoft.Extensions.PlatformAbstractions": "1.1.0",
+    "NETStandard.Library": "1.6.1",
+    "System.Linq": "4.3.0"
+  },
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": [
+        "dotnet5.6",
+        "portable-net45+win8"
+      ]
+    }
+  }
+
+}
