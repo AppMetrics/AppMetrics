@@ -5,7 +5,7 @@
         {
           "files": [
             "**/App.Metrics/project.json",
-            "**/AspNet.Metrics/project.json",
+            "**/App.Metrics.Extensions.Middleware/project.json",
             "**/App.Metrics.Extensions.Reporting.Console/project.json",
             "**/App.Metrics.Extensions.Reporting.TextFile/project.json",
             "**/App.Metrics.Formatters.Json/project.json"
