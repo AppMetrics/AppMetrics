@@ -93,7 +93,6 @@ namespace Api.Sample
                 })
                 .AddHealthChecks()
                 .AddMetricsMiddleware(Configuration.GetSection("AspNetMetrics"));
-            //.WithAllPerformanceCounters()
         }
     }
 }

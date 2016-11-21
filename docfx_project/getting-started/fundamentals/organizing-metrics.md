@@ -1,6 +1,6 @@
 # Organizing Metrics
 
-App Metrics provides a two ways to group your metrics into categories: 
+App Metrics provides a two ways to organize your metrics: 
 
 1. By specifing a **Context** label when [defining your metrics](../intro.md#measuring-application-metrics). By default any all custom Metrics will belong the the "Application" Context.
 2. Through the use of **Tags** when [defining your metrics](../intro.md#measuring-application-metrics) or by [configuring tags](configuration.md) globally for all Metrics.
