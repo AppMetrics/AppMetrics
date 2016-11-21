@@ -29,4 +29,8 @@
 - name: Sampling Types
   href: sampling/index.md      
 - name: Reporting & Visualization
-  href: reporting/index.md     
+  items:
+    - name: Reporting
+      href: reporting/index.md
+    - name: Visualization
+      href: reporting/Visualization.md     
