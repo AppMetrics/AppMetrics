@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.IO;
 using App.Metrics.Core;
 using App.Metrics.Data;
-using App.Metrics.Infrastructure;
 using App.Metrics.Reporting;
 using App.Metrics.Reporting.Interfaces;
 
@@ -33,6 +32,8 @@ namespace App.Metrics.Extensions.Reporting.TextFile
             ReportInterval = interval;
         }
 
+        public TimeSpan ReportInterval { get; }
+
 
         public void Dispose()
         {
@@ -55,8 +56,6 @@ namespace App.Metrics.Extensions.Reporting.TextFile
             _disposed = true;
         }
 
-        public TimeSpan ReportInterval { get; }
-
         public void EndMetricTypeReport(Type metricType)
         {
             _stringReporter.EndMetricTypeReport(metricType);
@@ -76,9 +75,9 @@ namespace App.Metrics.Extensions.Reporting.TextFile
             _stringReporter.ReportEnvironment(environmentInfo);
         }
 
-        public void ReportHealth(IEnumerable<HealthCheck.Result> healthyChecks, IEnumerable<HealthCheck.Result> unhealthyChecks)
+        public void ReportHealth(IEnumerable<HealthCheck.Result> healthyChecks, IEnumerable<HealthCheck.Result> degradedChecks, IEnumerable<HealthCheck.Result> unhealthyChecks)
         {
-            _stringReporter.ReportHealth(healthyChecks, unhealthyChecks);
+            _stringReporter.ReportHealth(healthyChecks, degradedChecks, unhealthyChecks);
         }
 
         public void ReportMetric<T>(string name, MetricValueSource<T> valueSource, MetricTags globalTags)

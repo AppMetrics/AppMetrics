@@ -9,6 +9,7 @@ using System.Text;
 using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.Formatting.Humanize;
+using App.Metrics.Internal;
 using App.Metrics.Reporting.Interfaces;
 
 namespace App.Metrics.Reporting
@@ -78,16 +79,33 @@ namespace App.Metrics.Reporting
             _buffer.WriteEnvironmentInfo(environmentInfo);
         }
 
-        public void ReportHealth(IEnumerable<HealthCheck.Result> healthyChecks, IEnumerable<HealthCheck.Result> unhealthyChecks)
+        public void ReportHealth(IEnumerable<HealthCheck.Result> healthyChecks, IEnumerable<HealthCheck.Result> degradedChecks, IEnumerable<HealthCheck.Result> unhealthyChecks)
         {
             var passed = healthyChecks.ToList();
             var failed = unhealthyChecks.ToList();
+            var degraded = degradedChecks.ToList();
 
-            _buffer.WriteHealthStatus(!failed.Any());
+            var status = Constants.Health.DegradedStatusDisplay;
+
+            if (!degraded.Any() && !failed.Any())
+            {
+                status = Constants.Health.HealthyStatusDisplay;
+            }
+
+            if (failed.Any())
+            {
+                status = Constants.Health.UnhealthyStatusDisplay;
+            }
+
+            _buffer.WriteHealthStatus(status);
 
             _buffer.WritePassedHealthChecksHeader();
             ;
             passed.ForEach(c => _buffer.WriteHealthCheckResult(c));
+
+            _buffer.WriteDegradedHealthChecksHeader();
+            ;
+            degraded.ForEach(c => _buffer.WriteHealthCheckResult(c));
 
             _buffer.WriteFailedHealthChecksHeader();
 

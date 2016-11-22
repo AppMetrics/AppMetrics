@@ -5,7 +5,7 @@ using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
 using FluentAssertions;
 using Xunit;
 
-namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware
+namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.MetricsText
 {
     public class MetricsTextEndpointFilteringMiddlewareTests : IClassFixture<MetricsHostTestFixture<FitleredMetricsEndpointStartup>>
     {

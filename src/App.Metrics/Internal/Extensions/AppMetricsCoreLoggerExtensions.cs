@@ -28,11 +28,11 @@ namespace Microsoft.Extensions.Logging
                 formatString:
                 $"Executed {nameof(HealthStatus)}, in {{elapsedMilliseconds}}ms, IsHealthy: True. {{checksPassed}} health check results passed.");
 
-            _healthGetStatusExecutedFailed = LoggerMessage.Define<double, int, int, IEnumerable<string>>(
+            _healthGetStatusExecutedFailed = LoggerMessage.Define<double, int, int, int, IEnumerable<string>, IEnumerable<string>>(
                 LogLevel.Information,
                 eventId: AppMetricsEventIds.HealthChecks.Status,
                 formatString:
-                $"Executed {nameof(HealthStatus)}, in {{elapsedMilliseconds}}ms, IsHealthy: False. {{checksPassed}} health check results passed. {{checksFailed}} health check results failed. Failed Checks: {{failedChecks}}");
+                $"Executed {nameof(HealthStatus)}, in {{elapsedMilliseconds}}ms, IsHealthy: False. {{checksPassed}} health check results passed. {{checksFailed}} health check results failed. Failed Checks: {{failedChecks}}. {{checksDegraded}} health check results degredated. Degraded Checks: {{degredatedChecks}}");
 
             _healthGetStatusExecutedNoResults = LoggerMessage.Define(
                 LogLevel.Information,
@@ -56,17 +56,20 @@ namespace Microsoft.Extensions.Logging
 
             if (healthStatus.HasRegisteredChecks)
             {
-                if (healthStatus.IsHealthy)
+                if (healthStatus.Status.IsHealthy())
                 {
                     _healthGetStatusExecuted(logger, elapsed.TotalMilliseconds, healthStatus.Results.Length, null);
                     return;
                 }
 
-                var checksFailed = healthStatus.Results.Count(x => !x.Check.IsHealthy);
-                var checksPassed = healthStatus.Results.Count(x => x.Check.IsHealthy);
-                var failedChecks = healthStatus.Results.Where(h => h.Check.IsHealthy).Select(h => h.Name);
+                var checksFailed = healthStatus.Results.Count(x => x.Check.Status.IsUnhealthy());
+                var checksDegraded = healthStatus.Results.Count(x => x.Check.Status.IsDegraded());
+                var checksPassed = healthStatus.Results.Count(x => x.Check.Status.IsHealthy());
+                var failedChecks = healthStatus.Results.Where(h => h.Check.Status.IsUnhealthy()).Select(h => h.Name);
+                var degradedChecks = healthStatus.Results.Where(h => h.Check.Status.IsDegraded()).Select(h => h.Name);
 
-                _healthGetStatusExecutedFailed(logger, elapsed.TotalMilliseconds, checksFailed, checksPassed, failedChecks, null);
+                _healthGetStatusExecutedFailed(logger, elapsed.TotalMilliseconds, checksFailed,  checksDegraded,
+                    checksPassed, degradedChecks, failedChecks, null);
             }
 
             _healthGetStatusExecutedNoResults(logger, null);
@@ -112,7 +115,7 @@ namespace Microsoft.Extensions.Logging
         // ReSharper disable InconsistentNaming
         private static readonly Action<ILogger, string, Exception> _healthCheckRegistered;
         private static readonly Action<ILogger, double, int, Exception> _healthGetStatusExecuted;
-        private static readonly Action<ILogger, double, int, int, IEnumerable<string>, Exception> _healthGetStatusExecutedFailed;
+        private static readonly Action<ILogger, double, int, int,int, IEnumerable<string>, IEnumerable<string>, Exception> _healthGetStatusExecutedFailed;
         private static readonly Action<ILogger, Exception> _healthGetStatusExecutedNoResults;
         private static readonly double TimestampToTicks = TimeSpan.TicksPerSecond / (double)Stopwatch.Frequency;
         // ReSharper restore InconsistentNaming

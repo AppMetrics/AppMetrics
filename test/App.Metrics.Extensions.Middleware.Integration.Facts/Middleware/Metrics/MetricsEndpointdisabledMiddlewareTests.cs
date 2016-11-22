@@ -5,11 +5,11 @@ using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
 using FluentAssertions;
 using Xunit;
 
-namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware
+namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
 {
-    public class HealthCheckEndpointDisabledMiddlewareTests : IClassFixture<MetricsHostTestFixture<DisabledHealthCheckTestStartup>>
+    public class MetricsEndpointDisabledMiddlewareTests : IClassFixture<MetricsHostTestFixture<DisabledMetricsEndpointStartup>>
     {
-        public HealthCheckEndpointDisabledMiddlewareTests(MetricsHostTestFixture<DisabledHealthCheckTestStartup> fixture)
+        public MetricsEndpointDisabledMiddlewareTests(MetricsHostTestFixture<DisabledMetricsEndpointStartup> fixture)
         {
             Client = fixture.Client;
             Context = fixture.Context;
@@ -20,9 +20,9 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware
         public IMetrics Context { get; }
 
         [Fact]
-        public async Task can_disable_health_checks()
+        public async Task can_disable_metrics_endpoint_when_metrics_enabled()
         {
-            var result = await Client.GetAsync("/health");
+            var result = await Client.GetAsync("/metrics");
 
             result.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }

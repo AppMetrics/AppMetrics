@@ -31,9 +31,9 @@ namespace App.Metrics.Formatting.Humanize
             buffer.AppendLine(Environment.NewLine + healthCheckResult.Hummanize());
         }
 
-        public static void WriteHealthStatus(this StringBuilder buffer, bool isHealthy)
+        public static void WriteHealthStatus(this StringBuilder buffer, string status)
         {
-            buffer.AppendLine(Environment.NewLine + "\tIs Healthy = " + (isHealthy ? "Yes" : "No") + Environment.NewLine);
+            buffer.AppendLine(Environment.NewLine + "\tHealth Status = {status}" + Environment.NewLine);
         }
 
         public static void WriteMetricEndReport(this StringBuilder buffer, string reportName, string timeStamp)
@@ -61,6 +61,11 @@ namespace App.Metrics.Formatting.Humanize
         public static void WritePassedHealthChecksHeader(this StringBuilder buffer)
         {
             buffer.AppendLine("\tPASSED CHECKS");
+        }
+
+        public static void WriteDegradedHealthChecksHeader(this StringBuilder buffer)
+        {
+            buffer.AppendLine("\tDEGRADED CHECKS");
         }
 
         public static void WriteStartMetricType(this StringBuilder buffer, Type metricType)

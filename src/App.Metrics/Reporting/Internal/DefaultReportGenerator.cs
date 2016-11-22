@@ -71,10 +71,11 @@ namespace App.Metrics.Reporting.Internal
 
                 reporter.StartMetricTypeReport(typeof(HealthStatus));
 
-                var passed = healthStatus.Results.Where(r => r.Check.IsHealthy);
-                var failed = healthStatus.Results.Where(r => !r.Check.IsHealthy);
+                var passed = healthStatus.Results.Where(r => r.Check.Status.IsHealthy());
+                var failed = healthStatus.Results.Where(r => r.Check.Status.IsUnhealthy());
+                var degraded = healthStatus.Results.Where(r => r.Check.Status.IsDegraded());
 
-                reporter.ReportHealth(passed, failed);
+                reporter.ReportHealth(passed, degraded, failed);
 
                 reporter.EndMetricTypeReport(typeof(HealthStatus));
             }

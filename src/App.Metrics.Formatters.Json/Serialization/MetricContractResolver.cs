@@ -54,6 +54,7 @@ namespace App.Metrics.Formatters.Json
 
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
+            //DEVNOTE: Writable properties only
             var props = base.CreateProperties(type, memberSerialization);
             return props.Where(p => p.Writable).ToList();
         }

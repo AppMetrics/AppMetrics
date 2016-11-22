@@ -30,7 +30,8 @@ namespace App.Metrics.Formatters.Json
             var source = serializer.Deserialize<HealthStatusData>(reader);
             var healthy = source.Healthy.Keys.Select(k => new HealthCheck.Result(k, HealthCheckResult.Healthy(source.Healthy[k])));
             var unhealthy = source.Unhealthy.Keys.Select(k => new HealthCheck.Result(k, HealthCheckResult.Unhealthy(source.Unhealthy[k])));
-            var target = new HealthStatus(healthy.Concat(unhealthy));
+            var degraded = source.Degraded.Keys.Select(k => new HealthCheck.Result(k, HealthCheckResult.Degraded(source.Degraded[k])));
+            var target = new HealthStatus(healthy.Concat(unhealthy).Concat(degraded));
             return target;
         }
 
@@ -40,15 +41,19 @@ namespace App.Metrics.Formatters.Json
 
             var target = new HealthStatusData
             {
-                IsHealthy = source.IsHealthy,
+                Status = source.Status.Hummanize(),
                 Timestamp = _clock.FormatTimestamp(_clock.UtcDateTime)
             };
 
-            var healthy = source.Results.Where(r => r.Check.IsHealthy)
+            var healthy = source.Results.Where(r => r.Check.Status.IsHealthy())
                 .Select(c => new KeyValuePair<string, string>(c.Name, c.Check.Message))
                 .ToDictionary(pair => pair.Key, pair => pair.Value);
 
-            var unhealthy = source.Results.Where(r => !r.Check.IsHealthy)
+            var unhealthy = source.Results.Where(r => r.Check.Status.IsUnhealthy())
+                .Select(c => new KeyValuePair<string, string>(c.Name, c.Check.Message))
+                .ToDictionary(pair => pair.Key, pair => pair.Value);
+
+            var degraded = source.Results.Where(r => r.Check.Status.IsDegraded())
                 .Select(c => new KeyValuePair<string, string>(c.Name, c.Check.Message))
                 .ToDictionary(pair => pair.Key, pair => pair.Value);
 
@@ -60,6 +65,11 @@ namespace App.Metrics.Formatters.Json
             if (unhealthy.Any())
             {
                 target.Unhealthy = unhealthy;
+            }
+
+            if (degraded.Any())
+            {
+                target.Degraded = degraded;
             }
 
             serializer.Serialize(writer, target);

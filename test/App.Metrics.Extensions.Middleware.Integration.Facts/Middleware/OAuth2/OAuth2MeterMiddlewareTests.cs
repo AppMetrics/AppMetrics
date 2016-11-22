@@ -7,7 +7,7 @@ using App.Metrics.Extensions.Middleware.Internal;
 using FluentAssertions;
 using Xunit;
 
-namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware
+namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
 {
     public class OAuth2MeterMiddlewareTests : IClassFixture<MetricsHostTestFixture<OAuthTestStartup>>
     {

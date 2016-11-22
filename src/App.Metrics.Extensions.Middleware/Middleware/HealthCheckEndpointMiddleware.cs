@@ -8,6 +8,7 @@ using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using App.Metrics.Serialization.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System.Net;
+using App.Metrics.Core;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Extensions.Middleware.Middleware
@@ -40,11 +41,24 @@ namespace App.Metrics.Extensions.Middleware.Middleware
                 Logger.MiddlewareExecuting(GetType());
 
                 var healthStatus = await Metrics.Advanced.Health.ReadStatusAsync();
-                var responseStatusCode = healthStatus.IsHealthy ? HttpStatusCode.OK : HttpStatusCode.InternalServerError;
+                string warning = null;
+
+                var responseStatusCode = HttpStatusCode.OK;
+
+                if (healthStatus.Status.IsUnhealthy())
+                {
+                    responseStatusCode = HttpStatusCode.InternalServerError;
+                }
+
+                if (healthStatus.Status.IsDegraded())
+                {
+                    responseStatusCode = HttpStatusCode.OK;
+                    warning = App.Metrics.Internal.Constants.Health.DegradedStatusDisplay;
+                }
 
                 var json = _serializer.Serialize(healthStatus);
 
-                await WriteResponseAsync(context, json, "application/json", responseStatusCode);
+                await WriteResponseAsync(context, json, "application/json", responseStatusCode, warning);
 
                 Logger.MiddlewareExecuted(GetType());
 

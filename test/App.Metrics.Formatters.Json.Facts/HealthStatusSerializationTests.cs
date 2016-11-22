@@ -29,8 +29,9 @@ namespace App.Metrics.Formatters.Json.Facts
             var healthyTwo = new HealthCheck.Result("test_two_healthy", HealthCheckResult.Healthy("second check was good"));
             var unhealthyOne = new HealthCheck.Result("test_three_unhealthy", HealthCheckResult.Unhealthy("something failed"));
             var unhealthyTwo = new HealthCheck.Result("test_four_unhealthy", HealthCheckResult.Unhealthy("something else failed"));
+            var degradedOne = new HealthCheck.Result("test_five_degraded", HealthCheckResult.Degraded("degrading service"));
 
-            var checks = new[] { healthyOne, healthyTwo, unhealthyOne, unhealthyTwo };
+            var checks = new[] { healthyOne, healthyTwo, unhealthyOne, unhealthyTwo, degradedOne };
 
             _healthStatus = new HealthStatus(checks);
         }
@@ -42,10 +43,11 @@ namespace App.Metrics.Formatters.Json.Facts
 
             var result = _serializer.Deserialize<HealthStatus>(expected.ToString());
 
-            result.IsHealthy.Should().BeFalse();
-            result.Results.Length.Should().Be(4);
-            result.Results.Count(r => r.Check.IsHealthy).Should().Be(2);
-            result.Results.Count(r => !r.Check.IsHealthy).Should().Be(2);
+            result.Status.Should().Be(HealthCheckStatus.Unhealthy);
+            result.Results.Length.Should().Be(5);
+            result.Results.Count(r => r.Check.Status.IsHealthy()).Should().Be(2);
+            result.Results.Count(r => r.Check.Status == HealthCheckStatus.Unhealthy).Should().Be(2);
+            result.Results.Count(r => r.Check.Status == HealthCheckStatus.Degraded).Should().Be(1);
         }
 
         [Fact]
@@ -59,7 +61,7 @@ namespace App.Metrics.Formatters.Json.Facts
         }
 
         [Fact]
-        public void produces_expected_json_when_null_healthy_checks()
+        public void produces_expected_json_when_null_unhealthy_checks()
         {
             var expected = HealthStatusSamples.NullHealthy.SampleJson();
             var healthyOne = new HealthCheck.Result("test_one_healthy", HealthCheckResult.Healthy("first check was good"));
@@ -75,7 +77,7 @@ namespace App.Metrics.Formatters.Json.Facts
         }
 
         [Fact]
-        public void produces_expected_json_when_null_unhealthy_checks()
+        public void produces_expected_json_when_null_healthy_checks()
         {
             var expected = HealthStatusSamples.NullUnhealthy.SampleJson();
             var unhealthyOne = new HealthCheck.Result("test_three_unhealthy", HealthCheckResult.Unhealthy("something failed"));

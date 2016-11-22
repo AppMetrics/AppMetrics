@@ -9,27 +9,18 @@ using System.Linq;
 using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.Formatting.Humanize;
-using App.Metrics.Infrastructure;
-using App.Metrics.Reporting;
 using App.Metrics.Reporting.Interfaces;
 
 namespace App.Metrics.Extensions.Reporting.Console
 {
-
     public class ConsoleReporter : IMetricReporter
     {
         private static readonly string GlobalName =
             $@"{CleanName(Environment.MachineName)}.{CleanName(Process.GetCurrentProcess().ProcessName)}";
 
-        private static string CleanName(string name)
-        {
-            return name.Replace('.', '_');
-        }
-
         public ConsoleReporter(TimeSpan reportInterval)
             : this("Console Reporter", reportInterval)
         {
-            
         }
 
         public ConsoleReporter(string name, TimeSpan reportInterval)
@@ -42,11 +33,11 @@ namespace App.Metrics.Extensions.Reporting.Console
 
         public string Name { get; }
 
+        public TimeSpan ReportInterval { get; }
+
         public void Dispose()
         {
         }
-
-        public TimeSpan ReportInterval { get; }
 
         public void EndMetricTypeReport(Type metricType)
         {
@@ -64,17 +55,36 @@ namespace App.Metrics.Extensions.Reporting.Console
             WriteLine(environmentInfo.Hummanize());
         }
 
-        public void ReportHealth(IEnumerable<HealthCheck.Result> healthyChecks, IEnumerable<HealthCheck.Result> unhealthyChecks)
+        public void ReportHealth(IEnumerable<HealthCheck.Result> healthyChecks, IEnumerable<HealthCheck.Result> degradedChecks, IEnumerable<HealthCheck.Result> unhealthyChecks)
         {
             var passed = healthyChecks.ToList();
             var failed = unhealthyChecks.ToList();
-            var isHealthy = !failed.Any();
+            var degraded = degradedChecks.ToList();
+            var isHealthy = !failed.Any() && !degraded.Any();
+            var isUnhealthy = failed.Any();
 
-            WriteLine(string.Format(Environment.NewLine + "\tIs Healthy = " + (isHealthy ? "Yes" : "No") + Environment.NewLine));
+            var status = "Degraded";
+
+            if (isHealthy)
+            {
+                status = "Healthy";
+            }
+
+            if (isUnhealthy)
+            {
+                status = "Unhealthy";
+            }
+
+
+            WriteLine(string.Format(Environment.NewLine + $"\tHealth Status = {status}" + Environment.NewLine));
 
             WriteLine("\tPASSED CHECKS");
 
             passed.ForEach(c => WriteLine(c.Hummanize()));
+
+            WriteLine("\tDEGRADED CHECKS");
+
+            degraded.ForEach(c => WriteLine(c.Hummanize()));
 
             WriteLine("\tFAILED CHECKS");
 
@@ -102,6 +112,11 @@ namespace App.Metrics.Extensions.Reporting.Console
         public void WriteLine(string message)
         {
             System.Console.WriteLine(message);
+        }
+
+        private static string CleanName(string name)
+        {
+            return name.Replace('.', '_');
         }
     }
 }

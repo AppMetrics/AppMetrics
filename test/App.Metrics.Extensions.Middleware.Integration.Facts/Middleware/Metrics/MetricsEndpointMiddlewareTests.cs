@@ -5,11 +5,11 @@ using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
 using FluentAssertions;
 using Xunit;
 
-namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware
+namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
 {
-    public class MetricsCustomEndpointMiddlewareTests : IClassFixture<MetricsHostTestFixture<CustomMetricsEndpointTestStartup>>
+    public class MetricsEndpointMiddlewareTests : IClassFixture<MetricsHostTestFixture<DefaultTestStartup>>
     {
-        public MetricsCustomEndpointMiddlewareTests(MetricsHostTestFixture<CustomMetricsEndpointTestStartup> fixture)
+        public MetricsEndpointMiddlewareTests(MetricsHostTestFixture<DefaultTestStartup> fixture)
         {
             Client = fixture.Client;
             Context = fixture.Context;
@@ -20,12 +20,12 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware
         public IMetrics Context { get; }
 
         [Fact]
-        public async Task can_change_metrics_endpoint()
+        public async Task uses_correct_mimetype_for_json_version()
         {
             var result = await Client.GetAsync("/metrics");
-            result.StatusCode.Should().Be(HttpStatusCode.NotFound);
-            result = await Client.GetAsync("/metrics-json");
+
             result.StatusCode.Should().Be(HttpStatusCode.OK);
+            result.Content.Headers.ContentType.ToString().Should().Match<string>(s => s == "application/vnd.app.metrics.v1.metrics+json");
         }
     }
 }

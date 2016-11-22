@@ -2,10 +2,10 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
 using App.Metrics.Extensions.Middleware.Internal;
-using Xunit;
 using FluentAssertions;
+using Xunit;
 
-namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware
+namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
 {
     public class ErrorRequestMeterMiddlewareOverallCountTests : IClassFixture<MetricsHostTestFixture<DefaultTestStartup>>
     {

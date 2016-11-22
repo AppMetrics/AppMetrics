@@ -39,7 +39,7 @@ namespace App.Metrics.Facts.DependencyInjection
 
             var result = await metricsContext.Advanced.Health.ReadStatusAsync();
 
-            result.IsHealthy.Should().BeTrue();
+            result.Status.Should().Be(HealthCheckStatus.Healthy);
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace App.Metrics.Facts.DependencyInjection
 
             var result = await metricsContext.Advanced.Health.ReadStatusAsync();
 
-            result.IsHealthy.Should().BeFalse();
+            result.Status.Should().Be(HealthCheckStatus.Unhealthy);
         }
 
         [Fact]

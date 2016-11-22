@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using App.Metrics;
 using App.Metrics.Core;
 
 namespace Api.Sample.HealthChecks

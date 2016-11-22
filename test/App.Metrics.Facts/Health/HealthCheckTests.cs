@@ -17,7 +17,7 @@ namespace App.Metrics.Facts.Health
 
             var check1 = new HealthCheck(name, () => ThrowExceptionWithBracketsInMessage());
             var result1 = await check1.ExecuteAsync();
-            result1.Check.IsHealthy.Should().BeFalse();
+            result1.Check.Status.Should().Be(HealthCheckStatus.Unhealthy);
 
             var check2 = new HealthCheck(name, () =>
             {
@@ -25,7 +25,7 @@ namespace App.Metrics.Facts.Health
                 return Task.FromResult("string");
             });
             var result2 = await check2.ExecuteAsync();
-            result2.Check.IsHealthy.Should().BeFalse();
+            result2.Check.Status.Should().Be(HealthCheckStatus.Unhealthy);
 
             var check3 = new HealthCheck(name, () =>
             {
@@ -33,7 +33,7 @@ namespace App.Metrics.Facts.Health
                 return AppMetricsTaskCache.CompletedHealthyTask;
             });
             var result3 = await check3.ExecuteAsync();
-            result3.Check.IsHealthy.Should().BeFalse();
+            result3.Check.Status.Should().Be(HealthCheckStatus.Unhealthy);
         }
 
         [Fact]
@@ -42,7 +42,7 @@ namespace App.Metrics.Facts.Health
             var name = "test";
             var check1 = new HealthCheck(name, () => ThrowException());
             var result1 = await check1.ExecuteAsync();
-            result1.Check.IsHealthy.Should().BeFalse();
+            result1.Check.Status.Should().Be(HealthCheckStatus.Unhealthy);
 
             var check2 = new HealthCheck(name, () =>
             {
@@ -50,7 +50,7 @@ namespace App.Metrics.Facts.Health
                 return Task.FromResult("string");
             });
             var result2 = await check2.ExecuteAsync();
-            result2.Check.IsHealthy.Should().BeFalse();
+            result2.Check.Status.Should().Be(HealthCheckStatus.Unhealthy);
 
             var check3 = new HealthCheck(name, () =>
             {
@@ -58,7 +58,7 @@ namespace App.Metrics.Facts.Health
                 return AppMetricsTaskCache.CompletedHealthyTask;
             });
             var result3 = await check3.ExecuteAsync();
-            result3.Check.IsHealthy.Should().BeFalse();
+            result3.Check.Status.Should().Be(HealthCheckStatus.Unhealthy);
         }
 
         [Fact]
@@ -66,7 +66,7 @@ namespace App.Metrics.Facts.Health
         {
             var check = new HealthCheck("test", () => Task.FromResult(HealthCheckResult.Unhealthy()));
             var result = await check.ExecuteAsync();
-            result.Check.IsHealthy.Should().BeFalse();
+            result.Check.Status.Should().Be(HealthCheckStatus.Unhealthy);
         }
 
         [Fact]
@@ -79,11 +79,15 @@ namespace App.Metrics.Facts.Health
 
             var check2 = new HealthCheck("test", () => Task.FromResult(HealthCheckResult.Healthy(message)));
             var result2 = await check2.ExecuteAsync();
-            result2.Check.Message.Should().Be(message);
+            result2.Check.Message.Should().Be(message);            
 
             var check3 = new HealthCheck("test", () => Task.FromResult(message));
             var result3 = await check3.ExecuteAsync();
             result3.Check.Message.Should().Be(message);
+
+            var check4 = new HealthCheck("test", () => Task.FromResult(HealthCheckResult.Degraded(message)));
+            var result4 = await check4.ExecuteAsync();
+            result4.Check.Message.Should().Be(message);
         }
 
         [Fact]
@@ -109,15 +113,15 @@ namespace App.Metrics.Facts.Health
             var name = "test";
             var check1 = new HealthCheck(name, () => Task.FromResult(HealthCheckResult.Healthy()));
             var result1 = await check1.ExecuteAsync();
-            result1.Check.IsHealthy.Should().BeTrue();
+            result1.Check.Status.Should().Be(HealthCheckStatus.Healthy);
 
             var check2 = new HealthCheck(name, () => Task.FromResult("string"));
             var result2 = await check2.ExecuteAsync();
-            result2.Check.IsHealthy.Should().BeTrue();
+            result2.Check.Status.Should().Be(HealthCheckStatus.Healthy);
 
             var check3 = new HealthCheck(name, () => Task.FromResult(HealthCheckResult.Healthy()));
             var result3 = await check3.ExecuteAsync();
-            result3.Check.IsHealthy.Should().BeTrue();
+            result3.Check.Status.Should().Be(HealthCheckStatus.Healthy);
         }
 
         private static Task<HealthCheckResult> ThrowException()

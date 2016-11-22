@@ -1,15 +1,15 @@
-﻿using System.Net;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
 using FluentAssertions;
 using Xunit;
 
-namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware
+namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Health
 {
-    public class HealthCheckEndpointMiddlewareTests : IClassFixture<MetricsHostTestFixture<DefaultTestStartup>>
+    public class HealthCheckEndpointDegradedMiddlewareTests : IClassFixture<MetricsHostTestFixture<DegradedHealthTestStartup>>
     {
-        public HealthCheckEndpointMiddlewareTests(MetricsHostTestFixture<DefaultTestStartup> fixture)
+        public HealthCheckEndpointDegradedMiddlewareTests(MetricsHostTestFixture<DegradedHealthTestStartup> fixture)
         {
             Client = fixture.Client;
             Context = fixture.Context;
@@ -25,6 +25,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware
             var result = await Client.GetAsync("/health");
 
             result.StatusCode.Should().Be(HttpStatusCode.OK);
+            result.Headers.Warning.ToString().Should().StartWith("Warning: 100 ");                        
         }
     }
 }

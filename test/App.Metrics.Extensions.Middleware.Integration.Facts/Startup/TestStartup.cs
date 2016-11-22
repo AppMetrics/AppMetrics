@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using App.Metrics.Configuration;
+using App.Metrics.Core;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using App.Metrics.Utils;
 using Microsoft.AspNetCore.Builder;
@@ -9,7 +12,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
 
 namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
 {
@@ -53,7 +55,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
         protected void SetupServices(IServiceCollection services,
             AppMetricsOptions appMetricsOptions,
             AspNetMetricsOptions aspNetMetricsOptions,
-            IMetricsFilter filter = null)
+            IMetricsFilter filter = null, IEnumerable<HealthCheckResult> healthChecks = null)
         {
             services
                 .AddLogging()
@@ -70,7 +72,18 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
                 })
                 .AddJsonSerialization()
                 .AddClockType<TestClock>()
-                .AddHealthChecks()
+                .AddHealthChecks(factory =>
+                {
+                    var checks = healthChecks != null
+                        ? healthChecks.ToList()
+                        : new List<HealthCheckResult>();
+
+                    for (var i = 0; i < checks.Count; i++)
+                    {
+                        var check = checks[i];
+                        factory.Register("Check" + i, () => Task.FromResult(check));
+                    }
+                })
                 .AddMetricsMiddleware(options =>
                 {
                     options.MetricsTextEndpointEnabled = aspNetMetricsOptions.MetricsTextEndpointEnabled;

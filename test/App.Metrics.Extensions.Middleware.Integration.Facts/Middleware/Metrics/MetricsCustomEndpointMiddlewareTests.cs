@@ -5,11 +5,11 @@ using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
 using FluentAssertions;
 using Xunit;
 
-namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware
+namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
 {
-    public class HealthCheckCustomEndpointMiddlewareTests : IClassFixture<MetricsHostTestFixture<CustomHealthCheckTestStartup>>
+    public class MetricsCustomEndpointMiddlewareTests : IClassFixture<MetricsHostTestFixture<CustomMetricsEndpointTestStartup>>
     {
-        public HealthCheckCustomEndpointMiddlewareTests(MetricsHostTestFixture<CustomHealthCheckTestStartup> fixture)
+        public MetricsCustomEndpointMiddlewareTests(MetricsHostTestFixture<CustomMetricsEndpointTestStartup> fixture)
         {
             Client = fixture.Client;
             Context = fixture.Context;
@@ -20,11 +20,11 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware
         public IMetrics Context { get; }
 
         [Fact]
-        public async Task can_change_health_endpoint()
+        public async Task can_change_metrics_endpoint()
         {
-            var result = await Client.GetAsync("/health");
+            var result = await Client.GetAsync("/metrics");
             result.StatusCode.Should().Be(HttpStatusCode.NotFound);
-            result = await Client.GetAsync("/health-status");
+            result = await Client.GetAsync("/metrics-json");
             result.StatusCode.Should().Be(HttpStatusCode.OK);
         }
     }

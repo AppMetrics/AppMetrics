@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
-using App.Metrics.Data;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.Internal.Interfaces;
@@ -27,8 +26,10 @@ namespace App.Metrics.Facts.Health
                 var clock = new TestClock();
                 var options = new AppMetricsOptions();
                 Func<string, IMetricContextRegistry> newContextRegistry = name => new DefaultMetricContextRegistry(name);
-                var registry = new DefaultMetricsRegistry(LoggerFactory, options, clock, new EnvironmentInfoProvider(LoggerFactory), newContextRegistry);
-                var advancedContext = new DefaultAdvancedMetrics(metricsLogger, options, clock, new DefaultMetricsFilter(), registry, healthCheckFactory);
+                var registry = new DefaultMetricsRegistry(LoggerFactory, options, clock, new EnvironmentInfoProvider(LoggerFactory),
+                    newContextRegistry);
+                var advancedContext = new DefaultAdvancedMetrics(metricsLogger, options, clock, new DefaultMetricsFilter(), registry,
+                    healthCheckFactory);
                 return new DefaultMetrics(options, registry, advancedContext);
             };
         }
@@ -42,6 +43,20 @@ namespace App.Metrics.Facts.Health
             action.ShouldNotThrow<InvalidOperationException>();
         }
 
+        [Fact]
+        public async Task registry_status_is_degraded_if_one_check_is_degraded()
+        {
+            _healthCheckFactory.Register("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
+            _healthCheckFactory.Register("degraded", () => Task.FromResult(HealthCheckResult.Degraded()));
+
+            var metrics = _metircsSetup(_healthCheckFactory);
+
+            var status = await metrics.Advanced.Health.ReadStatusAsync();
+
+            status.Status.Should().Be(HealthCheckStatus.Degraded);
+            status.Results.Length.Should().Be(2);
+        }
+
 
         [Fact]
         public async Task registry_status_is_failed_if_one_check_fails()
@@ -53,7 +68,7 @@ namespace App.Metrics.Facts.Health
 
             var status = await metrics.Advanced.Health.ReadStatusAsync();
 
-            status.IsHealthy.Should().BeFalse();
+            status.Status.Should().Be(HealthCheckStatus.Unhealthy);
             status.Results.Length.Should().Be(2);
         }
 
@@ -67,8 +82,23 @@ namespace App.Metrics.Facts.Health
 
             var status = await metrics.Advanced.ReadStatusAsync();
 
-            status.IsHealthy.Should().BeTrue();
+            status.Status.Should().Be(HealthCheckStatus.Healthy);
             status.Results.Length.Should().Be(2);
+        }
+
+        [Fact]
+        public async Task registry_status_is_unhealthy_if_any_one_check_fails_even_when_degraded()
+        {
+            _healthCheckFactory.Register("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
+            _healthCheckFactory.Register("bad", () => Task.FromResult(HealthCheckResult.Unhealthy()));
+            _healthCheckFactory.Register("degraded", () => Task.FromResult(HealthCheckResult.Degraded()));
+
+            var metrics = _metircsSetup(_healthCheckFactory);
+
+            var status = await metrics.Advanced.Health.ReadStatusAsync();
+
+            status.Status.Should().Be(HealthCheckStatus.Unhealthy);
+            status.Results.Length.Should().Be(3);
         }
     }
 }
