@@ -7,7 +7,7 @@ namespace HealthCheck.Samples
     [Obsolete]
     public class IgnoreAttributeHealthCheck : App.Metrics.Core.HealthCheck
     {
-        public IgnoreAttributeHealthCheck() : base("Referencing Assembly - Sample Healthy")
+        public IgnoreAttributeHealthCheck() : base("Referencing Assembly - Sample Ignore")
         {
         }
 

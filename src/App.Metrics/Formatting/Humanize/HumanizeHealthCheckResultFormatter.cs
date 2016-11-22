@@ -27,21 +27,19 @@ namespace App.Metrics.Formatting.Humanize
             var sb = new StringBuilder();
             sb.AppendLine();
 
-            if (!healthCheckResult.Check.Status.IsUnhealthy())
+            if (healthCheckResult.Check.Status.IsUnhealthy())
             {
                 sb.AppendLine(healthCheckResult.Name.FormatReadableMetricValue("FAILED: " + healthCheckResult.Check.Message));
+                return sb.ToString();
             }
 
             if (healthCheckResult.Check.Status.IsHealthy())
             {
                 sb.AppendLine(healthCheckResult.Name.FormatReadableMetricValue("PASSED: " + healthCheckResult.Check.Message));
+                return sb.ToString();
             }
 
-            if (healthCheckResult.Check.Status.IsDegraded())
-            {
-                sb.AppendLine(healthCheckResult.Name.FormatReadableMetricValue("DEGRADED: " + healthCheckResult.Check.Message));
-            }
-
+            sb.AppendLine(healthCheckResult.Name.FormatReadableMetricValue("DEGRADED: " + healthCheckResult.Check.Message));
             return sb.ToString();
         }
     }
