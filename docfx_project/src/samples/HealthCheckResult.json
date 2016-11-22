@@ -1,12 +1,14 @@
 {
-  "healthy": {
-    "test_one_healthy": "first check was good",
-    "test_two_healthy": "second check was good"
+  "degraded": {
+    "message queue reached the threshold": "5000 messages in the processing queue which is above the threshold of 4000",
+    "signing certificate expiry": "the signing certificate is going to expire in 1 week"
   },
-  "isHealthy": false,
+  "healthy": {
+    "database connection": "able make a connection to the database"    
+  },
+  "status": "Unhealthy",
   "timestamp": "0001-01-01T00:00:00.0000Z",
   "unhealthy": {
-    "test_three_unhealthy": "something failed",
-    "test_four_unhealthy": "something else failed"
+    "unable to ping x api": "a connection to x could not be made"    
   }
 }
