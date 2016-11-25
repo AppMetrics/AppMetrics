@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using App.Metrics.App_Packages.Concurrency;
+using App.Metrics.Concurrency;
 using App.Metrics.Sampling.Interfaces;
 using App.Metrics.Scheduling;
 using App.Metrics.Scheduling.Interfaces;

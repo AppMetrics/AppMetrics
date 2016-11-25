@@ -7,7 +7,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.App_Packages.Concurrency;
+using App.Metrics.Concurrency;
 
 namespace App.Metrics.App_Packages.HdrHistogram
 {

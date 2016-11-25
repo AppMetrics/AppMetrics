@@ -9,7 +9,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
-using App.Metrics.App_Packages.Concurrency;
+using App.Metrics.Concurrency;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Data;
 

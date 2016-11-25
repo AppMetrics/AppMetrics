@@ -5,7 +5,7 @@
 // Ported to.NET Standard Library by Allan Hardy
 
 using System;
-using App.Metrics.App_Packages.Concurrency;
+using App.Metrics.Concurrency;
 
 namespace App.Metrics.App_Packages.HdrHistogram
 {

@@ -5,8 +5,8 @@
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
 // Ported/Refactored to .NET Standard Library by Allan Hardy
 
-using App.Metrics.App_Packages.Concurrency;
 using App.Metrics.App_Packages.HdrHistogram;
+using App.Metrics.Concurrency;
 using App.Metrics.Sampling.Interfaces;
 
 namespace App.Metrics.Sampling

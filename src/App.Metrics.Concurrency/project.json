@@ -1,0 +1,43 @@
+{
+  "title": "App.Metrics.Concurrency",
+  "copyright": "Allan Hardy 2016",
+  "version": "1.0.0-alpha",
+  "authors": ["Allan Hardy"],
+  "description": "TODO",
+
+  "buildOptions": {
+    "warningsAsErrors": true,
+    "nowarn": [
+      "CS1591",
+      "CS1570"
+    ],
+    "xmlDoc": true,
+    "debugType": "portable"
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": [
+        "dotnet5.6",
+        "portable-net45+win8"
+      ],
+      "dependencies": {
+        "NETStandard.Library": "1.6.1",
+        "System.Threading.Thread": "4.3.0"
+      }
+    },
+    "net45": {
+      "buildOptions": {
+        "define": [
+          "CLASSIC"
+        ]
+      },
+      "frameworkAssemblies": {
+        "System.Reflection": "4.0.0.0"
+      },
+      "dependencies": {
+        
+      }
+    }
+  }
+}

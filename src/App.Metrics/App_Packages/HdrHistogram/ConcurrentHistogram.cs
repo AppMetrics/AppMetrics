@@ -8,7 +8,7 @@
 // Original repo: https://github.com/etishor/Metrics.NET
 
 using System.Diagnostics;
-using App.Metrics.App_Packages.Concurrency;
+using App.Metrics.Concurrency;
 
 namespace App.Metrics.App_Packages.HdrHistogram
 {

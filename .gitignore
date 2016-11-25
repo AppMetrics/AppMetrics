@@ -83,5 +83,4 @@ BDN.Generated
 BDN.Generated/*
 scripts/BenchMarkDotNet.Artifacts
 scripts/BenchMarkDotNet.Artifacts/*
-test/App.Metrics.Performance.Tests/BenchMarkDotNet.Artifacts
-test/App.Metrics.Performance.Tests/BenchMarkDotNet.Artifacts/*
+**/BenchMarkDotNet.Artifacts/*
