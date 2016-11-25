@@ -2,8 +2,8 @@
   "title": "App.Metrics.Concurrency",
   "copyright": "Allan Hardy 2016",
   "version": "1.0.0-alpha",
-  "authors": ["Allan Hardy"],
-  "description": "TODO",
+  "authors": [ "Allan Hardy" ],
+  "description": ".NET Standard Concurrency Utils. Original DNX Beta Project: https://github.com/etishor/ConcurrencyUtilities",
 
   "buildOptions": {
     "warningsAsErrors": true,
@@ -36,7 +36,7 @@
         "System.Reflection": "4.0.0.0"
       },
       "dependencies": {
-        
+
       }
     }
   }

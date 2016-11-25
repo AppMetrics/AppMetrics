@@ -6,7 +6,7 @@ namespace App.Metrics.Concurrency.Facts
     public class AtomicLongArrayTests
     {
         [Fact]
-        public void AtomicLongArray_CanCompareAndSet()
+        public void can_compare_and_set()
         {
             var array = new AtomicLongArray(10);
 
@@ -20,14 +20,14 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
-        public void AtomicLongArray_CanCreateArray()
+        public void can_create_array()
         {
             var array = new AtomicLongArray(10);
             array.Length.Should().Be(10);
         }
 
         [Fact]
-        public void AtomicLongArray_CanDecrement()
+        public void can_decrement()
         {
             var array = new AtomicLongArray(10);
 
@@ -41,7 +41,7 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
-        public void AtomicLongArray_CanGetAndSetValue()
+        public void can_get_and_set_value()
         {
             var array = new AtomicLongArray(10);
 
@@ -56,7 +56,7 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
-        public void AtomicLongArray_CanIncrement()
+        public void can_increment()
         {
             var array = new AtomicLongArray(10);
 

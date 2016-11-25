@@ -16,7 +16,20 @@ namespace App.Metrics.Concurrency.Facts
             InlineData(1000000, 2),
             InlineData(1000000, 1),
         ]
-        public void Concurrency_AtomicIntArray_IsCorrectWithConcurrency(int total, int threadCount)
+        public void Concurrency_AtomicLong_IsCorrectWithConcurrency(long total, int threadCount)
+        {
+            ConcurrencyTest<AtomicLong, long>(total, threadCount);
+        }
+
+        [Theory]
+        [
+            InlineData(1000000, 16),
+            InlineData(1000000, 8),
+            InlineData(1000000, 4),
+            InlineData(1000000, 2),
+            InlineData(1000000, 1),
+        ]
+        public void int_array_is_correct_with_concurrency(int total, int threadCount)
         {
             var array = new AtomicIntArray(100);
             var thread = new List<Thread>();
@@ -57,7 +70,7 @@ namespace App.Metrics.Concurrency.Facts
             InlineData(1000000, 2),
             InlineData(1000000, 1),
         ]
-        public void Concurrency_AtomicInteger_IsCorrectWithConcurrency(int total, int threadCount)
+        public void int_is_correct_with_concurrency(int total, int threadCount)
         {
             ConcurrencyTest<AtomicInteger, int>(total, threadCount);
         }
@@ -70,20 +83,7 @@ namespace App.Metrics.Concurrency.Facts
             InlineData(1000000, 2),
             InlineData(1000000, 1),
         ]
-        public void Concurrency_AtomicLong_IsCorrectWithConcurrency(long total, int threadCount)
-        {
-            ConcurrencyTest<AtomicLong, long>(total, threadCount);
-        }
-
-        [Theory]
-        [
-            InlineData(1000000, 16),
-            InlineData(1000000, 8),
-            InlineData(1000000, 4),
-            InlineData(1000000, 2),
-            InlineData(1000000, 1),
-        ]
-        public void Concurrency_AtomicLongArray_IsCorrectWithConcurrency(int total, int threadCount)
+        public void long_array_is_correct_with_concurrency(int total, int threadCount)
         {
             var array = new AtomicLongArray(100);
             var thread = new List<Thread>();
@@ -124,7 +124,7 @@ namespace App.Metrics.Concurrency.Facts
             InlineData(1000000, 2),
             InlineData(1000000, 1),
         ]
-        public void Concurrency_PaddedAtomicLong_IsCorrectWithConcurrency(long total, int threadCount)
+        public void padded_long_is_correct_with_concurrency(long total, int threadCount)
         {
             ConcurrencyTest<PaddedAtomicLong, long>(total, threadCount);
         }
@@ -137,7 +137,7 @@ namespace App.Metrics.Concurrency.Facts
             InlineData(1000000, 2),
             InlineData(1000000, 1),
         ]
-        public void Concurrency_StripedLongAdder_IsCorrectWithConcurrency(long total, int threadCount)
+        public void striped_long_adder_is_correct_with_concurrency(long total, int threadCount)
         {
             ConcurrencyTest<StripedLongAdder, long>(total, threadCount);
         }
@@ -150,12 +150,12 @@ namespace App.Metrics.Concurrency.Facts
             InlineData(1000000, 2),
             InlineData(1000000, 1),
         ]
-        public void Concurrency_ThreadLocalLongAdder_IsCorrectWithConcurrency(long total, int threadCount)
+        public void thread_local_long_adder_is_correct_with_concurrency(long total, int threadCount)
         {
             ConcurrencyTest<ThreadLocalLongAdder, long>(total, threadCount);
         }
 
-        private static void ConcurrencyTest<T, U>(long total, int threadCount) where T : IValueAdder<U>, new()
+        private static void ConcurrencyTest<T, TU>(long total, int threadCount) where T : IValueAdder<TU>, new()
         {
             var value = new T();
             var thread = new List<Thread>();
@@ -177,11 +177,11 @@ namespace App.Metrics.Concurrency.Facts
             var result = value.GetValue();
             if (result is int)
             {
-                AssertionExtensions.Should((object)value.GetValue()).Be((int)total * threadCount);
+                ((object)value.GetValue()).Should().Be((int)total * threadCount);
             }
             else
             {
-                AssertionExtensions.Should((object)value.GetValue()).Be(total * threadCount);
+                ((object)value.GetValue()).Should().Be(total * threadCount);
             }
         }
     }

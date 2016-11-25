@@ -1,17 +1,17 @@
-using App.Metrics.Concurrency.Benchmarks.Jobs;
+﻿using App.Metrics.Concurrency.Benchmarks.Jobs;
 using BenchmarkDotNet.Attributes;
 
-namespace App.Metrics.Concurrency.Benchmarks.Benchmarks
+namespace App.Metrics.Concurrency.Benchmarks
 {
-    [FastAndDirtyJob]
-    public class ThreadLocalLongAdderBenchMark
+    [QuickRunJob]
+    public class AtomicIntegerBenchmark
     {
-        private ThreadLocalLongAdder _num;
+        private AtomicInteger _num;
 
         [Benchmark]
         public void Decrement()
         {
-            _num.Decrement(1);
+            _num.Decrement();
         }
 
         [Benchmark]
@@ -23,13 +23,13 @@ namespace App.Metrics.Concurrency.Benchmarks.Benchmarks
         [Benchmark]
         public void Increment()
         {
-            _num.Increment(1);
+            _num.Increment();
         }
 
         [Setup]
         public void Setup()
         {
-            _num = new ThreadLocalLongAdder();
+            _num = new AtomicInteger();
         }
     }
 }

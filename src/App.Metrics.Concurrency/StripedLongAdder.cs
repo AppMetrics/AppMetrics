@@ -1,15 +1,13 @@
-/*
- * Striped64 & LongAdder classes were ported from Java and had this copyright:
- * 
- * Written by Doug Lea with assistance from members of JCP JSR-166
- * Expert Group and released to the public domain, as explained at
- * http://creativecommons.org/publicdomain/zero/1.0/
- * 
- * Source: http://gee.cs.oswego.edu/cgi-bin/viewcvs.cgi/jsr166/src/jsr166e/Striped64.java?revision=1.8
- * 
- * This class has been ported to .NET by Iulian Margarintescu and will retain the same license as the Java Version
- * 
- */
+//Striped64 & LongAdder classes were ported from Java and had this copyright:
+//Written by Doug Lea with assistance from members of JCP JSR-166
+//Expert Group and released to the public domain, as explained at http://creativecommons.org/publicdomain/zero/1.0/
+
+//Source: http://gee.cs.oswego.edu/cgi-bin/viewcvs.cgi/jsr166/src/jsr166e/Striped64.java?revision=1.8
+
+//This class was been ported to .NET by Iulian Margarintescu and will retain the same license as the Java Version
+//Original .NET Source by Iulian Margarintescu: https://github.com/etishor/ConcurrencyUtilities/blob/master/Src/ConcurrencyUtilities/StripedLongAdder.cs
+
+//Ported to a .NET Standard Project by Allan Hardy as the owner Iulian Margarintescu is unreachable and the source and packages are no longer maintained
 
 // ReSharper disable TooWideLocalVariableScope
 // ReSharper disable InvertIf
@@ -25,8 +23,7 @@ namespace App.Metrics.Concurrency
     ///     When updates are contended cross threads, the set of variables may grow dynamically to reduce contention.
     ///     Method GetValue() returns the current total combined across the variables maintaining the sum.
     ///     This class is usually preferable to AtomicLong when multiple threads update a common sum that is used for purposes
-    ///     such
-    ///     as collecting statistics, not for fine-grained synchronization control.
+    ///     such  as collecting statistics, not for fine-grained synchronization control.
     ///     Under low update contention, the two classes have similar characteristics.
     ///     But under high contention, expected throughput of this class is significantly higher, at the expense of higher
     ///     space consumption.

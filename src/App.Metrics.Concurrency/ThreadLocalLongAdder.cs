@@ -1,4 +1,8 @@
-﻿using System;
+﻿//Written by Iulian Margarintescu and will retain the same license as the Java Version
+//Original .NET Source by Iulian Margarintescu: https://github.com/etishor/ConcurrencyUtilities/blob/master/Src/ConcurrencyUtilities/ThreadLocalLongAdder.cs
+//Ported to a .NET Standard Project by Allan Hardy as the owner Iulian Margarintescu is unreachable and the source and packages are no longer maintained
+
+using System;
 using System.Threading;
 using App.Metrics.Concurrency.Internal;
 
@@ -8,10 +12,8 @@ namespace App.Metrics.Concurrency
     ///     This class is similar in functionality with the StripedLongAdder, but uses the ThreadLocal class to
     ///     keep a value for each thread. The GetValue method sums all the values and returns the result.
     ///     This class is a bit faster (in micro-benchmarks) than the StripedLongAdder for incrementing a value on multiple
-    ///     threads,
-    ///     but it creates a ValueHolder instance for each thread that increments the value, not just for when contention is
-    ///     present.
-    ///     Considering this, the StripedLongAdder might be a better solution in some cases (multiple threads, relatively low
+    ///     threads, but it creates a ValueHolder instance for each thread that increments the value, not just for when contention is
+    ///     present. Considering this, the StripedLongAdder might be a better solution in some cases (multiple threads, relatively low
     ///     contention).
     /// </summary>
     public sealed class ThreadLocalLongAdder : IValueAdder<long>

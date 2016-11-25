@@ -10,14 +10,13 @@ dotnet cli version=1.0.0-preview2-1-003177
 Job Runtime(s):
 	.NET Core 4.6.24410.01, Arch=64-bit  [RyuJIT]
 
-Job=FastAndDirtyJob  Jit=RyuJit  Platform=X64  
+Job=QuickRun  Jit=RyuJit  Platform=X64  
 Runtime=Core  LaunchCount=1  RunStrategy=ColdStart  
 TargetCount=5  UnrollFactor=1  WarmupCount=5  
 
 ```
     Method |       Mean |     StdErr |     StdDev |    Median |
 ---------- |----------- |----------- |----------- |---------- |
- Decrement | 37.9137 us | 37.3863 us | 83.5983 us | 0.3019 us |
-       Get | 37.1288 us | 36.5265 us | 81.6757 us | 0.3019 us |
- Increment | 38.8192 us | 36.2958 us | 81.1599 us | 0.3019 us |
-s |
+ Decrement | 38.3966 us | 37.6445 us | 84.1756 us | 0.3019 us |
+       Get | 37.7929 us | 37.1913 us | 83.1622 us | 0.3019 us |
+ Increment | 41.0530 us | 40.0765 us | 89.6139 us | 0.3019 us |

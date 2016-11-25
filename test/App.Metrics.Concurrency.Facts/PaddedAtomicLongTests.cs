@@ -9,14 +9,14 @@ namespace App.Metrics.Concurrency.Facts
         private PaddedAtomicLong _num = new PaddedAtomicLong();
 
         [Fact]
-        public void PaddedAtomicLong_CanAddValue()
+        public void can_add_value()
         {
             _num.Add(7L).Should().Be(7L);
             _num.GetValue().Should().Be(7L);
         }
 
         [Fact]
-        public void PaddedAtomicLong_CanBeAssigned()
+        public void can_be_assigned()
         {
             _num.SetValue(10L);
             PaddedAtomicLong y = _num;
@@ -24,20 +24,20 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
-        public void PaddedAtomicLong_CanBeCreatedWithValue()
+        public void can_be_created_with()
         {
             new PaddedAtomicLong(5L).GetValue().Should().Be(5L);
         }
 
         [Fact]
-        public void PaddedAtomicLong_CanBeDecremented()
+        public void can_be_decremented()
         {
             _num.Decrement().Should().Be(-1L);
             _num.GetValue().Should().Be(-1L);
         }
 
         [Fact]
-        public void PaddedAtomicLong_CanBeDecrementedMultipleTimes()
+        public void can_be_decremented_multiple_times()
         {
             _num.Decrement().Should().Be(-1L);
             _num.Decrement().Should().Be(-2L);
@@ -47,14 +47,14 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
-        public void PaddedAtomicLong_CanBeIncremented()
+        public void can_be_incremented()
         {
             _num.Increment().Should().Be(1L);
             _num.GetValue().Should().Be(1L);
         }
 
         [Fact]
-        public void PaddedAtomicLong_CanBeIncrementedMultipleTimes()
+        public void can_be_incremented_multiple_times()
         {
             _num.Increment().Should().Be(1L);
             _num.GetValue().Should().Be(1L);
@@ -67,7 +67,7 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
-        public void PaddedAtomicLong_CanCompareAndSwap()
+        public void can_compare_and_swap()
         {
             _num.SetValue(10L);
 
@@ -79,7 +79,7 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
-        public void PaddedAtomicLong_CanGetAndAdd()
+        public void can_get_and_add()
         {
             _num.SetValue(10L);
             _num.GetAndAdd(5L).Should().Be(10L);
@@ -87,7 +87,7 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
-        public void PaddedAtomicLong_CanGetAndDecrement()
+        public void can_get_and_decrement()
         {
             _num.SetValue(10L);
 
@@ -99,7 +99,7 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
-        public void PaddedAtomicLong_CanGetAndIncrement()
+        public void can_get_and_increment()
         {
             _num.SetValue(10L);
 
@@ -111,7 +111,7 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
-        public void PaddedAtomicLong_CanGetAndReset()
+        public void can_get_and_reset()
         {
             _num.SetValue(32);
             _num.GetAndReset().Should().Be(32);
@@ -119,7 +119,7 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
-        public void PaddedAtomicLong_CanGetAndSet()
+        public void can_get_and_set()
         {
             _num.SetValue(32);
             _num.GetAndSet(64).Should().Be(32);
@@ -127,20 +127,20 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
-        public void PaddedAtomicLong_CanSetAndReadValue()
+        public void can_set_and_read_value()
         {
             _num.SetValue(32);
             _num.GetValue().Should().Be(32);
         }
 
         [Fact]
-        public void PaddedAtomicLong_DefaultsToZero()
+        public void defaults_to_zero()
         {
             _num.GetValue().Should().Be(0L);
         }
 
         [Fact]
-        public void PaddedAtomicLong_ShouldHaveCorrectSize()
+        public void should_have_correct_size()
         {
             PaddedAtomicLong.SizeInBytes.Should().Be(Marshal.SizeOf<PaddedAtomicLong>());
         }

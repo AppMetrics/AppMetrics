@@ -6,7 +6,7 @@ namespace App.Metrics.Concurrency.Facts
     public class ThreadLocalTests
     {
         [Fact]
-        public void ThreadLocalRandom_RespectsMaxValue()
+        public void respects_max_value()
         {
             ThreadLocalRandom.Next(0).Should().Be(0);
             ThreadLocalRandom.Next(0, 0).Should().Be(0);
@@ -19,7 +19,7 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
-        public void ThreadLocalRandom_RespectsMinValue()
+        public void respects_min_value()
         {
             ThreadLocalRandom.Next(int.MaxValue - 1, int.MaxValue - 1).Should().Be(int.MaxValue - 1);
         }

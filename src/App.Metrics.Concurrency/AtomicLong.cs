@@ -1,4 +1,8 @@
-﻿using System.Threading;
+﻿//Written by Iulian Margarintescu and will retain the same license as the Java Version
+//Original .NET Source by Iulian Margarintescu: https://github.com/etishor/ConcurrencyUtilities/blob/master/Src/ConcurrencyUtilities/AtomicLong.cs
+//Ported to a .NET Standard Project by Allan Hardy as the owner Iulian Margarintescu is unreachable and the source and packages are no longer maintained
+
+using System.Threading;
 using App.Metrics.Concurrency.Internal;
 
 namespace App.Metrics.Concurrency

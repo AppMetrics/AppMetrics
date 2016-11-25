@@ -8,27 +8,27 @@ namespace App.Metrics.Concurrency.Facts
         private readonly StripedLongAdder _num = new StripedLongAdder();
 
         [Fact]
-        public void StripedLongAdder_CanAddValue()
+        public void can_add_value()
         {
             _num.Add(7L);
             _num.GetValue().Should().Be(7L);
         }
 
         [Fact]
-        public void StripedLongAdder_CanBeCreatedWithValue()
+        public void can_be_created_with_value()
         {
             new StripedLongAdder(5L).GetValue().Should().Be(5L);
         }
 
         [Fact]
-        public void StripedLongAdder_CanBeDecremented()
+        public void can_be_decremented()
         {
             _num.Decrement();
             _num.GetValue().Should().Be(-1L);
         }
 
         [Fact]
-        public void StripedLongAdder_CanBeDecrementedMultipleTimes()
+        public void can_be_decremented_multiple_times()
         {
             _num.Decrement();
             _num.Decrement();
@@ -38,14 +38,14 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
-        public void StripedLongAdder_CanBeIncremented()
+        public void can_be_incremented()
         {
             _num.Increment();
             _num.GetValue().Should().Be(1L);
         }
 
         [Fact]
-        public void StripedLongAdder_CanBeIncrementedMultipleTimes()
+        public void can_be_incremented_multiple_times()
         {
             _num.Increment();
             _num.Increment();
@@ -55,7 +55,7 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
-        public void StripedLongAdder_CanGetAndReset()
+        public void can_get_and_reset()
         {
             _num.Add(32);
             long val = _num.GetAndReset();
@@ -64,7 +64,7 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
-        public void StripedLongAdder_DefaultsToZero()
+        public void defaults_to_zero()
         {
             _num.GetValue().Should().Be(0L);
         }

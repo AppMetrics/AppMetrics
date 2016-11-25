@@ -7,7 +7,7 @@ namespace App.Metrics.Concurrency.Facts
     public class VolatileTests
     {
         [Fact]
-        public void VolatileDouble_CanGetAndSetValue()
+        public void can_get_and_set_value()
         {
             var value = new VolatileDouble(1.5);
 
@@ -17,7 +17,7 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
-        public void VolatileDouble_HasCorrectSize()
+        public void has_correct_size()
         {
             VolatileDouble.SizeInBytes.Should().Be(Marshal.SizeOf<VolatileDouble>());
         }

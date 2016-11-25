@@ -1,10 +1,10 @@
 ﻿using App.Metrics.Concurrency.Benchmarks.Jobs;
 using BenchmarkDotNet.Attributes;
 
-namespace App.Metrics.Concurrency.Benchmarks.Benchmarks
+namespace App.Metrics.Concurrency.Benchmarks
 {
-    [FastAndDirtyJob]
-    public class AtomicLongArrayBenchMark
+    [QuickRunJob]
+    public class AtomicLongArrayBenchmark
     {
         private AtomicLongArray _num;
 

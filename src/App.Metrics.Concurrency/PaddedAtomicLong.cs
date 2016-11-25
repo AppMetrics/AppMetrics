@@ -1,4 +1,8 @@
-﻿using System.Runtime.InteropServices;
+﻿//Written by Iulian Margarintescu and will retain the same license as the Java Version
+//Original .NET Source by Iulian Margarintescu: https://github.com/etishor/ConcurrencyUtilities/blob/master/Src/ConcurrencyUtilities/PaddedAtomicLong.cs
+//Ported to a .NET Standard Project by Allan Hardy as the owner Iulian Margarintescu is unreachable and the source and packages are no longer maintained
+
+using System.Runtime.InteropServices;
 using System.Threading;
 using App.Metrics.Concurrency.Internal;
 
@@ -6,14 +10,16 @@ namespace App.Metrics.Concurrency
 {
     /// <summary>
     ///     Padded version of the AtomicLong to avoid false CPU cache sharing. Recommended for cases where instances of
-    ///     AtomicLong end up close to each other in memory - when stored in an array for ex.
+    ///     AtomicLong end up close to each other in memory - when stored in an array for eg.
+    ///     An AtomicLong with heuristic padding to lessen cache effects of this heavily CAS'ed location. While the padding
+    ///     adds noticeable space, the improved throughput outweighs using extra space
     /// </summary>
     [StructLayout(LayoutKind.Explicit, Size = 64 * 2)]
     public struct PaddedAtomicLong : IAtomicValue<long>, IValueAdder<long>
     {
         public static readonly int SizeInBytes = 128;
 
-        [FieldOffset(64)] private long value;
+        [FieldOffset(64)] private long _value;
 
         /// <summary>
         ///     Initializes a new instance with the specified <paramref name="value" />.
@@ -21,7 +27,7 @@ namespace App.Metrics.Concurrency
         /// <param name="value">Initial value of the instance.</param>
         public PaddedAtomicLong(long value)
         {
-            this.value = value;
+            _value = value;
         }
 
         /// <summary>
@@ -31,7 +37,7 @@ namespace App.Metrics.Concurrency
         /// <returns>The value of this instance + the amount added.</returns>
         public long Add(long value)
         {
-            return Interlocked.Add(ref this.value, value);
+            return Interlocked.Add(ref _value, value);
         }
 
         /// <summary>
@@ -42,7 +48,7 @@ namespace App.Metrics.Concurrency
         /// <returns>True if the update was made, false otherwise.</returns>
         public bool CompareAndSwap(long expected, long updated)
         {
-            return Interlocked.CompareExchange(ref this.value, updated, expected) == expected;
+            return Interlocked.CompareExchange(ref _value, updated, expected) == expected;
         }
 
         /// <summary>
@@ -51,7 +57,7 @@ namespace App.Metrics.Concurrency
         /// <returns>The value of the instance *after* the decrement.</returns>
         public long Decrement()
         {
-            return Interlocked.Decrement(ref this.value);
+            return Interlocked.Decrement(ref _value);
         }
 
         /// <summary>
@@ -124,7 +130,7 @@ namespace App.Metrics.Concurrency
         /// <returns>The current value of the instance.</returns>
         public long GetAndSet(long newValue)
         {
-            return Interlocked.Exchange(ref this.value, newValue);
+            return Interlocked.Exchange(ref _value, newValue);
         }
 
         /// <summary>
@@ -133,7 +139,7 @@ namespace App.Metrics.Concurrency
         /// <returns>The latest written value of this instance.</returns>
         public long GetValue()
         {
-            return Volatile.Read(ref this.value);
+            return Volatile.Read(ref _value);
         }
 
         /// <summary>
@@ -142,7 +148,7 @@ namespace App.Metrics.Concurrency
         /// <returns>The value of the instance *after* the increment.</returns>
         public long Increment()
         {
-            return Interlocked.Increment(ref this.value);
+            return Interlocked.Increment(ref _value);
         }
 
         /// <summary>
@@ -163,12 +169,12 @@ namespace App.Metrics.Concurrency
         /// </summary>
         /// <remarks>
         ///     Currently implemented by calling Volatile.Write which is different from the java version.
-        ///     Not sure if it is possible on CLR to implement this.
+        ///     Not sure if it is possible on CLR to implement
         /// </remarks>
         /// <param name="value">The new value for this instance.</param>
         public void LazySetValue(long value)
         {
-            Volatile.Write(ref this.value, value);
+            Volatile.Write(ref _value, value);
         }
 
         /// <summary>
@@ -177,7 +183,7 @@ namespace App.Metrics.Concurrency
         /// <returns>The current value of the instance in a non-volatile way (might not observe changes on other threads).</returns>
         public long NonVolatileGetValue()
         {
-            return this.value;
+            return _value;
         }
 
         /// <summary>
@@ -186,7 +192,7 @@ namespace App.Metrics.Concurrency
         /// <param name="value">The new value for this instance.</param>
         public void NonVolatileSetValue(long value)
         {
-            this.value = value;
+            _value = value;
         }
 
         /// <summary>
@@ -195,48 +201,48 @@ namespace App.Metrics.Concurrency
         /// <param name="value">The new value for this instance.</param>
         public void SetValue(long value)
         {
-            Volatile.Write(ref this.value, value);
+            Volatile.Write(ref _value, value);
         }
 
         void IValueAdder<long>.Add(long value)
         {
-            this.Add(value);
+            Add(value);
         }
 
         void IValueAdder<long>.Decrement()
         {
-            this.Decrement();
+            Decrement();
         }
 
         void IValueAdder<long>.Decrement(long value)
         {
-            this.Decrement(value);
+            Decrement(value);
         }
 
         // RemoveAtPack
         long IValueAdder<long>.GetAndReset()
         {
-            return this.GetAndReset();
+            return GetAndReset();
         }
 
         long IValueReader<long>.GetValue()
         {
-            return this.GetValue();
+            return GetValue();
         }
 
         void IValueAdder<long>.Increment()
         {
-            this.Increment();
+            Increment();
         }
 
         void IValueAdder<long>.Increment(long value)
         {
-            this.Increment(value);
+            Increment(value);
         }
 
         void IValueAdder<long>.Reset()
         {
-            this.SetValue(0L);
+            SetValue(0L);
         }
 
         // EndRemoveAtPack

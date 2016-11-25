@@ -1,4 +1,8 @@
-﻿using System.Threading;
+﻿//Written by Iulian Margarintescu and will retain the same license as the Java Version
+//Original .NET Source by Iulian Margarintescu: https://github.com/etishor/ConcurrencyUtilities/blob/master/Src/ConcurrencyUtilities/VolatileDouble.cs
+//Ported to a .NET Standard Project by Allan Hardy as the owner Iulian Margarintescu is unreachable and the source and packages are no longer maintained
+
+using System.Threading;
 using App.Metrics.Concurrency.Internal;
 
 namespace App.Metrics.Concurrency
@@ -7,8 +11,7 @@ namespace App.Metrics.Concurrency
     ///     Double value on which the GetValue/SetValue operations are performed using Volatile.Read/Volatile.Write.
     /// </summary>
     /// <remarks>
-    ///     This datastructure is a struct. If a member is declared readonly VolatileDouble calling set will *NOT* modify the
-    ///     value.
+    ///     This datastructure is a struct. If a member is declared readonly VolatileDouble calling set will *NOT* modify the value.
     ///     GetValue/SetValue are expressed as methods to make it obvious that a non-trivial operation is performed.
     /// </remarks>
     public struct VolatileDouble : IVolatileValue<double>

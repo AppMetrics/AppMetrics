@@ -1,15 +1,14 @@
-﻿/*
- * Striped64 & LongAdder classes were ported from Java and had this copyright:
- * 
- * Written by Doug Lea with assistance from members of JCP JSR-166
- * Expert Group and released to the public domain, as explained at
- * http://creativecommons.org/publicdomain/zero/1.0/
- * 
- * Source: http://gee.cs.oswego.edu/cgi-bin/viewcvs.cgi/jsr166/src/jsr166e/Striped64.java?revision=1.8
- * 
- * This class has been ported to .NET by Iulian Margarintescu and will retain the same license as the Java Version
- * 
- */
+﻿//Striped64 & LongAdder classes were ported from Java and had this copyright:
+
+//Written by Doug Lea with assistance from members of JCP JSR-166
+//Expert Group and released to the public domain, as explained at http://creativecommons.org/publicdomain/zero/1.0/
+
+//Source: http: //gee.cs.oswego.edu/cgi-bin/viewcvs.cgi/jsr166/src/jsr166e/Striped64.java?revision=1.8
+
+//This class was ported to .NET by Iulian Margarintescu and will retain the same license as the Java Version
+//Original .NET Source by Iulian Margarintescu: https://github.com/etishor/ConcurrencyUtilities/blob/master/Src/ConcurrencyUtilities/Striped64.cs
+
+//Ported to a .NET Standard Project by Allan Hardy as the owner Iulian Margarintescu is unreachable and the source and packages are no longer maintained
 
 using System;
 using System.Threading;

@@ -1,12 +1,12 @@
 using App.Metrics.Concurrency.Benchmarks.Jobs;
 using BenchmarkDotNet.Attributes;
 
-namespace App.Metrics.Concurrency.Benchmarks.Benchmarks
+namespace App.Metrics.Concurrency.Benchmarks
 {
-    [FastAndDirtyJob]
-    public class PaddedAtomicLongBenchMark
+    [QuickRunJob]
+    public class ThreadLocalLongAdderBenchmark
     {
-        private PaddedAtomicLong _num;
+        private ThreadLocalLongAdder _num;
 
         [Benchmark]
         public void Decrement()
@@ -29,7 +29,7 @@ namespace App.Metrics.Concurrency.Benchmarks.Benchmarks
         [Setup]
         public void Setup()
         {
-            _num = new PaddedAtomicLong();
+            _num = new ThreadLocalLongAdder();
         }
     }
 }

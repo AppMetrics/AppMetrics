@@ -1,4 +1,9 @@
-﻿using System;
+﻿//Written by Iulian Margarintescu and will retain the same license as the Java Version
+//Original .NET Source by Iulian Margarintescu: https://github.com/etishor/ConcurrencyUtilities/blob/master/Src/ConcurrencyUtilities/AtomicIntArray.cs
+//Ported to a .NET Standard Project by Allan Hardy as the owner Iulian Margarintescu is unreachable and the source and packages are no longer maintained
+
+
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using App.Metrics.Concurrency.Internal;
@@ -16,9 +21,9 @@ namespace App.Metrics.Concurrency
         {
             if (length < 0)
             {
-                throw new ArgumentException("Length must be positive", "length");
+                throw new ArgumentException("Length must be positive", nameof(length));
             }
-            this._array = new int[length];
+            _array = new int[length];
         }
 
         public AtomicIntArray(IReadOnlyList<int> source)
@@ -28,7 +33,7 @@ namespace App.Metrics.Concurrency
             {
                 clone[i] = source[i];
             }
-            this._array = clone;
+            _array = clone;
         }
 
         /// <summary>
@@ -36,7 +41,7 @@ namespace App.Metrics.Concurrency
         /// </summary>
         public int Length
         {
-            get { return this._array.Length; }
+            get { return _array.Length; }
         }
 
         /// <summary>
@@ -57,7 +62,7 @@ namespace App.Metrics.Concurrency
         /// <returns>The value of this instance + the amount added.</returns>
         public int Add(int index, int value)
         {
-            return Interlocked.Add(ref this._array[index], value);
+            return Interlocked.Add(ref _array[index], value);
         }
 
         /// <summary>
@@ -69,7 +74,7 @@ namespace App.Metrics.Concurrency
         /// <returns>True if the update was made, false otherwise.</returns>
         public bool CompareAndSwap(int index, int expected, int updated)
         {
-            return Interlocked.CompareExchange(ref this._array[index], updated, expected) == expected;
+            return Interlocked.CompareExchange(ref _array[index], updated, expected) == expected;
         }
 
         /// <summary>
@@ -79,7 +84,7 @@ namespace App.Metrics.Concurrency
         /// <returns>The value of the instance *after* the decrement.</returns>
         public int Decrement(int index)
         {
-            return Interlocked.Decrement(ref this._array[index]);
+            return Interlocked.Decrement(ref _array[index]);
         }
 
         /// <summary>
@@ -164,7 +169,7 @@ namespace App.Metrics.Concurrency
         /// <returns>The current value of the instance.</returns>
         public int GetAndSet(int index, int newValue)
         {
-            return Interlocked.Exchange(ref this._array[index], newValue);
+            return Interlocked.Exchange(ref _array[index], newValue);
         }
 
         /// <summary>
@@ -174,7 +179,7 @@ namespace App.Metrics.Concurrency
         /// <returns>The latest written value of this instance.</returns>
         public int GetValue(int index)
         {
-            return Volatile.Read(ref this._array[index]);
+            return Volatile.Read(ref _array[index]);
         }
 
         /// <summary>
@@ -184,7 +189,7 @@ namespace App.Metrics.Concurrency
         /// <returns>The value of the instance *after* the increment.</returns>
         public int Increment(int index)
         {
-            return Interlocked.Increment(ref this._array[index]);
+            return Interlocked.Increment(ref _array[index]);
         }
 
         /// <summary>
@@ -207,13 +212,13 @@ namespace App.Metrics.Concurrency
         /// </summary>
         /// <remarks>
         ///     Currently implemented by calling Volatile.Write which is different from the java version.
-        ///     Not sure if it is possible on CLR to implement this.
+        ///     Not sure if it is possible on CLR to implement 
         /// </remarks>
         /// <param name="index">index in the array</param>
         /// <param name="value">The new value for this instance.</param>
         public void LazySetValue(int index, int value)
         {
-            Volatile.Write(ref this._array[index], value);
+            Volatile.Write(ref _array[index], value);
         }
 
         /// <summary>
@@ -223,7 +228,7 @@ namespace App.Metrics.Concurrency
         /// <returns>The current value of the instance in a non-volatile way (might not observe changes on other threads).</returns>
         public int NonVolatileGetValue(int index)
         {
-            return this._array[index];
+            return _array[index];
         }
 
         /// <summary>
@@ -233,7 +238,7 @@ namespace App.Metrics.Concurrency
         /// <param name="value">The new value for this instance.</param>
         public void NonVolatileSetValue(int index, int value)
         {
-            this._array[index] = value;
+            _array[index] = value;
         }
 
         /// <summary>
@@ -243,7 +248,7 @@ namespace App.Metrics.Concurrency
         /// <param name="value">The new value for this instance.</param>
         public void SetValue(int index, int value)
         {
-            Volatile.Write(ref this._array[index], value);
+            Volatile.Write(ref _array[index], value);
         }
     }
 }

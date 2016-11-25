@@ -27,3 +27,4 @@ using System.Runtime.InteropServices;
 [assembly: Guid("7ad4f2aa-a152-4092-b79f-2648cbedffbc")]
 
 [assembly: InternalsVisibleTo("App.Metrics.Concurrency.Facts")]
+[assembly: InternalsVisibleTo("App.Metrics.Concurrency.Benchmarks")]

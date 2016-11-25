@@ -1,4 +1,8 @@
-﻿using System;
+﻿//Written by Iulian Margarintescu and will retain the same license as the Java Version
+//Original .NET Source by Iulian Margarintescu: https://github.com/etishor/ConcurrencyUtilities/blob/master/Src/ConcurrencyUtilities/AtomicLongArray.cs
+//Ported to a .NET Standard Project by Allan Hardy as the owner Iulian Margarintescu is unreachable and the source and packages are no longer maintained
+
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using App.Metrics.Concurrency.Internal;
@@ -16,7 +20,7 @@ namespace App.Metrics.Concurrency
         {
             if (length < 0)
             {
-                throw new ArgumentException("Length must be positive", "length");
+                throw new ArgumentException("Length must be positive", nameof(length));
             }
             _array = new long[length];
         }
@@ -34,10 +38,7 @@ namespace App.Metrics.Concurrency
         /// <summary>
         ///     The length of the underlying array
         /// </summary>
-        public int Length
-        {
-            get { return _array.Length; }
-        }
+        public int Length => _array.Length;
 
         /// <summary>
         ///     Returns the size in bytes occupied by an AtomicLongArray instance.
