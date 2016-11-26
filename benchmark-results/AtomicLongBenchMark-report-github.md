@@ -17,6 +17,6 @@ TargetCount=5  UnrollFactor=1  WarmupCount=5
 ```
     Method |       Mean |     StdErr |     StdDev |    Median |
 ---------- |----------- |----------- |----------- |---------- |
- Decrement | 38.3966 us | 37.6445 us | 84.1756 us | 0.3019 us |
-       Get | 37.7929 us | 37.1913 us | 83.1622 us | 0.3019 us |
- Increment | 41.0530 us | 40.0765 us | 89.6139 us | 0.3019 us |
+ Decrement | 36.3440 us | 35.8173 us | 80.0899 us | 0.3019 us |
+       Get | 36.2232 us | 35.3955 us | 79.1467 us | 0.3019 us |
+ Increment | 36.8873 us | 36.2857 us | 81.1374 us | 0.3019 us |

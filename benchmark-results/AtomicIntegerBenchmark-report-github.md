@@ -17,8 +17,6 @@ TargetCount=5  UnrollFactor=1  WarmupCount=5
 ```
     Method |       Mean |     StdErr |      StdDev |    Median |
 ---------- |----------- |----------- |------------ |---------- |
- Decrement | 56.3875 us | 55.7847 us | 124.7383 us | 0.3019 us |
-       Get | 38.2155 us | 37.6888 us |  84.2746 us | 0.3019 us |
- Increment | 48.2976 us | 47.5457 us | 106.3155 us | 0.3019 us |
-re, LaunchCount=1, RunStrategy=ColdStart, TargetCount=5, UnrollFactor=1, WarmupCount=5)
-  AtomicIntegerBenchmark.Increment: QuickRun(Jit=RyuJit, Platform=X64, Runtime=Core, LaunchCount=1, RunStrategy=ColdStart, TargetCount=5, UnrollFactor=1, WarmupCount=5)
+ Decrement | 39.0003 us | 38.3238 us |  85.6947 us | 0.3019 us |
+       Get | 56.5082 us | 55.8309 us | 124.8416 us | 0.3019 us |
+ Increment | 37.4910 us | 36.7399 us |  82.1530 us | 0.3019 us |

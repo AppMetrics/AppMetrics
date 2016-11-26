@@ -6,7 +6,7 @@ using BenchmarkDotNet.Attributes;
 
 namespace App.Metrics.Concurrency.Benchmarks
 {
-    [QuickRunJob]
+    [MediumRunJob]
     public class AtomicLongCompareBenchmark
     {
         private const int NumberOfRuns = 100;

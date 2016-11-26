@@ -15,8 +15,8 @@ Runtime=Core  LaunchCount=1  RunStrategy=ColdStart
 TargetCount=5  UnrollFactor=1  WarmupCount=5  
 
 ```
-    Method |       Mean |     StdErr |     StdDev |    Median |
----------- |----------- |----------- |----------- |---------- |
- Decrement | 42.5623 us | 41.7351 us | 93.3224 us | 0.3019 us |
-       Get | 45.1583 us | 44.3309 us | 99.1269 us | 0.3019 us |
- Increment | 38.5174 us | 37.7643 us | 84.4437 us | 0.3019 us |
+    Method |       Mean |     StdErr |      StdDev |    Median |
+---------- |----------- |----------- |------------ |---------- |
+ Decrement | 36.7062 us | 36.0299 us |  80.5652 us | 0.3019 us |
+       Get | 45.0979 us | 44.4959 us |  99.4960 us | 0.3019 us |
+ Increment | 55.1801 us | 54.3529 us | 121.5368 us | 0.3019 us |

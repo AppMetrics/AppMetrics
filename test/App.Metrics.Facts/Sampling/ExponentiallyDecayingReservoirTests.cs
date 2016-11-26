@@ -2,7 +2,6 @@
 using App.Metrics.Internal;
 using App.Metrics.Internal.Test;
 using App.Metrics.Sampling;
-using App.Metrics.Scheduling;
 using App.Metrics.Scheduling.Interfaces;
 using App.Metrics.Utils;
 using FluentAssertions;

@@ -2,8 +2,12 @@ Push-Location $PSScriptRoot
 
 #.\build.cmd
 
+Remove-Item .\benchmark-results -Force -Recurse
+
 foreach ($test in ls benchmarks/*.Benchmarks) {
     Push-Location $test
+
+    Remove-Item BenchmarkDotNet.Artifacts -Force -Recurse
 
 	echo "perf: Running benchmark test project in $test"
 
