@@ -13,6 +13,21 @@ namespace App.Metrics.Core.Options
     public abstract class MetricValueWithSamplingOption : MetricValueOptions
     {
         /// <summary>
+        ///     Gets or sets the exponential decay factor; the higher this is, the more biased the reservoir will be towards newer
+        ///     values.
+        ///     This only applys when an <see cref="SamplingType" /> of ExponentiallyDecaying.
+        /// </summary>
+        /// <value>
+        ///     The exponential decay factor.
+        /// </value>
+        public double ExponentialDecayFactor { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the number of samples to keep in the sampling reservoir
+        /// </summary>
+        public int SampleSize { get; set; }
+
+        /// <summary>
         ///     Gets or sets the <see cref="SamplingType" /> to use for the metric being measured.
         /// </summary>
         /// <remarks>

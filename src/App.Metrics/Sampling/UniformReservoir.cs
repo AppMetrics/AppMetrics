@@ -30,8 +30,6 @@ namespace App.Metrics.Sampling
     /// <seealso cref="IReservoir" />
     public sealed class UniformReservoir : IReservoir
     {
-        private const int DefaultSampleSize = 1028;
-
         private readonly UserValueWrapper[] _values;
 
         private AtomicLong _count = new AtomicLong();
@@ -39,18 +37,7 @@ namespace App.Metrics.Sampling
         /// <summary>
         ///     Initializes a new instance of the <see cref="UniformReservoir" /> class.
         /// </summary>
-        /// <remarks>
-        ///     The default sample size is 1028
-        /// </remarks>
-        public UniformReservoir()
-            : this(DefaultSampleSize)
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="UniformReservoir" /> class.
-        /// </summary>
-        /// <param name="sampleSize">The random sample size to generate, defaults to 1028</param>
+        /// <param name="sampleSize">The number of samples to keep in the sampling reservoir</param>
         public UniformReservoir(int sampleSize)
         {
             _values = new UserValueWrapper[sampleSize];

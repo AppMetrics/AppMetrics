@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using App.Metrics.Internal;
 using App.Metrics.Sampling;
 using Xunit;
 
@@ -17,7 +18,7 @@ namespace App.Metrics.Facts
         [Fact]
         public void ExponentialDecayingResevoir()
         {
-            var reservoir = new ExponentiallyDecayingReservoir();
+            var reservoir = new ExponentiallyDecayingReservoir(Constants.ReservoirSampling.DefaultSampleSize, Constants.ReservoirSampling.DefaultExponentialDecayFactor);
 
             foreach (var sample in _samples)
             {
@@ -33,7 +34,7 @@ namespace App.Metrics.Facts
         [Fact]
         public void SlidingWindowResevoir()
         {
-            var reservoir = new SlidingWindowReservoir();
+            var reservoir = new SlidingWindowReservoir(Constants.ReservoirSampling.DefaultSampleSize);
 
             foreach (var sample in _samples)
             {
@@ -49,7 +50,7 @@ namespace App.Metrics.Facts
         [Fact]
         public void UniformResevoir()
         {
-            var reservoir = new UniformReservoir();
+            var reservoir = new UniformReservoir(Constants.ReservoirSampling.DefaultSampleSize);
 
             foreach (var sample in _samples)
             {

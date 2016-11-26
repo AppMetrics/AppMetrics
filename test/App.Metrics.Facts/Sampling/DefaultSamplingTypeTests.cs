@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using App.Metrics.Core;
+using App.Metrics.Internal;
 using App.Metrics.Sampling;
 using App.Metrics.Sampling.Interfaces;
 using FluentAssertions;
@@ -15,10 +16,15 @@ namespace App.Metrics.Facts.Sampling
         [Fact]
         public void maps_correct_sampling_type_to_reservoir()
         {
-            GetReservoir(new HistogramMetric(SamplingType.ExponentiallyDecaying)).Should().BeOfType<ExponentiallyDecayingReservoir>();
-            GetReservoir(new HistogramMetric(SamplingType.LongTerm)).Should().BeOfType<UniformReservoir>();
-            GetReservoir(new HistogramMetric(SamplingType.HighDynamicRange)).Should().BeOfType<HdrHistogramReservoir>();
-            GetReservoir(new HistogramMetric(SamplingType.SlidingWindow)).Should().BeOfType<SlidingWindowReservoir>();
+            GetReservoir(new HistogramMetric(SamplingType.ExponentiallyDecaying, 
+                Constants.ReservoirSampling.DefaultSampleSize,
+                Constants.ReservoirSampling.DefaultExponentialDecayFactor)).Should().BeOfType<ExponentiallyDecayingReservoir>();
+            GetReservoir(new HistogramMetric(SamplingType.LongTerm, Constants.ReservoirSampling.DefaultSampleSize,
+                Constants.ReservoirSampling.DefaultExponentialDecayFactor)).Should().BeOfType<UniformReservoir>();
+            GetReservoir(new HistogramMetric(SamplingType.HighDynamicRange, Constants.ReservoirSampling.DefaultSampleSize,
+                Constants.ReservoirSampling.DefaultExponentialDecayFactor)).Should().BeOfType<HdrHistogramReservoir>();
+            GetReservoir(new HistogramMetric(SamplingType.SlidingWindow, Constants.ReservoirSampling.DefaultSampleSize,
+                Constants.ReservoirSampling.DefaultExponentialDecayFactor)).Should().BeOfType<SlidingWindowReservoir>();
         }
 
         private static IReservoir GetReservoir(HistogramMetric histogram)

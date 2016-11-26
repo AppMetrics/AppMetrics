@@ -22,7 +22,7 @@ A histogram with an [exponentially decaying reservoir](../../api/App.Metrics.Sam
 
 This sampling resevoir can be used when you are interested in recent changes to the distribution of data rather than a median on the lifetime of the histgram.
 
-The default sample size of 1028 and alpha value of 0.015, offers a 99.9% confidence level with a 5% margin of error assuming a normal distribution and heavily biases the reservoir to the past 5 mins of measurements.
+The default sample size of 1028 and alpha value of 0.015, offers a 99.9% confidence level with a 5% margin of error assuming a normal distribution and heavily biases the reservoir to the past 5 mins of measurements. The higher the alpha, the more biased the reservoir will be towards newer values.
 
 **App Metrics** uses a [forward-decaying](http://dimacs.rutgers.edu/~graham/pubs/papers/fwddecay.pdf) resevoir with an exponential weighting towards recent samples.
 

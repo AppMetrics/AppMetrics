@@ -3,13 +3,14 @@
 
 
 using App.Metrics.Core.Interfaces;
+using App.Metrics.Internal;
 
 namespace App.Metrics.Core.Options
 {
     /// <summary>
     ///     Configuration of an <see cref="IHistogramMetric" /> that will be measured
     /// </summary>
-    /// <seealso cref="App.Metrics.Core.Options.MetricValueOptions" />
+    /// <seealso cref="MetricValueOptions" />
     public class HistogramOptions : MetricValueWithSamplingOption
     {
         /// <summary>
@@ -18,6 +19,10 @@ namespace App.Metrics.Core.Options
         public HistogramOptions()
         {
             SamplingType = SamplingType.Default;
+            SampleSize = Constants.ReservoirSampling.DefaultSampleSize;
+            ExponentialDecayFactor = Constants.ReservoirSampling.DefaultExponentialDecayFactor;
         }
+
+
     }
 }

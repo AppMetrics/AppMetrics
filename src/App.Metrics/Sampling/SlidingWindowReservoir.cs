@@ -19,26 +19,13 @@ namespace App.Metrics.Sampling
     /// <seealso cref="IReservoir" />
     public sealed class SlidingWindowReservoir : IReservoir
     {
-        private const int DefaultSampleSize = 1028;
-
         private readonly UserValueWrapper[] _values;
         private AtomicLong _count = new AtomicLong();
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="SlidingWindowReservoir" /> class.
         /// </summary>
-        /// <remarks>
-        ///     The default sample size is 1028
-        /// </remarks>
-        public SlidingWindowReservoir()
-            : this(DefaultSampleSize)
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="SlidingWindowReservoir" /> class.
-        /// </summary>
-        /// <param name="sampleSize">The sample size to generate, defaults to 1028.</param>
+        /// <param name="sampleSize">The number of samples to keep in the sampling reservoir</param>
         public SlidingWindowReservoir(int sampleSize)
         {
             _values = new UserValueWrapper[sampleSize];

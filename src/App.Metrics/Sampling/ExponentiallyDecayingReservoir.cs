@@ -34,8 +34,6 @@ namespace App.Metrics.Sampling
     /// <seealso cref="App.Metrics.Sampling.Interfaces.IReservoir" />
     public sealed class ExponentiallyDecayingReservoir : IReservoir, IDisposable
     {
-        private const double DefaultAlpha = 0.015;
-        private const int DefaultSampleSize = 1028;
         private static readonly TimeSpan RescaleInterval = TimeSpan.FromHours(1);
 
         private readonly double _alpha;
@@ -56,24 +54,13 @@ namespace App.Metrics.Sampling
         ///     Initializes a new instance of the <see cref="ExponentiallyDecayingReservoir" /> class.
         /// </summary>
         /// <remarks>
-        ///     The default sample size is 1028
-        /// </remarks>
-        public ExponentiallyDecayingReservoir()
-            : this(DefaultSampleSize, DefaultAlpha)
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="ExponentiallyDecayingReservoir" /> class.
-        /// </summary>
-        /// <remarks>
         ///     The default size and alpha values offer a 99.9% confidence level with a 5% margin of error assuming a normal
         ///     distribution and heavily biases the reservoir to the past 5 minutes of measurements.
         /// </remarks>
-        /// <param name="sampleSize">The sample size to generate, defaults to 1028.</param>
+        /// <param name="sampleSize">The number of samples to keep in the sampling reservoir.</param>
         /// <param name="alpha">
-        ///     The alpha value, defaults to 0.015 which heavily biases the reservoir to the past 5 mins of
-        ///     measurements.
+        ///     The alpha value, e.g 0.015 will heavily biases the reservoir to the past 5 mins of measurements. The higher the
+        ///     value the more biased the reservoir will be towards newer values.
         /// </param>
         public ExponentiallyDecayingReservoir(int sampleSize, double alpha)
             : this(sampleSize, alpha, new StopwatchClock(), new DefaultTaskScheduler())
@@ -83,30 +70,17 @@ namespace App.Metrics.Sampling
         /// <summary>
         ///     Initializes a new instance of the <see cref="ExponentiallyDecayingReservoir" /> class.
         /// </summary>
-        /// <param name="clock">The <see cref="IClock">clock</see> type to use for calculating processing time.</param>
-        /// <param name="scheduler">
-        ///     The scheduler to to rescale, allowing decayed weights to be tracked. Really only provided here
-        ///     for testing purposes.
-        /// </param>
-        public ExponentiallyDecayingReservoir(IClock clock, IScheduler scheduler)
-            : this(DefaultSampleSize, DefaultAlpha, clock, scheduler)
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="ExponentiallyDecayingReservoir" /> class.
-        /// </summary>
-        /// <param name="sampleSize">The sample size to generate, defaults to 1028.</param>
+        /// <param name="sampleSize">The number of samples to keep in the sampling reservoir</param>
         /// <param name="alpha">
-        ///     The alpha value, defaults to 0.015 which heavily biases the reservoir to the past 5 mins of
-        ///     measurements.
+        ///     The alpha value, e.g 0.015 will heavily biases the reservoir to the past 5 mins of measurements. The higher the
+        ///     value the more biased the reservoir will be towards newer values.
         /// </param>
         /// <param name="clock">The <see cref="IClock">clock</see> type to use for calculating processing time.</param>
         /// <param name="scheduler">
         ///     The scheduler to to rescale, allowing decayed weights to be tracked. Really only provided here
         ///     for testing purposes.
         /// </param>
-        public ExponentiallyDecayingReservoir(int sampleSize, double alpha, IClock clock, IScheduler scheduler)
+        public ExponentiallyDecayingReservoir(int sampleSize, double alpha, IClock clock, IScheduler scheduler)            
         {
             _sampleSize = sampleSize;
             _alpha = alpha;
@@ -120,6 +94,9 @@ namespace App.Metrics.Sampling
             _startTime = new AtomicLong(clock.Seconds);
         }
 
+        /// <summary>
+        /// Finalizes an instance of the <see cref="ExponentiallyDecayingReservoir"/> class.
+        /// </summary>
         ~ExponentiallyDecayingReservoir()
         {
             Dispose(false);

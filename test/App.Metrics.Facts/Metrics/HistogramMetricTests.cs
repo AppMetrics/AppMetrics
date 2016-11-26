@@ -1,4 +1,5 @@
 ﻿using App.Metrics.Core;
+using App.Metrics.Internal;
 using FluentAssertions;
 using Xunit;
 
@@ -6,7 +7,9 @@ namespace App.Metrics.Facts.Metrics
 {
     public class HistogramMetricTests
     {
-        private readonly HistogramMetric _histogram = new HistogramMetric(SamplingType.ExponentiallyDecaying);
+        private readonly HistogramMetric _histogram = new HistogramMetric(SamplingType.ExponentiallyDecaying, 
+            Constants.ReservoirSampling.DefaultSampleSize,
+            Constants.ReservoirSampling.DefaultExponentialDecayFactor);
 
         [Fact]
         public void can_count()

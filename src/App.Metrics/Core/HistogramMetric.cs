@@ -20,8 +20,17 @@ namespace App.Metrics.Core
         private bool _disposed = false;
         private UserValueWrapper _last;
 
-        public HistogramMetric(SamplingType samplingType)
-            : this(SamplingTypeToReservoir(samplingType))
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="HistogramMetric" /> class.
+        /// </summary>
+        /// <param name="samplingType">Type of the reservoir sampling to use.</param>
+        /// <param name="sampleSize">The number of samples to keep in the sampling reservoir</param>
+        /// <param name="alpha">
+        ///     The alpha value, e.g 0.015 will heavily biases the reservoir to the past 5 mins of measurements. The higher the
+        ///     value the more biased the reservoir will be towards newer values.
+        /// </param>
+        public HistogramMetric(SamplingType samplingType, int sampleSize, double alpha)
+            : this(SamplingTypeToReservoir(samplingType, sampleSize, alpha))
         {
         }
 
@@ -81,7 +90,7 @@ namespace App.Metrics.Core
             _reservoir.Update(value, userValue);
         }
 
-        private static IReservoir SamplingTypeToReservoir(SamplingType samplingType)
+        private static IReservoir SamplingTypeToReservoir(SamplingType samplingType, int sampleSize, double alpha)
         {
             while (true)
             {
@@ -90,11 +99,11 @@ namespace App.Metrics.Core
                     case SamplingType.HighDynamicRange:
                         return new HdrHistogramReservoir();
                     case SamplingType.ExponentiallyDecaying:
-                        return new ExponentiallyDecayingReservoir();
+                        return new ExponentiallyDecayingReservoir(sampleSize, alpha);
                     case SamplingType.LongTerm:
-                        return new UniformReservoir();
+                        return new UniformReservoir(sampleSize);
                     case SamplingType.SlidingWindow:
-                        return new SlidingWindowReservoir();
+                        return new SlidingWindowReservoir(sampleSize);
                     default:
                         throw new ArgumentOutOfRangeException(nameof(samplingType), samplingType, "Sampling type not implemented " + samplingType);
                 }

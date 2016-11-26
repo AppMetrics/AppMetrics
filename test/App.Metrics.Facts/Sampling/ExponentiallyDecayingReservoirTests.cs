@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using App.Metrics.Internal;
 using App.Metrics.Internal.Test;
 using App.Metrics.Sampling;
 using App.Metrics.Scheduling;
@@ -75,7 +76,9 @@ namespace App.Metrics.Facts.Sampling
         [Fact]
         public void EDR_QuantiliesShouldBeBasedOnWeights()
         {
-            var reservoir = new ExponentiallyDecayingReservoir(_clock, _scheduler);
+            var reservoir = new ExponentiallyDecayingReservoir(Constants.ReservoirSampling.DefaultSampleSize,
+                Constants.ReservoirSampling.DefaultExponentialDecayFactor,
+                _clock, _scheduler);
 
             for (var i = 0; i < 40; i++)
             {
@@ -101,7 +104,9 @@ namespace App.Metrics.Facts.Sampling
         [Fact]
         public void EDR_RecordsUserValue()
         {
-            var reservoir = new ExponentiallyDecayingReservoir(_clock, _scheduler);
+            var reservoir = new ExponentiallyDecayingReservoir(Constants.ReservoirSampling.DefaultSampleSize,
+                Constants.ReservoirSampling.DefaultExponentialDecayFactor,
+                _clock, _scheduler);
 
             reservoir.Update(2L, "B");
             reservoir.Update(1L, "A");
@@ -143,7 +148,9 @@ namespace App.Metrics.Facts.Sampling
         [Fact]
         public void EDR_SpotFall()
         {
-            var reservoir = new ExponentiallyDecayingReservoir(_clock, _scheduler);
+            var reservoir = new ExponentiallyDecayingReservoir(Constants.ReservoirSampling.DefaultSampleSize,
+                Constants.ReservoirSampling.DefaultExponentialDecayFactor,
+                _clock, _scheduler);
 
             var valuesRatePerMinute = 10;
             var valuesIntervalMillis = (int)(TimeUnit.Minutes.ToMilliseconds(1) / valuesRatePerMinute);
@@ -168,7 +175,9 @@ namespace App.Metrics.Facts.Sampling
         [Fact]
         public void EDR_SpotLift()
         {
-            var reservoir = new ExponentiallyDecayingReservoir(_clock, _scheduler);
+            var reservoir = new ExponentiallyDecayingReservoir(Constants.ReservoirSampling.DefaultSampleSize,
+                Constants.ReservoirSampling.DefaultExponentialDecayFactor,
+                _clock, _scheduler);
 
             var valuesRatePerMinute = 10;
             var valuesIntervalMillis = (int)(TimeUnit.Minutes.ToMilliseconds(1) / valuesRatePerMinute);

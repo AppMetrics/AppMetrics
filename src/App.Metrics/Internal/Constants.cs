@@ -20,5 +20,11 @@ namespace App.Metrics.Internal
                     { HealthCheckStatus.Degraded, DegradedStatusDisplay }
                 });
         }
+
+        public static class ReservoirSampling
+        {
+            public const int DefaultSampleSize = 1028;
+            public const double DefaultExponentialDecayFactor = 0.015;
+        }
     }
 }

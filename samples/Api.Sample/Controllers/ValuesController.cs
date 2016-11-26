@@ -34,30 +34,30 @@ namespace Api.Sample.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            _metrics.Increment(Metrics.Counters.TestCounter);
-            _metrics.Increment(Metrics.Counters.TestCounter, 4);
-            _metrics.Decrement(Metrics.Counters.TestCounter, 2);
+            _metrics.Increment(MetricsRegistry.Counters.TestCounter);
+            _metrics.Increment(MetricsRegistry.Counters.TestCounter, 4);
+            _metrics.Decrement(MetricsRegistry.Counters.TestCounter, 2);
 
-            var histogram = _metrics.Advanced.Histogram(Metrics.Histograms.TestHAdvancedistogram);
+            var histogram = _metrics.Advanced.Histogram(MetricsRegistry.Histograms.TestHAdvancedistogram);
             histogram.Update(Rnd.Next(1, 20));
 
-            _metrics.Update(Metrics.Histograms.TestHistogram, Rnd.Next(20, 40));
+            _metrics.Update(MetricsRegistry.Histograms.TestHistogram, Rnd.Next(20, 40));
 
-            _metrics.Time(Metrics.Timers.TestTimer, () => Thread.Sleep(15));
-            _metrics.Time(Metrics.Timers.TestTimer, () => Thread.Sleep(20), "value1");
-            _metrics.Time(Metrics.Timers.TestTimer, () => Thread.Sleep(25), "value2");
+            _metrics.Time(MetricsRegistry.Timers.TestTimer, () => Thread.Sleep(15));
+            _metrics.Time(MetricsRegistry.Timers.TestTimer, () => Thread.Sleep(20), "value1");
+            _metrics.Time(MetricsRegistry.Timers.TestTimer, () => Thread.Sleep(25), "value2");
 
-            using (_metrics.Time(Metrics.Timers.TestTimerTwo))
+            using (_metrics.Time(MetricsRegistry.Timers.TestTimerTwo))
             {
                 Thread.Sleep(15);
             }
 
-            using (_metrics.Time(Metrics.Timers.TestTimerTwo, "value1"))
+            using (_metrics.Time(MetricsRegistry.Timers.TestTimerTwo, "value1"))
             {
                 Thread.Sleep(20);
             }
 
-            using (_metrics.Time(Metrics.Timers.TestTimerTwo, "value2"))
+            using (_metrics.Time(MetricsRegistry.Timers.TestTimerTwo, "value2"))
             {
                 Thread.Sleep(25);
             }

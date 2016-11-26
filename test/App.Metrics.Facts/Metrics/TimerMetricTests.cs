@@ -1,5 +1,6 @@
 ﻿using System;
 using App.Metrics.Core;
+using App.Metrics.Internal;
 using App.Metrics.Internal.Test;
 using App.Metrics.Sampling;
 using App.Metrics.Utils;
@@ -15,7 +16,7 @@ namespace App.Metrics.Facts.Metrics
 
         public TimerMetricTests()
         {
-            _timer = new TimerMetric(new HistogramMetric(new UniformReservoir()), new MeterMetric(_clock, new TestTaskScheduler(_clock)),
+            _timer = new TimerMetric(new HistogramMetric(new UniformReservoir(Constants.ReservoirSampling.DefaultSampleSize)), new MeterMetric(_clock, new TestTaskScheduler(_clock)),
                 _clock);
         }
 

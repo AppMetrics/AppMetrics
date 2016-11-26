@@ -31,5 +31,6 @@ public static class AppMetricsRegistery
         DurationUnit = TimeUnit.Milliseconds,
         RateUnit = TimeUnit.Milliseconds,            
         SamplingType = SamplingType.ExponentiallyDecaying,
+        ExponentialDecayFactor = 0.015
     };
 }

@@ -27,7 +27,7 @@ namespace App.Metrics.Core
 
         public static IHistogramMetric BuildHistogram(this IAdvancedMetrics context, HistogramOptions options)
         {
-            return new HistogramMetric(options.SamplingType);
+            return new HistogramMetric(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor);
         }
 
         public static IHistogramMetric BuildHistogram(this IAdvancedMetrics context, HistogramOptions options, IReservoir reservoir)
@@ -42,7 +42,7 @@ namespace App.Metrics.Core
 
         public static ITimerMetric BuildTimer(this IAdvancedMetrics context, TimerOptions options)
         {
-            return new TimerMetric(options.SamplingType, context.Clock);
+            return new TimerMetric(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor, context.Clock);
         }
 
         public static ITimerMetric BuildTimer(this IAdvancedMetrics context, TimerOptions options, IHistogramMetric histogram)

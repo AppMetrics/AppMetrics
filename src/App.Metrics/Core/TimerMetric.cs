@@ -24,12 +24,17 @@ namespace App.Metrics.Core
         private bool _disposed = false;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="TimerMetric" /> class.
+        /// Initializes a new instance of the <see cref="TimerMetric" /> class.
         /// </summary>
         /// <param name="samplingType">Type of the sampling to use to generate the resevoir of values.</param>
+        /// <param name="sampleSize">The number of samples to keep in the sampling reservoir</param>
+        /// <param name="alpha">
+        ///     The alpha value, e.g 0.015 will heavily biases the reservoir to the past 5 mins of measurements. The higher the
+        ///     value the more biased the reservoir will be towards newer values.
+        /// </param>
         /// <param name="clock">The clock to use to measure processing duration.</param>
-        public TimerMetric(SamplingType samplingType, IClock clock)
-            : this(new HistogramMetric(samplingType), new MeterMetric(clock), clock)
+        public TimerMetric(SamplingType samplingType, int sampleSize, double alpha, IClock clock)
+            : this(new HistogramMetric(samplingType, sampleSize, alpha), new MeterMetric(clock), clock)
         {
         }
 
@@ -54,13 +59,18 @@ namespace App.Metrics.Core
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="TimerMetric" /> class.
+        /// Initializes a new instance of the <see cref="TimerMetric" /> class.
         /// </summary>
         /// <param name="samplingType">Type of the sampling to use to generate the resevoir of values.</param>
+        /// <param name="sampleSize">The number of samples to keep in the sampling reservoir used by the histogram</param>
+        /// <param name="alpha">
+        ///     The alpha value, e.g 0.015 will heavily biases the reservoir to the past 5 mins of measurements. The higher the
+        ///     value the more biased the reservoir will be towards newer values.
+        /// </param>
         /// <param name="meter">The meter implementation to use to genreate the rate of events over time.</param>
         /// <param name="clock">The clock to use to measure processing duration.</param>
-        public TimerMetric(SamplingType samplingType, IMeterMetric meter, IClock clock)
-            : this(new HistogramMetric(samplingType), meter, clock)
+        public TimerMetric(SamplingType samplingType, int sampleSize, double alpha, IMeterMetric meter, IClock clock)
+            : this(new HistogramMetric(samplingType, sampleSize, alpha), meter, clock)
         {
         }
 

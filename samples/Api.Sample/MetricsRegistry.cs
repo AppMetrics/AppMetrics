@@ -1,10 +1,9 @@
 ﻿using App.Metrics;
-using App.Metrics.Core;
 using App.Metrics.Core.Options;
 
 namespace Api.Sample
 {
-    public static class Metrics
+    public static class MetricsRegistry
     {
         public static class Contexts
         {
@@ -44,7 +43,7 @@ namespace Api.Sample
                     public static HistogramOptions TestHistogram { get; } = new HistogramOptions
                     {
                         Name = "Test Histogram",
-                        SamplingType = SamplingType.HighDynamicRange,
+                        SamplingType = SamplingType.HighDynamicRange,                        
                         MeasurementUnit = Unit.MegaBytes,
                         Tags = MetricTags.None
                     };

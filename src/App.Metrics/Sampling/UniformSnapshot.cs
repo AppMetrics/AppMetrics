@@ -17,7 +17,7 @@ namespace App.Metrics.Sampling
     ///     <see href="http://www.cs.umd.edu/~samir/498/vitter.pdf">Vitter's Algorithm R</see>.
     ///     This is the snapshot used a histogram with a <see cref="UniformReservoir">uniform reservoir </see>
     /// </summary>
-    /// <seealso cref="App.Metrics.Sampling.Interfaces.ISnapshot" />
+    /// <seealso cref="ISnapshot" />
     public sealed class UniformSnapshot : ISnapshot
     {
         private readonly long[] _values;
