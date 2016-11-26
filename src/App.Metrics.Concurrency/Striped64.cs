@@ -1,4 +1,7 @@
-﻿//Striped64 & LongAdder classes were ported from Java and had this copyright:
+﻿// Copyright (c) Allan hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+//Striped64 & LongAdder classes were ported from Java and had this copyright:
 
 //Written by Doug Lea with assistance from members of JCP JSR-166
 //Expert Group and released to the public domain, as explained at http://creativecommons.org/publicdomain/zero/1.0/
