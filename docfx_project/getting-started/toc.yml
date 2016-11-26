@@ -26,7 +26,7 @@
   href: health-checks/index.md    
 - name: Filtering Metrics
   href: filtering/index.md    
-- name: Sampling Types
+- name: Resevoir Sampling
   href: sampling/index.md      
 - name: Reporting & Visualization
   items:

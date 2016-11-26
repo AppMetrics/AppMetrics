@@ -2,7 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
+// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
 
 using App.Metrics.App_Packages.HdrHistogram;
@@ -12,10 +12,18 @@ using App.Metrics.Sampling.Interfaces;
 namespace App.Metrics.Sampling
 {
     /// <summary>
-    ///     Sampling reservoir based on HdrHistogram.
-    ///     Based on the java version from Marshall Pierce
-    ///     https://bitbucket.org/marshallpierce/hdrhistogram-metrics-reservoir/src/83a8ec568a1e?at=master
+    ///     A Histogram that supports recording and analyzing sampled data value counts across a configurable integer value
+    ///     range with configurable value precision within the range. Value precision is expressed as the number of significant
+    ///     digits in the value recording, and provides control over value quantization behavior across the value range and the
+    ///     subsequent value resolution at any given level.
     /// </summary>
+    /// <remarks>
+    ///     Based on the
+    ///     <see href="https://bitbucket.org/marshallpierce/hdrhistogram-metrics-reservoir/src/83a8ec568a1e?at=master">
+    ///         java version from Marshall Pierce
+    ///     </see>
+    /// </remarks>
+    /// <seealso cref="App.Metrics.Sampling.Interfaces.IReservoir" />
     public sealed class HdrHistogramReservoir : IReservoir
     {
         private readonly object _maxValueLock = new object();
@@ -31,11 +39,21 @@ namespace App.Metrics.Sampling
 
         private AtomicLong _minValue = new AtomicLong(long.MaxValue);
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="HdrHistogramReservoir" /> class.
+        /// </summary>
         public HdrHistogramReservoir()
             : this(new Recorder(2))
         {
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="HdrHistogramReservoir" /> class.
+        /// </summary>
+        /// <param name="recorder">
+        ///     Records integer values, and provides stable interval <see cref="Histogram">histogram</see> samples from
+        ///     live recorded data without interrupting or stalling active recording of values
+        /// </param>
         internal HdrHistogramReservoir(Recorder recorder)
         {
             _recorder = recorder;
@@ -44,6 +62,7 @@ namespace App.Metrics.Sampling
             _runningTotals = new HdrHistogram(_intervalHistogram.NumberOfSignificantValueDigits);
         }
 
+        /// <inheritdoc cref="IReservoir" />
         public ISnapshot GetSnapshot(bool resetReservoir = false)
         {
             var snapshot = new HdrSnapshot(UpdateTotals(), _minValue.GetValue(), _minUserValue, _maxValue.GetValue(),
@@ -55,6 +74,7 @@ namespace App.Metrics.Sampling
             return snapshot;
         }
 
+        /// <inheritdoc cref="IReservoir" />
         public void Reset()
         {
             _recorder.Reset();
@@ -62,6 +82,7 @@ namespace App.Metrics.Sampling
             _intervalHistogram.reset();
         }
 
+        /// <inheritdoc cref="IReservoir" />
         public void Update(long value, string userValue = null)
         {
             _recorder.RecordValue(value);

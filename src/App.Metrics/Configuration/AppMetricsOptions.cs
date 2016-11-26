@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using App.Metrics.Internal.Interfaces;
+using App.Metrics.Sampling.Interfaces;
 
 namespace App.Metrics.Configuration
 {
@@ -22,6 +23,14 @@ namespace App.Metrics.Configuration
         ///     The default context label used for grouping metrics within the <see cref="IMetricsRegistry" />.
         /// </value>
         public string DefaultContextLabel { get; set; } = DefaultContext;
+
+        /// <summary>
+        ///     Gets or sets the default sampling size of all histogram <see cref="IReservoir">reservoirs</see>
+        /// </summary>
+        /// <value>
+        ///     The  default sampling size of all histogram reservoirs. Defaults to 1028.
+        /// </value>
+        public int DefaultSamplingSize { get; set; } = 1028;
 
         /// <summary>
         ///     Gets or sets The default <see cref="SamplingType" /> to use to generate the resevoir of values on

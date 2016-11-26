@@ -52,5 +52,5 @@ The [DefaultMetricsFilter](../../api/App.Metrics.DefaultMetricsFilter.html) can 
 
 ## Next Steps
 
-- [Measuring Application Metrics](../intro.md#recording-metrics)
+- [Measuring Application Metrics](../intro.md#measuring-application-metrics)
 - [Sample Applications](../../samples/index.md)
