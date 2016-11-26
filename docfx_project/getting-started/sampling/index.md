@@ -36,6 +36,8 @@ The default sample size is 1028.
 
 A [HdrHistogram](http://hdrhistogram.org/) provides resevoir sampling that supports recording and analyzing sampled data value counts across a configurable integer value range with configurable value precision within the range.
 
+HdrHistograms are designed for recoding histograms of value measurements in latency and performance sensitive applications. Measurements show value recording times as low as 3-6 nanoseconds on modern Intel CPUs
+
 [Implementation](../../api/App.Metrics.Sampling.HdrHistogramReservoir.html) is based on [hdrhistogram-metrics-reservoir](https://bitbucket.org/marshallpierce/hdrhistogram-metrics-reservoir/src/83a8ec568a1e?at=master).
 
 
