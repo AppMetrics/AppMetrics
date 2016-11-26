@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
+//Written by Iulian Margarintescu and will retain the same license as the Java Version
+//Original .NET Source by Iulian Margarintescu: https://github.com/etishor/ConcurrencyUtilities/blob/master/Src/ConcurrencyUtilities/AtomicIntArray.cs
+//Ported to a .NET Standard Project by Allan Hardy as the owner Iulian Margarintescu is unreachable and the source and packages are no longer maintained
 
 using System;
 using System.Collections.Generic;
@@ -211,7 +214,7 @@ namespace App.Metrics.Concurrency
         /// </summary>
         /// <remarks>
         ///     Currently implemented by calling Volatile.Write which is different from the java version.
-        ///     Not sure if it is possible on CLR to implement 
+        ///     Not sure if it is possible on CLR to implement
         /// </remarks>
         /// <param name="index">index in the array</param>
         /// <param name="value">The new value for this instance.</param>
