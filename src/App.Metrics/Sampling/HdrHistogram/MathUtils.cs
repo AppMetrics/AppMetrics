@@ -6,7 +6,7 @@
 
 using System;
 
-namespace App.Metrics.App_Packages.HdrHistogram
+namespace App.Metrics.Sampling.HdrHistogram
 {
     internal static class MathUtils
     {

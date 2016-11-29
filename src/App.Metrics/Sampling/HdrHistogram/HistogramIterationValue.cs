@@ -7,7 +7,7 @@
 // Ported to .NET Standard Library by Allan Hardy
 // Original repo: https://github.com/etishor/Metrics.NET
 
-namespace App.Metrics.App_Packages.HdrHistogram
+namespace App.Metrics.Sampling.HdrHistogram
 {
 /**
                  * Represents a value point iterated through in a Histogram, with associated stats.

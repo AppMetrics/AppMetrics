@@ -6,7 +6,7 @@
 
 using System;
 
-namespace App.Metrics.App_Packages.HdrHistogram
+namespace App.Metrics.Sampling.HdrHistogram
 {
     /**
  * <h3>An integer values High Dynamic Range (HDR) Histogram that is synchronized as a whole</h3>

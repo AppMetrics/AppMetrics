@@ -9,7 +9,7 @@
 
 using System;
 
-namespace App.Metrics.App_Packages.HdrHistogram
+namespace App.Metrics.Sampling.HdrHistogram
 {
     /// <summary>
     ///     <h3>A High Dynamic Range (HDR) Histogram</h3>

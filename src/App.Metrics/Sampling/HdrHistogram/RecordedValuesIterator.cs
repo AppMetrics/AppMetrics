@@ -4,7 +4,7 @@
 
 // Ported to.NET Standard Library by Allan Hardy
 
-namespace App.Metrics.App_Packages.HdrHistogram
+namespace App.Metrics.Sampling.HdrHistogram
 {
     /**
  * Written by Gil Tene of Azul Systems, and released to the public domain,

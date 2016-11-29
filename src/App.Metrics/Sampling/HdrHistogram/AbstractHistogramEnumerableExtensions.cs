@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 
-namespace App.Metrics.App_Packages.HdrHistogram
+namespace App.Metrics.Sampling.HdrHistogram
 {
     internal static class AbstractHistogramEnumerableExtensions
     {

@@ -8,7 +8,7 @@ using System;
 using System.Diagnostics;
 using App.Metrics.Concurrency;
 
-namespace App.Metrics.App_Packages.HdrHistogram
+namespace App.Metrics.Sampling.HdrHistogram
 {
     /// <summary>
     ///     Records integer values, and provides stable interval {@link Histogram} samples from

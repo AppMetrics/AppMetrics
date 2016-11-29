@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Concurrency;
 
-namespace App.Metrics.App_Packages.HdrHistogram
+namespace App.Metrics.Sampling.HdrHistogram
 {
     /// <summary>
     ///     WriterReaderPhaser instances provide an asymmetric means for synchronizing the execution of

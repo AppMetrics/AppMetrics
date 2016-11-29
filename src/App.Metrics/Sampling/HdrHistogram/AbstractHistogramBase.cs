@@ -7,7 +7,7 @@
 using System;
 using App.Metrics.Concurrency;
 
-namespace App.Metrics.App_Packages.HdrHistogram
+namespace App.Metrics.Sampling.HdrHistogram
 {
     /// <summary>
     ///     This non-public AbstractHistogramBase super-class separation is meant to bunch "cold" fields

@@ -10,7 +10,7 @@
 using System.Diagnostics;
 using App.Metrics.Concurrency;
 
-namespace App.Metrics.App_Packages.HdrHistogram
+namespace App.Metrics.Sampling.HdrHistogram
 {
     /// <summary>
     ///     <h3>An integer values High Dynamic Range (HDR) Histogram that supports safe concurrent recording operations.</h3>

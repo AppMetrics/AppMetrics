@@ -5,8 +5,8 @@
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
 
-using App.Metrics.App_Packages.HdrHistogram;
 using App.Metrics.Concurrency;
+using App.Metrics.Sampling.HdrHistogram;
 using App.Metrics.Sampling.Interfaces;
 
 namespace App.Metrics.Sampling
@@ -30,8 +30,8 @@ namespace App.Metrics.Sampling
         private readonly object _minValueLock = new object();
         private readonly Recorder _recorder;
 
-        private readonly HdrHistogram _runningTotals;
-        private HdrHistogram _intervalHistogram;
+        private readonly HdrHistogram.HdrHistogram _runningTotals;
+        private HdrHistogram.HdrHistogram _intervalHistogram;
         private string _maxUserValue;
 
         private AtomicLong _maxValue = new AtomicLong(0);
@@ -59,7 +59,7 @@ namespace App.Metrics.Sampling
             _recorder = recorder;
 
             _intervalHistogram = recorder.GetIntervalHistogram();
-            _runningTotals = new HdrHistogram(_intervalHistogram.NumberOfSignificantValueDigits);
+            _runningTotals = new HdrHistogram.HdrHistogram(_intervalHistogram.NumberOfSignificantValueDigits);
         }
 
         /// <inheritdoc cref="IReservoir" />
@@ -145,13 +145,13 @@ namespace App.Metrics.Sampling
             }
         }
 
-        private HdrHistogram UpdateTotals()
+        private HdrHistogram.HdrHistogram UpdateTotals()
         {
             lock (_runningTotals)
             {
                 _intervalHistogram = _recorder.GetIntervalHistogram(_intervalHistogram);
                 _runningTotals.add(_intervalHistogram);
-                return _runningTotals.copy() as HdrHistogram;
+                return _runningTotals.copy() as HdrHistogram.HdrHistogram;
             }
         }
     }

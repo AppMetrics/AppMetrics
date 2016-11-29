@@ -8,7 +8,7 @@ using System;
 using System.Diagnostics;
 using App.Metrics.Concurrency;
 
-namespace App.Metrics.App_Packages.HdrHistogram
+namespace App.Metrics.Sampling.HdrHistogram
 {
 #pragma warning disable 0659 // GetHashCode does not make sense for a histogram, even if Equals is implemented
 
