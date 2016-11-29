@@ -30,4 +30,5 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("App.Metrics.Facts")]
 [assembly: InternalsVisibleTo("App.Metrics.Extensions.Middleware.Integration.Facts")]
 [assembly: InternalsVisibleTo("App.Metrics.Benchmarks")]
+[assembly: InternalsVisibleTo("App.Metrics.Reservoir.Benchmarks")]
 [assembly: InternalsVisibleTo("App.Metrics.Sampling.Facts")]
