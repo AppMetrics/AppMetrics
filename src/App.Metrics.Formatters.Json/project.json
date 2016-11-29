@@ -1,21 +1,5 @@
 {
-  "version": "1.0.0-alpha",
-  "description": "App Metrics Formattor, formatting metrics data to JSON using Json.NET",
-  "authors": [ "Allan Hardy" ],
-  "packOptions": {
-    "releaseNotes": "",
-    "tags": [
-      "app.metrics",
-      "json"
-    ],
-    "repository": {
-      "type": "git",
-      "url": "git://github.com/alhardy/aspnet-metrics"
-    },
-    "projectUrl": "https://github.com/alhardy/aspnet-metrics",
-    "licenseUrl": "https://github.com/alhardy/aspnet-metrics/blob/master/LICENSE",
-    "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png"
-  },
+  "authors": ["Allan Hardy"],
   "buildOptions": {
     "warningsAsErrors": true,
     "nowarn": [
@@ -31,6 +15,7 @@
     "Newtonsoft.Json": "9.0.2-beta1",
     "System.Linq": "4.3.0"
   },
+  "description": "App Metrics Formattor, formatting metrics data to JSON using Json.NET",
   "frameworks": {
     "netstandard1.6": {
       "imports": [
@@ -38,6 +23,21 @@
         "portable-net45+win8"
       ]
     }
-  }
-
+  },
+  "net461": {},
+  "packOptions": {
+    "releaseNotes": "",
+    "tags": [
+      "app.metrics",
+      "json"
+    ],
+    "repository": {
+      "type": "git",
+      "url": "git://github.com/alhardy/aspnet-metrics"
+    },
+    "projectUrl": "https://github.com/alhardy/aspnet-metrics",
+    "licenseUrl": "https://github.com/alhardy/aspnet-metrics/blob/master/LICENSE",
+    "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png"
+  },
+  "version": "1.0.0-alpha"
 }

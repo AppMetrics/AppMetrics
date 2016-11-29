@@ -1,9 +1,5 @@
 {
-  "title": "App.Metrics.Extensions.Reporting.Console",
-  "copyright": "Allan Hardy 2016",
-  "version": "1.0.0-alpha",
-  "authors": [ "Allan Hardy" ],
-  "description": "Provides console reporting capability to App Metrics",
+  "authors": ["Allan Hardy"],
 
   "buildOptions": {
     "warningsAsErrors": true,
@@ -13,13 +9,7 @@
     "xmlDoc": true,
     "debugType": "portable"
   },
-
-  "packOptions": {
-    "tags": [ "Metrics", "Monitoring", "Instrumentation", "Reporting", "Console" ],
-    "projectUrl": "https://github.com/alhardy/app-metrics",
-    "licenseUrl": "https://github.com/alhardy/app-metrics/blob/master/LICENSE",
-    "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png"
-  },
+  "copyright": "Allan Hardy 2016",
 
   "dependencies": {
     "Microsoft.Extensions.Logging.Console": "1.1.0",
@@ -35,6 +25,7 @@
     "System.Threading.Thread": "4.3.0",
     "Microsoft.DotNet.InternalAbstractions": "1.0.500-preview2-1-003177"
   },
+  "description": "Provides console reporting capability to App Metrics",
 
   "frameworks": {
     "netstandard1.6": {
@@ -43,9 +34,18 @@
         "portable-net45+win8"
       ],
       "dependencies": {
-
+      
       }
-    }
-    //"net452": {}
-  }
+    },
+    "net461": {}
+  },
+
+  "packOptions": {
+    "tags": ["Metrics", "Monitoring", "Instrumentation", "Reporting", "Console"],
+    "projectUrl": "https://github.com/alhardy/app-metrics",
+    "licenseUrl": "https://github.com/alhardy/app-metrics/blob/master/LICENSE",
+    "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png"
+  },
+  "title": "App.Metrics.Extensions.Reporting.Console",
+  "version": "1.0.0-alpha"
 }
