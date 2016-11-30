@@ -22,7 +22,7 @@ namespace App.Metrics.Facts
         }
 
         [Fact]
-        public void records_user_value()
+        public void can_records_user_value()
         {
             var reservoir = new UniformReservoir(100);
 

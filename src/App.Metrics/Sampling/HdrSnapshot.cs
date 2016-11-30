@@ -5,6 +5,7 @@
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Sampling.HdrHistogram;
@@ -27,9 +28,9 @@ namespace App.Metrics.Sampling
         public HdrSnapshot(AbstractHistogram histogram, long minValue, string minUserValue, long maxValue, string maxUserValue)
         {
             _histogram = histogram;
-            Min = minValue;
+            Min = minUserValue.IsPresent() ? minValue : _histogram.getMinValue();
             MinUserValue = minUserValue;
-            Max = maxValue;
+            Max = maxUserValue.IsPresent() ? maxValue : _histogram.getMaxValue();
             MaxUserValue = maxUserValue;
         }
 
