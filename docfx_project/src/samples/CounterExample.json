@@ -1,0 +1,27 @@
+{
+    "context": "EmailApplication",
+    "counters": [
+        {
+            "count": 100,
+            "items": [
+                {
+                    "count": 10,
+                    "item": "forgot-password",
+                    "percent": 10
+                },
+                {
+                    "count": 20,
+                    "item": "account-verification",
+                    "percent": 20
+                },
+                {
+                    "count": 70,
+                    "item": "email-a-friend",
+                    "percent": 70
+                }
+            ],
+            "name": "Sent Emails",
+            "unit": "Calls"
+        }
+    ]
+}
