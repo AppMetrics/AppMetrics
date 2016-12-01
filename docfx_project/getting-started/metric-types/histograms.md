@@ -26,5 +26,5 @@ In high performance applications it is not possible to keep the entire data stre
 
 ## Related Docs
 
-- [Getting Started](../intro.md)
+- [Getting Started](../intro.md#measuring-application-metrics)
 - [Configuration](../fundamentals/configuration.md)

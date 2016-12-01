@@ -24,5 +24,5 @@ Which for example when using the JSON formatter would result in:
 
 ## Related Docs
 
-- [Getting Started](../intro.md)
+- [Getting Started](../intro.md#measuring-application-metrics)
 - [Configuration](../fundamentals/configuration.md)
