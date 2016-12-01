@@ -20,7 +20,7 @@ var processPhysicalMemoryGauge = new GaugeOptions
 {
     Name = "Process Physical Memory (MB)",
     MeasurementUnit = Unit.MegaBytes
-} 
+};
 
 var physicalMemoryGauge = new FunctionGauge(() => process.WorkingSet64);
 
@@ -40,7 +40,7 @@ using (calls.NewContext())
     {
         cacheHits.Mark();
     }
-    
+
     Thread.Sleep(cacheHit ? 10 : 100);
 }
 

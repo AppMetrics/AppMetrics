@@ -1,0 +1,44 @@
+{
+    "context": "Application",
+    "meters": [
+        {
+            "count": 1000,
+            "fifteenMinuteRate": 0.2,
+            "fiveMinuteRate": 0.2,
+            "items": [
+                {
+                    "count": 100,
+                    "fifteenMinuteRate": 0.02,
+                    "fiveMinuteRate": 0.02,
+                    "item": "500",
+                    "meanRate": 0.011,
+                    "oneMinuteRate": 0.02,
+                    "percent": 10
+                },
+                {
+                    "count": 200,
+                    "fifteenMinuteRate": 0.04,
+                    "fiveMinuteRate": 0.04,
+                    "item": "401",
+                    "meanRate": 0.023,
+                    "oneMinuteRate": 0.04,
+                    "percent": 20
+                },
+                {
+                    "count": 700,
+                    "fifteenMinuteRate": 0.14,
+                    "fiveMinuteRate": 0.14,
+                    "item": "200",
+                    "meanRate": 0.080,
+                    "oneMinuteRate": 0.14,
+                    "percent": 70
+                }
+            ],
+            "meanRate": 0.1155,
+            "oneMinuteRate": 0.2,
+            "rateUnit": "ms",
+            "name": "Http Status",
+            "unit": "Calls"
+        }
+    ]
+}

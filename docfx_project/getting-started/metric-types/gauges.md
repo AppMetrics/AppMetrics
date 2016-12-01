@@ -24,3 +24,8 @@ Ratio Gauges allow you to measure a Gauge with a measurement which is the ratio 
 
 [!code-csharp[Main](../../src/samples/Gauges.cs?start=32&end=47&highlight=16)]
 
+## Related Docs
+
+- [Getting Started](../intro.md)
+- [Configuration](../fundamentals/configuration.md)
+

@@ -2,7 +2,7 @@
 
 Counters are one of the simpliest metrics types supported and allow us to track how many times something has happened. They are an atomic 64-bit integer which can be incremented or decremented.
 
-Counters are ideal for counting occurances, events or errors for example. They also provide the ability to track a count and percentage of each item from a finite set, for example if we were tracking the number of emails our application has sent, we could also track the number of each type of email sent and their percentage of the overall count within the same counter.
+Counters are ideal for counting occurances, events or errors for example. They also provide the ability to track a count and percentage of each item with a set, for example if we were tracking the number of emails our application has sent, we could also track the number of each type of email sent and their percentage of the overall count within the same counter.
 
 ## Using Counters
 

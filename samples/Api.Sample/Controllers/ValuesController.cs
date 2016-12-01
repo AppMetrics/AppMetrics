@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using App.Metrics;
 using App.Metrics.Core;
+using App.Metrics.Core.Options;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Sample.Controllers
@@ -36,6 +37,16 @@ namespace Api.Sample.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
+            var httpStatusMeter = new MeterOptions
+            {
+                Name = "Http Status",
+                MeasurementUnit = Unit.Calls
+            };
+
+            _metrics.Mark(httpStatusMeter, 70, "200");
+            _metrics.Mark(httpStatusMeter, 10, "500");
+            _metrics.Mark(httpStatusMeter, 20, "401");
+
             _metrics.Increment(MetricsRegistry.Counters.TestCounter);
             _metrics.Increment(MetricsRegistry.Counters.TestCounter, 4);
             _metrics.Decrement(MetricsRegistry.Counters.TestCounter, 2);

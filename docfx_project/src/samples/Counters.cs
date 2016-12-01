@@ -4,7 +4,7 @@ var sentEmailsCounter = new CounterOptions
 {
     Name = "Sent Emails",
     MeasurementUnit = Unit.Calls
-} 
+};
 
 _metrics.Increment(sentEmailsCounter); // Increment by 1 
 _metrics.Decrement(sentEmailsCounter); // Decrement by 1
@@ -17,11 +17,11 @@ var sentEmailsCounter = new CounterOptions
 {
     Name = "Sent Emails",
     MeasurementUnit = Unit.Calls
-} 
+};
 
-_metrics.Increment(sentEmailsCounter, 70, "email-a-friend");
-_metrics.Increment(sentEmailsCounter, 10, "forgot-password");
-_metrics.Increment(sentEmailsCounter, 20, "account-verification");
+_metrics.Increment(sentEmailsCounter, "email-a-friend");
+_metrics.Increment(sentEmailsCounter, "forgot-password");
+_metrics.Increment(sentEmailsCounter, "account-verification");
 
 // Counter Advanced
 

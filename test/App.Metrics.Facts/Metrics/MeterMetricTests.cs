@@ -31,7 +31,7 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void can_conpute_percent_with_zero_total()
+        public void can_compute_percent_with_zero_total()
         {
             _meter.Mark("A");
             _meter.Mark("A", -1);
