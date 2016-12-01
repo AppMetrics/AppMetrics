@@ -1,0 +1,24 @@
+{
+    "context": "Application",
+    "histograms": [
+        {
+            "lastUserValue": "client_1",
+            "lastValue": 26.5984,
+            "max": 26.5984,
+            "maxUserValue": "value2",
+            "mean": 23.1988,
+            "median": 22.2101,
+            "min": 20.2660,
+            "minUserValue": "client_2",
+            "percentile75": 25.4645,
+            "percentile95": 26.5987,
+            "percentile98": 26.5984,
+            "percentile99": 26.5984,
+            "percentile999": 26.5987,
+            "sampleSize": 20,
+            "stdDev": 2.4749,
+            "name": "File Sizes",
+            "unit": "Mb"
+        }
+    ]
+}
