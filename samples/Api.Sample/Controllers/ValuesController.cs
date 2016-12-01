@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using App.Metrics;
+using App.Metrics.Core;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Sample.Controllers
@@ -38,12 +40,35 @@ namespace Api.Sample.Controllers
             _metrics.Increment(MetricsRegistry.Counters.TestCounter, 4);
             _metrics.Decrement(MetricsRegistry.Counters.TestCounter, 2);
 
+            var process = Process.GetCurrentProcess();
+            var physicalMemoryGauge = new FunctionGauge(() => process.WorkingSet64);
+
+            _metrics.Gauge(MetricsRegistry.Gauges.TestGauge, () => physicalMemoryGauge.Value);
+
+            _metrics.Advanced.Gauge(MetricsRegistry.Gauges.DerivedGauge,
+                () => new DerivedGauge(physicalMemoryGauge, g => g / 1024.0 / 1024.0));
+
+            var cacheHits = _metrics.Advanced.Meter(MetricsRegistry.Meters.CacheHits);
+            var calls = _metrics.Advanced.Timer(MetricsRegistry.Timers.DatabaseQueryTimer);
+
+            var cacheHit = Rnd.Next(0, 2) == 0;
+            if (cacheHit)
+            {
+                cacheHits.Mark();
+            }
+
+            using (calls.NewContext())
+            {
+                Thread.Sleep(cacheHit ? 10 : 100);
+            }
+
+            _metrics.Advanced.Gauge(MetricsRegistry.Gauges.CacheHitRatioGauge, () => new HitRatioGauge(cacheHits, calls, m => m.OneMinuteRate));
+
             var histogram = _metrics.Advanced.Histogram(MetricsRegistry.Histograms.TestHAdvancedistogram);
             histogram.Update(Rnd.Next(1, 20));
 
             _metrics.Update(MetricsRegistry.Histograms.TestHistogram, Rnd.Next(20, 40));
 
-            _metrics.Time(MetricsRegistry.Timers.TestTimer, () => Thread.Sleep(15));
             _metrics.Time(MetricsRegistry.Timers.TestTimer, () => Thread.Sleep(20), "value1");
             _metrics.Time(MetricsRegistry.Timers.TestTimer, () => Thread.Sleep(25), "value2");
 

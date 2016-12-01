@@ -1,0 +1,10 @@
+{
+    "context": "Process",
+    "gauges": [
+        {
+            "value": 51683328,
+            "name": "Process Physical Memory",           
+            "unit": "bytes"
+        }
+    ]
+}

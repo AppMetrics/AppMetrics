@@ -197,7 +197,21 @@ namespace Api.Sample
             public static GaugeOptions TestGauge { get; } = new GaugeOptions
             {
                 Name = "Test Gauge",
-                MeasurementUnit = Unit.Items,
+                MeasurementUnit = Unit.Bytes,
+                Tags = MetricTags.None
+            };
+
+            public static GaugeOptions DerivedGauge { get; } = new GaugeOptions
+            {
+                Name = "Derived Gauge",
+                MeasurementUnit = Unit.MegaBytes,
+                Tags = MetricTags.None
+            };
+
+            public static GaugeOptions CacheHitRatioGauge { get; } = new GaugeOptions
+            {
+                Name = "Cache Gauge",
+                MeasurementUnit = Unit.Calls,
                 Tags = MetricTags.None
             };
         }
@@ -231,9 +245,9 @@ namespace Api.Sample
 
         public static class Meters
         {
-            public static MeterOptions TestMeter { get; } = new MeterOptions
+            public static MeterOptions CacheHits { get; } = new MeterOptions
             {
-                Name = "Test Meter",
+                Name = "Cache Hits Meter",
                 MeasurementUnit = Unit.Calls,
                 Tags = MetricTags.None
             };
@@ -249,6 +263,16 @@ namespace Api.Sample
                 RateUnit = TimeUnit.Milliseconds,
                 Tags = MetricTags.None,
                 SamplingType = SamplingType.ExponentiallyDecaying,
+            };
+
+            public static TimerOptions DatabaseQueryTimer { get; } = new TimerOptions
+            {
+                Name = "Database Query Timer",
+                MeasurementUnit = Unit.Calls,
+                DurationUnit = TimeUnit.Milliseconds,
+                RateUnit = TimeUnit.Milliseconds,
+                Tags = MetricTags.None,
+                SamplingType = SamplingType.SlidingWindow
             };
 
             public static TimerOptions TestTimerTwo { get; } = new TimerOptions

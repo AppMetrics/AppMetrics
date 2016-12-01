@@ -56,7 +56,6 @@ namespace Metrics.Samples
             // define a simple gauge that will provide the instant value of someValue when requested
             _metrics.Gauge(SampleMetricsRegistry.Gauges.DataValue, () => _someValue);
 
-
             _metrics.Gauge(SampleMetricsRegistry.Gauges.CustomRatioGauge, 
                 () => ValueReader.GetCurrentValue(_totalRequestsCounter).Count / ValueReader.GetCurrentValue(_meter).FiveMinuteRate);
             
