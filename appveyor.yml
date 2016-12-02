@@ -14,4 +14,4 @@ deploy:
   skip_symbols: true
   symbol_server: https://www.myget.org/F/alhardy/symbol
   on:
-    branch: dev
+    branch: dev, 1.0.0-beta1
