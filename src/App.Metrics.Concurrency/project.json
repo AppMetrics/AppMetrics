@@ -1,5 +1,5 @@
 {
-  "authors": ["Allan Hardy"],
+  "authors": [ "Allan Hardy" ],
 
   "buildOptions": {
     "warningsAsErrors": true,
@@ -11,8 +11,7 @@
     "debugType": "portable"
   },
   "copyright": "Allan Hardy 2016",
-  "description":
-    ".NET Standard Concurrency Utils. Original DNX Beta Project: https://github.com/etishor/ConcurrencyUtilities",
+  "description": ".NET Standard Concurrency Utils. Original DNX Beta Project: https://github.com/etishor/ConcurrencyUtilities",
 
   "frameworks": {
     "netstandard1.6": {
@@ -26,20 +25,20 @@
       }
     },
     "net45": {
-        "buildOptions": {
+      "buildOptions": {
         "define": [
           "CLASSIC"
         ]
       },
       "dependencies": {
-      
+
       },
       "frameworkAssemblies": {
         "System.Reflection": "4.0.0.0"
       }
-    
+
     }
   },
   "title": "App.Metrics.Concurrency",
-  "version": "1.0.0-alpha"
+  "version": "1.0.0-beta1"
 }

@@ -1,5 +1,5 @@
 {
-  "authors": ["Allan Hardy"],
+  "authors": [ "Allan Hardy" ],
 
   "buildOptions": {
     "warningsAsErrors": true,
@@ -34,18 +34,18 @@
         "portable-net45+win8"
       ],
       "dependencies": {
-      
+
       }
     },
     "net461": {}
   },
 
   "packOptions": {
-    "tags": ["Metrics", "Monitoring", "Instrumentation", "Reporting", "Console"],
+    "tags": [ "Metrics", "Monitoring", "Instrumentation", "Reporting", "Console" ],
     "projectUrl": "https://github.com/alhardy/app-metrics",
     "licenseUrl": "https://github.com/alhardy/app-metrics/blob/master/LICENSE",
     "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png"
   },
   "title": "App.Metrics.Extensions.Reporting.Console",
-  "version": "1.0.0-alpha"
+  "version": "1.0.0-beta1"
 }

@@ -7,7 +7,7 @@
     "dotnet-test-xunit": "1.0.0-rc2-build10025",
     "BenchmarkDotNet": "0.10.0",
     "BenchmarkDotNet.Core": "0.10.0",
-    "App.Metrics": "1.0.0-alpha"
+    "App.Metrics": "1.0.0-*"
   },
   "frameworks": {
     "netcoreapp1.0": {
