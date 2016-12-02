@@ -1,6 +1,5 @@
 {
   "authors": [ "Allan Hardy" ],
-
   "buildOptions": {
     "warningsAsErrors": true,
     "nowarn": [
@@ -11,8 +10,7 @@
     "debugType": "portable"
   },
   "copyright": "Allan Hardy 2016",
-  "description": ".NET Standard Concurrency Utils. Original DNX Beta Project: https://github.com/etishor/ConcurrencyUtilities",
-
+  "description": "Provides useful structures for performing efficient concurrent operations. Original Project: https://github.com/etishor/ConcurrencyUtilities, including a port of Java's LongAdder and Striped64 classes",
   "frameworks": {
     "netstandard1.6": {
       "imports": [
@@ -38,6 +36,12 @@
       }
 
     }
+  },
+  "packOptions": {
+    "tags": [ "Concurrency", "Atomic" ],
+    "projectUrl": "https://github.com/alhardy/app-metrics",
+    "licenseUrl": "https://github.com/alhardy/app-metrics/blob/master/LICENSE",
+    "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png"
   },
   "title": "App.Metrics.Concurrency",
   "version": "1.0.0-beta1"
