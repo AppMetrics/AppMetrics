@@ -12,7 +12,7 @@ And if we wanted to track the number of emails sent by type for example:
 
 [!code-csharp[Main](../../src/samples/Counters.cs?start=16&end=24)]
 
-Which for example when using the JSON formatter would result in:
+Which for example when using the [JSON formatter](../intro.md#configuring-a-web-host) would result in something similar to:
 
 [!code-json[Main](../../src/samples/CounterExample.json)]    
 
@@ -29,5 +29,5 @@ We can solve this by resetting the counter each time we flush our metrics to a d
 
 ## Related Docs
 
-- [Getting Started](../intro.md)
+- [Getting Started](../intro.md#measuring-application-metrics)
 - [Configuration](../fundamentals/configuration.md)

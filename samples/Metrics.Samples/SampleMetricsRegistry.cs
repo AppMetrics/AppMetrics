@@ -149,7 +149,9 @@ namespace Metrics.Samples
             public static TimerOptions Requests = new TimerOptions
             {
                 Name = "Requests",
-                MeasurementUnit = Unit.Requests
+                MeasurementUnit = Unit.Requests,
+                DurationUnit = TimeUnit.Milliseconds,
+                RateUnit = TimeUnit.Milliseconds
             };
 
             public static TimerOptions SampleTimer = new TimerOptions

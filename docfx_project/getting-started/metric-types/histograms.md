@@ -12,7 +12,7 @@ Histograms also allow us to track the *min*, *max* and *last value* that has bee
 
 [!code-csharp[Main](../../src/samples/Histograms.cs?start=26&end=33)]
 
-Which for example when using the JSON formatter would result in:
+Which for example when using the [JSON formatter](../intro.md#configuring-a-web-host) would result in something similar to:
 
 [!code-json[Main](../../src/samples/HistogramExample.json)]    
 

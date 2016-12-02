@@ -12,12 +12,12 @@ And if we wanted to track the rate at which each HTTP status was occuring with a
 
 [!code-csharp[Main](../../src/samples/Meters.cs?start=14&end=22)]
 
-Which for example when using the JSON formatter would result in:
+Which for example when using the [JSON formatter](../intro.md#configuring-a-web-host) would result in something similar to:
 
 [!code-json[Main](../../src/samples/MeterExample.json)]    
 
 > [!NOTE]
-> When reporting counters we should keep in mind that they are a cumulative count, see notes in the [Counters](counters.md#reporting-counters) documentation.
+> When reporting metrics with counts we should keep in mind that they are a cumulative count, see notes in the [Counters](counters.md#reporting-counters) documentation.
 > A Meters values can also be reset like a [Counter](counters.md) as shown below.
 
 [!code-csharp[Main](../../src/samples/Meters.cs?start=26)]

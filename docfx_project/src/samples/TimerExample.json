@@ -1,0 +1,37 @@
+{
+    "context": "Application",
+    "timers": [
+        {
+            "activeSessions": 0,
+            "count": 20,
+            "durationUnit": "ms",
+            "histogram": {
+                "lastUserValue": "feature-1",
+                "lastValue": 308.5304,
+                "max": 637.3094,
+                "maxUserValue": "feature-1",
+                "mean": 269.0895,
+                "median": 246.0747,
+                "min": 135.0442,
+                "minUserValue": "feature-2",
+                "percentile75": 331.6821,
+                "percentile95": 424.2902,
+                "percentile98": 424.2902,
+                "percentile99": 637.3094,
+                "percentile999": 637.3095,
+                "sampleSize": 20,
+                "stdDev": 108.9519
+            },
+            "rate": {
+                "fifteenMinuteRate": 0.0018,
+                "fiveMinuteRate": 0.0001,
+                "meanRate": 0.0001,
+                "oneMinuteRate": 5.1076
+            },
+            "rateUnit": "ms",
+            "totalTime": 5595,
+            "name": "GET api/values",
+            "unit": "Requests"
+        }
+    ]
+}

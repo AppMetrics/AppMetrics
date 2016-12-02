@@ -8,7 +8,7 @@ Gauges are ideal to use for measured values such as current memory usage, cpu us
 
 [!code-csharp[Main](../../src/samples/Gauges.cs?start=3&end=11&highlight=9)]
 
-Which for example when using the JSON formatter would result in:
+Which for example when using the [JSON formatter](../intro.md#configuring-a-web-host) would result in something similar to:
 
 [!code-json[Main](../../src/samples/GaugeExample.json)]
 
@@ -26,6 +26,6 @@ Ratio Gauges allow you to measure a Gauge with a measurement which is the ratio 
 
 ## Related Docs
 
-- [Getting Started](../intro.md)
+- [Getting Started](../intro.md#measuring-application-metrics)
 - [Configuration](../fundamentals/configuration.md)
 
