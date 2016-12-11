@@ -13,7 +13,7 @@
 
   "dependencies": {
     "Microsoft.Extensions.Logging.Console": "1.1.0",
-    "App.Metrics": "1.0.0-beta1",
+    "App.Metrics": "1.0.0-beta2",
     "Microsoft.Extensions.DependencyInjection": "1.1.0",
     "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
     "Microsoft.Extensions.DependencyModel": "1.1.0",
@@ -47,5 +47,5 @@
     "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png"
   },
   "title": "App.Metrics.Extensions.Reporting.TextFile",
-  "version": "1.0.0-beta1"
+  "version": "1.0.0-beta2"
 }

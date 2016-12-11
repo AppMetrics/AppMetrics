@@ -1,5 +1,5 @@
 {
-  "authors": ["Allan Hardy"],
+  "authors": [ "Allan Hardy" ],
   "buildOptions": {
     "warningsAsErrors": true,
     "nowarn": [
@@ -25,10 +25,9 @@
     "System.Diagnostics.Process": "4.3.0",
     "System.Threading.Thread": "4.3.0",
     "System.Net.NameResolution": "4.3.0",
-    "App.Metrics.Concurrency": "1.0.0-beta1"
+    "App.Metrics.Concurrency": "1.0.0-beta2"
   },
-  "description":
-    "App Metrics is an open-source and cross-platform .NET library used to record metrics within an application. Abstracts away the underlaying repository of your Metrics for example InfluxDB, Graphite, Elasticsearch etc, by sampling and aggregating in memory and providing extensibility points to flush metrics to a repository. App Metrics provides various metric types to measure things such as the rate of requests, counting the number of user logins over time, measure the time taken to execute a database query, measure the amount of free memory and so on. Metrics types supported are Gauges, Counters, Meters, Histograms and Timers. Also provides a health checking system allowing you to monitor the health of your application through user defined checks.",
+  "description": "App Metrics is an open-source and cross-platform .NET library used to record metrics within an application. Abstracts away the underlaying repository of your Metrics for example InfluxDB, Graphite, Elasticsearch etc, by sampling and aggregating in memory and providing extensibility points to flush metrics to a repository. App Metrics provides various metric types to measure things such as the rate of requests, counting the number of user logins over time, measure the time taken to execute a database query, measure the amount of free memory and so on. Metrics types supported are Gauges, Counters, Meters, Histograms and Timers. Also provides a health checking system allowing you to monitor the health of your application through user defined checks.",
   "frameworks": {
     "netstandard1.6": {
       "imports": [
@@ -36,17 +35,17 @@
         "portable-net45+win8"
       ],
       "dependencies": {
-      
+
       }
     },
     "net461": {}
   },
   "packOptions": {
-    "tags": ["Metrics", "Monitoring", "Instrumentation"],
+    "tags": [ "Metrics", "Monitoring", "Instrumentation" ],
     "projectUrl": "https://github.com/alhardy/app-metrics",
     "licenseUrl": "https://github.com/alhardy/app-metrics/blob/master/LICENSE",
     "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png"
   },
   "title": "App.Metrics",
-  "version": "1.0.0-beta1"
+  "version": "1.0.0-beta2"
 }
