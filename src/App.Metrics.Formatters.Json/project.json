@@ -9,7 +9,7 @@
     "debugType": "portable"
   },
   "dependencies": {
-    "App.Metrics": "1.0.0-*",
+    "App.Metrics": "1.0.0-beta1",
     "Microsoft.DotNet.InternalAbstractions": "1.0.500-preview2-1-003177",
     "NETStandard.Library": "1.6.1",
     "Newtonsoft.Json": "9.0.2-beta1",
