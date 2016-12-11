@@ -42,9 +42,13 @@
 
   "packOptions": {
     "tags": [ "Metrics", "Monitoring", "Instrumentation", "Reporting", "Console" ],
-    "projectUrl": "https://github.com/alhardy/app-metrics",
-    "licenseUrl": "https://github.com/alhardy/app-metrics/blob/master/LICENSE",
-    "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png"
+    "projectUrl": "https://alhardy.github.io/app-metrics-docs/getting-started/reporting/index.html#console-reporter",
+    "licenseUrl": "https://github.com/alhardy/AppMetrics/blob/master/LICENSE",
+    "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png",
+    "repository": {
+      "type": "git",
+      "url": "git://github.com/alhardy/AppMetrics"
+    }
   },
   "title": "App.Metrics.Extensions.Reporting.Console",
   "version": "1.0.0-beta2"

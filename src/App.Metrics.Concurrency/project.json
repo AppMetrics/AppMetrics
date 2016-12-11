@@ -39,9 +39,13 @@
   },
   "packOptions": {
     "tags": [ "Concurrency", "Atomic" ],
-    "projectUrl": "https://github.com/alhardy/app-metrics",
-    "licenseUrl": "https://github.com/alhardy/app-metrics/blob/master/LICENSE",
-    "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png"
+    "projectUrl": "https://github.com/alhardy/AppMetrics",
+    "licenseUrl": "https://github.com/alhardy/AppMetrics/blob/master/LICENSE",
+    "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png",
+    "repository": {
+      "type": "git",
+      "url": "git://github.com/alhardy/AppMetrics"
+    }
   },
   "title": "App.Metrics.Concurrency",
   "version": "1.0.0-beta2"

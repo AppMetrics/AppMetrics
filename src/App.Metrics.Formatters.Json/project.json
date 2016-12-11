@@ -28,15 +28,17 @@
   "packOptions": {
     "releaseNotes": "",
     "tags": [
-      "app.metrics",
-      "json"
+      "Metrics",
+      "Monitoring",
+      "Instrumentation",
+      "JSON"
     ],
     "repository": {
       "type": "git",
-      "url": "git://github.com/alhardy/aspnet-metrics"
+      "url": "git://github.com/alhardy/AppMetrics"
     },
-    "projectUrl": "https://github.com/alhardy/aspnet-metrics",
-    "licenseUrl": "https://github.com/alhardy/aspnet-metrics/blob/master/LICENSE",
+    "projectUrl": "https://alhardy.github.io/app-metrics-docs/getting-started/intro.html#configuring-a-web-host",
+    "licenseUrl": "https://github.com/alhardy/AppMetrics/blob/master/LICENSE",
     "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png"
   },
   "version": "1.0.0-beta2"
