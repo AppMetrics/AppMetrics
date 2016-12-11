@@ -48,7 +48,8 @@ namespace App.Sample
             {
                 Context = Context,
                 Name = "System Non-Paged Memory",
-                MeasurementUnit = Unit.Bytes
+                MeasurementUnit = Unit.Bytes,
+                Tags = new MetricTags().With("reporter", "influxdb")
             };
 
             public static GaugeOptions ProcessPagedMemorySizeGauge = new GaugeOptions
@@ -56,6 +57,15 @@ namespace App.Sample
                 Context = Context,
                 Name = "PagedProcess Memory Size",
                 MeasurementUnit = Unit.Bytes,
+                Tags = new MetricTags().With("reporter", "influxdb")
+            };
+
+            public static GaugeOptions CpuUsageTotal = new GaugeOptions
+            {
+                Context = Context,
+                Name = "Process Total CPU Usage",
+                MeasurementUnit = Unit.Percent,
+                Tags = new MetricTags().With("reporter", "influxdb")
             };
 
             public static GaugeOptions SystemPagedMemorySizeGauge = new GaugeOptions
@@ -63,6 +73,7 @@ namespace App.Sample
                 Context = Context,
                 Name = "PagedSystem Memory Size",
                 MeasurementUnit = Unit.Bytes,
+                Tags = new MetricTags().With("reporter", "influxdb")
             };
 
             public static GaugeOptions ProcessPeekPagedMemorySizeGauge = new GaugeOptions
@@ -70,6 +81,7 @@ namespace App.Sample
                 Context = Context,
                 Name = "Process Peek Paged Memory Size",
                 MeasurementUnit = Unit.Bytes,
+                Tags = new MetricTags().With("reporter", "influxdb")
             };
 
             public static GaugeOptions ProcessPeekVirtualMemorySizeGauge = new GaugeOptions
@@ -77,27 +89,31 @@ namespace App.Sample
                 Context = Context,
                 Name = "Process Peek Paged Memory Size",
                 MeasurementUnit = Unit.Bytes,
+                Tags = new MetricTags().With("reporter", "influxdb")
             };
 
             public static GaugeOptions ProcessPeekWorkingSetSizeGauge = new GaugeOptions
             {
                 Context = Context,
                 Name = "Process Working Set",
-                MeasurementUnit = Unit.Bytes
+                MeasurementUnit = Unit.Bytes,
+                Tags = new MetricTags().With("reporter", "influxdb")
             };
 
             public static GaugeOptions ProcessPrivateMemorySizeGauge = new GaugeOptions
             {
                 Context = Context,
                 Name = "Process Private Memory Size",
-                MeasurementUnit = Unit.Bytes
+                MeasurementUnit = Unit.Bytes,
+                Tags = new MetricTags().With("reporter", "influxdb")
             };
 
             public static GaugeOptions ProcessVirtualMemorySizeGauge = new GaugeOptions
             {
                 Context = Context,
                 Name = "Process Virtual Memory Size",
-                MeasurementUnit = Unit.Bytes
+                MeasurementUnit = Unit.Bytes,
+                Tags = new MetricTags().With("reporter", "influxdb")
             };
         }
     }

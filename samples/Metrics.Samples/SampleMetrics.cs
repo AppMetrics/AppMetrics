@@ -83,7 +83,7 @@ namespace Metrics.Samples
 
                 _meter.Mark(); // signal a new request to the meter
 
-                _histogramOfData.Update(new Random().Next(5000), i.ToString()); // update the histogram with the input data
+                _histogramOfData.Update(new Random().Next(5000), "user-value-" + i); // update the histogram with the input data
 
                 var item = "Item " + new Random().Next(5);
                 _setCounter.Increment(item);

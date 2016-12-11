@@ -80,9 +80,9 @@ namespace App.Metrics.Extensions.Reporting.TextFile
             _stringReporter.ReportHealth(healthyChecks, degradedChecks, unhealthyChecks);
         }
 
-        public void ReportMetric<T>(string name, MetricValueSource<T> valueSource, MetricTags globalTags)
+        public void ReportMetric<T>(string name, MetricValueSource<T> valueSource)
         {
-            _stringReporter.ReportMetric(name, valueSource, globalTags);
+            _stringReporter.ReportMetric(name, valueSource);
         }
 
         public void StartMetricTypeReport(Type metricType)

@@ -32,10 +32,8 @@ namespace App.Metrics.Extensions.Middleware.Middleware
             if (Options.MetricsTextEndpointEnabled && Options.MetricsTextEndpoint.IsPresent() && Options.MetricsTextEndpoint == context.Request.Path)
             {
                 Logger.MiddlewareExecuting(GetType());
-
-                //DEVNOTE: MetricsTags.None as it's not very useful here are the moment, if filtering was provided via the url it could be useful
-                // this would also allow filtering when pulling metrics rather than pushing
-                await _reportGenerator.Generate(_stringReporter, Metrics, MetricTags.None, context.RequestAborted);
+                
+                await _reportGenerator.Generate(_stringReporter, Metrics, context.RequestAborted);
 
                 await WriteResponseAsync(context, _stringReporter.Result, "text/plain");
 

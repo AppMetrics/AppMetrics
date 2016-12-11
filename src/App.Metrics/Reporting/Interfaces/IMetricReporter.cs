@@ -22,7 +22,7 @@ namespace App.Metrics.Reporting.Interfaces
 
         void ReportHealth(IEnumerable<HealthCheck.Result> healthyChecks, IEnumerable<HealthCheck.Result> degradedChecks, IEnumerable<HealthCheck.Result> unhealthyChecks);
 
-        void ReportMetric<T>(string name, MetricValueSource<T> valueSource, MetricTags globalTags);
+        void ReportMetric<T>(string name, MetricValueSource<T> valueSource);
 
         void StartMetricTypeReport(Type metricType);
 

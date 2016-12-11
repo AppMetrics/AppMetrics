@@ -8,8 +8,6 @@ namespace App.Metrics.Reporting.Interfaces
 {
     public interface IReporterSettings
     {
-        MetricTags GlobalTags { get; set; }
-
         TimeSpan ReportInterval { get; }
     }
 }

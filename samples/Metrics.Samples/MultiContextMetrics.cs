@@ -38,7 +38,7 @@ namespace Metrics.Samples
 
         public void Run()
         {
-            using (var context = this._instanceTimer.NewContext())
+            using (_instanceTimer.NewContext())
             {
                 _instanceCounter.Increment();
             }
@@ -48,7 +48,7 @@ namespace Metrics.Samples
         {
             for (var i = 0; i < 5; i++)
             {
-                new MultiContextInstanceMetrics("Sample Instance " + i.ToString(), _metrics).Run();
+                new MultiContextInstanceMetrics("Sample Instance " + i, _metrics).Run();
             }
         }
     }

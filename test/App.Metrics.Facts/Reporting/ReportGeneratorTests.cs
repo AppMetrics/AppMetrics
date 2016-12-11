@@ -30,11 +30,10 @@ namespace App.Metrics.Facts.Reporting
             metricReporter.Setup(x => x.StartMetricTypeReport(typeof(EnvironmentInfo)));
             metricReporter.Setup(x => x.EndMetricTypeReport(typeof(EnvironmentInfo)));
             metricReporter.Setup(x => x.ReportEnvironment(It.IsAny<EnvironmentInfo>()));
-            var tags = new MetricTags().With("tag1", "value1");
             var token = CancellationToken.None;
             var filter = new DefaultMetricsFilter().WithEnvironmentInfo(false);
 
-            await _reportGenerator.Generate(metricReporter.Object, _metrics, filter, tags, token);
+            await _reportGenerator.Generate(metricReporter.Object, _metrics, filter, token);
 
             metricReporter.Verify(p => p.StartMetricTypeReport(typeof(EnvironmentInfo)), Times.Never);
             metricReporter.Verify(p => p.EndMetricTypeReport(typeof(EnvironmentInfo)), Times.Never);
@@ -48,11 +47,10 @@ namespace App.Metrics.Facts.Reporting
             metricReporter.Setup(x => x.StartMetricTypeReport(typeof(HealthStatus)));
             metricReporter.Setup(x => x.EndMetricTypeReport(typeof(HealthStatus)));
             metricReporter.Setup(x => x.ReportHealth(It.IsAny<IEnumerable<HealthCheck.Result>>(), It.IsAny<IEnumerable<HealthCheck.Result>>(), It.IsAny<IEnumerable<HealthCheck.Result>>()));
-            var tags = new MetricTags().With("tag1", "value1");
             var token = CancellationToken.None;
             var filter = new DefaultMetricsFilter().WithHealthChecks(false);
 
-            await _reportGenerator.Generate(metricReporter.Object, _metrics, filter, tags, token);
+            await _reportGenerator.Generate(metricReporter.Object, _metrics, filter, token);
 
             metricReporter.Verify(p => p.StartMetricTypeReport(typeof(HealthStatus)), Times.Never);
             metricReporter.Verify(p => p.EndMetricTypeReport(typeof(HealthStatus)), Times.Never);
@@ -67,10 +65,9 @@ namespace App.Metrics.Facts.Reporting
             metricReporter.Setup(x => x.StartMetricTypeReport(typeof(EnvironmentInfo)));
             metricReporter.Setup(x => x.EndMetricTypeReport(typeof(EnvironmentInfo)));
             metricReporter.Setup(x => x.ReportEnvironment(It.IsAny<EnvironmentInfo>()));
-            var tags = new MetricTags().With("tag1", "value1");
             var token = CancellationToken.None;
 
-            await _reportGenerator.Generate(metricReporter.Object, _metrics, tags, token);
+            await _reportGenerator.Generate(metricReporter.Object, _metrics, token);
 
             metricReporter.Verify(p => p.StartMetricTypeReport(typeof(EnvironmentInfo)), Times.Once);
             metricReporter.Verify(p => p.EndMetricTypeReport(typeof(EnvironmentInfo)), Times.Once);
@@ -84,10 +81,9 @@ namespace App.Metrics.Facts.Reporting
             metricReporter.Setup(x => x.StartMetricTypeReport(typeof(HealthStatus)));
             metricReporter.Setup(x => x.EndMetricTypeReport(typeof(HealthStatus)));
             metricReporter.Setup(x => x.ReportHealth(It.IsAny<IEnumerable<HealthCheck.Result>>(), It.IsAny<IEnumerable<HealthCheck.Result>>(), It.IsAny<IEnumerable<HealthCheck.Result>>()));
-            var tags = new MetricTags().With("tag1", "value1");
             var token = CancellationToken.None;
 
-            await _reportGenerator.Generate(metricReporter.Object, _metrics, tags, token);
+            await _reportGenerator.Generate(metricReporter.Object, _metrics, token);
 
             metricReporter.Verify(p => p.StartMetricTypeReport(typeof(HealthStatus)), Times.Once);
             metricReporter.Verify(p => p.EndMetricTypeReport(typeof(HealthStatus)), Times.Once);
@@ -101,10 +97,9 @@ namespace App.Metrics.Facts.Reporting
         {
             var metricReporter = new Mock<IMetricReporter>();
             metricReporter.Setup(x => x.StartMetricTypeReport(It.IsAny<Type>()));
-            var tags = new MetricTags().With("tag1", "value1");
             var token = CancellationToken.None;
 
-            await _reportGenerator.Generate(metricReporter.Object, _metrics, tags, token);
+            await _reportGenerator.Generate(metricReporter.Object, _metrics, token);
 
             metricReporter.Verify(p => p.StartMetricTypeReport(typeof(CounterValueSource)), Times.Once);
             metricReporter.Verify(p => p.StartMetricTypeReport(typeof(MeterValueSource)), Times.Once);
@@ -119,10 +114,9 @@ namespace App.Metrics.Facts.Reporting
             var metricReporter = new Mock<IMetricReporter>();
             metricReporter.Setup(x => x.StartReport(It.IsAny<IMetrics>()));
             metricReporter.Setup(x => x.EndReport(It.IsAny<IMetrics>()));
-            var tags = new MetricTags().With("tag1", "value1");
             var token = CancellationToken.None;
 
-            await _reportGenerator.Generate(metricReporter.Object, _metrics, tags, token);
+            await _reportGenerator.Generate(metricReporter.Object, _metrics, token);
 
             metricReporter.Verify(p => p.StartReport(It.IsAny<IMetrics>()), Times.Once);
             metricReporter.Verify(p => p.EndReport(It.IsAny<IMetrics>()), Times.Once);

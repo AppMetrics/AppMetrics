@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Utils;
@@ -10,21 +11,27 @@ namespace App.Metrics
 {
     //TODO: Review this and write unit tests for equality
 
-    //TODO: Review this and write unit tests for equality
-
     /// <summary>
     ///     Collection of tags that can be attached to a metric.
     /// </summary>
     public struct MetricTags : IHideObjectMembers
     {
         public static readonly Dictionary<string, string> None = new Dictionary<string, string>();
-        private static readonly Dictionary<string, string> Empty = new Dictionary<string, string>();
 
-        private Dictionary<string, string> _tags;
+        private static readonly Dictionary<string, string> Empty = new Dictionary<string, string>();
+        private ConcurrentDictionary<string, string> _tags;
 
         public MetricTags(Dictionary<string, string> tags)
         {
-            _tags = tags ?? new Dictionary<string, string>();
+            _tags = new ConcurrentDictionary<string, string>();
+
+            foreach (var tag in tags)
+            {
+                if (!_tags.ContainsKey(tag.Key))
+                {
+                    _tags.TryAdd(tag.Key, tag.Value);
+                }
+            }            
         }
 
         public static bool operator ==(MetricTags left, MetricTags right)
@@ -51,52 +58,63 @@ namespace App.Metrics
 
             var tags = (MetricTags)obj;
 
+            if (_tags == null)
+            {
+                return false;
+            }
+
             return tags.ToDictionary().OrderBy(kvp => kvp.Key)
                 .SequenceEqual(_tags.OrderBy(kvp => kvp.Key));
         }
 
         public override int GetHashCode()
         {
-            return _tags?.GetHashCode() ?? 0;
+            return ToDictionary()?.GetHashCode() ?? 0;
         }
 
         public bool Equals(MetricTags other)
         {
-            return Equals(_tags, other._tags);
+            return Equals(_tags.ToDictionary(t => t.Key, t => t.Value), other.ToDictionary());
         }
 
         public Dictionary<string, string> ToDictionary()
         {
-            return _tags ?? Empty;
+            return _tags != null ? _tags.ToDictionary(t => t.Key, t => t.Value) : Empty;
         }
 
         public MetricTags With(string tag, string value)
         {
             if (_tags == null)
             {
-                _tags = new Dictionary<string, string>();
+                _tags = new ConcurrentDictionary<string, string>();
             }
 
-            _tags.Add(tag, value);
-            return _tags;
+            if (!_tags.ContainsKey(tag))
+            {
+                _tags.TryAdd(tag, value);
+            }
+
+            return _tags.ToDictionary(t => t.Key, t => t.Value);
         }
 
         public MetricTags With(Dictionary<string, string> tags)
         {
             if (_tags == null)
             {
-                _tags = new Dictionary<string, string>();
+                _tags = new ConcurrentDictionary<string, string>(tags);
             }
-
-            foreach (var tag in tags)
+            else
             {
-                if (!_tags.ContainsKey(tag.Key))
+                foreach (var tag in tags)
                 {
-                    _tags.Add(tag.Key, tag.Value);
+                    if (!_tags.ContainsKey(tag.Key))
+                    {
+                        _tags.TryAdd(tag.Key, tag.Value);
+                    }
                 }
             }
 
-            return _tags;
+            return _tags.ToDictionary(t => t.Key, t => t.Value);
         }
     }
 }

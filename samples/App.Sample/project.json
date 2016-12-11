@@ -6,6 +6,7 @@
   "dependencies": {
     "App.Metrics": "1.0.0-*",
     "App.Metrics.Extensions.Reporting.Console": "1.0.0-*",
+    "App.Metrics.Extensions.Reporting.InfluxDB": "1.0.0-alpha1",
     "App.Metrics.Extensions.Reporting.TextFile": "1.0.0-*",
     "HealthCheck.Samples": "1.0.0-*",
     "Metrics.Samples": "1.0.0-*",
@@ -22,7 +23,6 @@
     "Serilog.Extensions.Logging.File": "1.0.0",
     "Serilog.Sinks.Console": "2.2.0-dev-00719",
     "System.Linq": "4.3.0"
-  
   },
   "frameworks": {
     "netcoreapp1.1": {

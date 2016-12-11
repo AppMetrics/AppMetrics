@@ -1,8 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using App.Metrics.Data;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Internal;
 using FluentAssertions;
 using Xunit;
 
@@ -15,6 +13,23 @@ namespace App.Metrics.Facts.Core
         public MetricsFilteringTests(MetricsWithSamplesFixture fixture)
         {
             _metrics = fixture.Metrics;
+        }
+
+        [Fact]
+        public async Task can_filter_metrics_by_context()
+        {
+            var filter = new DefaultMetricsFilter().WhereMetricName(name => name == "test_gauge");
+            var currentData = await _metrics.Advanced.Data.ReadDataAsync(filter);
+            var context = currentData.Contexts.Single();
+
+            var gaugeValue = context.Gauges.FirstOrDefault();
+
+            gaugeValue.Should().NotBeNull();
+
+            Assert.Null(context.Counters.FirstOrDefault());
+            Assert.Null(context.Meters.FirstOrDefault());
+            Assert.Null(context.Histograms.FirstOrDefault());
+            Assert.Null(context.Timers.FirstOrDefault());
         }
 
         [Fact]
@@ -35,36 +50,19 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public async Task can_filter_metrics_by_meters()
+        public async Task can_filter_metrics_by_gauge()
         {
-            var filter = new DefaultMetricsFilter().WhereType(MetricType.Meter);
+            var filter = new DefaultMetricsFilter().WhereType(MetricType.Gauge);
             var currentData = await _metrics.Advanced.Data.ReadDataAsync(filter);
             var context = currentData.Contexts.Single();
 
-            var meterValue = context.Meters.Single();
-            meterValue.Name.Should().Be("test_meter");
-            meterValue.Value.Count.Should().Be(1);
+            var gaugeValue = context.Gauges.Single();
+            gaugeValue.Name.Should().Be("test_gauge");
+            gaugeValue.Value.Should().Be(8);
 
             Assert.Null(context.Counters.FirstOrDefault());
-            Assert.Null(context.Gauges.FirstOrDefault());
             Assert.Null(context.Histograms.FirstOrDefault());
             Assert.Null(context.Timers.FirstOrDefault());
-        }
-
-        [Fact]
-        public async Task can_filter_metrics_by_timers()
-        {
-            var filter = new DefaultMetricsFilter().WhereType(MetricType.Timer);
-            var currentData = await _metrics.Advanced.Data.ReadDataAsync(filter);
-            var context = currentData.Contexts.Single();
-
-            var timerValue = context.Timers.Single();
-            timerValue.Name.Should().Be("test_timer");
-            timerValue.Value.TotalTime.Should().Be(10);
-
-            Assert.Null(context.Counters.FirstOrDefault());
-            Assert.Null(context.Gauges.FirstOrDefault());
-            Assert.Null(context.Histograms.FirstOrDefault());
             Assert.Null(context.Meters.FirstOrDefault());
         }
 
@@ -86,53 +84,18 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public async Task can_filter_metrics_by_gauge()
+        public async Task can_filter_metrics_by_meters()
         {
-            var filter = new DefaultMetricsFilter().WhereType(MetricType.Gauge);
+            var filter = new DefaultMetricsFilter().WhereType(MetricType.Meter);
             var currentData = await _metrics.Advanced.Data.ReadDataAsync(filter);
             var context = currentData.Contexts.Single();
 
-            var gaugeValue = context.Gauges.Single();
-            gaugeValue.Name.Should().Be("test_gauge");
-            gaugeValue.Value.Should().Be(8);
-
-            Assert.Null(context.Counters.FirstOrDefault());
-            Assert.Null(context.Histograms.FirstOrDefault());
-            Assert.Null(context.Timers.FirstOrDefault());
-            Assert.Null(context.Meters.FirstOrDefault());
-        }
-
-        [Fact]
-        public async Task can_filter_metrics_by_tags()
-        {
-            var filter = new DefaultMetricsFilter().WhereMetricTaggedWith("tag1", "tag2");
-            var currentData = await _metrics.Advanced.Data.ReadDataAsync(filter);
-            var context = currentData.Contexts.Single();
-
-            var counterValue = context.Counters.Single();
             var meterValue = context.Meters.Single();
-
-            counterValue.Tags.ToDictionary().Should().ContainKey("tag1");
-            meterValue.Tags.ToDictionary().Should().ContainKey("tag2");
-
-            Assert.Null(context.Gauges.FirstOrDefault());
-            Assert.Null(context.Histograms.FirstOrDefault());
-            Assert.Null(context.Timers.FirstOrDefault());
-        }
-
-        [Fact]
-        public async Task can_filter_metrics_by_context()
-        {
-            var filter = new DefaultMetricsFilter().WhereMetricName(name => name == "test_gauge");
-            var currentData = await _metrics.Advanced.Data.ReadDataAsync(filter);
-            var context = currentData.Contexts.Single();
-
-            var gaugeValue = context.Gauges.FirstOrDefault();
-
-            gaugeValue.Should().NotBeNull();
+            meterValue.Name.Should().Be("test_meter");
+            meterValue.Value.Count.Should().Be(1);
 
             Assert.Null(context.Counters.FirstOrDefault());
-            Assert.Null(context.Meters.FirstOrDefault());
+            Assert.Null(context.Gauges.FirstOrDefault());
             Assert.Null(context.Histograms.FirstOrDefault());
             Assert.Null(context.Timers.FirstOrDefault());
         }
@@ -155,6 +118,59 @@ namespace App.Metrics.Facts.Core
             meterValue.Should().NotBeNull();
             histogramValue.Should().NotBeNull();
             timerValue.Should().NotBeNull();
+        }
+
+        [Fact]
+        public async Task can_filter_metrics_by_tags()
+        {
+            var filter = new DefaultMetricsFilter().WhereMetricTaggedWithKeyValue(new TagKeyValueFilter { { "tag1", "value1" } });
+            var currentData = await _metrics.Advanced.Data.ReadDataAsync(filter);
+            var context = currentData.Contexts.Single();
+
+            var counterValue = context.Counters.Single();
+
+            counterValue.Tags.ToDictionary().Should().ContainKey("tag1");
+            counterValue.Tags.ToDictionary().Should().ContainValue("value1");
+
+            Assert.Null(context.Gauges.FirstOrDefault());
+            Assert.Null(context.Meters.FirstOrDefault());
+            Assert.Null(context.Histograms.FirstOrDefault());
+            Assert.Null(context.Timers.FirstOrDefault());
+        }
+
+        [Fact]
+        public async Task can_filter_metrics_by_tags_keys()
+        {
+            var filter = new DefaultMetricsFilter().WhereMetricTaggedWithKey("tag1", "tag2");
+            var currentData = await _metrics.Advanced.Data.ReadDataAsync(filter);
+            var context = currentData.Contexts.Single();
+
+            var counterValue = context.Counters.Single();
+            var meterValue = context.Meters.Single();
+
+            counterValue.Tags.ToDictionary().Should().ContainKey("tag1");
+            meterValue.Tags.ToDictionary().Should().ContainKey("tag2");
+
+            Assert.Null(context.Gauges.FirstOrDefault());
+            Assert.Null(context.Histograms.FirstOrDefault());
+            Assert.Null(context.Timers.FirstOrDefault());
+        }
+
+        [Fact]
+        public async Task can_filter_metrics_by_timers()
+        {
+            var filter = new DefaultMetricsFilter().WhereType(MetricType.Timer);
+            var currentData = await _metrics.Advanced.Data.ReadDataAsync(filter);
+            var context = currentData.Contexts.Single();
+
+            var timerValue = context.Timers.Single();
+            timerValue.Name.Should().Be("test_timer");
+            timerValue.Value.TotalTime.Should().Be(10);
+
+            Assert.Null(context.Counters.FirstOrDefault());
+            Assert.Null(context.Gauges.FirstOrDefault());
+            Assert.Null(context.Histograms.FirstOrDefault());
+            Assert.Null(context.Meters.FirstOrDefault());
         }
     }
 }

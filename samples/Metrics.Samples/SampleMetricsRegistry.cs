@@ -1,5 +1,4 @@
 ﻿using App.Metrics;
-using App.Metrics.Core;
 using App.Metrics.Core.Options;
 
 namespace Metrics.Samples
@@ -52,7 +51,7 @@ namespace Metrics.Samples
 
         public static class Counters
         {
-            private static readonly MetricTags Tags = new MetricTags().With("filter-tag2", "value2");
+            private static readonly MetricTags Tags = new MetricTags().With("reporter", "influxdb");
 
             public static CounterOptions CommandCounter = new CounterOptions
             {
@@ -118,13 +117,21 @@ namespace Metrics.Samples
 
             public static HistogramOptions ResultsExample = new HistogramOptions
             {
-                Name = "ResultExample",
-                MeasurementUnit = Unit.Items
+                Name = "Results Example",
+                MeasurementUnit = Unit.Items,
+                Tags = new MetricTags().With("reporter", "influxdb")
             };
         }
 
         public static class Meters
         {
+            public static MeterOptions CommandMeter = new MeterOptions
+            {
+                Name = "Command Meter",
+                MeasurementUnit = Unit.Items,
+                Tags = new MetricTags().With("reporter", "influxdb")
+            };
+
             public static MeterOptions Errors = new MeterOptions
             {
                 Name = "Errors",
@@ -140,7 +147,7 @@ namespace Metrics.Samples
             public static MeterOptions SetMeter = new MeterOptions
             {
                 Name = "Set Meter",
-                MeasurementUnit = Unit.Items
+                MeasurementUnit = Unit.Items,
             };
         }
 
@@ -151,7 +158,8 @@ namespace Metrics.Samples
                 Name = "Requests",
                 MeasurementUnit = Unit.Requests,
                 DurationUnit = TimeUnit.Milliseconds,
-                RateUnit = TimeUnit.Milliseconds
+                RateUnit = TimeUnit.Milliseconds,                
+                Tags = new MetricTags().With("reporter", "influxdb")
             };
 
             public static TimerOptions SampleTimer = new TimerOptions

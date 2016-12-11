@@ -61,29 +61,28 @@ namespace App.Metrics.Reporting.Internal
             }
 
             List<Exception> exceptions = null;
+            var reportTasks = new List<Task>();
 
             foreach (var metricReporter in _metricReporters)
             {
-                try
-                {
-                    var logger = _loggerFactory.CreateLogger(metricReporter.Value.GetType());
+                var logger = _loggerFactory.CreateLogger(metricReporter.Value.GetType());
 
-                    var provider = _providers[metricReporter.Key];
-                    var settings = provider.Settings;
+                var provider = _providers[metricReporter.Key];
+                var settings = provider.Settings;
 
-                    logger.ReportRunning(metricReporter.Value);
+                logger.ReportRunning(metricReporter.Value);
 
-                    await ScheduleReport(context, token, metricReporter, logger, provider, settings);
-                }
-                catch (Exception ex)
-                {
-                    if (exceptions == null)
-                    {
-                        exceptions = new List<Exception>();
-                    }
+                reportTasks.Add(ScheduleReport(context, token, metricReporter, logger, provider, settings).WithAggregateException());               
+            }
 
-                    exceptions.Add(ex);
-                }
+            try
+            {
+                await Task.WhenAll(reportTasks);
+            }
+            catch (Exception ex)
+            {
+                //TODO: AH - confirm exception handlling and log
+                exceptions = new List<Exception> { ex };
             }
 
             if (exceptions != null && exceptions.Count > 0)
@@ -117,8 +116,7 @@ namespace App.Metrics.Reporting.Internal
 
                     logger.ReportedStarted(metricReporter.Value);
 
-                    await _reportGenerator.Generate(metricReporter.Value, context, provider.Filter,
-                        settings.GlobalTags, token);
+                    await _reportGenerator.Generate(metricReporter.Value, context, provider.Filter, token);
 
                     logger.ReportRan(metricReporter.Value, startTimestamp);
                 },

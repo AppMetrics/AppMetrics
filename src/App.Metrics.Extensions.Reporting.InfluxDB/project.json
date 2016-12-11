@@ -23,9 +23,10 @@
     "System.Collections.Specialized": "4.3.0",
     "System.Diagnostics.Process": "4.3.0",
     "System.Threading.Thread": "4.3.0",
-    "Microsoft.DotNet.InternalAbstractions": "1.0.500-preview2-1-003177"
+    "Microsoft.DotNet.InternalAbstractions": "1.0.500-preview2-1-003177",
+    "Polly": "4.3.0"
   },
-  "description": "Provides text file reporting capability to App Metrics",
+  "description": "Provides InfluxDB reporting capability to App Metrics",
 
   "frameworks": {
     "netstandard1.6": {
@@ -41,11 +42,11 @@
   },
 
   "packOptions": {
-    "tags": [ "Metrics", "Monitoring", "Instrumentation", "Reporting", "TextFile" ],
+    "tags": [ "Metrics", "Monitoring", "Instrumentation", "Reporting", "InfluxDB" ],
     "projectUrl": "https://github.com/alhardy/app-metrics",
     "licenseUrl": "https://github.com/alhardy/app-metrics/blob/master/LICENSE",
     "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png"
   },
-  "title": "App.Metrics.Extensions.Reporting.TextFile",
-  "version": "1.0.0-beta1"
+  "title": "App.Metrics.Extensions.Reporting.InfluxDB",
+  "version": "1.0.0-alpha1"
 }

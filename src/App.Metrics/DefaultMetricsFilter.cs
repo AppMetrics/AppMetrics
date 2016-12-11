@@ -20,6 +20,7 @@ namespace App.Metrics
         private Predicate<string> _context;
         private Predicate<string> _name;
         private HashSet<string> _tagKeys;
+        private Dictionary<string, string> _tags;
         private HashSet<MetricType> _types;
 
         public DefaultMetricsFilter()
@@ -176,9 +177,19 @@ namespace App.Metrics
         ///     Filters metrics where the metrics contain the specified tags keys
         /// </summary>
         /// <param name="tagKeys">The metrics tag keys to filter on.</param>
-        public DefaultMetricsFilter WhereMetricTaggedWith(params string[] tagKeys)
+        public DefaultMetricsFilter WhereMetricTaggedWithKey(params string[] tagKeys)
         {
             _tagKeys = new HashSet<string>(tagKeys);
+            return this;
+        }
+
+        /// <summary>
+        ///     Filters metrics where the metrics contain the specified tags key/value pair
+        /// </summary>
+        /// <param name="tags">The metrics tag key/values to filter on.</param>
+        public DefaultMetricsFilter WhereMetricTaggedWithKeyValue(TagKeyValueFilter tags)
+        {
+            _tags = tags;
             return this;
         }
 
@@ -212,8 +223,25 @@ namespace App.Metrics
 
         private bool IsTagMatch(MetricTags sourceTags)
         {
-            var keys = sourceTags.ToDictionary().Keys;
-            return _tagKeys == null || Array.Exists(_tagKeys.ToArray(), t => keys.Any(m => m == t));
+            var isMatch = false;
+            var tags = sourceTags.ToDictionary();
+
+            if ((_tagKeys == null || !_tagKeys.Any()) && (_tags == null || !_tags.Any()))
+            {
+                return true;
+            }
+
+            if (_tagKeys != null && Array.Exists(_tagKeys.ToArray(), t => tags.Keys.Any(m => m == t)))
+            {
+                isMatch = true;
+            }
+
+            if (_tags != null && Array.Exists(_tags.ToArray(), t => tags.Any(m => m.Key == t.Key && m.Value == t.Value)))
+            {
+                isMatch = true;
+            }
+
+            return isMatch;
         }
     }
 }

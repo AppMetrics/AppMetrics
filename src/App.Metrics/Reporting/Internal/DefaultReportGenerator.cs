@@ -17,16 +17,14 @@ namespace App.Metrics.Reporting.Internal
     {
         internal Task Generate(IMetricReporter reporter,
             IMetrics metrics,
-            MetricTags globalTags,
             CancellationToken token)
         {
-            return Generate(reporter, metrics, metrics.Advanced.GlobalFilter, globalTags, token);
+            return Generate(reporter, metrics, metrics.Advanced.GlobalFilter, token);
         }
 
         internal async Task Generate(IMetricReporter reporter,
             IMetrics metrics,
             IMetricsFilter reporterMetricsFilter,
-            MetricTags globalTags,
             CancellationToken token)
         {
             if (reporterMetricsFilter == default(IMetricsFilter))
@@ -50,19 +48,19 @@ namespace App.Metrics.Reporting.Internal
             foreach (var contextValueSource in data.Contexts)
             {
                 ReportMetricType(reporter, contextValueSource.Counters,
-                    c => { reporter.ReportMetric($"{contextValueSource.Context}", c, globalTags); }, token);
+                    c => { reporter.ReportMetric($"{contextValueSource.Context}", c); }, token);
 
                 ReportMetricType(reporter, contextValueSource.Gauges,
-                    g => { reporter.ReportMetric($"{contextValueSource.Context}", g, globalTags); }, token);
+                    g => { reporter.ReportMetric($"{contextValueSource.Context}", g); }, token);
 
                 ReportMetricType(reporter, contextValueSource.Histograms,
-                    h => { reporter.ReportMetric($"{contextValueSource.Context}", h, globalTags); }, token);
+                    h => { reporter.ReportMetric($"{contextValueSource.Context}", h); }, token);
 
                 ReportMetricType(reporter, contextValueSource.Meters,
-                    m => { reporter.ReportMetric($"{contextValueSource.Context}", m, globalTags); }, token);
+                    m => { reporter.ReportMetric($"{contextValueSource.Context}", m); }, token);
 
                 ReportMetricType(reporter, contextValueSource.Timers,
-                    t => { reporter.ReportMetric($"{contextValueSource.Context}", t, globalTags); }, token);
+                    t => { reporter.ReportMetric($"{contextValueSource.Context}", t); }, token);
             }
 
             if (reporterMetricsFilter.ReportHealthChecks)

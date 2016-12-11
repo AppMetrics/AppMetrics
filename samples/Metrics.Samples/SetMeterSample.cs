@@ -6,6 +6,7 @@ namespace Metrics.Samples
     public class SetMeterSample
     {
         private readonly IMeter _errorMeter;
+        private readonly IMeter _commandMeter;
         private static IMetrics _metrics;
 
         public SetMeterSample(IMetrics metrics)
@@ -13,6 +14,7 @@ namespace Metrics.Samples
             _metrics = metrics;
 
             _errorMeter = _metrics.Advanced.Meter(SampleMetricsRegistry.Meters.Errors);
+            _commandMeter = _metrics.Advanced.Meter(SampleMetricsRegistry.Meters.CommandMeter);
         }
 
         public void Process(Command command)
@@ -42,6 +44,7 @@ namespace Metrics.Samples
 
         private void ActualCommandProcessing(Command command)
         {
+            _commandMeter.Mark(command.GetType().Name);
         }
 
         public interface Command

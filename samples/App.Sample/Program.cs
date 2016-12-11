@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Core;
 using App.Metrics.Extensions.Reporting.Console;
+using App.Metrics.Extensions.Reporting.InfluxDB;
 using App.Metrics.Extensions.Reporting.TextFile;
 using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Scheduling;
@@ -22,6 +24,9 @@ namespace App.Sample
     {
         public static void Main()
         {
+            var cpuUsage = new CpuUsage();
+            cpuUsage.Start();
+
             IServiceCollection serviceCollection = new ServiceCollection();
             ConfigureServices(serviceCollection);
             ConfigureMetrics(serviceCollection);
@@ -43,6 +48,7 @@ namespace App.Sample
             var task = scheduler.Interval(
                 TimeSpan.FromMilliseconds(300), () =>
                 {
+
                     setCounterSample.RunSomeRequests();
                     setMeterSample.RunSomeRequests();
                     userValueHistogramSample.RunSomeRequests();
@@ -55,6 +61,11 @@ namespace App.Sample
                     application.Metrics.Gauge(AppMetricsRegistry.Gauges.ParenthesisGauge, () => 1);
                     application.Metrics.Gauge(AppMetricsRegistry.Gauges.GaugeWithNoValue, () => double.NaN);
 
+                    application.Metrics.Gauge(AppMetricsRegistry.ProcessMetrics.CpuUsageTotal, () =>
+                    {
+                        cpuUsage.CallCpu();
+                        return cpuUsage.CpuUsageTotal;
+                    });
                     application.Metrics.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPagedMemorySizeGauge, () => process.PagedMemorySize64);
                     application.Metrics.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPeekPagedMemorySizeGauge, () => process.PeakPagedMemorySize64);
                     application.Metrics.Gauge(AppMetricsRegistry.ProcessMetrics.ProcessPeekVirtualMemorySizeGauge,
@@ -77,9 +88,9 @@ namespace App.Sample
         {
             services
                 .AddMetrics(options =>
-                {                    
+                {
                     options.ReportingEnabled = true;
-                    options.GlobalTags.Add("env", "uat");
+                    options.GlobalTags.Add("env", "stage");
                 })
                 .AddHealthChecks(factory =>
                 {
@@ -95,18 +106,13 @@ namespace App.Sample
                 })
                 .AddReporting(factory =>
                 {
-                    var globalTags = new MetricTags().With("env", "stage");
-
                     var filter = new DefaultMetricsFilter()
-                        .WhereType(MetricType.Counter)
-                        .WhereMetricTaggedWith("filter-tag1", "filter-tag2")
                         .WithHealthChecks(true)
                         .WithEnvironmentInfo(true);
 
                     factory.AddConsole(new ConsoleReporterSettings
                     {
-                        ReportInterval = TimeSpan.FromSeconds(10),
-                        GlobalTags = globalTags
+                        ReportInterval = TimeSpan.FromSeconds(5),
                     }, filter);
 
                     factory.AddTextFile(new TextFileReporterSettings
@@ -114,6 +120,19 @@ namespace App.Sample
                         ReportInterval = TimeSpan.FromSeconds(30),
                         FileName = @"C:\metrics\sample.txt"
                     });
+
+                    var influxFilter = new DefaultMetricsFilter()
+                        //.WhereType(MetricType.Counter)                        
+                        .WhereMetricTaggedWithKeyValue(new TagKeyValueFilter { {"reporter", "influxdb"} })
+                        .WithHealthChecks(true)
+                        .WithEnvironmentInfo(true);
+
+                    factory.AddInfluxDb(new InfluxDbReporterSettings
+                    {
+                        BaseAddress = "http://127.0.0.1:8086",
+                        Database = "appmetrics",
+                        ReportInterval = TimeSpan.FromSeconds(5)                        
+                    }, influxFilter);
                 });
         }
 
