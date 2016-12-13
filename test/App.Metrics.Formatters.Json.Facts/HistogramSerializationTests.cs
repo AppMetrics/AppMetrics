@@ -49,7 +49,8 @@ namespace App.Metrics.Formatters.Json.Facts
             result.Value.Percentile99.Should().Be(_histogram.Value.Percentile99);
             result.Value.Percentile999.Should().Be(_histogram.Value.Percentile999);
             result.Value.SampleSize.Should().Be(_histogram.Value.SampleSize);
-            result.Tags.Should().Be(_histogram.Tags);
+            result.Tags.Should().ContainKeys(_histogram.Tags.Select(t => t.Key));
+            result.Tags.Should().ContainValues(_histogram.Tags.Select(t => t.Value));
         }
 
         [Fact]

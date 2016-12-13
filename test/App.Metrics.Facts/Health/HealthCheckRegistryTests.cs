@@ -26,7 +26,7 @@ namespace App.Metrics.Facts.Health
                 var clock = new TestClock();
                 var options = new AppMetricsOptions();
                 Func<string, IMetricContextRegistry> newContextRegistry = name => new DefaultMetricContextRegistry(name);
-                var registry = new DefaultMetricsRegistry(LoggerFactory, options, clock, new EnvironmentInfoProvider(LoggerFactory),
+                var registry = new DefaultMetricsRegistry(LoggerFactory, options, clock, new EnvironmentInfoProvider(),
                     newContextRegistry);
                 var advancedContext = new DefaultAdvancedMetrics(metricsLogger, options, clock, new DefaultMetricsFilter(), registry,
                     healthCheckFactory);

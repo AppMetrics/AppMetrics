@@ -35,7 +35,8 @@ namespace App.Metrics.Formatters.Json.Facts
             result.Unit.Should().Be(_counter.Unit);
             result.Value.Count.Should().Be(_counter.Value.Count);
             result.Value.Items.Should().BeEquivalentTo(_counter.Value.Items);
-            result.Tags.Should().Be(_counter.Tags);
+            result.Tags.Should().ContainKeys(_counter.Tags.Select(t => t.Key));
+            result.Tags.Should().ContainValues(_counter.Tags.Select(t => t.Value));
         }
 
         [Fact]

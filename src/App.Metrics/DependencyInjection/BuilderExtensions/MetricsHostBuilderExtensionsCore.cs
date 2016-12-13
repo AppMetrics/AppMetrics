@@ -37,7 +37,11 @@ namespace Microsoft.Extensions.DependencyInjection
         internal static void AddCoreServices(this IMetricsHostBuilder builder)
         {
             builder.Services.TryAddTransient<Func<string, IMetricContextRegistry>>(
-                provider => { return context => new DefaultMetricContextRegistry(context); });
+                provider =>
+                {
+                    var globalTags = provider.GetRequiredService<AppMetricsOptions>().GlobalTags;
+                    return context => new DefaultMetricContextRegistry(context, new GlobalMetricTags(globalTags));
+                });
             builder.Services.TryAddSingleton<IClock, StopwatchClock>();
             builder.Services.TryAddSingleton<IMetricsFilter, DefaultMetricsFilter>();
             builder.Services.TryAddSingleton<EnvironmentInfoProvider, EnvironmentInfoProvider>();

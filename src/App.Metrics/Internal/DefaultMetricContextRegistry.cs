@@ -22,6 +22,8 @@ namespace App.Metrics.Internal
         private readonly MetricMetaCatalog<IMetricValueProvider<double>, GaugeValueSource, double> _gauges =
             new MetricMetaCatalog<IMetricValueProvider<double>, GaugeValueSource, double>();
 
+        private readonly GlobalMetricTags _globalTags;
+
         private readonly MetricMetaCatalog<IHistogram, HistogramValueSource, HistogramValue> _histograms =
             new MetricMetaCatalog<IHistogram, HistogramValueSource, HistogramValue>();
 
@@ -32,12 +34,23 @@ namespace App.Metrics.Internal
             new MetricMetaCatalog<ITimer, TimerValueSource, TimerValue>();
 
         public DefaultMetricContextRegistry(string context)
+            : this(context, new GlobalMetricTags())
         {
+        }
+
+        public DefaultMetricContextRegistry(string context, GlobalMetricTags globalTags)
+        {
+            if (globalTags == null)
+            {
+                throw new ArgumentNullException(nameof(globalTags));
+            }
+
             if (context.IsMissing())
             {
                 throw new ArgumentException("Registry Context cannot be null or empty", nameof(context));
             }
 
+            _globalTags = globalTags;
             Context = context;
 
             DataProvider = new DefaultMetricRegistryManager(
@@ -66,18 +79,18 @@ namespace App.Metrics.Internal
             return _counters.GetOrAdd(options.Name, () =>
             {
                 var counter = builder();
-
-                return Tuple.Create((ICounter)counter,
-                    new CounterValueSource(options.Name, counter, options.MeasurementUnit, options.Tags));
+                var valueSource = new CounterValueSource(options.Name, counter, options.MeasurementUnit, AllTags(options.Tags));
+                return Tuple.Create((ICounter)counter, valueSource);
             });
         }
 
-        public void Gauge(GaugeOptions gaugeOptions, Func<IMetricValueProvider<double>> valueProvider)
+        public void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider)
         {
-            _gauges.GetOrAdd(gaugeOptions.Name, () =>
+            _gauges.GetOrAdd(options.Name, () =>
             {
                 var gauge = valueProvider();
-                return Tuple.Create(gauge, new GaugeValueSource(gaugeOptions.Name, gauge, gaugeOptions.MeasurementUnit, gaugeOptions.Tags));
+                var valueSource = new GaugeValueSource(options.Name, gauge, options.MeasurementUnit, AllTags(options.Tags));
+                return Tuple.Create(gauge, valueSource);
             });
         }
 
@@ -86,7 +99,8 @@ namespace App.Metrics.Internal
             return _histograms.GetOrAdd(options.Name, () =>
             {
                 var histogram = builder();
-                return Tuple.Create((IHistogram)histogram, new HistogramValueSource(options.Name, histogram, options.MeasurementUnit, options.Tags));
+                var valueSource = new HistogramValueSource(options.Name, histogram, options.MeasurementUnit, AllTags(options.Tags));
+                return Tuple.Create((IHistogram)histogram, valueSource);
             });
         }
 
@@ -95,7 +109,8 @@ namespace App.Metrics.Internal
             return _meters.GetOrAdd(options.Name, () =>
             {
                 var meter = builder();
-                return Tuple.Create((IMeter)meter, new MeterValueSource(options.Name, meter, options.MeasurementUnit, options.RateUnit, options.Tags));
+                var valueSource = new MeterValueSource(options.Name, meter, options.MeasurementUnit, options.RateUnit, AllTags(options.Tags));
+                return Tuple.Create((IMeter)meter, valueSource);
             });
         }
 
@@ -113,9 +128,15 @@ namespace App.Metrics.Internal
             return _timers.GetOrAdd(options.Name, () =>
             {
                 var timer = builder();
-                return Tuple.Create((ITimer)timer,
-                    new TimerValueSource(options.Name, timer, options.MeasurementUnit, options.RateUnit, options.DurationUnit, options.Tags));
+                var valueSource = new TimerValueSource(options.Name, timer, options.MeasurementUnit, 
+                    options.RateUnit, options.DurationUnit, AllTags(options.Tags));
+                return Tuple.Create((ITimer)timer, valueSource);
             });
+        }
+
+        private MetricTags AllTags(MetricTags metricTags)
+        {
+            return new MetricTags(_globalTags.Concat(metricTags).ToDictionary(t => t.Key, t => t.Value));
         }
 
         private class MetricMetaCatalog<TMetric, TValue, TMetricValue>

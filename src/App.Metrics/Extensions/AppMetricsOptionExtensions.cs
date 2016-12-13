@@ -12,7 +12,6 @@ namespace App.Metrics.Configuration
         public static AppMetricsOptions WithGlobalTags(this AppMetricsOptions options, Action<Dictionary<string, string>, EnvironmentInfo> setupAction)
         {
             var environmentBuilder = new EnvironmentInfoProvider();
-            //TODO: AH - remove async requirement
             var environmentInfo = environmentBuilder.BuildAsync().GetAwaiter().GetResult();
 
             setupAction(options.GlobalTags, environmentInfo);

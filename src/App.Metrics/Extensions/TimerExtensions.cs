@@ -55,7 +55,7 @@ namespace App.Metrics.Extensions
                 Unit = source.Unit.Name,
                 RateUnit = source.RateUnit.Unit(),
                 DurationUnit = source.DurationUnit.Unit(),
-                Tags = source.Tags.ToDictionary()
+                Tags = source.Tags
             };
         }
 

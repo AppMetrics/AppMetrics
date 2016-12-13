@@ -2,20 +2,18 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using System.Collections.Generic;
-
 namespace App.Metrics
 {
     public abstract class Metric
     {
-        private Dictionary<string, string> _tags = MetricTags.None;
+        private MetricTags _tags = new MetricTags();
 
         public string Name { get; set; }
 
-        public Dictionary<string, string> Tags
+        public MetricTags Tags
         {
             get { return _tags; }
-            set { _tags = value ?? new Dictionary<string, string>(); }
+            set { _tags = value ?? new MetricTags(); }
         }
 
         public string Unit { get; set; }

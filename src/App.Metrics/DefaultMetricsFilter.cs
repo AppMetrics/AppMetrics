@@ -224,19 +224,18 @@ namespace App.Metrics
         private bool IsTagMatch(MetricTags sourceTags)
         {
             var isMatch = false;
-            var tags = sourceTags.ToDictionary();
 
             if ((_tagKeys == null || !_tagKeys.Any()) && (_tags == null || !_tags.Any()))
             {
                 return true;
             }
 
-            if (_tagKeys != null && Array.Exists(_tagKeys.ToArray(), t => tags.Keys.Any(m => m == t)))
+            if (_tagKeys != null && Array.Exists(_tagKeys.ToArray(), t => sourceTags.Keys.Any(m => m == t)))
             {
                 isMatch = true;
             }
 
-            if (_tags != null && Array.Exists(_tags.ToArray(), t => tags.Any(m => m.Key == t.Key && m.Value == t.Value)))
+            if (_tags != null && Array.Exists(_tags.ToArray(), t => sourceTags.Any(m => m.Key == t.Key && m.Value == t.Value)))
             {
                 isMatch = true;
             }

@@ -33,7 +33,7 @@ namespace App.Metrics
                 Name = gauge.Name,
                 Value = gauge.Value,
                 Unit = gauge.Unit.Name,
-                Tags = gauge.Tags.ToDictionary()
+                Tags = gauge.Tags
             };
         }
     }

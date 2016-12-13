@@ -17,15 +17,5 @@ namespace App.Metrics.Infrastructure
         {
             return environmentInfo.Entries.ToDictionary(entry => entry.Name, entry => entry.Value);
         }
-
-        public static MetricTags ToTags(this EnvironmentInfo environmentInfo)
-        {
-            return new MetricTags(new Dictionary<string, string>
-            {
-                { "version", environmentInfo.EntryAssemblyVersion },
-                { "host", environmentInfo.MachineName },
-                { "ip_adress", environmentInfo.IpAddress }
-            });
-        }
     }
 }

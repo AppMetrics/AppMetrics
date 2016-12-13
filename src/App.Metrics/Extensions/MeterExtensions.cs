@@ -31,7 +31,7 @@ namespace App.Metrics.Extensions
 
             return new Meter
             {
-                RateUnit = TimeUnitExtensions.Unit(source.Value.RateUnit),
+                RateUnit = source.Value.RateUnit.Unit(),
                 Items = items,
                 Count = source.Value.Count,
                 Name = source.Name,
@@ -40,7 +40,7 @@ namespace App.Metrics.Extensions
                 FiveMinuteRate = source.Value.FiveMinuteRate,
                 FifteenMinuteRate = source.Value.FifteenMinuteRate,
                 MeanRate = source.Value.MeanRate,
-                Tags = source.Tags.ToDictionary()
+                Tags = source.Tags
             };
         }
 

@@ -22,7 +22,7 @@ namespace App.Metrics.Extensions
                 Name = source.Name,
                 Value = source.Value,
                 Unit = source.Unit.Name,
-                Tags = source.Tags.ToDictionary()
+                Tags = source.Tags
             };
         }
 

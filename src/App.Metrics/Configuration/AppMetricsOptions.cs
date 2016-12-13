@@ -1,10 +1,8 @@
 // Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-using System.Collections.Generic;
+using App.Metrics.Internal;
 using App.Metrics.Internal.Interfaces;
-using App.Metrics.Sampling.Interfaces;
 
 namespace App.Metrics.Configuration
 {
@@ -43,7 +41,7 @@ namespace App.Metrics.Configuration
         /// <value>
         ///     The global tags applied to on all metrics when reporting.
         /// </value>
-        public Dictionary<string, string> GlobalTags { get; set; } = new Dictionary<string, string>();
+        public GlobalMetricTags GlobalTags { get; set; } = new GlobalMetricTags();
 
         /// <summary>
         ///     Gets or sets a value indicating whether [metrics enabled].

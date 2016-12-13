@@ -37,7 +37,7 @@ namespace App.Metrics.Extensions
                 Percentile999 = source.Value.Percentile999,
                 SampleSize = source.Value.SampleSize,
                 StdDev = source.Value.StdDev,
-                Tags = source.Tags.ToDictionary()
+                Tags = source.Tags
             };
         }
 

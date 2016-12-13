@@ -14,7 +14,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
         public LineProtocolPoint(
             string measurement,
             IReadOnlyDictionary<string, object> fields,
-            IReadOnlyDictionary<string, string> tags = null,
+            MetricTags tags = null,
             DateTime? utcTimestamp = null)
         {
             if (string.IsNullOrEmpty(measurement)) throw new ArgumentException("A measurement name must be specified");

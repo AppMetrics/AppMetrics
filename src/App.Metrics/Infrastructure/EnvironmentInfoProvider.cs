@@ -11,7 +11,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using App.Metrics.Data;
 using Microsoft.DotNet.InternalAbstractions;
-using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Infrastructure
 {

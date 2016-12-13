@@ -28,7 +28,7 @@ namespace App.Metrics.Extensions
                     Percent = item.Percent,
                     Item = item.Item
                 }).ToArray(),
-                Tags = source.Tags.ToDictionary()
+                Tags = source.Tags
             };
         }
 

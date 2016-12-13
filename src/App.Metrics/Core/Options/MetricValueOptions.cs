@@ -11,7 +11,7 @@ namespace App.Metrics.Core.Options
     {
         protected MetricValueOptions()
         {
-            Tags = MetricTags.None;
+            Tags = new MetricTags();
             MeasurementUnit = Unit.None;
         }
 

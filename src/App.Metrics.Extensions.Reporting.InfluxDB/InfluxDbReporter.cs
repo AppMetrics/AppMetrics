@@ -125,14 +125,14 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 
         private void Pack(string name, object value, MetricTags tags)
         {
-            _payload.Add(new LineProtocolPoint(name, new Dictionary<string, object> { {"value", value} }, tags.ToDictionary()));
+            _payload.Add(new LineProtocolPoint(name, new Dictionary<string, object> { {"value", value} }, tags));
         }
 
         private void Pack(string name, IEnumerable<string> columns, IEnumerable<object> values, MetricTags tags)
         {
             var fields = columns.Zip(values, (column, data) => new { column, data }).ToDictionary(pair => pair.column, pair => pair.data);
 
-            _payload.Add(new LineProtocolPoint(name, fields, tags.ToDictionary()));
+            _payload.Add(new LineProtocolPoint(name, fields, tags));
         }
 
         private void ReportCounter(string name, MetricValueSource<CounterValue> valueSource)
@@ -151,7 +151,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 
                 var keys = data.Keys.ToList();
                 var values = keys.Select(k => data[k]);
-                var itemTags = new MetricTags(valueSource.Tags.ToDictionary()).With("item", item.Item);
+                var itemTags = new MetricTags(valueSource.Tags).With("item", item.Item);
 
                 Pack($"[{name}] {valueSource.Name} Items", keys, values, itemTags);
             }
@@ -197,7 +197,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 
                 var itemKeys = itemData.Keys.ToList();
                 var itemValues = itemKeys.Select(k => itemData[k]);
-                var itemTags = new MetricTags(valueSource.Tags.ToDictionary()).With("item", item.Item);
+                var itemTags = new MetricTags(valueSource.Tags).With("item", item.Item);
 
                 Pack($"[{name}] {valueSource.Name} Items", itemKeys, itemValues, itemTags);
             }
