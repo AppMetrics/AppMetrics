@@ -1,7 +1,6 @@
 // Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using System.Diagnostics;
 using System.Globalization;
@@ -16,20 +15,8 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Infrastructure
 {
-    internal sealed class EnvironmentInfoProvider
+    public sealed class EnvironmentInfoProvider
     {
-        private readonly ILogger _logger;
-
-        public EnvironmentInfoProvider(ILoggerFactory loggerFactory)
-        {
-            if (loggerFactory == null)
-            {
-                throw new ArgumentNullException(nameof(loggerFactory));
-            }
-
-            _logger = loggerFactory.CreateLogger<EnvironmentInfoProvider>();
-        }
-
         public static string SafeGetString(Func<string> action)
         {
             try
@@ -79,8 +66,6 @@ namespace App.Metrics.Infrastructure
             {
                 if (ex.SocketErrorCode != SocketError.HostNotFound) throw;
 
-                _logger.LogWarning("Unable to resolve hostname " + hostName);
-
                 return string.Empty;
             }
         }
@@ -93,11 +78,6 @@ namespace App.Metrics.Infrastructure
                 .Where(a => a.AddressFamily == AddressFamily.InterNetwork)
                 .OrderBy(a => Guid.NewGuid())
                 .FirstOrDefault();
-
-            if (address == null)
-            {
-                _logger.LogWarning("Unable to resolve IPAddress for host" + host);
-            }
 
             return address;
         }

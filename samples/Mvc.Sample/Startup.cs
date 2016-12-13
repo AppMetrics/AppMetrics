@@ -1,5 +1,10 @@
-﻿using App.Metrics.DependencyInjection;
+﻿using System;
+using System.Collections.Generic;
+using App.Metrics.Configuration;
+using App.Metrics.Data;
+using App.Metrics.DependencyInjection;
 using App.Metrics.Formatters.Json;
+using App.Metrics.Infrastructure;
 using HealthCheck.Samples;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -53,7 +58,7 @@ namespace Mvc.Sample
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+        {            
             services
                 .AddLogging()
                 .AddRouting(options => { options.LowercaseUrls = true; });
@@ -66,10 +71,17 @@ namespace Mvc.Sample
                 .AddMetrics(options =>
                 {
                     options.DefaultContextLabel = "Mvc.Sample";
+                    options.WithGlobalTags((globalTags, envInfo) =>
+                    {
+                        globalTags.Add("host", envInfo.HostName);
+                        globalTags.Add("machine_name", envInfo.MachineName);
+                        globalTags.Add("app_name", envInfo.EntryAssemblyName);
+                        globalTags.Add("app_version", envInfo.EntryAssemblyVersion);
+                    });
                 })
                 .AddJsonSerialization()
                 .AddHealthChecks()
                 .AddMetricsMiddleware(Configuration.GetSection("AspNetMetrics"));
         }
-    }
+    }        
 }
