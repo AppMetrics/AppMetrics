@@ -35,6 +35,14 @@ namespace App.Metrics.Core.Interfaces
         IMetricsFilter GlobalFilter { get; }
 
         /// <summary>
+        ///     Gets the global tags.
+        /// </summary>
+        /// <value>
+        ///     The global tags.
+        /// </value>
+        GlobalMetricTags GlobalTags { get; }
+
+        /// <summary>
         ///     Provides access to the <see cref="IHealthStatusProvider" /> configured to retrieve the current health status of the
         ///     application by execurting the registered health checks
         /// </summary>

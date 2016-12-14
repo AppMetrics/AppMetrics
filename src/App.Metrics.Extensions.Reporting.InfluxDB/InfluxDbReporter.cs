@@ -16,15 +16,15 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
     public class InfluxDbReporter : IMetricReporter
     {
         private readonly LineProtocolClient _influxDbClient;
-        private LineProtocolPayload _payload;
         private bool _disposed;
+        private LineProtocolPayload _payload;
 
-        public InfluxDbReporter(Uri serverBaseAddress, string username, 
+        public InfluxDbReporter(Uri serverBaseAddress, string username,
             string password, string database, string breakerRate, TimeSpan interval,
             string retentionPolicy, string consistency)
-            : this("InfluxDB Reporter", serverBaseAddress, username, password, 
-                   database, breakerRate, interval,
-                  retentionPolicy, consistency)
+            : this("InfluxDB Reporter", serverBaseAddress, username, password,
+                database, breakerRate, interval,
+                retentionPolicy, consistency)
         {
         }
 
@@ -55,7 +55,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
                 if (disposing)
                 {
                     // Free any other managed objects here.
-                    _payload = null;                    
+                    _payload = null;
                 }
             }
 
@@ -76,9 +76,47 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
         {
         }
 
-        public void ReportHealth(IEnumerable<HealthCheck.Result> healthyChecks, IEnumerable<HealthCheck.Result> degradedChecks,
+        public void ReportHealth(GlobalMetricTags globalTags,
+            IEnumerable<HealthCheck.Result> healthyChecks,
+            IEnumerable<HealthCheck.Result> degradedChecks,
             IEnumerable<HealthCheck.Result> unhealthyChecks)
         {
+            var unhealthy = unhealthyChecks.Any();
+            var degraded = degradedChecks.Any();
+            var healthy = !unhealthy && !degraded;
+
+            var healthStatusValue = 2;
+
+            if (unhealthy)
+            {
+                healthStatusValue = 3;
+            }
+            else if (healthy)
+            {
+                healthStatusValue = 1;
+            }
+
+            Pack("[Health]", healthStatusValue, new MetricTags(globalTags));
+
+            var checks = unhealthyChecks.Concat(degradedChecks).Concat(healthyChecks);
+
+            foreach (var healthCheck in checks)
+            {
+                var tags = new MetricTags(globalTags) { { "health_check", healthCheck.Name } };
+
+                if (healthCheck.Check.Status == HealthCheckStatus.Unhealthy)
+                {
+                    Pack("[Health Checks] Unhealhty", healthCheck.Check.Message, tags);
+                }
+                else if (healthCheck.Check.Status == HealthCheckStatus.Healthy)
+                {
+                    Pack("[Health Checks] Healthy", healthCheck.Check.Message, tags);
+                }
+                else if (healthCheck.Check.Status == HealthCheckStatus.Degraded)
+                {
+                    Pack("[Health Checks] Degraded", healthCheck.Check.Message, tags);
+                }
+            }
         }
 
         public void ReportMetric<T>(string name, MetricValueSource<T> valueSource)
@@ -125,7 +163,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 
         private void Pack(string name, object value, MetricTags tags)
         {
-            _payload.Add(new LineProtocolPoint(name, new Dictionary<string, object> { {"value", value} }, tags));
+            _payload.Add(new LineProtocolPoint(name, new Dictionary<string, object> { { "value", value } }, tags));
         }
 
         private void Pack(string name, IEnumerable<string> columns, IEnumerable<object> values, MetricTags tags)

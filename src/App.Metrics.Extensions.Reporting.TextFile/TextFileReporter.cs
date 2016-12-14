@@ -75,9 +75,12 @@ namespace App.Metrics.Extensions.Reporting.TextFile
             _stringReporter.ReportEnvironment(environmentInfo);
         }
 
-        public void ReportHealth(IEnumerable<HealthCheck.Result> healthyChecks, IEnumerable<HealthCheck.Result> degradedChecks, IEnumerable<HealthCheck.Result> unhealthyChecks)
+        public void ReportHealth(GlobalMetricTags globalMetrics,
+            IEnumerable<HealthCheck.Result> healthyChecks, 
+            IEnumerable<HealthCheck.Result> degradedChecks, 
+            IEnumerable<HealthCheck.Result> unhealthyChecks)
         {
-            _stringReporter.ReportHealth(healthyChecks, degradedChecks, unhealthyChecks);
+            _stringReporter.ReportHealth(globalMetrics, healthyChecks, degradedChecks, unhealthyChecks);
         }
 
         public void ReportMetric<T>(string name, MetricValueSource<T> valueSource)

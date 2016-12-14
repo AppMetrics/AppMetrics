@@ -46,7 +46,10 @@ namespace App.Metrics.Facts.Reporting
             var metricReporter = new Mock<IMetricReporter>();
             metricReporter.Setup(x => x.StartMetricTypeReport(typeof(HealthStatus)));
             metricReporter.Setup(x => x.EndMetricTypeReport(typeof(HealthStatus)));
-            metricReporter.Setup(x => x.ReportHealth(It.IsAny<IEnumerable<HealthCheck.Result>>(), It.IsAny<IEnumerable<HealthCheck.Result>>(), It.IsAny<IEnumerable<HealthCheck.Result>>()));
+            metricReporter.Setup(x => x.ReportHealth(It.IsAny<GlobalMetricTags>(),
+                It.IsAny<IEnumerable<HealthCheck.Result>>(), 
+                It.IsAny<IEnumerable<HealthCheck.Result>>(), 
+                It.IsAny<IEnumerable<HealthCheck.Result>>()));
             var token = CancellationToken.None;
             var filter = new DefaultMetricsFilter().WithHealthChecks(false);
 
@@ -54,7 +57,10 @@ namespace App.Metrics.Facts.Reporting
 
             metricReporter.Verify(p => p.StartMetricTypeReport(typeof(HealthStatus)), Times.Never);
             metricReporter.Verify(p => p.EndMetricTypeReport(typeof(HealthStatus)), Times.Never);
-            metricReporter.Verify(p => p.ReportHealth(It.IsAny<IEnumerable<HealthCheck.Result>>(), It.IsAny<IEnumerable<HealthCheck.Result>>(), It.IsAny<IEnumerable<HealthCheck.Result>>()),
+            metricReporter.Verify(p => p.ReportHealth(It.IsAny<GlobalMetricTags>(),
+                It.IsAny<IEnumerable<HealthCheck.Result>>(), 
+                It.IsAny<IEnumerable<HealthCheck.Result>>(), 
+                It.IsAny<IEnumerable<HealthCheck.Result>>()),
                 Times.Never);
         }
 
@@ -80,14 +86,20 @@ namespace App.Metrics.Facts.Reporting
             var metricReporter = new Mock<IMetricReporter>();
             metricReporter.Setup(x => x.StartMetricTypeReport(typeof(HealthStatus)));
             metricReporter.Setup(x => x.EndMetricTypeReport(typeof(HealthStatus)));
-            metricReporter.Setup(x => x.ReportHealth(It.IsAny<IEnumerable<HealthCheck.Result>>(), It.IsAny<IEnumerable<HealthCheck.Result>>(), It.IsAny<IEnumerable<HealthCheck.Result>>()));
+            metricReporter.Setup(x => x.ReportHealth(It.IsAny<GlobalMetricTags>(),
+                It.IsAny<IEnumerable<HealthCheck.Result>>(), 
+                It.IsAny<IEnumerable<HealthCheck.Result>>(), 
+                It.IsAny<IEnumerable<HealthCheck.Result>>()));
             var token = CancellationToken.None;
 
             await _reportGenerator.Generate(metricReporter.Object, _metrics, token);
 
             metricReporter.Verify(p => p.StartMetricTypeReport(typeof(HealthStatus)), Times.Once);
             metricReporter.Verify(p => p.EndMetricTypeReport(typeof(HealthStatus)), Times.Once);
-            metricReporter.Verify(p => p.ReportHealth(It.IsAny<IEnumerable<HealthCheck.Result>>(), It.IsAny<IEnumerable<HealthCheck.Result>>(), It.IsAny<IEnumerable<HealthCheck.Result>>()),
+            metricReporter.Verify(p => p.ReportHealth(It.IsAny<GlobalMetricTags>(),
+                It.IsAny<IEnumerable<HealthCheck.Result>>(), 
+                It.IsAny<IEnumerable<HealthCheck.Result>>(), 
+                It.IsAny<IEnumerable<HealthCheck.Result>>()),
                 Times.Once);
         }
 

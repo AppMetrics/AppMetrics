@@ -20,7 +20,10 @@ namespace App.Metrics.Reporting.Interfaces
 
         void ReportEnvironment(EnvironmentInfo environmentInfo);
 
-        void ReportHealth(IEnumerable<HealthCheck.Result> healthyChecks, IEnumerable<HealthCheck.Result> degradedChecks, IEnumerable<HealthCheck.Result> unhealthyChecks);
+        void ReportHealth(GlobalMetricTags globalTags,
+            IEnumerable<HealthCheck.Result> healthyChecks, 
+            IEnumerable<HealthCheck.Result> degradedChecks, 
+            IEnumerable<HealthCheck.Result> unhealthyChecks);
 
         void ReportMetric<T>(string name, MetricValueSource<T> valueSource);
 

@@ -72,8 +72,8 @@ namespace App.Metrics.Reporting.Internal
                 var passed = healthStatus.Results.Where(r => r.Check.Status.IsHealthy());
                 var failed = healthStatus.Results.Where(r => r.Check.Status.IsUnhealthy());
                 var degraded = healthStatus.Results.Where(r => r.Check.Status.IsDegraded());
-
-                reporter.ReportHealth(passed, degraded, failed);
+                
+                reporter.ReportHealth(metrics.Advanced.GlobalTags, passed, degraded, failed);
 
                 reporter.EndMetricTypeReport(typeof(HealthStatus));
             }

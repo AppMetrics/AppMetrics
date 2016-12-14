@@ -36,6 +36,7 @@ namespace App.Metrics.Internal
             if (options == null) throw new ArgumentNullException(nameof(options));
 
             GlobalFilter = globalFilter ?? new DefaultMetricsFilter();
+            GlobalTags = options.GlobalTags;
             Clock = clock;
 
             _logger = logger;
@@ -48,6 +49,8 @@ namespace App.Metrics.Internal
         public IMetricsDataProvider Data => this;
 
         public IMetricsFilter GlobalFilter { get; }
+
+        public GlobalMetricTags GlobalTags { get; }
 
         public IHealthStatusProvider Health => this;
 

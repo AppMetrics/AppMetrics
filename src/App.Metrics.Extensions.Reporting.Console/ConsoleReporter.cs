@@ -55,7 +55,10 @@ namespace App.Metrics.Extensions.Reporting.Console
             WriteLine(environmentInfo.Hummanize());
         }
 
-        public void ReportHealth(IEnumerable<HealthCheck.Result> healthyChecks, IEnumerable<HealthCheck.Result> degradedChecks, IEnumerable<HealthCheck.Result> unhealthyChecks)
+        public void ReportHealth(GlobalMetricTags globalTags,
+            IEnumerable<HealthCheck.Result> healthyChecks, 
+            IEnumerable<HealthCheck.Result> degradedChecks, 
+            IEnumerable<HealthCheck.Result> unhealthyChecks)
         {
             var passed = healthyChecks.ToList();
             var failed = unhealthyChecks.ToList();
