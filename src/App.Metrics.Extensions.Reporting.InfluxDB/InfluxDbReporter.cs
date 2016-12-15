@@ -175,24 +175,35 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 
         private void ReportCounter(string name, MetricValueSource<CounterValue> valueSource)
         {
-            Pack($"[{name}] {valueSource.Name}", valueSource.Value.Count, valueSource.Tags);
+            var counterValueSource = valueSource as CounterValueSource;
 
-            if (!valueSource.Value.Items.Any()) return;
-
-            foreach (var item in valueSource.Value.Items.Distinct())
+            if (counterValueSource == null)
             {
-                var data = new Dictionary<string, object>
-                {
-                    { "total", item.Count },
-                    { "percent", item.Percent }
-                };
-
-                var keys = data.Keys.ToList();
-                var values = keys.Select(k => data[k]);
-                var itemTags = new MetricTags(valueSource.Tags).With("item", item.Item);
-
-                Pack($"[{name}] {valueSource.Name} Items", keys, values, itemTags);
+                return;
             }
+
+            if (counterValueSource.Value.Items.Any() && counterValueSource.ReportSetItems)
+            {
+                foreach (var item in counterValueSource.Value.Items.Distinct())
+                {
+                    var data = new Dictionary<string, object> { { "total", item.Count } };
+
+                    if (counterValueSource.ReportItemPercentages)
+                    {
+                        data.Add("percent", item.Percent);
+                    }
+
+                    var keys = data.Keys.ToList();
+                    var values = keys.Select(k => data[k]);
+                    var itemTags = new MetricTags(counterValueSource.Tags).With("item", item.Item);
+
+                    Pack($"[{name}] {counterValueSource.Name} Items", keys, values, itemTags);
+                }
+            }
+
+            var count = counterValueSource.ValueProvider.GetValue(resetMetric: counterValueSource.ResetOnReporting).Count;
+
+            Pack($"[{name}] {counterValueSource.Name}", count, valueSource.Tags);
         }
 
         private void ReportGauge(string name, MetricValueSource<double> valueSource)
@@ -219,26 +230,29 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
         {
             var data = new Dictionary<string, object>();
 
+            if (valueSource.Value.Items.Any())
+            {
+                foreach (var item in valueSource.Value.Items.Distinct())
+                {
+                    var itemData = new Dictionary<string, object>();
+
+                    item.Value.AddMeterValues(itemData);
+                    itemData.Add("percent", item.Percent);
+
+                    var itemKeys = itemData.Keys.ToList();
+                    var itemValues = itemKeys.Select(k => itemData[k]);
+                    var itemTags = new MetricTags(valueSource.Tags).With("item", item.Item);
+
+                    Pack($"[{name}] {valueSource.Name} Items", itemKeys, itemValues, itemTags);
+                }
+            }
+
             valueSource.Value.AddMeterValues(data);
 
             var keys = data.Keys.ToList();
             var values = keys.Select(k => data[k]);
 
             Pack($"[{name}] {valueSource.Name}", keys, values, valueSource.Tags);
-
-            foreach (var item in valueSource.Value.Items.Distinct())
-            {
-                var itemData = new Dictionary<string, object>();
-
-                item.Value.AddMeterValues(itemData);
-                itemData.Add("percent", item.Percent);
-
-                var itemKeys = itemData.Keys.ToList();
-                var itemValues = itemKeys.Select(k => itemData[k]);
-                var itemTags = new MetricTags(valueSource.Tags).With("item", item.Item);
-
-                Pack($"[{name}] {valueSource.Name} Items", itemKeys, itemValues, itemTags);
-            }
         }
 
         private void ReportTimer(string name, MetricValueSource<TimerValue> valueSource)

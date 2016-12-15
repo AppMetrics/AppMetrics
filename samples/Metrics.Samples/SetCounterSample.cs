@@ -6,6 +6,9 @@ namespace Metrics.Samples
     public class SetCounterSample
     {
         private readonly ICounter _commandCounter;
+        private readonly ICounter _commandCounterNotReset;
+        private readonly ICounter _commandCounterNoPercentages;
+        private readonly ICounter _commandCounterNoReportSetItems;
         private static IMetrics _metrics;
 
         public SetCounterSample(IMetrics metrics)
@@ -13,12 +16,17 @@ namespace Metrics.Samples
             _metrics = metrics;
 
             _commandCounter = _metrics.Advanced.Counter(SampleMetricsRegistry.Counters.CommandCounter);
+            _commandCounterNoPercentages = _metrics.Advanced.Counter(SampleMetricsRegistry.Counters.CommandCounterNoPercentages);
+            _commandCounterNotReset = _metrics.Advanced.Counter(SampleMetricsRegistry.Counters.CommandCounterNotReset);
+            _commandCounterNoReportSetItems = _metrics.Advanced.Counter(SampleMetricsRegistry.Counters.CommandCounterDontReportSetItems);
         }
 
         public void Process(Command command)
         {
-            
+            _commandCounterNotReset.Increment(command.GetType().Name);
             _commandCounter.Increment(command.GetType().Name);
+            _commandCounterNoPercentages.Increment(command.GetType().Name);
+            _commandCounterNoReportSetItems.Increment(command.GetType().Name);
         }
 
         public void RunSomeRequests()

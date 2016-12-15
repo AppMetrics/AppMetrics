@@ -55,9 +55,34 @@ namespace Metrics.Samples
 
             public static CounterOptions CommandCounter = new CounterOptions
             {
-                Name = "Command Counter",
+                Name = "Command Counter (Reset)",
                 MeasurementUnit = Unit.Custom("Commands"),
-                Tags = Tags
+                Tags = Tags,
+                ResetOnReporting = true
+            };
+
+            public static CounterOptions CommandCounterNotReset = new CounterOptions
+            {
+                Name = "Command Counter (Not Reset)",
+                MeasurementUnit = Unit.Custom("Commands"),
+                Tags = Tags,
+                ResetOnReporting = false
+            };
+
+            public static CounterOptions CommandCounterDontReportSetItems = new CounterOptions
+            {
+                Name = "Command Counter (Not Reset, No Set Items)",
+                MeasurementUnit = Unit.Custom("Commands"),
+                Tags = Tags,
+                ReportSetItems = false
+            };
+
+            public static CounterOptions CommandCounterNoPercentages = new CounterOptions
+            {
+                Name = "Command Counter (Not Reset, No Percentages)",
+                MeasurementUnit = Unit.Custom("Commands"),
+                Tags = Tags,
+                ReportItemPercentages = false
             };
 
             public static CounterOptions ConcurrentRequestsCounter = new CounterOptions

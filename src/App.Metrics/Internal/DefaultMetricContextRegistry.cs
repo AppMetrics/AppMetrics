@@ -79,7 +79,9 @@ namespace App.Metrics.Internal
             return _counters.GetOrAdd(options.Name, () =>
             {
                 var counter = builder();
-                var valueSource = new CounterValueSource(options.Name, counter, options.MeasurementUnit, AllTags(options.Tags));
+                var valueSource = new CounterValueSource(options.Name, counter, 
+                    options.MeasurementUnit, AllTags(options.Tags), options.ResetOnReporting, 
+                    options.ReportItemPercentages, options.ReportSetItems);
                 return Tuple.Create((ICounter)counter, valueSource);
             });
         }
@@ -128,7 +130,7 @@ namespace App.Metrics.Internal
             return _timers.GetOrAdd(options.Name, () =>
             {
                 var timer = builder();
-                var valueSource = new TimerValueSource(options.Name, timer, options.MeasurementUnit, 
+                var valueSource = new TimerValueSource(options.Name, timer, options.MeasurementUnit,
                     options.RateUnit, options.DurationUnit, AllTags(options.Tags));
                 return Tuple.Create((ITimer)timer, valueSource);
             });
