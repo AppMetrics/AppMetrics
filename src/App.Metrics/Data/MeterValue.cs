@@ -85,6 +85,8 @@ namespace App.Metrics.Data
                 Value = value;
             }
 
+            public MetricTags Tags => new MetricTags().FromSetItemString(Item);
+
             public static bool operator ==(SetItem left, SetItem right)
             {
                 return left.Equals(right);

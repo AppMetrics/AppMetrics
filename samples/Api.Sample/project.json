@@ -7,6 +7,7 @@
   "dependencies": {
     "App.Metrics": "1.0.0-*",
     "App.Metrics.Extensions.Middleware": "1.0.0-*",
+    "App.Metrics.Extensions.Reporting.InfluxDB": "1.0.0-beta2",
     "App.Metrics.Extensions.Reporting.TextFile": "1.0.0-*",
     "App.Metrics.Formatters.Json": "1.0.0-*",
     "Microsoft.AspNetCore.Mvc": "1.1.0",

@@ -4,6 +4,7 @@ using System.IO;
 using System.Security.Claims;
 using System.Threading;
 using App.Metrics;
+using App.Metrics.Extensions.Reporting.InfluxDB;
 using App.Metrics.Extensions.Reporting.TextFile;
 using App.Metrics.Reporting.Interfaces;
 using Microsoft.AspNetCore.Builder;
@@ -79,17 +80,21 @@ namespace Api.Sample
 
             services
                 .AddMetrics(Configuration.GetSection("AppMetrics"))
-                //.AddGlobalFilter(new DefaultMetricsFilter().WhereType(MetricType.Counter))
+                //.AddGlobalFilter(new DefaultMetricsFilter().WhereMetricTaggedWithKeyValue(new TagKeyValueFilter { { "reporter", "influxdb" } }))
                 .AddJsonSerialization()
                 .AddReporting(factory =>
                 {
-                    var textFileSettings = new TextFileReporterSettings
-                    {
-                        ReportInterval = TimeSpan.FromSeconds(5),
-                        FileName = @"C:\metrics\aspnet-sample.txt"
-                    };
+                    var influxFilter = new DefaultMetricsFilter()
+                        //.WhereMetricTaggedWithKeyValue(new TagKeyValueFilter { { "reporter", "influxdb" } })
+                        .WithHealthChecks(true)
+                        .WithEnvironmentInfo(true);
 
-                    factory.AddTextFile(textFileSettings);
+                    factory.AddInfluxDb(new InfluxDbReporterSettings
+                    {
+                        BaseAddress = "http://127.0.0.1:8086",
+                        Database = "appmetricsapi",
+                        ReportInterval = TimeSpan.FromSeconds(5)
+                    }, influxFilter);
                 })
                 .AddHealthChecks()
                 .AddMetricsMiddleware(Configuration.GetSection("AspNetMetrics"));

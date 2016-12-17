@@ -116,12 +116,14 @@ namespace App.Metrics.Data
                 return obj is SetItem && Equals((SetItem)obj);
             }
 
+            public MetricTags Tags => new MetricTags().FromSetItemString(Item);
+
             public override int GetHashCode()
             {
                 unchecked
                 {
                     var hashCode = Count.GetHashCode();
-                    hashCode = (hashCode * 397) ^ (Item != null ? Item.GetHashCode() : 0);
+                    hashCode = (hashCode * 397) ^ (Item?.GetHashCode() ?? 0);
                     hashCode = (hashCode * 397) ^ Percent.GetHashCode();
                     return hashCode;
                 }

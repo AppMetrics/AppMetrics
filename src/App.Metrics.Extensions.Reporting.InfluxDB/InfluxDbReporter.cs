@@ -69,7 +69,6 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
         public void EndReport(IMetrics metrics)
         {
             _influxDbClient.WriteAsync(_payload).GetAwaiter().GetResult();
-            _payload = null;
         }
 
         public void ReportEnvironment(EnvironmentInfo environmentInfo)
@@ -102,7 +101,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 
             foreach (var healthCheck in checks)
             {
-                var tags = new MetricTags(globalTags) { { "health_check", healthCheck.Name } };
+                var tags = new MetricTags(globalTags).With("health_check", healthCheck.Name);
 
                 if (healthCheck.Check.Status == HealthCheckStatus.Unhealthy)
                 {
@@ -195,9 +194,8 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 
                     var keys = data.Keys.ToList();
                     var values = keys.Select(k => data[k]);
-                    var itemTags = new MetricTags(counterValueSource.Tags).With("item", item.Item);
 
-                    Pack($"[{name}] {counterValueSource.Name} Items", keys, values, itemTags);
+                    Pack($"[{name}] {counterValueSource.Name} Items", keys, values, item.Tags);
                 }
             }
 
@@ -240,10 +238,8 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
                     itemData.Add("percent", item.Percent);
 
                     var itemKeys = itemData.Keys.ToList();
-                    var itemValues = itemKeys.Select(k => itemData[k]);
-                    var itemTags = new MetricTags(valueSource.Tags).With("item", item.Item);
-
-                    Pack($"[{name}] {valueSource.Name} Items", itemKeys, itemValues, itemTags);
+                    var itemValues = itemKeys.Select(k => itemData[k]).ToList();
+                    Pack($"[{name}] {valueSource.Name} Items", itemKeys, itemValues, item.Tags);
                 }
             }
 
