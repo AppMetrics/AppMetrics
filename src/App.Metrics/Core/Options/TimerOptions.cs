@@ -11,7 +11,7 @@ namespace App.Metrics.Core.Options
         public TimerOptions()
         {
             DurationUnit = TimeUnit.Milliseconds;
-            RateUnit = TimeUnit.Milliseconds;
+            RateUnit = TimeUnit.Minutes;
             SamplingType = SamplingType.ExponentiallyDecaying;
             SampleSize = Constants.ReservoirSampling.DefaultSampleSize;
             ExponentialDecayFactor = Constants.ReservoirSampling.DefaultExponentialDecayFactor;

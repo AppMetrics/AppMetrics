@@ -17,7 +17,7 @@ namespace App.Metrics.Core.Options
         /// </summary>
         public MeterOptions()
         {
-            RateUnit = TimeUnit.Milliseconds;
+            RateUnit = TimeUnit.Minutes;
         }
 
         /// <summary>
