@@ -44,6 +44,11 @@ namespace App.Metrics.Formatters.Json
                 contract.Converter = new HistogramConverter();
             }
 
+            if (objectType == typeof(ApdexValueSource))
+            {
+                contract.Converter = new ApdexConverter();
+            }
+
             if (objectType == typeof(MetricsDataValueSource))
             {
                 contract.Converter = new MetricDataConverter();
