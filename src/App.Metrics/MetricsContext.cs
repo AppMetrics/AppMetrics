@@ -13,6 +13,8 @@ namespace App.Metrics
     /// </summary>
     public sealed class MetricsContext
     {
+        public IEnumerable<ApdexScore> ApdexScores { get; set; } = Enumerable.Empty<ApdexScore>();
+
         public string Context { get; set; }
 
         public IEnumerable<Counter> Counters { get; set; } = Enumerable.Empty<Counter>();

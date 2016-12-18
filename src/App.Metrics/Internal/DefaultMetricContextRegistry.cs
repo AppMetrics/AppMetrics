@@ -33,6 +33,9 @@ namespace App.Metrics.Internal
         private readonly MetricMetaCatalog<ITimer, TimerValueSource, TimerValue> _timers =
             new MetricMetaCatalog<ITimer, TimerValueSource, TimerValue>();
 
+        private readonly MetricMetaCatalog<IApdex, ApdexValueSource, ApdexValue> _apdexScores =
+            new MetricMetaCatalog<IApdex, ApdexValueSource, ApdexValue>();
+
         public DefaultMetricContextRegistry(string context)
             : this(context, new GlobalMetricTags())
         {
@@ -58,7 +61,8 @@ namespace App.Metrics.Internal
                 () => _counters.All,
                 () => _meters.All,
                 () => _histograms.All,
-                () => _timers.All);
+                () => _timers.All,
+                () => _apdexScores.All);
         }
 
         public string Context { get; }
@@ -133,6 +137,16 @@ namespace App.Metrics.Internal
                 var valueSource = new TimerValueSource(options.Name, timer, options.MeasurementUnit,
                     options.RateUnit, options.DurationUnit, AllTags(options.Tags));
                 return Tuple.Create((ITimer)timer, valueSource);
+            });
+        }
+
+        public IApdex Apdex<T>(ApdexOptions options, Func<T> builder) where T : IApdexMetric
+        {
+            return _apdexScores.GetOrAdd(options.Name, () =>
+            {
+                var apdex = builder();
+                var valueSource = new ApdexValueSource(options.Name, apdex, AllTags(options.Tags));
+                return Tuple.Create((IApdex)apdex, valueSource);
             });
         }
 

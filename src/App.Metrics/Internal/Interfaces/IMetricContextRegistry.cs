@@ -15,6 +15,8 @@ namespace App.Metrics.Internal.Interfaces
 
         IMetricRegistryManager DataProvider { get; }
 
+        IApdex Apdex<T>(ApdexOptions options, Func<T> builder) where T : IApdexMetric;
+
         void ClearAllMetrics();
 
         ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterMetric;

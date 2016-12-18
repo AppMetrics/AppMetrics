@@ -18,5 +18,7 @@ namespace App.Metrics.Internal.Interfaces
         IEnumerable<MeterValueSource> Meters { get; }
 
         IEnumerable<TimerValueSource> Timers { get; }
+
+        IEnumerable<ApdexValueSource> ApdexScores { get; }
     }
 }

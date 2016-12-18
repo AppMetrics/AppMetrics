@@ -123,7 +123,7 @@ namespace App.Metrics.Core.Interfaces
         /// <typeparam name="T">The type of <see cref="ITimer" /> to instantiate</typeparam>
         /// <param name="options">The details of the <see cref="ITimer" />  that is being measured</param>
         /// <param name="builder">The function used to build the timer metric.</param>
-        /// <returns>A new instance of an <see cref="ITimer" /> or the existing registered instance of the meter</returns>
+        /// <returns>A new instance of an <see cref="ITimer" /> or the existing registered instance of the timer</returns>
         ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerMetric;
 
         /// <summary>
@@ -131,7 +131,23 @@ namespace App.Metrics.Core.Interfaces
         /// </summary>
         /// <param name="options">The details of the <see cref="ITimer" />  that is being measured</param>
         /// <param name="builder">The function used to build a custom <see cref="IHistogramMetric" /> metric.</param>
-        /// <returns>A new instance of an <see cref="ITimer" /> or the existing registered instance of the meter</returns>
+        /// <returns>A new instance of an <see cref="ITimer" /> or the existing registered instance of the apdex metric</returns>
         ITimer Timer(TimerOptions options, Func<IHistogramMetric> builder);
+
+        /// <summary>
+        ///     Instantiates an instance of a <see cref="IApdex" />
+        /// </summary>
+        /// <param name="options">The details of the <see cref="IApdex" />  that is being measured</param>
+        /// <returns>A new instance of an <see cref="IApdex" /> or the existing registered instance of the apdex metric</returns>
+        IApdex Track(ApdexOptions options);
+
+        /// <summary>
+        ///     Instantiates an instance of a <see cref="IApdex" />
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="IApdex" /> to instantiate</typeparam>
+        /// <param name="options">The settings of the <see cref="IApdex" /> metric that is being measured</param>
+        /// <param name="builder">The function used to build the apdex metric.</param>
+        /// <returns>A new instance of an <see cref="IApdex" /> or the existing registered instance of the apdex metric</returns>
+        IApdex Track<T>(ApdexOptions options, Func<T> builder) where T : IApdexMetric;
     }
 }

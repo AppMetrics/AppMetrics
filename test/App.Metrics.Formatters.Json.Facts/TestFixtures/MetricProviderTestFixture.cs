@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using App.Metrics.Data;
-using App.Metrics.Infrastructure;
 using App.Metrics.Utils;
 
 namespace App.Metrics.Formatters.Json.Facts.TestFixtures
@@ -16,10 +15,13 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
             Meters = SetupMeters();
             Gauges = SetupGauges();
             Timers = SetupTimers();
+            ApdexScores = SetupApdexScores();
             Histograms = SetupHistograms();
             ContextOne = SetupContextOne();
             DataWithOneContext = SetupMetricsData(new[] { ContextOne });
         }
+
+        public IEnumerable<ApdexValueSource> ApdexScores { get; }
 
         public MetricsContextValueSource ContextOne { get; }
 
@@ -42,6 +44,14 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 
         public void Dispose()
         {
+        }
+
+        public IEnumerable<ApdexValueSource> SetupApdexScores()
+        {
+            var apdexValue = new ApdexValue(0.9, 170, 20, 10, 200);
+            var apdex = new ApdexValueSource("test_apdex", ConstantValue.Provider(apdexValue), Tags);
+
+            return new[] { apdex };
         }
 
         public IEnumerable<GaugeValueSource> SetupGauges()
@@ -86,7 +96,7 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 
         private MetricsContextValueSource SetupContextOne()
         {
-            return new MetricsContextValueSource("context_one", Gauges, Counters, Meters, Histograms, Timers);
+            return new MetricsContextValueSource("context_one", Gauges, Counters, Meters, Histograms, Timers, ApdexScores);
         }
 
         private IEnumerable<CounterValueSource> SetupCounters()

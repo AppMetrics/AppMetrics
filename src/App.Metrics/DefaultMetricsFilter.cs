@@ -136,6 +136,21 @@ namespace App.Metrics
         }
 
         /// <summary>
+        ///     Determines whether the specified apdex is match.
+        /// </summary>
+        /// <param name="apdex">The apdex.</param>
+        /// <returns></returns>
+        public bool IsMatch(ApdexValueSource apdex)
+        {
+            if (_types != null && !_types.Contains(MetricType.Apdex))
+            {
+                return false;
+            }
+
+            return IsMetricNameMatch(apdex.Name) && IsTagMatch(apdex.Tags);
+        }
+
+        /// <summary>
         ///     Filters metrics where the specified predicate on the metrics context is <c>true</c>
         /// </summary>
         /// <param name="condition">The predicate on the context to filter on.</param>

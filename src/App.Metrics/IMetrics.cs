@@ -182,6 +182,22 @@ namespace App.Metrics
         TimerContext Time(TimerOptions options);
 
         /// <summary>
+        ///     Records a <see cref="IApdexMetric" /> which measures the time taken to process an action, samples data and procuded
+        ///     an apdex score.
+        /// </summary>
+        /// <param name="options">The settings of the apdex metric that is being measured</param>
+        /// <param name="action">The action to measure.</param>
+        void Track(ApdexOptions options, Action action);
+
+        /// <summary>
+        ///     Records a <see cref="IApdexMetric" /> which measures the time taken to process an action, samples data and procuded
+        ///     an apdex score.
+        /// </summary>
+        /// <param name="options">The settings of the apdex metric that is being measured</param>
+        /// <returns>A disposable context, when disposed records the time token to process the using block</returns>
+        ApdexContext Track(ApdexOptions options);
+
+        /// <summary>
         ///     Updates a <see cref="IHistogramMetric" /> which measures the distribution of values in a stream of data. Records
         ///     the min, mean,
         ///     max and standard deviation of values and also quantiles such as the medium, 95th percentile, 98th percentile, 99th

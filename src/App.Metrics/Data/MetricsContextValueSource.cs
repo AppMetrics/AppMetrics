@@ -14,7 +14,8 @@ namespace App.Metrics.Data
             Enumerable.Empty<CounterValueSource>(),
             Enumerable.Empty<MeterValueSource>(),
             Enumerable.Empty<HistogramValueSource>(),
-            Enumerable.Empty<TimerValueSource>());
+            Enumerable.Empty<TimerValueSource>(),
+            Enumerable.Empty<ApdexValueSource>());
 
         public readonly string Context;
 
@@ -23,13 +24,15 @@ namespace App.Metrics.Data
         public readonly IEnumerable<HistogramValueSource> Histograms;
         public readonly IEnumerable<MeterValueSource> Meters;
         public readonly IEnumerable<TimerValueSource> Timers;
+        public readonly IEnumerable<ApdexValueSource> ApdexScores;
 
         public MetricsContextValueSource(string context,
             IEnumerable<GaugeValueSource> gauges,
             IEnumerable<CounterValueSource> counters,
             IEnumerable<MeterValueSource> meters,
             IEnumerable<HistogramValueSource> histograms,
-            IEnumerable<TimerValueSource> timers)
+            IEnumerable<TimerValueSource> timers,
+            IEnumerable<ApdexValueSource> apdexScores)
         {
             Context = context;
             Gauges = gauges;
@@ -37,6 +40,7 @@ namespace App.Metrics.Data
             Meters = meters;
             Histograms = histograms;
             Timers = timers;
+            ApdexScores = apdexScores;
         }
 
         public MetricsContextValueSource Filter(IMetricsFilter filter)
@@ -51,7 +55,8 @@ namespace App.Metrics.Data
                 Counters.Where(filter.IsMatch),
                 Meters.Where(filter.IsMatch),
                 Histograms.Where(filter.IsMatch),
-                Timers.Where(filter.IsMatch));
+                Timers.Where(filter.IsMatch),
+                ApdexScores.Where(filter.IsMatch));
         }
 
         public bool IsNotEmpty()

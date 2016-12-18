@@ -10,6 +10,7 @@ namespace App.Metrics
         Counter,
         Meter,
         Histogram,
-        Timer
+        Timer,
+        Apdex
     }
 }

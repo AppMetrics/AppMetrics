@@ -17,6 +17,8 @@ namespace App.Metrics.Extensions
             var jsonGauges = source.Gauges.ToMetric();
             var jsonHistograms = source.Histograms.ToMetric();
             var jsonTimers = source.Timers.ToMetric();
+            var jsonApdexScores = source.ApdexScores.ToMetric();
+
 
             return new MetricsContext
             {
@@ -25,7 +27,8 @@ namespace App.Metrics.Extensions
                 Gauges = jsonGauges,
                 Histograms = jsonHistograms,
                 Timers = jsonTimers,
-                Context = source.Context
+                Context = source.Context,
+                ApdexScores = jsonApdexScores
             };
         }
 
@@ -41,13 +44,14 @@ namespace App.Metrics.Extensions
 
         public static MetricsContextValueSource ToMetricValueSource(this MetricsContext source)
         {
-            var jsonCoutners = source.Counters.ToMetricValueSource();
+            var jsonCounters = source.Counters.ToMetricValueSource();
             var jsonMeters = source.Meters.ToMetricValueSource();
             var jsonGauges = source.Gauges.ToMetricValueSource();
             var jsonHistograms = source.Histograms.ToMetricValueSource();
             var jsonTimers = source.Timers.ToMetricValueSource();
+            var jsonApdexScores = source.ApdexScores.ToMetricValueSource();
 
-            return new MetricsContextValueSource(source.Context, jsonGauges, jsonCoutners, jsonMeters, jsonHistograms, jsonTimers);
+            return new MetricsContextValueSource(source.Context, jsonGauges, jsonCounters, jsonMeters, jsonHistograms, jsonTimers, jsonApdexScores);
         }
     }
 }

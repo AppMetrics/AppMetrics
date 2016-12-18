@@ -202,6 +202,21 @@ namespace App.Metrics.Core
         }
 
         /// <inheritdoc />
+        public void Track(ApdexOptions options, Action action)
+        {
+            using (_registry.Apdex(options, () => Advanced.BuildApdex(options)).NewContext())
+            {
+                action();
+            }
+        }
+
+        /// <inheritdoc />
+        public ApdexContext Track(ApdexOptions options)
+        {
+            return _registry.Apdex(options, () => Advanced.BuildApdex(options)).NewContext();
+        }
+
+        /// <inheritdoc />
         public void Update(HistogramOptions options, long value)
         {
             _registry.Histogram(options, () => Advanced.BuildHistogram(options)).Update(value);

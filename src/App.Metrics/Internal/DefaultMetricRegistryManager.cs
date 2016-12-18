@@ -11,6 +11,7 @@ namespace App.Metrics.Internal
 {
     internal sealed class DefaultMetricRegistryManager : IMetricRegistryManager
     {
+        private readonly Func<IEnumerable<ApdexValueSource>> _apdexScores;
         private readonly Func<IEnumerable<CounterValueSource>> _counters;
         private readonly Func<IEnumerable<GaugeValueSource>> _gauges;
         private readonly Func<IEnumerable<HistogramValueSource>> _histograms;
@@ -22,14 +23,18 @@ namespace App.Metrics.Internal
             Func<IEnumerable<CounterValueSource>> counters,
             Func<IEnumerable<MeterValueSource>> meters,
             Func<IEnumerable<HistogramValueSource>> histograms,
-            Func<IEnumerable<TimerValueSource>> timers)
+            Func<IEnumerable<TimerValueSource>> timers,
+            Func<IEnumerable<ApdexValueSource>> apdexScores)
         {
             _gauges = gauges;
             _counters = counters;
             _meters = meters;
             _histograms = histograms;
             _timers = timers;
+            _apdexScores = apdexScores;
         }
+
+        public IEnumerable<ApdexValueSource> ApdexScores => _apdexScores();
 
         public IEnumerable<CounterValueSource> Counters => _counters();
 

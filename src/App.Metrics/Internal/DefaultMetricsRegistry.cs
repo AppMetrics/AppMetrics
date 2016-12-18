@@ -56,6 +56,14 @@ namespace App.Metrics.Internal
             return ReferenceEquals(attached, registry);
         }
 
+        public IApdex Apdex<T>(ApdexOptions options, Func<T> builder) where T : IApdexMetric
+        {
+            EnsureContextLabel(options);
+            EnsureSamplingType(options);
+            var registry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
+            return registry.Apdex(options, builder);
+        }
+
         public void Clear()
         {
             ForAllContexts(c =>
@@ -68,7 +76,7 @@ namespace App.Metrics.Internal
         public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterMetric
         {
             EnsureContextLabel(options);
-            var registry = _contexts.GetOrAdd(options.Context, _newContextRegistry);            
+            var registry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
             return registry.Counter(options, builder);
         }
 
@@ -116,7 +124,8 @@ namespace App.Metrics.Internal
                 g.DataProvider.Counters.ToArray(),
                 g.DataProvider.Meters.ToArray(),
                 g.DataProvider.Histograms.ToArray(),
-                g.DataProvider.Timers.ToArray()
+                g.DataProvider.Timers.ToArray(),
+                g.DataProvider.ApdexScores.ToArray()
             ));
 
             var data = new MetricsDataValueSource(_clock.UtcDateTime, environment, contexts);

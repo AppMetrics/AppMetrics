@@ -41,5 +41,10 @@ namespace App.Metrics.Internal
         {
             return true;
         }
+
+        public bool IsMatch(ApdexValueSource apdex)
+        {
+            return true;
+        }
     }
 }

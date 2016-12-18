@@ -175,5 +175,20 @@ namespace App.Metrics.Internal
         {
             return Timer(options, () => this.BuildTimer(options, builder()));
         }
+
+        public IApdex Track(ApdexOptions options)
+        {
+            if (options.WithReservoir != null)
+            {
+                return Track(options, () => this.BuildApdex(options, options.WithReservoir()));
+            }
+
+            return _registry.Apdex(options, () => this.BuildApdex(options));
+        }
+
+        public IApdex Track<T>(ApdexOptions options, Func<T> builder) where T : IApdexMetric
+        {
+            return _registry.Apdex(options, builder);
+        }
     }
 }

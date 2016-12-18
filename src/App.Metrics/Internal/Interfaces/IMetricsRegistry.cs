@@ -15,6 +15,8 @@ namespace App.Metrics.Internal.Interfaces
     {
         bool AddContext(string context, IMetricContextRegistry registry);
 
+        IApdex Apdex<T>(ApdexOptions options, Func<T> builder) where T : IApdexMetric;
+
         void Clear();
 
         ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterMetric;

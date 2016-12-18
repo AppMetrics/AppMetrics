@@ -21,9 +21,15 @@ namespace App.Metrics.Internal
             return true;
         }
 
+        public IApdex Apdex<T>(ApdexOptions options, Func<T> builder) where T : IApdexMetric
+        {
+            return NullMetric.Instance;
+        }
+
         public void Clear()
         {
         }
+
 
         public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterMetric
         {
@@ -62,10 +68,17 @@ namespace App.Metrics.Internal
             return NullMetric.Instance;
         }
 
-        private struct NullMetric : ICounter, IMeter, IHistogram, ITimer, IMetricRegistryManager
+        private struct NullMetric : IApdex, ICounter, IMeter, IHistogram, ITimer, IMetricRegistryManager
         {
             public static readonly NullMetric Instance = new NullMetric();
+            private static readonly ApdexContext NullApdexContextContext = new ApdexContext(Instance);
             private static readonly TimerContext NullContext = new TimerContext(Instance, null);
+
+            public IEnumerable<ApdexValueSource> ApdexScores
+            {
+                get { yield break; }
+            }
+
 
             public IEnumerable<CounterValueSource> Counters
             {
@@ -113,6 +126,14 @@ namespace App.Metrics.Internal
             {
             }
 
+            public void Decrement(MetricItem item)
+            {
+            }
+
+            public void Decrement(MetricItem item, long amount)
+            {
+            }
+
             public long EndRecording()
             {
                 return 0;
@@ -131,6 +152,14 @@ namespace App.Metrics.Internal
             }
 
             public void Increment(string item, long value)
+            {
+            }
+
+            public void Increment(MetricItem item)
+            {
+            }
+
+            public void Increment(MetricItem item, long amount)
             {
             }
 
@@ -163,6 +192,11 @@ namespace App.Metrics.Internal
                 return NullContext;
             }
 
+            public ApdexContext NewContext()
+            {
+                return NullApdexContextContext;
+            }
+
             public void Record(long time, TimeUnit unit, string userValue = null)
             {
             }
@@ -186,23 +220,20 @@ namespace App.Metrics.Internal
                 return action();
             }
 
+            public void Track(long duration)
+            {
+            }
+
+            public void Track(Action action)
+            {
+            }
+
+            public T Track<T>(Func<T> action)
+            {
+                return action();
+            }
+
             public void Update(long value, string userValue)
-            {
-            }
-
-            public void Decrement(MetricItem item)
-            {
-            }
-
-            public void Decrement(MetricItem item, long amount)
-            {
-            }
-
-            public void Increment(MetricItem item)
-            {
-            }
-
-            public void Increment(MetricItem item, long amount)
             {
             }
         }

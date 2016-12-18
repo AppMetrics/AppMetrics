@@ -3,6 +3,7 @@
 
 
 using System;
+using App.Metrics.Apdex;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Options;
 using App.Metrics.Data.Interfaces;
@@ -15,6 +16,16 @@ namespace App.Metrics.Core
 {
     public static class AdvancedMetricsContextExtensions
     {
+        public static IApdexMetric BuildApdex(this IAdvancedMetrics context, ApdexOptions options)
+        {
+            return new ApdexMetric(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor, context.Clock, options.ApdexTSeconds);
+        }
+
+        public static IApdexMetric BuildApdex(this IAdvancedMetrics context, ApdexOptions options, IReservoir reservoir)
+        {
+            return new ApdexMetric(new ApdexProvider(reservoir, options.ApdexTSeconds), context.Clock);
+        }
+
         public static ICounterMetric BuildCounter(this IAdvancedMetrics context, CounterOptions options)
         {
             return new CounterMetric();
