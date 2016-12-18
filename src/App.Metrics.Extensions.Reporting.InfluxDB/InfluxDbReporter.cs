@@ -149,6 +149,12 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
                 ReportHistogram(name, valueSource as MetricValueSource<HistogramValue>);
                 return;
             }
+
+            if (typeof(T) == typeof(ApdexValue))
+            {
+                ReportApdex(name, valueSource as MetricValueSource<ApdexValue>);
+                return;
+            }
         }
 
         public void StartMetricTypeReport(Type metricType)
@@ -170,6 +176,25 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
             var fields = columns.Zip(values, (column, data) => new { column, data }).ToDictionary(pair => pair.column, pair => pair.data);
 
             _payload.Add(new LineProtocolPoint(name, fields, tags));
+        }
+
+        private void ReportApdex(string name, MetricValueSource<ApdexValue> valueSource)
+        {
+            var apdexValueSource = valueSource as ApdexValueSource;
+
+            if (apdexValueSource == null)
+            {
+                return;
+            }
+
+            var data = new Dictionary<string, object>();
+
+            valueSource.Value.AddApdexValues(data);
+
+            var keys = data.Keys.ToList();
+            var values = keys.Select(k => data[k]);
+
+            Pack($"[{name}] {valueSource.Name}", keys, values, valueSource.Tags);
         }
 
         private void ReportCounter(string name, MetricValueSource<CounterValue> valueSource)

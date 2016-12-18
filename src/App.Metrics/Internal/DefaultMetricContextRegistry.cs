@@ -16,6 +16,9 @@ namespace App.Metrics.Internal
 {
     internal sealed class DefaultMetricContextRegistry : IMetricContextRegistry
     {
+        private readonly MetricMetaCatalog<IApdex, ApdexValueSource, ApdexValue> _apdexScores =
+            new MetricMetaCatalog<IApdex, ApdexValueSource, ApdexValue>();
+
         private readonly MetricMetaCatalog<ICounter, CounterValueSource, CounterValue> _counters =
             new MetricMetaCatalog<ICounter, CounterValueSource, CounterValue>();
 
@@ -32,9 +35,6 @@ namespace App.Metrics.Internal
 
         private readonly MetricMetaCatalog<ITimer, TimerValueSource, TimerValue> _timers =
             new MetricMetaCatalog<ITimer, TimerValueSource, TimerValue>();
-
-        private readonly MetricMetaCatalog<IApdex, ApdexValueSource, ApdexValue> _apdexScores =
-            new MetricMetaCatalog<IApdex, ApdexValueSource, ApdexValue>();
 
         public DefaultMetricContextRegistry(string context)
             : this(context, new GlobalMetricTags())
@@ -69,6 +69,16 @@ namespace App.Metrics.Internal
 
         public IMetricRegistryManager DataProvider { get; }
 
+        public IApdex Apdex<T>(ApdexOptions options, Func<T> builder) where T : IApdexMetric
+        {
+            return _apdexScores.GetOrAdd(options.Name, () =>
+            {
+                var apdex = builder();
+                var valueSource = new ApdexValueSource(options.Name, apdex, AllTags(options.Tags), options.ResetOnReporting);
+                return Tuple.Create((IApdex)apdex, valueSource);
+            });
+        }
+
         public void ClearAllMetrics()
         {
             _gauges.Clear();
@@ -83,8 +93,8 @@ namespace App.Metrics.Internal
             return _counters.GetOrAdd(options.Name, () =>
             {
                 var counter = builder();
-                var valueSource = new CounterValueSource(options.Name, counter, 
-                    options.MeasurementUnit, AllTags(options.Tags), options.ResetOnReporting, 
+                var valueSource = new CounterValueSource(options.Name, counter,
+                    options.MeasurementUnit, AllTags(options.Tags), options.ResetOnReporting,
                     options.ReportItemPercentages, options.ReportSetItems);
                 return Tuple.Create((ICounter)counter, valueSource);
             });
@@ -137,16 +147,6 @@ namespace App.Metrics.Internal
                 var valueSource = new TimerValueSource(options.Name, timer, options.MeasurementUnit,
                     options.RateUnit, options.DurationUnit, AllTags(options.Tags));
                 return Tuple.Create((ITimer)timer, valueSource);
-            });
-        }
-
-        public IApdex Apdex<T>(ApdexOptions options, Func<T> builder) where T : IApdexMetric
-        {
-            return _apdexScores.GetOrAdd(options.Name, () =>
-            {
-                var apdex = builder();
-                var valueSource = new ApdexValueSource(options.Name, apdex, AllTags(options.Tags));
-                return Tuple.Create((IApdex)apdex, valueSource);
             });
         }
 

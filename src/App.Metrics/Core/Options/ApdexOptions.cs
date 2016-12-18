@@ -55,5 +55,15 @@ namespace App.Metrics.Core.Options
         ///     The apdex T seconds used in calculating the score on the samples collected.
         /// </value>
         public double ApdexTSeconds { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the counts and score should be reset when it is reported, otherwise values
+        ///     are cummulative. Note: If using more than one reporter, the count will be reset for the first reporter which sends
+        ///     the value. Defaults to <c>false</c>.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if [reset on reporting]; otherwise, <c>false</c>.
+        /// </value>
+        public bool ResetOnReporting { get; set; }
     }
 }

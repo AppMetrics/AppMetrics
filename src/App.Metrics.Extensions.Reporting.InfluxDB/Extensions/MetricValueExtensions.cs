@@ -9,6 +9,15 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Extensions
 {
     internal static class MetricValueExtensions
     {
+        public static void AddApdexValues(this ApdexValue apdex, IDictionary<string, object> values)
+        {
+            values.Add("samples", apdex.SampleSize);
+            values.Add("score", apdex.Score);
+            values.Add("satisfied", apdex.Satisfied);
+            values.Add("tolerating", apdex.Tolerating);
+            values.Add("frustrating", apdex.Frustrating);
+        }
+
         public static void AddHistogramValues(this HistogramValue histogram, IDictionary<string, object> values)
         {
             values.Add("samples", histogram.SampleSize);
