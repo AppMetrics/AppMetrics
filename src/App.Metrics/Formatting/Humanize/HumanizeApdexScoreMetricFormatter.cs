@@ -1,14 +1,10 @@
-// Copyright (c) Allan hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-
 using System;
 using System.Text;
 using App.Metrics.Data;
 
 namespace App.Metrics.Formatting.Humanize
 {
-    public sealed class HumanizeCounterMetricFormatter : ICustomFormatter
+    public sealed class HumanizeApdexScoreMetricFormatter : ICustomFormatter
     {
         public string Format(string format, object arg, IFormatProvider formatProvider)
         {
@@ -17,15 +13,15 @@ namespace App.Metrics.Formatting.Humanize
                 return string.Empty;
             }
 
-            if (!(arg is CounterValueSource))
+            if (!(arg is ApdexValueSource))
             {
                 return arg.ToString();
             }
 
-            var counter = (CounterValueSource)arg;
+            var apdex = (ApdexValueSource)arg;
 
             var sb = new StringBuilder();
-            sb.HumanizeCounter(counter);
+            sb.HumanizeApdexScore(apdex);
             return sb.ToString();
         }
     }

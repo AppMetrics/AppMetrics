@@ -18,6 +18,7 @@ namespace App.Metrics.Formatting.Humanize
             { typeof(HistogramValue), () => new HumanizeHistogramMetricFormatter() },
             { typeof(MeterValue), () => new HumanizeMeterMetricFormatter() },
             { typeof(TimerValue), () => new HumanizeTimerMetricFormatter() },
+            { typeof(ApdexValue), () => new HumanizeApdexScoreMetricFormatter() },
             { typeof(HealthCheck.Result), () => new HumanizeHealthCheckResultFormatter() },
             { typeof(EnvironmentInfo), () => new HumanizeEnvironmentInfoFormatter() }
         };

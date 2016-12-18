@@ -73,6 +73,11 @@ namespace Api.Sample.Controllers
                 Thread.Sleep(cacheHit ? 10 : 100);
             }
 
+            using (_metrics.Track(MetricsRegistry.ApdexScores.TestApdex))
+            {
+                Thread.Sleep(cacheHit ? 10 : 100);
+            }
+
             _metrics.Advanced.Gauge(MetricsRegistry.Gauges.CacheHitRatioGauge, () => new HitRatioGauge(cacheHits, calls, m => m.OneMinuteRate));
 
             var histogram = _metrics.Advanced.Histogram(MetricsRegistry.Histograms.TestHAdvancedistogram);

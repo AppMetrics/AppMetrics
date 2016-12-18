@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using App.Metrics.Data;
@@ -28,6 +29,16 @@ namespace App.Metrics.Formatting.Humanize
                 var value = $"{keyValue.Value.Percent:00.00}% {keyValue.Value.Count,5} {counter.Unit.Name} [{keyValue.Value.Item}]";
                 sb.AppendLine(key.FormatReadableMetricValue(value));
             }
+        }
+
+        public static void HumanizeApdexScore(this StringBuilder sb, ApdexValueSource apdex)
+        {
+            sb.AppendLine();
+            sb.AppendLine("Score".FormatReadableMetricValue(apdex.Value.Score.ToString(CultureInfo.CurrentCulture)));
+            sb.AppendLine("Sample Size".FormatReadableMetricValue(apdex.Value.SampleSize.ToString(CultureInfo.CurrentCulture)));
+            sb.AppendLine("Satisfied".FormatReadableMetricValue(apdex.Value.Satisfied.ToString(CultureInfo.CurrentCulture)));
+            sb.AppendLine("Tolerating".FormatReadableMetricValue(apdex.Value.Tolerating.ToString(CultureInfo.CurrentCulture)));
+            sb.AppendLine("Frustrating".FormatReadableMetricValue(apdex.Value.Frustrating.ToString(CultureInfo.CurrentCulture)));
         }
 
         public static void HumanizeGauge(this StringBuilder sb, GaugeValueSource gauge)

@@ -61,6 +61,9 @@ namespace App.Metrics.Reporting.Internal
 
                 ReportMetricType(reporter, contextValueSource.Timers,
                     t => { reporter.ReportMetric($"{contextValueSource.Context}", t); }, token);
+
+                ReportMetricType(reporter, contextValueSource.ApdexScores,
+                    t => { reporter.ReportMetric($"{contextValueSource.Context}", t); }, token);
             }
 
             if (reporterMetricsFilter.ReportHealthChecks)

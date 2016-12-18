@@ -17,6 +17,7 @@ namespace App.Metrics.Formatting.Humanize
             { typeof(GaugeValueSource), "Gauges" },
             { typeof(MeterValueSource), "Meters" },
             { typeof(TimerValueSource), "Timers" },
+            { typeof(ApdexValueSource), "ApdexScores" },
             { typeof(HistogramValueSource), "Histograms" },
             { typeof(HealthStatus), "Health Checks" },
             { typeof(EnvironmentInfo), "Environment Information" }

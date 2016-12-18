@@ -9,7 +9,7 @@ namespace Api.Sample
         {
             public static class TestContext
             {
-                public static readonly string TestContextName = "Test Context";
+                public static readonly string TestContextName = "Test Context";               
 
                 public static class Counters
                 {
@@ -188,6 +188,15 @@ namespace Api.Sample
             {
                 Name = "Test Counter With Item",
                 MeasurementUnit = Unit.Calls,
+                Tags = MetricTags.None
+            };
+        }
+
+        public static class ApdexScores
+        {
+            public static ApdexOptions TestApdex { get; } = new ApdexOptions
+            {
+                Name = "Test Apdex",
                 Tags = MetricTags.None
             };
         }
