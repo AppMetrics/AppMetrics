@@ -29,6 +29,7 @@ namespace App.Metrics.Internal
         {
             public const int DefaultSampleSize = 1028;
             public const double DefaultExponentialDecayFactor = 0.015;
+            public const double DefaultApdexTSeconds = 0.5;
         }
     }
 }

@@ -30,12 +30,17 @@ namespace App.Metrics.Core
         ///     value the more biased the reservoir will be towards newer values.
         /// </param>
         public HistogramMetric(SamplingType samplingType, int sampleSize, double alpha)
-            : this(SamplingTypeToReservoir(samplingType, sampleSize, alpha))
+            : this(ReservoirBuilder.Build(samplingType, sampleSize, alpha))
         {
         }
 
         public HistogramMetric(IReservoir reservoir)
         {
+            if (reservoir == null)
+            {
+                throw new ArgumentNullException(nameof(reservoir));
+            }
+
             _reservoir = reservoir;
         }
 
@@ -88,26 +93,6 @@ namespace App.Metrics.Core
         {
             _last = new UserValueWrapper(value, userValue);
             _reservoir.Update(value, userValue);
-        }
-
-        private static IReservoir SamplingTypeToReservoir(SamplingType samplingType, int sampleSize, double alpha)
-        {
-            while (true)
-            {
-                switch (samplingType)
-                {
-                    case SamplingType.HighDynamicRange:
-                        return new HdrHistogramReservoir();
-                    case SamplingType.ExponentiallyDecaying:
-                        return new ExponentiallyDecayingReservoir(sampleSize, alpha);
-                    case SamplingType.LongTerm:
-                        return new UniformReservoir(sampleSize);
-                    case SamplingType.SlidingWindow:
-                        return new SlidingWindowReservoir(sampleSize);
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(samplingType), samplingType, "Sampling type not implemented " + samplingType);
-                }
-            }
         }
     }
 }
