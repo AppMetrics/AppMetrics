@@ -25,7 +25,7 @@ namespace App.Metrics.Reporting.Interfaces
             IEnumerable<HealthCheck.Result> degradedChecks, 
             IEnumerable<HealthCheck.Result> unhealthyChecks);
 
-        void ReportMetric<T>(string name, MetricValueSource<T> valueSource);
+        void ReportMetric<T>(string context, MetricValueSource<T> valueSource);
 
         void StartMetricTypeReport(Type metricType);
 

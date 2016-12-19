@@ -9,6 +9,11 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Extensions
 {
     internal static class MetricValueExtensions
     {
+        public static string FormattedMetricName<T>(this MetricValueSource<T> valueSource)
+        {
+            return valueSource.Name.Replace(" ", "_").ToLowerInvariant();
+        }
+
         public static void AddApdexValues(this ApdexValue apdex, IDictionary<string, object> values)
         {
             values.Add("samples", apdex.SampleSize);

@@ -1,5 +1,5 @@
 {
-  "id": 2,
+  "id": 8,
   "title": "App Metrics",
   "tags": [],
   "style": "dark",
@@ -8,7 +8,7 @@
   "sharedCrosshair": false,
   "hideControls": false,
   "time": {
-    "from": "now-15m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
@@ -120,7 +120,7 @@
   },
   "refresh": "10s",
   "schemaVersion": 13,
-  "version": 8,
+  "version": 5,
   "links": [],
   "gnetId": null,
   "rows": [
@@ -200,7 +200,7 @@
             {
               "dsType": "influxdb",
               "groupBy": [],
-              "measurement": "[Process] Process Total CPU Usage",
+              "measurement": "process__process_total_cpu_usage",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -290,7 +290,7 @@
             {
               "dsType": "influxdb",
               "groupBy": [],
-              "measurement": "[Process] Process Private Memory Size",
+              "measurement": "process__process_private_memory_size",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -404,7 +404,7 @@
             {
               "dsType": "influxdb",
               "groupBy": [],
-              "measurement": "[Application] Command Counter (Reset)",
+              "measurement": "application__command_counter_(reset)",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -476,21 +476,21 @@
                   "type": "tag"
                 }
               ],
-              "measurement": "[Application] Command Counter (Reset) Items",
+              "measurement": "application__command_counter_(reset)__items",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
               "select": [
                 [
                   {
-                    "type": "field",
                     "params": [
                       "percent"
-                    ]
+                    ],
+                    "type": "field"
                   },
                   {
-                    "type": "sum",
-                    "params": []
+                    "params": [],
+                    "type": "sum"
                   }
                 ]
               ],
@@ -538,7 +538,7 @@
                   "type": "tag"
                 }
               ],
-              "measurement": "[Application] Command Counter (Reset) Items",
+              "measurement": "application__command_counter_(reset)__items",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -622,7 +622,7 @@
             {
               "dsType": "influxdb",
               "groupBy": [],
-              "measurement": "[Application] Command Counter (Not Reset)",
+              "measurement": "application__command_counter_(not_reset)",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -694,21 +694,21 @@
                   "type": "tag"
                 }
               ],
-              "measurement": "[Application] Command Counter (Not Reset) Items",
+              "measurement": "application__command_counter_(not_reset)__items",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
               "select": [
                 [
                   {
-                    "type": "field",
                     "params": [
                       "percent"
-                    ]
+                    ],
+                    "type": "field"
                   },
                   {
-                    "type": "last",
-                    "params": []
+                    "params": [],
+                    "type": "last"
                   }
                 ]
               ],
@@ -756,7 +756,7 @@
                   "type": "tag"
                 }
               ],
-              "measurement": "[Application] Command Counter (Not Reset) Items",
+              "measurement": "application__command_counter_(not_reset)__items",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -840,7 +840,7 @@
             {
               "dsType": "influxdb",
               "groupBy": [],
-              "measurement": "[Application] Command Counter (Not Reset, No Set Items)",
+              "measurement": "application__command_counter_(not_reset,_no_set_items)",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -912,21 +912,21 @@
                   "type": "tag"
                 }
               ],
-              "measurement": "[Application] Command Counter (Not Reset, No Set Items)",
+              "measurement": "application__command_counter_(not_reset,_no_set_items)",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
               "select": [
                 [
                   {
-                    "type": "field",
                     "params": [
                       "percent"
-                    ]
+                    ],
+                    "type": "field"
                   },
                   {
-                    "type": "last",
-                    "params": []
+                    "params": [],
+                    "type": "last"
                   }
                 ]
               ],
@@ -974,7 +974,7 @@
                   "type": "tag"
                 }
               ],
-              "measurement": "[Application] Command Counter (Not Reset, No Set Items)",
+              "measurement": "application__command_counter_(not_reset,_no_set_items)",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -1058,7 +1058,7 @@
             {
               "dsType": "influxdb",
               "groupBy": [],
-              "measurement": "[Application] Command Counter (Not Reset, No Percentages)",
+              "measurement": "application__command_counter_(not_reset,_no_percentages)",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -1130,21 +1130,21 @@
                   "type": "tag"
                 }
               ],
-              "measurement": "[Application] Command Counter (Not Reset, No Percentages) Items",
+              "measurement": "application__command_counter_(not_reset,_no_percentages)__items",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
               "select": [
                 [
                   {
-                    "type": "field",
                     "params": [
                       "percent"
-                    ]
+                    ],
+                    "type": "field"
                   },
                   {
-                    "type": "last",
-                    "params": []
+                    "params": [],
+                    "type": "last"
                   }
                 ]
               ],
@@ -1192,7 +1192,7 @@
                   "type": "tag"
                 }
               ],
-              "measurement": "[Application] Command Counter (Not Reset, No Percentages) Items",
+              "measurement": "application__command_counter_(not_reset,_no_percentages)__items",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -1224,7 +1224,7 @@
       "repeat": null,
       "repeatRowId": null,
       "repeatIteration": null,
-      "collapse": false
+      "collapse": true
     },
     {
       "title": "Sample Meters",
@@ -1290,7 +1290,7 @@
                   "type": "fill"
                 }
               ],
-              "measurement": "[Application] Command Meter",
+              "measurement": "application__command_meter",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -1395,7 +1395,7 @@
                   "type": "fill"
                 }
               ],
-              "measurement": "[Application] Command Meter",
+              "measurement": "application__command_meter",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -1500,7 +1500,7 @@
                   "type": "fill"
                 }
               ],
-              "measurement": "[Application] Command Meter",
+              "measurement": "application__command_meter",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -1605,7 +1605,7 @@
                   "type": "fill"
                 }
               ],
-              "measurement": "[Application] Command Meter",
+              "measurement": "application__command_meter",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -1700,7 +1700,7 @@
                   "type": "tag"
                 }
               ],
-              "measurement": "[Application] Command Meter Items",
+              "measurement": "application__command_meter__items",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -1758,7 +1758,7 @@
                   "type": "tag"
                 }
               ],
-              "measurement": "[Application] Command Meter Items",
+              "measurement": "application__command_meter__items",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -1838,7 +1838,7 @@
                   "type": "fill"
                 }
               ],
-              "measurement": "[Application] Command Meter Items",
+              "measurement": "application__command_meter__items",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -1971,7 +1971,7 @@
                 }
               ],
               "hide": false,
-              "measurement": "[Application] Results Example",
+              "measurement": "application__results_example",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -2009,7 +2009,7 @@
                 }
               ],
               "hide": false,
-              "measurement": "[Application] Results Example",
+              "measurement": "application__results_example",
               "policy": "default",
               "refId": "B",
               "resultFormat": "time_series",
@@ -2046,7 +2046,7 @@
                   "type": "fill"
                 }
               ],
-              "measurement": "[Application] Results Example",
+              "measurement": "application__results_example",
               "policy": "default",
               "refId": "C",
               "resultFormat": "time_series",
@@ -2083,7 +2083,7 @@
                   "type": "fill"
                 }
               ],
-              "measurement": "[Application] Results Example",
+              "measurement": "application__results_example",
               "policy": "default",
               "refId": "D",
               "resultFormat": "time_series",
@@ -2201,7 +2201,7 @@
             {
               "dsType": "influxdb",
               "groupBy": [],
-              "measurement": "[Application] Results Example",
+              "measurement": "application__results_example",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -2290,7 +2290,7 @@
             {
               "dsType": "influxdb",
               "groupBy": [],
-              "measurement": "[Application] Results Example",
+              "measurement": "application__results_example",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -2379,7 +2379,7 @@
             {
               "dsType": "influxdb",
               "groupBy": [],
-              "measurement": "[Application] Results Example",
+              "measurement": "application__results_example",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -2486,7 +2486,7 @@
                   "type": "fill"
                 }
               ],
-              "measurement": "[Application] Requests",
+              "measurement": "application__requests",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -2523,7 +2523,7 @@
                   "type": "fill"
                 }
               ],
-              "measurement": "[Application] Requests",
+              "measurement": "application__requests",
               "policy": "default",
               "refId": "B",
               "resultFormat": "time_series",
@@ -2560,7 +2560,7 @@
                   "type": "fill"
                 }
               ],
-              "measurement": "[Application] Requests",
+              "measurement": "application__requests",
               "policy": "default",
               "refId": "C",
               "resultFormat": "time_series",
@@ -2597,7 +2597,7 @@
                   "type": "fill"
                 }
               ],
-              "measurement": "[Application] Requests",
+              "measurement": "application__requests",
               "policy": "default",
               "refId": "D",
               "resultFormat": "time_series",
@@ -2634,7 +2634,7 @@
                   "type": "fill"
                 }
               ],
-              "measurement": "[Application] Requests",
+              "measurement": "application__requests",
               "policy": "default",
               "refId": "E",
               "resultFormat": "time_series",
@@ -2671,7 +2671,7 @@
                   "type": "fill"
                 }
               ],
-              "measurement": "[Application] Requests",
+              "measurement": "application__requests",
               "policy": "default",
               "refId": "F",
               "resultFormat": "time_series",
@@ -2779,7 +2779,7 @@
                   "type": "fill"
                 }
               ],
-              "measurement": "[Application] Requests",
+              "measurement": "application__requests",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -2816,7 +2816,7 @@
                   "type": "fill"
                 }
               ],
-              "measurement": "[Application] Requests",
+              "measurement": "application__requests",
               "policy": "default",
               "refId": "B",
               "resultFormat": "time_series",
@@ -2853,7 +2853,7 @@
                   "type": "fill"
                 }
               ],
-              "measurement": "[Application] Requests",
+              "measurement": "application__requests",
               "policy": "default",
               "refId": "C",
               "resultFormat": "time_series",
@@ -2890,7 +2890,7 @@
                   "type": "fill"
                 }
               ],
-              "measurement": "[Application] Requests",
+              "measurement": "application__requests",
               "policy": "default",
               "refId": "D",
               "resultFormat": "time_series",
@@ -2999,7 +2999,7 @@
                   "type": "fill"
                 }
               ],
-              "measurement": "[Application] Requests",
+              "measurement": "application__requests",
               "policy": "default",
               "refId": "D",
               "resultFormat": "time_series",
@@ -3036,7 +3036,7 @@
                   "type": "fill"
                 }
               ],
-              "measurement": "[Application] Requests",
+              "measurement": "application__requests",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -3073,7 +3073,7 @@
                   "type": "fill"
                 }
               ],
-              "measurement": "[Application] Requests",
+              "measurement": "application__requests",
               "policy": "default",
               "refId": "B",
               "resultFormat": "time_series",
@@ -3110,7 +3110,7 @@
                   "type": "fill"
                 }
               ],
-              "measurement": "[Application] Requests",
+              "measurement": "application__requests",
               "policy": "default",
               "refId": "C",
               "resultFormat": "time_series",
@@ -3251,7 +3251,7 @@
             {
               "dsType": "influxdb",
               "groupBy": [],
-              "measurement": "[Health]",
+              "measurement": "health",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -3338,7 +3338,7 @@
                   "type": "tag"
                 }
               ],
-              "measurement": "[Health Checks] Healthy",
+              "measurement": "health_checks__healthy",
               "policy": "default",
               "refId": "A",
               "resultFormat": "table",
@@ -3413,7 +3413,7 @@
                   "type": "tag"
                 }
               ],
-              "measurement": "[Health Checks] Degraded",
+              "measurement": "health_checks__degraded",
               "policy": "default",
               "refId": "A",
               "resultFormat": "table",
@@ -3488,7 +3488,7 @@
                   "type": "tag"
                 }
               ],
-              "measurement": "[Health Checks] Unhealhty",
+              "measurement": "health_checks__unhealhty",
               "policy": "default",
               "refId": "A",
               "resultFormat": "table",
@@ -3523,6 +3523,276 @@
       "repeatRowId": null,
       "repeatIteration": null,
       "collapse": true
+    },
+    {
+      "title": "Apdex",
+      "panels": [
+        {
+          "id": 44,
+          "title": "Application Apdex Score",
+          "error": false,
+          "span": 6,
+          "editable": true,
+          "type": "graph",
+          "targets": [
+            {
+              "policy": "default",
+              "dsType": "influxdb",
+              "resultFormat": "time_series",
+              "tags": [],
+              "groupBy": [
+                {
+                  "type": "time",
+                  "params": [
+                    "$interval"
+                  ]
+                },
+                {
+                  "type": "fill",
+                  "params": [
+                    "0"
+                  ]
+                }
+              ],
+              "select": [
+                [
+                  {
+                    "type": "field",
+                    "params": [
+                      "score"
+                    ]
+                  },
+                  {
+                    "type": "last",
+                    "params": []
+                  }
+                ]
+              ],
+              "refId": "A",
+              "measurement": "application__app_apdex"
+            }
+          ],
+          "datasource": null,
+          "renderer": "flot",
+          "yaxes": [
+            {
+              "label": null,
+              "show": true,
+              "logBase": 1,
+              "min": null,
+              "max": null,
+              "format": "short"
+            },
+            {
+              "label": null,
+              "show": true,
+              "logBase": 1,
+              "min": null,
+              "max": null,
+              "format": "short"
+            }
+          ],
+          "xaxis": {
+            "show": true,
+            "mode": "time",
+            "name": null,
+            "values": []
+          },
+          "lines": true,
+          "fill": 1,
+          "linewidth": 1,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": false,
+          "percentage": false,
+          "legend": {
+            "show": true,
+            "values": false,
+            "min": false,
+            "max": false,
+            "current": false,
+            "total": false,
+            "avg": false
+          },
+          "nullPointMode": "connected",
+          "steppedLine": false,
+          "tooltip": {
+            "value_type": "individual",
+            "shared": true,
+            "sort": 0,
+            "msResolution": false
+          },
+          "timeFrom": null,
+          "timeShift": null,
+          "aliasColors": {},
+          "seriesOverrides": [],
+          "thresholds": [],
+          "links": [],
+          "interval": "$summarize"
+        },
+        {
+          "aliasColors": {},
+          "bars": true,
+          "datasource": null,
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "id": 45,
+          "interval": "$summarize",
+          "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": false,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "frustrating",
+              "dsType": "influxdb",
+              "groupBy": [],
+              "hide": false,
+              "measurement": "application__app_apdex",
+              "policy": "default",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "frustrating"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": []
+            },
+            {
+              "alias": "tolerating",
+              "dsType": "influxdb",
+              "groupBy": [],
+              "hide": false,
+              "measurement": "application__app_apdex",
+              "policy": "default",
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "tolerating"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": []
+            },
+            {
+              "alias": "satisfied",
+              "dsType": "influxdb",
+              "groupBy": [],
+              "measurement": "application__app_apdex",
+              "policy": "default",
+              "refId": "C",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "satisfied"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": []
+            },
+            {
+              "alias": "samples",
+              "dsType": "influxdb",
+              "groupBy": [],
+              "measurement": "application__app_apdex",
+              "policy": "default",
+              "refId": "D",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "samples"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": []
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Apdex Samples",
+          "tooltip": {
+            "msResolution": false,
+            "shared": false,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "series",
+            "name": null,
+            "show": true,
+            "values": [
+              "current"
+            ]
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        }
+      ],
+      "showTitle": true,
+      "titleSize": "h6",
+      "height": 250,
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     }
   ]
 }

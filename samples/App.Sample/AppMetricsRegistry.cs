@@ -6,6 +6,17 @@ namespace App.Sample
 {
     public static class AppMetricsRegistry
     {
+        public static class ApdexScores
+        {
+            public static ApdexOptions AppApdex = new ApdexOptions
+            {
+                Name = "App Apdex",
+                ApdexTSeconds = 0.5,
+                ResetOnReporting = false,
+                Tags = new MetricTags().With("reporter", "influxdb")
+            };
+        }
+
         public static class Gauges
         {
             public static GaugeOptions ApmGauge = new GaugeOptions

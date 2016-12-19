@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
@@ -48,12 +49,20 @@ namespace App.Sample
             var task = scheduler.Interval(
                 TimeSpan.FromMilliseconds(300), () =>
                 {
-
                     setCounterSample.RunSomeRequests();
                     setMeterSample.RunSomeRequests();
                     userValueHistogramSample.RunSomeRequests();
                     //userValueTimerSample.RunSomeRequests(); //TODO: AH - why's this taking so long?
                     simpleMetrics.RunSomeRequests();
+
+                    var rnd = new Random();
+                    foreach (var index in Enumerable.Range(0, 1000))
+                    {
+                        using (application.Metrics.Track(AppMetricsRegistry.ApdexScores.AppApdex))
+                        {
+                            Thread.Sleep(rnd.Next(index));
+                        }
+                    }
 
                     application.Metrics.Gauge(AppMetricsRegistry.Gauges.Errors, () => 1);
                     application.Metrics.Gauge(AppMetricsRegistry.Gauges.PercentGauge, () => 1);
@@ -131,7 +140,7 @@ namespace App.Sample
                     {
                         BaseAddress = "http://127.0.0.1:8086",
                         Database = "appmetrics",
-                        ReportInterval = TimeSpan.FromSeconds(5)                        
+                        ReportInterval = TimeSpan.FromSeconds(3)                        
                     }, influxFilter);
                 });
         }

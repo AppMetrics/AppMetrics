@@ -95,7 +95,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
                 healthStatusValue = 1;
             }
 
-            Pack("[Health]", healthStatusValue, new MetricTags(globalTags));
+            Pack("health", healthStatusValue, new MetricTags(globalTags));
 
             var checks = unhealthyChecks.Concat(degradedChecks).Concat(healthyChecks);
 
@@ -105,54 +105,56 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 
                 if (healthCheck.Check.Status == HealthCheckStatus.Unhealthy)
                 {
-                    Pack("[Health Checks] Unhealhty", healthCheck.Check.Message, tags);
+                    Pack("health_checks__unhealhty", healthCheck.Check.Message, tags);
                 }
                 else if (healthCheck.Check.Status == HealthCheckStatus.Healthy)
                 {
-                    Pack("[Health Checks] Healthy", healthCheck.Check.Message, tags);
+                    Pack("health_checks__healthy", healthCheck.Check.Message, tags);
                 }
                 else if (healthCheck.Check.Status == HealthCheckStatus.Degraded)
                 {
-                    Pack("[Health Checks] Degraded", healthCheck.Check.Message, tags);
+                    Pack("health_checks__degraded", healthCheck.Check.Message, tags);
                 }
             }
         }
 
-        public void ReportMetric<T>(string name, MetricValueSource<T> valueSource)
+        public void ReportMetric<T>(string context, MetricValueSource<T> valueSource)
         {
+            var contextFormatted = context.Replace(" ", "_").ToLowerInvariant();
+
             if (typeof(T) == typeof(double))
             {
-                ReportGauge(name, valueSource as MetricValueSource<double>);
+                ReportGauge(contextFormatted, valueSource as MetricValueSource<double>);
                 return;
             }
 
             if (typeof(T) == typeof(CounterValue))
             {
-                ReportCounter(name, valueSource as MetricValueSource<CounterValue>);
+                ReportCounter(contextFormatted, valueSource as MetricValueSource<CounterValue>);
                 return;
             }
 
             if (typeof(T) == typeof(MeterValue))
             {
-                ReportMeter(name, valueSource as MetricValueSource<MeterValue>);
+                ReportMeter(contextFormatted, valueSource as MetricValueSource<MeterValue>);
                 return;
             }
 
             if (typeof(T) == typeof(TimerValue))
             {
-                ReportTimer(name, valueSource as MetricValueSource<TimerValue>);
+                ReportTimer(contextFormatted, valueSource as MetricValueSource<TimerValue>);
                 return;
             }
 
             if (typeof(T) == typeof(HistogramValue))
             {
-                ReportHistogram(name, valueSource as MetricValueSource<HistogramValue>);
+                ReportHistogram(contextFormatted, valueSource as MetricValueSource<HistogramValue>);
                 return;
             }
 
             if (typeof(T) == typeof(ApdexValue))
             {
-                ReportApdex(name, valueSource as MetricValueSource<ApdexValue>);
+                ReportApdex(contextFormatted, valueSource as MetricValueSource<ApdexValue>);
                 return;
             }
         }
@@ -194,7 +196,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
             var keys = data.Keys.ToList();
             var values = keys.Select(k => data[k]);
 
-            Pack($"[{name}] {valueSource.Name}", keys, values, valueSource.Tags);
+            Pack($"{name}__{valueSource.FormattedMetricName()}", keys, values, valueSource.Tags);
         }
 
         private void ReportCounter(string name, MetricValueSource<CounterValue> valueSource)
@@ -220,20 +222,20 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
                     var keys = data.Keys.ToList();
                     var values = keys.Select(k => data[k]);
 
-                    Pack($"[{name}] {counterValueSource.Name} Items", keys, values, item.Tags);
+                    Pack($"{name}__{counterValueSource.FormattedMetricName()}__items", keys, values, item.Tags);
                 }
             }
 
             var count = counterValueSource.ValueProvider.GetValue(resetMetric: counterValueSource.ResetOnReporting).Count;
 
-            Pack($"[{name}] {counterValueSource.Name}", count, valueSource.Tags);
+            Pack($"{name}__{counterValueSource.FormattedMetricName()}", count, valueSource.Tags);
         }
 
         private void ReportGauge(string name, MetricValueSource<double> valueSource)
         {
             if (!double.IsNaN(valueSource.Value) && !double.IsInfinity(valueSource.Value))
             {
-                Pack($"[{name}] {valueSource.Name}", valueSource.Value, valueSource.Tags);
+                Pack($"{name}__{valueSource.FormattedMetricName()}", valueSource.Value, valueSource.Tags);
             }
         }
 
@@ -246,7 +248,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
             var keys = data.Keys.ToList();
             var values = keys.Select(k => data[k]);
 
-            Pack($"[{name}] {valueSource.Name}", keys, values, valueSource.Tags);
+            Pack($"{name}__{valueSource.FormattedMetricName()}", keys, values, valueSource.Tags);
         }
 
         private void ReportMeter(string name, MetricValueSource<MeterValue> valueSource)
@@ -264,7 +266,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 
                     var itemKeys = itemData.Keys.ToList();
                     var itemValues = itemKeys.Select(k => itemData[k]).ToList();
-                    Pack($"[{name}] {valueSource.Name} Items", itemKeys, itemValues, item.Tags);
+                    Pack($"{name}__{valueSource.FormattedMetricName()}__items", itemKeys, itemValues, item.Tags);
                 }
             }
 
@@ -273,7 +275,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
             var keys = data.Keys.ToList();
             var values = keys.Select(k => data[k]);
 
-            Pack($"[{name}] {valueSource.Name}", keys, values, valueSource.Tags);
+            Pack($"{name}__{valueSource.FormattedMetricName()}", keys, values, valueSource.Tags);
         }
 
         private void ReportTimer(string name, MetricValueSource<TimerValue> valueSource)
@@ -286,7 +288,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
             var keys = data.Keys.ToList();
             var values = keys.Select(k => data[k]);
 
-            Pack($"[{name}] {valueSource.Name}", keys, values, valueSource.Tags);
+            Pack($"{name}__{valueSource.FormattedMetricName()}", keys, values, valueSource.Tags);
         }
     }
 }
