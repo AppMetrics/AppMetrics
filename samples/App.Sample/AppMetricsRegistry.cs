@@ -12,7 +12,6 @@ namespace App.Sample
             {
                 Name = "App Apdex",
                 ApdexTSeconds = 0.5,
-                ResetOnReporting = false,
                 Tags = new MetricTags().With("reporter", "influxdb")
             };
         }

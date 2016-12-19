@@ -44,25 +44,39 @@ namespace App.Sample
             var setMeterSample = new SetMeterSample(application.Metrics);
             var userValueHistogramSample = new UserValueHistogramSample(application.Metrics);
             var userValueTimerSample = new UserValueTimerSample(application.Metrics);
+            
+            //var rnd = new Random();
+            //foreach (var index in Enumerable.Range(0, 30))
+            //{
+            //    using (application.Metrics.Track(AppMetricsRegistry.ApdexScores.AppApdex))
+            //    {
+            //        if (index % 4 == 0)
+            //        {
+            //            Thread.Sleep(rnd.Next(2100, 2200));
+            //        }
+            //        else if (index % 2 == 0)
+            //        {
+            //            Thread.Sleep(rnd.Next(600, 700));
+            //        }
+            //        else
+            //        {
+            //            Thread.Sleep(rnd.Next(0, 300));
+            //        }
+            //    }
+            //}
 
             var cancellationTokenSource = new CancellationTokenSource();
             var task = scheduler.Interval(
                 TimeSpan.FromMilliseconds(300), () =>
                 {
-                    setCounterSample.RunSomeRequests();
-                    setMeterSample.RunSomeRequests();
-                    userValueHistogramSample.RunSomeRequests();
-                    //userValueTimerSample.RunSomeRequests(); //TODO: AH - why's this taking so long?
-                    simpleMetrics.RunSomeRequests();
-
-                    var rnd = new Random();
-                    foreach (var index in Enumerable.Range(0, 1000))
+                    using (application.Metrics.Track(AppMetricsRegistry.ApdexScores.AppApdex))
                     {
-                        using (application.Metrics.Track(AppMetricsRegistry.ApdexScores.AppApdex))
-                        {
-                            Thread.Sleep(rnd.Next(index));
-                        }
-                    }
+                        setCounterSample.RunSomeRequests();
+                        setMeterSample.RunSomeRequests();
+                        userValueHistogramSample.RunSomeRequests();
+                        //userValueTimerSample.RunSomeRequests(); //TODO: AH - why's this taking so long?
+                        simpleMetrics.RunSomeRequests();
+                    }                              
 
                     application.Metrics.Gauge(AppMetricsRegistry.Gauges.Errors, () => 1);
                     application.Metrics.Gauge(AppMetricsRegistry.Gauges.PercentGauge, () => 1);
@@ -140,7 +154,7 @@ namespace App.Sample
                     {
                         BaseAddress = "http://127.0.0.1:8086",
                         Database = "appmetrics",
-                        ReportInterval = TimeSpan.FromSeconds(3)                        
+                        ReportInterval = TimeSpan.FromSeconds(5)                        
                     }, influxFilter);
                 });
         }

@@ -1,5 +1,5 @@
 {
-  "id": 8,
+  "id": 7,
   "title": "App Metrics",
   "tags": [],
   "style": "dark",
@@ -120,7 +120,7 @@
   },
   "refresh": "10s",
   "schemaVersion": 13,
-  "version": 5,
+  "version": 4,
   "links": [],
   "gnetId": null,
   "rows": [
@@ -3528,108 +3528,134 @@
       "title": "Apdex",
       "panels": [
         {
-          "id": 44,
-          "title": "Application Apdex Score",
-          "error": false,
-          "span": 6,
+          "aliasColors": {
+            "application__app_apdex.last": "#DEDAF7"
+          },
+          "bars": false,
+          "datasource": null,
           "editable": true,
-          "type": "graph",
+          "error": false,
+          "fill": 1,
+          "id": 44,
+          "interval": "$summarize",
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
           "targets": [
             {
-              "policy": "default",
               "dsType": "influxdb",
-              "resultFormat": "time_series",
-              "tags": [],
               "groupBy": [
                 {
-                  "type": "time",
                   "params": [
                     "$interval"
-                  ]
+                  ],
+                  "type": "time"
                 },
                 {
-                  "type": "fill",
                   "params": [
                     "0"
-                  ]
+                  ],
+                  "type": "fill"
                 }
               ],
+              "measurement": "application__app_apdex",
+              "policy": "default",
+              "refId": "A",
+              "resultFormat": "time_series",
               "select": [
                 [
                   {
-                    "type": "field",
                     "params": [
                       "score"
-                    ]
+                    ],
+                    "type": "field"
                   },
                   {
-                    "type": "last",
-                    "params": []
+                    "params": [],
+                    "type": "last"
                   }
                 ]
               ],
-              "refId": "A",
-              "measurement": "application__app_apdex"
+              "tags": []
             }
           ],
-          "datasource": null,
-          "renderer": "flot",
-          "yaxes": [
+          "thresholds": [
             {
-              "label": null,
-              "show": true,
-              "logBase": 1,
-              "min": null,
-              "max": null,
-              "format": "short"
+              "value": 0.5,
+              "colorMode": "critical",
+              "op": "lt",
+              "fill": true,
+              "line": true
             },
             {
-              "label": null,
-              "show": true,
-              "logBase": 1,
-              "min": null,
-              "max": null,
-              "format": "short"
+              "value": 0.5,
+              "colorMode": "warning",
+              "op": "gt",
+              "fill": true,
+              "line": true
+            },
+            {
+              "value": 0.75,
+              "colorMode": "ok",
+              "op": "gt",
+              "fill": true,
+              "line": true
             }
           ],
-          "xaxis": {
-            "show": true,
-            "mode": "time",
-            "name": null,
-            "values": []
-          },
-          "lines": true,
-          "fill": 1,
-          "linewidth": 1,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": false,
-          "percentage": false,
-          "legend": {
-            "show": true,
-            "values": false,
-            "min": false,
-            "max": false,
-            "current": false,
-            "total": false,
-            "avg": false
-          },
-          "nullPointMode": "connected",
-          "steppedLine": false,
-          "tooltip": {
-            "value_type": "individual",
-            "shared": true,
-            "sort": 0,
-            "msResolution": false
-          },
           "timeFrom": null,
           "timeShift": null,
-          "aliasColors": {},
-          "seriesOverrides": [],
-          "thresholds": [],
-          "links": [],
-          "interval": "$summarize"
+          "title": "Application Apdex Score",
+          "tooltip": {
+            "msResolution": false,
+            "shared": false,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": [
+              "total"
+            ]
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": "apdex score",
+              "logBase": 1,
+              "max": "1",
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "max": "1",
+              "min": "0",
+              "show": false
+            }
+          ]
         },
         {
           "aliasColors": {},

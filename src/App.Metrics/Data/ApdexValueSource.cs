@@ -6,7 +6,7 @@ namespace App.Metrics.Data
     {
         public ApdexValueSource(string name, IMetricValueProvider<ApdexValue> value,
             MetricTags tags,
-            bool resetOnReporting = true)
+            bool resetOnReporting = false)
             : base(name, value, Unit.Results, tags)
         {
             ResetOnReporting = resetOnReporting;
