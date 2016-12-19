@@ -58,6 +58,7 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "App.Metrics.Extensions.Repo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "grafana_dashboards", "grafana_dashboards", "{4ABC9BEB-785D-42BB-9B54-48447CE714BE}"
 	ProjectSection(SolutionItems) = preProject
+		grafana_dashboards\Api.Sample-OAuth2.InfluxDB.json = grafana_dashboards\Api.Sample-OAuth2.InfluxDB.json
 		grafana_dashboards\Api.Sample.InfluxDB.json = grafana_dashboards\Api.Sample.InfluxDB.json
 		grafana_dashboards\App.Sample.InfluxDB.json = grafana_dashboards\App.Sample.InfluxDB.json
 	EndProjectSection
