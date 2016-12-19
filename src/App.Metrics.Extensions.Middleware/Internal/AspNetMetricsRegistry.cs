@@ -41,6 +41,16 @@ namespace App.Metrics.Extensions.Middleware.Internal
             {
                 public static string ContextName = "Application.HttpRequests";
 
+                public static class ApdexScores
+                {
+                    public static Func<double, ApdexOptions> Apdex = apdexTSeconds => new ApdexOptions
+                    {
+                        Context = ContextName,
+                        Name = "Apdex",
+                        ApdexTSeconds = apdexTSeconds
+                    };
+                }
+
                 public static class Counters
                 {
                     public static CounterOptions ActiveRequests = new CounterOptions
@@ -93,7 +103,7 @@ namespace App.Metrics.Extensions.Middleware.Internal
                         Name = "Http Requests",
                         MeasurementUnit = Unit.Requests
                     };
-                }
+                }               
             }
         }
     }

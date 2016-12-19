@@ -17,6 +17,8 @@ namespace App.Metrics.Extensions.Middleware.DependencyInjection.Options
             MetricsTextEndpointEnabled = true;
             PingEndpointEnabled = true;
             OAuth2TrackingEnabled = true;
+            ApdexTrackingEnabled = true;
+            ApdexTSeconds = Metrics.Internal.Constants.ReservoirSampling.DefaultApdexTSeconds;
         }
 
         public string HealthEndpoint { get; set; } = Constants.DefaultRoutePaths.HealthEndpoint.EnsureLeadingSlash();
@@ -34,6 +36,10 @@ namespace App.Metrics.Extensions.Middleware.DependencyInjection.Options
         public bool MetricsTextEndpointEnabled { get; set; }
 
         public bool OAuth2TrackingEnabled { get; set; }
+
+        public bool ApdexTrackingEnabled { get; set; }
+
+        public double ApdexTSeconds { get; set; }
 
         public string PingEndpoint { get; set; } = Constants.DefaultRoutePaths.PingEndpoint.EnsureLeadingSlash();
 

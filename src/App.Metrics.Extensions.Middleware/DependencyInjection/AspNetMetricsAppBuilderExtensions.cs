@@ -58,6 +58,7 @@ namespace Microsoft.AspNetCore.Builder
                 app.UseMiddleware<PerRequestTimerMiddleware>();
                 app.UseMiddleware<PostAndPutRequestSizeHistogramMiddleware>();
                 app.UseMiddleware<RequestTimerMiddleware>();
+                app.UseMiddleware<ApdexMiddleware>();
             }
 
             return app;
