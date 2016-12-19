@@ -138,7 +138,7 @@
   },
   "refresh": "10s",
   "schemaVersion": 13,
-  "version": 2,
+  "version": 5,
   "links": [],
   "gnetId": null,
   "rows": [
@@ -648,7 +648,7 @@
                 [
                   {
                     "params": [
-                      "p98"
+                      "mean"
                     ],
                     "type": "field"
                   },
@@ -715,8 +715,8 @@
           "interval": "$summarize",
           "legend": {
             "alignAsTable": true,
-            "avg": false,
-            "current": true,
+            "avg": true,
+            "current": false,
             "max": false,
             "min": false,
             "rightSide": true,
@@ -768,7 +768,7 @@
                 [
                   {
                     "params": [
-                      "rate.mean"
+                      "rate1m"
                     ],
                     "type": "field"
                   },
@@ -784,7 +784,7 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Error rate (TODO)",
+          "title": "Error Rate",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -803,8 +803,8 @@
               "format": "short",
               "label": null,
               "logBase": 1,
-              "max": "0",
-              "min": "0",
+              "max": null,
+              "min": null,
               "show": true
             },
             {
