@@ -11,6 +11,8 @@ using App.Metrics.DependencyInjection.Internal;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.Internal.Interfaces;
+using App.Metrics.Reporting.Interfaces;
+using App.Metrics.Reporting.Internal;
 using App.Metrics.Serialization;
 using App.Metrics.Serialization.Interfaces;
 using App.Metrics.Utils;
@@ -42,6 +44,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     var globalTags = provider.GetRequiredService<AppMetricsOptions>().GlobalTags;
                     return context => new DefaultMetricContextRegistry(context, new GlobalMetricTags(globalTags));
                 });
+            builder.Services.TryAddSingleton<IReportFactory, NoOpReportFactory>();
             builder.Services.TryAddSingleton<IClock, StopwatchClock>();
             builder.Services.TryAddSingleton<IMetricsFilter, DefaultMetricsFilter>();
             builder.Services.TryAddSingleton<EnvironmentInfoProvider, EnvironmentInfoProvider>();

@@ -69,17 +69,17 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             builder.Services.TryAddSingleton<AppMetricsReportingMarkerService, AppMetricsReportingMarkerService>();
 
-            builder.Services.TryAddSingleton<IReportFactory>(provider =>
+            builder.Services.Replace(ServiceDescriptor.Singleton<IReportFactory>(provider =>
             {
                 var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
                 var options = provider.GetRequiredService<AppMetricsOptions>();
 
-                if (!options.ReportingEnabled) return new NoOpReportFactory();
+                if (!options.ReportingEnabled || setupAction == null) return new NoOpReportFactory();
 
                 var factory = new ReportFactory(loggerFactory);
                 setupAction?.Invoke(factory);
                 return factory;
-            });
+            }));
 
             return builder;
         }
