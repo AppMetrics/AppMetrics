@@ -29,3 +29,4 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("eaaa166f-451b-4066-b62b-6d3fb7f4bf11")]
 [assembly: InternalsVisibleTo("App.Metrics.Extensions.Middleware.Integration.Facts")]
+[assembly: InternalsVisibleTo("App.Metrics.Extensions.Mvc")]

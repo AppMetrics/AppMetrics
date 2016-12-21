@@ -6,12 +6,14 @@ using System;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Internal;
 using App.Metrics.Internal;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
-namespace App.Metrics.Extensions.Middleware.Infrastructure
+// ReSharper disable CheckNamespace
+namespace Microsoft.AspNetCore.Mvc.Filters
+// ReSharper restore CheckNamespace
 {
     public class MetricsResourceFilter : IAsyncResourceFilter
     {
@@ -37,7 +39,7 @@ namespace App.Metrics.Extensions.Middleware.Infrastructure
 
             EnsureServices(context.HttpContext);
 
-            var templateRoute = await _routeNameResolver.ResolveMatchingTemplateRoute(context.RouteData);
+            var templateRoute = await _routeNameResolver.ResolveMatchingTemplateRouteAsync(context.RouteData);
 
             if (!string.IsNullOrEmpty(templateRoute))
             {
@@ -49,11 +51,13 @@ namespace App.Metrics.Extensions.Middleware.Infrastructure
 
         private void EnsureServices(HttpContext context)
         {
-            if (_logger == null)
+            if (_logger != null)
             {
-                var factory = context.RequestServices.GetRequiredService<ILoggerFactory>();
-                _logger = factory.CreateLogger<MetricsResourceFilter>();
+                return;
             }
+
+            var factory = context.RequestServices.GetRequiredService<ILoggerFactory>();
+            _logger = factory.CreateLogger<MetricsResourceFilter>();
         }
     }
 }

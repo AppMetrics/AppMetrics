@@ -5,12 +5,16 @@
     "debugType": "portable"
   },
   "dependencies": {
-    "App.Metrics": "1.0.0-*",
-    "App.Metrics.Extensions.Middleware": "1.0.0-*",
-    "App.Metrics.Formatters.Json": "1.0.0-*",
-    "HealthCheck.Samples": "1.0.0-*",
+    "App.Metrics.Extensions.Mvc": {
+      "target": "project"
+    },
+    "App.Metrics.Formatters.Json": {
+      "target": "project"
+    },
+    "HealthCheck.Samples": {
+      "target": "project"
+    },
     "Microsoft.AspNetCore.Diagnostics": "1.1.0",
-    "Microsoft.AspNetCore.Mvc": "1.1.0",
     "Microsoft.AspNetCore.Server.IISIntegration": "1.1.0",
     "Microsoft.AspNetCore.Server.IISIntegration.Tools": "1.1.0-preview4-final",
     "Microsoft.AspNetCore.Server.Kestrel": "1.1.0",

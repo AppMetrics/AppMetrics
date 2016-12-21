@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-using Microsoft.AspNetCore.Routing;
 using System.Threading.Tasks;
 
-namespace App.Metrics.Extensions.Middleware.Infrastructure
+// ReSharper disable CheckNamespace
+namespace Microsoft.AspNetCore.Routing
+// ReSharper restore CheckNamespace
 {
     public interface IRouteNameResolver
     {
-        Task<string> ResolveMatchingTemplateRoute(RouteData routeData);
+        Task<string> ResolveMatchingTemplateRouteAsync(RouteData routeData);
     }
 }

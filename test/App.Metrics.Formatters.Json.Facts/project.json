@@ -15,7 +15,9 @@
   },
 
   "dependencies": {
-    "App.Metrics.Formatters.Json": "1.0.0-*",
+    "App.Metrics.Formatters.Json": {
+      "target": "project"
+    },
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
     "FluentAssertions": "4.17.0",
     "FluentAssertions.Json": "4.17.0",

@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "App.Metrics": "1.0.0-beta2",
+    "App.Metrics.Extensions.Middleware": "1.0.0-beta2",
+    "Microsoft.AspNetCore.Mvc": "1.1.0",
     "Microsoft.AspNetCore.Routing": "1.1.0",
     "Microsoft.Extensions.DependencyInjection": "1.1.0",
     "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
@@ -17,7 +19,7 @@
     "Microsoft.Extensions.PlatformAbstractions": "1.1.0",
     "NETStandard.Library": "1.6.1"
   },
-  "description": "Extends the App.Metrics library providing a set AspNet Core Middleware Components which will record things like error rates per endpoint and an overall rate, request rates per endpoint and an overall rate etc.",
+  "description": "Extends the App.Metrics library providing a set AspNet Core MVC Components including tracking of endpoints with MVC attribute routes",
   "frameworks": {
     "netstandard1.6": {
       "imports": [
@@ -38,7 +40,8 @@
       "graphite",
       "influxdb",
       "health checks",
-      "metrics"
+      "metrics",
+      "mvc"
     ],
     "repository": {
       "type": "git",

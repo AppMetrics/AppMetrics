@@ -2,10 +2,11 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using App.Metrics.Extensions.Middleware.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Internal;
+using Microsoft.AspNetCore.Routing;
 
 // ReSharper disable CheckNamespace
-
 namespace Microsoft.AspNetCore.Mvc
 // ReSharper restore CheckNamespace
 {
@@ -13,7 +14,7 @@ namespace Microsoft.AspNetCore.Mvc
     {
         public static MvcOptions AddMetricsResourceFilter(this MvcOptions options)
         {
-            options.Filters.Add(new MetricsResourceFilter(new DefaultRouteTemplateResolver()));
+            options.Filters.Add(new MetricsResourceFilter(new MvcRouteTemplateResolver()));
 
             return options;
         }

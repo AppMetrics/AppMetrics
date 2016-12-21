@@ -4,12 +4,24 @@
     "debugType": "portable"
   },
   "dependencies": {
-    "App.Metrics": "1.0.0-*",
-    "App.Metrics.Extensions.Reporting.Console": "1.0.0-*",
-    "App.Metrics.Extensions.Reporting.InfluxDB": "1.0.0-alpha1",
-    "App.Metrics.Extensions.Reporting.TextFile": "1.0.0-*",
-    "HealthCheck.Samples": "1.0.0-*",
-    "Metrics.Samples": "1.0.0-*",
+    "App.Metrics": {
+      "target": "project"
+    },
+    "App.Metrics.Extensions.Reporting.Console": {
+      "target": "project"
+    },
+    "App.Metrics.Extensions.Reporting.InfluxDB": {
+      "target": "project"
+    },
+    "App.Metrics.Extensions.Reporting.TextFile": {
+      "target": "project"
+    },
+    "HealthCheck.Samples": {
+      "target": "project"
+    },
+    "Metrics.Samples": {
+      "target": "project"
+    },
     "Microsoft.Extensions.DependencyInjection": "1.1.0",
     "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
     "Microsoft.Extensions.Logging.Console": "1.1.0",

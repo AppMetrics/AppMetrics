@@ -10,10 +10,14 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
+[assembly: AssemblyTitle("App.Metrics.Extensions.Mvc")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("App.Metrics")]
+[assembly: AssemblyProduct("App.Metrics.Extensions.Mvc")]
+[assembly: AssemblyCopyright("Copyright ©  2016 Allan Hardy")]
 [assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
@@ -21,16 +25,7 @@ using System.Runtime.InteropServices;
 
 [assembly: ComVisible(false)]
 
-
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
-[assembly: Guid("7ad4f2aa-a152-4092-b79f-2648cbedffbc")]
-[assembly: InternalsVisibleTo("App.Metrics.Extensions.Middleware")]
-[assembly: InternalsVisibleTo("App.Metrics.Formatters.Json")]
-[assembly: InternalsVisibleTo("App.Metrics.Facts")]
+[assembly: Guid("674a88be-c701-44d5-bcd7-506a4848b762")]
 [assembly: InternalsVisibleTo("App.Metrics.Extensions.Middleware.Integration.Facts")]
-[assembly: InternalsVisibleTo("App.Metrics.Benchmarks")]
-[assembly: InternalsVisibleTo("App.Metrics.Reservoir.Benchmarks")]
-[assembly: InternalsVisibleTo("App.Metrics.Sampling.Facts")]
-[assembly: InternalsVisibleTo("App.Metrics.Extensions.Reporting.InfluxDB")]
-[assembly: InternalsVisibleTo("App.Metrics.Extensions.Mvc")]

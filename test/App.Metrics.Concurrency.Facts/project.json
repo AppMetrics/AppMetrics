@@ -8,14 +8,13 @@
   },
 
   "buildOptions": {
-    "debugType": "portable",
-    "embed": {
-      "include": ["JsonFiles/*.json"]
-    }
+    "debugType": "portable"    
   },
 
   "dependencies": {
-    "App.Metrics.Concurrency": "1.0.0-*",
+    "App.Metrics.Concurrency": {
+      "target": "project"
+    },
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
     "FluentAssertions": "4.17.0",
     "FluentAssertions.Json": "4.17.0",

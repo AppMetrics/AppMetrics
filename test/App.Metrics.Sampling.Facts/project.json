@@ -10,7 +10,9 @@
   "buildOptions": { "debugType": "portable" },
 
   "dependencies": {
-    "App.Metrics.Extensions.Middleware": "1.0.0-*",
+    "App.Metrics.Extensions.Middleware": {
+      "target": "project"
+    },
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
     "FluentAssertions": "4.17.0",
     "Microsoft.AspNetCore.Routing": "1.1.0",
