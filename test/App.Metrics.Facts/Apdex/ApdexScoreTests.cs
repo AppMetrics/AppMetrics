@@ -61,7 +61,7 @@ namespace App.Metrics.Facts.Apdex
 
             var score = apdexMetric.GetValue().Score;
 
-            score.Should().Be(expected);
+            score.Should().BeApproximately(expected, 2);
         }
 
         [Theory]

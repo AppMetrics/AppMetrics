@@ -72,7 +72,6 @@ namespace Api.InfluxDB.Sample
                 .AddReporting(factory =>
                 {
                     var influxFlushFilter = new DefaultMetricsFilter()
-                        .WhereMetricNameStartsWith("GET api/apdex")                        
                         .WithEnvironmentInfo(false)
                         .WithHealthChecks(false);
 

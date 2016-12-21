@@ -31,7 +31,7 @@ namespace App.Metrics.Core.Interfaces
     ///             </description>
     ///         </item>
     ///         <item>
-    ///             </description>
+    ///             <description>
     ///             Frustrated: Greater than 4 T
     ///             </description>
     ///         </item>
@@ -39,7 +39,7 @@ namespace App.Metrics.Core.Interfaces
     /// </summary>
     /// <seealso>
     ///     <cref>App.Metrics.IResetableMetric</cref>
-    /// </seealso>
+    /// </seealso>    
     public interface IApdex : IResetableMetric
     {
         /// <summary>

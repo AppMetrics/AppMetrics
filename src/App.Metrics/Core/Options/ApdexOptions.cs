@@ -45,7 +45,7 @@ namespace App.Metrics.Core.Options
         ///             </description>
         ///         </item>
         ///         <item>
-        ///             </description>
+        ///             <description>
         ///             Frustrated: Greater than 4 T
         ///             </description>
         ///         </item>
