@@ -17,7 +17,7 @@ $testsRoot = "$solutionRoot\test"
 $globalFilePath = "$solutionRoot\global.json"
 $appProjects = Get-ChildItem "$srcRoot\**\$projectFileName" | foreach { $_.FullName }
 $testProjects = Get-ChildItem "$testsRoot\**\$projectFileName" | foreach { $_.FullName }
-$packableProjectDirectories = @("$srcRoot\App.Metrics", "$srcRoot\App.Metrics.Concurrency", "$srcRoot\App.Metrics.Extensions.Middleware", "$srcRoot\App.Metrics.Formatters.Json", "$srcRoot\App.Metrics.Extensions.Reporting.TextFile","$srcRoot\App.Metrics.Extensions.Reporting.Console","$srcRoot\App.Metrics.Extensions.Reporting.InfluxDB")
+$packableProjectDirectories = @("$srcRoot\App.Metrics", "$srcRoot\App.Metrics.Concurrency", "$srcRoot\App.Metrics.Extensions.Middleware", "$srcRoot\App.Metrics.Extensions.Mvc","$srcRoot\App.Metrics.Formatters.Json", "$srcRoot\App.Metrics.Extensions.Reporting.TextFile","$srcRoot\App.Metrics.Extensions.Reporting.Console","$srcRoot\App.Metrics.Extensions.Reporting.InfluxDB")
 
 task default -depends PatchProject, TestParams, Setup, Build, RunTests, Pack
 
