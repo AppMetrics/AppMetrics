@@ -40,8 +40,7 @@
       "graphite",
       "influxdb",
       "health checks",
-      "metrics",
-      "mvc"
+      "metrics"
     ],
     "repository": {
       "type": "git",
