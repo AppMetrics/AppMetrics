@@ -17,8 +17,14 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
             MetricTags tags = null,
             DateTime? utcTimestamp = null)
         {
-            if (string.IsNullOrEmpty(measurement)) throw new ArgumentException("A measurement name must be specified");
-            if (fields == null || fields.Count == 0) throw new ArgumentException("At least one field must be specified");
+            if (string.IsNullOrEmpty(measurement))
+            {
+                throw new ArgumentException("A measurement name must be specified");
+            }
+            if (fields == null || fields.Count == 0)
+            {
+                throw new ArgumentException("At least one field must be specified");
+            }
 
             if (fields.Any(f => string.IsNullOrEmpty(f.Key)))
             {

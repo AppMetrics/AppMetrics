@@ -10,25 +10,30 @@ using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.Formatting.Humanize;
 using App.Metrics.Reporting.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Extensions.Reporting.Console
 {
     public class ConsoleReporter : IMetricReporter
     {
+        private readonly ILogger<ConsoleReporter> _logger;
         private static readonly string GlobalName =
             $@"{CleanName(Environment.MachineName)}.{CleanName(Process.GetCurrentProcess().ProcessName)}";
 
-        public ConsoleReporter(TimeSpan reportInterval)
-            : this("Console Reporter", reportInterval)
+        public ConsoleReporter(TimeSpan reportInterval, ILoggerFactory loggerFactory)
+            : this("Console Reporter", reportInterval, loggerFactory)
         {
         }
 
-        public ConsoleReporter(string name, TimeSpan reportInterval)
+        public ConsoleReporter(string name, TimeSpan reportInterval, ILoggerFactory loggerFactory)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
+            if (loggerFactory == null) throw new ArgumentNullException(nameof(loggerFactory));
 
             Name = name;
             ReportInterval = reportInterval;
+
+            _logger = loggerFactory.CreateLogger<ConsoleReporter>();
         }
 
         public string Name { get; }
@@ -37,6 +42,7 @@ namespace App.Metrics.Extensions.Reporting.Console
 
         public void Dispose()
         {
+            _logger.LogDebug("Console Reporter Disposed");
         }
 
         public void EndMetricTypeReport(Type metricType)
@@ -46,6 +52,8 @@ namespace App.Metrics.Extensions.Reporting.Console
 
         public void EndReport(IMetrics metrics)
         {
+            _logger.LogDebug("Ending Console Report Run");
+
             WriteLine(string.Format(Environment.NewLine + "-- End {0} Report: {1} - {2} --" + Environment.NewLine,
                 Name, GlobalName, metrics.Advanced.Clock.FormatTimestamp(metrics.Advanced.Clock.UtcDateTime)));
         }
@@ -60,6 +68,8 @@ namespace App.Metrics.Extensions.Reporting.Console
             IEnumerable<HealthCheck.Result> degradedChecks, 
             IEnumerable<HealthCheck.Result> unhealthyChecks)
         {
+            _logger.LogDebug("Writing Health Checks for Console");
+
             var passed = healthyChecks.ToList();
             var failed = unhealthyChecks.ToList();
             var degraded = degradedChecks.ToList();
@@ -92,13 +102,19 @@ namespace App.Metrics.Extensions.Reporting.Console
             WriteLine("\tFAILED CHECKS");
 
             failed.ForEach(c => WriteLine(c.Hummanize()));
+
+            _logger.LogDebug("Writing Health Checks for Console");
         }
 
         public void ReportMetric<T>(string context, MetricValueSource<T> valueSource)
         {
+            _logger.LogDebug("Writing Metric {T} for Console", typeof(T));
+
             WriteLine(valueSource.HumanzizeName(context));
 
             WriteLine(valueSource.Hummanize());
+
+            _logger.LogDebug("Writing Metric {T} for Console", typeof(T));
         }
 
         public void StartMetricTypeReport(Type metricType)
@@ -108,6 +124,8 @@ namespace App.Metrics.Extensions.Reporting.Console
 
         public void StartReport(IMetrics metrics)
         {
+            _logger.LogDebug("Starting Console Report Run");
+
             WriteLine(string.Format(Environment.NewLine + "-- Start {0} Report: {1} - {2} --" + Environment.NewLine,
                 Name, GlobalName, metrics.Advanced.Clock.FormatTimestamp(metrics.Advanced.Clock.UtcDateTime)));
         }

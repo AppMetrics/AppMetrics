@@ -10,32 +10,35 @@ using App.Metrics.Data;
 using App.Metrics.Extensions.Reporting.InfluxDB.Client;
 using App.Metrics.Extensions.Reporting.InfluxDB.Extensions;
 using App.Metrics.Reporting.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Extensions.Reporting.InfluxDB
 {
     public class InfluxDbReporter : IMetricReporter
     {
         private readonly LineProtocolClient _influxDbClient;
+        private readonly ILogger<InfluxDbReporter> _logger;
         private bool _disposed;
         private LineProtocolPayload _payload;
 
         public InfluxDbReporter(Uri serverBaseAddress, string username,
             string password, string database, string breakerRate, TimeSpan interval,
-            string retentionPolicy, string consistency)
+            string retentionPolicy, string consistency, ILoggerFactory loggerFactory)
             : this("InfluxDB Reporter", serverBaseAddress, username, password,
                 database, breakerRate, interval,
-                retentionPolicy, consistency)
+                retentionPolicy, consistency, loggerFactory)
         {
         }
 
         public InfluxDbReporter(string name, Uri serverBaseAddress,
             string username, string password, string database, string breakerRate, TimeSpan interval,
-            string retentionPolicy, string consistency)
+            string retentionPolicy, string consistency, ILoggerFactory loggerFactory)
         {
             ReportInterval = interval;
             Name = name;
 
-            _influxDbClient = new LineProtocolClient(serverBaseAddress, database, username, password, retentionPolicy, consistency, breakerRate);
+            _logger = loggerFactory.CreateLogger<InfluxDbReporter>();
+            _influxDbClient = new LineProtocolClient(serverBaseAddress, database, loggerFactory, username, password, retentionPolicy, consistency, breakerRate);
         }
 
         public string Name { get; }
@@ -59,6 +62,8 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
                 }
             }
 
+            _logger.LogDebug("InfluxDB Reporter Disposed");
+
             _disposed = true;
         }
 
@@ -68,6 +73,8 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 
         public void EndReport(IMetrics metrics)
         {
+            _logger.LogDebug("Ending InfluxDB Report Run");
+            
             _influxDbClient.WriteAsync(_payload).GetAwaiter().GetResult();
         }
 
@@ -80,6 +87,8 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
             IEnumerable<HealthCheck.Result> degradedChecks,
             IEnumerable<HealthCheck.Result> unhealthyChecks)
         {
+            _logger.LogDebug("Packing Health Checks for InfluxDB");
+
             var unhealthy = unhealthyChecks.Any();
             var degraded = degradedChecks.Any();
             var healthy = !unhealthy && !degraded;
@@ -116,10 +125,14 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
                     Pack("health_checks__degraded", healthCheck.Check.Message, tags);
                 }
             }
+
+            _logger.LogDebug("Packed Health Checks for InfluxDB");
         }
 
         public void ReportMetric<T>(string context, MetricValueSource<T> valueSource)
         {
+            _logger.LogDebug("Packing Metric {T} for InfluxDB", typeof(T));
+
             var contextFormatted = context.Replace(" ", "_").ToLowerInvariant();
 
             if (typeof(T) == typeof(double))
@@ -157,6 +170,8 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
                 ReportApdex(contextFormatted, valueSource as MetricValueSource<ApdexValue>);
                 return;
             }
+
+            _logger.LogDebug("Finished Packing Metric {T} for InfluxDB", typeof(T));
         }
 
         public void StartMetricTypeReport(Type metricType)
@@ -165,6 +180,8 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 
         public void StartReport(IMetrics metrics)
         {
+            _logger.LogDebug("Starting InfluxDB Report Run");
+
             _payload = new LineProtocolPayload();
         }
 

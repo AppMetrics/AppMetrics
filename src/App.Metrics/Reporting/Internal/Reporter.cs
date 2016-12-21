@@ -44,7 +44,7 @@ namespace App.Metrics.Reporting.Internal
 
             foreach (var provider in _providers)
             {
-                _metricReporters.Add(provider.Key, provider.Value.CreateMetricReporter(provider.Key.Name));
+                _metricReporters.Add(provider.Key, provider.Value.CreateMetricReporter(provider.Key.Name, _loggerFactory));
             }
         }
 
@@ -77,7 +77,7 @@ namespace App.Metrics.Reporting.Internal
 
             try
             {
-                await Task.WhenAll(reportTasks);
+                await Task.WhenAll(reportTasks);                
             }
             catch (Exception ex)
             {

@@ -4,8 +4,8 @@
 
 using System;
 using System.Collections.Concurrent;
-using App.Metrics.Reporting;
 using App.Metrics.Reporting.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Extensions.Reporting.TextFile
 {
@@ -25,22 +25,22 @@ namespace App.Metrics.Extensions.Reporting.TextFile
             Filter = fitler;
         }
 
+        public IMetricsFilter Filter { get; }
+
         public IReporterSettings Settings => _settings;
 
-        public IMetricReporter CreateMetricReporter(string name)
+        public IMetricReporter CreateMetricReporter(string name, ILoggerFactory loggerFactory)
         {
-            return _reporters.GetOrAdd(name, CreateReporterImplementation);
+            return _reporters.GetOrAdd(name, CreateReporterImplementation(name, loggerFactory));
         }
 
         public void Dispose()
         {
         }
 
-        private TextFileReporter CreateReporterImplementation(string name)
+        private TextFileReporter CreateReporterImplementation(string name, ILoggerFactory loggerFactory)
         {
-            return new TextFileReporter(name, _settings.FileName, _settings.ReportInterval);
+            return new TextFileReporter(name, _settings.FileName, _settings.ReportInterval, loggerFactory);
         }
-
-        public IMetricsFilter Filter { get; }
     }
 }

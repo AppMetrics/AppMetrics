@@ -5,12 +5,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
 {
     public class LineProtocolPayload
     {
-        readonly List<LineProtocolPoint> _points = new List<LineProtocolPoint>();
+        private readonly List<LineProtocolPoint> _points = new List<LineProtocolPoint>();
 
         public void Add(LineProtocolPoint point)
         {
@@ -22,7 +23,9 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
         {
             if (textWriter == null) throw new ArgumentNullException(nameof(textWriter));
 
-            foreach (var point in _points)
+            var points = _points.ToList();
+
+            foreach (var point in points)
             {
                 point.Format(textWriter);
                 textWriter.Write('\n');

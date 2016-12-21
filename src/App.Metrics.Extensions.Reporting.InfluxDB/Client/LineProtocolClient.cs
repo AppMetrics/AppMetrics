@@ -9,6 +9,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Polly;
 
 namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
@@ -22,8 +23,9 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
         private readonly HttpClient _httpClient;
         private readonly Policy _policy;
         private readonly string _retentionPolicy;
+        private readonly ILogger<LineProtocolClient> _logger;
 
-        public LineProtocolClient(Uri serverBaseAddress, string database, string username = null, string password = null,
+        public LineProtocolClient(Uri serverBaseAddress, string database, ILoggerFactory loggerFactory, string username = null, string password = null,
             string retentionPolicy = null, string consistenency = null, string breakerRate = DefaultBreakerRate)
         {
             if (serverBaseAddress == null)
@@ -64,6 +66,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
             _database = database;
             _retentionPolicy = retentionPolicy;
             _consistenency = consistenency;
+            _logger = loggerFactory.CreateLogger<LineProtocolClient>();
         }
 
         public async Task<LineProtocolWriteResult> WriteAsync(LineProtocolPayload payload,
@@ -93,6 +96,15 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
                     ? new LineProtocolWriteResult(true, null)
                     : new LineProtocolWriteResult(false, $"{response.StatusCode} {response.ReasonPhrase}");
             }, cancellationToken);
+
+            if (result.Outcome == OutcomeType.Failure)
+            {
+                _logger.LogError(LoggingEvents.InfluxDbWriteError, result.FinalException, "Failed to write to InfluxDB {error}", result.Result.ErrorMessage);
+            }
+            else
+            {
+                _logger.LogDebug("Successful write to InfluxDB");
+            }
 
             return result.Result;
         }

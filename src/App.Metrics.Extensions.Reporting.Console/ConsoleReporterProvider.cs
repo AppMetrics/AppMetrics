@@ -4,8 +4,8 @@
 
 using System;
 using System.Collections.Concurrent;
-using App.Metrics.Reporting;
 using App.Metrics.Reporting.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Extensions.Reporting.Console
 {
@@ -30,18 +30,18 @@ namespace App.Metrics.Extensions.Reporting.Console
 
         public IReporterSettings Settings => _settings;
 
-        public IMetricReporter CreateMetricReporter(string name)
+        public IMetricReporter CreateMetricReporter(string name, ILoggerFactory loggerFactory)
         {
-            return _reporters.GetOrAdd(name, CreateReporterImplementation);
+            return _reporters.GetOrAdd(name, CreateReporterImplementation(name, loggerFactory));
         }
 
         public void Dispose()
         {
         }
 
-        private ConsoleReporter CreateReporterImplementation(string name)
+        private ConsoleReporter CreateReporterImplementation(string name, ILoggerFactory loggerFactory)
         {
-            return new ConsoleReporter(name, _settings.ReportInterval);
+            return new ConsoleReporter(name, _settings.ReportInterval, loggerFactory);
         }
     }
 }
