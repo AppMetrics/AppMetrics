@@ -15,13 +15,12 @@ namespace App.Metrics.DependencyInjection.Internal
     {
         internal static HashSet<string> ReferenceAssemblies { get; } = new HashSet<string>(StringComparer.Ordinal)
         {
-            "App.Metrics",
-            "App.Metrics.Extensions.Middleware"
+            "App.Metrics"
         };
 
         internal static IEnumerable<Assembly> DiscoverAssemblies(string entryPointAssemblyName)
         {
-            var entryAssembly = Assembly.Load(new AssemblyName(entryPointAssemblyName));
+            var entryAssembly = Assembly.Load(new AssemblyName(entryPointAssemblyName));            
             var context = DependencyContext.Load(Assembly.Load(new AssemblyName(entryPointAssemblyName)));
 
             return GetCandidateAssemblies(entryAssembly, context);

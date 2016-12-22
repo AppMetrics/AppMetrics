@@ -139,7 +139,7 @@ namespace App.Metrics.Internal
             var results = await Task.WhenAll(_healthCheckFactory.Checks.Values.OrderBy(v => v.Name)
                 .Select(v => v.ExecuteAsync()));
 
-            var healthStatus = new HealthStatus(results);
+            var healthStatus = new HealthStatus(results.Where(h => !h.Check.Status.IsIgnored()));
 
             _logger.HealthCheckGetStatusExecuted(healthStatus, startTimestamp);
 

@@ -26,6 +26,8 @@ namespace App.Metrics.Core.Options
             SampleSize = Constants.ReservoirSampling.DefaultSampleSize;
             ExponentialDecayFactor = Constants.ReservoirSampling.DefaultExponentialDecayFactor;
             ApdexTSeconds = Constants.ReservoirSampling.DefaultApdexTSeconds;
+            AllowWarmup = true;
+
         }
 
         /// <summary>
@@ -65,5 +67,11 @@ namespace App.Metrics.Core.Options
         ///     <c>true</c> if [reset on reporting]; otherwise, <c>false</c>.
         /// </value>
         public bool ResetOnReporting { get; set; }
+
+        /// <summary>
+        ///     If set to <c>true</c> allows the service to warmup before starting to calculate the apdex,
+        ///     the score will intitially be 1 until enough samples have been recorded.
+        /// </summary>
+        public bool AllowWarmup { get; set; }
     }
 }

@@ -18,12 +18,13 @@ namespace App.Metrics.Core
     {
         public static IApdexMetric BuildApdex(this IAdvancedMetrics context, ApdexOptions options)
         {
-            return new ApdexMetric(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor, context.Clock, options.ApdexTSeconds);
+            return new ApdexMetric(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor, 
+                context.Clock, options.ApdexTSeconds, options.AllowWarmup);
         }
 
         public static IApdexMetric BuildApdex(this IAdvancedMetrics context, ApdexOptions options, IReservoir reservoir)
         {
-            return new ApdexMetric(new ApdexProvider(reservoir, options.ApdexTSeconds), context.Clock);
+            return new ApdexMetric(new ApdexProvider(reservoir, options.ApdexTSeconds), context.Clock, options.AllowWarmup);
         }
 
         public static ICounterMetric BuildCounter(this IAdvancedMetrics context, CounterOptions options)

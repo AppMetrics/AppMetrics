@@ -1,4 +1,5 @@
-﻿using App.Metrics.Core;
+﻿using System.Linq;
+using App.Metrics.Core;
 using App.Metrics.Internal;
 using App.Metrics.Utils;
 using FluentAssertions;
@@ -14,7 +15,7 @@ namespace App.Metrics.Facts.Metrics
         public ApdexMetricTests()
         {
             _apdex = new ApdexMetric(SamplingType.ExponentiallyDecaying, Constants.ReservoirSampling.DefaultSampleSize,
-                Constants.ReservoirSampling.DefaultSampleSize, _clock, Constants.ReservoirSampling.DefaultApdexTSeconds);
+                Constants.ReservoirSampling.DefaultSampleSize, _clock, Constants.ReservoirSampling.DefaultApdexTSeconds, false);
         }
 
         [Fact]
@@ -32,7 +33,7 @@ namespace App.Metrics.Facts.Metrics
             _apdex.Value.Frustrating.Should().Be(0);
 
             _apdex.Reset();
-
+            
             _apdex.Value.Score.Should().Be(0);
             _apdex.Value.SampleSize.Should().Be(0);
             _apdex.Value.Satisfied.Should().Be(0);

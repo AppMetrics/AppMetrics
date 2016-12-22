@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
 // Ported/Refactored to .NET Standard Library by Allan Hardy
 
@@ -12,31 +11,6 @@ using System.Text;
 
 namespace App.Metrics.Core
 {
-    public enum HealthCheckStatus
-    {
-        Healthy,
-        Degraded,
-        Unhealthy
-    }
-
-    public static class HealthCheckStatusExtensions
-    {
-        public static bool IsHealthy(this HealthCheckStatus status)
-        {
-            return status == HealthCheckStatus.Healthy;
-        }
-
-        public static bool IsUnhealthy(this HealthCheckStatus status)
-        {
-            return status == HealthCheckStatus.Unhealthy;
-        }
-
-        public static bool IsDegraded(this HealthCheckStatus status)
-        {
-            return status == HealthCheckStatus.Degraded;
-        }        
-    }
-
     /// <summary>
     ///     Result of a health check
     /// </summary>
@@ -122,6 +96,15 @@ namespace App.Metrics.Core
         {
             var status = string.Format(message, values);
             return new HealthCheckResult(HealthCheckStatus.Healthy, string.IsNullOrWhiteSpace(status) ? "OK" : status);
+        }
+
+        /// <summary>
+        /// Ignores this health check.
+        /// </summary>
+        /// <returns></returns>
+        public static HealthCheckResult Ignore()
+        {
+            return new HealthCheckResult(HealthCheckStatus.Ignored, "ignored check");
         }
 
         /// <summary>

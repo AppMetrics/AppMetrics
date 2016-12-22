@@ -69,6 +69,7 @@ namespace Microsoft.Extensions.DependencyInjection
             });
 
             builder.Services.TryAddSingleton<IMetrics, DefaultMetrics>();
+            builder.Services.TryAddSingleton(provider => new Lazy<IMetrics>(provider.GetRequiredService<IMetrics>));
             builder.Services.TryAddSingleton(provider => builder.Environment);
         }
     }

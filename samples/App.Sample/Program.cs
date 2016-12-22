@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
@@ -44,7 +42,7 @@ namespace App.Sample
             var setMeterSample = new SetMeterSample(application.Metrics);
             var userValueHistogramSample = new UserValueHistogramSample(application.Metrics);
             var userValueTimerSample = new UserValueTimerSample(application.Metrics);
-            
+
             //var rnd = new Random();
             //foreach (var index in Enumerable.Range(0, 30))
             //{
@@ -76,7 +74,7 @@ namespace App.Sample
                         userValueHistogramSample.RunSomeRequests();
                         //userValueTimerSample.RunSomeRequests(); //TODO: AH - why's this taking so long?
                         simpleMetrics.RunSomeRequests();
-                    }                              
+                    }
 
                     application.Metrics.Gauge(AppMetricsRegistry.Gauges.Errors, () => 1);
                     application.Metrics.Gauge(AppMetricsRegistry.Gauges.PercentGauge, () => 1);
@@ -117,6 +115,10 @@ namespace App.Sample
                 })
                 .AddHealthChecks(factory =>
                 {
+                    factory.RegisterPrivateMemorySizeCheck("Private Memory Size", 200);
+                    factory.RegisterVirtualMemorySizeCheck("Virtual Memory Size", 200);
+                    factory.RegisterWorkingSetCheck("Working Set", 200);
+
                     factory.Register("DatabaseConnected", () => Task.FromResult("Database Connection OK"));
                     factory.Register("DiskSpace", () =>
                     {
@@ -146,7 +148,7 @@ namespace App.Sample
 
                     var influxFilter = new DefaultMetricsFilter()
                         //.WhereType(MetricType.Counter)                        
-                        .WhereMetricTaggedWithKeyValue(new TagKeyValueFilter { {"reporter", "influxdb"} })
+                        .WhereMetricTaggedWithKeyValue(new TagKeyValueFilter { { "reporter", "influxdb" } })
                         .WithHealthChecks(true)
                         .WithEnvironmentInfo(true);
 
@@ -154,7 +156,7 @@ namespace App.Sample
                     {
                         BaseAddress = "http://127.0.0.1:8086",
                         Database = "appmetrics",
-                        ReportInterval = TimeSpan.FromSeconds(5)                        
+                        ReportInterval = TimeSpan.FromSeconds(5)
                     }, influxFilter);
                 });
         }

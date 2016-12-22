@@ -31,7 +31,7 @@ namespace App.Metrics.Facts.Fixtures
 
 
             var apdexMetric = new ApdexMetric(SamplingType.ExponentiallyDecaying, sampleSize,
-                Constants.ReservoirSampling.DefaultExponentialDecayFactor, clock, apdexTSeconds);
+                Constants.ReservoirSampling.DefaultExponentialDecayFactor, clock, apdexTSeconds, false);
 
             if (testSamplePreference == TestSamplePreference.Satisified)
             {

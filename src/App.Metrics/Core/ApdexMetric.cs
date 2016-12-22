@@ -20,6 +20,7 @@ namespace App.Metrics.Core
     {
         private readonly IApdexProvider _apdexProvider;
         private readonly IClock _clock;
+        private readonly bool _allowWarmup;
         private bool _disposed = false;
 
         /// <summary>
@@ -32,8 +33,12 @@ namespace App.Metrics.Core
         ///     value the more biased the reservoir will be towards newer values.
         /// </param>
         /// <param name="clock">The clock to use to measure processing duration.</param>
-        public ApdexMetric(SamplingType samplingType, int sampleSize, double alpha, IClock clock)
-            : this(ApdexProviderBuilder.Build(samplingType, sampleSize, alpha, Constants.ReservoirSampling.DefaultApdexTSeconds), clock)
+        /// <param name="allowWarmup">
+        ///     if set to <c>true</c> allows the service to warmup before starting to calculate the apdex,
+        ///     the score will intitially be 1 until enough samples have been recorded.
+        /// </param>
+        public ApdexMetric(SamplingType samplingType, int sampleSize, double alpha, IClock clock, bool allowWarmup)
+            : this(ApdexProviderBuilder.Build(samplingType, sampleSize, alpha, Constants.ReservoirSampling.DefaultApdexTSeconds), clock, allowWarmup)
         {
         }
 
@@ -48,8 +53,12 @@ namespace App.Metrics.Core
         /// </param>
         /// <param name="clock">The clock to use to measure processing duration.</param>
         /// <param name="apdexTSeconds">The apdex t seconds used to calculate satisfied, tolerating and frustrating counts.</param>
-        public ApdexMetric(SamplingType samplingType, int sampleSize, double alpha, IClock clock, double apdexTSeconds)
-            : this(ApdexProviderBuilder.Build(samplingType, sampleSize, alpha, apdexTSeconds), clock)
+        /// <param name="allowWarmup">
+        ///     if set to <c>true</c> allows the service to warmup before starting to calculate the apdex,
+        ///     the score will intitially be 1 until enough samples have been recorded.
+        /// </param>
+        public ApdexMetric(SamplingType samplingType, int sampleSize, double alpha, IClock clock, double apdexTSeconds, bool allowWarmup)
+            : this(ApdexProviderBuilder.Build(samplingType, sampleSize, alpha, apdexTSeconds), clock, allowWarmup)
         {
         }
 
@@ -58,10 +67,14 @@ namespace App.Metrics.Core
         /// </summary>
         /// <param name="apdexProvider">The apdexProvider implementation to use for sampling values to generate the apdex score.</param>
         /// <param name="clock">The clock to use to measure processing duration.</param>
+        /// <param name="allowWarmup">
+        ///     if set to <c>true</c> allows the service to warmup before starting to calculate the apdex,
+        ///     the score will intitially be 1 until enough samples have been recorded.
+        /// </param>
         /// <exception cref="System.ArgumentNullException">
         ///     clock and apdexProvider are required.
         /// </exception>
-        public ApdexMetric(IApdexProvider apdexProvider, IClock clock)
+        public ApdexMetric(IApdexProvider apdexProvider, IClock clock, bool allowWarmup)
         {
             if (clock == null)
             {
@@ -75,6 +88,7 @@ namespace App.Metrics.Core
 
             _apdexProvider = apdexProvider;
             _clock = clock;
+            _allowWarmup = allowWarmup;
         }
 
         ~ApdexMetric()
@@ -130,7 +144,7 @@ namespace App.Metrics.Core
                 Reset();
             }
 
-            return new ApdexValue(apdex, snapshot.SatisfiedSize, snapshot.ToleratingSize, snapshot.FrustratingSize, totalSamples);
+            return new ApdexValue(apdex, snapshot.SatisfiedSize, snapshot.ToleratingSize, snapshot.FrustratingSize, totalSamples, _allowWarmup);
         }
 
         /// <inheritdoc />

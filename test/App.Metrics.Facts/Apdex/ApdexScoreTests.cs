@@ -30,7 +30,7 @@ namespace App.Metrics.Facts.Apdex
             var clock = new TestClock();
 
             IApdexMetric apdexMetric = new ApdexMetric(SamplingType.ExponentiallyDecaying, sampleSize,
-                Constants.ReservoirSampling.DefaultExponentialDecayFactor, clock, apdexTSeconds);
+                Constants.ReservoirSampling.DefaultExponentialDecayFactor, clock, apdexTSeconds, false);
 
             foreach (var requestNumber in Enumerable.Range(0, 1000))
             {

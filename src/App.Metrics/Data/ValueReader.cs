@@ -11,6 +11,7 @@ namespace App.Metrics.Data
 {
     public static class ValueReader
     {
+        private static readonly ApdexValue EmptyApdex = new ApdexValue(0.0, 0, 0, 0, 0);
         private static readonly CounterValue EmptyCounter = new CounterValue(0);
 
         private static readonly HistogramValue EmptyHistogram = new HistogramValue(0, 0.0, null, 0.0, null, 0.0, 0.0, null, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -57,6 +58,16 @@ namespace App.Metrics.Data
                 return implementation.Value;
             }
             return EmptyTimer;
+        }
+
+        public static ApdexValue GetCurrentValue(IApdex metric)
+        {
+            var implementation = metric as IApdexMetric;
+            if (implementation != null)
+            {
+                return implementation.Value;
+            }
+            return EmptyApdex;
         }
     }
 }

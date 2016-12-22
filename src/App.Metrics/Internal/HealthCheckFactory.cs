@@ -20,6 +20,11 @@ namespace App.Metrics.Internal
 
         public HealthCheckFactory(ILogger<HealthCheckFactory> logger, IEnumerable<HealthCheck> healthChecks)
         {
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
             _logger = logger;
 
             foreach (var check in healthChecks)

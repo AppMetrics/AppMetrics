@@ -38,6 +38,11 @@ namespace App.Metrics
             return valueService.Timers.ValueFor(valueService.Context, metricName);
         }
 
+        public static ApdexValue ApdexValueFor(this MetricsContextValueSource valueService, string metricName)
+        {
+            return valueService.ApdexScores.ValueFor(valueService.Context, metricName);
+        }
+
         public static T ValueFor<T>(this IEnumerable<MetricValueSource<T>> values, string context, string metricName)
         {
             var metricValueSources = values as MetricValueSource<T>[] ?? values.ToArray();

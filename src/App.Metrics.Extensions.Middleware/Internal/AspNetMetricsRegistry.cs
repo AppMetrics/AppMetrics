@@ -39,14 +39,16 @@ namespace App.Metrics.Extensions.Middleware.Internal
 
             public static class HttpRequests
             {
-                public static string ContextName = "Application.HttpRequests";
+                public static string ContextName = "Application.HttpRequests";               
 
                 public static class ApdexScores
                 {
+                    public static readonly string ApdexMetricName = "Apdex";
+
                     public static Func<double, ApdexOptions> Apdex = apdexTSeconds => new ApdexOptions
                     {
                         Context = ContextName,
-                        Name = "Apdex",
+                        Name = ApdexMetricName,
                         ApdexTSeconds = apdexTSeconds
                     };
                 }
