@@ -96,9 +96,9 @@ namespace Api.Sample
                 //})
                 .AddHealthChecks(factory =>
                 {
-                    factory.RegisterPrivateMemorySizeCheck("Private Memory Size", 200);
-                    factory.RegisterVirtualMemorySizeCheck("Virtual Memory Size", 200);
-                    factory.RegisterWorkingSetCheck("Working Set", 200);
+                    factory.RegisterProcessPrivateMemorySizeHealthCheck("Private Memory Size", 200);
+                    factory.RegisterProcessVirtualMemorySizeHealthCheck("Virtual Memory Size", 200);
+                    factory.RegisterProcessPhysicalMemoryHealthCheck("Working Set", 200);
                 })
                 .AddMetricsMiddleware(Configuration.GetSection("AspNetMetrics"));
         }

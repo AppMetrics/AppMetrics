@@ -115,9 +115,9 @@ namespace App.Sample
                 })
                 .AddHealthChecks(factory =>
                 {
-                    factory.RegisterPrivateMemorySizeCheck("Private Memory Size", 200);
-                    factory.RegisterVirtualMemorySizeCheck("Virtual Memory Size", 200);
-                    factory.RegisterWorkingSetCheck("Working Set", 200);
+                    factory.RegisterProcessPrivateMemorySizeHealthCheck("Private Memory Size", 200);
+                    factory.RegisterProcessVirtualMemorySizeHealthCheck("Virtual Memory Size", 200);
+                    factory.RegisterProcessPhysicalMemoryHealthCheck("Working Set", 200);
 
                     factory.Register("DatabaseConnected", () => Task.FromResult("Database Connection OK"));
                     factory.Register("DiskSpace", () =>

@@ -16,7 +16,7 @@ namespace App.Metrics
         /// <param name="name">The name of the health check.</param>
         /// <param name="thresholdBytes">The private memory threshold in bytes.</param>
         /// <returns>The health check factory instance</returns>
-        public static IHealthCheckFactory RegisterPrivateMemorySizeCheck(this IHealthCheckFactory factory, string name, long thresholdBytes)
+        public static IHealthCheckFactory RegisterProcessPrivateMemorySizeHealthCheck(this IHealthCheckFactory factory, string name, long thresholdBytes)
         {
             factory.Register(name, () =>
             {
@@ -37,7 +37,7 @@ namespace App.Metrics
         /// <param name="name">The name of the health check.</param>
         /// <param name="thresholdBytes">The virtual memory threshold in bytes.</param>
         /// <returns>The health check factory instance</returns>
-        public static IHealthCheckFactory RegisterVirtualMemorySizeCheck(this IHealthCheckFactory factory, string name, long thresholdBytes)
+        public static IHealthCheckFactory RegisterProcessVirtualMemorySizeHealthCheck(this IHealthCheckFactory factory, string name, long thresholdBytes)
         {
             factory.Register(name, () =>
             {
@@ -58,7 +58,7 @@ namespace App.Metrics
         /// <param name="name">The name of the health check.</param>
         /// <param name="thresholdBytes">The physical memory threshold in bytes.</param>
         /// <returns>The health check factory instance</returns>
-        public static IHealthCheckFactory RegisterWorkingSetCheck(this IHealthCheckFactory factory, string name, long thresholdBytes)
+        public static IHealthCheckFactory RegisterProcessPhysicalMemoryHealthCheck(this IHealthCheckFactory factory, string name, long thresholdBytes)
         {
             factory.Register(name, () =>
             {
