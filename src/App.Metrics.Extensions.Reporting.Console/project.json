@@ -13,7 +13,7 @@
 
   "dependencies": {
     "Microsoft.Extensions.Logging.Console": "1.1.0",
-    "App.Metrics": "1.0.0-beta2",
+    "App.Metrics": "1.0.0-beta3",
     "Microsoft.Extensions.DependencyInjection": "1.1.0",
     "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
     "Microsoft.Extensions.DependencyModel": "1.1.0",
@@ -51,5 +51,5 @@
     }
   },
   "title": "App.Metrics.Extensions.Reporting.Console",
-  "version": "1.0.0-beta2"
+  "version": "1.0.0-beta3"
 }
