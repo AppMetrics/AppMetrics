@@ -69,16 +69,17 @@ task RunTests -depends Restore, Clean {
 	
 	New-Item $artifactsCodeCoverageRoot -type directory -force	
 	
-	if (-not (Test-Path env:COVERALLS_REPO_TOKEN))
-	{
-		Write-Output "Skipping code coverage publish"
-		$testProjects | foreach {
+	$testProjects | foreach {
 			Write-Output "Running tests for '$_'"		
 			exec { & $codeCoverage "-target:C:\Program Files\dotnet\dotnet.exe" -targetargs:" test -f netcoreapp1.0 -c Release $_" -mergeoutput -hideskipped:All -output:"$artifactsCodeCoverageRoot\coverage.xml" -oldStyle -filter:"+[App.Metrics*]* -[xunit.*]* -[*.Facts]*" -excludebyattribute:"*.ExcludeFromCodeCoverage*" -excludebyfile:"*\*Designer.cs;*\*.g.cs;*\*.g.i.cs" -register:user -skipautoprops -safemode:off }
-		}	
+		}
+	
+	if (-not (Test-Path env:COVERALLS_REPO_TOKEN))
+	{
+		Write-Output "Skipping code coverage publish"		
 	}
 	else 
-	{
+	{		
 		Write-Output "Publishing code coverage"
 		exec { & $coveralls --opencover -i "$artifactsCodeCoverageRoot\coverage.xml" --repoToken $env:COVERALLS_REPO_TOKEN --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID }
 	}		
