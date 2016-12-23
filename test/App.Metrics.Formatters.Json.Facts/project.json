@@ -8,9 +8,9 @@
   },
 
   "buildOptions": {
-    "debugType": "portable",
+    "debugType": "full",
     "embed": {
-      "include": ["JsonFiles/*.json"]
+      "include": [ "JsonFiles/*.json" ]
     }
   },
 

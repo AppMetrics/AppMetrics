@@ -8,7 +8,7 @@
   },
 
   "buildOptions": {
-    "debugType": "portable"    
+    "debugType": "full"
   },
 
   "dependencies": {

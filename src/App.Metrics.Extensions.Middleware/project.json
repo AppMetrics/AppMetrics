@@ -6,7 +6,7 @@
       "CS1591"
     ],
     "xmlDoc": true,
-    "debugType": "portable"
+    "debugType": "full"
   },
   "dependencies": {
     "App.Metrics": "1.0.0-beta2",

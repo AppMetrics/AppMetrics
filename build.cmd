@@ -11,6 +11,8 @@ md .nuget
 IF EXIST packages\psake goto run
 .nuget\NuGet.exe install psake -ExcludeVersion -o packages -nocache
 .nuget\NuGet.exe install newtonsoft.json -Version 7.0.1 -ExcludeVersion -o packages -nocache
+.nuget\NuGet.exe install OpenCover -ExcludeVersion -o packages -nocache
+.nuget\NuGet.exe install coveralls.net -ExcludeVersion -o packages -nocache
 
 :run
 :: Get Psake to Return Non-Zero Return Code on Build Failure (https://github.com/psake/psake/issues/58)

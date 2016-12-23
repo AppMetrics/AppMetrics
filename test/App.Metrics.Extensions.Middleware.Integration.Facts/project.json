@@ -7,7 +7,7 @@
     "win10-x64": {}
   },
 
-  "buildOptions": { "debugType": "portable" },
+  "buildOptions": { "debugType": "full" },
 
   "dependencies": {
     "App.Metrics.Formatters.Json": {

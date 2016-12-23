@@ -7,11 +7,14 @@ Include ".\core\utils.ps1"
 
 $projectFileName = "project.json"
 $solutionRoot = (get-item $PSScriptRoot).parent.fullname
-$jsonlib= "$solutionRoot\packages\Newtonsoft.Json\lib\net45\Newtonsoft.Json.dll"
+$jsonlib = "$solutionRoot\packages\Newtonsoft.Json\lib\net45\Newtonsoft.Json.dll"
+$codeCoverage = "$solutionRoot\packages\OpenCover*\tools\OpenCover.Console.exe"
+$coveralls = "$solutionRoot\packages\coveralls.net*\tools\csmacnz.coveralls.exe"
 $artifactsRoot = "$solutionRoot\artifacts"
 $artifactsBuildRoot = "$artifactsRoot\build"
 $artifactsTestRoot = "$artifactsRoot\test"
 $artifactsPackagesRoot = "$artifactsRoot\packages"
+$artifactsCodeCoverageRoot = "$artifactsRoot\coverage"
 $srcRoot = "$solutionRoot\src"
 $testsRoot = "$solutionRoot\test"
 $globalFilePath = "$solutionRoot\global.json"
@@ -63,10 +66,22 @@ task Build -depends Restore, Clean {
 }
 
 task RunTests -depends Restore, Clean {
-	$testProjects | foreach {
-		Write-Output "Running tests for '$_'"
-		dotnet test  "$_"  
+	
+	New-Item $artifactsCodeCoverageRoot -type directory -force	
+	
+	if (-not (Test-Path env:COVERALLS_REPO_TOKEN))
+	{
+		Write-Output "Skipping code coverage publish"
+		$testProjects | foreach {
+			Write-Output "Running tests for '$_'"		
+			exec { & $codeCoverage "-target:C:\Program Files\dotnet\dotnet.exe" -targetargs:" test -f netcoreapp1.0 -c Release $_" -mergeoutput -hideskipped:All -output:"$artifactsCodeCoverageRoot\coverage.xml" -oldStyle -filter:"+[App.Metrics*]* -[xunit.*]* -[*.Facts]*" -excludebyattribute:"*.ExcludeFromCodeCoverage*" -excludebyfile:"*\*Designer.cs;*\*.g.cs;*\*.g.i.cs" -register:user -skipautoprops -safemode:off }
+		}	
 	}
+	else 
+	{
+		Write-Output "Publishing code coverage"
+		exec { & $coveralls --opencover -i "$artifactsCodeCoverageRoot\coverage.xml" --repoToken $env:COVERALLS_REPO_TOKEN --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID }
+	}		
 }
 
 task PatchProject {

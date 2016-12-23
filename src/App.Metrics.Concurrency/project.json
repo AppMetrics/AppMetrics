@@ -7,7 +7,7 @@
       "CS1570"
     ],
     "xmlDoc": true,
-    "debugType": "portable"
+    "debugType": "full"
   },
   "copyright": "Allan Hardy 2016",
   "description": "Provides useful structures for performing efficient concurrent operations. Original Project: https://github.com/etishor/ConcurrencyUtilities, including a port of Java's LongAdder and Striped64 classes",
