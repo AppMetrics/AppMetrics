@@ -4,6 +4,8 @@
 
 using App.Metrics.Extensions.Middleware.Internal;
 using System;
+using App.Metrics.Core;
+using App.Metrics.Data;
 
 // ReSharper disable CheckNamespace
 
@@ -22,6 +24,17 @@ namespace App.Metrics
         public static IMetrics IncrementActiveRequests(this IMetrics metrics)
         {
             metrics.Increment(AspNetMetricsRegistry.Contexts.HttpRequests.Counters.ActiveRequests);
+
+            return metrics;
+        }
+
+        public static IMetrics ErrorRequestPercentage(this IMetrics metrics)
+        {
+            var errors = metrics.Advanced.Meter(AspNetMetricsRegistry.Contexts.HttpRequests.Meters.HttpErrorRequests);
+            var requests = metrics.Advanced.Timer(AspNetMetricsRegistry.Contexts.HttpRequests.Timers.WebRequestTimer);
+
+            metrics.Advanced.Gauge(AspNetMetricsRegistry.Contexts.HttpRequests.Gauges.PercentageErrorRequests, 
+                () => new HitPercentageGauge(errors, requests, m => m.OneMinuteRate));
 
             return metrics;
         }

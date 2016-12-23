@@ -4,6 +4,7 @@ using System.IO;
 using System.Security.Claims;
 using System.Threading;
 using App.Metrics;
+using App.Metrics.Extensions.Reporting.InfluxDB;
 using App.Metrics.Reporting.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -80,20 +81,20 @@ namespace Api.Sample
                 .AddMetrics(Configuration.GetSection("AppMetrics"))
                 //.AddGlobalFilter(new DefaultMetricsFilter().WhereMetricTaggedWithKeyValue(new TagKeyValueFilter { { "reporter", "influxdb" } }))
                 .AddJsonSerialization()
-                //.AddReporting(factory =>
-                //{
-                //    var influxFilter = new DefaultMetricsFilter()
-                //        //.WhereMetricTaggedWithKeyValue(new TagKeyValueFilter { { "reporter", "influxdb" } })
-                //        .WithHealthChecks(true)
-                //        .WithEnvironmentInfo(true);
+                .AddReporting(factory =>
+                {
+                    var influxFilter = new DefaultMetricsFilter()
+                        //.WhereMetricTaggedWithKeyValue(new TagKeyValueFilter { { "reporter", "influxdb" } })
+                        .WithHealthChecks(true)
+                        .WithEnvironmentInfo(true);
 
-                //    factory.AddInfluxDb(new InfluxDbReporterSettings
-                //    {
-                //        BaseAddress = "http://127.0.0.1:8086",
-                //        Database = "appmetricsapi",
-                //        ReportInterval = TimeSpan.FromSeconds(5)
-                //    }, influxFilter);
-                //})
+                    factory.AddInfluxDb(new InfluxDbReporterSettings
+                    {
+                        BaseAddress = "http://127.0.0.1:8086",
+                        Database = "appmetricsapi",
+                        ReportInterval = TimeSpan.FromSeconds(5)
+                    }, influxFilter);
+                })
                 .AddHealthChecks(factory =>
                 {
                     factory.RegisterProcessPrivateMemorySizeHealthCheck("Private Memory Size", 200);

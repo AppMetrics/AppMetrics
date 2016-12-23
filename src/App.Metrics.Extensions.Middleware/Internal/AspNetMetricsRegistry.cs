@@ -53,6 +53,16 @@ namespace App.Metrics.Extensions.Middleware.Internal
                     };
                 }
 
+                public static class Gauges
+                {
+                    public static GaugeOptions PercentageErrorRequests = new GaugeOptions
+                    {
+                        Context = ContextName,
+                        Name = "Percentage Error Requests",
+                        MeasurementUnit = Unit.Custom("Error Requests")
+                    };                    
+                }
+
                 public static class Counters
                 {
                     public static CounterOptions ActiveRequests = new CounterOptions
@@ -68,7 +78,7 @@ namespace App.Metrics.Extensions.Middleware.Internal
                     public static HistogramOptions PostAndPutRequestSize = new HistogramOptions
                     {
                         Context = ContextName,
-                        Name = "Web Request Post & Put Size",
+                        Name = "Http Request Post & Put Size",
                         MeasurementUnit = Unit.Bytes
                     };
                 }
