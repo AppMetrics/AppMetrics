@@ -1,11 +1,6 @@
 # App Metrics
 
-|Branch|Appveyor|
-|------|:--------:|
-|master|[![Build status](https://ci.appveyor.com/api/projects/status/r4x0et4g6mr5vttf?svg=true)](https://ci.appveyor.com/project/alhardy/appmetrics/branch/master)|
-|dev   |[![Build status](https://ci.appveyor.com/api/projects/status/r4x0et4g6mr5vttf?svg=true)](https://ci.appveyor.com/project/alhardy/appmetrics/branch/dev)|
-
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Build status](https://ci.appveyor.com/api/projects/status/r4x0et4g6mr5vttf?svg=true)](https://ci.appveyor.com/project/alhardy/appmetrics/branch/master) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Coverage Status](https://coveralls.io/repos/github/alhardy/AppMetrics/badge.svg)](https://coveralls.io/github/alhardy/AppMetrics)
 
 |Package|Pre Release|Latest Release|
 |------|:--------:|:--------:|
@@ -43,12 +38,15 @@ App Metrics also provides a health checking system allowing you to monitor the h
 
 **Ported from [Metrics.NET](https://github.com/etishor/Metrics.NET)**
 
-App Metrics is a significant redesign and .NET Standard port of the [Metrics.NET](https://github.com/etishor/Metrics.NET) library, which is a port of the Java [Metrics](https://github.com/dropwizard/metrics) library. This library for now includes the original [sampling code](https://github.com/etishor/Metrics.NET/tree/master/Src/Metrics/Sampling) written by Metrics.NET. Metrics.NET features that have been removed for now are the following:
+App Metrics is a significant redesign and .NET Standard port of the [Metrics.NET](https://github.com/etishor/Metrics.NET) library, which is a port of the Java [Metrics](https://github.com/dropwizard/metrics) library. This library for now includes the original [sampling code](https://github.com/etishor/Metrics.NET/tree/master/Src/Metrics/Sampling) written by Metrics.NET. 
+
+Metrics.NET features that have been removed for now are the following:
 
 1. Visualization, I believe most will be using something like Grafana to visualize their metrics
 2. Remote Metrics
 3. Performance counters as they are windows specific
-4. The Graphite, InfluxDB and Elasticsearch reporters, which can be re-written as an App Metrics Report Provider
+
+App Metrics includes addition features to Metrics.NET, see the [docs](https://alhardy.github.io/app-metrics-docs/getting-started/intro.html) for details.
 
 Why another .NET port? The main reason for porting Metrics.NET was to have it run on .NET Standard. Intially I refactored Metrics.NET stripping out features which required a fairly large refactor such as visualization, however the maintainers did not see .NET Standard or Core a priority at the time. 
 
