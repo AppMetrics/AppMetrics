@@ -4,9 +4,11 @@
 
 using System;
 using System.Globalization;
+using App.Metrics.Internal;
 
 namespace App.Metrics.Utils
 {
+    [AppMetricsExcludeFromCodeCoverage]
     public sealed class SystemClock : IClock
     {
 #pragma warning disable 67

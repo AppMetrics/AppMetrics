@@ -2,11 +2,14 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using App.Metrics.Internal;
 using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Scheduling.Interfaces;
 
 namespace App.Metrics.Reporting.Internal
 {
+
+    [AppMetricsExcludeFromCodeCoverage]
     internal sealed class NoOpReportFactory : IReportFactory
     {
         public void AddProvider(IReporterProvider provider)

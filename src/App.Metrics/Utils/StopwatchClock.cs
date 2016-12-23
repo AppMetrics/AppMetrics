@@ -5,9 +5,11 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using App.Metrics.Internal;
 
 namespace App.Metrics.Utils
 {
+    [AppMetricsExcludeFromCodeCoverage]
     public sealed class StopwatchClock : IClock
     {
         private static readonly long Factor = (1000L * 1000L * 1000L) / Stopwatch.Frequency;

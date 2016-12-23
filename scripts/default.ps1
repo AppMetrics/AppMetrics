@@ -71,7 +71,7 @@ task RunTests -depends Restore, Clean {
 	
 	$testProjects | foreach {
 			Write-Output "Running tests for '$_'"		
-			exec { & $codeCoverage "-target:C:\Program Files\dotnet\dotnet.exe" -targetargs:" test -f netcoreapp1.0 -c Release $_" -mergeoutput -hideskipped:All -output:"$artifactsCodeCoverageRoot\coverage.xml" -oldStyle -filter:"+[App.Metrics*]* -[xunit.*]* -[*.Facts]*" -excludebyattribute:"*.ExcludeFromCodeCoverage*" -excludebyfile:"*\*Designer.cs;*\*.g.cs;*\*.g.i.cs" -register:user -skipautoprops -safemode:off }
+			exec { & $codeCoverage "-target:C:\Program Files\dotnet\dotnet.exe" -targetargs:" test -f netcoreapp1.0 -c Release $_" -mergeoutput -hideskipped:All -output:"$artifactsCodeCoverageRoot\coverage.xml" -oldStyle -filter:"+[App.Metrics*]* -[xunit.*]* -[*.Facts]*" -excludebyattribute:"*.AppMetricsExcludeFromCodeCoverage*" -excludebyfile:"*\*Designer.cs;*\*.g.cs;*\*.g.i.cs" -register:user -skipautoprops -safemode:off }
 		}
 	
 	if (-not (Test-Path env:COVERALLS_REPO_TOKEN))

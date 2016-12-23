@@ -14,6 +14,7 @@ using App.Metrics.Internal.Interfaces;
 
 namespace App.Metrics.Internal
 {
+    [AppMetricsExcludeFromCodeCoverage]
     internal sealed class NullMetricsRegistry : IMetricsRegistry
     {
         public bool AddContext(string context, IMetricContextRegistry registry)

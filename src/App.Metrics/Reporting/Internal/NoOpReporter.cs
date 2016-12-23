@@ -5,10 +5,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.DependencyInjection.Internal;
+using App.Metrics.Internal;
 using App.Metrics.Reporting.Interfaces;
 
 namespace App.Metrics.Reporting.Internal
 {
+    [AppMetricsExcludeFromCodeCoverage]
     internal sealed class NoOpReporter : IReporter
     {
         public void Dispose()
