@@ -47,16 +47,15 @@ namespace Microsoft.Extensions.Logging
             _reportRan(logger, reporter.GetType().FullName, elapsed.TotalMilliseconds, null);
         }
 
-        public static void ReportRunFailed(this ILogger<Reporter> logger, Exception ex)
-        {
-            logger.LogError(AppMetricsEventIds.Reports.Schedule, ex, "Failed to run reports");
-        }
-
         public static void ReportRunning(this ILogger logger, IMetricReporter reporter)
         {
             logger.LogInformation(AppMetricsEventIds.Reports.Schedule, $"Running {reporter.GetType()}");
         }
 
+        public static void ReportFailed(this ILogger logger, IMetricReporter reporter, Exception ex)
+        {
+            logger.LogError(AppMetricsEventIds.Reports.Schedule, ex, $"{reporter.GetType()} failed during execution");
+        }
 
         internal static class AppMetricsEventIds
         {

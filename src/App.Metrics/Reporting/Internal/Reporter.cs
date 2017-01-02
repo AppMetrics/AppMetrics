@@ -56,7 +56,6 @@ namespace App.Metrics.Reporting.Internal
                 return;
             }
 
-            List<Exception> exceptions = null;
             var reportTasks = new List<Task>();
 
             foreach (var metricReporter in _metricReporters)
@@ -70,33 +69,24 @@ namespace App.Metrics.Reporting.Internal
                 reportTasks.Add(ScheduleReport(context, token, metricReporter, provider).WithAggregateException());
             }
 
-            try
-            {
-                Task.WaitAll(reportTasks.ToArray(), token);
-            }
-            catch (Exception ex)
-            {
-                //TODO: AH - confirm exception handlling and log
-                exceptions = new List<Exception> { ex };
-            }
-
-            if (exceptions != null && exceptions.Count > 0)
-            {
-                var aggregateException = new AggregateException(
-                    message: "An error occurred while running reporter(s).",
-                    innerExceptions: exceptions);
-
-                _logger.ReportRunFailed(aggregateException);
-
-                throw aggregateException;
-            }
+            Task.WaitAll(reportTasks.ToArray(), token);
         }
 
         private Task ScheduleReport(IMetrics context, CancellationToken token,
             KeyValuePair<Type, IMetricReporter> metricReporter, IReporterProvider provider)
         {
             return _scheduler.Interval(metricReporter.Value.ReportInterval, TaskCreationOptions.LongRunning,
-                async () => { await _reportGenerator.GenerateAsync(metricReporter.Value, context, provider.Filter, token); },
+                async () =>
+                {
+                    try
+                    {
+                        await _reportGenerator.GenerateAsync(metricReporter.Value, context, provider.Filter, token);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.ReportFailed(metricReporter.Value, ex);
+                    }
+                },
                 token);
         }
     }
