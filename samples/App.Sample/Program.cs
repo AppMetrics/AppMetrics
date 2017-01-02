@@ -43,27 +43,10 @@ namespace App.Sample
             var userValueHistogramSample = new UserValueHistogramSample(application.Metrics);
             var userValueTimerSample = new UserValueTimerSample(application.Metrics);
 
-            //var rnd = new Random();
-            //foreach (var index in Enumerable.Range(0, 30))
-            //{
-            //    using (application.Metrics.Track(AppMetricsRegistry.ApdexScores.AppApdex))
-            //    {
-            //        if (index % 4 == 0)
-            //        {
-            //            Thread.Sleep(rnd.Next(2100, 2200));
-            //        }
-            //        else if (index % 2 == 0)
-            //        {
-            //            Thread.Sleep(rnd.Next(600, 700));
-            //        }
-            //        else
-            //        {
-            //            Thread.Sleep(rnd.Next(0, 300));
-            //        }
-            //    }
-            //}
-
             var cancellationTokenSource = new CancellationTokenSource();
+
+            //cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(10));
+
             var task = scheduler.Interval(
                 TimeSpan.FromMilliseconds(300), TaskCreationOptions.LongRunning,() =>
                 {
@@ -72,7 +55,7 @@ namespace App.Sample
                         setCounterSample.RunSomeRequests();
                         setMeterSample.RunSomeRequests();
                         userValueHistogramSample.RunSomeRequests();
-                        //userValueTimerSample.RunSomeRequests(); //TODO: AH - why's this taking so long?
+                        userValueTimerSample.RunSomeRequests();
                         simpleMetrics.RunSomeRequests();
                     }
 
@@ -100,7 +83,7 @@ namespace App.Sample
 
             application.Reporter.RunReports(application.Metrics, cancellationTokenSource.Token);
 
-            Console.WriteLine("Setup Complete, waiting for report run...");
+            Console.WriteLine("Report Cancelled...");
 
             Console.ReadKey();
         }

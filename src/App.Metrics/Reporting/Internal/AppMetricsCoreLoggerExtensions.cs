@@ -62,6 +62,21 @@ namespace Microsoft.Extensions.Logging
             logger.LogError(AppMetricsEventIds.Reports.Schedule, $"{reporter.GetType()} failed during execution");
         }
 
+        public static void ReportingCancelled(this ILogger logger, OperationCanceledException ex)
+        {
+            logger.LogError(AppMetricsEventIds.Reports.Schedule, ex, "Report execution cancelled");
+        }
+
+        public static void ReportingFailedDuringExecution(this ILogger logger, AggregateException ex)
+        {
+            logger.LogError(AppMetricsEventIds.Reports.Schedule, ex.Flatten(), "Report execution stopped");
+        }
+
+        public static void ReportingDisposedDuringExecution(this ILogger logger, ObjectDisposedException ex)
+        {
+            logger.LogError(AppMetricsEventIds.Reports.Schedule, ex, "Report execution stopped");
+        }
+
         internal static class AppMetricsEventIds
         {
             private const int MetricsStart = 9999;

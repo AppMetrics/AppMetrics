@@ -16,17 +16,17 @@ namespace App.Metrics.Reporting.Internal
 {
     internal sealed class Reporter : IReporter
     {
+        private readonly CounterOptions _failedCounter;
         private readonly ILogger<Reporter> _logger;
         private readonly ILoggerFactory _loggerFactory;
 
         private readonly Dictionary<Type, IMetricReporter> _metricReporters;
+        private readonly IMetrics _metrics;
         private readonly Dictionary<Type, IReporterProvider> _providers;
         private readonly DefaultReportGenerator _reportGenerator;
-        private readonly IMetrics _metrics;
         private readonly IScheduler _scheduler;
 
         private readonly CounterOptions _successCounter;
-        private readonly CounterOptions _failedCounter;
 
         public Reporter(ReportFactory reportFactory, IMetrics metrics, IScheduler scheduler, ILoggerFactory loggerFactory)
         {
@@ -107,7 +107,22 @@ namespace App.Metrics.Reporting.Internal
                 reportTasks.Add(ScheduleReport(context, token, metricReporter, provider).WithAggregateException());
             }
 
-            Task.WaitAll(reportTasks.ToArray(), token);
+            try
+            {
+                Task.WaitAll(reportTasks.ToArray(), token);
+            }
+            catch (OperationCanceledException ex)
+            {
+                _logger.ReportingCancelled(ex);
+            }
+            catch (AggregateException ex)
+            {
+                _logger.ReportingFailedDuringExecution(ex);
+            }
+            catch (ObjectDisposedException ex)
+            {
+                _logger.ReportingDisposedDuringExecution(ex);
+            }
         }
 
         private Task ScheduleReport(IMetrics context, CancellationToken token,
