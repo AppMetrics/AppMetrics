@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.Formatting.Humanize;
@@ -68,10 +69,12 @@ namespace App.Metrics.Reporting
             _buffer.WriteEndMetricType(metricType);
         }
 
-        public void EndReport(IMetrics metrics)
+        public Task EndReportAsync(IMetrics metrics)
         {
             _buffer.WriteMetricEndReport(Name,
                 metrics.Advanced.Clock.FormatTimestamp(metrics.Advanced.Clock.UtcDateTime));
+
+            return Task.CompletedTask;
         }
 
         public void ReportEnvironment(EnvironmentInfo environmentInfo)

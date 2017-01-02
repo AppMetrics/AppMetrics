@@ -4,17 +4,31 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.Reporting.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporting.Internal
 {
     internal class DefaultReportGenerator
     {
+        private readonly ILogger _logger;
+
+        public DefaultReportGenerator(ILoggerFactory loggerFactory)
+        {
+            if (loggerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(loggerFactory));
+            }
+
+            _logger = loggerFactory.CreateLogger<DefaultReportGenerator>();
+        }
+
         internal Task GenerateAsync(IMetricReporter reporter,
             IMetrics metrics,
             CancellationToken token)
@@ -27,6 +41,10 @@ namespace App.Metrics.Reporting.Internal
             IMetricsFilter reporterMetricsFilter,
             CancellationToken token)
         {
+            var startTimestamp = _logger.IsEnabled(LogLevel.Information) ? Stopwatch.GetTimestamp() : 0;
+
+            _logger.ReportedStarted(reporter);
+
             if (reporterMetricsFilter == default(IMetricsFilter))
             {
                 reporterMetricsFilter = metrics.Advanced.GlobalFilter;
@@ -75,13 +93,15 @@ namespace App.Metrics.Reporting.Internal
                 var passed = healthStatus.Results.Where(r => r.Check.Status.IsHealthy());
                 var failed = healthStatus.Results.Where(r => r.Check.Status.IsUnhealthy());
                 var degraded = healthStatus.Results.Where(r => r.Check.Status.IsDegraded());
-                
+
                 reporter.ReportHealth(metrics.Advanced.GlobalTags, passed, degraded, failed);
 
                 reporter.EndMetricTypeReport(typeof(HealthStatus));
             }
 
-            reporter.EndReport(metrics);
+            await reporter.EndReportAsync(metrics);
+
+            _logger.ReportRan(reporter, startTimestamp);
         }
 
         private static void ReportMetricType<T>(IMetricReporter reporter, IEnumerable<T> metrics, Action<T> report, CancellationToken token)

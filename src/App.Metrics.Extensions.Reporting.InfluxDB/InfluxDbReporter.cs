@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.Core.Options;
 using App.Metrics.Data;
@@ -83,11 +84,11 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
         {
         }
 
-        public void EndReport(IMetrics metrics)
+        public async Task EndReportAsync(IMetrics metrics)
         {
             _logger.LogDebug($"Ending {Name} Run");
 
-            var result = _influxDbClient.WriteAsync(_payload).GetAwaiter().GetResult();
+            var result = await _influxDbClient.WriteAsync(_payload);
 
             metrics.Mark(result.Success ? _successMeter : _failedMeter);
         }

@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.Utils;
@@ -12,11 +13,13 @@ namespace App.Metrics.Reporting.Interfaces
 {
     public interface IMetricReporter : IHideObjectMembers, IDisposable
     {
+        string Name { get; }
+
         TimeSpan ReportInterval { get; }
 
         void EndMetricTypeReport(Type metricType);
 
-        void EndReport(IMetrics metrics);
+        Task EndReportAsync(IMetrics metrics);
 
         void ReportEnvironment(EnvironmentInfo environmentInfo);
 

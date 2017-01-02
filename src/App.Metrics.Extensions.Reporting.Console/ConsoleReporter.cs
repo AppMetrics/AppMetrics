@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.Formatting.Humanize;
@@ -50,12 +51,14 @@ namespace App.Metrics.Extensions.Reporting.Console
             WriteLine(metricType.HumanzeEndMetricType());
         }
 
-        public void EndReport(IMetrics metrics)
+        public Task EndReportAsync(IMetrics metrics)
         {
             _logger.LogDebug("Ending Console Report Run");
 
             WriteLine(string.Format(Environment.NewLine + "-- End {0} Report: {1} - {2} --" + Environment.NewLine,
                 Name, GlobalName, metrics.Advanced.Clock.FormatTimestamp(metrics.Advanced.Clock.UtcDateTime)));
+
+            return Task.CompletedTask;
         }
 
         public void ReportEnvironment(EnvironmentInfo environmentInfo)

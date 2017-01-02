@@ -7,6 +7,7 @@ using App.Metrics.Data;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Reporting.Internal;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -20,7 +21,7 @@ namespace App.Metrics.Facts.Reporting
         public ReportGeneratorTests(MetricsReportingFixture fixture)
         {
             _metrics = fixture.Metrics;
-            _reportGenerator = new DefaultReportGenerator();
+            _reportGenerator = new DefaultReportGenerator(new LoggerFactory());
         }
 
         [Fact]
@@ -125,13 +126,13 @@ namespace App.Metrics.Facts.Reporting
         {
             var metricReporter = new Mock<IMetricReporter>();
             metricReporter.Setup(x => x.StartReport(It.IsAny<IMetrics>()));
-            metricReporter.Setup(x => x.EndReport(It.IsAny<IMetrics>()));
+            metricReporter.Setup(x => x.EndReportAsync(It.IsAny<IMetrics>())).Returns(Task.CompletedTask);
             var token = CancellationToken.None;
 
             await _reportGenerator.GenerateAsync(metricReporter.Object, _metrics, token);
 
             metricReporter.Verify(p => p.StartReport(It.IsAny<IMetrics>()), Times.Once);
-            metricReporter.Verify(p => p.EndReport(It.IsAny<IMetrics>()), Times.Once);
+            metricReporter.Verify(p => p.EndReportAsync(It.IsAny<IMetrics>()), Times.Once);
         }
     }
 }

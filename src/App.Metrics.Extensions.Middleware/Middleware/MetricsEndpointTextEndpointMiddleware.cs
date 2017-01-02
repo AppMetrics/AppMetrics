@@ -24,7 +24,7 @@ namespace App.Metrics.Extensions.Middleware.Middleware
             : base(next, aspNetOptions, loggerFactory, metrics)
         {
             _stringReporter = new StringReporter();
-            _reportGenerator = new DefaultReportGenerator();
+            _reportGenerator = new DefaultReportGenerator(loggerFactory);
         }
 
         public async Task Invoke(HttpContext context)
