@@ -7,12 +7,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using App.Metrics.Core;
+using App.Metrics.Internal;
 
 // ReSharper disable CheckNamespace
 
 namespace Microsoft.Extensions.Logging
 // ReSharper restore CheckNamespace
 {
+    [AppMetricsExcludeFromCodeCoverage]
     internal static class AppMetricsCoreLoggerExtensions
     {
         static AppMetricsCoreLoggerExtensions()

@@ -4,14 +4,15 @@
 
 using System;
 using System.Diagnostics;
+using App.Metrics.Internal;
 using App.Metrics.Reporting.Interfaces;
-using App.Metrics.Reporting.Internal;
 
 // ReSharper disable CheckNamespace
 
 namespace Microsoft.Extensions.Logging
 // ReSharper restore CheckNamespace
 {
+    [AppMetricsExcludeFromCodeCoverage]
     internal static class AppMetricsReportingLoggerExtensions
     {
         static AppMetricsReportingLoggerExtensions()
@@ -36,22 +37,6 @@ namespace Microsoft.Extensions.Logging
             _reportStarted(logger, reporter.GetType().FullName, null);
         }
 
-        public static void ReportRan(this ILogger logger, IMetricReporter reporter, long startTimestamp)
-        {
-            if (!logger.IsEnabled(LogLevel.Information)) return;
-            if (startTimestamp == 0) return;
-
-            var currentTimestamp = Stopwatch.GetTimestamp();
-            var elapsed = new TimeSpan((long)(TimestampToTicks * (currentTimestamp - startTimestamp)));
-
-            _reportRan(logger, reporter.GetType().FullName, elapsed.TotalMilliseconds, null);
-        }
-
-        public static void ReportRunning(this ILogger logger, IMetricReporter reporter)
-        {
-            logger.LogInformation(AppMetricsEventIds.Reports.Schedule, $"Running {reporter.GetType()}");
-        }
-
         public static void ReportFailed(this ILogger logger, IMetricReporter reporter, Exception ex)
         {
             logger.LogError(AppMetricsEventIds.Reports.Schedule, ex, $"{reporter.GetType()} failed during execution");
@@ -67,14 +52,30 @@ namespace Microsoft.Extensions.Logging
             logger.LogError(AppMetricsEventIds.Reports.Schedule, ex, "Report execution cancelled");
         }
 
+        public static void ReportingDisposedDuringExecution(this ILogger logger, ObjectDisposedException ex)
+        {
+            logger.LogError(AppMetricsEventIds.Reports.Schedule, ex, "Report execution stopped");
+        }
+
         public static void ReportingFailedDuringExecution(this ILogger logger, AggregateException ex)
         {
             logger.LogError(AppMetricsEventIds.Reports.Schedule, ex.Flatten(), "Report execution stopped");
         }
 
-        public static void ReportingDisposedDuringExecution(this ILogger logger, ObjectDisposedException ex)
+        public static void ReportRan(this ILogger logger, IMetricReporter reporter, long startTimestamp)
         {
-            logger.LogError(AppMetricsEventIds.Reports.Schedule, ex, "Report execution stopped");
+            if (!logger.IsEnabled(LogLevel.Information)) return;
+            if (startTimestamp == 0) return;
+
+            var currentTimestamp = Stopwatch.GetTimestamp();
+            var elapsed = new TimeSpan((long)(TimestampToTicks * (currentTimestamp - startTimestamp)));
+
+            _reportRan(logger, reporter.GetType().FullName, elapsed.TotalMilliseconds, null);
+        }
+
+        public static void ReportRunning(this ILogger logger, IMetricReporter reporter)
+        {
+            logger.LogInformation(AppMetricsEventIds.Reports.Schedule, $"Running {reporter.GetType()}");
         }
 
         internal static class AppMetricsEventIds
