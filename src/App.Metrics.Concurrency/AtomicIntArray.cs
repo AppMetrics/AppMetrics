@@ -41,10 +41,7 @@ namespace App.Metrics.Concurrency
         /// <summary>
         ///     The length of the underlying array
         /// </summary>
-        public int Length
-        {
-            get { return _array.Length; }
-        }
+        public int Length => _array.Length;
 
         /// <summary>
         ///     Returns the size in bytes occupied by an AtomicIntArray instance.

@@ -7,6 +7,7 @@ using App.Metrics.DependencyInjection.Internal;
 
 namespace App.Metrics.Internal
 {
+    [AppMetricsExcludeFromCodeCoverage]
     internal static class MetricsServicesHelper
     {
         /// <summary>

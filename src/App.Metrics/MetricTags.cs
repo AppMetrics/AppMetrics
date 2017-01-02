@@ -53,11 +53,6 @@ namespace App.Metrics
 
             var tagPairs = setItem.Split('|');
 
-            if (tagPairs.Length <= 1)
-            {
-                return tags.With("item", setItem);
-            }
-
             foreach (var keyValue in tagPairs)
             {
                 var tagKeyValue = keyValue.Split(':');

@@ -7,9 +7,11 @@
 
 
 using App.Metrics.Data.Interfaces;
+using App.Metrics.Internal;
 
 namespace App.Metrics.Data
 {
+    [AppMetricsExcludeFromCodeCoverage]
     public static class ConstantValue
     {
         public static IMetricValueProvider<T> Provider<T>(T value)

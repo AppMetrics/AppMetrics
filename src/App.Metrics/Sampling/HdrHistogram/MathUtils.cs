@@ -43,42 +43,6 @@ namespace App.Metrics.Sampling.HdrHistogram
             }
             n -= (int)((uint)x >> 31);
             return n;
-        }
-
-        public static double ULP(double value)
-        {
-            // TODO: HdrHistogram
-
-            // This is actually a constant in the same static class as this method, but 
-            // we put it here for brevity of this example.
-            const double MaxULP = 1.9958403095347198116563727130368E+292;
-
-            if (Double.IsNaN(value))
-            {
-                return Double.NaN;
-            }
-            else if (Double.IsPositiveInfinity(value) || Double.IsNegativeInfinity(value))
-            {
-                return Double.PositiveInfinity;
-            }
-            else if (value == 0.0)
-            {
-                return Double.Epsilon; // Equivalent of Double.MIN_VALUE in Java; Double.MinValue in C# is the actual minimum value a double can hold.
-            }
-            else if (Math.Abs(value) == Double.MaxValue)
-            {
-                return MaxULP;
-            }
-
-            // All you need to understand about DoubleInfo is that it's a helper struct 
-            // that provides more functionality than is used here, but in this situation, 
-            // we only use the `Bits` property, which is just the double converted into a 
-            // long.
-            var bits = BitConverter.DoubleToInt64Bits(value);
-            //DoubleInfo info = new DoubleInfo(value);
-
-            // This is safe because we already checked for value == Double.MaxValue.
-            return Math.Abs(BitConverter.Int64BitsToDouble(bits + 1) - value);
-        }
+        }        
     }
 }

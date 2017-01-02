@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.Data;
+using App.Metrics.Utils;
 
 namespace App.Metrics.Reporting.Interfaces
 {
-    public interface IMetricReporter : IDisposable
+    public interface IMetricReporter : IHideObjectMembers, IDisposable
     {
         string Name { get; }
 

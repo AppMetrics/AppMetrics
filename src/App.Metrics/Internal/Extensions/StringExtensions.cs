@@ -66,21 +66,6 @@ namespace System
         }
 
         [DebuggerStepThrough]
-        internal static bool IsMissingOrTooLong(this string value, int maxLength)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                return true;
-            }
-            if (value.Length > maxLength)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        [DebuggerStepThrough]
         internal static bool IsPresent(this string value)
         {
             return !string.IsNullOrWhiteSpace(value);
@@ -92,17 +77,6 @@ namespace System
             if (url != null && url.StartsWith("/"))
             {
                 url = url.Substring(1);
-            }
-
-            return url;
-        }
-
-        [DebuggerStepThrough]
-        internal static string RemoveTrailingSlash(this string url)
-        {
-            if (url != null && url.EndsWith("/"))
-            {
-                url = url.Substring(0, url.Length - 1);
             }
 
             return url;

@@ -63,6 +63,39 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
+        public void can_get_tags_from_set_item_string()
+        {
+            var expectedTags = new MetricTags().With("item", "machine-1").With("item", "machine-2");
+           
+            var tags = new MetricTags();
+            tags = tags.FromSetItemString("item:machine-1|item:machine-2");
+
+            tags.Should().Equal(expectedTags);
+        }
+
+        [Fact]
+        public void can_get_tags_from_set_item_string_when_single_item()
+        {
+            var expectedTags = new MetricTags().With("item", "machine-1");
+
+            var tags = new MetricTags();
+            tags = tags.FromSetItemString("item:machine-1");
+
+            tags.Should().Equal(expectedTags);
+        }
+
+        [Fact]
+        public void can_get_tags_from_set_item_when_item_is_missing()
+        {
+            var expectedTags = MetricTags.None;
+
+            var tags = new MetricTags();
+            tags = tags.FromSetItemString(string.Empty);
+
+            tags.Should().Equal(expectedTags);
+        }
+
+        [Fact]
         public void can_propergate_value_tags()
         {
             var tags = new MetricTags().With("tag", "value");
@@ -190,7 +223,7 @@ namespace App.Metrics.Facts.Core
         public void Dispose()
         {
             Dispose(true);
-        }
+        }        
 
         [Fact]
         public void does_not_throw_on_metrics_of_different_type_with_same_name()
