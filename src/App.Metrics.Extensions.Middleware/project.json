@@ -11,6 +11,7 @@
   "dependencies": {
     "App.Metrics": "1.0.0-beta3",
     "Microsoft.AspNetCore.Routing": "1.1.0",
+    "Microsoft.AspNetCore.Hosting": "1.1.0",
     "Microsoft.Extensions.DependencyInjection": "1.1.0",
     "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
     "Microsoft.Extensions.Logging": "1.1.0",

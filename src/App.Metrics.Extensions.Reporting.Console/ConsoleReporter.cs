@@ -21,7 +21,7 @@ namespace App.Metrics.Extensions.Reporting.Console
             $@"{CleanName(Environment.MachineName)}.{CleanName(Process.GetCurrentProcess().ProcessName)}";
 
         public ConsoleReporter(TimeSpan reportInterval, ILoggerFactory loggerFactory)
-            : this("Console Reporter", reportInterval, loggerFactory)
+            : this(typeof(ConsoleReporter).Name, reportInterval, loggerFactory)
         {
         }
 

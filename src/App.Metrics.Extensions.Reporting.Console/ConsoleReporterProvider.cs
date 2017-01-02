@@ -3,7 +3,6 @@
 
 
 using System;
-using System.Collections.Concurrent;
 using App.Metrics.Reporting.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -11,7 +10,6 @@ namespace App.Metrics.Extensions.Reporting.Console
 {
     public class ConsoleReporterProvider : IReporterProvider
     {
-        private readonly ConcurrentDictionary<string, ConsoleReporter> _reporters = new ConcurrentDictionary<string, ConsoleReporter>();
         private readonly IConsoleReporterSettings _settings;
 
         public ConsoleReporterProvider(IConsoleReporterSettings settings, IMetricsFilter filter)
@@ -31,15 +29,6 @@ namespace App.Metrics.Extensions.Reporting.Console
         public IReporterSettings Settings => _settings;
 
         public IMetricReporter CreateMetricReporter(string name, ILoggerFactory loggerFactory)
-        {
-            return _reporters.GetOrAdd(name, CreateReporterImplementation(name, loggerFactory));
-        }
-
-        public void Dispose()
-        {
-        }
-
-        private ConsoleReporter CreateReporterImplementation(string name, ILoggerFactory loggerFactory)
         {
             return new ConsoleReporter(name, _settings.ReportInterval, loggerFactory);
         }

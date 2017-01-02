@@ -3,11 +3,14 @@
 
 
 using System;
-using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
-using App.Metrics.Extensions.Middleware.Middleware;
+using App.Metrics;
 using App.Metrics.Configuration;
 using App.Metrics.DependencyInjection.Internal;
+using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
+using App.Metrics.Extensions.Middleware.Middleware;
 using App.Metrics.Internal;
+using App.Metrics.Reporting.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable CheckNamespace
@@ -17,6 +20,15 @@ namespace Microsoft.AspNetCore.Builder
 {
     public static class AspNetMetricsAppBuilderExtensions
     {
+        /// <summary>
+        ///     Adds App Metrics Middleware to the <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder" /> request
+        ///     execution pipeline.
+        /// </summary>
+        /// <param name="app">The <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder" />.</param>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        /// <exception cref="System.ArgumentNullException">
+        ///     <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder" /> cannot be null
+        /// </exception>
         public static IApplicationBuilder UseMetrics(this IApplicationBuilder app)
         {
             if (app == null)
@@ -60,6 +72,39 @@ namespace Microsoft.AspNetCore.Builder
                 app.UseMiddleware<RequestTimerMiddleware>();
                 app.UseMiddleware<ApdexMiddleware>();
             }
+
+            return app;
+        }
+
+        /// <summary>
+        ///     Runs the configured App Metrics Reporting options once the application has started.
+        /// </summary>
+        /// <param name="app">The <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder" />.</param>
+        /// <param name="lifetime">The <see cref="T:Microsoft.AspNetCore.Hosting.IApplicationLifetime" />.</param>
+        /// <returns>
+        ///     A reference to this instance after the operation has completed.
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException">
+        ///     <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder" /> &amp;
+        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IApplicationLifetime" /> cannot be null
+        /// </exception>
+        public static IApplicationBuilder UseMetricsReporting(this IApplicationBuilder app, IApplicationLifetime lifetime)
+        {
+            if (app == null)
+            {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            if (lifetime == null)
+            {
+                throw new ArgumentNullException(nameof(lifetime));
+            }
+
+            var reportFactory = app.ApplicationServices.GetRequiredService<IReportFactory>();
+            var metrics = app.ApplicationServices.GetRequiredService<IMetrics>();
+            var reporter = reportFactory.CreateReporter();
+
+            lifetime.ApplicationStarted.Register(() => { reporter.RunReportsAsync(metrics, lifetime.ApplicationStopping); });
 
             return app;
         }

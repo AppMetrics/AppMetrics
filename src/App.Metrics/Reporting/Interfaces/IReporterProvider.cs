@@ -2,12 +2,11 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using System;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporting.Interfaces
 {
-    public interface IReporterProvider : IDisposable
+    public interface IReporterProvider
     {
         IMetricsFilter Filter { get; }
 

@@ -15,21 +15,24 @@ namespace App.Metrics.Extensions.Reporting.TextFile
 {
     public class TextFileReporter : IMetricReporter
     {
+        private readonly string _name;
         private readonly string _file;
         private readonly ILogger<TextFileReporter> _logger;
         private readonly StringReporter _stringReporter;
         private bool _disposed;
 
         public TextFileReporter(string file, TimeSpan interval, ILoggerFactory loggerFactory)
-            : this("Text File Reporter", file, interval, loggerFactory)
+            : this(typeof(TextFileReporter).Name, file, interval, loggerFactory)
         {
         }
 
         public TextFileReporter(string name, string file, TimeSpan interval, ILoggerFactory loggerFactory)
         {
+            if (name == null) throw new ArgumentNullException(nameof(name));
             if (file == null) throw new ArgumentNullException(nameof(file));
             if (loggerFactory == null) throw new ArgumentNullException(nameof(loggerFactory));
 
+            _name = name;
             _file = file;
             _logger = loggerFactory.CreateLogger<TextFileReporter>();
             _stringReporter = new StringReporter(name);
@@ -57,7 +60,7 @@ namespace App.Metrics.Extensions.Reporting.TextFile
                 }
             }
 
-            _logger.LogDebug("TextFile Reporter Disposed");
+            _logger.LogDebug($"{_name} Disposed");
 
             _disposed = true;
         }
@@ -69,9 +72,9 @@ namespace App.Metrics.Extensions.Reporting.TextFile
 
         public void EndReport(IMetrics metrics)
         {
-            _logger.LogDebug("Ending TextFile Report Run");
-
             _stringReporter.EndReport(metrics);
+
+            _logger.LogDebug($"End {_name} Run");
 
             var file = new FileInfo(_file);
             file.Directory.Create();
@@ -88,21 +91,21 @@ namespace App.Metrics.Extensions.Reporting.TextFile
             IEnumerable<HealthCheck.Result> degradedChecks, 
             IEnumerable<HealthCheck.Result> unhealthyChecks)
         {
-            _logger.LogDebug("Writing Health Checks for TextFile");
+            _logger.LogDebug($"Writing Health Checks for {_name}");
 
             _stringReporter.ReportHealth(globalMetrics, healthyChecks, degradedChecks, unhealthyChecks);
 
-            _logger.LogDebug("Writing Health Checks for TextFile");
+            _logger.LogDebug($"Writing Health Checks for {_name}");
 
         }
 
         public void ReportMetric<T>(string context, MetricValueSource<T> valueSource)
         {
-            _logger.LogDebug("Writing Metric {T} for TextFile", typeof(T));
+            _logger.LogDebug($"Start Writing Metric {typeof(T)} for {_name}");
 
             _stringReporter.ReportMetric(context, valueSource);
 
-            _logger.LogDebug("Writing Metric {T} for TextFile", typeof(T));
+            _logger.LogDebug($"End Writing Metric {typeof(T)} for {_name}");
         }
 
         public void StartMetricTypeReport(Type metricType)
@@ -112,7 +115,7 @@ namespace App.Metrics.Extensions.Reporting.TextFile
 
         public void StartReport(IMetrics metrics)
         {
-            _logger.LogDebug("Starting TextFile Report Run");
+            _logger.LogDebug($"Starting {_name} Run");
 
             _stringReporter.StartReport(metrics);
         }

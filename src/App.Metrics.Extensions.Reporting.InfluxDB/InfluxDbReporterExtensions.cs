@@ -17,7 +17,8 @@ namespace App.Metrics.Reporting.Interfaces
             return factory;
         }
 
-        public static IReportFactory AddInfluxDb(this IReportFactory factory, IMetricsFilter filter = null)
+        public static IReportFactory AddInfluxDb(this IReportFactory factory, 
+            IMetricsFilter filter = null)
         {
             var settings = new InfluxDbReporterSettings();
             factory.AddInfluxDb(settings, filter);

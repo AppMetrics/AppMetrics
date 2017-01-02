@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using System;
 using App.Metrics.Reporting.Interfaces;
 
 namespace App.Metrics.Extensions.Reporting.InfluxDB
@@ -39,7 +40,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
         /// <value>
         ///     The InfluxDB host.
         /// </value>
-        string BaseAddress { get; set; }
+        Uri BaseAddress { get; set; }
 
         /// <summary>
         ///     Gets or sets the InfluxDB database password.

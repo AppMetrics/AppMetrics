@@ -72,12 +72,12 @@ namespace App.Metrics.Reporting.Internal
 
                 logger.ReportRunning(metricReporter.Value);
 
-                reportTasks.Add(ScheduleReport(context, token, metricReporter, logger, provider, settings).WithAggregateException());               
+                reportTasks.Add(ScheduleReport(context, token, metricReporter, logger, provider, settings).WithAggregateException());
             }
 
             try
             {
-                await Task.WhenAll(reportTasks);                
+                await Task.WhenAll(reportTasks);
             }
             catch (Exception ex)
             {

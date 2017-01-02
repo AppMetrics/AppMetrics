@@ -30,6 +30,7 @@ namespace App.Metrics.Internal.Test
         {
         }
 
+        // <inheritdoc />
         public Task Interval(TimeSpan pollInterval, Action action, CancellationToken token)
         {
             _pollInterval = pollInterval;
@@ -38,11 +39,13 @@ namespace App.Metrics.Internal.Test
             return AppMetricsTaskCache.EmptyTask;
         }
 
+        // <inheritdoc />
         public Task Interval(TimeSpan pollInterval, Action action)
         {
             return Interval(pollInterval, action, CancellationToken.None);
         }
 
+        // <inheritdoc />
         public void Stop()
         {
         }
@@ -61,6 +64,6 @@ namespace App.Metrics.Internal.Test
                     _action();
                 }
             }
-        }
+        }    
     }
 }

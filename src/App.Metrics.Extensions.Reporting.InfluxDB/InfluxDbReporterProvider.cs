@@ -3,7 +3,6 @@
 
 
 using System;
-using System.Collections.Concurrent;
 using App.Metrics.Reporting.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -11,7 +10,6 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 {
     public class InfluxDbReporterProvider : IReporterProvider
     {
-        private readonly ConcurrentDictionary<string, InfluxDbReporter> _reporters = new ConcurrentDictionary<string, InfluxDbReporter>();
         private readonly IInfluxDbReporterSettings _settings;
 
         public InfluxDbReporterProvider(IInfluxDbReporterSettings settings, IMetricsFilter fitler)
@@ -31,18 +29,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 
         public IMetricReporter CreateMetricReporter(string name, ILoggerFactory loggerFactory)
         {
-            return _reporters.GetOrAdd(name, CreateReporterImplementation(name, loggerFactory));
-        }
-
-        public void Dispose()
-        {
-        }
-
-        private InfluxDbReporter CreateReporterImplementation(string name, ILoggerFactory loggerFactory)
-        {
-            return new InfluxDbReporter(name, new Uri(_settings.BaseAddress), _settings.Username, _settings.Password, _settings.Database,
-                _settings.BreakerRate, _settings.ReportInterval,
-                _settings.RetentionPolicy, _settings.Consistency, loggerFactory);
+            return new InfluxDbReporter(name, _settings, loggerFactory);
         }
     }
 }

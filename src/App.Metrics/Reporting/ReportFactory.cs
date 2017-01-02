@@ -17,7 +17,6 @@ namespace App.Metrics.Reporting
         private readonly ILoggerFactory _loggerFactory;
         private readonly Dictionary<Type, IReporterProvider> _providers = new Dictionary<Type, IReporterProvider>();
         private readonly object _syncLock = new object();
-        private volatile bool _disposed;
 
         public ReportFactory(ILoggerFactory loggerFactory)
         {
@@ -26,11 +25,6 @@ namespace App.Metrics.Reporting
 
         public void AddProvider(IReporterProvider provider)
         {
-            if (CheckDisposed())
-            {
-                throw new ObjectDisposedException(nameof(ReportFactory));
-            }
-
             lock (_syncLock)
             {
                 _providers.Add(provider.GetType(), provider);
@@ -39,11 +33,6 @@ namespace App.Metrics.Reporting
 
         public IReporter CreateReporter(IScheduler scheduler)
         {
-            if (CheckDisposed())
-            {
-                throw new ObjectDisposedException(nameof(ReportFactory));
-            }
-
             return new Reporter(this, scheduler, _loggerFactory);
         }
 
@@ -52,30 +41,9 @@ namespace App.Metrics.Reporting
             return CreateReporter(new DefaultTaskScheduler());
         }
 
-        public void Dispose()
-        {
-            if (_disposed) return;
-
-            _disposed = true;
-
-            foreach (var provider in _providers)
-            {
-                try
-                {
-                    provider.Value.Dispose();
-                }
-                catch
-                {
-                    // Swallow exceptions on dispose
-                }
-            }
-        }
-
         internal Dictionary<Type, IReporterProvider> GetProviders()
         {
             return _providers;
         }
-
-        private bool CheckDisposed() => _disposed;
     }
 }

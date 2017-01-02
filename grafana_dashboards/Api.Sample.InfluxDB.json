@@ -8,7 +8,7 @@
   "sharedCrosshair": false,
   "hideControls": false,
   "time": {
-    "from": "now-15m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
@@ -138,7 +138,7 @@
   },
   "refresh": "10s",
   "schemaVersion": 13,
-  "version": 13,
+  "version": 15,
   "links": [],
   "gnetId": null,
   "rows": [
@@ -603,12 +603,12 @@
           "interval": "$summarize",
           "legend": {
             "avg": false,
-            "current": false,
+            "current": true,
             "max": false,
             "min": false,
-            "show": false,
+            "show": true,
             "total": false,
-            "values": false
+            "values": true
           },
           "lines": true,
           "linewidth": 1,
@@ -647,7 +647,7 @@
                 [
                   {
                     "params": [
-                      "mean"
+                      "rate1m"
                     ],
                     "type": "field"
                   },
@@ -758,7 +758,7 @@
                 [
                   {
                     "params": [
-                      "mean"
+                      "rate1m"
                     ],
                     "type": "field"
                   },

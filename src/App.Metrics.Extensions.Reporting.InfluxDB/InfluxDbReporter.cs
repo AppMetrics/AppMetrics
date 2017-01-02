@@ -17,33 +17,28 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 {
     public class InfluxDbReporter : IMetricReporter
     {
+        private const string InfluxDbMetricsContext = "influxdb";
+        private readonly MeterOptions _failedMeter;
         private readonly LineProtocolClient _influxDbClient;
         private readonly ILogger<InfluxDbReporter> _logger;
+        private readonly MeterOptions _successMeter;
         private bool _disposed;
         private LineProtocolPayload _payload;
-        private readonly MeterOptions _successMeter;
-        private readonly MeterOptions _failedMeter;
-        private const string InfluxDbMetricsContext = "influxdb";
 
 
-        public InfluxDbReporter(Uri serverBaseAddress, string username,
-            string password, string database, string breakerRate, TimeSpan interval,
-            string retentionPolicy, string consistency, ILoggerFactory loggerFactory)
-            : this("InfluxDB Reporter", serverBaseAddress, username, password,
-                database, breakerRate, interval,
-                retentionPolicy, consistency, loggerFactory)
+        public InfluxDbReporter(IInfluxDbReporterSettings settings, ILoggerFactory loggerFactory)
+            : this(typeof(InfluxDbReporter).Name, settings, loggerFactory)
         {
         }
 
-        public InfluxDbReporter(string name, Uri serverBaseAddress,
-            string username, string password, string database, string breakerRate, TimeSpan interval,
-            string retentionPolicy, string consistency, ILoggerFactory loggerFactory)
+        public InfluxDbReporter(string name, IInfluxDbReporterSettings settings, ILoggerFactory loggerFactory)
         {
-            ReportInterval = interval;
+            ReportInterval = settings.ReportInterval;
             Name = name;
 
             _logger = loggerFactory.CreateLogger<InfluxDbReporter>();
-            _influxDbClient = new LineProtocolClient(serverBaseAddress, database, loggerFactory, username, password, retentionPolicy, consistency, breakerRate);
+            _influxDbClient = new LineProtocolClient(loggerFactory, settings.BaseAddress, settings.Database, settings.Username,
+                settings.Password, settings.RetentionPolicy, settings.Consistency, settings.BreakerRate);
 
             _successMeter = new MeterOptions
             {
@@ -79,7 +74,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
                 }
             }
 
-            _logger.LogDebug("InfluxDB Reporter Disposed");
+            _logger.LogDebug($"{Name} Disposed");
 
             _disposed = true;
         }
@@ -90,8 +85,8 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 
         public void EndReport(IMetrics metrics)
         {
-            _logger.LogDebug("Ending InfluxDB Report Run");
-            
+            _logger.LogDebug($"Ending {Name} Run");
+
             var result = _influxDbClient.WriteAsync(_payload).GetAwaiter().GetResult();
 
             metrics.Mark(result.Success ? _successMeter : _failedMeter);
@@ -106,7 +101,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
             IEnumerable<HealthCheck.Result> degradedChecks,
             IEnumerable<HealthCheck.Result> unhealthyChecks)
         {
-            _logger.LogDebug("Packing Health Checks for InfluxDB");
+            _logger.LogDebug($"Packing Health Checks for {Name}");
 
             var unhealthy = unhealthyChecks.Any();
             var degraded = degradedChecks.Any();
@@ -145,12 +140,12 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
                 }
             }
 
-            _logger.LogDebug("Packed Health Checks for InfluxDB");
+            _logger.LogDebug($"Packed Health Checks for {Name}");
         }
 
         public void ReportMetric<T>(string context, MetricValueSource<T> valueSource)
         {
-            _logger.LogDebug("Packing Metric {T} for InfluxDB", typeof(T));
+            _logger.LogDebug($"Packing Metric {typeof(T)} for {Name}");
 
             var contextFormatted = context.Replace(" ", "_").ToLowerInvariant();
 
@@ -190,7 +185,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
                 return;
             }
 
-            _logger.LogDebug("Finished Packing Metric {T} for InfluxDB", typeof(T));
+            _logger.LogDebug($"Finished Packing Metric {typeof(T)} for {Name}");
         }
 
         public void StartMetricTypeReport(Type metricType)
@@ -199,7 +194,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 
         public void StartReport(IMetrics metrics)
         {
-            _logger.LogDebug("Starting InfluxDB Report Run");
+            _logger.LogDebug($"Starting {Name} Report Run");
 
             _payload = new LineProtocolPayload();
         }

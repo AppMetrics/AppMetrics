@@ -35,8 +35,8 @@ namespace Api.InfluxDB.Sample
 
         public IConfigurationRoot Configuration { get; set; }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, 
+            ILoggerFactory loggerFactory, IApplicationLifetime lifetime)
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
@@ -47,12 +47,8 @@ namespace Api.InfluxDB.Sample
             loggerFactory.AddDebug();
             loggerFactory.AddSerilog(Log.Logger);
 
-            app.UseMetrics();           
-
-            var reportFactory = app.ApplicationServices.GetRequiredService<IReportFactory>();
-            var metrics = app.ApplicationServices.GetRequiredService<IMetrics>();
-            var reporter = reportFactory.CreateReporter();
-            reporter.RunReportsAsync(metrics, CancellationToken.None);
+            app.UseMetrics();
+            app.UseMetricsReporting(lifetime);
 
             app.UseMvc();
         }
@@ -77,7 +73,7 @@ namespace Api.InfluxDB.Sample
 
                     factory.AddInfluxDb(new InfluxDbReporterSettings
                     {
-                        BaseAddress = "http://127.0.0.1:8086",
+                        BaseAddress = new Uri("http://127.0.0.1:8086"),
                         Database = "appmetricsinfluxsample",
                         ReportInterval = TimeSpan.FromSeconds(5)
                     }, filter:influxFlushFilter);

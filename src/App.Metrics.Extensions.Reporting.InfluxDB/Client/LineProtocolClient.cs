@@ -25,8 +25,10 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
         private readonly string _retentionPolicy;
         private readonly ILogger<LineProtocolClient> _logger;
 
-        public LineProtocolClient(Uri serverBaseAddress, string database, ILoggerFactory loggerFactory, string username = null, string password = null,
-            string retentionPolicy = null, string consistenency = null, string breakerRate = DefaultBreakerRate)
+        public LineProtocolClient(ILoggerFactory loggerFactory, 
+            Uri serverBaseAddress, string database, string username = null, 
+            string password = null, string retentionPolicy = null, 
+            string consistenency = null, string breakerRate = DefaultBreakerRate)
         {
             if (serverBaseAddress == null)
             {

@@ -11,7 +11,6 @@ namespace App.Metrics.Extensions.Reporting.TextFile
 {
     public class TextFileReporterProvider : IReporterProvider
     {
-        private readonly ConcurrentDictionary<string, TextFileReporter> _reporters = new ConcurrentDictionary<string, TextFileReporter>();
         private readonly ITextFileReporterSettings _settings;
 
         public TextFileReporterProvider(ITextFileReporterSettings settings, IMetricsFilter fitler)
@@ -30,15 +29,6 @@ namespace App.Metrics.Extensions.Reporting.TextFile
         public IReporterSettings Settings => _settings;
 
         public IMetricReporter CreateMetricReporter(string name, ILoggerFactory loggerFactory)
-        {
-            return _reporters.GetOrAdd(name, CreateReporterImplementation(name, loggerFactory));
-        }
-
-        public void Dispose()
-        {
-        }
-
-        private TextFileReporter CreateReporterImplementation(string name, ILoggerFactory loggerFactory)
         {
             return new TextFileReporter(name, _settings.FileName, _settings.ReportInterval, loggerFactory);
         }

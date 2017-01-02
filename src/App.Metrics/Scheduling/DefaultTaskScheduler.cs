@@ -40,6 +40,7 @@ namespace App.Metrics.Scheduling
             _disposed = true;
         }
 
+        // <inheritdoc />
         public Task Interval(TimeSpan pollInterval, Action action)
         {
             _token = new CancellationTokenSource();
@@ -49,13 +50,16 @@ namespace App.Metrics.Scheduling
                 for (;;)
                 {
                     if (_token.Token.WaitCancellationRequested(pollInterval))
+                    {
                         break;
+                    }
 
                     action();
                 }
-            }, _token.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+            }, _token.Token);
         }
 
+        // <inheritdoc />
         public Task Interval(TimeSpan pollInterval, Action action, CancellationToken token)
         {
             _token = CancellationTokenSource.CreateLinkedTokenSource(token);
@@ -65,13 +69,16 @@ namespace App.Metrics.Scheduling
                 for (;;)
                 {
                     if (token.WaitCancellationRequested(pollInterval))
+                    {
                         break;
+                    }
 
                     action();
                 }
-            }, token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+            }, token);
         }
 
+        // <inheritdoc />
         public void Stop()
         {
             if (CheckDisposed())

@@ -74,10 +74,13 @@ namespace Microsoft.Extensions.DependencyInjection
                 var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
                 var options = provider.GetRequiredService<AppMetricsOptions>();
 
-                if (!options.ReportingEnabled || setupAction == null) return new NoOpReportFactory();
+                if (!options.ReportingEnabled || setupAction == null)
+                {
+                    return new NoOpReportFactory();
+                }
 
                 var factory = new ReportFactory(loggerFactory);
-                setupAction?.Invoke(factory);
+                setupAction.Invoke(factory);
                 return factory;
             }));
 

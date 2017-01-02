@@ -16,7 +16,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 
         public string BreakerRate { get; set; } = "3 / 00:00:30";
 
-        public string BaseAddress { get; set; }
+        public Uri BaseAddress { get; set; }
 
         public string Database { get; set; }
 
