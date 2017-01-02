@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using App.Metrics.Core.Options;
+using App.Metrics.Internal;
 using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Scheduling.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -20,16 +22,36 @@ namespace App.Metrics.Reporting.Internal
         private readonly Dictionary<Type, IMetricReporter> _metricReporters;
         private readonly Dictionary<Type, IReporterProvider> _providers;
         private readonly DefaultReportGenerator _reportGenerator;
+        private readonly IMetrics _metrics;
         private readonly IScheduler _scheduler;
 
-        public Reporter(ReportFactory reportFactory, IScheduler scheduler, ILoggerFactory loggerFactory)
+        private readonly CounterOptions _successCounter;
+        private readonly CounterOptions _failedCounter;
+
+        public Reporter(ReportFactory reportFactory, IMetrics metrics, IScheduler scheduler, ILoggerFactory loggerFactory)
         {
+            if (reportFactory == null)
+            {
+                throw new ArgumentNullException(nameof(reportFactory));
+            }
+
+            if (metrics == null)
+            {
+                throw new ArgumentNullException(nameof(metrics));
+            }
+
+            if (scheduler == null)
+            {
+                throw new ArgumentNullException(nameof(scheduler));
+            }
+
             if (loggerFactory == null)
             {
                 throw new ArgumentNullException(nameof(loggerFactory));
             }
 
             _reportGenerator = new DefaultReportGenerator(loggerFactory);
+            _metrics = metrics;
             _scheduler = scheduler;
             _loggerFactory = loggerFactory;
             _logger = loggerFactory.CreateLogger<Reporter>();
@@ -47,6 +69,22 @@ namespace App.Metrics.Reporting.Internal
             {
                 _metricReporters.Add(provider.Key, provider.Value.CreateMetricReporter(provider.Key.Name, _loggerFactory));
             }
+
+            _successCounter = new CounterOptions
+            {
+                Context = Constants.InternalMetricsContext,
+                MeasurementUnit = Unit.Items,
+                ResetOnReporting = true,
+                Name = "report_success"
+            };
+
+            _failedCounter = new CounterOptions
+            {
+                Context = Constants.InternalMetricsContext,
+                MeasurementUnit = Unit.Items,
+                ResetOnReporting = true,
+                Name = "report_failed"
+            };
         }
 
         public void RunReports(IMetrics context, CancellationToken token)
@@ -80,10 +118,21 @@ namespace App.Metrics.Reporting.Internal
                 {
                     try
                     {
-                        await _reportGenerator.GenerateAsync(metricReporter.Value, context, provider.Filter, token);
+                        var result = await _reportGenerator.GenerateAsync(metricReporter.Value, context, provider.Filter, token);
+
+                        if (result)
+                        {
+                            _metrics.Increment(_successCounter, metricReporter.Key.Name);
+                        }
+                        else
+                        {
+                            _metrics.Increment(_failedCounter, metricReporter.Key.Name);
+                            _logger.ReportFailed(metricReporter.Value);
+                        }
                     }
                     catch (Exception ex)
                     {
+                        _metrics.Increment(_failedCounter, metricReporter.Key.Name);
                         _logger.ReportFailed(metricReporter.Value, ex);
                     }
                 },

@@ -17,6 +17,8 @@ namespace App.Metrics.DependencyInjection.Internal
 
         public static readonly Task<MetricsDataValueSource> EmptyMetricsDataTask = Task.FromResult(MetricsDataValueSource.Empty);
 
+        public static readonly Task<bool> SuccessTask = Task.FromResult(true);
+        public static readonly Task<bool> FailedTask = Task.FromResult(false);
         public static readonly Task<string> EmptyStringTask = Task.FromResult(string.Empty);
         public static readonly Task EmptyTask = Task.FromResult(0);
     }

@@ -26,7 +26,8 @@ namespace App.Metrics.Facts.Reporting
         {
             var interval = TimeSpan.FromSeconds(60);
             var loggerFactory = new LoggerFactory();
-            var factory = new ReportFactory(loggerFactory);
+            var metrics = new Mock<IMetrics>();
+            var factory = new ReportFactory(metrics.Object, loggerFactory);
             var provider = new Mock<IReporterProvider>();
             var scheduler = new Mock<IScheduler>();
             var metricReporter = new Mock<IMetricReporter>();
@@ -38,7 +39,7 @@ namespace App.Metrics.Facts.Reporting
             provider.Setup(p => p.Settings).Returns(settings.Object);
             factory.AddProvider(provider.Object);
 
-            var reporter = new Reporter(factory, scheduler.Object, loggerFactory);
+            var reporter = new Reporter(factory, metrics.Object, scheduler.Object, loggerFactory);
 
             reporter.RunReports(_fixture.Metrics, CancellationToken.None);
 
@@ -49,9 +50,10 @@ namespace App.Metrics.Facts.Reporting
         public void when_null_providers_doest_throw()
         {
             var loggerFactory = new LoggerFactory();
-            var factory = new ReportFactory(loggerFactory);
+            var metrics = new Mock<IMetrics>();
+            var factory = new ReportFactory(metrics.Object, loggerFactory);
             var scheduler = new Mock<IScheduler>();
-            var reporter = new Reporter(factory, scheduler.Object, loggerFactory);
+            var reporter = new Reporter(factory, metrics.Object, scheduler.Object, loggerFactory);
 
             reporter.RunReports(_fixture.Metrics, CancellationToken.None);
         }
@@ -60,7 +62,8 @@ namespace App.Metrics.Facts.Reporting
         public void when_provider_added_the_associated_metric_reporter_is_created()
         {
             var loggerFactory = new LoggerFactory();
-            var factory = new ReportFactory(loggerFactory);
+            var metrics = new Mock<IMetrics>();
+            var factory = new ReportFactory(metrics.Object, loggerFactory);
             var provider = new Mock<IReporterProvider>();
             var scheduler = new Mock<IScheduler>();
             var metricReporter = new Mock<IMetricReporter>();
@@ -68,7 +71,7 @@ namespace App.Metrics.Facts.Reporting
             provider.Setup(p => p.CreateMetricReporter(It.IsAny<string>(), It.IsAny<ILoggerFactory>())).Returns(metricReporter.Object);
             factory.AddProvider(provider.Object);
 
-            var reporter = new Reporter(factory, scheduler.Object, loggerFactory);
+            var reporter = new Reporter(factory, metrics.Object, scheduler.Object, loggerFactory);
 
             provider.Verify(p => p.CreateMetricReporter(It.IsAny<string>(), It.IsAny<ILoggerFactory>()), Times.Once);
 

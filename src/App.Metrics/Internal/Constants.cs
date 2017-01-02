@@ -10,6 +10,8 @@ namespace App.Metrics.Internal
 {
     internal static class Constants
     {
+        public const string InternalMetricsContext = "appmetrics.internal";
+
         public static class Health
         {
             public const string DegradedStatusDisplay = "Degraded";

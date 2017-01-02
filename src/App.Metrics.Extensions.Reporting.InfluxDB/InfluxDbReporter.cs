@@ -18,11 +18,8 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 {
     public class InfluxDbReporter : IMetricReporter
     {
-        private const string InfluxDbMetricsContext = "influxdb";
-        private readonly MeterOptions _failedMeter;
         private readonly LineProtocolClient _influxDbClient;
         private readonly ILogger<InfluxDbReporter> _logger;
-        private readonly MeterOptions _successMeter;
         private bool _disposed;
         private LineProtocolPayload _payload;
 
@@ -40,18 +37,6 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
             _logger = loggerFactory.CreateLogger<InfluxDbReporter>();
             _influxDbClient = new LineProtocolClient(loggerFactory, settings.BaseAddress, settings.Database, settings.Username,
                 settings.Password, settings.RetentionPolicy, settings.Consistency, settings.BreakerRate);
-
-            _successMeter = new MeterOptions
-            {
-                Context = InfluxDbMetricsContext,
-                Name = "report_success"
-            };
-
-            _failedMeter = new MeterOptions
-            {
-                Context = InfluxDbMetricsContext,
-                Name = "report_failed"
-            };
         }
 
         public string Name { get; }
@@ -84,13 +69,13 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
         {
         }
 
-        public async Task EndReportAsync(IMetrics metrics)
+        public async Task<bool> EndReportAsync(IMetrics metrics)
         {
             _logger.LogDebug($"Ending {Name} Run");
 
             var result = await _influxDbClient.WriteAsync(_payload);
 
-            metrics.Mark(result.Success ? _successMeter : _failedMeter);
+            return result.Success;
         }
 
         public void ReportEnvironment(EnvironmentInfo environmentInfo)

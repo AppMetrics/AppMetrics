@@ -72,6 +72,7 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.Replace(ServiceDescriptor.Singleton<IReportFactory>(provider =>
             {
                 var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
+                var metrics = provider.GetRequiredService<IMetrics>();
                 var options = provider.GetRequiredService<AppMetricsOptions>();
 
                 if (!options.ReportingEnabled || setupAction == null)
@@ -79,7 +80,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     return new NoOpReportFactory();
                 }
 
-                var factory = new ReportFactory(loggerFactory);
+                var factory = new ReportFactory(metrics, loggerFactory);
                 setupAction.Invoke(factory);
                 return factory;
             }));

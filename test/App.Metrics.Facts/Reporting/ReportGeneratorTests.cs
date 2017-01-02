@@ -126,7 +126,7 @@ namespace App.Metrics.Facts.Reporting
         {
             var metricReporter = new Mock<IMetricReporter>();
             metricReporter.Setup(x => x.StartReport(It.IsAny<IMetrics>()));
-            metricReporter.Setup(x => x.EndReportAsync(It.IsAny<IMetrics>())).Returns(Task.CompletedTask);
+            metricReporter.Setup(x => x.EndReportAsync(It.IsAny<IMetrics>())).Returns(Task.FromResult(true));
             var token = CancellationToken.None;
 
             await _reportGenerator.GenerateAsync(metricReporter.Object, _metrics, token);

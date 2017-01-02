@@ -39,9 +39,9 @@ namespace App.Metrics.Extensions.Reporting.TextFile
             ReportInterval = interval;
         }
 
-        public TimeSpan ReportInterval { get; }
-
         public string Name { get; }
+
+        public TimeSpan ReportInterval { get; }
 
         public void Dispose()
         {
@@ -71,7 +71,7 @@ namespace App.Metrics.Extensions.Reporting.TextFile
             _stringReporter.EndMetricTypeReport(metricType);
         }
 
-        public async Task EndReportAsync(IMetrics metrics)
+        public async Task<bool> EndReportAsync(IMetrics metrics)
         {
             await _stringReporter.EndReportAsync(metrics);
 
@@ -80,6 +80,8 @@ namespace App.Metrics.Extensions.Reporting.TextFile
             var file = new FileInfo(_file);
             file.Directory.Create();
             File.WriteAllText(_file, _stringReporter.Result);
+
+            return true;
         }
 
         public void ReportEnvironment(EnvironmentInfo environmentInfo)
@@ -88,8 +90,8 @@ namespace App.Metrics.Extensions.Reporting.TextFile
         }
 
         public void ReportHealth(GlobalMetricTags globalMetrics,
-            IEnumerable<HealthCheck.Result> healthyChecks, 
-            IEnumerable<HealthCheck.Result> degradedChecks, 
+            IEnumerable<HealthCheck.Result> healthyChecks,
+            IEnumerable<HealthCheck.Result> degradedChecks,
             IEnumerable<HealthCheck.Result> unhealthyChecks)
         {
             _logger.LogDebug($"Writing Health Checks for {Name}");
@@ -97,7 +99,6 @@ namespace App.Metrics.Extensions.Reporting.TextFile
             _stringReporter.ReportHealth(globalMetrics, healthyChecks, degradedChecks, unhealthyChecks);
 
             _logger.LogDebug($"Writing Health Checks for {Name}");
-
         }
 
         public void ReportMetric<T>(string context, MetricValueSource<T> valueSource)

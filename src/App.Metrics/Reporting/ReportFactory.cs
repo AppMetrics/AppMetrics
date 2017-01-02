@@ -14,12 +14,24 @@ namespace App.Metrics.Reporting
 {
     public sealed class ReportFactory : IReportFactory
     {
+        private readonly IMetrics _metrics;
         private readonly ILoggerFactory _loggerFactory;
         private readonly Dictionary<Type, IReporterProvider> _providers = new Dictionary<Type, IReporterProvider>();
         private readonly object _syncLock = new object();
 
-        public ReportFactory(ILoggerFactory loggerFactory)
+        public ReportFactory(IMetrics metrics, ILoggerFactory loggerFactory)
         {
+            if (metrics == null)
+            {
+                throw new ArgumentNullException(nameof(metrics));
+            }
+
+            if (loggerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(loggerFactory));
+            }
+
+            _metrics = metrics;
             _loggerFactory = loggerFactory;
         }
 
@@ -33,7 +45,7 @@ namespace App.Metrics.Reporting
 
         public IReporter CreateReporter(IScheduler scheduler)
         {
-            return new Reporter(this, scheduler, _loggerFactory);
+            return new Reporter(this, _metrics, scheduler, _loggerFactory);
         }
 
         public IReporter CreateReporter()

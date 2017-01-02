@@ -19,7 +19,7 @@ namespace App.Metrics.Reporting.Interfaces
 
         void EndMetricTypeReport(Type metricType);
 
-        Task EndReportAsync(IMetrics metrics);
+        Task<bool> EndReportAsync(IMetrics metrics);
 
         void ReportEnvironment(EnvironmentInfo environmentInfo);
 

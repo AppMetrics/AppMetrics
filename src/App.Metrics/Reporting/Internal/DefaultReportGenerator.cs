@@ -29,14 +29,14 @@ namespace App.Metrics.Reporting.Internal
             _logger = loggerFactory.CreateLogger<DefaultReportGenerator>();
         }
 
-        internal Task GenerateAsync(IMetricReporter reporter,
+        internal Task<bool> GenerateAsync(IMetricReporter reporter,
             IMetrics metrics,
             CancellationToken token)
         {
             return GenerateAsync(reporter, metrics, metrics.Advanced.GlobalFilter, token);
         }
 
-        internal async Task GenerateAsync(IMetricReporter reporter,
+        internal async Task<bool> GenerateAsync(IMetricReporter reporter,
             IMetrics metrics,
             IMetricsFilter reporterMetricsFilter,
             CancellationToken token)
@@ -99,9 +99,11 @@ namespace App.Metrics.Reporting.Internal
                 reporter.EndMetricTypeReport(typeof(HealthStatus));
             }
 
-            await reporter.EndReportAsync(metrics);
+            var result = await reporter.EndReportAsync(metrics);
 
             _logger.ReportRan(reporter, startTimestamp);
+
+            return result;
         }
 
         private static void ReportMetricType<T>(IMetricReporter reporter, IEnumerable<T> metrics, Action<T> report, CancellationToken token)

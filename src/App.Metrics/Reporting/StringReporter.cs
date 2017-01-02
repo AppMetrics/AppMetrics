@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.Data;
+using App.Metrics.DependencyInjection.Internal;
 using App.Metrics.Formatting.Humanize;
 using App.Metrics.Internal;
 using App.Metrics.Reporting.Interfaces;
@@ -21,7 +22,7 @@ namespace App.Metrics.Reporting
         private bool _disposed;
 
         public StringReporter() :
-            this("String Reporter")
+            this(typeof(StringReporter).Name)
         {
         }
 
@@ -69,12 +70,12 @@ namespace App.Metrics.Reporting
             _buffer.WriteEndMetricType(metricType);
         }
 
-        public Task EndReportAsync(IMetrics metrics)
+        public Task<bool> EndReportAsync(IMetrics metrics)
         {
             _buffer.WriteMetricEndReport(Name,
                 metrics.Advanced.Clock.FormatTimestamp(metrics.Advanced.Clock.UtcDateTime));
 
-            return Task.CompletedTask;
+            return AppMetricsTaskCache.SuccessTask;
         }
 
         public void ReportEnvironment(EnvironmentInfo environmentInfo)

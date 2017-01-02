@@ -57,6 +57,11 @@ namespace Microsoft.Extensions.Logging
             logger.LogError(AppMetricsEventIds.Reports.Schedule, ex, $"{reporter.GetType()} failed during execution");
         }
 
+        public static void ReportFailed(this ILogger logger, IMetricReporter reporter)
+        {
+            logger.LogError(AppMetricsEventIds.Reports.Schedule, $"{reporter.GetType()} failed during execution");
+        }
+
         internal static class AppMetricsEventIds
         {
             private const int MetricsStart = 9999;
