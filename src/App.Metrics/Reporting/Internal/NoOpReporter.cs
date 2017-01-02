@@ -3,8 +3,6 @@
 
 
 using System.Threading;
-using System.Threading.Tasks;
-using App.Metrics.DependencyInjection.Internal;
 using App.Metrics.Internal;
 using App.Metrics.Reporting.Interfaces;
 
@@ -17,9 +15,8 @@ namespace App.Metrics.Reporting.Internal
         {
         }
 
-        public Task RunReportsAsync(IMetrics context, CancellationToken token)
+        public void RunReports(IMetrics context, CancellationToken token)
         {
-            return AppMetricsTaskCache.EmptyTask;
         }
     }
 }

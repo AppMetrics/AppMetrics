@@ -31,7 +31,7 @@ namespace App.Metrics.Internal.Test
         }
 
         // <inheritdoc />
-        public Task Interval(TimeSpan pollInterval, Action action, CancellationToken token)
+        public Task Interval(TimeSpan pollInterval, TaskCreationOptions taskCreationOptions, Action action, CancellationToken token)
         {
             _pollInterval = pollInterval;
             _lastRun = _clock.Seconds;
@@ -40,9 +40,9 @@ namespace App.Metrics.Internal.Test
         }
 
         // <inheritdoc />
-        public Task Interval(TimeSpan pollInterval, Action action)
+        public Task Interval(TimeSpan pollInterval, TaskCreationOptions taskCreationOptions, Action action)
         {
-            return Interval(pollInterval, action, CancellationToken.None);
+            return Interval(pollInterval, taskCreationOptions, action, CancellationToken.None);
         }
 
         // <inheritdoc />

@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace App.Metrics.Core.Interfaces
@@ -14,10 +15,11 @@ namespace App.Metrics.Core.Interfaces
         /// <summary>
         ///     Executes all regsitered health checks within the application
         /// </summary>
+        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         ///     The current health status of the application. A single health check failure will result in an un-healthy
         ///     result
         /// </returns>
-        Task<HealthStatus> ReadStatusAsync();
+        Task<HealthStatus> ReadStatusAsync(CancellationToken cancellationToken = default(CancellationToken));
     }
 }

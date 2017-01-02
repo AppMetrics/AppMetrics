@@ -2,7 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using System.Threading.Tasks;
 using App.Metrics.Data;
 
 namespace App.Metrics.Core.Interfaces
@@ -17,7 +16,7 @@ namespace App.Metrics.Core.Interfaces
         /// </summary>
         /// <param name="context">The metric context to retreive.</param>
         /// <returns>Metrics data belonging to the specified context</returns>
-        Task<MetricsContextValueSource> ReadContextAsync(string context);
+        MetricsContextValueSource ReadContext(string context);
 
         /// <summary>
         ///     Returns the current metrics data for the context for which this provider has been created.
@@ -26,7 +25,7 @@ namespace App.Metrics.Core.Interfaces
         ///     A snapshot of the current metrics data, if a global <see cref="IMetricsFilter" /> is configured this will be
         ///     applied on the result.
         /// </returns>
-        Task<MetricsDataValueSource> ReadDataAsync();
+        MetricsDataValueSource ReadData();
 
         /// <summary>
         ///     Returns the current metrics data for the context for which this provider has been created.
@@ -38,7 +37,7 @@ namespace App.Metrics.Core.Interfaces
         /// <returns>
         ///     A snapshot of the current metrics data filtered by the specified <see cref="IMetricsFilter" />
         /// </returns>
-        Task<MetricsDataValueSource> ReadDataAsync(IMetricsFilter overrideGlobalFilter);
+        MetricsDataValueSource ReadData(IMetricsFilter overrideGlobalFilter);
 
         /// <summary>
         ///     Allows resetting of all metric data at runtime.

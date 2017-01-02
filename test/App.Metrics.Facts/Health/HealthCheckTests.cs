@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.DependencyInjection.Internal;
@@ -16,7 +17,7 @@ namespace App.Metrics.Facts.Health
             var name = "test";
 
             var check1 = new HealthCheck(name, () => ThrowExceptionWithBracketsInMessage());
-            var result1 = await check1.ExecuteAsync();
+            var result1 = await check1.ExecuteAsync(CancellationToken.None);
             result1.Check.Status.Should().Be(HealthCheckStatus.Unhealthy);
 
             var check2 = new HealthCheck(name, () =>
@@ -24,7 +25,7 @@ namespace App.Metrics.Facts.Health
                 ThrowExceptionWithBracketsInMessage();
                 return Task.FromResult("string");
             });
-            var result2 = await check2.ExecuteAsync();
+            var result2 = await check2.ExecuteAsync(CancellationToken.None);
             result2.Check.Status.Should().Be(HealthCheckStatus.Unhealthy);
 
             var check3 = new HealthCheck(name, () =>
@@ -32,7 +33,7 @@ namespace App.Metrics.Facts.Health
                 ThrowExceptionWithBracketsInMessage();
                 return AppMetricsTaskCache.CompletedHealthyTask;
             });
-            var result3 = await check3.ExecuteAsync();
+            var result3 = await check3.ExecuteAsync(CancellationToken.None);
             result3.Check.Status.Should().Be(HealthCheckStatus.Unhealthy);
         }
 
@@ -41,7 +42,7 @@ namespace App.Metrics.Facts.Health
         {
             var name = "test";
             var check1 = new HealthCheck(name, () => ThrowException());
-            var result1 = await check1.ExecuteAsync();
+            var result1 = await check1.ExecuteAsync(CancellationToken.None);
             result1.Check.Status.Should().Be(HealthCheckStatus.Unhealthy);
 
             var check2 = new HealthCheck(name, () =>

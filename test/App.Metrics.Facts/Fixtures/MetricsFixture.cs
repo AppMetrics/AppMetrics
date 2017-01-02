@@ -30,11 +30,11 @@ namespace App.Metrics.Facts.Fixtures
 
         public IMetrics Metrics { get; }
 
-        public Func<IMetrics, Task<MetricsDataValueSource>> CurrentData =>
-            async ctx => await Metrics.Advanced.Data.ReadDataAsync();
+        public Func<IMetrics, MetricsDataValueSource> CurrentData =>
+            ctx => Metrics.Advanced.Data.ReadData();
 
-        public Func<IMetrics, IMetricsFilter, Task<MetricsDataValueSource>> CurrentDataWithFilter
-            => async (ctx, filter) => await Metrics.Advanced.Data.ReadDataAsync(filter);
+        public Func<IMetrics, IMetricsFilter, MetricsDataValueSource> CurrentDataWithFilter
+            => (ctx, filter) => Metrics.Advanced.Data.ReadData(filter);
 
         public void Dispose()
         {

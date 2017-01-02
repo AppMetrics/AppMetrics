@@ -20,7 +20,6 @@ namespace App.Metrics.Data
             OperatingSystemVersion = entries.FirstOrDefault(e => string.Equals(e.Key, "OSVersion", StringComparison.OrdinalIgnoreCase)).Value;
             ProcessorCount = entries.FirstOrDefault(e => string.Equals(e.Key, "CPUCount", StringComparison.OrdinalIgnoreCase)).Value;
             HostName = entries.FirstOrDefault(e => string.Equals(e.Key, "HostName", StringComparison.OrdinalIgnoreCase)).Value;
-            IpAddress = entries.FirstOrDefault(e => string.Equals(e.Key, "IPAddress", StringComparison.OrdinalIgnoreCase)).Value;
             LocalTimeString = entries.FirstOrDefault(e => string.Equals(e.Key, "LocalTime", StringComparison.OrdinalIgnoreCase)).Value;
             EntryAssemblyName = entries.FirstOrDefault(e => string.Equals(e.Key, "EntryAssemblyName", StringComparison.OrdinalIgnoreCase)).Value;
             EntryAssemblyVersion = entries.FirstOrDefault(e => string.Equals(e.Key, "EntryAssemblyVersion", StringComparison.OrdinalIgnoreCase)).Value;
@@ -33,7 +32,6 @@ namespace App.Metrics.Data
                 new EnvironmentInfoEntry("OSVersion", OperatingSystemVersion),
                 new EnvironmentInfoEntry("CPUCount", ProcessorCount),
                 new EnvironmentInfoEntry("HostName", HostName),
-                new EnvironmentInfoEntry("IPAddress", IpAddress),
                 new EnvironmentInfoEntry("LocalTime", LocalTimeString),
                 new EnvironmentInfoEntry("EntryAssemblyName", EntryAssemblyName),
                 new EnvironmentInfoEntry("EntryAssemblyVersion", EntryAssemblyVersion)
@@ -43,7 +41,6 @@ namespace App.Metrics.Data
         public EnvironmentInfo(string entryAssemblyName,
             string entryAssemblyVersion,
             string hostName,
-            string ipAddress,
             string localTimeString,
             string machineName,
             string operatingSystem,
@@ -54,7 +51,6 @@ namespace App.Metrics.Data
             EntryAssemblyName = entryAssemblyName;
             EntryAssemblyVersion = entryAssemblyVersion;
             HostName = hostName;
-            IpAddress = ipAddress;
             LocalTimeString = localTimeString;
             MachineName = machineName;
             OperatingSystem = operatingSystem;
@@ -70,7 +66,6 @@ namespace App.Metrics.Data
                 new EnvironmentInfoEntry("OSVersion", OperatingSystemVersion),
                 new EnvironmentInfoEntry("CPUCount", ProcessorCount.ToString()),
                 new EnvironmentInfoEntry("HostName", HostName),
-                new EnvironmentInfoEntry("IPAddress", IpAddress),
                 new EnvironmentInfoEntry("LocalTime", LocalTimeString),
                 new EnvironmentInfoEntry("EntryAssemblyName", EntryAssemblyName),
                 new EnvironmentInfoEntry("EntryAssemblyVersion", EntryAssemblyVersion)
@@ -86,8 +81,6 @@ namespace App.Metrics.Data
         public string EntryAssemblyVersion { get; }
 
         public string HostName { get; }
-
-        public string IpAddress { get; }
 
         public string LocalTimeString { get; }
 

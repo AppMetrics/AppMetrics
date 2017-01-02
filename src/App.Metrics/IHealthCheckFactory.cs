@@ -6,11 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using App.Metrics.Core;
-using App.Metrics.Utils;
 
 namespace App.Metrics
 {
-    public interface IHealthCheckFactory : IHideObjectMembers
+    public interface IHealthCheckFactory
     {
         IReadOnlyDictionary<string, HealthCheck> Checks { get; }
 

@@ -29,7 +29,8 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 
         public MetricsDataValueSource DataWithOneContext { get; }
 
-        public EnvironmentInfo Env => new EnvironmentInfo("assembly_name", "assembly_version", "host_name", "ip_address", "localtime", "machine_name",
+        public EnvironmentInfo Env => new EnvironmentInfo("assembly_name", "assembly_version", 
+            "host_name", "localtime", "machine_name",
             "os", "os_version", "process_name", "8");
 
         public IEnumerable<GaugeValueSource> Gauges { get; }

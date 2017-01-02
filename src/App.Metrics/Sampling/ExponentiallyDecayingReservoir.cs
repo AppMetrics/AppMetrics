@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using App.Metrics.Concurrency;
 using App.Metrics.Sampling.Interfaces;
 using App.Metrics.Scheduling;
@@ -89,7 +90,7 @@ namespace App.Metrics.Sampling
             _values = new SortedList<double, WeightedSample>(sampleSize, ReverseOrderDoubleComparer.Instance);
 
             _rescaleScheduler = scheduler;
-            _rescaleScheduler.Interval(RescaleInterval, Rescale);
+            _rescaleScheduler.Interval(RescaleInterval, TaskCreationOptions.LongRunning, Rescale);
 
             _startTime = new AtomicLong(clock.Seconds);
         }

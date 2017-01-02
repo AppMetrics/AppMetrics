@@ -10,6 +10,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Data;
 using App.Metrics.Scheduling;
@@ -37,7 +38,7 @@ namespace App.Metrics.Core
             _clock = clock;
             _startTime = _clock.Nanoseconds;
             _tickScheduler = scheduler;
-            _tickScheduler.Interval(TickInterval, Tick);
+            _tickScheduler.Interval(TickInterval, TaskCreationOptions.LongRunning, Tick);
         }
 
         ~MeterMetric()

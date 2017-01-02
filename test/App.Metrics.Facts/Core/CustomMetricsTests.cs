@@ -21,7 +21,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public async Task can_register_custom_counter()
+        public void can_register_custom_counter()
         {
             var counterOptions = new CounterOptions
             {
@@ -32,7 +32,7 @@ namespace App.Metrics.Facts.Core
             counter.Should().BeOfType<CustomCounter>();
             counter.Increment();
 
-            var data = await _fixture.Metrics.Advanced.Data.ReadDataAsync();
+            var data = _fixture.Metrics.Advanced.Data.ReadData();
             var context = data.Contexts.Single();
 
             context.Counters.Single().Value.Count.Should().Be(10L);

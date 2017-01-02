@@ -19,7 +19,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public async Task can_clear_metrics_at_runtime()
+        public void can_clear_metrics_at_runtime()
         {
             var counterOptions = new CounterOptions
             {
@@ -30,18 +30,18 @@ namespace App.Metrics.Facts.Core
 
             counter.Increment();
 
-            var data = await _fixture.CurrentData(_fixture.Metrics);
+            var data = _fixture.CurrentData(_fixture.Metrics);
             var counterValue = data.Contexts.Single().Counters.Single();
             counterValue.Value.Count.Should().Be(1);
 
             _fixture.Metrics.Advanced.Data.Reset();
 
-            data = await _fixture.CurrentData(_fixture.Metrics);
+            data = _fixture.CurrentData(_fixture.Metrics);
             data.Contexts.Should().BeNullOrEmpty();
         }
 
         [Fact]
-        public async Task can_disable_metrics_at_runtime()
+        public void can_disable_metrics_at_runtime()
         {
             var counterOptions = new CounterOptions
             {
@@ -52,18 +52,18 @@ namespace App.Metrics.Facts.Core
 
             counter.Increment();
 
-            var data = await _fixture.CurrentData(_fixture.Metrics);
+            var data = _fixture.CurrentData(_fixture.Metrics);
             var counterValue = data.Contexts.Single().Counters.Single();
             counterValue.Value.Count.Should().Be(1);
 
             _fixture.Metrics.Advanced.Disable();
 
-            data = await _fixture.CurrentData(_fixture.Metrics);
+            data = _fixture.CurrentData(_fixture.Metrics);
             data.Contexts.Should().BeNullOrEmpty();
         }
 
         [Fact]
-        public async Task can_propergate_value_tags()
+        public void can_propergate_value_tags()
         {
             var tags = new MetricTags().With("tag", "value");
             var counterOptions = new CounterOptions
@@ -99,7 +99,7 @@ namespace App.Metrics.Facts.Core
             _fixture.Metrics.Update(histogramOptions, 1);
             _fixture.Metrics.Time(timerOptions, () => { });
 
-            var data = await _fixture.CurrentData(_fixture.Metrics);
+            var data = _fixture.CurrentData(_fixture.Metrics);
             var context = data.Contexts.Single();
 
             context.Counters.Single().Tags.Should().Equals(tags);
@@ -109,7 +109,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public async Task can_record_metric_in_new_context()
+        public void can_record_metric_in_new_context()
         {
             var counterOptions = new CounterOptions
             {
@@ -120,7 +120,7 @@ namespace App.Metrics.Facts.Core
 
             _fixture.Metrics.Increment(counterOptions);
 
-            var data = await _fixture.CurrentData(_fixture.Metrics);
+            var data = _fixture.CurrentData(_fixture.Metrics);
 
             data.Contexts.Should().Contain(g => g.Context == "test");
 
@@ -130,7 +130,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public async Task can_shutdown_metric_contexts()
+        public void can_shutdown_metric_contexts()
         {
             var context = "test";
             var counterOptions = new CounterOptions
@@ -142,13 +142,13 @@ namespace App.Metrics.Facts.Core
 
             _fixture.Metrics.Advanced.Counter(counterOptions).Increment();
 
-            var data = await _fixture.CurrentData(_fixture.Metrics);
+            var data = _fixture.CurrentData(_fixture.Metrics);
 
             data.Contexts.First(g => g.Context == context).Counters.Single().Name.Should().Be("test");
 
             _fixture.Metrics.Advanced.Data.ShutdownContext(context);
 
-            data = await _fixture.CurrentData(_fixture.Metrics);
+            data = _fixture.CurrentData(_fixture.Metrics);
 
             data.Contexts.FirstOrDefault(g => g.Context == context).Should().BeNull("because the context was shutdown");
         }
@@ -169,7 +169,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public async Task data_provider_reflects_new_metrics()
+        public void data_provider_reflects_new_metrics()
         {
             var counterOptions = new CounterOptions
             {
@@ -179,7 +179,7 @@ namespace App.Metrics.Facts.Core
 
             _fixture.Metrics.Advanced.Counter(counterOptions).Increment();
 
-            var data = await _fixture.CurrentData(_fixture.Metrics);
+            var data = _fixture.CurrentData(_fixture.Metrics);
             var context = data.Contexts.Single();
 
             context.Counters.Should().HaveCount(1);
@@ -239,7 +239,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public async Task metrics_added_are_visible_in_the_data_provider()
+        public void metrics_added_are_visible_in_the_data_provider()
         {
             var context = "test";
             var counterOptions = new CounterOptions
@@ -250,17 +250,17 @@ namespace App.Metrics.Facts.Core
             };
             var dataProvider = _fixture.Metrics.Advanced.Data;
 
-            var data = await dataProvider.ReadDataAsync();
+            var data = dataProvider.ReadData();
 
             data.Contexts.FirstOrDefault(g => g.Context == context).Should().BeNull("the context hasn't been added yet");
             _fixture.Metrics.Advanced.Counter(counterOptions).Increment();
 
-            data = await dataProvider.ReadDataAsync();
+            data = dataProvider.ReadData();
             data.Contexts.First(g => g.Context == context).Counters.Should().HaveCount(1);
         }
 
         [Fact]
-        public async Task metrics_are_present_in_metrics_data()
+        public void metrics_are_present_in_metrics_data()
         {
             var counterOptions = new CounterOptions
             {
@@ -271,7 +271,7 @@ namespace App.Metrics.Facts.Core
 
             counter.Increment();
 
-            var data = await _fixture.CurrentData(_fixture.Metrics);
+            var data = _fixture.CurrentData(_fixture.Metrics);
 
             var counterValue = data.Contexts.Single().Counters.Single();
 

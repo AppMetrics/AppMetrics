@@ -33,7 +33,7 @@ namespace App.Metrics.Extensions.Middleware.Middleware
             {
                 Logger.MiddlewareExecuting(GetType());
                 
-                await _reportGenerator.Generate(_stringReporter, Metrics, context.RequestAborted);
+                await _reportGenerator.GenerateAsync(_stringReporter, Metrics, context.RequestAborted);
 
                 await WriteResponseAsync(context, _stringReporter.Result, "text/plain");
 

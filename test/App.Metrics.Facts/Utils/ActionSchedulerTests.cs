@@ -17,7 +17,7 @@ namespace App.Metrics.Facts.Utils
                 var data = 0;
                 var completionSource = new TaskCompletionSource<bool>();
 
-                scheduler.Interval(TimeSpan.FromMilliseconds(20), () =>
+                scheduler.Interval(TimeSpan.FromMilliseconds(20), TaskCreationOptions.LongRunning, () =>
                 {
                     data++;
                     completionSource.SetResult(true);
@@ -38,7 +38,7 @@ namespace App.Metrics.Facts.Utils
                 var data = 0;
                 var completionSource = new TaskCompletionSource<bool>();
 
-                scheduler.Interval(TimeSpan.FromMilliseconds(20), () =>
+                scheduler.Interval(TimeSpan.FromMilliseconds(20), TaskCreationOptions.LongRunning,() =>
                 {
                     data++;
                     completionSource.SetResult(true);
@@ -64,7 +64,7 @@ namespace App.Metrics.Facts.Utils
                 var token = new CancellationTokenSource();                
                 var completionSource = new TaskCompletionSource<bool>();
 
-                scheduler.Interval(TimeSpan.FromMilliseconds(20), () =>
+                scheduler.Interval(TimeSpan.FromMilliseconds(20), TaskCreationOptions.LongRunning,() =>
                  {
                      data++;
                      completionSource.SetResult(true);

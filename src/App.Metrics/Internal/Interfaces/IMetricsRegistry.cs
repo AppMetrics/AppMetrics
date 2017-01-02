@@ -3,7 +3,6 @@
 
 
 using System;
-using System.Threading.Tasks;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Options;
 using App.Metrics.Data;
@@ -23,7 +22,7 @@ namespace App.Metrics.Internal.Interfaces
 
         void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider);
 
-        Task<MetricsDataValueSource> GetDataAsync(IMetricsFilter filter);
+        MetricsDataValueSource GetData(IMetricsFilter filter);
 
         IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramMetric;
 

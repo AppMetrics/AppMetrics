@@ -65,7 +65,7 @@ namespace App.Sample
 
             var cancellationTokenSource = new CancellationTokenSource();
             var task = scheduler.Interval(
-                TimeSpan.FromMilliseconds(300), () =>
+                TimeSpan.FromMilliseconds(300), TaskCreationOptions.LongRunning,() =>
                 {
                     using (application.Metrics.Track(AppMetricsRegistry.ApdexScores.AppApdex))
                     {
@@ -98,7 +98,7 @@ namespace App.Sample
                     application.Metrics.Gauge(AppMetricsRegistry.ProcessMetrics.SystemPagedMemorySizeGauge, () => process.PagedSystemMemorySize64);
                 }, cancellationTokenSource.Token);
 
-            application.Reporter.RunReportsAsync(application.Metrics, cancellationTokenSource.Token);
+            application.Reporter.RunReports(application.Metrics, cancellationTokenSource.Token);
 
             Console.WriteLine("Setup Complete, waiting for report run...");
 

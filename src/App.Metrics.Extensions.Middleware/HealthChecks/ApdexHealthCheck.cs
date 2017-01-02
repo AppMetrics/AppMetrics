@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
@@ -20,28 +21,28 @@ namespace App.Metrics
             _options = options;
         }
 
-        protected override async Task<HealthCheckResult> CheckAsync()
+        protected override Task<HealthCheckResult> CheckAsync(CancellationToken token = default(CancellationToken))
         {
             if (!_options.ApdexTrackingEnabled)
             {
-                return HealthCheckResult.Ignore();
+                return Task.FromResult(HealthCheckResult.Ignore());
             }
 
-            var metricsContext = await _metrics.Value.Advanced.Data.ReadContextAsync(AspNetMetricsRegistry.Contexts.HttpRequests.ContextName);
+            var metricsContext = _metrics.Value.Advanced.Data.ReadContext(AspNetMetricsRegistry.Contexts.HttpRequests.ContextName);
 
             var apdex = metricsContext.ApdexValueFor(AspNetMetricsRegistry.Contexts.HttpRequests.ApdexScores.ApdexMetricName);
 
             if (apdex.Score < 0.5)
             {
-                return HealthCheckResult.Unhealthy($"Frustrating. Score: {apdex.Score}");
+                return Task.FromResult(HealthCheckResult.Unhealthy($"Frustrating. Score: {apdex.Score}"));
             }
 
             if (apdex.Score >= 0.5 && apdex.Score < 0.75)
             {
-                return HealthCheckResult.Degraded($"Tolerating. Score: {apdex.Score}");
+                return Task.FromResult(HealthCheckResult.Degraded($"Tolerating. Score: {apdex.Score}"));
             }
 
-            return HealthCheckResult.Healthy($"Satisfied. Score {apdex.Score}");
+            return Task.FromResult(HealthCheckResult.Healthy($"Satisfied. Score {apdex.Score}"));
         }
     }
 }

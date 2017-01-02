@@ -22,7 +22,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public async Task schedules_reports_to_run_at_the_specified_interval()
+        public void schedules_reports_to_run_at_the_specified_interval()
         {
             var interval = TimeSpan.FromSeconds(60);
             var loggerFactory = new LoggerFactory();
@@ -40,24 +40,24 @@ namespace App.Metrics.Facts.Reporting
 
             var reporter = new Reporter(factory, scheduler.Object, loggerFactory);
 
-            await reporter.RunReportsAsync(_fixture.Metrics, CancellationToken.None);
+            reporter.RunReports(_fixture.Metrics, CancellationToken.None);
 
-            scheduler.Verify(p => p.Interval(interval, It.IsAny<Action>(), It.IsAny<CancellationToken>()), Times.Once);
+            scheduler.Verify(p => p.Interval(interval, TaskCreationOptions.LongRunning, It.IsAny<Action>(), It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
-        public async Task when_null_providers_doest_throw()
+        public void when_null_providers_doest_throw()
         {
             var loggerFactory = new LoggerFactory();
             var factory = new ReportFactory(loggerFactory);
             var scheduler = new Mock<IScheduler>();
             var reporter = new Reporter(factory, scheduler.Object, loggerFactory);
 
-            await reporter.RunReportsAsync(_fixture.Metrics, CancellationToken.None);
+            reporter.RunReports(_fixture.Metrics, CancellationToken.None);
         }
 
         [Fact]
-        public async Task when_provider_added_the_associated_metric_reporter_is_created()
+        public void when_provider_added_the_associated_metric_reporter_is_created()
         {
             var loggerFactory = new LoggerFactory();
             var factory = new ReportFactory(loggerFactory);
@@ -72,7 +72,7 @@ namespace App.Metrics.Facts.Reporting
 
             provider.Verify(p => p.CreateMetricReporter(It.IsAny<string>(), It.IsAny<ILoggerFactory>()), Times.Once);
 
-            await reporter.RunReportsAsync(_fixture.Metrics, CancellationToken.None);
+            reporter.RunReports(_fixture.Metrics, CancellationToken.None);
         }
     }
 }

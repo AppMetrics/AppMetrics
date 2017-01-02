@@ -47,6 +47,19 @@ namespace System
         }
 
         [DebuggerStepThrough]
+        internal static string GetSafeString(Func<string> action)
+        {
+            try
+            {
+                return action();
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+        }
+
+        [DebuggerStepThrough]
         internal static bool IsMissing(this string value)
         {
             return string.IsNullOrWhiteSpace(value);

@@ -4,6 +4,7 @@ using App.Metrics.Data;
 using App.Metrics.Infrastructure;
 
 // ReSharper disable CheckNamespace
+
 namespace App.Metrics.Configuration
 // ReSharper restore CheckNamespace
 {
@@ -12,7 +13,7 @@ namespace App.Metrics.Configuration
         public static AppMetricsOptions WithGlobalTags(this AppMetricsOptions options, Action<Dictionary<string, string>, EnvironmentInfo> setupAction)
         {
             var environmentBuilder = new EnvironmentInfoProvider();
-            var environmentInfo = environmentBuilder.BuildAsync().GetAwaiter().GetResult();
+            var environmentInfo = environmentBuilder.Build();
 
             setupAction(options.GlobalTags, environmentInfo);
 

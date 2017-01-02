@@ -16,10 +16,10 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public async Task can_filter_metrics_by_context()
+        public void can_filter_metrics_by_context()
         {
             var filter = new DefaultMetricsFilter().WhereMetricName(name => name == "test_gauge");
-            var currentData = await _metrics.Advanced.Data.ReadDataAsync(filter);
+            var currentData = _metrics.Advanced.Data.ReadData(filter);
             var context = currentData.Contexts.Single();
 
             var gaugeValue = context.Gauges.FirstOrDefault();
@@ -33,10 +33,10 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public async Task can_filter_metrics_by_counters()
+        public void can_filter_metrics_by_counters()
         {
             var filter = new DefaultMetricsFilter().WhereType(MetricType.Counter);
-            var currentData = await _metrics.Advanced.Data.ReadDataAsync(filter);
+            var currentData = _metrics.Advanced.Data.ReadData(filter);
             var context = currentData.Contexts.Single();
 
             var counterValue = context.Counters.Single();
@@ -50,10 +50,10 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public async Task can_filter_metrics_by_gauge()
+        public void can_filter_metrics_by_gauge()
         {
             var filter = new DefaultMetricsFilter().WhereType(MetricType.Gauge);
-            var currentData = await _metrics.Advanced.Data.ReadDataAsync(filter);
+            var currentData = _metrics.Advanced.Data.ReadData(filter);
             var context = currentData.Contexts.Single();
 
             var gaugeValue = context.Gauges.Single();
@@ -67,10 +67,10 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public async Task can_filter_metrics_by_histograms()
+        public void can_filter_metrics_by_histograms()
         {
             var filter = new DefaultMetricsFilter().WhereType(MetricType.Histogram);
-            var currentData = await _metrics.Advanced.Data.ReadDataAsync(filter);
+            var currentData = _metrics.Advanced.Data.ReadData(filter);
             var context = currentData.Contexts.Single();
 
             var histogramValue = context.Histograms.Single();
@@ -84,10 +84,10 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public async Task can_filter_metrics_by_meters()
+        public void can_filter_metrics_by_meters()
         {
             var filter = new DefaultMetricsFilter().WhereType(MetricType.Meter);
-            var currentData = await _metrics.Advanced.Data.ReadDataAsync(filter);
+            var currentData = _metrics.Advanced.Data.ReadData(filter);
             var context = currentData.Contexts.Single();
 
             var meterValue = context.Meters.Single();
@@ -101,10 +101,10 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public async Task can_filter_metrics_by_name_starting_with()
+        public void can_filter_metrics_by_name_starting_with()
         {
             var filter = new DefaultMetricsFilter().WhereMetricNameStartsWith("test_");
-            var currentData = await _metrics.Advanced.Data.ReadDataAsync(filter);
+            var currentData = _metrics.Advanced.Data.ReadData(filter);
             var context = currentData.Contexts.Single();
 
             var counterValue = context.Counters.FirstOrDefault();
@@ -121,10 +121,10 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public async Task can_filter_metrics_by_tags()
+        public void can_filter_metrics_by_tags()
         {
             var filter = new DefaultMetricsFilter().WhereMetricTaggedWithKeyValue(new TagKeyValueFilter { { "tag1", "value1" } });
-            var currentData = await _metrics.Advanced.Data.ReadDataAsync(filter);
+            var currentData = _metrics.Advanced.Data.ReadData(filter);
             var context = currentData.Contexts.Single();
 
             var counterValue = context.Counters.Single();
@@ -139,10 +139,10 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public async Task can_filter_metrics_by_tags_keys()
+        public void can_filter_metrics_by_tags_keys()
         {
             var filter = new DefaultMetricsFilter().WhereMetricTaggedWithKey("tag1", "tag2");
-            var currentData = await _metrics.Advanced.Data.ReadDataAsync(filter);
+            var currentData = _metrics.Advanced.Data.ReadData(filter);
             var context = currentData.Contexts.Single();
 
             var counterValue = context.Counters.Single();
@@ -157,10 +157,10 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public async Task can_filter_metrics_by_timers()
+        public void can_filter_metrics_by_timers()
         {
             var filter = new DefaultMetricsFilter().WhereType(MetricType.Timer);
-            var currentData = await _metrics.Advanced.Data.ReadDataAsync(filter);
+            var currentData = _metrics.Advanced.Data.ReadData(filter);
             var context = currentData.Contexts.Single();
 
             var timerValue = context.Timers.Single();

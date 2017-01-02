@@ -41,9 +41,9 @@ namespace App.Metrics.Internal
         {
         }
 
-        public Task<MetricsDataValueSource> GetDataAsync(IMetricsFilter filter)
+        public MetricsDataValueSource GetData(IMetricsFilter filter)
         {
-            return AppMetricsTaskCache.EmptyMetricsDataTask;
+            return MetricsDataValueSource.Empty;
         }
 
         public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramMetric

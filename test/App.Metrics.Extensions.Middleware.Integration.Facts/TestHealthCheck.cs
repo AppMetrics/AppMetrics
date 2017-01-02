@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using App.Metrics.Core;
 
 namespace App.Metrics.Extensions.Middleware.Integration.Facts
@@ -9,7 +10,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         {
         }
 
-        protected override Task<HealthCheckResult> CheckAsync()
+        protected override Task<HealthCheckResult> CheckAsync(CancellationToken token = default(CancellationToken))
         {
             return Task.FromResult(HealthCheckResult.Healthy("OK"));
         }

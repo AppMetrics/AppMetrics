@@ -104,7 +104,7 @@ namespace Microsoft.AspNetCore.Builder
             var metrics = app.ApplicationServices.GetRequiredService<IMetrics>();
             var reporter = reportFactory.CreateReporter();
 
-            lifetime.ApplicationStarted.Register(() => { reporter.RunReportsAsync(metrics, lifetime.ApplicationStopping); });
+            lifetime.ApplicationStarted.Register(() => { reporter.RunReports(metrics, lifetime.ApplicationStopping); });
 
             return app;
         }

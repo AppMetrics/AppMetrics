@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
-using System.Threading.Tasks;
 using App.Metrics.Configuration;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Options;
@@ -107,7 +106,7 @@ namespace App.Metrics.Internal
             registry.Gauge(options, valueProvider);
         }
 
-        public async Task<MetricsDataValueSource> GetDataAsync(IMetricsFilter filter)
+        public MetricsDataValueSource GetData(IMetricsFilter filter)
         {
             _logger.RetrievedMetricsData();
 
@@ -116,7 +115,7 @@ namespace App.Metrics.Internal
                 return MetricsDataValueSource.Empty;
             }
 
-            var environment = await _environmentInfoProvider.BuildAsync();
+            var environment = _environmentInfoProvider.Build();
 
             var contexts = _contexts.Values.Select(g => new MetricsContextValueSource(
                 g.Context,

@@ -44,7 +44,7 @@ namespace App.Metrics.Extensions.Middleware.Middleware
             {
                 Logger.MiddlewareExecuting(GetType());
 
-                var metricsData = await Metrics.Advanced.Data.ReadDataAsync();
+                var metricsData = Metrics.Advanced.Data.ReadData();
 
                 var json = _serializer.Serialize(metricsData);
 

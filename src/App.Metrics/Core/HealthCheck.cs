@@ -1,12 +1,8 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
-// Ported/Refactored to .NET Standard Library by Allan Hardy
-
-
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.DependencyInjection.Internal;
 
@@ -14,7 +10,7 @@ namespace App.Metrics.Core
 {
     public class HealthCheck
     {
-        private readonly Func<Task<HealthCheckResult>> _check;
+        private readonly Func<CancellationToken, Task<HealthCheckResult>> _check;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="HealthCheck" /> class.
@@ -34,13 +30,16 @@ namespace App.Metrics.Core
         public HealthCheck(string name, Func<Task<HealthCheckResult>> check)
         {
             Name = name;
-            _check = check;
+
+            Func<CancellationToken, Task<HealthCheckResult>> checkWithToken = token => check();
+
+            _check = checkWithToken;
         }
 
         protected HealthCheck(string name)
         {
             Name = name;
-            _check = () => AppMetricsTaskCache.CompletedHealthyTask;
+            _check = token => AppMetricsTaskCache.CompletedHealthyTask;
         }
 
         /// <summary>
@@ -52,11 +51,11 @@ namespace App.Metrics.Core
         ///     Executes the health check asynchrously
         /// </summary>
         /// <returns>The <see cref="Result" /> of running the health check</returns>
-        public async Task<Result> ExecuteAsync()
+        public async Task<Result> ExecuteAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             try
             {
-                return new Result(Name, await CheckAsync());
+                return new Result(Name, await CheckAsync(cancellationToken));
             }
             catch (Exception ex)
             {
@@ -64,9 +63,9 @@ namespace App.Metrics.Core
             }
         }
 
-        protected virtual Task<HealthCheckResult> CheckAsync()
+        protected virtual Task<HealthCheckResult> CheckAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            return _check();
+            return _check(cancellationToken);
         }
 
         /// <summary>

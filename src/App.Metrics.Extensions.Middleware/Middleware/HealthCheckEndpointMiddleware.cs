@@ -40,7 +40,7 @@ namespace App.Metrics.Extensions.Middleware.Middleware
             {
                 Logger.MiddlewareExecuting(GetType());
 
-                var healthStatus = await Metrics.Advanced.Health.ReadStatusAsync();
+                var healthStatus = await Metrics.Advanced.Health.ReadStatusAsync(context.RequestAborted);
                 string warning = null;
 
                 var responseStatusCode = HttpStatusCode.OK;

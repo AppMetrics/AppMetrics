@@ -1,4 +1,5 @@
-﻿using App.Metrics;
+﻿using System.Threading;
+using App.Metrics;
 using App.Metrics.Core;
 using System.Threading.Tasks;
 
@@ -10,7 +11,7 @@ namespace Api.Sample.HealthChecks
         {
         }
 
-        protected override Task<HealthCheckResult> CheckAsync()
+        protected override Task<HealthCheckResult> CheckAsync(CancellationToken token = default(CancellationToken))
         {
             return Task.FromResult(HealthCheckResult.Unhealthy("OOPS"));
         }

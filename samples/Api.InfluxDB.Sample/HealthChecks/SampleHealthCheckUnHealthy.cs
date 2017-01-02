@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using App.Metrics.Core;
 
 namespace Api.InfluxDB.Sample.HealthChecks
@@ -9,7 +10,7 @@ namespace Api.InfluxDB.Sample.HealthChecks
         {
         }
 
-        protected override Task<HealthCheckResult> CheckAsync()
+        protected override Task<HealthCheckResult> CheckAsync(CancellationToken token = default(CancellationToken))
         {
             return Task.FromResult(HealthCheckResult.Unhealthy("OOPS"));
         }

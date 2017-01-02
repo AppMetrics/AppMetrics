@@ -41,7 +41,7 @@ namespace App.Metrics.Scheduling
         }
 
         // <inheritdoc />
-        public Task Interval(TimeSpan pollInterval, Action action)
+        public Task Interval(TimeSpan pollInterval, TaskCreationOptions taskCreationOptions, Action action)
         {
             _token = new CancellationTokenSource();
 
@@ -56,11 +56,11 @@ namespace App.Metrics.Scheduling
 
                     action();
                 }
-            }, _token.Token);
+            }, _token.Token, taskCreationOptions, TaskScheduler.Default);
         }
 
         // <inheritdoc />
-        public Task Interval(TimeSpan pollInterval, Action action, CancellationToken token)
+        public Task Interval(TimeSpan pollInterval, TaskCreationOptions taskCreationOptions, Action action, CancellationToken token)
         {
             _token = CancellationTokenSource.CreateLinkedTokenSource(token);
 
@@ -75,7 +75,7 @@ namespace App.Metrics.Scheduling
 
                     action();
                 }
-            }, token);
+            }, token, taskCreationOptions, TaskScheduler.Default);
         }
 
         // <inheritdoc />

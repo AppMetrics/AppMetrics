@@ -15,14 +15,14 @@ namespace App.Metrics.Reporting.Internal
 {
     internal class DefaultReportGenerator
     {
-        internal Task Generate(IMetricReporter reporter,
+        internal Task GenerateAsync(IMetricReporter reporter,
             IMetrics metrics,
             CancellationToken token)
         {
-            return Generate(reporter, metrics, metrics.Advanced.GlobalFilter, token);
+            return GenerateAsync(reporter, metrics, metrics.Advanced.GlobalFilter, token);
         }
 
-        internal async Task Generate(IMetricReporter reporter,
+        internal async Task GenerateAsync(IMetricReporter reporter,
             IMetrics metrics,
             IMetricsFilter reporterMetricsFilter,
             CancellationToken token)
@@ -34,7 +34,7 @@ namespace App.Metrics.Reporting.Internal
 
             reporter.StartReport(metrics);
 
-            var data = await metrics.Advanced.Data.ReadDataAsync(reporterMetricsFilter);
+            var data = metrics.Advanced.Data.ReadData(reporterMetricsFilter);
 
             if (data.Environment.Entries.Any() && reporterMetricsFilter.ReportEnvironment)
             {
@@ -68,7 +68,7 @@ namespace App.Metrics.Reporting.Internal
 
             if (reporterMetricsFilter.ReportHealthChecks)
             {
-                var healthStatus = await metrics.Advanced.Health.ReadStatusAsync();
+                var healthStatus = await metrics.Advanced.Health.ReadStatusAsync(token);
 
                 reporter.StartMetricTypeReport(typeof(HealthStatus));
 

@@ -17,10 +17,10 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public async Task can_filter_metrics_by_context()
+        public void can_filter_metrics_by_context()
         {
             var filter = new DefaultMetricsFilter().WhereContext("test_context1");
-            var currentData = await _metrics.Advanced.Data.ReadDataAsync(filter);
+            var currentData = _metrics.Advanced.Data.ReadData(filter);
             var context = currentData.Contexts.Single();
 
             var counterValue = context.Counters.Single();
@@ -34,9 +34,9 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public async Task can_filter_metrics_by_context_via_data_provider()
+        public void can_filter_metrics_by_context_via_data_provider()
         {
-            var currentData = await _metrics.Advanced.Data.ReadContextAsync("test_context1");
+            var currentData = _metrics.Advanced.Data.ReadContext("test_context1");
 
             var counterValue = currentData.Counters.Single();
             counterValue.Name.Should().Be("test_counter");

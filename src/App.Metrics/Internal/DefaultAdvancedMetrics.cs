@@ -109,9 +109,9 @@ namespace App.Metrics.Internal
             return _registry.Meter(options, builder);
         }
 
-        public async Task<MetricsContextValueSource> ReadContextAsync(string context)
+        public MetricsContextValueSource ReadContext(string context)
         {
-            var data = await ReadDataAsync();
+            var data = ReadData();
 
             var filter = new DefaultMetricsFilter().WhereContext(context);
 
@@ -120,24 +120,24 @@ namespace App.Metrics.Internal
             return contextData.Contexts.Single();
         }
 
-        public Task<MetricsDataValueSource> ReadDataAsync()
+        public MetricsDataValueSource ReadData()
         {
-            return _registry.GetDataAsync(GlobalFilter);
+            return _registry.GetData(GlobalFilter);
         }
 
-        public Task<MetricsDataValueSource> ReadDataAsync(IMetricsFilter overrideGlobalFilter)
+        public MetricsDataValueSource ReadData(IMetricsFilter overrideGlobalFilter)
         {
-            return _registry.GetDataAsync(overrideGlobalFilter);
+            return _registry.GetData(overrideGlobalFilter);
         }
 
-        public async Task<HealthStatus> ReadStatusAsync()
+        public async Task<HealthStatus> ReadStatusAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             var startTimestamp = _logger.IsEnabled(LogLevel.Information) ? Stopwatch.GetTimestamp() : 0;
 
             _logger.HealthCheckGetStatusExecuting();
 
             var results = await Task.WhenAll(_healthCheckFactory.Checks.Values.OrderBy(v => v.Name)
-                .Select(v => v.ExecuteAsync()));
+                .Select(v => v.ExecuteAsync(cancellationToken)));
 
             var healthStatus = new HealthStatus(results.Where(h => !h.Check.Status.IsIgnored()));
 

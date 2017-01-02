@@ -38,7 +38,10 @@ namespace App.Metrics.Reporting.Internal
 
             _providers = reportFactory.GetProviders();
 
-            if (_providers.Count <= 0) return;
+            if (_providers.Count <= 0)
+            {
+                return;
+            }
 
             _metricReporters = new Dictionary<Type, IMetricReporter>(_providers.Count);
 
@@ -48,12 +51,7 @@ namespace App.Metrics.Reporting.Internal
             }
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        public async Task RunReportsAsync(IMetrics context, CancellationToken token)
+        public void RunReports(IMetrics context, CancellationToken token)
         {
             if (_metricReporters == null)
             {
@@ -72,12 +70,12 @@ namespace App.Metrics.Reporting.Internal
 
                 logger.ReportRunning(metricReporter.Value);
 
-                reportTasks.Add(ScheduleReport(context, token, metricReporter, logger, provider, settings).WithAggregateException());
+                reportTasks.Add(ScheduleReport(context, token, metricReporter, logger, provider).WithAggregateException());
             }
 
             try
             {
-                await Task.WhenAll(reportTasks);
+                Task.WaitAll(reportTasks.ToArray(), token);
             }
             catch (Exception ex)
             {
@@ -95,28 +93,18 @@ namespace App.Metrics.Reporting.Internal
 
                 throw aggregateException;
             }
-            await AppMetricsTaskCache.EmptyTask;
         }
 
-        private void Dispose(bool disposing)
+        private Task ScheduleReport(IMetrics context, CancellationToken token, KeyValuePair<Type, IMetricReporter> metricReporter, 
+            ILogger logger, IReporterProvider provider)
         {
-            if (disposing)
-            {
-                _scheduler?.Dispose();
-            }
-        }
-
-        private Task ScheduleReport(IMetrics context, CancellationToken token, KeyValuePair<Type, IMetricReporter> metricReporter, ILogger logger,
-            IReporterProvider provider,
-            IReporterSettings settings)
-        {
-            return _scheduler.Interval(metricReporter.Value.ReportInterval, async () =>
+            return _scheduler.Interval(metricReporter.Value.ReportInterval, TaskCreationOptions.LongRunning, async() =>
                 {
                     var startTimestamp = _logger.IsEnabled(LogLevel.Information) ? Stopwatch.GetTimestamp() : 0;
 
                     logger.ReportedStarted(metricReporter.Value);
 
-                    await _reportGenerator.Generate(metricReporter.Value, context, provider.Filter, token);
+                    await _reportGenerator.GenerateAsync(metricReporter.Value, context, provider.Filter, token);
 
                     logger.ReportRan(metricReporter.Value, startTimestamp);
                 },

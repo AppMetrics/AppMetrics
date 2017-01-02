@@ -29,7 +29,6 @@ namespace App.Metrics.Formatting.Humanize
             sb.AppendLine("Assembly Name".FormatReadableMetricValue(environmentInfo.EntryAssemblyName));
             sb.AppendLine("Assembly Version".FormatReadableMetricValue(environmentInfo.EntryAssemblyVersion));
             sb.AppendLine("Host Name".FormatReadableMetricValue(environmentInfo.HostName));
-            sb.AppendLine("Ip Address".FormatReadableMetricValue(environmentInfo.IpAddress));
             sb.AppendLine("Local Time".FormatReadableMetricValue(environmentInfo.LocalTimeString));
             sb.AppendLine("Machine Name".FormatReadableMetricValue(environmentInfo.MachineName));
             sb.AppendLine("OS".FormatReadableMetricValue(environmentInfo.OperatingSystem));

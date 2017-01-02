@@ -34,7 +34,6 @@ namespace App.Metrics.Formatters.Json.Facts
             result.EntryAssemblyName.Should().BeEquivalentTo(_env.EntryAssemblyName);
             result.EntryAssemblyVersion.Should().BeEquivalentTo(_env.EntryAssemblyVersion);
             result.HostName.Should().BeEquivalentTo(_env.HostName);
-            result.IpAddress.Should().BeEquivalentTo(_env.IpAddress);
             result.LocalTimeString.Should().BeEquivalentTo(_env.LocalTimeString);
             result.MachineName.Should().BeEquivalentTo(_env.MachineName);
             result.OperatingSystem.Should().BeEquivalentTo(_env.OperatingSystem);

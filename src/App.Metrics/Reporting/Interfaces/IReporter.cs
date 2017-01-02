@@ -2,14 +2,12 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using System;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace App.Metrics.Reporting.Interfaces
 {
-    public interface IReporter : IDisposable
+    public interface IReporter
     {
-        Task RunReportsAsync(IMetrics context, CancellationToken token);
+        void RunReports(IMetrics context, CancellationToken token);
     }
 }
