@@ -52,7 +52,7 @@ namespace App.Metrics.Extensions.Reporting.Console
             WriteLine(metricType.HumanzeEndMetricType());
         }
 
-        public Task<bool> EndReportAsync(IMetrics metrics)
+        public Task<bool> EndAndFlushReportRunAsync(IMetrics metrics)
         {
             _logger.LogDebug("Ending Console Report Run");
 
@@ -126,7 +126,7 @@ namespace App.Metrics.Extensions.Reporting.Console
             WriteLine(metricType.HumanzeStartMetricType());
         }
 
-        public void StartReport(IMetrics metrics)
+        public void StartReportRun(IMetrics metrics)
         {
             _logger.LogDebug("Starting Console Report Run");
 

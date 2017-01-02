@@ -2,14 +2,12 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using App.Metrics.Utils;
-
 namespace App.Metrics
 {
     /// <summary>
     ///     Indicates a metric's ability to be reset. Reseting a metric clear all currently collected data.
     /// </summary>
-    public interface IResetableMetric : IHideObjectMembers
+    public interface IResetableMetric
     {
         /// <summary>
         ///     Clear all currently collected data for this metric.

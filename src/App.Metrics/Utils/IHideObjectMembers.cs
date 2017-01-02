@@ -10,6 +10,7 @@ namespace App.Metrics.Utils
     /// <summary>
     ///     Marker interface to cleanup editor visible members on metrics.
     /// </summary>
+    /// <remarks>Created by Daniel Cazzulino http://www.clariusconsulting.net/blogs/kzu/archive/2008/03/10/58301.aspx</remarks>
     public interface IHideObjectMembers
     {
         [EditorBrowsable(EditorBrowsableState.Never)]

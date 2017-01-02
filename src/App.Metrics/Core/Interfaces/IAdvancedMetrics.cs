@@ -15,7 +15,7 @@ namespace App.Metrics.Core.Interfaces
     /// <seealso cref="App.Metrics.Core.Interfaces.IMetricsDataProvider" />
     /// <seealso cref="App.Metrics.Core.Interfaces.IHealthStatusProvider" />
     /// <seealso cref="App.Metrics.Utils.IHideObjectMembers" />
-    public interface IAdvancedMetrics : IMetricsDataProvider, IHealthStatusProvider, IHideObjectMembers
+    public interface IAdvancedMetrics : IMetricsDataProvider, IHealthStatusProvider
     {
         /// <summary>
         ///     Provides access to the <see cref="IClock" /> configured used to measure by some <see cref="MetricType" />s that

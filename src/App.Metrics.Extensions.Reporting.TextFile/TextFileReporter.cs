@@ -71,9 +71,9 @@ namespace App.Metrics.Extensions.Reporting.TextFile
             _stringReporter.EndMetricTypeReport(metricType);
         }
 
-        public async Task<bool> EndReportAsync(IMetrics metrics)
+        public async Task<bool> EndAndFlushReportRunAsync(IMetrics metrics)
         {
-            await _stringReporter.EndReportAsync(metrics);
+            await _stringReporter.EndAndFlushReportRunAsync(metrics);
 
             _logger.LogDebug($"End {Name} Run");
 
@@ -115,11 +115,11 @@ namespace App.Metrics.Extensions.Reporting.TextFile
             _stringReporter.StartMetricTypeReport(metricType);
         }
 
-        public void StartReport(IMetrics metrics)
+        public void StartReportRun(IMetrics metrics)
         {
             _logger.LogDebug($"Starting {Name} Run");
 
-            _stringReporter.StartReport(metrics);
+            _stringReporter.StartReportRun(metrics);
         }
     }
 }

@@ -69,7 +69,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
         {
         }
 
-        public async Task<bool> EndReportAsync(IMetrics metrics)
+        public async Task<bool> EndAndFlushReportRunAsync(IMetrics metrics)
         {
             _logger.LogDebug($"Ending {Name} Run");
 
@@ -178,7 +178,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
         {
         }
 
-        public void StartReport(IMetrics metrics)
+        public void StartReportRun(IMetrics metrics)
         {
             _logger.LogDebug($"Starting {Name} Report Run");
 

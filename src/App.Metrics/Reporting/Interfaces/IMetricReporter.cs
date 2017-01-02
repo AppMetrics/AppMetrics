@@ -7,31 +7,30 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.Data;
-using App.Metrics.Utils;
 
 namespace App.Metrics.Reporting.Interfaces
 {
-    public interface IMetricReporter : IHideObjectMembers, IDisposable
+    public interface IMetricReporter : IDisposable
     {
         string Name { get; }
 
         TimeSpan ReportInterval { get; }
 
-        void EndMetricTypeReport(Type metricType);
+        Task<bool> EndAndFlushReportRunAsync(IMetrics metrics);
 
-        Task<bool> EndReportAsync(IMetrics metrics);
+        void EndMetricTypeReport(Type metricType);
 
         void ReportEnvironment(EnvironmentInfo environmentInfo);
 
         void ReportHealth(GlobalMetricTags globalTags,
-            IEnumerable<HealthCheck.Result> healthyChecks, 
-            IEnumerable<HealthCheck.Result> degradedChecks, 
+            IEnumerable<HealthCheck.Result> healthyChecks,
+            IEnumerable<HealthCheck.Result> degradedChecks,
             IEnumerable<HealthCheck.Result> unhealthyChecks);
 
         void ReportMetric<T>(string context, MetricValueSource<T> valueSource);
 
         void StartMetricTypeReport(Type metricType);
 
-        void StartReport(IMetrics metrics);
+        void StartReportRun(IMetrics metrics);
     }
 }

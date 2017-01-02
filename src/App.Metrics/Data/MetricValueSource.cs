@@ -7,7 +7,6 @@
 
 
 using App.Metrics.Data.Interfaces;
-using App.Metrics.Utils;
 
 namespace App.Metrics.Data
 {
@@ -16,7 +15,7 @@ namespace App.Metrics.Data
     ///     This is the class that metric consumers should use.
     /// </summary>
     /// <typeparam name="T">Type of the metric value</typeparam>
-    public abstract class MetricValueSource<T> : IHideObjectMembers
+    public abstract class MetricValueSource<T>
     {
         protected MetricValueSource(string name, IMetricValueProvider<T> valueProvider, Unit unit, MetricTags tags)
         {

@@ -2,8 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using App.Metrics.Utils;
-
 namespace App.Metrics.Data.Interfaces
 {
     /// <summary>
@@ -11,7 +9,7 @@ namespace App.Metrics.Data.Interfaces
     ///     This is the raw value. Consumers should use <see cref="MetricValueSource{T}" />
     /// </summary>
     /// <typeparam name="T">Type of the value returned by the metric</typeparam>
-    public interface IMetricValueProvider<T> : IHideObjectMembers
+    public interface IMetricValueProvider<T>
     {
         /// <summary>
         ///     The current value of the metric.

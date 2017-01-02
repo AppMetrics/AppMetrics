@@ -70,7 +70,7 @@ namespace App.Metrics.Reporting
             _buffer.WriteEndMetricType(metricType);
         }
 
-        public Task<bool> EndReportAsync(IMetrics metrics)
+        public Task<bool> EndAndFlushReportRunAsync(IMetrics metrics)
         {
             _buffer.WriteMetricEndReport(Name,
                 metrics.Advanced.Clock.FormatTimestamp(metrics.Advanced.Clock.UtcDateTime));
@@ -130,7 +130,7 @@ namespace App.Metrics.Reporting
             _buffer.WriteStartMetricType(metricType);
         }
 
-        public void StartReport(IMetrics metrics)
+        public void StartReportRun(IMetrics metrics)
         {
             _buffer.WriteMetricStartReport(Name,
                 metrics.Advanced.Clock.FormatTimestamp(metrics.Advanced.Clock.UtcDateTime));

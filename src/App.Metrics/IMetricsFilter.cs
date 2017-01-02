@@ -3,11 +3,10 @@
 
 
 using App.Metrics.Data;
-using App.Metrics.Utils;
 
 namespace App.Metrics
 {
-    public interface IMetricsFilter : IHideObjectMembers
+    public interface IMetricsFilter
     {
         bool ReportEnvironment { get; }
 

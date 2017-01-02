@@ -15,7 +15,7 @@ namespace App.Metrics
     /// <remarks>
     ///     This is the entry point to the application's metrics registry
     /// </remarks>
-    public interface IMetrics : IHideObjectMembers
+    public interface IMetrics
     {
         /// <summary>
         ///     Provides access to more advanced application metrics operations

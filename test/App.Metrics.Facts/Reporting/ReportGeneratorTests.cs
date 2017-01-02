@@ -125,14 +125,14 @@ namespace App.Metrics.Facts.Reporting
         public async Task reports_the_start_and_end_of_the_report()
         {
             var metricReporter = new Mock<IMetricReporter>();
-            metricReporter.Setup(x => x.StartReport(It.IsAny<IMetrics>()));
-            metricReporter.Setup(x => x.EndReportAsync(It.IsAny<IMetrics>())).Returns(Task.FromResult(true));
+            metricReporter.Setup(x => x.StartReportRun(It.IsAny<IMetrics>()));
+            metricReporter.Setup(x => x.EndAndFlushReportRunAsync(It.IsAny<IMetrics>())).Returns(Task.FromResult(true));
             var token = CancellationToken.None;
 
             await _reportGenerator.GenerateAsync(metricReporter.Object, _metrics, token);
 
-            metricReporter.Verify(p => p.StartReport(It.IsAny<IMetrics>()), Times.Once);
-            metricReporter.Verify(p => p.EndReportAsync(It.IsAny<IMetrics>()), Times.Once);
+            metricReporter.Verify(p => p.StartReportRun(It.IsAny<IMetrics>()), Times.Once);
+            metricReporter.Verify(p => p.EndAndFlushReportRunAsync(It.IsAny<IMetrics>()), Times.Once);
         }
     }
 }

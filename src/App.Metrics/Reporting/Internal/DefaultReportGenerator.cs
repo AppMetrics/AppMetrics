@@ -50,7 +50,7 @@ namespace App.Metrics.Reporting.Internal
                 reporterMetricsFilter = metrics.Advanced.GlobalFilter;
             }
 
-            reporter.StartReport(metrics);
+            reporter.StartReportRun(metrics);
 
             var data = metrics.Advanced.Data.ReadData(reporterMetricsFilter);
 
@@ -99,7 +99,7 @@ namespace App.Metrics.Reporting.Internal
                 reporter.EndMetricTypeReport(typeof(HealthStatus));
             }
 
-            var result = await reporter.EndReportAsync(metrics);
+            var result = await reporter.EndAndFlushReportRunAsync(metrics);
 
             _logger.ReportRan(reporter, startTimestamp);
 
