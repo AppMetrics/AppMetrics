@@ -138,7 +138,7 @@
   },
   "refresh": "10s",
   "schemaVersion": 13,
-  "version": 15,
+  "version": 16,
   "links": [],
   "gnetId": null,
   "rows": [
@@ -758,7 +758,7 @@
                 [
                   {
                     "params": [
-                      "rate1m"
+                      "p95"
                     ],
                     "type": "field"
                   },
@@ -959,10 +959,10 @@
               "dsType": "influxdb",
               "groupBy": [
                 {
+                  "type": "tag",
                   "params": [
                     "item"
-                  ],
-                  "type": "tag"
+                  ]
                 }
               ],
               "measurement": "application.httprequests__http_error_requests__items",

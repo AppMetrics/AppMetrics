@@ -76,7 +76,7 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void can_get_tags_from_set_item_string_when_single_item()
         {
-            var expectedTags = new MetricTags().With("item", "machine-1");
+            var expectedTags = new MetricTags().With("item", "item:machine-1");
 
             var tags = new MetricTags();
             tags = tags.FromSetItemString("item:machine-1");

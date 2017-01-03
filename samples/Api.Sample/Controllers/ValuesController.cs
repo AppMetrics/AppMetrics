@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Core;
 using App.Metrics.Core.Options;
@@ -123,6 +124,13 @@ namespace Api.Sample.Controllers
         public IActionResult Get401()
         {
             return StatusCode(401);
+        }
+
+        [HttpGet("slow")]
+        public async Task<IActionResult> GetSlow()
+        {
+            await Task.Delay(Rnd.Next(500, 1200), HttpContext.RequestAborted);
+            return StatusCode(200);
         }
 
         [HttpGet("error")]
