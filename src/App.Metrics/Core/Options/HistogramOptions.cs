@@ -22,7 +22,5 @@ namespace App.Metrics.Core.Options
             SampleSize = Constants.ReservoirSampling.DefaultSampleSize;
             ExponentialDecayFactor = Constants.ReservoirSampling.DefaultExponentialDecayFactor;
         }
-
-
     }
 }

@@ -21,7 +21,7 @@ namespace App.Metrics.Core.Options
         }
 
         /// <summary>
-        ///     The rate unit used for visualization which defaults to Milliseconds
+        ///     The rate unit used for visualization which defaults to Minutes
         /// </summary>
         public TimeUnit RateUnit { get; set; }
     }

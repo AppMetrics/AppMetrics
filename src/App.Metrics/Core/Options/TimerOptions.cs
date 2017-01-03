@@ -17,8 +17,14 @@ namespace App.Metrics.Core.Options
             ExponentialDecayFactor = Constants.ReservoirSampling.DefaultExponentialDecayFactor;
         }
 
+        /// <summary>
+        ///     The duration unit used for visualization which defaults to Milliseconds
+        /// </summary>
         public TimeUnit DurationUnit { get; set; }
 
+        /// <summary>
+        ///     The rate unit used for visualization which defaults to Minutes
+        /// </summary>
         public TimeUnit RateUnit { get; set; }
     }
 }
