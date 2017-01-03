@@ -11,7 +11,7 @@ namespace App.Metrics.Reporting.Interfaces
     public static class InfluxDbReporterExtensions
     {
         public static IReportFactory AddInfluxDb(this IReportFactory factory,
-            IInfluxDbReporterSettings settings, IMetricsFilter filter = null)
+            InfluxDBReporterSettings settings, IMetricsFilter filter = null)
         {
             factory.AddProvider(new InfluxDbReporterProvider(settings, filter));
             return factory;
@@ -20,7 +20,7 @@ namespace App.Metrics.Reporting.Interfaces
         public static IReportFactory AddInfluxDb(this IReportFactory factory, 
             IMetricsFilter filter = null)
         {
-            var settings = new InfluxDbReporterSettings();
+            var settings = new InfluxDBReporterSettings();
             factory.AddInfluxDb(settings, filter);
             return factory;
         }

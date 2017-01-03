@@ -7,6 +7,7 @@ using App.Metrics;
 using App.Metrics.Core;
 using App.Metrics.Extensions.Reporting.Console;
 using App.Metrics.Extensions.Reporting.InfluxDB;
+using App.Metrics.Extensions.Reporting.InfluxDB.Client;
 using App.Metrics.Extensions.Reporting.TextFile;
 using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Scheduling;
@@ -135,10 +136,19 @@ namespace App.Sample
                         .WithHealthChecks(true)
                         .WithEnvironmentInfo(true);
 
-                    factory.AddInfluxDb(new InfluxDbReporterSettings
+                    factory.AddInfluxDb(new InfluxDBReporterSettings
                     {
-                        BaseAddress = new Uri("http://127.0.0.1:8086"),
-                        Database = "appmetrics",
+                        HttpPolicy = new HttpPolicy
+                        {
+                            FailuresBeforeBackoff = 3,
+                            BackoffPeriod = TimeSpan.FromSeconds(30),
+                            Timeout = TimeSpan.FromSeconds(3)
+                        },
+                        InfluxDbSettings = new InfluxDBSettings
+                        {
+                            BaseAddress = new Uri("http://127.0.0.1:8086"),
+                            Database = "appmetrics"
+                        },                        
                         ReportInterval = TimeSpan.FromSeconds(5)
                     }, influxFilter);
                 });

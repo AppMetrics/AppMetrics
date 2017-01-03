@@ -50,7 +50,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
 
         public static string FormatValue(object value)
         {
-            var v = value ?? "";
+            var v = value ?? string.Empty;
             Func<object, string> format;
 
             return Formatters.TryGetValue(v.GetType(), out format)

@@ -1,22 +1,16 @@
-// Copyright (c) Allan hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-
 using System;
-using App.Metrics.Reporting.Interfaces;
 
-namespace App.Metrics.Extensions.Reporting.InfluxDB
+namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
 {
-    public interface IInfluxDbReporterSettings : IReporterSettings
+    public class InfluxDBSettings
     {
         /// <summary>
-        ///     Gets or sets the breaker rate, i.e. the error rate which temporarily stops writing data to InfluxDB.
+        ///     Gets or sets the InfluxDB host.
         /// </summary>
-        /// <example>3 / 00:00:30</example>
         /// <value>
-        ///     The circuit breaker rate.
+        ///     The InfluxDB host.
         /// </value>
-        string BreakerRate { get; set; }
+        public Uri BaseAddress { get; set; }
 
         /// <summary>
         ///     Gets or sets the number of InfluxDB notes that must confirm the write
@@ -24,7 +18,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
         /// <value>
         ///     The InfluxDB node write consistency.
         /// </value>
-        string Consistency { get; set; }
+        public string Consistenency { get; set; }
 
         /// <summary>
         ///     The InfluxDB database name where metrics will be persisted
@@ -32,15 +26,33 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
         /// <value>
         ///     The InfluxDB database name.
         /// </value>
-        string Database { get; set; }
+        public string Database { get; set; }
 
         /// <summary>
-        ///     Gets or sets the InfluxDB host.
+        ///     Gets formatted endpoint for writes to InfluxDB
         /// </summary>
         /// <value>
-        ///     The InfluxDB host.
+        ///     The InfluxDB endpoint for writes.
         /// </value>
-        Uri BaseAddress { get; set; }
+        public string Endpoint
+        {
+            get
+            {
+                var endpoint = $"write?db={Uri.EscapeDataString(Database)}";
+
+                if (RetensionPolicy.IsPresent())
+                {
+                    endpoint += $"&rp={Uri.EscapeDataString(RetensionPolicy)}";
+                }
+
+                if (Consistenency.IsPresent())
+                {
+                    endpoint += $"&consistency={Uri.EscapeDataString(Consistenency)}";
+                }
+
+                return endpoint;
+            }
+        }
 
         /// <summary>
         ///     Gets or sets the InfluxDB database password.
@@ -48,7 +60,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
         /// <value>
         ///     The InfluxDB database password.
         /// </value>
-        string Password { get; set; }
+        public string Password { get; set; }
 
         /// <summary>
         ///     Gets or sets the InfluxDB database's retention policy to target.
@@ -56,7 +68,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
         /// <value>
         ///     The InfluxDB database's retention policy to target.
         /// </value>
-        string RetentionPolicy { get; set; }
+        public string RetensionPolicy { get; set; }
 
         /// <summary>
         ///     Gets or sets the InfluxDB database username.
@@ -64,6 +76,6 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
         /// <value>
         ///     The InfluxDB database username.
         /// </value>
-        string Username { get; set; }
+        public string UserName { get; set; }
     }
 }

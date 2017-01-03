@@ -4,6 +4,7 @@ using System.IO;
 using System.Security.Claims;
 using App.Metrics;
 using App.Metrics.Extensions.Reporting.InfluxDB;
+using App.Metrics.Extensions.Reporting.InfluxDB.Client;
 using App.Metrics.Reporting.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,7 +32,7 @@ namespace Api.Sample
 
         public IConfigurationRoot Configuration { get; set; }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, 
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,
             ILoggerFactory loggerFactory, IApplicationLifetime lifetime)
         {
             Log.Logger = new LoggerConfiguration()
@@ -59,7 +60,7 @@ namespace Api.Sample
                     });
                 return func();
             });
-           
+
             app.UseMvc();
         }
 
@@ -82,10 +83,19 @@ namespace Api.Sample
                         .WithHealthChecks(true)
                         .WithEnvironmentInfo(true);
 
-                    factory.AddInfluxDb(new InfluxDbReporterSettings
+                    factory.AddInfluxDb(new InfluxDBReporterSettings
                     {
-                        BaseAddress = new Uri("http://127.0.0.1:8086"),
-                        Database = "appmetricsapi",
+                        HttpPolicy = new HttpPolicy
+                        {
+                            FailuresBeforeBackoff = 3,
+                            BackoffPeriod = TimeSpan.FromSeconds(30),
+                            Timeout = TimeSpan.FromSeconds(3)
+                        },
+                        InfluxDbSettings = new InfluxDBSettings
+                        {
+                            BaseAddress = new Uri("http://127.0.0.1:8086"),
+                            Database = "appmetricsapi"
+                        },
                         ReportInterval = TimeSpan.FromSeconds(5)
                     }, influxFilter);
                 })

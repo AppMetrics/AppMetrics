@@ -16,7 +16,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
             IReadOnlyDictionary<string, object> fields,
             MetricTags tags = null,
             DateTime? utcTimestamp = null)
-        {
+        {            
             if (string.IsNullOrEmpty(measurement))
             {
                 throw new ArgumentException("A measurement name must be specified");
@@ -82,6 +82,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
             }
 
             var fieldDelim = ' ';
+
             foreach (var f in Fields)
             {
                 textWriter.Write(fieldDelim);

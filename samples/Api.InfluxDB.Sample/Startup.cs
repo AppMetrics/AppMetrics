@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Security.Claims;
-using System.Threading;
 using Api.InfluxDB.Sample.ForTesting;
 using App.Metrics;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using App.Metrics.Extensions.Reporting.InfluxDB;
+using App.Metrics.Extensions.Reporting.InfluxDB.Client;
 using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Utils;
 using Microsoft.AspNetCore.Builder;
@@ -35,7 +33,7 @@ namespace Api.InfluxDB.Sample
 
         public IConfigurationRoot Configuration { get; set; }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, 
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,
             ILoggerFactory loggerFactory, IApplicationLifetime lifetime)
         {
             Log.Logger = new LoggerConfiguration()
@@ -71,12 +69,21 @@ namespace Api.InfluxDB.Sample
                         .WithEnvironmentInfo(false)
                         .WithHealthChecks(false);
 
-                    factory.AddInfluxDb(new InfluxDbReporterSettings
+                    factory.AddInfluxDb(new InfluxDBReporterSettings
                     {
-                        BaseAddress = new Uri("http://127.0.0.1:8086"),
-                        Database = "appmetricsinfluxsample",
+                        HttpPolicy = new HttpPolicy
+                        {
+                          FailuresBeforeBackoff  = 3,
+                          BackoffPeriod = TimeSpan.FromSeconds(30),
+                          Timeout = TimeSpan.FromSeconds(3)
+                        },
+                        InfluxDbSettings = new InfluxDBSettings
+                        {
+                            BaseAddress = new Uri("http://127.0.0.1:8086"),
+                            Database = "appmetricsinfluxsample"
+                        },                        
                         ReportInterval = TimeSpan.FromSeconds(5)
-                    }, filter:influxFlushFilter);
+                    }, filter: influxFlushFilter);
                 })
                 .AddHealthChecks()
                 .AddMetricsMiddleware(Configuration.GetSection("AspNetMetrics"));

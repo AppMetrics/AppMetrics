@@ -10,9 +10,9 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 {
     public class InfluxDbReporterProvider : IReporterProvider
     {
-        private readonly IInfluxDbReporterSettings _settings;
+        private readonly InfluxDBReporterSettings _settings;
 
-        public InfluxDbReporterProvider(IInfluxDbReporterSettings settings, IMetricsFilter fitler)
+        public InfluxDbReporterProvider(InfluxDBReporterSettings settings, IMetricsFilter fitler)
         {
             if (settings == null)
             {

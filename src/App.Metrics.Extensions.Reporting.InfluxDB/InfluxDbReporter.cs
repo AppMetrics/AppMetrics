@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using App.Metrics.Core;
-using App.Metrics.Core.Options;
 using App.Metrics.Data;
 using App.Metrics.Extensions.Reporting.InfluxDB.Client;
 using App.Metrics.Extensions.Reporting.InfluxDB.Extensions;
@@ -24,19 +23,18 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
         private LineProtocolPayload _payload;
 
 
-        public InfluxDbReporter(IInfluxDbReporterSettings settings, ILoggerFactory loggerFactory)
+        public InfluxDbReporter(InfluxDBReporterSettings settings, ILoggerFactory loggerFactory)
             : this(typeof(InfluxDbReporter).Name, settings, loggerFactory)
         {
         }
 
-        public InfluxDbReporter(string name, IInfluxDbReporterSettings settings, ILoggerFactory loggerFactory)
+        public InfluxDbReporter(string name, InfluxDBReporterSettings settings, ILoggerFactory loggerFactory)
         {
             ReportInterval = settings.ReportInterval;
             Name = name;
 
             _logger = loggerFactory.CreateLogger<InfluxDbReporter>();
-            _influxDbClient = new LineProtocolClient(loggerFactory, settings.BaseAddress, settings.Database, settings.Username,
-                settings.Password, settings.RetentionPolicy, settings.Consistency, settings.BreakerRate);
+            _influxDbClient = new LineProtocolClient(loggerFactory, settings.InfluxDbSettings, settings.HttpPolicy);
         }
 
         public string Name { get; }
@@ -65,10 +63,6 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
             _disposed = true;
         }
 
-        public void EndMetricTypeReport(Type metricType)
-        {
-        }
-
         public async Task<bool> EndAndFlushReportRunAsync(IMetrics metrics)
         {
             _logger.LogDebug($"Ending {Name} Run");
@@ -76,6 +70,10 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
             var result = await _influxDbClient.WriteAsync(_payload);
 
             return result.Success;
+        }
+
+        public void EndMetricTypeReport(Type metricType)
+        {
         }
 
         public void ReportEnvironment(EnvironmentInfo environmentInfo)

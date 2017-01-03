@@ -15,13 +15,20 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
 
         public void Add(LineProtocolPoint point)
         {
-            if (point == null) throw new ArgumentNullException(nameof(point));
+            if (point == null)
+            {
+                throw new ArgumentNullException(nameof(point));
+            }
+
             _points.Add(point);
         }
 
         public void Format(TextWriter textWriter)
         {
-            if (textWriter == null) throw new ArgumentNullException(nameof(textWriter));
+            if (textWriter == null)
+            {
+                throw new ArgumentNullException(nameof(textWriter));
+            }
 
             var points = _points.ToList();
 

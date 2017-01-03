@@ -16,83 +16,51 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
 {
     public class LineProtocolClient
     {
-        private const string DefaultBreakerRate = "3 / 00:00:30";
-        private static readonly TimeSpan DefaultHttpTimeout = TimeSpan.FromSeconds(3);
-        private readonly string _consistenency;
-        private readonly string _database;
         private readonly HttpClient _httpClient;
-        private readonly Policy _policy;
-        private readonly string _retentionPolicy;
+        private readonly InfluxDBSettings _influxDbSettings;
         private readonly ILogger<LineProtocolClient> _logger;
+        private readonly Policy _policy;
 
-        public LineProtocolClient(ILoggerFactory loggerFactory, 
-            Uri serverBaseAddress, string database, string username = null, 
-            string password = null, string retentionPolicy = null, 
-            string consistenency = null, string breakerRate = DefaultBreakerRate)
+        public LineProtocolClient(ILoggerFactory loggerFactory, InfluxDBSettings influxDbSettings)
+            : this(
+                loggerFactory, influxDbSettings,
+                new HttpPolicy { FailuresBeforeBackoff = 3, BackoffPeriod = TimeSpan.FromSeconds(30), Timeout = TimeSpan.FromSeconds(3) })
         {
-            if (serverBaseAddress == null)
+        }
+
+        public LineProtocolClient(ILoggerFactory loggerFactory, InfluxDBSettings influxDbSettings, HttpPolicy httpPolicy)
+        {
+            if (influxDbSettings == null)
             {
-                throw new ArgumentNullException(nameof(serverBaseAddress));
+                throw new ArgumentNullException(nameof(influxDbSettings));
             }
 
-            if (string.IsNullOrEmpty(database))
+            if (httpPolicy == null)
+            {
+                throw new ArgumentNullException(nameof(httpPolicy));
+            }
+
+            if (influxDbSettings.Database.IsMissing())
             {
                 throw new ArgumentException("A database must be specified");
             }
 
-            if (username.IsPresent() && password.IsPresent())
-            {
-                var byteArray = Encoding.ASCII.GetBytes($"{username}:{password}");
-
-                _httpClient = new HttpClient
-                {
-                    BaseAddress = serverBaseAddress,
-                    Timeout = DefaultHttpTimeout,
-                    DefaultRequestHeaders =
-                    {
-                        Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray))
-                    }
-                };
-            }
-            else
-            {
-                _httpClient = new HttpClient
-                {
-                    Timeout = DefaultHttpTimeout,
-                    BaseAddress = serverBaseAddress
-                };
-            }
-
-
-            _policy = new Rate(breakerRate).AsPolicy();
-            _database = database;
-            _retentionPolicy = retentionPolicy;
-            _consistenency = consistenency;
+            _httpClient = CreateHttpClient(influxDbSettings, httpPolicy);
+            _influxDbSettings = influxDbSettings;
+            _policy = httpPolicy.AsPolicy();
             _logger = loggerFactory.CreateLogger<LineProtocolClient>();
         }
 
         public async Task<LineProtocolWriteResult> WriteAsync(LineProtocolPayload payload,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            var endpoint = $"write?db={Uri.EscapeDataString(_database)}";            
-
-            if (_retentionPolicy.IsPresent())
-            {
-                endpoint += $"&rp={Uri.EscapeDataString(_retentionPolicy)}";
-            }
-
-            if (_consistenency.IsPresent())
-            {
-                endpoint += $"&consistency={Uri.EscapeDataString(_consistenency)}";
-            }            
-
             var result = await _policy.ExecuteAndCaptureAsync(async () =>
             {
                 var payloadText = new StringWriter();
                 payload.Format(payloadText);
 
                 var content = new StringContent(payloadText.ToString(), Encoding.UTF8);
-                var response = await _httpClient.PostAsync(endpoint, content, cancellationToken).ConfigureAwait(false);
+                var response = await _httpClient.PostAsync(_influxDbSettings.Endpoint, content, cancellationToken).ConfigureAwait(false);
 
                 return response.IsSuccessStatusCode
                     ? new LineProtocolWriteResult(true, null)
@@ -101,7 +69,8 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
 
             if (result.Outcome == OutcomeType.Failure)
             {
-                _logger.LogError(LoggingEvents.InfluxDbWriteError, result.FinalException, "Failed to write to InfluxDB {error}", result.Result.ErrorMessage);
+                _logger.LogError(LoggingEvents.InfluxDbWriteError, result.FinalException, "Failed to write to InfluxDB {error}",
+                    result.Result.ErrorMessage);
             }
             else
             {
@@ -109,6 +78,30 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
             }
 
             return result.Result;
+        }
+
+        private static HttpClient CreateHttpClient(InfluxDBSettings influxDbSettings, HttpPolicy httpPolicy)
+        {
+            if (influxDbSettings.UserName.IsPresent() && influxDbSettings.Password.IsPresent())
+            {
+                var byteArray = Encoding.ASCII.GetBytes($"{influxDbSettings.UserName}:{influxDbSettings.Password}");
+
+                return new HttpClient
+                {
+                    BaseAddress = influxDbSettings.BaseAddress,
+                    Timeout = httpPolicy.Timeout,
+                    DefaultRequestHeaders =
+                    {
+                        Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray))
+                    }
+                };
+            }
+
+            return new HttpClient
+            {
+                Timeout = httpPolicy.Timeout,
+                BaseAddress = influxDbSettings.BaseAddress
+            };
         }
     }
 }
