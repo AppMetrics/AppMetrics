@@ -9,7 +9,7 @@
     "debugType": "full"
   },
   "dependencies": {
-    "App.Metrics": "1.0.0-beta3",
+    "App.Metrics": "1.0.0-beta4",
     "Microsoft.AspNetCore.Routing": "1.1.0",
     "Microsoft.AspNetCore.Hosting": "1.1.0",
     "Microsoft.Extensions.DependencyInjection": "1.1.0",
@@ -49,6 +49,6 @@
     "licenseUrl": "https://github.com/alhardy/AppMetrics/blob/master/LICENSE",
     "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png"
   },
-  "version": "1.0.0-beta3"
+  "version": "1.0.0-beta4"
 
 }
