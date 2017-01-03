@@ -15,7 +15,6 @@ namespace App.Metrics.Extensions.Middleware.Middleware
     public class MetricsEndpointTextEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
         private readonly DefaultReportGenerator _reportGenerator;
-        private readonly StringReporter _stringReporter;
 
         public MetricsEndpointTextEndpointMiddleware(RequestDelegate next,
             AspNetMetricsOptions aspNetOptions,
@@ -23,7 +22,6 @@ namespace App.Metrics.Extensions.Middleware.Middleware
             IMetrics metrics)
             : base(next, aspNetOptions, loggerFactory, metrics)
         {
-            _stringReporter = new StringReporter();
             _reportGenerator = new DefaultReportGenerator(loggerFactory);
         }
 
@@ -32,10 +30,11 @@ namespace App.Metrics.Extensions.Middleware.Middleware
             if (Options.MetricsTextEndpointEnabled && Options.MetricsTextEndpoint.IsPresent() && Options.MetricsTextEndpoint == context.Request.Path)
             {
                 Logger.MiddlewareExecuting(GetType());
-                
-                await _reportGenerator.GenerateAsync(_stringReporter, Metrics, context.RequestAborted);
 
-                await WriteResponseAsync(context, _stringReporter.Result, "text/plain");
+                var stringReporter = new StringReporter();
+                await _reportGenerator.GenerateAsync(stringReporter, Metrics, context.RequestAborted);
+
+                await WriteResponseAsync(context, stringReporter.Result, "text/plain");
 
                 Logger.MiddlewareExecuted(GetType());
 
