@@ -188,12 +188,11 @@ namespace App.Metrics.Core
         private new void Tick()
         {
             base.Tick();
-            if (_setMeters != null)
+            if (_setMeters == null) return;
+
+            foreach (var value in _setMeters.Values)
             {
-                foreach (var value in _setMeters.Values)
-                {
-                    value.Tick();
-                }
+                value.Tick();
             }
         }
     }

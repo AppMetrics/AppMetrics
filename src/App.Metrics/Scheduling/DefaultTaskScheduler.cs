@@ -13,7 +13,13 @@ namespace App.Metrics.Scheduling
     public sealed class DefaultTaskScheduler : IScheduler
     {
         private bool _disposed;
+        private Task _task;
         private CancellationTokenSource _token;
+
+        public DefaultTaskScheduler()
+        {
+            _token = new CancellationTokenSource();
+        }
 
         public void Dispose()
         {
@@ -43,9 +49,14 @@ namespace App.Metrics.Scheduling
         // <inheritdoc />
         public Task Interval(TimeSpan pollInterval, TaskCreationOptions taskCreationOptions, Action action)
         {
-            _token = new CancellationTokenSource();
+            ThrowIfInvalid(pollInterval);
 
-            return Task.Factory.StartNew(() =>
+            if (HasStarted())
+            {
+                return _task;
+            }
+
+            _task = Task.Factory.StartNew(() =>
             {
                 for (;;)
                 {
@@ -54,17 +65,41 @@ namespace App.Metrics.Scheduling
                         break;
                     }
 
-                    action();
+                    try
+                    {
+                        action();
+                    }
+                    catch (Exception)
+                    {
+                        _token.Cancel();
+                    }
                 }
             }, _token.Token, taskCreationOptions, TaskScheduler.Default);
+
+            return _task;
+        }
+
+        private bool HasStarted()
+        {
+            return _task != null && (_task.IsCompleted == false ||
+                                     _task.Status == TaskStatus.Running ||
+                                     _task.Status == TaskStatus.WaitingToRun ||
+                                     _task.Status == TaskStatus.WaitingForActivation);
         }
 
         // <inheritdoc />
         public Task Interval(TimeSpan pollInterval, TaskCreationOptions taskCreationOptions, Action action, CancellationToken token)
         {
+            ThrowIfInvalid(pollInterval);
+
+            if (HasStarted())
+            {
+                return _task;
+            }
+
             _token = CancellationTokenSource.CreateLinkedTokenSource(token);
 
-            return Task.Factory.StartNew(() =>
+            _task = Task.Factory.StartNew(() =>
             {
                 for (;;)
                 {
@@ -73,9 +108,18 @@ namespace App.Metrics.Scheduling
                         break;
                     }
 
-                    action();
+                    try
+                    {
+                        action();
+                    }
+                    catch (Exception)
+                    {
+                        _token.Cancel();
+                    }
                 }
             }, token, taskCreationOptions, TaskScheduler.Default);
+
+            return _task;
         }
 
         // <inheritdoc />
@@ -90,5 +134,13 @@ namespace App.Metrics.Scheduling
         }
 
         private bool CheckDisposed() => _disposed;
+
+        private void ThrowIfInvalid(TimeSpan pollInterval)
+        {
+            if (pollInterval <= TimeSpan.Zero)
+            {
+                throw new ArgumentOutOfRangeException(nameof(pollInterval));
+            }            
+        }
     }
 }
