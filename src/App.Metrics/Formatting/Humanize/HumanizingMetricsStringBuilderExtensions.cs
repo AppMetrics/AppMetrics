@@ -11,11 +11,6 @@ namespace App.Metrics.Formatting.Humanize
 {
     public static class HumanizingMetricsStringBuilderExtensions
     {
-        public static void WriteEndMetricType(this StringBuilder buffer, Type metricType)
-        {
-            buffer.AppendFormat(metricType.HumanzeEndMetricType());
-        }
-
         public static void WriteEnvironmentInfo(this StringBuilder buffer, EnvironmentInfo environmentInfo)
         {
             buffer.AppendLine(environmentInfo.Hummanize());
@@ -33,7 +28,7 @@ namespace App.Metrics.Formatting.Humanize
 
         public static void WriteHealthStatus(this StringBuilder buffer, string status)
         {
-            buffer.AppendLine(Environment.NewLine + "\tHealth Status = {status}" + Environment.NewLine);
+            buffer.AppendLine(Environment.NewLine + $"***** Health Status = {status} *****" + Environment.NewLine + Environment.NewLine);
         }
 
         public static void WriteMetricEndReport(this StringBuilder buffer, string reportName, string timeStamp)
@@ -42,7 +37,7 @@ namespace App.Metrics.Formatting.Humanize
                 reportName, timeStamp);
         }
 
-        public static void WriteMetricName<T>(this StringBuilder buffer, string context, MetricValueSource<T> valueSource)
+        public static void WriteMetricName<T>(this StringBuilder buffer, MetricValueSource<T> valueSource, string context = null)
         {
             buffer.AppendLine(valueSource.HumanzizeName(context));
         }
@@ -68,9 +63,9 @@ namespace App.Metrics.Formatting.Humanize
             buffer.AppendLine("\tDEGRADED CHECKS");
         }
 
-        public static void WriteStartMetricType(this StringBuilder buffer, Type metricType)
+        public static void WriteStartMetricType(this StringBuilder buffer, Type metricType, string context = null)
         {
-            buffer.AppendFormat(metricType.HumanzeStartMetricType());
+            buffer.AppendFormat(metricType.HumanzeStartMetricType(context));
         }
     }
 }

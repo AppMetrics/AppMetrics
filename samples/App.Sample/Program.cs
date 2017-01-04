@@ -115,14 +115,10 @@ namespace App.Sample
                 })
                 .AddReporting(factory =>
                 {
-                    var filter = new DefaultMetricsFilter()
-                        .WithHealthChecks(true)
-                        .WithEnvironmentInfo(true);
-
                     factory.AddConsole(new ConsoleReporterSettings
                     {
                         ReportInterval = TimeSpan.FromSeconds(5),
-                    }, filter);
+                    });
 
                     factory.AddTextFile(new TextFileReporterSettings
                     {
@@ -131,7 +127,6 @@ namespace App.Sample
                     });
 
                     var influxFilter = new DefaultMetricsFilter()
-                        //.WhereType(MetricType.Counter)                        
                         .WhereMetricTaggedWithKeyValue(new TagKeyValueFilter { { "reporter", "influxdb" } })
                         .WithHealthChecks(true)
                         .WithEnvironmentInfo(true);

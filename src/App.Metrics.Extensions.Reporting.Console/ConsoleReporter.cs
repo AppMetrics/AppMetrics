@@ -49,7 +49,6 @@ namespace App.Metrics.Extensions.Reporting.Console
 
         public void EndMetricTypeReport(Type metricType)
         {
-            WriteLine(metricType.HumanzeEndMetricType());
         }
 
         public Task<bool> EndAndFlushReportRunAsync(IMetrics metrics)
@@ -64,7 +63,9 @@ namespace App.Metrics.Extensions.Reporting.Console
 
         public void ReportEnvironment(EnvironmentInfo environmentInfo)
         {
+            WriteLine(typeof(EnvironmentInfo).HumanzeStartMetricType());
             WriteLine(environmentInfo.Hummanize());
+            WriteLine(typeof(EnvironmentInfo).HumanzeEndMetricType());
         }
 
         public void ReportHealth(GlobalMetricTags globalTags,
@@ -72,6 +73,7 @@ namespace App.Metrics.Extensions.Reporting.Console
             IEnumerable<HealthCheck.Result> degradedChecks, 
             IEnumerable<HealthCheck.Result> unhealthyChecks)
         {
+            WriteLine(typeof(HealthStatus).HumanzeStartMetricType());
             _logger.LogDebug("Writing Health Checks for Console");
 
             var passed = healthyChecks.ToList();
@@ -108,6 +110,7 @@ namespace App.Metrics.Extensions.Reporting.Console
             failed.ForEach(c => WriteLine(c.Hummanize()));
 
             _logger.LogDebug("Writing Health Checks for Console");
+            WriteLine(typeof(HealthStatus).HumanzeEndMetricType());
         }
 
         public void ReportMetric<T>(string context, MetricValueSource<T> valueSource)
@@ -119,11 +122,6 @@ namespace App.Metrics.Extensions.Reporting.Console
             WriteLine(valueSource.Hummanize());
 
             _logger.LogDebug("Writing Metric {T} for Console", typeof(T));
-        }
-
-        public void StartMetricTypeReport(Type metricType)
-        {
-            WriteLine(metricType.HumanzeStartMetricType());
         }
 
         public void StartReportRun(IMetrics metrics)

@@ -9,7 +9,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Core;
-using App.Metrics.Data;
 using App.Metrics.Reporting.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -56,47 +55,39 @@ namespace App.Metrics.Reporting.Internal
 
             if (data.Environment.Entries.Any() && reporterMetricsFilter.ReportEnvironment)
             {
-                reporter.StartMetricTypeReport(typeof(EnvironmentInfo));
-
                 reporter.ReportEnvironment(data.Environment);
-
-                reporter.EndMetricTypeReport(typeof(EnvironmentInfo));
             }
 
             foreach (var contextValueSource in data.Contexts)
             {
-                ReportMetricType(reporter, contextValueSource.Counters,
+                ReportMetricType(contextValueSource.Counters,
                     c => { reporter.ReportMetric($"{contextValueSource.Context}", c); }, token);
 
-                ReportMetricType(reporter, contextValueSource.Gauges,
+                ReportMetricType(contextValueSource.Gauges,
                     g => { reporter.ReportMetric($"{contextValueSource.Context}", g); }, token);
 
-                ReportMetricType(reporter, contextValueSource.Histograms,
+                ReportMetricType(contextValueSource.Histograms,
                     h => { reporter.ReportMetric($"{contextValueSource.Context}", h); }, token);
 
-                ReportMetricType(reporter, contextValueSource.Meters,
+                ReportMetricType(contextValueSource.Meters,
                     m => { reporter.ReportMetric($"{contextValueSource.Context}", m); }, token);
 
-                ReportMetricType(reporter, contextValueSource.Timers,
+                ReportMetricType(contextValueSource.Timers,
                     t => { reporter.ReportMetric($"{contextValueSource.Context}", t); }, token);
 
-                ReportMetricType(reporter, contextValueSource.ApdexScores,
+                ReportMetricType(contextValueSource.ApdexScores,
                     t => { reporter.ReportMetric($"{contextValueSource.Context}", t); }, token);
             }
 
             if (reporterMetricsFilter.ReportHealthChecks)
             {
                 var healthStatus = await metrics.Advanced.Health.ReadStatusAsync(token);
-
-                reporter.StartMetricTypeReport(typeof(HealthStatus));
-
+                
                 var passed = healthStatus.Results.Where(r => r.Check.Status.IsHealthy());
                 var failed = healthStatus.Results.Where(r => r.Check.Status.IsUnhealthy());
                 var degraded = healthStatus.Results.Where(r => r.Check.Status.IsDegraded());
 
                 reporter.ReportHealth(metrics.Advanced.GlobalTags, passed, degraded, failed);
-
-                reporter.EndMetricTypeReport(typeof(HealthStatus));
             }
 
             var result = await reporter.EndAndFlushReportRunAsync(metrics);
@@ -106,7 +97,7 @@ namespace App.Metrics.Reporting.Internal
             return result;
         }
 
-        private static void ReportMetricType<T>(IMetricReporter reporter, IEnumerable<T> metrics, Action<T> report, CancellationToken token)
+        private static void ReportMetricType<T>(IEnumerable<T> metrics, Action<T> report, CancellationToken token)
         {
             var reportingMetrics = metrics.ToList();
 
@@ -114,8 +105,6 @@ namespace App.Metrics.Reporting.Internal
             {
                 return;
             }
-
-            reporter.StartMetricTypeReport(typeof(T));
 
             foreach (var metric in reportingMetrics)
             {
@@ -126,8 +115,6 @@ namespace App.Metrics.Reporting.Internal
 
                 report(metric);
             }
-
-            reporter.EndMetricTypeReport(typeof(T));
         }
     }
 }

@@ -66,11 +66,6 @@ namespace App.Metrics.Extensions.Reporting.TextFile
             _disposed = true;
         }
 
-        public void EndMetricTypeReport(Type metricType)
-        {
-            _stringReporter.EndMetricTypeReport(metricType);
-        }
-
         public async Task<bool> EndAndFlushReportRunAsync(IMetrics metrics)
         {
             await _stringReporter.EndAndFlushReportRunAsync(metrics);
@@ -108,11 +103,6 @@ namespace App.Metrics.Extensions.Reporting.TextFile
             _stringReporter.ReportMetric(context, valueSource);
 
             _logger.LogDebug($"End Writing Metric {typeof(T)} for {Name}");
-        }
-
-        public void StartMetricTypeReport(Type metricType)
-        {
-            _stringReporter.StartMetricTypeReport(metricType);
         }
 
         public void StartReportRun(IMetrics metrics)

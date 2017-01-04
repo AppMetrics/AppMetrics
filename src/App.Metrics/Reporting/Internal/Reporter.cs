@@ -133,7 +133,8 @@ namespace App.Metrics.Reporting.Internal
                 {
                     try
                     {
-                        var result = await _reportGenerator.GenerateAsync(metricReporter.Value, context, provider.Filter, token);
+                        var result = await _reportGenerator.GenerateAsync(metricReporter.Value, context, 
+                            provider.Filter, token);
 
                         if (result)
                         {

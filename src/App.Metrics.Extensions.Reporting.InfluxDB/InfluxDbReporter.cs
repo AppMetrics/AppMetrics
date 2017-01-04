@@ -22,7 +22,6 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
         private bool _disposed;
         private LineProtocolPayload _payload;
 
-
         public InfluxDbReporter(InfluxDBReporterSettings settings, ILoggerFactory loggerFactory)
             : this(typeof(InfluxDbReporter).Name, settings, loggerFactory)
         {
@@ -70,10 +69,6 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
             var result = await _influxDbClient.WriteAsync(_payload);
 
             return result.Success;
-        }
-
-        public void EndMetricTypeReport(Type metricType)
-        {
         }
 
         public void ReportEnvironment(EnvironmentInfo environmentInfo)
@@ -173,10 +168,6 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
             }
 
             _logger.LogDebug($"Finished Packing Metric {typeof(T)} for {Name}");
-        }
-
-        public void StartMetricTypeReport(Type metricType)
-        {
         }
 
         public void StartReportRun(IMetrics metrics)

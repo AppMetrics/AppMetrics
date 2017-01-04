@@ -18,6 +18,7 @@ namespace App.Metrics.Reporting
 {
     public sealed class StringReporter : IMetricReporter
     {
+        private static readonly List<string> MetricTypesReported = new List<string>();
         private StringBuilder _buffer;
         private bool _disposed;
 
@@ -38,7 +39,7 @@ namespace App.Metrics.Reporting
 
         public TimeSpan ReportInterval { get; } = TimeSpan.FromSeconds(5);
 
-        public string Result => _buffer.ToString();
+        public string Result => _buffer?.ToString();
 
         public void Dispose()
         {
@@ -65,11 +66,6 @@ namespace App.Metrics.Reporting
             _disposed = true;
         }
 
-        public void EndMetricTypeReport(Type metricType)
-        {
-            _buffer.WriteEndMetricType(metricType);
-        }
-
         public Task<bool> EndAndFlushReportRunAsync(IMetrics metrics)
         {
             _buffer.WriteMetricEndReport(Name,
@@ -80,12 +76,13 @@ namespace App.Metrics.Reporting
 
         public void ReportEnvironment(EnvironmentInfo environmentInfo)
         {
+            _buffer.WriteStartMetricType(typeof(EnvironmentInfo));
             _buffer.WriteEnvironmentInfo(environmentInfo);
         }
 
         public void ReportHealth(GlobalMetricTags globalTags,
-            IEnumerable<HealthCheck.Result> healthyChecks, 
-            IEnumerable<HealthCheck.Result> degradedChecks, 
+            IEnumerable<HealthCheck.Result> healthyChecks,
+            IEnumerable<HealthCheck.Result> degradedChecks,
             IEnumerable<HealthCheck.Result> unhealthyChecks)
         {
             var passed = healthyChecks.ToList();
@@ -121,19 +118,28 @@ namespace App.Metrics.Reporting
 
         public void ReportMetric<T>(string context, MetricValueSource<T> valueSource)
         {
-            _buffer.WriteMetricName(context, valueSource);
+            WriteStartMetricType<T>(context);
+            _buffer.WriteMetricName(valueSource);
             _buffer.WriteMetricValue(valueSource);
-        }
-
-        public void StartMetricTypeReport(Type metricType)
-        {
-            _buffer.WriteStartMetricType(metricType);
         }
 
         public void StartReportRun(IMetrics metrics)
         {
             _buffer.WriteMetricStartReport(Name,
                 metrics.Advanced.Clock.FormatTimestamp(metrics.Advanced.Clock.UtcDateTime));
+        }
+
+        private void WriteStartMetricType<T>(string context)
+        {
+            var key = $"{context}_{typeof(T).Name}";
+            if (MetricTypesReported.Contains(key))
+            {
+                return;
+            }
+
+            _buffer.WriteStartMetricType(typeof(T), context);
+
+            MetricTypesReported.Add(key);
         }
     }
 }

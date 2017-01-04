@@ -7,7 +7,12 @@
     "win10-x64": {}
   },
 
-  "buildOptions": { "debugType": "full" },
+  "buildOptions": {
+    "debugType": "full",
+    "embed": {
+      "include": [ "Reporting/StringReports/*.txt" ]
+    }
+  },
 
   "dependencies": {
     "App.Metrics": {

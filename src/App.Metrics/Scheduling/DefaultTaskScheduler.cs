@@ -12,12 +12,21 @@ namespace App.Metrics.Scheduling
 {
     public sealed class DefaultTaskScheduler : IScheduler
     {
+        private readonly bool _allowMulitpleTasks;
         private bool _disposed;
         private Task _task;
         private CancellationTokenSource _token;
 
-        public DefaultTaskScheduler()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultTaskScheduler"/> class.
+        /// </summary>
+        /// <param name="allowMulitpleTasks">
+        ///     if set to <c>true</c> allows more than one task to be created at a time, otherwise
+        ///     ensures the task hasn't yet started.
+        /// </param>
+        public DefaultTaskScheduler(bool allowMulitpleTasks = true)
         {
+            _allowMulitpleTasks = allowMulitpleTasks;
             _token = new CancellationTokenSource();
         }
 
@@ -47,11 +56,12 @@ namespace App.Metrics.Scheduling
         }
 
         // <inheritdoc />
-        public Task Interval(TimeSpan pollInterval, TaskCreationOptions taskCreationOptions, Action action)
+        public Task Interval(TimeSpan pollInterval, TaskCreationOptions taskCreationOptions, 
+            Action action)
         {
             ThrowIfInvalid(pollInterval);
 
-            if (HasStarted())
+            if (HasStarted() && !_allowMulitpleTasks)
             {
                 return _task;
             }
@@ -88,11 +98,12 @@ namespace App.Metrics.Scheduling
         }
 
         // <inheritdoc />
-        public Task Interval(TimeSpan pollInterval, TaskCreationOptions taskCreationOptions, Action action, CancellationToken token)
+        public Task Interval(TimeSpan pollInterval, TaskCreationOptions taskCreationOptions, 
+            Action action, CancellationToken token)
         {
             ThrowIfInvalid(pollInterval);
 
-            if (HasStarted())
+            if (HasStarted() && !_allowMulitpleTasks)
             {
                 return _task;
             }

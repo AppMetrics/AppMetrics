@@ -1,0 +1,22 @@
+﻿
+***** Health Status = Unhealthy *****
+
+
+	PASSED CHECKS
+
+
+	
+     healthy check = PASSED: healthy message
+
+	DEGRADED CHECKS
+
+
+	
+    degraded check = DEGRADED: degraded message
+
+	FAILED CHECKS
+
+
+	
+   unhealthy check = FAILED: unhealthy message
+

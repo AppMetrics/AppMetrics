@@ -19,8 +19,6 @@ namespace App.Metrics.Reporting.Interfaces
 
         Task<bool> EndAndFlushReportRunAsync(IMetrics metrics);
 
-        void EndMetricTypeReport(Type metricType);
-
         void ReportEnvironment(EnvironmentInfo environmentInfo);
 
         void ReportHealth(GlobalMetricTags globalTags,
@@ -29,8 +27,6 @@ namespace App.Metrics.Reporting.Interfaces
             IEnumerable<HealthCheck.Result> unhealthyChecks);
 
         void ReportMetric<T>(string context, MetricValueSource<T> valueSource);
-
-        void StartMetricTypeReport(Type metricType);
 
         void StartReportRun(IMetrics metrics);
     }
