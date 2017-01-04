@@ -18,6 +18,8 @@ namespace App.Metrics.Facts.Metrics
                 Constants.ReservoirSampling.DefaultSampleSize, _clock, Constants.ReservoirSampling.DefaultApdexTSeconds, false);
         }
 
+        //TODO: AH - Add Tests for tracking adpex via action and func
+
         [Fact]
         public void can_reset()
         {

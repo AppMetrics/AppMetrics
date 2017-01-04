@@ -23,51 +23,31 @@ namespace App.Metrics.Data
         public static CounterValue GetCurrentValue(ICounter metric)
         {
             var implementation = metric as ICounterMetric;
-            if (implementation != null)
-            {
-                return implementation.Value;
-            }
-            return EmptyCounter;
+            return implementation?.Value ?? EmptyCounter;
         }
 
         public static MeterValue GetCurrentValue(IMeter metric)
         {
             var implementation = metric as IMeterMetric;
-            if (implementation != null)
-            {
-                return implementation.Value;
-            }
-            return EmptyMeter;
+            return implementation == null ? EmptyMeter : implementation.Value;
         }
 
         public static HistogramValue GetCurrentValue(IHistogram metric)
         {
             var implementation = metric as IHistogramMetric;
-            if (implementation != null)
-            {
-                return implementation.Value;
-            }
-            return EmptyHistogram;
+            return implementation != null ? implementation.Value : EmptyHistogram;
         }
 
         public static TimerValue GetCurrentValue(ITimer metric)
         {
             var implementation = metric as ITimerMetric;
-            if (implementation != null)
-            {
-                return implementation.Value;
-            }
-            return EmptyTimer;
+            return implementation != null ? implementation.Value : EmptyTimer;
         }
 
         public static ApdexValue GetCurrentValue(IApdex metric)
         {
             var implementation = metric as IApdexMetric;
-            if (implementation != null)
-            {
-                return implementation.Value;
-            }
-            return EmptyApdex;
+            return implementation != null ? implementation.Value : EmptyApdex;
         }
     }
 }

@@ -30,5 +30,9 @@ namespace App.Metrics.Facts.Metrics
 
             hitPercentage.Value.Should().Be(expectedPercentage);
         }
+
+        //TODO: AH - Add HitRatioGauge Tests
+
+        //TODO: AH - Add RatioGauge Tests
     }
 }
