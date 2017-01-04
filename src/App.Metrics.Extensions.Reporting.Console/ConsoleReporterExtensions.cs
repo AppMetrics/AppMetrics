@@ -9,7 +9,7 @@ namespace App.Metrics.Extensions.Reporting.Console
     public static class ConsoleReporterExtensions
     {
         public static IReportFactory AddConsole(this IReportFactory factory,
-            IConsoleReporterSettings settings, IMetricsFilter filter = null)
+            ConsoleReporterSettings settings, IMetricsFilter filter = null)
         {
             factory.AddProvider(new ConsoleReporterProvider(settings, filter));
             return factory;

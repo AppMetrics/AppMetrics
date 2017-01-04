@@ -9,7 +9,7 @@ namespace App.Metrics.Extensions.Reporting.TextFile
     public static class TextFileReporterExtensions
     {
         public static IReportFactory AddTextFile(this IReportFactory factory,
-            ITextFileReporterSettings settings, IMetricsFilter filter = null)
+            TextFileReporterSettings settings, IMetricsFilter filter = null)
         {
             factory.AddProvider(new TextFileReporterProvider(settings, filter));
             return factory;

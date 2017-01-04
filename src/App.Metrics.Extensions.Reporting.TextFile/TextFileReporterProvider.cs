@@ -3,7 +3,6 @@
 
 
 using System;
-using System.Collections.Concurrent;
 using App.Metrics.Reporting.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -11,9 +10,9 @@ namespace App.Metrics.Extensions.Reporting.TextFile
 {
     public class TextFileReporterProvider : IReporterProvider
     {
-        private readonly ITextFileReporterSettings _settings;
+        private readonly TextFileReporterSettings _settings;
 
-        public TextFileReporterProvider(ITextFileReporterSettings settings, IMetricsFilter fitler)
+        public TextFileReporterProvider(TextFileReporterSettings settings, IMetricsFilter fitler)
         {
             if (settings == null)
             {

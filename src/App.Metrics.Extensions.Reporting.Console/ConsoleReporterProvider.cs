@@ -10,9 +10,9 @@ namespace App.Metrics.Extensions.Reporting.Console
 {
     public class ConsoleReporterProvider : IReporterProvider
     {
-        private readonly IConsoleReporterSettings _settings;
+        private readonly ConsoleReporterSettings _settings;
 
-        public ConsoleReporterProvider(IConsoleReporterSettings settings, IMetricsFilter filter)
+        public ConsoleReporterProvider(ConsoleReporterSettings settings, IMetricsFilter filter)
         {
             if (settings == null)
             {

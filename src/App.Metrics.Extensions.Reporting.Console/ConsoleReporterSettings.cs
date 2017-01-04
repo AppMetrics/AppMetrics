@@ -3,10 +3,11 @@
 
 
 using System;
+using App.Metrics.Reporting.Interfaces;
 
 namespace App.Metrics.Extensions.Reporting.Console
 {
-    public class ConsoleReporterSettings : IConsoleReporterSettings
+    public class ConsoleReporterSettings : IReporterSettings
     {
         public TimeSpan ReportInterval { get; set; } = TimeSpan.FromSeconds(30);
     }
