@@ -133,7 +133,7 @@ namespace App.Metrics.Reporting.Internal
                 {
                     try
                     {
-                        var result = await _reportGenerator.GenerateAsync(metricReporter.Value, context, 
+                        var result = await _reportGenerator.GenerateAsync(metricReporter.Value, context,
                             provider.Filter, token);
 
                         if (result)
@@ -145,7 +145,7 @@ namespace App.Metrics.Reporting.Internal
                             _metrics.Increment(_failedCounter, metricReporter.Key.Name);
                             _logger.ReportFailed(metricReporter.Value);
                         }
-                    }
+                    }                    
                     catch (Exception ex)
                     {
                         _metrics.Increment(_failedCounter, metricReporter.Key.Name);

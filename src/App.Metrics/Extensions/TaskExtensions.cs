@@ -16,7 +16,10 @@ namespace System.Threading.Tasks
             }
             catch
             {
-                throw source.Exception;
+                if (source.Exception != null)
+                {
+                    throw source.Exception;
+                }                
             }
         }
     }

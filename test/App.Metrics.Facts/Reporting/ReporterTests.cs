@@ -2,10 +2,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Facts.Fixtures;
+using App.Metrics.Facts.Reporting.Helpers;
 using App.Metrics.Reporting;
 using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Reporting.Internal;
+using App.Metrics.Scheduling;
 using App.Metrics.Scheduling.Interfaces;
+using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
@@ -43,6 +46,23 @@ namespace App.Metrics.Facts.Reporting
             reporter.RunReports(_fixture.Metrics, CancellationToken.None);
 
             scheduler.Verify(p => p.Interval(interval, TaskCreationOptions.LongRunning, It.IsAny<Action>(), It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [Fact]
+        public void when_metric_report_fails_should_not_throw()
+        {
+            var loggerFactory = new LoggerFactory();
+            var metrics = new Mock<IMetrics>();
+            var factory = new ReportFactory(metrics.Object, loggerFactory);
+            factory.AddProvider(new TestReportProvider(false, TimeSpan.FromMilliseconds(10), new Exception()));
+            var scheduler = new DefaultTaskScheduler();
+            var reporter = new Reporter(factory, metrics.Object, scheduler, loggerFactory);
+            var token = new CancellationTokenSource();
+            token.CancelAfter(100);
+
+            Action action = () => { reporter.RunReports(_fixture.Metrics, token.Token); };
+
+            action.ShouldNotThrow();
         }
 
         [Fact]
