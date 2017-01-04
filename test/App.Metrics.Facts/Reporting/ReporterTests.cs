@@ -66,6 +66,109 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
+        public void can_generate_report_successfully()
+        {
+            var loggerFactory = new LoggerFactory();
+            var metrics = new Mock<IMetrics>();
+            var factory = new ReportFactory(metrics.Object, loggerFactory);
+            factory.AddProvider(new TestReportProvider(true, TimeSpan.FromMilliseconds(10)));
+            var scheduler = new DefaultTaskScheduler();
+            var reporter = new Reporter(factory, metrics.Object, scheduler, loggerFactory);
+            var token = new CancellationTokenSource();
+            token.CancelAfter(100);
+
+            Action action = () => { reporter.RunReports(_fixture.Metrics, token.Token); };
+
+            action.ShouldNotThrow();
+        }
+
+        [Fact]
+        public void when_metric_reporter_fails_continues_to_retry()
+        {
+            var loggerFactory = new LoggerFactory();
+            var metrics = new Mock<IMetrics>();
+            var factory = new ReportFactory(metrics.Object, loggerFactory);
+            factory.AddProvider(new TestReportProvider(false, TimeSpan.FromMilliseconds(10)));
+            var scheduler = new DefaultTaskScheduler();
+            var reporter = new Reporter(factory, metrics.Object, scheduler, loggerFactory);
+            var token = new CancellationTokenSource();
+            token.CancelAfter(100);
+
+            Action action = () => { reporter.RunReports(_fixture.Metrics, token.Token); };
+
+            action.ShouldNotThrow();
+        }
+
+        [Fact]
+        public void report_factory_is_required()
+        {
+            Action action = () =>
+            {
+                var loggerFactory = new LoggerFactory();
+                var metrics = new Mock<IMetrics>();
+                var scheduler = new DefaultTaskScheduler();
+                var reporter = new Reporter(null, metrics.Object, scheduler, loggerFactory);
+            };
+
+            action.ShouldThrow<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void imetrics_is_required()
+        {
+            Action action = () =>
+            {
+                var loggerFactory = new LoggerFactory();
+                var metrics = new Mock<IMetrics>();
+                var scheduler = new DefaultTaskScheduler();
+                var factory = new ReportFactory(metrics.Object, loggerFactory);
+                var reporter = new Reporter(factory, null, scheduler, loggerFactory);
+            };
+
+            action.ShouldThrow<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void scheduler_is_required()
+        {
+            Action action = () =>
+            {
+                var loggerFactory = new LoggerFactory();
+                var metrics = new Mock<IMetrics>();
+                var factory = new ReportFactory(metrics.Object, loggerFactory);
+                var reporter = new Reporter(factory, metrics.Object, null, loggerFactory);
+            };
+
+            action.ShouldThrow<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void logger_factory_is_required()
+        {
+            Action action = () =>
+            {
+                var loggerFactory = new LoggerFactory();
+                var metrics = new Mock<IMetrics>();
+                var scheduler = new DefaultTaskScheduler();
+                var factory = new ReportFactory(metrics.Object, loggerFactory);
+                var reporter = new Reporter(factory, metrics.Object, scheduler, null);
+            };
+
+            action.ShouldThrow<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void logger_factory_is_required_when_instantiating_default_report_generator()
+        {
+            Action action = () =>
+            {
+                var generator = new DefaultReportGenerator(null);
+            };
+
+            action.ShouldThrow<ArgumentNullException>();
+        }
+
+        [Fact]
         public void when_null_providers_doest_throw()
         {
             var loggerFactory = new LoggerFactory();
