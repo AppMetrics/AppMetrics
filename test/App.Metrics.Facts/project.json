@@ -15,8 +15,6 @@
     },
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
     "FluentAssertions": "4.17.0",
-    "Microsoft.AspNetCore.Routing": "1.1.0",
-    "Microsoft.AspNetCore.TestHost": "1.1.0",
     "Moq": "4.6.38-alpha",
     "xunit": "2.2.0-beta4-build3444",
     "xunit.runner.visualstudio": "2.2.0-beta4-build1194"

@@ -36,7 +36,6 @@ namespace App.Metrics.Facts.Reporting
             settings.Setup(s => s.ReportInterval).Returns(interval);
             metricReporter.Setup(r => r.ReportInterval).Returns(interval);
             provider.Setup(p => p.CreateMetricReporter(It.IsAny<string>(), It.IsAny<ILoggerFactory>())).Returns(metricReporter.Object);
-            provider.Setup(p => p.Settings).Returns(settings.Object);
             factory.AddProvider(provider.Object);
 
             var reporter = new Reporter(factory, metrics.Object, scheduler.Object, loggerFactory);

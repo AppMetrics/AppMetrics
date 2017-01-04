@@ -10,8 +10,6 @@ namespace App.Metrics.Reporting.Interfaces
     {
         IMetricsFilter Filter { get; }
 
-        IReporterSettings Settings { get; }
-
         IMetricReporter CreateMetricReporter(string name, ILoggerFactory loggerFactory);
     }
 }

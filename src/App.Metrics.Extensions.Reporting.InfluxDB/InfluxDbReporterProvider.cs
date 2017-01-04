@@ -25,8 +25,6 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 
         public IMetricsFilter Filter { get; }
 
-        public IReporterSettings Settings => _settings;
-
         public IMetricReporter CreateMetricReporter(string name, ILoggerFactory loggerFactory)
         {
             return new InfluxDbReporter(name, _settings, loggerFactory);

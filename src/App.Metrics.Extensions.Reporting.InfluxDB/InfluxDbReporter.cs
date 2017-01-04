@@ -87,13 +87,16 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
         {
             _logger.LogDebug($"Packing Health Checks for {Name}");
 
-            var unhealthy = unhealthyChecks.Any();
-            var degraded = degradedChecks.Any();
-            var healthy = !unhealthy && !degraded;
+            var unhealthy = unhealthyChecks as HealthCheck.Result[] ?? unhealthyChecks.ToArray();
+            var degraded = degradedChecks as HealthCheck.Result[] ?? degradedChecks.ToArray();
+
+            var isUnhealthy = unhealthy.Any();
+            var isDegraded = degraded.Any();
+            var healthy = !isUnhealthy && !isDegraded;
 
             var healthStatusValue = 2;
 
-            if (unhealthy)
+            if (isUnhealthy)
             {
                 healthStatusValue = 3;
             }
@@ -104,7 +107,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 
             Pack("health", healthStatusValue, new MetricTags(globalTags));
 
-            var checks = unhealthyChecks.Concat(degradedChecks).Concat(healthyChecks);
+            var checks = unhealthy.Concat(degraded).Concat(healthyChecks);
 
             foreach (var healthCheck in checks)
             {

@@ -26,8 +26,6 @@ namespace App.Metrics.Extensions.Reporting.Console
 
         public IMetricsFilter Filter { get; }
 
-        public IReporterSettings Settings => _settings;
-
         public IMetricReporter CreateMetricReporter(string name, ILoggerFactory loggerFactory)
         {
             return new ConsoleReporter(name, _settings.ReportInterval, loggerFactory);

@@ -25,8 +25,6 @@ namespace App.Metrics.Extensions.Reporting.TextFile
 
         public IMetricsFilter Filter { get; }
 
-        public IReporterSettings Settings => _settings;
-
         public IMetricReporter CreateMetricReporter(string name, ILoggerFactory loggerFactory)
         {
             return new TextFileReporter(name, _settings.FileName, _settings.ReportInterval, loggerFactory);
