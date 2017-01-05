@@ -51,6 +51,44 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         }
 
         [Fact]
+        public void can_report_counter_with_items()
+        {
+            var metricsMock = new Mock<IMetrics>();
+            var counter = new CounterMetric();
+            counter.Increment(new MetricItem().With("item1", "value1"), 1);
+            counter.Increment(new MetricItem().With("item2", "value2"), 1);
+            var counterValueSource = new CounterValueSource("test counter",
+                ConstantValue.Provider(counter.Value),
+                Unit.None, MetricTags.None);
+            var payloadBuilder = new LineProtocolPayloadBuilder();
+            var reporter = CreateReporter(payloadBuilder);
+
+            reporter.StartReportRun(metricsMock.Object);
+            reporter.ReportMetric("test", counterValueSource);
+
+            payloadBuilder.PayloadFormatted().Should().Be("test__test_counter__items,item=item1:value1 total=1i,percent=50\ntest__test_counter__items,item=item2:value2 total=1i,percent=50\ntest__test_counter value=2i\n");
+        }
+
+        [Fact]
+        public void can_report_counter_with_items_with_option_not_to_report_percentage()
+        {
+            var metricsMock = new Mock<IMetrics>();
+            var counter = new CounterMetric();
+            counter.Increment(new MetricItem().With("item1", "value1"), 1);
+            counter.Increment(new MetricItem().With("item2", "value2"), 1);
+            var counterValueSource = new CounterValueSource("test counter",
+                ConstantValue.Provider(counter.Value),
+                Unit.None, MetricTags.None,reportItemPercentages:false);
+            var payloadBuilder = new LineProtocolPayloadBuilder();
+            var reporter = CreateReporter(payloadBuilder);
+
+            reporter.StartReportRun(metricsMock.Object);
+            reporter.ReportMetric("test", counterValueSource);
+
+            payloadBuilder.PayloadFormatted().Should().Be("test__test_counter__items,item=item1:value1 total=1i\ntest__test_counter__items,item=item2:value2 total=1i\ntest__test_counter value=2i\n");
+        }
+
+        [Fact]
         public void can_report_gauges()
         {
             var metricsMock = new Mock<IMetrics>();
@@ -155,6 +193,25 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
             reporter.ReportMetric("test", meterValueSource);
 
             payloadBuilder.PayloadFormatted().Should().Be("test__test_meter count.meter=1i,rate1m=0,rate5m=0,rate15m=0,rate.mean=Infinity\n");
+        }
+
+        [Fact]
+        public void can_report_meters_with_items()
+        {
+            var metricsMock = new Mock<IMetrics>();
+            var clock = new TestClock();
+            var meter = new MeterMetric(clock);
+            meter.Mark(new MetricItem().With("item1", "value1"), 1);
+            meter.Mark(new MetricItem().With("item2", "value2"), 1);
+            var meterValueSource = new MeterValueSource("test meter",
+                ConstantValue.Provider(meter.Value), Unit.None, TimeUnit.Milliseconds, MetricTags.None);
+            var payloadBuilder = new LineProtocolPayloadBuilder();
+            var reporter = CreateReporter(payloadBuilder);
+
+            reporter.StartReportRun(metricsMock.Object);
+            reporter.ReportMetric("test", meterValueSource);
+
+            payloadBuilder.PayloadFormatted().Should().Be("test__test_meter__items,item=item1:value1 count.meter=1i,rate1m=0,rate5m=0,rate15m=0,rate.mean=Infinity,percent=50\ntest__test_meter__items,item=item2:value2 count.meter=1i,rate1m=0,rate5m=0,rate15m=0,rate.mean=Infinity,percent=50\ntest__test_meter count.meter=2i,rate1m=0,rate5m=0,rate15m=0,rate.mean=Infinity\n");
         }
 
         [Fact]
