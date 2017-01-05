@@ -24,7 +24,12 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
         public DefaultLineProtocolClient(ILoggerFactory loggerFactory, InfluxDBSettings influxDbSettings)
             : this(
                 loggerFactory, influxDbSettings,
-                new HttpPolicy { FailuresBeforeBackoff = 3, BackoffPeriod = TimeSpan.FromSeconds(30), Timeout = TimeSpan.FromSeconds(3) })
+                new HttpPolicy
+                {
+                    FailuresBeforeBackoff = Constants.DefaultFailuresBeforeBackoff,
+                    BackoffPeriod = Constants.DefaultBackoffPeriod,
+                    Timeout = Constants.DefaultTimeout
+                })
         {
         }
 

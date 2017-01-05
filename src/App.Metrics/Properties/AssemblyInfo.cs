@@ -36,3 +36,4 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("App.Metrics.Extensions.Reporting.TextFile")]
 [assembly: InternalsVisibleTo("App.Metrics.Extensions.Reporting.Console")]
 [assembly: InternalsVisibleTo("App.Metrics.Extensions.Mvc")]
+[assembly: InternalsVisibleTo("App.Metrics.Extensions.Reporting.InfluxDB.Facts")]

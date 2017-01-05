@@ -9,10 +9,22 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 {
     public class InfluxDBReporterSettings : IReporterSettings
     {
-        public InfluxDBSettings InfluxDbSettings { get; set; }    
-        
-        public HttpPolicy HttpPolicy { get; set; }    
+        public InfluxDBReporterSettings()
+        {
+            InfluxDbSettings = new InfluxDBSettings();
+            HttpPolicy = new HttpPolicy
+            {
+                FailuresBeforeBackoff = Constants.DefaultFailuresBeforeBackoff,
+                BackoffPeriod = Constants.DefaultBackoffPeriod,
+                Timeout = Constants.DefaultTimeout
+            };
+            ReportInterval = TimeSpan.FromSeconds(5);
+        }
 
-        public TimeSpan ReportInterval { get; set; } = TimeSpan.FromSeconds(5);
+        public HttpPolicy HttpPolicy { get; set; }
+
+        public InfluxDBSettings InfluxDbSettings { get; set; }
+
+        public TimeSpan ReportInterval { get; set; }
     }
 }
