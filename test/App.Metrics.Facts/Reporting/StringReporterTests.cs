@@ -32,7 +32,7 @@ namespace App.Metrics.Facts.Reporting
 
             sr.ReportMetric("test", new ApdexValueSource("apdex_name", metric, MetricTags.None));
 
-            sr.Result.Should().Be(expected);
+            AssertReportResult(sr.Result, expected);
         }
 
         [Fact]
@@ -43,7 +43,7 @@ namespace App.Metrics.Facts.Reporting
 
             sr.ReportMetric("test", new CounterValueSource("counter_name", new CounterMetric(), Unit.None, MetricTags.None));
 
-            sr.Result.Should().Be(expected);
+            AssertReportResult(sr.Result, expected);
         }
 
         [Fact]
@@ -55,7 +55,7 @@ namespace App.Metrics.Facts.Reporting
 
             sr.ReportEnvironment(envInfo);
 
-            sr.Result.Should().Be(expected);
+            AssertReportResult(sr.Result, expected);
         }
 
         [Fact]
@@ -66,7 +66,7 @@ namespace App.Metrics.Facts.Reporting
 
             sr.ReportMetric("test", new GaugeValueSource("gauge_name", new FunctionGauge(() => 2), Unit.None, MetricTags.None));
 
-            sr.Result.Should().Be(expected);
+            AssertReportResult(sr.Result, expected);
         }
 
         [Fact]
@@ -94,7 +94,7 @@ namespace App.Metrics.Facts.Reporting
 
             sr.ReportHealth(globalTags, healthyChecks, degradedChecks, unhealthyChecks);
 
-            sr.Result.Should().Be(expected);
+            AssertReportResult(sr.Result, expected);
         }
 
         [Fact]
@@ -110,7 +110,7 @@ namespace App.Metrics.Facts.Reporting
 
             sr.ReportMetric("test", new HistogramValueSource("histogram_name", metric, Unit.None, MetricTags.None));
 
-            sr.Result.Should().Be(expected);
+            AssertReportResult(sr.Result, expected);
         }
 
         [Fact]
@@ -124,7 +124,7 @@ namespace App.Metrics.Facts.Reporting
 
             sr.ReportMetric("test", new MeterValueSource("meter_name", metric, Unit.None, TimeUnit.Milliseconds, MetricTags.None));
 
-            sr.Result.Should().Be(expected);
+            AssertReportResult(sr.Result, expected);
         }
 
         [Fact]
@@ -143,7 +143,7 @@ namespace App.Metrics.Facts.Reporting
             sr.ReportMetric("test", new TimerValueSource("timer_name", metric, Unit.None, TimeUnit.Milliseconds,
                 TimeUnit.Milliseconds, MetricTags.None));
 
-            sr.Result.Should().Be(expected);
+            AssertReportResult(sr.Result, expected);
         }
 
         [Fact]
@@ -166,6 +166,11 @@ namespace App.Metrics.Facts.Reporting
             sr.Dispose();
 
             sr.Result.IsNullOrEmpty();
+        }
+
+        private static void AssertReportResult(string result, string expected)
+        {
+            (string.CompareOrdinal(result.Replace("\r\n", "\n"), expected.Replace("\r\n", "\n")) == 0).Should().BeTrue();
         }
     }
 }
