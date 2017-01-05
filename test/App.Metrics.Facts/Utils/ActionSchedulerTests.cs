@@ -33,7 +33,7 @@ namespace App.Metrics.Facts.Utils
         [Fact]
         public void if_task_has_already_started_just_return_the_started_task()
         {
-            using (var scheduler = new DefaultTaskScheduler())
+            using (var scheduler = new DefaultTaskScheduler(false))
             {
                 var data = 0;
                 var completionSource = new TaskCompletionSource<bool>();

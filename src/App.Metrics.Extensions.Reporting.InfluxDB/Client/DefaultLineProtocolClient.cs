@@ -14,21 +14,21 @@ using Polly;
 
 namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
 {
-    public class LineProtocolClient
+    public class DefaultLineProtocolClient : ILineProtocolClient
     {
         private readonly HttpClient _httpClient;
         private readonly InfluxDBSettings _influxDbSettings;
-        private readonly ILogger<LineProtocolClient> _logger;
+        private readonly ILogger<DefaultLineProtocolClient> _logger;
         private readonly Policy _policy;
 
-        public LineProtocolClient(ILoggerFactory loggerFactory, InfluxDBSettings influxDbSettings)
+        public DefaultLineProtocolClient(ILoggerFactory loggerFactory, InfluxDBSettings influxDbSettings)
             : this(
                 loggerFactory, influxDbSettings,
                 new HttpPolicy { FailuresBeforeBackoff = 3, BackoffPeriod = TimeSpan.FromSeconds(30), Timeout = TimeSpan.FromSeconds(3) })
         {
         }
 
-        public LineProtocolClient(ILoggerFactory loggerFactory, InfluxDBSettings influxDbSettings, HttpPolicy httpPolicy)
+        public DefaultLineProtocolClient(ILoggerFactory loggerFactory, InfluxDBSettings influxDbSettings, HttpPolicy httpPolicy)
         {
             if (influxDbSettings == null)
             {
@@ -48,7 +48,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
             _httpClient = CreateHttpClient(influxDbSettings, httpPolicy);
             _influxDbSettings = influxDbSettings;
             _policy = httpPolicy.AsPolicy();
-            _logger = loggerFactory.CreateLogger<LineProtocolClient>();
+            _logger = loggerFactory.CreateLogger<DefaultLineProtocolClient>();
         }
 
         public async Task<LineProtocolWriteResult> WriteAsync(LineProtocolPayload payload,

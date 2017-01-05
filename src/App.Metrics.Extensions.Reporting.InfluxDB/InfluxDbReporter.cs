@@ -17,23 +17,30 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 {
     public class InfluxDbReporter : IMetricReporter
     {
-        private readonly LineProtocolClient _influxDbClient;
+        private readonly ILineProtocolClient _lineProtocolClient;
         private readonly ILogger<InfluxDbReporter> _logger;
+        private readonly ILineProtocolPayloadBuilder _payloadBuilder;
         private bool _disposed;
-        private LineProtocolPayload _payload;
 
-        public InfluxDbReporter(InfluxDBReporterSettings settings, ILoggerFactory loggerFactory)
-            : this(typeof(InfluxDbReporter).Name, settings, loggerFactory)
+        public InfluxDbReporter(ILineProtocolClient lineProtocolClient,
+            ILineProtocolPayloadBuilder payloadBuilder,
+            TimeSpan reportInterval,
+            ILoggerFactory loggerFactory)
+            : this(lineProtocolClient, payloadBuilder, reportInterval, typeof(InfluxDbReporter).Name, loggerFactory)
         {
         }
 
-        public InfluxDbReporter(string name, InfluxDBReporterSettings settings, ILoggerFactory loggerFactory)
+        public InfluxDbReporter(ILineProtocolClient lineProtocolClient,
+            ILineProtocolPayloadBuilder payloadBuilder,
+            TimeSpan reportInterval,
+            string name, ILoggerFactory loggerFactory)
         {
-            ReportInterval = settings.ReportInterval;
+            ReportInterval = reportInterval;
             Name = name;
 
+            _payloadBuilder = payloadBuilder;
             _logger = loggerFactory.CreateLogger<InfluxDbReporter>();
-            _influxDbClient = new LineProtocolClient(loggerFactory, settings.InfluxDbSettings, settings.HttpPolicy);
+            _lineProtocolClient = lineProtocolClient;
         }
 
         public string Name { get; }
@@ -53,7 +60,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
                 if (disposing)
                 {
                     // Free any other managed objects here.
-                    _payload = null;
+                    _payloadBuilder.Clear();
                 }
             }
 
@@ -66,7 +73,9 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
         {
             _logger.LogDebug($"Ending {Name} Run");
 
-            var result = await _influxDbClient.WriteAsync(_payload);
+            var result = await _lineProtocolClient.WriteAsync(_payloadBuilder.Payload());
+
+            _payloadBuilder.Clear();
 
             return result.Success;
         }
@@ -100,7 +109,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
                 healthStatusValue = 1;
             }
 
-            Pack("health", healthStatusValue, new MetricTags(globalTags));
+            _payloadBuilder.Pack("health", healthStatusValue, new MetricTags(globalTags));
 
             var checks = unhealthy.Concat(degraded).Concat(healthyChecks);
 
@@ -110,15 +119,15 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 
                 if (healthCheck.Check.Status == HealthCheckStatus.Unhealthy)
                 {
-                    Pack("health_checks__unhealhty", healthCheck.Check.Message, tags);
+                    _payloadBuilder.Pack("health_checks__unhealhty", healthCheck.Check.Message, tags);
                 }
                 else if (healthCheck.Check.Status == HealthCheckStatus.Healthy)
                 {
-                    Pack("health_checks__healthy", healthCheck.Check.Message, tags);
+                    _payloadBuilder.Pack("health_checks__healthy", healthCheck.Check.Message, tags);
                 }
                 else if (healthCheck.Check.Status == HealthCheckStatus.Degraded)
                 {
-                    Pack("health_checks__degraded", healthCheck.Check.Message, tags);
+                    _payloadBuilder.Pack("health_checks__degraded", healthCheck.Check.Message, tags);
                 }
             }
 
@@ -174,19 +183,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
         {
             _logger.LogDebug($"Starting {Name} Report Run");
 
-            _payload = new LineProtocolPayload();
-        }
-
-        private void Pack(string name, object value, MetricTags tags)
-        {
-            _payload.Add(new LineProtocolPoint(name, new Dictionary<string, object> { { "value", value } }, tags));
-        }
-
-        private void Pack(string name, IEnumerable<string> columns, IEnumerable<object> values, MetricTags tags)
-        {
-            var fields = columns.Zip(values, (column, data) => new { column, data }).ToDictionary(pair => pair.column, pair => pair.data);
-
-            _payload.Add(new LineProtocolPoint(name, fields, tags));
+            _payloadBuilder.Init();
         }
 
         private void ReportApdex(string name, MetricValueSource<ApdexValue> valueSource)
@@ -205,7 +202,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
             var keys = data.Keys.ToList();
             var values = keys.Select(k => data[k]);
 
-            Pack($"{name}__{valueSource.FormattedMetricName()}", keys, values, valueSource.Tags);
+            _payloadBuilder.Pack($"{name}__{valueSource.FormattedMetricName()}", keys, values, valueSource.Tags);
         }
 
         private void ReportCounter(string name, MetricValueSource<CounterValue> valueSource)
@@ -231,20 +228,21 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
                     var keys = data.Keys.ToList();
                     var values = keys.Select(k => data[k]);
 
-                    Pack($"{name}__{counterValueSource.FormattedMetricName()}__items", keys, values, item.Tags);
+                    _payloadBuilder.Pack($"{name}__{counterValueSource.FormattedMetricName()}__items",
+                        keys, values, item.Tags);
                 }
             }
 
             var count = counterValueSource.ValueProvider.GetValue(resetMetric: counterValueSource.ResetOnReporting).Count;
 
-            Pack($"{name}__{counterValueSource.FormattedMetricName()}", count, valueSource.Tags);
+            _payloadBuilder.Pack($"{name}__{counterValueSource.FormattedMetricName()}", count, valueSource.Tags);
         }
 
         private void ReportGauge(string name, MetricValueSource<double> valueSource)
         {
             if (!double.IsNaN(valueSource.Value) && !double.IsInfinity(valueSource.Value))
             {
-                Pack($"{name}__{valueSource.FormattedMetricName()}", valueSource.Value, valueSource.Tags);
+                _payloadBuilder.Pack($"{name}__{valueSource.FormattedMetricName()}", valueSource.Value, valueSource.Tags);
             }
         }
 
@@ -257,7 +255,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
             var keys = data.Keys.ToList();
             var values = keys.Select(k => data[k]);
 
-            Pack($"{name}__{valueSource.FormattedMetricName()}", keys, values, valueSource.Tags);
+            _payloadBuilder.Pack($"{name}__{valueSource.FormattedMetricName()}", keys, values, valueSource.Tags);
         }
 
         private void ReportMeter(string name, MetricValueSource<MeterValue> valueSource)
@@ -275,7 +273,8 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 
                     var itemKeys = itemData.Keys.ToList();
                     var itemValues = itemKeys.Select(k => itemData[k]).ToList();
-                    Pack($"{name}__{valueSource.FormattedMetricName()}__items", itemKeys, itemValues, item.Tags);
+                    _payloadBuilder.Pack($"{name}__{valueSource.FormattedMetricName()}__items",
+                        itemKeys, itemValues, item.Tags);
                 }
             }
 
@@ -284,7 +283,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
             var keys = data.Keys.ToList();
             var values = keys.Select(k => data[k]);
 
-            Pack($"{name}__{valueSource.FormattedMetricName()}", keys, values, valueSource.Tags);
+            _payloadBuilder.Pack($"{name}__{valueSource.FormattedMetricName()}", keys, values, valueSource.Tags);
         }
 
         private void ReportTimer(string name, MetricValueSource<TimerValue> valueSource)
@@ -297,7 +296,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
             var keys = data.Keys.ToList();
             var values = keys.Select(k => data[k]);
 
-            Pack($"{name}__{valueSource.FormattedMetricName()}", keys, values, valueSource.Tags);
+            _payloadBuilder.Pack($"{name}__{valueSource.FormattedMetricName()}", keys, values, valueSource.Tags);
         }
     }
 }

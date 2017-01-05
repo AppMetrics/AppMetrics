@@ -3,6 +3,7 @@
 
 
 using System;
+using App.Metrics.Extensions.Reporting.InfluxDB.Client;
 using App.Metrics.Reporting.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -27,7 +28,12 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 
         public IMetricReporter CreateMetricReporter(string name, ILoggerFactory loggerFactory)
         {
-            return new InfluxDbReporter(name, _settings, loggerFactory);
+            var lineProtocolClient = new DefaultLineProtocolClient(loggerFactory,
+                _settings.InfluxDbSettings, _settings.HttpPolicy);
+            var payloadBuilder = new LineProtocolPayloadBuilder();
+
+            return new InfluxDbReporter(lineProtocolClient, payloadBuilder, 
+                _settings.ReportInterval, name, loggerFactory);
         }
     }
 }

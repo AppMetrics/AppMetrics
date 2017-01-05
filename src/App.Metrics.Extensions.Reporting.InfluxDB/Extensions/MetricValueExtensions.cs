@@ -11,6 +11,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Extensions
     {
         public static string FormattedMetricName<T>(this MetricValueSource<T> valueSource)
         {
+            //TODO: AH - should be possible to specify formatting in confirguration
             return valueSource.Name.Replace(" ", "_").ToLowerInvariant();
         }
 

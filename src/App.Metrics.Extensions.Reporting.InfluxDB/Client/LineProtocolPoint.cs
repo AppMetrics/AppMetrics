@@ -39,7 +39,6 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
                 }
             }
 
-
             if (utcTimestamp != null && utcTimestamp.Value.Kind != DateTimeKind.Utc)
             {
                 throw new ArgumentException("Timestamps must be specified as UTC");
