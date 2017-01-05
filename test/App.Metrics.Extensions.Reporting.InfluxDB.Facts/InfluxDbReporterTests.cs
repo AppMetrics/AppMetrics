@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.Extensions.Reporting.InfluxDB;
@@ -66,6 +67,33 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         }
 
         [Fact]
+        public void can_report_health()
+        {
+            var metricsMock = new Mock<IMetrics>();
+            var healthyChecks = new[]
+            {
+                new HealthCheck.Result("healthy check", HealthCheckResult.Healthy("healthy message"))
+            }.AsEnumerable();
+
+            var degradedChecks = new[]
+            {
+                new HealthCheck.Result("degraded check", HealthCheckResult.Degraded("degraded message"))
+            }.AsEnumerable();
+
+            var unhealthyChecks = new[]
+            {
+                new HealthCheck.Result("unhealthy check", HealthCheckResult.Unhealthy("unhealthy message"))
+            }.AsEnumerable();
+            var payloadBuilder = new LineProtocolPayloadBuilder();
+            var reporter = CreateReporter(payloadBuilder);
+
+            reporter.StartReportRun(metricsMock.Object);
+            reporter.ReportHealth(new GlobalMetricTags(), healthyChecks, degradedChecks, unhealthyChecks);
+
+            payloadBuilder.PayloadFormatted().Should().Be("health value=3i\nhealth_checks__unhealhty,health_check=unhealthy\\ check value=\"unhealthy message\"\nhealth_checks__degraded,health_check=degraded\\ check value=\"degraded message\"\nhealth_checks__healthy,health_check=healthy\\ check value=\"healthy message\"\n");
+        }
+
+        [Fact]
         public void can_report_histograms()
         {
             var metricsMock = new Mock<IMetrics>();
@@ -81,7 +109,8 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
 
             payloadBuilder.PayloadFormatted()
                 .Should()
-                .Be("test__test_histogram samples=1i,last=1000,count.hist=1i,min=1000,max=1000,mean=1000,median=1000,stddev=0,p999=1000,p99=1000,p98=1000,p95=1000,p75=1000,user.last=\"client1\",user.min=\"client1\",user.max=\"client1\"\n");
+                .Be(
+                    "test__test_histogram samples=1i,last=1000,count.hist=1i,min=1000,max=1000,mean=1000,median=1000,stddev=0,p999=1000,p99=1000,p98=1000,p95=1000,p75=1000,user.last=\"client1\",user.min=\"client1\",user.max=\"client1\"\n");
         }
 
         [Fact]
