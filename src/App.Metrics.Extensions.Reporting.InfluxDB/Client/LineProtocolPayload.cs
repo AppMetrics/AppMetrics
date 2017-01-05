@@ -17,7 +17,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
         {
             if (point == null)
             {
-                throw new ArgumentNullException(nameof(point));
+                return;
             }
 
             _points.Add(point);
@@ -27,7 +27,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
         {
             if (textWriter == null)
             {
-                throw new ArgumentNullException(nameof(textWriter));
+                return;
             }
 
             var points = _points.ToList();
