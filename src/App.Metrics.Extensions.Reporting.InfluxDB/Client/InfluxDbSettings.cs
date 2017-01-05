@@ -4,6 +4,32 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
 {
     public class InfluxDBSettings
     {
+        public InfluxDBSettings(string database, Uri baseAddress)
+        {
+            if (database == null)
+            {
+                throw new ArgumentNullException(nameof(database));    
+            }            
+
+            if (database.IsMissing())
+            {
+                throw new ArgumentException("A database must be specified", nameof(database));
+            }
+
+            if (baseAddress == null)
+            {
+                throw new ArgumentNullException(nameof(baseAddress));
+            }
+
+            Database = database;
+            BaseAddress = baseAddress;
+        }
+
+        internal InfluxDBSettings()
+        {
+            
+        }
+
         /// <summary>
         ///     Gets or sets the InfluxDB host.
         /// </summary>

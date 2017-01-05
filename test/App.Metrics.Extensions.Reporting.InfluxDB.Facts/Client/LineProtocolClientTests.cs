@@ -43,7 +43,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Client
         {
             Action action = () =>
             {
-                var client = new DefaultLineProtocolClient(new LoggerFactory(), new InfluxDBSettings(), null);
+                var client = new DefaultLineProtocolClient(new LoggerFactory(), new InfluxDBSettings("influx", new Uri("http://localhost")), null);
             };
 
             action.ShouldThrow<ArgumentNullException>();
@@ -54,7 +54,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Client
         {
             Action action = () =>
             {
-                var client = new DefaultLineProtocolClient(new LoggerFactory(), new InfluxDBSettings(), new HttpPolicy());
+                var client = new DefaultLineProtocolClient(new LoggerFactory(), new InfluxDBSettings("influx", new Uri("http://localhost")), new HttpPolicy());
             };
 
             action.ShouldThrow<ArgumentException>();

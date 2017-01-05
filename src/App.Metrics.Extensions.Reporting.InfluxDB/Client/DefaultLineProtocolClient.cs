@@ -45,11 +45,6 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
                 throw new ArgumentNullException(nameof(httpPolicy));
             }
 
-            if (influxDbSettings.Database.IsMissing())
-            {
-                throw new ArgumentException("A database must be specified");
-            }
-
             _httpClient = CreateHttpClient(influxDbSettings, httpPolicy);
             _influxDbSettings = influxDbSettings;
             _policy = httpPolicy.AsPolicy();

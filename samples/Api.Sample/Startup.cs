@@ -91,11 +91,7 @@ namespace Api.Sample
                             BackoffPeriod = TimeSpan.FromSeconds(30),
                             Timeout = TimeSpan.FromSeconds(3)
                         },
-                        InfluxDbSettings = new InfluxDBSettings
-                        {
-                            BaseAddress = new Uri("http://127.0.0.1:8086"),
-                            Database = "appmetricsapi"
-                        },
+                        InfluxDbSettings = new InfluxDBSettings("appmetricsapi", new Uri("http://127.0.0.1:8086")),
                         ReportInterval = TimeSpan.FromSeconds(5)
                     }, influxFilter);
                 })

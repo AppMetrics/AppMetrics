@@ -1,6 +1,5 @@
 ﻿using System;
 using App.Metrics.Extensions.Reporting.InfluxDB;
-using App.Metrics.Extensions.Reporting.InfluxDB.Client;
 using App.Metrics.Internal;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
@@ -13,13 +12,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         [Fact]
         public void can_create_metric_reporter()
         {
-            var provider = new InfluxDbReporterProvider(new InfluxDBReporterSettings
-            {
-                InfluxDbSettings = new InfluxDBSettings
-                {
-                    Database = "influx"
-                }
-            }, new DefaultMetricsFilter());
+            var provider = new InfluxDbReporterProvider(new InfluxDBReporterSettings(), new DefaultMetricsFilter());
 
             var reporter = provider.CreateMetricReporter("influx", new LoggerFactory());
 
@@ -29,13 +22,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         [Fact]
         public void defaults_filter_to_no_op()
         {
-            var provider = new InfluxDbReporterProvider(new InfluxDBReporterSettings
-            {
-                InfluxDbSettings = new InfluxDBSettings
-                {
-                    Database = "influx"
-                }
-            });
+            var provider = new InfluxDbReporterProvider(new InfluxDBReporterSettings());
 
             provider.Filter.Should().BeOfType<NoOpMetricsFilter>();
         }
