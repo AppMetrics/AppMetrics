@@ -70,7 +70,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Client
         {
             Action action = () =>
             {
-                var client = new DefaultLineProtocolClient(new LoggerFactory(), new InfluxDBSettings("influx", new Uri("http://localhost")),
+                var client = new DefaultLineProtocolClient(new LoggerFactory(), new InfluxDBSettings(null, new Uri("http://localhost")),
                     new HttpPolicy());
             };
 
