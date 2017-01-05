@@ -9,6 +9,7 @@ using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
+using System.Threading.Tasks;
 
 namespace App.Metrics.Extensions.Middleware.Integration.Facts
 {
@@ -94,6 +95,31 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         }
 
         [Fact]
+        public void when_disposed_clears_playload()
+        {
+            var payloadBuilderMock = new Mock<ILineProtocolPayloadBuilder>();
+            payloadBuilderMock.Setup(p => p.Clear());
+            var reporter = CreateReporter(payloadBuilderMock.Object);
+
+            reporter.Dispose();
+
+            payloadBuilderMock.Verify(p => p.Clear(), Times.Once);
+        }
+
+        [Fact]
+        public async Task on_end_report_clears_playload()
+        {
+            var metricsMock = new Mock<IMetrics>();
+            var payloadBuilderMock = new Mock<ILineProtocolPayloadBuilder>();
+            payloadBuilderMock.Setup(p => p.Clear());
+            var reporter = CreateReporter(payloadBuilderMock.Object);
+
+            await reporter.EndAndFlushReportRunAsync(metricsMock.Object).ConfigureAwait(false);
+
+            payloadBuilderMock.Verify(p => p.Clear(), Times.Once);
+        }
+
+        [Fact]
         public void can_report_histograms()
         {
             var metricsMock = new Mock<IMetrics>();
@@ -152,7 +178,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
                     "test__test_timer count.meter=1i,rate1m=0,rate5m=0,rate15m=0,rate.mean=Infinity,samples=1i,last=1000,count.hist=1i,min=1000,max=1000,mean=1000,median=1000,stddev=0,p999=1000,p99=1000,p98=1000,p95=1000,p75=1000,user.last=\"client1\",user.min=\"client1\",user.max=\"client1\"\n");
         }
 
-        private static InfluxDbReporter CreateReporter(LineProtocolPayloadBuilder payloadBuilder)
+        private static InfluxDbReporter CreateReporter(ILineProtocolPayloadBuilder payloadBuilder)
         {
             var lineProtocolClientMock = new Mock<ILineProtocolClient>();
             var reportInterval = TimeSpan.FromSeconds(1);
