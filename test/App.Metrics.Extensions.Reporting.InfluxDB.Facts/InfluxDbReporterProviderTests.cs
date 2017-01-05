@@ -44,7 +44,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         {
             Action action = () =>
             {
-                var provider = new InfluxDbReporterProvider(null, new DefaultMetricsFilter());
+                var provider = new InfluxDbReporterProvider(null);
             };
 
             action.ShouldThrow<ArgumentNullException>();

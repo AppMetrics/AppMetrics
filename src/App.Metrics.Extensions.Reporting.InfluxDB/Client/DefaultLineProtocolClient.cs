@@ -21,9 +21,9 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
         private readonly ILogger<DefaultLineProtocolClient> _logger;
         private readonly Policy _policy;
 
+
         public DefaultLineProtocolClient(ILoggerFactory loggerFactory, InfluxDBSettings influxDbSettings)
-            : this(
-                loggerFactory, influxDbSettings,
+            : this(loggerFactory, influxDbSettings,
                 new HttpPolicy
                 {
                     FailuresBeforeBackoff = Constants.DefaultFailuresBeforeBackoff,
@@ -33,7 +33,8 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
         {
         }
 
-        public DefaultLineProtocolClient(ILoggerFactory loggerFactory, InfluxDBSettings influxDbSettings, HttpPolicy httpPolicy)
+        public DefaultLineProtocolClient(ILoggerFactory loggerFactory, InfluxDBSettings influxDbSettings,
+            HttpPolicy httpPolicy, HttpMessageHandler httpMessageHandler = null)
         {
             if (influxDbSettings == null)
             {
@@ -45,7 +46,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
                 throw new ArgumentNullException(nameof(httpPolicy));
             }
 
-            _httpClient = CreateHttpClient(influxDbSettings, httpPolicy);
+            _httpClient = CreateHttpClient(influxDbSettings, httpPolicy, httpMessageHandler);
             _influxDbSettings = influxDbSettings;
             _policy = httpPolicy.AsPolicy();
             _logger = loggerFactory.CreateLogger<DefaultLineProtocolClient>();
@@ -62,46 +63,44 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
                 var content = new StringContent(payloadText.ToString(), Encoding.UTF8);
                 var response = await _httpClient.PostAsync(_influxDbSettings.Endpoint, content, cancellationToken).ConfigureAwait(false);
 
-                return response.IsSuccessStatusCode
-                    ? new LineProtocolWriteResult(true, null)
-                    : new LineProtocolWriteResult(false, $"{response.StatusCode} {response.ReasonPhrase}");
+                response.EnsureSuccessStatusCode();
+
+                return new LineProtocolWriteResult(true, null);                
             }, cancellationToken);
 
             if (result.Outcome == OutcomeType.Failure)
             {
-                _logger.LogError(LoggingEvents.InfluxDbWriteError, result.FinalException, "Failed to write to InfluxDB {error}",
-                    result.Result.ErrorMessage);
+                _logger.LogError(LoggingEvents.InfluxDbWriteError, result.FinalException, "Failed to write to InfluxDB");
+
+                return new LineProtocolWriteResult(false, result.FinalException.ToString());
             }
-            else
-            {
-                _logger.LogDebug("Successful write to InfluxDB");
-            }
+
+            _logger.LogDebug("Successful write to InfluxDB");
 
             return result.Result;
         }
 
-        private static HttpClient CreateHttpClient(InfluxDBSettings influxDbSettings, HttpPolicy httpPolicy)
+        private static HttpClient CreateHttpClient(InfluxDBSettings influxDbSettings, HttpPolicy httpPolicy,
+            HttpMessageHandler httpMessageHandler = null)
         {
-            if (influxDbSettings.UserName.IsPresent() && influxDbSettings.Password.IsPresent())
-            {
-                var byteArray = Encoding.ASCII.GetBytes($"{influxDbSettings.UserName}:{influxDbSettings.Password}");
+            var client = httpMessageHandler == null
+                ? new HttpClient()
+                : new HttpClient(httpMessageHandler);
 
-                return new HttpClient
-                {
-                    BaseAddress = influxDbSettings.BaseAddress,
-                    Timeout = httpPolicy.Timeout,
-                    DefaultRequestHeaders =
-                    {
-                        Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray))
-                    }
-                };
+            client.BaseAddress = influxDbSettings.BaseAddress;
+            client.Timeout = httpPolicy.Timeout;
+
+            if (influxDbSettings.UserName.IsMissing() || influxDbSettings.Password.IsMissing())
+            {
+                return client;
             }
 
-            return new HttpClient
-            {
-                Timeout = httpPolicy.Timeout,
-                BaseAddress = influxDbSettings.BaseAddress
-            };
+            var byteArray = Encoding.ASCII.GetBytes($"{influxDbSettings.UserName}:{influxDbSettings.Password}");
+            client.BaseAddress = influxDbSettings.BaseAddress;
+            client.Timeout = httpPolicy.Timeout;
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
+            return client;
         }
     }
 }

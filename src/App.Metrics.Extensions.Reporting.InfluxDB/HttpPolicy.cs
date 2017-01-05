@@ -3,12 +3,20 @@
 
 
 using System;
+using App.Metrics.Extensions.Reporting.InfluxDB.Client;
 using Polly;
 
 namespace App.Metrics.Extensions.Reporting.InfluxDB
 {
     public class HttpPolicy
     {
+        public HttpPolicy()
+        {
+            FailuresBeforeBackoff = Constants.DefaultFailuresBeforeBackoff;
+            BackoffPeriod = Constants.DefaultBackoffPeriod;
+            Timeout = Constants.DefaultTimeout;
+        }
+
         public int FailuresBeforeBackoff { get; set; }
 
         public TimeSpan BackoffPeriod { get; set; }
