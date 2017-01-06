@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Core;
+using App.Metrics.Internal;
 using App.Metrics.Reporting.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -58,6 +59,32 @@ namespace App.Metrics.Reporting.Internal
                 reporter.ReportEnvironment(data.Environment);
             }
 
+            if (reporterMetricsFilter.ReportHealthChecks)
+            {
+                var healthStatus = await metrics.Advanced.Health.ReadStatusAsync(token);
+
+                var passed = healthStatus.Results.Where(r => r.Check.Status.IsHealthy()).ToArray();
+                var failed = healthStatus.Results.Where(r => r.Check.Status.IsUnhealthy()).ToArray();
+                var degraded = healthStatus.Results.Where(r => r.Check.Status.IsDegraded()).ToArray();
+
+                reporter.ReportHealth(metrics.Advanced.GlobalTags, passed, degraded, failed);
+
+                foreach (var check in passed)
+                {
+                    metrics.Increment(ApplicationHealthMetricRegistry.HealthyCheckCounter, check.Name);
+                }
+
+                foreach (var check in degraded)
+                {
+                    metrics.Increment(ApplicationHealthMetricRegistry.DegradedCheckCounter, check.Name);
+                }
+
+                foreach (var check in failed)
+                {
+                    metrics.Increment(ApplicationHealthMetricRegistry.UnhealthyCheckCounter, check.Name);
+                }
+            }
+
             foreach (var contextValueSource in data.Contexts)
             {
                 ReportMetricType(contextValueSource.Counters,
@@ -77,17 +104,6 @@ namespace App.Metrics.Reporting.Internal
 
                 ReportMetricType(contextValueSource.ApdexScores,
                     t => { reporter.ReportMetric($"{contextValueSource.Context}", t); }, token);
-            }
-
-            if (reporterMetricsFilter.ReportHealthChecks)
-            {
-                var healthStatus = await metrics.Advanced.Health.ReadStatusAsync(token);
-                
-                var passed = healthStatus.Results.Where(r => r.Check.Status.IsHealthy());
-                var failed = healthStatus.Results.Where(r => r.Check.Status.IsUnhealthy());
-                var degraded = healthStatus.Results.Where(r => r.Check.Status.IsDegraded());
-
-                reporter.ReportHealth(metrics.Advanced.GlobalTags, passed, degraded, failed);
             }
 
             var result = await reporter.EndAndFlushReportRunAsync(metrics);
