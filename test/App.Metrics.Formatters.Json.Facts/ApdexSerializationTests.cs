@@ -25,12 +25,6 @@ namespace App.Metrics.Formatters.Json.Facts
         }
 
         [Fact]
-        public void fail_one_test()
-        {
-            Assert.False(true);
-        }
-
-        [Fact]
         public void can_deserialize()
         {
             var jsonApdex = MetricType.Apdex.SampleJson();
