@@ -45,10 +45,8 @@ namespace App.Metrics
         /// <param name="amount">The amount to decrement the counter.</param>
         void Decrement(CounterOptions options, long amount);
 
-        //TODO: AH - keeping this method?
         void Decrement(CounterOptions options, string item);
 
-        //TODO: AH - keeping this method?
         void Decrement(CounterOptions options, long amount, string item);
 
         /// <summary>
@@ -106,7 +104,6 @@ namespace App.Metrics
         /// <param name="item">The item within the set to increment.</param>
         void Increment(CounterOptions options, string item);
 
-        //TODO: AH - keeping this method?
         void Increment(CounterOptions options, long amount, string item);
 
         /// <summary>
@@ -128,7 +125,6 @@ namespace App.Metrics
         /// <param name="item">The <see cref="MetricItem" />  within the set to mark.</param>
         void Mark(MeterOptions options, Action<MetricItem> item);
 
-        //TODO: AH - keeping this method?
         void Mark(MeterOptions options, long amount, string item);
 
         /// <summary>

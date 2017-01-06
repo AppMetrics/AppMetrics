@@ -107,7 +107,6 @@ namespace App.Metrics.Sampling.HdrHistogram
                 {
                     if (yieldTimeNsec == 0)
                     {
-                        //TODO: HdrHistogram
                         Task.Yield();
                     }
                     else

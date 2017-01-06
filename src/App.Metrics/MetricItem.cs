@@ -24,15 +24,6 @@ namespace App.Metrics
     /// <seealso cref="App.Metrics.Metric" />
     public sealed class MetricItem : ConcurrentDictionary<string, string>
     {
-        public MetricItem(Dictionary<string, string> tags)
-            : base(tags)
-        {
-        }
-
-        public MetricItem()
-        {
-        }
-
         public override string ToString()
         {
             return string.Join("|", this.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Key + ":" + kvp.Value));

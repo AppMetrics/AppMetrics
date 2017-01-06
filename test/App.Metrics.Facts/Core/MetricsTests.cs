@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
 using FluentAssertions;
@@ -62,84 +61,6 @@ namespace App.Metrics.Facts.Core
             data.Contexts.Should().BeNullOrEmpty();
         }
 
-        [Fact]
-        public void can_get_tags_from_set_item_string()
-        {
-            var expectedTags = new MetricTags().With("item", "machine-1").With("item", "machine-2");
-           
-            var tags = new MetricTags();
-            tags = tags.FromSetItemString("item:machine-1|item:machine-2");
-
-            tags.Should().Equal(expectedTags);
-        }
-
-        [Fact]
-        public void can_get_tags_from_set_item_string_when_single_item()
-        {
-            var expectedTags = new MetricTags().With("item", "item:machine-1");
-
-            var tags = new MetricTags();
-            tags = tags.FromSetItemString("item:machine-1");
-
-            tags.Should().Equal(expectedTags);
-        }
-
-        [Fact]
-        public void can_get_tags_from_set_item_when_item_is_missing()
-        {
-            var expectedTags = MetricTags.None;
-
-            var tags = new MetricTags();
-            tags = tags.FromSetItemString(string.Empty);
-
-            tags.Should().Equal(expectedTags);
-        }
-
-        [Fact]
-        public void can_propergate_value_tags()
-        {
-            var tags = new MetricTags().With("tag", "value");
-            var counterOptions = new CounterOptions
-            {
-                Name = "test",
-                MeasurementUnit = Unit.None,
-                Tags = tags
-            };
-
-            var meterOptions = new MeterOptions
-            {
-                Name = "test",
-                MeasurementUnit = Unit.None,
-                Tags = tags
-            };
-
-            var histogramOptions = new HistogramOptions
-            {
-                Name = "test",
-                MeasurementUnit = Unit.None,
-                Tags = tags
-            };
-
-            var timerOptions = new TimerOptions
-            {
-                Name = "test",
-                MeasurementUnit = Unit.None,
-                Tags = tags
-            };
-
-            _fixture.Metrics.Increment(counterOptions);
-            _fixture.Metrics.Mark(meterOptions);
-            _fixture.Metrics.Update(histogramOptions, 1);
-            _fixture.Metrics.Time(timerOptions, () => { });
-
-            var data = _fixture.CurrentData(_fixture.Metrics);
-            var context = data.Contexts.Single();
-
-            context.Counters.Single().Tags.Should().Equals(tags);
-            context.Meters.Single().Tags.Should().Equals("tag");
-            context.Histograms.Single().Tags.Should().Equals("tag");
-            context.Timers.Single().Tags.Should().Equals("tag");
-        }
 
         [Fact]
         public void can_record_metric_in_new_context()
@@ -223,7 +144,7 @@ namespace App.Metrics.Facts.Core
         public void Dispose()
         {
             Dispose(true);
-        }        
+        }
 
         [Fact]
         public void does_not_throw_on_metrics_of_different_type_with_same_name()

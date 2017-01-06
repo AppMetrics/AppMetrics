@@ -14,11 +14,6 @@ namespace App.Metrics
     /// </summary>
     public class MetricTags : ConcurrentDictionary<string, string>
     {
-        public MetricTags(ConcurrentDictionary<string, string> tags)
-            : base(tags)
-        {
-        }
-
         public MetricTags(Dictionary<string, string> tags)
             : base(tags)
         {
@@ -35,11 +30,6 @@ namespace App.Metrics
             TryAdd(tag, value);
 
             return this;
-        }
-
-        public MetricTags With(ConcurrentDictionary<string, string> tags)
-        {
-            return new MetricTags(new ConcurrentDictionary<string, string>(this.Concat(tags).ToDictionary(t => t.Key, t => t.Value)));
         }
 
         public MetricTags FromSetItemString(string setItem)

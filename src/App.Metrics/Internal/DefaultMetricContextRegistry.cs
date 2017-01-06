@@ -169,7 +169,9 @@ namespace App.Metrics.Internal
             public void Clear()
             {
                 var values = _metrics.Values;
+
                 _metrics.Clear();
+
                 foreach (var value in values)
                 {
                     using (value.Metric as IDisposable)
