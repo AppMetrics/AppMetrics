@@ -29,11 +29,7 @@ namespace App.Metrics.Extensions.Middleware.Internal
                         Context = ContextName,
                         Name = "Http Requests",
                         MeasurementUnit = Unit.Requests
-                    };
-
-                    public static MetricItem HttpRequestSubItemId = new MetricItem()
-                        .With("client_id", "")
-                        .With("http_status_code", "");
+                    };                    
                 }
             }
 

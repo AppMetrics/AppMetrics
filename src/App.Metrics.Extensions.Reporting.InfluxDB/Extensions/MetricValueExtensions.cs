@@ -8,13 +8,7 @@ using App.Metrics.Data;
 namespace App.Metrics.Extensions.Reporting.InfluxDB.Extensions
 {
     internal static class MetricValueExtensions
-    {
-        public static string FormattedMetricName<T>(this MetricValueSource<T> valueSource)
-        {
-            //TODO: AH - should be possible to specify formatting in confirguration
-            return valueSource.Name.Replace(" ", "_").ToLowerInvariant();
-        }
-
+    {       
         public static void AddApdexValues(this ApdexValue apdex, IDictionary<string, object> values)
         {
             values.Add("samples", apdex.SampleSize);

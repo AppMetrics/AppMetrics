@@ -45,7 +45,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
             var payloadBuilder = new LineProtocolPayloadBuilder();
 
             return new InfluxDbReporter(lineProtocolClient, payloadBuilder,
-                _settings.ReportInterval, name, loggerFactory);
+                _settings.ReportInterval, name, loggerFactory, _settings.MetricNameFormatter);
         }
     }
 }

@@ -278,9 +278,10 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
             var lineProtocolClientMock = new Mock<ILineProtocolClient>();
             var reportInterval = TimeSpan.FromSeconds(1);
             var loggerFactory = new LoggerFactory();
+            var settings = new InfluxDBReporterSettings();
 
             return new InfluxDbReporter(lineProtocolClientMock.Object,
-                payloadBuilder, reportInterval, loggerFactory);
+                payloadBuilder, reportInterval, loggerFactory, settings.MetricNameFormatter);
         }
     }
 }
