@@ -68,7 +68,7 @@ task Build -depends Restore, Clean {
 task RunTests -depends Restore, Clean {
 	
 	New-Item $artifactsCodeCoverageRoot -type directory -force	
-	$success = true
+	$success = $true
 	
 	$testProjects | foreach {
 		Write-Output "Running tests for '$_'"	
@@ -76,7 +76,7 @@ task RunTests -depends Restore, Clean {
 			exec { & $codeCoverage "-target:C:\Program Files\dotnet\dotnet.exe" -targetargs:" test -f netcoreapp1.0 -c Release $_" -mergeoutput -hideskipped:All -output:"$artifactsCodeCoverageRoot\coverage.xml" -oldStyle -filter:"+[App.Metrics*]* -[xunit.*]* -[*.Facts]*" -excludebyattribute:"*.AppMetricsExcludeFromCodeCoverage*" -excludebyfile:"*\*Designer.cs;*\*.g.cs;*\*.g.i.cs" -register:user -skipautoprops -safemode:off -returntargetcode }
 		}
 		catch {
-			$success = false
+			$success = $false
 		}					
 	}
 		
