@@ -20,6 +20,18 @@ namespace App.Metrics.Facts.Apdex
         }
 
         [Fact]
+        public void fail_one_test()
+        {
+            Assert.False(true);
+        }
+
+        [Fact]
+        public void fail_two_test()
+        {
+            Assert.False(true);
+        }
+
+        [Fact]
         public void apdex_score_should_be_between_zero_and_one()
         {
             const double apdexTSeconds = 0.5;
