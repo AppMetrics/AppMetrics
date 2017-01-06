@@ -14,7 +14,5 @@ namespace App.Metrics
         public IDictionary<string, string> Environment { get; set; }
 
         public DateTime Timestamp { get; set; }
-
-        public string Version { get; set; }
     }
 }

@@ -18,7 +18,6 @@ namespace App.Metrics.Extensions
             {
                 Environment = source.Environment.ToEnvDictionary(),
                 Timestamp = source.Timestamp,
-                Version = "1",
                 Contexts = jsonContexts.ToArray()
             };
         }
