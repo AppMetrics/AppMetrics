@@ -12,6 +12,8 @@ using App.Metrics.Concurrency;
 
 namespace App.Metrics.Sampling.HdrHistogram
 {
+    // ReSharper disable InconsistentNaming
+
     /// <summary>
     ///     <h3>An integer values High Dynamic Range (HDR) Histogram that supports safe concurrent recording operations.</h3>
     ///     A ConcurrentHistogram guarantees lossless recording of values into the histogram even when the
@@ -163,7 +165,9 @@ namespace App.Metrics.Sampling.HdrHistogram
             }
         }
 
+        // ReSharper disable ArrangeModifiersOrder
         internal protected override void resize(long newHighestTrackableValue)
+            // ReSharper restore ArrangeModifiersOrder
         {
             try
             {
@@ -507,3 +511,4 @@ namespace App.Metrics.Sampling.HdrHistogram
         }
     }
 }
+// ReSharper restore InconsistentNaming

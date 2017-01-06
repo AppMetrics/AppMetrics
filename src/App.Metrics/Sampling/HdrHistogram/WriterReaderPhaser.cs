@@ -11,6 +11,8 @@ using App.Metrics.Concurrency;
 
 namespace App.Metrics.Sampling.HdrHistogram
 {
+    // ReSharper disable InconsistentNaming
+
     /// <summary>
     ///     WriterReaderPhaser instances provide an asymmetric means for synchronizing the execution of
     ///     wait-free "writer" critical sections against a "reader phase flip" that needs to make sure no writer critical
@@ -181,3 +183,4 @@ namespace App.Metrics.Sampling.HdrHistogram
         }
     }
 }
+// ReSharper restore InconsistentNaming

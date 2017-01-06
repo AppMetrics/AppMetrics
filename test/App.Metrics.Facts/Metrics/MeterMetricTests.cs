@@ -138,12 +138,12 @@ namespace App.Metrics.Facts.Metrics
         [Fact]
         public void value_can_scale_down()
         {
-            this._meter.Mark();
-            this._clock.Advance(TimeUnit.Milliseconds, 1);
-            this._meter.Mark();
-            this._clock.Advance(TimeUnit.Milliseconds, 1);
+            _meter.Mark();
+            _clock.Advance(TimeUnit.Milliseconds, 1);
+            _meter.Mark();
+            _clock.Advance(TimeUnit.Milliseconds, 1);
 
-            var scaledValue = this._meter.Value.Scale(TimeUnit.Milliseconds);
+            var scaledValue = _meter.Value.Scale(TimeUnit.Milliseconds);
 
             scaledValue.MeanRate.Should().Be(1);
         }
@@ -151,12 +151,12 @@ namespace App.Metrics.Facts.Metrics
         [Fact]
         public void value_can_scale_down_to_decimal()
         {
-            this._meter.Mark();
-            this._clock.Advance(TimeUnit.Seconds, 1);
-            this._meter.Mark();
-            this._clock.Advance(TimeUnit.Seconds, 1);
+            _meter.Mark();
+            _clock.Advance(TimeUnit.Seconds, 1);
+            _meter.Mark();
+            _clock.Advance(TimeUnit.Seconds, 1);
 
-            var scaledValue = this._meter.Value.Scale(TimeUnit.Milliseconds);
+            var scaledValue = _meter.Value.Scale(TimeUnit.Milliseconds);
 
             scaledValue.MeanRate.Should().Be(0.001);
         }
@@ -164,12 +164,12 @@ namespace App.Metrics.Facts.Metrics
         [Fact]
         public void value_can_scale_up()
         {
-            this._meter.Mark();
-            this._clock.Advance(TimeUnit.Minutes, 1);
-            this._meter.Mark();
-            this._clock.Advance(TimeUnit.Minutes, 1);
+            _meter.Mark();
+            _clock.Advance(TimeUnit.Minutes, 1);
+            _meter.Mark();
+            _clock.Advance(TimeUnit.Minutes, 1);
 
-            var scaledValue = this._meter.Value.Scale(TimeUnit.Minutes);
+            var scaledValue = _meter.Value.Scale(TimeUnit.Minutes);
 
             scaledValue.MeanRate.Should().Be(1);
         }

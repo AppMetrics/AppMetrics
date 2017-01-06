@@ -2,10 +2,9 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using App.Metrics.Extensions.Middleware.Internal;
 using System;
 using App.Metrics.Core;
-using App.Metrics.Data;
+using App.Metrics.Extensions.Middleware.Internal;
 
 // ReSharper disable CheckNamespace
 
@@ -21,28 +20,20 @@ namespace App.Metrics
             return metrics;
         }
 
-        public static IMetrics IncrementActiveRequests(this IMetrics metrics)
-        {
-            metrics.Increment(AspNetMetricsRegistry.Contexts.HttpRequests.Counters.ActiveRequests);
-
-            return metrics;
-        }
-
         public static IMetrics ErrorRequestPercentage(this IMetrics metrics)
         {
             var errors = metrics.Advanced.Meter(AspNetMetricsRegistry.Contexts.HttpRequests.Meters.HttpErrorRequests);
             var requests = metrics.Advanced.Timer(AspNetMetricsRegistry.Contexts.HttpRequests.Timers.WebRequestTimer);
 
-            metrics.Advanced.Gauge(AspNetMetricsRegistry.Contexts.HttpRequests.Gauges.PercentageErrorRequests, 
+            metrics.Advanced.Gauge(AspNetMetricsRegistry.Contexts.HttpRequests.Gauges.PercentageErrorRequests,
                 () => new HitPercentageGauge(errors, requests, m => m.OneMinuteRate));
 
             return metrics;
         }
 
-        public static IMetrics MarkHttpRequestEndpointError(this IMetrics metrics, string routeTemplate, int httpStatusCode)
+        public static IMetrics IncrementActiveRequests(this IMetrics metrics)
         {
-            metrics.Mark(AspNetMetricsRegistry.Contexts.HttpRequests.Meters.EndpointHttpErrorRequests(routeTemplate),
-                item => item.With("http_status_code", httpStatusCode.ToString()));
+            metrics.Increment(AspNetMetricsRegistry.Contexts.HttpRequests.Counters.ActiveRequests);
 
             return metrics;
         }
@@ -55,11 +46,18 @@ namespace App.Metrics
             return metrics;
         }
 
+        public static IMetrics MarkHttpRequestEndpointError(this IMetrics metrics, string routeTemplate, int httpStatusCode)
+        {
+            metrics.Mark(AspNetMetricsRegistry.Contexts.HttpRequests.Meters.EndpointHttpErrorRequests(routeTemplate),
+                item => item.With("http_status_code", httpStatusCode.ToString()));
+
+            return metrics;
+        }
+
         public static IMetrics MarkHttpRequestError(this IMetrics metrics, int httpStatusCode)
         {
             metrics.Mark(AspNetMetricsRegistry.Contexts.HttpRequests.Meters.HttpErrorRequests,
                 item => item.With("http_status_code", httpStatusCode.ToString()));
-            ;
 
             return metrics;
         }

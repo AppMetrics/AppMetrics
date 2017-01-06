@@ -17,7 +17,7 @@ namespace App.Metrics.Core
     public sealed class HistogramMetric : IHistogramMetric
     {
         private readonly IReservoir _reservoir;
-        private bool _disposed = false;
+        private bool _disposed;
         private UserValueWrapper _last;
 
         /// <summary>

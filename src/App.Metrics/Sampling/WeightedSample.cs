@@ -49,7 +49,9 @@ namespace App.Metrics.Sampling
 
         public bool Equals(WeightedSample other)
         {
+            // ReSharper disable ImpureMethodCallOnReadonlyValueField
             return string.Equals(UserValue, other.UserValue) && Value == other.Value && Weight.Equals(other.Weight);
+            // ReSharper restore ImpureMethodCallOnReadonlyValueField
         }
     }
 }

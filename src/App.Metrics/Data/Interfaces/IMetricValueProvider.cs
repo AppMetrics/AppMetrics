@@ -9,7 +9,7 @@ namespace App.Metrics.Data.Interfaces
     ///     This is the raw value. Consumers should use <see cref="MetricValueSource{T}" />
     /// </summary>
     /// <typeparam name="T">Type of the value returned by the metric</typeparam>
-    public interface IMetricValueProvider<T>
+    public interface IMetricValueProvider<out T>
     {
         /// <summary>
         ///     The current value of the metric.

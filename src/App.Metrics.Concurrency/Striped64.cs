@@ -78,15 +78,15 @@ namespace App.Metrics.Concurrency
                 Cell a;
                 int n;
                 long v;
-                if ((@as = this.Cells) != null && (n = @as.Length) > 0)
+                if ((@as = Cells) != null && (n = @as.Length) > 0)
                 {
                     if ((a = @as[(n - 1) & h]) == null)
                     {
-                        if (this._cellsBusy == 0)
+                        if (_cellsBusy == 0)
                         {
                             // Try to attach new Cell
                             var r = new Cell(x); // Optimistically create
-                            if (this._cellsBusy == 0 && CasCellsBusy())
+                            if (_cellsBusy == 0 && CasCellsBusy())
                             {
                                 var created = false;
                                 try
@@ -94,7 +94,7 @@ namespace App.Metrics.Concurrency
                                     // Recheck under lock
                                     Cell[] rs;
                                     int m, j;
-                                    if ((rs = this.Cells) != null &&
+                                    if ((rs = Cells) != null &&
                                         (m = rs.Length) > 0 &&
                                         rs[j = (m - 1) & h] == null)
                                     {
@@ -104,7 +104,7 @@ namespace App.Metrics.Concurrency
                                 }
                                 finally
                                 {
-                                    this._cellsBusy = 0;
+                                    _cellsBusy = 0;
                                 }
                                 if (created)
                                     break;
@@ -117,54 +117,54 @@ namespace App.Metrics.Concurrency
                         wasUncontended = true; // Continue after rehash
                     else if (a.Value.CompareAndSwap(v = a.Value.GetValue(), v + x))
                         break;
-                    else if (n >= ProcessorCount || this.Cells != @as)
+                    else if (n >= ProcessorCount || Cells != @as)
                         collide = false; // At max size or stale
                     else if (!collide)
                         collide = true;
-                    else if (this._cellsBusy == 0 && CasCellsBusy())
+                    else if (_cellsBusy == 0 && CasCellsBusy())
                     {
                         try
                         {
-                            if (this.Cells == @as)
+                            if (Cells == @as)
                             {
                                 // Expand table unless stale
                                 var rs = new Cell[n << 1];
                                 for (var i = 0; i < n; ++i)
                                     rs[i] = @as[i];
-                                this.Cells = rs;
+                                Cells = rs;
                             }
                         }
                         finally
                         {
-                            this._cellsBusy = 0;
+                            _cellsBusy = 0;
                         }
                         collide = false;
                         continue; // Retry with expanded table
                     }
                     h = AdvanceProbe(h);
                 }
-                else if (this._cellsBusy == 0 && this.Cells == @as && CasCellsBusy())
+                else if (_cellsBusy == 0 && Cells == @as && CasCellsBusy())
                 {
                     var init = false;
                     try
                     {
                         // Initialize table
-                        if (this.Cells == @as)
+                        if (Cells == @as)
                         {
                             var rs = new Cell[2];
                             rs[h & 1] = new Cell(x);
-                            this.Cells = rs;
+                            Cells = rs;
                             init = true;
                         }
                     }
                     finally
                     {
-                        this._cellsBusy = 0;
+                        _cellsBusy = 0;
                     }
                     if (init)
                         break;
                 }
-                else if (this.Base.CompareAndSwap(v = this.Base.GetValue(), v + x))
+                else if (Base.CompareAndSwap(v = Base.GetValue(), v + x))
                     break; // Fall back on using volatileBase
             }
         }
@@ -180,7 +180,7 @@ namespace App.Metrics.Concurrency
 
         private bool CasCellsBusy()
         {
-            return Interlocked.CompareExchange(ref this._cellsBusy, 1, 0) == 0;
+            return Interlocked.CompareExchange(ref _cellsBusy, 1, 0) == 0;
         }
 
         protected sealed class Cell
@@ -191,7 +191,7 @@ namespace App.Metrics.Concurrency
 
             public Cell(long x)
             {
-                this.Value = new PaddedAtomicLong(x);
+                Value = new PaddedAtomicLong(x);
             }
         }
 

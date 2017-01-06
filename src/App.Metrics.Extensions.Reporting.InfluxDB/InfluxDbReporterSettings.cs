@@ -8,7 +8,9 @@ using App.Metrics.Reporting.Interfaces;
 
 namespace App.Metrics.Extensions.Reporting.InfluxDB
 {
+    // ReSharper disable InconsistentNaming
     public class InfluxDBReporterSettings : IReporterSettings
+    // ReSharper restore InconsistentNaming
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="InfluxDBReporterSettings" /> class.

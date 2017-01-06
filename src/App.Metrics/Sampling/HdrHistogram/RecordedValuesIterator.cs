@@ -6,6 +6,8 @@
 
 namespace App.Metrics.Sampling.HdrHistogram
 {
+    // ReSharper disable InconsistentNaming
+
     /**
  * Written by Gil Tene of Azul Systems, and released to the public domain,
  * as explained at http://creativecommons.org/publicdomain/zero/1.0/
@@ -62,3 +64,5 @@ namespace App.Metrics.Sampling.HdrHistogram
         }
     }
 }
+
+// ReSharper restore InconsistentNaming

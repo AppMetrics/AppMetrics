@@ -57,11 +57,11 @@ namespace App.Metrics.Concurrency
                 return 0;
             }
 
-            const int BitsPerLong = 63;
+            const int bitsPerLong = 63;
             long bits, val;
             do
             {
-                bits = NextLong() & (~(1L << BitsPerLong));
+                bits = NextLong() & (~(1L << bitsPerLong));
                 val = bits % max;
             } while (bits - val + (max - 1) < 0L);
             return val;

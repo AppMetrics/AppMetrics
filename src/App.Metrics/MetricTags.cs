@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace App.Metrics
 {
@@ -24,13 +23,6 @@ namespace App.Metrics
         }
 
         public static MetricTags None => new MetricTags();
-
-        public MetricTags With(string tag, string value)
-        {
-            TryAdd(tag, value);
-
-            return this;
-        }
 
         public MetricTags FromSetItemString(string setItem)
         {
@@ -61,6 +53,13 @@ namespace App.Metrics
             }
 
             return tags;
+        }
+
+        public MetricTags With(string tag, string value)
+        {
+            TryAdd(tag, value);
+
+            return this;
         }
     }
 }

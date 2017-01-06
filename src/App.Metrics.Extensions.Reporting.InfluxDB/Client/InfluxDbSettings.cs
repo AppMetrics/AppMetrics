@@ -6,7 +6,9 @@ using System;
 
 namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
 {
+    // ReSharper disable InconsistentNaming
     public class InfluxDBSettings
+    // ReSharper restore InconsistentNaming
     {
         public InfluxDBSettings(string database, Uri baseAddress)
         {

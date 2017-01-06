@@ -11,6 +11,10 @@ using App.Metrics.Concurrency;
 namespace App.Metrics.Sampling.HdrHistogram
 {
 #pragma warning disable 0659 // GetHashCode does not make sense for a histogram, even if Equals is implemented
+    // ReSharper disable ArrangeModifiersOrder
+    // ReSharper disable ArrangeThisQualifier
+    // ReSharper disable InconsistentNaming
+    // ReSharper disable LocalVariableHidesMember
 
     /// <summary>
     ///     <h3>An abstract base class for integer values High Dynamic Range (HDR) Histograms</h3>
@@ -27,7 +31,7 @@ namespace App.Metrics.Sampling.HdrHistogram
     ///     1 millisecond (or better) up to one second, and a resolution of 1 second (or better) up to 1,000 seconds. At it's
     ///     maximum tracked value (1 hour), it would still maintain a resolution of 3.6 seconds (or better).
     ///     See package description for {@link org.HdrHistogram} for details.
-    /// </summary>
+    /// </summary>    
     internal abstract class AbstractHistogram : AbstractHistogramBase, IEquatable<AbstractHistogram>
     {
         internal int unitMagnitude;
@@ -308,15 +312,12 @@ namespace App.Metrics.Sampling.HdrHistogram
                 return true;
             }
 
-            if (other == null)
-            {
-                return false;
-            }
-
-            if ((LowestDiscernibleValue != other.LowestDiscernibleValue) ||
+            if (LowestDiscernibleValue != other?.LowestDiscernibleValue ||
                 (HighestTrackableValue != other.HighestTrackableValue) ||
                 (NumberOfSignificantValueDigits != other.NumberOfSignificantValueDigits) ||
+                // ReSharper disable CompareOfFloatsByEqualityOperator
                 (integerToDoubleValueConversionRatio != other.integerToDoubleValueConversionRatio))
+                // ReSharper restore CompareOfFloatsByEqualityOperator
             {
                 return false;
             }
@@ -615,7 +616,9 @@ namespace App.Metrics.Sampling.HdrHistogram
                 if (totalToCurrentIndex >= countAtPercentile)
                 {
                     var valueAtIndex = ValueFromIndex(i);
+                    // ReSharper disable CompareOfFloatsByEqualityOperator
                     return (percentile == 0.0)
+                        // ReSharper restore CompareOfFloatsByEqualityOperator
                         ? lowestEquivalentValue(valueAtIndex)
                         : highestEquivalentValue(valueAtIndex);
                 }
@@ -1253,7 +1256,9 @@ namespace App.Metrics.Sampling.HdrHistogram
             this.HighestTrackableValue = highestEquivalentValue(ValueFromIndex(countsArrayLength - 1));
         }
 
+        // ReSharper disable ParameterHidesMember
         private void Init(long highestTrackableValue, double integerToDoubleValueConversionRatio, int normalizingIndexOffset)
+            // ReSharper restore ParameterHidesMember
         {
             this.HighestTrackableValue = highestTrackableValue;
             this.integerToDoubleValueConversionRatio = integerToDoubleValueConversionRatio;
@@ -1340,12 +1345,16 @@ namespace App.Metrics.Sampling.HdrHistogram
             }
         }
 
+        // ReSharper disable ParameterHidesMember
         private void resetMaxValue(long maxValue)
+            // ReSharper restore ParameterHidesMember
         {
             this.maxValue.SetValue(maxValue);
         }
 
+        // ReSharper disable ParameterHidesMember
         private void resetMinNonZeroValue(long minNonZeroValue)
+            // ReSharper restore ParameterHidesMember
         {
             this.minNonZeroValue.SetValue(minNonZeroValue);
         }
@@ -1405,3 +1414,7 @@ namespace App.Metrics.Sampling.HdrHistogram
 
 #pragma warning restore 0659
 }
+// ReSharper restore ArrangeModifiersOrder
+// ReSharper restore ArrangeThisQualifier
+// ReSharper restore InconsistentNaming
+// ReSharper restore LocalVariableHidesMember

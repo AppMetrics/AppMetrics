@@ -21,7 +21,7 @@ namespace Metrics.Samples
             _commandCounterNoReportSetItems = _metrics.Advanced.Counter(SampleMetricsRegistry.Counters.CommandCounterDontReportSetItems);
         }
 
-        public void Process(Command command)
+        public void Process(ICommand command)
         {
             _commandCounterNotReset.Increment(command.GetType().Name);
             _commandCounter.Increment(command.GetType().Name);
@@ -42,27 +42,27 @@ namespace Metrics.Samples
             }
         }
 
-        public interface Command
+        public interface ICommand
         {
         }
 
-        public class BillCustomer : Command
+        public class BillCustomer : ICommand
         {
         }
 
-        public class MakeInvoice : Command
+        public class MakeInvoice : ICommand
         {
         }
 
-        public class MarkAsPreffered : Command
+        public class MarkAsPreffered : ICommand
         {
         }
 
-        public class SendEmail : Command
+        public class SendEmail : ICommand
         {
         }
 
-        public class ShipProduct : Command
+        public class ShipProduct : ICommand
         {
         }
     }

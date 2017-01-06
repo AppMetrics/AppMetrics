@@ -4,8 +4,6 @@
 
 // Ported to.NET Standard Library by Allan Hardy
 
-using System;
-
 namespace App.Metrics.Sampling.HdrHistogram
 {
     internal static class MathUtils
@@ -43,6 +41,6 @@ namespace App.Metrics.Sampling.HdrHistogram
             }
             n -= (int)((uint)x >> 31);
             return n;
-        }        
+        }
     }
 }

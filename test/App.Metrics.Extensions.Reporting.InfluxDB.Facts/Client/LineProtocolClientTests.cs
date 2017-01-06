@@ -115,7 +115,9 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Client
             {
                 await client.WriteAsync(_payload, CancellationToken.None);
 
+                // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
                 if (attempt <= policy.FailuresBeforeBackoff)
+                // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
                 {
                     httpMessageHandlerMock.Protected()
                         .Verify<Task<HttpResponseMessage>>("SendAsync", Times.AtLeastOnce(), ItExpr.IsAny<HttpRequestMessage>(),

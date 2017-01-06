@@ -124,7 +124,9 @@ namespace App.Metrics.Sampling.HdrHistogram
             }
         }
 
+        // ReSharper disable InconsistentNaming
         public new void add(AbstractHistogram otherHistogram)
+            // ReSharper restore InconsistentNaming
         {
             // Synchronize add(). Avoid deadlocks by synchronizing in order of construction identity count.
             if (Identity < otherHistogram.Identity)

@@ -64,7 +64,7 @@ namespace App.Metrics.Data
                 new EnvironmentInfoEntry("ProcessName", ProcessName),
                 new EnvironmentInfoEntry("OS", OperatingSystem),
                 new EnvironmentInfoEntry("OSVersion", OperatingSystemVersion),
-                new EnvironmentInfoEntry("CPUCount", ProcessorCount.ToString()),
+                new EnvironmentInfoEntry("CPUCount", ProcessorCount),
                 new EnvironmentInfoEntry("HostName", HostName),
                 new EnvironmentInfoEntry("LocalTime", LocalTimeString),
                 new EnvironmentInfoEntry("EntryAssemblyName", EntryAssemblyName),

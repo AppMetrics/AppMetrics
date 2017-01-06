@@ -9,14 +9,13 @@ using System.Collections.Generic;
 
 namespace App.Metrics.Sampling.HdrHistogram
 {
+    // ReSharper disable InconsistentNaming
     internal abstract class Iterator<E> : IEnumerator<E>
+        // ReSharper restore InconsistentNaming
     {
         public E Current { get; private set; }
 
-        object IEnumerator.Current
-        {
-            get { return Current; }
-        }
+        object IEnumerator.Current => Current;
 
         /**
          * Returns {@code true} if the iteration has more elements.
@@ -26,7 +25,9 @@ namespace App.Metrics.Sampling.HdrHistogram
          * @return {@code true} if the iteration has more elements
          */
 
+        // ReSharper disable InconsistentNaming
         public abstract bool hasNext();
+        // ReSharper restore InconsistentNaming
 
         /**
          * Returns the next element in the iteration.
@@ -35,7 +36,9 @@ namespace App.Metrics.Sampling.HdrHistogram
          * @throws NoSuchElementException if the iteration has no more elements
          */
 
+        // ReSharper disable InconsistentNaming
         public abstract E next();
+        // ReSharper restore InconsistentNaming
 
         public void Dispose()
         {

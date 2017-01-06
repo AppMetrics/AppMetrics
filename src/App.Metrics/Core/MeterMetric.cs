@@ -24,7 +24,7 @@ namespace App.Metrics.Core
         private static readonly TimeSpan TickInterval = TimeSpan.FromSeconds(5);
         private readonly IClock _clock;
         private readonly IScheduler _tickScheduler;
-        private bool _disposed = false;
+        private bool _disposed;
         private ConcurrentDictionary<string, SimpleMeter> _setMeters;
         private long _startTime;
 

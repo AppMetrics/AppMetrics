@@ -52,7 +52,9 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         }
 
         [HttpGet("300ms")]
+        // ReSharper disable InconsistentNaming
         public async Task<IActionResult> Get300ms()
+        // ReSharper restore InconsistentNaming
         {
             _metrics.Advanced.Clock.Advance(TimeUnit.Milliseconds, 300);
             await Task.FromResult(0);
@@ -60,7 +62,9 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         }
 
         [HttpGet("30ms")]
+        // ReSharper disable InconsistentNaming
         public async Task<IActionResult> Get30ms()
+        // ReSharper restore InconsistentNaming
         {
             _metrics.Advanced.Clock.Advance(TimeUnit.Milliseconds, 30);
             await Task.FromResult(0);

@@ -9,6 +9,10 @@ using App.Metrics.Concurrency;
 
 namespace App.Metrics.Sampling.HdrHistogram
 {
+    // ReSharper disable ArrangeModifiersOrder
+    // ReSharper disable ArrangeThisQualifier
+    // ReSharper disable InconsistentNaming
+
     /// <summary>
     ///     This non-public AbstractHistogramBase super-class separation is meant to bunch "cold" fields
     ///     separately from "hot" fields, in an attempt to force the JVM to place the (hot) fields
@@ -66,3 +70,6 @@ namespace App.Metrics.Sampling.HdrHistogram
         }
     }
 }
+// ReSharper restore ArrangeModifiersOrder
+// ReSharper restore ArrangeThisQualifier
+// ReSharper restore InconsistentNaming

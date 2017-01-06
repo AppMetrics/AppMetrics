@@ -21,7 +21,7 @@ namespace App.Metrics.Core
         private readonly IHistogramMetric _histogram;
         private readonly IMeterMetric _meter;
         private readonly StripedLongAdder _totalRecordedTime = new StripedLongAdder();
-        private bool _disposed = false;
+        private bool _disposed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TimerMetric" /> class.

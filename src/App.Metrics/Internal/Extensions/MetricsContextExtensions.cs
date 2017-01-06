@@ -47,9 +47,9 @@ namespace App.Metrics
         {
             var metricValueSources = values as MetricValueSource<T>[] ?? values.ToArray();
 
-            var value = metricValueSources.Where(t => t.Name == metricName).Select(t => t.Value).ToList<T>();
+            var value = metricValueSources.Where(t => t.Name == metricName).Select(t => t.Value).ToList();
 
-            if (value.Any() && value.Count() <= 1) return value.Single();
+            if (value.Any() && value.Count <= 1) return value.Single();
 
             var availableNames = string.Join(",", metricValueSources.Select(v => v.Name));
             throw new InvalidOperationException($"No metric found with name {metricName} in context {context} Available names: {availableNames}");

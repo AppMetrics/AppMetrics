@@ -70,7 +70,7 @@ namespace App.Metrics.Concurrency
             long b, v;
             int m;
             Cell a;
-            if ((@as = this.Cells) != null || !Base.CompareAndSwap(b = Base.GetValue(), b + value))
+            if ((@as = Cells) != null || !Base.CompareAndSwap(b = Base.GetValue(), b + value))
             {
                 var uncontended = true;
                 if (@as == null || (m = @as.Length - 1) < 0 || (a = @as[GetProbe() & m]) == null ||
@@ -108,7 +108,7 @@ namespace App.Metrics.Concurrency
         /// <returns>The current value recored by this adder.</returns>
         public long GetAndReset()
         {
-            var @as = this.Cells;
+            var @as = Cells;
             Cell a;
             var sum = Base.GetAndReset();
             if (@as != null)
@@ -130,7 +130,7 @@ namespace App.Metrics.Concurrency
         /// <returns>The current value recored by this adder.</returns>
         public long GetValue()
         {
-            var @as = this.Cells;
+            var @as = Cells;
             Cell a;
             var sum = Base.GetValue();
             if (@as != null)
@@ -166,7 +166,7 @@ namespace App.Metrics.Concurrency
         /// <returns>The current value of the instance in a non-volatile way (might not observe changes on other threads).</returns>
         public long NonVolatileGetValue()
         {
-            var @as = this.Cells;
+            var @as = Cells;
             Cell a;
             var sum = Base.NonVolatileGetValue();
             if (@as != null)
@@ -185,7 +185,7 @@ namespace App.Metrics.Concurrency
         /// </summary>
         public void Reset()
         {
-            var @as = this.Cells;
+            var @as = Cells;
             Cell a;
             Base.SetValue(0L);
             if (@as != null)

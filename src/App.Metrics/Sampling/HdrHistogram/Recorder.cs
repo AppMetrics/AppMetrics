@@ -10,6 +10,8 @@ using App.Metrics.Concurrency;
 
 namespace App.Metrics.Sampling.HdrHistogram
 {
+    // ReSharper disable InconsistentNaming
+
     /// <summary>
     ///     Records integer values, and provides stable interval {@link Histogram} samples from
     ///     live recorded data without interrupting or stalling active recording of values. Each interval
@@ -28,7 +30,9 @@ namespace App.Metrics.Sampling.HdrHistogram
 
         private static readonly AtomicLong instanceIdSequencer = new AtomicLong(1);
         private static readonly object syncLock = new object();
+        // ReSharper disable ImpureMethodCallOnReadonlyValueField
         private readonly long instanceId = instanceIdSequencer.GetAndIncrement();
+        // ReSharper restore ImpureMethodCallOnReadonlyValueField
 
         private readonly WriterReaderPhaser recordingPhaser = new WriterReaderPhaser();
 
@@ -125,6 +129,7 @@ namespace App.Metrics.Sampling.HdrHistogram
         /// <param name="value">The value to record.</param>
         public void RecordValue(long value)
         {
+            // ReSharper disable InconsistentlySynchronizedField
             var criticalValueAtEnter = recordingPhaser.WriterCriticalSectionEnter();
             try
             {
@@ -134,6 +139,7 @@ namespace App.Metrics.Sampling.HdrHistogram
             {
                 recordingPhaser.WriterCriticalSectionExit(criticalValueAtEnter);
             }
+            // ReSharper restore InconsistentlySynchronizedField
         }
 
         /// <summary>
@@ -206,3 +212,4 @@ namespace App.Metrics.Sampling.HdrHistogram
         }
     }
 }
+// ReSharper restore InconsistentNaming

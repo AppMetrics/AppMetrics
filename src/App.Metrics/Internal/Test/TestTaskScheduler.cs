@@ -15,7 +15,7 @@ namespace App.Metrics.Internal.Test
     {
         private readonly IClock _clock;
         private Action _action;
-        private long _lastRun = 0;
+        private long _lastRun;
         private TimeSpan _pollInterval;
 
         internal TestTaskScheduler(IClock clock)

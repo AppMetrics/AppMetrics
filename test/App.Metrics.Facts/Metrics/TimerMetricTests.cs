@@ -102,11 +102,11 @@ namespace App.Metrics.Facts.Metrics
         [Fact]
         public void counts_even_when_action_throws()
         {
-            Action action = () => this._timer.Time(() => { throw new InvalidOperationException(); });
+            Action action = () => _timer.Time(() => { throw new InvalidOperationException(); });
 
             action.ShouldThrow<InvalidOperationException>();
 
-            this._timer.Value.Rate.Count.Should().Be(1);
+            _timer.Value.Rate.Count.Should().Be(1);
         }
 
         [Fact]

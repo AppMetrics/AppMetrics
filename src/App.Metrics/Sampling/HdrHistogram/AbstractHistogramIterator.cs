@@ -8,6 +8,9 @@ using System;
 
 namespace App.Metrics.Sampling.HdrHistogram
 {
+    // ReSharper disable ArrangeModifiersOrder
+    // ReSharper disable ArrangeThisQualifier
+
     /// <summary>
     ///     Used for iterating through histogram values.
     /// </summary>
@@ -141,3 +144,5 @@ namespace App.Metrics.Sampling.HdrHistogram
         }
     }
 }
+// ReSharper restore ArrangeModifiersOrder
+// ReSharper restore ArrangeThisQualifier

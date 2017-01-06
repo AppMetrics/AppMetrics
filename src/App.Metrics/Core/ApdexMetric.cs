@@ -25,7 +25,7 @@ namespace App.Metrics.Core
         private readonly IApdexProvider _apdexProvider;
         private readonly IClock _clock;
         private readonly bool _allowWarmup;
-        private bool _disposed = false;
+        private bool _disposed;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ApdexMetric" /> class.
@@ -141,7 +141,7 @@ namespace App.Metrics.Core
 
             var totalSamples = snapshot.SatisfiedSize + snapshot.ToleratingSize + snapshot.FrustratingSize;
 
-            var apdex = ((double)snapshot.SatisfiedSize + (double)snapshot.ToleratingSize / 2) / (double)totalSamples;
+            var apdex = (snapshot.SatisfiedSize + (double)snapshot.ToleratingSize / 2) / totalSamples;
 
             if (resetMetric)
             {

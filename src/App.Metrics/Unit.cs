@@ -9,7 +9,7 @@ using App.Metrics.Utils;
 
 namespace App.Metrics
 {
-    [DebuggerDisplay("{Name}")]
+    [DebuggerDisplay("{" + nameof(Name) + "}")]
     public struct Unit : IHideObjectMembers
     {
         public static readonly Unit Bytes = new Unit("bytes");

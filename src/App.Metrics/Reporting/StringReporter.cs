@@ -104,11 +104,11 @@ namespace App.Metrics.Reporting
             _buffer.WriteHealthStatus(status);
 
             _buffer.WritePassedHealthChecksHeader();
-            ;
+
             passed.ForEach(c => _buffer.WriteHealthCheckResult(c));
 
             _buffer.WriteDegradedHealthChecksHeader();
-            ;
+
             degraded.ForEach(c => _buffer.WriteHealthCheckResult(c));
 
             _buffer.WriteFailedHealthChecksHeader();

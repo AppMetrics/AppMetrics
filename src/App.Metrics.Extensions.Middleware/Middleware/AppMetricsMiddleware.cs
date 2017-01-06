@@ -16,9 +16,7 @@ namespace App.Metrics.Extensions.Middleware.Middleware
 {
     public abstract class AppMetricsMiddleware<TOptions> where TOptions : AspNetMetricsOptions, new()
     {
-        private static IReadOnlyList<Regex> _ignoredRoutes;
-
-        private static Func<PathString, bool> _shouldRecordMetric;
+        private readonly Func<PathString, bool> _shouldRecordMetric;
 
         protected AppMetricsMiddleware(RequestDelegate next,
             TOptions aspNetOptions,
@@ -46,17 +44,17 @@ namespace App.Metrics.Extensions.Middleware.Middleware
             }
 
             Options = aspNetOptions;
-            Logger = loggerFactory.CreateLogger(this.GetType().FullName);
+            Logger = loggerFactory.CreateLogger(GetType().FullName);
             Metrics = metrics;
 
             Next = next;
 
-            _ignoredRoutes = Options.IgnoredRoutesRegexPatterns
+            IReadOnlyList<Regex> ignoredRoutes = Options.IgnoredRoutesRegexPatterns
                 .Select(p => new Regex(p, RegexOptions.Compiled | RegexOptions.IgnoreCase)).ToList();
 
-            if (_ignoredRoutes.Any())
+            if (ignoredRoutes.Any())
             {
-                _shouldRecordMetric = path => !_ignoredRoutes.Any(ignorePattern => ignorePattern.IsMatch(path.ToString()
+                _shouldRecordMetric = path => !ignoredRoutes.Any(ignorePattern => ignorePattern.IsMatch(path.ToString()
                     .RemoveLeadingSlash()));
             }
             else

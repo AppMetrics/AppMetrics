@@ -5,7 +5,9 @@ using Xunit;
 
 namespace App.Metrics.Extensions.Middleware.Integration.Facts.Client
 {
+    // ReSharper disable InconsistentNaming
     public class InfluxDBSettingsTests
+        // ReSharper restore InconsistentNaming
     {
         [Fact]
         public void can_generate_influx_write_endpoint()

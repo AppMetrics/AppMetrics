@@ -17,7 +17,7 @@ namespace Metrics.Samples
             _commandMeter = _metrics.Advanced.Meter(SampleMetricsRegistry.Meters.CommandMeter);
         }
 
-        public void Process(Command command)
+        public void Process(ICommand command)
         {
             try
             {
@@ -42,32 +42,32 @@ namespace Metrics.Samples
             }
         }
 
-        private void ActualCommandProcessing(Command command)
+        private void ActualCommandProcessing(ICommand command)
         {
             _commandMeter.Mark(command.GetType().Name);
         }
 
-        public interface Command
+        public interface ICommand
         {
         }
 
-        public class BillCustomer : Command
+        public class BillCustomer : ICommand
         {
         }
 
-        public class MakeInvoice : Command
+        public class MakeInvoice : ICommand
         {
         }
 
-        public class MarkAsPreffered : Command
+        public class MarkAsPreffered : ICommand
         {
         }
 
-        public class SendEmail : Command
+        public class SendEmail : ICommand
         {
         }
 
-        public class ShipProduct : Command
+        public class ShipProduct : ICommand
         {
         }
     }

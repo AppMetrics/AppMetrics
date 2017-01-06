@@ -11,7 +11,7 @@ namespace App.Metrics.Formatting.Humanize
 {
     public sealed class HumanizeMetricValueFormatProvider<T> : IFormatProvider
     {
-        private static readonly IDictionary<Type, Func<ICustomFormatter>> CustomFormaterTypesFactor = new Dictionary<Type, Func<ICustomFormatter>>
+        private readonly IDictionary<Type, Func<ICustomFormatter>> _customFormaterTypesFactor = new Dictionary<Type, Func<ICustomFormatter>>
         {
             { typeof(CounterValue), () => new HumanizeCounterMetricFormatter() },
             { typeof(double), () => new HumanizeGaugeMetricFormatter() },
@@ -26,9 +26,9 @@ namespace App.Metrics.Formatting.Humanize
         public object GetFormat(Type formatType)
         {
             var metricType = typeof(T);
-            if (formatType == typeof(ICustomFormatter) && CustomFormaterTypesFactor.ContainsKey(metricType))
+            if (formatType == typeof(ICustomFormatter) && _customFormaterTypesFactor.ContainsKey(metricType))
             {
-                return CustomFormaterTypesFactor[metricType]();
+                return _customFormaterTypesFactor[metricType]();
             }
 
             return null;

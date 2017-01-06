@@ -97,7 +97,7 @@ namespace App.Metrics.Apdex
         // <inheritdoc />
         public void Update(long value)
         {
-            _reservoir.Update(value, null);
+            _reservoir.Update(value);
         }
     }
 }

@@ -22,7 +22,9 @@ namespace Microsoft.Extensions.Logging
             _healthCheckRegistered = LoggerMessage.Define<string>(
                 LogLevel.Information,
                 eventId: AppMetricsEventIds.HealthChecks.Registration,
+                // ReSharper disable RedundantStringInterpolation
                 formatString: $"Health Check Registered: {{name}}");
+            // ReSharper restore RedundantStringInterpolation
 
             _healthGetStatusExecuted = LoggerMessage.Define<double, int>(
                 LogLevel.Information,

@@ -21,13 +21,18 @@ namespace Microsoft.Extensions.Logging
                 LogLevel.Information,
                 eventId: AppMetricsEventIds.Reports.Schedule,
                 formatString:
+                // ReSharper disable RedundantStringInterpolation
                 $"Report {{reportType}} started");
+                // ReSharper restore RedundantStringInterpolation
 
             _reportRan = LoggerMessage.Define<string, double>(
                 LogLevel.Information,
                 eventId: AppMetricsEventIds.Reports.Schedule,
                 formatString:
+                // ReSharper disable RedundantStringInterpolation
                 $"Report {{reportType}} ran in {{elapsedMilliseconds}}ms");
+                // ReSharper restore RedundantStringInterpolation
+
         }
 
         public static void ReportedStarted(this ILogger logger, IMetricReporter reporter)

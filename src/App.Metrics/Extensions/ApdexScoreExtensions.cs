@@ -12,7 +12,7 @@ namespace App.Metrics.Extensions
     {
         public static IEnumerable<ApdexScore> ToMetric(this IEnumerable<ApdexValueSource> source)
         {
-            return source.Select(x => ToMetric((ApdexValueSource)x));
+            return source.Select(ToMetric);
         }
 
         public static ApdexScore ToMetric(this ApdexValueSource source)

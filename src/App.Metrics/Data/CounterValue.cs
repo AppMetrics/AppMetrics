@@ -66,7 +66,7 @@ namespace App.Metrics.Data
         {
             unchecked
             {
-                return (Count.GetHashCode() * 397) ^ (Items != null ? Items.GetHashCode() : 0);
+                return (Count.GetHashCode() * 397) ^ (Items?.GetHashCode() ?? 0);
             }
         }
 

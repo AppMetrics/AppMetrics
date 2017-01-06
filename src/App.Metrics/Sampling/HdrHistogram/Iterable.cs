@@ -9,6 +9,8 @@ using System.Collections.Generic;
 
 namespace App.Metrics.Sampling.HdrHistogram
 {
+    // ReSharper disable InconsistentNaming
+
     internal abstract class Iterable<T> : IEnumerable<T>
     {
         public IEnumerator<T> GetEnumerator()
@@ -30,3 +32,4 @@ namespace App.Metrics.Sampling.HdrHistogram
         }
     }
 }
+// ReSharper restore InconsistentNaming
