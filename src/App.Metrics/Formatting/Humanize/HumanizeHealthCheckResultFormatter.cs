@@ -35,7 +35,7 @@ namespace App.Metrics.Formatting.Humanize
 
             if (healthCheckResult.Check.Status.IsHealthy())
             {
-                sb.AppendLine(healthCheckResult.Name.FormatReadableMetricValue("PASSED: " + healthCheckResult.Check.Message));
+                sb.AppendLine("\t" + Environment.NewLine + healthCheckResult.Name.FormatReadableMetricValue("PASSED: " + healthCheckResult.Check.Message));
                 return sb.ToString();
             }
 

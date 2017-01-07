@@ -3,7 +3,7 @@
 
 
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using App.Metrics.Core;
 
@@ -11,7 +11,7 @@ namespace App.Metrics
 {
     public interface IHealthCheckFactory
     {
-        IReadOnlyDictionary<string, HealthCheck> Checks { get; }
+        ConcurrentDictionary<string, HealthCheck> Checks { get; }
 
         void Register(string name, Func<Task<string>> check);
 

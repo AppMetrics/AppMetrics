@@ -13,9 +13,6 @@ namespace App.Metrics.Internal
 {
     internal class HealthCheckFactory : IHealthCheckFactory
     {
-        private readonly ConcurrentDictionary<string, HealthCheck> _checks =
-            new ConcurrentDictionary<string, HealthCheck>();
-
         private readonly ILogger<HealthCheckFactory> _logger;
 
         public HealthCheckFactory(ILogger<HealthCheckFactory> logger, IEnumerable<HealthCheck> healthChecks)
@@ -38,7 +35,7 @@ namespace App.Metrics.Internal
             _logger = logger;
         }
 
-        public IReadOnlyDictionary<string, HealthCheck> Checks => _checks;
+        public ConcurrentDictionary<string, HealthCheck> Checks { get; } = new ConcurrentDictionary<string, HealthCheck>();
 
         public void Register(string name, Func<Task<string>> check)
         {
@@ -52,7 +49,7 @@ namespace App.Metrics.Internal
 
         internal void Register(HealthCheck healthCheck)
         {
-            if (_checks.TryAdd(healthCheck.Name, healthCheck))
+            if (Checks.TryAdd(healthCheck.Name, healthCheck))
             {
                 _logger.HealthCheckRegistered(healthCheck.Name);
             }

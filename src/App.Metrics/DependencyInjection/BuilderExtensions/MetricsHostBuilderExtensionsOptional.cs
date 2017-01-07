@@ -52,7 +52,7 @@ namespace Microsoft.Extensions.DependencyInjection
             HealthChecksAsServices.AddHealthChecksAsServices(builder.Services,
                 DefaultMetricsAssemblyDiscoveryProvider.DiscoverAssemblies(builder.Environment.ApplicationName));
 
-            builder.Services.TryAddTransient<IHealthCheckFactory>(provider =>
+            builder.Services.Replace(ServiceDescriptor.Singleton<IHealthCheckFactory>(provider =>
             {
                 var autoScannedHealthChecks = provider.GetRequiredService<IEnumerable<HealthCheck>>();
                 var logFactory = provider.GetRequiredService<ILoggerFactory>();
@@ -60,7 +60,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 var factory = new HealthCheckFactory(logger, autoScannedHealthChecks);
                 setupAction?.Invoke(factory);
                 return factory;
-            });
+            }));
 
             return builder;
         }

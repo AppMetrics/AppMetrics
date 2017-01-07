@@ -11,12 +11,10 @@
 	DEGRADED CHECKS
 
 
-	
     degraded check = DEGRADED: degraded message
 
 	FAILED CHECKS
 
 
-	
    unhealthy check = FAILED: unhealthy message
 

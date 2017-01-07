@@ -45,6 +45,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     return context => new DefaultMetricContextRegistry(context, new GlobalMetricTags(globalTags));
                 });
             builder.Services.TryAddSingleton<IReportFactory, NoOpReportFactory>();
+            builder.Services.TryAddSingleton<IHealthCheckFactory, NoOpHealthCheckFactory>();
             builder.Services.TryAddSingleton<IClock, StopwatchClock>();
             builder.Services.TryAddSingleton<IMetricsFilter, DefaultMetricsFilter>();
             builder.Services.TryAddSingleton<EnvironmentInfoProvider, EnvironmentInfoProvider>();

@@ -27,6 +27,14 @@ namespace Microsoft.Extensions.DependencyInjection
             return builder.AddMetricsMiddleware();
         }
 
+        public static IMetricsHostBuilder AddMetricsMiddleware(this IMetricsHostBuilder builder, IConfiguration configuration,
+            Action<AspNetMetricsOptions> setupAction)
+        {
+            builder.Services.Configure<AspNetMetricsOptions>(configuration);
+            builder.Services.Configure(setupAction);
+            return builder.AddMetricsMiddleware();
+        }
+
         public static IMetricsHostBuilder AddMetricsMiddleware(this IMetricsHostBuilder builder, Action<AspNetMetricsOptions> setupAction)
         {
             builder.Services.Configure(setupAction);

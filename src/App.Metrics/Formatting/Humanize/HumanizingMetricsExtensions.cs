@@ -55,20 +55,38 @@ namespace App.Metrics.Formatting.Humanize
 
         public static string Hummanize<T>(this MetricValueSource<T> valueSource)
         {
+#if NET452
+            var formatProvider = new HumanizeMetricValueFormatProvider<T>();
+            var formatter = formatProvider.GetFormat(valueSource.GetType()) as ICustomFormatter;
+            return formatter != null 
+                ? formatter.Format(string.Empty, valueSource, null) 
+                : string.Empty;
+#else
             FormattableString metricValueSourceString = $"{valueSource}";
             return metricValueSourceString.ToString(new HumanizeMetricValueFormatProvider<T>());
+#endif
         }
 
         public static string Hummanize(this EnvironmentInfo environmentInfo)
         {
+#if NET452
+            var formatProvider = new HumanizeEnvironmentInfoFormatter();
+            return formatProvider.Format(string.Empty, environmentInfo, null);
+#else
             FormattableString environmentInfoString = $"{environmentInfo}";
             return environmentInfoString.ToString(new HumanizeMetricValueFormatProvider<EnvironmentInfo>());
+#endif
         }
 
         public static string Hummanize(this HealthCheck.Result healthCheckResult)
         {
-            FormattableString healthCheckResultString = $"\t{healthCheckResult}";
-            return Environment.NewLine + healthCheckResultString.ToString(new HumanizeMetricValueFormatProvider<HealthCheck.Result>());
+#if NET452
+            var formatProvider = new HumanizeHealthCheckResultFormatter();
+            return formatProvider.Format(string.Empty, healthCheckResult, null);
+#else
+            FormattableString healthCheckResultString = $"{healthCheckResult}";
+            return healthCheckResultString.ToString(new HumanizeMetricValueFormatProvider<HealthCheck.Result>());
+#endif
         }
     }
 }
