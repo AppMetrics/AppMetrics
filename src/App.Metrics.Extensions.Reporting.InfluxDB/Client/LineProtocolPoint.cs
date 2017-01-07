@@ -3,6 +3,7 @@
 
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -54,7 +55,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
 
         public string Measurement { get; }
 
-        public IReadOnlyDictionary<string, string> Tags { get; }
+        public ConcurrentDictionary<string, string> Tags { get; }
 
         public DateTime? UtcTimestamp { get; }
 

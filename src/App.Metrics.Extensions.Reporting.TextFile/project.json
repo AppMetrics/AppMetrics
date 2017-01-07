@@ -19,10 +19,7 @@
     "Microsoft.Extensions.DependencyModel": "1.1.0",
     "Microsoft.Extensions.Options": "1.1.0",
     "Microsoft.Extensions.PlatformAbstractions": "1.1.0",
-    "NETStandard.Library": "1.6.1",
-    "System.Collections.Specialized": "4.3.0",
-    "System.Diagnostics.Process": "4.3.0",
-    "System.Threading.Thread": "4.3.0",
+    "NETStandard.Library": "1.6.1",    
     "Microsoft.DotNet.InternalAbstractions": "1.0.500-preview2-1-003177"
   },
   "description": "Provides text file reporting capability to App Metrics",
@@ -34,10 +31,25 @@
         "portable-net45+win8"
       ],
       "dependencies": {
-
+        "System.Collections.Specialized": "4.3.0",
+        "System.Diagnostics.Process": "4.3.0",
+        "System.Threading.Thread": "4.3.0"
       }
     },
-    "net461": {}
+    "net452": {
+      "buildOptions": {
+        "define": [
+          "CLASSIC"
+        ]
+      },
+      "dependencies": {
+
+      },
+      "frameworkAssemblies": {
+        "System.Reflection": "4.0.0.0"
+      }
+
+    }
   },
 
   "packOptions": {
