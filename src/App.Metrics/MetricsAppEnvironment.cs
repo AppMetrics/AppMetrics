@@ -3,6 +3,7 @@
 
 
 using System;
+using System.Reflection;
 using Microsoft.Extensions.PlatformAbstractions;
 
 namespace App.Metrics
@@ -13,8 +14,19 @@ namespace App.Metrics
         {
             if (applicationEnvironment == null) throw new ArgumentNullException(nameof(applicationEnvironment));
 
+#if NET452
+            var assemblyName = Assembly.GetEntryAssembly().GetName();
+            ApplicationName = assemblyName.Name;
+#else
             ApplicationName = applicationEnvironment.ApplicationName;
+#endif
+
+#if NET452
+            ApplicationVersion = assemblyName.Version.ToString();
+#else
             ApplicationVersion = applicationEnvironment.ApplicationVersion;
+#endif
+
             RuntimeFramework = applicationEnvironment.RuntimeFramework.Identifier;
             RuntimeFrameworkVersion = applicationEnvironment.RuntimeFramework.Version.ToString();
         }

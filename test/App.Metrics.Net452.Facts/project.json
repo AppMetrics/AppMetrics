@@ -11,7 +11,8 @@
     "debugType": "full",
     "compile": {
       "includeFiles": [
-        "../App.Metrics.Facts/Extensions/HumanizingMetricExtensionTests.cs"
+        "../App.Metrics.Facts/Extensions/HumanizingMetricExtensionTests.cs",
+        "../App.Metrics.Facts/Core/MetricsAppEnvironmentTests.cs"
       ]
     }
   },
