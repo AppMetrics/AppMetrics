@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using App.Metrics;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
@@ -54,9 +55,20 @@ namespace Microsoft.Extensions.DependencyInjection
 
             builder.Services.Replace(ServiceDescriptor.Singleton<IHealthCheckFactory>(provider =>
             {
-                var autoScannedHealthChecks = provider.GetRequiredService<IEnumerable<HealthCheck>>();
                 var logFactory = provider.GetRequiredService<ILoggerFactory>();
                 var logger = logFactory.CreateLogger<HealthCheckFactory>();
+
+                var autoScannedHealthChecks = Enumerable.Empty<HealthCheck>();
+
+                try
+                {
+                    autoScannedHealthChecks = provider.GetRequiredService<IEnumerable<HealthCheck>>();
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(new EventId(5000), ex, "Failed to load autoscanned health checks, health checks won't be registered");
+                }
+                
                 var factory = new HealthCheckFactory(logger, autoScannedHealthChecks);
                 setupAction?.Invoke(factory);
                 return factory;
