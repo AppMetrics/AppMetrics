@@ -24,7 +24,20 @@
       ]
     }
   },
-  "net461": {},
+  "net452": {
+    "buildOptions": {
+      "define": [
+        "CLASSIC"
+      ]
+    },
+    "dependencies": {
+
+    },
+    "frameworkAssemblies": {
+      "System.Reflection": "4.0.0.0"
+    }
+
+  },
   "packOptions": {
     "releaseNotes": "",
     "tags": [
