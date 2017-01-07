@@ -2,16 +2,115 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+// ReSharper disable CheckNamespace
+
 using System;
+using System.Reflection;
 using App.Metrics.Configuration;
 using Microsoft.Extensions.Configuration;
 
-// ReSharper disable CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
 // ReSharper restore CheckNamespace
 {
     public static class MetricsServiceCollectionExtensions
     {
+ #if NET452
+        /// <summary>
+        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection">IServiceCollection</see>.
+        /// </summary>
+        /// <param name="services">The application services collection.</param>
+        /// <param name="entryAssemblyName">The application assembly name</param>
+        /// <returns>The metrics host builder</returns>
+        public static IMetricsHostBuilder AddMetrics(this IServiceCollection services, AssemblyName entryAssemblyName)
+        {
+            var builder = services.AddMetricsHostBuilder(entryAssemblyName);
+
+            builder.AddRequiredPlatformServices();
+
+            builder.AddCoreServices();
+
+            return new MetricsHostBuilder(services, entryAssemblyName);
+        }
+
+        /// <summary>
+        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection">IServiceCollection</see>.
+        /// </summary>
+        /// <param name="services">The application services collection.</param>
+        /// <param name="configuration">
+        ///     The <see cref="IConfiguration">IConfiguration</see> from where to load <see cref="AppMetricsOptions">options</see>.
+        /// </param>
+        /// <param name="entryAssemblyName">The application assembly name</param>
+        /// <returns>The metrics host builder</returns>
+        public static IMetricsHostBuilder AddMetrics(this IServiceCollection services, IConfiguration configuration, AssemblyName entryAssemblyName)
+        {
+            services.Configure<AppMetricsOptions>(configuration);
+            return services.AddMetrics(entryAssemblyName);
+        }
+
+        /// <summary>
+        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection">IServiceCollection</see>.
+        /// </summary>
+        /// <param name="services">The application services collection.</param>
+        /// <param name="setupAction">The <see cref="AppMetricsOptions">options</see> setup action.</param>
+        /// <param name="configuration">
+        ///     The <see cref="IConfiguration">IConfiguration</see> from where to load
+        ///     <see cref="AppMetricsOptions">options</see>. Any shared configuration options with the options delegate will be
+        ///     overriden by using this configuration.
+        /// </param>
+        /// <param name="entryAssemblyName">The application assembly name</param>
+        /// <returns>The metrics host builder</returns>
+        public static IMetricsHostBuilder AddMetrics(this IServiceCollection services, Action<AppMetricsOptions> setupAction,
+            IConfiguration configuration, AssemblyName entryAssemblyName)
+        {
+            services.Configure(setupAction);
+            services.Configure<AppMetricsOptions>(configuration);
+            return services.AddMetrics(entryAssemblyName);
+        }
+
+        /// <summary>
+        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection">IServiceCollection</see>.
+        /// </summary>
+        /// <param name="services">The application services collection.</param>
+        /// <param name="configuration">
+        ///     The <see cref="IConfiguration">IConfiguration</see> from where to load
+        ///     <see cref="AppMetricsOptions">options</see>.
+        /// </param>
+        /// <param name="setupAction">The <see cref="AppMetricsOptions">options</see> setup action.</param>
+        /// Any shared configuration options with the options IConfiguration will be overriden by the options delegate.
+        /// <param name="entryAssemblyName">The application assembly name</param>
+        /// <returns>The metrics host builder</returns>
+        public static IMetricsHostBuilder AddMetrics(this IServiceCollection services, IConfiguration configuration,
+            Action<AppMetricsOptions> setupAction, AssemblyName entryAssemblyName)
+        {
+            services.Configure<AppMetricsOptions>(configuration);
+            services.Configure(setupAction);
+            return services.AddMetrics(entryAssemblyName);
+        }
+
+        /// <summary>
+        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection">IServiceCollection</see>.
+        /// </summary>
+        /// <param name="services">The application services collection.</param>
+        /// <param name="setupAction">The <see cref="AppMetricsOptions">options</see> setup action.</param>
+        /// <param name="entryAssemblyName">The application assembly name</param>
+        /// <returns>The metrics host builder</returns>
+        public static IMetricsHostBuilder AddMetrics(this IServiceCollection services, Action<AppMetricsOptions> setupAction, AssemblyName entryAssemblyName)
+        {
+            services.Configure(setupAction);
+            return services.AddMetrics(entryAssemblyName);
+        }
+
+        /// <summary>
+        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection">IServiceCollection</see>.
+        /// </summary>
+        /// <param name="services">The application services collection.</param>
+        /// <param name="entryAssemblyName">The application assembly name</param>
+        /// <returns>The metrics host builder</returns>
+        internal static IMetricsHostBuilder AddMetricsHostBuilder(this IServiceCollection services, AssemblyName entryAssemblyName)
+        {
+            return new MetricsHostBuilder(services, entryAssemblyName);
+        }
+#else
         /// <summary>
         ///     Adds the metrics services and configuration to the <see cref="IServiceCollection">IServiceCollection</see>.
         /// </summary>
@@ -101,5 +200,6 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             return new MetricsHostBuilder(services);
         }
+#endif
     }
 }

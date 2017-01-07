@@ -3,33 +3,48 @@
 
 
 using System;
+#if NET452
 using System.Reflection;
+#endif
 using Microsoft.Extensions.PlatformAbstractions;
 
 namespace App.Metrics
 {
     public sealed class MetricsAppEnvironment : IMetricsEnvironment
     {
-        public MetricsAppEnvironment(ApplicationEnvironment applicationEnvironment)
+#if NET452
+        public MetricsAppEnvironment(ApplicationEnvironment applicationEnvironment, AssemblyName executingAssemblyName)
         {
-            if (applicationEnvironment == null) throw new ArgumentNullException(nameof(applicationEnvironment));
+            if (applicationEnvironment == null)
+            {
+                throw new ArgumentNullException(nameof(applicationEnvironment));
+            }
+            if (executingAssemblyName == null)
+            {
+                throw new ArgumentNullException(nameof(executingAssemblyName));
+            }
 
-#if NET452
-            var assemblyName = Assembly.GetEntryAssembly().GetName();
-            ApplicationName = assemblyName.Name;
-#else
-            ApplicationName = applicationEnvironment.ApplicationName;
-#endif
-
-#if NET452
-            ApplicationVersion = assemblyName.Version.ToString();
-#else
-            ApplicationVersion = applicationEnvironment.ApplicationVersion;
-#endif
-
+            ApplicationName = executingAssemblyName.Name;
+            ApplicationVersion = executingAssemblyName.Version.ToString();
             RuntimeFramework = applicationEnvironment.RuntimeFramework.Identifier;
             RuntimeFrameworkVersion = applicationEnvironment.RuntimeFramework.Version.ToString();
         }
+#endif
+
+#if !NET452
+        public MetricsAppEnvironment(ApplicationEnvironment applicationEnvironment)
+        {
+            if (applicationEnvironment == null)
+            {
+                throw new ArgumentNullException(nameof(applicationEnvironment));
+            }
+
+            ApplicationName = applicationEnvironment.ApplicationName;
+            ApplicationVersion = applicationEnvironment.ApplicationVersion;
+            RuntimeFramework = applicationEnvironment.RuntimeFramework.Identifier;
+            RuntimeFrameworkVersion = applicationEnvironment.RuntimeFramework.Version.ToString();
+        }
+#endif
 
         public string ApplicationName { get; }
 
