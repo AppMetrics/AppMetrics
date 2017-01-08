@@ -14,15 +14,15 @@
 
 ## What is App Metrics?
 
-App Metrics is an open-source and cross-platform .NET library used to record metrics within an application. App Metrics can run on .NET Core or on the full .NET framework. App Metrics abstracts away the underlaying repository of your Metrics for example InfluxDB, Graphite, Elasticsearch etc, by sampling and aggregating in memory and providing extensibility points to flush metrics to a repository at a specified interval.
+App Metrics is an open-source and cross-platform .NET library used to record metrics within an application. App Metrics can run on .NET Core or on the full .NET framework also supporting .NET 4.5.2. App Metrics abstracts away the underlaying repository of your Metrics for example InfluxDB, Graphite, Elasticsearch etc, by sampling and aggregating in memory and providing extensibility points to flush metrics to a repository at a specified interval.
 
 App Metrics provides various metric types to measure things such as the rate of requests, counting the number of user logins over time, measure the time taken to execute a database query, measure the amount of free memory and so on. Metrics types supporter are Gauges, Counters, Meters, Histograms and Timers.
 
 App Metrics also provides a health checking system allowing you to monitor the health of your application through user defined checks.
 
 - [Getting Started](https://alhardy.github.io/app-metrics-docs/getting-started/intro.html)
+- [Sample Applications & Grafana Dashbaords](https://github.com/alhardy/AppMetrics.Samples)
 - [Api Documentation](https://alhardy.github.io/app-metrics-docs/api/index.html)
-- [Samples](https://github.com/alhardy/AppMetrics/tree/master/samples)
 
 ## Acknowledgements
 
@@ -38,17 +38,11 @@ App Metrics also provides a health checking system allowing you to monitor the h
 
 **Ported from [Metrics.NET](https://github.com/etishor/Metrics.NET)**
 
-App Metrics is a significant redesign and .NET Standard port of the [Metrics.NET](https://github.com/etishor/Metrics.NET) library, which is a port of the Java [Metrics](https://github.com/dropwizard/metrics) library. This library for now includes the original [sampling code](https://github.com/etishor/Metrics.NET/tree/master/Src/Metrics/Sampling) written by Metrics.NET. 
+App Metrics is based on the [Metrics.NET](https://github.com/etishor/Metrics.NET) library and using the same reservoir sampling code from the original library, which is a port of the Java [Metrics](https://github.com/dropwizard/metrics) library. 
 
-Metrics.NET features that have been removed for now are the following:
+App Metrics includes additional features to Metrics.NET, see the [docs](https://alhardy.github.io/app-metrics-docs/getting-started/intro.html) for details.
 
-1. Visualization, I believe most will be using something like Grafana to visualize their metrics
-2. Remote Metrics
-3. Performance counters as they are windows specific
-
-App Metrics includes addition features to Metrics.NET, see the [docs](https://alhardy.github.io/app-metrics-docs/getting-started/intro.html) for details.
-
-Why another .NET port? The main reason for porting Metrics.NET was to have it run on .NET Standard. Intially I refactored Metrics.NET stripping out features which required a fairly large refactor such as visualization, however the maintainers did not see .NET Standard or Core a priority at the time. 
+Why another .NET port? The main reason for porting Metrics.NET was to have it run on .NET Standard and provider a more modern API into the libraries features. Intially I refactored Metrics.NET stripping out features which required a fairly large refactor such as visualization, however the maintainers did not see .NET Standard or Core a priority at the time. 
 
 This library will always keep the same license as the original [Metrics.NET Library](https://github.com/etishor/Metrics.NET) (as long as its an open source, permisive license). 
 
