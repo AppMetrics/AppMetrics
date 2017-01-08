@@ -19,6 +19,7 @@ namespace App.Metrics.Core.Interfaces
     /// <seealso>
     ///     <cref>System.IDisposable</cref>
     /// </seealso>
+    /// </summary>
     public interface IApdexMetric : IApdex, IMetricValueProvider<ApdexValue>, IDisposable
     {
     }

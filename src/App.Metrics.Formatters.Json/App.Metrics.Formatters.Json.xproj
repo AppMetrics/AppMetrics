@@ -6,7 +6,7 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>66adef00-7776-4208-932d-d3d2f7eadf52</ProjectGuid>
+    <ProjectGuid>909ae159-2da0-4f9f-a8ad-0d5ab3f107c7</ProjectGuid>
     <RootNamespace> App.Metrics.Formatters.Json</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>

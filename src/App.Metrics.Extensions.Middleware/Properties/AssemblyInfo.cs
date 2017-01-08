@@ -27,6 +27,6 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
-[assembly: Guid("eaaa166f-451b-4066-b62b-6d3fb7f4bf11")]
+[assembly: Guid("1f728c7b-28db-4879-b550-0062b4e93dc2")]
 [assembly: InternalsVisibleTo("App.Metrics.Extensions.Middleware.Integration.Facts")]
 [assembly: InternalsVisibleTo("App.Metrics.Extensions.Mvc")]

@@ -23,5 +23,5 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
-[assembly: Guid("cc7ea5c1-0ae5-4147-9960-b9da362f91cd")]
+[assembly: Guid("95544142-7bfb-4b6b-8504-efb6df2167e0")]
 [assembly: InternalsVisibleTo("App.Metrics.Extensions.Reporting.InfluxDB.Facts")]

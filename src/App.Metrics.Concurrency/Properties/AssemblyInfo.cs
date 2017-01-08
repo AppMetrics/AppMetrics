@@ -24,7 +24,7 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
-[assembly: Guid("7ad4f2aa-a152-4092-b79f-2648cbedffbc")]
+[assembly: Guid("a0666226-0f07-475f-bad5-41e99c112a9a")]
 
 [assembly: InternalsVisibleTo("App.Metrics.Concurrency.Facts")]
 [assembly: InternalsVisibleTo("App.Metrics.Concurrency.Benchmarks")]

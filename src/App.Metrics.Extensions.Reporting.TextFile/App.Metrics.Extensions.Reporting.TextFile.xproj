@@ -6,7 +6,7 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>2b01fdf8-8e73-4904-9b2c-5bfa505bff5f</ProjectGuid>
+    <ProjectGuid>c29e2ef1-077d-43c8-9144-d998ed3a7bb3</ProjectGuid>
     <RootNamespace>App.Metrics.Extensions.Reporting.TextFile</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
