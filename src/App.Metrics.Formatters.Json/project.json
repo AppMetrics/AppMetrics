@@ -1,5 +1,6 @@
 {
   "authors": [ "Allan Hardy" ],
+
   "buildOptions": {
     "warningsAsErrors": true,
     "nowarn": [
@@ -8,51 +9,54 @@
     "xmlDoc": true,
     "debugType": "full"
   },
+  "copyright": "Allan Hardy 2016",
+
   "dependencies": {
     "App.Metrics": "1.0.0-beta4",
     "Microsoft.DotNet.InternalAbstractions": "1.0.500-preview2-1-003177",
     "NETStandard.Library": "1.6.1",
-    "Newtonsoft.Json": "9.0.2-beta1",
-    "System.Linq": "4.3.0"
+    "Newtonsoft.Json": "9.0.2-beta1"
   },
   "description": "App Metrics Formattor, formatting metrics data to JSON using Json.NET",
+
   "frameworks": {
     "netstandard1.6": {
       "imports": [
         "dotnet5.6",
         "portable-net45+win8"
-      ]
+      ],
+      "dependencies": {
+        "System.Collections.Specialized": "4.3.0",
+        "System.Diagnostics.Process": "4.3.0",
+        "System.Threading.Thread": "4.3.0"
+      }
+    },
+    "net452": {
+      "buildOptions": {
+        "define": [
+          "CLASSIC"
+        ]
+      },
+      "dependencies": {
+
+      },
+      "frameworkAssemblies": {
+        "System.Reflection": "4.0.0.0"
+      }
+
     }
   },
-  "net452": {
-    "buildOptions": {
-      "define": [
-        "CLASSIC"
-      ]
-    },
-    "dependencies": {
 
-    },
-    "frameworkAssemblies": {
-      "System.Reflection": "4.0.0.0"
-    }
-
-  },
   "packOptions": {
-    "releaseNotes": "",
-    "tags": [
-      "Metrics",
-      "Monitoring",
-      "Instrumentation",
-      "JSON"
-    ],
+    "tags": [ "Metrics", "Monitoring", "Instrumentation", "JSON" ],
+    "projectUrl": "https://alhardy.github.io/app-metrics-docs/getting-started/reporting/index.html#text-file-reporter",
+    "licenseUrl": "https://github.com/alhardy/AppMetrics/blob/master/LICENSE",
+    "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png",
     "repository": {
       "type": "git",
       "url": "git://github.com/alhardy/AppMetrics"
-    },
-    "projectUrl": "https://alhardy.github.io/app-metrics-docs/getting-started/intro.html#configuring-a-web-host",
-    "licenseUrl": "https://github.com/alhardy/AppMetrics/blob/master/LICENSE",
-    "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png"
+    }
   },
+  "title": "App.Metrics.Formatters.Json",
   "version": "1.0.0-beta4"
 }

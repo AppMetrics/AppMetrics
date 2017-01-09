@@ -38,3 +38,4 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("App.Metrics.Extensions.Mvc")]
 [assembly: InternalsVisibleTo("App.Metrics.Extensions.Reporting.InfluxDB.Facts")]
 [assembly: InternalsVisibleTo("App.Metrics.Net452.Facts")]
+[assembly: InternalsVisibleTo("App.Metrics.Extensions.Owin")]

@@ -8,6 +8,8 @@
     "xmlDoc": true,
     "debugType": "full"
   },
+  "copyright": "Allan Hardy 2016",
+
   "dependencies": {
     "App.Metrics": "1.0.0-beta4",
     "Microsoft.AspNetCore.Routing": "1.1.0",

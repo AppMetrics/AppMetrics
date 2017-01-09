@@ -7,7 +7,7 @@ using App.Metrics.Data;
 using App.Metrics.Extensions;
 using Newtonsoft.Json;
 
-namespace App.Metrics.Formatters.Json
+namespace App.Metrics.Formatters.Json.Converters
 {
     public class MeterConverter : JsonConverter
     {

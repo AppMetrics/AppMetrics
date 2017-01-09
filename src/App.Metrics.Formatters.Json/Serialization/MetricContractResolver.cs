@@ -6,10 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Data;
+using App.Metrics.Formatters.Json.Converters;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace App.Metrics.Formatters.Json
+namespace App.Metrics.Formatters.Json.Serialization
 {
     public class MetricContractResolver : CamelCasePropertyNamesContractResolver
     {

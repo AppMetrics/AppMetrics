@@ -9,7 +9,7 @@ using App.Metrics.Core;
 using App.Metrics.Utils;
 using Newtonsoft.Json;
 
-namespace App.Metrics.Formatters.Json
+namespace App.Metrics.Formatters.Json.Converters
 {
     public class HealthStatusConverter : JsonConverter
     {

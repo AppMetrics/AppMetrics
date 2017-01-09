@@ -5,7 +5,7 @@
 using App.Metrics.Serialization.Interfaces;
 using Newtonsoft.Json;
 
-namespace App.Metrics.Formatters.Json
+namespace App.Metrics.Formatters.Json.Serialization
 {
     public class MetricDataSerializer : JsonSerializer, IMetricDataSerializer
     {

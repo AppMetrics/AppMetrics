@@ -2,11 +2,12 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using App.Metrics.Formatters.Json.Converters;
 using App.Metrics.Serialization.Interfaces;
 using App.Metrics.Utils;
 using Newtonsoft.Json;
 
-namespace App.Metrics.Formatters.Json
+namespace App.Metrics.Formatters.Json.Serialization
 {
     public class HealthStatusSerializer : IHealthStatusSerializer
     {

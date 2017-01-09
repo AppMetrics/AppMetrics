@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics.Data;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
-using App.Metrics.Formatters.Json;
+using App.Metrics.Formatters.Json.Serialization;
 using FluentAssertions;
 using Xunit;
 

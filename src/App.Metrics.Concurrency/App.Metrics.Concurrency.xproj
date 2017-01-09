@@ -6,7 +6,7 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>a0666226-0f07-475f-bad5-41e99c112a9a</ProjectGuid>
+    <ProjectGuid>f9aa4862-3755-425f-8f33-b25772f43ffc</ProjectGuid>
     <RootNamespace>App.Metrics.Concurrency</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
