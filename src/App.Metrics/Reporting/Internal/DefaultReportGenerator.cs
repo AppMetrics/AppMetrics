@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporting.Internal
 {
-    internal class DefaultReportGenerator
+    public class DefaultReportGenerator
     {
         private readonly ILogger _logger;
 
@@ -29,14 +29,14 @@ namespace App.Metrics.Reporting.Internal
             _logger = loggerFactory.CreateLogger<DefaultReportGenerator>();
         }
 
-        internal Task<bool> GenerateAsync(IMetricReporter reporter,
+        public Task<bool> GenerateAsync(IMetricReporter reporter,
             IMetrics metrics,
             CancellationToken token)
         {
             return GenerateAsync(reporter, metrics, metrics.Advanced.GlobalFilter, token);
         }
 
-        internal async Task<bool> GenerateAsync(IMetricReporter reporter,
+        public async Task<bool> GenerateAsync(IMetricReporter reporter,
             IMetrics metrics,
             IMetricsFilter reporterMetricsFilter,
             CancellationToken token)
