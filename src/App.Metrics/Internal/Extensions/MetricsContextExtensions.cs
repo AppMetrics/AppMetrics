@@ -11,7 +11,7 @@ using App.Metrics.Data;
 namespace App.Metrics
 // ReSharper restore CheckNamespace
 {
-    internal static class MetricsContextValueSourceExtensions
+    public static class MetricsContextValueSourceExtensions
     {
         public static CounterValue CounterValueFor(this MetricsContextValueSource valueService, string metricName)
         {
