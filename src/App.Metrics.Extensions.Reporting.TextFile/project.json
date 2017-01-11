@@ -12,13 +12,13 @@
   "copyright": "Allan Hardy 2016",
 
   "dependencies": {
-    "App.Metrics": "1.0.0-beta4",
+    "App.Metrics": "1.0.0-beta5",
     "Microsoft.Extensions.DependencyInjection": "1.1.0",
     "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
     "Microsoft.Extensions.DependencyModel": "1.1.0",
     "Microsoft.Extensions.Options": "1.1.0",
     "Microsoft.Extensions.PlatformAbstractions": "1.1.0",
-    "NETStandard.Library": "1.6.1",    
+    "NETStandard.Library": "1.6.1",
     "Microsoft.DotNet.InternalAbstractions": "1.0.500-preview2-1-003177"
   },
   "description": "Provides text file reporting capability to App Metrics",
@@ -62,5 +62,5 @@
     }
   },
   "title": "App.Metrics.Extensions.Reporting.TextFile",
-  "version": "1.0.0-beta4"
+  "version": "1.0.0-beta5"
 }

@@ -12,7 +12,7 @@
   "copyright": "Allan Hardy 2016",
 
   "dependencies": {
-    "App.Metrics": "1.0.0-beta4",
+    "App.Metrics": "1.0.0-beta5",
     "Microsoft.DotNet.InternalAbstractions": "1.0.500-preview2-1-003177",
     "NETStandard.Library": "1.6.1",
     "Newtonsoft.Json": "9.0.2-beta1"
@@ -58,5 +58,5 @@
     }
   },
   "title": "App.Metrics.Formatters.Json",
-  "version": "1.0.0-beta4"
+  "version": "1.0.0-beta5"
 }
