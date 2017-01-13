@@ -7,6 +7,7 @@
 using System;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Data;
+using App.Metrics.Internal;
 using App.Metrics.Sampling;
 using App.Metrics.Sampling.Interfaces;
 
@@ -40,16 +41,19 @@ namespace App.Metrics.Core
             _reservoir = reservoir;
         }
 
+        [AppMetricsExcludeFromCodeCoverage]
         ~HistogramMetric() { Dispose(false); }
 
         public HistogramValue Value => GetValue();
 
+        [AppMetricsExcludeFromCodeCoverage]
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        [AppMetricsExcludeFromCodeCoverage]
         public void Dispose(bool disposing)
         {
             if (!_disposed)

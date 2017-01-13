@@ -105,12 +105,14 @@ namespace App.Metrics.Core
             return _clock.Nanoseconds;
         }
 
+        [AppMetricsExcludeFromCodeCoverage]
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        [AppMetricsExcludeFromCodeCoverage]
         public void Dispose(bool disposing)
         {
             if (!_disposed)
