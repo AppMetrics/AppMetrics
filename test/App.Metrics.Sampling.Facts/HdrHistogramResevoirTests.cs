@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using App.Metrics.Sampling;
 using App.Metrics.Sampling.HdrHistogram;
 using FluentAssertions;
@@ -46,6 +47,19 @@ namespace App.Metrics.Facts
             snapshot.Min.Should().Be(1L);
             snapshot.MaxUserValue.Should().Be("B");
             snapshot.Max.Should().Be(2L);
+        }
+
+        [Fact]
+        public void can_get_snap_shot_values()
+        {
+            var reservoir = new HdrHistogramReservoir(new Recorder(2));
+
+            reservoir.Update(2L, "B");
+            reservoir.Update(1L, "A");
+
+            var snapshot = reservoir.GetSnapshot();
+
+            snapshot.Values.Should().Contain(new[] { 2L, 1L });
         }
     }
 }

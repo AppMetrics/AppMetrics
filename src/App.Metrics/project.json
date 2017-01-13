@@ -8,10 +8,7 @@
     ],
     "xmlDoc": true,
     "debugType": "full",
-    "additionalArguments": [ "/ruleset:../../ruleset.ruleset", "/additionalfile:../../stylecop.json" ],
-    "compile": {
-      "excludeFiles": "Sampling/SynchronizedHistogram.cs"
-    }
+    "additionalArguments": [ "/ruleset:../../ruleset.ruleset", "/additionalfile:../../stylecop.json" ]    
   },
   "copyright": "Allan Hardy 2016",
   "dependencies": {

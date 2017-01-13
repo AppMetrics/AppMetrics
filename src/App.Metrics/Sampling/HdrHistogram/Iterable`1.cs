@@ -26,7 +26,7 @@ namespace App.Metrics.Sampling.HdrHistogram
 
         IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
     }
+
+    // ReSharper restore InconsistentNaming
 #pragma warning restore
 }
-
-// ReSharper restore InconsistentNaming

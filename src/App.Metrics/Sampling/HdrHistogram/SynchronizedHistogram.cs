@@ -5,8 +5,7 @@
 // Ported/Refactored to .NET Standard Library by Allan Hardy
 
 using System;
-
-// DEVNOTE: Excluded from build not being used yet
+using App.Metrics.Internal;
 
 namespace App.Metrics.Sampling.HdrHistogram
 {
@@ -28,7 +27,7 @@ namespace App.Metrics.Sampling.HdrHistogram
  * See package description for {@link org.HdrHistogram} and {@link org.HdrHistogram.Histogram} for more details.
  */
 
-
+    [AppMetricsExcludeFromCodeCoverage] // DEVNOTE: Excluded from coverage, not being used yet.
     internal class SynchronizedHistogram : HdrHistogram
     {
         private static readonly object SyncLock = new object();
