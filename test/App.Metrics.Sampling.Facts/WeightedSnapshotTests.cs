@@ -111,7 +111,7 @@ namespace App.Metrics.Facts
         public void can_determine_if_weighted_samples_are_diff()
         {
             var first = new WeightedSample(1, null, 1);
-            var second = new WeightedSample(1, null, 1);
+            var second = new WeightedSample(1, null, 2);
 
             first.Should().NotBe(second);
         }
