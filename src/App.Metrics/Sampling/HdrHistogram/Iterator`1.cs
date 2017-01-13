@@ -4,16 +4,14 @@
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
 
-
 using System.Collections;
 using System.Collections.Generic;
 
 namespace App.Metrics.Sampling.HdrHistogram
 {
+#pragma warning disable
     // ReSharper disable InconsistentNaming
     internal abstract class Iterator<T> : IEnumerator<T>
-
-        // ReSharper restore InconsistentNaming
     {
         public T Current { get; private set; }
 
@@ -57,6 +55,8 @@ namespace App.Metrics.Sampling.HdrHistogram
         }
 
         public void Reset() { }
+
+        // ReSharper restore InconsistentNaming
     }
-}
 #pragma warning restore
+}
