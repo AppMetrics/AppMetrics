@@ -7,6 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2D805782-756
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{31A4DDB1-952E-4EED-96EF-29C669279A86}"
 	ProjectSection(SolutionItems) = preProject
+		appmetrics.DotSettings = appmetrics.DotSettings
 		appveyor.yml = appveyor.yml
 		CONTRIBUTING.md = CONTRIBUTING.md
 		GitReleaseManager.yaml = GitReleaseManager.yaml
