@@ -8,6 +8,7 @@ using App.Metrics.Core;
 
 namespace App.Metrics.Internal
 {
+    [AppMetricsExcludeFromCodeCoverage]
     internal class NoOpHealthCheckFactory : IHealthCheckFactory
     {
         public ConcurrentDictionary<string, HealthCheck> Checks { get; } = new ConcurrentDictionary<string, HealthCheck>();
