@@ -55,44 +55,57 @@ task Setup {
 }
 
 task Build -depends Restore, Clean {
-	
+	$script:buildSuccess = $true
 	$appProjects | foreach {
-		dotnet build "$_" --configuration $configuration
+		try {
+			exec { & dotnet build "$_" --configuration $configuration }
+		}
+		catch {
+			$script:buildSuccess = $false
+			continue			
+		}		
     }
-    
-    $testProjects | foreach {
-		dotnet build "$_" --configuration $configuration
-    }
+		
+	if ($script:buildSuccess) {
+		$testProjects | foreach {
+			dotnet build "$_" --configuration $configuration
+		}   
+	}	
 }
 
 task RunTests -depends Restore, Clean {
 	
-	New-Item $artifactsCodeCoverageRoot -type directory -force	
-	$success = $true
-	
-	$testProjects | foreach {
-		Write-Output "Running tests for '$_'"	
-		try {
-			exec { & $codeCoverage "-target:C:\Program Files\dotnet\dotnet.exe" -targetargs:" test -c Release $_" -mergeoutput -hideskipped:All -output:"$artifactsCodeCoverageRoot\coverage.xml" -oldStyle -filter:"+[App.Metrics*]* -[xunit.*]* -[*.Facts]*" -excludebyattribute:"*.AppMetricsExcludeFromCodeCoverage*" -excludebyfile:"*\*Designer.cs;*\*.g.cs;*\*.g.i.cs" -register:user -skipautoprops -safemode:off -returntargetcode }
-		}
-		catch {
-			$success = $false
-		}					
-	}
+	if ($script:buildSuccess) {
+		New-Item $artifactsCodeCoverageRoot -type directory -force	
+		$success = $true
 		
-	if (-not $success) {
-		throw 'tests failed'
-	}
-	
-	if (-not (Test-Path env:COVERALLS_REPO_TOKEN))
-	{
-		Write-Output "Skipping code coverage publish"		
-	}
-	else 
-	{		
-		Write-Output "Publishing code coverage"
-		exec { & $coveralls --opencover -i "$artifactsCodeCoverageRoot\coverage.xml" --repoToken $env:COVERALLS_REPO_TOKEN --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID }
-	}		
+		$testProjects | foreach {
+			Write-Output "Running tests for '$_'"	
+			try {
+				exec { & $codeCoverage "-target:C:\Program Files\dotnet\dotnet.exe" -targetargs:" test -c Release $_" -mergeoutput -hideskipped:All -output:"$artifactsCodeCoverageRoot\coverage.xml" -oldStyle -filter:"+[App.Metrics*]* -[xunit.*]* -[*.Facts]*" -excludebyattribute:"*.AppMetricsExcludeFromCodeCoverage*" -excludebyfile:"*\*Designer.cs;*\*.g.cs;*\*.g.i.cs" -register:user -skipautoprops -safemode:off -returntargetcode }
+			}
+			catch {
+				$script:buildSuccess = $false
+			}					
+		}
+			
+		if (-not $script:buildSuccess) {
+			throw 'tests failed'
+		}
+		
+		if (-not (Test-Path env:COVERALLS_REPO_TOKEN))
+		{
+			Write-Output "Skipping code coverage publish"		
+		}
+		else 
+		{		
+			Write-Output "Publishing code coverage"
+			exec { & $coveralls --opencover -i "$artifactsCodeCoverageRoot\coverage.xml" --repoToken $env:COVERALLS_REPO_TOKEN --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID }
+		}
+	} 
+	else {
+		Write-Output "Skipping tests since build failed"		
+	}	
 }
 
 task PatchProject {
@@ -121,8 +134,13 @@ task PatchProject {
 }
 
 task Pack -depends Restore, Clean {
-	$packableProjectDirectories | foreach {
-		dotnet pack "$_" --configuration $configuration -o "$artifactsPackagesRoot"
+	if ($script:buildSuccess) {
+		$packableProjectDirectories | foreach {
+			dotnet pack "$_" --configuration $configuration -o "$artifactsPackagesRoot"
+		}
+	}
+	else {
+		Write-Output "Skipping Pack since build failed"	
 	}
 }
 
