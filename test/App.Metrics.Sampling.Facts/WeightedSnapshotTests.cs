@@ -108,12 +108,21 @@ namespace App.Metrics.Facts
         }
 
         [Fact]
-        public void can_determine_if_weighted_samples_are_diff()
+        public void can_determine_if_weighted_samples_are_same_using_operator()
+        {
+            var first = new WeightedSample(1, null, 1);
+            var second = new WeightedSample(1, null, 1);
+
+            Assert.True(first == second);
+        }
+
+        [Fact]
+        public void can_determine_if_weighted_samples_are_diff_using_operator()
         {
             var first = new WeightedSample(1, null, 1);
             var second = new WeightedSample(2, null, 1);
 
-            first.Should().NotBe(second);
+            Assert.False(first == second);
         }
 
         private static WeightedSnapshot MakeSanpshot(long[] values, double[] weights)
