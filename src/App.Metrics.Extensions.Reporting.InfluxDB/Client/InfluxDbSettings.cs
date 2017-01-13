@@ -49,7 +49,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
         public string Consistenency { get; set; }
 
         /// <summary>
-        ///     Gets or Sets the InfluxDB database name where metrics will be persisted
+        ///     Gets or sets the InfluxDB database name where metrics will be persisted.
         /// </summary>
         /// <value>
         ///     The InfluxDB database name.

@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System;
 using System.Collections.Generic;
@@ -12,10 +11,7 @@ namespace App.Metrics.Formatters.Json.Converters
 {
     public class EnvironmentInfoConverter : JsonConverter
     {
-        public override bool CanConvert(Type objectType)
-        {
-            return typeof(EnvironmentInfo) == objectType;
-        }
+        public override bool CanConvert(Type objectType) { return typeof(EnvironmentInfo) == objectType; }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {

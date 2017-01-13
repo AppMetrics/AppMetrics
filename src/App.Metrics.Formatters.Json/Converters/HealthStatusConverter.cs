@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System;
 using System.Collections.Generic;
@@ -15,15 +14,9 @@ namespace App.Metrics.Formatters.Json.Converters
     {
         private readonly IClock _clock;
 
-        public HealthStatusConverter(IClock clock)
-        {
-            _clock = clock;
-        }
+        public HealthStatusConverter(IClock clock) { _clock = clock; }
 
-        public override bool CanConvert(Type objectType)
-        {
-            return typeof(HealthStatus) == objectType;
-        }
+        public override bool CanConvert(Type objectType) { return typeof(HealthStatus) == objectType; }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
@@ -40,22 +33,22 @@ namespace App.Metrics.Formatters.Json.Converters
             var source = (HealthStatus)value;
 
             var target = new HealthStatusData
-            {
-                Status = source.Status.Hummanize(),
-                Timestamp = _clock.FormatTimestamp(_clock.UtcDateTime)
-            };
+                         {
+                             Status = source.Status.Hummanize(),
+                             Timestamp = _clock.FormatTimestamp(_clock.UtcDateTime)
+                         };
 
             var healthy = source.Results.Where(r => r.Check.Status.IsHealthy())
-                .Select(c => new KeyValuePair<string, string>(c.Name, c.Check.Message))
-                .ToDictionary(pair => pair.Key, pair => pair.Value);
+                                .Select(c => new KeyValuePair<string, string>(c.Name, c.Check.Message))
+                                .ToDictionary(pair => pair.Key, pair => pair.Value);
 
             var unhealthy = source.Results.Where(r => r.Check.Status.IsUnhealthy())
-                .Select(c => new KeyValuePair<string, string>(c.Name, c.Check.Message))
-                .ToDictionary(pair => pair.Key, pair => pair.Value);
+                                  .Select(c => new KeyValuePair<string, string>(c.Name, c.Check.Message))
+                                  .ToDictionary(pair => pair.Key, pair => pair.Value);
 
             var degraded = source.Results.Where(r => r.Check.Status.IsDegraded())
-                .Select(c => new KeyValuePair<string, string>(c.Name, c.Check.Message))
-                .ToDictionary(pair => pair.Key, pair => pair.Value);
+                                 .Select(c => new KeyValuePair<string, string>(c.Name, c.Check.Message))
+                                 .ToDictionary(pair => pair.Key, pair => pair.Value);
 
             if (healthy.Any())
             {
