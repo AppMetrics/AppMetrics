@@ -108,6 +108,15 @@ namespace App.Metrics.Facts
         }
 
         [Fact]
+        public void can_determine_if_weighted_samples_are_diff()
+        {
+            var first = new WeightedSample(1, null, 1);
+            var second = new WeightedSample(1, null, 1);
+
+            first.Should().NotBe(second);
+        }
+
+        [Fact]
         public void can_determine_if_weighted_samples_are_same_using_operator()
         {
             var first = new WeightedSample(1, null, 1);
