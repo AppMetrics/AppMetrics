@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,10 +11,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
     {
         private LineProtocolPayload _payload;
 
-        public void Clear()
-        {
-            _payload = null;
-        }
+        public void Clear() { _payload = null; }
 
         public LineProtocolPayloadBuilder Init()
         {
@@ -30,21 +26,21 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
             return this;
         }
 
-        public LineProtocolPayloadBuilder Pack(string name, IEnumerable<string> columns,
-            IEnumerable<object> values, MetricTags tags)
+        public LineProtocolPayloadBuilder Pack(
+            string name,
+            IEnumerable<string> columns,
+            IEnumerable<object> values,
+            MetricTags tags)
         {
             var fields = columns.Zip(values, (column, data) => new { column, data })
-                .ToDictionary(pair => pair.column, pair => pair.data);
+                                .ToDictionary(pair => pair.column, pair => pair.data);
 
             _payload.Add(new LineProtocolPoint(name, fields, tags));
 
             return this;
         }
 
-        public LineProtocolPayload Payload()
-        {
-            return _payload;
-        }
+        public LineProtocolPayload Payload() { return _payload; }
 
         public string PayloadFormatted()
         {

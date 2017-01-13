@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System;
 using System.Collections.Generic;
@@ -19,24 +18,30 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
     {
         private readonly ILineProtocolClient _lineProtocolClient;
         private readonly ILogger<InfluxDbReporter> _logger;
-        private readonly ILineProtocolPayloadBuilder _payloadBuilder;
         private readonly Func<string, string, string> _metricNameFormatter;
+        private readonly ILineProtocolPayloadBuilder _payloadBuilder;
         private bool _disposed;
 
-        public InfluxDbReporter(ILineProtocolClient lineProtocolClient,
+        public InfluxDbReporter(
+            ILineProtocolClient lineProtocolClient,
             ILineProtocolPayloadBuilder payloadBuilder,
             TimeSpan reportInterval,
             ILoggerFactory loggerFactory,
             Func<string, string, string> metricNameFormatter)
-            : this(lineProtocolClient, payloadBuilder, reportInterval, typeof(InfluxDbReporter).Name,
-                loggerFactory, metricNameFormatter)
-        {
-        }
+            : this(
+                lineProtocolClient,
+                payloadBuilder,
+                reportInterval,
+                typeof(InfluxDbReporter).Name,
+                loggerFactory,
+                metricNameFormatter) { }
 
-        public InfluxDbReporter(ILineProtocolClient lineProtocolClient,
+        public InfluxDbReporter(
+            ILineProtocolClient lineProtocolClient,
             ILineProtocolPayloadBuilder payloadBuilder,
             TimeSpan reportInterval,
-            string name, ILoggerFactory loggerFactory,
+            string name,
+            ILoggerFactory loggerFactory,
             Func<string, string, string> metricNameFormatter)
         {
             ReportInterval = reportInterval;
@@ -85,11 +90,10 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
             return result.Success;
         }
 
-        public void ReportEnvironment(EnvironmentInfo environmentInfo)
-        {
-        }
+        public void ReportEnvironment(EnvironmentInfo environmentInfo) { }
 
-        public void ReportHealth(GlobalMetricTags globalTags,
+        public void ReportHealth(
+            GlobalMetricTags globalTags,
             IEnumerable<HealthCheck.Result> healthyChecks,
             IEnumerable<HealthCheck.Result> degradedChecks,
             IEnumerable<HealthCheck.Result> unhealthyChecks)
@@ -231,8 +235,11 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
                     var keys = data.Keys.ToList();
                     var values = keys.Select(k => data[k]);
 
-                    _payloadBuilder.Pack(_metricNameFormatter(name, valueSource.Name + "  items"),
-                        keys, values, item.Tags);
+                    _payloadBuilder.Pack(
+                        _metricNameFormatter(name, valueSource.Name + "  items"),
+                        keys,
+                        values,
+                        item.Tags);
                 }
             }
 

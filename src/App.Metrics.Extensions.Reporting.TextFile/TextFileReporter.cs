@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System;
 using System.Collections.Generic;
@@ -28,9 +27,20 @@ namespace App.Metrics.Extensions.Reporting.TextFile
 
         public TextFileReporter(string name, string file, TimeSpan interval, ILoggerFactory loggerFactory)
         {
-            if (name == null) throw new ArgumentNullException(nameof(name));
-            if (file == null) throw new ArgumentNullException(nameof(file));
-            if (loggerFactory == null) throw new ArgumentNullException(nameof(loggerFactory));
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            if (file == null)
+            {
+                throw new ArgumentNullException(nameof(file));
+            }
+
+            if (loggerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(loggerFactory));
+            }
 
             _file = file;
             _logger = loggerFactory.CreateLogger<TextFileReporter>();
@@ -79,12 +89,10 @@ namespace App.Metrics.Extensions.Reporting.TextFile
             return true;
         }
 
-        public void ReportEnvironment(EnvironmentInfo environmentInfo)
-        {
-            _stringReporter.ReportEnvironment(environmentInfo);
-        }
+        public void ReportEnvironment(EnvironmentInfo environmentInfo) { _stringReporter.ReportEnvironment(environmentInfo); }
 
-        public void ReportHealth(GlobalMetricTags globalMetrics,
+        public void ReportHealth(
+            GlobalMetricTags globalMetrics,
             IEnumerable<HealthCheck.Result> healthyChecks,
             IEnumerable<HealthCheck.Result> degradedChecks,
             IEnumerable<HealthCheck.Result> unhealthyChecks)

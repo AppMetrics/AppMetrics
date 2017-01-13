@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using App.Metrics.Reporting.Interfaces;
 
@@ -8,8 +7,10 @@ namespace App.Metrics.Extensions.Reporting.TextFile
 {
     public static class TextFileReporterExtensions
     {
-        public static IReportFactory AddTextFile(this IReportFactory factory,
-            TextFileReporterSettings settings, IMetricsFilter filter = null)
+        public static IReportFactory AddTextFile(
+            this IReportFactory factory,
+            TextFileReporterSettings settings,
+            IMetricsFilter filter = null)
         {
             factory.AddProvider(new TextFileReporterProvider(settings, filter));
             return factory;

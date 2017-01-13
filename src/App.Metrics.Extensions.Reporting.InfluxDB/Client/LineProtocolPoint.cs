@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -17,11 +16,12 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
             IReadOnlyDictionary<string, object> fields,
             MetricTags tags = null,
             DateTime? utcTimestamp = null)
-        {            
+        {
             if (string.IsNullOrEmpty(measurement))
             {
                 throw new ArgumentException("A measurement name must be specified");
             }
+
             if (fields == null || fields.Count == 0)
             {
                 throw new ArgumentException("At least one field must be specified");
@@ -61,7 +61,10 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
 
         public void Format(TextWriter textWriter)
         {
-            if (textWriter == null) throw new ArgumentNullException(nameof(textWriter));
+            if (textWriter == null)
+            {
+                throw new ArgumentNullException(nameof(textWriter));
+            }
 
             textWriter.Write(LineProtocolSyntax.EscapeName(Measurement));
 

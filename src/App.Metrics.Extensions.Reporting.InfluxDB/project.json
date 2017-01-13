@@ -1,5 +1,5 @@
 {
-  "authors": [ "Allan Hardy" ],
+  "authors": ["Allan Hardy"],
 
   "buildOptions": {
     "warningsAsErrors": true,
@@ -7,7 +7,8 @@
       "CS1591"
     ],
     "xmlDoc": true,
-    "debugType": "full"
+    "debugType": "full",
+    "additionalArguments": ["/ruleset:../../ruleset.ruleset", "/additionalfile:../../stylecop.json"]
   },
   "copyright": "Allan Hardy 2016",
 
@@ -21,7 +22,11 @@
     "Microsoft.Extensions.PlatformAbstractions": "1.1.0",
     "NETStandard.Library": "1.6.1",
     "Microsoft.DotNet.InternalAbstractions": "1.0.500-preview2-1-003177",
-    "Polly": "4.3.0"
+    "Polly": "4.3.0",
+    "StyleCop.Analyzers": {
+      "version": "1.0.0",
+      "type": "build"
+    }
   },
   "description": "Provides InfluxDB reporting capability to App Metrics",
 
@@ -44,6 +49,7 @@
         ]
       },
       "dependencies": {
+      
       },
       "frameworkAssemblies": {
         "System.Reflection": "4.0.0.0"
@@ -53,7 +59,7 @@
   },
 
   "packOptions": {
-    "tags": [ "Metrics", "Monitoring", "Instrumentation", "Reporting", "InfluxDB" ],
+    "tags": ["Metrics", "Monitoring", "Instrumentation", "Reporting", "InfluxDB"],
     "projectUrl": "https://alhardy.github.io/app-metrics-docs/getting-started/reporting/index.html#influxdb-reporter",
     "licenseUrl": "https://github.com/alhardy/AppMetrics/blob/master/LICENSE",
     "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png",

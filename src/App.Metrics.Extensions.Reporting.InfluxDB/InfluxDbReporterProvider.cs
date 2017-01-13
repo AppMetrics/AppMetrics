@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System;
 using App.Metrics.Extensions.Reporting.InfluxDB.Client;
@@ -40,12 +39,19 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
 
         public IMetricReporter CreateMetricReporter(string name, ILoggerFactory loggerFactory)
         {
-            var lineProtocolClient = new DefaultLineProtocolClient(loggerFactory,
-                _settings.InfluxDbSettings, _settings.HttpPolicy);
+            var lineProtocolClient = new DefaultLineProtocolClient(
+                loggerFactory,
+                _settings.InfluxDbSettings,
+                _settings.HttpPolicy);
             var payloadBuilder = new LineProtocolPayloadBuilder();
 
-            return new InfluxDbReporter(lineProtocolClient, payloadBuilder,
-                _settings.ReportInterval, name, loggerFactory, _settings.MetricNameFormatter);
+            return new InfluxDbReporter(
+                lineProtocolClient,
+                payloadBuilder,
+                _settings.ReportInterval,
+                name,
+                loggerFactory,
+                _settings.MetricNameFormatter);
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using System.IO;
 using System.Net.Http;
@@ -21,20 +20,22 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
         private readonly ILogger<DefaultLineProtocolClient> _logger;
         private readonly Policy _policy;
 
-
         public DefaultLineProtocolClient(ILoggerFactory loggerFactory, InfluxDBSettings influxDbSettings)
-            : this(loggerFactory, influxDbSettings,
+            : this(
+                loggerFactory,
+                influxDbSettings,
                 new HttpPolicy
                 {
                     FailuresBeforeBackoff = Constants.DefaultFailuresBeforeBackoff,
                     BackoffPeriod = Constants.DefaultBackoffPeriod,
                     Timeout = Constants.DefaultTimeout
-                })
-        {
-        }
+                }) { }
 
-        public DefaultLineProtocolClient(ILoggerFactory loggerFactory, InfluxDBSettings influxDbSettings,
-            HttpPolicy httpPolicy, HttpMessageHandler httpMessageHandler = null)
+        public DefaultLineProtocolClient(
+            ILoggerFactory loggerFactory,
+            InfluxDBSettings influxDbSettings,
+            HttpPolicy httpPolicy,
+            HttpMessageHandler httpMessageHandler = null)
         {
             if (influxDbSettings == null)
             {
@@ -52,21 +53,24 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
             _logger = loggerFactory.CreateLogger<DefaultLineProtocolClient>();
         }
 
-        public async Task<LineProtocolWriteResult> WriteAsync(LineProtocolPayload payload,
+        public async Task<LineProtocolWriteResult> WriteAsync(
+            LineProtocolPayload payload,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            var result = await _policy.ExecuteAndCaptureAsync(async () =>
-            {
-                var payloadText = new StringWriter();
-                payload.Format(payloadText);
+            var result = await _policy.ExecuteAndCaptureAsync(
+                async () =>
+                {
+                    var payloadText = new StringWriter();
+                    payload.Format(payloadText);
 
-                var content = new StringContent(payloadText.ToString(), Encoding.UTF8);
-                var response = await _httpClient.PostAsync(_influxDbSettings.Endpoint, content, cancellationToken).ConfigureAwait(false);
+                    var content = new StringContent(payloadText.ToString(), Encoding.UTF8);
+                    var response = await _httpClient.PostAsync(_influxDbSettings.Endpoint, content, cancellationToken).ConfigureAwait(false);
 
-                response.EnsureSuccessStatusCode();
+                    response.EnsureSuccessStatusCode();
 
-                return new LineProtocolWriteResult(true, null);                
-            }, cancellationToken);
+                    return new LineProtocolWriteResult(true, null);
+                },
+                cancellationToken);
 
             if (result.Outcome == OutcomeType.Failure)
             {
@@ -80,7 +84,9 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
             return result.Result;
         }
 
-        private static HttpClient CreateHttpClient(InfluxDBSettings influxDbSettings, HttpPolicy httpPolicy,
+        private static HttpClient CreateHttpClient(
+            InfluxDBSettings influxDbSettings,
+            HttpPolicy httpPolicy,
             HttpMessageHandler httpMessageHandler = null)
         {
             var client = httpMessageHandler == null

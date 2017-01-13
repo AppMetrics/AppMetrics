@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System;
 using System.Collections.Generic;
@@ -18,9 +17,10 @@ namespace App.Metrics.Extensions.Reporting.Console
 {
     public class ConsoleReporter : IMetricReporter
     {
-        private readonly ILogger<ConsoleReporter> _logger;
         private static readonly string GlobalName =
             $@"{CleanName(Environment.MachineName)}.{CleanName(Process.GetCurrentProcess().ProcessName)}";
+
+        private readonly ILogger<ConsoleReporter> _logger;
 
         public ConsoleReporter(TimeSpan reportInterval, ILoggerFactory loggerFactory)
             : this(typeof(ConsoleReporter).Name, reportInterval, loggerFactory)
@@ -29,8 +29,15 @@ namespace App.Metrics.Extensions.Reporting.Console
 
         public ConsoleReporter(string name, TimeSpan reportInterval, ILoggerFactory loggerFactory)
         {
-            if (name == null) throw new ArgumentNullException(nameof(name));
-            if (loggerFactory == null) throw new ArgumentNullException(nameof(loggerFactory));
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            if (loggerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(loggerFactory));
+            }
 
             Name = name;
             ReportInterval = reportInterval;
@@ -42,24 +49,23 @@ namespace App.Metrics.Extensions.Reporting.Console
 
         public TimeSpan ReportInterval { get; }
 
-        public void Dispose()
-        {
-            _logger.LogDebug("Console Reporter Disposed");
-        }
-
-        public void EndMetricTypeReport(Type metricType)
-        {
-        }
+        public void Dispose() { _logger.LogDebug("Console Reporter Disposed"); }
 
         public Task<bool> EndAndFlushReportRunAsync(IMetrics metrics)
         {
             _logger.LogDebug("Ending Console Report Run");
 
-            WriteLine(string.Format(Environment.NewLine + "-- End {0} Report: {1} - {2} --" + Environment.NewLine,
-                Name, GlobalName, metrics.Advanced.Clock.FormatTimestamp(metrics.Advanced.Clock.UtcDateTime)));
+            WriteLine(
+                string.Format(
+                    Environment.NewLine + "-- End {0} Report: {1} - {2} --" + Environment.NewLine,
+                    Name,
+                    GlobalName,
+                    metrics.Advanced.Clock.FormatTimestamp(metrics.Advanced.Clock.UtcDateTime)));
 
             return AppMetricsTaskCache.SuccessTask;
         }
+
+        public void EndMetricTypeReport(Type metricType) { }
 
         public void ReportEnvironment(EnvironmentInfo environmentInfo)
         {
@@ -68,9 +74,10 @@ namespace App.Metrics.Extensions.Reporting.Console
             WriteLine(typeof(EnvironmentInfo).HumanzeEndMetricType());
         }
 
-        public void ReportHealth(GlobalMetricTags globalTags,
-            IEnumerable<HealthCheck.Result> healthyChecks, 
-            IEnumerable<HealthCheck.Result> degradedChecks, 
+        public void ReportHealth(
+            GlobalMetricTags globalTags,
+            IEnumerable<HealthCheck.Result> healthyChecks,
+            IEnumerable<HealthCheck.Result> degradedChecks,
             IEnumerable<HealthCheck.Result> unhealthyChecks)
         {
             WriteLine(typeof(HealthStatus).HumanzeStartMetricType());
@@ -93,7 +100,6 @@ namespace App.Metrics.Extensions.Reporting.Console
             {
                 status = "Unhealthy";
             }
-
 
             WriteLine(string.Format(Environment.NewLine + $"\tHealth Status = {status}" + Environment.NewLine));
 
@@ -128,18 +134,16 @@ namespace App.Metrics.Extensions.Reporting.Console
         {
             _logger.LogDebug("Starting Console Report Run");
 
-            WriteLine(string.Format(Environment.NewLine + "-- Start {0} Report: {1} - {2} --" + Environment.NewLine,
-                Name, GlobalName, metrics.Advanced.Clock.FormatTimestamp(metrics.Advanced.Clock.UtcDateTime)));
+            WriteLine(
+                string.Format(
+                    Environment.NewLine + "-- Start {0} Report: {1} - {2} --" + Environment.NewLine,
+                    Name,
+                    GlobalName,
+                    metrics.Advanced.Clock.FormatTimestamp(metrics.Advanced.Clock.UtcDateTime)));
         }
 
-        public void WriteLine(string message)
-        {
-            System.Console.WriteLine(message);
-        }
+        public void WriteLine(string message) { System.Console.WriteLine(message); }
 
-        private static string CleanName(string name)
-        {
-            return name.Replace('.', '_');
-        }
+        private static string CleanName(string name) { return name.Replace('.', '_'); }
     }
 }

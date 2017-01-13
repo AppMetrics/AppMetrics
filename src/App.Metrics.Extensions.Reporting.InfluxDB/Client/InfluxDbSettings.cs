@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System;
 
@@ -8,14 +7,14 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
 {
     // ReSharper disable InconsistentNaming
     public class InfluxDBSettings
-    // ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
     {
         public InfluxDBSettings(string database, Uri baseAddress)
         {
             if (database == null)
             {
-                throw new ArgumentNullException(nameof(database));    
-            }            
+                throw new ArgumentNullException(nameof(database));
+            }
 
             if (database.IsMissing())
             {
@@ -31,10 +30,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
             BaseAddress = baseAddress;
         }
 
-        internal InfluxDBSettings()
-        {
-            
-        }
+        internal InfluxDBSettings() { }
 
         /// <summary>
         ///     Gets or sets the InfluxDB host.
@@ -53,7 +49,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
         public string Consistenency { get; set; }
 
         /// <summary>
-        ///     The InfluxDB database name where metrics will be persisted
+        ///     Gets or Sets the InfluxDB database name where metrics will be persisted
         /// </summary>
         /// <value>
         ///     The InfluxDB database name.
