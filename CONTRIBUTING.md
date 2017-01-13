@@ -4,7 +4,7 @@ Thanks for taking the time to contribute to App Metrics :+1:
 
 ### **Coding Style**
 
-Coding style is enforced using StyleCop. The automate the clean up of most rules, the solution includes a [Resharper DotSettings](https://github.com/alhardy/AppMetrics/blob/master/appmetrics.DotSettings) file which allows a clode clean up to be applied across the solution.
+Coding style is enforced using StyleCop. The automate the clean up of most rules, the solution includes a [Resharper DotSettings](appmetrics.DotSettings) file which allows a clode clean up to be applied across the solution.
 
 ### **Have you found a bug?**
 
