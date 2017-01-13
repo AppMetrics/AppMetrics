@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-//Written by Iulian Margarintescu and will retain the same license as the Java Version
-//Original .NET Source by Iulian Margarintescu: https://github.com/etishor/ConcurrencyUtilities/blob/master/Src/ConcurrencyUtilities/AtomicIntArray.cs
-//Ported to a .NET Standard Project by Allan Hardy as the owner Iulian Margarintescu is unreachable and the source and packages are no longer maintained
+// Written by Iulian Margarintescu and will retain the same license as the Java Version
+// Original .NET Source by Iulian Margarintescu: https://github.com/etishor/ConcurrencyUtilities/blob/master/Src/ConcurrencyUtilities/AtomicIntArray.cs
+// Ported to a .NET Standard Project by Allan Hardy as the owner Iulian Margarintescu is unreachable and the source and packages are no longer maintained
 
 using System;
 using System.Collections.Generic;
@@ -25,6 +25,7 @@ namespace App.Metrics.Concurrency
             {
                 throw new ArgumentException("Length must be positive", nameof(length));
             }
+
             _array = new int[length];
         }
 
@@ -35,12 +36,16 @@ namespace App.Metrics.Concurrency
             {
                 clone[i] = source[i];
             }
+
             _array = clone;
         }
 
         /// <summary>
-        ///     The length of the underlying array
+        ///     Gets the length of the underlying array
         /// </summary>
+        /// <value>
+        ///     The length.
+        /// </value>
         public int Length => _array.Length;
 
         /// <summary>
@@ -50,7 +55,9 @@ namespace App.Metrics.Concurrency
         /// <returns>The size of the instance in bytes.</returns>
         public static int GetEstimatedFootprintInBytes(AtomicIntArray instance)
         {
-            return instance.Length * sizeof(int) + 16 + IntPtr.Size; // array reference & overhead
+            // ReSharper disable ArrangeRedundantParentheses SA1407
+            return (instance.Length * sizeof(int)) + 16 + IntPtr.Size; // array reference & overhead
+            // ReSharper restore ArrangeRedundantParentheses
         }
 
         /// <summary>

@@ -10,15 +10,11 @@ namespace App.Metrics
     /// </summary>
     public interface ICounter : IResetableMetric
     {
-        /// <summary>
-        ///     Decrement the counter value.
-        /// </summary>
         void Decrement();
 
         /// <summary>
-        ///     Decrement the counter value for an item from a set.
-        ///     The counter value is decremented but the counter will also keep track and decrement another counter associated with
-        ///     the <paramref name="item" />.
+        ///     Decrement the counter value for an item from a set. The counter value is decremented but the counter will also keep
+        ///     track and decrement another counter associated with the <paramref name="item" />.
         ///     The counter value will contain the total count and for each item the specific count and percentage of total count.
         /// </summary>
         /// <param name="item">Item from the set for which to increment the counter value.</param>

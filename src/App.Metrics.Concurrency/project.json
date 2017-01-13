@@ -7,7 +7,8 @@
       "CS1570"
     ],
     "xmlDoc": true,
-    "debugType": "full"
+    "debugType": "full",
+    "additionalArguments": [ "/ruleset:../../ruleset.ruleset", "/additionalfile:../../stylecop.json" ]
   },
   "copyright": "Allan Hardy 2016",
   "description": "Provides useful structures for performing efficient concurrent operations. Original Project: https://github.com/etishor/ConcurrencyUtilities, including a port of Java's LongAdder and Striped64 classes",
@@ -19,7 +20,11 @@
       ],
       "dependencies": {
         "NETStandard.Library": "1.6.1",
-        "System.Threading.Thread": "4.3.0"
+        "System.Threading.Thread": "4.3.0",
+        "StyleCop.Analyzers": {
+          "version": "1.0.0",
+          "type": "build"
+        }
       }
     },
     "net45": {

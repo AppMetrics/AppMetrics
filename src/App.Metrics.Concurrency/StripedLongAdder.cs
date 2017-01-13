@@ -1,15 +1,13 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 // Striped64 & LongAdder classes were ported from Java and had this copyright:
-// Written by Doug Lea with assistance from members of JCP JSR-166 
-// Expert Group and released to the public domain, as explained at http://creativecommons.org/publicdomain/zero/1.0/
+// Written by Doug Lea with assistance from members of JCP JSR-166 Expert Group and released to the public domain, as explained at http://creativecommons.org/publicdomain/zero/1.0/
 
 // Source: http://gee.cs.oswego.edu/cgi-bin/viewcvs.cgi/jsr166/src/jsr166e/Striped64.java?revision=1.8
 
 // This class was been ported to .NET by Iulian Margarintescu and will retain the same license as the Java Version
-// Original .NET Source by Iulian Margarintescu: 
-// https://github.com/etishor/ConcurrencyUtilities/blob/master/Src/ConcurrencyUtilities/StripedLongAdder.cs
+// Original .NET Source by Iulian Margarintescu: https://github.com/etishor/ConcurrencyUtilities/blob/master/Src/ConcurrencyUtilities/StripedLongAdder.cs
 
 // Ported to a .NET Standard Project by Allan Hardy as the owner Iulian Margarintescu is unreachable and the
 // source and packages are no longer maintained
@@ -36,29 +34,25 @@ namespace App.Metrics.Concurrency
     public sealed class StripedLongAdder : Striped64, IValueAdder<long>
     {
         /// <summary>
-        ///     Creates a new instance of the adder with initial value of zero.
+        ///     Initializes a new instance of the <see cref="StripedLongAdder" /> class.
         /// </summary>
-        public StripedLongAdder()
-        {
-        }
+        public StripedLongAdder() { }
 
         /// <summary>
-        ///     Creates a new instance of the adder with initial <paramref name="value" />.
+        ///     Initializes a new instance of the <see cref="StripedLongAdder" /> class.
         /// </summary>
-        public StripedLongAdder(long value)
-        {
-            Add(value);
-        }
+        /// <param name="value">The initial value of the instance.</param>
+        /// <remarks>
+        ///     Creates a new instance of the adder with initial <paramref name="value" />.
+        /// </remarks>
+        public StripedLongAdder(long value) { Add(value); }
 
         /// <summary>
         ///     Returns the size in bytes occupied by an Striped64 instance.
         /// </summary>
         /// <param name="instance">instance for whch to calculate the size.</param>
         /// <returns>The size of the instance in bytes.</returns>
-        public static int GetEstimatedFootprintInBytes(StripedLongAdder instance)
-        {
-            return Striped64.GetEstimatedFootprintInBytes(instance);
-        }
+        public static int GetEstimatedFootprintInBytes(StripedLongAdder instance) { return Striped64.GetEstimatedFootprintInBytes(instance); }
 
         /// <summary>
         ///     Add <paramref name="value" /> to this instance.
@@ -84,18 +78,13 @@ namespace App.Metrics.Concurrency
         /// <summary>
         ///     Decrement the value of this instance.
         /// </summary>
-        public void Decrement()
-        {
-            Add(-1L);
-        }
+        public void Decrement() { Add(-1L); }
 
         /// <summary>
         ///     Decrement the value of this instance with <paramref name="value" />.
         /// </summary>
-        public void Decrement(long value)
-        {
-            Add(-value);
-        }
+        /// <param name="value">The value.</param>
+        public void Decrement(long value) { Add(-value); }
 
         /// <summary>
         ///     Returns the current value of this adder and resets the value to zero.
@@ -121,6 +110,7 @@ namespace App.Metrics.Concurrency
                     }
                 }
             }
+
             return sum;
         }
 
@@ -138,27 +128,25 @@ namespace App.Metrics.Concurrency
                 for (var i = 0; i < @as.Length; ++i)
                 {
                     if ((a = @as[i]) != null)
+                    {
                         sum += a.Value.GetValue();
+                    }
                 }
             }
+
             return sum;
         }
 
         /// <summary>
         ///     Increment the value of this instance.
         /// </summary>
-        public void Increment()
-        {
-            Add(1L);
-        }
+        public void Increment() { Add(1L); }
 
         /// <summary>
         ///     Increment the value of this instance with <paramref name="value" />.
         /// </summary>
-        public void Increment(long value)
-        {
-            Add(value);
-        }
+        /// <param name="value">The value.</param>
+        public void Increment(long value) { Add(value); }
 
         /// <summary>
         ///     Returns the current value of the instance without using Volatile.Read fence and ordering.
@@ -174,9 +162,12 @@ namespace App.Metrics.Concurrency
                 for (var i = 0; i < @as.Length; ++i)
                 {
                     if ((a = @as[i]) != null)
+                    {
                         sum += a.Value.NonVolatileGetValue();
+                    }
                 }
             }
+
             return sum;
         }
 
