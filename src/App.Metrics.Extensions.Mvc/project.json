@@ -35,7 +35,6 @@
     "net461": {}
   },
   "packOptions": {
-    "releaseNotes": "Initial Release",
     "tags": [
       "mvc",
       "measurements",
