@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
+using System;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System;
 
 namespace App.Metrics.Extensions.Middleware.Middleware
 {
@@ -15,7 +14,8 @@ namespace App.Metrics.Extensions.Middleware.Middleware
     /// </summary>
     public class OAuth2ClientWebRequestMeterMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
-        public OAuth2ClientWebRequestMeterMiddleware(RequestDelegate next,
+        public OAuth2ClientWebRequestMeterMiddleware(
+            RequestDelegate next,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics)

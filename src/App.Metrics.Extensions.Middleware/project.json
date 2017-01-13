@@ -1,12 +1,13 @@
 {
-  "authors": [ "Allan Hardy" ],
+  "authors": ["Allan Hardy"],
   "buildOptions": {
     "warningsAsErrors": true,
     "nowarn": [
       "CS1591"
     ],
     "xmlDoc": true,
-    "debugType": "full"
+    "debugType": "full",
+    "additionalArguments": ["/ruleset:../../ruleset.ruleset", "/additionalfile:../../stylecop.json"]
   },
   "copyright": "Allan Hardy 2016",
 
@@ -18,9 +19,14 @@
     "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
     "Microsoft.Extensions.Logging": "1.1.0",
     "Microsoft.Extensions.PlatformAbstractions": "1.1.0",
-    "NETStandard.Library": "1.6.1"
+    "NETStandard.Library": "1.6.1",
+    "StyleCop.Analyzers": {
+      "version": "1.0.0",
+      "type": "build"
+    }
   },
-  "description": "Extends the App.Metrics library providing a set AspNet Core Middleware Components which will record things like error rates per endpoint and an overall rate, request rates per endpoint and an overall rate etc.",
+  "description":
+    "Extends the App.Metrics library providing a set AspNet Core Middleware Components which will record things like error rates per endpoint and an overall rate, request rates per endpoint and an overall rate etc.",
   "frameworks": {
     "netstandard1.6": {
       "imports": [

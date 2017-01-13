@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using System.Threading.Tasks;
 using App.Metrics.Core.Interfaces;
@@ -17,14 +16,15 @@ namespace App.Metrics.Extensions.Middleware.Middleware
         private const string ApdexItemsKey = "__App.Mertics.Apdex__";
         private readonly IApdex _apdexTracking;
 
-        public ApdexMiddleware(RequestDelegate next,
+        public ApdexMiddleware(
+            RequestDelegate next,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics)
             : base(next, aspNetOptions, loggerFactory, metrics)
         {
             _apdexTracking = Metrics.Advanced
-                .Track(AspNetMetricsRegistry.Contexts.HttpRequests.ApdexScores.Apdex(aspNetOptions.ApdexTSeconds));
+                                    .Track(AspNetMetricsRegistry.Contexts.HttpRequests.ApdexScores.Apdex(aspNetOptions.ApdexTSeconds));
         }
 
         public async Task Invoke(HttpContext context)
@@ -38,9 +38,11 @@ namespace App.Metrics.Extensions.Middleware.Middleware
                 await Next(context);
 
                 var apdex = context.Items[ApdexItemsKey];
+
                 using (apdex as IDisposable)
                 {
                 }
+
                 context.Items.Remove(ApdexItemsKey);
 
                 Logger.MiddlewareExecuted(GetType());

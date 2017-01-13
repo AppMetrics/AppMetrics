@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Routing.Template;
@@ -15,7 +14,7 @@ namespace Microsoft.AspNetCore.Routing
         public Task<string> ResolveMatchingTemplateRouteAsync(RouteData routeData)
         {
             var templateRoute = routeData.Routers
-                    .FirstOrDefault(r => r.GetType().Name == "Route")
+                                         .FirstOrDefault(r => r.GetType().Name == "Route")
                 as Route;
 
             if (templateRoute == null)

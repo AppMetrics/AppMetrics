@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System;
 using System.Threading.Tasks;
@@ -16,14 +15,15 @@ namespace App.Metrics.Extensions.Middleware.Middleware
         private const string TimerItemsKey = "__App.Mertics.RequestTimer__";
         private readonly ITimer _requestTimer;
 
-        public RequestTimerMiddleware(RequestDelegate next,
+        public RequestTimerMiddleware(
+            RequestDelegate next,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics)
             : base(next, aspNetOptions, loggerFactory, metrics)
         {
             _requestTimer = Metrics.Advanced
-                .Timer(AspNetMetricsRegistry.Contexts.HttpRequests.Timers.WebRequestTimer);
+                                   .Timer(AspNetMetricsRegistry.Contexts.HttpRequests.Timers.WebRequestTimer);
         }
 
         public async Task Invoke(HttpContext context)
@@ -37,9 +37,11 @@ namespace App.Metrics.Extensions.Middleware.Middleware
                 await Next(context);
 
                 var timer = context.Items[TimerItemsKey];
+
                 using (timer as IDisposable)
                 {
                 }
+
                 context.Items.Remove(TimerItemsKey);
 
                 Logger.MiddlewareExecuted(GetType());

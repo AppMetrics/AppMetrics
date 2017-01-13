@@ -1,18 +1,18 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
+using System;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
-using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
-using System;
+using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Extensions.Middleware.Middleware
 {
     public class PingEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
-        public PingEndpointMiddleware(RequestDelegate next,
+        public PingEndpointMiddleware(
+            RequestDelegate next,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics)

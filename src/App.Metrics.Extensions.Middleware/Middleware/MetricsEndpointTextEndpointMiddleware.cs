@@ -1,14 +1,13 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
+using System;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
-using Microsoft.AspNetCore.Http;
 using App.Metrics.Reporting;
-using Microsoft.Extensions.Logging;
 using App.Metrics.Reporting.Internal;
-using System;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Extensions.Middleware.Middleware
 {
@@ -16,7 +15,8 @@ namespace App.Metrics.Extensions.Middleware.Middleware
     {
         private readonly DefaultReportGenerator _reportGenerator;
 
-        public MetricsEndpointTextEndpointMiddleware(RequestDelegate next,
+        public MetricsEndpointTextEndpointMiddleware(
+            RequestDelegate next,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics)

@@ -1,13 +1,12 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
+using App.Metrics.Serialization.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using App.Metrics.Serialization.Interfaces;
 
 namespace App.Metrics.Extensions.Middleware.Middleware
 {
@@ -17,7 +16,8 @@ namespace App.Metrics.Extensions.Middleware.Middleware
         private readonly RequestDelegate _next;
         private readonly IMetricDataSerializer _serializer;
 
-        public MetricsEndpointMiddleware(RequestDelegate next,
+        public MetricsEndpointMiddleware(
+            RequestDelegate next,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics,
@@ -28,6 +28,7 @@ namespace App.Metrics.Extensions.Middleware.Middleware
             {
                 throw new ArgumentNullException(nameof(next));
             }
+
             if (serializer == null)
             {
                 throw new ArgumentNullException(nameof(serializer));

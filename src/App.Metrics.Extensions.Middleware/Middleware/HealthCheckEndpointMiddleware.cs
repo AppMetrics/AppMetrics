@@ -1,14 +1,14 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
+using System.Net;
 using System.Threading.Tasks;
+using App.Metrics.Core;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
+using App.Metrics.Internal;
 using App.Metrics.Serialization.Interfaces;
 using Microsoft.AspNetCore.Http;
-using System.Net;
-using App.Metrics.Core;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Extensions.Middleware.Middleware
@@ -17,7 +17,8 @@ namespace App.Metrics.Extensions.Middleware.Middleware
     {
         private readonly IHealthStatusSerializer _serializer;
 
-        public HealthCheckEndpointMiddleware(RequestDelegate next,
+        public HealthCheckEndpointMiddleware(
+            RequestDelegate next,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics,
@@ -53,7 +54,7 @@ namespace App.Metrics.Extensions.Middleware.Middleware
                 if (healthStatus.Status.IsDegraded())
                 {
                     responseStatusCode = HttpStatusCode.OK;
-                    warning = App.Metrics.Internal.Constants.Health.DegradedStatusDisplay;
+                    warning = Constants.Health.DegradedStatusDisplay;
                 }
 
                 var json = _serializer.Serialize(healthStatus);

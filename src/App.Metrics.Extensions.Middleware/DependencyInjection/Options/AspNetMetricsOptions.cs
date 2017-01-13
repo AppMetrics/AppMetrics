@@ -1,10 +1,9 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
+using System;
 using System.Collections.Generic;
 using App.Metrics.Extensions.Middleware.Internal;
-using System;
 
 namespace App.Metrics.Extensions.Middleware.DependencyInjection.Options
 {
@@ -21,6 +20,10 @@ namespace App.Metrics.Extensions.Middleware.DependencyInjection.Options
             ApdexTSeconds = Metrics.Internal.Constants.ReservoirSampling.DefaultApdexTSeconds;
         }
 
+        public bool ApdexTrackingEnabled { get; set; }
+
+        public double ApdexTSeconds { get; set; }
+
         public string HealthEndpoint { get; set; } = Constants.DefaultRoutePaths.HealthEndpoint.EnsureLeadingSlash();
 
         public bool HealthEndpointEnabled { get; set; }
@@ -36,10 +39,6 @@ namespace App.Metrics.Extensions.Middleware.DependencyInjection.Options
         public bool MetricsTextEndpointEnabled { get; set; }
 
         public bool OAuth2TrackingEnabled { get; set; }
-
-        public bool ApdexTrackingEnabled { get; set; }
-
-        public double ApdexTSeconds { get; set; }
 
         public string PingEndpoint { get; set; } = Constants.DefaultRoutePaths.PingEndpoint.EnsureLeadingSlash();
 

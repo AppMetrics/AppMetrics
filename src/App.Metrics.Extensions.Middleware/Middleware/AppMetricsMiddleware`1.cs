@@ -1,24 +1,25 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
-using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http;
-using System.Linq;
 using Microsoft.Extensions.Logging;
-using System.Net;
 
 namespace App.Metrics.Extensions.Middleware.Middleware
 {
-    public abstract class AppMetricsMiddleware<TOptions> where TOptions : AspNetMetricsOptions, new()
+    public abstract class AppMetricsMiddleware<TOptions>
+        where TOptions : AspNetMetricsOptions, new()
     {
         private readonly Func<PathString, bool> _shouldRecordMetric;
 
-        protected AppMetricsMiddleware(RequestDelegate next,
+        protected AppMetricsMiddleware(
+            RequestDelegate next,
             TOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics)
@@ -50,12 +51,14 @@ namespace App.Metrics.Extensions.Middleware.Middleware
             Next = next;
 
             IReadOnlyList<Regex> ignoredRoutes = Options.IgnoredRoutesRegexPatterns
-                .Select(p => new Regex(p, RegexOptions.Compiled | RegexOptions.IgnoreCase)).ToList();
+                                                        .Select(p => new Regex(p, RegexOptions.Compiled | RegexOptions.IgnoreCase)).ToList();
 
             if (ignoredRoutes.Any())
             {
-                _shouldRecordMetric = path => !ignoredRoutes.Any(ignorePattern => ignorePattern.IsMatch(path.ToString()
-                    .RemoveLeadingSlash()));
+                _shouldRecordMetric = path => !ignoredRoutes.Any(
+                    ignorePattern => ignorePattern.IsMatch(
+                        path.ToString()
+                            .RemoveLeadingSlash()));
             }
             else
             {
@@ -86,8 +89,12 @@ namespace App.Metrics.Extensions.Middleware.Middleware
             return _shouldRecordMetric(context.Request.Path);
         }
 
-        protected Task WriteResponseAsync(HttpContext context, string content, string contentType,
-            HttpStatusCode code = HttpStatusCode.OK, string warning = null)
+        protected Task WriteResponseAsync(
+            HttpContext context,
+            string content,
+            string contentType,
+            HttpStatusCode code = HttpStatusCode.OK,
+            string warning = null)
         {
             context.Response.Headers["Content-Type"] = new[] { contentType };
             context.Response.Headers["Cache-Control"] = new[] { "no-cache, no-store, must-revalidate" };

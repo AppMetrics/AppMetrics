@@ -1,18 +1,18 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
+using System.Linq;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
-using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
-using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Extensions.Middleware.Middleware
 {
     public class PostAndPutRequestSizeHistogramMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
-        public PostAndPutRequestSizeHistogramMiddleware(RequestDelegate next,
+        public PostAndPutRequestSizeHistogramMiddleware(
+            RequestDelegate next,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics)
