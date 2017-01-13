@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System.Collections.Generic;
 
 namespace App.Metrics.Sampling.HdrHistogram
@@ -15,7 +14,7 @@ namespace App.Metrics.Sampling.HdrHistogram
         ///     <seealso cref="RecordedValuesIterator" />
         /// </summary>
         /// <param name="histogram">The histogram on which to iterate.</param>
-        /// <returns></returns>
+        /// <returns>Enumerable histogram iteration values</returns>
         public static IEnumerable<HistogramIterationValue> RecordedValues(this AbstractHistogram histogram)
         {
             return IterateOver(new RecordedValuesIterator(histogram));

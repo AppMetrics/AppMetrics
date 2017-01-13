@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
+#pragma warning disable SA1515
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
+#pragma warning restore SA1515
 
 using App.Metrics.Concurrency;
 using App.Metrics.Sampling.HdrHistogram;
@@ -43,9 +44,7 @@ namespace App.Metrics.Sampling
         ///     Initializes a new instance of the <see cref="HdrHistogramReservoir" /> class.
         /// </summary>
         public HdrHistogramReservoir()
-            : this(new Recorder(2))
-        {
-        }
+            : this(new Recorder(2)) { }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="HdrHistogramReservoir" /> class.
@@ -65,12 +64,18 @@ namespace App.Metrics.Sampling
         /// <inheritdoc cref="IReservoir" />
         public ISnapshot GetSnapshot(bool resetReservoir = false)
         {
-            var snapshot = new HdrSnapshot(UpdateTotals(), _minValue.GetValue(), _minUserValue, _maxValue.GetValue(),
+            var snapshot = new HdrSnapshot(
+                UpdateTotals(),
+                _minValue.GetValue(),
+                _minUserValue,
+                _maxValue.GetValue(),
                 _maxUserValue);
+
             if (resetReservoir)
             {
                 Reset();
             }
+
             return snapshot;
         }
 

@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System;
 using System.Collections.Generic;
@@ -9,10 +8,15 @@ using App.Metrics.Data;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics
-// ReSharper restore CheckNamespace
 {
+    // ReSharper restore CheckNamespace
     public static class MetricsContextValueSourceExtensions
     {
+        public static ApdexValue ApdexValueFor(this MetricsContextValueSource valueService, string metricName)
+        {
+            return valueService.ApdexScores.ValueFor(valueService.Context, metricName);
+        }
+
         public static CounterValue CounterValueFor(this MetricsContextValueSource valueService, string metricName)
         {
             return valueService.Counters.ValueFor(valueService.Context, metricName);
@@ -38,18 +42,16 @@ namespace App.Metrics
             return valueService.Timers.ValueFor(valueService.Context, metricName);
         }
 
-        public static ApdexValue ApdexValueFor(this MetricsContextValueSource valueService, string metricName)
-        {
-            return valueService.ApdexScores.ValueFor(valueService.Context, metricName);
-        }
-
         public static T ValueFor<T>(this IEnumerable<MetricValueSource<T>> values, string context, string metricName)
         {
             var metricValueSources = values as MetricValueSource<T>[] ?? values.ToArray();
 
             var value = metricValueSources.Where(t => t.Name == metricName).Select(t => t.Value).ToList();
 
-            if (value.Any() && value.Count <= 1) return value.Single();
+            if (value.Any() && value.Count <= 1)
+            {
+                return value.Single();
+            }
 
             var availableNames = string.Join(",", metricValueSources.Select(v => v.Name));
             throw new InvalidOperationException($"No metric found with name {metricName} in context {context} Available names: {availableNames}");

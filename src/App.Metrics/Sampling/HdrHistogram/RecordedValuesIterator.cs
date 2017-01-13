@@ -1,11 +1,14 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-// Ported to.NET Standard Library by Allan Hardy
-
+#pragma warning disable SA1515
+// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
+// Ported/Refactored to .NET Standard Library by Allan Hardy
+#pragma warning restore SA1515
 namespace App.Metrics.Sampling.HdrHistogram
 {
+#pragma warning disable
+
     // ReSharper disable InconsistentNaming
 
     /**
@@ -30,31 +33,22 @@ namespace App.Metrics.Sampling.HdrHistogram
          * @param histogram The histogram this iterator will operate on
          */
 
-        public RecordedValuesIterator(AbstractHistogram histogram)
-        {
-            reset(histogram);
-        }
+        public RecordedValuesIterator(AbstractHistogram histogram) { reset(histogram); }
 
         /**
          * Reset iterator for re-use in a fresh iteration over the same histogram data set.
          */
 
-        public void reset()
-        {
-            reset(Histogram);
-        }
+        public void reset() { reset(Histogram); }
 
 
-        protected override void IncrementIterationLevel()
-        {
-            visitedIndex = CurrentIndex;
-        }
+        protected override void IncrementIterationLevel() { visitedIndex = CurrentIndex; }
 
 
         protected override bool ReachedIterationLevel()
         {
             var currentCount = Histogram.getCountAtIndex(CurrentIndex);
-            return (currentCount != 0) && (visitedIndex != CurrentIndex);
+            return currentCount != 0 && visitedIndex != CurrentIndex;
         }
 
         private void reset(AbstractHistogram histogram)
@@ -63,6 +57,7 @@ namespace App.Metrics.Sampling.HdrHistogram
             visitedIndex = -1;
         }
     }
+#pragma warning restore
 }
 
 // ReSharper restore InconsistentNaming

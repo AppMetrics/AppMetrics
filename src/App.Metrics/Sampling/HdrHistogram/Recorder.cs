@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-// Ported to.NET Standard Library by Allan Hardy
+#pragma warning disable SA1515
+// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
+// Ported/Refactored to .NET Standard Library by Allan Hardy
+#pragma warning restore SA1515
 
 using System;
 using System.Diagnostics;
@@ -11,6 +13,7 @@ using App.Metrics.Concurrency;
 namespace App.Metrics.Sampling.HdrHistogram
 {
     // ReSharper disable InconsistentNaming
+#pragma warning disable
 
     /// <summary>
     ///     Records integer values, and provides stable interval {@link Histogram} samples from
@@ -30,10 +33,11 @@ namespace App.Metrics.Sampling.HdrHistogram
 
         private static readonly AtomicLong instanceIdSequencer = new AtomicLong(1);
         private static readonly object syncLock = new object();
+
         // ReSharper disable ImpureMethodCallOnReadonlyValueField
         private readonly long instanceId = instanceIdSequencer.GetAndIncrement();
-        // ReSharper restore ImpureMethodCallOnReadonlyValueField
 
+        // ReSharper restore ImpureMethodCallOnReadonlyValueField
         private readonly WriterReaderPhaser recordingPhaser = new WriterReaderPhaser();
 
         private volatile HdrHistogram activeHistogram;
@@ -55,10 +59,7 @@ namespace App.Metrics.Sampling.HdrHistogram
             activeHistogram.setStartTimeStamp(CurentTimeInMilis());
         }
 
-        public static long CurentTimeInMilis()
-        {
-            return Stopwatch.GetTimestamp() * factor;
-        }
+        public static long CurentTimeInMilis() { return Stopwatch.GetTimestamp() * factor; }
 
         /// <summary>
         ///     Get a new instance of an interval histogram, which will include a stable, consistent view of all value
@@ -67,10 +68,7 @@ namespace App.Metrics.Sampling.HdrHistogram
         ///     the value counts, and start accumulating value counts for the next interval.
         /// </summary>
         /// <returns>a histogram containing the value counts accumulated since the last interval histogram was taken.</returns>
-        public HdrHistogram GetIntervalHistogram()
-        {
-            return GetIntervalHistogram(null);
-        }
+        public HdrHistogram GetIntervalHistogram() { return GetIntervalHistogram(null); }
 
         /// <summary>
         ///     Get an interval histogram, which will include a stable, consistent view of all value counts
@@ -107,6 +105,7 @@ namespace App.Metrics.Sampling.HdrHistogram
                         instanceId,
                         inactiveHistogram.getNumberOfSignificantValueDigits());
                 }
+
                 // Verify that replacement histogram can validly be used as an inactive histogram replacement:
                 ValidateFitAsReplacementHistogram(histogramToRecycle);
                 try
@@ -139,6 +138,7 @@ namespace App.Metrics.Sampling.HdrHistogram
             {
                 recordingPhaser.WriterCriticalSectionExit(criticalValueAtEnter);
             }
+
             // ReSharper restore InconsistentlySynchronizedField
         }
 
@@ -196,8 +196,10 @@ namespace App.Metrics.Sampling.HdrHistogram
                     return;
                 }
             }
-            throw new ArgumentException("replacement histogram must have been obtained via a previous" +
-                                        "GetIntervalHistogram() call from this " + GetType().Name + " instance");
+
+            throw new ArgumentException(
+                "replacement histogram must have been obtained via a previous" +
+                "GetIntervalHistogram() call from this " + GetType().Name + " instance");
         }
 
         private class InternalConcurrentHistogram : ConcurrentHistogram
@@ -205,11 +207,10 @@ namespace App.Metrics.Sampling.HdrHistogram
             public readonly long ContainingInstanceId;
 
             public InternalConcurrentHistogram(long id, int numberOfSignificantValueDigits)
-                : base(numberOfSignificantValueDigits)
-            {
-                ContainingInstanceId = id;
-            }
+                : base(numberOfSignificantValueDigits) { ContainingInstanceId = id; }
         }
     }
 }
+#pragma warning restore
+
 // ReSharper restore InconsistentNaming

@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
+#pragma warning disable
+// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
+// Ported/Refactored to .NET Standard Library by Allan Hardy
 
-// Ported to.NET Standard Library by Allan Hardy
 
 using System.Collections;
 using System.Collections.Generic;
@@ -10,10 +12,11 @@ using System.Collections.Generic;
 namespace App.Metrics.Sampling.HdrHistogram
 {
     // ReSharper disable InconsistentNaming
-    internal abstract class Iterator<E> : IEnumerator<E>
+    internal abstract class Iterator<T> : IEnumerator<T>
+
         // ReSharper restore InconsistentNaming
     {
-        public E Current { get; private set; }
+        public T Current { get; private set; }
 
         object IEnumerator.Current => Current;
 
@@ -27,6 +30,7 @@ namespace App.Metrics.Sampling.HdrHistogram
 
         // ReSharper disable InconsistentNaming
         public abstract bool hasNext();
+
         // ReSharper restore InconsistentNaming
 
         /**
@@ -37,12 +41,10 @@ namespace App.Metrics.Sampling.HdrHistogram
          */
 
         // ReSharper disable InconsistentNaming
-        public abstract E next();
-        // ReSharper restore InconsistentNaming
+        public abstract T next();
 
-        public void Dispose()
-        {
-        }
+        // ReSharper restore InconsistentNaming
+        public void Dispose() { }
 
         public bool MoveNext()
         {
@@ -51,11 +53,11 @@ namespace App.Metrics.Sampling.HdrHistogram
                 Current = next();
                 return true;
             }
+
             return false;
         }
 
-        public void Reset()
-        {
-        }
+        public void Reset() { }
     }
 }
+#pragma warning restore

@@ -1,19 +1,19 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
-#if NET452
-using System.Reflection;
-#endif
 using App.Metrics;
 using Microsoft.Extensions.PlatformAbstractions;
 
-// ReSharper disable CheckNamespace
+#if NET452
+using System.Reflection;
 
+#endif
+
+// ReSharper disable CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
-// ReSharper restore CheckNamespace
 {
+    // ReSharper restore CheckNamespace
     internal sealed class MetricsHostBuilder : IMetricsHostBuilder
     {
 #if NET452
@@ -23,6 +23,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 throw new ArgumentNullException(nameof(services));
             }
+
             if (assemblyName == null)
             {
                 throw new ArgumentNullException(nameof(assemblyName));

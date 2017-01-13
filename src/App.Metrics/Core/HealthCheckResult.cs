@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
+#pragma warning disable SA1515
+// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
-
+#pragma warning disable SA1515// Original repo: https://github.com/etishor/Metrics.NET
 
 using System;
 using System.Linq;
@@ -18,16 +18,14 @@ namespace App.Metrics.Core
     public struct HealthCheckResult
     {
         /// <summary>
-        /// True if the check was healthy, degraded or unhealthy.
-        /// </summary>
-        public readonly HealthCheckStatus Status;
-
-
-
-        /// <summary>
         ///     Status message of the check. A status can be provided for both healthy and unhealthy states.
         /// </summary>
         public readonly string Message;
+
+        /// <summary>
+        ///     True if the check was healthy, degraded or unhealthy.
+        /// </summary>
+        public readonly HealthCheckStatus Status;
 
         private HealthCheckResult(HealthCheckStatus status, string message)
         {
@@ -36,19 +34,20 @@ namespace App.Metrics.Core
         }
 
         /// <summary>
-        /// Create a Degraded status response. This is useful for when a health check may
-        /// fail but the application itself is still functioning correct. E.g. There could be a
-        /// health check checking the number of messages in a queue, if that number reaches a
-        /// specificied threshold, a degraded status could be returned rather than raising a critical alert.
+        ///     Create a Degraded status response. This is useful for when a health check may
+        ///     fail but the application itself is still functioning correct. E.g. There could be a
+        ///     health check checking the number of messages in a queue, if that number reaches a
+        ///     specificied threshold, a degraded status could be returned rather than raising a critical alert.
         /// </summary>
         /// <param name="message">Status message.</param>
         /// <param name="values">Values to format the status message with.</param>
-        /// <returns></returns>
+        /// <returns>A degraded health check result</returns>
         public static HealthCheckResult Degraded(string message, params object[] values)
         {
             var status = string.Format(message, values);
-            return new HealthCheckResult(HealthCheckStatus.Degraded, string.IsNullOrWhiteSpace(status) 
-                ? "DEGRADED" : status);
+            return new HealthCheckResult(
+                HealthCheckStatus.Degraded,
+                string.IsNullOrWhiteSpace(status) ? "DEGRADED" : status);
         }
 
         /// <summary>
@@ -62,8 +61,9 @@ namespace App.Metrics.Core
         public static HealthCheckResult Degraded(Exception exception)
         {
             var status = $"EXCEPTION: {exception.GetType().Name} - {exception.Message}";
-            return new HealthCheckResult(HealthCheckStatus.Degraded, status + 
-                Environment.NewLine + FormatStackTrace(exception));
+            return new HealthCheckResult(
+                HealthCheckStatus.Degraded,
+                status + Environment.NewLine + FormatStackTrace(exception));
         }
 
         /// <summary>
@@ -73,19 +73,13 @@ namespace App.Metrics.Core
         ///     specificied threshold, a degraded status could be returned rather than raising a critical alert.
         /// </summary>
         /// <returns>Degraded status response.</returns>
-        public static HealthCheckResult Degraded()
-        {
-            return Degraded("DEGRADED");
-        }
+        public static HealthCheckResult Degraded() { return Degraded("DEGRADED"); }
 
         /// <summary>
         ///     Create a healthy status response.
         /// </summary>
         /// <returns>Healthy status response.</returns>
-        public static HealthCheckResult Healthy()
-        {
-            return Healthy("OK");
-        }
+        public static HealthCheckResult Healthy() { return Healthy("OK"); }
 
         /// <summary>
         ///     Create a healthy status response.
@@ -100,22 +94,16 @@ namespace App.Metrics.Core
         }
 
         /// <summary>
-        /// Ignores this health check.
+        ///     Ignores this health check.
         /// </summary>
-        /// <returns></returns>
-        public static HealthCheckResult Ignore()
-        {
-            return new HealthCheckResult(HealthCheckStatus.Ignored, "ignored check");
-        }
+        /// <returns>An ignored health check restul</returns>
+        public static HealthCheckResult Ignore() { return new HealthCheckResult(HealthCheckStatus.Ignored, "ignored check"); }
 
         /// <summary>
         ///     Create a unhealthy status response.
         /// </summary>
         /// <returns>Unhealthy status response.</returns>
-        public static HealthCheckResult Unhealthy()
-        {
-            return Unhealthy("FAILED");
-        }
+        public static HealthCheckResult Unhealthy() { return Unhealthy("FAILED"); }
 
         /// <summary>
         ///     Create a unhealthy status response.
@@ -126,8 +114,9 @@ namespace App.Metrics.Core
         public static HealthCheckResult Unhealthy(string message, params object[] values)
         {
             var status = string.Format(message, values);
-            return new HealthCheckResult(HealthCheckStatus.Unhealthy, string.IsNullOrWhiteSpace(status) 
-                ? "FAILED" : status);
+            return new HealthCheckResult(
+                HealthCheckStatus.Unhealthy,
+                string.IsNullOrWhiteSpace(status) ? "FAILED" : status);
         }
 
         /// <summary>
@@ -138,7 +127,8 @@ namespace App.Metrics.Core
         public static HealthCheckResult Unhealthy(Exception exception)
         {
             var status = $"EXCEPTION: {exception.GetType().Name} - {exception.Message}";
-            return new HealthCheckResult(HealthCheckStatus.Unhealthy, 
+            return new HealthCheckResult(
+                HealthCheckStatus.Unhealthy,
                 status + Environment.NewLine + FormatStackTrace(exception));
         }
 
@@ -164,8 +154,8 @@ namespace App.Metrics.Core
                 if (exception.StackTrace != null)
                 {
                     var stackLines = exception.StackTrace.Split('\n')
-                        .Where(l => !string.IsNullOrWhiteSpace(l))
-                        .Select(l => string.Concat(pad, l.Trim()));
+                                              .Where(l => !string.IsNullOrWhiteSpace(l))
+                                              .Select(l => string.Concat(pad, l.Trim()));
 
                     builder.AppendLine(string.Join(Environment.NewLine, stackLines));
                 }

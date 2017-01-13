@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using App.Metrics.Internal;
 using App.Metrics.Sampling.Interfaces;
@@ -31,8 +30,17 @@ namespace App.Metrics.Core.Options
             ExponentialDecayFactor = Constants.ReservoirSampling.DefaultExponentialDecayFactor;
             ApdexTSeconds = Constants.ReservoirSampling.DefaultApdexTSeconds;
             AllowWarmup = true;
-
         }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether to allow the app to warmup before calcaulting.
+        ///     If set to <c>true</c> allows the service to warmup before starting to calculate the apdex,
+        ///     the score will intitially be 1 until enough samples have been recorded.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if [allow warmup]; otherwise, <c>false</c>.
+        /// </value>
+        public bool AllowWarmup { get; set; }
 
         /// <summary>
         ///     Gets or sets the apdex t seconds.
@@ -52,7 +60,7 @@ namespace App.Metrics.Core.Options
         ///         </item>
         ///         <item>
         ///             <description>
-        ///             Frustrated: Greater than 4 T
+        ///                 Frustrated: Greater than 4 T
         ///             </description>
         ///         </item>
         ///     </list>
@@ -71,11 +79,5 @@ namespace App.Metrics.Core.Options
         ///     <c>true</c> if [reset on reporting]; otherwise, <c>false</c>.
         /// </value>
         public bool ResetOnReporting { get; set; }
-
-        /// <summary>
-        ///     If set to <c>true</c> allows the service to warmup before starting to calculate the apdex,
-        ///     the score will intitially be 1 until enough samples have been recorded.
-        /// </summary>
-        public bool AllowWarmup { get; set; }
     }
 }

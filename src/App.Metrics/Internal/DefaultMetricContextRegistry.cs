@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -69,14 +68,17 @@ namespace App.Metrics.Internal
 
         public IMetricRegistryManager DataProvider { get; }
 
-        public IApdex Apdex<T>(ApdexOptions options, Func<T> builder) where T : IApdexMetric
+        public IApdex Apdex<T>(ApdexOptions options, Func<T> builder)
+            where T : IApdexMetric
         {
-            return _apdexScores.GetOrAdd(options.Name, () =>
-            {
-                var apdex = builder();
-                var valueSource = new ApdexValueSource(options.Name, apdex, AllTags(options.Tags), options.ResetOnReporting);
-                return Tuple.Create((IApdex)apdex, valueSource);
-            });
+            return _apdexScores.GetOrAdd(
+                options.Name,
+                () =>
+                {
+                    var apdex = builder();
+                    var valueSource = new ApdexValueSource(options.Name, apdex, AllTags(options.Tags), options.ResetOnReporting);
+                    return Tuple.Create((IApdex)apdex, valueSource);
+                });
         }
 
         public void ClearAllMetrics()
@@ -88,46 +90,62 @@ namespace App.Metrics.Internal
             _timers.Clear();
         }
 
-        public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterMetric
+        public ICounter Counter<T>(CounterOptions options, Func<T> builder)
+            where T : ICounterMetric
         {
-            return _counters.GetOrAdd(options.Name, () =>
-            {
-                var counter = builder();
-                var valueSource = new CounterValueSource(options.Name, counter,
-                    options.MeasurementUnit, AllTags(options.Tags), options.ResetOnReporting,
-                    options.ReportItemPercentages, options.ReportSetItems);
-                return Tuple.Create((ICounter)counter, valueSource);
-            });
+            return _counters.GetOrAdd(
+                options.Name,
+                () =>
+                {
+                    var counter = builder();
+                    var valueSource = new CounterValueSource(
+                        options.Name,
+                        counter,
+                        options.MeasurementUnit,
+                        AllTags(options.Tags),
+                        options.ResetOnReporting,
+                        options.ReportItemPercentages,
+                        options.ReportSetItems);
+                    return Tuple.Create((ICounter)counter, valueSource);
+                });
         }
 
         public void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider)
         {
-            _gauges.GetOrAdd(options.Name, () =>
-            {
-                var gauge = valueProvider();
-                var valueSource = new GaugeValueSource(options.Name, gauge, options.MeasurementUnit, AllTags(options.Tags));
-                return Tuple.Create(gauge, valueSource);
-            });
+            _gauges.GetOrAdd(
+                options.Name,
+                () =>
+                {
+                    var gauge = valueProvider();
+                    var valueSource = new GaugeValueSource(options.Name, gauge, options.MeasurementUnit, AllTags(options.Tags));
+                    return Tuple.Create(gauge, valueSource);
+                });
         }
 
-        public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramMetric
+        public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder)
+            where T : IHistogramMetric
         {
-            return _histograms.GetOrAdd(options.Name, () =>
-            {
-                var histogram = builder();
-                var valueSource = new HistogramValueSource(options.Name, histogram, options.MeasurementUnit, AllTags(options.Tags));
-                return Tuple.Create((IHistogram)histogram, valueSource);
-            });
+            return _histograms.GetOrAdd(
+                options.Name,
+                () =>
+                {
+                    var histogram = builder();
+                    var valueSource = new HistogramValueSource(options.Name, histogram, options.MeasurementUnit, AllTags(options.Tags));
+                    return Tuple.Create((IHistogram)histogram, valueSource);
+                });
         }
 
-        public IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterMetric
+        public IMeter Meter<T>(MeterOptions options, Func<T> builder)
+            where T : IMeterMetric
         {
-            return _meters.GetOrAdd(options.Name, () =>
-            {
-                var meter = builder();
-                var valueSource = new MeterValueSource(options.Name, meter, options.MeasurementUnit, options.RateUnit, AllTags(options.Tags));
-                return Tuple.Create((IMeter)meter, valueSource);
-            });
+            return _meters.GetOrAdd(
+                options.Name,
+                () =>
+                {
+                    var meter = builder();
+                    var valueSource = new MeterValueSource(options.Name, meter, options.MeasurementUnit, options.RateUnit, AllTags(options.Tags));
+                    return Tuple.Create((IMeter)meter, valueSource);
+                });
         }
 
         public void ResetMetricsValues()
@@ -139,15 +157,23 @@ namespace App.Metrics.Internal
             _timers.Reset();
         }
 
-        public ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerMetric
+        public ITimer Timer<T>(TimerOptions options, Func<T> builder)
+            where T : ITimerMetric
         {
-            return _timers.GetOrAdd(options.Name, () =>
-            {
-                var timer = builder();
-                var valueSource = new TimerValueSource(options.Name, timer, options.MeasurementUnit,
-                    options.RateUnit, options.DurationUnit, AllTags(options.Tags));
-                return Tuple.Create((ITimer)timer, valueSource);
-            });
+            return _timers.GetOrAdd(
+                options.Name,
+                () =>
+                {
+                    var timer = builder();
+                    var valueSource = new TimerValueSource(
+                        options.Name,
+                        timer,
+                        options.MeasurementUnit,
+                        options.RateUnit,
+                        options.DurationUnit,
+                        AllTags(options.Tags));
+                    return Tuple.Create((ITimer)timer, valueSource);
+                });
         }
 
         private MetricTags AllTags(MetricTags metricTags)
@@ -182,11 +208,13 @@ namespace App.Metrics.Internal
 
             public TMetric GetOrAdd(string name, Func<Tuple<TMetric, TValue>> metricProvider)
             {
-                return _metrics.GetOrAdd(name, n =>
-                {
-                    var result = metricProvider();
-                    return new MetricMeta(result.Item1, result.Item2);
-                }).Metric;
+                return _metrics.GetOrAdd(
+                    name,
+                    n =>
+                    {
+                        var result = metricProvider();
+                        return new MetricMeta(result.Item1, result.Item2);
+                    }).Metric;
             }
 
             public void Reset()

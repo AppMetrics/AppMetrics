@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System.Linq;
 using App.Metrics.Data;
@@ -15,11 +14,11 @@ namespace App.Metrics.Extensions
             var jsonContexts = source.Contexts.ToMetric();
 
             return new MetricData
-            {
-                Environment = source.Environment.ToEnvDictionary(),
-                Timestamp = source.Timestamp,
-                Contexts = jsonContexts.ToArray()
-            };
+                   {
+                       Environment = source.Environment.ToEnvDictionary(),
+                       Timestamp = source.Timestamp,
+                       Contexts = jsonContexts.ToArray()
+                   };
         }
 
         public static MetricsDataValueSource ToMetricValueSource(this MetricData source)

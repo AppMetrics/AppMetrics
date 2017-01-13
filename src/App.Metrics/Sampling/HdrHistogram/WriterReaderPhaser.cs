@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-// Ported to.NET Standard Library by Allan Hardy
+#pragma warning disable SA1515
+// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
+// Ported/Refactored to .NET Standard Library by Allan Hardy
+#pragma warning restore SA1515
 
 using System;
 using System.Threading;
@@ -75,9 +77,10 @@ namespace App.Metrics.Sampling.HdrHistogram
                 throw new ThreadStateException("flipPhase() can only be called while holding the readerLock()");
             }
 
-            var nextPhaseIsEven = (startEpoch.GetValue() < 0); // Current phase is odd...
+            var nextPhaseIsEven = startEpoch.GetValue() < 0; // Current phase is odd...
 
             long initialStartValue;
+
             // First, clear currently unused [next] phase end epoch (to proper initial value for phase):
             if (nextPhaseIsEven)
             {
@@ -99,12 +102,13 @@ namespace App.Metrics.Sampling.HdrHistogram
             {
                 if (nextPhaseIsEven)
                 {
-                    caughtUp = (oddEndEpoch.GetValue() == startValueAtFlip);
+                    caughtUp = oddEndEpoch.GetValue() == startValueAtFlip;
                 }
                 else
                 {
-                    caughtUp = (evenEndEpoch.GetValue() == startValueAtFlip);
+                    caughtUp = evenEndEpoch.GetValue() == startValueAtFlip;
                 }
+
                 if (!caughtUp)
                 {
                     if (yieldTimeNsec == 0)
@@ -116,7 +120,8 @@ namespace App.Metrics.Sampling.HdrHistogram
                         Thread.Sleep(TimeSpan.FromMilliseconds(yieldTimeNsec / 1000000.0));
                     }
                 }
-            } while (!caughtUp);
+            }
+            while (!caughtUp);
         }
 
         /// <summary>
@@ -126,19 +131,13 @@ namespace App.Metrics.Sampling.HdrHistogram
         ///     against {@link WriterReaderPhaser#writerCriticalSectionEnter()} calls. Use {@link WriterReaderPhaser#flipPhase()}
         ///     to synchronize reads against writers.
         /// </summary>
-        public void ReaderLock()
-        {
-            Monitor.Enter(readerLockObject);
-        }
+        public void ReaderLock() { Monitor.Enter(readerLockObject); }
 
         /// <summary>
         ///     Exit from a critical section containing a read operation (relinquishes mutual exclusion against other
         ///     {@link WriterReaderPhaser#readerLock} calls).
         /// </summary>
-        public void ReaderUnlock()
-        {
-            Monitor.Exit(readerLockObject);
-        }
+        public void ReaderUnlock() { Monitor.Exit(readerLockObject); }
 
         /// <summary>
         ///     Indicate entry to a critical section containing a write operation.
@@ -152,10 +151,7 @@ namespace App.Metrics.Sampling.HdrHistogram
         ///     an (opaque) value associated with the critical section entry, which MUST be provided to the matching {@link
         ///     WriterReaderPhaser#writerCriticalSectionExit} call.
         /// </returns>
-        public long WriterCriticalSectionEnter()
-        {
-            return startEpoch.GetAndIncrement();
-        }
+        public long WriterCriticalSectionEnter() { return startEpoch.GetAndIncrement(); }
 
         /// <summary>
         ///     Indicate exit from a critical section containing a write operation.
@@ -183,4 +179,5 @@ namespace App.Metrics.Sampling.HdrHistogram
         }
     }
 }
+
 // ReSharper restore InconsistentNaming

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using System.Globalization;
 
@@ -23,9 +22,6 @@ namespace App.Metrics.Utils
             Advanced?.Invoke(this, EventArgs.Empty);
         }
 
-        public string FormatTimestamp(DateTime timestamp)
-        {
-            return timestamp.ToString("yyyy-MM-ddTHH:mm:ss.ffffK", CultureInfo.InvariantCulture);
-        }
+        public string FormatTimestamp(DateTime timestamp) { return timestamp.ToString("yyyy-MM-ddTHH:mm:ss.ffffK", CultureInfo.InvariantCulture); }
     }
 }

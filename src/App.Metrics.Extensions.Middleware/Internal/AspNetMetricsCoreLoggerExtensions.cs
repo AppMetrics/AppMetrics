@@ -7,8 +7,8 @@ using App.Metrics.Internal;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.Extensions.Logging
-// ReSharper restore CheckNamespace
 {
+    // ReSharper restore CheckNamespace
     [AppMetricsExcludeFromCodeCoverage]
     internal static class AspNetMetricsCoreLoggerExtensions
     {

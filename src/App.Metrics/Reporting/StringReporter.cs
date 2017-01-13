@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System;
 using System.Collections.Generic;
@@ -22,14 +21,15 @@ namespace App.Metrics.Reporting
         private StringBuilder _buffer;
         private bool _disposed;
 
-        public StringReporter() :
-            this(typeof(StringReporter).Name)
-        {
-        }
+        public StringReporter()
+            : this(typeof(StringReporter).Name) { }
 
         public StringReporter(string name)
         {
-            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
 
             Name = name;
             _buffer = new StringBuilder();
@@ -54,7 +54,6 @@ namespace App.Metrics.Reporting
                 if (disposing)
                 {
                     // Free any other managed objects here.
-
                     if (_buffer != null)
                     {
                         _buffer.Clear();
@@ -68,7 +67,8 @@ namespace App.Metrics.Reporting
 
         public Task<bool> EndAndFlushReportRunAsync(IMetrics metrics)
         {
-            _buffer.WriteMetricEndReport(Name,
+            _buffer.WriteMetricEndReport(
+                Name,
                 metrics.Advanced.Clock.FormatTimestamp(metrics.Advanced.Clock.UtcDateTime));
 
             return AppMetricsTaskCache.SuccessTask;
@@ -80,7 +80,8 @@ namespace App.Metrics.Reporting
             _buffer.WriteEnvironmentInfo(environmentInfo);
         }
 
-        public void ReportHealth(GlobalMetricTags globalTags,
+        public void ReportHealth(
+            GlobalMetricTags globalTags,
             IEnumerable<HealthCheck.Result> healthyChecks,
             IEnumerable<HealthCheck.Result> degradedChecks,
             IEnumerable<HealthCheck.Result> unhealthyChecks)
@@ -125,7 +126,8 @@ namespace App.Metrics.Reporting
 
         public void StartReportRun(IMetrics metrics)
         {
-            _buffer.WriteMetricStartReport(Name,
+            _buffer.WriteMetricStartReport(
+                Name,
                 metrics.Advanced.Clock.FormatTimestamp(metrics.Advanced.Clock.UtcDateTime));
         }
 

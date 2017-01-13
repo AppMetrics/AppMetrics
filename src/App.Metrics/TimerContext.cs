@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 
 namespace App.Metrics
@@ -35,8 +34,11 @@ namespace App.Metrics
         }
 
         /// <summary>
-        ///     Provides the currently elapsed time from when the instance has been created
+        ///     Gets the currently elapsed time from when the instance has been created
         /// </summary>
+        /// <value>
+        ///     The elapsed.
+        /// </value>
         public TimeSpan Elapsed
         {
             get
@@ -45,6 +47,7 @@ namespace App.Metrics
                 {
                     return TimeSpan.Zero;
                 }
+
                 var milliseconds = TimeUnit.Nanoseconds.Convert(TimeUnit.Milliseconds, _timer.CurrentTime() - _start);
                 return TimeSpan.FromMilliseconds(milliseconds);
             }
@@ -52,7 +55,10 @@ namespace App.Metrics
 
         public void Dispose()
         {
-            if (_timer == null) return;
+            if (_timer == null)
+            {
+                return;
+            }
 
             var end = _timer.EndRecording();
             _timer.Record(end - _start, TimeUnit.Nanoseconds, _userValue);
@@ -63,9 +69,6 @@ namespace App.Metrics
         ///     Set the user value for this timer context.
         /// </summary>
         /// <param name="value">New user value to use for this context.</param>
-        public void TrackUserValue(string value)
-        {
-            _userValue = value;
-        }
+        public void TrackUserValue(string value) { _userValue = value; }
     }
 }

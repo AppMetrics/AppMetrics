@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
+#pragma warning disable SA1515
+// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
-
+#pragma warning disable SA1515// Original repo: https://github.com/etishor/Metrics.NET
 
 using System;
 using App.Metrics.Core.Interfaces;
@@ -30,9 +30,7 @@ namespace App.Metrics.Core
         ///     value the more biased the reservoir will be towards newer values.
         /// </param>
         public HistogramMetric(SamplingType samplingType, int sampleSize, double alpha)
-            : this(ReservoirBuilder.Build(samplingType, sampleSize, alpha))
-        {
-        }
+            : this(ReservoirBuilder.Build(samplingType, sampleSize, alpha)) { }
 
         public HistogramMetric(IReservoir reservoir)
         {
@@ -44,10 +42,7 @@ namespace App.Metrics.Core
             _reservoir = reservoir;
         }
 
-        ~HistogramMetric()
-        {
-            Dispose(false);
-        }
+        ~HistogramMetric() { Dispose(false); }
 
         public HistogramValue Value => GetValue();
 
@@ -74,10 +69,12 @@ namespace App.Metrics.Core
         public HistogramValue GetValue(bool resetMetric = false)
         {
             var value = new HistogramValue(_last.Value, _last.UserValue, _reservoir.GetSnapshot(resetMetric));
+
             if (resetMetric)
             {
                 _last = UserValueWrapper.Empty;
             }
+
             return value;
         }
 

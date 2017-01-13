@@ -9,8 +9,8 @@ using Microsoft.AspNetCore.Routing;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.AspNetCore.Mvc.Internal
-// ReSharper restore CheckNamespace
 {
+    // ReSharper restore CheckNamespace
     public class MvcRouteTemplateResolver : IRouteNameResolver
     {
         private readonly IRouteNameResolver _routeNameResolver;

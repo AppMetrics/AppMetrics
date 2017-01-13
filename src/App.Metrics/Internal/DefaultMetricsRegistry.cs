@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System;
 using System.Collections.Concurrent;
@@ -55,7 +54,8 @@ namespace App.Metrics.Internal
             return ReferenceEquals(attached, registry);
         }
 
-        public IApdex Apdex<T>(ApdexOptions options, Func<T> builder) where T : IApdexMetric
+        public IApdex Apdex<T>(ApdexOptions options, Func<T> builder)
+            where T : IApdexMetric
         {
             EnsureContextLabel(options);
             EnsureSamplingType(options);
@@ -65,14 +65,16 @@ namespace App.Metrics.Internal
 
         public void Clear()
         {
-            ForAllContexts(c =>
-            {
-                c.ClearAllMetrics();
-                _contexts.TryRemove(c.Context, out c);
-            });
+            ForAllContexts(
+                c =>
+                {
+                    c.ClearAllMetrics();
+                    _contexts.TryRemove(c.Context, out c);
+                });
         }
 
-        public ICounter Counter<T>(CounterOptions options, Func<T> builder) where T : ICounterMetric
+        public ICounter Counter<T>(CounterOptions options, Func<T> builder)
+            where T : ICounterMetric
         {
             EnsureContextLabel(options);
             var registry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
@@ -117,15 +119,15 @@ namespace App.Metrics.Internal
 
             var environment = _environmentInfoProvider.Build();
 
-            var contexts = _contexts.Values.Select(g => new MetricsContextValueSource(
-                g.Context,
-                g.DataProvider.Gauges.ToArray(),
-                g.DataProvider.Counters.ToArray(),
-                g.DataProvider.Meters.ToArray(),
-                g.DataProvider.Histograms.ToArray(),
-                g.DataProvider.Timers.ToArray(),
-                g.DataProvider.ApdexScores.ToArray()
-            ));
+            var contexts = _contexts.Values.Select(
+                g => new MetricsContextValueSource(
+                    g.Context,
+                    g.DataProvider.Gauges.ToArray(),
+                    g.DataProvider.Counters.ToArray(),
+                    g.DataProvider.Meters.ToArray(),
+                    g.DataProvider.Histograms.ToArray(),
+                    g.DataProvider.Timers.ToArray(),
+                    g.DataProvider.ApdexScores.ToArray()));
 
             var data = new MetricsDataValueSource(_clock.UtcDateTime, environment, contexts);
 
@@ -134,7 +136,8 @@ namespace App.Metrics.Internal
             return data.Filter(filter);
         }
 
-        public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder) where T : IHistogramMetric
+        public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder)
+            where T : IHistogramMetric
         {
             EnsureContextLabel(options);
             EnsureSamplingType(options);
@@ -142,7 +145,8 @@ namespace App.Metrics.Internal
             return registry.Histogram(options, builder);
         }
 
-        public IMeter Meter<T>(MeterOptions options, Func<T> builder) where T : IMeterMetric
+        public IMeter Meter<T>(MeterOptions options, Func<T> builder)
+            where T : IMeterMetric
         {
             EnsureContextLabel(options);
             var registry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
@@ -163,7 +167,8 @@ namespace App.Metrics.Internal
             }
         }
 
-        public ITimer Timer<T>(TimerOptions options, Func<T> builder) where T : ITimerMetric
+        public ITimer Timer<T>(TimerOptions options, Func<T> builder)
+            where T : ITimerMetric
         {
             EnsureContextLabel(options);
             EnsureSamplingType(options);

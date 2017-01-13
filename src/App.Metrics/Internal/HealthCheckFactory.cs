@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -30,22 +29,13 @@ namespace App.Metrics.Internal
             }
         }
 
-        public HealthCheckFactory(ILogger<HealthCheckFactory> logger)
-        {
-            _logger = logger;
-        }
+        public HealthCheckFactory(ILogger<HealthCheckFactory> logger) { _logger = logger; }
 
         public ConcurrentDictionary<string, HealthCheck> Checks { get; } = new ConcurrentDictionary<string, HealthCheck>();
 
-        public void Register(string name, Func<Task<string>> check)
-        {
-            Register(new HealthCheck(name, check));
-        }
+        public void Register(string name, Func<Task<string>> check) { Register(new HealthCheck(name, check)); }
 
-        public void Register(string name, Func<Task<HealthCheckResult>> check)
-        {
-            Register(new HealthCheck(name, check));
-        }
+        public void Register(string name, Func<Task<HealthCheckResult>> check) { Register(new HealthCheck(name, check)); }
 
         internal void Register(HealthCheck healthCheck)
         {

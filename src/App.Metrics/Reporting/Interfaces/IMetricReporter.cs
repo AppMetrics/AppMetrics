@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -21,7 +20,8 @@ namespace App.Metrics.Reporting.Interfaces
 
         void ReportEnvironment(EnvironmentInfo environmentInfo);
 
-        void ReportHealth(GlobalMetricTags globalTags,
+        void ReportHealth(
+            GlobalMetricTags globalTags,
             IEnumerable<HealthCheck.Result> healthyChecks,
             IEnumerable<HealthCheck.Result> degradedChecks,
             IEnumerable<HealthCheck.Result> unhealthyChecks);

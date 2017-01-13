@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System.Collections.Generic;
 using System.Linq;
@@ -30,8 +29,11 @@ namespace App.Metrics.Core
         }
 
         /// <summary>
-        ///     All health checks passed.
+        ///     Gets all health checks passed.
         /// </summary>
+        /// <value>
+        ///     The status.
+        /// </value>
         public HealthCheckStatus Status
         {
             get

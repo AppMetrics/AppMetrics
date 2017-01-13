@@ -1,14 +1,12 @@
 // Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-// ReSharper disable CheckNamespace
-
 using System.Linq;
 
+// ReSharper disable CheckNamespace
 namespace Microsoft.AspNetCore.Routing.Template
-// ReSharper restore CheckNamespace
 {
+    // ReSharper restore CheckNamespace
     internal static class TemplateExtensions
     {
         public static string ToTemplatePartString(this TemplatePart templatePart)
@@ -24,11 +22,15 @@ namespace Microsoft.AspNetCore.Routing.Template
         public static string ToTemplateSegmentString(this TemplateSegment templateSegment) =>
             string.Join(string.Empty, templateSegment.Parts.Select(ToTemplatePartString));
 
-        public static string ToTemplateString(this Route templateRoute,
-                string controller, string action) =>
-            string.Join("/", templateRoute.ParsedTemplate.Segments
-                    .Select(s => s.ToTemplateSegmentString()))
-                .Replace("{controller}", controller)
-                .Replace("{action}", action);
+        public static string ToTemplateString(
+            this Route templateRoute,
+            string controller,
+            string action) =>
+            string.Join(
+                      "/",
+                      templateRoute.ParsedTemplate.Segments
+                                   .Select(s => s.ToTemplateSegmentString()))
+                  .Replace("{controller}", controller)
+                  .Replace("{action}", action);
     }
 }

@@ -14,10 +14,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable CheckNamespace
-
 namespace Microsoft.AspNetCore.Builder
-// ReSharper restore CheckNamespace
 {
+    // ReSharper restore CheckNamespace
     public static class AspNetMetricsAppBuilderExtensions
     {
         /// <summary>

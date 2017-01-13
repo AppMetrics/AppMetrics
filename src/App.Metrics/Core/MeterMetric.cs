@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
+#pragma warning disable SA1515
+// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
-
+#pragma warning restore SA1515// Original repo: https://github.com/etishor/Metrics.NET
 
 using System;
 using System.Collections.Concurrent;
@@ -29,9 +29,7 @@ namespace App.Metrics.Core
         private long _startTime;
 
         public MeterMetric(IClock systemClock)
-            : this(systemClock, new DefaultTaskScheduler())
-        {
-        }
+            : this(systemClock, new DefaultTaskScheduler()) { }
 
         public MeterMetric(IClock clock, IScheduler scheduler)
         {
@@ -41,10 +39,7 @@ namespace App.Metrics.Core
             _tickScheduler.Interval(TickInterval, TaskCreationOptions.LongRunning, Tick);
         }
 
-        ~MeterMetric()
-        {
-            Dispose(false);
-        }
+        ~MeterMetric() { Dispose(false); }
 
         /// <inheritdoc />
         public MeterValue Value => GetValue();
@@ -54,7 +49,10 @@ namespace App.Metrics.Core
         {
             _startTime = _clock.Nanoseconds;
             base.Reset();
-            if (_setMeters == null) return;
+            if (_setMeters == null)
+            {
+                return;
+            }
 
             foreach (var meter in _setMeters.Values)
             {
@@ -75,7 +73,6 @@ namespace App.Metrics.Core
                 if (disposing)
                 {
                     // Free any other managed objects here.
-
                     if (_tickScheduler != null)
                     {
                         _tickScheduler.Stop();
@@ -98,12 +95,15 @@ namespace App.Metrics.Core
         {
             if (_setMeters == null || _setMeters.Count == 0)
             {
-                double elapsed = (_clock.Nanoseconds - _startTime);
-                var value = base.GetValue(elapsed);
+                double elapsed = _clock.Nanoseconds - _startTime;
+
+                var value = GetValue(elapsed);
+
                 if (resetMetric)
                 {
                     Reset();
                 }
+
                 return value;
             }
 
@@ -111,28 +111,16 @@ namespace App.Metrics.Core
         }
 
         /// <inheritdoc />
-        public void Mark()
-        {
-            Mark(1L);
-        }
+        public void Mark() { Mark(1L); }
 
         /// <inheritdoc />
-        public void Mark(string item)
-        {
-            Mark(item, 1L);
-        }
+        public void Mark(string item) { Mark(item, 1L); }
 
         /// <inheritdoc />
-        public void Mark(MetricItem item)
-        {
-            Mark(item.ToString());
-        }
+        public void Mark(MetricItem item) { Mark(item.ToString()); }
 
         /// <inheritdoc />
-        public void Mark(MetricItem item, long amount)
-        {
-            Mark(item.ToString(), amount);
-        }
+        public void Mark(MetricItem item, long amount) { Mark(item.ToString(), amount); }
 
         /// <inheritdoc />
         public void Mark(string item, long amount)
@@ -149,7 +137,7 @@ namespace App.Metrics.Core
                 Interlocked.CompareExchange(ref _setMeters, new ConcurrentDictionary<string, SimpleMeter>(), null);
             }
 
-            Debug.Assert(_setMeters != null);
+            Debug.Assert(_setMeters != null, "set meters not null");
 
             _setMeters.GetOrAdd(item, v => new SimpleMeter()).Mark(amount);
         }
@@ -157,9 +145,10 @@ namespace App.Metrics.Core
         private MeterValue GetValueWithSetItems(bool resetMetric)
         {
             double elapsed = _clock.Nanoseconds - _startTime;
-            var value = base.GetValue(elapsed);
 
-            Debug.Assert(_setMeters != null);
+            var value = GetValue(elapsed);
+
+            Debug.Assert(_setMeters != null, "set meters not null");
 
             var items = new MeterValue.SetItem[_setMeters.Count];
             var index = 0;
@@ -176,19 +165,31 @@ namespace App.Metrics.Core
             }
 
             Array.Sort(items, MeterValue.SetItemComparer);
-            var result = new MeterValue(value.Count, value.MeanRate, value.OneMinuteRate, value.FiveMinuteRate, value.FifteenMinuteRate,
-                TimeUnit.Seconds, items);
+
+            var result = new MeterValue(
+                value.Count,
+                value.MeanRate,
+                value.OneMinuteRate,
+                value.FiveMinuteRate,
+                value.FifteenMinuteRate,
+                TimeUnit.Seconds,
+                items);
+
             if (resetMetric)
             {
                 Reset();
             }
+
             return result;
         }
 
         private new void Tick()
         {
             base.Tick();
-            if (_setMeters == null) return;
+            if (_setMeters == null)
+            {
+                return;
+            }
 
             foreach (var value in _setMeters.Values)
             {

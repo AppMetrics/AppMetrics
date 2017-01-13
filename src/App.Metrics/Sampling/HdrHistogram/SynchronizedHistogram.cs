@@ -1,13 +1,17 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-// Ported to.NET Standard Library by Allan Hardy
+#pragma warning disable SA1515
+// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
+// Ported/Refactored to .NET Standard Library by Allan Hardy
+#pragma warning restore SA1515
 
 using System;
 
 namespace App.Metrics.Sampling.HdrHistogram
 {
+#pragma warning disable
+
     /**
  * <h3>An integer values High Dynamic Range (HDR) Histogram that is synchronized as a whole</h3>
  * <p>
@@ -39,9 +43,7 @@ namespace App.Metrics.Sampling.HdrHistogram
      */
 
         public SynchronizedHistogram(int numberOfSignificantValueDigits)
-            : base(numberOfSignificantValueDigits)
-        {
-        }
+            : base(numberOfSignificantValueDigits) { }
 
         /**
      * Construct a SynchronizedHistogram given the Highest value to be tracked and a number of significant decimal digits. The
@@ -55,9 +57,7 @@ namespace App.Metrics.Sampling.HdrHistogram
      */
 
         public SynchronizedHistogram(long highestTrackableValue, int numberOfSignificantValueDigits)
-            : base(highestTrackableValue, numberOfSignificantValueDigits)
-        {
-        }
+            : base(highestTrackableValue, numberOfSignificantValueDigits) { }
 
         /**
      * Construct a SynchronizedHistogram given the Lowest and Highest values to be tracked and a number of significant
@@ -77,9 +77,7 @@ namespace App.Metrics.Sampling.HdrHistogram
      */
 
         public SynchronizedHistogram(long lowestDiscernibleValue, long highestTrackableValue, int numberOfSignificantValueDigits)
-            : base(lowestDiscernibleValue, highestTrackableValue, numberOfSignificantValueDigits)
-        {
-        }
+            : base(lowestDiscernibleValue, highestTrackableValue, numberOfSignificantValueDigits) { }
 
         /**
      * Construct a histogram with the same range settings as a given source histogram,
@@ -88,20 +86,21 @@ namespace App.Metrics.Sampling.HdrHistogram
      */
 
         public SynchronizedHistogram(AbstractHistogram source)
-            : base(source)
-        {
-        }
+            : base(source) { }
 
         public override AbstractHistogram copy()
         {
             lock (SyncLock)
             {
                 SynchronizedHistogram copy;
+
                 lock (this)
                 {
                     copy = new SynchronizedHistogram(this);
                 }
+
                 copy.add(this);
+
                 return copy;
             }
         }
@@ -126,6 +125,7 @@ namespace App.Metrics.Sampling.HdrHistogram
 
         // ReSharper disable InconsistentNaming
         public new void add(AbstractHistogram otherHistogram)
+
             // ReSharper restore InconsistentNaming
         {
             // Synchronize add(). Avoid deadlocks by synchronizing in order of construction identity count.
@@ -163,7 +163,7 @@ namespace App.Metrics.Sampling.HdrHistogram
         {
             lock (SyncLock)
             {
-                return (512 + (8 * Counts.Length));
+                return 512 + 8 * Counts.Length;
             }
         }
 
@@ -191,7 +191,7 @@ namespace App.Metrics.Sampling.HdrHistogram
                 {
                     // We need to shift the stuff from the zero index and up to the end of the array:
                     var newNormalizedZeroIndex = oldNormalizedZeroIndex + countsDelta;
-                    var lengthToCopy = (countsArrayLength - countsDelta) - oldNormalizedZeroIndex;
+                    var lengthToCopy = countsArrayLength - countsDelta - oldNormalizedZeroIndex;
                     Array.Copy(Counts, oldNormalizedZeroIndex, Counts, newNormalizedZeroIndex, lengthToCopy);
                 }
             }
@@ -323,4 +323,5 @@ namespace App.Metrics.Sampling.HdrHistogram
             }
         }
     }
+#pragma warning restore
 }

@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
+#pragma warning disable SA1515
+// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
-
+#pragma warning restore SA1515
 
 using System;
 using System.Collections.Generic;
@@ -13,11 +13,12 @@ namespace App.Metrics.Data
 {
     public struct CounterValue
     {
-        public static readonly IComparer<SetItem> SetItemComparer = Comparer<SetItem>.Create((x, y) =>
-        {
-            var percent = Comparer<double>.Default.Compare(x.Percent, y.Percent);
-            return percent == 0 ? Comparer<string>.Default.Compare(x.Item, y.Item) : percent;
-        });
+        public static readonly IComparer<SetItem> SetItemComparer = Comparer<SetItem>.Create(
+            (x, y) =>
+            {
+                var percent = Comparer<double>.Default.Compare(x.Percent, y.Percent);
+                return percent == 0 ? Comparer<string>.Default.Compare(x.Item, y.Item) : percent;
+            });
 
         /// <summary>
         ///     Total count of the counter instance.
@@ -42,23 +43,20 @@ namespace App.Metrics.Data
             Items = items;
         }
 
-        internal CounterValue(long count) : this(count, NoItems)
-        {
-        }
+        internal CounterValue(long count)
+            : this(count, NoItems) { }
 
-        public static bool operator ==(CounterValue left, CounterValue right)
-        {
-            return left.Equals(right);
-        }
+        public static bool operator ==(CounterValue left, CounterValue right) { return left.Equals(right); }
 
-        public static bool operator !=(CounterValue left, CounterValue right)
-        {
-            return !left.Equals(right);
-        }
+        public static bool operator !=(CounterValue left, CounterValue right) { return !left.Equals(right); }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
             return obj is CounterValue && Equals((CounterValue)obj);
         }
 
@@ -70,11 +68,7 @@ namespace App.Metrics.Data
             }
         }
 
-        public bool Equals(CounterValue other)
-        {
-            return Count == other.Count && Equals(Items, other.Items);
-        }
-
+        public bool Equals(CounterValue other) { return Count == other.Count && Equals(Items, other.Items); }
 
         public struct SetItem
         {
@@ -100,23 +94,21 @@ namespace App.Metrics.Data
                 Percent = percent;
             }
 
-            public static bool operator ==(SetItem left, SetItem right)
-            {
-                return left.Equals(right);
-            }
+            public MetricTags Tags => new MetricTags().FromSetItemString(Item);
 
-            public static bool operator !=(SetItem left, SetItem right)
-            {
-                return !left.Equals(right);
-            }
+            public static bool operator ==(SetItem left, SetItem right) { return left.Equals(right); }
+
+            public static bool operator !=(SetItem left, SetItem right) { return !left.Equals(right); }
 
             public override bool Equals(object obj)
             {
-                if (ReferenceEquals(null, obj)) return false;
+                if (ReferenceEquals(null, obj))
+                {
+                    return false;
+                }
+
                 return obj is SetItem && Equals((SetItem)obj);
             }
-
-            public MetricTags Tags => new MetricTags().FromSetItemString(Item);
 
             public override int GetHashCode()
             {
@@ -129,10 +121,7 @@ namespace App.Metrics.Data
                 }
             }
 
-            public bool Equals(SetItem other)
-            {
-                return Count == other.Count && string.Equals(Item, other.Item) && Percent.Equals(other.Percent);
-            }
+            public bool Equals(SetItem other) { return Count == other.Count && string.Equals(Item, other.Item) && Percent.Equals(other.Percent); }
         }
     }
 }

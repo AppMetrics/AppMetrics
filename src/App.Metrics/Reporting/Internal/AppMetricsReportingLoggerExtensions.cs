@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System;
 using System.Diagnostics;
@@ -8,38 +7,37 @@ using App.Metrics.Internal;
 using App.Metrics.Reporting.Interfaces;
 
 // ReSharper disable CheckNamespace
-
 namespace Microsoft.Extensions.Logging
-// ReSharper restore CheckNamespace
 {
+    // ReSharper restore CheckNamespace
     [AppMetricsExcludeFromCodeCoverage]
     internal static class AppMetricsReportingLoggerExtensions
     {
+        private static readonly Action<ILogger, string, double, Exception> ReportRanAction;
+        private static readonly Action<ILogger, string, Exception> ReportStartedAction;
+        private static readonly double TimestampToTicks = TimeSpan.TicksPerSecond / (double)Stopwatch.Frequency;
+
         static AppMetricsReportingLoggerExtensions()
         {
-            _reportStarted = LoggerMessage.Define<string>(
+            ReportStartedAction = LoggerMessage.Define<string>(
                 LogLevel.Information,
-                eventId: AppMetricsEventIds.Reports.Schedule,
-                formatString:
-                // ReSharper disable RedundantStringInterpolation
+                AppMetricsEventIds.Reports.Schedule,
                 $"Report {{reportType}} started");
-                // ReSharper restore RedundantStringInterpolation
 
-            _reportRan = LoggerMessage.Define<string, double>(
+            ReportRanAction = LoggerMessage.Define<string, double>(
                 LogLevel.Information,
-                eventId: AppMetricsEventIds.Reports.Schedule,
-                formatString:
-                // ReSharper disable RedundantStringInterpolation
+                AppMetricsEventIds.Reports.Schedule,
                 $"Report {{reportType}} ran in {{elapsedMilliseconds}}ms");
-                // ReSharper restore RedundantStringInterpolation
-
         }
 
         public static void ReportedStarted(this ILogger logger, IMetricReporter reporter)
         {
-            if (!logger.IsEnabled(LogLevel.Information)) return;
+            if (!logger.IsEnabled(LogLevel.Information))
+            {
+                return;
+            }
 
-            _reportStarted(logger, reporter.GetType().FullName, null);
+            ReportStartedAction(logger, reporter.GetType().FullName, null);
         }
 
         public static void ReportFailed(this ILogger logger, IMetricReporter reporter, Exception ex)
@@ -69,13 +67,20 @@ namespace Microsoft.Extensions.Logging
 
         public static void ReportRan(this ILogger logger, IMetricReporter reporter, long startTimestamp)
         {
-            if (!logger.IsEnabled(LogLevel.Information)) return;
-            if (startTimestamp == 0) return;
+            if (!logger.IsEnabled(LogLevel.Information))
+            {
+                return;
+            }
+
+            if (startTimestamp == 0)
+            {
+                return;
+            }
 
             var currentTimestamp = Stopwatch.GetTimestamp();
             var elapsed = new TimeSpan((long)(TimestampToTicks * (currentTimestamp - startTimestamp)));
 
-            _reportRan(logger, reporter.GetType().FullName, elapsed.TotalMilliseconds, null);
+            ReportRanAction(logger, reporter.GetType().FullName, elapsed.TotalMilliseconds, null);
         }
 
         public static void ReportRunning(this ILogger logger, IMetricReporter reporter)
@@ -103,12 +108,5 @@ namespace Microsoft.Extensions.Logging
                 public const int Schedule = MetricsStart + 2;
             }
         }
-
-
-        // ReSharper disable InconsistentNaming
-        private static readonly Action<ILogger, string, Exception> _reportStarted;
-        private static readonly Action<ILogger, string, double, Exception> _reportRan;
-        private static readonly double TimestampToTicks = TimeSpan.TicksPerSecond / (double)Stopwatch.Frequency;
-        // ReSharper restore InconsistentNaming
     }
 }

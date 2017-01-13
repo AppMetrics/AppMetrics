@@ -1,15 +1,13 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-
 using System.Linq;
 using System.Net;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.AspNetCore.Http
-// ReSharper restore CheckNamespace
 {
+    // ReSharper restore CheckNamespace
     internal static class HttpContextExtensions
     {
         private static readonly string MetricsCurrentRouteName = "__Mertics.CurrentRouteName__";
@@ -24,14 +22,11 @@ namespace Microsoft.AspNetCore.Http
             return context.Request.Method + " " + context.Items[MetricsCurrentRouteName];
         }
 
-        public static bool HasMetricsCurrentRouteName(this HttpContext context)
-        {
-            return context.Items.ContainsKey(MetricsCurrentRouteName);
-        }
+        public static bool HasMetricsCurrentRouteName(this HttpContext context) { return context.Items.ContainsKey(MetricsCurrentRouteName); }
 
         public static bool IsSuccessfulResponse(this HttpResponse httpResponse)
         {
-            return (httpResponse.StatusCode >= (int)HttpStatusCode.OK) && (httpResponse.StatusCode <= 299);
+            return httpResponse.StatusCode >= (int)HttpStatusCode.OK && httpResponse.StatusCode <= 299;
         }
 
         public static string OAuthClientId(this HttpContext httpContext)

@@ -11,8 +11,8 @@ using App.Metrics.Extensions.Middleware.Internal;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics
-// ReSharper restore CheckNamespace
 {
+    // ReSharper restore CheckNamespace
     public class ApdexHealthCheck : HealthCheck
     {
         private readonly Lazy<IMetrics> _metrics;

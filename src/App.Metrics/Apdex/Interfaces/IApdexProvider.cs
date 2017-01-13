@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using App.Metrics.Sampling.Interfaces;
 
@@ -19,6 +18,7 @@ namespace App.Metrics.Apdex.Interfaces
         ///     requests, the apdex score and the number of samples used to calculate the result.
         /// </summary>
         /// <param name="resetReservoir">if set to <c>true</c> [reset reservoir].</param>
+        /// <returns>The apdex snapshot</returns>
         ApdexSnapshot GetSnapshot(bool resetReservoir = false);
 
         /// <summary>

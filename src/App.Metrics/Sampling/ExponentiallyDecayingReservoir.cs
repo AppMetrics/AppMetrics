@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
+#pragma warning disable SA1515
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
+#pragma warning restore SA1515
 
 using System;
 using System.Collections.Generic;
@@ -45,10 +46,10 @@ namespace App.Metrics.Sampling
         private readonly int _sampleSize;
 
         private readonly SortedList<double, WeightedSample> _values;
-        private AtomicLong _count = new AtomicLong();
+        private AtomicLong _count = new AtomicLong(0);
         private bool _disposed;
 
-        private SpinLock _lock = new SpinLock();
+        private SpinLock _lock = default(SpinLock);
         private AtomicLong _startTime;
 
         /// <summary>
@@ -64,9 +65,7 @@ namespace App.Metrics.Sampling
         ///     value the more biased the reservoir will be towards newer values.
         /// </param>
         public ExponentiallyDecayingReservoir(int sampleSize, double alpha)
-            : this(sampleSize, alpha, new StopwatchClock(), new DefaultTaskScheduler())
-        {
-        }
+            : this(sampleSize, alpha, new StopwatchClock(), new DefaultTaskScheduler()) { }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ExponentiallyDecayingReservoir" /> class.
@@ -81,7 +80,7 @@ namespace App.Metrics.Sampling
         ///     The scheduler to to rescale, allowing decayed weights to be tracked. Really only provided here
         ///     for testing purposes.
         /// </param>
-        public ExponentiallyDecayingReservoir(int sampleSize, double alpha, IClock clock, IScheduler scheduler)            
+        public ExponentiallyDecayingReservoir(int sampleSize, double alpha, IClock clock, IScheduler scheduler)
         {
             _sampleSize = sampleSize;
             _alpha = alpha;
@@ -96,14 +95,16 @@ namespace App.Metrics.Sampling
         }
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="ExponentiallyDecayingReservoir"/> class.
+        ///     Finalizes an instance of the <see cref="ExponentiallyDecayingReservoir" /> class.
         /// </summary>
-        ~ExponentiallyDecayingReservoir()
-        {
-            Dispose(false);
-        }
+        ~ExponentiallyDecayingReservoir() { Dispose(false); }
 
-        /// <inheritdoc cref="IReservoir" />
+        /// <summary>
+        ///     Gets the size.
+        /// </summary>
+        /// <value>
+        ///     The size.
+        /// </value>
         public int Size => Math.Min(_sampleSize, (int)_count.GetValue());
 
         /// <summary>
@@ -129,7 +130,6 @@ namespace App.Metrics.Sampling
                 if (disposing)
                 {
                     // Free any other managed objects here.
-
                     _rescaleScheduler?.Dispose();
                 }
             }
@@ -149,6 +149,7 @@ namespace App.Metrics.Sampling
                 {
                     ResetReservoir();
                 }
+
                 return snapshot;
             }
             finally
@@ -179,10 +180,7 @@ namespace App.Metrics.Sampling
         }
 
         /// <inheritdoc cref="IReservoir" />
-        public void Update(long value, string userValue = null)
-        {
-            Update(value, userValue, _clock.Seconds);
-        }
+        public void Update(long value, string userValue = null) { Update(value, userValue, _clock.Seconds); }
 
         /// <summary>
         ///     A common feature of the above techniques—indeed, the key technique that
@@ -223,6 +221,7 @@ namespace App.Metrics.Sampling
                     var newSample = new WeightedSample(sample.Value, sample.UserValue, sample.Weight * scalingFactor);
                     _values[newKey] = newSample;
                 }
+
                 // make sure the counter is in sync with the number of stored samples.
                 _count.SetValue(_values.Count);
             }
@@ -253,6 +252,7 @@ namespace App.Metrics.Sampling
                 var sample = new WeightedSample(value, userValue, itemWeight);
 
                 var random = 0.0;
+
                 // Prevent division by 0
                 while (random.Equals(.0))
                 {
@@ -292,10 +292,7 @@ namespace App.Metrics.Sampling
         {
             public static readonly IComparer<double> Instance = new ReverseOrderDoubleComparer();
 
-            public int Compare(double x, double y)
-            {
-                return y.CompareTo(x);
-            }
+            public int Compare(double x, double y) { return y.CompareTo(x); }
         }
     }
 }

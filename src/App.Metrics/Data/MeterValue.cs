@@ -1,15 +1,14 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
+#pragma warning disable SA1515
+// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
-
+#pragma warning restore SA1515
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using App.Metrics.Data.Interfaces;
 
 namespace App.Metrics.Data
 {
@@ -18,22 +17,22 @@ namespace App.Metrics.Data
     /// </summary>
     public sealed class MeterValue
     {
-        public static readonly IComparer<SetItem> SetItemComparer = Comparer<SetItem>.Create((x, y) =>
-        {
-            var percent = Comparer<double>.Default.Compare(x.Percent, y.Percent);
-            return percent == 0 ? Comparer<string>.Default.Compare(x.Item, y.Item) : percent;
-        });
+        public static readonly IComparer<SetItem> SetItemComparer = Comparer<SetItem>.Create(
+            (x, y) =>
+            {
+                var percent = Comparer<double>.Default.Compare(x.Percent, y.Percent);
+                return percent == 0 ? Comparer<string>.Default.Compare(x.Item, y.Item) : percent;
+            });
 
-        public readonly long Count;
-        public readonly double FifteenMinuteRate;
-        public readonly double FiveMinuteRate;
-        public readonly SetItem[] Items;
-        public readonly double MeanRate;
-        public readonly double OneMinuteRate;
-        public readonly TimeUnit RateUnit;
         private static readonly SetItem[] NoItems = new SetItem[0];
 
-        public MeterValue(long count, double meanRate, double oneMinuteRate, double fiveMinuteRate, double fifteenMinuteRate, TimeUnit rateUnit,
+        public MeterValue(
+            long count,
+            double meanRate,
+            double oneMinuteRate,
+            double fiveMinuteRate,
+            double fifteenMinuteRate,
+            TimeUnit rateUnit,
             SetItem[] items)
         {
             if (items == null)
@@ -55,6 +54,20 @@ namespace App.Metrics.Data
         {
         }
 
+        public long Count { get; }
+
+        public double FifteenMinuteRate { get; }
+
+        public double FiveMinuteRate { get; }
+
+        public SetItem[] Items { get; }
+
+        public double MeanRate { get; }
+
+        public double OneMinuteRate { get; }
+
+        public TimeUnit RateUnit { get; }
+
         public MeterValue Scale(TimeUnit unit)
         {
             if (unit == RateUnit)
@@ -63,7 +76,8 @@ namespace App.Metrics.Data
             }
 
             var factor = unit.ScalingFactorFor(TimeUnit.Seconds);
-            return new MeterValue(Count,
+            return new MeterValue(
+                Count,
                 MeanRate * factor,
                 OneMinuteRate * factor,
                 FiveMinuteRate * factor,
@@ -87,19 +101,17 @@ namespace App.Metrics.Data
 
             public MetricTags Tags => new MetricTags().FromSetItemString(Item);
 
-            public static bool operator ==(SetItem left, SetItem right)
-            {
-                return left.Equals(right);
-            }
+            public static bool operator ==(SetItem left, SetItem right) { return left.Equals(right); }
 
-            public static bool operator !=(SetItem left, SetItem right)
-            {
-                return !left.Equals(right);
-            }
+            public static bool operator !=(SetItem left, SetItem right) { return !left.Equals(right); }
 
             public override bool Equals(object obj)
             {
-                if (ReferenceEquals(null, obj)) return false;
+                if (ReferenceEquals(null, obj))
+                {
+                    return false;
+                }
+
                 return obj is SetItem && Equals((SetItem)obj);
             }
 
@@ -119,19 +131,5 @@ namespace App.Metrics.Data
                 return string.Equals(Item, other.Item) && Percent.Equals(other.Percent) && Equals(Value, other.Value);
             }
         }
-    }
-
-    /// <summary>
-    ///     Combines the value of the meter with the defined unit and the rate unit at which the value is reported.
-    /// </summary>
-    public sealed class MeterValueSource : MetricValueSource<MeterValue>
-    {
-        public MeterValueSource(string name, IMetricValueProvider<MeterValue> value, Unit unit, TimeUnit rateUnit, MetricTags tags)
-            : base(name, new ScaledValueProvider<MeterValue>(value, v => v.Scale(rateUnit)), unit, tags)
-        {
-            RateUnit = rateUnit;
-        }
-
-        public TimeUnit RateUnit { get; private set; }
     }
 }

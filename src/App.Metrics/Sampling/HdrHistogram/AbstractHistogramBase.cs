@@ -1,14 +1,18 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-// Ported to.NET Standard Library by Allan Hardy
+#pragma warning disable SA1515
+// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
+// Ported/Refactored to .NET Standard Library by Allan Hardy
+#pragma warning restore SA1515
 
 using System;
 using App.Metrics.Concurrency;
 
 namespace App.Metrics.Sampling.HdrHistogram
 {
+#pragma warning disable
+
     // ReSharper disable ArrangeModifiersOrder
     // ReSharper disable ArrangeThisQualifier
     // ReSharper disable InconsistentNaming
@@ -55,7 +59,7 @@ namespace App.Metrics.Sampling.HdrHistogram
                 throw new ArgumentException("lowestDiscernibleValue must be >= 1");
             }
 
-            if ((numberOfSignificantValueDigits < 0) || (numberOfSignificantValueDigits > 5))
+            if (numberOfSignificantValueDigits < 0 || numberOfSignificantValueDigits > 5)
             {
                 throw new ArgumentException("numberOfSignificantValueDigits must be between 0 and 5");
             }
@@ -69,7 +73,10 @@ namespace App.Metrics.Sampling.HdrHistogram
             recordedValuesIterator = new RecordedValuesIterator(this as AbstractHistogram);
         }
     }
+
+#pragma warning restore
 }
+
 // ReSharper restore ArrangeModifiersOrder
 // ReSharper restore ArrangeThisQualifier
 // ReSharper restore InconsistentNaming

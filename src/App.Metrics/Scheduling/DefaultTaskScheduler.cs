@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System;
 using System.Threading;
@@ -18,7 +17,7 @@ namespace App.Metrics.Scheduling
         private CancellationTokenSource _token;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultTaskScheduler"/> class.
+        ///     Initializes a new instance of the <see cref="DefaultTaskScheduler" /> class.
         /// </summary>
         /// <param name="allowMulitpleTasks">
         ///     if set to <c>true</c> allows more than one task to be created at a time, otherwise
@@ -43,7 +42,6 @@ namespace App.Metrics.Scheduling
                 if (disposing)
                 {
                     // Free any other managed objects here.
-
                     if (_token != null)
                     {
                         _token.Cancel();
@@ -56,7 +54,9 @@ namespace App.Metrics.Scheduling
         }
 
         // <inheritdoc />
-        public Task Interval(TimeSpan pollInterval, TaskCreationOptions taskCreationOptions, 
+        public Task Interval(
+            TimeSpan pollInterval,
+            TaskCreationOptions taskCreationOptions,
             Action action)
         {
             ThrowIfInvalid(pollInterval);
@@ -66,40 +66,40 @@ namespace App.Metrics.Scheduling
                 return _task;
             }
 
-            _task = Task.Factory.StartNew(() =>
-            {
-                for (;;)
+            _task = Task.Factory.StartNew(
+                () =>
                 {
-                    if (_token.Token.WaitCancellationRequested(pollInterval))
+                    do
                     {
-                        break;
-                    }
+                        if (_token.Token.WaitCancellationRequested(pollInterval))
+                        {
+                            break;
+                        }
 
-                    try
-                    {
-                        action();
+                        try
+                        {
+                            action();
+                        }
+                        catch (Exception)
+                        {
+                            _token.Cancel();
+                        }
                     }
-                    catch (Exception)
-                    {
-                        _token.Cancel();
-                    }
-                }
-            }, _token.Token, taskCreationOptions, TaskScheduler.Default);
+                    while (true);
+                },
+                _token.Token,
+                taskCreationOptions,
+                TaskScheduler.Default);
 
             return _task;
         }
 
-        private bool HasStarted()
-        {
-            return _task != null && (_task.IsCompleted == false ||
-                                     _task.Status == TaskStatus.Running ||
-                                     _task.Status == TaskStatus.WaitingToRun ||
-                                     _task.Status == TaskStatus.WaitingForActivation);
-        }
-
         // <inheritdoc />
-        public Task Interval(TimeSpan pollInterval, TaskCreationOptions taskCreationOptions, 
-            Action action, CancellationToken token)
+        public Task Interval(
+            TimeSpan pollInterval,
+            TaskCreationOptions taskCreationOptions,
+            Action action,
+            CancellationToken token)
         {
             ThrowIfInvalid(pollInterval);
 
@@ -110,25 +110,30 @@ namespace App.Metrics.Scheduling
 
             _token = CancellationTokenSource.CreateLinkedTokenSource(token);
 
-            _task = Task.Factory.StartNew(() =>
-            {
-                for (;;)
+            _task = Task.Factory.StartNew(
+                () =>
                 {
-                    if (token.WaitCancellationRequested(pollInterval))
+                    do
                     {
-                        break;
-                    }
+                        if (token.WaitCancellationRequested(pollInterval))
+                        {
+                            break;
+                        }
 
-                    try
-                    {
-                        action();
+                        try
+                        {
+                            action();
+                        }
+                        catch (Exception)
+                        {
+                            _token.Cancel();
+                        }
                     }
-                    catch (Exception)
-                    {
-                        _token.Cancel();
-                    }
-                }
-            }, token, taskCreationOptions, TaskScheduler.Default);
+                    while (true);
+                },
+                token,
+                taskCreationOptions,
+                TaskScheduler.Default);
 
             return _task;
         }
@@ -146,12 +151,20 @@ namespace App.Metrics.Scheduling
 
         private bool CheckDisposed() => _disposed;
 
+        private bool HasStarted()
+        {
+            return _task != null && (_task.IsCompleted == false ||
+                                     _task.Status == TaskStatus.Running ||
+                                     _task.Status == TaskStatus.WaitingToRun ||
+                                     _task.Status == TaskStatus.WaitingForActivation);
+        }
+
         private void ThrowIfInvalid(TimeSpan pollInterval)
         {
             if (pollInterval <= TimeSpan.Zero)
             {
                 throw new ArgumentOutOfRangeException(nameof(pollInterval));
-            }            
+            }
         }
     }
 }

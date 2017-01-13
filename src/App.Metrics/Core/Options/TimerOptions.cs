@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using App.Metrics.Internal;
 
 namespace App.Metrics.Core.Options
@@ -18,13 +17,19 @@ namespace App.Metrics.Core.Options
         }
 
         /// <summary>
-        ///     The duration unit used for visualization which defaults to Milliseconds
+        ///     Gets or sets the duration unit used for visualization which defaults to Milliseconds
         /// </summary>
+        /// <value>
+        ///     The duration unit.
+        /// </value>
         public TimeUnit DurationUnit { get; set; }
 
         /// <summary>
-        ///     The rate unit used for visualization which defaults to Minutes
+        ///     Gets or sets the rate unit used for visualization which defaults to Minutes
         /// </summary>
+        /// <value>
+        ///     The rate unit.
+        /// </value>
         public TimeUnit RateUnit { get; set; }
     }
 }

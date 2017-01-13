@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Routing.Template;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.AspNetCore.Routing
-// ReSharper restore CheckNamespace
 {
+    // ReSharper restore CheckNamespace
     public class AspNetCoreRouteTemplateResolver : IRouteNameResolver
     {
         public Task<string> ResolveMatchingTemplateRouteAsync(RouteData routeData)

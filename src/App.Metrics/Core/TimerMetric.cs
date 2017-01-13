@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
+#pragma warning disable SA1515
+// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
+#pragma warning restore SA1515
 
 using System;
 using App.Metrics.Concurrency;
@@ -24,7 +25,7 @@ namespace App.Metrics.Core
         private bool _disposed;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TimerMetric" /> class.
+        ///     Initializes a new instance of the <see cref="TimerMetric" /> class.
         /// </summary>
         /// <param name="samplingType">Type of the sampling to use to generate the resevoir of values.</param>
         /// <param name="sampleSize">The number of samples to keep in the sampling reservoir</param>
@@ -34,9 +35,7 @@ namespace App.Metrics.Core
         /// </param>
         /// <param name="clock">The clock to use to measure processing duration.</param>
         public TimerMetric(SamplingType samplingType, int sampleSize, double alpha, IClock clock)
-            : this(new HistogramMetric(samplingType, sampleSize, alpha), new MeterMetric(clock), clock)
-        {
-        }
+            : this(new HistogramMetric(samplingType, sampleSize, alpha), new MeterMetric(clock), clock) { }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="TimerMetric" /> class.
@@ -44,9 +43,7 @@ namespace App.Metrics.Core
         /// <param name="histogram">The histogram implementation to use.</param>
         /// <param name="clock">The clock to use to measure processing duration.</param>
         public TimerMetric(IHistogramMetric histogram, IClock clock)
-            : this(histogram, new MeterMetric(clock), clock)
-        {
-        }
+            : this(histogram, new MeterMetric(clock), clock) { }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="TimerMetric" /> class.
@@ -54,12 +51,10 @@ namespace App.Metrics.Core
         /// <param name="reservoir">The reservoir implementation to use for sampling values to generate the histogram.</param>
         /// <param name="clock">The clock to use to measure processing duration.</param>
         public TimerMetric(IReservoir reservoir, IClock clock)
-            : this(new HistogramMetric(reservoir), new MeterMetric(clock), clock)
-        {
-        }
+            : this(new HistogramMetric(reservoir), new MeterMetric(clock), clock) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TimerMetric" /> class.
+        ///     Initializes a new instance of the <see cref="TimerMetric" /> class.
         /// </summary>
         /// <param name="samplingType">Type of the sampling to use to generate the resevoir of values.</param>
         /// <param name="sampleSize">The number of samples to keep in the sampling reservoir used by the histogram</param>
@@ -70,9 +65,7 @@ namespace App.Metrics.Core
         /// <param name="meter">The meter implementation to use to genreate the rate of events over time.</param>
         /// <param name="clock">The clock to use to measure processing duration.</param>
         public TimerMetric(SamplingType samplingType, int sampleSize, double alpha, IMeterMetric meter, IClock clock)
-            : this(new HistogramMetric(samplingType, sampleSize, alpha), meter, clock)
-        {
-        }
+            : this(new HistogramMetric(samplingType, sampleSize, alpha), meter, clock) { }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="TimerMetric" /> class.
@@ -87,19 +80,13 @@ namespace App.Metrics.Core
             _histogram = histogram;
         }
 
-        ~TimerMetric()
-        {
-            Dispose(false);
-        }
+        ~TimerMetric() { Dispose(false); }
 
         /// <inheritdoc />
         public TimerValue Value => GetValue();
 
         /// <inheritdoc />
-        public long CurrentTime()
-        {
-            return _clock.Nanoseconds;
-        }
+        public long CurrentTime() { return _clock.Nanoseconds; }
 
         public void Dispose()
         {
@@ -114,7 +101,6 @@ namespace App.Metrics.Core
                 if (disposing)
                 {
                     // Free any other managed objects here.
-
                     _histogram?.Dispose();
 
                     _meter?.Dispose();
@@ -135,21 +121,25 @@ namespace App.Metrics.Core
         public TimerValue GetValue(bool resetMetric = false)
         {
             var total = resetMetric ? _totalRecordedTime.GetAndReset() : _totalRecordedTime.GetValue();
-            return new TimerValue(_meter.GetValue(resetMetric), _histogram.GetValue(resetMetric), _activeSessionsCounter.GetValue(), total,
+            return new TimerValue(
+                _meter.GetValue(resetMetric),
+                _histogram.GetValue(resetMetric),
+                _activeSessionsCounter.GetValue(),
+                total,
                 TimeUnit.Nanoseconds);
         }
 
         /// <inheritdoc />
-        public TimerContext NewContext(string userValue = null)
-        {
-            return new TimerContext(this, userValue);
-        }
+        public TimerContext NewContext(string userValue = null) { return new TimerContext(this, userValue); }
 
         /// <inheritdoc />
         public void Record(long duration, TimeUnit unit, string userValue = null)
         {
             var nanos = unit.ToNanoseconds(duration);
-            if (nanos < 0) return;
+            if (nanos < 0)
+            {
+                return;
+            }
 
             _histogram.Update(nanos, userValue);
             _meter.Mark(userValue);

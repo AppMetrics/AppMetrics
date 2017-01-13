@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +9,7 @@ namespace App.Metrics.Data
 {
     public struct EnvironmentInfo
     {
+        public static EnvironmentInfo Empty;
         private readonly IEnumerable<EnvironmentInfoEntry> _entries;
 
         public EnvironmentInfo(IDictionary<string, string> entries)
@@ -25,20 +25,21 @@ namespace App.Metrics.Data
             EntryAssemblyVersion = entries.FirstOrDefault(e => string.Equals(e.Key, "EntryAssemblyVersion", StringComparison.OrdinalIgnoreCase)).Value;
 
             _entries = new[]
-            {
-                new EnvironmentInfoEntry("MachineName", MachineName),
-                new EnvironmentInfoEntry("ProcessName", ProcessName),
-                new EnvironmentInfoEntry("OS", OperatingSystem),
-                new EnvironmentInfoEntry("OSVersion", OperatingSystemVersion),
-                new EnvironmentInfoEntry("CPUCount", ProcessorCount),
-                new EnvironmentInfoEntry("HostName", HostName),
-                new EnvironmentInfoEntry("LocalTime", LocalTimeString),
-                new EnvironmentInfoEntry("EntryAssemblyName", EntryAssemblyName),
-                new EnvironmentInfoEntry("EntryAssemblyVersion", EntryAssemblyVersion)
-            };
+                       {
+                           new EnvironmentInfoEntry("MachineName", MachineName),
+                           new EnvironmentInfoEntry("ProcessName", ProcessName),
+                           new EnvironmentInfoEntry("OS", OperatingSystem),
+                           new EnvironmentInfoEntry("OSVersion", OperatingSystemVersion),
+                           new EnvironmentInfoEntry("CPUCount", ProcessorCount),
+                           new EnvironmentInfoEntry("HostName", HostName),
+                           new EnvironmentInfoEntry("LocalTime", LocalTimeString),
+                           new EnvironmentInfoEntry("EntryAssemblyName", EntryAssemblyName),
+                           new EnvironmentInfoEntry("EntryAssemblyVersion", EntryAssemblyVersion)
+                       };
         }
 
-        public EnvironmentInfo(string entryAssemblyName,
+        public EnvironmentInfo(
+            string entryAssemblyName,
             string entryAssemblyVersion,
             string hostName,
             string localTimeString,
@@ -59,20 +60,18 @@ namespace App.Metrics.Data
             ProcessorCount = processorCount;
 
             _entries = new[]
-            {
-                new EnvironmentInfoEntry("MachineName", MachineName),
-                new EnvironmentInfoEntry("ProcessName", ProcessName),
-                new EnvironmentInfoEntry("OS", OperatingSystem),
-                new EnvironmentInfoEntry("OSVersion", OperatingSystemVersion),
-                new EnvironmentInfoEntry("CPUCount", ProcessorCount),
-                new EnvironmentInfoEntry("HostName", HostName),
-                new EnvironmentInfoEntry("LocalTime", LocalTimeString),
-                new EnvironmentInfoEntry("EntryAssemblyName", EntryAssemblyName),
-                new EnvironmentInfoEntry("EntryAssemblyVersion", EntryAssemblyVersion)
-            };
+                       {
+                           new EnvironmentInfoEntry("MachineName", MachineName),
+                           new EnvironmentInfoEntry("ProcessName", ProcessName),
+                           new EnvironmentInfoEntry("OS", OperatingSystem),
+                           new EnvironmentInfoEntry("OSVersion", OperatingSystemVersion),
+                           new EnvironmentInfoEntry("CPUCount", ProcessorCount),
+                           new EnvironmentInfoEntry("HostName", HostName),
+                           new EnvironmentInfoEntry("LocalTime", LocalTimeString),
+                           new EnvironmentInfoEntry("EntryAssemblyName", EntryAssemblyName),
+                           new EnvironmentInfoEntry("EntryAssemblyVersion", EntryAssemblyVersion)
+                       };
         }
-
-        public static EnvironmentInfo Empty { get; } = new EnvironmentInfo();
 
         public IEnumerable<EnvironmentInfoEntry> Entries => _entries ?? Enumerable.Empty<EnvironmentInfoEntry>();
 

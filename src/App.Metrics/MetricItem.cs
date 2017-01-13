@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System.Collections.Concurrent;
 using System.Linq;
 
@@ -23,10 +22,7 @@ namespace App.Metrics
     /// <seealso cref="App.Metrics.Metric" />
     public sealed class MetricItem : ConcurrentDictionary<string, string>
     {
-        public override string ToString()
-        {
-            return string.Join("|", this.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Key + ":" + kvp.Value));
-        }
+        public override string ToString() { return string.Join("|", this.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Key + ":" + kvp.Value)); }
 
         public MetricItem With(string tag, string value)
         {

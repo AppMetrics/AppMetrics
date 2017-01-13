@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using App.Metrics.Configuration;
 using App.Metrics.Core.Interfaces;
@@ -28,15 +27,27 @@ namespace App.Metrics.Core
         /// <param name="registry">The registry storing all metric data.</param>
         /// <param name="advanced">The implementation providing access to more advanced metric options</param>
         /// <exception cref="System.ArgumentNullException">
+        ///     When any options, registry and/or advanced is null
         /// </exception>
         public DefaultMetrics(
             AppMetricsOptions options,
             IMetricsRegistry registry,
             IAdvancedMetrics advanced)
         {
-            if (options == null) throw new ArgumentNullException(nameof(options));
-            if (registry == null) throw new ArgumentNullException(nameof(registry));
-            if (advanced == null) throw new ArgumentNullException(nameof(advanced));
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            if (registry == null)
+            {
+                throw new ArgumentNullException(nameof(registry));
+            }
+
+            if (advanced == null)
+            {
+                throw new ArgumentNullException(nameof(advanced));
+            }
 
             _registry = registry;
             Advanced = advanced;
@@ -107,22 +118,6 @@ namespace App.Metrics.Core
         public void Increment(CounterOptions options, string item)
         {
             _registry.Counter(options, () => Advanced.BuildCounter(options)).Increment(item);
-        }
-
-        /// <inheritdoc />
-        public void Increment(CounterOptions options, Action<MetricItem> itemSetup)
-        {
-            var item = new MetricItem();
-            itemSetup(item);
-            _registry.Counter(options, () => Advanced.BuildCounter(options)).Increment(item);
-        }
-
-        /// <inheritdoc />
-        public void Increment(CounterOptions options, long amount, Action<MetricItem> itemSetup)
-        {
-            var item = new MetricItem();
-            itemSetup(item);
-            _registry.Counter(options, () => Advanced.BuildCounter(options)).Increment(item, amount);
         }
 
         /// <inheritdoc />

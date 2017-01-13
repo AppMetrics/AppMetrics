@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System;
 using System.Collections.Generic;
@@ -71,20 +70,20 @@ namespace App.Metrics.Reporting.Internal
             }
 
             _successCounter = new CounterOptions
-            {
-                Context = Constants.InternalMetricsContext,
-                MeasurementUnit = Unit.Items,
-                ResetOnReporting = true,
-                Name = "report_success"
-            };
+                              {
+                                  Context = Constants.InternalMetricsContext,
+                                  MeasurementUnit = Unit.Items,
+                                  ResetOnReporting = true,
+                                  Name = "report_success"
+                              };
 
             _failedCounter = new CounterOptions
-            {
-                Context = Constants.InternalMetricsContext,
-                MeasurementUnit = Unit.Items,
-                ResetOnReporting = true,
-                Name = "report_failed"
-            };
+                             {
+                                 Context = Constants.InternalMetricsContext,
+                                 MeasurementUnit = Unit.Items,
+                                 ResetOnReporting = true,
+                                 Name = "report_failed"
+                             };
         }
 
         public void RunReports(IMetrics context, CancellationToken token)
@@ -125,16 +124,24 @@ namespace App.Metrics.Reporting.Internal
             }
         }
 
-        private Task ScheduleReport(IMetrics context, CancellationToken token,
-            KeyValuePair<Type, IMetricReporter> metricReporter, IReporterProvider provider)
+        private Task ScheduleReport(
+            IMetrics context,
+            CancellationToken token,
+            KeyValuePair<Type, IMetricReporter> metricReporter,
+            IReporterProvider provider)
         {
-            return _scheduler.Interval(metricReporter.Value.ReportInterval, TaskCreationOptions.LongRunning,
+            return _scheduler.Interval(
+                metricReporter.Value.ReportInterval,
+                TaskCreationOptions.LongRunning,
                 async () =>
                 {
                     try
                     {
-                        var result = await _reportGenerator.GenerateAsync(metricReporter.Value, context,
-                            provider.Filter, token);
+                        var result = await _reportGenerator.GenerateAsync(
+                            metricReporter.Value,
+                            context,
+                            provider.Filter,
+                            token);
 
                         if (result)
                         {
@@ -145,7 +152,7 @@ namespace App.Metrics.Reporting.Internal
                             _metrics.Increment(_failedCounter, metricReporter.Key.Name);
                             _logger.ReportFailed(metricReporter.Value);
                         }
-                    }                    
+                    }
                     catch (Exception ex)
                     {
                         _metrics.Increment(_failedCounter, metricReporter.Key.Name);

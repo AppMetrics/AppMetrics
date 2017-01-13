@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using App.Metrics.Core.Interfaces;
 
@@ -19,8 +18,11 @@ namespace App.Metrics
         }
 
         /// <summary>
-        ///     Provides the currently elapsed time from when the instance has been created
+        ///     Gets the currently elapsed time from when the instance has been created
         /// </summary>
+        /// <value>
+        ///     The elapsed.
+        /// </value>
         public TimeSpan Elapsed
         {
             get
@@ -29,6 +31,7 @@ namespace App.Metrics
                 {
                     return TimeSpan.Zero;
                 }
+
                 var milliseconds = TimeUnit.Nanoseconds.Convert(TimeUnit.Milliseconds, _apdex.CurrentTime() - _start);
                 return TimeSpan.FromMilliseconds(milliseconds);
             }
@@ -36,7 +39,10 @@ namespace App.Metrics
 
         public void Dispose()
         {
-            if (_apdex == null) return;
+            if (_apdex == null)
+            {
+                return;
+            }
 
             var end = _apdex.EndRecording();
 

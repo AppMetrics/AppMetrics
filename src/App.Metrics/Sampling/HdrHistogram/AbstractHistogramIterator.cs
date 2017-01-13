@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-// Ported to.NET Standard Library by Allan Hardy
+#pragma warning disable SA1515
+// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
+// Ported/Refactored to .NET Standard Library by Allan Hardy
+#pragma warning restore SA1515
 
 using System;
 
@@ -10,6 +12,7 @@ namespace App.Metrics.Sampling.HdrHistogram
 {
     // ReSharper disable ArrangeModifiersOrder
     // ReSharper disable ArrangeThisQualifier
+#pragma warning disable
 
     /// <summary>
     ///     Used for iterating through histogram values.
@@ -51,7 +54,8 @@ namespace App.Metrics.Sampling.HdrHistogram
             {
                 throw new InvalidOperationException("ConcurrentModificationException");
             }
-            return (TotalCountToCurrentIndex < ArrayTotalCount);
+
+            return TotalCountToCurrentIndex < ArrayTotalCount;
         }
 
         /**
@@ -76,22 +80,32 @@ namespace App.Metrics.Sampling.HdrHistogram
                 if (ReachedIterationLevel())
                 {
                     var valueIteratedTo = GetValueIteratedTo();
-                    CurrentIterationValue.Set(valueIteratedTo, _prevValueIteratedTo, CountAtThisValue,
-                        (TotalCountToCurrentIndex - _totalCountToPrevIndex), TotalCountToCurrentIndex,
-                        _totalValueToCurrentIndex, ((100.0 * TotalCountToCurrentIndex) / ArrayTotalCount),
-                        GetPercentileIteratedTo(), _integerToDoubleValueConversionRatio);
+                    CurrentIterationValue.Set(
+                        valueIteratedTo,
+                        _prevValueIteratedTo,
+                        CountAtThisValue,
+                        TotalCountToCurrentIndex - _totalCountToPrevIndex,
+                        TotalCountToCurrentIndex,
+                        _totalValueToCurrentIndex,
+                        100.0 * TotalCountToCurrentIndex / ArrayTotalCount,
+                        GetPercentileIteratedTo(),
+                        _integerToDoubleValueConversionRatio);
                     _prevValueIteratedTo = valueIteratedTo;
                     _totalCountToPrevIndex = TotalCountToCurrentIndex;
+
                     // move the next iteration level forward:
                     IncrementIterationLevel();
                     if (Histogram.getTotalCount() != SavedHistogramTotalRawCount)
                     {
                         throw new InvalidOperationException("ConcurrentModificationException");
                     }
+
                     return CurrentIterationValue;
                 }
+
                 IncrementSubBucket();
             }
+
             // Should not reach here. But possible for overflowed histograms under certain conditions
             throw new IndexOutOfRangeException();
         }
@@ -118,31 +132,26 @@ namespace App.Metrics.Sampling.HdrHistogram
             CurrentIterationValue.Reset();
         }
 
-        private bool ExhaustedSubBuckets()
-        {
-            return (CurrentIndex >= Histogram.countsArrayLength);
-        }
+        private bool ExhaustedSubBuckets() { return CurrentIndex >= Histogram.countsArrayLength; }
 
-        double GetPercentileIteratedTo()
-        {
-            return (100.0 * this.TotalCountToCurrentIndex) / ArrayTotalCount;
-        }
+        double GetPercentileIteratedTo() { return 100.0 * this.TotalCountToCurrentIndex / ArrayTotalCount; }
 
-        long GetValueIteratedTo()
-        {
-            return Histogram.highestEquivalentValue(CurrentValueAtIndex);
-        }
+        long GetValueIteratedTo() { return Histogram.highestEquivalentValue(CurrentValueAtIndex); }
 
         void IncrementSubBucket()
         {
             _freshSubBucket = true;
+
             // Take on the next index:
             CurrentIndex++;
             CurrentValueAtIndex = Histogram.ValueFromIndex(CurrentIndex);
+
             // Figure out the value at the next index (used by some iterators):
             NextValueAtIndex = Histogram.ValueFromIndex(CurrentIndex + 1);
         }
     }
 }
+#pragma warning restore
+
 // ReSharper restore ArrangeModifiersOrder
 // ReSharper restore ArrangeThisQualifier

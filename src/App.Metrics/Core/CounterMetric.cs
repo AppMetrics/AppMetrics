@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
+#pragma warning disable SA1515
+// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
+#pragma warning disable SA1515
 
 using System;
 using System.Collections.Concurrent;
@@ -28,21 +29,16 @@ namespace App.Metrics.Core
                 {
                     return new CounterValue(_counter.GetValue());
                 }
+
                 return GetValueWithSetItems();
             }
         }
 
         /// <inheritdoc />
-        public void Decrement()
-        {
-            _counter.Decrement();
-        }
+        public void Decrement() { _counter.Decrement(); }
 
         /// <inheritdoc />
-        public void Decrement(long value)
-        {
-            _counter.Add(-value);
-        }
+        public void Decrement(long value) { _counter.Add(-value); }
 
         /// <inheritdoc />
         public void Decrement(string item)
@@ -59,39 +55,29 @@ namespace App.Metrics.Core
         }
 
         /// <inheritdoc />
-        public void Decrement(MetricItem item)
-        {
-            Decrement(item.ToString());
-        }
+        public void Decrement(MetricItem item) { Decrement(item.ToString()); }
 
         /// <inheritdoc />
-        public void Decrement(MetricItem item, long amount)
-        {
-            Decrement(item.ToString(), amount);
-        }
+        public void Decrement(MetricItem item, long amount) { Decrement(item.ToString(), amount); }
 
         /// <inheritdoc />
         public CounterValue GetValue(bool resetMetric = false)
         {
             var value = Value;
+
             if (resetMetric)
             {
                 Reset();
             }
+
             return value;
         }
 
         /// <inheritdoc />
-        public void Increment()
-        {
-            _counter.Increment();
-        }
+        public void Increment() { _counter.Increment(); }
 
         /// <inheritdoc />
-        public void Increment(long value)
-        {
-            _counter.Add(value);
-        }
+        public void Increment(long value) { _counter.Add(value); }
 
         /// <inheritdoc />
         public void Increment(string item)
@@ -108,16 +94,10 @@ namespace App.Metrics.Core
         }
 
         /// <inheritdoc />
-        public void Increment(MetricItem item)
-        {
-            Increment(item.ToString());
-        }
+        public void Increment(MetricItem item) { Increment(item.ToString()); }
 
         /// <inheritdoc />
-        public void Increment(MetricItem item, long amount)
-        {
-            Increment(item.ToString(), amount);
-        }
+        public void Increment(MetricItem item, long amount) { Increment(item.ToString(), amount); }
 
         /// <inheritdoc />
         public void Reset()
@@ -135,11 +115,13 @@ namespace App.Metrics.Core
 
         private CounterValue GetValueWithSetItems()
         {
-            Debug.Assert(_setCounters != null);
+            Debug.Assert(_setCounters != null, "set counters not null");
+
             var total = _counter.GetValue();
 
             var items = new CounterValue.SetItem[_setCounters.Count];
             var index = 0;
+
             foreach (var item in _setCounters)
             {
                 var itemValue = item.Value.GetValue();
@@ -164,7 +146,9 @@ namespace App.Metrics.Core
             {
                 Interlocked.CompareExchange(ref _setCounters, new ConcurrentDictionary<string, StripedLongAdder>(), null);
             }
-            Debug.Assert(_setCounters != null);
+
+            Debug.Assert(_setCounters != null, "set counters not null");
+
             return _setCounters.GetOrAdd(item, v => new StripedLongAdder());
         }
     }

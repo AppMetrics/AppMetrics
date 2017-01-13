@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System.Collections.Generic;
 using System.Linq;
@@ -19,23 +18,19 @@ namespace App.Metrics.Extensions
             var jsonTimers = source.Timers.ToMetric();
             var jsonApdexScores = source.ApdexScores.ToMetric();
 
-
             return new MetricsContext
-            {
-                Counters = jsonCoutners,
-                Meters = jsonMeters,
-                Gauges = jsonGauges,
-                Histograms = jsonHistograms,
-                Timers = jsonTimers,
-                Context = source.Context,
-                ApdexScores = jsonApdexScores
-            };
+                   {
+                       Counters = jsonCoutners,
+                       Meters = jsonMeters,
+                       Gauges = jsonGauges,
+                       Histograms = jsonHistograms,
+                       Timers = jsonTimers,
+                       Context = source.Context,
+                       ApdexScores = jsonApdexScores
+                   };
         }
 
-        public static IEnumerable<MetricsContext> ToMetric(this IEnumerable<MetricsContextValueSource> source)
-        {
-            return source.Select(ToMetric);
-        }
+        public static IEnumerable<MetricsContext> ToMetric(this IEnumerable<MetricsContextValueSource> source) { return source.Select(ToMetric); }
 
         public static IEnumerable<MetricsContextValueSource> ToMetricValueSource(this IEnumerable<MetricsContext> source)
         {

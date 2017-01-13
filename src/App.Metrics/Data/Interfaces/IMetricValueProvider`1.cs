@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 namespace App.Metrics.Data.Interfaces
 {
     /// <summary>
@@ -12,8 +11,11 @@ namespace App.Metrics.Data.Interfaces
     public interface IMetricValueProvider<out T>
     {
         /// <summary>
-        ///     The current value of the metric.
+        ///     Gets the current value of the metric.
         /// </summary>
+        /// <value>
+        ///     The value.
+        /// </value>
         T Value { get; }
 
         /// <summary>

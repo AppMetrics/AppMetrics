@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Options;
@@ -10,7 +9,7 @@ using App.Metrics.Utils;
 namespace App.Metrics
 {
     /// <summary>
-    ///     Provides access to record application metrics.
+    ///     Gets the record application metrics.
     /// </summary>
     /// <remarks>
     ///     This is the entry point to the application's metrics registry
@@ -18,17 +17,18 @@ namespace App.Metrics
     public interface IMetrics
     {
         /// <summary>
-        ///     Provides access to more advanced application metrics operations
+        ///     Gets the more advanced application metrics operations
         /// </summary>
+        /// <value>
+        ///     The advanced.
+        /// </value>
         /// <remarks>
-        ///     <para>
-        ///         - Provides access to the regsitered <see cref="IClock" /> used for timing
-        ///         - Allows retrieval of a snapshot of metrics data recorded via the <see cref="IMetricsDataProvider" /> and
-        ///         reseting the data at runtime
-        ///         - Allows retrieval of the current health of the application via the <see cref="IHealthStatusProvider" />
-        ///         - Allows instantiation of a metric without performing the option
-        ///         - Allows disabling of metrics recording at runtime
-        ///     </para>
+        ///     -Gets the the regsitered <see cref="IClock" /> used for timing
+        ///     - Allows retrieval of a snapshot of metrics data recorded via the <see cref="IMetricsDataProvider" /> and
+        ///     reseting the data at runtime
+        ///     - Allows retrieval of the current health of the application via the <see cref="IHealthStatusProvider" />
+        ///     - Allows instantiation of a metric without performing the option
+        ///     - Allows disabling of metrics recording at runtime
         /// </remarks>
         IAdvancedMetrics Advanced { get; }
 
@@ -45,8 +45,19 @@ namespace App.Metrics
         /// <param name="amount">The amount to decrement the counter.</param>
         void Decrement(CounterOptions options, long amount);
 
+        /// <summary>
+        ///     Decrements the specified options.
+        /// </summary>
+        /// <param name="options">The options.</param>
+        /// <param name="item">The item.</param>
         void Decrement(CounterOptions options, string item);
 
+        /// <summary>
+        ///     Decrements the specified options.
+        /// </summary>
+        /// <param name="options">The options.</param>
+        /// <param name="amount">The amount.</param>
+        /// <param name="item">The item.</param>
         void Decrement(CounterOptions options, long amount, string item);
 
         /// <summary>
@@ -114,7 +125,14 @@ namespace App.Metrics
         /// <param name="amount">The amount to mark the meter.</param>
         void Mark(MeterOptions options, long amount);
 
-        //TODO: AH - keeping this method?
+        /// <summary>
+        ///     Marks a <see cref="IMeterMetric" /> which increments an increment-only counter and measures the rate of events
+        ///     overtime, will mark as 1.
+        /// </summary>
+        /// <param name="options">The details of the meter that is being marked</param>
+        void Mark(MeterOptions options);
+
+        // TODO: AH - keeping this method?
         void Mark(MeterOptions options, string item);
 
         /// <summary>
@@ -135,13 +153,6 @@ namespace App.Metrics
         /// <param name="amount">The amount to mark the meter.</param>
         /// <param name="item">The <see cref="MetricItem" /> within the set to mark.</param>
         void Mark(MeterOptions options, long amount, Action<MetricItem> item);
-
-        /// <summary>
-        ///     Marks a <see cref="IMeterMetric" /> which increments an increment-only counter and measures the rate of events over
-        ///     time
-        /// </summary>
-        /// <param name="options">The details of the meter that is being marked</param>
-        void Mark(MeterOptions options);
 
         /// <summary>
         ///     Records a <see cref="ITimerMetric" /> which measures the time taken to process an action using a timer metric.

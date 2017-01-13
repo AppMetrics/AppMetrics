@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System;
 using System.Collections.Generic;
@@ -10,10 +9,9 @@ using App.Metrics.Core;
 using App.Metrics.Internal;
 
 // ReSharper disable CheckNamespace
-
 namespace Microsoft.Extensions.Logging
-// ReSharper restore CheckNamespace
 {
+    // ReSharper restore CheckNamespace
     [AppMetricsExcludeFromCodeCoverage]
     internal static class AppMetricsCoreLoggerExtensions
     {
@@ -21,39 +19,40 @@ namespace Microsoft.Extensions.Logging
         {
             _healthCheckRegistered = LoggerMessage.Define<string>(
                 LogLevel.Information,
-                eventId: AppMetricsEventIds.HealthChecks.Registration,
-                // ReSharper disable RedundantStringInterpolation
-                formatString: $"Health Check Registered: {{name}}");
-            // ReSharper restore RedundantStringInterpolation
-
+                AppMetricsEventIds.HealthChecks.Registration,
+                $"Health Check Registered: {{name}}");
             _healthGetStatusExecuted = LoggerMessage.Define<double, int>(
                 LogLevel.Information,
-                eventId: AppMetricsEventIds.HealthChecks.Status,
-                formatString:
+                AppMetricsEventIds.HealthChecks.Status,
                 $"Executed {nameof(HealthStatus)}, in {{elapsedMilliseconds}}ms, IsHealthy: True. {{checksPassed}} health check results passed.");
 
             _healthGetStatusExecutedFailed = LoggerMessage.Define<double, int, int, int, IEnumerable<string>, IEnumerable<string>>(
                 LogLevel.Information,
-                eventId: AppMetricsEventIds.HealthChecks.Status,
-                formatString:
+                AppMetricsEventIds.HealthChecks.Status,
                 $"Executed {nameof(HealthStatus)}, in {{elapsedMilliseconds}}ms, IsHealthy: False. {{checksPassed}} health check results passed. {{checksFailed}} health check results failed. Failed Checks: {{failedChecks}}. {{checksDegraded}} health check results degredated. Degraded Checks: {{degredatedChecks}}");
 
             _healthGetStatusExecutedNoResults = LoggerMessage.Define(
                 LogLevel.Information,
-                eventId: AppMetricsEventIds.HealthChecks.Status,
-                formatString: $"Executed {nameof(HealthStatus)}, 0 health check results.");
+                AppMetricsEventIds.HealthChecks.Status,
+                $"Executed {nameof(HealthStatus)}, 0 health check results.");
         }
 
-        internal static void GettingMetricsData(this ILogger logger)
-        {
-            logger.LogDebug(AppMetricsEventIds.Metrics.Data, "GettingMetricsData");
-        }
+        internal static void GettingMetricsData(this ILogger logger) { logger.LogDebug(AppMetricsEventIds.Metrics.Data, "GettingMetricsData"); }
 
-        internal static void HealthCheckGetStatusExecuted(this ILogger logger, HealthStatus healthStatus,
+        internal static void HealthCheckGetStatusExecuted(
+            this ILogger logger,
+            HealthStatus healthStatus,
             long startTimestamp)
         {
-            if (!logger.IsEnabled(LogLevel.Information)) return;
-            if (startTimestamp == 0) return;
+            if (!logger.IsEnabled(LogLevel.Information))
+            {
+                return;
+            }
+
+            if (startTimestamp == 0)
+            {
+                return;
+            }
 
             var currentTimestamp = Stopwatch.GetTimestamp();
             var elapsed = new TimeSpan((long)(TimestampToTicks * (currentTimestamp - startTimestamp)));
@@ -72,8 +71,15 @@ namespace Microsoft.Extensions.Logging
                 var failedChecks = healthStatus.Results.Where(h => h.Check.Status.IsUnhealthy()).Select(h => h.Name);
                 var degradedChecks = healthStatus.Results.Where(h => h.Check.Status.IsDegraded()).Select(h => h.Name);
 
-                _healthGetStatusExecutedFailed(logger, elapsed.TotalMilliseconds, checksFailed,  checksDegraded,
-                    checksPassed, degradedChecks, failedChecks, null);
+                _healthGetStatusExecutedFailed(
+                    logger,
+                    elapsed.TotalMilliseconds,
+                    checksFailed,
+                    checksDegraded,
+                    checksPassed,
+                    degradedChecks,
+                    failedChecks,
+                    null);
             }
 
             _healthGetStatusExecutedNoResults(logger, null);
@@ -84,15 +90,9 @@ namespace Microsoft.Extensions.Logging
             logger.LogDebug(AppMetricsEventIds.HealthChecks.Status, "Executing HealthCheck Get Status");
         }
 
-        internal static void HealthCheckRegistered(this ILogger logger, string name)
-        {
-            _healthCheckRegistered(logger, name, null);
-        }
+        internal static void HealthCheckRegistered(this ILogger logger, string name) { _healthCheckRegistered(logger, name, null); }
 
-        internal static void RetrievedMetricsData(this ILogger logger)
-        {
-            logger.LogDebug(AppMetricsEventIds.Metrics.Data, "RetrievedMetricsData");
-        }
+        internal static void RetrievedMetricsData(this ILogger logger) { logger.LogDebug(AppMetricsEventIds.Metrics.Data, "RetrievedMetricsData"); }
 
         internal static class AppMetricsEventIds
         {
@@ -114,14 +114,19 @@ namespace Microsoft.Extensions.Logging
                 public const int Schedule = MetricsStart + 2;
             }
         }
-
+#pragma warning disable SA1201
 
         // ReSharper disable InconsistentNaming
         private static readonly Action<ILogger, string, Exception> _healthCheckRegistered;
         private static readonly Action<ILogger, double, int, Exception> _healthGetStatusExecuted;
-        private static readonly Action<ILogger, double, int, int,int, IEnumerable<string>, IEnumerable<string>, Exception> _healthGetStatusExecutedFailed;
+
+        private static readonly Action<ILogger, double, int, int, int, IEnumerable<string>, IEnumerable<string>, Exception>
+            _healthGetStatusExecutedFailed;
+
         private static readonly Action<ILogger, Exception> _healthGetStatusExecutedNoResults;
         private static readonly double TimestampToTicks = TimeSpan.TicksPerSecond / (double)Stopwatch.Frequency;
+
         // ReSharper restore InconsistentNaming
+#pragma warning disable SA1201
     }
 }

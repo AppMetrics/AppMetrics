@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -14,13 +13,9 @@ namespace App.Metrics
     public class MetricTags : ConcurrentDictionary<string, string>
     {
         public MetricTags(Dictionary<string, string> tags)
-            : base(tags)
-        {
-        }
+            : base(tags) { }
 
-        public MetricTags()
-        {
-        }
+        public MetricTags() { }
 
         public static MetricTags None => new MetricTags();
 

@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System;
 using App.Metrics;
@@ -21,10 +20,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 // ReSharper disable CheckNamespace
-
 namespace Microsoft.Extensions.DependencyInjection
-// ReSharper restore CheckNamespace
 {
+    // ReSharper restore CheckNamespace
     public static class MetricsHostBuilderExtensionsCore
     {
         public static IMetricsHostBuilder AddRequiredPlatformServices(this IMetricsHostBuilder builder)
@@ -52,22 +50,23 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.TryAddSingleton<IMetricDataSerializer, NoOpMetricDataSerializer>();
             builder.Services.TryAddSingleton<IHealthStatusSerializer, NoOpHealthStatusSerializer>();
             builder.Services.TryAddSingleton<IAdvancedMetrics, DefaultAdvancedMetrics>();
-            builder.Services.TryAddSingleton<IMetricsRegistry>(provider =>
-            {
-                var options = provider.GetRequiredService<AppMetricsOptions>();
-
-                if (!options.MetricsEnabled)
+            builder.Services.TryAddSingleton<IMetricsRegistry>(
+                provider =>
                 {
-                    return new NullMetricsRegistry();
-                }
+                    var options = provider.GetRequiredService<AppMetricsOptions>();
 
-                var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
-                var clock = provider.GetRequiredService<IClock>();
-                var envBuilder = provider.GetRequiredService<EnvironmentInfoProvider>();
-                var newContextRegistry = provider.GetRequiredService<Func<string, IMetricContextRegistry>>();
+                    if (!options.MetricsEnabled)
+                    {
+                        return new NullMetricsRegistry();
+                    }
 
-                return new DefaultMetricsRegistry(loggerFactory, options, clock, envBuilder, newContextRegistry);
-            });
+                    var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
+                    var clock = provider.GetRequiredService<IClock>();
+                    var envBuilder = provider.GetRequiredService<EnvironmentInfoProvider>();
+                    var newContextRegistry = provider.GetRequiredService<Func<string, IMetricContextRegistry>>();
+
+                    return new DefaultMetricsRegistry(loggerFactory, options, clock, envBuilder, newContextRegistry);
+                });
 
             builder.Services.TryAddSingleton<IMetrics, DefaultMetrics>();
             builder.Services.TryAddSingleton(provider => new Lazy<IMetrics>(provider.GetRequiredService<IMetrics>));

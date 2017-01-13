@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using App.Metrics.Sampling.Interfaces;
 
@@ -36,14 +35,14 @@ namespace App.Metrics.Core.Interfaces
     ///         </item>
     ///         <item>
     ///             <description>
-    ///             Frustrated: Greater than 4 T
+    ///                 Frustrated: Greater than 4 T
     ///             </description>
     ///         </item>
     ///     </list>
     /// </summary>
     /// <seealso>
     ///     <cref>App.Metrics.IResetableMetric</cref>
-    /// </seealso>    
+    /// </seealso>
     public interface IApdex : IResetableMetric
     {
         /// <summary>

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,19 +19,23 @@ namespace App.Metrics.Internal.Test
 
         internal TestTaskScheduler(IClock clock)
         {
-            if (clock == null) throw new ArgumentNullException(nameof(clock));
+            if (clock == null)
+            {
+                throw new ArgumentNullException(nameof(clock));
+            }
 
             _clock = clock;
             _clock.Advanced += (s, l) => RunIfNeeded();
         }
 
-        public void Dispose()
-        {
-        }
+        public void Dispose() { }
 
         // <inheritdoc />
-        public Task Interval(TimeSpan pollInterval, TaskCreationOptions taskCreationOptions, 
-            Action action, CancellationToken token)
+        public Task Interval(
+            TimeSpan pollInterval,
+            TaskCreationOptions taskCreationOptions,
+            Action action,
+            CancellationToken token)
         {
             _pollInterval = pollInterval;
             _lastRun = _clock.Seconds;
@@ -41,16 +44,13 @@ namespace App.Metrics.Internal.Test
         }
 
         // <inheritdoc />
-        public Task Interval(TimeSpan pollInterval, TaskCreationOptions taskCreationOptions, 
-            Action action)
-        {
-            return Interval(pollInterval, taskCreationOptions, action, CancellationToken.None);
-        }
+        public Task Interval(
+            TimeSpan pollInterval,
+            TaskCreationOptions taskCreationOptions,
+            Action action) { return Interval(pollInterval, taskCreationOptions, action, CancellationToken.None); }
 
         // <inheritdoc />
-        public void Stop()
-        {
-        }
+        public void Stop() { }
 
         private void RunIfNeeded()
         {
@@ -66,6 +66,6 @@ namespace App.Metrics.Internal.Test
                     _action();
                 }
             }
-        }    
+        }
     }
 }

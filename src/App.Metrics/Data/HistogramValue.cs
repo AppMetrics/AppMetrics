@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
+#pragma warning disable SA1515
+// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
+#pragma warning restore SA1515
 
-
-using App.Metrics.Data.Interfaces;
 using App.Metrics.Sampling.Interfaces;
 
 namespace App.Metrics.Data
@@ -16,26 +15,9 @@ namespace App.Metrics.Data
     /// </summary>
     public sealed class HistogramValue
     {
-        public readonly long Count;
-        public readonly string LastUserValue;
-
-        public readonly double LastValue;
-        public readonly double Max;
-        public readonly string MaxUserValue;
-        public readonly double Mean;
-        public readonly double Median;
-        public readonly double Min;
-        public readonly string MinUserValue;
-        public readonly double Percentile75;
-        public readonly double Percentile95;
-        public readonly double Percentile98;
-        public readonly double Percentile99;
-        public readonly double Percentile999;
-        public readonly int SampleSize;
-        public readonly double StdDev;
-
         public HistogramValue(double lastValue, string lastUserValue, ISnapshot snapshot)
-            : this(snapshot.Count,
+            : this(
+                snapshot.Count,
                 lastValue,
                 lastUserValue,
                 snapshot.Max,
@@ -50,11 +32,10 @@ namespace App.Metrics.Data
                 snapshot.Percentile98,
                 snapshot.Percentile99,
                 snapshot.Percentile999,
-                snapshot.Size)
-        {
-        }
+                snapshot.Size) { }
 
-        public HistogramValue(long count,
+        public HistogramValue(
+            long count,
             double lastValue,
             string lastUserValue,
             double max,
@@ -89,6 +70,38 @@ namespace App.Metrics.Data
             SampleSize = sampleSize;
         }
 
+        public long Count { get; }
+
+        public string LastUserValue { get; }
+
+        public double LastValue { get; }
+
+        public double Max { get; }
+
+        public string MaxUserValue { get; }
+
+        public double Mean { get; }
+
+        public double Median { get; }
+
+        public double Min { get; }
+
+        public string MinUserValue { get; }
+
+        public double Percentile75 { get; }
+
+        public double Percentile95 { get; }
+
+        public double Percentile98 { get; }
+
+        public double Percentile99 { get; }
+
+        public double Percentile999 { get; }
+
+        public int SampleSize { get; }
+
+        public double StdDev { get; }
+
         public HistogramValue Scale(double factor)
         {
             if (factor == 1.0d)
@@ -96,7 +109,8 @@ namespace App.Metrics.Data
                 return this;
             }
 
-            return new HistogramValue(Count,
+            return new HistogramValue(
+                Count,
                 LastValue * factor,
                 LastUserValue,
                 Max * factor,
@@ -112,17 +126,6 @@ namespace App.Metrics.Data
                 Percentile99 * factor,
                 Percentile999 * factor,
                 SampleSize);
-        }
-    }
-
-    /// <summary>
-    ///     Combines the value of the histogram with the defined unit for the value.
-    /// </summary>
-    public sealed class HistogramValueSource : MetricValueSource<HistogramValue>
-    {
-        public HistogramValueSource(string name, IMetricValueProvider<HistogramValue> valueProvider, Unit unit, MetricTags tags)
-            : base(name, valueProvider, unit, tags)
-        {
         }
     }
 }

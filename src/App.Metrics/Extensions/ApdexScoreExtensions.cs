@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System.Collections.Generic;
 using System.Linq;
@@ -10,23 +9,20 @@ namespace App.Metrics.Extensions
 {
     public static class ApdexScoreExtensions
     {
-        public static IEnumerable<ApdexScore> ToMetric(this IEnumerable<ApdexValueSource> source)
-        {
-            return source.Select(ToMetric);
-        }
+        public static IEnumerable<ApdexScore> ToMetric(this IEnumerable<ApdexValueSource> source) { return source.Select(ToMetric); }
 
         public static ApdexScore ToMetric(this ApdexValueSource source)
         {
             return new ApdexScore
-            {
-                Name = source.Name,
-                Score = source.Value.Score,
-                SampleSize = source.Value.SampleSize,
-                Satisfied = source.Value.Satisfied,
-                Tolerating = source.Value.Tolerating,
-                Frustrating = source.Value.Frustrating,
-                Tags = source.Tags
-            };
+                   {
+                       Name = source.Name,
+                       Score = source.Value.Score,
+                       SampleSize = source.Value.SampleSize,
+                       Satisfied = source.Value.Satisfied,
+                       Tolerating = source.Value.Tolerating,
+                       Frustrating = source.Value.Frustrating,
+                       Tags = source.Tags
+                   };
         }
 
         public static ApdexValueSource ToMetricValueSource(this ApdexScore source)

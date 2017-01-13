@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using App.Metrics.Apdex.Interfaces;
 using App.Metrics.Internal;
@@ -30,9 +29,7 @@ namespace App.Metrics.Apdex
         /// </remarks>
         /// <param name="reservoir">The reservoir used to sample values in order to caclulate an apdex score.</param>
         public ApdexProvider(IReservoir reservoir)
-            : this(reservoir, Constants.ReservoirSampling.DefaultApdexTSeconds)
-        {
-        }
+            : this(reservoir, Constants.ReservoirSampling.DefaultApdexTSeconds) { }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ApdexProvider" /> class.
@@ -46,10 +43,7 @@ namespace App.Metrics.Apdex
         }
 
         // <inheritdoc />
-        ~ApdexProvider()
-        {
-            Dispose(false);
-        }
+        ~ApdexProvider() { Dispose(false); }
 
         // <inheritdoc />
         public void Dispose()
@@ -89,15 +83,9 @@ namespace App.Metrics.Apdex
         }
 
         // <inheritdoc />
-        public void Reset()
-        {
-            _reservoir.Reset();
-        }
+        public void Reset() { _reservoir.Reset(); }
 
         // <inheritdoc />
-        public void Update(long value)
-        {
-            _reservoir.Update(value);
-        }
+        public void Update(long value) { _reservoir.Update(value); }
     }
 }

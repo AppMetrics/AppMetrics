@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
+#pragma warning disable SA1515
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
+#pragma warning restore SA1515
 
 using System;
 using System.Linq;
@@ -32,18 +33,20 @@ namespace App.Metrics.Sampling
     {
         private readonly UserValueWrapper[] _values;
 
-        private AtomicLong _count = new AtomicLong();
+        private AtomicLong _count = new AtomicLong(0);
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="UniformReservoir" /> class.
         /// </summary>
         /// <param name="sampleSize">The number of samples to keep in the sampling reservoir</param>
-        public UniformReservoir(int sampleSize)
-        {
-            _values = new UserValueWrapper[sampleSize];
-        }
+        public UniformReservoir(int sampleSize) { _values = new UserValueWrapper[sampleSize]; }
 
-        /// <inheritdoc cref="IReservoir" />
+        /// <summary>
+        ///     Gets the size.
+        /// </summary>
+        /// <value>
+        ///     The size.
+        /// </value>
         public int Size => Math.Min((int)_count.GetValue(), _values.Length);
 
         /// <inheritdoc cref="IReservoir" />
@@ -70,7 +73,8 @@ namespace App.Metrics.Sampling
             var minValue = snapshotValues[0].UserValue;
             var maxValue = snapshotValues[size - 1].UserValue;
 
-            return new UniformSnapshot(_count.GetValue(),
+            return new UniformSnapshot(
+                _count.GetValue(),
                 snapshotValues.Select(v => v.Value),
                 valuesAreSorted: true,
                 minUserValue: minValue,
@@ -78,13 +82,11 @@ namespace App.Metrics.Sampling
         }
 
         /// <inheritdoc cref="IReservoir" />
-        public void Reset()
-        {
-            _count.SetValue(0L);
-        }
+        public void Reset() { _count.SetValue(0L); }
 
         /// <summary>
-        ///     Updates the sample set adding the specified value using <see href="http://www.cs.umd.edu/~samir/498/vitter.pdf">Vitter's Algorithm R</see>.
+        ///     Updates the sample set adding the specified value using
+        ///     <see href="http://www.cs.umd.edu/~samir/498/vitter.pdf">Vitter's Algorithm R</see>.
         /// </summary>
         /// Algorithm R pseudo code
         /// <example>
@@ -100,7 +102,7 @@ namespace App.Metrics.Sampling
         ///             j := random(1, i)   -- important: inclusive range
         ///             if j <= k
         ///             R[j] := S[i]
-        ///     ]]>        
+        ///     ]]>
         /// </code>
         /// </example>
         /// <param name="value">The value to add to the sample set.</param>

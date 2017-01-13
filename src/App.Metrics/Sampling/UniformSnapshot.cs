@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
+#pragma warning disable SA1515
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
+#pragma warning restore SA1515
 
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,11 @@ namespace App.Metrics.Sampling
         /// <param name="valuesAreSorted">if set to <c>true</c> [values are already sorted].</param>
         /// <param name="minUserValue">The minimum user value.</param>
         /// <param name="maxUserValue">The maximum user value.</param>
-        public UniformSnapshot(long count, IEnumerable<long> values, bool valuesAreSorted = false, string minUserValue = null,
+        public UniformSnapshot(
+            long count,
+            IEnumerable<long> values,
+            bool valuesAreSorted = false,
+            string minUserValue = null,
             string maxUserValue = null)
         {
             Count = count;
@@ -45,46 +50,46 @@ namespace App.Metrics.Sampling
             MaxUserValue = maxUserValue;
         }
 
-        /// <inheritdoc cref="ISnapshot"/>
+        /// <inheritdoc cref="ISnapshot" />
         public long Count { get; }
 
-        /// <inheritdoc cref="ISnapshot"/>
+        /// <inheritdoc cref="ISnapshot" />
         public long Max => _values.LastOrDefault();
 
-        /// <inheritdoc cref="ISnapshot"/>
+        /// <inheritdoc cref="ISnapshot" />
         public string MaxUserValue { get; }
 
-        /// <inheritdoc cref="ISnapshot"/>
+        /// <inheritdoc cref="ISnapshot" />
         public double Mean => Size == 0 ? 0.0 : _values.Average();
 
-        /// <inheritdoc cref="ISnapshot"/>
+        /// <inheritdoc cref="ISnapshot" />
         public double Median => GetValue(0.5d);
 
-        /// <inheritdoc cref="ISnapshot"/>
+        /// <inheritdoc cref="ISnapshot" />
         public long Min => _values.FirstOrDefault();
 
-        /// <inheritdoc cref="ISnapshot"/>
+        /// <inheritdoc cref="ISnapshot" />
         public string MinUserValue { get; }
 
-        /// <inheritdoc cref="ISnapshot"/>
+        /// <inheritdoc cref="ISnapshot" />
         public double Percentile75 => GetValue(0.75d);
 
-        /// <inheritdoc cref="ISnapshot"/>
+        /// <inheritdoc cref="ISnapshot" />
         public double Percentile95 => GetValue(0.95d);
 
-        /// <inheritdoc cref="ISnapshot"/>
+        /// <inheritdoc cref="ISnapshot" />
         public double Percentile98 => GetValue(0.98d);
 
-        /// <inheritdoc cref="ISnapshot"/>
+        /// <inheritdoc cref="ISnapshot" />
         public double Percentile99 => GetValue(0.99d);
 
-        /// <inheritdoc cref="ISnapshot"/>
+        /// <inheritdoc cref="ISnapshot" />
         public double Percentile999 => GetValue(0.999d);
 
-        /// <inheritdoc cref="ISnapshot"/>
+        /// <inheritdoc cref="ISnapshot" />
         public int Size => _values.Length;
 
-        /// <inheritdoc cref="ISnapshot"/>
+        /// <inheritdoc cref="ISnapshot" />
         public double StdDev
         {
             get
@@ -97,14 +102,14 @@ namespace App.Metrics.Sampling
                 var avg = _values.Average();
                 var sum = _values.Sum(d => Math.Pow(d - avg, 2));
 
-                return Math.Sqrt((sum) / (_values.Length - 1));
+                return Math.Sqrt(sum / (_values.Length - 1));
             }
         }
 
-        /// <inheritdoc cref="ISnapshot"/>
+        /// <inheritdoc cref="ISnapshot" />
         public IEnumerable<long> Values => _values;
 
-        /// <inheritdoc cref="ISnapshot"/>
+        /// <inheritdoc cref="ISnapshot" />
         public double GetValue(double quantile)
         {
             if (quantile < 0.0 || quantile > 1.0 || double.IsNaN(quantile))
@@ -133,7 +138,9 @@ namespace App.Metrics.Sampling
             double lower = _values[index - 1];
             double upper = _values[index];
 
-            return lower + (pos - Math.Floor(pos)) * (upper - lower);
+            // ReSharper disable ArrangeRedundantParentheses
+            return lower + ((pos - Math.Floor(pos)) * (upper - lower));
+            // ReSharper restore ArrangeRedundantParentheses
         }
     }
 }

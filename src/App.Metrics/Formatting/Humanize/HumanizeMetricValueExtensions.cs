@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System.Globalization;
 using System.Linq;
@@ -11,6 +10,16 @@ namespace App.Metrics.Formatting.Humanize
 {
     public static class HumanizeMetricValueExtensions
     {
+        public static void HumanizeApdexScore(this StringBuilder sb, ApdexValueSource apdex)
+        {
+            sb.AppendLine();
+            sb.AppendLine("Score".FormatReadableMetricValue(apdex.Value.Score.ToString(CultureInfo.CurrentCulture)));
+            sb.AppendLine("Sample Size".FormatReadableMetricValue(apdex.Value.SampleSize.ToString(CultureInfo.CurrentCulture)));
+            sb.AppendLine("Satisfied".FormatReadableMetricValue(apdex.Value.Satisfied.ToString(CultureInfo.CurrentCulture)));
+            sb.AppendLine("Tolerating".FormatReadableMetricValue(apdex.Value.Tolerating.ToString(CultureInfo.CurrentCulture)));
+            sb.AppendLine("Frustrating".FormatReadableMetricValue(apdex.Value.Frustrating.ToString(CultureInfo.CurrentCulture)));
+        }
+
         public static void HumanizeCounter(this StringBuilder sb, CounterValueSource counter)
         {
             sb.AppendLine();
@@ -26,19 +35,9 @@ namespace App.Metrics.Formatting.Humanize
             foreach (var keyValue in counter.Value.Items.Select((x, i) => new { Value = x, Index = i }))
             {
                 var key = $"Item {keyValue.Index}";
-                var value = $"{keyValue.Value.Percent:00.00}% {keyValue.Value.Count,5} {counter.Unit.Name} [{keyValue.Value.Item}]";
+                var value = $"{keyValue.Value.Percent:00.00}% {keyValue.Value.Count, 5} {counter.Unit.Name} [{keyValue.Value.Item}]";
                 sb.AppendLine(key.FormatReadableMetricValue(value));
             }
-        }
-
-        public static void HumanizeApdexScore(this StringBuilder sb, ApdexValueSource apdex)
-        {
-            sb.AppendLine();
-            sb.AppendLine("Score".FormatReadableMetricValue(apdex.Value.Score.ToString(CultureInfo.CurrentCulture)));
-            sb.AppendLine("Sample Size".FormatReadableMetricValue(apdex.Value.SampleSize.ToString(CultureInfo.CurrentCulture)));
-            sb.AppendLine("Satisfied".FormatReadableMetricValue(apdex.Value.Satisfied.ToString(CultureInfo.CurrentCulture)));
-            sb.AppendLine("Tolerating".FormatReadableMetricValue(apdex.Value.Tolerating.ToString(CultureInfo.CurrentCulture)));
-            sb.AppendLine("Frustrating".FormatReadableMetricValue(apdex.Value.Frustrating.ToString(CultureInfo.CurrentCulture)));
         }
 
         public static void HumanizeGauge(this StringBuilder sb, GaugeValueSource gauge)
@@ -100,7 +99,7 @@ namespace App.Metrics.Formatting.Humanize
             foreach (var keyValue in value.Items.Select((x, i) => new { Value = x, Index = i }))
             {
                 var key = $"Item {keyValue.Index}";
-                var itemValue = $"{keyValue.Value.Percent:00.00}% {keyValue.Value.Value.Count,5} {unit.Name} [{keyValue.Value.Item}]";
+                var itemValue = $"{keyValue.Value.Percent:00.00}% {keyValue.Value.Value.Count, 5} {unit.Name} [{keyValue.Value.Item}]";
                 sb.AppendLine(key.FormatReadableMetricValue(itemValue));
                 sb.HumanizeMeter(keyValue.Value.Value, unit);
             }

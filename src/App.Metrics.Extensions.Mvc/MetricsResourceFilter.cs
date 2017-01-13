@@ -13,8 +13,8 @@ using Microsoft.Extensions.Logging;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.AspNetCore.Mvc.Filters
-// ReSharper restore CheckNamespace
 {
+    // ReSharper restore CheckNamespace
     public class MetricsResourceFilter : IAsyncResourceFilter
     {
         private readonly IRouteNameResolver _routeNameResolver;

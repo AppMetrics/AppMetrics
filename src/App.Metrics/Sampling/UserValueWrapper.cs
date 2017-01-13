@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
+#pragma warning disable SA1515
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
+#pragma warning restore SA1515
 
 using System.Collections.Generic;
 
@@ -12,7 +13,7 @@ namespace App.Metrics.Sampling
     public struct UserValueWrapper
     {
         public static readonly IComparer<UserValueWrapper> Comparer = new UserValueComparer();
-        public static readonly UserValueWrapper Empty = new UserValueWrapper();
+        public static readonly UserValueWrapper Empty = default(UserValueWrapper);
         public readonly string UserValue;
 
         public readonly long Value;
@@ -23,19 +24,17 @@ namespace App.Metrics.Sampling
             UserValue = userValue;
         }
 
-        public static bool operator ==(UserValueWrapper left, UserValueWrapper right)
-        {
-            return left.Equals(right);
-        }
+        public static bool operator ==(UserValueWrapper left, UserValueWrapper right) { return left.Equals(right); }
 
-        public static bool operator !=(UserValueWrapper left, UserValueWrapper right)
-        {
-            return !left.Equals(right);
-        }
+        public static bool operator !=(UserValueWrapper left, UserValueWrapper right) { return !left.Equals(right); }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
             return obj is UserValueWrapper && Equals((UserValueWrapper)obj);
         }
 
@@ -47,17 +46,11 @@ namespace App.Metrics.Sampling
             }
         }
 
-        public bool Equals(UserValueWrapper other)
-        {
-            return string.Equals(UserValue, other.UserValue) && Value == other.Value;
-        }
+        public bool Equals(UserValueWrapper other) { return string.Equals(UserValue, other.UserValue) && Value == other.Value; }
 
         private class UserValueComparer : IComparer<UserValueWrapper>
         {
-            public int Compare(UserValueWrapper x, UserValueWrapper y)
-            {
-                return Comparer<long>.Default.Compare(x.Value, y.Value);
-            }
+            public int Compare(UserValueWrapper x, UserValueWrapper y) { return Comparer<long>.Default.Compare(x.Value, y.Value); }
         }
     }
 }

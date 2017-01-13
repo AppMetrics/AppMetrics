@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using App.Metrics.Apdex;
 using App.Metrics.Apdex.Interfaces;
@@ -22,9 +21,9 @@ namespace App.Metrics.Core
     /// </seealso>
     public sealed class ApdexMetric : IApdexMetric
     {
+        private readonly bool _allowWarmup;
         private readonly IApdexProvider _apdexProvider;
         private readonly IClock _clock;
-        private readonly bool _allowWarmup;
         private bool _disposed;
 
         /// <summary>
@@ -67,7 +66,7 @@ namespace App.Metrics.Core
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="TimerMetric" /> class.
+        ///     Initializes a new instance of the <see cref="ApdexMetric" /> class.
         /// </summary>
         /// <param name="apdexProvider">The apdexProvider implementation to use for sampling values to generate the apdex score.</param>
         /// <param name="clock">The clock to use to measure processing duration.</param>
@@ -95,10 +94,7 @@ namespace App.Metrics.Core
             _allowWarmup = allowWarmup;
         }
 
-        ~ApdexMetric()
-        {
-            Dispose(false);
-        }
+        ~ApdexMetric() { Dispose(false); }
 
         /// <inheritdoc />
         public ApdexValue Value => GetValue();
@@ -141,8 +137,10 @@ namespace App.Metrics.Core
 
             var totalSamples = snapshot.SatisfiedSize + snapshot.ToleratingSize + snapshot.FrustratingSize;
 
-            var apdex = (snapshot.SatisfiedSize + (double)snapshot.ToleratingSize / 2) / totalSamples;
+            // ReSharper disable ArrangeRedundantParentheses
+            var apdex = (snapshot.SatisfiedSize + ((double)snapshot.ToleratingSize / 2)) / totalSamples;
 
+            // ReSharper restore ArrangeRedundantParentheses
             if (resetMetric)
             {
                 Reset();

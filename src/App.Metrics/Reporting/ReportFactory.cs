@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using System.Collections.Generic;
 using App.Metrics.Reporting.Interfaces;
@@ -14,8 +13,8 @@ namespace App.Metrics.Reporting
 {
     public sealed class ReportFactory : IReportFactory
     {
-        private readonly IMetrics _metrics;
         private readonly ILoggerFactory _loggerFactory;
+        private readonly IMetrics _metrics;
         private readonly Dictionary<Type, IReporterProvider> _providers = new Dictionary<Type, IReporterProvider>();
         private readonly object _syncLock = new object();
 
@@ -43,19 +42,10 @@ namespace App.Metrics.Reporting
             }
         }
 
-        public IReporter CreateReporter(IScheduler scheduler)
-        {
-            return new Reporter(this, _metrics, scheduler, _loggerFactory);
-        }
+        public IReporter CreateReporter(IScheduler scheduler) { return new Reporter(this, _metrics, scheduler, _loggerFactory); }
 
-        public IReporter CreateReporter()
-        {
-            return CreateReporter(new DefaultTaskScheduler());
-        }
+        public IReporter CreateReporter() { return CreateReporter(new DefaultTaskScheduler()); }
 
-        internal Dictionary<Type, IReporterProvider> GetProviders()
-        {
-            return _providers;
-        }
+        internal Dictionary<Type, IReporterProvider> GetProviders() { return _providers; }
     }
 }

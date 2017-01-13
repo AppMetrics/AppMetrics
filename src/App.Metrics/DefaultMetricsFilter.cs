@@ -1,12 +1,10 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Data;
-using App.Metrics.Internal;
 
 namespace App.Metrics
 {
@@ -16,7 +14,6 @@ namespace App.Metrics
     /// <seealso cref="App.Metrics.IMetricsFilter" />
     public sealed class DefaultMetricsFilter : IMetricsFilter
     {
-        public static IMetricsFilter All = new NoOpMetricsFilter();
         private Predicate<string> _context;
         private Predicate<string> _name;
         private HashSet<string> _tagKeys;
@@ -55,7 +52,7 @@ namespace App.Metrics
         ///     Determines whether the specified context is match.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns></returns>
+        /// <returns>true if the context matches</returns>
         public bool IsMatch(string context)
         {
             return _context == null || _context(context);
@@ -65,7 +62,7 @@ namespace App.Metrics
         ///     Determines whether the specified gauge is match.
         /// </summary>
         /// <param name="gauge">The gauge.</param>
-        /// <returns></returns>
+        /// <returns>True if the metric type is a gauge, the name matches and tags match</returns>
         public bool IsMatch(GaugeValueSource gauge)
         {
             if (_types != null && !_types.Contains(MetricType.Gauge))
@@ -80,7 +77,7 @@ namespace App.Metrics
         ///     Determines whether the specified counter is match.
         /// </summary>
         /// <param name="counter">The counter.</param>
-        /// <returns></returns>
+        /// <returns>True if the metric type is a counter, the name matches and tags match</returns>
         public bool IsMatch(CounterValueSource counter)
         {
             if (_types != null && !_types.Contains(MetricType.Counter))
@@ -95,7 +92,7 @@ namespace App.Metrics
         ///     Determines whether the specified meter is match.
         /// </summary>
         /// <param name="meter">The meter.</param>
-        /// <returns></returns>
+        /// <returns>True if the metric type is a meter, the name matches and tags match</returns>
         public bool IsMatch(MeterValueSource meter)
         {
             if (_types != null && !_types.Contains(MetricType.Meter))
@@ -110,13 +107,14 @@ namespace App.Metrics
         ///     Determines whether the specified histogram is match.
         /// </summary>
         /// <param name="histogram">The histogram.</param>
-        /// <returns></returns>
+        /// <returns>True if the metric type is a histogram, the name matches and tags match</returns>
         public bool IsMatch(HistogramValueSource histogram)
         {
             if (_types != null && !_types.Contains(MetricType.Histogram))
             {
                 return false;
             }
+
             return IsMetricNameMatch(histogram.Name) && IsTagMatch(histogram.Tags);
         }
 
@@ -124,7 +122,7 @@ namespace App.Metrics
         ///     Determines whether the specified timer is match.
         /// </summary>
         /// <param name="timer">The timer.</param>
-        /// <returns></returns>
+        /// <returns>True if the metric type is a timer, the name matches and tags match</returns>
         public bool IsMatch(TimerValueSource timer)
         {
             if (_types != null && !_types.Contains(MetricType.Timer))
@@ -139,7 +137,7 @@ namespace App.Metrics
         ///     Determines whether the specified apdex is match.
         /// </summary>
         /// <param name="apdex">The apdex.</param>
-        /// <returns></returns>
+        /// <returns>True if the metric type is an apdex, the name matches and tags match</returns>
         public bool IsMatch(ApdexValueSource apdex)
         {
             if (_types != null && !_types.Contains(MetricType.Apdex))
@@ -154,6 +152,7 @@ namespace App.Metrics
         ///     Filters metrics where the specified predicate on the metrics context is <c>true</c>
         /// </summary>
         /// <param name="condition">The predicate on the context to filter on.</param>
+        /// <returns>A filter where the metric context should match</returns>
         public DefaultMetricsFilter WhereContext(Predicate<string> condition)
         {
             _context = condition;
@@ -164,6 +163,7 @@ namespace App.Metrics
         ///     Filters metrics where the specified context matches
         /// </summary>
         /// <param name="context">The metrics context to filter on.</param>
+        /// <returns>A filter where the metric context should match</returns>
         public DefaultMetricsFilter WhereContext(string context)
         {
             return WhereContext(c => c.Equals(context, StringComparison.OrdinalIgnoreCase));
@@ -173,6 +173,7 @@ namespace App.Metrics
         ///     Filters metrics where the specified predicate on the metric name is <c>true</c>
         /// </summary>
         /// <param name="condition">The predicate on the metric name to filter on.</param>
+        /// <returns>A filter where the metric name should match</returns>
         public DefaultMetricsFilter WhereMetricName(Predicate<string> condition)
         {
             _name = condition;
@@ -183,6 +184,7 @@ namespace App.Metrics
         ///     Filters metrics where the metric name starts with the specified name
         /// </summary>
         /// <param name="name">The metrics name to filter on.</param>
+        /// <returns>A filter where the metric name starts with the specified name</returns>
         public DefaultMetricsFilter WhereMetricNameStartsWith(string name)
         {
             return WhereMetricName(n => n.StartsWith(name, StringComparison.OrdinalIgnoreCase));
@@ -192,6 +194,7 @@ namespace App.Metrics
         ///     Filters metrics where the metrics contain the specified tags keys
         /// </summary>
         /// <param name="tagKeys">The metrics tag keys to filter on.</param>
+        /// <returns>A filter where the metric tags keys should match</returns>
         public DefaultMetricsFilter WhereMetricTaggedWithKey(params string[] tagKeys)
         {
             _tagKeys = new HashSet<string>(tagKeys);
@@ -202,6 +205,7 @@ namespace App.Metrics
         ///     Filters metrics where the metrics contain the specified tags key/value pair
         /// </summary>
         /// <param name="tags">The metrics tag key/values to filter on.</param>
+        /// <returns>A filter where the metric tags key and value should match</returns>
         public DefaultMetricsFilter WhereMetricTaggedWithKeyValue(TagKeyValueFilter tags)
         {
             _tags = tags;
@@ -212,7 +216,7 @@ namespace App.Metrics
         ///     Fitlers metrics by matching types
         /// </summary>
         /// <param name="types">The metric types to filter on.</param>
-        /// <returns></returns>
+        /// <returns>A filter where metrics types should match</returns>
         public DefaultMetricsFilter WhereType(params MetricType[] types)
         {
             _types = new HashSet<MetricType>(types);
@@ -231,10 +235,7 @@ namespace App.Metrics
             return this;
         }
 
-        private bool IsMetricNameMatch(string name)
-        {
-            return _name == null || _name(name);
-        }
+        private bool IsMetricNameMatch(string name) { return _name == null || _name(name); }
 
         private bool IsTagMatch(MetricTags sourceTags)
         {

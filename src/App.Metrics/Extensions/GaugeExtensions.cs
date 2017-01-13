@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System.Collections.Generic;
 using System.Linq;
@@ -10,20 +9,17 @@ namespace App.Metrics.Extensions
 {
     public static class GaugeExtensions
     {
-        public static IEnumerable<Gauge> ToMetric(this IEnumerable<GaugeValueSource> source)
-        {
-            return source.Select(ToMetric);
-        }
+        public static IEnumerable<Gauge> ToMetric(this IEnumerable<GaugeValueSource> source) { return source.Select(ToMetric); }
 
         public static Gauge ToMetric(this GaugeValueSource source)
         {
             return new Gauge
-            {
-                Name = source.Name,
-                Value = source.Value,
-                Unit = source.Unit.Name,
-                Tags = source.Tags
-            };
+                   {
+                       Name = source.Name,
+                       Value = source.Value,
+                       Unit = source.Unit.Name,
+                       Tags = source.Tags
+                   };
         }
 
         public static GaugeValueSource ToMetricValueSource(this Gauge source)

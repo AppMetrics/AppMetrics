@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +14,6 @@ namespace App.Metrics.Data
             EnvironmentInfo.Empty,
             Enumerable.Empty<MetricsContextValueSource>());
 
-        public readonly IEnumerable<MetricsContextValueSource> Contexts;
-
-        public readonly EnvironmentInfo Environment;
-        public readonly DateTime Timestamp;
-
         public MetricsDataValueSource(
             DateTime timestamp,
             EnvironmentInfo environment,
@@ -29,6 +23,12 @@ namespace App.Metrics.Data
             Environment = environment;
             Contexts = contexts;
         }
+
+        public IEnumerable<MetricsContextValueSource> Contexts { get; }
+
+        public EnvironmentInfo Environment { get; }
+
+        public DateTime Timestamp { get; }
 
         public MetricsDataValueSource Filter(IMetricsFilter filter)
         {

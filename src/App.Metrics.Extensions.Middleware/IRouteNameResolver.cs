@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.AspNetCore.Routing
-// ReSharper restore CheckNamespace
 {
+    // ReSharper restore CheckNamespace
     public interface IRouteNameResolver
     {
         Task<string> ResolveMatchingTemplateRouteAsync(RouteData routeData);

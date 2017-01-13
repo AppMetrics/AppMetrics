@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System;
 using System.Collections.Generic;
@@ -29,14 +28,13 @@ namespace App.Metrics.Reporting.Internal
             _logger = loggerFactory.CreateLogger<DefaultReportGenerator>();
         }
 
-        public Task<bool> GenerateAsync(IMetricReporter reporter,
+        public Task<bool> GenerateAsync(
+            IMetricReporter reporter,
             IMetrics metrics,
-            CancellationToken token)
-        {
-            return GenerateAsync(reporter, metrics, metrics.Advanced.GlobalFilter, token);
-        }
+            CancellationToken token) { return GenerateAsync(reporter, metrics, metrics.Advanced.GlobalFilter, token); }
 
-        public async Task<bool> GenerateAsync(IMetricReporter reporter,
+        public async Task<bool> GenerateAsync(
+            IMetricReporter reporter,
             IMetrics metrics,
             IMetricsFilter reporterMetricsFilter,
             CancellationToken token)
@@ -87,23 +85,35 @@ namespace App.Metrics.Reporting.Internal
 
             foreach (var contextValueSource in data.Contexts)
             {
-                ReportMetricType(contextValueSource.Counters,
-                    c => { reporter.ReportMetric($"{contextValueSource.Context}", c); }, token);
+                ReportMetricType(
+                    contextValueSource.Counters,
+                    c => { reporter.ReportMetric($"{contextValueSource.Context}", c); },
+                    token);
 
-                ReportMetricType(contextValueSource.Gauges,
-                    g => { reporter.ReportMetric($"{contextValueSource.Context}", g); }, token);
+                ReportMetricType(
+                    contextValueSource.Gauges,
+                    g => { reporter.ReportMetric($"{contextValueSource.Context}", g); },
+                    token);
 
-                ReportMetricType(contextValueSource.Histograms,
-                    h => { reporter.ReportMetric($"{contextValueSource.Context}", h); }, token);
+                ReportMetricType(
+                    contextValueSource.Histograms,
+                    h => { reporter.ReportMetric($"{contextValueSource.Context}", h); },
+                    token);
 
-                ReportMetricType(contextValueSource.Meters,
-                    m => { reporter.ReportMetric($"{contextValueSource.Context}", m); }, token);
+                ReportMetricType(
+                    contextValueSource.Meters,
+                    m => { reporter.ReportMetric($"{contextValueSource.Context}", m); },
+                    token);
 
-                ReportMetricType(contextValueSource.Timers,
-                    t => { reporter.ReportMetric($"{contextValueSource.Context}", t); }, token);
+                ReportMetricType(
+                    contextValueSource.Timers,
+                    t => { reporter.ReportMetric($"{contextValueSource.Context}", t); },
+                    token);
 
-                ReportMetricType(contextValueSource.ApdexScores,
-                    t => { reporter.ReportMetric($"{contextValueSource.Context}", t); }, token);
+                ReportMetricType(
+                    contextValueSource.ApdexScores,
+                    t => { reporter.ReportMetric($"{contextValueSource.Context}", t); },
+                    token);
             }
 
             var result = await reporter.EndAndFlushReportRunAsync(metrics);

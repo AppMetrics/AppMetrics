@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +8,8 @@ namespace App.Metrics.Data
 {
     public sealed class MetricsContextValueSource
     {
-        public static readonly MetricsContextValueSource Empty = new MetricsContextValueSource(string.Empty,
+        public static readonly MetricsContextValueSource Empty = new MetricsContextValueSource(
+            string.Empty,
             Enumerable.Empty<GaugeValueSource>(),
             Enumerable.Empty<CounterValueSource>(),
             Enumerable.Empty<MeterValueSource>(),
@@ -17,16 +17,8 @@ namespace App.Metrics.Data
             Enumerable.Empty<TimerValueSource>(),
             Enumerable.Empty<ApdexValueSource>());
 
-        public readonly string Context;
-
-        public readonly IEnumerable<CounterValueSource> Counters;
-        public readonly IEnumerable<GaugeValueSource> Gauges;
-        public readonly IEnumerable<HistogramValueSource> Histograms;
-        public readonly IEnumerable<MeterValueSource> Meters;
-        public readonly IEnumerable<TimerValueSource> Timers;
-        public readonly IEnumerable<ApdexValueSource> ApdexScores;
-
-        public MetricsContextValueSource(string context,
+        public MetricsContextValueSource(
+            string context,
             IEnumerable<GaugeValueSource> gauges,
             IEnumerable<CounterValueSource> counters,
             IEnumerable<MeterValueSource> meters,
@@ -43,6 +35,20 @@ namespace App.Metrics.Data
             ApdexScores = apdexScores;
         }
 
+        public IEnumerable<ApdexValueSource> ApdexScores { get; }
+
+        public string Context { get; }
+
+        public IEnumerable<CounterValueSource> Counters { get; }
+
+        public IEnumerable<GaugeValueSource> Gauges { get; }
+
+        public IEnumerable<HistogramValueSource> Histograms { get; }
+
+        public IEnumerable<MeterValueSource> Meters { get; }
+
+        public IEnumerable<TimerValueSource> Timers { get; }
+
         public MetricsContextValueSource Filter(IMetricsFilter filter)
         {
             if (!filter.IsMatch(Context))
@@ -50,7 +56,8 @@ namespace App.Metrics.Data
                 return Empty;
             }
 
-            return new MetricsContextValueSource(Context,
+            return new MetricsContextValueSource(
+                Context,
                 Gauges.Where(filter.IsMatch),
                 Counters.Where(filter.IsMatch),
                 Meters.Where(filter.IsMatch),
@@ -59,9 +66,6 @@ namespace App.Metrics.Data
                 ApdexScores.Where(filter.IsMatch));
         }
 
-        public bool IsNotEmpty()
-        {
-            return this != Empty;
-        }
+        public bool IsNotEmpty() { return this != Empty; }
     }
 }

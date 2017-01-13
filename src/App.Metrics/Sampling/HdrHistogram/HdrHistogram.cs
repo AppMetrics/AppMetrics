@@ -1,16 +1,17 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-// Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
-// 
-// Ported to .NET Standard Library by Allan Hardy
-// Original repo: https://github.com/etishor/Metrics.NET
+#pragma warning disable SA1515
+// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
+// Ported/Refactored to .NET Standard Library by Allan Hardy
+#pragma warning restore SA1515// Original repo: https://github.com/etishor/Metrics.NET
 
 using System;
 
 namespace App.Metrics.Sampling.HdrHistogram
 {
+#pragma warning disable
+
     /// <summary>
     ///     <h3>A High Dynamic Range (HDR) Histogram</h3>
     ///     <para>
@@ -59,60 +60,73 @@ namespace App.Metrics.Sampling.HdrHistogram
         protected long TotalCount;
 
         /// <summary>
-        ///     Construct an auto-resizing histogram with a lowest discernible value of 1 and an auto-adjusting
-        ///     highestTrackableValue. Can auto-resize up to track values up to (long.MaxValue / 2).
+        ///     Initializes a new instance of the <see cref="HdrHistogram" /> class.
         /// </summary>
         /// <param name="numberOfSignificantValueDigits">
         ///     Specifies the precision to use. This is the number of significant decimal
         ///     digits to which the histogram will maintain value resolution and separation. Must be a non-negative integer between
         ///     0 and 5.
         /// </param>
+        /// <remarks>
+        ///     Construct an auto-resizing histogram with a lowest discernible value of 1 and an auto-adjusting
+        ///     highestTrackableValue. Can auto-resize up to track values up to (long.MaxValue / 2).
+        /// </remarks>
         public HdrHistogram(int numberOfSignificantValueDigits)
             : this(1, 2, numberOfSignificantValueDigits, sizeof(long), allocateCountsArray: true, autoResize: true)
         {
         }
 
         /// <summary>
-        ///     Construct a Histogram given the Highest value to be tracked and a number of significant decimal digits. The
-        ///     histogram will be constructed to implicitly track (distinguish from 0) values as low as 1.
+        ///     Initializes a new instance of the <see cref="HdrHistogram" /> class.
         /// </summary>
         /// <param name="highestTrackableValue">
         ///     The highest value to be tracked by the histogram. Must be a positiveinteger that is
-        ///     {@literal >=} 2.
+        ///     {@literal &gt;=} 2.
         /// </param>
         /// <param name="numberOfSignificantValueDigits">
         ///     Specifies the precision to use. This is the number of significant decimal
         ///     digits to which the histogram will maintain value resolution and separation. Must be a non-negative integer between
         ///     0 and 5.
         /// </param>
+        /// <remarks>
+        ///     Construct a Histogram given the Highest value to be tracked and a number of significant decimal digits. The
+        ///     histogram will be constructed to implicitly track (distinguish from 0) values as low as 1.
+        /// </remarks>
         public HdrHistogram(long highestTrackableValue, int numberOfSignificantValueDigits)
             : this(1, highestTrackableValue, numberOfSignificantValueDigits)
         {
         }
 
         /// <summary>
-        ///     Construct a Histogram given the Lowest and Highest values to be tracked and a number of significant
-        ///     decimal digits. Providing a lowestDiscernibleValue is useful is situations where the units used
-        ///     for the histogram's values are much smaller that the minimal accuracy required. E.g. when tracking
-        ///     time values stated in nanosecond units, where the minimal accuracy required is a microsecond, the
-        ///     proper value for lowestDiscernibleValue would be 1000.
+        ///     Initializes a new instance of the <see cref="HdrHistogram" /> class.
         /// </summary>
         /// <param name="lowestDiscernibleValue">
         ///     The lowest value that can be discerned (distinguished from 0) by the histogram.
-        ///     Must be a positive integer that is {@literal >=} 1. May be internally rounded down to nearest power of 2.
+        ///     Must be a positive integer that is {@literal &gt;=} 1. May be internally rounded down to nearest power of 2.
         /// </param>
         /// <param name="highestTrackableValue">
         ///     The highest value to be tracked by the histogram. Must be a positive integer that
-        ///     is {@literal >=} (2 * lowestDiscernibleValue).
+        ///     is {@literal &gt;=} (2 * lowestDiscernibleValue).
         /// </param>
         /// <param name="numberOfSignificantValueDigits">
         ///     Specifies the precision to use. This is the number of significant decimal
         ///     digits to which the histogram will maintain value resolution and separation. Must be a non-negative integer between
         ///     0 and 5.
         /// </param>
+        /// <remarks>
+        ///     Construct a Histogram given the Lowest and Highest values to be tracked and a number of significant
+        ///     decimal digits. Providing a lowestDiscernibleValue is useful is situations where the units used
+        ///     for the histogram's values are much smaller that the minimal accuracy required. E.g. when tracking
+        ///     time values stated in nanosecond units, where the minimal accuracy required is a microsecond, the
+        ///     proper value for lowestDiscernibleValue would be 1000.
+        /// </remarks>
         public HdrHistogram(long lowestDiscernibleValue, long highestTrackableValue, int numberOfSignificantValueDigits)
             : this(
-                lowestDiscernibleValue, highestTrackableValue, numberOfSignificantValueDigits, sizeof(long), allocateCountsArray: true,
+                lowestDiscernibleValue,
+                highestTrackableValue,
+                numberOfSignificantValueDigits,
+                sizeof(long),
+                allocateCountsArray: true,
                 autoResize: false)
         {
         }
@@ -136,8 +150,13 @@ namespace App.Metrics.Sampling.HdrHistogram
             }
         }
 
-        protected HdrHistogram(long lowestDiscernibleValue, long highestTrackableValue, int numberOfSignificantValueDigits, int wordSizeInBytes,
-            bool allocateCountsArray, bool autoResize)
+        protected HdrHistogram(
+            long lowestDiscernibleValue,
+            long highestTrackableValue,
+            int numberOfSignificantValueDigits,
+            int wordSizeInBytes,
+            bool allocateCountsArray,
+            bool autoResize)
             : base(lowestDiscernibleValue, highestTrackableValue, numberOfSignificantValueDigits, wordSizeInBytes, autoResize)
         {
             if (allocateCountsArray)
@@ -160,20 +179,11 @@ namespace App.Metrics.Sampling.HdrHistogram
             return copy;
         }
 
-        public override long getTotalCount()
-        {
-            return TotalCount;
-        }
+        public override long getTotalCount() { return TotalCount; }
 
-        internal override long getCountAtIndex(int index)
-        {
-            return Counts[NormalizeIndex(index, NormalizingIndexOffset, countsArrayLength)];
-        }
+        internal override long getCountAtIndex(int index) { return Counts[NormalizeIndex(index, NormalizingIndexOffset, countsArrayLength)]; }
 
-        protected internal override int _getEstimatedFootprintInBytes()
-        {
-            return (512 + (8 * Counts.Length));
-        }
+        protected internal override int _getEstimatedFootprintInBytes() { return 512 + 8 * Counts.Length; }
 
         protected internal override void clearCounts()
         {
@@ -195,7 +205,7 @@ namespace App.Metrics.Sampling.HdrHistogram
             {
                 // We need to shift the stuff from the zero index and up to the end of the array:
                 var newNormalizedZeroIndex = oldNormalizedZeroIndex + countsDelta;
-                var lengthToCopy = (countsArrayLength - countsDelta) - oldNormalizedZeroIndex;
+                var lengthToCopy = countsArrayLength - countsDelta - oldNormalizedZeroIndex;
                 Array.Copy(Counts, oldNormalizedZeroIndex, Counts, newNormalizedZeroIndex, lengthToCopy);
             }
         }
@@ -205,54 +215,31 @@ namespace App.Metrics.Sampling.HdrHistogram
             Counts[NormalizeIndex(index, NormalizingIndexOffset, countsArrayLength)] += value;
         }
 
-        protected override void addToTotalCount(long value)
-        {
-            TotalCount += value;
-        }
+        protected override void addToTotalCount(long value) { TotalCount += value; }
 
-        protected override long getCountAtNormalizedIndex(int index)
-        {
-            return Counts[index];
-        }
+        protected override long getCountAtNormalizedIndex(int index) { return Counts[index]; }
 
-        protected override int getNormalizingIndexOffset()
-        {
-            return NormalizingIndexOffset;
-        }
+        protected override int getNormalizingIndexOffset() { return NormalizingIndexOffset; }
 
-        protected override void incrementCountAtIndex(int index)
-        {
-            Counts[NormalizeIndex(index, NormalizingIndexOffset, countsArrayLength)]++;
-        }
+        protected override void incrementCountAtIndex(int index) { Counts[NormalizeIndex(index, NormalizingIndexOffset, countsArrayLength)]++; }
 
-        protected override void incrementTotalCount()
-        {
-            TotalCount++;
-        }
+        protected override void incrementTotalCount() { TotalCount++; }
 
         protected override void setCountAtIndex(int index, long value)
         {
             Counts[NormalizeIndex(index, NormalizingIndexOffset, countsArrayLength)] = value;
         }
 
-        protected override void setCountAtNormalizedIndex(int index, long value)
-        {
-            Counts[index] = value;
-        }
+        protected override void setCountAtNormalizedIndex(int index, long value) { Counts[index] = value; }
 
-        protected override void setNormalizingIndexOffset(int normalizingIndexOffset)
-        {
-            NormalizingIndexOffset = normalizingIndexOffset;
-        }
+        protected override void setNormalizingIndexOffset(int normalizingIndexOffset) { NormalizingIndexOffset = normalizingIndexOffset; }
 
-        protected override void setTotalCount(long totalCount)
-        {
-            TotalCount = totalCount;
-        }
+        protected override void setTotalCount(long totalCount) { TotalCount = totalCount; }
 
         protected override void shiftNormalizingIndexByOffset(int offsetToAdd, bool lowestHalfBucketPopulated)
         {
             nonConcurrentNormalizingIndexShift(offsetToAdd, lowestHalfBucketPopulated);
         }
     }
+#pragma warning restore
 }

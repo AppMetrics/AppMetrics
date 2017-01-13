@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
+#pragma warning disable SA1515
+// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
+#pragma warning restore SA1515
 
 using System;
 using App.Metrics.Concurrency;
@@ -23,7 +24,8 @@ namespace App.Metrics.Core
         private static readonly double M1Alpha = 1 - Math.Exp(-IntervalSeconds / SecondsPerMinute / OneMinute);
         private static readonly double M5Alpha = 1 - Math.Exp(-IntervalSeconds / SecondsPerMinute / FiveMinutes);
         private static readonly double M15Alpha = 1 - Math.Exp(-IntervalSeconds / SecondsPerMinute / FifteenMinutes);
-
+#pragma warning disable SA1507 // Resharpers adding two line breaks?
+#pragma warning restore SA1507
 
         private readonly StripedLongAdder _uncounted = new StripedLongAdder();
         private volatile bool _initialized;
@@ -38,13 +40,15 @@ namespace App.Metrics.Core
 
         private double OneMinuteRate => _m1Rate.GetValue() * NanosInSecond;
 
-        /// <inheritdoc />
-        public virtual void Mark(long count)
-        {
-            _uncounted.Add(count);
-        }
+        /// <summary>
+        ///     Marks the specified count.
+        /// </summary>
+        /// <param name="count">The count.</param>
+        public virtual void Mark(long count) { _uncounted.Add(count); }
 
-        /// <inheritdoc />
+        /// <summary>
+        ///     Resets all the meters values.
+        /// </summary>
         public virtual void Reset()
         {
             _uncounted.Reset();
@@ -54,7 +58,11 @@ namespace App.Metrics.Core
             _m15Rate.SetValue(0.0);
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        ///     Gets the meters current value.
+        /// </summary>
+        /// <param name="elapsed">The elapsed time for calculating the mean rate.</param>
+        /// <returns>The meters current value</returns>
         public MeterValue GetValue(double elapsed)
         {
             var count = _total.GetValue() + _uncounted.GetValue();
@@ -84,16 +92,19 @@ namespace App.Metrics.Core
             if (_initialized)
             {
                 var rate = _m1Rate.GetValue();
-                _m1Rate.SetValue(rate + M1Alpha * (instantRate - rate));
+
+                // ReSharper disable ArrangeRedundantParentheses
+                _m1Rate.SetValue(rate + (M1Alpha * (instantRate - rate)));
 
                 rate = _m5Rate.GetValue();
-                _m5Rate.SetValue(rate + M5Alpha * (instantRate - rate));
+                _m5Rate.SetValue(rate + (M5Alpha * (instantRate - rate)));
 
                 rate = _m15Rate.GetValue();
-                _m15Rate.SetValue(rate + M15Alpha * (instantRate - rate));
+                _m15Rate.SetValue(rate + (M15Alpha * (instantRate - rate)));
             }
             else
             {
+                // ReSharper restore ArrangeRedundantParentheses
                 _m1Rate.SetValue(instantRate);
                 _m5Rate.SetValue(instantRate);
                 _m15Rate.SetValue(instantRate);

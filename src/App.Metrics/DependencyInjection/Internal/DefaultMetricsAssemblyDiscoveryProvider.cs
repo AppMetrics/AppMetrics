@@ -1,6 +1,5 @@
-// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 
 using System;
 using System.Collections.Generic;
@@ -14,13 +13,13 @@ namespace App.Metrics.DependencyInjection.Internal
     internal static class DefaultMetricsAssemblyDiscoveryProvider
     {
         internal static HashSet<string> ReferenceAssemblies { get; } = new HashSet<string>(StringComparer.Ordinal)
-        {
-            "App.Metrics"
-        };
+                                                                       {
+                                                                           "App.Metrics"
+                                                                       };
 
         internal static IEnumerable<Assembly> DiscoverAssemblies(string entryPointAssemblyName)
         {
-            var entryAssembly = Assembly.Load(new AssemblyName(entryPointAssemblyName));            
+            var entryAssembly = Assembly.Load(new AssemblyName(entryPointAssemblyName));
             var context = DependencyContext.Load(Assembly.Load(new AssemblyName(entryPointAssemblyName)));
 
             return GetCandidateAssemblies(entryAssembly, context);
@@ -51,7 +50,8 @@ namespace App.Metrics.DependencyInjection.Internal
 
         private static bool IsCandidateLibrary(RuntimeLibrary library)
         {
-            Debug.Assert(ReferenceAssemblies != null);
+            Debug.Assert(ReferenceAssemblies != null, "reference assemblies not null");
+
             return !ReferenceAssemblies.Contains(library.Name) &&
                    library.Dependencies.Any(dependency => ReferenceAssemblies.Contains(dependency.Name));
         }

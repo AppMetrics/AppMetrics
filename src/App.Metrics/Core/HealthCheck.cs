@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -44,14 +43,20 @@ namespace App.Metrics.Core
         }
 
         /// <summary>
-        ///     A descriptive name for the health check.
+        ///     Gets the descriptive name for the health check.
         /// </summary>
+        /// <value>
+        ///     The name.
+        /// </value>
         public string Name { get; }
 
         /// <summary>
         ///     Executes the health check asynchrously
         /// </summary>
-        /// <returns>The <see cref="Result" /> of running the health check</returns>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        ///     The <see cref="Result" /> of running the health check
+        /// </returns>
         public async Task<Result> ExecuteAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             try

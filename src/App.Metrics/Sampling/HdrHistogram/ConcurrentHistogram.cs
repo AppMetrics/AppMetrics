@@ -1,17 +1,19 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-// Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET
-// 
-// Ported to .NET Standard Library by Allan Hardy
-// Original repo: https://github.com/etishor/Metrics.NET
+#pragma warning disable SA1515
+// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
+// Ported/Refactored to .NET Standard Library by Allan Hardy
+#pragma warning restore SA1515
 
 using System.Diagnostics;
 using App.Metrics.Concurrency;
 
 namespace App.Metrics.Sampling.HdrHistogram
 {
+#pragma warning disable
+
+
     // ReSharper disable InconsistentNaming
 
     /// <summary>
@@ -54,9 +56,7 @@ namespace App.Metrics.Sampling.HdrHistogram
          */
 
         public ConcurrentHistogram(int numberOfSignificantValueDigits)
-            : this(1, 2, numberOfSignificantValueDigits)
-        {
-        }
+            : this(1, 2, numberOfSignificantValueDigits) { }
 
         /**
          * Construct a ConcurrentHistogram given the Lowest and Highest values to be tracked and a number of significant
@@ -77,8 +77,12 @@ namespace App.Metrics.Sampling.HdrHistogram
 
         public ConcurrentHistogram(long lowestDiscernibleValue, long highestTrackableValue, int numberOfSignificantValueDigits)
             : base(
-                lowestDiscernibleValue, highestTrackableValue, numberOfSignificantValueDigits, wordSizeInBytes: sizeof(long),
-                allocateCountsArray: false, autoResize: true)
+                lowestDiscernibleValue,
+                highestTrackableValue,
+                numberOfSignificantValueDigits,
+                wordSizeInBytes: sizeof(long),
+                allocateCountsArray: false,
+                autoResize: true)
         {
             _activeCounts = new AtomicLongArray(countsArrayLength);
             _activeCountsNormalizingIndexOffset = 0;
@@ -117,10 +121,7 @@ namespace App.Metrics.Sampling.HdrHistogram
             return toHistogram;
         }
 
-        public override long getTotalCount()
-        {
-            return TotalCount.GetValue();
-        }
+        public override long getTotalCount() { return TotalCount.GetValue(); }
 
         internal override long getCountAtIndex(int index)
         {
@@ -140,10 +141,7 @@ namespace App.Metrics.Sampling.HdrHistogram
             }
         }
 
-        protected internal override int _getEstimatedFootprintInBytes()
-        {
-            return (512 + (2 * 8 * _activeCounts.Length));
-        }
+        protected internal override int _getEstimatedFootprintInBytes() { return 512 + 2 * 8 * _activeCounts.Length; }
 
         protected internal override void clearCounts()
         {
@@ -157,6 +155,7 @@ namespace App.Metrics.Sampling.HdrHistogram
                     _activeCounts.SetValue(i, 0);
                     _inactiveCounts.SetValue(i, 0);
                 }
+
                 TotalCount.Reset();
             }
             finally
@@ -167,6 +166,7 @@ namespace App.Metrics.Sampling.HdrHistogram
 
         // ReSharper disable ArrangeModifiersOrder
         internal protected override void resize(long newHighestTrackableValue)
+
             // ReSharper restore ArrangeModifiersOrder
         {
             try
@@ -198,15 +198,16 @@ namespace App.Metrics.Sampling.HdrHistogram
                 {
                     _inactiveCounts.SetValue(i, oldInactiveCounts.GetValue(i));
                 }
+
                 if (oldNormalizedZeroIndex != 0)
                 {
                     // We need to shift the stuff from the zero index and up to the end of the array:
                     var newNormalizedZeroIndex = oldNormalizedZeroIndex + countsDelta;
-                    var lengthToCopy = (newArrayLength - countsDelta) - oldNormalizedZeroIndex;
+                    var lengthToCopy = newArrayLength - countsDelta - oldNormalizedZeroIndex;
                     int src, dst;
                     for (src = oldNormalizedZeroIndex, dst = newNormalizedZeroIndex;
-                        src < oldNormalizedZeroIndex + lengthToCopy;
-                        src++, dst++)
+                         src < oldNormalizedZeroIndex + lengthToCopy;
+                         src++, dst++)
                     {
                         _inactiveCounts.SetValue(dst, oldInactiveCounts.GetValue(src));
                     }
@@ -233,15 +234,16 @@ namespace App.Metrics.Sampling.HdrHistogram
                 {
                     _inactiveCounts.SetValue(i, oldInactiveCounts.GetValue(i));
                 }
+
                 if (oldNormalizedZeroIndex != 0)
                 {
                     // We need to shift the stuff from the zero index and up to the end of the array:
                     var newNormalizedZeroIndex = oldNormalizedZeroIndex + countsDelta;
-                    var lengthToCopy = (newArrayLength - countsDelta) - oldNormalizedZeroIndex;
+                    var lengthToCopy = newArrayLength - countsDelta - oldNormalizedZeroIndex;
                     int src, dst;
                     for (src = oldNormalizedZeroIndex, dst = newNormalizedZeroIndex;
-                        src < oldNormalizedZeroIndex + lengthToCopy;
-                        src++, dst++)
+                         src < oldNormalizedZeroIndex + lengthToCopy;
+                         src++, dst++)
                     {
                         _inactiveCounts.SetValue(dst, oldInactiveCounts.GetValue(src));
                     }
@@ -282,10 +284,7 @@ namespace App.Metrics.Sampling.HdrHistogram
             }
         }
 
-        protected override void addToTotalCount(long value)
-        {
-            TotalCount.Add(value);
-        }
+        protected override void addToTotalCount(long value) { TotalCount.Add(value); }
 
         protected override long getCountAtNormalizedIndex(int index)
         {
@@ -304,10 +303,7 @@ namespace App.Metrics.Sampling.HdrHistogram
             }
         }
 
-        protected override int getNormalizingIndexOffset()
-        {
-            return _activeCountsNormalizingIndexOffset;
-        }
+        protected override int getNormalizingIndexOffset() { return _activeCountsNormalizingIndexOffset; }
 
         protected override void incrementCountAtIndex(int index)
         {
@@ -322,10 +318,7 @@ namespace App.Metrics.Sampling.HdrHistogram
             }
         }
 
-        protected override void incrementTotalCount()
-        {
-            TotalCount.Increment();
-        }
+        protected override void incrementTotalCount() { TotalCount.Increment(); }
 
         protected override void setCountAtIndex(int index, long value)
         {
@@ -359,10 +352,7 @@ namespace App.Metrics.Sampling.HdrHistogram
             }
         }
 
-        protected override void setNormalizingIndexOffset(int normalizingIndexOffset)
-        {
-            setNormalizingIndexOffset(normalizingIndexOffset, 0, false);
-        }
+        protected override void setNormalizingIndexOffset(int normalizingIndexOffset) { setNormalizingIndexOffset(normalizingIndexOffset, 0, false); }
 
         protected override void setTotalCount(long totalCount)
         {
@@ -410,10 +400,11 @@ namespace App.Metrics.Sampling.HdrHistogram
 
                 // Change the normalizingIndexOffset on the current inactiveCounts:
                 _inactiveCountsNormalizingIndexOffset = normalizingIndexOffset;
-                //inactiveCounts.setNormalizingIndexOffset(normalizingIndexOffset);
+
+                // inactiveCounts.setNormalizingIndexOffset(normalizingIndexOffset);
 
                 // Handle the inactive lowest half bucket:
-                if ((shiftedAmount > 0) && lowestHalfBucketPopulated)
+                if (shiftedAmount > 0 && lowestHalfBucketPopulated)
                 {
                     shiftLowestInactiveHalfBucketContentsLeft(shiftedAmount);
                 }
@@ -441,10 +432,11 @@ namespace App.Metrics.Sampling.HdrHistogram
 
                 // Change the normalizingIndexOffset on the newly inactiveCounts:
                 _inactiveCountsNormalizingIndexOffset = normalizingIndexOffset;
-                //inactiveCounts.setNormalizingIndexOffset(normalizingIndexOffset);
+
+                // inactiveCounts.setNormalizingIndexOffset(normalizingIndexOffset);
 
                 // Handle the newly inactive lowest half bucket:
-                if ((shiftedAmount > 0) && lowestHalfBucketPopulated)
+                if (shiftedAmount > 0 && lowestHalfBucketPopulated)
                 {
                     shiftLowestInactiveHalfBucketContentsLeft(shiftedAmount);
                 }
@@ -492,7 +484,6 @@ namespace App.Metrics.Sampling.HdrHistogram
             // preceding non-scaled "from slot" index:
             //
             // (Note that we specifically avoid slot 0, as it is directly handled in the outer case)
-
             for (var fromIndex = 1; fromIndex < subBucketHalfCount; fromIndex++)
             {
                 var toValue = ValueFromIndex(fromIndex) << numberOfBinaryOrdersOfMagnitude;
@@ -510,5 +501,7 @@ namespace App.Metrics.Sampling.HdrHistogram
             // will never loop, and their shifts will remain O(1).
         }
     }
+#pragma warning restore
 }
+
 // ReSharper restore InconsistentNaming

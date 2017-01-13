@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System;
 using System.Collections.Generic;
 using App.Metrics.Core;
@@ -12,16 +11,19 @@ namespace App.Metrics.Formatting.Humanize
     public static class HumanizingMetricsExtensions
     {
         private static readonly IReadOnlyDictionary<Type, string> MetricTypeDisplayNameMapping = new Dictionary<Type, string>
-        {
-            { typeof(CounterValue), "Counters" },
-            { typeof(double), "Gauges" },
-            { typeof(MeterValue), "Meters" },
-            { typeof(TimerValue), "Timers" },
-            { typeof(ApdexValue), "ApdexScores" },
-            { typeof(HistogramValue), "Histograms" },
-            { typeof(HealthStatus), "Health Checks" },
-            { typeof(EnvironmentInfo), "Environment Information" }
-        };
+                                                                                                 {
+                                                                                                     { typeof(CounterValue), "Counters" },
+                                                                                                     { typeof(double), "Gauges" },
+                                                                                                     { typeof(MeterValue), "Meters" },
+                                                                                                     { typeof(TimerValue), "Timers" },
+                                                                                                     { typeof(ApdexValue), "ApdexScores" },
+                                                                                                     { typeof(HistogramValue), "Histograms" },
+                                                                                                     { typeof(HealthStatus), "Health Checks" },
+                                                                                                     {
+                                                                                                         typeof(EnvironmentInfo),
+                                                                                                         "Environment Information"
+                                                                                                     }
+                                                                                                 };
 
         public static string HumanzeEndMetricType(this Type metricType)
         {
@@ -36,8 +38,10 @@ namespace App.Metrics.Formatting.Humanize
 
             if (context.IsPresent())
             {
-                return string.Format(Environment.NewLine + "***** [{0}] {1} *****" + Environment.NewLine + Environment.NewLine,
-                    context, metricTypeDisplay);
+                return string.Format(
+                    Environment.NewLine + "***** [{0}] {1} *****" + Environment.NewLine + Environment.NewLine,
+                    context,
+                    metricTypeDisplay);
             }
 
             return string.Format(Environment.NewLine + "***** {0} *****" + Environment.NewLine + Environment.NewLine, metricTypeDisplay);
@@ -58,8 +62,8 @@ namespace App.Metrics.Formatting.Humanize
 #if NET452
             var formatProvider = new HumanizeMetricValueFormatProvider<T>();
             var formatter = formatProvider.GetFormat(valueSource.GetType()) as ICustomFormatter;
-            return formatter != null 
-                ? formatter.Format(string.Empty, valueSource, null) 
+            return formatter != null
+                ? formatter.Format(string.Empty, valueSource, null)
                 : string.Empty;
 #else
             FormattableString metricValueSourceString = $"{valueSource}";
