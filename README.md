@@ -24,6 +24,10 @@ App Metrics also provides a health checking system allowing you to monitor the h
 - [Sample Applications & Grafana Dashbaords](https://github.com/alhardy/AppMetrics.Samples)
 - [Api Documentation](https://alhardy.github.io/app-metrics-docs/api/index.html)
 
+## Contributing
+
+See the [contribution guidlines](CONTRIBUTING.md) for details.
+
 ## Acknowledgements
 
 **Built using the following open source projects**
@@ -33,6 +37,7 @@ App Metrics also provides a health checking system allowing you to monitor the h
 * [Json.Net](http://www.newtonsoft.com/json)
 * [Fluent Assertions](http://www.fluentassertions.com/)
 * [XUnit](https://xunit.github.io/)
+* [StyleCopAnalyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers)
 
 ----------
 
