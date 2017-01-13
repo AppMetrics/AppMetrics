@@ -13,10 +13,12 @@ namespace Microsoft.AspNetCore.Routing.Template
         {
             if (templatePart.IsParameter)
             {
-                return "{" + (templatePart.IsCatchAll ? "*" : string.Empty) + templatePart.Name + (templatePart.IsOptional ? "?" : string.Empty) + "}";
+                return
+                    ("{" + (templatePart.IsCatchAll ? "*" : string.Empty) + templatePart.Name + (templatePart.IsOptional ? "?" : string.Empty) + "}").
+                    ToLower();
             }
 
-            return templatePart.Text;
+            return templatePart.Text.ToLower();
         }
 
         public static string ToTemplateSegmentString(this TemplateSegment templateSegment) =>
@@ -31,6 +33,6 @@ namespace Microsoft.AspNetCore.Routing.Template
                       templateRoute.ParsedTemplate.Segments
                                    .Select(s => s.ToTemplateSegmentString()))
                   .Replace("{controller}", controller)
-                  .Replace("{action}", action);
+                  .Replace("{action}", action).ToLower();
     }
 }

@@ -21,6 +21,7 @@
     "Microsoft.AspNetCore.Routing": "1.1.0",
     "Microsoft.AspNetCore.TestHost": "1.1.0",
     "xunit": "2.2.0-beta4-build3444",
+    "Moq": "4.6.38-alpha",
     "xunit.runner.visualstudio": "2.2.0-beta4-build1194"
   },
 

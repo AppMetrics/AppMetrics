@@ -25,7 +25,7 @@ namespace Microsoft.AspNetCore.Routing
             var controller = routeData.Values.FirstOrDefault(v => v.Key == "controller");
             var action = routeData.Values.FirstOrDefault(v => v.Key == "action");
 
-            var result = templateRoute.ToTemplateString(controller.Value as string, action.Value as string).ToLower();
+            var result = templateRoute.ToTemplateString(controller.Value as string, action.Value as string);
 
             return Task.FromResult(result);
         }
