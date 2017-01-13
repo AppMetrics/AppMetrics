@@ -6,6 +6,8 @@
 
 using System;
 
+// DEVNOTE: Excluded from build not being used yet
+
 namespace App.Metrics.Sampling.HdrHistogram
 {
 #pragma warning disable
