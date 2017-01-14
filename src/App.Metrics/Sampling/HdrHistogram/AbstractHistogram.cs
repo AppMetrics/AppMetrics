@@ -4,6 +4,7 @@
 using System;
 using System.Diagnostics;
 using App.Metrics.Concurrency;
+
 #pragma warning disable 659
 
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license

@@ -32,6 +32,7 @@ namespace App.Metrics.Sampling.HdrHistogram
                      * range of multiple percentiles in the requested percentile iteration points).</li>
                      * </ul>
                      */
+
     internal class HistogramIterationValue
     {
         private long _countAddedInThisIterationStep;
