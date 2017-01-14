@@ -56,6 +56,37 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
+        public void can_calculate_the_hit_ratio_as_a_guage_with_one_min_rate_as_default()
+        {
+            var clock = new TestClock();
+            var scheduler = new TestTaskScheduler(clock);
+
+            var cacheHitMeter = new MeterMetric(clock, scheduler);
+            var dbQueryTimer = new TimerMetric(
+                SamplingType.LongTerm,
+                Constants.ReservoirSampling.DefaultSampleSize,
+                Constants.ReservoirSampling.DefaultExponentialDecayFactor,
+                clock);
+
+            foreach (var index in Enumerable.Range(0, 1000))
+            {
+                using (dbQueryTimer.NewContext())
+                {
+                    clock.Advance(TimeUnit.Milliseconds, 100);
+                }
+
+                if (index % 2 == 0)
+                {
+                    cacheHitMeter.Mark();
+                }
+            }
+
+            var cacheHitRatioGauge = new HitRatioGauge(cacheHitMeter, dbQueryTimer);
+
+            cacheHitRatioGauge.Value.Should().BeGreaterThan(0.0);
+        }
+
+        [Fact]
         public void can_create_gauge_from_value_source()
         {
             var valueSource = new GaugeValueSource("test", new FunctionGauge(() => 2.0), Unit.Bytes, MetricTags.None);
