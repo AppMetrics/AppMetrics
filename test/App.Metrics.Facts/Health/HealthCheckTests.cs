@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.DependencyInjection.Internal;
-using App.Metrics.Infrastructure;
 using FluentAssertions;
 using Xunit;
 
@@ -20,19 +19,23 @@ namespace App.Metrics.Facts.Health
             var result1 = await check1.ExecuteAsync(CancellationToken.None);
             result1.Check.Status.Should().Be(HealthCheckStatus.Unhealthy);
 
-            var check2 = new HealthCheck(name, () =>
-            {
-                ThrowExceptionWithBracketsInMessage();
-                return Task.FromResult("string");
-            });
+            var check2 = new HealthCheck(
+                name,
+                () =>
+                {
+                    ThrowExceptionWithBracketsInMessage();
+                    return Task.FromResult("string");
+                });
             var result2 = await check2.ExecuteAsync(CancellationToken.None);
             result2.Check.Status.Should().Be(HealthCheckStatus.Unhealthy);
 
-            var check3 = new HealthCheck(name, () =>
-            {
-                ThrowExceptionWithBracketsInMessage();
-                return AppMetricsTaskCache.CompletedHealthyTask;
-            });
+            var check3 = new HealthCheck(
+                name,
+                () =>
+                {
+                    ThrowExceptionWithBracketsInMessage();
+                    return AppMetricsTaskCache.CompletedHealthyTask;
+                });
             var result3 = await check3.ExecuteAsync(CancellationToken.None);
             result3.Check.Status.Should().Be(HealthCheckStatus.Unhealthy);
         }
@@ -45,19 +48,23 @@ namespace App.Metrics.Facts.Health
             var result1 = await check1.ExecuteAsync(CancellationToken.None);
             result1.Check.Status.Should().Be(HealthCheckStatus.Unhealthy);
 
-            var check2 = new HealthCheck(name, () =>
-            {
-                ThrowException();
-                return Task.FromResult("string");
-            });
+            var check2 = new HealthCheck(
+                name,
+                () =>
+                {
+                    ThrowException();
+                    return Task.FromResult("string");
+                });
             var result2 = await check2.ExecuteAsync();
             result2.Check.Status.Should().Be(HealthCheckStatus.Unhealthy);
 
-            var check3 = new HealthCheck(name, () =>
-            {
-                ThrowException();
-                return AppMetricsTaskCache.CompletedHealthyTask;
-            });
+            var check3 = new HealthCheck(
+                name,
+                () =>
+                {
+                    ThrowException();
+                    return AppMetricsTaskCache.CompletedHealthyTask;
+                });
             var result3 = await check3.ExecuteAsync();
             result3.Check.Status.Should().Be(HealthCheckStatus.Unhealthy);
         }
@@ -80,7 +87,7 @@ namespace App.Metrics.Facts.Health
 
             var check2 = new HealthCheck("test", () => Task.FromResult(HealthCheckResult.Healthy(message)));
             var result2 = await check2.ExecuteAsync();
-            result2.Check.Message.Should().Be(message);            
+            result2.Check.Message.Should().Be(message);
 
             var check3 = new HealthCheck("test", () => Task.FromResult(message));
             var result3 = await check3.ExecuteAsync();
@@ -125,14 +132,8 @@ namespace App.Metrics.Facts.Health
             result3.Check.Status.Should().Be(HealthCheckStatus.Healthy);
         }
 
-        private static Task<HealthCheckResult> ThrowException()
-        {
-            throw new InvalidOperationException();
-        }
+        private static Task<HealthCheckResult> ThrowException() { throw new InvalidOperationException(); }
 
-        private static Task<HealthCheckResult> ThrowExceptionWithBracketsInMessage()
-        {
-            throw new InvalidOperationException("an {example message}");            
-        }
+        private static Task<HealthCheckResult> ThrowExceptionWithBracketsInMessage() { throw new InvalidOperationException("an {example message}"); }
     }
 }
