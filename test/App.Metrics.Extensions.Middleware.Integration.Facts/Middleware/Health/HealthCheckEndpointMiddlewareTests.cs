@@ -26,5 +26,16 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Health
 
             result.StatusCode.Should().Be(HttpStatusCode.OK);
         }
+
+        [Fact]
+        public async Task returns_correct_response_headers()
+        {
+            var result = await Client.GetAsync("/health");
+
+            result.Headers.CacheControl.NoCache.Should().Be(true);
+            result.Headers.CacheControl.NoStore.Should().Be(true);
+            result.Headers.CacheControl.MustRevalidate.Should().Be(true);
+            result.Headers.Pragma.ToString().Should().Be("no-cache");
+        }
     }
 }

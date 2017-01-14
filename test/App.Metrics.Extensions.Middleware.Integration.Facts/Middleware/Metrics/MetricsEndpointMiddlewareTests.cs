@@ -27,5 +27,16 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
             result.StatusCode.Should().Be(HttpStatusCode.OK);
             result.Content.Headers.ContentType.ToString().Should().Match<string>(s => s == "application/vnd.app.metrics.v1.metrics+json");
         }
+
+        [Fact]
+        public async Task returns_correct_response_headers()
+        {
+            var result = await Client.GetAsync("/health");
+
+            result.Headers.CacheControl.NoCache.Should().Be(true);
+            result.Headers.CacheControl.NoStore.Should().Be(true);
+            result.Headers.CacheControl.MustRevalidate.Should().Be(true);
+            result.Headers.Pragma.ToString().Should().Be("no-cache");
+        }
     }
 }
