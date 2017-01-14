@@ -1,4 +1,7 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using FluentAssertions;
 using Xunit;
 
 namespace App.Metrics.Concurrency.Facts
@@ -41,6 +44,48 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
+        public void can_estimate_size()
+        {
+            var list = new ReadOnlyCollection<long>(new List<long> { 1, 2, 3 });
+            var array = new AtomicLongArray(list);
+
+            AtomicLongArray.GetEstimatedFootprintInBytes(array).Should().NotBe(0);
+        }
+
+        [Fact]
+        public void can_get_and_add()
+        {
+            var array = new AtomicLongArray(1);
+            array.Add(0, 1);
+            var value = array.GetAndAdd(0, 2);
+
+            value.Should().Be(1);
+            array.GetValue(0).Should().Be(3);
+        }
+
+        [Fact]
+        public void can_get_and_decrement()
+        {
+            var array = new AtomicLongArray(1);
+            array.Add(0, 10);
+            var value = array.GetAndDecrement(0, 2);
+
+            value.Should().Be(10);
+            array.GetValue(0).Should().Be(8);
+        }
+
+        [Fact]
+        public void can_get_and_increment()
+        {
+            var array = new AtomicLongArray(1);
+            array.Add(0, 10);
+            var value = array.GetAndIncrement(0, 2);
+
+            value.Should().Be(10);
+            array.GetValue(0).Should().Be(12);
+        }
+
+        [Fact]
         public void can_get_and_set_value()
         {
             var array = new AtomicLongArray(10);
@@ -67,6 +112,29 @@ namespace App.Metrics.Concurrency.Facts
 
             array.GetAndIncrement(1).Should().Be(8);
             array.GetValue(1).Should().Be(9);
+        }
+
+        [Fact]
+        public void can_instiate_from_list()
+        {
+            var list = new ReadOnlyCollection<long>(new List<long> { 1, 2, 3 });
+            var array = new AtomicLongArray(list);
+
+            array.Length.Should().Be(3);
+            array.GetValue(0).Should().Be(1);
+            array.GetValue(1).Should().Be(2);
+            array.GetValue(2).Should().Be(3);
+        }
+
+        [Fact]
+        public void negetive_length_throws()
+        {
+            Action setupAction = () =>
+            {
+                var array = new AtomicLongArray(-1);
+            };
+
+            setupAction.ShouldThrow<ArgumentException>();
         }
     }
 }

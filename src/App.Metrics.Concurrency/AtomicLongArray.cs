@@ -53,7 +53,7 @@ namespace App.Metrics.Concurrency
         /// </summary>
         /// <param name="instance">instance for whch to calculate the size.</param>
         /// <returns>The size of the instance in bytes.</returns>
-        public static int GetEstimatedFootprintInBytes(AtomicIntArray instance)
+        public static int GetEstimatedFootprintInBytes(AtomicLongArray instance)
         {
             // ReSharper disable ArrangeRedundantParentheses SA1407
             return (instance.Length * sizeof(long)) + 16 + IntPtr.Size; // array reference & overhead
