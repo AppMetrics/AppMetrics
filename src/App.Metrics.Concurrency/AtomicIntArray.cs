@@ -210,24 +210,6 @@ namespace App.Metrics.Concurrency
         }
 
         /// <summary>
-        ///     From the Java Version:
-        ///     Eventually sets to the given value.
-        ///     The semantics are that the write is guaranteed not to be re-ordered with any previous write,
-        ///     but may be reordered with subsequent operations (or equivalently, might not be visible to other threads)
-        ///     until some other volatile write or synchronizing action occurs).
-        /// </summary>
-        /// <remarks>
-        ///     Currently implemented by calling Volatile.Write which is different from the java version.
-        ///     Not sure if it is possible on CLR to implement
-        /// </remarks>
-        /// <param name="index">index in the array</param>
-        /// <param name="value">The new value for this instance.</param>
-        public void LazySetValue(int index, int value)
-        {
-            Volatile.Write(ref _array[index], value);
-        }
-
-        /// <summary>
         ///     Returns the current value of the instance without using Volatile.Read fence and ordering.
         /// </summary>
         /// <param name="index">index in the array</param>

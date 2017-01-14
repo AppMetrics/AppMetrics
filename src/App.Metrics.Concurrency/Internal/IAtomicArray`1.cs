@@ -35,8 +35,6 @@ namespace App.Metrics.Concurrency.Internal
 
         T Increment(int index, T value);
 
-        void LazySetValue(int index, T value);
-
         T NonVolatileGetValue(int index);
 
         void NonVolatileSetValue(int index, T value);

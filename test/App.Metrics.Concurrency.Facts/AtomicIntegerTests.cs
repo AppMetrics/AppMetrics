@@ -1,78 +1,9 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using FluentAssertions;
 using Xunit;
 
 namespace App.Metrics.Concurrency.Facts
 {
-    public class AtomicIntegerArrayTests
-    {
-        [Fact]
-        public void throws_when_lenght_smaller_than_zero()
-        {
-            Action action = () =>
-            {
-                var atomicIntArray = new AtomicIntArray(-2);
-            };
-
-            action.ShouldThrow<ArgumentException>();
-        }
-
-        [Fact]
-        public void can_create_from_readonly_list()
-        {
-            var list = new[] { 1, 2, 3 };
-            var array = new AtomicIntArray(list);
-
-            list.Length.Should().Be(array.Length);
-        }
-
-        [Fact]
-        public void can_get_estimated_bytes()
-        {
-            var list = new[] { 1, 2, 3 };
-            var expected = list.Length * sizeof(int) + 16 + IntPtr.Size;
-            var array = new AtomicIntArray(list);
-
-            var estimate = AtomicIntArray.GetEstimatedFootprintInBytes(array);
-
-            estimate.Should().Be(expected);
-        }
-
-        [Fact]
-        public void can_add_value_to_item()
-        {
-            var list = new[] { 1, 2, 3 };
-            var array = new AtomicIntArray(list);
-
-            array.Add(0, 4);
-
-            array.GetValue(0).Should().Be(5);
-        }
-
-        [Fact]
-        public void can_decrement_item()
-        {
-            var list = new[] { 1, 2, 3 };
-            var array = new AtomicIntArray(list);
-
-            array.Decrement(0);
-
-            array.GetValue(0).Should().Be(0);
-        }
-
-        [Fact]
-        public void can_increment_item()
-        {
-            var list = new[] { 1, 2, 3 };
-            var array = new AtomicIntArray(list);
-
-            array.Increment(0);
-
-            array.GetValue(0).Should().Be(2);
-        }
-    }
-
     public class AtomicIntegerTests
     {
         private AtomicInteger _num = new AtomicInteger();
