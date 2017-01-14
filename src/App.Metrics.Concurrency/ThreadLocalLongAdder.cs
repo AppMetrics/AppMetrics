@@ -87,6 +87,7 @@ namespace App.Metrics.Concurrency
         public long GetAndReset()
         {
             long sum = 0;
+
             foreach (var val in _local.Values)
             {
                 sum += val.GetAndReset();
@@ -102,6 +103,7 @@ namespace App.Metrics.Concurrency
         public long GetValue()
         {
             long sum = 0;
+
             foreach (var value in _local.Values)
             {
                 sum += Volatile.Read(ref value.Value);

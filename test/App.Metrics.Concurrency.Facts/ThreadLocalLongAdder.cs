@@ -15,10 +15,7 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
-        public void can_be_created_with()
-        {
-            new ThreadLocalLongAdder(5L).GetValue().Should().Be(5L);
-        }
+        public void can_be_created_with() { new ThreadLocalLongAdder(5L).GetValue().Should().Be(5L); }
 
         [Fact]
         public void can_be_decremented()
@@ -45,6 +42,14 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
+        public void can_be_incremented_and_decremented_by_value()
+        {
+            _num.Increment(2L);
+            _num.Decrement(1L);
+            _num.GetValue().Should().Be(1L);
+        }
+
+        [Fact]
         public void can_be_incremented_multiple_times()
         {
             _num.Increment();
@@ -64,9 +69,33 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
-        public void ThreadLocalLongAdder_DefaultsToZero()
+        public void can_get_estimated_size()
         {
+            _num.Add(32);
+            var result = ThreadLocalLongAdder.GetEstimatedFootprintInBytes(_num);
+
+            result.Should().NotBe(0);
+        }
+
+        [Fact]
+        public void can_get_without_volatile_read_fence_and_ordering()
+        {
+            _num.Add(1L);
+            _num.Add(2L);
+            _num.NonVolatileGetValue().Should().Be(3L);
+        }
+
+        [Fact]
+        public void can_reset()
+        {
+            _num.Add(1L);
+            _num.Add(2L);
+            _num.Reset();
+
             _num.GetValue().Should().Be(0L);
         }
+
+        [Fact]
+        public void ThreadLocalLongAdder_DefaultsToZero() { _num.GetValue().Should().Be(0L); }
     }
 }
