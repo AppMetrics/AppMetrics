@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Core;
@@ -22,14 +23,16 @@ namespace App.Metrics.Facts.Metrics
 
             for (var i = 0; i < threadCount; i++)
             {
-                threads.Add(new Thread(s =>
-                {
-                    tcs.Task.Wait();
-                    for (long j = 0; j < iterations; j++)
-                    {
-                        _counter.Increment();
-                    }
-                }));
+                threads.Add(
+                    new Thread(
+                        s =>
+                        {
+                            tcs.Task.Wait();
+                            for (long j = 0; j < iterations; j++)
+                            {
+                                _counter.Increment();
+                            }
+                        }));
             }
 
             threads.ForEach(t => t.Start());
@@ -90,6 +93,14 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
+        public void can_decrement_item_by_amount()
+        {
+            _counter.Increment("test-item", 2L);
+            _counter.Decrement("test-item");
+            _counter.Value.Items.First().Count.Should().Be(1L);
+        }
+
+        [Fact]
         public void can_decrement_multiple_times()
         {
             _counter.Decrement();
@@ -106,10 +117,35 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
+        public void can_get_value()
+        {
+            _counter.Increment();
+            _counter.GetValue().Count.Should().Be(1L);
+        }
+
+        [Fact]
+        public void can_get_value_and_reset()
+        {
+            _counter.Increment();
+            var value = _counter.GetValue(resetMetric: true);
+            value.Count.Should().Be(1L);
+            _counter.Value.Count.Should().Be(0);
+        }
+
+        [Fact]
         public void can_increment()
         {
             _counter.Increment();
             _counter.Value.Count.Should().Be(1L);
+        }
+
+        [Fact]
+        public void can_increment_and_decrement_metric_item()
+        {
+            var item = new MetricItem().With("test-item", "value");
+            _counter.Increment(item, 2L);
+            _counter.Decrement(item);
+            _counter.Value.Items.First().Count.Should().Be(1L);
         }
 
         [Fact]
