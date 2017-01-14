@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using App.Metrics.Core;
+using App.Metrics.Data;
 using App.Metrics.Internal;
 using App.Metrics.Internal.Test;
 using App.Metrics.Utils;
@@ -60,6 +61,20 @@ namespace App.Metrics.Facts.Metrics
             new FunctionGauge(() => { throw new InvalidOperationException("test"); }).Value.Should().Be(double.NaN);
 
             new DerivedGauge(new FunctionGauge(() => 5.0), (d) => { throw new InvalidOperationException("test"); }).Value.Should().Be(double.NaN);
+        }
+
+        [Fact]
+        public void can_create_gauge_from_value_source()
+        {
+            var valueSource = new GaugeValueSource("test", new FunctionGauge(() => 2.0), Unit.Bytes, MetricTags.None );
+
+            var gauge = Gauge.FromGauge(valueSource);
+
+            gauge.Value.Should().Be(2.0);
+            gauge.Name.Should().Be("test");
+            Assert.True(gauge.Unit == Unit.Bytes);
+            Assert.True(gauge.Tags == MetricTags.None);
+
         }
     }
 }
