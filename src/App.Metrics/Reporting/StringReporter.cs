@@ -35,6 +35,8 @@ namespace App.Metrics.Reporting
             _buffer = new StringBuilder();
         }
 
+        ~StringReporter() { Dispose(false); }
+
         public string Name { get; }
 
         public TimeSpan ReportInterval { get; } = TimeSpan.FromSeconds(5);

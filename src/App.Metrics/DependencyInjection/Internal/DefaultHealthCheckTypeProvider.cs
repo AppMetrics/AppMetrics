@@ -80,7 +80,7 @@ namespace App.Metrics.DependencyInjection.Internal
 
         private static bool DerivesFromHealthCheck(TypeInfo typeInfo, ISet<Assembly> candidateAssemblies)
         {
-            while (typeInfo != ObjectTypeInfo)
+            while (!Equals(typeInfo, ObjectTypeInfo))
             {
                 var baseTypeInfo = typeInfo.BaseType.GetTypeInfo();
 

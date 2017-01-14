@@ -7,6 +7,7 @@
 using System;
 using System.Diagnostics;
 using App.Metrics.Concurrency;
+#pragma warning disable 659
 
 namespace App.Metrics.Sampling.HdrHistogram
 {

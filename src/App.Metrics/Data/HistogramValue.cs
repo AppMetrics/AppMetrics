@@ -4,6 +4,7 @@
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
 
+using System;
 using App.Metrics.Sampling.Interfaces;
 
 namespace App.Metrics.Data
@@ -102,7 +103,7 @@ namespace App.Metrics.Data
 
         public HistogramValue Scale(double factor)
         {
-            if (factor == 1.0d)
+            if (Math.Abs(factor - 1.0d) < 0.001)
             {
                 return this;
             }
