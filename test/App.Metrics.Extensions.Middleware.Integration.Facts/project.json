@@ -7,7 +7,10 @@
     "win10-x64": {}
   },
 
-  "buildOptions": { "debugType": "full" },
+  "buildOptions": {
+    "debugType": "full",
+    "copyToOutput": [ "DependencyInjection/TestConfiguration/*.json" ]    
+  },
 
   "dependencies": {
     "App.Metrics.Formatters.Json": {
@@ -22,7 +25,9 @@
     "Microsoft.AspNetCore.TestHost": "1.1.0",
     "xunit": "2.2.0-beta4-build3444",
     "Moq": "4.6.38-alpha",
-    "xunit.runner.visualstudio": "2.2.0-beta4-build1194"
+    "xunit.runner.visualstudio": "2.2.0-beta4-build1194",
+    "Microsoft.Extensions.Configuration.FileExtensions": "1.1.0",
+    "Microsoft.Extensions.Configuration.Json": "1.1.0"
   },
 
   "frameworks": {
