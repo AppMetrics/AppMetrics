@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Threading.Tasks;
+using FluentAssertions;
 using Xunit;
 
 namespace App.Metrics.Concurrency.Facts
@@ -15,16 +16,21 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
-        public void can_be_created_with_value()
-        {
-            new StripedLongAdder(5L).GetValue().Should().Be(5L);
-        }
+        public void can_be_created_with_value() { new StripedLongAdder(5L).GetValue().Should().Be(5L); }
 
         [Fact]
         public void can_be_decremented()
         {
             _num.Decrement();
             _num.GetValue().Should().Be(-1L);
+        }
+
+        [Fact]
+        public void can_be_decremented_by_value()
+        {
+            _num.Add(7L);
+            _num.Decrement(2L);
+            _num.GetValue().Should().Be(5L);
         }
 
         [Fact]
@@ -45,6 +51,13 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
+        public void can_be_incremented_by_value()
+        {
+            _num.Increment(2L);
+            _num.GetValue().Should().Be(2L);
+        }
+
+        [Fact]
         public void can_be_incremented_multiple_times()
         {
             _num.Increment();
@@ -58,15 +71,52 @@ namespace App.Metrics.Concurrency.Facts
         public void can_get_and_reset()
         {
             _num.Add(32);
-            long val = _num.GetAndReset();
+            var val = _num.GetAndReset();
             val.Should().Be(32);
             _num.GetValue().Should().Be(0);
         }
 
         [Fact]
-        public void defaults_to_zero()
+        public void can_get_estimated_size()
         {
-            _num.GetValue().Should().Be(0L);
+            _num.Add(7L);
+            StripedLongAdder.GetEstimatedFootprintInBytes(_num).Should().NotBe(0);
         }
+
+        [Fact]
+        public void can_get_without_volatile_read_fence_and_ordering()
+        {
+            Parallel.For(
+                1,
+                1000,
+                l =>
+                {
+                    _num.Add(l);
+                    var val = _num.NonVolatileGetValue();
+                    val.Should().BeGreaterOrEqualTo(l);
+                });
+        }
+
+        [Fact]
+        public void can_reset()
+        {
+            Parallel.For(
+                1,
+                1000,
+                l =>
+                {
+                    _num.Add(l);
+
+                    if (l % 2 == 0)
+                    {
+                        _num.Reset();
+                    }
+                });
+
+            _num.GetValue().Should().BeLessThan(499500);
+        }
+
+        [Fact]
+        public void defaults_to_zero() { _num.GetValue().Should().Be(0L); }
     }
 }
