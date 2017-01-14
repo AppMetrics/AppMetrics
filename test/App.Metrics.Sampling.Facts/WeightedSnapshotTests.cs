@@ -18,7 +18,7 @@ namespace App.Metrics.Facts
         public void weight_snapshot_calculates_the_max_of_zero_for_an_empty_snapshot()
         {
             ISnapshot snapshot = MakeSanpshot(new long[0], new double[0]);
-            
+
             snapshot.Max.Should().Be(0);
         }
 
@@ -96,42 +96,6 @@ namespace App.Metrics.Facts
             ((Action)(() => _snapshot.GetValue(-0.5))).ShouldThrow<ArgumentException>();
             ((Action)(() => _snapshot.GetValue(1.5))).ShouldThrow<ArgumentException>();
             ((Action)(() => _snapshot.GetValue(double.NaN))).ShouldThrow<ArgumentException>();
-        }
-
-        [Fact]
-        public void can_determine_if_weighted_samples_are_same()
-        {
-            var first = new WeightedSample(1, null, 1);
-            var second = new WeightedSample(1, null, 1);
-
-            first.Should().Be(second);
-        }
-
-        [Fact]
-        public void can_determine_if_weighted_samples_are_diff()
-        {
-            var first = new WeightedSample(1, null, 1);
-            var second = new WeightedSample(1, null, 2);
-
-            first.Should().NotBe(second);
-        }
-
-        [Fact]
-        public void can_determine_if_weighted_samples_are_same_using_operator()
-        {
-            var first = new WeightedSample(1, null, 1);
-            var second = new WeightedSample(1, null, 1);
-
-            Assert.True(first == second);
-        }
-
-        [Fact]
-        public void can_determine_if_weighted_samples_are_diff_using_operator()
-        {
-            var first = new WeightedSample(1, null, 1);
-            var second = new WeightedSample(2, null, 1);
-
-            Assert.False(first == second);
         }
 
         private static WeightedSnapshot MakeSanpshot(long[] values, double[] weights)
