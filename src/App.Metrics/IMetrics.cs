@@ -1,4 +1,4 @@
-﻿// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
@@ -14,7 +14,7 @@ namespace App.Metrics
     /// <remarks>
     ///     This is the entry point to the application's metrics registry
     /// </remarks>
-    public interface IMetrics
+    public interface IMetrics : ICounterMetrics
     {
         /// <summary>
         ///     Gets the more advanced application metrics operations
@@ -33,89 +33,11 @@ namespace App.Metrics
         IAdvancedMetrics Advanced { get; }
 
         /// <summary>
-        ///     Decrements a <see cref="ICounterMetric" />
-        /// </summary>
-        /// <param name="options">The details of the counter that is being decremented</param>
-        void Decrement(CounterOptions options);
-
-        /// <summary>
-        ///     Decrements a <see cref="ICounterMetric" /> by the specificed amount
-        /// </summary>
-        /// <param name="options">The details of the counter that is being decremented</param>
-        /// <param name="amount">The amount to decrement the counter.</param>
-        void Decrement(CounterOptions options, long amount);
-
-        /// <summary>
-        ///     Decrements the specified options.
-        /// </summary>
-        /// <param name="options">The options.</param>
-        /// <param name="item">The item.</param>
-        void Decrement(CounterOptions options, string item);
-
-        /// <summary>
-        ///     Decrements the specified options.
-        /// </summary>
-        /// <param name="options">The options.</param>
-        /// <param name="amount">The amount.</param>
-        /// <param name="item">The item.</param>
-        void Decrement(CounterOptions options, long amount, string item);
-
-        /// <summary>
-        ///     Decrements a <see cref="ICounterMetric" /> as well as the specified item within the counter's set
-        /// </summary>
-        /// <remarks>
-        ///     The counter value is decremented as is the specified <see cref="MetricItem" />'s counter within the set.
-        ///     The <see cref="MetricItem" /> within the set will also keep track of it's percentage from the total sets count.
-        /// </remarks>
-        /// <param name="options">The details of the counter that is being decremented</param>
-        /// <param name="item">The item within the set to decrement.</param>
-        void Decrement(CounterOptions options, Action<MetricItem> item);
-
-        /// <summary>
-        ///     Decrements a <see cref="ICounterMetric" /> by the specified amount as well as the specified item within the
-        ///     counter's set
-        /// </summary>
-        /// <param name="options">The details of the counter that is being decremented</param>
-        /// <param name="amount">The amount to decrement the counter.</param>
-        /// <param name="item">The item within the set to decrement.</param>
-        /// <remarks>
-        ///     The counter value is decremented as is the specified <see cref="MetricItem" />'s counter within the set.
-        ///     The <see cref="MetricItem" /> within the set will also keep track of it's percentage from the total sets count.
-        /// </remarks>
-        void Decrement(CounterOptions options, long amount, Action<MetricItem> item);
-
-        /// <summary>
         ///     Records <see cref="IGaugeMetric" /> which is a point in time instantaneous value
         /// </summary>
         /// <param name="options">The details of the gauge that is being measured.</param>
         /// <param name="valueProvider">A function that returns the value for the gauge.</param>
         void Gauge(GaugeOptions options, Func<double> valueProvider);
-
-        /// <summary>
-        ///     Increments a <see cref="ICounterMetric" />
-        /// </summary>
-        /// <param name="options">The details of the counter that is being incremented</param>
-        void Increment(CounterOptions options);
-
-        /// <summary>
-        ///     Increments a <see cref="ICounterMetric" />
-        /// </summary>
-        /// <param name="options">The details of the counter that is being incremented</param>
-        /// <param name="amount">The amount to decrement the counter.</param>
-        void Increment(CounterOptions options, long amount);
-
-        /// <summary>
-        ///     Increments a <see cref="ICounterMetric" /> as well as the specified item within the counter's set
-        /// </summary>
-        /// <remarks>
-        ///     The counter value is incremented as is the specified <see cref="MetricItem" />'s counter within the set.
-        ///     The <see cref="MetricItem" /> within the set will also keep track of it's percentage from the total sets count.
-        /// </remarks>
-        /// <param name="options">The details of the counter that is being incremented</param>
-        /// <param name="item">The item within the set to increment.</param>
-        void Increment(CounterOptions options, string item);
-
-        void Increment(CounterOptions options, long amount, string item);
 
         /// <summary>
         ///     Marks a <see cref="IMeterMetric" /> which increments an increment-only counter and measures the rate of events over
@@ -132,7 +54,6 @@ namespace App.Metrics
         /// <param name="options">The details of the meter that is being marked</param>
         void Mark(MeterOptions options);
 
-        // TODO: AH - keeping this method?
         void Mark(MeterOptions options, string item);
 
         /// <summary>

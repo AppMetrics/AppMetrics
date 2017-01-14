@@ -1,4 +1,4 @@
-﻿// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
@@ -19,8 +19,9 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
         private readonly InfluxDBSettings _influxDbSettings;
         private readonly ILogger<DefaultLineProtocolClient> _logger;
         private readonly Policy _policy;
+        // Complaining about HttpPolicy spanning multiple lines
+#pragma warning disable SA1118
 
-#pragma warning disable SA1118 // Complaining about HttpPolicy spanning multiple lines
         public DefaultLineProtocolClient(ILoggerFactory loggerFactory, InfluxDBSettings influxDbSettings)
             : this(
                 loggerFactory,

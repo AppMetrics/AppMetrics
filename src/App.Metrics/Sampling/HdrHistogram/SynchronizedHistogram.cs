@@ -1,12 +1,11 @@
-﻿// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
-// Ported/Refactored to .NET Standard Library by Allan Hardy
 
 using System;
 using App.Metrics.Internal;
 
+// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
+// Ported/Refactored to .NET Standard Library by Allan Hardy
 namespace App.Metrics.Sampling.HdrHistogram
 {
 #pragma warning disable

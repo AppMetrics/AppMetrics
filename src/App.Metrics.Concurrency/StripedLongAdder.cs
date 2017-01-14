@@ -1,5 +1,7 @@
-﻿// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using App.Metrics.Concurrency.Internal;
 
 // Striped64 & LongAdder classes were ported from Java and had this copyright:
 // Written by Doug Lea with assistance from members of JCP JSR-166 Expert Group and released to the public domain, as explained at http://creativecommons.org/publicdomain/zero/1.0/
@@ -16,9 +18,6 @@
 // ReSharper disable InvertIf
 // ReSharper disable ForCanBeConvertedToForeach
 // ReSharper disable LoopCanBeConvertedToQuery
-
-using App.Metrics.Concurrency.Internal;
-
 namespace App.Metrics.Concurrency
 {
     /// <summary>

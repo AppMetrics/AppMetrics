@@ -8,7 +8,7 @@
     ],
     "xmlDoc": true,
     "debugType": "full",
-    "additionalArguments": [ "/ruleset:../../AppMetrics.ruleset", "/additionalfile:../../stylecop.json" ]    
+    "additionalArguments": ["/ruleset:../../AppMetrics.ruleset", "/additionalfile:../../stylecop.json"]
   },
   "copyright": "Allan Hardy 2016",
   "dependencies": {

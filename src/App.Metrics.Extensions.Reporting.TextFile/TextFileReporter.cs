@@ -1,4 +1,4 @@
-﻿// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
@@ -21,9 +21,7 @@ namespace App.Metrics.Extensions.Reporting.TextFile
         private bool _disposed;
 
         public TextFileReporter(string file, TimeSpan interval, ILoggerFactory loggerFactory)
-            : this(typeof(TextFileReporter).Name, file, interval, loggerFactory)
-        {
-        }
+            : this(typeof(TextFileReporter).Name, file, interval, loggerFactory) { }
 
         public TextFileReporter(string name, string file, TimeSpan interval, ILoggerFactory loggerFactory)
         {

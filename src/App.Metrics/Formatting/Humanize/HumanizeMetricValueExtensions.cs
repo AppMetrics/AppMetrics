@@ -1,4 +1,4 @@
-﻿// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System.Globalization;
@@ -35,7 +35,7 @@ namespace App.Metrics.Formatting.Humanize
             foreach (var keyValue in counter.Value.Items.Select((x, i) => new { Value = x, Index = i }))
             {
                 var key = $"Item {keyValue.Index}";
-                var value = $"{keyValue.Value.Percent:00.00}% {keyValue.Value.Count, 5} {counter.Unit.Name} [{keyValue.Value.Item}]";
+                var value = $"{keyValue.Value.Percent:00.00}% {keyValue.Value.Count,5} {counter.Unit.Name} [{keyValue.Value.Item}]";
                 sb.AppendLine(key.FormatReadableMetricValue(value));
             }
         }
@@ -99,7 +99,7 @@ namespace App.Metrics.Formatting.Humanize
             foreach (var keyValue in value.Items.Select((x, i) => new { Value = x, Index = i }))
             {
                 var key = $"Item {keyValue.Index}";
-                var itemValue = $"{keyValue.Value.Percent:00.00}% {keyValue.Value.Value.Count, 5} {unit.Name} [{keyValue.Value.Item}]";
+                var itemValue = $"{keyValue.Value.Percent:00.00}% {keyValue.Value.Value.Count,5} {unit.Name} [{keyValue.Value.Item}]";
                 sb.AppendLine(key.FormatReadableMetricValue(itemValue));
                 sb.HumanizeMeter(keyValue.Value.Value, unit);
             }

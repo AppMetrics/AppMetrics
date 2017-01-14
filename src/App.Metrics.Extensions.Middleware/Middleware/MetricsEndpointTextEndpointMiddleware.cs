@@ -1,4 +1,4 @@
-﻿// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
@@ -20,10 +20,7 @@ namespace App.Metrics.Extensions.Middleware.Middleware
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics)
-            : base(next, aspNetOptions, loggerFactory, metrics)
-        {
-            _reportGenerator = new DefaultReportGenerator(loggerFactory);
-        }
+            : base(next, aspNetOptions, loggerFactory, metrics) { _reportGenerator = new DefaultReportGenerator(loggerFactory); }
 
         public async Task Invoke(HttpContext context)
         {

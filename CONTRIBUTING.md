@@ -6,7 +6,7 @@ Thanks for taking the time to contribute to App Metrics :+1:
 
 Coding style is enforced using StyleCop. To automate the clean up of most rules, the solution includes a "team-shared" [ReSharper DotSettings](AppMetrics.sln.DotSettings), the ReSharper Code Cleanup profile is named `AppMetrics`.
 
-If your not familiar with ReSharper Code Cleanup, see the [docs](https://www.jetbrains.com/help/resharper/2016.3/Code_Cleanup__Running_Code_Cleanup.html)
+If your not familiar with ReSharper Code Cleanup, see the [code cleanup docs](https://www.jetbrains.com/help/resharper/2016.3/Code_Cleanup__Running_Code_Cleanup.html) and [settings layer docs](https://www.jetbrains.com/help/resharper/2016.3/Reference__Settings_Layers.html). 
 
 ### **Have you found a bug?**
 

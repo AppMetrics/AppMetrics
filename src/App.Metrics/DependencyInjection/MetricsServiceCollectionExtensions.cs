@@ -1,13 +1,13 @@
-﻿// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
 using App.Metrics.Configuration;
-using App.Metrics.Internal;
 using Microsoft.Extensions.Configuration;
+
 #if NET452
 using System.Reflection;
-
+using App.Metrics.Internal;
 #endif
 
 // ReSharper disable CheckNamespace
@@ -17,12 +17,12 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class MetricsServiceCollectionExtensions
     {
 #if NET452
-        /// <summary>
-        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection">IServiceCollection</see>.
-        /// </summary>
-        /// <param name="services">The application services collection.</param>
-        /// <param name="entryAssemblyName">The application assembly name</param>
-        /// <returns>The metrics host builder</returns>
+/// <summary>
+///     Adds the metrics services and configuration to the <see cref="IServiceCollection">IServiceCollection</see>.
+/// </summary>
+/// <param name="services">The application services collection.</param>
+/// <param name="entryAssemblyName">The application assembly name</param>
+/// <returns>The metrics host builder</returns>
         [AppMetricsExcludeFromCodeCoverage] // DEVNOTE: Excluding for now, don't think the it's worth the effort in testing net452 at this time.
         public static IMetricsHostBuilder AddMetrics(this IServiceCollection services, AssemblyName entryAssemblyName)
         {
@@ -126,11 +126,11 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 #else
 
-/// <summary>
-///     Adds the metrics services and configuration to the <see cref="IServiceCollection">IServiceCollection</see>.
-/// </summary>
-/// <param name="services">The application services collection.</param>
-/// <returns>The metrics host builder</returns>
+        /// <summary>
+        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection">IServiceCollection</see>.
+        /// </summary>
+        /// <param name="services">The application services collection.</param>
+        /// <returns>The metrics host builder</returns>
         public static IMetricsHostBuilder AddMetrics(this IServiceCollection services)
         {
             var builder = services.AddMetricsHostBuilder();

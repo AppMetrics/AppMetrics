@@ -1,5 +1,5 @@
 {
-  "authors": [ "Allan Hardy" ],
+  "authors": ["Allan Hardy"],
   "buildOptions": {
     "warningsAsErrors": true,
     "nowarn": [
@@ -8,10 +8,11 @@
     ],
     "xmlDoc": true,
     "debugType": "full",
-    "additionalArguments": [ "/ruleset:../../AppMetrics.ruleset", "/additionalfile:../../stylecop.json" ]
+    "additionalArguments": ["/ruleset:../../AppMetrics.ruleset", "/additionalfile:../../stylecop.json"]
   },
   "copyright": "Allan Hardy 2016",
-  "description": "Provides useful structures for performing efficient concurrent operations. Original Project: https://github.com/etishor/ConcurrencyUtilities, including a port of Java's LongAdder and Striped64 classes",
+  "description":
+    "Provides useful structures for performing efficient concurrent operations. Original Project: https://github.com/etishor/ConcurrencyUtilities, including a port of Java's LongAdder and Striped64 classes",
   "frameworks": {
     "netstandard1.6": {
       "imports": [
@@ -34,7 +35,7 @@
         ]
       },
       "dependencies": {
-
+      
       },
       "frameworkAssemblies": {
         "System.Reflection": "4.0.0.0"
@@ -43,7 +44,7 @@
     }
   },
   "packOptions": {
-    "tags": [ "Concurrency", "Atomic" ],
+    "tags": ["Concurrency", "Atomic"],
     "projectUrl": "https://github.com/alhardy/AppMetrics",
     "licenseUrl": "https://github.com/alhardy/AppMetrics/blob/master/LICENSE",
     "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png",

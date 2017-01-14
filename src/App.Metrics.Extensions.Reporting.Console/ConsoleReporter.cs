@@ -1,4 +1,4 @@
-﻿// Copyright (c) Allan hardy. All rights reserved.
+﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
@@ -23,9 +23,7 @@ namespace App.Metrics.Extensions.Reporting.Console
         private readonly ILogger<ConsoleReporter> _logger;
 
         public ConsoleReporter(TimeSpan reportInterval, ILoggerFactory loggerFactory)
-            : this(typeof(ConsoleReporter).Name, reportInterval, loggerFactory)
-        {
-        }
+            : this(typeof(ConsoleReporter).Name, reportInterval, loggerFactory) { }
 
         public ConsoleReporter(string name, TimeSpan reportInterval, ILoggerFactory loggerFactory)
         {

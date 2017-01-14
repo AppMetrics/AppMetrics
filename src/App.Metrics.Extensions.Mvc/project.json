@@ -1,5 +1,5 @@
 {
-  "authors": [ "Allan Hardy" ],
+  "authors": ["Allan Hardy"],
   "buildOptions": {
     "warningsAsErrors": true,
     "nowarn": [
@@ -7,7 +7,7 @@
     ],
     "xmlDoc": true,
     "debugType": "full",
-    "additionalArguments": [ "/ruleset:../../AppMetrics.ruleset", "/additionalfile:../../stylecop.json" ]
+    "additionalArguments": ["/ruleset:../../AppMetrics.ruleset", "/additionalfile:../../stylecop.json"]
   },
   "dependencies": {
     "App.Metrics": "1.0.0-beta5",
@@ -24,7 +24,8 @@
       "type": "build"
     }
   },
-  "description": "Extends the App.Metrics library providing a set AspNet Core MVC Components including tracking of endpoints with MVC attribute routes",
+  "description":
+    "Extends the App.Metrics library providing a set AspNet Core MVC Components including tracking of endpoints with MVC attribute routes",
   "frameworks": {
     "netstandard1.6": {
       "imports": [
