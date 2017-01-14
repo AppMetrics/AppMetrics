@@ -2,8 +2,8 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
+using App.Metrics.Internal;
 using Microsoft.Extensions.PlatformAbstractions;
-
 #if NET452
 using System.Reflection;
 
@@ -13,6 +13,7 @@ namespace App.Metrics
     public sealed class MetricsAppEnvironment : IMetricsEnvironment
     {
 #if NET452
+        [AppMetricsExcludeFromCodeCoverage] // DEVNOTE: Excluding for now, don't think the it's worth the effort in testing net452 at this time.
         public MetricsAppEnvironment(ApplicationEnvironment applicationEnvironment, AssemblyName executingAssemblyName)
         {
             if (applicationEnvironment == null)
