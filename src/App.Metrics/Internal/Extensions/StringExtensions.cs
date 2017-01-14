@@ -10,22 +10,6 @@ namespace System
     internal static class StringExtensions
     {
         [DebuggerStepThrough]
-        internal static string CleanUrlPath(this string url)
-        {
-            if (string.IsNullOrWhiteSpace(url))
-            {
-                url = "/";
-            }
-
-            if (url != "/" && url.EndsWith("/"))
-            {
-                url = url.Substring(0, url.Length - 1);
-            }
-
-            return url;
-        }
-
-        [DebuggerStepThrough]
         internal static string EnsureLeadingSlash(this string url)
         {
             if (!url.StartsWith("/"))
