@@ -4,7 +4,7 @@ using FluentAssertions;
 using Xunit;
 
 namespace App.Metrics.Facts.Metrics
-{    
+{
     public class CounterValueTests
     {
         [Fact]
