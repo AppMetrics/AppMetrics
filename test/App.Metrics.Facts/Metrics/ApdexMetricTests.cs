@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using App.Metrics.Apdex.Interfaces;
 using App.Metrics.Core;
 using App.Metrics.Internal;
 using App.Metrics.Utils;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace App.Metrics.Facts.Metrics
@@ -14,11 +16,14 @@ namespace App.Metrics.Facts.Metrics
 
         public ApdexMetricTests()
         {
-            _apdex = new ApdexMetric(SamplingType.ExponentiallyDecaying, Constants.ReservoirSampling.DefaultSampleSize,
-                Constants.ReservoirSampling.DefaultSampleSize, _clock, Constants.ReservoirSampling.DefaultApdexTSeconds, false);
+            _apdex = new ApdexMetric(
+                SamplingType.ExponentiallyDecaying,
+                Constants.ReservoirSampling.DefaultSampleSize,
+                Constants.ReservoirSampling.DefaultSampleSize,
+                _clock,
+                Constants.ReservoirSampling.DefaultApdexTSeconds,
+                false);
         }
-
-        //TODO: AH - Add Tests for tracking adpex via action and func
 
         [Fact]
         public void can_reset()
@@ -35,7 +40,7 @@ namespace App.Metrics.Facts.Metrics
             _apdex.Value.Frustrating.Should().Be(0);
 
             _apdex.Reset();
-            
+
             _apdex.Value.Score.Should().Be(0);
             _apdex.Value.SampleSize.Should().Be(0);
             _apdex.Value.Satisfied.Should().Be(0);
@@ -43,12 +48,29 @@ namespace App.Metrics.Facts.Metrics
             _apdex.Value.Frustrating.Should().Be(0);
         }
 
+        [Fact]
+        public void can_reset_and_get_value()
+        {
+            using (_apdex.NewContext())
+            {
+                _clock.Advance(TimeUnit.Milliseconds, 100);
+            }
+
+            var value = _apdex.GetValue(true);
+            value.Score.Should().NotBe(0);
+            _apdex.Value.Score.Should().Be(0);
+        }
+
         [Theory]
         [InlineData(1, 1.0, 600, 0.75, 10000, 0.5)]
         [InlineData(10000, 0, 1, 0.5, 600, 0.5)]
-        public void can_score(long durationFirstRequest, double apdexAfterFirstRequest,
-            long durationSecondRequest, double apdexAfterSecondRequest,
-            long durationThirdRequest, double apdexAfterThirdRequest)
+        public void can_score(
+            long durationFirstRequest,
+            double apdexAfterFirstRequest,
+            long durationSecondRequest,
+            double apdexAfterSecondRequest,
+            long durationThirdRequest,
+            double apdexAfterThirdRequest)
         {
             _apdex.Value.Score.Should().Be(0);
 
@@ -72,6 +94,35 @@ namespace App.Metrics.Facts.Metrics
             }
 
             _apdex.Value.Score.Should().Be(apdexAfterThirdRequest);
+        }
+
+        [Fact]
+        public void can_track_action()
+        {
+            _apdex.Track(() => _clock.Advance(TimeUnit.Milliseconds, 100));
+
+            _apdex.Value.Score.Should().NotBe(0);
+            _apdex.Value.SampleSize.Should().Be(1);
+            _apdex.Value.Satisfied.Should().Be(1);
+            _apdex.Value.Tolerating.Should().Be(0);
+            _apdex.Value.Frustrating.Should().Be(0);
+        }
+
+        [Fact]
+        public void can_track_func()
+        {
+            var result = _apdex.Track(
+                () =>
+                {
+                    _clock.Advance(TimeUnit.Milliseconds, 100);
+                    return 1;
+                });
+
+            _apdex.Value.Score.Should().NotBe(0);
+            _apdex.Value.SampleSize.Should().Be(1);
+            _apdex.Value.Satisfied.Should().Be(1);
+            _apdex.Value.Tolerating.Should().Be(0);
+            _apdex.Value.Frustrating.Should().Be(0);
         }
 
         [Fact]
@@ -104,6 +155,46 @@ namespace App.Metrics.Facts.Metrics
             //action.ShouldThrow<InvalidOperationException>();
 
             //this._apdex.Value.Score.Should().BeGreaterThan(0);
+        }
+
+        [Fact]
+        public void if_duration_smaller_than_zero_dont_update()
+        {
+            var providerMock = new Mock<IApdexProvider>();
+
+            var apdex = new ApdexMetric(providerMock.Object, _clock, false);
+
+            apdex.Track(-1L);
+
+            providerMock.Verify(x => x.Update(0L), Times.Never);
+        }
+
+        [Fact]
+        public void throws_if_apdex_provider_is_null()
+        {
+            Action createApdex = () =>
+            {
+                var apdex = new ApdexMetric(null, _clock, true);
+            };
+
+            createApdex.ShouldThrow<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void throws_if_clock_is_null()
+        {
+            Action createApdex = () =>
+            {
+                var apdex = new ApdexMetric(
+                    SamplingType.ExponentiallyDecaying,
+                    Constants.ReservoirSampling.DefaultSampleSize,
+                    Constants.ReservoirSampling.DefaultSampleSize,
+                    null,
+                    Constants.ReservoirSampling.DefaultApdexTSeconds,
+                    false);
+            };
+
+            createApdex.ShouldThrow<ArgumentNullException>();
         }
     }
 }
