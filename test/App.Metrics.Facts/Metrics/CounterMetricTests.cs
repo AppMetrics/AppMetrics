@@ -183,9 +183,6 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void count_should_start_from_zero()
-        {
-            _counter.Value.Count.Should().Be(0L);
-        }
+        public void count_should_start_from_zero() { _counter.Value.Count.Should().Be(0L); }
     }
 }
