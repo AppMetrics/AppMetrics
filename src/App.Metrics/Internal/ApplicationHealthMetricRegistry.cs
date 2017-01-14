@@ -5,6 +5,7 @@ using App.Metrics.Core.Options;
 
 namespace App.Metrics.Internal
 {
+    [AppMetricsExcludeFromCodeCoverage]
     public static class ApplicationHealthMetricRegistry
     {
         public static readonly string Context = "Health";
