@@ -24,6 +24,14 @@ namespace App.Metrics.Concurrency.Facts
         }
 
         [Fact]
+        public void can_get_without_volatile_read_fence_and_ordering()
+        {
+            _num.Add(1);
+            var val = _num.NonVolatileGetValue();
+            val.Should().Be(1);
+        }
+
+        [Fact]
         public void can_be_created_with_value()
         {
             new AtomicLong(5L).GetValue().Should().Be(5L);
