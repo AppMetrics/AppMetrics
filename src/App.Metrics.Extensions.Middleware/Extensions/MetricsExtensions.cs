@@ -85,6 +85,7 @@ namespace App.Metrics
         public static IMetrics UpdatePostAndPutRequestSize(this IMetrics metrics, long value)
         {
             metrics.Update(AspNetMetricsRegistry.Contexts.HttpRequests.Histograms.PostAndPutRequestSize, value);
+
             return metrics;
         }
     }

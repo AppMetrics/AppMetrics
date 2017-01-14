@@ -7,7 +7,7 @@
     ],
     "xmlDoc": true,
     "debugType": "full",
-    "additionalArguments": [ "/ruleset:../../ruleset.ruleset", "/additionalfile:../../stylecop.json" ]
+    "additionalArguments": [ "/ruleset:../../AppMetrics.ruleset", "/additionalfile:../../stylecop.json" ]
   },
   "dependencies": {
     "App.Metrics": "1.0.0-beta5",

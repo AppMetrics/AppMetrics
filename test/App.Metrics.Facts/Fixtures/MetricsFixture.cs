@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
 using App.Metrics.Data;
@@ -20,7 +19,7 @@ namespace App.Metrics.Facts.Fixtures
             var metricsLogger = _loggerFactory.CreateLogger<DefaultAdvancedMetrics>();
             var healthFactoryLogger = _loggerFactory.CreateLogger<HealthCheckFactory>();
             var clock = new TestClock();
-            var options = new AppMetricsOptions {DefaultSamplingType = SamplingType.LongTerm};
+            var options = new AppMetricsOptions { DefaultSamplingType = SamplingType.LongTerm };
             Func<string, IMetricContextRegistry> newContextRegistry = name => new DefaultMetricContextRegistry(name);
             var registry = new DefaultMetricsRegistry(_loggerFactory, options, clock, new EnvironmentInfoProvider(), newContextRegistry);
             var healthCheckFactory = new HealthCheckFactory(healthFactoryLogger);
@@ -28,22 +27,22 @@ namespace App.Metrics.Facts.Fixtures
             Metrics = new DefaultMetrics(options, registry, advancedContext);
         }
 
-        public IMetrics Metrics { get; }
-
         public Func<IMetrics, MetricsDataValueSource> CurrentData =>
             ctx => Metrics.Advanced.Data.ReadData();
 
         public Func<IMetrics, IMetricsFilter, MetricsDataValueSource> CurrentDataWithFilter
             => (ctx, filter) => Metrics.Advanced.Data.ReadData(filter);
 
-        public void Dispose()
-        {
-            Dispose(true);
-        }
+        public IMetrics Metrics { get; }
+
+        public void Dispose() { Dispose(true); }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposing) return;
+            if (!disposing)
+            {
+                return;
+            }
 
             Metrics?.Advanced.Data.Reset();
         }
