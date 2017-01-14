@@ -7,7 +7,7 @@ using App.Metrics.Core.Options;
 
 namespace App.Metrics
 {
-    public interface ICounterMetrics
+    public interface IMeasureCounterMetrics
     {
         /// <summary>
         ///     Decrements a <see cref="ICounterMetric" />
