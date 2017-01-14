@@ -56,25 +56,24 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void should_report_nan_on_exception()
-        {
-            new FunctionGauge(() => { throw new InvalidOperationException("test"); }).Value.Should().Be(double.NaN);
-
-            new DerivedGauge(new FunctionGauge(() => 5.0), (d) => { throw new InvalidOperationException("test"); }).Value.Should().Be(double.NaN);
-        }
-
-        [Fact]
         public void can_create_gauge_from_value_source()
         {
-            var valueSource = new GaugeValueSource("test", new FunctionGauge(() => 2.0), Unit.Bytes, MetricTags.None );
+            var valueSource = new GaugeValueSource("test", new FunctionGauge(() => 2.0), Unit.Bytes, MetricTags.None);
 
             var gauge = Gauge.FromGauge(valueSource);
 
             gauge.Value.Should().Be(2.0);
             gauge.Name.Should().Be("test");
+            gauge.Tags.Count.Should().Be(0);
             Assert.True(gauge.Unit == Unit.Bytes);
-            Assert.True(gauge.Tags == MetricTags.None);
+        }
 
+        [Fact]
+        public void should_report_nan_on_exception()
+        {
+            new FunctionGauge(() => { throw new InvalidOperationException("test"); }).Value.Should().Be(double.NaN);
+
+            new DerivedGauge(new FunctionGauge(() => 5.0), (d) => { throw new InvalidOperationException("test"); }).Value.Should().Be(double.NaN);
         }
     }
 }
