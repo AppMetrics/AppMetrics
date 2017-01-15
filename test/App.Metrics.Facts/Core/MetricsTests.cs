@@ -72,7 +72,7 @@ namespace App.Metrics.Facts.Core
                 MeasurementUnit = Unit.Requests,
             };
 
-            _fixture.Metrics.Increment(counterOptions);
+            _fixture.Metrics.Counter.Increment(counterOptions);
 
             var data = _fixture.CurrentData(_fixture.Metrics);
 
@@ -184,7 +184,7 @@ namespace App.Metrics.Facts.Core
                     MeasurementUnit = Unit.Calls
                 };
 
-                _fixture.Metrics.Gauge(gaugeOptions, () => 0.0);
+                _fixture.Metrics.Gauge.SetValue(gaugeOptions, () => 0.0);
                 _fixture.Metrics.Advanced.Counter(counterOptions);
                 _fixture.Metrics.Advanced.Meter(meterOptions);
                 _fixture.Metrics.Advanced.Histogram(histogramOptions);

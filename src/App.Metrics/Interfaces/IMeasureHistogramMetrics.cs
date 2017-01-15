@@ -4,7 +4,7 @@
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Options;
 
-namespace App.Metrics
+namespace App.Metrics.Interfaces
 {
     public interface IMeasureHistogramMetrics
     {

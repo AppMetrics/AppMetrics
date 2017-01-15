@@ -19,13 +19,12 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
         private readonly InfluxDBSettings _influxDbSettings;
         private readonly ILogger<DefaultLineProtocolClient> _logger;
         private readonly Policy _policy;
-        // Complaining about HttpPolicy spanning multiple lines
-#pragma warning disable SA1118
 
         public DefaultLineProtocolClient(ILoggerFactory loggerFactory, InfluxDBSettings influxDbSettings)
             : this(
                 loggerFactory,
                 influxDbSettings,
+#pragma warning disable SA1118
                 new HttpPolicy
                 {
                     FailuresBeforeBackoff = Constants.DefaultFailuresBeforeBackoff,

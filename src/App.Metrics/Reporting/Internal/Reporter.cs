@@ -145,17 +145,17 @@ namespace App.Metrics.Reporting.Internal
 
                         if (result)
                         {
-                            _metrics.Increment(_successCounter, metricReporter.Key.Name);
+                            _metrics.Counter.Increment(_successCounter, metricReporter.Key.Name);
                         }
                         else
                         {
-                            _metrics.Increment(_failedCounter, metricReporter.Key.Name);
+                            _metrics.Counter.Increment(_failedCounter, metricReporter.Key.Name);
                             _logger.ReportFailed(metricReporter.Value);
                         }
                     }
                     catch (Exception ex)
                     {
-                        _metrics.Increment(_failedCounter, metricReporter.Key.Name);
+                        _metrics.Counter.Increment(_failedCounter, metricReporter.Key.Name);
                         _logger.ReportFailed(metricReporter.Value, ex);
                     }
                 },

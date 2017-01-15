@@ -13,7 +13,7 @@ namespace App.Metrics
     {
         public static IMetrics DecrementActiveRequests(this IMetrics metrics)
         {
-            metrics.Decrement(AspNetMetricsRegistry.Contexts.HttpRequests.Counters.ActiveRequests);
+            metrics.Counter.Decrement(AspNetMetricsRegistry.Contexts.HttpRequests.Counters.ActiveRequests);
 
             return metrics;
         }
@@ -32,14 +32,14 @@ namespace App.Metrics
 
         public static IMetrics IncrementActiveRequests(this IMetrics metrics)
         {
-            metrics.Increment(AspNetMetricsRegistry.Contexts.HttpRequests.Counters.ActiveRequests);
+            metrics.Counter.Increment(AspNetMetricsRegistry.Contexts.HttpRequests.Counters.ActiveRequests);
 
             return metrics;
         }
 
         public static IMetrics MarkHttpEndpointForOAuthClient(this IMetrics metrics, string routeTemplate, string clientId, int httpStatusCode)
         {
-            metrics.Mark(
+            metrics.Meter.Mark(
                 AspNetMetricsRegistry.Contexts.OAuth2.Meters.EndpointHttpRequests(routeTemplate),
                 item => item.With("client_id", clientId).With("http_status_code", httpStatusCode.ToString()));
 
@@ -48,7 +48,7 @@ namespace App.Metrics
 
         public static IMetrics MarkHttpRequestEndpointError(this IMetrics metrics, string routeTemplate, int httpStatusCode)
         {
-            metrics.Mark(
+            metrics.Meter.Mark(
                 AspNetMetricsRegistry.Contexts.HttpRequests.Meters.EndpointHttpErrorRequests(routeTemplate),
                 item => item.With("http_status_code", httpStatusCode.ToString()));
 
@@ -57,7 +57,7 @@ namespace App.Metrics
 
         public static IMetrics MarkHttpRequestError(this IMetrics metrics, int httpStatusCode)
         {
-            metrics.Mark(
+            metrics.Meter.Mark(
                 AspNetMetricsRegistry.Contexts.HttpRequests.Meters.HttpErrorRequests,
                 item => item.With("http_status_code", httpStatusCode.ToString()));
 
@@ -66,7 +66,7 @@ namespace App.Metrics
 
         public static IMetrics MarkHttpRequestForOAuthClient(this IMetrics metrics, string clientId, int httpStatusCode)
         {
-            metrics.Mark(
+            metrics.Meter.Mark(
                 AspNetMetricsRegistry.Contexts.OAuth2.Meters.HttpRequests,
                 item => item.With("client_id", clientId).With("http_status_code", httpStatusCode.ToString()));
 
@@ -84,7 +84,7 @@ namespace App.Metrics
 
         public static IMetrics UpdatePostAndPutRequestSize(this IMetrics metrics, long value)
         {
-            metrics.Update(AspNetMetricsRegistry.Contexts.HttpRequests.Histograms.PostAndPutRequestSize, value);
+            metrics.Histogram.Update(AspNetMetricsRegistry.Contexts.HttpRequests.Histograms.PostAndPutRequestSize, value);
 
             return metrics;
         }

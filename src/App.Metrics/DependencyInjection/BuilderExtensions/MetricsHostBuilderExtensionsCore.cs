@@ -10,6 +10,7 @@ using App.Metrics.DependencyInjection.Internal;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.Internal.Interfaces;
+using App.Metrics.Internal.Managers;
 using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Reporting.Internal;
 using App.Metrics.Serialization;
@@ -49,6 +50,7 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.TryAddSingleton<EnvironmentInfoProvider, EnvironmentInfoProvider>();
             builder.Services.TryAddSingleton<IMetricDataSerializer, NoOpMetricDataSerializer>();
             builder.Services.TryAddSingleton<IHealthStatusSerializer, NoOpHealthStatusSerializer>();
+            builder.Services.TryAddSingleton<IMetricsManagerFactory, DefaultMetricsManagerFactory>();
             builder.Services.TryAddSingleton<IAdvancedMetrics, DefaultAdvancedMetrics>();
             builder.Services.TryAddSingleton<IMetricsRegistry>(
                 provider =>

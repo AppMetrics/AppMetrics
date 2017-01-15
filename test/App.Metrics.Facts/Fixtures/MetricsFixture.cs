@@ -1,3 +1,6 @@
+// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
 using System;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
@@ -5,6 +8,7 @@ using App.Metrics.Data;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.Internal.Interfaces;
+using App.Metrics.Internal.Managers;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 
@@ -23,8 +27,9 @@ namespace App.Metrics.Facts.Fixtures
             Func<string, IMetricContextRegistry> newContextRegistry = name => new DefaultMetricContextRegistry(name);
             var registry = new DefaultMetricsRegistry(_loggerFactory, options, clock, new EnvironmentInfoProvider(), newContextRegistry);
             var healthCheckFactory = new HealthCheckFactory(healthFactoryLogger);
-            var advancedContext = new DefaultAdvancedMetrics(metricsLogger, options, clock, new DefaultMetricsFilter(), registry, healthCheckFactory);
-            Metrics = new DefaultMetrics(options, registry, advancedContext);
+            var advancedManager = new DefaultAdvancedMetrics(metricsLogger, options, clock, new DefaultMetricsFilter(), registry, healthCheckFactory);
+            var metricsTypesAggregateService = new DefaultMetricsManagerFactory(registry, advancedManager);
+            Metrics = new DefaultMetrics(options, metricsTypesAggregateService, advancedManager);
         }
 
         public Func<IMetrics, MetricsDataValueSource> CurrentData =>

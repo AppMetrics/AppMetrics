@@ -1,10 +1,14 @@
-﻿using System;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System;
 using System.Threading.Tasks;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.Internal.Interfaces;
+using App.Metrics.Internal.Managers;
 using App.Metrics.Utils;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
@@ -26,11 +30,23 @@ namespace App.Metrics.Facts.Health
                 var clock = new TestClock();
                 var options = new AppMetricsOptions();
                 Func<string, IMetricContextRegistry> newContextRegistry = name => new DefaultMetricContextRegistry(name);
-                var registry = new DefaultMetricsRegistry(LoggerFactory, options, clock, new EnvironmentInfoProvider(),
+                var registry = new DefaultMetricsRegistry(
+                    LoggerFactory,
+                    options,
+                    clock,
+                    new EnvironmentInfoProvider(),
                     newContextRegistry);
-                var advancedContext = new DefaultAdvancedMetrics(metricsLogger, options, clock, new DefaultMetricsFilter(), registry,
+                var advancedManager = new DefaultAdvancedMetrics(
+                    metricsLogger,
+                    options,
+                    clock,
+                    new DefaultMetricsFilter(),
+                    registry,
                     healthCheckFactory);
-                return new DefaultMetrics(options, registry, advancedContext);
+
+                var metricsTypesAggregateService = new DefaultMetricsManagerFactory(registry, advancedManager);
+
+                return new DefaultMetrics(options, metricsTypesAggregateService, advancedManager);
             };
         }
 

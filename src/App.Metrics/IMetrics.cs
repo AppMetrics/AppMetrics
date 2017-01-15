@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using App.Metrics.Core.Interfaces;
+using App.Metrics.Interfaces;
 using App.Metrics.Utils;
 
 namespace App.Metrics
@@ -12,12 +13,7 @@ namespace App.Metrics
     /// <remarks>
     ///     This is the entry point to the application's metrics registry
     /// </remarks>
-    public interface IMetrics : IMeasureCounterMetrics,
-        IMeasureGaugeMetrics,
-        IMeasureMeterMetrics,
-        IMeasureTimerMetrics,
-        IMeasureApdexMetrics,
-        IMeasureHistogramMetrics
+    public interface IMetrics
     {
         /// <summary>
         ///     Gets the more advanced application metrics operations
@@ -34,5 +30,19 @@ namespace App.Metrics
         ///     - Allows disabling of metrics recording at runtime
         /// </remarks>
         IAdvancedMetrics Advanced { get; }
+
+        // TODO: ! Add docs
+
+        IMeasureApdexMetrics Apdex { get; }
+
+        IMeasureTimerMetrics Timer { get; }
+
+        IMeasureCounterMetrics Counter { get; }
+
+        IMeasureGaugeMetrics Gauge { get; }
+
+        IMeasureHistogramMetrics Histogram { get; }
+
+        IMeasureMeterMetrics Meter { get; }
     }
 }
