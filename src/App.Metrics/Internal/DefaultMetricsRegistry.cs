@@ -10,6 +10,7 @@ using App.Metrics.Core.Options;
 using App.Metrics.Data;
 using App.Metrics.Data.Interfaces;
 using App.Metrics.Infrastructure;
+using App.Metrics.Interfaces;
 using App.Metrics.Internal.Interfaces;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;

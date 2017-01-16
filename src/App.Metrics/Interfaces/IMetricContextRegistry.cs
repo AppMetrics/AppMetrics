@@ -4,34 +4,32 @@
 using System;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Options;
-using App.Metrics.Data;
 using App.Metrics.Data.Interfaces;
+using App.Metrics.Internal.Interfaces;
 
-namespace App.Metrics.Internal.Interfaces
+namespace App.Metrics.Interfaces
 {
-    internal interface IMetricsRegistry
+    public interface IMetricContextRegistry
     {
-        bool AddContext(string context, IMetricContextRegistry registry);
+        string Context { get; }
+
+        IMetricRegistryManager DataProvider { get; }
 
         IApdex Apdex<T>(ApdexOptions options, Func<T> builder)
             where T : IApdexMetric;
 
-        void Clear();
+        void ClearAllMetrics();
 
         ICounter Counter<T>(CounterOptions options, Func<T> builder)
             where T : ICounterMetric;
 
         void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider);
 
-        MetricsDataValueSource GetData(IMetricsFilter filter);
-
         IHistogram Histogram<T>(HistogramOptions options, Func<T> builder)
             where T : IHistogramMetric;
 
         IMeter Meter<T>(MeterOptions options, Func<T> builder)
             where T : IMeterMetric;
-
-        void RemoveContext(string context);
 
         ITimer Timer<T>(TimerOptions options, Func<T> builder)
             where T : ITimerMetric;

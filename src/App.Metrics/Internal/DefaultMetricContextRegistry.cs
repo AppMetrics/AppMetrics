@@ -9,6 +9,7 @@ using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Options;
 using App.Metrics.Data;
 using App.Metrics.Data.Interfaces;
+using App.Metrics.Interfaces;
 using App.Metrics.Internal.Interfaces;
 
 namespace App.Metrics.Internal

@@ -89,5 +89,21 @@ namespace App.Metrics.Internal.Managers
         {
             _registry.Counter(options, () => _advanced.BuildCounter(options)).Increment(item, amount);
         }
+
+        /// <inheritdoc />
+        public void Increment(CounterOptions options, Action<MetricItem> itemSetup)
+        {
+            var item = new MetricItem();
+            itemSetup(item);
+            _registry.Counter(options, () => _advanced.BuildCounter(options)).Increment(item);
+        }
+
+        /// <inheritdoc />
+        public void Increment(CounterOptions options, long amount, Action<MetricItem> itemSetup)
+        {
+            var item = new MetricItem();
+            itemSetup(item);
+            _registry.Counter(options, () => _advanced.BuildCounter(options)).Increment(item, amount);
+        }
     }
 }

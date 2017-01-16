@@ -7,8 +7,8 @@ using App.Metrics.Core;
 using App.Metrics.Core.Options;
 using App.Metrics.Data;
 using App.Metrics.Infrastructure;
+using App.Metrics.Interfaces;
 using App.Metrics.Internal;
-using App.Metrics.Internal.Interfaces;
 using App.Metrics.Internal.Managers;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
@@ -30,8 +30,8 @@ namespace App.Metrics.Facts.Fixtures
             var healthCheckFactory = new HealthCheckFactory(healthFactoryLogger);
             var advancedManager = new DefaultAdvancedMetrics(metricsLogger, options, clock, new DefaultMetricsFilter(), registry, healthCheckFactory);
 
-            var metricsTypesAggregateService = new DefaultMetricsManagerFactory(registry, advancedManager);
-            Metrics = new DefaultMetrics(options, metricsTypesAggregateService, advancedManager);
+            var metricsManagerFactory = new DefaultMetricsManagerFactory(registry, advancedManager);
+            Metrics = new DefaultMetrics(options, metricsManagerFactory, advancedManager);
             RecordSomeMetrics();
         }
 

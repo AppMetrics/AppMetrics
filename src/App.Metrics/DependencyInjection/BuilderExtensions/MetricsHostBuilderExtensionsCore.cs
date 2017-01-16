@@ -8,6 +8,7 @@ using App.Metrics.Core;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.DependencyInjection.Internal;
 using App.Metrics.Infrastructure;
+using App.Metrics.Interfaces;
 using App.Metrics.Internal;
 using App.Metrics.Internal.Interfaces;
 using App.Metrics.Internal.Managers;

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
 using App.Metrics.Infrastructure;
+using App.Metrics.Interfaces;
 using App.Metrics.Internal;
 using App.Metrics.Internal.Interfaces;
 using App.Metrics.Internal.Managers;
@@ -44,9 +45,9 @@ namespace App.Metrics.Facts.Health
                     registry,
                     healthCheckFactory);
 
-                var metricsTypesAggregateService = new DefaultMetricsManagerFactory(registry, advancedManager);
+                var metricsManagerFactory = new DefaultMetricsManagerFactory(registry, advancedManager);
 
-                return new DefaultMetrics(options, metricsTypesAggregateService, advancedManager);
+                return new DefaultMetrics(options, metricsManagerFactory, advancedManager);
             };
         }
 

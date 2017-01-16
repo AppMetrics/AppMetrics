@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using App.Metrics.Data;
+using App.Metrics.Interfaces;
 using App.Metrics.Internal.Interfaces;
 
 namespace App.Metrics.Internal

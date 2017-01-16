@@ -3,7 +3,7 @@
 
 using App.Metrics.Interfaces;
 
-namespace App.Metrics.Internal.Managers
+namespace App.Metrics.Internal.Interfaces
 {
     internal interface IMetricsManagerFactory
     {

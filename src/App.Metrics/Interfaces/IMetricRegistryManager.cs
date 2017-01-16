@@ -4,9 +4,9 @@
 using System.Collections.Generic;
 using App.Metrics.Data;
 
-namespace App.Metrics.Internal.Interfaces
+namespace App.Metrics.Interfaces
 {
-    internal interface IMetricRegistryManager
+    public interface IMetricRegistryManager
     {
         IEnumerable<ApdexValueSource> ApdexScores { get; }
 
