@@ -41,7 +41,7 @@ namespace App.Metrics.Facts.Core
             data.Contexts.Should().BeNullOrEmpty();
         }
 
-        [Fact(Skip = "Not used just yet, skipping for now as replacing the metrics registry ref in the data manager isnt correct")]
+        [Fact]
         public void can_disable_metrics_at_runtime()
         {
             var counterOptions = new CounterOptions

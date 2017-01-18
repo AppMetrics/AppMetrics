@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-using System.Threading;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -11,7 +10,7 @@ namespace App.Metrics.Internal.Managers
     internal sealed class DefaultMetricsManager : IManageMetrics
     {
         private readonly ILogger<DefaultMetricsManager> _logger;
-        private IMetricsRegistry _registry;
+        private readonly IMetricsRegistry _registry;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultMetricsManager" /> class.
@@ -34,8 +33,7 @@ namespace App.Metrics.Internal.Managers
                 return;
             }
 
-            // TODO: This isn't going to replace the ref globally, fix skipped test
-            Interlocked.Exchange(ref _registry, new NullMetricsRegistry());
+            _registry.Disable();
 
             _logger.LogDebug("Metrics disabled");
         }

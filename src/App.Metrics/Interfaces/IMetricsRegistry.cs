@@ -21,6 +21,8 @@ namespace App.Metrics.Interfaces
         ICounter Counter<T>(CounterOptions options, Func<T> builder)
             where T : ICounterMetric;
 
+        void Disable();
+
         void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider);
 
         MetricsDataValueSource GetData(IMetricsFilter filter);

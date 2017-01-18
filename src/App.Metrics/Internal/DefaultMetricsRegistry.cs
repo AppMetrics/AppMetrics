@@ -25,6 +25,8 @@ namespace App.Metrics.Internal
         private readonly EnvironmentInfoProvider _environmentInfoProvider;
         private readonly ILogger _logger;
         private readonly Func<string, IMetricContextRegistry> _newContextRegistry;
+        private readonly NullMetricsRegistry _nullMetricsRegistry = new NullMetricsRegistry();
+        private bool _enabled = true;
 
         public DefaultMetricsRegistry(
             ILoggerFactory loggerFactory,
@@ -44,6 +46,11 @@ namespace App.Metrics.Internal
 
         public bool AddContext(string context, IMetricContextRegistry registry)
         {
+            if (!_enabled)
+            {
+                _nullMetricsRegistry.AddContext(context, registry);
+            }
+
             if (context.IsMissing())
             {
                 throw new ArgumentException("Registry Context cannot be null or empty", nameof(context));
@@ -57,6 +64,11 @@ namespace App.Metrics.Internal
         public IApdex Apdex<T>(ApdexOptions options, Func<T> builder)
             where T : IApdexMetric
         {
+            if (!_enabled)
+            {
+                return _nullMetricsRegistry.Apdex(options, builder);
+            }
+
             EnsureContextLabel(options);
             EnsureSamplingType(options);
 
@@ -67,6 +79,11 @@ namespace App.Metrics.Internal
 
         public void Clear()
         {
+            if (!_enabled)
+            {
+                _nullMetricsRegistry.Clear();
+            }
+
             ForAllContexts(
                 c =>
                 {
@@ -78,11 +95,24 @@ namespace App.Metrics.Internal
         public ICounter Counter<T>(CounterOptions options, Func<T> builder)
             where T : ICounterMetric
         {
+            if (!_enabled)
+            {
+                return _nullMetricsRegistry.Counter(options, builder);
+            }
+
             EnsureContextLabel(options);
 
             var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
 
             return contextRegistry.Counter(options, builder);
+        }
+
+        /// <inheritdoc />
+        public void Disable()
+        {
+            Clear();
+
+            _enabled = false;
         }
 
         public MetricValueOptions EnsureContextLabel(MetricValueOptions options)
@@ -107,6 +137,11 @@ namespace App.Metrics.Internal
 
         public void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider)
         {
+            if (!_enabled)
+            {
+                _nullMetricsRegistry.Gauge(options, valueProvider);
+            }
+
             EnsureContextLabel(options);
 
             var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
@@ -117,6 +152,11 @@ namespace App.Metrics.Internal
         public MetricsDataValueSource GetData(IMetricsFilter filter)
         {
             _logger.RetrievedMetricsData();
+
+            if (!_enabled)
+            {
+                _nullMetricsRegistry.GetData(filter);
+            }
 
             if (_contexts.Count == 0)
             {
@@ -145,6 +185,11 @@ namespace App.Metrics.Internal
         public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder)
             where T : IHistogramMetric
         {
+            if (!_enabled)
+            {
+                return _nullMetricsRegistry.Histogram(options, builder);
+            }
+
             EnsureContextLabel(options);
             EnsureSamplingType(options);
 
@@ -156,6 +201,11 @@ namespace App.Metrics.Internal
         public IMeter Meter<T>(MeterOptions options, Func<T> builder)
             where T : IMeterMetric
         {
+            if (!_enabled)
+            {
+                return _nullMetricsRegistry.Meter(options, builder);
+            }
+
             EnsureContextLabel(options);
 
             var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
@@ -165,22 +215,32 @@ namespace App.Metrics.Internal
 
         public void RemoveContext(string context)
         {
+            if (!_enabled)
+            {
+                _nullMetricsRegistry.RemoveContext(context);
+            }
+
             if (context.IsMissing())
             {
                 throw new ArgumentException("Registry Context cannot be null or empty", nameof(context));
             }
 
-            IMetricContextRegistry registry;
+            IMetricContextRegistry contextRegistry;
 
-            if (_contexts.TryRemove(context, out registry))
+            if (_contexts.TryRemove(context, out contextRegistry))
             {
-                registry.ClearAllMetrics();
+                contextRegistry.ClearAllMetrics();
             }
         }
 
         public ITimer Timer<T>(TimerOptions options, Func<T> builder)
             where T : ITimerMetric
         {
+            if (!_enabled)
+            {
+                _nullMetricsRegistry.Timer(options, builder);
+            }
+
             EnsureContextLabel(options);
             EnsureSamplingType(options);
 
@@ -191,9 +251,9 @@ namespace App.Metrics.Internal
 
         private void ForAllContexts(Action<IMetricContextRegistry> action)
         {
-            foreach (var context in _contexts.Values)
+            foreach (var contextRegistry in _contexts.Values)
             {
-                action(context);
+                action(contextRegistry);
             }
         }
     }

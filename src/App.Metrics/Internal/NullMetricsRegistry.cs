@@ -8,7 +8,6 @@ using App.Metrics.Core.Options;
 using App.Metrics.Data;
 using App.Metrics.Data.Interfaces;
 using App.Metrics.Interfaces;
-using App.Metrics.Internal.Interfaces;
 
 namespace App.Metrics.Internal
 {
@@ -24,6 +23,9 @@ namespace App.Metrics.Internal
 
         public ICounter Counter<T>(CounterOptions options, Func<T> builder)
             where T : ICounterMetric { return NullMetric.Instance; }
+
+        /// <inheritdoc />
+        public void Disable() { }
 
         public void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider) { }
 
