@@ -26,25 +26,25 @@ namespace App.Metrics.Internal.Managers
         /// <inheritdoc />
         public void Decrement(CounterOptions options, long amount)
         {
-            _registry.Counter(options, () => _counterBuilder.Instance()).Decrement(amount);
+            _registry.Counter(options, () => _counterBuilder.Build()).Decrement(amount);
         }
 
         /// <inheritdoc />
         public void Decrement(CounterOptions options, string item)
         {
-            _registry.Counter(options, () => _counterBuilder.Instance()).Decrement(item);
+            _registry.Counter(options, () => _counterBuilder.Build()).Decrement(item);
         }
 
         /// <inheritdoc />
         public void Decrement(CounterOptions options, long amount, string item)
         {
-            _registry.Counter(options, () => _counterBuilder.Instance()).Decrement(item, amount);
+            _registry.Counter(options, () => _counterBuilder.Build()).Decrement(item, amount);
         }
 
         /// <inheritdoc />
         public void Decrement(CounterOptions options)
         {
-            _registry.Counter(options, () => _counterBuilder.Instance()).Decrement();
+            _registry.Counter(options, () => _counterBuilder.Build()).Decrement();
         }
 
         /// <inheritdoc />
@@ -52,7 +52,7 @@ namespace App.Metrics.Internal.Managers
         {
             var item = new MetricItem();
             itemSetup(item);
-            _registry.Counter(options, () => _counterBuilder.Instance()).Decrement(item);
+            _registry.Counter(options, () => _counterBuilder.Build()).Decrement(item);
         }
 
         /// <inheritdoc />
@@ -60,31 +60,31 @@ namespace App.Metrics.Internal.Managers
         {
             var item = new MetricItem();
             itemSetup(item);
-            _registry.Counter(options, () => _counterBuilder.Instance()).Decrement(item, amount);
+            _registry.Counter(options, () => _counterBuilder.Build()).Decrement(item, amount);
         }
 
         /// <inheritdoc />
         public void Increment(CounterOptions options)
         {
-            _registry.Counter(options, () => _counterBuilder.Instance()).Increment();
+            _registry.Counter(options, () => _counterBuilder.Build()).Increment();
         }
 
         /// <inheritdoc />
         public void Increment(CounterOptions options, long amount)
         {
-            _registry.Counter(options, () => _counterBuilder.Instance()).Increment(amount);
+            _registry.Counter(options, () => _counterBuilder.Build()).Increment(amount);
         }
 
         /// <inheritdoc />
         public void Increment(CounterOptions options, string item)
         {
-            _registry.Counter(options, () => _counterBuilder.Instance()).Increment(item);
+            _registry.Counter(options, () => _counterBuilder.Build()).Increment(item);
         }
 
         /// <inheritdoc />
         public void Increment(CounterOptions options, long amount, string item)
         {
-            _registry.Counter(options, () => _counterBuilder.Instance()).Increment(item, amount);
+            _registry.Counter(options, () => _counterBuilder.Build()).Increment(item, amount);
         }
 
         /// <inheritdoc />
@@ -92,7 +92,7 @@ namespace App.Metrics.Internal.Managers
         {
             var item = new MetricItem();
             itemSetup(item);
-            _registry.Counter(options, () => _counterBuilder.Instance()).Increment(item);
+            _registry.Counter(options, () => _counterBuilder.Build()).Increment(item);
         }
 
         /// <inheritdoc />
@@ -100,7 +100,7 @@ namespace App.Metrics.Internal.Managers
         {
             var item = new MetricItem();
             itemSetup(item);
-            _registry.Counter(options, () => _counterBuilder.Instance()).Increment(item, amount);
+            _registry.Counter(options, () => _counterBuilder.Build()).Increment(item, amount);
         }
     }
 }

@@ -7,6 +7,6 @@ namespace App.Metrics.Interfaces
 {
     public interface IBuildCounterMetrics
     {
-        ICounterMetric Instance();
+        ICounterMetric Build();
     }
 }

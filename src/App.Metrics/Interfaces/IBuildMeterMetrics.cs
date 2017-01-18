@@ -8,6 +8,6 @@ namespace App.Metrics.Interfaces
 {
     public interface IBuildMeterMetrics
     {
-        IMeterMetric Instance(IClock clock);
+        IMeterMetric Build(IClock clock);
     }
 }

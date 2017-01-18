@@ -25,14 +25,14 @@ namespace App.Metrics.Internal.Managers
         /// <inheritdoc />
         public void Update(HistogramOptions options, long value)
         {
-            _registry.Histogram(options, () => _histogramBuilder.Instance(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor))
+            _registry.Histogram(options, () => _histogramBuilder.Build(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor))
                      .Update(value);
         }
 
         /// <inheritdoc />
         public void Update(HistogramOptions options, long value, string userValue)
         {
-            _registry.Histogram(options, () => _histogramBuilder.Instance(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor))
+            _registry.Histogram(options, () => _histogramBuilder.Build(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor))
                      .Update(value, userValue);
         }
     }

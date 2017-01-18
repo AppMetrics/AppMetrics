@@ -27,7 +27,7 @@ namespace App.Metrics.Internal.Managers
         /// <inheritdoc />
         public void SetValue(GaugeOptions options, Func<double> valueProvider)
         {
-            _registry.Gauge(options, () => _gaugeBuilder.Instance(valueProvider));
+            _registry.Gauge(options, () => _gaugeBuilder.Build(valueProvider));
         }
 
         /// <inheritdoc />

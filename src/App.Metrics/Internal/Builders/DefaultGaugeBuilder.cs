@@ -11,6 +11,6 @@ namespace App.Metrics.Internal.Builders
     public class DefaultGaugeBuilder : IBuildGaugeMetrics
     {
         /// <inheritdoc />
-        public IMetricValueProvider<double> Instance(Func<double> valueProvider) { return new FunctionGauge(valueProvider); }
+        public IMetricValueProvider<double> Build(Func<double> valueProvider) { return new FunctionGauge(valueProvider); }
     }
 }

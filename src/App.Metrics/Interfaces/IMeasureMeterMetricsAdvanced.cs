@@ -14,7 +14,7 @@ namespace App.Metrics.Interfaces
         /// </summary>
         /// <param name="options">The details of the <see cref="IMeter" />  that is being marked</param>
         /// <returns>A new instance of an <see cref="IMeter" /> or the existing registered instance of the meter</returns>
-        IMeter With(MeterOptions options);
+        IMeter Instance(MeterOptions options);
 
         /// <summary>
         ///     Instantiates an instance of a <see cref="IMeter" />
@@ -23,7 +23,7 @@ namespace App.Metrics.Interfaces
         /// <param name="options">The details of the <see cref="IMeter" />  that is being marked</param>
         /// <param name="builder">The function used to build the meter metric.</param>
         /// <returns>A new instance of an <see cref="IMeter" /> or the existing registered instance of the meter</returns>
-        IMeter With<T>(MeterOptions options, Func<T> builder)
+        IMeter Instance<T>(MeterOptions options, Func<T> builder)
             where T : IMeterMetric;
     }
 }

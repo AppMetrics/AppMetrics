@@ -53,7 +53,7 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.TryAddSingleton<IMetricDataSerializer, NoOpMetricDataSerializer>();
             builder.Services.TryAddSingleton<IHealthStatusSerializer, NoOpHealthStatusSerializer>();
             builder.Services.TryAddSingleton<IMetricsManagerFactory, DefaultMetricsManagerFactory>();
-            builder.Services.TryAddSingleton<IMetricsBuilderFactory, DefaultMetricsBuilderFactory>();
+            builder.Services.TryAddSingleton<IBuildMetrics, DefaultMetricsBuilder>();
             builder.Services.TryAddSingleton<IMetricsAdvancedManagerFactory, DefaultMetricsAdvancedManagerFactory>();
             builder.Services.TryAddSingleton<IMetricsDataProvider, DefaultDataManager>();
             builder.Services.TryAddSingleton<IManageMetrics, DefaultMetricsManager>();

@@ -9,10 +9,10 @@ namespace App.Metrics.Interfaces
 {
     public interface IBuildTimerMetrics
     {
-        ITimerMetric Instance(SamplingType samplingType, int sampleSize, double exponentialDecayFactor, IClock clock);
+        ITimerMetric Build(SamplingType samplingType, int sampleSize, double exponentialDecayFactor, IClock clock);
 
-        ITimerMetric Instance(IHistogramMetric histogram, IClock clock);
+        ITimerMetric Build(IHistogramMetric histogram, IClock clock);
 
-        ITimerMetric Instance(IReservoir reservoir, IClock clock);
+        ITimerMetric Build(IReservoir reservoir, IClock clock);
     }
 }

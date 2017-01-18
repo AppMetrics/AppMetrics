@@ -9,9 +9,9 @@ namespace App.Metrics.Interfaces
 {
     public interface IMeasureApdexMetricsAdvanced
     {
-        IApdex With(ApdexOptions options);
+        IApdex Instance(ApdexOptions options);
 
-        IApdex With<T>(ApdexOptions options, Func<T> builder)
+        IApdex Instance<T>(ApdexOptions options, Func<T> builder)
             where T : IApdexMetric;
     }
 }

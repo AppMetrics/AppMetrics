@@ -9,9 +9,9 @@ namespace App.Metrics.Interfaces
 {
     public interface IMeasureTimerMetricsAdvanced
     {
-        ITimer With(TimerOptions options);
+        ITimer Instance(TimerOptions options);
 
-        ITimer With<T>(TimerOptions options, Func<T> builder)
+        ITimer Instance<T>(TimerOptions options, Func<T> builder)
             where T : ITimerMetric;
 
         ITimer WithHistogram<T>(TimerOptions options, Func<T> histogramMetricBuilder)

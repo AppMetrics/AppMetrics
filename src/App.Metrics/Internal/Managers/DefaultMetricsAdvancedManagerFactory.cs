@@ -2,7 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using App.Metrics.Interfaces;
-using App.Metrics.Internal.Interfaces;
 using App.Metrics.Utils;
 
 namespace App.Metrics.Internal.Managers
@@ -15,7 +14,7 @@ namespace App.Metrics.Internal.Managers
         /// <param name="registry">The metrics registry.</param>
         /// <param name="buideFactory">The buide factory.</param>
         /// <param name="clock">The clock.</param>
-        public DefaultMetricsAdvancedManagerFactory(IMetricsRegistry registry, IMetricsBuilderFactory buideFactory, IClock clock)
+        public DefaultMetricsAdvancedManagerFactory(IMetricsRegistry registry, IBuildMetrics buideFactory, IClock clock)
         {
             Apdex = new DefaultApdexAdvancedManager(buideFactory.Apdex, registry, clock);
             Counter = new DefaultCounterAdvancedManager(buideFactory.Counter, registry);

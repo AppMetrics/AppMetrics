@@ -36,7 +36,7 @@ namespace App.Metrics.Facts.Health
                     clock,
                     new EnvironmentInfoProvider(),
                     newContextRegistry);
-                var metricBuilderFactory = new DefaultMetricsBuilderFactory();
+                var metricBuilderFactory = new DefaultMetricsBuilder();
                 var filter = new DefaultMetricsFilter();
                 var healthManager = new DefaultHealthManager(LoggerFactory.CreateLogger<DefaultHealthManager>(), healthCheckFactory);
                 var dataManager = new DefaultDataManager(

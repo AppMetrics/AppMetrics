@@ -10,6 +10,6 @@ namespace App.Metrics.Internal.Builders
     public class DefaultCounterBuilder : IBuildCounterMetrics
     {
         /// <inheritdoc />
-        public ICounterMetric Instance() { return new CounterMetric(); }
+        public ICounterMetric Build() { return new CounterMetric(); }
     }
 }

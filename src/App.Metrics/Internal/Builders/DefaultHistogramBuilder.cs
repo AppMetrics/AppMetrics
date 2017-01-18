@@ -11,13 +11,13 @@ namespace App.Metrics.Internal.Builders
     public class DefaultHistogramBuilder : IBuildHistogramMetrics
     {
         /// <inheritdoc />
-        public IHistogramMetric Instance(SamplingType samplingType, int sampleSize, double exponentialDecayFactor)
+        public IHistogramMetric Build(SamplingType samplingType, int sampleSize, double exponentialDecayFactor)
         {
             return new HistogramMetric(samplingType, sampleSize, exponentialDecayFactor);
         }
 
         /// <inheritdoc />
-        public IHistogramMetric Instance(IReservoir reservoir)
+        public IHistogramMetric Build(IReservoir reservoir)
         {
             return new HistogramMetric(reservoir);
         }

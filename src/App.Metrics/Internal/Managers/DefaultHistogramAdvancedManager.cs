@@ -25,18 +25,18 @@ namespace App.Metrics.Internal.Managers
         }
 
         /// <inheritdoc />
-        public IHistogram With(HistogramOptions options)
+        public IHistogram Instance(HistogramOptions options)
         {
             if (options.WithReservoir != null)
             {
-                return With(options, () => _histogramBuilder.Instance(options.WithReservoir()));
+                return Instance(options, () => _histogramBuilder.Build(options.WithReservoir()));
             }
 
-            return With(options, () => _histogramBuilder.Instance(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor));
+            return Instance(options, () => _histogramBuilder.Build(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor));
         }
 
         /// <inheritdoc />
-        public IHistogram With<T>(HistogramOptions options, Func<T> builder)
+        public IHistogram Instance<T>(HistogramOptions options, Func<T> builder)
             where T : IHistogramMetric { return _registry.Histogram(options, builder); }
     }
 }

@@ -14,7 +14,7 @@ namespace App.Metrics.Interfaces
         /// </summary>
         /// <param name="options">The details of the histogram that is being measured</param>
         /// <returns>A new instance of an <see cref="IHistogram" /> or the existing registered instance of the histogram</returns>
-        IHistogram With(HistogramOptions options);
+        IHistogram Instance(HistogramOptions options);
 
         /// <summary>
         ///     Instantiates an instance of a <see cref="IHistogram" />
@@ -23,7 +23,7 @@ namespace App.Metrics.Interfaces
         /// <param name="options">The details of the <see cref="IHistogram" /> that is being measured</param>
         /// <param name="builder">The function used to build the histogram metric.</param>
         /// <returns>A new instance of an <see cref="IHistogram" /> or the existing registered instance of the histogram</returns>
-        IHistogram With<T>(HistogramOptions options, Func<T> builder)
+        IHistogram Instance<T>(HistogramOptions options, Func<T> builder)
             where T : IHistogramMetric;
     }
 }

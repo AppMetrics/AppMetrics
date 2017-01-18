@@ -8,8 +8,8 @@ namespace App.Metrics.Interfaces
 {
     public interface IBuildHistogramMetrics
     {
-        IHistogramMetric Instance(SamplingType samplingType, int sampleSize, double exponentialDecayFactor);
+        IHistogramMetric Build(SamplingType samplingType, int sampleSize, double exponentialDecayFactor);
 
-        IHistogramMetric Instance(IReservoir reservoir);
+        IHistogramMetric Build(IReservoir reservoir);
     }
 }

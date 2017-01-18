@@ -15,7 +15,7 @@ namespace App.Metrics.Internal.Managers
         /// <param name="registry">The metrics registry.</param>
         /// <param name="buideFactory">The buide factory.</param>
         /// <param name="clock">The clock.</param>
-        public DefaultMetricsManagerFactory(IMetricsRegistry registry, IMetricsBuilderFactory buideFactory, IClock clock)
+        public DefaultMetricsManagerFactory(IMetricsRegistry registry, IBuildMetrics buideFactory, IClock clock)
         {
             Apdex = new DefaultApdexManager(buideFactory.Apdex, registry, clock);
             Counter = new DefaultCounterManager(buideFactory.Counter, registry);

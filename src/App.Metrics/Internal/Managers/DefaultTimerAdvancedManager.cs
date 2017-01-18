@@ -29,31 +29,31 @@ namespace App.Metrics.Internal.Managers
         }
 
         /// <inheritdoc />
-        public ITimer With(TimerOptions options)
+        public ITimer Instance(TimerOptions options)
         {
             if (options.WithReservoir != null)
             {
-                return With(
+                return Instance(
                     options,
-                    () => _timerBuilder.Instance(options.WithReservoir(), _clock));
+                    () => _timerBuilder.Build(options.WithReservoir(), _clock));
             }
 
             return _registry.Timer(
                 options,
-                () => _timerBuilder.Instance(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor, _clock));
+                () => _timerBuilder.Build(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor, _clock));
         }
 
         /// <inheritdoc />
-        public ITimer With<T>(TimerOptions options, Func<T> builder)
+        public ITimer Instance<T>(TimerOptions options, Func<T> builder)
             where T : ITimerMetric { return _registry.Timer(options, builder); }
 
         /// <inheritdoc />
         public ITimer WithHistogram<T>(TimerOptions options, Func<T> histogramMetricBuilder)
             where T : IHistogramMetric
         {
-            return With(
+            return Instance(
                 options,
-                () => _timerBuilder.Instance(histogramMetricBuilder(), _clock));
+                () => _timerBuilder.Build(histogramMetricBuilder(), _clock));
         }
     }
 }

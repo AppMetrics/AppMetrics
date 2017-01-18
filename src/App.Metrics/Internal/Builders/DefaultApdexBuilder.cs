@@ -13,7 +13,7 @@ namespace App.Metrics.Internal.Builders
     public class DefaultApdexBuilder : IBuildApdexMetrics
     {
         /// <inheritdoc />
-        public IApdexMetric Instance(
+        public IApdexMetric Build(
             SamplingType samplingType,
             int sampleSize,
             double exponentialDecayFactor,
@@ -31,7 +31,7 @@ namespace App.Metrics.Internal.Builders
         }
 
         /// <inheritdoc />
-        public IApdexMetric Instance(
+        public IApdexMetric Build(
             IReservoir reservoir,
             double apdexTSeconds,
             bool allowWarmup,

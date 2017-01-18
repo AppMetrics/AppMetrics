@@ -3,8 +3,6 @@
 
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Interfaces;
-using App.Metrics.Internal.Interfaces;
-using App.Metrics.Internal.Managers;
 using App.Metrics.Utils;
 
 namespace App.Metrics
@@ -19,7 +17,7 @@ namespace App.Metrics
     {
         IMetricsAdvancedManagerFactory Advanced { get; }
 
-        IMetricsBuilderFactory Build { get; }
+        IBuildMetrics Build { get; }
 
         IClock Clock { get; }
 

@@ -26,7 +26,7 @@ namespace App.Metrics.Core
         /// <param name="clock">The clock.</param>
         /// <param name="globalFilter">The global filter.</param>
         /// <param name="metricsManagerFactory">The factory used to provide access to metric managers.</param>
-        /// <param name="metricsBuilderFactory">The factory used to provide access to metric builders.</param>
+        /// <param name="metricsBuilder">The factory used to provide access to metric builders.</param>
         /// <param name="metricsAdvancedManagerFactory">The metrics advanced manager factory.</param>
         /// <param name="dataManager">The data manager.</param>
         /// <param name="metricsManager">The metrics manager.</param>
@@ -36,7 +36,7 @@ namespace App.Metrics.Core
             IClock clock,
             IMetricsFilter globalFilter,
             IMetricsManagerFactory metricsManagerFactory,
-            IMetricsBuilderFactory metricsBuilderFactory,
+            IBuildMetrics metricsBuilder,
             IMetricsAdvancedManagerFactory metricsAdvancedManagerFactory,
             IMetricsDataProvider dataManager,
             IManageMetrics metricsManager,
@@ -46,7 +46,7 @@ namespace App.Metrics.Core
             GlobalTags = options.GlobalTags; // TODO: in reporting just get this from options
             GlobalFilter = globalFilter ?? new NoOpMetricsFilter();
             Measure = metricsManagerFactory;
-            Build = metricsBuilderFactory;
+            Build = metricsBuilder;
             Data = dataManager;
             Advanced = metricsAdvancedManagerFactory;
             Manage = metricsManager;
@@ -57,7 +57,7 @@ namespace App.Metrics.Core
         public IMetricsAdvancedManagerFactory Advanced { get; }
 
         /// <inheritdoc />
-        public IMetricsBuilderFactory Build { get; }
+        public IBuildMetrics Build { get; }
 
         /// <inheritdoc />
         public IClock Clock { get; }

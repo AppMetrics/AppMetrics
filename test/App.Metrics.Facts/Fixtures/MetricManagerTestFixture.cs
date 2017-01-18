@@ -20,7 +20,7 @@ namespace App.Metrics.Facts.Fixtures
             var options = new AppMetricsOptions();
 
             Clock = new TestClock();
-            Builder = new DefaultMetricsBuilderFactory();
+            Builder = new DefaultMetricsBuilder();
 
             Func<string, IMetricContextRegistry> contextRegistrySetup = context => new DefaultMetricContextRegistry(context);
             var registry = new DefaultMetricsRegistry(loggerFactory, options, Clock, new EnvironmentInfoProvider(), contextRegistrySetup);
@@ -28,7 +28,7 @@ namespace App.Metrics.Facts.Fixtures
             Registry = registry;
         }
 
-        public IMetricsBuilderFactory Builder { get; }
+        public IBuildMetrics Builder { get; }
 
         public IClock Clock { get; }
 

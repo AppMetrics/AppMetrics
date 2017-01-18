@@ -29,10 +29,10 @@ namespace App.Metrics.Internal.Managers
         }
 
         /// <inheritdoc />
-        public IMeter With(MeterOptions options) { return With(options, () => _meterBuilder.Instance(_clock)); }
+        public IMeter Instance(MeterOptions options) { return Instance(options, () => _meterBuilder.Build(_clock)); }
 
         /// <inheritdoc />
-        public IMeter With<T>(MeterOptions options, Func<T> builder)
+        public IMeter Instance<T>(MeterOptions options, Func<T> builder)
             where T : IMeterMetric { return _registry.Meter(options, builder); }
     }
 }

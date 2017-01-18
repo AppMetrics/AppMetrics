@@ -33,7 +33,7 @@ namespace App.Metrics.Internal.Managers
             var apdex = _registry.Apdex(
                 options,
                 () =>
-                    _apdexBuilder.Instance(
+                    _apdexBuilder.Build(
                         options.SamplingType,
                         options.SampleSize,
                         options.ExponentialDecayFactor,
@@ -53,7 +53,7 @@ namespace App.Metrics.Internal.Managers
             var apdex = _registry.Apdex(
                 options,
                 () =>
-                    _apdexBuilder.Instance(
+                    _apdexBuilder.Build(
                         options.SamplingType,
                         options.SampleSize,
                         options.ExponentialDecayFactor,

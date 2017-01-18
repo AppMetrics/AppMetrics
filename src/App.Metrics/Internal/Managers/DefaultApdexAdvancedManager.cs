@@ -26,17 +26,17 @@ namespace App.Metrics.Internal.Managers
         }
 
         /// <inheritdoc />
-        public IApdex With(ApdexOptions options)
+        public IApdex Instance(ApdexOptions options)
         {
             if (options.WithReservoir != null)
             {
-                return With(options, () => _apdexBuidler.Instance(options.WithReservoir(), options.ApdexTSeconds, options.AllowWarmup, _clock));
+                return Instance(options, () => _apdexBuidler.Build(options.WithReservoir(), options.ApdexTSeconds, options.AllowWarmup, _clock));
             }
 
             return _registry.Apdex(
                 options,
                 () =>
-                    _apdexBuidler.Instance(
+                    _apdexBuidler.Build(
                         options.SamplingType,
                         options.SampleSize,
                         options.ExponentialDecayFactor,
@@ -46,7 +46,7 @@ namespace App.Metrics.Internal.Managers
         }
 
         /// <inheritdoc />
-        public IApdex With<T>(ApdexOptions options, Func<T> builder)
+        public IApdex Instance<T>(ApdexOptions options, Func<T> builder)
             where T : IApdexMetric
         {
             return _registry.Apdex(options, builder);

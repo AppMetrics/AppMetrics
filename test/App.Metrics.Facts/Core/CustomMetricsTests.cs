@@ -49,7 +49,7 @@ namespace App.Metrics.Facts.Core
                                    MeasurementUnit = Unit.Calls,
                                    WithReservoir = () => reservoir as IReservoir
                                };
-            var timer = _fixture.Metrics.Advanced.Timer.With(timerOptions);            
+            var timer = _fixture.Metrics.Advanced.Timer.Instance(timerOptions);            
 
             timer.Record(10L, TimeUnit.Nanoseconds);
 

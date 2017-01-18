@@ -28,7 +28,7 @@ namespace App.Metrics.Facts.Fixtures
             Func<string, IMetricContextRegistry> newContextRegistry = name => new DefaultMetricContextRegistry(name);
             var registry = new DefaultMetricsRegistry(_loggerFactory, options, clock, new EnvironmentInfoProvider(), newContextRegistry);
             var healthCheckFactory = new HealthCheckFactory(healthFactoryLogger);
-            var metricBuilderFactory = new DefaultMetricsBuilderFactory();
+            var metricBuilderFactory = new DefaultMetricsBuilder();
             var filter = new DefaultMetricsFilter();
             var healthManager = new DefaultHealthManager(_loggerFactory.CreateLogger<DefaultHealthManager>(), healthCheckFactory);
             var dataManager = new DefaultDataManager(

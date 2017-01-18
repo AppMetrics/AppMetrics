@@ -117,8 +117,8 @@ namespace App.Metrics.Facts.Core
                                      Context = "test"
                                  };
 
-            var first = _fixture.Metrics.Advanced.Counter.With(counterOptions);
-            var second = _fixture.Metrics.Advanced.Counter.With(counterOptions);
+            var first = _fixture.Metrics.Advanced.Counter.Instance(counterOptions);
+            var second = _fixture.Metrics.Advanced.Counter.Instance(counterOptions);
 
             ReferenceEquals(first, second).Should().BeTrue();
         }

@@ -8,6 +8,6 @@ namespace App.Metrics.Interfaces
 {
     public interface IBuildGaugeMetrics
     {
-        IMetricValueProvider<double> Instance(Func<double> valueProvider);
+        IMetricValueProvider<double> Build(Func<double> valueProvider);
     }
 }

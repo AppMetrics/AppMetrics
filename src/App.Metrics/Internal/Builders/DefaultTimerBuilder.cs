@@ -12,19 +12,19 @@ namespace App.Metrics.Internal.Builders
     public class DefaultTimerBuilder : IBuildTimerMetrics
     {
         /// <inheritdoc />
-        public ITimerMetric Instance(SamplingType samplingType, int sampleSize, double exponentialDecayFactor, IClock clock)
+        public ITimerMetric Build(SamplingType samplingType, int sampleSize, double exponentialDecayFactor, IClock clock)
         {
             return new TimerMetric(samplingType, sampleSize, exponentialDecayFactor, clock);
         }
 
         /// <inheritdoc />
-        public ITimerMetric Instance(IHistogramMetric histogram, IClock clock)
+        public ITimerMetric Build(IHistogramMetric histogram, IClock clock)
         {
             return new TimerMetric(histogram, clock);
         }
 
         /// <inheritdoc />
-        public ITimerMetric Instance(IReservoir reservoir, IClock clock)
+        public ITimerMetric Build(IReservoir reservoir, IClock clock)
         {
             return new TimerMetric(reservoir, clock);
         }

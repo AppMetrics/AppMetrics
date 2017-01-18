@@ -13,6 +13,6 @@ namespace App.Metrics.Internal.Builders
     public class DefaultMeterBuilder : IBuildMeterMetrics
     {
         /// <inheritdoc />
-        public IMeterMetric Instance(IClock clock) { return new MeterMetric(clock); }
+        public IMeterMetric Build(IClock clock) { return new MeterMetric(clock); }
     }
 }

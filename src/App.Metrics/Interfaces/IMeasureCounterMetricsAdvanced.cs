@@ -9,9 +9,9 @@ namespace App.Metrics.Interfaces
 {
     public interface IMeasureCounterMetricsAdvanced
     {
-        ICounter With(CounterOptions options);
+        ICounter Instance(CounterOptions options);
 
-        ICounter With<T>(CounterOptions options, Func<T> builder)
+        ICounter Instance<T>(CounterOptions options, Func<T> builder)
             where T : ICounterMetric;
     }
 }

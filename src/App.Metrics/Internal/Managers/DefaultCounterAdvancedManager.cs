@@ -25,10 +25,10 @@ namespace App.Metrics.Internal.Managers
         }
 
         /// <inheritdoc />
-        public ICounter With<T>(CounterOptions options, Func<T> builder)
+        public ICounter Instance<T>(CounterOptions options, Func<T> builder)
             where T : ICounterMetric { return _registry.Counter(options, builder); }
 
         /// <inheritdoc />
-        public ICounter With(CounterOptions options) { return With(options, () => _counterBuilder.Instance()); }
+        public ICounter Instance(CounterOptions options) { return Instance(options, () => _counterBuilder.Build()); }
     }
 }

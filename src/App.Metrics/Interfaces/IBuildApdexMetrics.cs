@@ -9,7 +9,7 @@ namespace App.Metrics.Interfaces
 {
     public interface IBuildApdexMetrics
     {
-        IApdexMetric Instance(
+        IApdexMetric Build(
             SamplingType samplingType,
             int sampleSize,
             double exponentialDecayFactor,
@@ -17,7 +17,7 @@ namespace App.Metrics.Interfaces
             bool allowWarmup,
             IClock clock);
 
-        IApdexMetric Instance(
+        IApdexMetric Build(
             IReservoir reservoir,
             double apdexTSeconds,
             bool allowWarmup,

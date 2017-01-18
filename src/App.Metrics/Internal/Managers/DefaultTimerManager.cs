@@ -33,7 +33,7 @@ namespace App.Metrics.Internal.Managers
             using (
                 _registry.Timer(
                              options,
-                             () => _timerBuilder.Instance(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor, _clock))
+                             () => _timerBuilder.Build(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor, _clock))
                          .NewContext())
             {
                 action();
@@ -46,7 +46,7 @@ namespace App.Metrics.Internal.Managers
             using (
                 _registry.Timer(
                              options,
-                             () => _timerBuilder.Instance(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor, _clock))
+                             () => _timerBuilder.Build(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor, _clock))
                          .NewContext(userValue))
             {
                 action();
@@ -59,7 +59,7 @@ namespace App.Metrics.Internal.Managers
             return
                 _registry.Timer(
                              options,
-                             () => _timerBuilder.Instance(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor, _clock))
+                             () => _timerBuilder.Build(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor, _clock))
                          .NewContext();
         }
 
@@ -68,7 +68,7 @@ namespace App.Metrics.Internal.Managers
         {
             return _registry.Timer(
                                 options,
-                                () => _timerBuilder.Instance(
+                                () => _timerBuilder.Build(
                                     options.SamplingType,
                                     options.SampleSize,
                                     options.ExponentialDecayFactor,
