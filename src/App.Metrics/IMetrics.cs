@@ -4,6 +4,7 @@
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Interfaces;
 using App.Metrics.Internal.Interfaces;
+using App.Metrics.Internal.Managers;
 using App.Metrics.Utils;
 
 namespace App.Metrics
@@ -16,21 +17,13 @@ namespace App.Metrics
     /// </remarks>
     public interface IMetrics
     {
-        IMetricsAdvancedManagerFactory AdvancedMetrics { get; }
-
-        IMeasureApdexMetrics Apdex { get; }
-
-        // TODO: ! Add docs
+        IMetricsAdvancedManagerFactory Advanced { get; }
 
         IMetricsBuilderFactory Build { get; }
 
         IClock Clock { get; }
 
-        IMeasureCounterMetrics Counter { get; }
-
         IMetricsDataProvider Data { get; }
-
-        IMeasureGaugeMetrics Gauge { get; }
 
         IMetricsFilter GlobalFilter { get; }
 
@@ -38,12 +31,8 @@ namespace App.Metrics
 
         IHealthStatusProvider Health { get; }
 
-        IMeasureHistogramMetrics Histogram { get; }
-
         IManageMetrics Manage { get; }
 
-        IMeasureMeterMetrics Meter { get; }
-
-        IMeasureTimerMetrics Timer { get; }
+        IMetricsManagerFactory Measure { get; }
     }
 }

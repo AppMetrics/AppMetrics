@@ -45,24 +45,16 @@ namespace App.Metrics.Core
             Clock = clock ?? new StopwatchClock();
             GlobalTags = options.GlobalTags; // TODO: in reporting just get this from options
             GlobalFilter = globalFilter ?? new NoOpMetricsFilter();
-            Apdex = metricsManagerFactory.ApdexManager;
-            Gauge = metricsManagerFactory.GaugeManager;
-            Counter = metricsManagerFactory.CounterManager;
-            Meter = metricsManagerFactory.MeterManager;
-            Histogram = metricsManagerFactory.HistogramManager;
-            Timer = metricsManagerFactory.TimerManager;
+            Measure = metricsManagerFactory;
             Build = metricsBuilderFactory;
             Data = dataManager;
-            AdvancedMetrics = metricsAdvancedManagerFactory;
+            Advanced = metricsAdvancedManagerFactory;
             Manage = metricsManager;
             Health = healthStatusProvider;
         }
 
         /// <inheritdoc />
-        public IMetricsAdvancedManagerFactory AdvancedMetrics { get; }
-
-        /// <inheritdoc />
-        public IMeasureApdexMetrics Apdex { get; }
+        public IMetricsAdvancedManagerFactory Advanced { get; }
 
         /// <inheritdoc />
         public IMetricsBuilderFactory Build { get; }
@@ -71,13 +63,7 @@ namespace App.Metrics.Core
         public IClock Clock { get; }
 
         /// <inheritdoc />
-        public IMeasureCounterMetrics Counter { get; }
-
-        /// <inheritdoc />
         public IMetricsDataProvider Data { get; }
-
-        /// <inheritdoc />
-        public IMeasureGaugeMetrics Gauge { get; }
 
         /// <inheritdoc />
         public IMetricsFilter GlobalFilter { get; }
@@ -89,15 +75,9 @@ namespace App.Metrics.Core
         public IHealthStatusProvider Health { get; }
 
         /// <inheritdoc />
-        public IMeasureHistogramMetrics Histogram { get; }
-
-        /// <inheritdoc />
         public IManageMetrics Manage { get; }
 
         /// <inheritdoc />
-        public IMeasureMeterMetrics Meter { get; }
-
-        /// <inheritdoc />
-        public IMeasureTimerMetrics Timer { get; }
+        public IMetricsManagerFactory Measure { get; }
     }
 }

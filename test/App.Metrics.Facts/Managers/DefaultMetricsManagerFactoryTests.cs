@@ -20,37 +20,37 @@ namespace App.Metrics.Facts.Managers
         [Fact]
         public void creates_apdex_manager()
         {
-            _factory.ApdexManager.Should().NotBeNull();
+            _factory.Apdex.Should().NotBeNull();
         }
 
         [Fact]
         public void creates_counter_manager()
         {
-            _factory.CounterManager.Should().NotBeNull();
+            _factory.Counter.Should().NotBeNull();
         }
 
         [Fact]
         public void creates_gauge_manager()
         {
-            _factory.GaugeManager.Should().NotBeNull();
+            _factory.Gauge.Should().NotBeNull();
         }
 
         [Fact]
         public void creates_histogram_manager()
         {
-            _factory.HistogramManager.Should().NotBeNull();
+            _factory.Histogram.Should().NotBeNull();
         }
 
         [Fact]
         public void creates_meter_manager()
         {
-            _factory.MeterManager.Should().NotBeNull();
+            _factory.Meter.Should().NotBeNull();
         }
 
         [Fact]
         public void creates_timer_manager()
         {
-            _factory.TimerManager.Should().NotBeNull();
+            _factory.Timer.Should().NotBeNull();
         }
     }
 }

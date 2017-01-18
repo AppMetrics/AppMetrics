@@ -93,10 +93,10 @@ namespace App.Metrics.Facts.Core
                 Tags = tags
             };
 
-            _fixture.Metrics.Counter.Increment(counterOptions);
-            _fixture.Metrics.Meter.Mark(meterOptions);
-            _fixture.Metrics.Histogram.Update(histogramOptions, 1);
-            _fixture.Metrics.Timer.Time(timerOptions, () => { });
+            _fixture.Metrics.Measure.Counter.Increment(counterOptions);
+            _fixture.Metrics.Measure.Meter.Mark(meterOptions);
+            _fixture.Metrics.Measure.Histogram.Update(histogramOptions, 1);
+            _fixture.Metrics.Measure.Timer.Time(timerOptions, () => { });
 
             var data = _fixture.CurrentData(_fixture.Metrics);
             var context = data.Contexts.Single();

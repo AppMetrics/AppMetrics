@@ -69,17 +69,17 @@ namespace App.Metrics.Reporting.Internal
 
                 foreach (var check in passed)
                 {
-                    metrics.Counter.Increment(ApplicationHealthMetricRegistry.HealthyCheckCounter, check.Name);
+                    metrics.Measure.Counter.Increment(ApplicationHealthMetricRegistry.HealthyCheckCounter, check.Name);
                 }
 
                 foreach (var check in degraded)
                 {
-                    metrics.Counter.Increment(ApplicationHealthMetricRegistry.DegradedCheckCounter, check.Name);
+                    metrics.Measure.Counter.Increment(ApplicationHealthMetricRegistry.DegradedCheckCounter, check.Name);
                 }
 
                 foreach (var check in failed)
                 {
-                    metrics.Counter.Increment(ApplicationHealthMetricRegistry.UnhealthyCheckCounter, check.Name);
+                    metrics.Measure.Counter.Increment(ApplicationHealthMetricRegistry.UnhealthyCheckCounter, check.Name);
                 }
             }
 

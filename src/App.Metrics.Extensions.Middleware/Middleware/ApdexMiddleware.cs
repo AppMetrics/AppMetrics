@@ -23,7 +23,7 @@ namespace App.Metrics.Extensions.Middleware.Middleware
             IMetrics metrics)
             : base(next, aspNetOptions, loggerFactory, metrics)
         {
-            _apdexTracking = Metrics.AdvancedMetrics
+            _apdexTracking = Metrics.Advanced
                                     .Apdex
                                     .With(AspNetMetricsRegistry.Contexts.HttpRequests.ApdexScores.Apdex(aspNetOptions.ApdexTSeconds));
         }

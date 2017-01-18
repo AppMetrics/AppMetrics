@@ -17,24 +17,24 @@ namespace App.Metrics.Internal.Managers
         /// <param name="clock">The clock.</param>
         public DefaultMetricsManagerFactory(IMetricsRegistry registry, IMetricsBuilderFactory buideFactory, IClock clock)
         {
-            ApdexManager = new DefaultApdexManager(buideFactory.Apdex, registry, clock);
-            CounterManager = new DefaultCounterManager(buideFactory.Counter, registry);
-            GaugeManager = new DefaultGaugeManager(buideFactory.Gauge, registry);
-            HistogramManager = new DefaultHistogramManager(buideFactory.Histogram, registry);
-            MeterManager = new DefaultMeterManager(buideFactory.Meter, registry, clock);
-            TimerManager = new DefaultTimerManager(buideFactory.Timer, registry, clock);
+            Apdex = new DefaultApdexManager(buideFactory.Apdex, registry, clock);
+            Counter = new DefaultCounterManager(buideFactory.Counter, registry);
+            Gauge = new DefaultGaugeManager(buideFactory.Gauge, registry);
+            Histogram = new DefaultHistogramManager(buideFactory.Histogram, registry);
+            Meter = new DefaultMeterManager(buideFactory.Meter, registry, clock);
+            Timer = new DefaultTimerManager(buideFactory.Timer, registry, clock);
         }
 
-        public IMeasureApdexMetrics ApdexManager { get; }
+        public IMeasureApdexMetrics Apdex { get; }
 
-        public IMeasureCounterMetrics CounterManager { get; }
+        public IMeasureCounterMetrics Counter { get; }
 
-        public IMeasureGaugeMetrics GaugeManager { get; }
+        public IMeasureGaugeMetrics Gauge { get; }
 
-        public IMeasureHistogramMetrics HistogramManager { get; }
+        public IMeasureHistogramMetrics Histogram { get; }
 
-        public IMeasureMeterMetrics MeterManager { get; }
+        public IMeasureMeterMetrics Meter { get; }
 
-        public IMeasureTimerMetrics TimerManager { get; }
+        public IMeasureTimerMetrics Timer { get; }
     }
 }

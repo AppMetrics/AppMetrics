@@ -13,17 +13,17 @@ namespace App.Metrics
     {
         public static IMetrics DecrementActiveRequests(this IMetrics metrics)
         {
-            metrics.Counter.Decrement(AspNetMetricsRegistry.Contexts.HttpRequests.Counters.ActiveRequests);
+            metrics.Measure.Counter.Decrement(AspNetMetricsRegistry.Contexts.HttpRequests.Counters.ActiveRequests);
 
             return metrics;
         }
 
         public static IMetrics ErrorRequestPercentage(this IMetrics metrics)
         {
-            var errors = metrics.AdvancedMetrics.Meter.With(AspNetMetricsRegistry.Contexts.HttpRequests.Meters.HttpErrorRequests);
-            var requests = metrics.AdvancedMetrics.Timer.With(AspNetMetricsRegistry.Contexts.HttpRequests.Timers.WebRequestTimer);
+            var errors = metrics.Advanced.Meter.With(AspNetMetricsRegistry.Contexts.HttpRequests.Meters.HttpErrorRequests);
+            var requests = metrics.Advanced.Timer.With(AspNetMetricsRegistry.Contexts.HttpRequests.Timers.WebRequestTimer);
 
-            metrics.Gauge.SetValue(
+            metrics.Measure.Gauge.SetValue(
                 AspNetMetricsRegistry.Contexts.HttpRequests.Gauges.PercentageErrorRequests,
                 () => new HitPercentageGauge(errors, requests, m => m.OneMinuteRate));
 
@@ -32,14 +32,14 @@ namespace App.Metrics
 
         public static IMetrics IncrementActiveRequests(this IMetrics metrics)
         {
-            metrics.Counter.Increment(AspNetMetricsRegistry.Contexts.HttpRequests.Counters.ActiveRequests);
+            metrics.Measure.Counter.Increment(AspNetMetricsRegistry.Contexts.HttpRequests.Counters.ActiveRequests);
 
             return metrics;
         }
 
         public static IMetrics MarkHttpEndpointForOAuthClient(this IMetrics metrics, string routeTemplate, string clientId, int httpStatusCode)
         {
-            metrics.Meter.Mark(
+            metrics.Measure.Meter.Mark(
                 AspNetMetricsRegistry.Contexts.OAuth2.Meters.EndpointHttpRequests(routeTemplate),
                 item => item.With("client_id", clientId).With("http_status_code", httpStatusCode.ToString()));
 
@@ -48,7 +48,7 @@ namespace App.Metrics
 
         public static IMetrics MarkHttpRequestEndpointError(this IMetrics metrics, string routeTemplate, int httpStatusCode)
         {
-            metrics.Meter.Mark(
+            metrics.Measure.Meter.Mark(
                 AspNetMetricsRegistry.Contexts.HttpRequests.Meters.EndpointHttpErrorRequests(routeTemplate),
                 item => item.With("http_status_code", httpStatusCode.ToString()));
 
@@ -57,7 +57,7 @@ namespace App.Metrics
 
         public static IMetrics MarkHttpRequestError(this IMetrics metrics, int httpStatusCode)
         {
-            metrics.Meter.Mark(
+            metrics.Measure.Meter.Mark(
                 AspNetMetricsRegistry.Contexts.HttpRequests.Meters.HttpErrorRequests,
                 item => item.With("http_status_code", httpStatusCode.ToString()));
 
@@ -66,7 +66,7 @@ namespace App.Metrics
 
         public static IMetrics MarkHttpRequestForOAuthClient(this IMetrics metrics, string clientId, int httpStatusCode)
         {
-            metrics.Meter.Mark(
+            metrics.Measure.Meter.Mark(
                 AspNetMetricsRegistry.Contexts.OAuth2.Meters.HttpRequests,
                 item => item.With("client_id", clientId).With("http_status_code", httpStatusCode.ToString()));
 
@@ -75,7 +75,7 @@ namespace App.Metrics
 
         public static IMetrics RecordEndpointRequestTime(this IMetrics metrics, string clientId, string routeTemplate, long elapsed)
         {
-            metrics.AdvancedMetrics
+            metrics.Advanced
                    .Timer
                    .With(AspNetMetricsRegistry.Contexts.HttpRequests.Timers.EndpointPerRequestTimer(routeTemplate))
                    .Record(elapsed, TimeUnit.Nanoseconds, clientId.IsPresent() ? clientId : null);
@@ -85,7 +85,7 @@ namespace App.Metrics
 
         public static IMetrics UpdatePostAndPutRequestSize(this IMetrics metrics, long value)
         {
-            metrics.Histogram.Update(AspNetMetricsRegistry.Contexts.HttpRequests.Histograms.PostAndPutRequestSize, value);
+            metrics.Measure.Histogram.Update(AspNetMetricsRegistry.Contexts.HttpRequests.Histograms.PostAndPutRequestSize, value);
 
             return metrics;
         }

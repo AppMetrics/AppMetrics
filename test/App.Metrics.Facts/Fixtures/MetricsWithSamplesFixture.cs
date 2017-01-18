@@ -43,11 +43,11 @@ namespace App.Metrics.Facts.Fixtures
                 Name = "test_gauge"
             };
 
-            Metrics.Counter.Increment(counterOptions);
-            Metrics.Meter.Mark(meterOptions);
-            Metrics.Timer.Time(timerOptions, () => Metrics.Clock.Advance(TimeUnit.Milliseconds, 10));
-            Metrics.Histogram.Update(histogramOptions, 5);
-            Metrics.Gauge.SetValue(gaugeOptions, () => 8);
+            Metrics.Measure.Counter.Increment(counterOptions);
+            Metrics.Measure.Meter.Mark(meterOptions);
+            Metrics.Measure.Timer.Time(timerOptions, () => Metrics.Clock.Advance(TimeUnit.Milliseconds, 10));
+            Metrics.Measure.Histogram.Update(histogramOptions, 5);
+            Metrics.Measure.Gauge.SetValue(gaugeOptions, () => 8);
         }
     }
 }

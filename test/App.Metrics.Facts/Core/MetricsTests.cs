@@ -29,7 +29,7 @@ namespace App.Metrics.Facts.Core
                                      MeasurementUnit = Unit.Requests,
                                  };
 
-            _fixture.Metrics.Counter.Increment(counterOptions);
+            _fixture.Metrics.Measure.Counter.Increment(counterOptions);
 
             var data = _fixture.CurrentData(_fixture.Metrics);
             var counterValue = data.Contexts.Single().Counters.Single();
@@ -50,7 +50,7 @@ namespace App.Metrics.Facts.Core
                                      MeasurementUnit = Unit.Requests,
                                  };
 
-            _fixture.Metrics.Counter.Increment(counterOptions);
+            _fixture.Metrics.Measure.Counter.Increment(counterOptions);
 
             var data = _fixture.CurrentData(_fixture.Metrics);
             var counterValue = data.Contexts.Single().Counters.Single();
@@ -73,7 +73,7 @@ namespace App.Metrics.Facts.Core
                                      MeasurementUnit = Unit.Requests,
                                  };
 
-            _fixture.Metrics.Counter.Increment(counterOptions);
+            _fixture.Metrics.Measure.Counter.Increment(counterOptions);
 
             var data = _fixture.CurrentData(_fixture.Metrics);
 
@@ -95,7 +95,7 @@ namespace App.Metrics.Facts.Core
                                      MeasurementUnit = Unit.Bytes
                                  };
 
-            _fixture.Metrics.Counter.Increment(counterOptions);
+            _fixture.Metrics.Measure.Counter.Increment(counterOptions);
 
             var data = _fixture.CurrentData(_fixture.Metrics);
 
@@ -117,8 +117,8 @@ namespace App.Metrics.Facts.Core
                                      Context = "test"
                                  };
 
-            var first = _fixture.Metrics.AdvancedMetrics.Counter.With(counterOptions);
-            var second = _fixture.Metrics.AdvancedMetrics.Counter.With(counterOptions);
+            var first = _fixture.Metrics.Advanced.Counter.With(counterOptions);
+            var second = _fixture.Metrics.Advanced.Counter.With(counterOptions);
 
             ReferenceEquals(first, second).Should().BeTrue();
         }
@@ -132,7 +132,7 @@ namespace App.Metrics.Facts.Core
                                      MeasurementUnit = Unit.Bytes,
                                  };
 
-            _fixture.Metrics.Counter.Increment(counterOptions);
+            _fixture.Metrics.Measure.Counter.Increment(counterOptions);
 
             var data = _fixture.CurrentData(_fixture.Metrics);
             var context = data.Contexts.Single();
@@ -187,13 +187,12 @@ namespace App.Metrics.Facts.Core
                                        MeasurementUnit = Unit.Calls
                                    };
 
-                _fixture.Metrics.Apdex.Track(apdexOptions);
-                _fixture.Metrics.Gauge.SetValue(gaugeOptions, () => 0.0);
-                _fixture.Metrics.Counter.Increment(counterOptions);
-                _fixture.Metrics.Meter.Mark(meterOptions);
-                _fixture.Metrics.Histogram.Update(histogramOptions, 1L);
-
-                _fixture.Metrics.Timer.Time(timerOptions);
+                _fixture.Metrics.Measure.Apdex.Track(apdexOptions);
+                _fixture.Metrics.Measure.Gauge.SetValue(gaugeOptions, () => 0.0);
+                _fixture.Metrics.Measure.Counter.Increment(counterOptions);
+                _fixture.Metrics.Measure.Meter.Mark(meterOptions);
+                _fixture.Metrics.Measure.Histogram.Update(histogramOptions, 1L);
+                _fixture.Metrics.Measure.Timer.Time(timerOptions);
             })).ShouldNotThrow();
         }
 
@@ -213,7 +212,7 @@ namespace App.Metrics.Facts.Core
 
             data.Contexts.FirstOrDefault(g => g.Context == context).Should().BeNull("the context hasn't been added yet");
 
-            _fixture.Metrics.Counter.Increment(counterOptions);
+            _fixture.Metrics.Measure.Counter.Increment(counterOptions);
 
             data = dataProvider.ReadData();
             data.Contexts.First(g => g.Context == context).Counters.Should().HaveCount(1);
@@ -228,7 +227,7 @@ namespace App.Metrics.Facts.Core
                                      MeasurementUnit = Unit.Requests,
                                  };
 
-            _fixture.Metrics.Counter.Increment(counterOptions);
+            _fixture.Metrics.Measure.Counter.Increment(counterOptions);
 
             var data = _fixture.CurrentData(_fixture.Metrics);
 
