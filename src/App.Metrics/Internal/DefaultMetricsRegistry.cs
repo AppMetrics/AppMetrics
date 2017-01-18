@@ -25,8 +25,7 @@ namespace App.Metrics.Internal
         private readonly EnvironmentInfoProvider _environmentInfoProvider;
         private readonly ILogger _logger;
         private readonly Func<string, IMetricContextRegistry> _newContextRegistry;
-        private readonly NullMetricsRegistry _nullMetricsRegistry = new NullMetricsRegistry();
-        private bool _enabled = true;
+        private readonly Lazy<NullMetricsRegistry> _nullMetricsRegistry = new Lazy<NullMetricsRegistry>();
 
         public DefaultMetricsRegistry(
             ILoggerFactory loggerFactory,
@@ -46,9 +45,9 @@ namespace App.Metrics.Internal
 
         public bool AddContext(string context, IMetricContextRegistry registry)
         {
-            if (!_enabled)
+            if (_nullMetricsRegistry.IsValueCreated)
             {
-                _nullMetricsRegistry.AddContext(context, registry);
+                _nullMetricsRegistry.Value.AddContext(context, registry);
             }
 
             if (context.IsMissing())
@@ -64,9 +63,9 @@ namespace App.Metrics.Internal
         public IApdex Apdex<T>(ApdexOptions options, Func<T> builder)
             where T : IApdexMetric
         {
-            if (!_enabled)
+            if (_nullMetricsRegistry.IsValueCreated)
             {
-                return _nullMetricsRegistry.Apdex(options, builder);
+                return _nullMetricsRegistry.Value.Apdex(options, builder);
             }
 
             EnsureContextLabel(options);
@@ -79,9 +78,9 @@ namespace App.Metrics.Internal
 
         public void Clear()
         {
-            if (!_enabled)
+            if (_nullMetricsRegistry.IsValueCreated)
             {
-                _nullMetricsRegistry.Clear();
+                _nullMetricsRegistry.Value.Clear();
             }
 
             ForAllContexts(
@@ -95,9 +94,9 @@ namespace App.Metrics.Internal
         public ICounter Counter<T>(CounterOptions options, Func<T> builder)
             where T : ICounterMetric
         {
-            if (!_enabled)
+            if (_nullMetricsRegistry.IsValueCreated)
             {
-                return _nullMetricsRegistry.Counter(options, builder);
+                return _nullMetricsRegistry.Value.Counter(options, builder);
             }
 
             EnsureContextLabel(options);
@@ -112,7 +111,7 @@ namespace App.Metrics.Internal
         {
             Clear();
 
-            _enabled = false;
+            _nullMetricsRegistry.Value.Disable();
         }
 
         public MetricValueOptions EnsureContextLabel(MetricValueOptions options)
@@ -137,9 +136,9 @@ namespace App.Metrics.Internal
 
         public void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider)
         {
-            if (!_enabled)
+            if (_nullMetricsRegistry.IsValueCreated)
             {
-                _nullMetricsRegistry.Gauge(options, valueProvider);
+                _nullMetricsRegistry.Value.Gauge(options, valueProvider);
             }
 
             EnsureContextLabel(options);
@@ -153,9 +152,9 @@ namespace App.Metrics.Internal
         {
             _logger.RetrievedMetricsData();
 
-            if (!_enabled)
+            if (_nullMetricsRegistry.IsValueCreated)
             {
-                _nullMetricsRegistry.GetData(filter);
+                _nullMetricsRegistry.Value.GetData(filter);
             }
 
             if (_contexts.Count == 0)
@@ -185,9 +184,9 @@ namespace App.Metrics.Internal
         public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder)
             where T : IHistogramMetric
         {
-            if (!_enabled)
+            if (_nullMetricsRegistry.IsValueCreated)
             {
-                return _nullMetricsRegistry.Histogram(options, builder);
+                return _nullMetricsRegistry.Value.Histogram(options, builder);
             }
 
             EnsureContextLabel(options);
@@ -201,9 +200,9 @@ namespace App.Metrics.Internal
         public IMeter Meter<T>(MeterOptions options, Func<T> builder)
             where T : IMeterMetric
         {
-            if (!_enabled)
+            if (_nullMetricsRegistry.IsValueCreated)
             {
-                return _nullMetricsRegistry.Meter(options, builder);
+                return _nullMetricsRegistry.Value.Meter(options, builder);
             }
 
             EnsureContextLabel(options);
@@ -215,9 +214,9 @@ namespace App.Metrics.Internal
 
         public void RemoveContext(string context)
         {
-            if (!_enabled)
+            if (_nullMetricsRegistry.IsValueCreated)
             {
-                _nullMetricsRegistry.RemoveContext(context);
+                _nullMetricsRegistry.Value.RemoveContext(context);
             }
 
             if (context.IsMissing())
@@ -236,9 +235,9 @@ namespace App.Metrics.Internal
         public ITimer Timer<T>(TimerOptions options, Func<T> builder)
             where T : ITimerMetric
         {
-            if (!_enabled)
+            if (_nullMetricsRegistry.IsValueCreated)
             {
-                _nullMetricsRegistry.Timer(options, builder);
+                _nullMetricsRegistry.Value.Timer(options, builder);
             }
 
             EnsureContextLabel(options);
