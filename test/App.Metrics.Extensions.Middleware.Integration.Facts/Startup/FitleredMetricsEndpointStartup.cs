@@ -66,7 +66,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
 
             Metrics.Counter.Increment(counterOptions);
             Metrics.Meter.Mark(meterOptions);
-            Metrics.Timer.Time(timerOptions, () => Metrics.Advanced.Clock.Advance(TimeUnit.Milliseconds, 10));
+            Metrics.Timer.Time(timerOptions, () => Metrics.Clock.Advance(TimeUnit.Milliseconds, 10));
             Metrics.Histogram.Update(histogramOptions, 5);
             Metrics.Gauge.SetValue(gaugeOptions, () => 8);
         }

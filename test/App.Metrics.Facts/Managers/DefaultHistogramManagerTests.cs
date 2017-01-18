@@ -20,7 +20,7 @@ namespace App.Metrics.Facts.Managers
         public DefaultHistogramManagerTests(MetricManagerTestFixture fixture)
         {
             _fixture = fixture;
-            _manager = new DefaultHistogramManager(_fixture.Advanced, _fixture.Registry);
+            _manager = new DefaultHistogramManager(_fixture.Builder.Histogram, _fixture.Registry);
         }
 
         [Fact]

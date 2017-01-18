@@ -1,7 +1,8 @@
-﻿using System;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System;
 using System.Linq;
-using System.Threading.Tasks;
-using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Sampling.Interfaces;
@@ -21,34 +22,16 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void can_register_custom_counter()
-        {
-            var counterOptions = new CounterOptions
-            {
-                Name = "Custom Counter",
-                MeasurementUnit = Unit.Calls
-            };
-            var counter = _fixture.Metrics.Advanced.Counter(counterOptions, () => new CustomCounter());
-            counter.Should().BeOfType<CustomCounter>();
-            counter.Increment();
-
-            var data = _fixture.Metrics.Advanced.Data.ReadData();
-            var context = data.Contexts.Single();
-
-            context.Counters.Single().Value.Count.Should().Be(10L);
-        }
-
-        [Fact]
         public void can_register_timer_with_custom_histogram()
         {
             var histogram = new CustomHistogram();
             var timerOptions = new TimerOptions
-            {
-                Name = "custom",
-                MeasurementUnit = Unit.Calls
-            };
+                               {
+                                   Name = "custom",
+                                   MeasurementUnit = Unit.Calls
+                               };
 
-            var timer = _fixture.Metrics.Advanced.Timer(timerOptions, () => (IHistogramMetric)histogram);
+            var timer = _fixture.Metrics.AdvancedMetrics.Timer.WithHistogram(timerOptions, () => histogram);
 
             timer.Record(10L, TimeUnit.Nanoseconds);
 
@@ -61,12 +44,12 @@ namespace App.Metrics.Facts.Core
         {
             var reservoir = new CustomReservoir();
             var timerOptions = new TimerOptions
-            {
-                Name = "custom",
-                MeasurementUnit = Unit.Calls,
-                WithReservoir = () => reservoir as IReservoir
-            };
-            var timer = _fixture.Metrics.Advanced.Timer(timerOptions);
+                               {
+                                   Name = "custom",
+                                   MeasurementUnit = Unit.Calls,
+                                   WithReservoir = () => reservoir as IReservoir
+                               };
+            var timer = _fixture.Metrics.AdvancedMetrics.Timer.With(timerOptions);            
 
             timer.Record(10L, TimeUnit.Nanoseconds);
 
@@ -74,10 +57,7 @@ namespace App.Metrics.Facts.Core
             reservoir.Values.Single().Should().Be(10L);
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-        }
+        public void Dispose() { Dispose(true); }
 
         protected virtual void Dispose(bool disposing)
         {

@@ -21,7 +21,7 @@ namespace App.Metrics.Facts.Managers
         public DefaultApdexManagerTests(MetricManagerTestFixture fixture)
         {
             _fixture = fixture;
-            _manager = new DefaultApdexManager(_fixture.Advanced, _fixture.Registry);
+            _manager = new DefaultApdexManager(_fixture.Builder.Apdex, _fixture.Registry, _fixture.Clock);
         }
 
         [Fact]

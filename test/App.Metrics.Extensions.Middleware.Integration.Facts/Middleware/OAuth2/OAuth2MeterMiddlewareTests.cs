@@ -31,7 +31,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
             await Client.GetAsync("/api/test/oauth/error/client3");
             await Client.GetAsync("/api/test/oauth/error/client4");
 
-            var metrics = Context.Advanced.Data.ReadContext(AspNetMetricsRegistry.Contexts.OAuth2.ContextName);
+            var metrics = Context.Data.ReadContext(AspNetMetricsRegistry.Contexts.OAuth2.ContextName);
             var successItems = metrics.MeterValueFor("GET api/test/oauth/{clientid} Http Requests").Items;
             var errorItems = metrics.MeterValueFor("GET api/test/oauth/error/{clientid} Http Requests").Items;
             var overallItems = metrics.MeterValueFor("Http Requests").Items;

@@ -8,7 +8,7 @@ using App.Metrics.Core;
 using App.Metrics.Infrastructure;
 using App.Metrics.Interfaces;
 using App.Metrics.Internal;
-using App.Metrics.Internal.Interfaces;
+using App.Metrics.Internal.Builders;
 using App.Metrics.Internal.Managers;
 using App.Metrics.Utils;
 using FluentAssertions;
@@ -27,7 +27,6 @@ namespace App.Metrics.Facts.Health
         {
             _metircsSetup = healthCheckFactory =>
             {
-                var metricsLogger = LoggerFactory.CreateLogger<DefaultAdvancedMetrics>();
                 var clock = new TestClock();
                 var options = new AppMetricsOptions();
                 Func<string, IMetricContextRegistry> newContextRegistry = name => new DefaultMetricContextRegistry(name);
@@ -37,17 +36,27 @@ namespace App.Metrics.Facts.Health
                     clock,
                     new EnvironmentInfoProvider(),
                     newContextRegistry);
-                var advancedManager = new DefaultAdvancedMetrics(
-                    metricsLogger,
+                var metricBuilderFactory = new DefaultMetricsBuilderFactory();
+                var filter = new DefaultMetricsFilter();
+                var healthManager = new DefaultHealthManager(LoggerFactory.CreateLogger<DefaultHealthManager>(), healthCheckFactory);
+                var dataManager = new DefaultDataManager(
+                    filter,
+                    registry);
+
+                var metricsManagerFactory = new DefaultMetricsManagerFactory(registry, metricBuilderFactory, clock);
+                var metricsManagerAdvancedFactory = new DefaultMetricsAdvancedManagerFactory(registry, metricBuilderFactory, clock);
+                var metricsManager = new DefaultMetricsManager(registry, LoggerFactory.CreateLogger<DefaultMetricsManager>());
+
+                return new DefaultMetrics(
                     options,
                     clock,
-                    new DefaultMetricsFilter(),
-                    registry,
-                    healthCheckFactory);
-
-                var metricsManagerFactory = new DefaultMetricsManagerFactory(registry, advancedManager);
-
-                return new DefaultMetrics(options, metricsManagerFactory, advancedManager);
+                    filter,
+                    metricsManagerFactory,
+                    metricBuilderFactory,
+                    metricsManagerAdvancedFactory,
+                    dataManager,
+                    metricsManager,
+                    healthManager);
             };
         }
 
@@ -68,7 +77,7 @@ namespace App.Metrics.Facts.Health
 
             var metrics = _metircsSetup(_healthCheckFactory);
 
-            var status = await metrics.Advanced.Health.ReadStatusAsync();
+            var status = await metrics.Health.ReadStatusAsync();
 
             status.Status.Should().Be(HealthCheckStatus.Degraded);
             status.Results.Length.Should().Be(2);
@@ -83,7 +92,7 @@ namespace App.Metrics.Facts.Health
 
             var metrics = _metircsSetup(_healthCheckFactory);
 
-            var status = await metrics.Advanced.Health.ReadStatusAsync();
+            var status = await metrics.Health.ReadStatusAsync();
 
             status.Status.Should().Be(HealthCheckStatus.Unhealthy);
             status.Results.Length.Should().Be(2);
@@ -97,7 +106,7 @@ namespace App.Metrics.Facts.Health
 
             var metrics = _metircsSetup(_healthCheckFactory);
 
-            var status = await metrics.Advanced.ReadStatusAsync();
+            var status = await metrics.Health.ReadStatusAsync();
 
             status.Status.Should().Be(HealthCheckStatus.Healthy);
             status.Results.Length.Should().Be(2);
@@ -112,7 +121,7 @@ namespace App.Metrics.Facts.Health
 
             var metrics = _metircsSetup(_healthCheckFactory);
 
-            var status = await metrics.Advanced.Health.ReadStatusAsync();
+            var status = await metrics.Health.ReadStatusAsync();
 
             status.Status.Should().Be(HealthCheckStatus.Unhealthy);
             status.Results.Length.Should().Be(3);

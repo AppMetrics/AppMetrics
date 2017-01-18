@@ -71,7 +71,7 @@ namespace App.Metrics.Reporting
         {
             _buffer.WriteMetricEndReport(
                 Name,
-                metrics.Advanced.Clock.FormatTimestamp(metrics.Advanced.Clock.UtcDateTime));
+                metrics.Clock.FormatTimestamp(metrics.Clock.UtcDateTime));
 
             return AppMetricsTaskCache.SuccessTask;
         }
@@ -130,7 +130,7 @@ namespace App.Metrics.Reporting
         {
             _buffer.WriteMetricStartReport(
                 Name,
-                metrics.Advanced.Clock.FormatTimestamp(metrics.Advanced.Clock.UtcDateTime));
+                metrics.Clock.FormatTimestamp(metrics.Clock.UtcDateTime));
         }
 
         private void WriteStartMetricType<T>(string context)

@@ -20,7 +20,7 @@ namespace App.Metrics.Facts.Managers
         public DefaultCounterManagerTests(MetricManagerTestFixture fixture)
         {
             _fixture = fixture;
-            _manager = new DefaultCounterManager(_fixture.Advanced, _fixture.Registry);
+            _manager = new DefaultCounterManager(_fixture.Builder.Counter, _fixture.Registry);
         }
 
         [Fact]

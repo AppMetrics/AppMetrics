@@ -34,14 +34,14 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         [HttpGet("oauth/{clientid}")]
         public IActionResult OAuth(string clientId)
         {
-            _metrics.Advanced.Clock.Advance(TimeUnit.Milliseconds, 300);
+            _metrics.Clock.Advance(TimeUnit.Milliseconds, 300);
             return StatusCode(200);
         }
 
         [HttpGet("oauth/error/{clientid}")]
         public IActionResult OAuthError(string clientId)
         {
-            _metrics.Advanced.Clock.Advance(TimeUnit.Milliseconds, 300);
+            _metrics.Clock.Advance(TimeUnit.Milliseconds, 300);
             return StatusCode(500);
         }
 
@@ -56,7 +56,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         public async Task<IActionResult> Get300ms()
         // ReSharper restore InconsistentNaming
         {
-            _metrics.Advanced.Clock.Advance(TimeUnit.Milliseconds, 300);
+            _metrics.Clock.Advance(TimeUnit.Milliseconds, 300);
             await Task.FromResult(0);
             return StatusCode(200);
         }
@@ -66,7 +66,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         public async Task<IActionResult> Get30ms()
         // ReSharper restore InconsistentNaming
         {
-            _metrics.Advanced.Clock.Advance(TimeUnit.Milliseconds, 30);
+            _metrics.Clock.Advance(TimeUnit.Milliseconds, 30);
             await Task.FromResult(0);
             return StatusCode(200);
         }

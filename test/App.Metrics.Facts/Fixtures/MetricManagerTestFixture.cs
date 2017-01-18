@@ -3,10 +3,10 @@
 
 using System;
 using App.Metrics.Configuration;
-using App.Metrics.Core.Interfaces;
 using App.Metrics.Infrastructure;
 using App.Metrics.Interfaces;
 using App.Metrics.Internal;
+using App.Metrics.Internal.Builders;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 
@@ -17,26 +17,20 @@ namespace App.Metrics.Facts.Fixtures
         public MetricManagerTestFixture()
         {
             var loggerFactory = new LoggerFactory();
-            var clock = new TestClock();
-            var filter = new DefaultMetricsFilter();
             var options = new AppMetricsOptions();
 
-            var healthCheckFactory = new HealthCheckFactory(loggerFactory.CreateLogger<HealthCheckFactory>());
-            Func<string, IMetricContextRegistry> contextRegistrySetup = context => new DefaultMetricContextRegistry(context);
-            var registry = new DefaultMetricsRegistry(loggerFactory, options, clock, new EnvironmentInfoProvider(), contextRegistrySetup);
+            Clock = new TestClock();
+            Builder = new DefaultMetricsBuilderFactory();
 
-            Advanced = new DefaultAdvancedMetrics(
-                loggerFactory.CreateLogger<DefaultAdvancedMetrics>(),
-                options,
-                clock,
-                filter,
-                registry,
-                healthCheckFactory);
+            Func<string, IMetricContextRegistry> contextRegistrySetup = context => new DefaultMetricContextRegistry(context);
+            var registry = new DefaultMetricsRegistry(loggerFactory, options, Clock, new EnvironmentInfoProvider(), contextRegistrySetup);
 
             Registry = registry;
         }
 
-        public IAdvancedMetrics Advanced { get; }
+        public IMetricsBuilderFactory Builder { get; }
+
+        public IClock Clock { get; }
 
         public IMetricsRegistry Registry { get; }
 

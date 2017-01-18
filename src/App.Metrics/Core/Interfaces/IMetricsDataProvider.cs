@@ -37,16 +37,5 @@ namespace App.Metrics.Core.Interfaces
         ///     A snapshot of the current metrics data filtered by the specified <see cref="IMetricsFilter" />
         /// </returns>
         MetricsDataValueSource ReadData(IMetricsFilter overrideGlobalFilter);
-
-        /// <summary>
-        ///     Allows resetting of all metric data at runtime.
-        /// </summary>
-        void Reset();
-
-        /// <summary>
-        ///     Allows clearing all metrics belonging to the specified context at runtime.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        void ShutdownContext(string context);
     }
 }

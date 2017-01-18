@@ -40,6 +40,13 @@ namespace App.Metrics.Interfaces
         /// <param name="item">The <see cref="MetricItem" />  within the set to mark.</param>
         void Mark(MeterOptions options, Action<MetricItem> item);
 
+        /// <summary>
+        ///     Marks a <see cref="IMeterMetric" /> which increments an increment-only counter and measures the rate of events over
+        ///     time
+        /// </summary>
+        /// <param name="options">The details of the meter that is being marked</param>
+        /// <param name="amount">The amount to mark the meter.</param>
+        /// <param name="item">The metric item within the set to mark.</param>
         void Mark(MeterOptions options, long amount, string item);
 
         /// <summary>

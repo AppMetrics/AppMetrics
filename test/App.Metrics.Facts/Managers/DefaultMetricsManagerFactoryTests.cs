@@ -14,7 +14,7 @@ namespace App.Metrics.Facts.Managers
 
         public DefaultMetricsManagerFactoryTests(MetricManagerTestFixture fixture)
         {
-            _factory = new DefaultMetricsManagerFactory(fixture.Registry, fixture.Advanced);
+            _factory = new DefaultMetricsManagerFactory(fixture.Registry, fixture.Builder, fixture.Clock);
         }
 
         [Fact]

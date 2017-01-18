@@ -31,7 +31,7 @@ namespace App.Metrics.Reporting.Internal
         public Task<bool> GenerateAsync(
             IMetricReporter reporter,
             IMetrics metrics,
-            CancellationToken token) { return GenerateAsync(reporter, metrics, metrics.Advanced.GlobalFilter, token); }
+            CancellationToken token) { return GenerateAsync(reporter, metrics, metrics.GlobalFilter, token); }
 
         public async Task<bool> GenerateAsync(
             IMetricReporter reporter,
@@ -45,12 +45,12 @@ namespace App.Metrics.Reporting.Internal
 
             if (reporterMetricsFilter == default(IMetricsFilter))
             {
-                reporterMetricsFilter = metrics.Advanced.GlobalFilter;
+                reporterMetricsFilter = metrics.GlobalFilter;
             }
 
             reporter.StartReportRun(metrics);
 
-            var data = metrics.Advanced.Data.ReadData(reporterMetricsFilter);
+            var data = metrics.Data.ReadData(reporterMetricsFilter);
 
             if (data.Environment.Entries.Any() && reporterMetricsFilter.ReportEnvironment)
             {
@@ -59,13 +59,13 @@ namespace App.Metrics.Reporting.Internal
 
             if (reporterMetricsFilter.ReportHealthChecks)
             {
-                var healthStatus = await metrics.Advanced.Health.ReadStatusAsync(token);
+                var healthStatus = await metrics.Health.ReadStatusAsync(token);
 
                 var passed = healthStatus.Results.Where(r => r.Check.Status.IsHealthy()).ToArray();
                 var failed = healthStatus.Results.Where(r => r.Check.Status.IsUnhealthy()).ToArray();
                 var degraded = healthStatus.Results.Where(r => r.Check.Status.IsDegraded()).ToArray();
 
-                reporter.ReportHealth(metrics.Advanced.GlobalTags, passed, degraded, failed);
+                reporter.ReportHealth(metrics.GlobalTags, passed, degraded, failed);
 
                 foreach (var check in passed)
                 {

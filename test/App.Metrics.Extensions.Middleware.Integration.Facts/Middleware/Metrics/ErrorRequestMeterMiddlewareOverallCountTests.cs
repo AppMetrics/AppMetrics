@@ -30,7 +30,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
             await Client.GetAsync("/api/test/error");
             await Client.GetAsync("/api/test/error");
 
-            var metrics = Context.Advanced.Data.ReadContext(AspNetMetricsRegistry.Contexts.HttpRequests.ContextName);
+            var metrics = Context.Data.ReadContext(AspNetMetricsRegistry.Contexts.HttpRequests.ContextName);
 
             metrics.MeterValueFor("Http Error Requests").Count.Should().Be(6);
             metrics.TimerValueFor("Http Requests").Histogram.Count.Should().Be(7);

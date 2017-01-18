@@ -3,6 +3,7 @@
 
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Interfaces;
+using App.Metrics.Internal.Interfaces;
 using App.Metrics.Utils;
 
 namespace App.Metrics
@@ -15,34 +16,34 @@ namespace App.Metrics
     /// </remarks>
     public interface IMetrics
     {
-        /// <summary>
-        ///     Gets the more advanced application metrics operations
-        /// </summary>
-        /// <value>
-        ///     The advanced.
-        /// </value>
-        /// <remarks>
-        ///     - Gets the the regsitered <see cref="IClock" /> used for timing
-        ///     - Allows retrieval of a snapshot of metrics data recorded via the <see cref="IMetricsDataProvider" /> and
-        ///     reseting the data at runtime
-        ///     - Allows retrieval of the current health of the application via the <see cref="IHealthStatusProvider" />
-        ///     - Allows instantiation of a metric without performing the option
-        ///     - Allows disabling of metrics recording at runtime
-        /// </remarks>
-        IAdvancedMetrics Advanced { get; }
-
-        // TODO: ! Add docs
+        IMetricsAdvancedManagerFactory AdvancedMetrics { get; }
 
         IMeasureApdexMetrics Apdex { get; }
 
-        IMeasureTimerMetrics Timer { get; }
+        // TODO: ! Add docs
+
+        IMetricsBuilderFactory Build { get; }
+
+        IClock Clock { get; }
 
         IMeasureCounterMetrics Counter { get; }
 
+        IMetricsDataProvider Data { get; }
+
         IMeasureGaugeMetrics Gauge { get; }
+
+        IMetricsFilter GlobalFilter { get; }
+
+        GlobalMetricTags GlobalTags { get; }
+
+        IHealthStatusProvider Health { get; }
 
         IMeasureHistogramMetrics Histogram { get; }
 
+        IManageMetrics Manage { get; }
+
         IMeasureMeterMetrics Meter { get; }
+
+        IMeasureTimerMetrics Timer { get; }
     }
 }

@@ -20,10 +20,10 @@ namespace App.Metrics
 
         public static IMetrics ErrorRequestPercentage(this IMetrics metrics)
         {
-            var errors = metrics.Advanced.Meter(AspNetMetricsRegistry.Contexts.HttpRequests.Meters.HttpErrorRequests);
-            var requests = metrics.Advanced.Timer(AspNetMetricsRegistry.Contexts.HttpRequests.Timers.WebRequestTimer);
+            var errors = metrics.AdvancedMetrics.Meter.With(AspNetMetricsRegistry.Contexts.HttpRequests.Meters.HttpErrorRequests);
+            var requests = metrics.AdvancedMetrics.Timer.With(AspNetMetricsRegistry.Contexts.HttpRequests.Timers.WebRequestTimer);
 
-            metrics.Advanced.Gauge(
+            metrics.Gauge.SetValue(
                 AspNetMetricsRegistry.Contexts.HttpRequests.Gauges.PercentageErrorRequests,
                 () => new HitPercentageGauge(errors, requests, m => m.OneMinuteRate));
 
@@ -75,8 +75,9 @@ namespace App.Metrics
 
         public static IMetrics RecordEndpointRequestTime(this IMetrics metrics, string clientId, string routeTemplate, long elapsed)
         {
-            metrics.Advanced
-                   .Timer(AspNetMetricsRegistry.Contexts.HttpRequests.Timers.EndpointPerRequestTimer(routeTemplate))
+            metrics.AdvancedMetrics
+                   .Timer
+                   .With(AspNetMetricsRegistry.Contexts.HttpRequests.Timers.EndpointPerRequestTimer(routeTemplate))
                    .Record(elapsed, TimeUnit.Nanoseconds, clientId.IsPresent() ? clientId : null);
 
             return metrics;

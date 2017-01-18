@@ -11,7 +11,6 @@ using App.Metrics.Data;
 using App.Metrics.Data.Interfaces;
 using App.Metrics.Infrastructure;
 using App.Metrics.Interfaces;
-using App.Metrics.Internal.Interfaces;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 
@@ -60,8 +59,10 @@ namespace App.Metrics.Internal
         {
             EnsureContextLabel(options);
             EnsureSamplingType(options);
-            var registry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
-            return registry.Apdex(options, builder);
+
+            var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
+
+            return contextRegistry.Apdex(options, builder);
         }
 
         public void Clear()
@@ -78,8 +79,10 @@ namespace App.Metrics.Internal
             where T : ICounterMetric
         {
             EnsureContextLabel(options);
-            var registry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
-            return registry.Counter(options, builder);
+
+            var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
+
+            return contextRegistry.Counter(options, builder);
         }
 
         public MetricValueOptions EnsureContextLabel(MetricValueOptions options)
@@ -105,8 +108,10 @@ namespace App.Metrics.Internal
         public void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider)
         {
             EnsureContextLabel(options);
-            var registry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
-            registry.Gauge(options, valueProvider);
+
+            var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
+
+            contextRegistry.Gauge(options, valueProvider);
         }
 
         public MetricsDataValueSource GetData(IMetricsFilter filter)
@@ -142,16 +147,20 @@ namespace App.Metrics.Internal
         {
             EnsureContextLabel(options);
             EnsureSamplingType(options);
-            var registry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
-            return registry.Histogram(options, builder);
+
+            var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
+
+            return contextRegistry.Histogram(options, builder);
         }
 
         public IMeter Meter<T>(MeterOptions options, Func<T> builder)
             where T : IMeterMetric
         {
             EnsureContextLabel(options);
-            var registry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
-            return registry.Meter(options, builder);
+
+            var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
+
+            return contextRegistry.Meter(options, builder);
         }
 
         public void RemoveContext(string context)
@@ -162,6 +171,7 @@ namespace App.Metrics.Internal
             }
 
             IMetricContextRegistry registry;
+
             if (_contexts.TryRemove(context, out registry))
             {
                 registry.ClearAllMetrics();
@@ -173,8 +183,10 @@ namespace App.Metrics.Internal
         {
             EnsureContextLabel(options);
             EnsureSamplingType(options);
-            var registry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
-            return registry.Timer(options, builder);
+
+            var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
+
+            return contextRegistry.Timer(options, builder);
         }
 
         private void ForAllContexts(Action<IMetricContextRegistry> action)

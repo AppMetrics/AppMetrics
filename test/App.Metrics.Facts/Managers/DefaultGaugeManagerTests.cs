@@ -20,7 +20,7 @@ namespace App.Metrics.Facts.Managers
         public DefaultGaugeManagerTests(MetricManagerTestFixture fixture)
         {
             _fixture = fixture;
-            _manager = new DefaultGaugeManager(_fixture.Advanced, _fixture.Registry);
+            _manager = new DefaultGaugeManager(_fixture.Builder.Gauge, _fixture.Registry);
         }
 
         [Fact]

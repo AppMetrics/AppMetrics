@@ -20,7 +20,7 @@ namespace App.Metrics.Facts.DependencyInjection
             var provider = services.BuildServiceProvider();
             var metricsContext = provider.GetRequiredService<IMetrics>();
 
-            var result = await metricsContext.Advanced.Health.ReadStatusAsync();
+            var result = await metricsContext.Health.ReadStatusAsync();
 
             result.HasRegisteredChecks.Should().BeTrue();
             result.Results.Should().HaveCount(2);
@@ -37,7 +37,7 @@ namespace App.Metrics.Facts.DependencyInjection
             var provider = services.BuildServiceProvider();
             var metricsContext = provider.GetRequiredService<IMetrics>();
 
-            var result = await metricsContext.Advanced.Health.ReadStatusAsync();
+            var result = await metricsContext.Health.ReadStatusAsync();
 
             result.Status.Should().Be(HealthCheckStatus.Healthy);
         }
@@ -57,7 +57,7 @@ namespace App.Metrics.Facts.DependencyInjection
             var provider = services.BuildServiceProvider();
             var metricsContext = provider.GetRequiredService<IMetrics>();
 
-            var result = await metricsContext.Advanced.Health.ReadStatusAsync();
+            var result = await metricsContext.Health.ReadStatusAsync();
 
             result.Status.Should().Be(HealthCheckStatus.Unhealthy);
         }
@@ -73,7 +73,7 @@ namespace App.Metrics.Facts.DependencyInjection
             var provider = services.BuildServiceProvider();
             var metricsContext = provider.GetRequiredService<IMetrics>();
 
-            var result = await metricsContext.Advanced.Health.ReadStatusAsync();
+            var result = await metricsContext.Health.ReadStatusAsync();
 
             result.HasRegisteredChecks.Should().BeTrue();
             result.Results.Should().HaveCount(1);

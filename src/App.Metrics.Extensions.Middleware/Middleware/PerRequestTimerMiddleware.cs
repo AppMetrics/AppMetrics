@@ -26,7 +26,7 @@ namespace App.Metrics.Extensions.Middleware.Middleware
             {
                 Logger.MiddlewareExecuting(GetType());
 
-                context.Items[TimerItemsKey] = Metrics.Advanced.Clock.Nanoseconds;
+                context.Items[TimerItemsKey] = Metrics.Clock.Nanoseconds;
 
                 await Next(context);
 
@@ -35,7 +35,7 @@ namespace App.Metrics.Extensions.Middleware.Middleware
                     var clientId = context.OAuthClientId();
 
                     var startTime = (long)context.Items[TimerItemsKey];
-                    var elapsed = Metrics.Advanced.Clock.Nanoseconds - startTime;
+                    var elapsed = Metrics.Clock.Nanoseconds - startTime;
 
                     Metrics.RecordEndpointRequestTime(clientId, context.GetMetricsCurrentRouteName(), elapsed);
                 }

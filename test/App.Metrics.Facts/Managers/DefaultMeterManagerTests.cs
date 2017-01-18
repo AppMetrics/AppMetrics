@@ -20,7 +20,7 @@ namespace App.Metrics.Facts.Managers
         public DefaultMeterManagerTests(MetricManagerTestFixture fixture)
         {
             _fixture = fixture;
-            _manager = new DefaultMeterManager(_fixture.Advanced, _fixture.Registry);
+            _manager = new DefaultMeterManager(_fixture.Builder.Meter, _fixture.Registry, _fixture.Clock);
         }
 
         [Fact]

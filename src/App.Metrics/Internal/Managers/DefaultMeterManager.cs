@@ -2,46 +2,47 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
-using App.Metrics.Core;
-using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Options;
 using App.Metrics.Interfaces;
-using App.Metrics.Internal.Interfaces;
+using App.Metrics.Utils;
 
 namespace App.Metrics.Internal.Managers
 {
     internal class DefaultMeterManager : IMeasureMeterMetrics
     {
-        private readonly IAdvancedMetrics _advanced;
+        private readonly IClock _clock;
+        private readonly IBuildMeterMetrics _meterBuilder;
         private readonly IMetricsRegistry _registry;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultMeterManager" /> class.
         /// </summary>
+        /// <param name="clock">The clock.</param>
         /// <param name="registry">The registry storing all metric data.</param>
-        /// <param name="advanced">The advanced metrics manager.</param>
-        public DefaultMeterManager(IAdvancedMetrics advanced, IMetricsRegistry registry)
+        /// <param name="meterBuilder">The meter builder.</param>
+        public DefaultMeterManager(IBuildMeterMetrics meterBuilder, IMetricsRegistry registry, IClock clock)
         {
-            _advanced = advanced;
+            _clock = clock;
             _registry = registry;
+            _meterBuilder = meterBuilder;
         }
 
         /// <inheritdoc />
         public void Mark(MeterOptions options)
         {
-            _registry.Meter(options, () => _advanced.BuildMeter(options)).Mark();
+            _registry.Meter(options, () => _meterBuilder.Instance(_clock)).Mark();
         }
 
         /// <inheritdoc />
         public void Mark(MeterOptions options, long amount)
         {
-            _registry.Meter(options, () => _advanced.BuildMeter(options)).Mark(amount);
+            _registry.Meter(options, () => _meterBuilder.Instance(_clock)).Mark(amount);
         }
 
         /// <inheritdoc />
         public void Mark(MeterOptions options, string item)
         {
-            _registry.Meter(options, () => _advanced.BuildMeter(options)).Mark(item);
+            _registry.Meter(options, () => _meterBuilder.Instance(_clock)).Mark(item);
         }
 
         /// <inheritdoc />
@@ -49,7 +50,7 @@ namespace App.Metrics.Internal.Managers
         {
             var item = new MetricItem();
             itemSetup(item);
-            _registry.Meter(options, () => _advanced.BuildMeter(options)).Mark(item);
+            _registry.Meter(options, () => _meterBuilder.Instance(_clock)).Mark(item);
         }
 
         /// <inheritdoc />
@@ -57,13 +58,13 @@ namespace App.Metrics.Internal.Managers
         {
             var item = new MetricItem();
             itemSetup(item);
-            _registry.Meter(options, () => _advanced.BuildMeter(options)).Mark(item, amount);
+            _registry.Meter(options, () => _meterBuilder.Instance(_clock)).Mark(item, amount);
         }
 
         /// <inheritdoc />
         public void Mark(MeterOptions options, long amount, string item)
         {
-            _registry.Meter(options, () => _advanced.BuildMeter(options)).Mark(item, amount);
+            _registry.Meter(options, () => _meterBuilder.Instance(_clock)).Mark(item, amount);
         }
     }
 }

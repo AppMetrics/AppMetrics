@@ -1,6 +1,8 @@
+// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
 using System;
 using System.Linq;
-using App.Metrics.Core;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Data;
 
@@ -10,10 +12,7 @@ namespace App.Metrics.Facts
     {
         private bool _disposed = false;
 
-        ~CustomHistogram()
-        {
-            Dispose(false);
-        }
+        ~CustomHistogram() { Dispose(false); }
 
         public CustomReservoir Reservoir { get; } = new CustomReservoir();
 
@@ -38,19 +37,10 @@ namespace App.Metrics.Facts
             _disposed = true;
         }
 
-        public HistogramValue GetValue(bool resetMetric = false)
-        {
-            return Value;
-        }
+        public HistogramValue GetValue(bool resetMetric = false) { return Value; }
 
-        public void Reset()
-        {
-            Reservoir.Reset();
-        }
+        public void Reset() { Reservoir.Reset(); }
 
-        public void Update(long value, string userValue)
-        {
-            Reservoir.Update(value, userValue);
-        }
+        public void Update(long value, string userValue) { Reservoir.Update(value, userValue); }
     }
 }

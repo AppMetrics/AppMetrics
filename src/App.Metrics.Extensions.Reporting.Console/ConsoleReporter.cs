@@ -58,7 +58,7 @@ namespace App.Metrics.Extensions.Reporting.Console
                     Environment.NewLine + "-- End {0} Report: {1} - {2} --" + Environment.NewLine,
                     Name,
                     GlobalName,
-                    metrics.Advanced.Clock.FormatTimestamp(metrics.Advanced.Clock.UtcDateTime)));
+                    metrics.Clock.FormatTimestamp(metrics.Clock.UtcDateTime)));
 
             return AppMetricsTaskCache.SuccessTask;
         }
@@ -137,7 +137,7 @@ namespace App.Metrics.Extensions.Reporting.Console
                     Environment.NewLine + "-- Start {0} Report: {1} - {2} --" + Environment.NewLine,
                     Name,
                     GlobalName,
-                    metrics.Advanced.Clock.FormatTimestamp(metrics.Advanced.Clock.UtcDateTime)));
+                    metrics.Clock.FormatTimestamp(metrics.Clock.UtcDateTime)));
         }
 
         public void WriteLine(string message) { System.Console.WriteLine(message); }

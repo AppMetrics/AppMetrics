@@ -8,6 +8,7 @@ using App.Metrics.Data;
 using App.Metrics.Infrastructure;
 using App.Metrics.Interfaces;
 using App.Metrics.Internal;
+using App.Metrics.Internal.Builders;
 using App.Metrics.Internal.Managers;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
@@ -20,23 +21,36 @@ namespace App.Metrics.Facts.Fixtures
 
         public MetricsFixture()
         {
-            var metricsLogger = _loggerFactory.CreateLogger<DefaultAdvancedMetrics>();
             var healthFactoryLogger = _loggerFactory.CreateLogger<HealthCheckFactory>();
             var clock = new TestClock();
             var options = new AppMetricsOptions { DefaultSamplingType = SamplingType.LongTerm };
             Func<string, IMetricContextRegistry> newContextRegistry = name => new DefaultMetricContextRegistry(name);
             var registry = new DefaultMetricsRegistry(_loggerFactory, options, clock, new EnvironmentInfoProvider(), newContextRegistry);
             var healthCheckFactory = new HealthCheckFactory(healthFactoryLogger);
-            var advancedManager = new DefaultAdvancedMetrics(metricsLogger, options, clock, new DefaultMetricsFilter(), registry, healthCheckFactory);
-            var metricsManagerFactory = new DefaultMetricsManagerFactory(registry, advancedManager);
-            Metrics = new DefaultMetrics(options, metricsManagerFactory, advancedManager);
+            var metricBuilderFactory = new DefaultMetricsBuilderFactory();
+            var filter = new DefaultMetricsFilter();
+            var dataManager = new DefaultDataManager(filter, registry);
+            var healthStatusProvider = new DefaultHealthManager(_loggerFactory.CreateLogger<DefaultHealthManager>(), healthCheckFactory);
+            var metricsManagerFactory = new DefaultMetricsManagerFactory(registry, metricBuilderFactory, clock);
+            var metricsManagerAdvancedFactory = new DefaultMetricsAdvancedManagerFactory(registry, metricBuilderFactory, clock);
+            var metricsManager = new DefaultMetricsManager(registry, _loggerFactory.CreateLogger<DefaultMetricsManager>());
+            Metrics = new DefaultMetrics(
+                options,
+                clock,
+                filter,
+                metricsManagerFactory,
+                metricBuilderFactory,
+                metricsManagerAdvancedFactory,
+                dataManager,
+                metricsManager,
+                healthStatusProvider);
         }
 
         public Func<IMetrics, MetricsDataValueSource> CurrentData =>
-            ctx => Metrics.Advanced.Data.ReadData();
+            ctx => Metrics.Data.ReadData();
 
         public Func<IMetrics, IMetricsFilter, MetricsDataValueSource> CurrentDataWithFilter
-            => (ctx, filter) => Metrics.Advanced.Data.ReadData(filter);
+            => (ctx, filter) => Metrics.Data.ReadData(filter);
 
         public IMetrics Metrics { get; }
 
@@ -49,7 +63,7 @@ namespace App.Metrics.Facts.Fixtures
                 return;
             }
 
-            Metrics?.Advanced.Data.Reset();
+            Metrics?.Manage.Reset();
         }
     }
 }

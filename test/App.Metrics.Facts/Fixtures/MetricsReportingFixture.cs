@@ -9,6 +9,7 @@ using App.Metrics.Data;
 using App.Metrics.Infrastructure;
 using App.Metrics.Interfaces;
 using App.Metrics.Internal;
+using App.Metrics.Internal.Builders;
 using App.Metrics.Internal.Managers;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
@@ -21,25 +22,42 @@ namespace App.Metrics.Facts.Fixtures
 
         public MetricsReportingFixture()
         {
-            var metricsLogger = _loggerFactory.CreateLogger<DefaultAdvancedMetrics>();
             var healthFactoryLogger = _loggerFactory.CreateLogger<HealthCheckFactory>();
             var options = new AppMetricsOptions { DefaultSamplingType = SamplingType.LongTerm };
             var clock = new TestClock();
             Func<string, IMetricContextRegistry> newContextRegistry = name => new DefaultMetricContextRegistry(name);
             var registry = new DefaultMetricsRegistry(_loggerFactory, options, clock, new EnvironmentInfoProvider(), newContextRegistry);
             var healthCheckFactory = new HealthCheckFactory(healthFactoryLogger);
-            var advancedManager = new DefaultAdvancedMetrics(metricsLogger, options, clock, new DefaultMetricsFilter(), registry, healthCheckFactory);
+            var metricBuilderFactory = new DefaultMetricsBuilderFactory();
+            var filter = new DefaultMetricsFilter();
+            var healthManager = new DefaultHealthManager(_loggerFactory.CreateLogger<DefaultHealthManager>(), healthCheckFactory);
+            var dataManager = new DefaultDataManager(
+                filter,
+                registry);
 
-            var metricsManagerFactory = new DefaultMetricsManagerFactory(registry, advancedManager);
-            Metrics = new DefaultMetrics(options, metricsManagerFactory, advancedManager);
+            var metricsManagerFactory = new DefaultMetricsManagerFactory(registry, metricBuilderFactory, clock);
+            var metricsManagerAdvancedFactory = new DefaultMetricsAdvancedManagerFactory(registry, metricBuilderFactory, clock);
+            var metricsManager = new DefaultMetricsManager(registry, _loggerFactory.CreateLogger<DefaultMetricsManager>());
+
+            Metrics = new DefaultMetrics(
+                options,
+                clock,
+                filter,
+                metricsManagerFactory,
+                metricBuilderFactory,
+                metricsManagerAdvancedFactory,
+                dataManager,
+                metricsManager,
+                healthManager);
+
             RecordSomeMetrics();
         }
 
         public Func<IMetrics, MetricsDataValueSource> CurrentData =>
-            ctx => Metrics.Advanced.Data.ReadData();
+            ctx => Metrics.Data.ReadData();
 
         public Func<IMetrics, IMetricsFilter, MetricsDataValueSource> CurrentDataWithFilter
-            => (ctx, filter) => Metrics.Advanced.Data.ReadData(filter);
+            => (ctx, filter) => Metrics.Data.ReadData(filter);
 
         public IMetrics Metrics { get; }
 
@@ -52,7 +70,7 @@ namespace App.Metrics.Facts.Fixtures
                 return;
             }
 
-            Metrics?.Advanced.Data.Reset();
+            Metrics?.Manage.Reset();
         }
 
         private void RecordSomeMetrics()
@@ -90,7 +108,7 @@ namespace App.Metrics.Facts.Fixtures
 
             Metrics.Counter.Increment(counterOptions);
             Metrics.Meter.Mark(meterOptions);
-            Metrics.Timer.Time(timerOptions, () => Metrics.Advanced.Clock.Advance(TimeUnit.Milliseconds, 10));
+            Metrics.Timer.Time(timerOptions, () => Metrics.Clock.Advance(TimeUnit.Milliseconds, 10));
             Metrics.Histogram.Update(histogramOptions, 5);
             Metrics.Gauge.SetValue(gaugeOptions, () => 8);
         }
