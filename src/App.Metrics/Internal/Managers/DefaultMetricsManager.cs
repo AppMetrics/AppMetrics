@@ -34,7 +34,7 @@ namespace App.Metrics.Internal.Managers
                 return;
             }
 
-            //TODO: This isn't going to replace the ref globally, fix skipped test
+            // TODO: This isn't going to replace the ref globally, fix skipped test
             Interlocked.Exchange(ref _registry, new NullMetricsRegistry());
 
             _logger.LogDebug("Metrics disabled");
