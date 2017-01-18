@@ -30,13 +30,13 @@ namespace App.Metrics.Facts.Fixtures
             var healthCheckFactory = new HealthCheckFactory(healthFactoryLogger);
             var metricBuilderFactory = new DefaultMetricsBuilder();
             var filter = new DefaultMetricsFilter();
-            var healthManager = new DefaultHealthManager(_loggerFactory.CreateLogger<DefaultHealthManager>(), healthCheckFactory);
-            var dataManager = new DefaultDataManager(
+            var healthManager = new DefaultHealthProvider(_loggerFactory.CreateLogger<DefaultHealthProvider>(), healthCheckFactory);
+            var dataManager = new DefaultMetricValuesProvider(
                 filter,
                 registry);
 
-            var metricsManagerFactory = new DefaultMetricsManagerFactory(registry, metricBuilderFactory, clock);
-            var metricsManagerAdvancedFactory = new DefaultMetricsAdvancedManagerFactory(registry, metricBuilderFactory, clock);
+            var metricsManagerFactory = new DefaultMeasureMetricsProvider(registry, metricBuilderFactory, clock);
+            var metricsManagerAdvancedFactory = new DefaultMetricsProvider(registry, metricBuilderFactory, clock);
             var metricsManager = new DefaultMetricsManager(registry, _loggerFactory.CreateLogger<DefaultMetricsManager>());
 
             Metrics = new DefaultMetrics(
@@ -54,10 +54,10 @@ namespace App.Metrics.Facts.Fixtures
         }
 
         public Func<IMetrics, MetricsDataValueSource> CurrentData =>
-            ctx => Metrics.Data.ReadData();
+            ctx => Metrics.Snapshot.Get();
 
-        public Func<IMetrics, IMetricsFilter, MetricsDataValueSource> CurrentDataWithFilter
-            => (ctx, filter) => Metrics.Data.ReadData(filter);
+        public Func<IMetrics, IFilterMetrics, MetricsDataValueSource> CurrentDataWithFilter
+            => (ctx, filter) => Metrics.Snapshot.Get(filter);
 
         public IMetrics Metrics { get; }
 

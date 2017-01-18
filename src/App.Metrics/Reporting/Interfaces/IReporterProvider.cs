@@ -7,7 +7,7 @@ namespace App.Metrics.Reporting.Interfaces
 {
     public interface IReporterProvider
     {
-        IMetricsFilter Filter { get; }
+        IFilterMetrics Filter { get; }
 
         IMetricReporter CreateMetricReporter(string name, ILoggerFactory loggerFactory);
     }

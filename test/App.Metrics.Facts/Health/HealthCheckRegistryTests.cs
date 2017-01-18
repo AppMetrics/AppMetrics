@@ -38,13 +38,13 @@ namespace App.Metrics.Facts.Health
                     newContextRegistry);
                 var metricBuilderFactory = new DefaultMetricsBuilder();
                 var filter = new DefaultMetricsFilter();
-                var healthManager = new DefaultHealthManager(LoggerFactory.CreateLogger<DefaultHealthManager>(), healthCheckFactory);
-                var dataManager = new DefaultDataManager(
+                var healthManager = new DefaultHealthProvider(LoggerFactory.CreateLogger<DefaultHealthProvider>(), healthCheckFactory);
+                var dataManager = new DefaultMetricValuesProvider(
                     filter,
                     registry);
 
-                var metricsManagerFactory = new DefaultMetricsManagerFactory(registry, metricBuilderFactory, clock);
-                var metricsManagerAdvancedFactory = new DefaultMetricsAdvancedManagerFactory(registry, metricBuilderFactory, clock);
+                var metricsManagerFactory = new DefaultMeasureMetricsProvider(registry, metricBuilderFactory, clock);
+                var metricsManagerAdvancedFactory = new DefaultMetricsProvider(registry, metricBuilderFactory, clock);
                 var metricsManager = new DefaultMetricsManager(registry, LoggerFactory.CreateLogger<DefaultMetricsManager>());
 
                 return new DefaultMetrics(

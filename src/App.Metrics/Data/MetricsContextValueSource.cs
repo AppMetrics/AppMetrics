@@ -49,7 +49,7 @@ namespace App.Metrics.Data
 
         public IEnumerable<TimerValueSource> Timers { get; }
 
-        public MetricsContextValueSource Filter(IMetricsFilter filter)
+        public MetricsContextValueSource Filter(IFilterMetrics filter)
         {
             if (!filter.IsMatch(Context))
             {

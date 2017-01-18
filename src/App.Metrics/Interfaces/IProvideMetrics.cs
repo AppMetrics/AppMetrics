@@ -3,7 +3,7 @@
 
 namespace App.Metrics.Interfaces
 {
-    public interface IMetricsAdvancedManagerFactory
+    public interface IProvideMetrics
     {
         IMeasureApdexMetricsAdvanced Apdex { get; }
 

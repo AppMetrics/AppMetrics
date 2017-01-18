@@ -30,7 +30,7 @@ namespace App.Metrics.Data
 
         public DateTime Timestamp { get; }
 
-        public MetricsDataValueSource Filter(IMetricsFilter filter)
+        public MetricsDataValueSource Filter(IFilterMetrics filter)
         {
             var contexts = Contexts.FilterBy(filter).WhereNotEmpty();
             var environment = filter.ReportEnvironment ? Environment : EnvironmentInfo.Empty;

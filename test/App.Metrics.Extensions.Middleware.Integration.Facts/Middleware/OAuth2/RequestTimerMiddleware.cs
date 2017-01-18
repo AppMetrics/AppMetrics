@@ -26,7 +26,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
             await Client.GetAsync("/api/test/300ms");
             await Client.GetAsync("/api/test/30ms");
 
-            var metrics = Context.Data.ReadContext(AspNetMetricsRegistry.Contexts.HttpRequests.ContextName);
+            var metrics = Context.Snapshot.GetForContext(AspNetMetricsRegistry.Contexts.HttpRequests.ContextName);
 
             var timer = metrics.TimerValueFor("Http Requests");
             timer.Histogram.Min.Should().Be(30);

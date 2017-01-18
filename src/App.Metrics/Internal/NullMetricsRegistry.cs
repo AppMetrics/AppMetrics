@@ -29,7 +29,7 @@ namespace App.Metrics.Internal
 
         public void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider) { }
 
-        public MetricsDataValueSource GetData(IMetricsFilter filter) { return MetricsDataValueSource.Empty; }
+        public MetricsDataValueSource GetData(IFilterMetrics filter) { return MetricsDataValueSource.Empty; }
 
         public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder)
             where T : IHistogramMetric { return NullMetric.Instance; }

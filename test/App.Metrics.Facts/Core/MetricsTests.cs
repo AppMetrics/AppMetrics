@@ -117,8 +117,8 @@ namespace App.Metrics.Facts.Core
                                      Context = "test"
                                  };
 
-            var first = _fixture.Metrics.Advanced.Counter.Instance(counterOptions);
-            var second = _fixture.Metrics.Advanced.Counter.Instance(counterOptions);
+            var first = _fixture.Metrics.Provider.Counter.Instance(counterOptions);
+            var second = _fixture.Metrics.Provider.Counter.Instance(counterOptions);
 
             ReferenceEquals(first, second).Should().BeTrue();
         }
@@ -206,15 +206,15 @@ namespace App.Metrics.Facts.Core
                                      Context = context,
                                      MeasurementUnit = Unit.Bytes
                                  };
-            var dataProvider = _fixture.Metrics.Data;
+            var dataProvider = _fixture.Metrics.Snapshot;
 
-            var data = dataProvider.ReadData();
+            var data = dataProvider.Get();
 
             data.Contexts.FirstOrDefault(g => g.Context == context).Should().BeNull("the context hasn't been added yet");
 
             _fixture.Metrics.Measure.Counter.Increment(counterOptions);
 
-            data = dataProvider.ReadData();
+            data = dataProvider.Get();
             data.Contexts.First(g => g.Context == context).Counters.Should().HaveCount(1);
         }
 

@@ -11,17 +11,17 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Internal.Managers
 {
-    internal class DefaultHealthManager : IHealthStatusProvider
+    internal class DefaultHealthProvider : IProvideHealth
     {
         private readonly IHealthCheckFactory _healthCheckFactory;
-        private readonly ILogger<DefaultHealthManager> _logger;
+        private readonly ILogger<DefaultHealthProvider> _logger;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DefaultHealthManager" /> class.
+        ///     Initializes a new instance of the <see cref="DefaultHealthProvider" /> class.
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="healthCheckFactory">The health check factory.</param>
-        public DefaultHealthManager(ILogger<DefaultHealthManager> logger, IHealthCheckFactory healthCheckFactory)
+        public DefaultHealthProvider(ILogger<DefaultHealthProvider> logger, IHealthCheckFactory healthCheckFactory)
         {
             _logger = logger;
             _healthCheckFactory = healthCheckFactory ?? new NoOpHealthCheckFactory();

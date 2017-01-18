@@ -14,7 +14,7 @@ namespace App.Metrics.Reporting.Interfaces
         public static IReportFactory AddInfluxDb(
             this IReportFactory factory,
             InfluxDBReporterSettings settings,
-            IMetricsFilter filter = null)
+            IFilterMetrics filter = null)
         {
             factory.AddProvider(new InfluxDbReporterProvider(settings, filter));
             return factory;
@@ -24,7 +24,7 @@ namespace App.Metrics.Reporting.Interfaces
             this IReportFactory factory,
             string database,
             Uri baseAddress,
-            IMetricsFilter filter = null)
+            IFilterMetrics filter = null)
         {
             var settings = new InfluxDBReporterSettings
                            {

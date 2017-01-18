@@ -11,7 +11,7 @@ namespace App.Metrics.Extensions.Reporting.Console
     {
         private readonly ConsoleReporterSettings _settings;
 
-        public ConsoleReporterProvider(ConsoleReporterSettings settings, IMetricsFilter filter)
+        public ConsoleReporterProvider(ConsoleReporterSettings settings, IFilterMetrics filter)
         {
             if (settings == null)
             {
@@ -23,7 +23,7 @@ namespace App.Metrics.Extensions.Reporting.Console
             Filter = filter;
         }
 
-        public IMetricsFilter Filter { get; }
+        public IFilterMetrics Filter { get; }
 
         public IMetricReporter CreateMetricReporter(string name, ILoggerFactory loggerFactory)
         {

@@ -16,7 +16,7 @@ namespace App.Metrics.Facts.Reporting.Helpers
             _reportInterval = reportInterval;
             _throwEx = throwEx;
         }
-        public IMetricsFilter Filter { get; set; }
+        public IFilterMetrics Filter { get; set; }
 
         public IMetricReporter CreateMetricReporter(string name, ILoggerFactory loggerFactory)
         {

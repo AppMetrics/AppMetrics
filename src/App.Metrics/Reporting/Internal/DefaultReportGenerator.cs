@@ -36,21 +36,21 @@ namespace App.Metrics.Reporting.Internal
         public async Task<bool> GenerateAsync(
             IMetricReporter reporter,
             IMetrics metrics,
-            IMetricsFilter reporterMetricsFilter,
+            IFilterMetrics reporterMetricsFilter,
             CancellationToken token)
         {
             var startTimestamp = _logger.IsEnabled(LogLevel.Information) ? Stopwatch.GetTimestamp() : 0;
 
             _logger.ReportedStarted(reporter);
 
-            if (reporterMetricsFilter == default(IMetricsFilter))
+            if (reporterMetricsFilter == default(IFilterMetrics))
             {
                 reporterMetricsFilter = metrics.GlobalFilter;
             }
 
             reporter.StartReportRun(metrics);
 
-            var data = metrics.Data.ReadData(reporterMetricsFilter);
+            var data = metrics.Snapshot.Get(reporterMetricsFilter);
 
             if (data.Environment.Entries.Any() && reporterMetricsFilter.ReportEnvironment)
             {

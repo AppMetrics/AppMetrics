@@ -5,7 +5,7 @@ using App.Metrics.Data;
 
 namespace App.Metrics
 {
-    public interface IMetricsFilter
+    public interface IFilterMetrics
     {
         bool ReportEnvironment { get; }
 

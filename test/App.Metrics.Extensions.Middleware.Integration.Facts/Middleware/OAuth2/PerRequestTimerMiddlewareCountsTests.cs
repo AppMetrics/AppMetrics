@@ -25,7 +25,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
             await Client.GetAsync("/api/test");
             await Client.GetAsync("/api/test/error");
 
-            var metrics = Context.Data.ReadContext(AspNetMetricsRegistry.Contexts.HttpRequests.ContextName);
+            var metrics = Context.Snapshot.GetForContext(AspNetMetricsRegistry.Contexts.HttpRequests.ContextName);
 
             metrics.TimerValueFor("GET api/test").Histogram.Count.Should().Be(1);
             metrics.TimerValueFor("GET api/test/error").Histogram.Count.Should().Be(1);

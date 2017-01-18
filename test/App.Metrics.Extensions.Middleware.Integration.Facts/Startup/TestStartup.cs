@@ -55,7 +55,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
         protected void SetupServices(IServiceCollection services,
             AppMetricsOptions appMetricsOptions,
             AspNetMetricsOptions aspNetMetricsOptions,
-            IMetricsFilter filter = null, IEnumerable<HealthCheckResult> healthChecks = null)
+            IFilterMetrics filter = null, IEnumerable<HealthCheckResult> healthChecks = null)
         {
             services
                 .AddLogging()

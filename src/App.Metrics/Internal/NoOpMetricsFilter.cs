@@ -6,7 +6,7 @@ using App.Metrics.Data;
 namespace App.Metrics.Internal
 {
     [AppMetricsExcludeFromCodeCoverage]
-    internal sealed class NoOpMetricsFilter : IMetricsFilter
+    internal sealed class NoOpMetricsFilter : IFilterMetrics
     {
         public bool ReportEnvironment => true;
 

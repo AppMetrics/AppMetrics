@@ -28,7 +28,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
             await Client.GetAsync("/api/test/error");
             await Client.GetAsync("/api/test/error");
 
-            var metrics = Context.Data.ReadContext(AspNetMetricsRegistry.Contexts.HttpRequests.ContextName);
+            var metrics = Context.Snapshot.GetForContext(AspNetMetricsRegistry.Contexts.HttpRequests.ContextName);
 
             metrics.MeterValueFor("GET api/test/bad Http Error Requests").Count.Should().Be(1);
             metrics.MeterValueFor("GET api/test/error Http Error Requests").Count.Should().Be(2);

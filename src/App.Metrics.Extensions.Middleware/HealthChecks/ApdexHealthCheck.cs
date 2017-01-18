@@ -31,7 +31,7 @@ namespace App.Metrics
                 return Task.FromResult(HealthCheckResult.Ignore());
             }
 
-            var metricsContext = _metrics.Value.Data.ReadContext(AspNetMetricsRegistry.Contexts.HttpRequests.ContextName);
+            var metricsContext = _metrics.Value.Snapshot.GetForContext(AspNetMetricsRegistry.Contexts.HttpRequests.ContextName);
 
             var apdex = metricsContext.ApdexValueFor(AspNetMetricsRegistry.Contexts.HttpRequests.ApdexScores.ApdexMetricName);
 

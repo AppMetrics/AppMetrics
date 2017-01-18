@@ -8,26 +8,26 @@ using App.Metrics.Interfaces;
 
 namespace App.Metrics.Internal.Managers
 {
-    internal class DefaultDataManager : IMetricsDataProvider
+    internal class DefaultMetricValuesProvider : IProvideMetricValues
     {
-        private readonly IMetricsFilter _globalFilter;
+        private readonly IFilterMetrics _globalFilter;
         private readonly IMetricsRegistry _registry;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DefaultDataManager" /> class.
+        ///     Initializes a new instance of the <see cref="DefaultMetricValuesProvider" /> class.
         /// </summary>
         /// <param name="globalFilter">The global filter.</param>
         /// <param name="registry">The registry.</param>
-        public DefaultDataManager(IMetricsFilter globalFilter, IMetricsRegistry registry)
+        public DefaultMetricValuesProvider(IFilterMetrics globalFilter, IMetricsRegistry registry)
         {
             _globalFilter = globalFilter ?? new NoOpMetricsFilter();
             _registry = registry ?? new NullMetricsRegistry();
         }
 
         /// <inheritdoc />
-        public MetricsContextValueSource ReadContext(string context)
+        public MetricsContextValueSource GetForContext(string context)
         {
-            var data = ReadData();
+            var data = Get();
 
             var filter = new DefaultMetricsFilter().WhereContext(context);
 
@@ -37,9 +37,9 @@ namespace App.Metrics.Internal.Managers
         }
 
         /// <inheritdoc />
-        public MetricsDataValueSource ReadData() { return _registry.GetData(_globalFilter); }
+        public MetricsDataValueSource Get() { return _registry.GetData(_globalFilter); }
 
         /// <inheritdoc />
-        public MetricsDataValueSource ReadData(IMetricsFilter overrideGlobalFilter) { return _registry.GetData(overrideGlobalFilter); }
+        public MetricsDataValueSource Get(IFilterMetrics overrideGlobalFilter) { return _registry.GetData(overrideGlobalFilter); }
     }
 }

@@ -22,7 +22,7 @@ namespace App.Metrics.Extensions.Middleware.Middleware
             IMetrics metrics)
             : base(next, aspNetOptions, loggerFactory, metrics)
         {
-            _requestTimer = Metrics.Advanced
+            _requestTimer = Metrics.Provider
                                    .Timer
                                    .Instance(AspNetMetricsRegistry.Contexts.HttpRequests.Timers.WebRequestTimer);
         }

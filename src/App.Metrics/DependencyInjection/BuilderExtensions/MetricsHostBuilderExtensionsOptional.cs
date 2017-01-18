@@ -30,7 +30,7 @@ namespace Microsoft.Extensions.DependencyInjection
             return builder;
         }
 
-        public static IMetricsHostBuilder AddGlobalFilter(this IMetricsHostBuilder builder, IMetricsFilter filter)
+        public static IMetricsHostBuilder AddGlobalFilter(this IMetricsHostBuilder builder, IFilterMetrics filter)
         {
             builder.Services.Replace(ServiceDescriptor.Singleton(filter));
 

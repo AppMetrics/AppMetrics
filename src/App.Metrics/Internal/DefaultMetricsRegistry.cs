@@ -148,7 +148,7 @@ namespace App.Metrics.Internal
             contextRegistry.Gauge(options, valueProvider);
         }
 
-        public MetricsDataValueSource GetData(IMetricsFilter filter)
+        public MetricsDataValueSource GetData(IFilterMetrics filter)
         {
             _logger.RetrievedMetricsData();
 

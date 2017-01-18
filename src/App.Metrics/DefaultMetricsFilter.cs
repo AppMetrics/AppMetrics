@@ -11,8 +11,8 @@ namespace App.Metrics
     /// <summary>
     ///     Provides the ability to filter metrics by Context, Type, Name etc.
     /// </summary>
-    /// <seealso cref="App.Metrics.IMetricsFilter" />
-    public sealed class DefaultMetricsFilter : IMetricsFilter
+    /// <seealso cref="IFilterMetrics" />
+    public sealed class DefaultMetricsFilter : IFilterMetrics
     {
         private Predicate<string> _context;
         private Predicate<string> _name;

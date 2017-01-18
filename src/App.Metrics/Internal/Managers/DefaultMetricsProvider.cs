@@ -6,15 +6,15 @@ using App.Metrics.Utils;
 
 namespace App.Metrics.Internal.Managers
 {
-    internal class DefaultMetricsAdvancedManagerFactory : IMetricsAdvancedManagerFactory
+    internal class DefaultMetricsProvider : IProvideMetrics
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DefaultMetricsAdvancedManagerFactory" /> class.
+        ///     Initializes a new instance of the <see cref="DefaultMetricsProvider" /> class.
         /// </summary>
         /// <param name="registry">The metrics registry.</param>
         /// <param name="buideFactory">The buide factory.</param>
         /// <param name="clock">The clock.</param>
-        public DefaultMetricsAdvancedManagerFactory(IMetricsRegistry registry, IBuildMetrics buideFactory, IClock clock)
+        public DefaultMetricsProvider(IMetricsRegistry registry, IBuildMetrics buideFactory, IClock clock)
         {
             Apdex = new DefaultApdexAdvancedManager(buideFactory.Apdex, registry, clock);
             Counter = new DefaultCounterAdvancedManager(buideFactory.Counter, registry);

@@ -10,7 +10,7 @@ namespace App.Metrics.Data
     // ReSharper restore CheckNamespace
     public static class MetricContextValueSourceEnumerableExtensions
     {
-        public static IEnumerable<MetricsContextValueSource> FilterBy(this IEnumerable<MetricsContextValueSource> valueSources, IMetricsFilter filter)
+        public static IEnumerable<MetricsContextValueSource> FilterBy(this IEnumerable<MetricsContextValueSource> valueSources, IFilterMetrics filter)
         {
             return valueSources.Select(g => g.Filter(filter));
         }

@@ -9,7 +9,7 @@ namespace App.Metrics.Core.Interfaces
     /// <summary>
     ///     Provides access to the current health status of the application by executing regsitered <see cref="HealthCheck" />s
     /// </summary>
-    public interface IHealthStatusProvider
+    public interface IProvideHealth
     {
         /// <summary>
         ///     Executes all regsitered health checks within the application

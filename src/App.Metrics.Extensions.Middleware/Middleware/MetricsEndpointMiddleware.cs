@@ -45,7 +45,7 @@ namespace App.Metrics.Extensions.Middleware.Middleware
             {
                 Logger.MiddlewareExecuting(GetType());
 
-                var metricsData = Metrics.Data.ReadData();
+                var metricsData = Metrics.Snapshot.Get();
 
                 var json = _serializer.Serialize(metricsData);
 

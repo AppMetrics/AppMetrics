@@ -25,36 +25,36 @@ namespace App.Metrics.Core
         /// <param name="options">The options.</param>
         /// <param name="clock">The clock.</param>
         /// <param name="globalFilter">The global filter.</param>
-        /// <param name="metricsManagerFactory">The factory used to provide access to metric managers.</param>
+        /// <param name="measureMetricsProvider">The factory used to provide access to metric managers.</param>
         /// <param name="metricsBuilder">The factory used to provide access to metric builders.</param>
-        /// <param name="metricsAdvancedManagerFactory">The metrics advanced manager factory.</param>
+        /// <param name="metricsProvider">The metrics advanced manager factory.</param>
         /// <param name="dataManager">The data manager.</param>
         /// <param name="metricsManager">The metrics manager.</param>
-        /// <param name="healthStatusProvider">The health status provider.</param>
+        /// <param name="healthProvider">The health status provider.</param>
         public DefaultMetrics(
             AppMetricsOptions options,
             IClock clock,
-            IMetricsFilter globalFilter,
-            IMetricsManagerFactory metricsManagerFactory,
+            IFilterMetrics globalFilter,
+            IMeasureMetrics measureMetricsProvider,
             IBuildMetrics metricsBuilder,
-            IMetricsAdvancedManagerFactory metricsAdvancedManagerFactory,
-            IMetricsDataProvider dataManager,
+            IProvideMetrics metricsProvider,
+            IProvideMetricValues dataManager,
             IManageMetrics metricsManager,
-            IHealthStatusProvider healthStatusProvider)
+            IProvideHealth healthProvider)
         {
             Clock = clock ?? new StopwatchClock();
             GlobalTags = options.GlobalTags; // TODO: in reporting just get this from options
             GlobalFilter = globalFilter ?? new NoOpMetricsFilter();
-            Measure = metricsManagerFactory;
+            Measure = measureMetricsProvider;
             Build = metricsBuilder;
-            Data = dataManager;
-            Advanced = metricsAdvancedManagerFactory;
+            Snapshot = dataManager;
+            Provider = metricsProvider;
             Manage = metricsManager;
-            Health = healthStatusProvider;
+            Health = healthProvider;
         }
 
         /// <inheritdoc />
-        public IMetricsAdvancedManagerFactory Advanced { get; }
+        public IProvideMetrics Provider { get; }
 
         /// <inheritdoc />
         public IBuildMetrics Build { get; }
@@ -63,21 +63,21 @@ namespace App.Metrics.Core
         public IClock Clock { get; }
 
         /// <inheritdoc />
-        public IMetricsDataProvider Data { get; }
+        public IProvideMetricValues Snapshot { get; }
 
         /// <inheritdoc />
-        public IMetricsFilter GlobalFilter { get; }
+        public IFilterMetrics GlobalFilter { get; }
 
         /// <inheritdoc />
         public GlobalMetricTags GlobalTags { get; }
 
         /// <inheritdoc />
-        public IHealthStatusProvider Health { get; }
+        public IProvideHealth Health { get; }
 
         /// <inheritdoc />
         public IManageMetrics Manage { get; }
 
         /// <inheritdoc />
-        public IMetricsManagerFactory Measure { get; }
+        public IMeasureMetrics Measure { get; }
     }
 }

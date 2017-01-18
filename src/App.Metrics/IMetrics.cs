@@ -15,22 +15,22 @@ namespace App.Metrics
     /// </remarks>
     public interface IMetrics
     {
-        IMetricsAdvancedManagerFactory Advanced { get; }
+        IProvideMetrics Provider { get; }
 
         IBuildMetrics Build { get; }
 
         IClock Clock { get; }
 
-        IMetricsDataProvider Data { get; }
+        IProvideMetricValues Snapshot { get; }
 
-        IMetricsFilter GlobalFilter { get; }
+        IFilterMetrics GlobalFilter { get; }
 
         GlobalMetricTags GlobalTags { get; }
 
-        IHealthStatusProvider Health { get; }
+        IProvideHealth Health { get; }
 
         IManageMetrics Manage { get; }
 
-        IMetricsManagerFactory Measure { get; }
+        IMeasureMetrics Measure { get; }
     }
 }

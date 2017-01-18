@@ -24,7 +24,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
             Filter = new NoOpMetricsFilter();
         }
 
-        public InfluxDbReporterProvider(InfluxDBReporterSettings settings, IMetricsFilter fitler)
+        public InfluxDbReporterProvider(InfluxDBReporterSettings settings, IFilterMetrics fitler)
         {
             if (settings == null)
             {
@@ -35,7 +35,7 @@ namespace App.Metrics.Extensions.Reporting.InfluxDB
             Filter = fitler ?? new NoOpMetricsFilter();
         }
 
-        public IMetricsFilter Filter { get; }
+        public IFilterMetrics Filter { get; }
 
         public IMetricReporter CreateMetricReporter(string name, ILoggerFactory loggerFactory)
         {

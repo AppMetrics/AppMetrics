@@ -31,7 +31,7 @@ namespace App.Metrics.Facts.Core
                                    MeasurementUnit = Unit.Calls
                                };
 
-            var timer = _fixture.Metrics.Advanced.Timer.WithHistogram(timerOptions, () => histogram);
+            var timer = _fixture.Metrics.Provider.Timer.WithHistogram(timerOptions, () => histogram);
 
             timer.Record(10L, TimeUnit.Nanoseconds);
 
@@ -49,7 +49,7 @@ namespace App.Metrics.Facts.Core
                                    MeasurementUnit = Unit.Calls,
                                    WithReservoir = () => reservoir as IReservoir
                                };
-            var timer = _fixture.Metrics.Advanced.Timer.Instance(timerOptions);            
+            var timer = _fixture.Metrics.Provider.Timer.Instance(timerOptions);            
 
             timer.Record(10L, TimeUnit.Nanoseconds);
 

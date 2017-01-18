@@ -10,7 +10,7 @@ namespace App.Metrics.Extensions.Reporting.Console
         public static IReportFactory AddConsole(
             this IReportFactory factory,
             ConsoleReporterSettings settings,
-            IMetricsFilter filter = null)
+            IFilterMetrics filter = null)
         {
             factory.AddProvider(new ConsoleReporterProvider(settings, filter));
             return factory;
@@ -18,7 +18,7 @@ namespace App.Metrics.Extensions.Reporting.Console
 
         public static IReportFactory AddConsole(
             this IReportFactory factory,
-            IMetricsFilter filter = null)
+            IFilterMetrics filter = null)
         {
             var settings = new ConsoleReporterSettings();
             factory.AddConsole(settings, filter);

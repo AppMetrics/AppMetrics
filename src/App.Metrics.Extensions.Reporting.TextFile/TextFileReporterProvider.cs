@@ -11,7 +11,7 @@ namespace App.Metrics.Extensions.Reporting.TextFile
     {
         private readonly TextFileReporterSettings _settings;
 
-        public TextFileReporterProvider(TextFileReporterSettings settings, IMetricsFilter fitler)
+        public TextFileReporterProvider(TextFileReporterSettings settings, IFilterMetrics fitler)
         {
             if (settings == null)
             {
@@ -22,7 +22,7 @@ namespace App.Metrics.Extensions.Reporting.TextFile
             Filter = fitler;
         }
 
-        public IMetricsFilter Filter { get; }
+        public IFilterMetrics Filter { get; }
 
         public IMetricReporter CreateMetricReporter(string name, ILoggerFactory loggerFactory)
         {

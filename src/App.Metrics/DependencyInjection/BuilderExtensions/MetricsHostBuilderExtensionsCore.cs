@@ -48,16 +48,16 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.TryAddSingleton<IReportFactory, NoOpReportFactory>();
             builder.Services.TryAddSingleton<IHealthCheckFactory, NoOpHealthCheckFactory>();
             builder.Services.TryAddSingleton<IClock, StopwatchClock>();
-            builder.Services.TryAddSingleton<IMetricsFilter, DefaultMetricsFilter>();
+            builder.Services.TryAddSingleton<IFilterMetrics, DefaultMetricsFilter>();
             builder.Services.TryAddSingleton<EnvironmentInfoProvider, EnvironmentInfoProvider>();
             builder.Services.TryAddSingleton<IMetricDataSerializer, NoOpMetricDataSerializer>();
             builder.Services.TryAddSingleton<IHealthStatusSerializer, NoOpHealthStatusSerializer>();
-            builder.Services.TryAddSingleton<IMetricsManagerFactory, DefaultMetricsManagerFactory>();
+            builder.Services.TryAddSingleton<IMeasureMetrics, DefaultMeasureMetricsProvider>();
             builder.Services.TryAddSingleton<IBuildMetrics, DefaultMetricsBuilder>();
-            builder.Services.TryAddSingleton<IMetricsAdvancedManagerFactory, DefaultMetricsAdvancedManagerFactory>();
-            builder.Services.TryAddSingleton<IMetricsDataProvider, DefaultDataManager>();
+            builder.Services.TryAddSingleton<IProvideMetrics, DefaultMetricsProvider>();
+            builder.Services.TryAddSingleton<IProvideMetricValues, DefaultMetricValuesProvider>();
             builder.Services.TryAddSingleton<IManageMetrics, DefaultMetricsManager>();
-            builder.Services.TryAddSingleton<IHealthStatusProvider, DefaultHealthManager>();
+            builder.Services.TryAddSingleton<IProvideHealth, DefaultHealthProvider>();
             builder.Services.TryAddSingleton<IMetricsRegistry>(
                 provider =>
                 {

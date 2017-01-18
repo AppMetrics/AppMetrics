@@ -8,34 +8,34 @@ namespace App.Metrics.Core.Interfaces
     /// <summary>
     ///     Provides access to the current metrics recorded by the application
     /// </summary>
-    public interface IMetricsDataProvider
+    public interface IProvideMetricValues
     {
         /// <summary>
         ///     Retrieves a snapshot of the current metrics values recorded.
         /// </summary>
         /// <param name="context">The metric context to retreive.</param>
         /// <returns>Metrics data belonging to the specified context</returns>
-        MetricsContextValueSource ReadContext(string context);
+        MetricsContextValueSource GetForContext(string context);
 
         /// <summary>
         ///     Returns the current metrics data for the context for which this provider has been created.
         /// </summary>
         /// <returns>
-        ///     A snapshot of the current metrics data, if a global <see cref="IMetricsFilter" /> is configured this will be
+        ///     A snapshot of the current metrics data, if a global <see cref="IFilterMetrics" /> is configured this will be
         ///     applied on the result.
         /// </returns>
-        MetricsDataValueSource ReadData();
+        MetricsDataValueSource Get();
 
         /// <summary>
         ///     Returns the current metrics data for the context for which this provider has been created.
         /// </summary>
         /// <param name="overrideGlobalFilter">
         ///     The override the configured global filter and filters metric data by the specified
-        ///     <see cref="IMetricsFilter" />.
+        ///     <see cref="IFilterMetrics" />.
         /// </param>
         /// <returns>
-        ///     A snapshot of the current metrics data filtered by the specified <see cref="IMetricsFilter" />
+        ///     A snapshot of the current metrics data filtered by the specified <see cref="IFilterMetrics" />
         /// </returns>
-        MetricsDataValueSource ReadData(IMetricsFilter overrideGlobalFilter);
+        MetricsDataValueSource Get(IFilterMetrics overrideGlobalFilter);
     }
 }

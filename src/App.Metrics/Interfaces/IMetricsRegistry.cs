@@ -25,7 +25,7 @@ namespace App.Metrics.Interfaces
 
         void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider);
 
-        MetricsDataValueSource GetData(IMetricsFilter filter);
+        MetricsDataValueSource GetData(IFilterMetrics filter);
 
         IHistogram Histogram<T>(HistogramOptions options, Func<T> builder)
             where T : IHistogramMetric;

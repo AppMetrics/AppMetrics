@@ -10,11 +10,11 @@ namespace App.Metrics.Facts.Managers
 {
     public class DefaultMetricsManagerFactoryTests : IClassFixture<MetricManagerTestFixture>
     {
-        private readonly DefaultMetricsManagerFactory _factory;
+        private readonly DefaultMeasureMetricsProvider _factory;
 
         public DefaultMetricsManagerFactoryTests(MetricManagerTestFixture fixture)
         {
-            _factory = new DefaultMetricsManagerFactory(fixture.Registry, fixture.Builder, fixture.Clock);
+            _factory = new DefaultMeasureMetricsProvider(fixture.Registry, fixture.Builder, fixture.Clock);
         }
 
         [Fact]
