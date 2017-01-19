@@ -7,7 +7,7 @@ using App.Metrics.Core.Options;
 
 namespace App.Metrics.Interfaces
 {
-    public interface IMeasureHistogramMetricsAdvanced
+    public interface IProvideHistogramMetrics
     {
         /// <summary>
         ///     Instantiates an instance of a <see cref="IHistogram" />

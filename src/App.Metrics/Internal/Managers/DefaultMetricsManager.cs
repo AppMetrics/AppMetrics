@@ -28,11 +28,6 @@ namespace App.Metrics.Internal.Managers
         {
             _logger.LogDebug("Disabling metrics");
 
-            if (_registry is NullMetricsRegistry)
-            {
-                return;
-            }
-
             _registry.Disable();
 
             _logger.LogDebug("Metrics disabled");

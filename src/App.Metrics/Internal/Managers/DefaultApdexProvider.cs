@@ -9,13 +9,13 @@ using App.Metrics.Utils;
 
 namespace App.Metrics.Internal.Managers
 {
-    public class DefaultApdexAdvancedManager : IMeasureApdexMetricsAdvanced
+    public class DefaultApdexProvider : IProvideApdexMetrics
     {
         private readonly IBuildApdexMetrics _apdexBuidler;
         private readonly IClock _clock;
         private readonly IMetricsRegistry _registry;
 
-        public DefaultApdexAdvancedManager(
+        public DefaultApdexProvider(
             IBuildApdexMetrics apdexBuidler,
             IMetricsRegistry registry,
             IClock clock)

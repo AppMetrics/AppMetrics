@@ -7,7 +7,7 @@ using App.Metrics.Core.Options;
 
 namespace App.Metrics.Interfaces
 {
-    public interface IMeasureTimerMetricsAdvanced
+    public interface IProvideTimerMetrics
     {
         ITimer Instance(TimerOptions options);
 

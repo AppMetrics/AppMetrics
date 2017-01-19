@@ -7,7 +7,7 @@ using App.Metrics.Core.Options;
 
 namespace App.Metrics.Interfaces
 {
-    public interface IMeasureMeterMetricsAdvanced
+    public interface IProviderMeterMetrics
     {
         /// <summary>
         ///     Instantiates an instance of a <see cref="IMeter" />

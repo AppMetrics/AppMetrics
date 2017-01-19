@@ -8,7 +8,7 @@ using App.Metrics.Data.Interfaces;
 
 namespace App.Metrics.Interfaces
 {
-    public interface IMeasureGaugeMetricsAdvanced
+    public interface IProvideGaugeMetrics
     {
         /// <summary>
         ///     Records <see cref="IGaugeMetric" /> which is a point in time instantaneous value

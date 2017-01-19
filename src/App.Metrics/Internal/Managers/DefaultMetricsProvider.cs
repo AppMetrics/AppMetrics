@@ -16,30 +16,30 @@ namespace App.Metrics.Internal.Managers
         /// <param name="clock">The clock.</param>
         public DefaultMetricsProvider(IMetricsRegistry registry, IBuildMetrics buideFactory, IClock clock)
         {
-            Apdex = new DefaultApdexAdvancedManager(buideFactory.Apdex, registry, clock);
-            Counter = new DefaultCounterAdvancedManager(buideFactory.Counter, registry);
-            Gauge = new DefaultGaugeAdvancedManager(registry);
-            Histogram = new DefaultHistogramAdvancedManager(buideFactory.Histogram, registry);
-            Meter = new DefaultMeterAdvancedManager(buideFactory.Meter, registry, clock);
-            Timer = new DefaultTimerAdvancedManager(buideFactory.Timer, registry, clock);
+            Apdex = new DefaultApdexProvider(buideFactory.Apdex, registry, clock);
+            Counter = new DefaultCounterProvider(buideFactory.Counter, registry);
+            Gauge = new DefaultGaugeProvider(registry);
+            Histogram = new DefaultHistogramProvider(buideFactory.Histogram, registry);
+            Meter = new DefaultMeterProvider(buideFactory.Meter, registry, clock);
+            Timer = new DefaultTimerProvider(buideFactory.Timer, registry, clock);
         }
 
         /// <inheritdoc />
-        public IMeasureApdexMetricsAdvanced Apdex { get; }
+        public IProvideApdexMetrics Apdex { get; }
 
         /// <inheritdoc />
-        public IMeasureCounterMetricsAdvanced Counter { get; }
+        public IProvidCounterMetrics Counter { get; }
 
         /// <inheritdoc />
-        public IMeasureGaugeMetricsAdvanced Gauge { get; }
+        public IProvideGaugeMetrics Gauge { get; }
 
         /// <inheritdoc />
-        public IMeasureHistogramMetricsAdvanced Histogram { get; }
+        public IProvideHistogramMetrics Histogram { get; }
 
         /// <inheritdoc />
-        public IMeasureMeterMetricsAdvanced Meter { get; }
+        public IProviderMeterMetrics Meter { get; }
 
         /// <inheritdoc />
-        public IMeasureTimerMetricsAdvanced Timer { get; }
+        public IProvideTimerMetrics Timer { get; }
     }
 }

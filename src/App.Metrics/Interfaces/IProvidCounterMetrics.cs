@@ -7,11 +7,11 @@ using App.Metrics.Core.Options;
 
 namespace App.Metrics.Interfaces
 {
-    public interface IMeasureApdexMetricsAdvanced
+    public interface IProvidCounterMetrics
     {
-        IApdex Instance(ApdexOptions options);
+        ICounter Instance(CounterOptions options);
 
-        IApdex Instance<T>(ApdexOptions options, Func<T> builder)
-            where T : IApdexMetric;
+        ICounter Instance<T>(CounterOptions options, Func<T> builder)
+            where T : ICounterMetric;
     }
 }

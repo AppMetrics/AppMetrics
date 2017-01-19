@@ -8,17 +8,17 @@ using App.Metrics.Interfaces;
 
 namespace App.Metrics.Internal.Managers
 {
-    public class DefaultCounterAdvancedManager : IMeasureCounterMetricsAdvanced
+    public class DefaultCounterProvider : IProvidCounterMetrics
     {
         private readonly IBuildCounterMetrics _counterBuilder;
         private readonly IMetricsRegistry _registry;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultCounterAdvancedManager" /> class.
+        /// Initializes a new instance of the <see cref="DefaultCounterProvider" /> class.
         /// </summary>
         /// <param name="counterBuilder">The counter builder.</param>
         /// <param name="registry">The registry.</param>
-        public DefaultCounterAdvancedManager(IBuildCounterMetrics counterBuilder, IMetricsRegistry registry)
+        public DefaultCounterProvider(IBuildCounterMetrics counterBuilder, IMetricsRegistry registry)
         {
             _registry = registry;
             _counterBuilder = counterBuilder;

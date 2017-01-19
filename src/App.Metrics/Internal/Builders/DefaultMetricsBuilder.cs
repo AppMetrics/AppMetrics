@@ -23,6 +23,7 @@ namespace App.Metrics.Internal.Builders
         /// <inheritdoc />
         public IBuildCounterMetrics Counter { get; }
 
+        /// <inheritdoc />
         public IBuildGaugeMetrics Gauge { get; }
 
         /// <inheritdoc />

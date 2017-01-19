@@ -8,17 +8,17 @@ using App.Metrics.Interfaces;
 
 namespace App.Metrics.Internal.Managers
 {
-    public class DefaultHistogramAdvancedManager : IMeasureHistogramMetricsAdvanced
+    public class DefaultHistogramProvider : IProvideHistogramMetrics
     {
         private readonly IBuildHistogramMetrics _histogramBuilder;
         private readonly IMetricsRegistry _registry;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DefaultHistogramAdvancedManager" /> class.
+        ///     Initializes a new instance of the <see cref="DefaultHistogramProvider" /> class.
         /// </summary>
         /// <param name="histogramBuilder">The histogram builder.</param>
         /// <param name="registry">The registry.</param>
-        public DefaultHistogramAdvancedManager(IBuildHistogramMetrics histogramBuilder, IMetricsRegistry registry)
+        public DefaultHistogramProvider(IBuildHistogramMetrics histogramBuilder, IMetricsRegistry registry)
         {
             _registry = registry;
             _histogramBuilder = histogramBuilder;

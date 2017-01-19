@@ -2,7 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using App.Metrics.Interfaces;
-using App.Metrics.Internal.Interfaces;
 using App.Metrics.Utils;
 
 namespace App.Metrics.Internal.Managers

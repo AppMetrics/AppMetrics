@@ -5,16 +5,16 @@ namespace App.Metrics.Interfaces
 {
     public interface IProvideMetrics
     {
-        IMeasureApdexMetricsAdvanced Apdex { get; }
+        IProvideApdexMetrics Apdex { get; }
 
-        IMeasureCounterMetricsAdvanced Counter { get; }
+        IProvidCounterMetrics Counter { get; }
 
-        IMeasureGaugeMetricsAdvanced Gauge { get; }
+        IProvideGaugeMetrics Gauge { get; }
 
-        IMeasureHistogramMetricsAdvanced Histogram { get; }
+        IProvideHistogramMetrics Histogram { get; }
 
-        IMeasureMeterMetricsAdvanced Meter { get; }
+        IProviderMeterMetrics Meter { get; }
 
-        IMeasureTimerMetricsAdvanced Timer { get; }
+        IProvideTimerMetrics Timer { get; }
     }
 }

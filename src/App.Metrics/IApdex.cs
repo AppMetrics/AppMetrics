@@ -4,7 +4,7 @@
 using System;
 using App.Metrics.Sampling.Interfaces;
 
-namespace App.Metrics.Core.Interfaces
+namespace App.Metrics
 {
     /// <summary>
     ///     <see href="https://en.wikipedia.org/wiki/Apdex">Apdex</see> allows us to measure an apdex score which is a ratio of
