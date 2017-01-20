@@ -19,7 +19,8 @@
     "Microsoft.AspNetCore.TestHost": "1.1.0",
     "Moq": "4.6.38-alpha",
     "xunit": "2.2.0-beta4-build3444",
-    "xunit.runner.visualstudio": "2.2.0-beta4-build1194"
+    "xunit.runner.visualstudio": "2.2.0-beta4-build1194",
+    "Microsoft.DotNet.InternalAbstractions": "1.0.0"
   },
 
   "frameworks": {
