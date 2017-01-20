@@ -39,7 +39,6 @@
 
       },
       "frameworkAssemblies": {
-        "System.Reflection": "4.0.0.0"
       }
 
     }
