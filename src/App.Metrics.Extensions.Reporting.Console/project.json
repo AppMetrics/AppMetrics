@@ -1,5 +1,5 @@
 {
-  "authors": ["Allan Hardy"],
+  "authors": [ "Allan Hardy" ],
 
   "buildOptions": {
     "warningsAsErrors": true,
@@ -8,13 +8,13 @@
     ],
     "xmlDoc": true,
     "debugType": "full",
-    "additionalArguments": ["/ruleset:../../AppMetrics.ruleset", "/additionalfile:../../stylecop.json"]
+    "additionalArguments": [ "/ruleset:../../AppMetrics.ruleset", "/additionalfile:../../stylecop.json" ]
   },
   "copyright": "Allan Hardy 2016",
 
   "dependencies": {
     "Microsoft.Extensions.Logging.Console": "1.1.0",
-    "App.Metrics": "1.0.0-beta5",   
+    "App.Metrics": "1.0.0-beta5-*",
     "StyleCop.Analyzers": {
       "version": "1.0.0",
       "type": "build"
@@ -36,7 +36,7 @@
         ]
       },
       "dependencies": {
-      
+
       },
       "frameworkAssemblies": {
       }
@@ -45,7 +45,7 @@
   },
 
   "packOptions": {
-    "tags": ["Metrics", "Monitoring", "Instrumentation", "Reporting", "Console"],
+    "tags": [ "Metrics", "Monitoring", "Instrumentation", "Reporting", "Console" ],
     "projectUrl": "https://alhardy.github.io/app-metrics-docs/getting-started/reporting/index.html#console-reporter",
     "licenseUrl": "https://github.com/alhardy/AppMetrics/blob/master/LICENSE",
     "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png",
@@ -55,5 +55,5 @@
     }
   },
   "title": "App.Metrics.Extensions.Reporting.Console",
-  "version": "1.0.0-beta5"
+  "version": "1.0.0-beta5-*"
 }

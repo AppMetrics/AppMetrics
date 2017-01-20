@@ -1,5 +1,5 @@
 {
-  "authors": ["Allan Hardy"],
+  "authors": [ "Allan Hardy" ],
   "buildOptions": {
     "warningsAsErrors": true,
     "nowarn": [
@@ -7,18 +7,17 @@
     ],
     "xmlDoc": true,
     "debugType": "full",
-    "additionalArguments": ["/ruleset:../../AppMetrics.ruleset", "/additionalfile:../../stylecop.json"]
+    "additionalArguments": [ "/ruleset:../../AppMetrics.ruleset", "/additionalfile:../../stylecop.json" ]
   },
   "dependencies": {
-    "App.Metrics.Extensions.Middleware": "1.0.0-beta5",
+    "App.Metrics.Extensions.Middleware": "1.0.0-beta5-*",
     "Microsoft.AspNetCore.Mvc": "1.1.0",
     "StyleCop.Analyzers": {
       "version": "1.0.0",
       "type": "build"
     }
   },
-  "description":
-    "Extends the App.Metrics library providing a set AspNet Core MVC Components including tracking of endpoints with MVC attribute routes",
+  "description": "Extends the App.Metrics library providing a set AspNet Core MVC Components including tracking of endpoints with MVC attribute routes",
   "frameworks": {
     "netstandard1.6": {
       "imports": [
@@ -48,6 +47,6 @@
     "licenseUrl": "https://github.com/alhardy/AppMetrics/blob/master/LICENSE",
     "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png"
   },
-  "version": "1.0.0-beta5"
+  "version": "1.0.0-beta5-*"
 
 }
