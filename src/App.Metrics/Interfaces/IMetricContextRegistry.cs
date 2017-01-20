@@ -5,7 +5,6 @@ using System;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Options;
 using App.Metrics.Data.Interfaces;
-using App.Metrics.Internal.Interfaces;
 
 namespace App.Metrics.Interfaces
 {

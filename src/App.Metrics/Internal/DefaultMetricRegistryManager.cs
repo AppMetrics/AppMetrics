@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using App.Metrics.Data;
 using App.Metrics.Interfaces;
-using App.Metrics.Internal.Interfaces;
 
 namespace App.Metrics.Internal
 {
@@ -34,16 +33,22 @@ namespace App.Metrics.Internal
             _apdexScores = apdexScores;
         }
 
+        /// <inheritdoc />
         public IEnumerable<ApdexValueSource> ApdexScores => _apdexScores();
 
+        /// <inheritdoc />
         public IEnumerable<CounterValueSource> Counters => _counters();
 
+        /// <inheritdoc />
         public IEnumerable<GaugeValueSource> Gauges => _gauges();
 
+        /// <inheritdoc />
         public IEnumerable<HistogramValueSource> Histograms => _histograms();
 
+        /// <inheritdoc />
         public IEnumerable<MeterValueSource> Meters => _meters();
 
+        /// <inheritdoc />
         public IEnumerable<TimerValueSource> Timers => _timers();
     }
 }

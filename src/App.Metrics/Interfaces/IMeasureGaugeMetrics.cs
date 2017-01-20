@@ -8,6 +8,9 @@ using App.Metrics.Data.Interfaces;
 
 namespace App.Metrics.Interfaces
 {
+    /// <summary>
+    ///     Provides access to the API allowing Gauge Metrics to be measured/recorded.
+    /// </summary>
     public interface IMeasureGaugeMetrics
     {
         /// <summary>

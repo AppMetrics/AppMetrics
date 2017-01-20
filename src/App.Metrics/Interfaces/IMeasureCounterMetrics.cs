@@ -7,6 +7,9 @@ using App.Metrics.Core.Options;
 
 namespace App.Metrics.Interfaces
 {
+    /// <summary>
+    ///     Provides access to the API allowing Counter Metrics to be measured/recorded.
+    /// </summary>
     public interface IMeasureCounterMetrics
     {
         /// <summary>
