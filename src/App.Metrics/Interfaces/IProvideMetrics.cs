@@ -7,7 +7,7 @@ namespace App.Metrics.Interfaces
     {
         IProvideApdexMetrics Apdex { get; }
 
-        IProvidCounterMetrics Counter { get; }
+        IProvideCounterMetrics Counter { get; }
 
         IProvideGaugeMetrics Gauge { get; }
 

@@ -6,19 +6,19 @@ using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Options;
 using App.Metrics.Interfaces;
 
-namespace App.Metrics.Internal.Managers
+namespace App.Metrics.Internal.Providers
 {
-    public class DefaultHistogramProvider : IProvideHistogramMetrics
+    public class DefaultHistogramMetricProvider : IProvideHistogramMetrics
     {
         private readonly IBuildHistogramMetrics _histogramBuilder;
         private readonly IMetricsRegistry _registry;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DefaultHistogramProvider" /> class.
+        ///     Initializes a new instance of the <see cref="DefaultHistogramMetricProvider" /> class.
         /// </summary>
         /// <param name="histogramBuilder">The histogram builder.</param>
         /// <param name="registry">The registry.</param>
-        public DefaultHistogramProvider(IBuildHistogramMetrics histogramBuilder, IMetricsRegistry registry)
+        public DefaultHistogramMetricProvider(IBuildHistogramMetrics histogramBuilder, IMetricsRegistry registry)
         {
             _registry = registry;
             _histogramBuilder = histogramBuilder;

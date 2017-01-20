@@ -7,7 +7,7 @@ using App.Metrics.Core.Options;
 
 namespace App.Metrics.Interfaces
 {
-    public interface IProvidCounterMetrics
+    public interface IProvideCounterMetrics
     {
         ICounter Instance(CounterOptions options);
 

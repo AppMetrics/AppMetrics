@@ -2,17 +2,17 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Internal.Managers;
+using App.Metrics.Internal.Providers;
 using FluentAssertions;
 using Xunit;
 
 namespace App.Metrics.Facts.Managers
 {
-    public class DefaultMetricsManagerFactoryTests : IClassFixture<MetricManagerTestFixture>
+    public class DefaultMetricsManagerFactoryTests : IClassFixture<MetricCoreTestFixture>
     {
         private readonly DefaultMeasureMetricsProvider _factory;
 
-        public DefaultMetricsManagerFactoryTests(MetricManagerTestFixture fixture)
+        public DefaultMetricsManagerFactoryTests(MetricCoreTestFixture fixture)
         {
             _factory = new DefaultMeasureMetricsProvider(fixture.Registry, fixture.Builder, fixture.Clock);
         }

@@ -6,21 +6,20 @@ using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Interfaces;
 using App.Metrics.Internal;
-using App.Metrics.Internal.Managers;
 using FluentAssertions;
 using Xunit;
 
 namespace App.Metrics.Facts.Managers
 {
-    public class DefaultMeterManagerTests : IClassFixture<MetricManagerTestFixture>
+    public class DefaultMeterManagerTests : IClassFixture<MetricCoreTestFixture>
     {
-        private readonly MetricManagerTestFixture _fixture;
+        private readonly MetricCoreTestFixture _fixture;
         private readonly IMeasureMeterMetrics _manager;
 
-        public DefaultMeterManagerTests(MetricManagerTestFixture fixture)
+        public DefaultMeterManagerTests(MetricCoreTestFixture fixture)
         {
             _fixture = fixture;
-            _manager = new DefaultMeterManager(_fixture.Builder.Meter, _fixture.Registry, _fixture.Clock);
+            _manager = _fixture.Managers.Meter;
         }
 
         [Fact]

@@ -135,7 +135,7 @@ namespace App.Metrics.Sampling
         }
 
         /// <inheritdoc cref="IReservoir" />
-        public ISnapshot GetSnapshot(bool resetReservoir = false)
+        public ISnapshot GetSnapshot(bool resetReservoir)
         {
             var lockTaken = false;
             try
@@ -158,6 +158,9 @@ namespace App.Metrics.Sampling
             }
         }
 
+        /// <inheritdoc />
+        public ISnapshot GetSnapshot() { return GetSnapshot(false); }
+
         /// <inheritdoc cref="IReservoir" />
         public void Reset()
         {
@@ -177,7 +180,10 @@ namespace App.Metrics.Sampling
         }
 
         /// <inheritdoc cref="IReservoir" />
-        public void Update(long value, string userValue = null) { Update(value, userValue, _clock.Seconds); }
+        public void Update(long value, string userValue) { Update(value, userValue, _clock.Seconds); }
+
+        /// <inheritdoc />
+        public void Update(long value) { Update(value, null); }
 
         /// <summary>
         ///     A common feature of the above techniques—indeed, the key technique that

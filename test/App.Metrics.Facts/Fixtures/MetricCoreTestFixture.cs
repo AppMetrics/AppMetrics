@@ -7,30 +7,38 @@ using App.Metrics.Infrastructure;
 using App.Metrics.Interfaces;
 using App.Metrics.Internal;
 using App.Metrics.Internal.Builders;
+using App.Metrics.Internal.Providers;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Facts.Fixtures
 {
-    public class MetricManagerTestFixture : IDisposable
+    public class MetricCoreTestFixture : IDisposable
     {
-        public MetricManagerTestFixture()
+        public MetricCoreTestFixture()
         {
             var loggerFactory = new LoggerFactory();
             var options = new AppMetricsOptions();
 
             Clock = new TestClock();
-            Builder = new DefaultMetricsBuilder();
+            Builder = new DefaultMetricsBuilderFactory();
 
             Func<string, IMetricContextRegistry> contextRegistrySetup = context => new DefaultMetricContextRegistry(context);
             var registry = new DefaultMetricsRegistry(loggerFactory, options, Clock, new EnvironmentInfoProvider(), contextRegistrySetup);
 
             Registry = registry;
+            Providers = new DefaultMetricsProvider(Registry, Builder, Clock);
+
+            Managers = new DefaultMeasureMetricsProvider(Registry, Builder, Clock);
         }
 
         public IBuildMetrics Builder { get; }
 
         public IClock Clock { get; }
+
+        public IMeasureMetrics Managers { get; }
+
+        public IProvideMetrics Providers { get; }
 
         public IMetricsRegistry Registry { get; }
 

@@ -7,21 +7,21 @@ using App.Metrics.Core.Options;
 using App.Metrics.Interfaces;
 using App.Metrics.Utils;
 
-namespace App.Metrics.Internal.Managers
+namespace App.Metrics.Internal.Providers
 {
-    public class DefaultTimerProvider : IProvideTimerMetrics
+    public class DefaultTimerMetricProvider : IProvideTimerMetrics
     {
         private readonly IClock _clock;
         private readonly IMetricsRegistry _registry;
         private readonly IBuildTimerMetrics _timerBuilder;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultTimerProvider" /> class.
+        /// Initializes a new instance of the <see cref="DefaultTimerMetricProvider" /> class.
         /// </summary>
         /// <param name="timerBuilder">The timer builder.</param>
         /// <param name="registry">The metrics registry.</param>
         /// <param name="clock">The clock.</param>
-        public DefaultTimerProvider(IBuildTimerMetrics timerBuilder, IMetricsRegistry registry, IClock clock)
+        public DefaultTimerMetricProvider(IBuildTimerMetrics timerBuilder, IMetricsRegistry registry, IClock clock)
         {
             _registry = registry;
             _clock = clock;

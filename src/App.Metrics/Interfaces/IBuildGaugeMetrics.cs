@@ -2,12 +2,12 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
-using App.Metrics.Data.Interfaces;
+using App.Metrics.Core.Interfaces;
 
 namespace App.Metrics.Interfaces
 {
     public interface IBuildGaugeMetrics
     {
-        IMetricValueProvider<double> Build(Func<double> valueProvider);
+        IGaugeMetric Build(Func<double> valueProvider);
     }
 }

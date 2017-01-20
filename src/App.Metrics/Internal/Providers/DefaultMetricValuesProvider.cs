@@ -6,7 +6,7 @@ using App.Metrics.Core.Interfaces;
 using App.Metrics.Data;
 using App.Metrics.Interfaces;
 
-namespace App.Metrics.Internal.Managers
+namespace App.Metrics.Internal.Providers
 {
     internal class DefaultMetricValuesProvider : IProvideMetricValues
     {

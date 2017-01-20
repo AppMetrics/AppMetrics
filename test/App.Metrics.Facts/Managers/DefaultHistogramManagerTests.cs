@@ -12,15 +12,15 @@ using Xunit;
 
 namespace App.Metrics.Facts.Managers
 {
-    public class DefaultHistogramManagerTests : IClassFixture<MetricManagerTestFixture>
+    public class DefaultHistogramManagerTests : IClassFixture<MetricCoreTestFixture>
     {
-        private readonly MetricManagerTestFixture _fixture;
+        private readonly MetricCoreTestFixture _fixture;
         private readonly IMeasureHistogramMetrics _manager;
 
-        public DefaultHistogramManagerTests(MetricManagerTestFixture fixture)
+        public DefaultHistogramManagerTests(MetricCoreTestFixture fixture)
         {
             _fixture = fixture;
-            _manager = new DefaultHistogramManager(_fixture.Builder.Histogram, _fixture.Registry);
+            _manager = _fixture.Managers.Histogram;
         }
 
         [Fact]

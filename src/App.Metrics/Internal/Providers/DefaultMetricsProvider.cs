@@ -4,7 +4,7 @@
 using App.Metrics.Interfaces;
 using App.Metrics.Utils;
 
-namespace App.Metrics.Internal.Managers
+namespace App.Metrics.Internal.Providers
 {
     internal class DefaultMetricsProvider : IProvideMetrics
     {
@@ -16,19 +16,19 @@ namespace App.Metrics.Internal.Managers
         /// <param name="clock">The clock.</param>
         public DefaultMetricsProvider(IMetricsRegistry registry, IBuildMetrics buideFactory, IClock clock)
         {
-            Apdex = new DefaultApdexProvider(buideFactory.Apdex, registry, clock);
-            Counter = new DefaultCounterProvider(buideFactory.Counter, registry);
-            Gauge = new DefaultGaugeProvider(registry);
-            Histogram = new DefaultHistogramProvider(buideFactory.Histogram, registry);
-            Meter = new DefaultMeterProvider(buideFactory.Meter, registry, clock);
-            Timer = new DefaultTimerProvider(buideFactory.Timer, registry, clock);
+            Apdex = new DefaultApdexMetricProvider(buideFactory.Apdex, registry, clock);
+            Counter = new DefaultCounterMetricProvider(buideFactory.Counter, registry);
+            Gauge = new DefaultGaugeMetricProvider(registry);
+            Histogram = new DefaultHistogramMetricProvider(buideFactory.Histogram, registry);
+            Meter = new DefaultMeterMetricProvider(buideFactory.Meter, registry, clock);
+            Timer = new DefaultTimerMetricProvider(buideFactory.Timer, registry, clock);
         }
 
         /// <inheritdoc />
         public IProvideApdexMetrics Apdex { get; }
 
         /// <inheritdoc />
-        public IProvidCounterMetrics Counter { get; }
+        public IProvideCounterMetrics Counter { get; }
 
         /// <inheritdoc />
         public IProvideGaugeMetrics Gauge { get; }

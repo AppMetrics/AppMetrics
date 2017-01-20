@@ -6,19 +6,19 @@ using App.Metrics.Core.Options;
 using App.Metrics.Data.Interfaces;
 using App.Metrics.Interfaces;
 
-namespace App.Metrics.Internal.Managers
+namespace App.Metrics.Internal.Providers
 {
-    public class DefaultGaugeProvider : IProvideGaugeMetrics
+    public class DefaultGaugeMetricProvider : IProvideGaugeMetrics
     {
         private readonly IMetricsRegistry _registry;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DefaultGaugeProvider" /> class.
+        ///     Initializes a new instance of the <see cref="DefaultGaugeMetricProvider" /> class.
         /// </summary>
         /// <param name="registry">The registry.</param>
-        public DefaultGaugeProvider(IMetricsRegistry registry) { _registry = registry; }
+        public DefaultGaugeMetricProvider(IMetricsRegistry registry) { _registry = registry; }
 
         /// <inheritdoc />
-        public void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider) { _registry.Gauge(options, valueProvider); }
+        public void Instance(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider) { _registry.Gauge(options, valueProvider); }
     }
 }

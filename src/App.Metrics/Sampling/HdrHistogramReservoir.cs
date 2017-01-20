@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
+using System;
 using App.Metrics.Concurrency;
 using App.Metrics.Sampling.HdrHistogram;
 using App.Metrics.Sampling.Interfaces;
@@ -59,7 +60,7 @@ namespace App.Metrics.Sampling
         }
 
         /// <inheritdoc cref="IReservoir" />
-        public ISnapshot GetSnapshot(bool resetReservoir = false)
+        public ISnapshot GetSnapshot(bool resetReservoir)
         {
             var snapshot = new HdrSnapshot(
                 UpdateTotals(),
@@ -76,6 +77,9 @@ namespace App.Metrics.Sampling
             return snapshot;
         }
 
+        /// <inheritdoc />
+        public ISnapshot GetSnapshot() { return GetSnapshot(false); }
+
         /// <inheritdoc cref="IReservoir" />
         public void Reset()
         {
@@ -85,7 +89,7 @@ namespace App.Metrics.Sampling
         }
 
         /// <inheritdoc cref="IReservoir" />
-        public void Update(long value, string userValue = null)
+        public void Update(long value, string userValue)
         {
             _recorder.RecordValue(value);
             if (userValue != null)
@@ -93,6 +97,9 @@ namespace App.Metrics.Sampling
                 TrackMinMaxUserValue(value, userValue);
             }
         }
+
+        /// <inheritdoc />
+        public void Update(long value) { Update(value, null); }
 
         private void SetMaxValue(long value, string userValue)
         {

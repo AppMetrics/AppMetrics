@@ -42,5 +42,7 @@ namespace App.Metrics.Facts
         public void Reset() { Reservoir.Reset(); }
 
         public void Update(long value, string userValue) { Reservoir.Update(value, userValue); }
+
+        public void Update(long value) { Reservoir.Update(value); }
     }
 }

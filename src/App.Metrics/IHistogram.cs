@@ -17,6 +17,12 @@ namespace App.Metrics
         ///     A custom user value that will be associated to the results.
         ///     Useful for tracking (for example) for which id the max or min value was recorded.
         /// </param>
-        void Update(long value, string userValue = null);
+        void Update(long value, string userValue);
+
+        /// <summary>
+        ///     Records a value.
+        /// </summary>
+        /// <param name="value">Value to be added to the histogram.</param>
+        void Update(long value);
     }
 }

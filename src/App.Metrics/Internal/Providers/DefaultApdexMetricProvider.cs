@@ -7,15 +7,15 @@ using App.Metrics.Core.Options;
 using App.Metrics.Interfaces;
 using App.Metrics.Utils;
 
-namespace App.Metrics.Internal.Managers
+namespace App.Metrics.Internal.Providers
 {
-    public class DefaultApdexProvider : IProvideApdexMetrics
+    public class DefaultApdexMetricProvider : IProvideApdexMetrics
     {
         private readonly IBuildApdexMetrics _apdexBuidler;
         private readonly IClock _clock;
         private readonly IMetricsRegistry _registry;
 
-        public DefaultApdexProvider(
+        public DefaultApdexMetricProvider(
             IBuildApdexMetrics apdexBuidler,
             IMetricsRegistry registry,
             IClock clock)

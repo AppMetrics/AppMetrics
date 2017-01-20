@@ -124,15 +124,24 @@ namespace App.Metrics.Internal
 
             public ApdexContext NewContext() { return NullApdexContextContext; }
 
-            public void Record(long time, TimeUnit unit, string userValue = null) { }
+            public void Record(long time, TimeUnit unit, string userValue) { }
+
+            /// <inheritdoc />
+            public void Record(long time, TimeUnit unit) { }
 
             public void Reset() { }
 
             public long StartRecording() { return 0; }
 
-            public void Time(Action action, string userValue = null) { action(); }
+            public void Time(Action action, string userValue) { action(); }
 
-            public T Time<T>(Func<T> action, string userValue = null) { return action(); }
+            public T Time<T>(Func<T> action, string userValue) { return action(); }
+
+            /// <inheritdoc />
+            public void Time(Action action) { }
+
+            /// <inheritdoc />
+            public T Time<T>(Func<T> action) { return action(); }
 
             public void Track(long duration) { }
 
@@ -141,6 +150,12 @@ namespace App.Metrics.Internal
             public T Track<T>(Func<T> action) { return action(); }
 
             public void Update(long value, string userValue) { }
+
+            /// <inheritdoc />
+            public void Update(long value) { }
+
+            /// <inheritdoc />
+            TimerContext ITimer.NewContext() { return NullContext; }
         }
     }
 }

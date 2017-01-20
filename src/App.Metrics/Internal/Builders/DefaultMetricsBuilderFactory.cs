@@ -5,9 +5,9 @@ using App.Metrics.Interfaces;
 
 namespace App.Metrics.Internal.Builders
 {
-    internal class DefaultMetricsBuilder : IBuildMetrics
+    internal class DefaultMetricsBuilderFactory : IBuildMetrics
     {
-        public DefaultMetricsBuilder()
+        public DefaultMetricsBuilderFactory()
         {
             Apdex = new DefaultApdexBuilder();
             Counter = new DefaultCounterBuilder();

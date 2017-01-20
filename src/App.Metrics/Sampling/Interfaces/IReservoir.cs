@@ -48,7 +48,14 @@ namespace App.Metrics.Sampling.Interfaces
         /// </summary>
         /// <param name="resetReservoir">if set to <c>true</c> [reset reservoir].</param>
         /// <returns>A <see cref="ISnapshot">snapshot</see> of the current sample</returns>
-        ISnapshot GetSnapshot(bool resetReservoir = false);
+        ISnapshot GetSnapshot(bool resetReservoir);
+
+        /// <summary>
+        ///     Gets a statistical <see cref="ISnapshot">snapshot</see> including
+        ///     <see href="https://en.wikipedia.org/wiki/Percentile">percentiles</see> of the current sample.
+        /// </summary>
+        /// <returns>A <see cref="ISnapshot">snapshot</see> of the current sample</returns>
+        ISnapshot GetSnapshot();
 
         /// <summary>
         ///     Reset all statistics, in addition to the underlying reservoir.
@@ -60,6 +67,12 @@ namespace App.Metrics.Sampling.Interfaces
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="userValue">The user value.</param>
-        void Update(long value, string userValue = null);
+        void Update(long value, string userValue);
+
+        /// <summary>
+        ///     Update statistics and the reservoir with a new sample.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        void Update(long value);
     }
 }

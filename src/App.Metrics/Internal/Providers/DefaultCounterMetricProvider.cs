@@ -6,19 +6,19 @@ using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Options;
 using App.Metrics.Interfaces;
 
-namespace App.Metrics.Internal.Managers
+namespace App.Metrics.Internal.Providers
 {
-    public class DefaultCounterProvider : IProvidCounterMetrics
+    public class DefaultCounterMetricProvider : IProvideCounterMetrics
     {
         private readonly IBuildCounterMetrics _counterBuilder;
         private readonly IMetricsRegistry _registry;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultCounterProvider" /> class.
+        /// Initializes a new instance of the <see cref="DefaultCounterMetricProvider" /> class.
         /// </summary>
         /// <param name="counterBuilder">The counter builder.</param>
         /// <param name="registry">The registry.</param>
-        public DefaultCounterProvider(IBuildCounterMetrics counterBuilder, IMetricsRegistry registry)
+        public DefaultCounterMetricProvider(IBuildCounterMetrics counterBuilder, IMetricsRegistry registry)
         {
             _registry = registry;
             _counterBuilder = counterBuilder;

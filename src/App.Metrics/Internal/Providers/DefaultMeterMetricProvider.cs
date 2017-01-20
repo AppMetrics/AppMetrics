@@ -7,21 +7,21 @@ using App.Metrics.Core.Options;
 using App.Metrics.Interfaces;
 using App.Metrics.Utils;
 
-namespace App.Metrics.Internal.Managers
+namespace App.Metrics.Internal.Providers
 {
-    public class DefaultMeterProvider : IProviderMeterMetrics
+    public class DefaultMeterMetricProvider : IProviderMeterMetrics
     {
         private readonly IClock _clock;
         private readonly IBuildMeterMetrics _meterBuilder;
         private readonly IMetricsRegistry _registry;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DefaultMeterProvider" /> class.
+        ///     Initializes a new instance of the <see cref="DefaultMeterMetricProvider" /> class.
         /// </summary>
         /// <param name="meterBuilder">The meter builder.</param>
         /// <param name="registry">The metrics registry.</param>
         /// <param name="clock">The clock.</param>
-        public DefaultMeterProvider(IBuildMeterMetrics meterBuilder, IMetricsRegistry registry, IClock clock)
+        public DefaultMeterMetricProvider(IBuildMeterMetrics meterBuilder, IMetricsRegistry registry, IClock clock)
         {
             _registry = registry;
             _clock = clock;

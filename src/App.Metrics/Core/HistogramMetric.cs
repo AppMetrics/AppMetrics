@@ -87,10 +87,17 @@ namespace App.Metrics.Core
         }
 
         /// <inheritdoc />
-        public void Update(long value, string userValue = null)
+        public void Update(long value, string userValue)
         {
             _last = new UserValueWrapper(value, userValue);
             _reservoir.Update(value, userValue);
+        }
+
+        /// <inheritdoc />
+        public void Update(long value)
+        {
+            _last = new UserValueWrapper(value);
+            _reservoir.Update(value);
         }
     }
 }

@@ -6,21 +6,20 @@ using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Interfaces;
 using App.Metrics.Internal;
-using App.Metrics.Internal.Managers;
 using FluentAssertions;
 using Xunit;
 
 namespace App.Metrics.Facts.Managers
 {
-    public class DefaultCounterManagerTests : IClassFixture<MetricManagerTestFixture>
+    public class DefaultCounterManagerTests : IClassFixture<MetricCoreTestFixture>
     {
-        private readonly MetricManagerTestFixture _fixture;
+        private readonly MetricCoreTestFixture _fixture;
         private readonly IMeasureCounterMetrics _manager;
 
-        public DefaultCounterManagerTests(MetricManagerTestFixture fixture)
+        public DefaultCounterManagerTests(MetricCoreTestFixture fixture)
         {
             _fixture = fixture;
-            _manager = new DefaultCounterManager(_fixture.Builder.Counter, _fixture.Registry);
+            _manager = _fixture.Managers.Counter;
         }
 
         [Fact]

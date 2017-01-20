@@ -10,6 +10,7 @@ using App.Metrics.Interfaces;
 using App.Metrics.Internal;
 using App.Metrics.Internal.Builders;
 using App.Metrics.Internal.Managers;
+using App.Metrics.Internal.Providers;
 using App.Metrics.Utils;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
@@ -36,7 +37,7 @@ namespace App.Metrics.Facts.Health
                     clock,
                     new EnvironmentInfoProvider(),
                     newContextRegistry);
-                var metricBuilderFactory = new DefaultMetricsBuilder();
+                var metricBuilderFactory = new DefaultMetricsBuilderFactory();
                 var filter = new DefaultMetricsFilter();
                 var healthManager = new DefaultHealthProvider(LoggerFactory.CreateLogger<DefaultHealthProvider>(), healthCheckFactory);
                 var dataManager = new DefaultMetricValuesProvider(

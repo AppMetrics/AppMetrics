@@ -11,6 +11,7 @@ using App.Metrics.Interfaces;
 using App.Metrics.Internal;
 using App.Metrics.Internal.Builders;
 using App.Metrics.Internal.Managers;
+using App.Metrics.Internal.Providers;
 using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 
@@ -28,7 +29,7 @@ namespace App.Metrics.Facts.Fixtures
             Func<string, IMetricContextRegistry> newContextRegistry = name => new DefaultMetricContextRegistry(name);
             var registry = new DefaultMetricsRegistry(_loggerFactory, options, clock, new EnvironmentInfoProvider(), newContextRegistry);
             var healthCheckFactory = new HealthCheckFactory(healthFactoryLogger);
-            var metricBuilderFactory = new DefaultMetricsBuilder();
+            var metricBuilderFactory = new DefaultMetricsBuilderFactory();
             var filter = new DefaultMetricsFilter();
             var healthManager = new DefaultHealthProvider(_loggerFactory.CreateLogger<DefaultHealthProvider>(), healthCheckFactory);
             var dataManager = new DefaultMetricValuesProvider(

@@ -3,7 +3,7 @@
 
 using System;
 using App.Metrics.Core;
-using App.Metrics.Data.Interfaces;
+using App.Metrics.Core.Interfaces;
 using App.Metrics.Interfaces;
 
 namespace App.Metrics.Internal.Builders
@@ -11,6 +11,6 @@ namespace App.Metrics.Internal.Builders
     public class DefaultGaugeBuilder : IBuildGaugeMetrics
     {
         /// <inheritdoc />
-        public IMetricValueProvider<double> Build(Func<double> valueProvider) { return new FunctionGauge(valueProvider); }
+        public IGaugeMetric Build(Func<double> valueProvider) { return new FunctionGauge(valueProvider); }
     }
 }

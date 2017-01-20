@@ -9,7 +9,7 @@ using App.Metrics.Core;
 using App.Metrics.Core.Interfaces;
 using Microsoft.Extensions.Logging;
 
-namespace App.Metrics.Internal.Managers
+namespace App.Metrics.Internal.Providers
 {
     internal class DefaultHealthProvider : IProvideHealth
     {

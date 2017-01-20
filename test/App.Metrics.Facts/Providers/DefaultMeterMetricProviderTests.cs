@@ -1,0 +1,60 @@
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System.Linq;
+using App.Metrics.Core.Options;
+using App.Metrics.Facts.Fixtures;
+using App.Metrics.Interfaces;
+using FluentAssertions;
+using Xunit;
+
+namespace App.Metrics.Facts.Providers
+{
+    public class DefaultMeterMetricProviderTests : IClassFixture<MetricCoreTestFixture>
+    {
+        private readonly DefaultMetricsFilter _filter = new DefaultMetricsFilter().WhereType(MetricType.Meter);
+        private readonly MetricCoreTestFixture _fixture;
+        private readonly IProviderMeterMetrics _provider;
+
+
+        public DefaultMeterMetricProviderTests(MetricCoreTestFixture fixture)
+        {
+            _fixture = fixture;
+            _provider = _fixture.Providers.Meter;
+        }
+
+        [Fact]
+        public void can_add_add_new_instance_to_registry()
+        {
+            var metricName = "meter_provider_metric_test";
+            var options = new MeterOptions
+                          {
+                              Name = metricName
+                          };
+
+            var meterMetric = _fixture.Builder.Meter.Build(_fixture.Clock);
+
+            _provider.Instance(options, () => meterMetric);
+
+            _filter.WhereMetricName(name => name == metricName);
+
+            _fixture.Registry.GetData(_filter).Contexts.First().Meters.Count().Should().Be(1);
+        }
+
+        [Fact]
+        public void can_add_instance_to_registry()
+        {
+            var metricName = "meter_provider_test";
+            var options = new MeterOptions
+                          {
+                              Name = metricName
+                          };
+
+            _provider.Instance(options);
+
+            _filter.WhereMetricName(name => name == metricName);
+
+            _fixture.Registry.GetData(_filter).Contexts.First().Meters.Count().Should().Be(1);
+        }
+    }
+}

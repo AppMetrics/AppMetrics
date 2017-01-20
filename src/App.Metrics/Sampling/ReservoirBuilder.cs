@@ -22,6 +22,8 @@ namespace App.Metrics.Sampling
                         return new UniformReservoir(sampleSize);
                     case SamplingType.SlidingWindow:
                         return new SlidingWindowReservoir(sampleSize);
+                    case SamplingType.Default:
+                        return new ExponentiallyDecayingReservoir(sampleSize, alpha);
                     default:
                         throw new ArgumentOutOfRangeException(nameof(samplingType), samplingType, "Sampling type not implemented " + samplingType);
                 }

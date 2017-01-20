@@ -3,13 +3,12 @@
 
 using App.Metrics.Data.Interfaces;
 
-// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
-// Ported/Refactored to .NET Standard Library by Allan Hardy
 namespace App.Metrics.Core.Interfaces
 {
     /// <summary>
     ///     Provides access to a gauge metric implementation e.g. <see cref="FunctionGauge" />, <see cref="HitRatioGauge" />,
-    ///     allows custom gauges to be implemented
+    ///     <see cref="DerivedGauge" />, <see cref="HitPercentageGauge" />, <see cref="PercentageGauge" />.
+    ///     Allows custom gauges to be implemented
     /// </summary>
     /// <seealso cref="IGaugeMetric" />
     public interface IGaugeMetric : IMetricValueProvider<double>

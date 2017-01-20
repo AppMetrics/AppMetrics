@@ -15,6 +15,6 @@ namespace App.Metrics.Interfaces
         /// </summary>
         /// <param name="options">The details of the gauge that is being measured.</param>
         /// <param name="valueProvider">A function that returns custom value provider for the gauge.</param>
-        void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider);
+        void Instance(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider);
     }
 }

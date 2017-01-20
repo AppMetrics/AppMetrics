@@ -7,21 +7,20 @@ using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Interfaces;
 using App.Metrics.Internal;
-using App.Metrics.Internal.Managers;
 using FluentAssertions;
 using Xunit;
 
 namespace App.Metrics.Facts.Managers
 {
-    public class DefaultApdexManagerTests : IClassFixture<MetricManagerTestFixture>
+    public class DefaultApdexManagerTests : IClassFixture<MetricCoreTestFixture>
     {
-        private readonly MetricManagerTestFixture _fixture;
+        private readonly MetricCoreTestFixture _fixture;
         private readonly IMeasureApdexMetrics _manager;
 
-        public DefaultApdexManagerTests(MetricManagerTestFixture fixture)
+        public DefaultApdexManagerTests(MetricCoreTestFixture fixture)
         {
             _fixture = fixture;
-            _manager = new DefaultApdexManager(_fixture.Builder.Apdex, _fixture.Registry, _fixture.Clock);
+            _manager = _fixture.Managers.Apdex;
         }
 
         [Fact]

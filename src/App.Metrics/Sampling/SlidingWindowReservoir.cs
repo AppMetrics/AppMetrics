@@ -59,6 +59,9 @@ namespace App.Metrics.Sampling
                 maxUserValue: maxValue);
         }
 
+        /// <inheritdoc />
+        public ISnapshot GetSnapshot() { return GetSnapshot(false); }
+
         /// <inheritdoc cref="IReservoir" />
         public void Reset()
         {
@@ -67,11 +70,14 @@ namespace App.Metrics.Sampling
         }
 
         /// <inheritdoc cref="IReservoir" />
-        public void Update(long value, string userValue = null)
+        public void Update(long value, string userValue)
         {
             var newCount = _count.Increment();
 
             _values[(int)((newCount - 1) % _values.Length)] = new UserValueWrapper(value, userValue);
         }
+
+        /// <inheritdoc />
+        public void Update(long value) { Update(value, null); }
     }
 }

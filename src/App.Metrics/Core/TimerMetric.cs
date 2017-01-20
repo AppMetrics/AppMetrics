@@ -85,6 +85,7 @@ namespace App.Metrics.Core
         /// <inheritdoc />
         public long CurrentTime() { return _clock.Nanoseconds; }
 
+        /// <inheritdoc />
         public void Dispose()
         {
             Dispose(true);
@@ -127,10 +128,13 @@ namespace App.Metrics.Core
         }
 
         /// <inheritdoc />
-        public TimerContext NewContext(string userValue = null) { return new TimerContext(this, userValue); }
+        public TimerContext NewContext(string userValue) { return new TimerContext(this, userValue); }
 
         /// <inheritdoc />
-        public void Record(long duration, TimeUnit unit, string userValue = null)
+        public TimerContext NewContext() { return NewContext(null); }
+
+        /// <inheritdoc />
+        public void Record(long duration, TimeUnit unit, string userValue)
         {
             var nanos = unit.ToNanoseconds(duration);
             if (nanos < 0)
@@ -142,6 +146,9 @@ namespace App.Metrics.Core
             _meter.Mark(userValue);
             _totalRecordedTime.Add(nanos);
         }
+
+        /// <inheritdoc />
+        public void Record(long time, TimeUnit unit) { Record(time, unit, null); }
 
         /// <inheritdoc />
         public void Reset()
@@ -158,7 +165,7 @@ namespace App.Metrics.Core
         }
 
         /// <inheritdoc />
-        public void Time(Action action, string userValue = null)
+        public void Time(Action action, string userValue)
         {
             var start = _clock.Nanoseconds;
             try
@@ -174,7 +181,7 @@ namespace App.Metrics.Core
         }
 
         /// <inheritdoc />
-        public T Time<T>(Func<T> action, string userValue = null)
+        public T Time<T>(Func<T> action, string userValue)
         {
             var start = _clock.Nanoseconds;
             try
@@ -188,5 +195,11 @@ namespace App.Metrics.Core
                 Record(_clock.Nanoseconds - start, TimeUnit.Nanoseconds, userValue);
             }
         }
+
+        /// <inheritdoc />
+        public void Time(Action action) { Time(action, null); }
+
+        /// <inheritdoc />
+        public T Time<T>(Func<T> action) { return Time(action, null); }
     }
 }

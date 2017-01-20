@@ -47,7 +47,7 @@ namespace App.Metrics.Sampling
         public int Size => Math.Min((int)_count.GetValue(), _values.Length);
 
         /// <inheritdoc cref="IReservoir" />
-        public ISnapshot GetSnapshot(bool resetReservoir = false)
+        public ISnapshot GetSnapshot(bool resetReservoir)
         {
             var size = Size;
 
@@ -78,6 +78,9 @@ namespace App.Metrics.Sampling
                 maxUserValue: maxValue);
         }
 
+        /// <inheritdoc />
+        public ISnapshot GetSnapshot() { return GetSnapshot(false); }
+
         /// <inheritdoc cref="IReservoir" />
         public void Reset() { _count.SetValue(0L); }
 
@@ -104,7 +107,7 @@ namespace App.Metrics.Sampling
         /// </example>
         /// <param name="value">The value to add to the sample set.</param>
         /// <param name="userValue">The user value to track, which records the last, min and max user values within the sample.</param>
-        public void Update(long value, string userValue = null)
+        public void Update(long value, string userValue)
         {
             var c = _count.Increment();
 
@@ -122,5 +125,8 @@ namespace App.Metrics.Sampling
                 }
             }
         }
+
+        /// <inheritdoc />
+        public void Update(long value) { Update(value, null); }
     }
 }
