@@ -10,15 +10,8 @@
     "additionalArguments": ["/ruleset:../../AppMetrics.ruleset", "/additionalfile:../../stylecop.json"]
   },
   "dependencies": {
-    "App.Metrics": "1.0.0-beta5",
     "App.Metrics.Extensions.Middleware": "1.0.0-beta5",
     "Microsoft.AspNetCore.Mvc": "1.1.0",
-    "Microsoft.AspNetCore.Routing": "1.1.0",
-    "Microsoft.Extensions.DependencyInjection": "1.1.0",
-    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
-    "Microsoft.Extensions.Logging": "1.1.0",
-    "Microsoft.Extensions.PlatformAbstractions": "1.1.0",
-    "NETStandard.Library": "1.6.1",
     "StyleCop.Analyzers": {
       "version": "1.0.0",
       "type": "build"
