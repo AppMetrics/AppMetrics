@@ -55,5 +55,5 @@
     }
   },
   "title": "App.Metrics.Extensions.Reporting.InfluxDB",
-  "version": "1.0.0-beta5-*"
+  "version": "1.0.0-beta5"
 }
