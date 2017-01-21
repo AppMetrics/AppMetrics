@@ -9,6 +9,7 @@ using App.Metrics.Abstractions.Scheduling;
 
 namespace App.Metrics.Abstractions.Internal
 {
+    [AppMetricsExcludeFromCodeCoverage]
     internal sealed class TestTaskScheduler : IScheduler
     {
         private readonly IClock _clock;
