@@ -7,6 +7,7 @@ using App.Metrics.Core;
 using App.Metrics.Formatters.Json.Facts.Helpers;
 using App.Metrics.Formatters.Json.Serialization;
 using App.Metrics.Abstractions;
+using App.Metrics.Abstractions.Clock;
 using FluentAssertions;
 using FluentAssertions.Json;
 using Newtonsoft.Json.Linq;

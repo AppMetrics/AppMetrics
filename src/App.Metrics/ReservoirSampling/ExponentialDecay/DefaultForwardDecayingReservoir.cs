@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Abstractions;
+using App.Metrics.Abstractions.Clock;
+using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Abstractions.Scheduling;
-using App.Metrics.Abstractions.Scheduling.Interfaces;
 using App.Metrics.Concurrency;
 using App.Metrics.Internal;
 

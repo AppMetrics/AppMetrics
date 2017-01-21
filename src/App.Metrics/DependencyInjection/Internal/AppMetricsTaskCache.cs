@@ -6,7 +6,7 @@ using App.Metrics.Data;
 
 // ReSharper disable CheckNamespace
 namespace System.Threading.Tasks
-// ReSharper restore CheckNamespace
+    // ReSharper restore CheckNamespace
 {
     internal static class AppMetricsTaskCache
     {

@@ -12,6 +12,7 @@ using App.Metrics.Internal.Builders;
 using App.Metrics.Internal.Managers;
 using App.Metrics.Internal.Providers;
 using App.Metrics.Abstractions;
+using App.Metrics.Abstractions.Clock;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Facts.Fixtures

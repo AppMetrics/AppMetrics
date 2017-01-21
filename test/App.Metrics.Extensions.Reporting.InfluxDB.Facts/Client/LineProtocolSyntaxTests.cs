@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System;
 using App.Metrics.Extensions.Reporting.InfluxDB.Client;
 using FluentAssertions;
 using Xunit;
@@ -14,10 +17,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Client
         [InlineData("te=st", "te\\=st")]
         [InlineData("te st", "te\\ st")]
         [InlineData("te,st", "te\\,st")]
-        public void can_escape_name(string nameOrKey, string expected)
-        {
-            LineProtocolSyntax.EscapeName(nameOrKey).Should().Be(expected);
-        }
+        public void can_escape_name(string nameOrKey, string expected) { LineProtocolSyntax.EscapeName(nameOrKey).Should().Be(expected); }
 
         [Fact]
         public void can_format_timespan()
@@ -47,9 +47,6 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Client
         [InlineData((double)1, "1")]
         [InlineData(true, "t")]
         [InlineData(false, "f")]
-        public void can_format_value(object value, string expected)
-        {
-            LineProtocolSyntax.FormatValue(value).Should().Be(expected);
-        }
+        public void can_format_value(object value, string expected) { LineProtocolSyntax.FormatValue(value).Should().Be(expected); }
     }
 }

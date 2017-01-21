@@ -3,24 +3,24 @@
 
 using System;
 using System.Globalization;
-using App.Metrics.Abstractions.Internal;
 
-namespace App.Metrics.Abstractions
+namespace App.Metrics.Abstractions.Clock
 {
-    [AppMetricsExcludeFromCodeCoverage]
-    public sealed class SystemClock : IClock
+    public sealed class TestClock : IClock
     {
-#pragma warning disable 67
         public event EventHandler Advanced;
-#pragma warning restore 67
 
-        public long Nanoseconds => DateTime.UtcNow.Ticks * 100L;
+        public long Nanoseconds { get; private set; }
 
         public long Seconds => TimeUnit.Nanoseconds.ToSeconds(Nanoseconds);
 
-        public DateTime UtcDateTime => DateTime.UtcNow;
+        public DateTime UtcDateTime => new DateTime(Nanoseconds / 100L, DateTimeKind.Utc);
 
-        public void Advance(TimeUnit unit, long value) { throw new NotImplementedException($"Unable to advance {GetType()} Clock Type"); }
+        public void Advance(TimeUnit unit, long value)
+        {
+            Nanoseconds += unit.ToNanoseconds(value);
+            Advanced?.Invoke(this, EventArgs.Empty);
+        }
 
         public string FormatTimestamp(DateTime timestamp) { return timestamp.ToString("yyyy-MM-ddTHH:mm:ss.ffffK", CultureInfo.InvariantCulture); }
     }

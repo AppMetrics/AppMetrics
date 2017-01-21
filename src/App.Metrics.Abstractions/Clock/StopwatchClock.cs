@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Globalization;
 using App.Metrics.Abstractions.Internal;
 
-namespace App.Metrics.Abstractions
+namespace App.Metrics.Abstractions.Clock
 {
     [AppMetricsExcludeFromCodeCoverage]
     public sealed class StopwatchClock : IClock

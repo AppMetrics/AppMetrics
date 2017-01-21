@@ -5,7 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics;
-using App.Metrics.Abstractions;
+using App.Metrics.Abstractions.Clock;
+using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
 using App.Metrics.DependencyInjection.Internal;
@@ -13,7 +14,6 @@ using App.Metrics.Internal;
 using App.Metrics.Reporting;
 using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Reporting.Internal;
-using App.Metrics.ReservoirSampling;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 

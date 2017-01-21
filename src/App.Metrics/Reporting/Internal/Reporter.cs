@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Abstractions.Scheduling.Interfaces;
+using App.Metrics.Abstractions.Scheduling;
 using App.Metrics.Core.Options;
 using App.Metrics.Internal;
 using App.Metrics.Reporting.Interfaces;

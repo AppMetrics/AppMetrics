@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
-using App.Metrics.Abstractions;
+using App.Metrics.Abstractions.Clock;
 using App.Metrics.Configuration;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Options;

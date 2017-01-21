@@ -4,7 +4,8 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Abstractions.Scheduling.Interfaces;
+using App.Metrics.Abstractions.Clock;
+using App.Metrics.Abstractions.Scheduling;
 
 namespace App.Metrics.Abstractions.Internal
 {

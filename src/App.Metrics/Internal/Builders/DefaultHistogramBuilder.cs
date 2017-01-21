@@ -2,10 +2,10 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
+using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Core;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Interfaces;
-using App.Metrics.ReservoirSampling;
 
 namespace App.Metrics.Internal.Builders
 {
@@ -13,7 +13,10 @@ namespace App.Metrics.Internal.Builders
     {
         private readonly DefaultSamplingReservoirProvider _defaultSamplingReservoirProvider;
 
-        public DefaultHistogramBuilder(DefaultSamplingReservoirProvider defaultSamplingReservoirProvider) { _defaultSamplingReservoirProvider = defaultSamplingReservoirProvider; }
+        public DefaultHistogramBuilder(DefaultSamplingReservoirProvider defaultSamplingReservoirProvider)
+        {
+            _defaultSamplingReservoirProvider = defaultSamplingReservoirProvider;
+        }
 
         /// <inheritdoc />
         public IHistogramMetric Build(Lazy<IReservoir> reservoir)

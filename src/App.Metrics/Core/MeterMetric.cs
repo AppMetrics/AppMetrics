@@ -6,9 +6,8 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Abstractions;
+using App.Metrics.Abstractions.Clock;
 using App.Metrics.Abstractions.Scheduling;
-using App.Metrics.Abstractions.Scheduling.Interfaces;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Data;
 

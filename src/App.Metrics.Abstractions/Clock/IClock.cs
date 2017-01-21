@@ -3,7 +3,7 @@
 
 using System;
 
-namespace App.Metrics.Abstractions
+namespace App.Metrics.Abstractions.Clock
 {
     public interface IClock
     {

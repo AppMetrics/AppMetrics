@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Extensions.Reservoirs.HdrHistogram.HdrHistogram;
 using App.Metrics.ReservoirSampling;
 

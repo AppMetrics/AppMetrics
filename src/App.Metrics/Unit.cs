@@ -4,12 +4,11 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
-using App.Metrics.Abstractions;
 
 namespace App.Metrics
 {
     [DebuggerDisplay("{" + nameof(Name) + "}")]
-    public struct Unit : IHideObjectMembers
+    public struct Unit
     {
         public static readonly Unit Bytes = new Unit("bytes");
         public static readonly Unit Calls = new Unit("Calls");

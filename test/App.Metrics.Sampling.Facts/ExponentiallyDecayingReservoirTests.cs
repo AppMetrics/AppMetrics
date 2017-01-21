@@ -2,13 +2,13 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System.Linq;
-using App.Metrics.ReservoirSampling;
-using App.Metrics.ReservoirSampling.ExponentialDecay;
 using App.Metrics.Abstractions;
-using App.Metrics.Abstractions.Internal;
-using App.Metrics.Abstractions.Scheduling.Interfaces;
+using App.Metrics.Abstractions.Clock;
+using App.Metrics.Abstractions.Scheduling;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
 using FluentAssertions;
 using Xunit;
+using TestTaskScheduler = App.Metrics.Abstractions.Internal.TestTaskScheduler;
 
 namespace App.Metrics.Facts
 {

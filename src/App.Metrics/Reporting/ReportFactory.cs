@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using App.Metrics.Abstractions.Scheduling;
-using App.Metrics.Abstractions.Scheduling.Interfaces;
 using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Reporting.Internal;
 using Microsoft.Extensions.Logging;

@@ -8,6 +8,8 @@ using App.Metrics.Internal;
 using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 using App.Metrics.Abstractions;
+using App.Metrics.Abstractions.Clock;
+using App.Metrics.Abstractions.ReservoirSampling;
 
 namespace App.Metrics.Facts.Fixtures
 {

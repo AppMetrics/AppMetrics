@@ -11,13 +11,6 @@ namespace App.Metrics.Core.Interfaces
     public interface IProvideMetricValues
     {
         /// <summary>
-        ///     Retrieves a snapshot of the current metrics values recorded.
-        /// </summary>
-        /// <param name="context">The metric context to retreive.</param>
-        /// <returns>Metrics data belonging to the specified context</returns>
-        MetricsContextValueSource GetForContext(string context);
-
-        /// <summary>
         ///     Returns the current metrics data for the context for which this provider has been created.
         /// </summary>
         /// <returns>
@@ -37,5 +30,12 @@ namespace App.Metrics.Core.Interfaces
         ///     A snapshot of the current metrics data filtered by the specified <see cref="IFilterMetrics" />
         /// </returns>
         MetricsDataValueSource Get(IFilterMetrics overrideGlobalFilter);
+
+        /// <summary>
+        ///     Retrieves a snapshot of the current metrics values recorded.
+        /// </summary>
+        /// <param name="context">The metric context to retreive.</param>
+        /// <returns>Metrics data belonging to the specified context</returns>
+        MetricsContextValueSource GetForContext(string context);
     }
 }

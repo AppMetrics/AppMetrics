@@ -25,6 +25,12 @@ namespace App.Metrics.Internal.Providers
         }
 
         /// <inheritdoc />
+        public MetricsDataValueSource Get() { return _registry.GetData(_globalFilter); }
+
+        /// <inheritdoc />
+        public MetricsDataValueSource Get(IFilterMetrics overrideGlobalFilter) { return _registry.GetData(overrideGlobalFilter); }
+
+        /// <inheritdoc />
         public MetricsContextValueSource GetForContext(string context)
         {
             var data = Get();
@@ -35,11 +41,5 @@ namespace App.Metrics.Internal.Providers
 
             return contextData.Contexts.Single();
         }
-
-        /// <inheritdoc />
-        public MetricsDataValueSource Get() { return _registry.GetData(_globalFilter); }
-
-        /// <inheritdoc />
-        public MetricsDataValueSource Get(IFilterMetrics overrideGlobalFilter) { return _registry.GetData(overrideGlobalFilter); }
     }
 }

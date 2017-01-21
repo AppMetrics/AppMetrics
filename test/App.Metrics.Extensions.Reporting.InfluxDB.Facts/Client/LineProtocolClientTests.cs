@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -33,11 +36,17 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Client
         {
             var httpMessageHandlerMock = new Mock<HttpMessageHandler>();
             httpMessageHandlerMock.Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)));
+                                  .Setup<Task<HttpResponseMessage>>(
+                                      "SendAsync",
+                                      ItExpr.IsAny<HttpRequestMessage>(),
+                                      ItExpr.IsAny<CancellationToken>())
+                                  .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)));
 
-            var client = new DefaultLineProtocolClient(new LoggerFactory(),
-                new InfluxDBSettings("influx", new Uri("http://localhost")), new HttpPolicy(), httpMessageHandlerMock.Object);
+            var client = new DefaultLineProtocolClient(
+                new LoggerFactory(),
+                new InfluxDBSettings("influx", new Uri("http://localhost")),
+                new HttpPolicy(),
+                httpMessageHandlerMock.Object);
 
             var response = await client.WriteAsync(_payload, CancellationToken.None);
 
@@ -49,16 +58,21 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Client
         {
             var httpMessageHandlerMock = new Mock<HttpMessageHandler>();
             httpMessageHandlerMock.Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)));
+                                  .Setup<Task<HttpResponseMessage>>(
+                                      "SendAsync",
+                                      ItExpr.IsAny<HttpRequestMessage>(),
+                                      ItExpr.IsAny<CancellationToken>())
+                                  .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)));
 
-            var client = new DefaultLineProtocolClient(new LoggerFactory(),
+            var client = new DefaultLineProtocolClient(
+                new LoggerFactory(),
                 new InfluxDBSettings("influx", new Uri("http://localhost"))
                 {
                     UserName = "admin",
                     Password = "password"
                 },
-                new HttpPolicy(), httpMessageHandlerMock.Object);
+                new HttpPolicy(),
+                httpMessageHandlerMock.Object);
 
             var response = await client.WriteAsync(_payload, CancellationToken.None);
 
@@ -70,7 +84,9 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Client
         {
             Action action = () =>
             {
-                var client = new DefaultLineProtocolClient(new LoggerFactory(), new InfluxDBSettings(null, new Uri("http://localhost")),
+                var client = new DefaultLineProtocolClient(
+                    new LoggerFactory(),
+                    new InfluxDBSettings(null, new Uri("http://localhost")),
                     new HttpPolicy());
             };
 
@@ -104,12 +120,18 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Client
         {
             var httpMessageHandlerMock = new Mock<HttpMessageHandler>();
             httpMessageHandlerMock.Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)));
+                                  .Setup<Task<HttpResponseMessage>>(
+                                      "SendAsync",
+                                      ItExpr.IsAny<HttpRequestMessage>(),
+                                      ItExpr.IsAny<CancellationToken>())
+                                  .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)));
             var policy = new HttpPolicy { FailuresBeforeBackoff = 3 };
 
-            var client = new DefaultLineProtocolClient(new LoggerFactory(),
-                new InfluxDBSettings("influx", new Uri("http://localhost")), policy, httpMessageHandlerMock.Object);
+            var client = new DefaultLineProtocolClient(
+                new LoggerFactory(),
+                new InfluxDBSettings("influx", new Uri("http://localhost")),
+                policy,
+                httpMessageHandlerMock.Object);
 
             foreach (var attempt in Enumerable.Range(0, 10))
             {
@@ -117,17 +139,23 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Client
 
                 // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
                 if (attempt <= policy.FailuresBeforeBackoff)
-                // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
+                    // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
                 {
                     httpMessageHandlerMock.Protected()
-                        .Verify<Task<HttpResponseMessage>>("SendAsync", Times.AtLeastOnce(), ItExpr.IsAny<HttpRequestMessage>(),
-                            ItExpr.IsAny<CancellationToken>());
+                                          .Verify<Task<HttpResponseMessage>>(
+                                              "SendAsync",
+                                              Times.AtLeastOnce(),
+                                              ItExpr.IsAny<HttpRequestMessage>(),
+                                              ItExpr.IsAny<CancellationToken>());
                 }
                 else
                 {
                     httpMessageHandlerMock.Protected()
-                        .Verify<Task<HttpResponseMessage>>("SendAsync", Times.AtMost(3), ItExpr.IsAny<HttpRequestMessage>(),
-                            ItExpr.IsAny<CancellationToken>());
+                                          .Verify<Task<HttpResponseMessage>>(
+                                              "SendAsync",
+                                              Times.AtMost(3),
+                                              ItExpr.IsAny<HttpRequestMessage>(),
+                                              ItExpr.IsAny<CancellationToken>());
                 }
             }
         }
@@ -137,12 +165,18 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Client
         {
             var httpMessageHandlerMock = new Mock<HttpMessageHandler>();
             httpMessageHandlerMock.Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)));
+                                  .Setup<Task<HttpResponseMessage>>(
+                                      "SendAsync",
+                                      ItExpr.IsAny<HttpRequestMessage>(),
+                                      ItExpr.IsAny<CancellationToken>())
+                                  .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)));
             var policy = new HttpPolicy { FailuresBeforeBackoff = 3, BackoffPeriod = TimeSpan.FromSeconds(1) };
 
-            var client = new DefaultLineProtocolClient(new LoggerFactory(),
-                new InfluxDBSettings("influx", new Uri("http://localhost")), policy, httpMessageHandlerMock.Object);
+            var client = new DefaultLineProtocolClient(
+                new LoggerFactory(),
+                new InfluxDBSettings("influx", new Uri("http://localhost")),
+                policy,
+                httpMessageHandlerMock.Object);
 
             foreach (var attempt in Enumerable.Range(0, 10))
             {
@@ -151,14 +185,20 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Client
                 if (attempt <= policy.FailuresBeforeBackoff)
                 {
                     httpMessageHandlerMock.Protected()
-                        .Verify<Task<HttpResponseMessage>>("SendAsync", Times.AtLeastOnce(), ItExpr.IsAny<HttpRequestMessage>(),
-                            ItExpr.IsAny<CancellationToken>());
+                                          .Verify<Task<HttpResponseMessage>>(
+                                              "SendAsync",
+                                              Times.AtLeastOnce(),
+                                              ItExpr.IsAny<HttpRequestMessage>(),
+                                              ItExpr.IsAny<CancellationToken>());
                 }
                 else
                 {
                     httpMessageHandlerMock.Protected()
-                        .Verify<Task<HttpResponseMessage>>("SendAsync", Times.AtMost(3), ItExpr.IsAny<HttpRequestMessage>(),
-                            ItExpr.IsAny<CancellationToken>());
+                                          .Verify<Task<HttpResponseMessage>>(
+                                              "SendAsync",
+                                              Times.AtMost(3),
+                                              ItExpr.IsAny<HttpRequestMessage>(),
+                                              ItExpr.IsAny<CancellationToken>());
                 }
             }
 
@@ -166,10 +206,16 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Client
 
             httpMessageHandlerMock = new Mock<HttpMessageHandler>();
             httpMessageHandlerMock.Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)));
-            client = new DefaultLineProtocolClient(new LoggerFactory(),
-                new InfluxDBSettings("influx", new Uri("http://localhost")), policy, httpMessageHandlerMock.Object);
+                                  .Setup<Task<HttpResponseMessage>>(
+                                      "SendAsync",
+                                      ItExpr.IsAny<HttpRequestMessage>(),
+                                      ItExpr.IsAny<CancellationToken>())
+                                  .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)));
+            client = new DefaultLineProtocolClient(
+                new LoggerFactory(),
+                new InfluxDBSettings("influx", new Uri("http://localhost")),
+                policy,
+                httpMessageHandlerMock.Object);
 
             var response = await client.WriteAsync(_payload, CancellationToken.None);
 

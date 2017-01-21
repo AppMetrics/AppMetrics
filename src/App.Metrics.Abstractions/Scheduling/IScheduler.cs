@@ -5,7 +5,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace App.Metrics.Abstractions.Scheduling.Interfaces
+namespace App.Metrics.Abstractions.Scheduling
 {
     public interface IScheduler : IDisposable
     {

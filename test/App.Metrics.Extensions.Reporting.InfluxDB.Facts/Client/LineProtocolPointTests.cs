@@ -1,15 +1,29 @@
-﻿using System;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using App.Metrics.Extensions.Reporting.InfluxDB.Client;
 using FluentAssertions;
-using Newtonsoft.Json;
 using Xunit;
 
 namespace App.Metrics.Extensions.Middleware.Integration.Facts.Client
 {
     public class LineProtocolPointTests
     {
+        [Fact]
+        public void at_least_one_field_is_required()
+        {
+            var fields = new Dictionary<string, object>();
+            Action action = () =>
+            {
+                var point = new LineProtocolPoint("measurement", fields, MetricTags.None);
+            };
+
+            action.ShouldThrow<ArgumentException>();
+        }
+
         [Fact]
         public void can_format_payload_correctly()
         {
@@ -40,19 +54,18 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Client
         {
             var textWriter = new StringWriter();
             var fields = new Dictionary<string, object>
-            {
-                { "field1key", "field1value" },
-                { "field2key", 2 },
-                { "field3key", false }
-
-            };
+                         {
+                             { "field1key", "field1value" },
+                             { "field2key", 2 },
+                             { "field3key", false }
+                         };
             var timestamp = new DateTime(2017, 1, 1, 1, 1, 1, DateTimeKind.Utc);
             var point = new LineProtocolPoint("measurement", fields, MetricTags.None, timestamp);
 
             point.Format(textWriter);
 
             textWriter.ToString().Should()
-                .Be("measurement field1key=\"field1value\",field2key=2i,field3key=f 1483232461000000000");
+                      .Be("measurement field1key=\"field1value\",field2key=2i,field3key=f 1483232461000000000");
         }
 
         [Fact]
@@ -67,18 +80,6 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Client
             point.Format(textWriter);
 
             textWriter.ToString().Should().Be("measurement,tagkey=tagvalue key=\"value\" 1483232461000000000");
-        }
-
-        [Fact]
-        public void at_least_one_field_is_required()
-        {
-            var fields = new Dictionary<string, object>();
-            Action action = () =>
-            {
-                var point = new LineProtocolPoint("measurement", fields, MetricTags.None);
-            };
-
-            action.ShouldThrow<ArgumentException>();
         }
 
         [Fact]

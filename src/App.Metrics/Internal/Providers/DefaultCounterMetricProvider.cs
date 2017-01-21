@@ -14,7 +14,7 @@ namespace App.Metrics.Internal.Providers
         private readonly IMetricsRegistry _registry;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultCounterMetricProvider" /> class.
+        ///     Initializes a new instance of the <see cref="DefaultCounterMetricProvider" /> class.
         /// </summary>
         /// <param name="counterBuilder">The counter builder.</param>
         /// <param name="registry">The registry.</param>

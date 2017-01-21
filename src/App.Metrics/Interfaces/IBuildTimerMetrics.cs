@@ -2,9 +2,9 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
-using App.Metrics.Abstractions;
+using App.Metrics.Abstractions.Clock;
+using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Core.Interfaces;
-using App.Metrics.ReservoirSampling;
 
 namespace App.Metrics.Interfaces
 {

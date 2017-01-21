@@ -4,13 +4,12 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using App.Metrics.Abstractions.Scheduling;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Facts.Reporting.Helpers;
 using App.Metrics.Reporting;
 using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Reporting.Internal;
-using App.Metrics.Abstractions.Scheduling;
-using App.Metrics.Abstractions.Scheduling.Interfaces;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -27,7 +26,7 @@ namespace App.Metrics.Facts.Reporting
         [Fact]
         public void can_generate_report_successfully()
         {
-            var loggerFactory = new LoggerFactory();            
+            var loggerFactory = new LoggerFactory();
             var factory = new ReportFactory(_fixture.Metrics, loggerFactory);
             factory.AddProvider(new TestReportProvider(true, TimeSpan.FromMilliseconds(10)));
             var scheduler = new DefaultTaskScheduler();
@@ -60,7 +59,7 @@ namespace App.Metrics.Facts.Reporting
         {
             Action action = () =>
             {
-                var loggerFactory = new LoggerFactory();                
+                var loggerFactory = new LoggerFactory();
                 var scheduler = new DefaultTaskScheduler();
                 var factory = new ReportFactory(_fixture.Metrics, loggerFactory);
                 var reporter = new Reporter(factory, _fixture.Metrics, scheduler, null);
@@ -85,7 +84,7 @@ namespace App.Metrics.Facts.Reporting
         {
             Action action = () =>
             {
-                var loggerFactory = new LoggerFactory();                
+                var loggerFactory = new LoggerFactory();
                 var scheduler = new DefaultTaskScheduler();
                 var reporter = new Reporter(null, _fixture.Metrics, scheduler, loggerFactory);
             };
@@ -98,7 +97,7 @@ namespace App.Metrics.Facts.Reporting
         {
             Action action = () =>
             {
-                var loggerFactory = new LoggerFactory();                
+                var loggerFactory = new LoggerFactory();
                 var factory = new ReportFactory(_fixture.Metrics, loggerFactory);
                 var reporter = new Reporter(factory, _fixture.Metrics, null, loggerFactory);
             };
@@ -110,7 +109,7 @@ namespace App.Metrics.Facts.Reporting
         public void schedules_reports_to_run_at_the_specified_interval()
         {
             var interval = TimeSpan.FromSeconds(60);
-            var loggerFactory = new LoggerFactory();            
+            var loggerFactory = new LoggerFactory();
             var factory = new ReportFactory(_fixture.Metrics, loggerFactory);
             var provider = new Mock<IReporterProvider>();
             var scheduler = new Mock<IScheduler>();
@@ -134,7 +133,7 @@ namespace App.Metrics.Facts.Reporting
         [Fact]
         public void when_metric_report_fails_should_not_throw()
         {
-            var loggerFactory = new LoggerFactory();            
+            var loggerFactory = new LoggerFactory();
             var factory = new ReportFactory(_fixture.Metrics, loggerFactory);
             factory.AddProvider(new TestReportProvider(false, TimeSpan.FromMilliseconds(10), new Exception()));
             var scheduler = new DefaultTaskScheduler();
@@ -150,7 +149,7 @@ namespace App.Metrics.Facts.Reporting
         [Fact]
         public void when_metric_reporter_fails_continues_to_retry()
         {
-            var loggerFactory = new LoggerFactory();            
+            var loggerFactory = new LoggerFactory();
             var factory = new ReportFactory(_fixture.Metrics, loggerFactory);
             factory.AddProvider(new TestReportProvider(false, TimeSpan.FromMilliseconds(10)));
             var scheduler = new DefaultTaskScheduler();
@@ -166,7 +165,7 @@ namespace App.Metrics.Facts.Reporting
         [Fact]
         public void when_null_providers_doest_throw()
         {
-            var loggerFactory = new LoggerFactory();            
+            var loggerFactory = new LoggerFactory();
             var factory = new ReportFactory(_fixture.Metrics, loggerFactory);
             var scheduler = new Mock<IScheduler>();
             var reporter = new Reporter(factory, _fixture.Metrics, scheduler.Object, loggerFactory);
@@ -178,7 +177,7 @@ namespace App.Metrics.Facts.Reporting
         [Fact]
         public void when_provider_added_the_associated_metric_reporter_is_created()
         {
-            var loggerFactory = new LoggerFactory();            
+            var loggerFactory = new LoggerFactory();
             var factory = new ReportFactory(_fixture.Metrics, loggerFactory);
             var provider = new Mock<IReporterProvider>();
             var scheduler = new Mock<IScheduler>();

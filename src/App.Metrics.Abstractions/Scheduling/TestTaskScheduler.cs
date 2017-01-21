@@ -4,9 +4,9 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Abstractions.Scheduling.Interfaces;
+using App.Metrics.Abstractions.Clock;
 
-namespace App.Metrics.Abstractions.Test
+namespace App.Metrics.Abstractions.Scheduling
 {
     internal sealed class TestTaskScheduler : IScheduler
     {

@@ -3,7 +3,7 @@
 
 using System;
 using App.Metrics;
-using App.Metrics.Abstractions;
+using App.Metrics.Abstractions.Clock;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
 using App.Metrics.Core.Interfaces;
