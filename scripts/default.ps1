@@ -91,7 +91,7 @@ task RunTests -depends Restore, Clean {
 		$testProjects | foreach {
 			Write-Output "Running tests for '$_'"	
 			try {
-				exec { & $codeCoverage "-target:C:\Program Files\dotnet\dotnet.exe" -targetargs:" test -c Release $_" -mergeoutput -hideskipped:All -output:"$artifactsCodeCoverageRoot\coverage.xml" -oldStyle -filter:"+[App.Metrics*]* -[xunit.*]* -[*.Facts]* -[*.HdrHistogram]" -excludebyattribute:"*.AppMetricsExcludeFromCodeCoverage*" -excludebyfile:"*\*Designer.cs;*\*.g.cs;*\*.g.i.cs" -register:user -skipautoprops -safemode:off -returntargetcode }
+				exec { & $codeCoverage "-target:C:\Program Files\dotnet\dotnet.exe" -targetargs:" test -c Release $_" -mergeoutput -hideskipped:All -output:"$artifactsCodeCoverageRoot\coverage.xml" -oldStyle -filter:"+[App.Metrics*]* -[xunit.*]* -[*.Facts]* -[*.HdrHistogram]*" -excludebyattribute:"*.AppMetricsExcludeFromCodeCoverage*" -excludebyfile:"*\*Designer.cs;*\*.g.cs;*\*.g.i.cs" -register:user -skipautoprops -safemode:off -returntargetcode }
 			}
 			catch {
 				$script:buildSuccess = $false
