@@ -2,11 +2,11 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
+using App.Metrics.Abstractions;
 using App.Metrics.Concurrency;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Data;
-using App.Metrics.Sampling.Interfaces;
-using App.Metrics.Utils;
+using App.Metrics.ReservoirSampling;
 
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
@@ -24,19 +24,6 @@ namespace App.Metrics.Core
         /// <summary>
         ///     Initializes a new instance of the <see cref="TimerMetric" /> class.
         /// </summary>
-        /// <param name="samplingType">Type of the sampling to use to generate the resevoir of values.</param>
-        /// <param name="sampleSize">The number of samples to keep in the sampling reservoir</param>
-        /// <param name="alpha">
-        ///     The alpha value, e.g 0.015 will heavily biases the reservoir to the past 5 mins of measurements. The higher the
-        ///     value the more biased the reservoir will be towards newer values.
-        /// </param>
-        /// <param name="clock">The clock to use to measure processing duration.</param>
-        public TimerMetric(SamplingType samplingType, int sampleSize, double alpha, IClock clock)
-            : this(new HistogramMetric(samplingType, sampleSize, alpha), new MeterMetric(clock), clock) { }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="TimerMetric" /> class.
-        /// </summary>
         /// <param name="histogram">The histogram implementation to use.</param>
         /// <param name="clock">The clock to use to measure processing duration.</param>
         public TimerMetric(IHistogramMetric histogram, IClock clock)
@@ -47,22 +34,17 @@ namespace App.Metrics.Core
         /// </summary>
         /// <param name="reservoir">The reservoir implementation to use for sampling values to generate the histogram.</param>
         /// <param name="clock">The clock to use to measure processing duration.</param>
-        public TimerMetric(IReservoir reservoir, IClock clock)
+        public TimerMetric(Lazy<IReservoir> reservoir, IClock clock)
             : this(new HistogramMetric(reservoir), new MeterMetric(clock), clock) { }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="TimerMetric" /> class.
         /// </summary>
-        /// <param name="samplingType">Type of the sampling to use to generate the resevoir of values.</param>
-        /// <param name="sampleSize">The number of samples to keep in the sampling reservoir used by the histogram</param>
-        /// <param name="alpha">
-        ///     The alpha value, e.g 0.015 will heavily biases the reservoir to the past 5 mins of measurements. The higher the
-        ///     value the more biased the reservoir will be towards newer values.
-        /// </param>
+        /// <param name="reservoir">The reservoir to use for sampling within the histogram.</param>
         /// <param name="meter">The meter implementation to use to genreate the rate of events over time.</param>
         /// <param name="clock">The clock to use to measure processing duration.</param>
-        public TimerMetric(SamplingType samplingType, int sampleSize, double alpha, IMeterMetric meter, IClock clock)
-            : this(new HistogramMetric(samplingType, sampleSize, alpha), meter, clock) { }
+        public TimerMetric(Lazy<IReservoir> reservoir, IMeterMetric meter, IClock clock)
+            : this(new HistogramMetric(reservoir), meter, clock) { }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="TimerMetric" /> class.

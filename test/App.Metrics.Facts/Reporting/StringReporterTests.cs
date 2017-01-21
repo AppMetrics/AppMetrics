@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Apdex;
@@ -6,10 +9,11 @@ using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.Facts.Reporting.Helpers;
 using App.Metrics.Internal;
-using App.Metrics.Internal.Test;
 using App.Metrics.Reporting;
-using App.Metrics.Sampling;
-using App.Metrics.Utils;
+using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
+using App.Metrics.Abstractions;
+using App.Metrics.Abstractions.Internal;
 using Castle.Core.Internal;
 using FluentAssertions;
 using Xunit;
@@ -18,14 +22,31 @@ namespace App.Metrics.Facts.Reporting
 {
     public class StringReporterTests
     {
+        private readonly Lazy<IReservoir> _defaultReservoir;
+
+        public StringReporterTests()
+        {
+            var clock = new TestClock();
+            _defaultReservoir = new Lazy<IReservoir>(
+                () => new DefaultForwardDecayingReservoir(
+                    Constants.ReservoirSampling.DefaultSampleSize,
+                    Constants.ReservoirSampling.DefaultExponentialDecayFactor,
+                    clock,
+                    new TestTaskScheduler(clock)));
+        }
+
         [Fact]
         public void can_report_apdex()
         {
             var expected = StringReporterSamples.Apdex.ExtractStringReporterSampleFromResourceFile();
-            var clock = new TestClock();
             var sr = new StringReporter();
-            var reservoir = new ExponentiallyDecayingReservoir(Constants.ReservoirSampling.DefaultSampleSize,
-                Constants.ReservoirSampling.DefaultExponentialDecayFactor, clock, new TestTaskScheduler(clock));
+            var clock = new TestClock();
+            var reservoir = new Lazy<IReservoir>(
+                () => new DefaultForwardDecayingReservoir(
+                    Constants.ReservoirSampling.DefaultSampleSize,
+                    Constants.ReservoirSampling.DefaultExponentialDecayFactor,
+                    clock,
+                    new TestTaskScheduler(clock)));
             var metric = new ApdexMetric(new ApdexProvider(reservoir, Constants.ReservoirSampling.DefaultApdexTSeconds), clock, true);
 
             metric.Track(1000);
@@ -76,19 +97,19 @@ namespace App.Metrics.Facts.Reporting
             var globalTags = new GlobalMetricTags(new Dictionary<string, string> { { "tag_key", "tag_value" } });
 
             var healthyChecks = new[]
-            {
-                new HealthCheck.Result("healthy check", HealthCheckResult.Healthy("healthy message"))
-            }.AsEnumerable();
+                                {
+                                    new HealthCheck.Result("healthy check", HealthCheckResult.Healthy("healthy message"))
+                                }.AsEnumerable();
 
             var degradedChecks = new[]
-            {
-                new HealthCheck.Result("degraded check", HealthCheckResult.Degraded("degraded message"))
-            }.AsEnumerable();
+                                 {
+                                     new HealthCheck.Result("degraded check", HealthCheckResult.Degraded("degraded message"))
+                                 }.AsEnumerable();
 
             var unhealthyChecks = new[]
-            {
-                new HealthCheck.Result("unhealthy check", HealthCheckResult.Unhealthy("unhealthy message"))
-            }.AsEnumerable();
+                                  {
+                                      new HealthCheck.Result("unhealthy check", HealthCheckResult.Unhealthy("unhealthy message"))
+                                  }.AsEnumerable();
 
             var sr = new StringReporter();
 
@@ -102,8 +123,7 @@ namespace App.Metrics.Facts.Reporting
         {
             var expected = StringReporterSamples.Histograms.ExtractStringReporterSampleFromResourceFile();
             var sr = new StringReporter();
-            var metric = new HistogramMetric(SamplingType.ExponentiallyDecaying, Constants.ReservoirSampling.DefaultSampleSize,
-                Constants.ReservoirSampling.DefaultExponentialDecayFactor);
+            var metric = new HistogramMetric(_defaultReservoir);
 
             metric.Update(1000, "value1");
             metric.Update(2000, "value2");
@@ -133,15 +153,21 @@ namespace App.Metrics.Facts.Reporting
             var expected = StringReporterSamples.Timers.ExtractStringReporterSampleFromResourceFile();
             var sr = new StringReporter();
             var clock = new TestClock();
-            var histogram = new HistogramMetric(SamplingType.ExponentiallyDecaying, Constants.ReservoirSampling.DefaultSampleSize,
-                Constants.ReservoirSampling.DefaultExponentialDecayFactor);
+            var histogram = new HistogramMetric(_defaultReservoir);
             var metric = new TimerMetric(histogram, clock);
 
             metric.Record(1000, TimeUnit.Milliseconds, "value1");
             metric.Record(2000, TimeUnit.Milliseconds, "value2");
 
-            sr.ReportMetric("test", new TimerValueSource("timer_name", metric, Unit.None, TimeUnit.Milliseconds,
-                TimeUnit.Milliseconds, MetricTags.None));
+            sr.ReportMetric(
+                "test",
+                new TimerValueSource(
+                    "timer_name",
+                    metric,
+                    Unit.None,
+                    TimeUnit.Milliseconds,
+                    TimeUnit.Milliseconds,
+                    MetricTags.None));
 
             AssertReportResult(sr.Result, expected);
         }

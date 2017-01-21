@@ -9,7 +9,7 @@
     "BenchmarkDotNet.Core": "0.10.0",
     "App.Metrics": {
       "target": "project"
-    }
+    }    
   },
   "frameworks": {
     "netcoreapp1.1": {

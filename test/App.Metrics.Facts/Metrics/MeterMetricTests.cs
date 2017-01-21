@@ -1,6 +1,6 @@
 ﻿using App.Metrics.Core;
-using App.Metrics.Internal.Test;
-using App.Metrics.Utils;
+using App.Metrics.Abstractions;
+using App.Metrics.Abstractions.Internal;
 using FluentAssertions;
 using Xunit;
 

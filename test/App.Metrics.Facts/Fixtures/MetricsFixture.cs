@@ -11,7 +11,7 @@ using App.Metrics.Internal;
 using App.Metrics.Internal.Builders;
 using App.Metrics.Internal.Managers;
 using App.Metrics.Internal.Providers;
-using App.Metrics.Utils;
+using App.Metrics.Abstractions;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Facts.Fixtures
@@ -24,7 +24,7 @@ namespace App.Metrics.Facts.Fixtures
         {
             var healthFactoryLogger = _loggerFactory.CreateLogger<HealthCheckFactory>();
             var clock = new TestClock();
-            var options = new AppMetricsOptions { DefaultSamplingType = SamplingType.LongTerm };
+            var options = new AppMetricsOptions();
             Func<string, IMetricContextRegistry> newContextRegistry = name => new DefaultMetricContextRegistry(name);
             var registry = new DefaultMetricsRegistry(_loggerFactory, options, clock, new EnvironmentInfoProvider(), newContextRegistry);
             var healthCheckFactory = new HealthCheckFactory(healthFactoryLogger);

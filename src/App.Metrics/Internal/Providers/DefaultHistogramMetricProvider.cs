@@ -25,15 +25,7 @@ namespace App.Metrics.Internal.Providers
         }
 
         /// <inheritdoc />
-        public IHistogram Instance(HistogramOptions options)
-        {
-            if (options.WithReservoir != null)
-            {
-                return Instance(options, () => _histogramBuilder.Build(options.WithReservoir()));
-            }
-
-            return Instance(options, () => _histogramBuilder.Build(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor));
-        }
+        public IHistogram Instance(HistogramOptions options) { return Instance(options, () => _histogramBuilder.Build(options.Reservoir)); }
 
         /// <inheritdoc />
         public IHistogram Instance<T>(HistogramOptions options, Func<T> builder)

@@ -3,6 +3,7 @@
 
 using System;
 using App.Metrics;
+using App.Metrics.Abstractions;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
 using App.Metrics.Core.Interfaces;
@@ -17,7 +18,6 @@ using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Reporting.Internal;
 using App.Metrics.Serialization;
 using App.Metrics.Serialization.Interfaces;
-using App.Metrics.Utils;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -45,6 +45,8 @@ namespace Microsoft.Extensions.DependencyInjection
                     var globalTags = provider.GetRequiredService<AppMetricsOptions>().GlobalTags;
                     return context => new DefaultMetricContextRegistry(context, new GlobalMetricTags(globalTags));
                 });
+
+            builder.Services.TryAddSingleton(provider => new DefaultSamplingReservoirProvider());
             builder.Services.TryAddSingleton<IReportFactory, NoOpReportFactory>();
             builder.Services.TryAddSingleton<IHealthCheckFactory, NoOpHealthCheckFactory>();
             builder.Services.TryAddSingleton<IClock, StopwatchClock>();

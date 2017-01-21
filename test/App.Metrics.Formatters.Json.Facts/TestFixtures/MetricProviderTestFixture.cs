@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using App.Metrics.Data;
-using App.Metrics.Utils;
+using App.Metrics.Abstractions;
 
 namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 {

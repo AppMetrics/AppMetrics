@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics;
+using App.Metrics.Abstractions;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
 using App.Metrics.DependencyInjection.Internal;
@@ -12,7 +13,7 @@ using App.Metrics.Internal;
 using App.Metrics.Reporting;
 using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Reporting.Internal;
-using App.Metrics.Utils;
+using App.Metrics.ReservoirSampling;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 
@@ -27,6 +28,19 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             builder.Services.Replace(ServiceDescriptor.Singleton<IClock>(new T()));
 
+            return builder;
+        }
+
+        /// <summary>
+        ///     Adds the default reservoir which will be applied to all metrics using sampling that do not have an
+        ///     <see cref="IReservoir" /> set explicitly.
+        /// </summary>
+        /// <param name="builder">The metrics host builder.</param>
+        /// <param name="reservoirBuilder">The reservoir builder to use as the default reservoir for sampling.</param>
+        /// <returns>The same instance of the metrics host builder.</returns>
+        public static IMetricsHostBuilder AddDefaultReservoir(this IMetricsHostBuilder builder, Func<Lazy<IReservoir>> reservoirBuilder)
+        {
+            builder.Services.Remove(ServiceDescriptor.Singleton(new DefaultSamplingReservoirProvider(reservoirBuilder)));
             return builder;
         }
 

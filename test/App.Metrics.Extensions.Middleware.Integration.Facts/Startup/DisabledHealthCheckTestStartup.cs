@@ -1,3 +1,6 @@
+// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
 using App.Metrics.Configuration;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using Microsoft.AspNetCore.Builder;
@@ -17,19 +20,18 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
         public void ConfigureServices(IServiceCollection services)
         {
             var appMetricsOptions = new AppMetricsOptions
-            {
-                DefaultContextLabel = "testing",
-                MetricsEnabled = true,
-                DefaultSamplingType = SamplingType.LongTerm
-            };
+                                    {
+                                        DefaultContextLabel = "testing",
+                                        MetricsEnabled = true
+                                    };
 
             var aspNetMetricsOptions = new AspNetMetricsOptions
-            {
-                MetricsTextEndpointEnabled = true,
-                HealthEndpointEnabled = false,
-                MetricsEndpointEnabled = true,
-                PingEndpointEnabled = true
-            };
+                                       {
+                                           MetricsTextEndpointEnabled = true,
+                                           HealthEndpointEnabled = false,
+                                           MetricsEndpointEnabled = true,
+                                           PingEndpointEnabled = true
+                                       };
 
             SetupServices(services, appMetricsOptions, aspNetMetricsOptions);
         }

@@ -2,51 +2,32 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
-using App.Metrics.Sampling.Interfaces;
+using App.Metrics.ReservoirSampling;
 
 namespace App.Metrics.Core.Options
 {
     /// <summary>
-    ///     Configuration of a Metric that will be measured using a specified <see cref="SamplingType" />
+    ///     Configuration of a Metric that will be measured using a reservoir sampling type
     /// </summary>
     public abstract class MetricValueWithSamplingOption : MetricValueOptions
     {
         /// <summary>
-        ///     Gets or sets the exponential decay factor; the higher this is, the more biased the reservoir will be towards newer
-        ///     values.
-        ///     This only applys when an <see cref="SamplingType" /> of ExponentiallyDecaying.
+        ///     Gets or sets an <see cref="IReservoir" /> implementation for sampling.
         /// </summary>
         /// <value>
-        ///     The exponential decay factor.
-        /// </value>
-        public double ExponentialDecayFactor { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the number of samples to keep in the sampling reservoir
-        /// </summary>
-        /// <value>
-        ///     The size of the sample.
-        /// </value>
-        public int SampleSize { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the <see cref="SamplingType" /> to use for the metric being measured.
-        /// </summary>
-        /// <value>
-        ///     The type of the sampling.
+        ///     The reservoir instance to use for sampling.
         /// </value>
         /// <remarks>
-        ///     Sampling avoid unbound memory usage, allows metrics to be generated from a reservoir of values.
+        ///     Reservoir sampling avoids unbound memory usage, allows metrics to be generated from a reservoir of values.
         /// </remarks>
-        public SamplingType SamplingType { get; set; }
+        public Lazy<IReservoir> Reservoir { get; set; }
 
         /// <summary>
-        ///     Gets or sets an <see cref="IReservoir" /> implementation to be used instead of the <see cref="SamplingType" />
-        ///     specified
+        /// Gets a value indicating whether this instance has a reservoir set.
         /// </summary>
         /// <value>
-        ///     The with reservoir.
+        /// <c>true</c> if this instance has reservoir; otherwise, <c>false</c>.
         /// </value>
-        public Func<IReservoir> WithReservoir { get; set; }
+        public bool HasReservoir => Reservoir != null;
     }
 }

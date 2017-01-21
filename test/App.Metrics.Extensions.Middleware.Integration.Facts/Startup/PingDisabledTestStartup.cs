@@ -1,5 +1,6 @@
 using App.Metrics.Configuration;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
+using App.Metrics.Internal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,12 +17,12 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
 
         public void ConfigureServices(IServiceCollection services)
         {
+
             var appMetricsOptions = new AppMetricsOptions
                                     {
                                         DefaultContextLabel = "testing",
-                                        MetricsEnabled = true,
-                                        DefaultSamplingType = SamplingType.LongTerm
-                                    };
+                                        MetricsEnabled = true
+            };
 
             var aspNetMetricsOptions = new AspNetMetricsOptions
                                        {

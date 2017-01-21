@@ -1,4 +1,7 @@
-﻿using App.Metrics.Configuration;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using App.Metrics.Configuration;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,15 +19,12 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var appMetricsOptions = new AppMetricsOptions
-            {
-                DefaultSamplingType = SamplingType.LongTerm
-            };
+            var appMetricsOptions = new AppMetricsOptions();
 
             var aspNetMetricsOptions = new AspNetMetricsOptions
-            {
-                MetricsTextEndpointEnabled = false
-            };
+                                       {
+                                           MetricsTextEndpointEnabled = false
+                                       };
 
             SetupServices(services, appMetricsOptions, aspNetMetricsOptions);
         }

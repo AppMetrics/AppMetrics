@@ -1,40 +1,49 @@
 ﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
+using System;
+using App.Metrics.Abstractions;
 using App.Metrics.Apdex;
 using App.Metrics.Core;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Interfaces;
-using App.Metrics.Sampling.Interfaces;
-using App.Metrics.Utils;
+using App.Metrics.ReservoirSampling;
 
 namespace App.Metrics.Internal.Builders
 {
     public class DefaultApdexBuilder : IBuildApdexMetrics
     {
-        /// <inheritdoc />
-        public IApdexMetric Build(
-            SamplingType samplingType,
-            int sampleSize,
-            double exponentialDecayFactor,
-            double apdexTSeconds,
-            bool allowWarmup,
-            IClock clock)
+        private readonly DefaultSamplingReservoirProvider _defaultSamplingReservoirProvider;
+
+        public DefaultApdexBuilder(DefaultSamplingReservoirProvider defaultSamplingReservoirProvider)
         {
-            return new ApdexMetric(
-                samplingType,
-                sampleSize,
-                exponentialDecayFactor,
-                clock,
-                apdexTSeconds,
-                allowWarmup);
+            _defaultSamplingReservoirProvider = defaultSamplingReservoirProvider;
         }
 
         /// <inheritdoc />
         public IApdexMetric Build(
-            IReservoir reservoir,
             double apdexTSeconds,
             bool allowWarmup,
-            IClock clock) { return new ApdexMetric(new ApdexProvider(reservoir, apdexTSeconds), clock, allowWarmup); }
+            IClock clock)
+        {
+            var reservoir = _defaultSamplingReservoirProvider.Instance();
+
+            return new ApdexMetric(new ApdexProvider(reservoir, apdexTSeconds), clock, allowWarmup);
+        }
+
+        /// <inheritdoc />
+        public IApdexMetric Build(
+            Lazy<IReservoir> reservoir,
+            double apdexTSeconds,
+            bool allowWarmup,
+            IClock clock)
+        {
+            if (reservoir == null)
+            {
+                reservoir = _defaultSamplingReservoirProvider.Instance();
+            }
+
+            return new ApdexMetric(new ApdexProvider(reservoir, apdexTSeconds), clock, allowWarmup);
+        }
     }
 }

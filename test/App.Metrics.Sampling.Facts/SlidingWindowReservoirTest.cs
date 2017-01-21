@@ -1,4 +1,7 @@
-﻿using App.Metrics.Sampling;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using App.Metrics.ReservoirSampling.SlidingWindow;
 using FluentAssertions;
 using Xunit;
 
@@ -6,7 +9,7 @@ namespace App.Metrics.Facts
 {
     public class SlidingWindowReservoirTest
     {
-        private readonly SlidingWindowReservoir _reservoir = new SlidingWindowReservoir(3);
+        private readonly DefaultSlidingWindowReservoir _reservoir = new DefaultSlidingWindowReservoir(3);
 
         [Fact]
         public void can_store_small_sample()

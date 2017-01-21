@@ -2,10 +2,10 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
+using App.Metrics.Abstractions;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Options;
 using App.Metrics.Interfaces;
-using App.Metrics.Utils;
 
 namespace App.Metrics.Internal.Providers
 {
@@ -28,21 +28,7 @@ namespace App.Metrics.Internal.Providers
         /// <inheritdoc />
         public IApdex Instance(ApdexOptions options)
         {
-            if (options.WithReservoir != null)
-            {
-                return Instance(options, () => _apdexBuidler.Build(options.WithReservoir(), options.ApdexTSeconds, options.AllowWarmup, _clock));
-            }
-
-            return _registry.Apdex(
-                options,
-                () =>
-                    _apdexBuidler.Build(
-                        options.SamplingType,
-                        options.SampleSize,
-                        options.ExponentialDecayFactor,
-                        options.ApdexTSeconds,
-                        options.AllowWarmup,
-                        _clock));
+            return Instance(options, () => _apdexBuidler.Build(options.Reservoir, options.ApdexTSeconds, options.AllowWarmup, _clock));
         }
 
         /// <inheritdoc />

@@ -5,7 +5,9 @@ using App.Metrics.Core;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Facts.Apdex;
 using App.Metrics.Internal;
-using App.Metrics.Utils;
+using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
+using App.Metrics.Abstractions;
 
 namespace App.Metrics.Facts.Fixtures
 {
@@ -17,8 +19,7 @@ namespace App.Metrics.Facts.Fixtures
             var maxSatifiedDurationMilliseconds = (int)(apdexTSeconds * 1000);
             var minToleratedDurationMilliseconds = maxSatifiedDurationMilliseconds + 1;
             var maxToleratedDurationMilliseconds = 4 * (int)(apdexTSeconds * 1000);
-            var minFrustratedDurationMilliseconds = maxToleratedDurationMilliseconds + 1;
-            const int sampleSize = 1024;
+            var minFrustratedDurationMilliseconds = maxToleratedDurationMilliseconds + 1;            
             var clock = new TestClock();
             var random = new Random();
 
@@ -29,9 +30,9 @@ namespace App.Metrics.Facts.Fixtures
                 Enumerable.Range(1, frustratingRequest)
                     .Select(x => random.Next(minFrustratedDurationMilliseconds, minFrustratedDurationMilliseconds * 2));
 
+            var reservoir = new Lazy<IReservoir>(() => new DefaultForwardDecayingReservoir());
 
-            var apdexMetric = new ApdexMetric(SamplingType.ExponentiallyDecaying, sampleSize,
-                Constants.ReservoirSampling.DefaultExponentialDecayFactor, clock, apdexTSeconds, false);
+            var apdexMetric = new ApdexMetric(reservoir, apdexTSeconds, clock, false);
 
             if (testSamplePreference == TestSamplePreference.Satisified)
             {

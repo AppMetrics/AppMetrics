@@ -1,9 +1,12 @@
-﻿using System.Linq;
-using App.Metrics.Internal;
-using App.Metrics.Internal.Test;
-using App.Metrics.Sampling;
-using App.Metrics.Scheduling.Interfaces;
-using App.Metrics.Utils;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System.Linq;
+using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
+using App.Metrics.Abstractions;
+using App.Metrics.Abstractions.Internal;
+using App.Metrics.Abstractions.Scheduling.Interfaces;
 using FluentAssertions;
 using Xunit;
 
@@ -14,15 +17,12 @@ namespace App.Metrics.Facts
         private readonly IClock _clock = new TestClock();
         private readonly IScheduler _scheduler;
 
-        public ExponentiallyDecayingReservoirTests()
-        {
-            _scheduler = new TestTaskScheduler(_clock);
-        }
+        public ExponentiallyDecayingReservoirTests() { _scheduler = new TestTaskScheduler(_clock); }
 
         [Fact]
         public void EDR_HeavilyBiasedReservoirOf100OutOf1000Elements()
         {
-            var reservoir = new ExponentiallyDecayingReservoir(1000, 0.01);
+            var reservoir = new DefaultForwardDecayingReservoir(1000, 0.01);
             for (var i = 0; i < 100; i++)
             {
                 reservoir.Update(i);
@@ -37,7 +37,7 @@ namespace App.Metrics.Facts
         [Fact]
         public void EDR_longPeriodsOfInactivityShouldNotCorruptSamplingState()
         {
-            var reservoir = new ExponentiallyDecayingReservoir(10, 0.015, _clock, _scheduler);
+            var reservoir = new DefaultForwardDecayingReservoir(10, 0.015, _clock, _scheduler);
 
             // add 1000 values at a rate of 10 values/second
             for (var i = 0; i < 1000; i++)
@@ -75,9 +75,11 @@ namespace App.Metrics.Facts
         [Fact]
         public void EDR_QuantiliesShouldBeBasedOnWeights()
         {
-            var reservoir = new ExponentiallyDecayingReservoir(Constants.ReservoirSampling.DefaultSampleSize,
+            var reservoir = new DefaultForwardDecayingReservoir(
+                Constants.ReservoirSampling.DefaultSampleSize,
                 Constants.ReservoirSampling.DefaultExponentialDecayFactor,
-                _clock, _scheduler);
+                _clock,
+                _scheduler);
 
             for (var i = 0; i < 40; i++)
             {
@@ -103,9 +105,11 @@ namespace App.Metrics.Facts
         [Fact]
         public void EDR_RecordsUserValue()
         {
-            var reservoir = new ExponentiallyDecayingReservoir(Constants.ReservoirSampling.DefaultSampleSize,
+            var reservoir = new DefaultForwardDecayingReservoir(
+                Constants.ReservoirSampling.DefaultSampleSize,
                 Constants.ReservoirSampling.DefaultExponentialDecayFactor,
-                _clock, _scheduler);
+                _clock,
+                _scheduler);
 
             reservoir.Update(2L, "B");
             reservoir.Update(1L, "A");
@@ -117,7 +121,7 @@ namespace App.Metrics.Facts
         [Fact]
         public void EDR_ReservoirOf100OutOf1000Elements()
         {
-            var reservoir = new ExponentiallyDecayingReservoir(100, 0.99);
+            var reservoir = new DefaultForwardDecayingReservoir(100, 0.99);
             for (var i = 0; i < 1000; i++)
             {
                 reservoir.Update(i);
@@ -132,7 +136,7 @@ namespace App.Metrics.Facts
         [Fact]
         public void EDR_ReservoirOf100OutOf10Elements()
         {
-            var reservoir = new ExponentiallyDecayingReservoir(100, 0.99);
+            var reservoir = new DefaultForwardDecayingReservoir(100, 0.99);
             for (var i = 0; i < 10; i++)
             {
                 reservoir.Update(i);
@@ -147,9 +151,11 @@ namespace App.Metrics.Facts
         [Fact]
         public void EDR_SpotFall()
         {
-            var reservoir = new ExponentiallyDecayingReservoir(Constants.ReservoirSampling.DefaultSampleSize,
+            var reservoir = new DefaultForwardDecayingReservoir(
+                Constants.ReservoirSampling.DefaultSampleSize,
                 Constants.ReservoirSampling.DefaultExponentialDecayFactor,
-                _clock, _scheduler);
+                _clock,
+                _scheduler);
 
             var valuesRatePerMinute = 10;
             var valuesIntervalMillis = (int)(TimeUnit.Minutes.ToMilliseconds(1) / valuesRatePerMinute);
@@ -174,9 +180,11 @@ namespace App.Metrics.Facts
         [Fact]
         public void EDR_SpotLift()
         {
-            var reservoir = new ExponentiallyDecayingReservoir(Constants.ReservoirSampling.DefaultSampleSize,
+            var reservoir = new DefaultForwardDecayingReservoir(
+                Constants.ReservoirSampling.DefaultSampleSize,
                 Constants.ReservoirSampling.DefaultExponentialDecayFactor,
-                _clock, _scheduler);
+                _clock,
+                _scheduler);
 
             var valuesRatePerMinute = 10;
             var valuesIntervalMillis = (int)(TimeUnit.Minutes.ToMilliseconds(1) / valuesRatePerMinute);

@@ -1,4 +1,7 @@
-﻿using App.Metrics.Configuration;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using App.Metrics.Configuration;
 using App.Metrics.Core.Options;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using Microsoft.AspNetCore.Builder;
@@ -20,49 +23,51 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
         public void ConfigureServices(IServiceCollection services)
         {
             var appMetricsOptions = new AppMetricsOptions
-            {
-                DefaultSamplingType = SamplingType.LongTerm,
-                MetricsEnabled = true,
-            };
+                                    {
+                                        MetricsEnabled = true,
+                                    };
 
             var aspNetMetricsOptions = new AspNetMetricsOptions();
 
-            SetupServices(services, appMetricsOptions, aspNetMetricsOptions,
+            SetupServices(
+                services,
+                appMetricsOptions,
+                aspNetMetricsOptions,
                 new DefaultMetricsFilter().WhereType(MetricType.Counter));
         }
 
         private void RecordSomeMetrics()
         {
             var counterOptions = new CounterOptions
-            {
-                Name = "test_counter",
-                MeasurementUnit = Unit.Requests,
-                Tags = new MetricTags().With("tag1", "value")
-            };
+                                 {
+                                     Name = "test_counter",
+                                     MeasurementUnit = Unit.Requests,
+                                     Tags = new MetricTags().With("tag1", "value")
+                                 };
 
             var meterOptions = new MeterOptions
-            {
-                Name = "test_meter",
-                MeasurementUnit = Unit.None,
-                Tags = new MetricTags().With("tag2", "value")
-            };
+                               {
+                                   Name = "test_meter",
+                                   MeasurementUnit = Unit.None,
+                                   Tags = new MetricTags().With("tag2", "value")
+                               };
 
             var timerOptions = new TimerOptions
-            {
-                Name = "test_timer",
-                MeasurementUnit = Unit.Requests
-            };
+                               {
+                                   Name = "test_timer",
+                                   MeasurementUnit = Unit.Requests
+                               };
 
             var histogramOptions = new HistogramOptions
-            {
-                Name = "test_histogram",
-                MeasurementUnit = Unit.Requests
-            };
+                                   {
+                                       Name = "test_histogram",
+                                       MeasurementUnit = Unit.Requests
+                                   };
 
             var gaugeOptions = new GaugeOptions
-            {
-                Name = "test_gauge"
-            };
+                               {
+                                   Name = "test_gauge"
+                               };
 
             Metrics.Measure.Counter.Increment(counterOptions);
             Metrics.Measure.Meter.Mark(meterOptions);

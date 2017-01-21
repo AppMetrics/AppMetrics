@@ -1,7 +1,10 @@
-﻿using System;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Scheduling;
+using App.Metrics.Abstractions.Scheduling;
 using FluentAssertions;
 using Xunit;
 
@@ -17,88 +20,20 @@ namespace App.Metrics.Facts.Utils
                 var data = 0;
                 var completionSource = new TaskCompletionSource<bool>();
 
-                scheduler.Interval(TimeSpan.FromMilliseconds(20), TaskCreationOptions.LongRunning, () =>
-                {
-                    data++;
-                    completionSource.SetResult(true);
-                });
-
-                completionSource.Task.Wait();
-                scheduler.Stop();
-
-                data.Should().Be(1);
-            }
-        }
-
-        [Fact]
-        public void if_task_has_already_started_just_return_the_started_task()
-        {
-            using (var scheduler = new DefaultTaskScheduler(false))
-            {
-                var data = 0;
-                var completionSource = new TaskCompletionSource<bool>();
-
-                scheduler.Interval(TimeSpan.FromMilliseconds(20), TaskCreationOptions.LongRunning, () =>
-                {
-                    data++;
-                    completionSource.SetResult(true);
-                });
-
-                scheduler.Interval(TimeSpan.FromMilliseconds(20), TaskCreationOptions.LongRunning, () =>
-                {
-                    data++;
-                    completionSource.SetResult(true);
-                });
-
-                completionSource.Task.Wait();
-                scheduler.Stop();
-
-                data.Should().Be(1);
-            }
-        }
-
-        [Fact]
-        public void throws_if_poll_interval_is_zero()
-        {
-            Action action = () =>
-            {
-                using (var scheduler = new DefaultTaskScheduler())
-                {
-                    var completionSource = new TaskCompletionSource<bool>();
-
-                    scheduler.Interval(TimeSpan.Zero, TaskCreationOptions.LongRunning, () =>
+                scheduler.Interval(
+                    TimeSpan.FromMilliseconds(20),
+                    TaskCreationOptions.LongRunning,
+                    () =>
                     {
+                        data++;
                         completionSource.SetResult(true);
                     });
 
-                    completionSource.Task.Wait();
-                    scheduler.Stop();
-                }
-            };
+                completionSource.Task.Wait();
+                scheduler.Stop();
 
-            action.ShouldThrow<ArgumentOutOfRangeException>();
-        }
-
-        [Fact]
-        public void gracefully_cancel_task_if_the_action_throws()
-        {
-            Task scheduledTask = null;
-
-            Action action = () =>
-            {
-                using (var scheduler = new DefaultTaskScheduler())
-                {
-                    scheduledTask = scheduler.Interval(TimeSpan.FromMilliseconds(20), TaskCreationOptions.LongRunning, () =>
-                    {
-                        throw new InvalidOperationException();
-                    });
-
-                    scheduledTask.Wait();
-                }
-            };
-
-            action.ShouldNotThrow();
-            scheduledTask.Status.Should().Be(TaskStatus.RanToCompletion);
+                data.Should().Be(1);
+            }
         }
 
         [Fact]
@@ -111,12 +46,16 @@ namespace App.Metrics.Facts.Utils
             {
                 using (var scheduler = new DefaultTaskScheduler())
                 {
-                    scheduledTask = scheduler.Interval(TimeSpan.FromMilliseconds(20), TaskCreationOptions.LongRunning, async () =>
-                    {
-                        // ReSharper disable MethodSupportsCancellation
-                        await Task.Delay(1000);
-                        // ReSharper restore MethodSupportsCancellation
-                    }, token.Token);
+                    scheduledTask = scheduler.Interval(
+                        TimeSpan.FromMilliseconds(20),
+                        TaskCreationOptions.LongRunning,
+                        async () =>
+                        {
+                            // ReSharper disable MethodSupportsCancellation
+                            await Task.Delay(1000);
+                            // ReSharper restore MethodSupportsCancellation
+                        },
+                        token.Token);
 
                     // ReSharper disable MethodSupportsCancellation
                     scheduledTask.Wait();
@@ -136,11 +75,14 @@ namespace App.Metrics.Facts.Utils
                 var data = 0;
                 var completionSource = new TaskCompletionSource<bool>();
 
-                scheduler.Interval(TimeSpan.FromMilliseconds(20), TaskCreationOptions.LongRunning,() =>
-                {
-                    data++;
-                    completionSource.SetResult(true);
-                });
+                scheduler.Interval(
+                    TimeSpan.FromMilliseconds(20),
+                    TaskCreationOptions.LongRunning,
+                    () =>
+                    {
+                        data++;
+                        completionSource.SetResult(true);
+                    });
 
                 completionSource.Task.Wait();
                 data.Should().Be(1);
@@ -159,19 +101,97 @@ namespace App.Metrics.Facts.Utils
             using (var scheduler = new DefaultTaskScheduler())
             {
                 var data = 0;
-                var token = new CancellationTokenSource();                
+                var token = new CancellationTokenSource();
                 var completionSource = new TaskCompletionSource<bool>();
 
-                scheduler.Interval(TimeSpan.FromMilliseconds(20), TaskCreationOptions.LongRunning,() =>
-                 {
-                     data++;
-                     completionSource.SetResult(true);
-                 }, token.Token);
+                scheduler.Interval(
+                    TimeSpan.FromMilliseconds(20),
+                    TaskCreationOptions.LongRunning,
+                    () =>
+                    {
+                        data++;
+                        completionSource.SetResult(true);
+                    },
+                    token.Token);
 
                 completionSource.Task.Wait(token.Token);
                 scheduler.Stop();
                 data.Should().Be(1);
             }
-        }        
+        }
+
+        [Fact]
+        public void gracefully_cancel_task_if_the_action_throws()
+        {
+            Task scheduledTask = null;
+
+            Action action = () =>
+            {
+                using (var scheduler = new DefaultTaskScheduler())
+                {
+                    scheduledTask = scheduler.Interval(
+                        TimeSpan.FromMilliseconds(20),
+                        TaskCreationOptions.LongRunning,
+                        () => { throw new InvalidOperationException(); });
+
+                    scheduledTask.Wait();
+                }
+            };
+
+            action.ShouldNotThrow();
+            scheduledTask.Status.Should().Be(TaskStatus.RanToCompletion);
+        }
+
+        [Fact]
+        public void if_task_has_already_started_just_return_the_started_task()
+        {
+            using (var scheduler = new DefaultTaskScheduler(false))
+            {
+                var data = 0;
+                var completionSource = new TaskCompletionSource<bool>();
+
+                scheduler.Interval(
+                    TimeSpan.FromMilliseconds(20),
+                    TaskCreationOptions.LongRunning,
+                    () =>
+                    {
+                        data++;
+                        completionSource.SetResult(true);
+                    });
+
+                scheduler.Interval(
+                    TimeSpan.FromMilliseconds(20),
+                    TaskCreationOptions.LongRunning,
+                    () =>
+                    {
+                        data++;
+                        completionSource.SetResult(true);
+                    });
+
+                completionSource.Task.Wait();
+                scheduler.Stop();
+
+                data.Should().Be(1);
+            }
+        }
+
+        [Fact]
+        public void throws_if_poll_interval_is_zero()
+        {
+            Action action = () =>
+            {
+                using (var scheduler = new DefaultTaskScheduler())
+                {
+                    var completionSource = new TaskCompletionSource<bool>();
+
+                    scheduler.Interval(TimeSpan.Zero, TaskCreationOptions.LongRunning, () => { completionSource.SetResult(true); });
+
+                    completionSource.Task.Wait();
+                    scheduler.Stop();
+                }
+            };
+
+            action.ShouldThrow<ArgumentOutOfRangeException>();
+        }
     }
 }

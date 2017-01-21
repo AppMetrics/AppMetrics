@@ -6,11 +6,11 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using App.Metrics.Abstractions;
+using App.Metrics.Abstractions.Scheduling;
+using App.Metrics.Abstractions.Scheduling.Interfaces;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Data;
-using App.Metrics.Scheduling;
-using App.Metrics.Scheduling.Interfaces;
-using App.Metrics.Utils;
 
 namespace App.Metrics.Core
 {

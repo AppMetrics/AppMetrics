@@ -4,7 +4,9 @@ using App.Metrics.Core;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Internal;
-using App.Metrics.Utils;
+using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
+using App.Metrics.Abstractions;
 using FluentAssertions;
 using Xunit;
 
@@ -25,12 +27,12 @@ namespace App.Metrics.Facts.Apdex
             const double apdexTSeconds = 0.5;
             const int fromMilliSeconds = 20;
             const int toMilliSeconds = 5000;
-            const int sampleSize = 1024;
             var random = new Random();
             var clock = new TestClock();
 
-            IApdexMetric apdexMetric = new ApdexMetric(SamplingType.ExponentiallyDecaying, sampleSize,
-                Constants.ReservoirSampling.DefaultExponentialDecayFactor, clock, apdexTSeconds, false);
+            var reservoir = new Lazy<IReservoir>(() => new DefaultForwardDecayingReservoir());
+
+            IApdexMetric apdexMetric = new ApdexMetric(reservoir, apdexTSeconds, clock, false);
 
             foreach (var requestNumber in Enumerable.Range(0, 1000))
             {

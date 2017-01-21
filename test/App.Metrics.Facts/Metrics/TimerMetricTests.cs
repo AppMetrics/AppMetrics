@@ -1,9 +1,12 @@
-﻿using System;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System;
 using App.Metrics.Core;
-using App.Metrics.Internal;
-using App.Metrics.Internal.Test;
-using App.Metrics.Sampling;
-using App.Metrics.Utils;
+using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.Uniform;
+using App.Metrics.Abstractions;
+using App.Metrics.Abstractions.Internal;
 using FluentAssertions;
 using Xunit;
 
@@ -16,8 +19,9 @@ namespace App.Metrics.Facts.Metrics
 
         public TimerMetricTests()
         {
-            _timer = new TimerMetric(new HistogramMetric(new UniformReservoir(Constants.ReservoirSampling.DefaultSampleSize)), new MeterMetric(_clock, new TestTaskScheduler(_clock)),
-                _clock);
+            var reservoir = new Lazy<IReservoir>(() => new DefaultAlgorithmRReservoir(1028));
+
+            _timer = new TimerMetric(new HistogramMetric(reservoir), new MeterMetric(_clock, new TestTaskScheduler(_clock)), _clock);
         }
 
         [Fact]

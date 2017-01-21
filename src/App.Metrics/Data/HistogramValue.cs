@@ -2,7 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
-using App.Metrics.Sampling.Interfaces;
+using App.Metrics.ReservoirSampling;
 
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
@@ -13,7 +13,7 @@ namespace App.Metrics.Data
     /// </summary>
     public sealed class HistogramValue
     {
-        public HistogramValue(double lastValue, string lastUserValue, ISnapshot snapshot)
+        public HistogramValue(double lastValue, string lastUserValue, IReservoirSnapshot snapshot)
             : this(
                 snapshot.Count,
                 lastValue,

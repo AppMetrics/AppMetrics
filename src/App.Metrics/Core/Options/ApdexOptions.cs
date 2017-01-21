@@ -2,7 +2,8 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using App.Metrics.Internal;
-using App.Metrics.Sampling.Interfaces;
+using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
 
 namespace App.Metrics.Core.Options
 {
@@ -12,22 +13,14 @@ namespace App.Metrics.Core.Options
     ///     request, while each tolerating request counts as half a satisfied request.
     ///     <para>
     ///         Apdex tracks three response counts, counts based on samples measured by the chosen
-    ///         <see cref="IReservoir">reservoir</see>
-    ///         <remarks>
-    ///             The <see cref="IReservoir">reservoir</see>  is determined by the <see cref="SamplingType" />sampling
-    ///             type
-    ///         </remarks>
-    ///         when the apdex metric instance is instantiated.
+    ///         <see cref="IReservoir">reservoir</see>, defaults to a <see cref="DefaultForwardDecayingReservoir" />.
     ///     </para>
     /// </summary>
-    /// <seealso cref="App.Metrics.Core.Options.MetricValueWithSamplingOption" />
+    /// <seealso cref="MetricValueWithSamplingOption" />
     public class ApdexOptions : MetricValueWithSamplingOption
     {
         public ApdexOptions()
         {
-            SamplingType = SamplingType.ExponentiallyDecaying;
-            SampleSize = Constants.ReservoirSampling.DefaultSampleSize;
-            ExponentialDecayFactor = Constants.ReservoirSampling.DefaultExponentialDecayFactor;
             ApdexTSeconds = Constants.ReservoirSampling.DefaultApdexTSeconds;
             AllowWarmup = true;
         }

@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using App.Metrics.Abstractions;
 using App.Metrics.Configuration;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Options;
@@ -11,7 +12,6 @@ using App.Metrics.Data;
 using App.Metrics.Data.Interfaces;
 using App.Metrics.Infrastructure;
 using App.Metrics.Interfaces;
-using App.Metrics.Utils;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Internal
@@ -21,7 +21,6 @@ namespace App.Metrics.Internal
         private readonly IClock _clock;
         private readonly ConcurrentDictionary<string, IMetricContextRegistry> _contexts = new ConcurrentDictionary<string, IMetricContextRegistry>();
         private readonly string _defaultContextLabel;
-        private readonly SamplingType _defaultSamplingType;
         private readonly EnvironmentInfoProvider _environmentInfoProvider;
         private readonly ILogger _logger;
         private readonly Func<string, IMetricContextRegistry> _newContextRegistry;
@@ -39,7 +38,6 @@ namespace App.Metrics.Internal
             _clock = clock;
             _newContextRegistry = newContextRegistry;
             _defaultContextLabel = options.DefaultContextLabel;
-            _defaultSamplingType = options.DefaultSamplingType;
             _contexts.TryAdd(_defaultContextLabel, newContextRegistry(_defaultContextLabel));
         }
 
@@ -69,7 +67,6 @@ namespace App.Metrics.Internal
             }
 
             EnsureContextLabel(options);
-            EnsureSamplingType(options);
 
             var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
 
@@ -119,16 +116,6 @@ namespace App.Metrics.Internal
             if (options.Context.IsMissing())
             {
                 options.Context = _defaultContextLabel;
-            }
-
-            return options;
-        }
-
-        public MetricValueWithSamplingOption EnsureSamplingType(MetricValueWithSamplingOption options)
-        {
-            if (options.SamplingType == SamplingType.Default)
-            {
-                options.SamplingType = _defaultSamplingType;
             }
 
             return options;
@@ -190,7 +177,6 @@ namespace App.Metrics.Internal
             }
 
             EnsureContextLabel(options);
-            EnsureSamplingType(options);
 
             var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
 
@@ -241,7 +227,6 @@ namespace App.Metrics.Internal
             }
 
             EnsureContextLabel(options);
-            EnsureSamplingType(options);
 
             var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
 

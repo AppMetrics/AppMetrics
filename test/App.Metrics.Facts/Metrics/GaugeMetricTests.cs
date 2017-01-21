@@ -1,10 +1,14 @@
-﻿using System;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System;
 using System.Linq;
 using App.Metrics.Core;
 using App.Metrics.Data;
-using App.Metrics.Internal;
-using App.Metrics.Internal.Test;
-using App.Metrics.Utils;
+using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.Uniform;
+using App.Metrics.Abstractions;
+using App.Metrics.Abstractions.Internal;
 using FluentAssertions;
 using Xunit;
 
@@ -29,13 +33,10 @@ namespace App.Metrics.Facts.Metrics
         {
             var clock = new TestClock();
             var scheduler = new TestTaskScheduler(clock);
+            var reservoir = new Lazy<IReservoir>(() => new DefaultAlgorithmRReservoir(1028));
 
             var cacheHitMeter = new MeterMetric(clock, scheduler);
-            var dbQueryTimer = new TimerMetric(
-                SamplingType.LongTerm,
-                Constants.ReservoirSampling.DefaultSampleSize,
-                Constants.ReservoirSampling.DefaultExponentialDecayFactor,
-                clock);
+            var dbQueryTimer = new TimerMetric(reservoir, clock);
 
             foreach (var index in Enumerable.Range(0, 1000))
             {
@@ -60,13 +61,10 @@ namespace App.Metrics.Facts.Metrics
         {
             var clock = new TestClock();
             var scheduler = new TestTaskScheduler(clock);
+            var reservoir = new Lazy<IReservoir>(() => new DefaultAlgorithmRReservoir(1028));
 
             var cacheHitMeter = new MeterMetric(clock, scheduler);
-            var dbQueryTimer = new TimerMetric(
-                SamplingType.LongTerm,
-                Constants.ReservoirSampling.DefaultSampleSize,
-                Constants.ReservoirSampling.DefaultExponentialDecayFactor,
-                clock);
+            var dbQueryTimer = new TimerMetric(reservoir, clock);
 
             foreach (var index in Enumerable.Range(0, 1000))
             {

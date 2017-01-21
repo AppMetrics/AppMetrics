@@ -2,7 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
-using App.Metrics.Sampling.Interfaces;
+using App.Metrics.ReservoirSampling;
 
 namespace App.Metrics
 {
@@ -12,12 +12,7 @@ namespace App.Metrics
     ///     request, while each tolerating request counts as half a satisfied request.
     ///     <para>
     ///         Apdex tracks three response counts, counts based on samples measured by the chosen
-    ///         <see cref="IReservoir">reservoir</see>
-    ///         <remarks>
-    ///             The <see cref="IReservoir">reservoir</see>  is determined by the <see cref="SamplingType" />sampling
-    ///             type
-    ///         </remarks>
-    ///         when the apdex metric instance is instantiated.
+    ///         <see cref="IReservoir">reservoir</see>.
     ///     </para>
     ///     <para>
     ///         Satisfied, Tolerated and Frustrated request counts are calculated as follows using a user value of T seconds.

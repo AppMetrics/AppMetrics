@@ -5,8 +5,7 @@ using System;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Data;
 using App.Metrics.Internal;
-using App.Metrics.Sampling;
-using App.Metrics.Sampling.Interfaces;
+using App.Metrics.ReservoirSampling;
 
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
@@ -14,23 +13,15 @@ namespace App.Metrics.Core
 {
     public sealed class HistogramMetric : IHistogramMetric
     {
-        private readonly IReservoir _reservoir;
+        private readonly Lazy<IReservoir> _reservoir;
         private bool _disposed;
         private UserValueWrapper _last;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="HistogramMetric" /> class.
         /// </summary>
-        /// <param name="samplingType">Type of the reservoir sampling to use.</param>
-        /// <param name="sampleSize">The number of samples to keep in the sampling reservoir</param>
-        /// <param name="alpha">
-        ///     The alpha value, e.g 0.015 will heavily biases the reservoir to the past 5 mins of measurements. The higher the
-        ///     value the more biased the reservoir will be towards newer values.
-        /// </param>
-        public HistogramMetric(SamplingType samplingType, int sampleSize, double alpha)
-            : this(ReservoirBuilder.Build(samplingType, sampleSize, alpha)) { }
-
-        public HistogramMetric(IReservoir reservoir)
+        /// <param name="reservoir">The reservoir to use for sampling.</param>
+        public HistogramMetric(Lazy<IReservoir> reservoir)
         {
             if (reservoir == null)
             {
@@ -69,7 +60,7 @@ namespace App.Metrics.Core
         /// <inheritdoc />
         public HistogramValue GetValue(bool resetMetric = false)
         {
-            var value = new HistogramValue(_last.Value, _last.UserValue, _reservoir.GetSnapshot(resetMetric));
+            var value = new HistogramValue(_last.Value, _last.UserValue, _reservoir.Value.GetSnapshot(resetMetric));
 
             if (resetMetric)
             {
@@ -83,21 +74,21 @@ namespace App.Metrics.Core
         public void Reset()
         {
             _last = UserValueWrapper.Empty;
-            _reservoir.Reset();
+            _reservoir.Value.Reset();
         }
 
         /// <inheritdoc />
         public void Update(long value, string userValue)
         {
             _last = new UserValueWrapper(value, userValue);
-            _reservoir.Update(value, userValue);
+            _reservoir.Value.Update(value, userValue);
         }
 
         /// <inheritdoc />
         public void Update(long value)
         {
             _last = new UserValueWrapper(value);
-            _reservoir.Update(value);
+            _reservoir.Value.Update(value);
         }
     }
 }

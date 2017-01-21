@@ -1,5 +1,10 @@
-﻿using App.Metrics.Core;
-using App.Metrics.Internal;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System;
+using App.Metrics.Core;
+using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
 using FluentAssertions;
 using Xunit;
 
@@ -7,9 +12,13 @@ namespace App.Metrics.Facts.Metrics
 {
     public class HistogramMetricTests
     {
-        private readonly HistogramMetric _histogram = new HistogramMetric(SamplingType.ExponentiallyDecaying, 
-            Constants.ReservoirSampling.DefaultSampleSize,
-            Constants.ReservoirSampling.DefaultExponentialDecayFactor);
+        private readonly HistogramMetric _histogram;
+
+        public HistogramMetricTests()
+        {
+            var reservoir = new Lazy<IReservoir>(() => new DefaultForwardDecayingReservoir());
+            _histogram = new HistogramMetric(reservoir);
+        }
 
         [Fact]
         public void can_count()

@@ -1,7 +1,10 @@
-﻿using System;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System;
 using System.Linq;
-using App.Metrics.Sampling;
-using App.Metrics.Sampling.Interfaces;
+using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
 using FluentAssertions;
 using Xunit;
 
@@ -17,7 +20,7 @@ namespace App.Metrics.Facts
         [Fact]
         public void weight_snapshot_calculates_the_max_of_zero_for_an_empty_snapshot()
         {
-            ISnapshot snapshot = MakeSanpshot(new long[0], new double[0]);
+            IReservoirSnapshot snapshot = MakeSanpshot(new long[0], new double[0]);
 
             snapshot.Max.Should().Be(0);
         }
@@ -28,7 +31,7 @@ namespace App.Metrics.Facts
         [Fact]
         public void weight_snapshot_calculates_the_mean_of_zero_for_an_empty_snapshot()
         {
-            ISnapshot snapshot = MakeSanpshot(new long[0], new double[0]);
+            IReservoirSnapshot snapshot = MakeSanpshot(new long[0], new double[0]);
             snapshot.Mean.Should().Be(0);
         }
 
@@ -38,7 +41,7 @@ namespace App.Metrics.Facts
         [Fact]
         public void weight_snapshot_calculates_the_min_of_zero_for_an_empty_snapshot()
         {
-            ISnapshot snapshot = MakeSanpshot(new long[0], new double[0]);
+            IReservoirSnapshot snapshot = MakeSanpshot(new long[0], new double[0]);
             snapshot.Min.Should().Be(0);
         }
 
@@ -51,14 +54,14 @@ namespace App.Metrics.Facts
         [Fact]
         public void weight_snapshot_calculates_the_standard_deviation_of_zero_for_a_single_snapshot()
         {
-            ISnapshot snapshot = MakeSanpshot(new long[0], new double[0]);
+            IReservoirSnapshot snapshot = MakeSanpshot(new long[0], new double[0]);
             snapshot.StdDev.Should().Be(0);
         }
 
         [Fact]
         public void weight_snapshot_calculates_the_standard_deviation_of_zero_for_an_empty_snapshot()
         {
-            ISnapshot snapshot = MakeSanpshot(new long[0], new double[0]);
+            IReservoirSnapshot snapshot = MakeSanpshot(new long[0], new double[0]);
             snapshot.StdDev.Should().Be(0);
         }
 

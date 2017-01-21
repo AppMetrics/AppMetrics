@@ -1,8 +1,13 @@
-﻿using System;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System;
 using App.Metrics.Apdex.Interfaces;
 using App.Metrics.Core;
 using App.Metrics.Internal;
-using App.Metrics.Utils;
+using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
+using App.Metrics.Abstractions;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -16,13 +21,9 @@ namespace App.Metrics.Facts.Metrics
 
         public ApdexMetricTests()
         {
-            _apdex = new ApdexMetric(
-                SamplingType.ExponentiallyDecaying,
-                Constants.ReservoirSampling.DefaultSampleSize,
-                Constants.ReservoirSampling.DefaultSampleSize,
-                _clock,
-                Constants.ReservoirSampling.DefaultApdexTSeconds,
-                false);
+            var reservoir = new Lazy<IReservoir>(() => new DefaultForwardDecayingReservoir());
+
+            _apdex = new ApdexMetric(reservoir, Constants.ReservoirSampling.DefaultApdexTSeconds, _clock, false);
         }
 
         [Fact]
@@ -172,9 +173,10 @@ namespace App.Metrics.Facts.Metrics
         [Fact]
         public void throws_if_apdex_provider_is_null()
         {
+            IApdexProvider provider = null;
             Action createApdex = () =>
             {
-                var apdex = new ApdexMetric(null, _clock, true);
+                var apdex = new ApdexMetric(provider, _clock, true);
             };
 
             createApdex.ShouldThrow<ArgumentNullException>();
@@ -185,13 +187,13 @@ namespace App.Metrics.Facts.Metrics
         {
             Action createApdex = () =>
             {
+                var reservoir = new Lazy<IReservoir>(() => new DefaultForwardDecayingReservoir());
                 var apdex = new ApdexMetric(
-                    SamplingType.ExponentiallyDecaying,
-                    Constants.ReservoirSampling.DefaultSampleSize,
-                    Constants.ReservoirSampling.DefaultSampleSize,
-                    null,
-                    Constants.ReservoirSampling.DefaultApdexTSeconds,
-                    false);
+                        reservoir,
+                        Constants.ReservoirSampling.DefaultApdexTSeconds,
+                        null,
+                        false)
+                    ;
             };
 
             createApdex.ShouldThrow<ArgumentNullException>();

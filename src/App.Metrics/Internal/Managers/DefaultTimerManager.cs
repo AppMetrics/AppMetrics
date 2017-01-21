@@ -2,9 +2,9 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
+using App.Metrics.Abstractions;
 using App.Metrics.Core.Options;
 using App.Metrics.Interfaces;
-using App.Metrics.Utils;
 
 namespace App.Metrics.Internal.Managers
 {
@@ -33,7 +33,7 @@ namespace App.Metrics.Internal.Managers
             using (
                 _registry.Timer(
                              options,
-                             () => _timerBuilder.Build(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor, _clock))
+                             () => _timerBuilder.Build(options.Reservoir, _clock))
                          .NewContext())
             {
                 action();
@@ -46,7 +46,7 @@ namespace App.Metrics.Internal.Managers
             using (
                 _registry.Timer(
                              options,
-                             () => _timerBuilder.Build(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor, _clock))
+                             () => _timerBuilder.Build(options.Reservoir, _clock))
                          .NewContext(userValue))
             {
                 action();
@@ -59,7 +59,7 @@ namespace App.Metrics.Internal.Managers
             return
                 _registry.Timer(
                              options,
-                             () => _timerBuilder.Build(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor, _clock))
+                             () => _timerBuilder.Build(options.Reservoir, _clock))
                          .NewContext();
         }
 
@@ -69,9 +69,7 @@ namespace App.Metrics.Internal.Managers
             return _registry.Timer(
                                 options,
                                 () => _timerBuilder.Build(
-                                    options.SamplingType,
-                                    options.SampleSize,
-                                    options.ExponentialDecayFactor,
+                                    options.Reservoir,
                                     _clock))
                             .NewContext(userValue);
         }

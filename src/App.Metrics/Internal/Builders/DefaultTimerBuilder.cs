@@ -1,20 +1,22 @@
 ﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
+using System;
+using App.Metrics.Abstractions;
 using App.Metrics.Core;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Interfaces;
-using App.Metrics.Sampling.Interfaces;
-using App.Metrics.Utils;
+using App.Metrics.ReservoirSampling;
 
 namespace App.Metrics.Internal.Builders
 {
     public class DefaultTimerBuilder : IBuildTimerMetrics
     {
-        /// <inheritdoc />
-        public ITimerMetric Build(SamplingType samplingType, int sampleSize, double exponentialDecayFactor, IClock clock)
+        private readonly DefaultSamplingReservoirProvider _defaultSamplingReservoirProvider;
+
+        public DefaultTimerBuilder(DefaultSamplingReservoirProvider defaultSamplingReservoirProvider)
         {
-            return new TimerMetric(samplingType, sampleSize, exponentialDecayFactor, clock);
+            _defaultSamplingReservoirProvider = defaultSamplingReservoirProvider;
         }
 
         /// <inheritdoc />
@@ -24,8 +26,13 @@ namespace App.Metrics.Internal.Builders
         }
 
         /// <inheritdoc />
-        public ITimerMetric Build(IReservoir reservoir, IClock clock)
+        public ITimerMetric Build(Lazy<IReservoir> reservoir, IClock clock)
         {
+            if (reservoir == null)
+            {
+                reservoir = _defaultSamplingReservoirProvider.Instance();
+            }
+
             return new TimerMetric(reservoir, clock);
         }
     }

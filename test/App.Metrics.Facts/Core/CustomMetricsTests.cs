@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Sampling.Interfaces;
+using App.Metrics.ReservoirSampling;
 using FluentAssertions;
 using Xunit;
 
@@ -42,19 +42,21 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void can_register_timer_with_custom_reservoir()
         {
-            var reservoir = new CustomReservoir();
+            var reservoir = new Lazy<IReservoir>(() => new CustomReservoir());
             var timerOptions = new TimerOptions
                                {
                                    Name = "custom",
                                    MeasurementUnit = Unit.Calls,
-                                   WithReservoir = () => reservoir as IReservoir
+                                   Reservoir = reservoir
                                };
-            var timer = _fixture.Metrics.Provider.Timer.Instance(timerOptions);            
+            var timer = _fixture.Metrics.Provider.Timer.Instance(timerOptions);
 
             timer.Record(10L, TimeUnit.Nanoseconds);
 
-            reservoir.Size.Should().Be(1);
-            reservoir.Values.Single().Should().Be(10L);
+            var snapshot = reservoir.Value.GetSnapshot();
+
+            snapshot.Size.Should().Be(1);
+            snapshot.Values.Single().Should().Be(10L);
         }
 
         public void Dispose() { Dispose(true); }

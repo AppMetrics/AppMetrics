@@ -1,7 +1,13 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System;
+using System.Collections.Generic;
 using App.Metrics.Core;
 using App.Metrics.Extensions.Reporting.InfluxDB.Extensions;
-using App.Metrics.Utils;
+using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
+using App.Metrics.Abstractions;
 using FluentAssertions;
 using Xunit;
 
@@ -9,11 +15,13 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Extensions
 {
     public class MetricValueExtensionsTests
     {
+        private readonly Lazy<IReservoir> _defaultReservoir = new Lazy<IReservoir>(() => new DefaultForwardDecayingReservoir());
+
         [Fact]
         public void can_add_apdex_values()
         {
             var clock = new TestClock();
-            var apdex = new ApdexMetric(SamplingType.ExponentiallyDecaying, 1028, 0.015, clock, true);
+            var apdex = new ApdexMetric(_defaultReservoir, clock, true);
             apdex.Track(10000);
             var values = new Dictionary<string, object>();
             apdex.Value.AddApdexValues(values);
@@ -28,7 +36,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Extensions
         [Fact]
         public void can_add_histgoram_values()
         {
-            var histogramMetric = new HistogramMetric(SamplingType.ExponentiallyDecaying, 1028, 0.015);
+            var histogramMetric = new HistogramMetric(_defaultReservoir);
             histogramMetric.Update(10000, "value");
             var values = new Dictionary<string, object>();
             histogramMetric.Value.AddHistogramValues(values);

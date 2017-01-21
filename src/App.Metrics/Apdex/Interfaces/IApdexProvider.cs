@@ -2,7 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
-using App.Metrics.Sampling.Interfaces;
+using App.Metrics.ReservoirSampling;
 
 namespace App.Metrics.Apdex.Interfaces
 {
@@ -10,7 +10,7 @@ namespace App.Metrics.Apdex.Interfaces
     ///     Provides access to an ApdexProvider Implementation responsible for sampling measured duration to calcualte an apdex
     ///     score
     /// </summary>
-    /// <seealso cref="System.IDisposable" />
+    /// <seealso cref="IDisposable" />
     public interface IApdexProvider : IDisposable
     {
         /// <summary>

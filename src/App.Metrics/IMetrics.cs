@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
+using App.Metrics.Abstractions;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Interfaces;
-using App.Metrics.Utils;
 
 namespace App.Metrics
 {
@@ -15,13 +15,9 @@ namespace App.Metrics
     /// </remarks>
     public interface IMetrics
     {
-        IProvideMetrics Provider { get; }
-
         IBuildMetrics Build { get; }
 
         IClock Clock { get; }
-
-        IProvideMetricValues Snapshot { get; }
 
         IFilterMetrics GlobalFilter { get; }
 
@@ -32,5 +28,9 @@ namespace App.Metrics
         IManageMetrics Manage { get; }
 
         IMeasureMetrics Measure { get; }
+
+        IProvideMetrics Provider { get; }
+
+        IProvideMetricValues Snapshot { get; }
     }
 }

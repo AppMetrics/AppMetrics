@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
+using App.Metrics.Abstractions;
 using App.Metrics.Configuration;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Interfaces;
 using App.Metrics.Internal;
-using App.Metrics.Internal.Interfaces;
-using App.Metrics.Utils;
 
 namespace App.Metrics.Core
 {
@@ -54,16 +53,10 @@ namespace App.Metrics.Core
         }
 
         /// <inheritdoc />
-        public IProvideMetrics Provider { get; }
-
-        /// <inheritdoc />
         public IBuildMetrics Build { get; }
 
         /// <inheritdoc />
         public IClock Clock { get; }
-
-        /// <inheritdoc />
-        public IProvideMetricValues Snapshot { get; }
 
         /// <inheritdoc />
         public IFilterMetrics GlobalFilter { get; }
@@ -79,5 +72,11 @@ namespace App.Metrics.Core
 
         /// <inheritdoc />
         public IMeasureMetrics Measure { get; }
+
+        /// <inheritdoc />
+        public IProvideMetrics Provider { get; }
+
+        /// <inheritdoc />
+        public IProvideMetricValues Snapshot { get; }
     }
 }

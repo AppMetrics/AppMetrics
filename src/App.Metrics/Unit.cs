@@ -4,7 +4,7 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
-using App.Metrics.Utils;
+using App.Metrics.Abstractions;
 
 namespace App.Metrics
 {

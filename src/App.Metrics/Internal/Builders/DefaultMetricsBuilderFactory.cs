@@ -9,12 +9,13 @@ namespace App.Metrics.Internal.Builders
     {
         public DefaultMetricsBuilderFactory()
         {
-            Apdex = new DefaultApdexBuilder();
+            var defaultReservoir = new DefaultSamplingReservoirProvider();
+            Apdex = new DefaultApdexBuilder(defaultReservoir);
             Counter = new DefaultCounterBuilder();
             Gauge = new DefaultGaugeBuilder();
-            Histogram = new DefaultHistogramBuilder();
+            Histogram = new DefaultHistogramBuilder(defaultReservoir);
             Meter = new DefaultMeterBuilder();
-            Timer = new DefaultTimerBuilder();
+            Timer = new DefaultTimerBuilder(defaultReservoir);
         }
 
         /// <inheritdoc />

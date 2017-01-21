@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
-using App.Metrics.Utils;
+using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.Uniform;
+using App.Metrics.Abstractions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -68,9 +70,9 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
                 {
                     options.DefaultContextLabel = appMetricsOptions.DefaultContextLabel;
                     options.MetricsEnabled = appMetricsOptions.MetricsEnabled;
-                    options.DefaultSamplingType = appMetricsOptions.DefaultSamplingType;
                 })
                 .AddJsonSerialization()
+                .AddDefaultReservoir(() => new Lazy<IReservoir>(() => new DefaultAlgorithmRReservoir(1028)))
                 .AddClockType<TestClock>()
                 .AddHealthChecks(factory =>
                 {

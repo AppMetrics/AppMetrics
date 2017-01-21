@@ -2,10 +2,10 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
+using App.Metrics.Abstractions;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Options;
 using App.Metrics.Interfaces;
-using App.Metrics.Utils;
 
 namespace App.Metrics.Internal.Providers
 {
@@ -16,7 +16,7 @@ namespace App.Metrics.Internal.Providers
         private readonly IBuildTimerMetrics _timerBuilder;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultTimerMetricProvider" /> class.
+        ///     Initializes a new instance of the <see cref="DefaultTimerMetricProvider" /> class.
         /// </summary>
         /// <param name="timerBuilder">The timer builder.</param>
         /// <param name="registry">The metrics registry.</param>
@@ -31,16 +31,9 @@ namespace App.Metrics.Internal.Providers
         /// <inheritdoc />
         public ITimer Instance(TimerOptions options)
         {
-            if (options.WithReservoir != null)
-            {
-                return Instance(
-                    options,
-                    () => _timerBuilder.Build(options.WithReservoir(), _clock));
-            }
-
-            return _registry.Timer(
+            return Instance(
                 options,
-                () => _timerBuilder.Build(options.SamplingType, options.SampleSize, options.ExponentialDecayFactor, _clock));
+                () => _timerBuilder.Build(options.Reservoir, _clock));
         }
 
         /// <inheritdoc />

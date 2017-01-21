@@ -2,9 +2,9 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
+using App.Metrics.Abstractions;
 using App.Metrics.Core.Options;
 using App.Metrics.Interfaces;
-using App.Metrics.Utils;
 
 namespace App.Metrics.Internal.Managers
 {
@@ -32,14 +32,7 @@ namespace App.Metrics.Internal.Managers
         {
             var apdex = _registry.Apdex(
                 options,
-                () =>
-                    _apdexBuilder.Build(
-                        options.SamplingType,
-                        options.SampleSize,
-                        options.ExponentialDecayFactor,
-                        options.ApdexTSeconds,
-                        options.AllowWarmup,
-                        _clock));
+                () => _apdexBuilder.Build(options.Reservoir, options.ApdexTSeconds, options.AllowWarmup, _clock));
 
             using (apdex.NewContext())
             {
@@ -52,14 +45,7 @@ namespace App.Metrics.Internal.Managers
         {
             var apdex = _registry.Apdex(
                 options,
-                () =>
-                    _apdexBuilder.Build(
-                        options.SamplingType,
-                        options.SampleSize,
-                        options.ExponentialDecayFactor,
-                        options.ApdexTSeconds,
-                        options.AllowWarmup,
-                        _clock));
+                () => _apdexBuilder.Build(options.Reservoir, options.ApdexTSeconds, options.AllowWarmup, _clock));
 
             return apdex.NewContext();
         }

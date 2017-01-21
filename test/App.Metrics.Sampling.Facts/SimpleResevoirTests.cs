@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System.Collections.Generic;
 using System.Linq;
-using App.Metrics.Internal;
-using App.Metrics.Sampling;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
+using App.Metrics.ReservoirSampling.SlidingWindow;
+using App.Metrics.ReservoirSampling.Uniform;
 using Xunit;
 
 namespace App.Metrics.Facts
@@ -10,15 +14,14 @@ namespace App.Metrics.Facts
     {
         private readonly IEnumerable<long> _samples;
 
-        public SimpleResevoirTests()
-        {
-            _samples = new long[] { 0, 4, 1, 5 }.AsEnumerable();
-        }
+        public SimpleResevoirTests() { _samples = new long[] { 0, 4, 1, 5 }.AsEnumerable(); }
 
         [Fact]
         public void ExponentialDecayingResevoir()
         {
-            var reservoir = new ExponentiallyDecayingReservoir(Constants.ReservoirSampling.DefaultSampleSize, Constants.ReservoirSampling.DefaultExponentialDecayFactor);
+            var reservoir = new DefaultForwardDecayingReservoir(
+                Constants.ReservoirSampling.DefaultSampleSize,
+                Constants.ReservoirSampling.DefaultExponentialDecayFactor);
 
             foreach (var sample in _samples)
             {
@@ -34,7 +37,7 @@ namespace App.Metrics.Facts
         [Fact]
         public void SlidingWindowResevoir()
         {
-            var reservoir = new SlidingWindowReservoir(Constants.ReservoirSampling.DefaultSampleSize);
+            var reservoir = new DefaultSlidingWindowReservoir(Constants.ReservoirSampling.DefaultSampleSize);
 
             foreach (var sample in _samples)
             {
@@ -50,7 +53,7 @@ namespace App.Metrics.Facts
         [Fact]
         public void UniformResevoir()
         {
-            var reservoir = new UniformReservoir(Constants.ReservoirSampling.DefaultSampleSize);
+            var reservoir = new DefaultAlgorithmRReservoir(Constants.ReservoirSampling.DefaultSampleSize);
 
             foreach (var sample in _samples)
             {

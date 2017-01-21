@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.Data;
 
-namespace App.Metrics.DependencyInjection.Internal
+// ReSharper disable CheckNamespace
+namespace System.Threading.Tasks
+// ReSharper restore CheckNamespace
 {
     internal static class AppMetricsTaskCache
     {
@@ -16,7 +17,11 @@ namespace App.Metrics.DependencyInjection.Internal
 
         public static readonly Task<MetricsDataValueSource> EmptyMetricsDataTask = Task.FromResult(MetricsDataValueSource.Empty);
         public static readonly Task<string> EmptyStringTask = Task.FromResult(string.Empty);
-        public static readonly Task EmptyTask = Task.FromResult(0);
+#if NET452
+        public static readonly Task CompletedTask = Task.FromResult(0);
+#else
+        public static readonly Task CompletedTask = Task.CompletedTask;
+#endif
         public static readonly Task<bool> FailedTask = Task.FromResult(false);
 
         public static readonly Task<bool> SuccessTask = Task.FromResult(true);
