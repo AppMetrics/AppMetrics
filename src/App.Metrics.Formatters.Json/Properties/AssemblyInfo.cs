@@ -2,20 +2,17 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System.Reflection;
+using System.Resources;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("App.Metrics.Formatters.Json")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("App.Metrics.Formatters.Json")]
-[assembly: AssemblyCopyright("Copyright ©  2016 Allan Hardy")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+[assembly: AssemblyProduct("App.Metrics")]
+[assembly: AssemblyCompany("Allan Hardy.")]
+[assembly: NeutralResourcesLanguage("en-us")]
+[assembly: AssemblyCopyright("© Allan Hardy. All rights reserved.")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
