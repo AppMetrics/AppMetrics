@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Filtering.Interfaces;
 using App.Metrics.Health;
 using App.Metrics.Reporting.Interfaces;

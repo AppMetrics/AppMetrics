@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Concurrency;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;

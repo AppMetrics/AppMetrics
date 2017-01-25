@@ -2,8 +2,8 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
+using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Extensions.Reporting.InfluxDB.Client;
-using App.Metrics.Reporting.Interfaces;
 
 namespace App.Metrics.Extensions.Reporting.InfluxDB
 {

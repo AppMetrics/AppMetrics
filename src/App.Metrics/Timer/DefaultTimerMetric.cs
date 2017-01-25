@@ -2,13 +2,11 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
+using App.Metrics.Abstractions.Metrics;
+using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Concurrency;
 using App.Metrics.Histogram;
-using App.Metrics.Histogram.Interfaces;
 using App.Metrics.Meter;
-using App.Metrics.Meter.Interfaces;
-using App.Metrics.ReservoirSampling;
-using App.Metrics.Timer.Interfaces;
 
 namespace App.Metrics.Timer
 {

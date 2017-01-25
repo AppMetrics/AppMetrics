@@ -3,8 +3,10 @@
 
 using System;
 using App.Metrics.Data.Interfaces;
+using App.Metrics.Meter;
+using App.Metrics.Meter.Interfaces;
 
-namespace App.Metrics.Meter.Interfaces
+namespace App.Metrics.Abstractions.Metrics
 {
     /// <summary>
     ///     Provides access to a meter metric implementation e.g. <see cref="DefaultMeterMetric" />, allows custom meters to be

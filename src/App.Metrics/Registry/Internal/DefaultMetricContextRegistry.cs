@@ -5,6 +5,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using App.Metrics.Abstractions.Metrics;
 using App.Metrics.Apdex;
 using App.Metrics.Apdex.Interfaces;
 using App.Metrics.Core.Interfaces;

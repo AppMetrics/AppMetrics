@@ -3,6 +3,7 @@
 
 using System;
 using App.Metrics;
+using App.Metrics.Abstractions.Serialization;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
 using App.Metrics.Core.Interfaces;
@@ -23,7 +24,6 @@ using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Reporting.Internal;
 using App.Metrics.ReservoirSampling;
 using App.Metrics.Serialization;
-using App.Metrics.Serialization.Interfaces;
 using App.Metrics.Tagging;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;

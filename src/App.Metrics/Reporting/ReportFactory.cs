@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Reporting.Internal;
 using App.Metrics.Scheduling;

@@ -1,12 +1,13 @@
-﻿using System;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System;
 using System.Linq;
+using App.Metrics.Abstractions.Metrics;
+using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Apdex;
-using App.Metrics.Core;
-using App.Metrics.Core.Interfaces;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Infrastructure;
-using App.Metrics.Internal;
-using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 using FluentAssertions;
 using Xunit;
@@ -17,10 +18,7 @@ namespace App.Metrics.Facts.Apdex
     {
         private readonly ApdexScoreTestFixture _fixture;
 
-        public ApdexScoreTests(ApdexScoreTestFixture fixture)
-        {
-            _fixture = fixture;
-        }
+        public ApdexScoreTests(ApdexScoreTestFixture fixture) { _fixture = fixture; }
 
         [Fact]
         public void apdex_score_should_be_between_zero_and_one()
@@ -56,10 +54,18 @@ namespace App.Metrics.Facts.Apdex
         [InlineData(0.5, 340, 40, 20, 0.9)]
         [InlineData(1.0, 250, 800, 60, 0.59)]
         [InlineData(3.0, 60, 30, 10, 0.75)]
-        public void can_calculate_apdex_score(double apdexTSeconds, int satisifedRequests, int toleratingRequests, int frustratingRequest,
+        public void can_calculate_apdex_score(
+            double apdexTSeconds,
+            int satisifedRequests,
+            int toleratingRequests,
+            int frustratingRequest,
             double expected)
         {
-            var apdexMetric = _fixture.RunSamplesForApdexCalculation(apdexTSeconds, satisifedRequests, toleratingRequests, frustratingRequest,
+            var apdexMetric = _fixture.RunSamplesForApdexCalculation(
+                apdexTSeconds,
+                satisifedRequests,
+                toleratingRequests,
+                frustratingRequest,
                 TestSamplePreference.Satisified);
 
             var score = apdexMetric.GetValue().Score;
@@ -69,10 +75,18 @@ namespace App.Metrics.Facts.Apdex
 
         [Theory]
         [InlineData(0.5, 3000, 1000, 5000, 0.5)]
-        public void recent_failures_should_reduce_apdex(double apdexTSeconds, int satisifedRequests, int toleratingRequests,
-            int frustratingRequest, double expectedLessThan)
+        public void recent_failures_should_reduce_apdex(
+            double apdexTSeconds,
+            int satisifedRequests,
+            int toleratingRequests,
+            int frustratingRequest,
+            double expectedLessThan)
         {
-            var apdexMetric = _fixture.RunSamplesForApdexCalculation(apdexTSeconds, satisifedRequests, toleratingRequests, frustratingRequest,
+            var apdexMetric = _fixture.RunSamplesForApdexCalculation(
+                apdexTSeconds,
+                satisifedRequests,
+                toleratingRequests,
+                frustratingRequest,
                 TestSamplePreference.Frustrating);
 
             var score = apdexMetric.GetValue().Score;
@@ -82,10 +96,18 @@ namespace App.Metrics.Facts.Apdex
 
         [Theory]
         [InlineData(0.5, 3000, 1000, 5000, 0.5)]
-        public void recent_satisifed_should_increase_apdex(double apdexTSeconds, int satisifedRequests, int toleratingRequests,
-            int frustratingRequest, double expectedGreaterThan)
+        public void recent_satisifed_should_increase_apdex(
+            double apdexTSeconds,
+            int satisifedRequests,
+            int toleratingRequests,
+            int frustratingRequest,
+            double expectedGreaterThan)
         {
-            var apdexMetric = _fixture.RunSamplesForApdexCalculation(apdexTSeconds, satisifedRequests, toleratingRequests, frustratingRequest,
+            var apdexMetric = _fixture.RunSamplesForApdexCalculation(
+                apdexTSeconds,
+                satisifedRequests,
+                toleratingRequests,
+                frustratingRequest,
                 TestSamplePreference.Satisified);
 
             var score = apdexMetric.GetValue().Score;

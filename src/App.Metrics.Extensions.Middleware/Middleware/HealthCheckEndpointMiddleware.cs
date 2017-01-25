@@ -4,10 +4,10 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using App.Metrics.Abstractions.Serialization;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using App.Metrics.Health;
 using App.Metrics.Internal;
-using App.Metrics.Serialization.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 

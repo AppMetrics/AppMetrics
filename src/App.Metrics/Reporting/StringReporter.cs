@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Data;
 using App.Metrics.Formatting.Humanize;
 using App.Metrics.Health;

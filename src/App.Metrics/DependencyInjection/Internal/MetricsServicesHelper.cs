@@ -2,9 +2,9 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
-using App.Metrics.DependencyInjection.Internal;
+using App.Metrics.Internal;
 
-namespace App.Metrics.Internal
+namespace App.Metrics.DependencyInjection.Internal
 {
     [AppMetricsExcludeFromCodeCoverage]
     internal static class MetricsServicesHelper

@@ -3,12 +3,11 @@
 
 using System;
 using System.Collections.Generic;
+using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Apdex;
-using App.Metrics.Core;
 using App.Metrics.Extensions.Reporting.InfluxDB.Extensions;
 using App.Metrics.Histogram;
 using App.Metrics.Infrastructure;
-using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 using FluentAssertions;
 using Xunit;

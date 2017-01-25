@@ -2,12 +2,9 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
-using App.Metrics.Core.Interfaces;
+using App.Metrics.Abstractions.Metrics;
+using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Histogram;
-using App.Metrics.Histogram.Interfaces;
-using App.Metrics.Interfaces;
-using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.Uniform;
 using App.Metrics.Timer.Interfaces;
 using FluentAssertions;

@@ -3,6 +3,7 @@
 
 using System;
 using System.Linq;
+using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Concurrency;
 using App.Metrics.Core;
 

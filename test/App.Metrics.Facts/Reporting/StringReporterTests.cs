@@ -4,8 +4,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Apdex;
-using App.Metrics.Core;
 using App.Metrics.Counter;
 using App.Metrics.Data;
 using App.Metrics.Facts.Reporting.Helpers;
@@ -16,7 +16,6 @@ using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.Meter;
 using App.Metrics.Reporting;
-using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 using App.Metrics.Tagging;
 using App.Metrics.Timer;

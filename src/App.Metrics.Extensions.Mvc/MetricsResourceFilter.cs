@@ -3,6 +3,7 @@
 
 using System;
 using System.Threading.Tasks;
+using App.Metrics.DependencyInjection.Internal;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Internal;
 using App.Metrics.Internal;
 using Microsoft.AspNetCore.Http;

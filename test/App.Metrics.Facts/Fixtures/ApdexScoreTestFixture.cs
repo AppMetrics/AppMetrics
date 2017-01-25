@@ -1,26 +1,33 @@
+// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using App.Metrics.Abstractions.Metrics;
+using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Apdex;
-using App.Metrics.Core;
-using App.Metrics.Core.Interfaces;
 using App.Metrics.Facts.Apdex;
 using App.Metrics.Infrastructure;
-using App.Metrics.Internal;
-using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 
 namespace App.Metrics.Facts.Fixtures
 {
     public class ApdexScoreTestFixture : IDisposable
     {
-        public IApdexMetric RunSamplesForApdexCalculation(double apdexTSeconds, int satisifedRequests,
-            int toleratingRequests, int frustratingRequest, TestSamplePreference testSamplePreference)
+        public void Dispose() { }
+
+        public IApdexMetric RunSamplesForApdexCalculation(
+            double apdexTSeconds,
+            int satisifedRequests,
+            int toleratingRequests,
+            int frustratingRequest,
+            TestSamplePreference testSamplePreference)
         {
             var maxSatifiedDurationMilliseconds = (int)(apdexTSeconds * 1000);
             var minToleratedDurationMilliseconds = maxSatifiedDurationMilliseconds + 1;
             var maxToleratedDurationMilliseconds = 4 * (int)(apdexTSeconds * 1000);
-            var minFrustratedDurationMilliseconds = maxToleratedDurationMilliseconds + 1;            
+            var minFrustratedDurationMilliseconds = maxToleratedDurationMilliseconds + 1;
             var clock = new TestClock();
             var random = new Random();
 
@@ -29,7 +36,7 @@ namespace App.Metrics.Facts.Fixtures
                 Enumerable.Range(1, toleratingRequests).Select(x => random.Next(minToleratedDurationMilliseconds, maxToleratedDurationMilliseconds));
             var frustratingRequestsDurations =
                 Enumerable.Range(1, frustratingRequest)
-                    .Select(x => random.Next(minFrustratedDurationMilliseconds, minFrustratedDurationMilliseconds * 2));
+                          .Select(x => random.Next(minFrustratedDurationMilliseconds, minFrustratedDurationMilliseconds * 2));
 
             var reservoir = new Lazy<IReservoir>(() => new DefaultForwardDecayingReservoir());
 
@@ -54,12 +61,7 @@ namespace App.Metrics.Facts.Fixtures
                 RunSamples(satisfiedRequestsDurations, apdexMetric, clock);
             }
 
-
             return apdexMetric;
-        }
-
-        public void Dispose()
-        {
         }
 
         private static void RunSamples(IEnumerable<int> satisfiedRequestsDurations, IApdexMetric apdexMetric, TestClock clock)

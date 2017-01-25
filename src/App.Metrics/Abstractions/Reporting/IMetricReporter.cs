@@ -9,7 +9,7 @@ using App.Metrics.Health;
 using App.Metrics.Interfaces;
 using App.Metrics.Tagging;
 
-namespace App.Metrics.Reporting.Interfaces
+namespace App.Metrics.Abstractions.Reporting
 {
     public interface IMetricReporter : IHideObjectMembers, IDisposable
     {

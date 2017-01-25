@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;

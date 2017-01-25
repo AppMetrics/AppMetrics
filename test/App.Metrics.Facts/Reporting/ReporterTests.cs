@@ -4,10 +4,10 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Facts.Reporting.Helpers;
 using App.Metrics.Reporting;
-using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Reporting.Internal;
 using App.Metrics.Scheduling;
 using App.Metrics.Scheduling.Interfaces;

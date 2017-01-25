@@ -3,9 +3,8 @@
 
 using System;
 using System.Linq;
-using App.Metrics.Core.Interfaces;
+using App.Metrics.Abstractions.Metrics;
 using App.Metrics.Histogram;
-using App.Metrics.Histogram.Interfaces;
 
 namespace App.Metrics.Facts
 {

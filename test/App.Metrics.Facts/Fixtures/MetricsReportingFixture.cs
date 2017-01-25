@@ -3,13 +3,13 @@
 
 using System;
 using App.Metrics.Configuration;
-using App.Metrics.Core;
 using App.Metrics.Core.Options;
 using App.Metrics.Data;
 using App.Metrics.Filtering;
 using App.Metrics.Filtering.Interfaces;
 using App.Metrics.Health.Internal;
 using App.Metrics.Infrastructure;
+using App.Metrics.Internal;
 using App.Metrics.Internal.Builders;
 using App.Metrics.Internal.Managers;
 using App.Metrics.Internal.Providers;

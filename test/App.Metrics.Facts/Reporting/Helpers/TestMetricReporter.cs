@@ -1,10 +1,12 @@
+// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using App.Metrics.Core;
+using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Data;
 using App.Metrics.Health;
-using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Tagging;
 
 namespace App.Metrics.Facts.Reporting.Helpers
@@ -20,13 +22,12 @@ namespace App.Metrics.Facts.Reporting.Helpers
             _throwEx = throwEx;
             ReportInterval = reportInterval;
         }
-        public void Dispose()
-        {
-        }
 
         public string Name { get; } = "Test Reporter";
 
         public TimeSpan ReportInterval { get; }
+
+        public void Dispose() { }
 
         public Task<bool> EndAndFlushReportRunAsync(IMetrics metrics)
         {
@@ -38,21 +39,18 @@ namespace App.Metrics.Facts.Reporting.Helpers
             return Task.FromResult(_pass);
         }
 
-        public void ReportEnvironment(EnvironmentInfo environmentInfo)
-        {
-            
-        }
+        public void ReportEnvironment(EnvironmentInfo environmentInfo) { }
 
-        public void ReportHealth(GlobalMetricTags globalTags, IEnumerable<HealthCheck.Result> healthyChecks, IEnumerable<HealthCheck.Result> degradedChecks, IEnumerable<HealthCheck.Result> unhealthyChecks)
-        {
-        }
-
-        public void ReportMetric<T>(string context, MetricValueSource<T> valueSource)
+        public void ReportHealth(
+            GlobalMetricTags globalTags,
+            IEnumerable<HealthCheck.Result> healthyChecks,
+            IEnumerable<HealthCheck.Result> degradedChecks,
+            IEnumerable<HealthCheck.Result> unhealthyChecks)
         {
         }
 
-        public void StartReportRun(IMetrics metrics)
-        {
-        }
+        public void ReportMetric<T>(string context, MetricValueSource<T> valueSource) { }
+
+        public void StartReportRun(IMetrics metrics) { }
     }
 }

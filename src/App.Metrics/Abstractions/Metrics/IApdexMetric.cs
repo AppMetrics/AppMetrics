@@ -2,10 +2,11 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
+using App.Metrics.Apdex;
 using App.Metrics.Apdex.Interfaces;
 using App.Metrics.Data.Interfaces;
 
-namespace App.Metrics.Apdex
+namespace App.Metrics.Abstractions.Metrics
 {
     /// <summary>
     ///     Provides access to a adpex metric implementation e.g. <see cref="DefaultApdexMetric" />

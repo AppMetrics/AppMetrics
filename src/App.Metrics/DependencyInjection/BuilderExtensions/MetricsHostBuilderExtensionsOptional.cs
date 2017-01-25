@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics;
+using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Configuration;
 using App.Metrics.DependencyInjection.Internal;
 using App.Metrics.Filtering.Interfaces;

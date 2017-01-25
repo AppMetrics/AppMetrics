@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-using System;
-
-namespace App.Metrics.Reporting.Interfaces
+namespace App.Metrics.Abstractions.Serialization
 {
-    public interface IReporterSettings
+    public interface IMetricDataSerializer
     {
-        TimeSpan ReportInterval { get; }
+        T Deserialize<T>(string json);
+
+        string Serialize<T>(T value);
     }
 }

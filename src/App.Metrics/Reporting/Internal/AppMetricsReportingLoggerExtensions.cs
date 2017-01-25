@@ -3,6 +3,7 @@
 
 using System;
 using System.Diagnostics;
+using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Internal;
 using App.Metrics.Reporting.Interfaces;
 

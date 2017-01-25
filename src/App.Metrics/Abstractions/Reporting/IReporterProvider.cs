@@ -4,7 +4,7 @@
 using App.Metrics.Filtering.Interfaces;
 using Microsoft.Extensions.Logging;
 
-namespace App.Metrics.Reporting.Interfaces
+namespace App.Metrics.Abstractions.Reporting
 {
     public interface IReporterProvider
     {

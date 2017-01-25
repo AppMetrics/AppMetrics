@@ -7,10 +7,9 @@ using App.Metrics.Filtering.Interfaces;
 using App.Metrics.Health.Interfaces;
 using App.Metrics.Infrastructure;
 using App.Metrics.Interfaces;
-using App.Metrics.Internal;
 using App.Metrics.Tagging;
 
-namespace App.Metrics.Core
+namespace App.Metrics.Internal
 {
     /// <summary>
     ///     Provides access to record application metrics.

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.Health;
