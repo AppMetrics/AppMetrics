@@ -3,13 +3,13 @@
 
 using App.Metrics.Apdex;
 using App.Metrics.Apdex.Interfaces;
+using App.Metrics.Core.Interfaces;
 using App.Metrics.Counter;
 using App.Metrics.Counter.Interfaces;
 using App.Metrics.Gauge;
 using App.Metrics.Gauge.Interfaces;
 using App.Metrics.Histogram;
 using App.Metrics.Histogram.Interfaces;
-using App.Metrics.Interfaces;
 using App.Metrics.Meter;
 using App.Metrics.Meter.Interfaces;
 using App.Metrics.Registry.Interfaces;

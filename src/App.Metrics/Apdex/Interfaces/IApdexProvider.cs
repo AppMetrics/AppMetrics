@@ -3,7 +3,6 @@
 
 using System;
 using App.Metrics.Abstractions.ReservoirSampling;
-using App.Metrics.ReservoirSampling;
 
 namespace App.Metrics.Apdex.Interfaces
 {

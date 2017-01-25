@@ -5,7 +5,6 @@ using System;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Options;
 using App.Metrics.Gauge.Interfaces;
-using App.Metrics.Interfaces;
 using App.Metrics.Registry.Interfaces;
 
 namespace App.Metrics.Gauge

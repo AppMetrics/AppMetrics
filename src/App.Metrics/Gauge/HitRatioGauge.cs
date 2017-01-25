@@ -3,7 +3,6 @@
 
 using System;
 using App.Metrics.Core;
-using App.Metrics.Data;
 using App.Metrics.Meter;
 using App.Metrics.Meter.Interfaces;
 using App.Metrics.Timer.Interfaces;

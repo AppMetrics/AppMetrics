@@ -3,7 +3,6 @@
 
 using App.Metrics.Core;
 using App.Metrics.Core.Interfaces;
-using App.Metrics.Data;
 using App.Metrics.Tagging;
 
 namespace App.Metrics.Timer

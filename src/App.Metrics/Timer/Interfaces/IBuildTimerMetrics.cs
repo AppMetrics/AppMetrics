@@ -4,7 +4,6 @@
 using System;
 using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Abstractions.ReservoirSampling;
-using App.Metrics.Histogram.Interfaces;
 
 namespace App.Metrics.Timer.Interfaces
 {

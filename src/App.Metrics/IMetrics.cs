@@ -4,7 +4,6 @@
 using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Health.Interfaces;
-using App.Metrics.Interfaces;
 using App.Metrics.Tagging;
 
 namespace App.Metrics

@@ -8,7 +8,7 @@ using App.Metrics.Histogram.Interfaces;
 using App.Metrics.Meter.Interfaces;
 using App.Metrics.Timer.Interfaces;
 
-namespace App.Metrics.Interfaces
+namespace App.Metrics.Core.Interfaces
 {
     /// <summary>
     ///     Provides access to measure/record available metric types

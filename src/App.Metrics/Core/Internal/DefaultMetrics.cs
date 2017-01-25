@@ -6,7 +6,6 @@ using App.Metrics.Configuration;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Health.Interfaces;
 using App.Metrics.Infrastructure;
-using App.Metrics.Interfaces;
 using App.Metrics.Internal;
 using App.Metrics.Tagging;
 

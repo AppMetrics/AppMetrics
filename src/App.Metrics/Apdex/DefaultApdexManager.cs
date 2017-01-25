@@ -4,7 +4,6 @@
 using System;
 using App.Metrics.Apdex.Interfaces;
 using App.Metrics.Core.Options;
-using App.Metrics.Interfaces;
 using App.Metrics.Registry.Interfaces;
 
 namespace App.Metrics.Apdex

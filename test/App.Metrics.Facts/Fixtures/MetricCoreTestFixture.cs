@@ -3,10 +3,9 @@
 
 using System;
 using App.Metrics.Configuration;
+using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Internal;
 using App.Metrics.Infrastructure;
-using App.Metrics.Interfaces;
-using App.Metrics.Internal;
 using App.Metrics.Internal.Builders;
 using App.Metrics.Registry.Interfaces;
 using App.Metrics.Registry.Internal;

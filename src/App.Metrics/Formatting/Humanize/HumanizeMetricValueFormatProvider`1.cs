@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using App.Metrics.Apdex;
 using App.Metrics.Counter;
-using App.Metrics.Data;
 using App.Metrics.Health;
 using App.Metrics.Histogram;
 using App.Metrics.Infrastructure;

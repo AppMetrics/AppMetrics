@@ -10,7 +10,6 @@ using App.Metrics.Core;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Options;
 using App.Metrics.Counter.Interfaces;
-using App.Metrics.Data;
 using App.Metrics.Histogram.Interfaces;
 using App.Metrics.Meter.Interfaces;
 using App.Metrics.Timer.Interfaces;

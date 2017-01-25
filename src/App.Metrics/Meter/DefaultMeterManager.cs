@@ -3,7 +3,6 @@
 
 using System;
 using App.Metrics.Core.Options;
-using App.Metrics.Interfaces;
 using App.Metrics.Meter.Interfaces;
 using App.Metrics.Registry.Interfaces;
 using App.Metrics.Tagging;

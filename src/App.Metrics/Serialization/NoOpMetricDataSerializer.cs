@@ -3,7 +3,6 @@
 
 using App.Metrics.Abstractions.Serialization;
 using App.Metrics.Core.Internal;
-using App.Metrics.Internal;
 
 namespace App.Metrics.Serialization
 {

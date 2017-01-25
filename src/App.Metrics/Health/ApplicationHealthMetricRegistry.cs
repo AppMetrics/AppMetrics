@@ -3,7 +3,6 @@
 
 using App.Metrics.Core.Internal;
 using App.Metrics.Core.Options;
-using App.Metrics.Internal;
 
 namespace App.Metrics.Health
 {

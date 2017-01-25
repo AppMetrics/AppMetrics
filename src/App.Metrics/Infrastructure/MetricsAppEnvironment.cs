@@ -2,11 +2,11 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
+using Microsoft.Extensions.PlatformAbstractions;
 #if NET452
 using System.Reflection;
 using App.Metrics.Core.Internal;
 #endif
-using Microsoft.Extensions.PlatformAbstractions;
 
 namespace App.Metrics.Infrastructure
 {

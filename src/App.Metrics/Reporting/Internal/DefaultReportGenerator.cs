@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Health;
-using App.Metrics.Reporting.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporting.Internal

@@ -6,7 +6,6 @@ using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Core;
 using App.Metrics.Core.Internal;
-using App.Metrics.Internal;
 
 namespace App.Metrics.Histogram
 {

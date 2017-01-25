@@ -3,7 +3,6 @@
 
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Core.Internal;
-using App.Metrics.Internal;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 
 namespace App.Metrics.Core.Options

@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Net;
 using System.Reflection;
-using App.Metrics.Data;
 using Microsoft.DotNet.PlatformAbstractions;
 
 namespace App.Metrics.Infrastructure

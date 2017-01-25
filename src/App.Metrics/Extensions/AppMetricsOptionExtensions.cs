@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using App.Metrics.Data;
 using App.Metrics.Infrastructure;
 
 // ReSharper disable CheckNamespace

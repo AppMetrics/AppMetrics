@@ -4,7 +4,6 @@
 using System;
 using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Core.Interfaces;
-using App.Metrics.Gauge.Interfaces;
 
 namespace App.Metrics.Gauge
 {

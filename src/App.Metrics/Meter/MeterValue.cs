@@ -13,8 +13,6 @@ namespace App.Metrics.Meter
     /// </summary>
     public sealed class MeterValue
     {
-        public static readonly MeterValue Empty = new MeterValue(0, 0.0, 0.0, 0.0, 0.0, TimeUnit.Seconds);
-
         public static readonly IComparer<SetItem> SetItemComparer = Comparer<SetItem>.Create(
             (x, y) =>
             {

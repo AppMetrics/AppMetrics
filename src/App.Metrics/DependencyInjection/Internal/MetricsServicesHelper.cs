@@ -3,7 +3,6 @@
 
 using System;
 using App.Metrics.Core.Internal;
-using App.Metrics.Internal;
 
 namespace App.Metrics.DependencyInjection.Internal
 {

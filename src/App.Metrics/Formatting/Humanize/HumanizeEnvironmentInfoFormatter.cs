@@ -3,7 +3,6 @@
 
 using System;
 using System.Text;
-using App.Metrics.Data;
 using App.Metrics.Infrastructure;
 
 namespace App.Metrics.Formatting.Humanize

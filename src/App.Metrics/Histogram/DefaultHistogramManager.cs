@@ -3,7 +3,6 @@
 
 using App.Metrics.Core.Options;
 using App.Metrics.Histogram.Interfaces;
-using App.Metrics.Interfaces;
 using App.Metrics.Registry.Interfaces;
 
 namespace App.Metrics.Histogram

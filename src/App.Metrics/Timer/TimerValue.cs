@@ -11,13 +11,6 @@ namespace App.Metrics.Timer
     /// </summary>
     public sealed class TimerValue
     {
-        public static readonly TimerValue Empty = new TimerValue(
-            MeterValue.Empty,
-            HistogramValue.Empty,
-            0,
-            0,
-            TimeUnit.Milliseconds);
-
         private readonly TimeUnit _durationUnit;
 
         public TimerValue(MeterValue rate, HistogramValue histogram, long activeSessions, long totalTime, TimeUnit durationUnit)

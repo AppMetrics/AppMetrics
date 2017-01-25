@@ -9,7 +9,6 @@ using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Concurrency;
 using App.Metrics.Core.Internal;
 using App.Metrics.Infrastructure;
-using App.Metrics.Internal;
 using App.Metrics.Scheduling;
 using App.Metrics.Scheduling.Interfaces;
 

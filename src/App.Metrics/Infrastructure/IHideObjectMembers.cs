@@ -4,7 +4,7 @@
 using System;
 using System.ComponentModel;
 
-namespace App.Metrics.Interfaces
+namespace App.Metrics.Core.Interfaces
 {
     /// <summary>
     ///     Marker interface to cleanup editor visible members.

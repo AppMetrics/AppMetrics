@@ -3,7 +3,6 @@
 
 using System.Threading;
 using App.Metrics.Core.Internal;
-using App.Metrics.Internal;
 using App.Metrics.Reporting.Interfaces;
 
 namespace App.Metrics.Reporting.Internal

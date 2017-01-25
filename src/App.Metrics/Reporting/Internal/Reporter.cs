@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Core.Internal;
 using App.Metrics.Core.Options;
-using App.Metrics.Internal;
 using App.Metrics.Reporting.Interfaces;
-using App.Metrics.Scheduling;
 using App.Metrics.Scheduling.Interfaces;
 using Microsoft.Extensions.Logging;
 

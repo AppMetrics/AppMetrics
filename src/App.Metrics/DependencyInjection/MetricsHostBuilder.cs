@@ -2,13 +2,12 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
-using App.Metrics.Core.Internal;
-using App.Metrics.Infrastructure;
-using Microsoft.Extensions.PlatformAbstractions;
-
 #if NET452
 using System.Reflection;
+using App.Metrics.Core.Internal;
 #endif
+using App.Metrics.Infrastructure;
+using Microsoft.Extensions.PlatformAbstractions;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection

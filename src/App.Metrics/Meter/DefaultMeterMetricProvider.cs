@@ -4,7 +4,6 @@
 using System;
 using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Core.Options;
-using App.Metrics.Interfaces;
 using App.Metrics.Meter.Interfaces;
 using App.Metrics.Registry.Interfaces;
 

@@ -3,7 +3,6 @@
 
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Internal;
-using App.Metrics.Internal;
 
 namespace App.Metrics.Core
 {

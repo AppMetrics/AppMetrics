@@ -10,7 +10,7 @@ using App.Metrics.Meter.Interfaces;
 using App.Metrics.Registry.Interfaces;
 using App.Metrics.Timer.Interfaces;
 
-namespace App.Metrics.Interfaces
+namespace App.Metrics.Core.Interfaces
 {
     /// <summary>
     ///     Provides access to APIs which build instances of all available metric types. Metrics created are not added to the

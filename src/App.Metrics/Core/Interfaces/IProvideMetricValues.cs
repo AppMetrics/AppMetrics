@@ -2,7 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using App.Metrics.Abstractions.Filtering;
-using App.Metrics.Data;
 
 namespace App.Metrics.Core.Interfaces
 {

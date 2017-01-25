@@ -14,7 +14,6 @@ using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Options;
 using App.Metrics.Counter;
 using App.Metrics.Counter.Interfaces;
-using App.Metrics.Data;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
 using App.Metrics.Histogram.Interfaces;
