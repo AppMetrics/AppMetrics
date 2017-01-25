@@ -3,8 +3,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Extensions.Reservoirs.HdrHistogram.HdrHistogram;
+using App.Metrics.ReservoirSampling;
 
 // Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy

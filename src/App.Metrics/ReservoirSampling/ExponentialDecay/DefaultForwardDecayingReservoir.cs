@@ -5,11 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Abstractions.Clock;
-using App.Metrics.Abstractions.ReservoirSampling;
-using App.Metrics.Abstractions.Scheduling;
 using App.Metrics.Concurrency;
+using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
+using App.Metrics.Scheduling;
 
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy

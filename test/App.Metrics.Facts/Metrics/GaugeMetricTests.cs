@@ -5,12 +5,10 @@ using System;
 using System.Linq;
 using App.Metrics.Core;
 using App.Metrics.Data;
+using App.Metrics.Infrastructure;
+using App.Metrics.Internal;
 using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.Uniform;
-using App.Metrics.Abstractions;
-using App.Metrics.Abstractions.Clock;
-using App.Metrics.Abstractions.Internal;
-using App.Metrics.Abstractions.ReservoirSampling;
 using FluentAssertions;
 using Xunit;
 

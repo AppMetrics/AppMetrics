@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
 using App.Metrics.Data;
-using App.Metrics.Abstractions;
-using App.Metrics.Abstractions.Clock;
+using App.Metrics.Infrastructure;
 
 namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 {

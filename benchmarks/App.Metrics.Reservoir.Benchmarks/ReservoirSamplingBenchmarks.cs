@@ -3,7 +3,6 @@
 
 using System.Collections.Generic;
 using System.Threading;
-using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Reservoir.Benchmarks.Jobs;
 using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;

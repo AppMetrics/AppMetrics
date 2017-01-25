@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace App.Metrics.Abstractions.ReservoirSampling
+namespace App.Metrics.ReservoirSampling
 {
     /// <summary>
     ///     Provides access to a snapshot used for calculating

@@ -11,8 +11,6 @@ using App.Metrics.Internal;
 using App.Metrics.Internal.Builders;
 using App.Metrics.Internal.Managers;
 using App.Metrics.Internal.Providers;
-using App.Metrics.Abstractions;
-using App.Metrics.Abstractions.Clock;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Xunit;

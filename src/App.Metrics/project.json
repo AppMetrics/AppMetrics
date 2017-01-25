@@ -13,7 +13,6 @@
   "copyright": "Allan Hardy 2016",
   "dependencies": {
     "App.Metrics.Concurrency": "1.0.0-beta5-*",
-    "App.Metrics.Abstractions": "1.0.0-beta5-*",
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0",
     "Microsoft.Extensions.Logging": "1.1.0",
     "Microsoft.Extensions.DependencyModel": "1.1.0",

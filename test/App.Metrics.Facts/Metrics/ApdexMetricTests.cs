@@ -4,12 +4,10 @@
 using System;
 using App.Metrics.Apdex.Interfaces;
 using App.Metrics.Core;
+using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
-using App.Metrics.Abstractions;
-using App.Metrics.Abstractions.Clock;
-using App.Metrics.Abstractions.ReservoirSampling;
 using FluentAssertions;
 using Moq;
 using Xunit;

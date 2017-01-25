@@ -3,9 +3,9 @@
 
 using System;
 using System.Collections.Generic;
-using App.Metrics.Abstractions.Scheduling;
 using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Reporting.Internal;
+using App.Metrics.Scheduling;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporting

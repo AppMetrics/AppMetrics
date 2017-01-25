@@ -5,10 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Abstractions.Scheduling;
 using App.Metrics.Core.Options;
 using App.Metrics.Internal;
 using App.Metrics.Reporting.Interfaces;
+using App.Metrics.Scheduling;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporting.Internal

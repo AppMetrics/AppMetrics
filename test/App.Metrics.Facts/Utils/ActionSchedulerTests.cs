@@ -4,7 +4,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Abstractions.Scheduling;
+using App.Metrics.Scheduling;
 using FluentAssertions;
 using Xunit;
 

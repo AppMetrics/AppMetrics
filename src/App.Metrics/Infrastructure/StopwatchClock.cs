@@ -4,9 +4,9 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
-using App.Metrics.Abstractions.Internal;
+using App.Metrics.Internal;
 
-namespace App.Metrics.Abstractions.Clock
+namespace App.Metrics.Infrastructure
 {
     [AppMetricsExcludeFromCodeCoverage]
     public sealed class StopwatchClock : IClock

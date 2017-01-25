@@ -10,6 +10,9 @@
   "buildOptions": { "debugType": "full" },
 
   "dependencies": {
+    "App.Metrics": {
+      "target": "project"
+    },
     "App.Metrics.Extensions.Reservoirs.HdrHistogram": {
       "target": "project"
     },

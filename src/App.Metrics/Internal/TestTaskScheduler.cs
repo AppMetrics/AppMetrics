@@ -4,10 +4,11 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Abstractions.Clock;
+using App.Metrics.Scheduling;
 
-namespace App.Metrics.Abstractions.Scheduling
+namespace App.Metrics.Internal
 {
+    [AppMetricsExcludeFromCodeCoverage]
     internal sealed class TestTaskScheduler : IScheduler
     {
         private readonly IClock _clock;
@@ -38,7 +39,7 @@ namespace App.Metrics.Abstractions.Scheduling
             _pollInterval = pollInterval;
             _lastRun = _clock.Seconds;
             _action = action;
-            return TaskCache.CompletedTask;
+            return AppMetricsTaskCache.CompletedTask;
         }
 
         // <inheritdoc />

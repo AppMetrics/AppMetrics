@@ -4,12 +4,12 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Abstractions.Scheduling;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Facts.Reporting.Helpers;
 using App.Metrics.Reporting;
 using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Reporting.Internal;
+using App.Metrics.Scheduling;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;

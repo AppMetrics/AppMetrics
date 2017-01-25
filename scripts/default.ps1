@@ -20,8 +20,7 @@ $testsRoot = "$solutionRoot\test"
 $globalFilePath = "$solutionRoot\global.json"
 $appProjects = Get-ChildItem "$srcRoot\**\$projectFileName" | foreach { $_.FullName }
 $testProjects = Get-ChildItem "$testsRoot\**\$projectFileName" | foreach { $_.FullName }
-$packableProjectDirectories = @("$srcRoot\App.Metrics",
-								"$srcRoot\App.Metrics.Abstractions",
+$packableProjectDirectories = @("$srcRoot\App.Metrics",								
 								"$srcRoot\App.Metrics.Concurrency", 
 								"$srcRoot\App.Metrics.Extensions.Middleware", 
 								"$srcRoot\App.Metrics.Extensions.Mvc",

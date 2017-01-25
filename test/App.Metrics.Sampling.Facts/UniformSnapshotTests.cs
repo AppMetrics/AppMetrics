@@ -3,7 +3,6 @@
 
 using System;
 using System.Linq;
-using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.Uniform;
 using FluentAssertions;

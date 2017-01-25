@@ -4,7 +4,7 @@
 using System;
 using System.ComponentModel;
 
-namespace App.Metrics.Abstractions
+namespace App.Metrics.Internal
 {
     /// <summary>
     ///     Marker interface to cleanup editor visible members.
