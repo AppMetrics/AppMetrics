@@ -4,6 +4,7 @@
 using System;
 using System.Linq;
 using App.Metrics.Abstractions.ReservoirSampling;
+using App.Metrics.Core.Internal;
 using App.Metrics.Gauge;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;

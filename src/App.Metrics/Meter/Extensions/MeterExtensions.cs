@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using App.Metrics.Core;
 using App.Metrics.Data;
 
 namespace App.Metrics.Meter.Extensions

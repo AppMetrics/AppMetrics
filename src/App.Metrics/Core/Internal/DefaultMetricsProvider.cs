@@ -16,7 +16,7 @@ using App.Metrics.Registry.Interfaces;
 using App.Metrics.Timer;
 using App.Metrics.Timer.Interfaces;
 
-namespace App.Metrics.Internal.Providers
+namespace App.Metrics.Core.Internal
 {
     internal class DefaultMetricsProvider : IProvideMetrics
     {

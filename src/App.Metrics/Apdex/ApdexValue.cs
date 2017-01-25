@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
+using App.Metrics.Core.Internal;
 using App.Metrics.Internal;
 
 namespace App.Metrics.Apdex
@@ -11,6 +12,8 @@ namespace App.Metrics.Apdex
     /// </summary>
     public sealed class ApdexValue
     {
+        public static readonly ApdexValue Empty = new ApdexValue(0.0, 0, 0, 0, 0);
+
         public ApdexValue(double score, int satisfied, int tolerating, int frustrating, int sampleSize, bool allowWarmup = true)
         {
             Satisfied = satisfied;

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Apdex;
+using App.Metrics.Core;
 using App.Metrics.Counter;
 using App.Metrics.Data;
 using App.Metrics.Extensions.Reporting.InfluxDB;

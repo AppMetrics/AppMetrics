@@ -3,6 +3,7 @@
 
 using System;
 using App.Metrics.Abstractions.ReservoirSampling;
+using App.Metrics.Core.Internal;
 using App.Metrics.Histogram;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;

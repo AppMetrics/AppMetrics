@@ -3,8 +3,8 @@
 
 using System;
 using App.Metrics.Abstractions.MetricTypes;
+using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Options;
-using App.Metrics.Data.Interfaces;
 
 namespace App.Metrics.Gauge.Interfaces
 {

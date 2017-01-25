@@ -2,9 +2,9 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
+using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Extensions.Reporting.InfluxDB;
 using App.Metrics.Extensions.Reporting.InfluxDB.Client;
-using App.Metrics.Filtering.Interfaces;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics.Reporting.Interfaces

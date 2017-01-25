@@ -5,9 +5,9 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using App.Metrics.Abstractions.Serialization;
+using App.Metrics.Core.Internal;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using App.Metrics.Health;
-using App.Metrics.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 

@@ -2,15 +2,14 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System.Linq;
+using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Core.Interfaces;
-using App.Metrics.Data;
 using App.Metrics.Filtering;
-using App.Metrics.Filtering.Interfaces;
-using App.Metrics.Interfaces;
+using App.Metrics.Internal;
 using App.Metrics.Registry.Interfaces;
 using App.Metrics.Registry.Internal;
 
-namespace App.Metrics.Internal.Providers
+namespace App.Metrics.Core.Internal
 {
     internal class DefaultMetricValuesProvider : IProvideMetricValues
     {

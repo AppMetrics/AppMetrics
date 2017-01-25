@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-using App.Metrics.Data.Interfaces;
+using App.Metrics.Core.Interfaces;
 using App.Metrics.Timer;
 using App.Metrics.Timer.Interfaces;
 

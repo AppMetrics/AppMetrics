@@ -5,8 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using App.Metrics.Core.Internal;
 using App.Metrics.Health;
-using App.Metrics.Internal;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.Extensions.Logging

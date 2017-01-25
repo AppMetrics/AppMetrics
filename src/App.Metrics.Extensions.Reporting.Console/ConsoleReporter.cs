@@ -7,9 +7,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using App.Metrics.Abstractions.Reporting;
+using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.Formatting.Humanize;
 using App.Metrics.Health;
+using App.Metrics.Infrastructure;
 using App.Metrics.Tagging;
 using Microsoft.Extensions.Logging;
 

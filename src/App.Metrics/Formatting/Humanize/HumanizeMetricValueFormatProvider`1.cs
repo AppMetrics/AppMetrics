@@ -8,6 +8,7 @@ using App.Metrics.Counter;
 using App.Metrics.Data;
 using App.Metrics.Health;
 using App.Metrics.Histogram;
+using App.Metrics.Infrastructure;
 using App.Metrics.Meter;
 using App.Metrics.Timer;
 

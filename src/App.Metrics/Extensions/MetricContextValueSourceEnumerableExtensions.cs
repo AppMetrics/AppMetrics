@@ -3,7 +3,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using App.Metrics.Filtering.Interfaces;
+using App.Metrics.Abstractions.Filtering;
+using App.Metrics.Core;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics.Data

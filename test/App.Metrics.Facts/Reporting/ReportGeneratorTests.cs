@@ -9,6 +9,7 @@ using App.Metrics.Data;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Filtering;
 using App.Metrics.Health;
+using App.Metrics.Infrastructure;
 using App.Metrics.Reporting.Internal;
 using App.Metrics.Tagging;
 using Microsoft.Extensions.Logging;

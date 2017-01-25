@@ -3,15 +3,15 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Apdex;
 using App.Metrics.Counter;
-using App.Metrics.Filtering.Interfaces;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
 using App.Metrics.Timer;
 
-namespace App.Metrics.Data
+namespace App.Metrics.Core
 {
     public sealed class MetricsContextValueSource
     {

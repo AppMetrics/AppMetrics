@@ -14,33 +14,15 @@ using App.Metrics.Meter.Interfaces;
 using App.Metrics.Timer;
 using App.Metrics.Timer.Interfaces;
 
-namespace App.Metrics.Data
+namespace App.Metrics.Core
 {
     public static class ValueReader
     {
-        private static readonly ApdexValue EmptyApdex = new ApdexValue(0.0, 0, 0, 0, 0);
+        private static readonly ApdexValue EmptyApdex = ApdexValue.Empty;
         private static readonly CounterValue EmptyCounter = new CounterValue(0);
-
-        private static readonly HistogramValue EmptyHistogram = new HistogramValue(
-            0,
-            0.0,
-            null,
-            0.0,
-            null,
-            0.0,
-            0.0,
-            null,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0);
-
-        private static readonly MeterValue EmptyMeter = new MeterValue(0, 0.0, 0.0, 0.0, 0.0, TimeUnit.Seconds);
-        private static readonly TimerValue EmptyTimer = new TimerValue(EmptyMeter, EmptyHistogram, 0, 0, TimeUnit.Milliseconds);
+        private static readonly HistogramValue EmptyHistogram = HistogramValue.Empty;
+        private static readonly MeterValue EmptyMeter = MeterValue.Empty;
+        private static readonly TimerValue EmptyTimer = TimerValue.Empty;
 
         public static CounterValue GetCurrentValue(ICounter metric)
         {

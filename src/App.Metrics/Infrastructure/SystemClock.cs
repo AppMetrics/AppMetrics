@@ -3,6 +3,7 @@
 
 using System;
 using System.Globalization;
+using App.Metrics.Core.Internal;
 using App.Metrics.Internal;
 
 namespace App.Metrics.Infrastructure

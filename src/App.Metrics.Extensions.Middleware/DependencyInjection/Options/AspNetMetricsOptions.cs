@@ -17,7 +17,7 @@ namespace App.Metrics.Extensions.Middleware.DependencyInjection.Options
             PingEndpointEnabled = true;
             OAuth2TrackingEnabled = true;
             ApdexTrackingEnabled = true;
-            ApdexTSeconds = Metrics.Internal.Constants.ReservoirSampling.DefaultApdexTSeconds;
+            ApdexTSeconds = Core.Internal.Constants.ReservoirSampling.DefaultApdexTSeconds;
         }
 
         public bool ApdexTrackingEnabled { get; set; }

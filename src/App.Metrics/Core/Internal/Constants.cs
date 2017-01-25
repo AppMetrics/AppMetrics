@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using App.Metrics.Health;
 
-namespace App.Metrics.Internal
+namespace App.Metrics.Core.Internal
 {
     internal static class Constants
     {

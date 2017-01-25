@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace App.Metrics
+namespace App.Metrics.Core
 {
     public sealed class MetricData
     {

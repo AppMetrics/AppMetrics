@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-using App.Metrics.Data.Interfaces;
+using App.Metrics.Core.Interfaces;
+using App.Metrics.Core.Internal;
 using App.Metrics.Internal;
 
-// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
-// Ported/Refactored to .NET Standard Library by Allan Hardy
-namespace App.Metrics.Data
+namespace App.Metrics.Core
 {
     [AppMetricsExcludeFromCodeCoverage]
     public static class ConstantValue

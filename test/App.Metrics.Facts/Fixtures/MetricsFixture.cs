@@ -2,16 +2,16 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
+using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Configuration;
+using App.Metrics.Core;
+using App.Metrics.Core.Internal;
 using App.Metrics.Data;
 using App.Metrics.Filtering;
-using App.Metrics.Filtering.Interfaces;
 using App.Metrics.Health.Internal;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.Internal.Builders;
-using App.Metrics.Internal.Managers;
-using App.Metrics.Internal.Providers;
 using App.Metrics.Registry.Interfaces;
 using App.Metrics.Registry.Internal;
 using Microsoft.Extensions.Logging;

@@ -3,7 +3,7 @@
 
 using System;
 
-namespace App.Metrics.Internal
+namespace App.Metrics.Core.Internal
 {
     [AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = true)]
     internal class AppMetricsExcludeFromCodeCoverage : Attribute

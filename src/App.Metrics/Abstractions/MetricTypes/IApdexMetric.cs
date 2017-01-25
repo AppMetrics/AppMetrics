@@ -4,7 +4,7 @@
 using System;
 using App.Metrics.Apdex;
 using App.Metrics.Apdex.Interfaces;
-using App.Metrics.Data.Interfaces;
+using App.Metrics.Core.Interfaces;
 
 namespace App.Metrics.Abstractions.Metrics
 {

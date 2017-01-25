@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using App.Metrics.Data;
+using App.Metrics.Infrastructure;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

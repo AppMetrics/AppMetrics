@@ -8,6 +8,7 @@ using App.Metrics.Formatting.Humanize;
 using App.Metrics.Gauge;
 using App.Metrics.Health;
 using App.Metrics.Histogram;
+using App.Metrics.Infrastructure;
 using App.Metrics.Meter;
 using App.Metrics.Tagging;
 using App.Metrics.Timer;

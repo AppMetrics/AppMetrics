@@ -10,7 +10,7 @@ using App.Metrics.Histogram;
 using App.Metrics.Meter;
 using App.Metrics.Timer;
 
-namespace App.Metrics
+namespace App.Metrics.Core
 {
     /// <summary>
     ///     MetricsContext's are a way of grouping metrics withing a context, for example we can record all database related

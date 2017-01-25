@@ -8,7 +8,7 @@ using App.Metrics.Histogram;
 using App.Metrics.Meter;
 using App.Metrics.Timer;
 
-namespace App.Metrics.Filtering.Interfaces
+namespace App.Metrics.Abstractions.Filtering
 {
     public interface IFilterMetrics
     {

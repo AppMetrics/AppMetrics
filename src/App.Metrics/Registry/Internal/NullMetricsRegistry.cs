@@ -3,16 +3,18 @@
 
 using System;
 using System.Collections.Generic;
+using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Abstractions.Metrics;
 using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Apdex;
 using App.Metrics.Apdex.Interfaces;
+using App.Metrics.Core;
+using App.Metrics.Core.Interfaces;
+using App.Metrics.Core.Internal;
 using App.Metrics.Core.Options;
 using App.Metrics.Counter;
 using App.Metrics.Counter.Interfaces;
 using App.Metrics.Data;
-using App.Metrics.Data.Interfaces;
-using App.Metrics.Filtering.Interfaces;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
 using App.Metrics.Histogram.Interfaces;

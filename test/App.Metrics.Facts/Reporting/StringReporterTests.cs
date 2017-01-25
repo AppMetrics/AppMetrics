@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Apdex;
+using App.Metrics.Core.Internal;
 using App.Metrics.Counter;
 using App.Metrics.Data;
 using App.Metrics.Facts.Reporting.Helpers;

@@ -3,7 +3,6 @@
 
 using System;
 using App.Metrics.Abstractions.ReservoirSampling;
-using App.Metrics.ReservoirSampling;
 
 namespace App.Metrics.Histogram
 {
@@ -12,6 +11,24 @@ namespace App.Metrics.Histogram
     /// </summary>
     public sealed class HistogramValue
     {
+        public static readonly HistogramValue Empty = new HistogramValue(
+            0,
+            0.0,
+            null,
+            0.0,
+            null,
+            0.0,
+            0.0,
+            null,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0);
+
         public HistogramValue(double lastValue, string lastUserValue, IReservoirSnapshot snapshot)
             : this(
                 snapshot.Count,

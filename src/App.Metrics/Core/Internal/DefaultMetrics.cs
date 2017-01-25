@@ -1,15 +1,16 @@
 ﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
+using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Configuration;
 using App.Metrics.Core.Interfaces;
-using App.Metrics.Filtering.Interfaces;
 using App.Metrics.Health.Interfaces;
 using App.Metrics.Infrastructure;
 using App.Metrics.Interfaces;
+using App.Metrics.Internal;
 using App.Metrics.Tagging;
 
-namespace App.Metrics.Internal
+namespace App.Metrics.Core.Internal
 {
     /// <summary>
     ///     Provides access to record application metrics.

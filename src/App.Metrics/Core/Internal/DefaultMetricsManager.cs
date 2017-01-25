@@ -2,12 +2,11 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using App.Metrics.Core.Interfaces;
-using App.Metrics.Interfaces;
 using App.Metrics.Registry.Interfaces;
 using App.Metrics.Registry.Internal;
 using Microsoft.Extensions.Logging;
 
-namespace App.Metrics.Internal.Managers
+namespace App.Metrics.Core.Internal
 {
     internal sealed class DefaultMetricsManager : IManageMetrics
     {

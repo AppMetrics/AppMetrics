@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace App.Metrics.Data
+namespace App.Metrics.Infrastructure
 {
     public struct EnvironmentInfo
     {

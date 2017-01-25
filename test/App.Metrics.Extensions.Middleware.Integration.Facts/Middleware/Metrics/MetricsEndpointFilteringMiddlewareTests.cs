@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
 using App.Metrics.Formatters.Json.Serialization;

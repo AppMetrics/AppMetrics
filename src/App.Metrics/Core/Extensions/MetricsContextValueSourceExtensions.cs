@@ -6,15 +6,14 @@ using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Apdex;
 using App.Metrics.Counter;
-using App.Metrics.Data;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
 using App.Metrics.Timer;
 
 // ReSharper disable CheckNamespace
-namespace App.Metrics
-{
+namespace App.Metrics.Core
     // ReSharper restore CheckNamespace
+{
     public static class MetricsContextValueSourceExtensions
     {
         public static ApdexValue ApdexValueFor(this MetricsContextValueSource valueService, string metricName)

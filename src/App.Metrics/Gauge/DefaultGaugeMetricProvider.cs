@@ -2,8 +2,8 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
+using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Options;
-using App.Metrics.Data.Interfaces;
 using App.Metrics.Gauge.Interfaces;
 using App.Metrics.Interfaces;
 using App.Metrics.Registry.Interfaces;

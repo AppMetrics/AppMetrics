@@ -5,8 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using App.Metrics.Abstractions.Reporting;
+using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.Health;
+using App.Metrics.Infrastructure;
 using App.Metrics.Tagging;
 
 namespace App.Metrics.Facts.Reporting.Helpers
