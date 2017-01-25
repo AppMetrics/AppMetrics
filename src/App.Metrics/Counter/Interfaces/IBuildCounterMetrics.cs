@@ -2,15 +2,12 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
-using App.Metrics.Abstractions.Metrics;
+using App.Metrics.Abstractions.MetricTypes;
 
-namespace App.Metrics.Counter.Interfaces
+public interface IBuildCounterMetrics
 {
-    public interface IBuildCounterMetrics
-    {
-        ICounterMetric Build();
+    ICounterMetric Build();
 
-        ICounterMetric Build<T>(Func<T> builder)
-            where T : ICounterMetric;
-    }
+    ICounterMetric Build<T>(Func<T> builder)
+        where T : ICounterMetric;
 }

@@ -3,19 +3,15 @@
 
 using System;
 using App.Metrics.Abstractions.Metrics;
-using App.Metrics.Apdex;
+using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Apdex.Interfaces;
 using App.Metrics.Core.Options;
-using App.Metrics.Counter;
 using App.Metrics.Counter.Interfaces;
 using App.Metrics.Data;
 using App.Metrics.Data.Interfaces;
 using App.Metrics.Filtering.Interfaces;
-using App.Metrics.Histogram;
 using App.Metrics.Histogram.Interfaces;
-using App.Metrics.Meter;
 using App.Metrics.Meter.Interfaces;
-using App.Metrics.Timer;
 using App.Metrics.Timer.Interfaces;
 
 namespace App.Metrics.Registry.Interfaces

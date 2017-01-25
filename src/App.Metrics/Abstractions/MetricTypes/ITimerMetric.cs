@@ -5,7 +5,7 @@ using App.Metrics.Data.Interfaces;
 using App.Metrics.Timer;
 using App.Metrics.Timer.Interfaces;
 
-namespace App.Metrics.Abstractions.Metrics
+namespace App.Metrics.Abstractions.MetricTypes
 {
     /// <summary>
     ///     Provides access to a timer metric implementation e.g. <see cref="DefaultTimerMetric" />, allows custom timers to be

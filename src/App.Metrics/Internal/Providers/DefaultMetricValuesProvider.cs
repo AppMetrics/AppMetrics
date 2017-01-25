@@ -8,6 +8,7 @@ using App.Metrics.Filtering;
 using App.Metrics.Filtering.Interfaces;
 using App.Metrics.Interfaces;
 using App.Metrics.Registry.Interfaces;
+using App.Metrics.Registry.Internal;
 
 namespace App.Metrics.Internal.Providers
 {

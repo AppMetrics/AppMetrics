@@ -6,7 +6,7 @@ using App.Metrics.Data.Interfaces;
 using App.Metrics.Histogram;
 using App.Metrics.Histogram.Interfaces;
 
-namespace App.Metrics.Abstractions.Metrics
+namespace App.Metrics.Abstractions.MetricTypes
 {
     /// <summary>
     ///     Provides access to a histgram metric implementation e.g. <see cref="HistogramMetric" />, allows custom histograms

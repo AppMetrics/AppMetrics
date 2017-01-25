@@ -5,7 +5,7 @@ using App.Metrics.Counter;
 using App.Metrics.Counter.Interfaces;
 using App.Metrics.Data.Interfaces;
 
-namespace App.Metrics.Abstractions.Metrics
+namespace App.Metrics.Abstractions.MetricTypes
 {
     /// <summary>
     ///     Provides access to a counter metric implementation e.g. <see cref="DefaultCounterMetric" />, allows custom counters

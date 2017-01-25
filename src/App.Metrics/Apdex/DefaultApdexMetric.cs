@@ -6,7 +6,6 @@ using App.Metrics.Abstractions.Metrics;
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Apdex.Interfaces;
 using App.Metrics.Internal;
-using App.Metrics.ReservoirSampling;
 
 namespace App.Metrics.Apdex
 {

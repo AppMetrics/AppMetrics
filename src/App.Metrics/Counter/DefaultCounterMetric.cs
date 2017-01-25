@@ -5,7 +5,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
-using App.Metrics.Abstractions.Metrics;
+using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Concurrency;
 using App.Metrics.Counter.Interfaces;
 using App.Metrics.Tagging;
