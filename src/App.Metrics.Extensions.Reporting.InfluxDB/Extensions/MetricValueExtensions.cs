@@ -2,7 +2,10 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
+using App.Metrics.Apdex;
 using App.Metrics.Data;
+using App.Metrics.Histogram;
+using App.Metrics.Meter;
 
 namespace App.Metrics.Extensions.Reporting.InfluxDB.Extensions
 {

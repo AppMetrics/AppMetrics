@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
+using App.Metrics.Filtering.Interfaces;
+using App.Metrics.Health;
 using App.Metrics.Infrastructure;
 using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.Uniform;

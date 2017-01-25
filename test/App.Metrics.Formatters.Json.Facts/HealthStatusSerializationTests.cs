@@ -1,11 +1,11 @@
-﻿// Copyright (c) Allan Hardy & Asif Mushtaq. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
 using System.Linq;
-using App.Metrics.Core;
 using App.Metrics.Formatters.Json.Facts.Helpers;
 using App.Metrics.Formatters.Json.Serialization;
+using App.Metrics.Health;
 using App.Metrics.Infrastructure;
 using FluentAssertions;
 using FluentAssertions.Json;
@@ -62,13 +62,13 @@ namespace App.Metrics.Formatters.Json.Facts
         }
 
         [Fact]
-        public void produces_expected_json_when_null_unhealthy_checks()
+        public void produces_expected_json_when_null_healthy_checks()
         {
-            var expected = HealthStatusSamples.NullHealthy.SampleJson();
-            var healthyOne = new HealthCheck.Result("test_one_healthy", HealthCheckResult.Healthy("first check was good"));
-            var healthyTwo = new HealthCheck.Result("test_two_healthy", HealthCheckResult.Healthy("second check was good"));
+            var expected = HealthStatusSamples.NullUnhealthy.SampleJson();
+            var unhealthyOne = new HealthCheck.Result("test_three_unhealthy", HealthCheckResult.Unhealthy("something failed"));
+            var unhealthyTwo = new HealthCheck.Result("test_four_unhealthy", HealthCheckResult.Unhealthy("something else failed"));
 
-            var checks = new[] { healthyOne, healthyTwo };
+            var checks = new[] { unhealthyOne, unhealthyTwo };
 
             var healthStatus = new HealthStatus(checks);
 
@@ -78,13 +78,13 @@ namespace App.Metrics.Formatters.Json.Facts
         }
 
         [Fact]
-        public void produces_expected_json_when_null_healthy_checks()
+        public void produces_expected_json_when_null_unhealthy_checks()
         {
-            var expected = HealthStatusSamples.NullUnhealthy.SampleJson();
-            var unhealthyOne = new HealthCheck.Result("test_three_unhealthy", HealthCheckResult.Unhealthy("something failed"));
-            var unhealthyTwo = new HealthCheck.Result("test_four_unhealthy", HealthCheckResult.Unhealthy("something else failed"));
+            var expected = HealthStatusSamples.NullHealthy.SampleJson();
+            var healthyOne = new HealthCheck.Result("test_one_healthy", HealthCheckResult.Healthy("first check was good"));
+            var healthyTwo = new HealthCheck.Result("test_two_healthy", HealthCheckResult.Healthy("second check was good"));
 
-            var checks = new[] { unhealthyOne, unhealthyTwo };
+            var checks = new[] { healthyOne, healthyTwo };
 
             var healthStatus = new HealthStatus(checks);
 

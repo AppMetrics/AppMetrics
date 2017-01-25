@@ -6,13 +6,20 @@ using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Apdex;
 using App.Metrics.Core;
+using App.Metrics.Counter;
 using App.Metrics.Data;
 using App.Metrics.Facts.Reporting.Helpers;
+using App.Metrics.Gauge;
+using App.Metrics.Health;
+using App.Metrics.Histogram;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
+using App.Metrics.Meter;
 using App.Metrics.Reporting;
 using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
+using App.Metrics.Tagging;
+using App.Metrics.Timer;
 using Castle.Core.Internal;
 using FluentAssertions;
 using Xunit;
@@ -46,7 +53,7 @@ namespace App.Metrics.Facts.Reporting
                     Constants.ReservoirSampling.DefaultExponentialDecayFactor,
                     clock,
                     new TestTaskScheduler(clock)));
-            var metric = new ApdexMetric(new ApdexProvider(reservoir, Constants.ReservoirSampling.DefaultApdexTSeconds), clock, true);
+            var metric = new DefaultApdexMetric(new ApdexProvider(reservoir, Constants.ReservoirSampling.DefaultApdexTSeconds), clock, true);
 
             metric.Track(1000);
 
@@ -61,7 +68,7 @@ namespace App.Metrics.Facts.Reporting
             var expected = StringReporterSamples.Counters.ExtractStringReporterSampleFromResourceFile();
             var sr = new StringReporter();
 
-            sr.ReportMetric("test", new CounterValueSource("counter_name", new CounterMetric(), Unit.None, MetricTags.None));
+            sr.ReportMetric("test", new CounterValueSource("counter_name", new DefaultCounterMetric(), Unit.None, MetricTags.None));
 
             AssertReportResult(sr.Result, expected);
         }
@@ -122,7 +129,7 @@ namespace App.Metrics.Facts.Reporting
         {
             var expected = StringReporterSamples.Histograms.ExtractStringReporterSampleFromResourceFile();
             var sr = new StringReporter();
-            var metric = new HistogramMetric(_defaultReservoir);
+            var metric = new DefaultHistogramMetric(_defaultReservoir);
 
             metric.Update(1000, "value1");
             metric.Update(2000, "value2");
@@ -138,7 +145,7 @@ namespace App.Metrics.Facts.Reporting
             var expected = StringReporterSamples.Meters.ExtractStringReporterSampleFromResourceFile();
             var clock = new TestClock();
             var sr = new StringReporter();
-            var metric = new MeterMetric(clock, new TestTaskScheduler(clock));
+            var metric = new DefaultMeterMetric(clock, new TestTaskScheduler(clock));
             metric.Mark(1);
 
             sr.ReportMetric("test", new MeterValueSource("meter_name", metric, Unit.None, TimeUnit.Milliseconds, MetricTags.None));
@@ -152,8 +159,8 @@ namespace App.Metrics.Facts.Reporting
             var expected = StringReporterSamples.Timers.ExtractStringReporterSampleFromResourceFile();
             var sr = new StringReporter();
             var clock = new TestClock();
-            var histogram = new HistogramMetric(_defaultReservoir);
-            var metric = new TimerMetric(histogram, clock);
+            var histogram = new DefaultHistogramMetric(_defaultReservoir);
+            var metric = new DefaultTimerMetric(histogram, clock);
 
             metric.Record(1000, TimeUnit.Milliseconds, "value1");
             metric.Record(2000, TimeUnit.Milliseconds, "value2");

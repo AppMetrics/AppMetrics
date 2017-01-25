@@ -4,6 +4,8 @@
 using System;
 using App.Metrics.Data;
 using App.Metrics.Extensions;
+using App.Metrics.Meter;
+using App.Metrics.Meter.Extensions;
 using Newtonsoft.Json;
 
 namespace App.Metrics.Formatters.Json.Converters
@@ -14,7 +16,7 @@ namespace App.Metrics.Formatters.Json.Converters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var source = serializer.Deserialize<Meter>(reader);
+            var source = serializer.Deserialize<MeterMetric>(reader);
 
             return source.ToMetricValueSource();
         }

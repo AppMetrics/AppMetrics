@@ -1,9 +1,8 @@
 ﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
+using App.Metrics.Counter.Interfaces;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Interfaces;
-using App.Metrics.Internal.Builders;
 using FluentAssertions;
 using Xunit;
 

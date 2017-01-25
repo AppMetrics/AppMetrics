@@ -3,6 +3,7 @@
 
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Interfaces;
+using App.Metrics.Registry.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Internal.Managers

@@ -1,11 +1,11 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// // Copyright (c) Allan Hardy. All rights reserved.
+// // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System.Linq;
 using System.Threading.Tasks;
+using App.Metrics.Apdex.Interfaces;
 using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Interfaces;
 using App.Metrics.Internal;
 using FluentAssertions;
 using Xunit;

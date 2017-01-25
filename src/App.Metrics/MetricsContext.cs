@@ -3,6 +3,12 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using App.Metrics.Apdex;
+using App.Metrics.Counter;
+using App.Metrics.Gauge;
+using App.Metrics.Histogram;
+using App.Metrics.Meter;
+using App.Metrics.Timer;
 
 namespace App.Metrics
 {
@@ -12,18 +18,18 @@ namespace App.Metrics
     /// </summary>
     public sealed class MetricsContext
     {
-        public IEnumerable<ApdexScore> ApdexScores { get; set; } = Enumerable.Empty<ApdexScore>();
+        public IEnumerable<ApdexMetric> ApdexScores { get; set; } = Enumerable.Empty<ApdexMetric>();
 
         public string Context { get; set; }
 
-        public IEnumerable<Counter> Counters { get; set; } = Enumerable.Empty<Counter>();
+        public IEnumerable<CounterMetric> Counters { get; set; } = Enumerable.Empty<CounterMetric>();
 
-        public IEnumerable<Gauge> Gauges { get; set; } = Enumerable.Empty<Gauge>();
+        public IEnumerable<GaugeMetric> Gauges { get; set; } = Enumerable.Empty<GaugeMetric>();
 
-        public IEnumerable<Histogram> Histograms { get; set; } = Enumerable.Empty<Histogram>();
+        public IEnumerable<HistogramMetric> Histograms { get; set; } = Enumerable.Empty<HistogramMetric>();
 
-        public IEnumerable<Meter> Meters { get; set; } = Enumerable.Empty<Meter>();
+        public IEnumerable<MeterMetric> Meters { get; set; } = Enumerable.Empty<MeterMetric>();
 
-        public IEnumerable<Timer> Timers { get; set; } = Enumerable.Empty<Timer>();
+        public IEnumerable<TimerMetric> Timers { get; set; } = Enumerable.Empty<TimerMetric>();
     }
 }

@@ -1,10 +1,17 @@
 ﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-using App.Metrics.Core.Interfaces;
+using App.Metrics.Apdex;
+using App.Metrics.Apdex.Interfaces;
+using App.Metrics.Counter;
+using App.Metrics.Counter.Interfaces;
+using App.Metrics.Histogram;
+using App.Metrics.Histogram.Interfaces;
+using App.Metrics.Meter;
+using App.Metrics.Meter.Interfaces;
+using App.Metrics.Timer;
+using App.Metrics.Timer.Interfaces;
 
-// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
-// Ported/Refactored to .NET Standard Library by Allan Hardy
 namespace App.Metrics.Data
 {
     public static class ValueReader

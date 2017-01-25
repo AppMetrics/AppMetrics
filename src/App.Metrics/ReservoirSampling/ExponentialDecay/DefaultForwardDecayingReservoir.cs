@@ -9,6 +9,7 @@ using App.Metrics.Concurrency;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.Scheduling;
+using App.Metrics.Scheduling.Interfaces;
 
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy

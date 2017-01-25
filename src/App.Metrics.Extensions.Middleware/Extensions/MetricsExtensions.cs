@@ -2,8 +2,8 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
-using App.Metrics.Core;
 using App.Metrics.Extensions.Middleware.Internal;
+using App.Metrics.Gauge;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics

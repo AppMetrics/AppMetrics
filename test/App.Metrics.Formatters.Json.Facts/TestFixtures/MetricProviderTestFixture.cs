@@ -1,7 +1,17 @@
+// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
 using System;
 using System.Collections.Generic;
+using App.Metrics.Apdex;
+using App.Metrics.Counter;
 using App.Metrics.Data;
+using App.Metrics.Gauge;
+using App.Metrics.Histogram;
 using App.Metrics.Infrastructure;
+using App.Metrics.Meter;
+using App.Metrics.Tagging;
+using App.Metrics.Timer;
 
 namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 {
@@ -29,9 +39,16 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 
         public MetricsDataValueSource DataWithOneContext { get; }
 
-        public EnvironmentInfo Env => new EnvironmentInfo("assembly_name", "assembly_version", 
-            "host_name", "localtime", "machine_name",
-            "os", "os_version", "process_name", "8");
+        public EnvironmentInfo Env => new EnvironmentInfo(
+            "assembly_name",
+            "assembly_version",
+            "host_name",
+            "localtime",
+            "machine_name",
+            "os",
+            "os_version",
+            "process_name",
+            "8");
 
         public IEnumerable<GaugeValueSource> Gauges { get; }
 
@@ -43,9 +60,7 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 
         public IEnumerable<TimerValueSource> Timers { get; }
 
-        public void Dispose()
-        {
-        }
+        public void Dispose() { }
 
         public IEnumerable<ApdexValueSource> SetupApdexScores()
         {
@@ -70,10 +85,17 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 
         public IEnumerable<MeterValueSource> SetupMeters()
         {
-            var meterValue = new MeterValue(5, 1, 2, 3, 4, TimeUnit.Seconds, new[]
-            {
-                new MeterValue.SetItem("item", 0.5, new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds, new MeterValue.SetItem[0]))
-            });
+            var meterValue = new MeterValue(
+                5,
+                1,
+                2,
+                3,
+                4,
+                TimeUnit.Seconds,
+                new[]
+                {
+                    new MeterValue.SetItem("item", 0.5, new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds, new MeterValue.SetItem[0]))
+                });
             var meter = new MeterValueSource("test2", ConstantValue.Provider(meterValue), Unit.Calls, TimeUnit.Seconds, Tags);
             return new[] { meter };
         }
@@ -82,14 +104,26 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
         {
             const int count = 5;
 
-            var meterValue = new MeterValue(count, 1, 2, 3, 4, TimeUnit.Seconds, new[]
-            {
-                new MeterValue.SetItem("item", 0.5, new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds, new MeterValue.SetItem[0]))
-            });
+            var meterValue = new MeterValue(
+                count,
+                1,
+                2,
+                3,
+                4,
+                TimeUnit.Seconds,
+                new[]
+                {
+                    new MeterValue.SetItem("item", 0.5, new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds, new MeterValue.SetItem[0]))
+                });
             var histogramValue = new HistogramValue(count, 2, "3", 4, "5", 6, 7, "8", 9, 10, 11, 12, 13, 14, 15, 16);
 
             var timerValue = new TimerValue(meterValue, histogramValue, 0, 1, TimeUnit.Nanoseconds);
-            var timer = new TimerValueSource("test_timer", ConstantValue.Provider(timerValue), Unit.Requests, TimeUnit.Seconds, TimeUnit.Milliseconds,
+            var timer = new TimerValueSource(
+                "test_timer",
+                ConstantValue.Provider(timerValue),
+                Unit.Requests,
+                TimeUnit.Seconds,
+                TimeUnit.Milliseconds,
                 Tags);
 
             return new[] { timer };
@@ -103,11 +137,11 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
         private IEnumerable<CounterValueSource> SetupCounters()
         {
             var items = new[]
-            {
-                new CounterValue.SetItem("item1", 20, 10),
-                new CounterValue.SetItem("item2", 40, 20),
-                new CounterValue.SetItem("item3", 140, 70)
-            };
+                        {
+                            new CounterValue.SetItem("item1", 20, 10),
+                            new CounterValue.SetItem("item2", 40, 20),
+                            new CounterValue.SetItem("item3", 140, 70)
+                        };
 
             var counterValue = new CounterValue(200, items);
             var counter = new CounterValueSource("test_counter", ConstantValue.Provider(counterValue), Unit.Items, Tags);

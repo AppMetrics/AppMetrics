@@ -3,8 +3,8 @@
 
 using System;
 using System.Text;
-using App.Metrics.Core;
 using App.Metrics.Data;
+using App.Metrics.Health;
 
 namespace App.Metrics.Formatting.Humanize
 {

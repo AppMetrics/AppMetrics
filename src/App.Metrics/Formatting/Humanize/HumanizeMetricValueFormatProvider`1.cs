@@ -3,8 +3,13 @@
 
 using System;
 using System.Collections.Generic;
-using App.Metrics.Core;
+using App.Metrics.Apdex;
+using App.Metrics.Counter;
 using App.Metrics.Data;
+using App.Metrics.Health;
+using App.Metrics.Histogram;
+using App.Metrics.Meter;
+using App.Metrics.Timer;
 
 namespace App.Metrics.Formatting.Humanize
 {

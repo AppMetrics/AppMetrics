@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Core;
+using App.Metrics.Health;
 
 namespace App.Metrics.Extensions.Middleware.Integration.Facts
 {

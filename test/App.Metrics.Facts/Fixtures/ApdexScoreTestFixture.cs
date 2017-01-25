@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using App.Metrics.Apdex;
 using App.Metrics.Core;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Facts.Apdex;
@@ -32,7 +33,7 @@ namespace App.Metrics.Facts.Fixtures
 
             var reservoir = new Lazy<IReservoir>(() => new DefaultForwardDecayingReservoir());
 
-            var apdexMetric = new ApdexMetric(reservoir, apdexTSeconds, clock, false);
+            var apdexMetric = new DefaultApdexMetric(reservoir, apdexTSeconds, clock, false);
 
             if (testSamplePreference == TestSamplePreference.Satisified)
             {

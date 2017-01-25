@@ -6,11 +6,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.Formatting.Humanize;
+using App.Metrics.Health;
 using App.Metrics.Internal;
 using App.Metrics.Reporting.Interfaces;
+using App.Metrics.Tagging;
 
 namespace App.Metrics.Reporting
 {

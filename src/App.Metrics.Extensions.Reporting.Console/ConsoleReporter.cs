@@ -10,7 +10,9 @@ using App.Metrics.Core;
 using App.Metrics.Data;
 using App.Metrics.DependencyInjection.Internal;
 using App.Metrics.Formatting.Humanize;
+using App.Metrics.Health;
 using App.Metrics.Reporting.Interfaces;
+using App.Metrics.Tagging;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Extensions.Reporting.Console

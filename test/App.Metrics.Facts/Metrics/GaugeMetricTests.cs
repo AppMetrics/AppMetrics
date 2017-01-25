@@ -3,12 +3,14 @@
 
 using System;
 using System.Linq;
-using App.Metrics.Core;
-using App.Metrics.Data;
+using App.Metrics.Gauge;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
+using App.Metrics.Meter;
 using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.Uniform;
+using App.Metrics.Tagging;
+using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;
 
@@ -35,8 +37,8 @@ namespace App.Metrics.Facts.Metrics
             var scheduler = new TestTaskScheduler(clock);
             var reservoir = new Lazy<IReservoir>(() => new DefaultAlgorithmRReservoir(1028));
 
-            var cacheHitMeter = new MeterMetric(clock, scheduler);
-            var dbQueryTimer = new TimerMetric(reservoir, clock);
+            var cacheHitMeter = new DefaultMeterMetric(clock, scheduler);
+            var dbQueryTimer = new DefaultTimerMetric(reservoir, clock);
 
             foreach (var index in Enumerable.Range(0, 1000))
             {
@@ -63,8 +65,8 @@ namespace App.Metrics.Facts.Metrics
             var scheduler = new TestTaskScheduler(clock);
             var reservoir = new Lazy<IReservoir>(() => new DefaultAlgorithmRReservoir(1028));
 
-            var cacheHitMeter = new MeterMetric(clock, scheduler);
-            var dbQueryTimer = new TimerMetric(reservoir, clock);
+            var cacheHitMeter = new DefaultMeterMetric(clock, scheduler);
+            var dbQueryTimer = new DefaultTimerMetric(reservoir, clock);
 
             foreach (var index in Enumerable.Range(0, 1000))
             {
@@ -89,7 +91,7 @@ namespace App.Metrics.Facts.Metrics
         {
             var valueSource = new GaugeValueSource("test", new FunctionGauge(() => 2.0), Unit.Bytes, MetricTags.None);
 
-            var gauge = Gauge.FromGauge(valueSource);
+            var gauge = GaugeMetric.FromGauge(valueSource);
 
             gauge.Value.Should().Be(2.0);
             gauge.Name.Should().Be("test");

@@ -2,7 +2,9 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using App.Metrics.Core.Interfaces;
-using App.Metrics.Data;
+using App.Metrics.Counter;
+using App.Metrics.Counter.Interfaces;
+using App.Metrics.Tagging;
 
 namespace App.Metrics.Facts
 {

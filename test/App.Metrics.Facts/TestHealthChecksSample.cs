@@ -2,6 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.DependencyInjection.Internal;
+using App.Metrics.Health;
 using App.Metrics.Infrastructure;
 
 namespace App.Metrics.Facts

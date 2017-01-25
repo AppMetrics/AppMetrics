@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using App.Metrics.Apdex;
 using App.Metrics.Core;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Facts.Fixtures;
@@ -32,7 +33,7 @@ namespace App.Metrics.Facts.Apdex
 
             var reservoir = new Lazy<IReservoir>(() => new DefaultForwardDecayingReservoir());
 
-            IApdexMetric apdexMetric = new ApdexMetric(reservoir, apdexTSeconds, clock, false);
+            IApdexMetric apdexMetric = new DefaultApdexMetric(reservoir, apdexTSeconds, clock, false);
 
             foreach (var requestNumber in Enumerable.Range(0, 1000))
             {

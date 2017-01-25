@@ -4,7 +4,8 @@
 using System;
 using System.Linq;
 using App.Metrics.Core.Interfaces;
-using App.Metrics.Data;
+using App.Metrics.Histogram;
+using App.Metrics.Histogram.Interfaces;
 
 namespace App.Metrics.Facts
 {

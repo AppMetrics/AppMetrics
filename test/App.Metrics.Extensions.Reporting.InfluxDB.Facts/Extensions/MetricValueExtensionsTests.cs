@@ -3,8 +3,10 @@
 
 using System;
 using System.Collections.Generic;
+using App.Metrics.Apdex;
 using App.Metrics.Core;
 using App.Metrics.Extensions.Reporting.InfluxDB.Extensions;
+using App.Metrics.Histogram;
 using App.Metrics.Infrastructure;
 using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
@@ -21,7 +23,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Extensions
         public void can_add_apdex_values()
         {
             var clock = new TestClock();
-            var apdex = new ApdexMetric(_defaultReservoir, clock, true);
+            var apdex = new DefaultApdexMetric(_defaultReservoir, clock, true);
             apdex.Track(10000);
             var values = new Dictionary<string, object>();
             apdex.Value.AddApdexValues(values);
@@ -36,7 +38,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Extensions
         [Fact]
         public void can_add_histgoram_values()
         {
-            var histogramMetric = new HistogramMetric(_defaultReservoir);
+            var histogramMetric = new DefaultHistogramMetric(_defaultReservoir);
             histogramMetric.Update(10000, "value");
             var values = new Dictionary<string, object>();
             histogramMetric.Value.AddHistogramValues(values);

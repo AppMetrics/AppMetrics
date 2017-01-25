@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using App.Metrics.Internal.Interfaces;
+using App.Metrics.Health.Interfaces;
 
 namespace App.Metrics.DependencyInjection.Internal
 {

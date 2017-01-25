@@ -2,11 +2,13 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
-using App.Metrics.Core;
+using App.Metrics.Histogram;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
+using App.Metrics.Meter;
 using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.Uniform;
+using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;
 
@@ -15,13 +17,16 @@ namespace App.Metrics.Facts.Metrics
     public class TimerMetricTests
     {
         private readonly IClock _clock = new TestClock();
-        private readonly TimerMetric _timer;
+        private readonly DefaultTimerMetric _timer;
 
         public TimerMetricTests()
         {
             var reservoir = new Lazy<IReservoir>(() => new DefaultAlgorithmRReservoir(1028));
 
-            _timer = new TimerMetric(new HistogramMetric(reservoir), new MeterMetric(_clock, new TestTaskScheduler(_clock)), _clock);
+            _timer = new DefaultTimerMetric(
+                new DefaultHistogramMetric(reservoir),
+                new DefaultMeterMetric(_clock, new TestTaskScheduler(_clock)),
+                _clock);
         }
 
         [Fact]

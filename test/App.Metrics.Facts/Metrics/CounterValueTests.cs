@@ -1,4 +1,5 @@
 using System;
+using App.Metrics.Counter;
 using App.Metrics.Data;
 using FluentAssertions;
 using Xunit;

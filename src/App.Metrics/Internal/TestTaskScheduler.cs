@@ -5,6 +5,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Scheduling;
+using App.Metrics.Scheduling.Interfaces;
 
 namespace App.Metrics.Internal
 {

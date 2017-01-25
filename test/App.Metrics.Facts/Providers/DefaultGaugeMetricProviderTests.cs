@@ -5,7 +5,9 @@ using System.Linq;
 using App.Metrics.Core;
 using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Interfaces;
+using App.Metrics.Filtering;
+using App.Metrics.Gauge;
+using App.Metrics.Gauge.Interfaces;
 using FluentAssertions;
 using Xunit;
 
@@ -46,9 +48,9 @@ namespace App.Metrics.Facts.Providers
             var metricName = "gauge_provider_test";
 
             var options = new GaugeOptions
-            {
-                Name = metricName
-            };
+                          {
+                              Name = metricName
+                          };
 
             _provider.Instance(options, () => new FunctionGauge(() => 1.0));
             _provider.Instance(options, () => new FunctionGauge(() => 2.0));

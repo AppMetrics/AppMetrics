@@ -4,6 +4,7 @@
 using System;
 using App.Metrics.Extensions.Reporting.InfluxDB;
 using App.Metrics.Extensions.Reporting.InfluxDB.Client;
+using App.Metrics.Filtering.Interfaces;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics.Reporting.Interfaces

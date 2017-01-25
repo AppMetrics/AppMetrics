@@ -4,7 +4,8 @@
 using System.Linq;
 using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Interfaces;
+using App.Metrics.Filtering;
+using App.Metrics.Meter.Interfaces;
 using FluentAssertions;
 using Xunit;
 
@@ -14,13 +15,13 @@ namespace App.Metrics.Facts.Providers
     {
         private readonly DefaultMetricsFilter _filter = new DefaultMetricsFilter().WhereType(MetricType.Meter);
         private readonly MetricCoreTestFixture _fixture;
-        private readonly IProviderMeterMetrics _provider;
+        private readonly IProvideMeterMetrics _provide;
 
 
         public DefaultMeterMetricProviderTests(MetricCoreTestFixture fixture)
         {
             _fixture = fixture;
-            _provider = _fixture.Providers.Meter;
+            _provide = _fixture.Providers.Meter;
         }
 
         [Fact]
@@ -34,7 +35,7 @@ namespace App.Metrics.Facts.Providers
 
             var meterMetric = _fixture.Builder.Meter.Build(_fixture.Clock);
 
-            _provider.Instance(options, () => meterMetric);
+            _provide.Instance(options, () => meterMetric);
 
             _filter.WhereMetricName(name => name == metricName);
 
@@ -50,7 +51,7 @@ namespace App.Metrics.Facts.Providers
                               Name = metricName
                           };
 
-            _provider.Instance(options);
+            _provide.Instance(options);
 
             _filter.WhereMetricName(name => name == metricName);
 

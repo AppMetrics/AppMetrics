@@ -3,7 +3,7 @@
 
 using System;
 using System.Text;
-using App.Metrics.Data;
+using App.Metrics.Counter;
 
 namespace App.Metrics.Formatting.Humanize
 {

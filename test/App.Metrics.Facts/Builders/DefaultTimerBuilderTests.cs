@@ -4,9 +4,12 @@
 using System;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Facts.Fixtures;
+using App.Metrics.Histogram;
+using App.Metrics.Histogram.Interfaces;
 using App.Metrics.Interfaces;
 using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.Uniform;
+using App.Metrics.Timer.Interfaces;
 using FluentAssertions;
 using Moq;
 using Xunit;

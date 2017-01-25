@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Core;
+using App.Metrics.Counter;
+using App.Metrics.Tagging;
 using FluentAssertions;
 using Xunit;
 
@@ -10,7 +14,7 @@ namespace App.Metrics.Facts.Metrics
 {
     public class CounterMetricTests
     {
-        private readonly CounterMetric _counter = new CounterMetric();
+        private readonly DefaultCounterMetric _counter = new DefaultCounterMetric();
 
         [Fact]
         public void can_be_incremented_on_multiple_threads()

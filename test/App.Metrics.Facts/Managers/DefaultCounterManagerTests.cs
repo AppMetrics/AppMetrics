@@ -3,8 +3,8 @@
 
 using System.Linq;
 using App.Metrics.Core.Options;
+using App.Metrics.Counter.Interfaces;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Interfaces;
 using App.Metrics.Internal;
 using FluentAssertions;
 using Xunit;

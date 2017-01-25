@@ -4,6 +4,8 @@
 using App.Metrics.Configuration;
 using App.Metrics.Core.Options;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
+using App.Metrics.Filtering;
+using App.Metrics.Tagging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;

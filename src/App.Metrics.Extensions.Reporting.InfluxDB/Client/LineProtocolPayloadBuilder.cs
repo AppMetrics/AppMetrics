@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using App.Metrics.Tagging;
 
 namespace App.Metrics.Extensions.Reporting.InfluxDB.Client
 {

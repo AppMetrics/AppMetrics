@@ -4,6 +4,7 @@
 using System;
 using App.Metrics.Reporting;
 using App.Metrics.Scheduling;
+using App.Metrics.Scheduling.Interfaces;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;

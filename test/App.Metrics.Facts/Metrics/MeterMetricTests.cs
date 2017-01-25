@@ -1,6 +1,9 @@
-﻿using App.Metrics.Core;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
+using App.Metrics.Meter;
 using FluentAssertions;
 using Xunit;
 
@@ -9,12 +12,12 @@ namespace App.Metrics.Facts.Metrics
     public class MeterMetricTests
     {
         private readonly IClock _clock = new TestClock();
-        private readonly MeterMetric _meter;
+        private readonly DefaultMeterMetric _meter;
 
         public MeterMetricTests()
         {
             var scheduler = new TestTaskScheduler(_clock);
-            _meter = new MeterMetric(_clock, scheduler);
+            _meter = new DefaultMeterMetric(_clock, scheduler);
         }
 
         [Fact]
@@ -31,19 +34,6 @@ namespace App.Metrics.Facts.Metrics
         }
 
         [Fact]
-        public void can_compute_percent_with_zero_total()
-        {
-            _meter.Mark("A");
-            _meter.Mark("A", -1);
-
-            _meter.Value.Count.Should().Be(0);
-
-            _meter.Value.Items[0].Item.Should().Be("A");
-            _meter.Value.Items[0].Value.Count.Should().Be(0);
-            _meter.Value.Items[0].Percent.Should().Be(0);
-        }
-
-        [Fact]
         public void can_compute_multiple_rates()
         {
             _meter.Mark();
@@ -56,6 +46,19 @@ namespace App.Metrics.Facts.Metrics
             value.OneMinuteRate.Should().BeApproximately(0.1840, 0.001);
             value.FiveMinuteRate.Should().BeApproximately(0.1966, 0.001);
             value.FifteenMinuteRate.Should().BeApproximately(0.1988, 0.001);
+        }
+
+        [Fact]
+        public void can_compute_percent_with_zero_total()
+        {
+            _meter.Mark("A");
+            _meter.Mark("A", -1);
+
+            _meter.Value.Count.Should().Be(0);
+
+            _meter.Value.Items[0].Item.Should().Be("A");
+            _meter.Value.Items[0].Value.Count.Should().Be(0);
+            _meter.Value.Items[0].Percent.Should().Be(0);
         }
 
         [Fact]

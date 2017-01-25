@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using App.Metrics.Infrastructure;
 using FluentAssertions;
 using Microsoft.Extensions.PlatformAbstractions;
 using Xunit;

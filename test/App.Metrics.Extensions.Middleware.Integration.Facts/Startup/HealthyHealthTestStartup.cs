@@ -4,6 +4,7 @@
 using App.Metrics.Configuration;
 using App.Metrics.Core;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
+using App.Metrics.Health;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;

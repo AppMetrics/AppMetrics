@@ -3,7 +3,7 @@
 
 using System;
 using System.Text;
-using App.Metrics.Data;
+using App.Metrics.Gauge;
 
 namespace App.Metrics.Formatting.Humanize
 {

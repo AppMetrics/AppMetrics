@@ -2,8 +2,8 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
+using App.Metrics.Apdex;
 using App.Metrics.Apdex.Interfaces;
-using App.Metrics.Core;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.ReservoirSampling;
@@ -16,14 +16,14 @@ namespace App.Metrics.Facts.Metrics
 {
     public class ApdexMetricTests
     {
-        private readonly ApdexMetric _apdex;
+        private readonly DefaultApdexMetric _apdex;
         private readonly IClock _clock = new TestClock();
 
         public ApdexMetricTests()
         {
             var reservoir = new Lazy<IReservoir>(() => new DefaultForwardDecayingReservoir());
 
-            _apdex = new ApdexMetric(reservoir, Constants.ReservoirSampling.DefaultApdexTSeconds, _clock, false);
+            _apdex = new DefaultApdexMetric(reservoir, Constants.ReservoirSampling.DefaultApdexTSeconds, _clock, false);
         }
 
         [Fact]
@@ -163,7 +163,7 @@ namespace App.Metrics.Facts.Metrics
         {
             var providerMock = new Mock<IApdexProvider>();
 
-            var apdex = new ApdexMetric(providerMock.Object, _clock, false);
+            var apdex = new DefaultApdexMetric(providerMock.Object, _clock, false);
 
             apdex.Track(-1L);
 
@@ -176,7 +176,7 @@ namespace App.Metrics.Facts.Metrics
             IApdexProvider provider = null;
             Action createApdex = () =>
             {
-                var apdex = new ApdexMetric(provider, _clock, true);
+                var apdex = new DefaultApdexMetric(provider, _clock, true);
             };
 
             createApdex.ShouldThrow<ArgumentNullException>();
@@ -188,7 +188,7 @@ namespace App.Metrics.Facts.Metrics
             Action createApdex = () =>
             {
                 var reservoir = new Lazy<IReservoir>(() => new DefaultForwardDecayingReservoir());
-                var apdex = new ApdexMetric(
+                var apdex = new DefaultApdexMetric(
                         reservoir,
                         Constants.ReservoirSampling.DefaultApdexTSeconds,
                         null,

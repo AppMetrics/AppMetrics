@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using App.Metrics.Data;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
 using App.Metrics.Extensions.Middleware.Internal;
+using App.Metrics.Meter;
 using FluentAssertions;
 using Xunit;
 

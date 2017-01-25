@@ -2,7 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
-using App.Metrics.Core;
+using App.Metrics.Histogram;
 using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 using FluentAssertions;
@@ -12,12 +12,12 @@ namespace App.Metrics.Facts.Metrics
 {
     public class HistogramMetricTests
     {
-        private readonly HistogramMetric _histogram;
+        private readonly DefaultHistogramMetric _histogram;
 
         public HistogramMetricTests()
         {
             var reservoir = new Lazy<IReservoir>(() => new DefaultForwardDecayingReservoir());
-            _histogram = new HistogramMetric(reservoir);
+            _histogram = new DefaultHistogramMetric(reservoir);
         }
 
         [Fact]

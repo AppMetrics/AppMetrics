@@ -3,6 +3,7 @@
 
 using System;
 using App.Metrics.Extensions.Reporting.InfluxDB.Client;
+using App.Metrics.Filtering.Interfaces;
 using App.Metrics.Internal;
 using App.Metrics.Reporting.Interfaces;
 using Microsoft.Extensions.Logging;

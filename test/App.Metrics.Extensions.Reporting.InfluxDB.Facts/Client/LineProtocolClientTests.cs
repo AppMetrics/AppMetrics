@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Reporting.InfluxDB;
 using App.Metrics.Extensions.Reporting.InfluxDB.Client;
+using App.Metrics.Tagging;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;

@@ -1,4 +1,5 @@
 using System;
+using App.Metrics.Filtering.Interfaces;
 using App.Metrics.Reporting.Interfaces;
 using Microsoft.Extensions.Logging;
 

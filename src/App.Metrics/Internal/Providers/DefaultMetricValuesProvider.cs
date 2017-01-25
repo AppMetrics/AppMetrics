@@ -4,7 +4,10 @@
 using System.Linq;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Data;
+using App.Metrics.Filtering;
+using App.Metrics.Filtering.Interfaces;
 using App.Metrics.Interfaces;
+using App.Metrics.Registry.Interfaces;
 
 namespace App.Metrics.Internal.Providers
 {

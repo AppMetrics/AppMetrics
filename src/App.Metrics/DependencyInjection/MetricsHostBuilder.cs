@@ -3,6 +3,7 @@
 
 using System;
 using App.Metrics;
+using App.Metrics.Infrastructure;
 using Microsoft.Extensions.PlatformAbstractions;
 
 #if NET452

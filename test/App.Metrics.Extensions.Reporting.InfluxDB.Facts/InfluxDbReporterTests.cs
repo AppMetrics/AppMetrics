@@ -5,13 +5,21 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Metrics.Apdex;
 using App.Metrics.Core;
+using App.Metrics.Counter;
 using App.Metrics.Data;
 using App.Metrics.Extensions.Reporting.InfluxDB;
 using App.Metrics.Extensions.Reporting.InfluxDB.Client;
+using App.Metrics.Gauge;
+using App.Metrics.Health;
+using App.Metrics.Histogram;
 using App.Metrics.Infrastructure;
+using App.Metrics.Meter;
 using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
+using App.Metrics.Tagging;
+using App.Metrics.Timer;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -28,7 +36,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         {
             var metricsMock = new Mock<IMetrics>();
             var clock = new TestClock();
-            var meter = new MeterMetric(clock);
+            var meter = new DefaultMeterMetric(clock);
             meter.Mark(new MetricItem().With("item1", "value1"), 1);
             meter.Mark(new MetricItem().With("item2", "value2"), 1);
             var meterValueSource = new MeterValueSource(
@@ -57,7 +65,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         {
             var metricsMock = new Mock<IMetrics>();
             var clock = new TestClock();
-            var gauge = new ApdexMetric(_defaultReservoir, clock, false);
+            var gauge = new DefaultApdexMetric(_defaultReservoir, clock, false);
             var apdexValueSource = new ApdexValueSource(
                 "test apdex",
                 ConstantValue.Provider(gauge.Value),
@@ -76,7 +84,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         public void can_report_counter_with_items()
         {
             var metricsMock = new Mock<IMetrics>();
-            var counter = new CounterMetric();
+            var counter = new DefaultCounterMetric();
             counter.Increment(new MetricItem().With("item1", "value1"), 1);
             counter.Increment(new MetricItem().With("item2", "value2"), 1);
             var counterValueSource = new CounterValueSource(
@@ -100,7 +108,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         public void can_report_counter_with_items_with_option_not_to_report_percentage()
         {
             var metricsMock = new Mock<IMetrics>();
-            var counter = new CounterMetric();
+            var counter = new DefaultCounterMetric();
             counter.Increment(new MetricItem().With("item1", "value1"), 1);
             counter.Increment(new MetricItem().With("item2", "value2"), 1);
             var counterValueSource = new CounterValueSource(
@@ -125,7 +133,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         public void can_report_counters()
         {
             var metricsMock = new Mock<IMetrics>();
-            var counter = new CounterMetric();
+            var counter = new DefaultCounterMetric();
             counter.Increment(1);
             var counterValueSource = new CounterValueSource(
                 "test counter",
@@ -194,7 +202,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         public void can_report_histograms()
         {
             var metricsMock = new Mock<IMetrics>();
-            var histogram = new HistogramMetric(_defaultReservoir);
+            var histogram = new DefaultHistogramMetric(_defaultReservoir);
             histogram.Update(1000, "client1");
             var histogramValueSource = new HistogramValueSource(
                 "test histogram",
@@ -218,7 +226,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         {
             var metricsMock = new Mock<IMetrics>();
             var clock = new TestClock();
-            var meter = new MeterMetric(clock);
+            var meter = new DefaultMeterMetric(clock);
             meter.Mark(1);
             var meterValueSource = new MeterValueSource(
                 "test meter",
@@ -240,7 +248,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         {
             var metricsMock = new Mock<IMetrics>();
             var clock = new TestClock();
-            var meter = new MeterMetric(clock);
+            var meter = new DefaultMeterMetric(clock);
             meter.Mark(new MetricItem().With("item1", "value1"), 1);
             meter.Mark(new MetricItem().With("item2", "value2"), 1);
             var meterValueSource = new MeterValueSource(
@@ -266,7 +274,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         {
             var metricsMock = new Mock<IMetrics>();
             var clock = new TestClock();
-            var timer = new TimerMetric(_defaultReservoir, clock);
+            var timer = new DefaultTimerMetric(_defaultReservoir, clock);
             timer.Record(1000, TimeUnit.Milliseconds, "client1");
             var timerValueSource = new TimerValueSource(
                 "test timer",

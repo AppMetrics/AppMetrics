@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using App.Metrics.Extensions.Middleware.Internal;
+using App.Metrics.Health;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics

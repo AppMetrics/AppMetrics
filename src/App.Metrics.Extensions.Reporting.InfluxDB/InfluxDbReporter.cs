@@ -5,11 +5,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Metrics.Apdex;
 using App.Metrics.Core;
+using App.Metrics.Counter;
 using App.Metrics.Data;
 using App.Metrics.Extensions.Reporting.InfluxDB.Client;
 using App.Metrics.Extensions.Reporting.InfluxDB.Extensions;
+using App.Metrics.Health;
+using App.Metrics.Histogram;
+using App.Metrics.Meter;
 using App.Metrics.Reporting.Interfaces;
+using App.Metrics.Tagging;
+using App.Metrics.Timer;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Extensions.Reporting.InfluxDB

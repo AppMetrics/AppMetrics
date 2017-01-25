@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using App.Metrics.Extensions.Reporting.InfluxDB.Client;
+using App.Metrics.Tagging;
 using FluentAssertions;
 using Xunit;
 
