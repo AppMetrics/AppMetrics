@@ -4,7 +4,7 @@
 using System.Linq;
 using App.Metrics.Core;
 using App.Metrics.Core.Options;
-using App.Metrics.Counter.Interfaces;
+using App.Metrics.Counter.Abstractions;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Internal;
 using FluentAssertions;

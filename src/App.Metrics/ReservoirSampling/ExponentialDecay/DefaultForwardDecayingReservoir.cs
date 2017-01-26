@@ -10,7 +10,7 @@ using App.Metrics.Concurrency;
 using App.Metrics.Core.Internal;
 using App.Metrics.Infrastructure;
 using App.Metrics.Scheduling;
-using App.Metrics.Scheduling.Interfaces;
+using App.Metrics.Scheduling.Abstractions;
 
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy

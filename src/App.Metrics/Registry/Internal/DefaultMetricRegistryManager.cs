@@ -8,7 +8,7 @@ using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
-using App.Metrics.Registry.Interfaces;
+using App.Metrics.Registry.Abstractions;
 using App.Metrics.Timer;
 
 namespace App.Metrics.Registry.Internal

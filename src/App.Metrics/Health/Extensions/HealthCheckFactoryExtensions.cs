@@ -4,7 +4,7 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using App.Metrics.Health;
-using App.Metrics.Health.Interfaces;
+using App.Metrics.Health.Abstractions;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics

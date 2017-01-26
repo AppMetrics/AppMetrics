@@ -5,7 +5,7 @@ using System.Linq;
 using App.Metrics.Core;
 using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Histogram.Interfaces;
+using App.Metrics.Histogram.Abstractions;
 using App.Metrics.Internal;
 using FluentAssertions;
 using Xunit;

@@ -3,10 +3,10 @@
 
 using System.Linq;
 using App.Metrics.Abstractions.Filtering;
-using App.Metrics.Core.Interfaces;
+using App.Metrics.Core.Abstractions;
 using App.Metrics.Filtering;
 using App.Metrics.Internal;
-using App.Metrics.Registry.Interfaces;
+using App.Metrics.Registry.Abstractions;
 using App.Metrics.Registry.Internal;
 
 namespace App.Metrics.Core.Internal

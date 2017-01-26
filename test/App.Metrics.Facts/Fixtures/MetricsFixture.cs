@@ -6,13 +6,10 @@ using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
 using App.Metrics.Core.Internal;
-using App.Metrics.Data;
 using App.Metrics.Filtering;
 using App.Metrics.Health.Internal;
 using App.Metrics.Infrastructure;
-using App.Metrics.Internal;
-using App.Metrics.Internal.Builders;
-using App.Metrics.Registry.Interfaces;
+using App.Metrics.Registry.Abstractions;
 using App.Metrics.Registry.Internal;
 using Microsoft.Extensions.Logging;
 

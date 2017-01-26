@@ -3,8 +3,9 @@
 
 using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Configuration;
+using App.Metrics.Core.Abstractions;
 using App.Metrics.Core.Interfaces;
-using App.Metrics.Health.Interfaces;
+using App.Metrics.Health.Abstractions;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.Tagging;

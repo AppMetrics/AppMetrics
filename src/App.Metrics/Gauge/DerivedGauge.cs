@@ -3,7 +3,7 @@
 
 using System;
 using App.Metrics.Abstractions.MetricTypes;
-using App.Metrics.Core.Interfaces;
+using App.Metrics.Core.Abstractions;
 
 namespace App.Metrics.Gauge
 {

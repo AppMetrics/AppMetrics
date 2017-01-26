@@ -4,8 +4,7 @@
 using System;
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Histogram.Interfaces;
-using App.Metrics.ReservoirSampling;
+using App.Metrics.Histogram.Abstractions;
 using App.Metrics.ReservoirSampling.Uniform;
 using FluentAssertions;
 using Moq;

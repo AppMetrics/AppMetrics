@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using App.Metrics.Core;
+using App.Metrics.Core.Abstractions;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Health;
 using App.Metrics.Infrastructure;

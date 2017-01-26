@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Scheduling;
-using App.Metrics.Scheduling.Interfaces;
+using App.Metrics.Scheduling.Abstractions;
 using App.Metrics.Tagging;
 
 namespace App.Metrics.Meter

@@ -3,9 +3,9 @@
 
 using System;
 using App.Metrics.Abstractions.Metrics;
-using App.Metrics.Apdex.Interfaces;
+using App.Metrics.Apdex.Abstractions;
 using App.Metrics.Core.Options;
-using App.Metrics.Registry.Interfaces;
+using App.Metrics.Registry.Abstractions;
 
 namespace App.Metrics.Apdex
 {

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Core;
+using App.Metrics.Core.Abstractions;
 using App.Metrics.Core.Internal;
 using App.Metrics.Formatting.Humanize;
 using App.Metrics.Health;

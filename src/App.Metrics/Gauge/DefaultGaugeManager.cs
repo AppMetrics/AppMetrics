@@ -2,10 +2,10 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
-using App.Metrics.Core.Interfaces;
+using App.Metrics.Core.Abstractions;
 using App.Metrics.Core.Options;
-using App.Metrics.Gauge.Interfaces;
-using App.Metrics.Registry.Interfaces;
+using App.Metrics.Gauge.Abstractions;
+using App.Metrics.Registry.Abstractions;
 
 namespace App.Metrics.Gauge
 {

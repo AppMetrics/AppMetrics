@@ -3,7 +3,7 @@
 
 using System.Threading;
 using App.Metrics.Core.Internal;
-using App.Metrics.Reporting.Interfaces;
+using App.Metrics.Reporting.Abstractions;
 
 namespace App.Metrics.Reporting.Internal
 {

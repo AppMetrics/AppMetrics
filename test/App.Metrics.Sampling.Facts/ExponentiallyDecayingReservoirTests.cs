@@ -5,7 +5,7 @@ using System.Linq;
 using App.Metrics.Infrastructure;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 using App.Metrics.Scheduling;
-using App.Metrics.Scheduling.Interfaces;
+using App.Metrics.Scheduling.Abstractions;
 using FluentAssertions;
 using Xunit;
 

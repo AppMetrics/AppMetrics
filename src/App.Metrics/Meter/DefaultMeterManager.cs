@@ -3,8 +3,8 @@
 
 using System;
 using App.Metrics.Core.Options;
-using App.Metrics.Meter.Interfaces;
-using App.Metrics.Registry.Interfaces;
+using App.Metrics.Meter.Abstractions;
+using App.Metrics.Registry.Abstractions;
 using App.Metrics.Tagging;
 
 namespace App.Metrics.Meter

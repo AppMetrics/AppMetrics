@@ -5,8 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using App.Metrics.Abstractions.Reporting;
-using App.Metrics.Core;
-using App.Metrics.Data;
+using App.Metrics.Core.Abstractions;
 using App.Metrics.Health;
 using App.Metrics.Infrastructure;
 using App.Metrics.Tagging;
@@ -47,9 +46,7 @@ namespace App.Metrics.Facts.Reporting.Helpers
             GlobalMetricTags globalTags,
             IEnumerable<HealthCheck.Result> healthyChecks,
             IEnumerable<HealthCheck.Result> degradedChecks,
-            IEnumerable<HealthCheck.Result> unhealthyChecks)
-        {
-        }
+            IEnumerable<HealthCheck.Result> unhealthyChecks) { }
 
         public void ReportMetric<T>(string context, MetricValueSource<T> valueSource) { }
 

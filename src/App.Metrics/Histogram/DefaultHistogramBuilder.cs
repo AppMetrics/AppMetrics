@@ -4,7 +4,7 @@
 using System;
 using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Abstractions.ReservoirSampling;
-using App.Metrics.Histogram.Interfaces;
+using App.Metrics.Histogram.Abstractions;
 using App.Metrics.ReservoirSampling;
 
 namespace App.Metrics.Histogram

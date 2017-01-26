@@ -3,8 +3,8 @@
 
 using System;
 using App.Metrics.Core.Options;
-using App.Metrics.Registry.Interfaces;
-using App.Metrics.Timer.Interfaces;
+using App.Metrics.Registry.Abstractions;
+using App.Metrics.Timer.Abstractions;
 
 namespace App.Metrics.Timer
 {

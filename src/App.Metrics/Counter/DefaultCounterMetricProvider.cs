@@ -4,8 +4,8 @@
 using System;
 using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Core.Options;
-using App.Metrics.Counter.Interfaces;
-using App.Metrics.Registry.Interfaces;
+using App.Metrics.Counter.Abstractions;
+using App.Metrics.Registry.Abstractions;
 
 namespace App.Metrics.Counter
 {

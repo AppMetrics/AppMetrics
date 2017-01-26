@@ -5,7 +5,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using App.Metrics.Health.Interfaces;
+using App.Metrics.Health.Abstractions;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Health.Internal

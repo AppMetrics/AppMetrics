@@ -3,9 +3,8 @@
 
 using System;
 using App.Metrics.Abstractions.ReservoirSampling;
-using App.Metrics.Apdex.Interfaces;
+using App.Metrics.Apdex.Abstractions;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.Uniform;
 using FluentAssertions;
 using Moq;

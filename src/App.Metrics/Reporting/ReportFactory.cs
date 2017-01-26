@@ -4,10 +4,10 @@
 using System;
 using System.Collections.Generic;
 using App.Metrics.Abstractions.Reporting;
-using App.Metrics.Reporting.Interfaces;
+using App.Metrics.Reporting.Abstractions;
 using App.Metrics.Reporting.Internal;
 using App.Metrics.Scheduling;
-using App.Metrics.Scheduling.Interfaces;
+using App.Metrics.Scheduling.Abstractions;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporting

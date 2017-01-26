@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Core;
+using App.Metrics.Core.Abstractions;
 
 namespace App.Metrics.Meter
 {

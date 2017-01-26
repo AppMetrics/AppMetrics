@@ -4,11 +4,9 @@
 using System;
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Apdex;
-using App.Metrics.Apdex.Interfaces;
+using App.Metrics.Apdex.Abstractions;
 using App.Metrics.Core.Internal;
 using App.Metrics.Infrastructure;
-using App.Metrics.Internal;
-using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 using FluentAssertions;
 using Moq;

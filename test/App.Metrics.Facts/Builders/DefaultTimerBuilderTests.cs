@@ -6,7 +6,7 @@ using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.ReservoirSampling.Uniform;
-using App.Metrics.Timer.Interfaces;
+using App.Metrics.Timer.Abstractions;
 using FluentAssertions;
 using Moq;
 using Xunit;

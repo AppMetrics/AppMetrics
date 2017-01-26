@@ -3,10 +3,9 @@
 
 using System;
 using App.Metrics.Abstractions.MetricTypes;
-using App.Metrics.Gauge;
-using App.Metrics.Gauge.Interfaces;
+using App.Metrics.Gauge.Abstractions;
 
-namespace App.Metrics.Internal.Builders
+namespace App.Metrics.Gauge
 {
     public class DefaultGaugeBuilder : IBuildGaugeMetrics
     {

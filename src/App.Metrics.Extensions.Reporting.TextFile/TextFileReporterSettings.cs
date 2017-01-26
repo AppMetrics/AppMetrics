@@ -3,7 +3,6 @@
 
 using System;
 using App.Metrics.Abstractions.Reporting;
-using App.Metrics.Reporting.Interfaces;
 
 namespace App.Metrics.Extensions.Reporting.TextFile
 {

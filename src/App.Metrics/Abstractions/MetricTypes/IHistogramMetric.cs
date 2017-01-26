@@ -2,9 +2,9 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
-using App.Metrics.Core.Interfaces;
+using App.Metrics.Core.Abstractions;
 using App.Metrics.Histogram;
-using App.Metrics.Histogram.Interfaces;
+using App.Metrics.Histogram.Abstractions;
 
 namespace App.Metrics.Abstractions.MetricTypes
 {

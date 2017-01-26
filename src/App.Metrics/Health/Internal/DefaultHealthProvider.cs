@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Health.Interfaces;
+using App.Metrics.Health.Abstractions;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Health.Internal

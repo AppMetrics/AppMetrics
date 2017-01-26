@@ -3,7 +3,7 @@
 
 using System.Linq;
 using System.Threading.Tasks;
-using App.Metrics.Apdex.Interfaces;
+using App.Metrics.Apdex.Abstractions;
 using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Internal;

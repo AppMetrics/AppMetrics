@@ -4,6 +4,7 @@
 using System.Collections.Concurrent;
 using System.Linq;
 using App.Metrics.Core;
+using App.Metrics.Core.Abstractions;
 using App.Metrics.Counter;
 using App.Metrics.Meter;
 

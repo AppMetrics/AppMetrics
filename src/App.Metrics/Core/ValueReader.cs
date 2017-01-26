@@ -4,15 +4,15 @@
 using App.Metrics.Abstractions.Metrics;
 using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Apdex;
-using App.Metrics.Apdex.Interfaces;
+using App.Metrics.Apdex.Abstractions;
 using App.Metrics.Counter;
-using App.Metrics.Counter.Interfaces;
+using App.Metrics.Counter.Abstractions;
 using App.Metrics.Histogram;
-using App.Metrics.Histogram.Interfaces;
+using App.Metrics.Histogram.Abstractions;
 using App.Metrics.Meter;
-using App.Metrics.Meter.Interfaces;
+using App.Metrics.Meter.Abstractions;
 using App.Metrics.Timer;
-using App.Metrics.Timer.Interfaces;
+using App.Metrics.Timer.Abstractions;
 
 namespace App.Metrics.Core
 {

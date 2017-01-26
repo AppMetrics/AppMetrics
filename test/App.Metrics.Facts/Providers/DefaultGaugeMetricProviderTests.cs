@@ -2,12 +2,11 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System.Linq;
-using App.Metrics.Core;
 using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Filtering;
 using App.Metrics.Gauge;
-using App.Metrics.Gauge.Interfaces;
+using App.Metrics.Gauge.Abstractions;
 using FluentAssertions;
 using Xunit;
 

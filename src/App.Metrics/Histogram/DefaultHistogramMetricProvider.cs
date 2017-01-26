@@ -4,8 +4,8 @@
 using System;
 using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Core.Options;
-using App.Metrics.Histogram.Interfaces;
-using App.Metrics.Registry.Interfaces;
+using App.Metrics.Histogram.Abstractions;
+using App.Metrics.Registry.Abstractions;
 
 namespace App.Metrics.Histogram
 {

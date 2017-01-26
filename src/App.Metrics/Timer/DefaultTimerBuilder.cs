@@ -5,7 +5,7 @@ using System;
 using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.ReservoirSampling;
-using App.Metrics.Timer.Interfaces;
+using App.Metrics.Timer.Abstractions;
 
 namespace App.Metrics.Timer
 {

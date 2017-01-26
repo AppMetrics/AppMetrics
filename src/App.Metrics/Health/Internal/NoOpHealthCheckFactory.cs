@@ -5,7 +5,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using App.Metrics.Core.Internal;
-using App.Metrics.Health.Interfaces;
+using App.Metrics.Health.Abstractions;
 
 namespace App.Metrics.Health.Internal
 {

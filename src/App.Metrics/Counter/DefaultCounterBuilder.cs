@@ -3,6 +3,7 @@
 
 using System;
 using App.Metrics.Abstractions.MetricTypes;
+using App.Metrics.Counter.Abstractions;
 
 namespace App.Metrics.Counter
 {

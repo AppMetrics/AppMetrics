@@ -4,8 +4,8 @@
 using System;
 using App.Metrics.Core;
 using App.Metrics.Meter;
-using App.Metrics.Meter.Interfaces;
-using App.Metrics.Timer.Interfaces;
+using App.Metrics.Meter.Abstractions;
+using App.Metrics.Timer.Abstractions;
 
 namespace App.Metrics.Gauge
 {

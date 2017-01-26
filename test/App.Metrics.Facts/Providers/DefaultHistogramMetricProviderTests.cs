@@ -7,7 +7,7 @@ using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Filtering;
-using App.Metrics.Histogram.Interfaces;
+using App.Metrics.Histogram.Abstractions;
 using App.Metrics.ReservoirSampling.Uniform;
 using FluentAssertions;
 using Moq;

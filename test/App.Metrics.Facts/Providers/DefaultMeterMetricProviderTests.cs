@@ -5,7 +5,7 @@ using System.Linq;
 using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Filtering;
-using App.Metrics.Meter.Interfaces;
+using App.Metrics.Meter.Abstractions;
 using FluentAssertions;
 using Xunit;
 

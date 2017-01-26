@@ -3,8 +3,8 @@
 
 using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Core.Internal;
-using App.Metrics.Reporting.Interfaces;
-using App.Metrics.Scheduling.Interfaces;
+using App.Metrics.Reporting.Abstractions;
+using App.Metrics.Scheduling.Abstractions;
 
 namespace App.Metrics.Reporting.Internal
 {
