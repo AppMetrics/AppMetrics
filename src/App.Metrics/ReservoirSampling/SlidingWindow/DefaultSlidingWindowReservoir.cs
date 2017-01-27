@@ -24,9 +24,10 @@ namespace App.Metrics.ReservoirSampling.SlidingWindow
         private AtomicLong _count = new AtomicLong(0);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultSlidingWindowReservoir"/> class.
+        ///     Initializes a new instance of the <see cref="DefaultSlidingWindowReservoir" /> class.
         /// </summary>
-        public DefaultSlidingWindowReservoir() : this(Constants.ReservoirSampling.DefaultSampleSize) { }
+        public DefaultSlidingWindowReservoir()
+            : this(Constants.ReservoirSampling.DefaultSampleSize) { }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultSlidingWindowReservoir" /> class.

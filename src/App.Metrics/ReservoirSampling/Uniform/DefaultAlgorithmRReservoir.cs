@@ -35,9 +35,10 @@ namespace App.Metrics.ReservoirSampling.Uniform
         private AtomicLong _count = new AtomicLong(0);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultAlgorithmRReservoir"/> class.
+        ///     Initializes a new instance of the <see cref="DefaultAlgorithmRReservoir" /> class.
         /// </summary>
-        public DefaultAlgorithmRReservoir() : this(Constants.ReservoirSampling.DefaultSampleSize) { }
+        public DefaultAlgorithmRReservoir()
+            : this(Constants.ReservoirSampling.DefaultSampleSize) { }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultAlgorithmRReservoir" /> class.
