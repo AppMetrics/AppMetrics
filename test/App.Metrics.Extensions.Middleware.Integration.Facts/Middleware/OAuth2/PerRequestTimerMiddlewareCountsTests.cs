@@ -29,7 +29,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
             await Client.GetAsync("/api/test/error");
 
             Func<string, TimerValue> getTimerValue = metricName => Context.Snapshot.GetTimerValue(
-                AspNetMetricsRegistry.Contexts.HttpRequests.ContextName,
+                HttpRequestMetricsRegistry.ContextName,
                 metricName);
 
             getTimerValue("GET api/test").Histogram.Count.Should().Be(1);

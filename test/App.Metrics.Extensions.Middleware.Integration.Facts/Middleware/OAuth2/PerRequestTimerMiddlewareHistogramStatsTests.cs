@@ -29,10 +29,10 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
             await Client.GetAsync("/api/test/300ms");
             await Client.GetAsync("/api/test/30ms");
 
-            var metrics = Context.Snapshot.GetForContext(AspNetMetricsRegistry.Contexts.HttpRequests.ContextName);
+            var metrics = Context.Snapshot.GetForContext(HttpRequestMetricsRegistry.ContextName);
 
             var timer1 = Context.Snapshot.GetTimerValue(
-                AspNetMetricsRegistry.Contexts.HttpRequests.ContextName,
+                HttpRequestMetricsRegistry.ContextName,
                 "GET api/test/30ms");
 
             timer1.Histogram.Min.Should().Be(30);
@@ -45,7 +45,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
             timer1.TotalTime.Should().Be(30);
 
             var timer2 = Context.Snapshot.GetTimerValue(
-                AspNetMetricsRegistry.Contexts.HttpRequests.ContextName,
+                HttpRequestMetricsRegistry.ContextName,
                 "GET api/test/300ms");
 
             timer2.Histogram.Min.Should().Be(300);

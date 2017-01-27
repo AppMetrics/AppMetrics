@@ -36,11 +36,11 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
             await Client.GetAsync("/api/test/error");
 
             var meterValue = Context.Snapshot.GetMeterValue(
-                AspNetMetricsRegistry.Contexts.HttpRequests.ContextName,
+                HttpRequestMetricsRegistry.ContextName,
                 "Http Error Requests");
 
             var timerValue = Context.Snapshot.GetTimerValue(
-                AspNetMetricsRegistry.Contexts.HttpRequests.ContextName,
+                HttpRequestMetricsRegistry.ContextName,
                 "Http Requests");
 
             meterValue.Count.Should().Be(6);

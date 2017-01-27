@@ -25,7 +25,7 @@ namespace App.Metrics.Extensions.Middleware
         {
             _apdexTracking = Metrics.Provider
                                     .Apdex
-                                    .Instance(AspNetMetricsRegistry.Contexts.HttpRequests.ApdexScores.Apdex(aspNetOptions.ApdexTSeconds));
+                                    .Instance(HttpRequestMetricsRegistry.ApdexScores.Apdex(aspNetOptions.ApdexTSeconds));
         }
 
         public async Task Invoke(HttpContext context)

@@ -15,8 +15,8 @@ namespace App.Metrics
     // ReSharper restore CheckNamespace
     public class ApdexHealthCheck : HealthCheck
     {
-        private readonly string _context = AspNetMetricsRegistry.Contexts.HttpRequests.ContextName;
-        private readonly string _metricName = AspNetMetricsRegistry.Contexts.HttpRequests.ApdexScores.ApdexMetricName;
+        private readonly string _context = HttpRequestMetricsRegistry.ContextName;
+        private readonly string _metricName = HttpRequestMetricsRegistry.ApdexScores.ApdexMetricName;
         private readonly Lazy<IMetrics> _metrics;
         private readonly AspNetMetricsOptions _options;
 

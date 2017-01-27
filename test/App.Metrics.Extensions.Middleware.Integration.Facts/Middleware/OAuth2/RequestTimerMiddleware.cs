@@ -31,7 +31,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
             await Client.GetAsync("/api/test/30ms");
 
             var timerValue = Context.Snapshot.GetTimerValue(
-                AspNetMetricsRegistry.Contexts.HttpRequests.ContextName,
+                HttpRequestMetricsRegistry.ContextName,
                 "Http Requests");
 
             timerValue.Histogram.Min.Should().Be(30);

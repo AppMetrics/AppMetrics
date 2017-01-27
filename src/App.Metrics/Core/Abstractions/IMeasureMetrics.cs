@@ -8,7 +8,7 @@ using App.Metrics.Histogram.Abstractions;
 using App.Metrics.Meter.Abstractions;
 using App.Metrics.Timer.Abstractions;
 
-namespace App.Metrics.Core.Interfaces
+namespace App.Metrics.Core.Abstractions
 {
     /// <summary>
     ///     Provides access to measure/record available metric types

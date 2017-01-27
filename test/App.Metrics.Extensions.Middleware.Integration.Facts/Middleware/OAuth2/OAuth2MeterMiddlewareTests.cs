@@ -36,7 +36,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
             await Client.GetAsync("/api/test/oauth/error/client4");
 
             Func<string, MeterValue> getMeterValue = metricName => Context.Snapshot.GetMeterValue(
-                AspNetMetricsRegistry.Contexts.OAuth2.ContextName,
+                OAuth2MetricsRegistry.ContextName,
                 metricName);
 
             var successItems = getMeterValue("GET api/test/oauth/{clientid} Http Requests").Items;
