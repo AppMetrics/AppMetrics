@@ -114,7 +114,7 @@ namespace Microsoft.Extensions.DependencyInjection
                             return new NoOpReportFactory();
                         }
 
-                        var factory = new ReportFactory(metrics, loggerFactory);
+                        var factory = new ReportFactory(options, metrics, loggerFactory);
                         setupAction.Invoke(factory);
                         return factory;
                     }));

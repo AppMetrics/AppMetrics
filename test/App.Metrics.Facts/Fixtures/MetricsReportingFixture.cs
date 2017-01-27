@@ -41,7 +41,6 @@ namespace App.Metrics.Facts.Fixtures
             var metricsManager = new DefaultMetricsManager(registry, _loggerFactory.CreateLogger<DefaultMetricsManager>());
 
             Metrics = new DefaultMetrics(
-                options,
                 clock,
                 filter,
                 metricsManagerFactory,

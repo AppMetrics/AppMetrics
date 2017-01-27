@@ -3,6 +3,7 @@
 
 using System;
 using System.Threading.Tasks;
+using App.Metrics.Configuration;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using App.Metrics.Reporting;
 using App.Metrics.Reporting.Internal;
@@ -17,10 +18,11 @@ namespace App.Metrics.Extensions.Middleware
 
         public MetricsEndpointTextEndpointMiddleware(
             RequestDelegate next,
+            AppMetricsOptions appMetricsOptions,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics)
-            : base(next, aspNetOptions, loggerFactory, metrics) { _reportGenerator = new DefaultReportGenerator(loggerFactory); }
+            : base(next, aspNetOptions, loggerFactory, metrics) { _reportGenerator = new DefaultReportGenerator(appMetricsOptions, loggerFactory); }
 
         public async Task Invoke(HttpContext context)
         {

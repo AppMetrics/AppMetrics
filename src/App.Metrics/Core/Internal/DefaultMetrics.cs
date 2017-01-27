@@ -2,13 +2,11 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using App.Metrics.Abstractions.Filtering;
-using App.Metrics.Configuration;
 using App.Metrics.Core.Abstractions;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Health.Abstractions;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
-using App.Metrics.Tagging;
 
 namespace App.Metrics.Core.Internal
 {
@@ -24,7 +22,6 @@ namespace App.Metrics.Core.Internal
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultMetrics" /> class.
         /// </summary>
-        /// <param name="options">The options.</param>
         /// <param name="clock">The clock.</param>
         /// <param name="globalFilter">The global filter.</param>
         /// <param name="measureMetricsProvider">The factory used to provide access to metric managers.</param>
@@ -34,7 +31,6 @@ namespace App.Metrics.Core.Internal
         /// <param name="metricsManager">The metrics manager.</param>
         /// <param name="healthProvider">The health status provider.</param>
         public DefaultMetrics(
-            AppMetricsOptions options,
             IClock clock,
             IFilterMetrics globalFilter,
             IMeasureMetrics measureMetricsProvider,
@@ -45,7 +41,6 @@ namespace App.Metrics.Core.Internal
             IProvideHealth healthProvider)
         {
             Clock = clock ?? new StopwatchClock();
-            GlobalTags = options.GlobalTags; // TODO: in reporting just get this from options
             GlobalFilter = globalFilter ?? new NoOpMetricsFilter();
             Measure = measureMetricsProvider;
             Build = metricsBuilder;
@@ -63,9 +58,6 @@ namespace App.Metrics.Core.Internal
 
         /// <inheritdoc />
         public IFilterMetrics GlobalFilter { get; }
-
-        /// <inheritdoc />
-        public GlobalMetricTags GlobalTags { get; }
 
         /// <inheritdoc />
         public IProvideHealth Health { get; }

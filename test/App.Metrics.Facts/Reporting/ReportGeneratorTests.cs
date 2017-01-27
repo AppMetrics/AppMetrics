@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Abstractions.Reporting;
+using App.Metrics.Configuration;
 using App.Metrics.Data;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Filtering;
@@ -26,7 +27,7 @@ namespace App.Metrics.Facts.Reporting
         public ReportGeneratorTests(MetricsReportingFixture fixture)
         {
             _metrics = fixture.Metrics;
-            _reportGenerator = new DefaultReportGenerator(new LoggerFactory());
+            _reportGenerator = new DefaultReportGenerator(new AppMetricsOptions(), new LoggerFactory());
         }
 
         [Fact]

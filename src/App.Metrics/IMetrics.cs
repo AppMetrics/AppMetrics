@@ -5,7 +5,6 @@ using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Core.Abstractions;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Health.Abstractions;
-using App.Metrics.Tagging;
 
 namespace App.Metrics
 {
@@ -22,8 +21,6 @@ namespace App.Metrics
         IClock Clock { get; }
 
         IFilterMetrics GlobalFilter { get; }
-
-        GlobalMetricTags GlobalTags { get; }
 
         IProvideHealth Health { get; }
 

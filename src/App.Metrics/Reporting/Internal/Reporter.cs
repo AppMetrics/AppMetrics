@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Abstractions.Reporting;
+using App.Metrics.Configuration;
 using App.Metrics.Core.Internal;
 using App.Metrics.Core.Options;
 using App.Metrics.Reporting.Abstractions;
@@ -28,8 +29,18 @@ namespace App.Metrics.Reporting.Internal
 
         private readonly CounterOptions _successCounter;
 
-        public Reporter(ReportFactory reportFactory, IMetrics metrics, IScheduler scheduler, ILoggerFactory loggerFactory)
+        public Reporter(
+            AppMetricsOptions options,
+            ReportFactory reportFactory,
+            IMetrics metrics,
+            IScheduler scheduler,
+            ILoggerFactory loggerFactory)
         {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             if (reportFactory == null)
             {
                 throw new ArgumentNullException(nameof(reportFactory));
@@ -50,7 +61,7 @@ namespace App.Metrics.Reporting.Internal
                 throw new ArgumentNullException(nameof(loggerFactory));
             }
 
-            _reportGenerator = new DefaultReportGenerator(loggerFactory);
+            _reportGenerator = new DefaultReportGenerator(options, loggerFactory);
             _metrics = metrics;
             _scheduler = scheduler;
             _loggerFactory = loggerFactory;

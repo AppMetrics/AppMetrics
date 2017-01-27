@@ -49,7 +49,6 @@ namespace App.Metrics.Facts.Health
                 var metricsManager = new DefaultMetricsManager(registry, LoggerFactory.CreateLogger<DefaultMetricsManager>());
 
                 return new DefaultMetrics(
-                    options,
                     clock,
                     filter,
                     metricsManagerFactory,

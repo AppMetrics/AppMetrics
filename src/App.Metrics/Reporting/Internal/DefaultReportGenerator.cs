@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Abstractions.Reporting;
+using App.Metrics.Configuration;
 using App.Metrics.Health;
 using Microsoft.Extensions.Logging;
 
@@ -17,14 +18,21 @@ namespace App.Metrics.Reporting.Internal
     public class DefaultReportGenerator
     {
         private readonly ILogger _logger;
+        private readonly AppMetricsOptions _options;
 
-        public DefaultReportGenerator(ILoggerFactory loggerFactory)
+        public DefaultReportGenerator(AppMetricsOptions options, ILoggerFactory loggerFactory)
         {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             if (loggerFactory == null)
             {
                 throw new ArgumentNullException(nameof(loggerFactory));
             }
 
+            _options = options;
             _logger = loggerFactory.CreateLogger<DefaultReportGenerator>();
         }
 
@@ -65,7 +73,7 @@ namespace App.Metrics.Reporting.Internal
                 var failed = healthStatus.Results.Where(r => r.Check.Status.IsUnhealthy()).ToArray();
                 var degraded = healthStatus.Results.Where(r => r.Check.Status.IsDegraded()).ToArray();
 
-                reporter.ReportHealth(metrics.GlobalTags, passed, degraded, failed);
+                reporter.ReportHealth(_options.GlobalTags, passed, degraded, failed);
 
                 foreach (var check in passed)
                 {
