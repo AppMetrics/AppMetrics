@@ -2,6 +2,16 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using App.Metrics.Abstractions.Filtering;
+using App.Metrics.Apdex;
+using App.Metrics.Apdex.Abstractions;
+using App.Metrics.Counter;
+using App.Metrics.Counter.Abstractions;
+using App.Metrics.Histogram;
+using App.Metrics.Histogram.Abstractions;
+using App.Metrics.Meter;
+using App.Metrics.Meter.Abstractions;
+using App.Metrics.Timer;
+using App.Metrics.Timer.Abstractions;
 
 namespace App.Metrics.Core.Abstractions
 {
@@ -11,7 +21,7 @@ namespace App.Metrics.Core.Abstractions
     public interface IProvideMetricValues
     {
         /// <summary>
-        ///     Returns the current metrics data for the context for which this provider has been created.
+        ///     Returns the current metrics data for all contexts.
         /// </summary>
         /// <returns>
         ///     A snapshot of the current metrics data, if a global <see cref="IFilterMetrics" /> is configured this will be

@@ -1,8 +1,10 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics.Core;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
 using App.Metrics.Extensions.Middleware.Internal;
+using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;
 
@@ -26,11 +28,13 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
             await Client.GetAsync("/api/test");
             await Client.GetAsync("/api/test/error");
 
-            var metrics = Context.Snapshot.GetForContext(AspNetMetricsRegistry.Contexts.HttpRequests.ContextName);
+            Func<string, TimerValue> getTimerValue = metricName => Context.Snapshot.GetTimerValue(
+                AspNetMetricsRegistry.Contexts.HttpRequests.ContextName,
+                metricName);
 
-            metrics.TimerValueFor("GET api/test").Histogram.Count.Should().Be(1);
-            metrics.TimerValueFor("GET api/test/error").Histogram.Count.Should().Be(1);
-            metrics.TimerValueFor("Http Requests").Histogram.Count.Should().Be(2);
+            getTimerValue("GET api/test").Histogram.Count.Should().Be(1);
+            getTimerValue("GET api/test/error").Histogram.Count.Should().Be(1);
+            getTimerValue("Http Requests").Histogram.Count.Should().Be(2);
         }
     }
 }

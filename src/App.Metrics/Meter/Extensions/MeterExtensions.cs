@@ -3,12 +3,28 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Core;
+using App.Metrics.Core.Abstractions;
+using App.Metrics.Meter.Abstractions;
 
 namespace App.Metrics.Meter.Extensions
 {
     public static class MeterExtensions
     {
+        private static readonly MeterValue EmptyMeter = new MeterValue(0, 0.0, 0.0, 0.0, 0.0, TimeUnit.Seconds);
+
+        public static MeterValue Value(this IMeter metric)
+        {
+            var implementation = metric as IMeterMetric;
+            return implementation == null ? EmptyMeter : implementation.Value;
+        }
+
+        public static MeterValue GetMeterValue(this IProvideMetricValues valueService, string context, string metricName)
+        {
+            return valueService.GetForContext(context).Meters.ValueFor(context, metricName);
+        }
+
         public static IEnumerable<MeterMetric> ToMetric(this IEnumerable<MeterValueSource> source) { return source.Select(x => x.ToMetric()); }
 
         public static MeterMetric ToMetric(this MeterValueSource source)

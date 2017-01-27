@@ -1,3 +1,6 @@
+// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,11 +9,9 @@ using System.Threading.Tasks;
 using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Configuration;
-using App.Metrics.Core;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using App.Metrics.Health;
 using App.Metrics.Infrastructure;
-using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.Uniform;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,39 +29,44 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
         {
             app.UseMetrics();
 
-            app.Use((context, func) =>
-            {
-                var clientId = string.Empty;
-
-                if (context.Request.Path.Value.Contains("oauth"))
+            app.Use(
+                (context, func) =>
                 {
-                    clientId = context.Request.Path.Value.Split('/').Last();
-                }
+                    var clientId = string.Empty;
 
-                if (clientId.IsPresent())
-                {
-                    context.User =
-                        new ClaimsPrincipal(new List<ClaimsIdentity>
-                        {
-                            new ClaimsIdentity(new[]
-                            {
-                                new Claim("client_id", clientId)
-                            })
-                        });
-                }
+                    if (context.Request.Path.Value.Contains("oauth"))
+                    {
+                        clientId = context.Request.Path.Value.Split('/').Last();
+                    }
 
-                return func();
-            });
+                    if (clientId.IsPresent())
+                    {
+                        context.User =
+                            new ClaimsPrincipal(
+                                new List<ClaimsIdentity>
+                                {
+                                    new ClaimsIdentity(
+                                        new[]
+                                        {
+                                            new Claim("client_id", clientId)
+                                        })
+                                });
+                    }
+
+                    return func();
+                });
 
             Metrics = app.ApplicationServices.GetRequiredService<IMetrics>();
 
             app.UseMvc();
         }
 
-        protected void SetupServices(IServiceCollection services,
+        protected void SetupServices(
+            IServiceCollection services,
             AppMetricsOptions appMetricsOptions,
             AspNetMetricsOptions aspNetMetricsOptions,
-            IFilterMetrics filter = null, IEnumerable<HealthCheckResult> healthChecks = null)
+            IFilterMetrics filter = null,
+            IEnumerable<HealthCheckResult> healthChecks = null)
         {
             services
                 .AddLogging()
@@ -69,41 +75,44 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
             services.AddMvc(options => options.AddMetricsResourceFilter());
 
             var builder = services
-                .AddMetrics(options =>
-                {
-                    options.DefaultContextLabel = appMetricsOptions.DefaultContextLabel;
-                    options.MetricsEnabled = appMetricsOptions.MetricsEnabled;
-                })
+                .AddMetrics(
+                    options =>
+                    {
+                        options.DefaultContextLabel = appMetricsOptions.DefaultContextLabel;
+                        options.MetricsEnabled = appMetricsOptions.MetricsEnabled;
+                    })
                 .AddJsonSerialization()
                 .AddDefaultReservoir(() => new Lazy<IReservoir>(() => new DefaultAlgorithmRReservoir(1028)))
                 .AddClockType<TestClock>()
-                .AddHealthChecks(factory =>
-                {
-                    var checks = healthChecks != null
-                        ? healthChecks.ToList()
-                        : new List<HealthCheckResult>();
-
-                    for (var i = 0; i < checks.Count; i++)
+                .AddHealthChecks(
+                    factory =>
                     {
-                        var check = checks[i];
-                        factory.Register("Check" + i, () => Task.FromResult(check));
-                    }
-                })
-                .AddMetricsMiddleware(options =>
-                {
-                    options.MetricsTextEndpointEnabled = aspNetMetricsOptions.MetricsTextEndpointEnabled;
-                    options.HealthEndpointEnabled = aspNetMetricsOptions.HealthEndpointEnabled;
-                    options.MetricsEndpointEnabled = aspNetMetricsOptions.MetricsEndpointEnabled;
-                    options.PingEndpointEnabled = aspNetMetricsOptions.PingEndpointEnabled;
-                    options.OAuth2TrackingEnabled = aspNetMetricsOptions.OAuth2TrackingEnabled;
+                        var checks = healthChecks != null
+                            ? healthChecks.ToList()
+                            : new List<HealthCheckResult>();
 
-                    options.HealthEndpoint = aspNetMetricsOptions.HealthEndpoint;
-                    options.MetricsEndpoint = aspNetMetricsOptions.MetricsEndpoint;
-                    options.MetricsTextEndpoint = aspNetMetricsOptions.MetricsTextEndpoint;
-                    options.PingEndpoint = aspNetMetricsOptions.PingEndpoint;
+                        for (var i = 0; i < checks.Count; i++)
+                        {
+                            var check = checks[i];
+                            factory.Register("Check" + i, () => Task.FromResult(check));
+                        }
+                    })
+                .AddMetricsMiddleware(
+                    options =>
+                    {
+                        options.MetricsTextEndpointEnabled = aspNetMetricsOptions.MetricsTextEndpointEnabled;
+                        options.HealthEndpointEnabled = aspNetMetricsOptions.HealthEndpointEnabled;
+                        options.MetricsEndpointEnabled = aspNetMetricsOptions.MetricsEndpointEnabled;
+                        options.PingEndpointEnabled = aspNetMetricsOptions.PingEndpointEnabled;
+                        options.OAuth2TrackingEnabled = aspNetMetricsOptions.OAuth2TrackingEnabled;
 
-                    options.IgnoredRoutesRegexPatterns = aspNetMetricsOptions.IgnoredRoutesRegexPatterns;
-                });
+                        options.HealthEndpoint = aspNetMetricsOptions.HealthEndpoint;
+                        options.MetricsEndpoint = aspNetMetricsOptions.MetricsEndpoint;
+                        options.MetricsTextEndpoint = aspNetMetricsOptions.MetricsTextEndpoint;
+                        options.PingEndpoint = aspNetMetricsOptions.PingEndpoint;
+
+                        options.IgnoredRoutesRegexPatterns = aspNetMetricsOptions.IgnoredRoutesRegexPatterns;
+                    });
 
             if (filter != null)
             {

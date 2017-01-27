@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-using System.Linq;
-using App.Metrics.Core;
 using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
+using App.Metrics.Histogram;
 using App.Metrics.Histogram.Abstractions;
-using App.Metrics.Internal;
 using FluentAssertions;
 using Xunit;
 
@@ -14,6 +12,7 @@ namespace App.Metrics.Facts.Managers
 {
     public class DefaultHistogramManagerTests : IClassFixture<MetricCoreTestFixture>
     {
+        private readonly string _context;
         private readonly MetricCoreTestFixture _fixture;
         private readonly IMeasureHistogramMetrics _manager;
 
@@ -21,6 +20,7 @@ namespace App.Metrics.Facts.Managers
         {
             _fixture = fixture;
             _manager = _fixture.Managers.Histogram;
+            _context = _fixture.Context;
         }
 
         [Fact]
@@ -31,9 +31,7 @@ namespace App.Metrics.Facts.Managers
 
             _manager.Update(options, 2L);
 
-            var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
-
-            data.Contexts.Single().HistogramValueFor(metricName).LastValue.Should().Be(2L);
+            _fixture.Snapshot.GetHistogramValue(_context, metricName).LastValue.Should().Be(2L);
         }
 
         [Fact]
@@ -44,10 +42,8 @@ namespace App.Metrics.Facts.Managers
 
             _manager.Update(options, 5L, "uservalue");
 
-            var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
-
-            data.Contexts.Single().HistogramValueFor(metricName).LastValue.Should().Be(5L);
-            data.Contexts.Single().HistogramValueFor(metricName).LastUserValue.Should().Be("uservalue");
+            _fixture.Snapshot.GetHistogramValue(_context, metricName).LastValue.Should().Be(5L);
+            _fixture.Snapshot.GetHistogramValue(_context, metricName).LastUserValue.Should().Be("uservalue");
         }
     }
 }

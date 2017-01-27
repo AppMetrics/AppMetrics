@@ -1,8 +1,11 @@
-﻿using System.Net.Http;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System.Net.Http;
 using System.Threading.Tasks;
-using App.Metrics.Core;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
 using App.Metrics.Extensions.Middleware.Internal;
+using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;
 
@@ -27,12 +30,13 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
             await Client.GetAsync("/api/test/300ms");
             await Client.GetAsync("/api/test/30ms");
 
-            var metrics = Context.Snapshot.GetForContext(AspNetMetricsRegistry.Contexts.HttpRequests.ContextName);
+            var timerValue = Context.Snapshot.GetTimerValue(
+                AspNetMetricsRegistry.Contexts.HttpRequests.ContextName,
+                "Http Requests");
 
-            var timer = metrics.TimerValueFor("Http Requests");
-            timer.Histogram.Min.Should().Be(30);
-            timer.Histogram.Max.Should().Be(300);
-            timer.TotalTime.Should().Be(630);
+            timerValue.Histogram.Min.Should().Be(30);
+            timerValue.Histogram.Max.Should().Be(300);
+            timerValue.TotalTime.Should().Be(630);
         }
     }
 }

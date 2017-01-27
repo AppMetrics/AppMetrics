@@ -2,9 +2,10 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
-using App.Metrics.Core;
 using App.Metrics.Meter;
 using App.Metrics.Meter.Abstractions;
+using App.Metrics.Meter.Extensions;
+using App.Metrics.Timer;
 using App.Metrics.Timer.Abstractions;
 
 namespace App.Metrics.Gauge
@@ -37,7 +38,7 @@ namespace App.Metrics.Gauge
         ///     the value for the ratio.
         /// </remarks>
         public HitRatioGauge(IMeter hitMeter, IMeter totalMeter, Func<MeterValue, double> meterRateFunc)
-            : base(() => meterRateFunc(ValueReader.GetCurrentValue(hitMeter)), () => meterRateFunc(ValueReader.GetCurrentValue(totalMeter))) { }
+            : base(() => meterRateFunc(hitMeter.Value()), () => meterRateFunc(totalMeter.Value())) { }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="HitRatioGauge" /> class.
@@ -65,6 +66,6 @@ namespace App.Metrics.Gauge
         ///     extract the value for the ratio.
         /// </remarks>
         public HitRatioGauge(IMeter hitMeter, ITimer totalTimer, Func<MeterValue, double> meterRateFunc)
-            : base(() => meterRateFunc(ValueReader.GetCurrentValue(hitMeter)), () => meterRateFunc(ValueReader.GetCurrentValue(totalTimer).Rate)) { }
+            : base(() => meterRateFunc(hitMeter.Value()), () => meterRateFunc(totalTimer.Value().Rate)) { }
     }
 }

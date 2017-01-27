@@ -4,9 +4,11 @@
 using System.Linq;
 using App.Metrics.Core;
 using App.Metrics.Core.Options;
+using App.Metrics.Counter;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Internal;
 using App.Metrics.Meter.Abstractions;
+using App.Metrics.Meter.Extensions;
 using FluentAssertions;
 using Xunit;
 
@@ -14,6 +16,7 @@ namespace App.Metrics.Facts.Managers
 {
     public class DefaultMeterManagerTests : IClassFixture<MetricCoreTestFixture>
     {
+        private readonly string _context;
         private readonly MetricCoreTestFixture _fixture;
         private readonly IMeasureMeterMetrics _manager;
 
@@ -21,6 +24,7 @@ namespace App.Metrics.Facts.Managers
         {
             _fixture = fixture;
             _manager = _fixture.Managers.Meter;
+            _context = _fixture.Context;
         }
 
         [Fact]
@@ -57,9 +61,7 @@ namespace App.Metrics.Facts.Managers
 
             _manager.Mark(options, "item1");
 
-            var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
-
-            data.Contexts.Single().MeterValueFor(metricName).Items.Length.Should().Be(1);
+            _fixture.Snapshot.GetMeterValue(_context, metricName).Items.Length.Should().Be(1);
         }
 
         [Fact]
@@ -70,9 +72,7 @@ namespace App.Metrics.Facts.Managers
 
             _manager.Mark(options, 5L, "item1");
 
-            var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
-
-            data.Contexts.Single().MeterValueFor(metricName).Items.Length.Should().Be(1);
+            _fixture.Snapshot.GetMeterValue(_context, metricName).Items.Length.Should().Be(1);
         }
 
         [Fact]
@@ -83,9 +83,7 @@ namespace App.Metrics.Facts.Managers
 
             _manager.Mark(options, item => { item.With("tagKey", "tagvalue"); });
 
-            var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
-
-            data.Contexts.Single().MeterValueFor(metricName).Items.Length.Should().Be(1);
+            _fixture.Snapshot.GetMeterValue(_context, metricName).Items.Length.Should().Be(1);
         }
 
         [Fact]
@@ -96,9 +94,7 @@ namespace App.Metrics.Facts.Managers
 
             _manager.Mark(options, 5L, item => { item.With("tagKey", "tagvalue"); });
 
-            var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
-
-            data.Contexts.Single().MeterValueFor(metricName).Items.Length.Should().Be(1);
+            _fixture.Snapshot.GetMeterValue(_context, metricName).Items.Length.Should().Be(1);
         }
     }
 }

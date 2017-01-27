@@ -1,8 +1,12 @@
+// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
 using System.Net.Http;
 using System.Threading.Tasks;
-using App.Metrics.Core;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
 using App.Metrics.Extensions.Middleware.Internal;
+using App.Metrics.Meter.Extensions;
+using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;
 
@@ -31,10 +35,16 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
             await Client.GetAsync("/api/test/error");
             await Client.GetAsync("/api/test/error");
 
-            var metrics = Context.Snapshot.GetForContext(AspNetMetricsRegistry.Contexts.HttpRequests.ContextName);
+            var meterValue = Context.Snapshot.GetMeterValue(
+                AspNetMetricsRegistry.Contexts.HttpRequests.ContextName,
+                "Http Error Requests");
 
-            metrics.MeterValueFor("Http Error Requests").Count.Should().Be(6);
-            metrics.TimerValueFor("Http Requests").Histogram.Count.Should().Be(7);
+            var timerValue = Context.Snapshot.GetTimerValue(
+                AspNetMetricsRegistry.Contexts.HttpRequests.ContextName,
+                "Http Requests");
+
+            meterValue.Count.Should().Be(6);
+            timerValue.Histogram.Count.Should().Be(7);
         }
     }
 }

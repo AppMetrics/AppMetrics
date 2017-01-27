@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using App.Metrics.Data;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
 using App.Metrics.Extensions.Middleware.Internal;
 using App.Metrics.Meter;
+using App.Metrics.Meter.Extensions;
 using FluentAssertions;
 using Xunit;
 
@@ -33,10 +35,13 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
             await Client.GetAsync("/api/test/oauth/error/client3");
             await Client.GetAsync("/api/test/oauth/error/client4");
 
-            var metrics = Context.Snapshot.GetForContext(AspNetMetricsRegistry.Contexts.OAuth2.ContextName);
-            var successItems = metrics.MeterValueFor("GET api/test/oauth/{clientid} Http Requests").Items;
-            var errorItems = metrics.MeterValueFor("GET api/test/oauth/error/{clientid} Http Requests").Items;
-            var overallItems = metrics.MeterValueFor("Http Requests").Items;
+            Func<string, MeterValue> getMeterValue = metricName => Context.Snapshot.GetMeterValue(
+                AspNetMetricsRegistry.Contexts.OAuth2.ContextName,
+                metricName);
+
+            var successItems = getMeterValue("GET api/test/oauth/{clientid} Http Requests").Items;
+            var errorItems = getMeterValue("GET api/test/oauth/error/{clientid} Http Requests").Items;
+            var overallItems = getMeterValue("Http Requests").Items;
 
             successItems.Should().HaveCount(2);
             errorItems.Should().HaveCount(4);

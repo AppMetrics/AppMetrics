@@ -3,7 +3,10 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Core;
+using App.Metrics.Core.Abstractions;
+using App.Metrics.Counter.Abstractions;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics.Counter
@@ -11,6 +14,19 @@ namespace App.Metrics.Counter
 {
     public static class CounterExtensions
     {
+        private static readonly CounterValue EmptyCounter = new CounterValue(0);
+
+        public static CounterValue GetCounterValue(this IProvideMetricValues valueService, string context, string metricName)
+        {
+            return valueService.GetForContext(context).Counters.ValueFor(context, metricName);
+        }
+
+        public static CounterValue Value(this ICounter metric)
+        {
+            var implementation = metric as ICounterMetric;
+            return implementation?.Value ?? EmptyCounter;
+        }
+
         public static IEnumerable<CounterMetric> ToMetric(this IEnumerable<CounterValueSource> source) { return source.Select(x => x.ToMetric()); }
 
         public static CounterMetric ToMetric(this CounterValueSource source)

@@ -7,6 +7,7 @@ using App.Metrics.Core.Abstractions;
 using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Internal;
 using App.Metrics.Infrastructure;
+using App.Metrics.Internal;
 using App.Metrics.Registry.Abstractions;
 using App.Metrics.Registry.Internal;
 using Microsoft.Extensions.Logging;
@@ -28,8 +29,9 @@ namespace App.Metrics.Facts.Fixtures
 
             Registry = registry;
             Providers = new DefaultMetricsProvider(Registry, Builder, Clock);
-
+            Snapshot = new DefaultMetricValuesProvider(new NoOpMetricsFilter(), Registry);
             Managers = new DefaultMeasureMetricsProvider(Registry, Builder, Clock);
+            Context = options.DefaultContextLabel;
         }
 
         public IBuildMetrics Builder { get; }
@@ -41,6 +43,10 @@ namespace App.Metrics.Facts.Fixtures
         public IProvideMetrics Providers { get; }
 
         public IMetricsRegistry Registry { get; }
+
+        public IProvideMetricValues Snapshot { get; }
+
+        public string Context { get; }
 
         /// <inheritdoc />
         public void Dispose() { }

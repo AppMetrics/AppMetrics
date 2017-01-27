@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Core;
+using App.Metrics.Core.Abstractions;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics.Gauge
@@ -11,6 +12,11 @@ namespace App.Metrics.Gauge
 {
     public static class GaugeExtensions
     {
+        public static double GetGaugeValue(this IProvideMetricValues valueService, string context, string metricName)
+        {
+            return valueService.GetForContext(context).Gauges.ValueFor(context, metricName);
+        }
+
         public static IEnumerable<GaugeMetric> ToMetric(this IEnumerable<GaugeValueSource> source) { return source.Select(ToMetric); }
 
         public static GaugeMetric ToMetric(this GaugeValueSource source)

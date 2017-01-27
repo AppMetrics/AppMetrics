@@ -1,8 +1,14 @@
-﻿using System.Net.Http;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System;
+using System.Net.Http;
 using System.Threading.Tasks;
-using App.Metrics.Core;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
 using App.Metrics.Extensions.Middleware.Internal;
+using App.Metrics.Meter;
+using App.Metrics.Meter.Extensions;
+using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;
 
@@ -29,16 +35,24 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
             await Client.GetAsync("/api/test/error");
             await Client.GetAsync("/api/test/error");
 
-            var metrics = Context.Snapshot.GetForContext(AspNetMetricsRegistry.Contexts.HttpRequests.ContextName);
+            Func<string, MeterValue> getMeterValue = metricName => Context.Snapshot.GetMeterValue(
+                AspNetMetricsRegistry.Contexts.HttpRequests.ContextName,
+                metricName);
 
-            metrics.MeterValueFor("GET api/test/bad Http Error Requests").Count.Should().Be(1);
-            metrics.MeterValueFor("GET api/test/error Http Error Requests").Count.Should().Be(2);
-            metrics.MeterValueFor("GET api/test/unauth Http Error Requests").Count.Should().Be(1);
-            metrics.MeterValueFor("Http Error Requests").Count.Should().Be(4);
-            metrics.MeterValueFor("Http Error Requests").Items.Length.Should().Be(3, "there are three endpoints which had an unsuccessful status code");
-            metrics.MeterValueFor("GET api/test/bad Http Error Requests").Count.Should().Be(1);
-            metrics.MeterValueFor("Http Error Requests").Count.Should().Be(4);
-            metrics.TimerValueFor("Http Requests").Histogram.Count.Should().Be(5);
+            Func<string, TimerValue> getTimerValue = metricName => Context.Snapshot.GetTimerValue(
+                AspNetMetricsRegistry.Contexts.HttpRequests.ContextName,
+                metricName);
+
+            getMeterValue("GET api/test/bad Http Error Requests").Count.Should().Be(1);
+            getMeterValue("GET api/test/error Http Error Requests").Count.Should().Be(2);
+            getMeterValue("GET api/test/unauth Http Error Requests").Count.Should().Be(1);
+            getMeterValue("Http Error Requests").Count.Should().Be(4);
+            getMeterValue("Http Error Requests").
+                Items.Length.Should().
+                Be(3, "there are three endpoints which had an unsuccessful status code");
+            getMeterValue("GET api/test/bad Http Error Requests").Count.Should().Be(1);
+            getMeterValue("Http Error Requests").Count.Should().Be(4);
+            getTimerValue("Http Requests").Histogram.Count.Should().Be(5);
         }
     }
 }

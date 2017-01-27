@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-using System.Linq;
-using App.Metrics.Core;
 using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Internal;
+using App.Metrics.Timer;
 using App.Metrics.Timer.Abstractions;
 using FluentAssertions;
 using Xunit;
@@ -31,9 +29,9 @@ namespace App.Metrics.Facts.Managers
 
             _manager.Time(options, () => _fixture.Clock.Advance(TimeUnit.Milliseconds, 100L));
 
-            var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
+            var timerValue = _fixture.Snapshot.GetTimerValue(_fixture.Context, metricName);
 
-            data.Contexts.Single().TimerValueFor(metricName).TotalTime.Should().Be(100L);
+            timerValue.TotalTime.Should().Be(100L);
         }
 
         [Fact]
@@ -45,11 +43,11 @@ namespace App.Metrics.Facts.Managers
             _manager.Time(options, () => _fixture.Clock.Advance(TimeUnit.Milliseconds, 100L), "value1");
             _manager.Time(options, () => _fixture.Clock.Advance(TimeUnit.Milliseconds, 200L), "value2");
 
-            var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
+            var timerValue = _fixture.Snapshot.GetTimerValue(_fixture.Context, metricName);
 
-            data.Contexts.Single().TimerValueFor(metricName).TotalTime.Should().Be(300L);
-            data.Contexts.Single().TimerValueFor(metricName).Histogram.MinUserValue.Should().Be("value1");
-            data.Contexts.Single().TimerValueFor(metricName).Histogram.MaxUserValue.Should().Be("value2");
+            timerValue.TotalTime.Should().Be(300L);
+            timerValue.Histogram.MinUserValue.Should().Be("value1");
+            timerValue.Histogram.MaxUserValue.Should().Be("value2");
         }
 
         [Fact]
@@ -63,9 +61,9 @@ namespace App.Metrics.Facts.Managers
                 _fixture.Clock.Advance(TimeUnit.Milliseconds, 100L);
             }
 
-            var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
+            var timerValue = _fixture.Snapshot.GetTimerValue(_fixture.Context, metricName);
 
-            data.Contexts.Single().TimerValueFor(metricName).TotalTime.Should().Be(100L);
+            timerValue.TotalTime.Should().Be(100L);
         }
 
         [Fact]
@@ -84,11 +82,11 @@ namespace App.Metrics.Facts.Managers
                 _fixture.Clock.Advance(TimeUnit.Milliseconds, 200L);
             }
 
-            var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
+            var timerValue = _fixture.Snapshot.GetTimerValue(_fixture.Context, metricName);
 
-            data.Contexts.Single().TimerValueFor(metricName).TotalTime.Should().Be(300L);
-            data.Contexts.Single().TimerValueFor(metricName).Histogram.MinUserValue.Should().Be("value1");
-            data.Contexts.Single().TimerValueFor(metricName).Histogram.MaxUserValue.Should().Be("value2");
+            timerValue.TotalTime.Should().Be(300L);
+            timerValue.Histogram.MinUserValue.Should().Be("value1");
+            timerValue.Histogram.MaxUserValue.Should().Be("value2");
         }
     }
 }
