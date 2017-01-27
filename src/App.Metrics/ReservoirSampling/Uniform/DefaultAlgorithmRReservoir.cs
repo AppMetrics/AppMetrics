@@ -6,6 +6,7 @@ using System.Linq;
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Concurrency;
 using App.Metrics.Core;
+using App.Metrics.Core.Internal;
 
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
@@ -32,6 +33,11 @@ namespace App.Metrics.ReservoirSampling.Uniform
         private readonly UserValueWrapper[] _values;
 
         private AtomicLong _count = new AtomicLong(0);
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultAlgorithmRReservoir"/> class.
+        /// </summary>
+        public DefaultAlgorithmRReservoir() : this(Constants.ReservoirSampling.DefaultSampleSize) { }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultAlgorithmRReservoir" /> class.
