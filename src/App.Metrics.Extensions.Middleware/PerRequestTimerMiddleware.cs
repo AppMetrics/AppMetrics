@@ -11,7 +11,7 @@ namespace App.Metrics.Extensions.Middleware
 {
     public class PerRequestTimerMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
-        private const string TimerItemsKey = "__Mertics.PerRequestStartTime__";
+        private const string TimerItemsKey = "__App.Metrics.PerRequestStartTime__";
 
         public PerRequestTimerMiddleware(
             RequestDelegate next,

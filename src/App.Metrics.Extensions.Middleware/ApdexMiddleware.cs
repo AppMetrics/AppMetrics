@@ -13,7 +13,7 @@ namespace App.Metrics.Extensions.Middleware
 {
     public class ApdexMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
-        private const string ApdexItemsKey = "__App.Mertics.Apdex__";
+        private const string ApdexItemsKey = "__App.Metrics.Apdex__";
         private readonly IApdex _apdexTracking;
 
         public ApdexMiddleware(

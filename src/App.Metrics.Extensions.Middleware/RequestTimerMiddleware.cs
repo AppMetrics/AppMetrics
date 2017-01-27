@@ -13,7 +13,7 @@ namespace App.Metrics.Extensions.Middleware
 {
     public class RequestTimerMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
-        private const string TimerItemsKey = "__App.Mertics.RequestTimer__";
+        private const string TimerItemsKey = "__App.Metrics.RequestTimer__";
         private readonly ITimer _requestTimer;
 
         public RequestTimerMiddleware(
