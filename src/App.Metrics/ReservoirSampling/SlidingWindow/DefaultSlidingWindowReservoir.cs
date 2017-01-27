@@ -6,6 +6,7 @@ using System.Linq;
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Concurrency;
 using App.Metrics.Core;
+using App.Metrics.Core.Internal;
 using App.Metrics.ReservoirSampling.Uniform;
 
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
@@ -21,6 +22,11 @@ namespace App.Metrics.ReservoirSampling.SlidingWindow
     {
         private readonly UserValueWrapper[] _values;
         private AtomicLong _count = new AtomicLong(0);
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultSlidingWindowReservoir"/> class.
+        /// </summary>
+        public DefaultSlidingWindowReservoir() : this(Constants.ReservoirSampling.DefaultSampleSize) { }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultSlidingWindowReservoir" /> class.
