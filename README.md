@@ -17,6 +17,8 @@ App Metrics provides various metric types to measure things such as the rate of 
 
 For metric reporting capabilities see the [reporting repo](https://github.com/alhardy/AppMetrics.Reporters).
 
+`App.Metrics` includes an Exponentially Forward Decaying, Sliding Window and Algorithm R reservoir implementations, for additional reservoir sampling see the [reservoir repo](https://github.com/alhardy/AppMetrics.Reservoirs). For more details on reservoir sampling see the [docs](https://alhardy.github.io/app-metrics-docs/getting-started/sampling/index.html).
+
 App Metrics also provides a health checking system allowing you to monitor the health of your application through user defined checks.
 
 - [Getting Started](https://alhardy.github.io/app-metrics-docs/getting-started/intro.html)
@@ -38,23 +40,17 @@ See the [contribution guidlines](CONTRIBUTING.md) for details.
 * [XUnit](https://xunit.github.io/)
 * [StyleCopAnalyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers)
 
-----------
-
-**Ported from [Metrics.NET](https://github.com/etishor/Metrics.NET)**
-
-App Metrics is based on the [Metrics.NET](https://github.com/etishor/Metrics.NET) library and using the same reservoir sampling code from the original library, which is a port of the Java [Metrics](https://github.com/dropwizard/metrics) library. 
-
-App Metrics includes additional features to Metrics.NET, see the [docs](https://alhardy.github.io/app-metrics-docs/getting-started/intro.html) for details.
-
-Why another .NET port? The main reason for porting Metrics.NET was to have it run on .NET Standard and provider a more modern API into the libraries features. Intially I refactored Metrics.NET stripping out features which required a fairly large refactor such as visualization, however the maintainers did not see .NET Standard or Core a priority at the time. 
-
-This library will always keep the same license as the original [Metrics.NET Library](https://github.com/etishor/Metrics.NET) (as long as its an open source, permisive license). 
-
-The original metrics project is released under these terms
-
-"Metrics.NET is release under Apache 2.0 License 
-Copyright (c) 2014 Iulian Margarintescu"
 
 ## License
 
 This library is release under Apache 2.0 License ( see LICENSE ) Copyright (c) 2016 Allan Hardy
+
+----------
+
+App Metrics is based on the [Metrics.NET](https://github.com/etishor/Metrics.NET) library, using the same reservoir sampling code from the original library, which is a port of the Java [Metrics](https://github.com/dropwizard/metrics) library. 
+
+Why another .NET port? The main reason for porting Metrics.NET was to have it run on .NET Standard and provide a more modern API into the libraries features.
+
+The original metrics project is released under these terms:
+
+"Metrics.NET is release under Apache 2.0 License Copyright (c) 2014 Iulian Margarintescu"
