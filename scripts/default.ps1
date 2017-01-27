@@ -24,10 +24,7 @@ $packableProjectDirectories = @("$srcRoot\App.Metrics",
 								"$srcRoot\App.Metrics.Concurrency", 
 								"$srcRoot\App.Metrics.Extensions.Middleware", 
 								"$srcRoot\App.Metrics.Extensions.Mvc",
-								"$srcRoot\App.Metrics.Formatters.Json",
-								"$srcRoot\App.Metrics.Extensions.Reporting.TextFile",
-								"$srcRoot\App.Metrics.Extensions.Reporting.Console",
-								"$srcRoot\App.Metrics.Extensions.Reporting.InfluxDB",
+								"$srcRoot\App.Metrics.Formatters.Json",								
 								"$srcRoot\App.Metrics.Extensions.Reservoirs.HdrHistogram")
 
 task default -depends PatchProject, TestParams, Setup, Build, RunTests, Pack
