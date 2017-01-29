@@ -10,7 +10,7 @@ using App.Metrics.Tagging;
 using FluentAssertions;
 using Xunit;
 
-namespace App.Metrics.Facts.Metrics
+namespace App.Metrics.Facts.Counter
 {
     public class CounterMetricTests
     {

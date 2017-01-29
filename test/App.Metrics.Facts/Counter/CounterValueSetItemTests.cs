@@ -1,9 +1,8 @@
 using App.Metrics.Counter;
-using App.Metrics.Data;
 using FluentAssertions;
 using Xunit;
 
-namespace App.Metrics.Facts.Metrics
+namespace App.Metrics.Facts.Counter
 {
     public class CounterValueSetItemTests
     {

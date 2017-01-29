@@ -3,12 +3,11 @@
 
 using App.Metrics.Core.Internal;
 using App.Metrics.Infrastructure;
-using App.Metrics.Internal;
 using App.Metrics.Meter;
 using FluentAssertions;
 using Xunit;
 
-namespace App.Metrics.Facts.Metrics
+namespace App.Metrics.Facts.Meter
 {
     public class MeterMetricTests
     {

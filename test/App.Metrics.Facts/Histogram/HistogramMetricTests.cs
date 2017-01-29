@@ -4,12 +4,11 @@
 using System;
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Histogram;
-using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 using FluentAssertions;
 using Xunit;
 
-namespace App.Metrics.Facts.Metrics
+namespace App.Metrics.Facts.Histogram
 {
     public class HistogramMetricTests
     {

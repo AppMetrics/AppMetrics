@@ -12,7 +12,7 @@ using FluentAssertions;
 using Moq;
 using Xunit;
 
-namespace App.Metrics.Facts.Metrics
+namespace App.Metrics.Facts.Apdex
 {
     public class ApdexMetricTests
     {

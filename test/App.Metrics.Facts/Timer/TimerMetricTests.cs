@@ -6,15 +6,13 @@ using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Core.Internal;
 using App.Metrics.Histogram;
 using App.Metrics.Infrastructure;
-using App.Metrics.Internal;
 using App.Metrics.Meter;
-using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.Uniform;
 using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;
 
-namespace App.Metrics.Facts.Metrics
+namespace App.Metrics.Facts.Timer
 {
     public class TimerMetricTests
     {

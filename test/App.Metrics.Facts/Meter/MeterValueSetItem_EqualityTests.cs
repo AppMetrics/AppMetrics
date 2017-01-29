@@ -32,6 +32,17 @@ namespace App.Metrics.Facts.Meter
         }
 
         [Fact]
+        public void equality_with_equals_false_when_same_object()
+        {
+            var meterValue = new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds);
+
+            var value = new MeterValue.SetItem("item", 0.5, meterValue);
+            object other = value;
+
+            value.Equals(other).Should().Be(false);
+        }
+
+        [Fact]
         public void equality_with_equals_operator()
         {
             var meterValue = new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds);
