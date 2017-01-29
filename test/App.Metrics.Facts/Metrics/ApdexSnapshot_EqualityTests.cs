@@ -12,37 +12,37 @@ namespace App.Metrics.Facts.Metrics
         [Fact]
         public void equality_with_equals_false_when_not_same()
         {
-            var env = new ApdexSnapshot(new[] { 1L, 2L, 3L }, 0.5);
+            var snapshot = new ApdexSnapshot(new[] { 1L, 2L, 3L }, 0.5);
             var other = new ApdexSnapshot(new[] { 1L, 2L }, 0.5);
 
-            env.Equals(other).Should().Be(false);
+            snapshot.Equals(other).Should().Be(false);
         }
 
         [Fact]
         public void equality_with_equals_operator()
         {
-            var env = new ApdexSnapshot(new[] { 1L, 2L, 3L }, 0.5);
+            var snapshot = new ApdexSnapshot(new[] { 1L, 2L, 3L }, 0.5);
             var other = new ApdexSnapshot(new[] { 1L, 2L, 3L }, 0.5);
 
-            env.Equals(other).Should().Be(true);
+            snapshot.Equals(other).Should().Be(true);
         }
 
         [Fact]
         public void equality_with_equals_true_when_same()
         {
-            var env = new ApdexSnapshot(new[] { 1L, 2L, 3L }, 0.5);
+            var snapshot = new ApdexSnapshot(new[] { 1L, 2L, 3L }, 0.5);
             var other = new ApdexSnapshot(new[] { 1L, 2L, 3L }, 0.5);
 
-            env.Equals(other).Should().Be(true);
+            snapshot.Equals(other).Should().Be(true);
         }
 
         [Fact]
         public void equality_with_not_equals_operator()
         {
-            var env = new ApdexSnapshot(new[] { 1L, 2L, 3L }, 0.5);
+            var snapshot = new ApdexSnapshot(new[] { 1L, 2L, 3L }, 0.5);
             var other = new ApdexSnapshot(new[] { 1L, 2L }, 0.5);
 
-            env.Equals(other).Should().Be(false);
+            snapshot.Equals(other).Should().Be(false);
         }
     }
 }
