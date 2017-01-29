@@ -12,14 +12,6 @@ namespace App.Metrics.Core.Options
     public abstract class MetricValueWithSamplingOption : MetricValueOptionsBase
     {
         /// <summary>
-        ///     Gets a value indicating whether this instance has a reservoir set.
-        /// </summary>
-        /// <value>
-        ///     <c>true</c> if this instance has reservoir; otherwise, <c>false</c>.
-        /// </value>
-        public bool HasReservoir => Reservoir != null;
-
-        /// <summary>
         ///     Gets or sets an <see cref="IReservoir" /> implementation for sampling.
         /// </summary>
         /// <value>
