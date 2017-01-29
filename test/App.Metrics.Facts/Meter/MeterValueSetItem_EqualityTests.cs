@@ -39,7 +39,7 @@ namespace App.Metrics.Facts.Meter
             var value = new MeterValue.SetItem("item", 0.5, meterValue);
             object other = value;
 
-            value.Equals(other).Should().Be(false);
+            value.Equals(other).Should().Be(true);
         }
 
         [Fact]
