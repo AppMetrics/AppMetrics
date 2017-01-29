@@ -4,9 +4,11 @@
 using System;
 using App.Metrics.Apdex;
 using App.Metrics.Apdex.Abstractions;
+using App.Metrics.Core.Internal;
 
 namespace App.Metrics.Registry.Internal
 {
+    [AppMetricsExcludeFromCodeCoverage]
     internal struct NullApdex : IApdex
     {
         public long CurrentTime() { return 0; }

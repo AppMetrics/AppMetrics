@@ -2,11 +2,13 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
+using App.Metrics.Core.Internal;
 using App.Metrics.Timer;
 using App.Metrics.Timer.Abstractions;
 
 namespace App.Metrics.Registry.Internal
 {
+    [AppMetricsExcludeFromCodeCoverage]
     internal struct NullTimer : ITimer
     {
         public long CurrentTime() { return 0; }
