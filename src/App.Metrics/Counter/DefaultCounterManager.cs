@@ -9,7 +9,7 @@ using App.Metrics.Tagging;
 
 namespace App.Metrics.Counter
 {
-    internal class DefaultCounterManager : IMeasureCounterMetrics
+    internal sealed class DefaultCounterManager : IMeasureCounterMetrics
     {
         private readonly IBuildCounterMetrics _counterBuilder;
         private readonly IMetricsRegistry _registry;

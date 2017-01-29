@@ -6,7 +6,7 @@ using System;
 namespace App.Metrics.Core.Internal
 {
     [AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = true)]
-    internal class AppMetricsExcludeFromCodeCoverage : Attribute
+    internal sealed class AppMetricsExcludeFromCodeCoverageAttribute : Attribute
     {
     }
 }

@@ -23,7 +23,10 @@ namespace App.Metrics.Infrastructure
 
         public DateTime UtcDateTime => DateTime.UtcNow;
 
-        public void Advance(TimeUnit unit, long value) { throw new NotImplementedException($"Unable to advance {GetType()} Clock Type"); }
+        public void Advance(TimeUnit unit, long value)
+        {
+            // DEVNOTE: Use test clock to advance the timer for testing purposes
+        }
 
         public string FormatTimestamp(DateTime timestamp) { return timestamp.ToString("yyyy-MM-ddTHH:mm:ss.ffffK", CultureInfo.InvariantCulture); }
     }

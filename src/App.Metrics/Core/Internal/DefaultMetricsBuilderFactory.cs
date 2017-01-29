@@ -18,7 +18,7 @@ using App.Metrics.Timer.Abstractions;
 
 namespace App.Metrics.Core.Internal
 {
-    internal class DefaultMetricsBuilderFactory : IBuildMetrics
+    internal sealed class DefaultMetricsBuilderFactory : IBuildMetrics
     {
         public DefaultMetricsBuilderFactory()
         {

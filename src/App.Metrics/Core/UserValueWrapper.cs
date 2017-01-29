@@ -43,7 +43,7 @@ namespace App.Metrics.Core
 
         public bool Equals(UserValueWrapper other) { return string.Equals(UserValue, other.UserValue) && Value == other.Value; }
 
-        private class UserValueComparer : IComparer<UserValueWrapper>
+        private sealed class UserValueComparer : IComparer<UserValueWrapper>
         {
             public int Compare(UserValueWrapper x, UserValueWrapper y) { return Comparer<long>.Default.Compare(x.Value, y.Value); }
         }

@@ -9,7 +9,7 @@ using App.Metrics.Tagging;
 
 namespace App.Metrics.Meter
 {
-    internal class DefaultMeterManager : IMeasureMeterMetrics
+    internal sealed class DefaultMeterManager : IMeasureMeterMetrics
     {
         private readonly IClock _clock;
         private readonly IBuildMeterMetrics _meterBuilder;

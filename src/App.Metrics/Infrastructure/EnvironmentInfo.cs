@@ -9,7 +9,7 @@ namespace App.Metrics.Infrastructure
 {
     public struct EnvironmentInfo
     {
-        public static EnvironmentInfo Empty;
+        public static readonly EnvironmentInfo Empty = new EnvironmentInfo(new Dictionary<string, string>());
         private readonly IEnumerable<EnvironmentInfoEntry> _entries;
 
         public EnvironmentInfo(IDictionary<string, string> entries)
@@ -92,5 +92,47 @@ namespace App.Metrics.Infrastructure
         public string ProcessName { get; }
 
         public string ProcessorCount { get; }
+
+        public static bool operator ==(EnvironmentInfo left, EnvironmentInfo right) { return left.Equals(right); }
+
+        public static bool operator !=(EnvironmentInfo left, EnvironmentInfo right) { return !left.Equals(right); }
+
+        /// <inheritdoc />
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            return obj is EnvironmentInfo && Equals((EnvironmentInfo)obj);
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = EntryAssemblyName?.GetHashCode() ?? 0;
+                hashCode = (hashCode * 397) ^ (EntryAssemblyVersion?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (HostName?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (LocalTimeString?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (MachineName?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (OperatingSystem?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (OperatingSystemVersion?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (ProcessName?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (ProcessorCount?.GetHashCode() ?? 0);
+                return hashCode;
+            }
+        }
+
+        public bool Equals(EnvironmentInfo other)
+        {
+            return string.Equals(EntryAssemblyName, other.EntryAssemblyName) && string.Equals(EntryAssemblyVersion, other.EntryAssemblyVersion) &&
+                   string.Equals(HostName, other.HostName) && string.Equals(LocalTimeString, other.LocalTimeString) &&
+                   string.Equals(MachineName, other.MachineName) && string.Equals(OperatingSystem, other.OperatingSystem) &&
+                   string.Equals(OperatingSystemVersion, other.OperatingSystemVersion) && string.Equals(ProcessName, other.ProcessName) &&
+                   string.Equals(ProcessorCount, other.ProcessorCount);
+        }
     }
 }

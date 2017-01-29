@@ -18,16 +18,16 @@ namespace App.Metrics.Abstractions.Filtering
 
         bool IsMatch(string context);
 
-        bool IsMatch(GaugeValueSource gauge);
+        bool IsGaugeMatch(GaugeValueSource gauge);
 
-        bool IsMatch(CounterValueSource counter);
+        bool IsCounterMatch(CounterValueSource counter);
 
-        bool IsMatch(MeterValueSource meter);
+        bool IsMeterMatch(MeterValueSource meter);
 
-        bool IsMatch(HistogramValueSource histogram);
+        bool IsHistogramMatch(HistogramValueSource histogram);
 
-        bool IsMatch(TimerValueSource timer);
+        bool IsTimerMatch(TimerValueSource timer);
 
-        bool IsMatch(ApdexValueSource apdex);
+        bool IsApdexMatch(ApdexValueSource apdex);
     }
 }

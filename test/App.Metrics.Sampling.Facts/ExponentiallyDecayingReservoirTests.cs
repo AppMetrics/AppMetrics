@@ -2,9 +2,9 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System.Linq;
+using App.Metrics.Core.Internal;
 using App.Metrics.Infrastructure;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
-using App.Metrics.Scheduling;
 using App.Metrics.Scheduling.Abstractions;
 using FluentAssertions;
 using Xunit;

@@ -10,7 +10,7 @@ using App.Metrics.Health.Abstractions;
 namespace App.Metrics.Health.Internal
 {
     [AppMetricsExcludeFromCodeCoverage]
-    internal class NoOpHealthCheckFactory : IHealthCheckFactory
+    internal sealed class NoOpHealthCheckFactory : IHealthCheckFactory
     {
         public ConcurrentDictionary<string, HealthCheck> Checks { get; } = new ConcurrentDictionary<string, HealthCheck>();
 

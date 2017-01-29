@@ -7,7 +7,7 @@ using App.Metrics.Registry.Abstractions;
 
 namespace App.Metrics.Histogram
 {
-    internal class DefaultHistogramManager : IMeasureHistogramMetrics
+    internal sealed class DefaultHistogramManager : IMeasureHistogramMetrics
     {
         private readonly IBuildHistogramMetrics _histogramBuilder;
         private readonly IMetricsRegistry _registry;

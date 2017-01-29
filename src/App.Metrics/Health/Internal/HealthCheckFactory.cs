@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Health.Internal
 {
-    internal class HealthCheckFactory : IHealthCheckFactory
+    internal sealed class HealthCheckFactory : IHealthCheckFactory
     {
         private readonly ILogger<HealthCheckFactory> _logger;
 

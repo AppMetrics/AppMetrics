@@ -70,7 +70,7 @@ namespace App.Metrics.Filtering
         /// </summary>
         /// <param name="gauge">The gauge.</param>
         /// <returns>True if the metric type is a gauge, the name matches and tags match</returns>
-        public bool IsMatch(GaugeValueSource gauge)
+        public bool IsGaugeMatch(GaugeValueSource gauge)
         {
             if (_types != null && !_types.Contains(MetricType.Gauge))
             {
@@ -85,7 +85,7 @@ namespace App.Metrics.Filtering
         /// </summary>
         /// <param name="counter">The counter.</param>
         /// <returns>True if the metric type is a counter, the name matches and tags match</returns>
-        public bool IsMatch(CounterValueSource counter)
+        public bool IsCounterMatch(CounterValueSource counter)
         {
             if (_types != null && !_types.Contains(MetricType.Counter))
             {
@@ -100,7 +100,7 @@ namespace App.Metrics.Filtering
         /// </summary>
         /// <param name="meter">The meter.</param>
         /// <returns>True if the metric type is a meter, the name matches and tags match</returns>
-        public bool IsMatch(MeterValueSource meter)
+        public bool IsMeterMatch(MeterValueSource meter)
         {
             if (_types != null && !_types.Contains(MetricType.Meter))
             {
@@ -115,7 +115,7 @@ namespace App.Metrics.Filtering
         /// </summary>
         /// <param name="histogram">The histogram.</param>
         /// <returns>True if the metric type is a histogram, the name matches and tags match</returns>
-        public bool IsMatch(HistogramValueSource histogram)
+        public bool IsHistogramMatch(HistogramValueSource histogram)
         {
             if (_types != null && !_types.Contains(MetricType.Histogram))
             {
@@ -130,7 +130,7 @@ namespace App.Metrics.Filtering
         /// </summary>
         /// <param name="timer">The timer.</param>
         /// <returns>True if the metric type is a timer, the name matches and tags match</returns>
-        public bool IsMatch(TimerValueSource timer)
+        public bool IsTimerMatch(TimerValueSource timer)
         {
             if (_types != null && !_types.Contains(MetricType.Timer))
             {
@@ -145,7 +145,7 @@ namespace App.Metrics.Filtering
         /// </summary>
         /// <param name="apdex">The apdex.</param>
         /// <returns>True if the metric type is an apdex, the name matches and tags match</returns>
-        public bool IsMatch(ApdexValueSource apdex)
+        public bool IsApdexMatch(ApdexValueSource apdex)
         {
             if (_types != null && !_types.Contains(MetricType.Apdex))
             {

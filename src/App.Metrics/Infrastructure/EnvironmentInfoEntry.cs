@@ -13,5 +13,31 @@ namespace App.Metrics.Infrastructure
             Name = name;
             Value = value;
         }
+
+        public static bool operator ==(EnvironmentInfoEntry left, EnvironmentInfoEntry right) { return left.Equals(right); }
+
+        public static bool operator !=(EnvironmentInfoEntry left, EnvironmentInfoEntry right) { return !left.Equals(right); }
+
+        /// <inheritdoc />
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            return obj is EnvironmentInfoEntry && Equals((EnvironmentInfoEntry)obj);
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((Name?.GetHashCode() ?? 0) * 397) ^ (Value?.GetHashCode() ?? 0);
+            }
+        }
+
+        public bool Equals(EnvironmentInfoEntry other) { return string.Equals(Name, other.Name) && string.Equals(Value, other.Value); }
     }
 }

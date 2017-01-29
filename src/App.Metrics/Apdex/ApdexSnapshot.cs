@@ -6,31 +6,56 @@ using System.Linq;
 
 namespace App.Metrics.Apdex
 {
-    public class ApdexSnapshot
+    public struct ApdexSnapshot
     {
         private static readonly double ApdexTimeUnitFactor = TimeUnit.Seconds.ScalingFactorFor(TimeUnit.Nanoseconds);
-        private readonly double _apdexTNanoseconds;
-        private readonly IEnumerable<long> _samples;
 
         public ApdexSnapshot(IEnumerable<long> samples, double apdexTSeconds)
         {
-            _samples = samples;
-            _apdexTNanoseconds = apdexTSeconds * ApdexTimeUnitFactor;
+            var sampleSet = samples as long[] ?? samples.ToArray();
+            var apdexTNanoseconds = apdexTSeconds * ApdexTimeUnitFactor;
+
+            FrustratingSize = sampleSet.Count(t => t > 4.0 * apdexTNanoseconds);
+            SatisfiedSize = sampleSet.Count(t => t <= apdexTNanoseconds);
+            ToleratingSize = sampleSet.Count(t => t > apdexTNanoseconds && t <= 4.0 * apdexTNanoseconds);
         }
 
-        public int FrustratingSize
+        public int FrustratingSize { get; }
+
+        public int SatisfiedSize { get; }
+
+        public int ToleratingSize { get; }
+
+        public static bool operator ==(ApdexSnapshot left, ApdexSnapshot right) { return left.Equals(right); }
+
+        public static bool operator !=(ApdexSnapshot left, ApdexSnapshot right) { return !left.Equals(right); }
+
+        /// <inheritdoc />
+        public override bool Equals(object obj)
         {
-            get { return _samples.Count(t => t > 4.0 * _apdexTNanoseconds); }
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            return obj is ApdexSnapshot && Equals((ApdexSnapshot)obj);
         }
 
-        public int SatisfiedSize
+        /// <inheritdoc />
+        public override int GetHashCode()
         {
-            get { return _samples.Count(t => t <= _apdexTNanoseconds); }
+            unchecked
+            {
+                var hashCode = FrustratingSize;
+                hashCode = (hashCode * 397) ^ SatisfiedSize;
+                hashCode = (hashCode * 397) ^ ToleratingSize;
+                return hashCode;
+            }
         }
 
-        public int ToleratingSize
+        public bool Equals(ApdexSnapshot other)
         {
-            get { return _samples.Count(t => t > _apdexTNanoseconds && t <= 4.0 * _apdexTNanoseconds); }
+            return FrustratingSize == other.FrustratingSize && SatisfiedSize == other.SatisfiedSize && ToleratingSize == other.ToleratingSize;
         }
     }
 }

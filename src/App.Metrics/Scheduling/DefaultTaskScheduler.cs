@@ -150,6 +150,14 @@ namespace App.Metrics.Scheduling
             _token?.Cancel();
         }
 
+        private static void ThrowIfInvalid(TimeSpan pollInterval)
+        {
+            if (pollInterval <= TimeSpan.Zero)
+            {
+                throw new ArgumentOutOfRangeException(nameof(pollInterval));
+            }
+        }
+
         private bool CheckDisposed() => _disposed;
 
         private bool HasStarted()
@@ -158,14 +166,6 @@ namespace App.Metrics.Scheduling
                                      _task.Status == TaskStatus.Running ||
                                      _task.Status == TaskStatus.WaitingToRun ||
                                      _task.Status == TaskStatus.WaitingForActivation);
-        }
-
-        private void ThrowIfInvalid(TimeSpan pollInterval)
-        {
-            if (pollInterval <= TimeSpan.Zero)
-            {
-                throw new ArgumentOutOfRangeException(nameof(pollInterval));
-            }
         }
     }
 }

@@ -8,7 +8,7 @@ using App.Metrics.Registry.Abstractions;
 
 namespace App.Metrics.Apdex
 {
-    internal class DefaultApdexManager : IMeasureApdexMetrics
+    internal sealed class DefaultApdexManager : IMeasureApdexMetrics
     {
         private readonly IBuildApdexMetrics _apdexBuilder;
         private readonly IClock _clock;

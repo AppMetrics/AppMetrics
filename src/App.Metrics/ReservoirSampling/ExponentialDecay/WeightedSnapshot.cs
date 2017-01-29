@@ -156,7 +156,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
             return posx >= _values.Length ? _values[_values.Length - 1] : _values[posx];
         }
 
-        private class WeightedSampleComparer : IComparer<WeightedSample>
+        private sealed class WeightedSampleComparer : IComparer<WeightedSample>
         {
             public static readonly IComparer<WeightedSample> Instance = new WeightedSampleComparer();
 

@@ -65,12 +65,12 @@ namespace App.Metrics.Core
 
             return new MetricsContextValueSource(
                 Context,
-                Gauges.Where(filter.IsMatch),
-                Counters.Where(filter.IsMatch),
-                Meters.Where(filter.IsMatch),
-                Histograms.Where(filter.IsMatch),
-                Timers.Where(filter.IsMatch),
-                ApdexScores.Where(filter.IsMatch));
+                Gauges.Where(filter.IsGaugeMatch),
+                Counters.Where(filter.IsCounterMatch),
+                Meters.Where(filter.IsMeterMatch),
+                Histograms.Where(filter.IsHistogramMatch),
+                Timers.Where(filter.IsTimerMatch),
+                ApdexScores.Where(filter.IsApdexMatch));
         }
 
         public bool IsNotEmpty() { return this != Empty; }

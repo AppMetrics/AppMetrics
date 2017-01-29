@@ -19,7 +19,7 @@ using App.Metrics.Timer.Abstractions;
 
 namespace App.Metrics.Core.Internal
 {
-    internal class DefaultMetricsProvider : IProvideMetrics
+    internal sealed class DefaultMetricsProvider : IProvideMetrics
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultMetricsProvider" /> class.

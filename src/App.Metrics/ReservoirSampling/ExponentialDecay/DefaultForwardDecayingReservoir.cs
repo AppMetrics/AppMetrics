@@ -305,7 +305,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
             }
         }
 
-        private class ReverseOrderDoubleComparer : IComparer<double>
+        private sealed class ReverseOrderDoubleComparer : IComparer<double>
         {
             public static readonly IComparer<double> Instance = new ReverseOrderDoubleComparer();
 

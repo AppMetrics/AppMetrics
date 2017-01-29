@@ -8,7 +8,7 @@ using App.Metrics.Timer.Abstractions;
 
 namespace App.Metrics.Timer
 {
-    internal class DefaultTimerManager : IMeasureTimerMetrics
+    internal sealed class DefaultTimerManager : IMeasureTimerMetrics
     {
         private readonly IClock _clock;
         private readonly IMetricsRegistry _registry;

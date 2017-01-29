@@ -9,7 +9,6 @@ using App.Metrics.Abstractions.Metrics;
 using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Apdex;
 using App.Metrics.Apdex.Abstractions;
-using App.Metrics.Core;
 using App.Metrics.Core.Abstractions;
 using App.Metrics.Core.Options;
 using App.Metrics.Counter;
@@ -194,7 +193,7 @@ namespace App.Metrics.Registry.Internal
             return new MetricTags(_globalTags.Concat(metricTags).ToDictionary(t => t.Key, t => t.Value));
         }
 
-        private class MetricMetaCatalog<TMetric, TValue, TMetricValue>
+        private sealed class MetricMetaCatalog<TMetric, TValue, TMetricValue>
             where TValue : MetricValueSource<TMetricValue>
         {
             private readonly ConcurrentDictionary<string, MetricMeta> _metrics =
@@ -239,7 +238,7 @@ namespace App.Metrics.Registry.Internal
                 }
             }
 
-            private class MetricMeta
+            private sealed class MetricMeta
             {
                 public MetricMeta(TMetric metric, TValue valueUnit)
                 {

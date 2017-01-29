@@ -16,7 +16,5 @@ namespace App.Metrics.Reporting.Internal
         public IReporter CreateReporter(IScheduler scheduler) { return new NoOpReporter(); }
 
         public IReporter CreateReporter() { return new NoOpReporter(); }
-
-        public void Dispose() { }
     }
 }

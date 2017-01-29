@@ -9,7 +9,7 @@ using App.Metrics.Registry.Abstractions;
 
 namespace App.Metrics.Gauge
 {
-    internal class DefaultGaugeManager : IMeasureGaugeMetrics
+    internal sealed class DefaultGaugeManager : IMeasureGaugeMetrics
     {
         private readonly IBuildGaugeMetrics _gaugeBuilder;
         private readonly IMetricsRegistry _registry;

@@ -11,7 +11,7 @@ using App.Metrics.Registry.Internal;
 
 namespace App.Metrics.Core.Internal
 {
-    internal class DefaultMetricValuesProvider : IProvideMetricValues
+    internal sealed class DefaultMetricValuesProvider : IProvideMetricValues
     {
         private readonly IFilterMetrics _globalFilter;
         private readonly IMetricsRegistry _registry;

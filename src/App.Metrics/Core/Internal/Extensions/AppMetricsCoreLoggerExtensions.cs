@@ -94,7 +94,7 @@ namespace Microsoft.Extensions.Logging
 
         internal static void RetrievedMetricsData(this ILogger logger) { logger.LogDebug(AppMetricsEventIds.Metrics.Data, "RetrievedMetricsData"); }
 
-        internal static class AppMetricsEventIds
+        private static class AppMetricsEventIds
         {
             private const int MetricsStart = 9999;
 
