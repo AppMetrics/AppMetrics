@@ -117,7 +117,7 @@ namespace App.Metrics.Registry.Internal
             _nullMetricsRegistry.Value.Disable();
         }
 
-        public MetricValueOptions EnsureContextLabel(MetricValueOptions options)
+        public MetricValueOptionsBase EnsureContextLabel(MetricValueOptionsBase options)
         {
             if (options.Context.IsMissing())
             {

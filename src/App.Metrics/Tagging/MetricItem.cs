@@ -24,7 +24,7 @@ namespace App.Metrics.Tagging
     ///         type of emails sent or The total rate of emails sent but also the rate at which type of email was sent.
     ///     </para>
     /// </summary>
-    /// <seealso cref="Metric" />
+    /// <seealso cref="MetricBase" />
     public sealed class MetricItem : ConcurrentDictionary<string, string>
     {
         public override string ToString() { return string.Join("|", this.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Key + ":" + kvp.Value)); }

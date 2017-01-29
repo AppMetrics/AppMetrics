@@ -13,9 +13,9 @@ namespace App.Metrics.Core.Internal
 
         public static class Health
         {
-            public const string DegradedStatusDisplay = "Degraded";
-            public const string HealthyStatusDisplay = "Healthy";
-            public const string UnhealthyStatusDisplay = "Unhealthy";
+            internal const string DegradedStatusDisplay = "Degraded";
+            internal const string HealthyStatusDisplay = "Healthy";
+            internal const string UnhealthyStatusDisplay = "Unhealthy";
 
             public static ReadOnlyDictionary<HealthCheckStatus, string> HealthStatusDisplay =>
                 new ReadOnlyDictionary<HealthCheckStatus, string>(

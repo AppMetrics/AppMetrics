@@ -84,10 +84,6 @@ namespace App.Metrics.Meter
 
         public struct SetItem
         {
-            public readonly string Item;
-            public readonly double Percent;
-            public readonly MeterValue Value;
-
             public SetItem(string item, double percent, MeterValue value)
             {
                 Item = item;
@@ -95,7 +91,13 @@ namespace App.Metrics.Meter
                 Value = value;
             }
 
+            public string Item { get; }
+
+            public double Percent { get; }
+
             public MetricTags Tags => new MetricTags().FromSetItemString(Item);
+
+            public MeterValue Value { get; }
 
             public static bool operator ==(SetItem left, SetItem right) { return left.Equals(right); }
 

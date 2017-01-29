@@ -7,7 +7,7 @@ using App.Metrics.Tagging;
 
 namespace App.Metrics.Apdex
 {
-    public sealed class ApdexValueSource : MetricValueSource<ApdexValue>
+    public sealed class ApdexValueSource : MetricValueSourceBase<ApdexValue>
     {
         public ApdexValueSource(
             string name,

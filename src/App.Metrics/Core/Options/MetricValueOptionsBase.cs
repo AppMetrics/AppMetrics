@@ -8,9 +8,9 @@ namespace App.Metrics.Core.Options
     /// <summary>
     ///     Configuration of a Metric that will be measured
     /// </summary>
-    public abstract class MetricValueOptions
+    public abstract class MetricValueOptionsBase
     {
-        protected MetricValueOptions()
+        protected MetricValueOptionsBase()
         {
             Tags = new MetricTags();
             MeasurementUnit = Unit.None;

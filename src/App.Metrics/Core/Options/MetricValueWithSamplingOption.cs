@@ -9,7 +9,7 @@ namespace App.Metrics.Core.Options
     /// <summary>
     ///     Configuration of a Metric that will be measured using a reservoir sampling type
     /// </summary>
-    public abstract class MetricValueWithSamplingOption : MetricValueOptions
+    public abstract class MetricValueWithSamplingOption : MetricValueOptionsBase
     {
         /// <summary>
         ///     Gets a value indicating whether this instance has a reservoir set.

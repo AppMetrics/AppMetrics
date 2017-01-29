@@ -10,7 +10,7 @@ namespace App.Metrics.Timer
     /// <summary>
     ///     Combines the value of the timer with the defined unit and the time units for rate and duration.
     /// </summary>
-    public sealed class TimerValueSource : MetricValueSource<TimerValue>
+    public sealed class TimerValueSource : MetricValueSourceBase<TimerValue>
     {
         public TimerValueSource(
             string name,

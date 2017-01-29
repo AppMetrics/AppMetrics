@@ -26,8 +26,8 @@ namespace App.Metrics.Meter
     ///         number of emails sent but also the rate at which each type of email is sent.
     ///     </para>
     /// </summary>
-    /// <seealso cref="Metric" />
-    public sealed class MeterMetric : Metric
+    /// <seealso cref="MetricBase" />
+    public sealed class MeterMetric : MetricBase
     {
         public long Count { get; set; }
 

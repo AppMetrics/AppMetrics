@@ -20,8 +20,8 @@ namespace App.Metrics.Timer
     ///         the min, max and last user value values is recorded.
     ///     </para>
     /// </summary>
-    /// <seealso cref="Metric" />
-    public sealed class TimerMetric : Metric
+    /// <seealso cref="MetricBase" />
+    public sealed class TimerMetric : MetricBase
     {
         public long ActiveSessions { get; set; }
 

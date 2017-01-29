@@ -39,7 +39,7 @@ namespace App.Metrics.Formatting.Humanize
                 timeStamp);
         }
 
-        public static void WriteMetricName<T>(this StringBuilder buffer, MetricValueSource<T> valueSource, string context = null)
+        public static void WriteMetricName<T>(this StringBuilder buffer, MetricValueSourceBase<T> valueSource, string context = null)
         {
             buffer.AppendLine(valueSource.HumanzizeName(context));
         }
@@ -52,7 +52,7 @@ namespace App.Metrics.Formatting.Humanize
                 timeStamp);
         }
 
-        public static void WriteMetricValue<T>(this StringBuilder buffer, MetricValueSource<T> valueSource)
+        public static void WriteMetricValue<T>(this StringBuilder buffer, MetricValueSourceBase<T> valueSource)
         {
             buffer.AppendLine(valueSource.Hummanize());
         }

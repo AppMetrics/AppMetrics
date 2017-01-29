@@ -24,7 +24,7 @@ namespace App.Metrics.Histogram
     ///         value values is recorded.
     ///     </para>
     /// </summary>
-    public sealed class HistogramMetric : Metric
+    public sealed class HistogramMetric : MetricBase
     {
         public long Count { get; set; }
 

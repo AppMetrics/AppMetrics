@@ -12,9 +12,9 @@ namespace App.Metrics.Core
 {
     public static class MetricsContextValueSourceExtensions
     {
-        public static T ValueFor<T>(this IEnumerable<MetricValueSource<T>> values, string context, string metricName)
+        public static T ValueFor<T>(this IEnumerable<MetricValueSourceBase<T>> values, string context, string metricName)
         {
-            var metricValueSources = values as MetricValueSource<T>[] ?? values.ToArray();
+            var metricValueSources = values as MetricValueSourceBase<T>[] ?? values.ToArray();
 
             var value = metricValueSources.Where(t => t.Name == metricName).Select(t => t.Value).ToList();
 

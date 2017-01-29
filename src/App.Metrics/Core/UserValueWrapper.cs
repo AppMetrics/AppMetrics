@@ -9,9 +9,10 @@ namespace App.Metrics.Core
     {
         public static readonly IComparer<UserValueWrapper> Comparer = new UserValueComparer();
         public static readonly UserValueWrapper Empty = default(UserValueWrapper);
-        public readonly string UserValue;
 
-        public readonly long Value;
+        public string UserValue { get; }
+
+        public long Value { get; }
 
         public UserValueWrapper(long value, string userValue = null)
         {

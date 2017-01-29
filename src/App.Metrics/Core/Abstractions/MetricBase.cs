@@ -5,7 +5,7 @@ using App.Metrics.Tagging;
 
 namespace App.Metrics.Core.Abstractions
 {
-    public abstract class Metric
+    public abstract class MetricBase
     {
         private MetricTags _tags = new MetricTags();
 

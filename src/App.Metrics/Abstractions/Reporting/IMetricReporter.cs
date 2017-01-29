@@ -28,7 +28,7 @@ namespace App.Metrics.Abstractions.Reporting
             IEnumerable<HealthCheck.Result> degradedChecks,
             IEnumerable<HealthCheck.Result> unhealthyChecks);
 
-        void ReportMetric<T>(string context, MetricValueSource<T> valueSource);
+        void ReportMetric<T>(string context, MetricValueSourceBase<T> valueSource);
 
         void StartReportRun(IMetrics metrics);
     }

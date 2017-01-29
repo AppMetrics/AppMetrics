@@ -11,22 +11,28 @@ namespace App.Metrics.Health
     /// </summary>
     public struct HealthStatus
     {
-        /// <summary>
-        ///     Flag indicating whether any checks are registered
-        /// </summary>
-        public readonly bool HasRegisteredChecks;
-
-        /// <summary>
-        ///     Result of each health check operation
-        /// </summary>
-        public readonly HealthCheck.Result[] Results;
-
         public HealthStatus(IEnumerable<HealthCheck.Result> results)
         {
             Results = results.ToArray();
 
             HasRegisteredChecks = Results.Length > 0;
         }
+
+        /// <summary>
+        ///     Gets a value indicating whether this health checks have registered checks.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if this instance has registered checks; otherwise, <c>false</c>.
+        /// </value>
+        public bool HasRegisteredChecks { get; }
+
+        /// <summary>
+        ///     Gets result of each health check operation
+        /// </summary>
+        /// <value>
+        ///     The health check results.
+        /// </value>
+        public HealthCheck.Result[] Results { get; }
 
         /// <summary>
         ///     Gets all health checks passed.

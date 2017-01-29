@@ -194,7 +194,7 @@ namespace App.Metrics.Registry.Internal
         }
 
         private sealed class MetricMetaCatalog<TMetric, TValue, TMetricValue>
-            where TValue : MetricValueSource<TMetricValue>
+            where TValue : MetricValueSourceBase<TMetricValue>
         {
             private readonly ConcurrentDictionary<string, MetricMeta> _metrics =
                 new ConcurrentDictionary<string, MetricMeta>();

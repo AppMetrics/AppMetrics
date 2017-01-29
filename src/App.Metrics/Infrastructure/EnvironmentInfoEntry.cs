@@ -5,8 +5,9 @@ namespace App.Metrics.Infrastructure
 {
     public struct EnvironmentInfoEntry
     {
-        public readonly string Name;
-        public readonly string Value;
+        public string Name { get; }
+
+        public string Value { get; }
 
         public EnvironmentInfoEntry(string name, string value)
         {

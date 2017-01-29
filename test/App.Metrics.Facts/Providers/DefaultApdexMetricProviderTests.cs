@@ -3,6 +3,7 @@
 
 using System;
 using System.Linq;
+using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Apdex.Abstractions;
 using App.Metrics.Core.Options;
@@ -18,7 +19,7 @@ namespace App.Metrics.Facts.Providers
     public class DefaultApdexMetricProviderTests : IClassFixture<MetricCoreTestFixture>
     {
         private readonly Lazy<IReservoir> _defaultReservoir = new Lazy<IReservoir>(() => new DefaultAlgorithmRReservoir(1028));
-        private readonly DefaultMetricsFilter _filter = new DefaultMetricsFilter().WhereType(MetricType.Apdex);
+        private readonly IFilterMetrics _filter = new DefaultMetricsFilter().WhereType(MetricType.Apdex);
         private readonly MetricCoreTestFixture _fixture;
         private readonly IProvideApdexMetrics _provider;
 

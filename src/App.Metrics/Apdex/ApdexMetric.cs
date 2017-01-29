@@ -6,7 +6,7 @@ using App.Metrics.Core.Abstractions;
 
 namespace App.Metrics.Apdex
 {
-    public sealed class ApdexMetric : Metric
+    public sealed class ApdexMetric : MetricBase
     {
         public int Frustrating { get; set; }
 

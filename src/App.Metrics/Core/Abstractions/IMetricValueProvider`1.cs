@@ -5,7 +5,7 @@ namespace App.Metrics.Core.Abstractions
 {
     /// <summary>
     ///     Indicates the ability to provide the value for a metric.
-    ///     This is the raw value. Consumers should use <see cref="MetricValueSource{T}" />
+    ///     This is the raw value. Consumers should use <see cref="MetricValueSourceBase{T}" />
     /// </summary>
     /// <typeparam name="T">Type of the value returned by the metric</typeparam>
     public interface IMetricValueProvider<out T>

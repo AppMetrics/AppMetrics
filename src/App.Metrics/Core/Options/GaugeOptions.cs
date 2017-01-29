@@ -8,8 +8,8 @@ namespace App.Metrics.Core.Options
     /// <summary>
     ///     Configuration of an <see cref="IGaugeMetric" /> that will be measured
     /// </summary>
-    /// <seealso cref="App.Metrics.Core.Options.MetricValueOptions" />
-    public class GaugeOptions : MetricValueOptions
+    /// <seealso cref="MetricValueOptionsBase" />
+    public class GaugeOptions : MetricValueOptionsBase
     {
     }
 }

@@ -10,7 +10,7 @@ namespace App.Metrics.Counter
     /// <summary>
     ///     Combines the value for a counter with the defined unit for the value.
     /// </summary>
-    public sealed class CounterValueSource : MetricValueSource<CounterValue>
+    public sealed class CounterValueSource : MetricValueSourceBase<CounterValue>
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="CounterValueSource" /> class.

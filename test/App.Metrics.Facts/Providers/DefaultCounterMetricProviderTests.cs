@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System.Linq;
+using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Core.Options;
 using App.Metrics.Counter.Abstractions;
 using App.Metrics.Facts.Fixtures;
@@ -13,7 +14,7 @@ namespace App.Metrics.Facts.Providers
 {
     public class DefaultCounterMetricProviderTests : IClassFixture<MetricCoreTestFixture>
     {
-        private readonly DefaultMetricsFilter _filter = new DefaultMetricsFilter().WhereType(MetricType.Counter);
+        private readonly IFilterMetrics _filter = new DefaultMetricsFilter().WhereType(MetricType.Counter);
         private readonly MetricCoreTestFixture _fixture;
         private readonly IProvideCounterMetrics _provider;
 

@@ -48,7 +48,7 @@ namespace App.Metrics.Facts.Reporting.Helpers
             IEnumerable<HealthCheck.Result> degradedChecks,
             IEnumerable<HealthCheck.Result> unhealthyChecks) { }
 
-        public void ReportMetric<T>(string context, MetricValueSource<T> valueSource) { }
+        public void ReportMetric<T>(string context, MetricValueSourceBase<T> valueSource) { }
 
         public void StartReportRun(IMetrics metrics) { }
     }

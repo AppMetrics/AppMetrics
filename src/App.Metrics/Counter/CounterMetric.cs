@@ -21,8 +21,8 @@ namespace App.Metrics.Counter
     ///         number of emails sent but also the count of each type of emails sent.
     ///     </para>
     /// </summary>
-    /// <seealso cref="Metric" />
-    public sealed class CounterMetric : Metric
+    /// <seealso cref="MetricBase" />
+    public sealed class CounterMetric : MetricBase
     {
         public long Count { get; set; }
 

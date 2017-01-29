@@ -15,8 +15,8 @@ namespace App.Metrics.Gauge
     ///         Gauges represent a double value.
     ///     </para>
     /// </summary>
-    /// <seealso cref="Metric" />
-    public sealed class GaugeMetric : Metric
+    /// <seealso cref="MetricBase" />
+    public sealed class GaugeMetric : MetricBase
     {
         private double _value;
 
@@ -26,7 +26,7 @@ namespace App.Metrics.Gauge
             set { _value = value ?? double.NaN; }
         }
 
-        public static GaugeMetric FromGauge(MetricValueSource<double> gauge)
+        public static GaugeMetric FromGauge(MetricValueSourceBase<double> gauge)
         {
             return new GaugeMetric
                    {

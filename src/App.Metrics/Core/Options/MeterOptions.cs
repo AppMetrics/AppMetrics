@@ -8,8 +8,8 @@ namespace App.Metrics.Core.Options
     /// <summary>
     ///     Configuration of an <see cref="IMeterMetric" /> that will be measured
     /// </summary>
-    /// <seealso cref="App.Metrics.Core.Options.MetricValueOptions" />
-    public class MeterOptions : MetricValueOptions
+    /// <seealso cref="MetricValueOptionsBase" />
+    public class MeterOptions : MetricValueOptionsBase
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="MeterOptions" /> class.

@@ -58,7 +58,7 @@ namespace App.Metrics.Core
 
         public MetricsContextValueSource Filter(IFilterMetrics filter)
         {
-            if (!filter.IsMatch(Context))
+            if (!filter.IsContextMatch(Context))
             {
                 return Empty;
             }

@@ -10,9 +10,9 @@ namespace App.Metrics.Core.Abstractions
     ///     This is the class that metric consumers should use.
     /// </summary>
     /// <typeparam name="T">Type of the metric value</typeparam>
-    public abstract class MetricValueSource<T>
+    public abstract class MetricValueSourceBase<T>
     {
-        protected MetricValueSource(string name, IMetricValueProvider<T> valueProvider, Unit unit, MetricTags tags)
+        protected MetricValueSourceBase(string name, IMetricValueProvider<T> valueProvider, Unit unit, MetricTags tags)
         {
             Name = name;
             Unit = unit;

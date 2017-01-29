@@ -15,9 +15,12 @@ namespace App.Metrics.Health
     public struct HealthCheckResult
     {
         /// <summary>
-        ///     Status message of the check. A status can be provided for both healthy and unhealthy states.
+        /// Gets the status message of the check. A status can be provided for both healthy and unhealthy states.
         /// </summary>
-        public readonly string Message;
+        /// <value>
+        /// The message.
+        /// </value>
+        public string Message { get; }
 
         /// <summary>
         ///     True if the check was healthy, degraded or unhealthy.

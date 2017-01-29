@@ -16,16 +16,6 @@ namespace App.Metrics.Counter
                 return percent == 0 ? Comparer<string>.Default.Compare(x.Item, y.Item) : percent;
             });
 
-        /// <summary>
-        ///     Total count of the counter instance.
-        /// </summary>
-        public readonly long Count;
-
-        /// <summary>
-        ///     Separate counters for each registered set item.
-        /// </summary>
-        public readonly SetItem[] Items;
-
         private static readonly SetItem[] NoItems = new SetItem[0];
 
         public CounterValue(long count, SetItem[] items)
@@ -41,6 +31,22 @@ namespace App.Metrics.Counter
 
         internal CounterValue(long count)
             : this(count, NoItems) { }
+
+        /// <summary>
+        ///     Gets the total count of the counter instance.
+        /// </summary>
+        /// <value>
+        ///     The count.
+        /// </value>
+        public long Count { get; }
+
+        /// <summary>
+        ///     Gets counters for each registered set item.
+        /// </summary>
+        /// <value>
+        ///     The counter's set items.
+        /// </value>
+        public SetItem[] Items { get; }
 
         public static bool operator ==(CounterValue left, CounterValue right) { return left.Equals(right); }
 
@@ -68,27 +74,36 @@ namespace App.Metrics.Counter
 
         public struct SetItem
         {
-            /// <summary>
-            ///     Specific count for this item.
-            /// </summary>
-            public readonly long Count;
-
-            /// <summary>
-            ///     Registered item name.
-            /// </summary>
-            public readonly string Item;
-
-            /// <summary>
-            ///     Percent of this item from the total count.
-            /// </summary>
-            public readonly double Percent;
-
             public SetItem(string item, long count, double percent)
             {
                 Item = item;
                 Count = count;
                 Percent = percent;
             }
+
+            /// <summary>
+            ///     Gets the specific count for this item.
+            /// </summary>
+            /// <value>
+            ///     The count.
+            /// </value>
+            public long Count { get; }
+
+            /// <summary>
+            ///     Gets the registered item name.
+            /// </summary>
+            /// <value>
+            ///     The item.
+            /// </value>
+            public string Item { get; }
+
+            /// <summary>
+            ///     Gets the percent of this item from the total count.
+            /// </summary>
+            /// <value>
+            ///     The percent.
+            /// </value>
+            public double Percent { get; }
 
             public MetricTags Tags => new MetricTags().FromSetItemString(Item);
 

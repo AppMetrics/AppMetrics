@@ -3,6 +3,7 @@
 
 using System;
 using System.Linq;
+using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Core.Options;
@@ -18,7 +19,7 @@ namespace App.Metrics.Facts.Providers
 {
     public class DefaultTimerMetricProviderTests : IClassFixture<MetricCoreTestFixture>
     {
-        private readonly DefaultMetricsFilter _filter = new DefaultMetricsFilter().WhereType(MetricType.Timer);
+        private readonly IFilterMetrics _filter = new DefaultMetricsFilter().WhereType(MetricType.Timer);
         private readonly MetricCoreTestFixture _fixture;
         private readonly IProvideTimerMetrics _provider;
 

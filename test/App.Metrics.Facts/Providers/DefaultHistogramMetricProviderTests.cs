@@ -3,6 +3,7 @@
 
 using System;
 using System.Linq;
+using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
@@ -17,7 +18,7 @@ namespace App.Metrics.Facts.Providers
 {
     public class DefaultHistogramMetricProviderTests : IClassFixture<MetricCoreTestFixture>
     {
-        private readonly DefaultMetricsFilter _filter = new DefaultMetricsFilter().WhereType(MetricType.Histogram);
+        private readonly IFilterMetrics _filter = new DefaultMetricsFilter().WhereType(MetricType.Histogram);
         private readonly MetricCoreTestFixture _fixture;
         private readonly IProvideHistogramMetrics _provider;
 

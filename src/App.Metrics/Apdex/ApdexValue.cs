@@ -11,6 +11,15 @@ namespace App.Metrics.Apdex
     /// </summary>
     public sealed class ApdexValue
     {
+        public ApdexValue()
+        {
+            Score = 0.0;
+            Satisfied = 0;
+            Tolerating = 0;
+            Frustrating = 0;
+            SampleSize = 0;
+        }
+
         public ApdexValue(double score, int satisfied, int tolerating, int frustrating, int sampleSize, bool allowWarmup = true)
         {
             Satisfied = satisfied;

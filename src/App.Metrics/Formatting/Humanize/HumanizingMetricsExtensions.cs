@@ -54,7 +54,7 @@ namespace App.Metrics.Formatting.Humanize
             return string.Format(Environment.NewLine + "***** {0} *****" + Environment.NewLine + Environment.NewLine, metricTypeDisplay);
         }
 
-        public static string HumanzizeName<T>(this MetricValueSource<T> valueSource, string context = null)
+        public static string HumanzizeName<T>(this MetricValueSourceBase<T> valueSource, string context = null)
         {
             if (context.IsPresent())
             {
@@ -64,7 +64,7 @@ namespace App.Metrics.Formatting.Humanize
             return $"\t{valueSource.Name}";
         }
 
-        public static string Hummanize<T>(this MetricValueSource<T> valueSource)
+        public static string Hummanize<T>(this MetricValueSourceBase<T> valueSource)
         {
 #if NET452
             var formatProvider = new HumanizeMetricValueFormatProvider<T>();

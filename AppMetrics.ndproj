@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <NDepend AppName="AppMetrics" Platform="DotNet" FileWrittenByProductVersion="2017.1.0.8916">
   <OutputDir KeepXmlFiles="False">C:\_dev\mysource-git\app-metrics\AppMetrics\NDependOut</OutputDir>
   <Assemblies>
@@ -181,7 +181,8 @@
       <Major2Critical_SeverityThreshold>72000000000</Major2Critical_SeverityThreshold>
       <Critical2Blocker_SeverityThreshold>360000000000</Critical2Blocker_SeverityThreshold>
     </DebtSettings>
-  </ProjectDebtSettings><Queries>
+  </ProjectDebtSettings>
+  <Queries>
     <Group Name="Quality Gates" Active="True" ShownInReport="True">
       <Query Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>Quality Gates Evolution</Name>
 from qg in QualityGates
@@ -4282,7 +4283,7 @@ select new {
 //</HowToFix>]]></Query>
     </Group>
     <Group Name="API Breaking Changes" Active="True" ShownInReport="True">
-      <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="True"><![CDATA[// <Name>API Breaking Changes: Types</Name>
+      <Query Active="False" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="True"><![CDATA[// <Name>API Breaking Changes: Types</Name>
 
 warnif count > 0 from t in codeBase.OlderVersion().Application.Types
 where t.IsPubliclyVisible && 
@@ -4327,7 +4328,7 @@ select new {
 // because an API Breaking change can provoque significant
 // friction with consumers of the API.
 //</HowToFix>]]></Query>
-      <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="True"><![CDATA[// <Name>API Breaking Changes: Methods</Name>
+      <Query Active="False" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="True"><![CDATA[// <Name>API Breaking Changes: Methods</Name>
 warnif count > 0 from m in codeBase.OlderVersion().Application.Methods
 where m.IsPubliclyVisible && 
 
@@ -4403,7 +4404,7 @@ select new {
 // friction with consumers of the API.
 //</HowToFix>
 ]]></Query>
-      <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="True"><![CDATA[// <Name>API Breaking Changes: Fields</Name>
+      <Query Active="False" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="True"><![CDATA[// <Name>API Breaking Changes: Fields</Name>
 warnif count > 0 from f in codeBase.OlderVersion().Application.Fields
 where f.IsPubliclyVisible &&
 
@@ -4451,7 +4452,7 @@ select new {
 // because an API Breaking change can provoque significant
 // friction with consumers of the API.
 //</HowToFix>]]></Query>
-      <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="True"><![CDATA[// <Name>API Breaking Changes: Interfaces and Abstract Classes</Name>
+      <Query Active="False" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="True"><![CDATA[// <Name>API Breaking Changes: Interfaces and Abstract Classes</Name>
 warnif count > 0 from tNewer in Application.Types where 
  (tNewer.IsInterface || tNewer.IsClass && tNewer.IsAbstract) && 
   tNewer.IsPubliclyVisible && 
@@ -7204,7 +7205,7 @@ select new {
 // To fix a violation of this rule, remove or 
 // rename the member.
 //</HowToFix>]]></Query>
-      <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>Avoid types with name too long</Name>
+      <Query Active="False" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>Avoid types with name too long</Name>
 warnif count > 0 
 from t in JustMyCode.Types 
 where !t.IsGeneratedByCompiler
@@ -7230,7 +7231,7 @@ select new {
 // To fix a violation of this rule, rename the type with a shortest name
 // or eventually split the type in several more fine-grained types.
 //</HowToFix>]]></Query>
-      <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>Avoid methods with name too long</Name>
+      <Query Active="False" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>Avoid methods with name too long</Name>
 warnif count > 0 from m in JustMyCode.Methods where 
 
  // Explicit Interface Implementation methods are 
@@ -7607,7 +7608,7 @@ select new {
 // By default issues of this rule have an **Info** severity
 // because they reflect more an advice than a problem.
 //</HowToFix>]]></Query>
-      <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>Namespace name should correspond to file location</Name>
+      <Query Active="False" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>Namespace name should correspond to file location</Name>
 warnif count > 0
 from n in Application.Namespaces 
 
@@ -7662,7 +7663,7 @@ select new {
 // To fix a violation of this rule, make sure that the type parent namespace and 
 // the directory sub-paths that contains the type source file, are mirrored.
 //</HowToFix>]]></Query>
-      <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>Types with source files stored in the same directory, should be declared in the same namespace</Name>
+      <Query Active="False" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>Types with source files stored in the same directory, should be declared in the same namespace</Name>
 warnif count > 0 
 
 // Group JustMyCode types in a lookup 
@@ -7750,7 +7751,7 @@ select new {
 // The estimated Debt, which means the effort to fix such issue,
 // is equal to 2 minutes plus 5 minutes per type in *typesOutOfMainNamespace*.
 //</HowToFix>]]></Query>
-      <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>Types declared in the same namespace, should have their source files stored in the same directory</Name>
+      <Query Active="False" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>Types declared in the same namespace, should have their source files stored in the same directory</Name>
         
 warnif count > 0 
 from @namespace in Application.Namespaces
@@ -11015,4 +11016,5 @@ select new {
 //</HowToFix>]]></Query>
       </Group>
     </Group>
-  </Queries></NDepend>
+  </Queries>
+</NDepend>
