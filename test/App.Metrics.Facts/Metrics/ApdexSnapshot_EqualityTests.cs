@@ -24,7 +24,7 @@ namespace App.Metrics.Facts.Metrics
             var snapshot = new ApdexSnapshot(new[] { 1L, 2L, 3L }, 0.5);
             var other = new ApdexSnapshot(new[] { 1L, 2L, 3L }, 0.5);
 
-            snapshot.Equals(other).Should().Be(true);
+            (snapshot == other).Should().Be(true);
         }
 
         [Fact]
@@ -42,7 +42,7 @@ namespace App.Metrics.Facts.Metrics
             var snapshot = new ApdexSnapshot(new[] { 1L, 2L, 3L }, 0.5);
             var other = new ApdexSnapshot(new[] { 1L, 2L }, 0.5);
 
-            snapshot.Equals(other).Should().Be(false);
+            (snapshot != other).Should().Be(true);
         }
     }
 }
