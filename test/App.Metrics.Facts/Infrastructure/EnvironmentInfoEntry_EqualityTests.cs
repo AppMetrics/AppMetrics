@@ -21,6 +21,16 @@ namespace App.Metrics.Facts.Infrastructure
             env.Equals(other).Should().Be(expected);
         }
 
+        [Fact]
+        public void equality_with_equals_false_when_same_object()
+        {
+            var env = new EnvironmentInfoEntry("name", "value");
+
+            object other = env;
+
+            env.Equals(other).Should().Be(true);
+        }
+
         [Theory]
         [InlineData("name", "value", true)]
         [InlineData("name1", "value", false)]
@@ -44,6 +54,5 @@ namespace App.Metrics.Facts.Infrastructure
 
             (env != other).Should().Be(!expected);
         }
-
     }
 }
