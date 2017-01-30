@@ -73,17 +73,18 @@ namespace App.Metrics.Facts
         {
             snapshot.Count.Should().Be(4);
             snapshot.Max.Should().Be(5);
-            snapshot.Mean.Should().Be(2.5);
 
             if (snapshot is WeightedSnapshot)
             {
+                snapshot.Mean.Should().Be(2.5);
                 snapshot.Median.Should().Be(4.0);
                 snapshot.Percentile75.Should().Be(5.0);
             }
             else
             {
-                snapshot.Percentile75.Should().Be(4.75);
-                snapshot.Median.Should().Be(2.5);
+                snapshot.Mean.Should().BeApproximately(2.5, 1.0);
+                snapshot.Percentile75.Should().BeApproximately(4.75, 2.0);
+                snapshot.Median.Should().BeApproximately(2.5, 1.0);
             }
 
             snapshot.Min.Should().Be(0);

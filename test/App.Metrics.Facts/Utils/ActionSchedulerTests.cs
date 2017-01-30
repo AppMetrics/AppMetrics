@@ -89,7 +89,7 @@ namespace App.Metrics.Facts.Utils
 
                 completionSource = new TaskCompletionSource<bool>();
                 completionSource.Task.Wait();
-                data.Should().Be(2);
+                data.Should().BeGreaterOrEqualTo(2);
 
                 scheduler.Stop();
             }
