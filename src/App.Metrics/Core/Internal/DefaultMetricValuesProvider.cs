@@ -42,7 +42,7 @@ namespace App.Metrics.Core.Internal
 
             var contextData = data.Filter(filter);
 
-            return contextData.Contexts.Single();
+            return contextData.Contexts.FirstOrDefault() ?? MetricsContextValueSource.Empty;
         }
     }
 }

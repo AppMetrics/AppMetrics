@@ -3,7 +3,6 @@
 
 using App.Metrics.Core.Internal;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Internal;
 using FluentAssertions;
 using Xunit;
 

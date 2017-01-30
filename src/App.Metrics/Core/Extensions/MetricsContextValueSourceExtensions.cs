@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Core.Abstractions;
@@ -23,8 +22,7 @@ namespace App.Metrics.Core
                 return value.Single();
             }
 
-            var availableNames = string.Join(",", metricValueSources.Select(v => v.Name));
-            throw new InvalidOperationException($"No metric found with name {metricName} in context {context} Available names: {availableNames}");
+            return default(T);
         }
     }
 }

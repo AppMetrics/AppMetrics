@@ -2,16 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using App.Metrics.Abstractions.Filtering;
-using App.Metrics.Apdex;
-using App.Metrics.Apdex.Abstractions;
-using App.Metrics.Counter;
-using App.Metrics.Counter.Abstractions;
-using App.Metrics.Histogram;
-using App.Metrics.Histogram.Abstractions;
-using App.Metrics.Meter;
-using App.Metrics.Meter.Abstractions;
-using App.Metrics.Timer;
-using App.Metrics.Timer.Abstractions;
 
 namespace App.Metrics.Core.Abstractions
 {
