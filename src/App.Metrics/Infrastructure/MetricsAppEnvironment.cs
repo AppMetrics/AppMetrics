@@ -36,11 +36,6 @@ namespace App.Metrics.Infrastructure
 #if !NET452
         public MetricsAppEnvironment(ApplicationEnvironment applicationEnvironment)
         {
-            if (applicationEnvironment == null)
-            {
-                throw new ArgumentNullException(nameof(applicationEnvironment));
-            }
-
             ApplicationName = applicationEnvironment.ApplicationName;
             ApplicationVersion = applicationEnvironment.ApplicationVersion;
             RuntimeFramework = applicationEnvironment.RuntimeFramework.Identifier;

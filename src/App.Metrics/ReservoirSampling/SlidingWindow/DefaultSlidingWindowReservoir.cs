@@ -49,23 +49,25 @@ namespace App.Metrics.ReservoirSampling.SlidingWindow
 
             Array.Copy(_values, snapshotValues, size);
 
+            Array.Sort(snapshotValues, UserValueWrapper.Comparer);
+
+            var minValue = snapshotValues[0].UserValue;
+            var maxValue = snapshotValues[size - 1].UserValue;
+
+            var result = new UniformSnapshot(
+                _count.GetValue(),
+                snapshotValues.Select(v => v.Value),
+                true,
+                minValue,
+                maxValue);
+
             if (resetReservoir)
             {
                 Array.Clear(_values, 0, snapshotValues.Length);
                 _count.SetValue(0L);
             }
 
-            Array.Sort(snapshotValues, UserValueWrapper.Comparer);
-
-            var minValue = snapshotValues[0].UserValue;
-            var maxValue = snapshotValues[size - 1].UserValue;
-
-            return new UniformSnapshot(
-                _count.GetValue(),
-                snapshotValues.Select(v => v.Value),
-                valuesAreSorted: true,
-                minUserValue: minValue,
-                maxUserValue: maxValue);
+            return result;
         }
 
         /// <inheritdoc />

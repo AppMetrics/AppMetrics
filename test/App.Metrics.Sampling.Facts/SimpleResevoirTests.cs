@@ -1,11 +1,17 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
+﻿#region copyright
+
+// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+#endregion
 
 using System.Collections.Generic;
 using System.Linq;
+using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 using App.Metrics.ReservoirSampling.SlidingWindow;
 using App.Metrics.ReservoirSampling.Uniform;
+using FluentAssertions;
 using Xunit;
 
 namespace App.Metrics.Facts
@@ -30,8 +36,7 @@ namespace App.Metrics.Facts
 
             var snapshot = reservoir.GetSnapshot();
 
-            //TODO: Assert snapshot
-            //snapshot.AssertValues(_samples);
+            AssertValues(snapshot);
         }
 
         [Fact]
@@ -41,13 +46,12 @@ namespace App.Metrics.Facts
 
             foreach (var sample in _samples)
             {
-                reservoir.Update((long)sample);
+                reservoir.Update(sample);
             }
 
             var snapshot = reservoir.GetSnapshot();
 
-            //TODO: Assert snapshot
-            //snapshot.AssertValues(_samples);
+            AssertValues(snapshot);
         }
 
         [Fact]
@@ -57,13 +61,38 @@ namespace App.Metrics.Facts
 
             foreach (var sample in _samples)
             {
-                reservoir.Update((long)sample);
+                reservoir.Update(sample);
             }
 
             var snapshot = reservoir.GetSnapshot();
 
-            //TODO: Assert snapshot
-            //snapshot.AssertValues(_samples);
+            AssertValues(snapshot);
+        }
+
+        private void AssertValues(IReservoirSnapshot snapshot)
+        {
+            snapshot.Count.Should().Be(4);
+            snapshot.Max.Should().Be(5);
+            snapshot.Mean.Should().Be(2.5);
+
+            if (snapshot is WeightedSnapshot)
+            {
+                snapshot.Median.Should().Be(4.0);
+                snapshot.Percentile75.Should().Be(5.0);
+            }
+            else
+            {
+                snapshot.Percentile75.Should().Be(4.75);
+                snapshot.Median.Should().Be(2.5);
+            }
+
+            snapshot.Min.Should().Be(0);
+            snapshot.Percentile95.Should().Be(5.0);
+            snapshot.Percentile98.Should().Be(5.0);
+            snapshot.Percentile99.Should().Be(5.0);
+            snapshot.Percentile999.Should().Be(5.0);
+            snapshot.Size.Should().Be(4);
+            snapshot.StdDev.Should().BeApproximately(2.3, 1);
         }
     }
 }
