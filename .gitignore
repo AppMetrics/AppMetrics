@@ -84,3 +84,11 @@ BDN.Generated/*
 scripts/BenchMarkDotNet.Artifacts
 scripts/BenchMarkDotNet.Artifacts/*
 **/BenchMarkDotNet.Artifacts/*
+
+#NDepend
+*.ndproj
+NDependOut/*
+
+#DotCover
+Session/*
+Session.html
