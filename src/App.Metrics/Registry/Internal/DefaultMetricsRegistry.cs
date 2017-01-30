@@ -47,23 +47,6 @@ namespace App.Metrics.Registry.Internal
             _contexts.TryAdd(_defaultContextLabel, newContextRegistry(_defaultContextLabel));
         }
 
-        public bool AddContext(string context, IMetricContextRegistry registry)
-        {
-            if (_nullMetricsRegistry.IsValueCreated)
-            {
-                _nullMetricsRegistry.Value.AddContext(context, registry);
-            }
-
-            if (context.IsMissing())
-            {
-                throw new ArgumentException("Registry Context cannot be null or empty", nameof(context));
-            }
-
-            var attached = _contexts.GetOrAdd(context, registry);
-
-            return ReferenceEquals(attached, registry);
-        }
-
         public IApdex Apdex<T>(ApdexOptions options, Func<T> builder)
             where T : IApdexMetric
         {

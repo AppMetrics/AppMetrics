@@ -4,6 +4,7 @@
 using App.Metrics.Core.Internal;
 using App.Metrics.Infrastructure;
 using App.Metrics.Meter;
+using App.Metrics.Meter.Extensions;
 using FluentAssertions;
 using Xunit;
 
@@ -172,7 +173,7 @@ namespace App.Metrics.Facts.Meter
             _meter.Mark();
             _clock.Advance(TimeUnit.Minutes, 1);
 
-            var scaledValue = _meter.Value.Scale(TimeUnit.Minutes);
+            var scaledValue = _meter.GetValueOrDefault().Scale(TimeUnit.Minutes);
 
             scaledValue.MeanRate.Should().Be(1);
         }

@@ -3,11 +3,11 @@
 
 using System;
 using App.Metrics.Configuration;
+using App.Metrics.Core.Internal;
 using Microsoft.Extensions.Configuration;
 
 #if NET452
 using System.Reflection;
-using App.Metrics.Core.Internal;
 #endif
 
 // ReSharper disable CheckNamespace
@@ -150,6 +150,7 @@ namespace Microsoft.Extensions.DependencyInjection
         ///     The <see cref="IConfiguration">IConfiguration</see> from where to load <see cref="AppMetricsOptions">options</see>.
         /// </param>
         /// <returns>The metrics host builder</returns>
+        [AppMetricsExcludeFromCodeCoverage] // DEVNOTE: No need to test Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions
         public static IMetricsHostBuilder AddMetrics(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<AppMetricsOptions>(configuration);
@@ -167,6 +168,7 @@ namespace Microsoft.Extensions.DependencyInjection
         ///     overriden by using this configuration.
         /// </param>
         /// <returns>The metrics host builder</returns>
+        [AppMetricsExcludeFromCodeCoverage] // DEVNOTE: No need to test Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions
         public static IMetricsHostBuilder AddMetrics(
             this IServiceCollection services,
             Action<AppMetricsOptions> setupAction,
@@ -188,6 +190,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="setupAction">The <see cref="AppMetricsOptions">options</see> setup action.</param>
         /// Any shared configuration options with the options IConfiguration will be overriden by the options delegate.
         /// <returns>The metrics host builder</returns>
+        [AppMetricsExcludeFromCodeCoverage] // DEVNOTE: No need to test Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions
         public static IMetricsHostBuilder AddMetrics(
             this IServiceCollection services,
             IConfiguration configuration,
@@ -204,6 +207,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">The application services collection.</param>
         /// <param name="setupAction">The <see cref="AppMetricsOptions">options</see> setup action.</param>
         /// <returns>The metrics host builder</returns>
+        [AppMetricsExcludeFromCodeCoverage] // DEVNOTE: No need to test Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions
         public static IMetricsHostBuilder AddMetrics(this IServiceCollection services, Action<AppMetricsOptions> setupAction)
         {
             services.Configure(setupAction);

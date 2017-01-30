@@ -21,7 +21,7 @@ namespace App.Metrics.Counter
             return valueService.GetForContext(context).Counters.ValueFor(context, metricName);
         }
 
-        public static CounterValue Value(this ICounter metric)
+        public static CounterValue GetValueOrDefault(this ICounter metric)
         {
             var implementation = metric as ICounterMetric;
             return implementation?.Value ?? EmptyCounter;

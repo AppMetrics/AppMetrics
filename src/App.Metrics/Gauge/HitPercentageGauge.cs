@@ -38,7 +38,7 @@ namespace App.Metrics.Gauge
         ///     extract the value for the percentage.
         /// </remarks>
         public HitPercentageGauge(IMeter hitMeter, IMeter totalMeter, Func<MeterValue, double> meterRateFunc)
-            : base(() => meterRateFunc(hitMeter.Value()), () => meterRateFunc(totalMeter.Value())) { }
+            : base(() => meterRateFunc(hitMeter.GetValueOrDefault()), () => meterRateFunc(totalMeter.GetValueOrDefault())) { }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="HitPercentageGauge" /> class.
@@ -66,6 +66,6 @@ namespace App.Metrics.Gauge
         ///     to extract the value for the percentage.
         /// </remarks>
         public HitPercentageGauge(IMeter hitMeter, ITimer totalTimer, Func<MeterValue, double> meterRateFunc)
-            : base(() => meterRateFunc(hitMeter.Value()), () => meterRateFunc(totalTimer.Value().Rate)) { }
+            : base(() => meterRateFunc(hitMeter.GetValueOrDefault()), () => meterRateFunc(totalTimer.GetValueOrDefault().Rate)) { }
     }
 }

@@ -14,7 +14,7 @@ namespace App.Metrics.Meter.Extensions
     {
         private static readonly MeterValue EmptyMeter = new MeterValue(0, 0.0, 0.0, 0.0, 0.0, TimeUnit.Seconds);
 
-        public static MeterValue Value(this IMeter metric)
+        public static MeterValue GetValueOrDefault(this IMeter metric)
         {
             var implementation = metric as IMeterMetric;
             return implementation == null ? EmptyMeter : implementation.Value;

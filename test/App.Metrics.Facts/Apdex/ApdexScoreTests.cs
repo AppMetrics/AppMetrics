@@ -89,7 +89,7 @@ namespace App.Metrics.Facts.Apdex
                 frustratingRequest,
                 TestSamplePreference.Frustrating);
 
-            var score = apdexMetric.GetValue().Score;
+            var score = apdexMetric.GetValueOrDefault().Score;
 
             score.Should().BeLessThan(expectedLessThan);
         }

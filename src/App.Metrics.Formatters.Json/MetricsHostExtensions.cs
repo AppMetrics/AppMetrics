@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using App.Metrics.Abstractions.Serialization;
+using App.Metrics.Core.Internal;
 using App.Metrics.Formatters.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json;
@@ -20,6 +21,7 @@ namespace Microsoft.Extensions.DependencyInjection
             return host;
         }
 
+        [AppMetricsExcludeFromCodeCoverage] // DEVNOTE: No need to test JsonSerializerSettings really
         public static IMetricsHostBuilder AddJsonSerialization(this IMetricsHostBuilder host, JsonSerializerSettings serializerSettings)
         {
             host.Services.Replace(ServiceDescriptor.Transient<IMetricDataSerializer>(provider => new MetricDataSerializer(serializerSettings)));

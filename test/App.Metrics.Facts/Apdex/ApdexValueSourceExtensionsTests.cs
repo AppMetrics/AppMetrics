@@ -14,7 +14,7 @@ namespace App.Metrics.Facts.Apdex
         {
             var metric = new CustomApdex();
 
-            var apdex = metric.Value();
+            var apdex = metric.GetValueOrDefault();
 
             apdex.Frustrating.Should().Be(0);
             apdex.SampleSize.Should().Be(0);

@@ -32,7 +32,7 @@ namespace App.Metrics.Histogram
             0.0,
             0);
 
-        public static HistogramValue Value(this IHistogram metric)
+        public static HistogramValue GetValueOrDefault(this IHistogram metric)
         {
             var implementation = metric as IHistogramMetric;
             return implementation != null ? implementation.Value : EmptyHistogram;

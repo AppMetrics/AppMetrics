@@ -59,8 +59,8 @@ namespace App.Metrics.Facts.Histogram
             _histogram.Update(1L, "A");
             _histogram.Update(10L, "B");
 
-            _histogram.Value.MinUserValue.Should().Be("A");
-            _histogram.Value.MaxUserValue.Should().Be("B");
+            _histogram.GetValueOrDefault().MinUserValue.Should().Be("A");
+            _histogram.GetValueOrDefault().MaxUserValue.Should().Be("B");
         }
     }
 }

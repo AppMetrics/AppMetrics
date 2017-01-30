@@ -23,8 +23,6 @@ namespace App.Metrics.Registry.Internal
     {
         public static void Reset() { }
 
-        public bool AddContext(string context, IMetricContextRegistry registry) { return true; }
-
         public IApdex Apdex<T>(ApdexOptions options, Func<T> builder)
             where T : IApdexMetric { return _apdexInstance; }
 

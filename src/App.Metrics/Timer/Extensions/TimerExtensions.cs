@@ -37,7 +37,7 @@ namespace App.Metrics.Timer
         private static readonly MeterValue EmptyMeter = new MeterValue(0, 0.0, 0.0, 0.0, 0.0, TimeUnit.Seconds);
         private static readonly TimerValue EmptyTimer = new TimerValue(EmptyMeter, EmptyHistogram, 0, 0, TimeUnit.Milliseconds);
 
-        public static TimerValue Value(this ITimer metric)
+        public static TimerValue GetValueOrDefault(this ITimer metric)
         {
             var implementation = metric as ITimerMetric;
             return implementation != null ? implementation.Value : EmptyTimer;

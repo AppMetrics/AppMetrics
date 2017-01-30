@@ -161,7 +161,7 @@ namespace App.Metrics.Facts.Timer
                 x.TrackUserValue("test");
             }
 
-            _timer.Value.Histogram.LastUserValue.Should().Be("test");
+            _timer.GetValueOrDefault().Histogram.LastUserValue.Should().Be("test");
         }
     }
 }

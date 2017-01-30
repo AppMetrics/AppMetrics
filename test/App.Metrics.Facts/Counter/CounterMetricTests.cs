@@ -181,9 +181,9 @@ namespace App.Metrics.Facts.Counter
         public void can_reset_item()
         {
             _counter.Increment("A");
-            _counter.Value.Items[0].Count.Should().Be(1);
+            _counter.GetValueOrDefault().Items[0].Count.Should().Be(1);
             _counter.Reset();
-            _counter.Value.Items[0].Count.Should().Be(0L);
+            _counter.GetValueOrDefault().Items[0].Count.Should().Be(0L);
         }
 
         [Fact]

@@ -18,8 +18,6 @@ namespace App.Metrics.Registry.Abstractions
 {
     public interface IMetricsRegistry
     {
-        bool AddContext(string context, IMetricContextRegistry registry);
-
         IApdex Apdex<T>(ApdexOptions options, Func<T> builder)
             where T : IApdexMetric;
 
