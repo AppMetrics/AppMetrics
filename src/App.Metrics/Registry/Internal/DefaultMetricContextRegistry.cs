@@ -160,15 +160,6 @@ namespace App.Metrics.Registry.Internal
                 });
         }
 
-        public void ResetMetricsValues()
-        {
-            _gauges.Reset();
-            _counters.Reset();
-            _meters.Reset();
-            _histograms.Reset();
-            _timers.Reset();
-        }
-
         public ITimer Timer<T>(TimerOptions options, Func<T> builder)
             where T : ITimerMetric
         {
@@ -227,15 +218,6 @@ namespace App.Metrics.Registry.Internal
                         var result = metricProvider();
                         return new MetricMeta(result.Item1, result.Item2);
                     }).Metric;
-            }
-
-            public void Reset()
-            {
-                foreach (var metric in _metrics.Values)
-                {
-                    var resetable = metric.Metric as IResetableMetric;
-                    resetable?.Reset();
-                }
             }
 
             private sealed class MetricMeta
