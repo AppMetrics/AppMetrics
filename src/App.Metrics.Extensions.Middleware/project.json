@@ -12,7 +12,7 @@
   "copyright": "Allan Hardy 2016",
 
   "dependencies": {
-    "App.Metrics": "1.0.0-beta5-*",
+    "App.Metrics": "1.0.0-beta5-2",
     "Microsoft.AspNetCore.Routing": "1.1.0",
     "Microsoft.AspNetCore.Hosting": "1.1.0",
     "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
@@ -51,6 +51,6 @@
     "licenseUrl": "https://github.com/alhardy/AppMetrics/blob/master/LICENSE",
     "iconUrl": "https://alhardy.github.io/app-metrics-docs/logo.png"
   },
-  "version": "1.0.0-beta5"
+  "version": "1.0.0-beta5-2"
 
 }
