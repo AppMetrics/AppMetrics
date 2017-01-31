@@ -17,6 +17,7 @@ issue-labels-include:
 - breaking change
 - documentation
 - refactoring
+- investigation
 issue-labels-exclude:
 - wontfix
 - duplicate
