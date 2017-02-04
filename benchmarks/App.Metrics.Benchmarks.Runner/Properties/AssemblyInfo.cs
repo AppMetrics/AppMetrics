@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("App.Metrics.Reservoir.Benchmarks")]
+[assembly: AssemblyProduct("App.Metrics.Benchmarks.Runner")]
 [assembly: AssemblyTrademark("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -16,4 +16,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("c967ea87-325e-4c06-9cdc-1343c11cb62b")]
+[assembly: Guid("b5dcdaa4-632b-4c9b-b049-1dd4adf8d6b3")]
