@@ -1,0 +1,55 @@
+﻿{
+  "title": "App.Metrics.Benchmarks.Runner",
+  "version": "1.0.0-*",
+  "configurations": {
+    "Debug": {
+      "buildOptions": {
+        "define": [ "DEBUG", "TRACE" ]
+      }
+    },
+    "Release": {
+      "buildOptions": {
+        "define": [ "RELEASE", "TRACE" ],
+        "optimize": true
+      }
+    }
+  },
+  "buildOptions": {
+    "emitEntryPoint": true,
+    "debugType": "portable"
+  },
+  "frameworks": {
+    "netcoreapp1.1": {
+      "buildOptions": {
+        "define": [ "CORE" ]
+      },
+      "imports": [
+        "dnxcore50",
+        "portable-net45+win8",
+        "netstandard1.6"
+      ],
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.1.0"
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "App.Metrics": {
+      "target": "project"
+    },
+    "App.Metrics.Benchmarks": {
+      "target": "project"
+    },
+    "BenchmarkDotNet": "0.10.2",
+    "BenchmarkDotNet.Core": "0.10.2",
+    "Microsoft.Extensions.DependencyInjection": "1.1.0"
+  },
+  "runtimes": {
+    "win7-x64": {},
+    "ubuntu.14.04-x64": {},
+    "win10-x64": {}
+  }
+}
