@@ -3,6 +3,7 @@
 
 using App.Metrics.Benchmarks.Fixtures;
 using App.Metrics.Benchmarks.Support;
+using App.Metrics.Tagging;
 using Xunit;
 
 namespace App.Metrics.Benchmarks.Facts
@@ -28,7 +29,7 @@ namespace App.Metrics.Benchmarks.Facts
                 {
                     _fixture.Metrics.Measure.Meter.Mark(
                         MetricOptions.Meter.OptionsWithMetricItem,
-                        item => item.With("key", "value"));
+                        () => new MetricItem("key", "value"));
                 });
         }
 

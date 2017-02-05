@@ -146,7 +146,7 @@ namespace App.Metrics.Facts.Counter
         [Fact]
         public void can_increment_and_decrement_metric_item()
         {
-            var item = new MetricItem().With("test-item", "value");
+            var item = new MetricItem("test-item", "value");
             _counter.Increment(item, 2L);
             _counter.Decrement(item);
             _counter.Value.Items.First().Count.Should().Be(1L);

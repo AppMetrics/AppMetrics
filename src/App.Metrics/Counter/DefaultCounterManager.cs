@@ -50,19 +50,15 @@ namespace App.Metrics.Counter
         }
 
         /// <inheritdoc />
-        public void Decrement(CounterOptions options, Action<MetricItem> itemSetup)
+        public void Decrement(CounterOptions options, Func<MetricItem> itemSetup)
         {
-            var item = new MetricItem();
-            itemSetup(item);
-            _registry.Counter(options, () => _counterBuilder.Build()).Decrement(item);
+            _registry.Counter(options, () => _counterBuilder.Build()).Decrement(itemSetup());
         }
 
         /// <inheritdoc />
-        public void Decrement(CounterOptions options, long amount, Action<MetricItem> itemSetup)
+        public void Decrement(CounterOptions options, long amount, Func<MetricItem> itemSetup)
         {
-            var item = new MetricItem();
-            itemSetup(item);
-            _registry.Counter(options, () => _counterBuilder.Build()).Decrement(item, amount);
+            _registry.Counter(options, () => _counterBuilder.Build()).Decrement(itemSetup(), amount);
         }
 
         /// <inheritdoc />
@@ -90,19 +86,15 @@ namespace App.Metrics.Counter
         }
 
         /// <inheritdoc />
-        public void Increment(CounterOptions options, Action<MetricItem> itemSetup)
+        public void Increment(CounterOptions options, Func<MetricItem> itemSetup)
         {
-            var item = new MetricItem();
-            itemSetup(item);
-            _registry.Counter(options, () => _counterBuilder.Build()).Increment(item);
+            _registry.Counter(options, () => _counterBuilder.Build()).Increment(itemSetup());
         }
 
         /// <inheritdoc />
-        public void Increment(CounterOptions options, long amount, Action<MetricItem> itemSetup)
+        public void Increment(CounterOptions options, long amount, Func<MetricItem> itemSetup)
         {
-            var item = new MetricItem();
-            itemSetup(item);
-            _registry.Counter(options, () => _counterBuilder.Build()).Increment(item, amount);
+            _registry.Counter(options, () => _counterBuilder.Build()).Increment(itemSetup(), amount);
         }
     }
 }
