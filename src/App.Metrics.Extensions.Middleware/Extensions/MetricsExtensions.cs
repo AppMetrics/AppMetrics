@@ -4,6 +4,7 @@
 using System;
 using App.Metrics.Extensions.Middleware.Internal;
 using App.Metrics.Gauge;
+using App.Metrics.Tagging;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics
@@ -41,7 +42,7 @@ namespace App.Metrics
         {
             metrics.Measure.Meter.Mark(
                 OAuth2MetricsRegistry.Meters.EndpointHttpRequests(routeTemplate),
-                item => item.With("client_id", clientId).With("http_status_code", httpStatusCode.ToString()));
+                () => new MetricItem(new[] { "client_id", "http_status_code" }, new[] { clientId, httpStatusCode.ToString() }));
 
             return metrics;
         }
@@ -50,7 +51,7 @@ namespace App.Metrics
         {
             metrics.Measure.Meter.Mark(
                 HttpRequestMetricsRegistry.Meters.EndpointHttpErrorRequests(routeTemplate),
-                item => item.With("http_status_code", httpStatusCode.ToString()));
+                () => new MetricItem("http_status_code", httpStatusCode.ToString()));
 
             return metrics;
         }
@@ -59,7 +60,7 @@ namespace App.Metrics
         {
             metrics.Measure.Meter.Mark(
                 HttpRequestMetricsRegistry.Meters.HttpErrorRequests,
-                item => item.With("http_status_code", httpStatusCode.ToString()));
+                () => new MetricItem("http_status_code", httpStatusCode.ToString()));
 
             return metrics;
         }
@@ -68,7 +69,7 @@ namespace App.Metrics
         {
             metrics.Measure.Meter.Mark(
                 OAuth2MetricsRegistry.Meters.HttpRequests,
-                item => item.With("client_id", clientId).With("http_status_code", httpStatusCode.ToString()));
+                () => new MetricItem(new[] { "client_id", "http_status_code" }, new[] { clientId, httpStatusCode.ToString() }));
 
             return metrics;
         }

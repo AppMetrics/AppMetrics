@@ -50,7 +50,7 @@ namespace App.Metrics.Counter.Abstractions
         /// </remarks>
         /// <param name="options">The details of the counter that is being decremented</param>
         /// <param name="item">The item within the set to decrement.</param>
-        void Decrement(CounterOptions options, Action<MetricItem> item);
+        void Decrement(CounterOptions options, Func<MetricItem> item);
 
         /// <summary>
         ///     Decrements a <see cref="ICounterMetric" /> by the specified amount as well as the specified item within the
@@ -63,7 +63,7 @@ namespace App.Metrics.Counter.Abstractions
         ///     The counter value is decremented as is the specified <see cref="MetricItem" />'s counter within the set.
         ///     The <see cref="MetricItem" /> within the set will also keep track of it's percentage from the total sets count.
         /// </remarks>
-        void Decrement(CounterOptions options, long amount, Action<MetricItem> item);
+        void Decrement(CounterOptions options, long amount, Func<MetricItem> item);
 
         /// <summary>
         ///     Increments a <see cref="ICounterMetric" />
@@ -110,7 +110,7 @@ namespace App.Metrics.Counter.Abstractions
         /// </remarks>
         /// <param name="options">The details of the counter that is being incremented</param>
         /// <param name="item">The item within the set to increment.</param>
-        void Increment(CounterOptions options, Action<MetricItem> item);
+        void Increment(CounterOptions options, Func<MetricItem> item);
 
         /// <summary>
         ///     Increment a <see cref="ICounterMetric" /> by the specified amount as well as the specified item within the
@@ -123,6 +123,6 @@ namespace App.Metrics.Counter.Abstractions
         ///     The counter value is incremented as is the specified <see cref="MetricItem" />'s counter within the set.
         ///     The <see cref="MetricItem" /> within the set will also keep track of it's percentage from the total sets count.
         /// </remarks>
-        void Increment(CounterOptions options, long amount, Action<MetricItem> item);
+        void Increment(CounterOptions options, long amount, Func<MetricItem> item);
     }
 }

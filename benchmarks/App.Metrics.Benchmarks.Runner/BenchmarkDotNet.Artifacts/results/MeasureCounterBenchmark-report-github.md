@@ -10,11 +10,12 @@ dotnet cli version=1.0.0-preview2-1-003177
 Job=Core  Runtime=Core  
 
 ```
-              Method |          Mean |     StdDev |  Gen 0 | Allocated |
--------------------- |-------------- |----------- |------- |---------- |
-           Decrement |   197.7471 ns |  1.3114 ns | 0.0484 |     255 B |
- DecrementMetricItem | 1,314.8832 ns | 28.3000 ns | 0.2853 |   1.38 kB |
-  DecrementUserValue |   301.1133 ns |  3.2988 ns | 0.0481 |     255 B |
-           Increment |   193.6961 ns |  2.7010 ns | 0.0484 |     255 B |
- IncrementMetricItem | 1,273.7235 ns | 32.4396 ns | 0.2843 |   1.38 kB |
-  IncrementUserValue |   345.3350 ns |  4.0224 ns | 0.0506 |     255 B |
+              Method |        Mean |     StdDev |  Gen 0 | Allocated |
+-------------------- |------------ |----------- |------- |---------- |
+           Decrement | 203.1457 ns |  2.7116 ns | 0.0486 |     255 B |
+ DecrementMetricItem | 561.3463 ns | 40.4305 ns | 0.0609 |     366 B |
+  DecrementUserValue | 319.7285 ns |  2.2260 ns | 0.0484 |     255 B |
+           Increment | 207.4588 ns |  2.1375 ns | 0.0476 |     255 B |
+ IncrementMetricItem | 523.2124 ns |  7.4678 ns | 0.0629 |     366 B |
+  IncrementUserValue | 319.2846 ns |  4.7603 ns | 0.0484 |     255 B |
+ |     255 B |

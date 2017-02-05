@@ -10,8 +10,9 @@ dotnet cli version=1.0.0-preview2-1-003177
 Job=Core  Runtime=Core  
 
 ```
-         Method |          Mean |     StdDev |  Gen 0 | Allocated |
---------------- |-------------- |----------- |------- |---------- |
-           Mark |   193.7937 ns |  0.8007 ns | 0.0482 |     255 B |
- MarkMetricItem | 1,261.6435 ns | 15.8472 ns | 0.2853 |   1.38 kB |
-  MarkUserValue |   309.2564 ns |  5.5220 ns | 0.0490 |     255 B |
+         Method |        Mean |     StdDev |  Gen 0 | Allocated |
+--------------- |------------ |----------- |------- |---------- |
+           Mark | 199.1586 ns |  1.6771 ns | 0.0484 |     255 B |
+ MarkMetricItem | 546.7033 ns | 14.4922 ns | 0.0631 |     366 B |
+  MarkUserValue | 350.2237 ns |  4.4682 ns | 0.0490 |     255 B |
+ 255 B |

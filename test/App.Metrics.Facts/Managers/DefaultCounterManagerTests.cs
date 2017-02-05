@@ -5,6 +5,7 @@ using App.Metrics.Core.Options;
 using App.Metrics.Counter;
 using App.Metrics.Counter.Abstractions;
 using App.Metrics.Facts.Fixtures;
+using App.Metrics.Tagging;
 using FluentAssertions;
 using Xunit;
 
@@ -75,7 +76,7 @@ namespace App.Metrics.Facts.Managers
 
             _manager.Decrement(
                 options,
-                item => { item.With("item4", "value4"); });
+                () => new MetricItem("item4", "value4"));
 
             _fixture.Snapshot.GetCounterValue(_context, metricName).Count.Should().Be(-1L);
         }
@@ -89,7 +90,7 @@ namespace App.Metrics.Facts.Managers
             _manager.Decrement(
                 options,
                 3L,
-                item => { item.With("item3", "value3"); });
+                () => new MetricItem("item3", "value3"));
 
             _fixture.Snapshot.GetCounterValue(_context, metricName).Count.Should().Be(-3L);
         }
@@ -146,7 +147,7 @@ namespace App.Metrics.Facts.Managers
 
             _manager.Increment(
                 options,
-                item => { item.With("item4", "value4"); });
+                () => new MetricItem("item4", "value4"));
 
             _fixture.Snapshot.GetCounterValue(_context, metricName).Count.Should().Be(1L);
         }
@@ -160,7 +161,7 @@ namespace App.Metrics.Facts.Managers
             _manager.Increment(
                 options,
                 3L,
-                item => { item.With("item3", "value3"); });
+                () => new MetricItem("item3", "value3"));
 
             _fixture.Snapshot.GetCounterValue(_context, metricName).Count.Should().Be(3L);
         }

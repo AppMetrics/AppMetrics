@@ -9,6 +9,7 @@ using App.Metrics.Facts.Fixtures;
 using App.Metrics.Internal;
 using App.Metrics.Meter.Abstractions;
 using App.Metrics.Meter.Extensions;
+using App.Metrics.Tagging;
 using FluentAssertions;
 using Xunit;
 
@@ -81,7 +82,7 @@ namespace App.Metrics.Facts.Managers
             var metricName = "test_mark_meter_with_metric_item";
             var options = new MeterOptions { Name = metricName };
 
-            _manager.Mark(options, item => { item.With("tagKey", "tagvalue"); });
+            _manager.Mark(options, () => new MetricItem("tagKey", "tagvalue"));
 
             _fixture.Snapshot.GetMeterValue(_context, metricName).Items.Length.Should().Be(1);
         }
@@ -92,7 +93,7 @@ namespace App.Metrics.Facts.Managers
             var metricName = "test_mark_meter_with_metric_item_by_amount";
             var options = new MeterOptions { Name = metricName };
 
-            _manager.Mark(options, 5L, item => { item.With("tagKey", "tagvalue"); });
+            _manager.Mark(options, 5L, () => new MetricItem("tagKey", "tagvalue"));
 
             _fixture.Snapshot.GetMeterValue(_context, metricName).Items.Length.Should().Be(1);
         }

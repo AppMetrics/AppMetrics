@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using App.Metrics.Benchmarks.Support;
+using App.Metrics.Tagging;
 using BenchmarkDotNet.Attributes;
 
 namespace App.Metrics.Benchmarks
@@ -16,7 +17,7 @@ namespace App.Metrics.Benchmarks
         {
             Fixture.Metrics.Measure.Meter.Mark(
                 MetricOptions.Meter.OptionsWithMetricItem,
-                item => item.With("key", "value"));
+                () => new MetricItem("key", "value"));
         }
 
         [Benchmark]

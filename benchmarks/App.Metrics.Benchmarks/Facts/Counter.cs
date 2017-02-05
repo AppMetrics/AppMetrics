@@ -3,6 +3,7 @@
 
 using App.Metrics.Benchmarks.Fixtures;
 using App.Metrics.Benchmarks.Support;
+using App.Metrics.Tagging;
 using Xunit;
 
 namespace App.Metrics.Benchmarks.Facts
@@ -21,7 +22,7 @@ namespace App.Metrics.Benchmarks.Facts
                 {
                     _fixture.Metrics.Measure.Counter.Decrement(
                         MetricOptions.Counter.Options,
-                        item => item.With("key", "value"));
+                        () => new MetricItem("key", "value"));
                 });
         }
 
@@ -33,7 +34,7 @@ namespace App.Metrics.Benchmarks.Facts
                 {
                     _fixture.Metrics.Measure.Counter.Decrement(
                         MetricOptions.Counter.OptionsWithMetricItem,
-                        item => item.With("key", "value"));
+                        () => new MetricItem("key", "value"));
                 });
         }
 
@@ -65,7 +66,7 @@ namespace App.Metrics.Benchmarks.Facts
                 {
                     _fixture.Metrics.Measure.Counter.Increment(
                         MetricOptions.Counter.OptionsWithMetricItem,
-                        item => item.With("key", "value"));
+                        () => new MetricItem("key", "value"));
                 });
         }
 
