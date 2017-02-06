@@ -10,12 +10,15 @@ dotnet cli version=1.0.0-preview2-1-003177
 Job=Core  Runtime=Core  
 
 ```
-              Method |        Mean |     StdDev |  Gen 0 | Allocated |
--------------------- |------------ |----------- |------- |---------- |
-           Decrement | 203.1457 ns |  2.7116 ns | 0.0486 |     255 B |
- DecrementMetricItem | 561.3463 ns | 40.4305 ns | 0.0609 |     366 B |
-  DecrementUserValue | 319.7285 ns |  2.2260 ns | 0.0484 |     255 B |
-           Increment | 207.4588 ns |  2.1375 ns | 0.0476 |     255 B |
- IncrementMetricItem | 523.2124 ns |  7.4678 ns | 0.0629 |     366 B |
-  IncrementUserValue | 319.2846 ns |  4.7603 ns | 0.0484 |     255 B |
- |     255 B |
+              Method |        Mean |    StdDev |  Gen 0 | Allocated |
+-------------------- |------------ |---------- |------- |---------- |
+           Decrement | 200.0111 ns | 1.5733 ns | 0.0481 |     255 B |
+ DecrementMetricItem | 408.6757 ns | 5.1452 ns | 0.0635 |     366 B |
+  DecrementUserValue | 312.3322 ns | 9.4250 ns | 0.0476 |     255 B |
+           Increment | 208.3164 ns | 5.3108 ns | 0.0474 |     255 B |
+ IncrementMetricItem | 415.5476 ns | 6.3695 ns | 0.0599 |     366 B |
+  IncrementUserValue | 306.8503 ns | 2.8819 ns | 0.0484 |     255 B |
+0614 |     366 B |
+  IncrementUserValue | 324.3867 ns | 3.1953 ns | 12.3754 ns | 0.0481 |     255 B |
+UserValue | 316.2327 ns | 2.3623 ns | 12.7211 ns | 0.0474 |     255 B |
+ns | 140.2562 ns | 378.8982 ns | 0.0479 |     255 B |
