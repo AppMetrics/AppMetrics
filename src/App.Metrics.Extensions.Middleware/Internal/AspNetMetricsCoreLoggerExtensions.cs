@@ -13,12 +13,12 @@ namespace Microsoft.Extensions.Logging
     {
         public static void MiddlewareExecuted(this ILogger logger, Type middleware)
         {
-            logger.LogDebug(AspNetMetricsEventIds.Middleware.MiddlewareExecutedId, $"Executed AspNet Metrics Middleare {middleware.FullName}");
+            logger.LogDebug(AspNetMetricsEventIds.Middleware.MiddlewareExecutedId, $"Executed AspNet Metrics Middleware {middleware.FullName}");
         }
 
         public static void MiddlewareExecuting(this ILogger logger, Type middleware)
         {
-            logger.LogDebug(AspNetMetricsEventIds.Middleware.MiddlewareExecutingId, $"Executing AspNet Metrics Middleare {middleware.FullName}");
+            logger.LogDebug(AspNetMetricsEventIds.Middleware.MiddlewareExecutingId, $"Executing AspNet Metrics Middleware {middleware.FullName}");
         }
 
         internal static class AspNetMetricsEventIds
