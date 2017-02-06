@@ -2,11 +2,11 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using App.Metrics.Counter;
+using App.Metrics.Infrastructure;
 using App.Metrics.Meter;
+using Microsoft.DotNet.PlatformAbstractions;
 
 namespace App.Metrics.Tagging
 {
@@ -26,6 +26,12 @@ namespace App.Metrics.Tagging
     /// </summary>
     public struct MetricItem : IEquatable<MetricItem>
     {
+        public static readonly MetricItem Empty = new MetricItem(EmptyArray, EmptyArray);
+
+        private static readonly string[] EmptyArray = new string[0];
+        private readonly string[] _tags;
+        private readonly string[] _values;
+
         public MetricItem(string tag, string value)
         {
             if (tag == null)
@@ -48,8 +54,8 @@ namespace App.Metrics.Tagging
                 throw new ArgumentOutOfRangeException(nameof(value));
             }
 
-            Tags = new[] { tag };
-            Values = new[] { value };
+            _tags = new[] { tag };
+            _values = new[] { value };
         }
 
         public MetricItem(string[] tags, string[] values)
@@ -79,15 +85,9 @@ namespace App.Metrics.Tagging
                 throw new ArgumentNullException(nameof(values), "value items cannot be empty");
             }
 
-            Tags = tags;
-            Values = values;
+            _tags = tags;
+            _values = values;
         }
-
-        public static IEqualityComparer<MetricItem> TagComparer { get; } = new TagEqualityComparer();
-
-        public string[] Tags { get; }
-
-        public string[] Values { get; }
 
         public static bool operator ==(MetricItem left, MetricItem right) { return left.Equals(right); }
 
@@ -96,63 +96,68 @@ namespace App.Metrics.Tagging
         /// <inheritdoc />
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj == null)
             {
-                return false;
+                return Equals(this, Empty);
             }
 
-            return obj is MetricItem && Equals((MetricItem)obj);
+            if (obj is MetricItem)
+            {
+                return Equals(this, (MetricItem)obj);
+            }
+
+            return false;
         }
 
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            unchecked
+            if (_tags == null)
             {
-                return ((Tags?.GetHashCode() ?? 0) * 397) ^ (Values?.GetHashCode() ?? 0);
+                return _tags?.GetHashCode() ?? 0;
             }
+#pragma warning disable SA1129
+            var hcc = new HashCodeCombiner();
+#pragma warning restore SA1129
+
+            for (var i = 0; i < _tags.Length; i++)
+            {
+                hcc.Add(_tags[i]);
+            }
+
+            return hcc.CombinedHash;
         }
 
         /// <inheritdoc />
         public override string ToString()
         {
-            if (Tags.Length == 1)
+            var sb = StringBuilderCache.Acquire();
+
+            if (_tags.Length == 1)
             {
-                return $"{Tags[0]}:{Values[0]}";
+                sb.Append(_tags[0]);
+                sb.Append(":");
+                sb.Append(_values[0]);
+
+                return StringBuilderCache.GetStringAndRelease(sb);
             }
 
-            var sb = new StringBuilder();
-
-            for (var i = 0; i < Tags.Length; i++)
+            for (var i = 0; i < _tags.Length; i++)
             {
-                sb.Append($"{Tags[i]}:{Values[i]}|");
+                sb.Append(_tags[i]);
+                sb.Append(":");
+                sb.Append(_values[i]);
+
+                if (i < _tags.Length - 1)
+                {
+                    sb.Append("|");
+                }
             }
 
-            return sb.ToString().TrimEnd('|');
+            return StringBuilderCache.GetStringAndRelease(sb);
         }
 
         /// <inheritdoc />
-        public bool Equals(MetricItem other)
-        {
-            var tags = string.Join(string.Empty, Tags);
-            var values = string.Join(string.Empty, Values);
-            var otherTags = string.Join(string.Empty, other.Tags);
-            var otherValues = string.Join(string.Empty, other.Values);
-
-            return string.Equals(tags, otherTags) && string.Equals(values, otherValues);
-        }
-
-        private sealed class TagEqualityComparer : IEqualityComparer<MetricItem>
-        {
-            public bool Equals(MetricItem x, MetricItem y)
-            {
-                var firstTags = string.Join(string.Empty, x);
-                var secondTags = string.Join(string.Empty, y);
-
-                return string.Equals(firstTags, secondTags);
-            }
-
-            public int GetHashCode(MetricItem obj) { return obj.Tags?.GetHashCode() ?? 0; }
-        }
+        public bool Equals(MetricItem other) { return Equals(this, other); }
     }
 }
