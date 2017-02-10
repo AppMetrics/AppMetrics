@@ -14,25 +14,25 @@ namespace App.Metrics.Registry.Internal
 
         public void Decrement(long value) { }
 
-        public void Decrement(string item) { }
+        public void Decrement(string setItem) { }
 
-        public void Decrement(string item, long value) { }
+        public void Decrement(string setItem, long value) { }
 
-        public void Decrement(MetricItem item) { }
+        public void Decrement(MetricSetItem setItem) { }
 
-        public void Decrement(MetricItem item, long amount) { }
+        public void Decrement(MetricSetItem setItem, long amount) { }
 
         public void Increment() { }
 
         public void Increment(long value) { }
 
-        public void Increment(string item) { }
+        public void Increment(string setItem) { }
 
-        public void Increment(string item, long value) { }
+        public void Increment(string setItem, long value) { }
 
-        public void Increment(MetricItem item) { }
+        public void Increment(MetricSetItem setItem) { }
 
-        public void Increment(MetricItem item, long amount) { }
+        public void Increment(MetricSetItem setItem, long amount) { }
 
         public void Reset() { }
     }

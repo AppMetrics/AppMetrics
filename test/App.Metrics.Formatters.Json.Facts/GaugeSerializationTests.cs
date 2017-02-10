@@ -36,8 +36,8 @@ namespace App.Metrics.Formatters.Json.Facts
             result.Name.Should().BeEquivalentTo(_gauge.Name);
             result.Unit.Should().Be(_gauge.Unit);
             result.Value.Should().Be(_gauge.Value);
-            result.Tags.Should().ContainKeys(_gauge.Tags.Select(t => t.Key));
-            result.Tags.Should().ContainValues(_gauge.Tags.Select(t => t.Value));
+            result.Tags.Keys.Should().Contain(_gauge.Tags.Keys.ToArray());
+            result.Tags.Values.Should().Contain(_gauge.Tags.Values.ToArray());
         }
 
         [Fact]

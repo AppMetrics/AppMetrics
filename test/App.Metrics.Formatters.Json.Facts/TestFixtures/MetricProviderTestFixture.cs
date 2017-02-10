@@ -29,7 +29,7 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
             ApdexScores = SetupApdexScores();
             Histograms = SetupHistograms();
             ContextOne = SetupContextOne();
-            DataWithOneContext = SetupMetricsData(new[] { ContextOne });
+            DataWithOneContext = SetupMetricsData(new[] { ContextOne });            
         }
 
         public IEnumerable<ApdexValueSource> ApdexScores { get; }
@@ -57,7 +57,7 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 
         public IEnumerable<MeterValueSource> Meters { get; }
 
-        public MetricTags Tags => new MetricTags().With("host", "server1").With("env", "staging");
+        public MetricTags Tags => new MetricTags(new[] { "host", "env" }, new[] { "server1", "staging" });
 
         public IEnumerable<TimerValueSource> Timers { get; }
 

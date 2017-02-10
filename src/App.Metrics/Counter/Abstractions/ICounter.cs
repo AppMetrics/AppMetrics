@@ -17,13 +17,13 @@ namespace App.Metrics.Counter.Abstractions
 
         /// <summary>
         ///     Decrement the counter value for an item from a set. The counter value is decremented but the counter will also keep
-        ///     track and decrement another counter associated with the <paramref name="item" />.
+        ///     track and decrement another counter associated with the <paramref name="setItem" />.
         ///     The counter value will contain the total count and for each item the specific count and percentage of total count.
         /// </summary>
-        /// <param name="item">Item from the set for which to increment the counter value.</param>
-        void Decrement(string item);
+        /// <param name="setItem">Item from the set for which to increment the counter value.</param>
+        void Decrement(string setItem);
 
-        void Decrement(MetricItem item);
+        void Decrement(MetricSetItem setItem);
 
         /// <summary>
         ///     Decrement the counter value with a specified amount.
@@ -34,14 +34,14 @@ namespace App.Metrics.Counter.Abstractions
         /// <summary>
         ///     Decrement the counter value with a specified amount for an item from a set.
         ///     The counter value is decremented but the counter will also keep track and decrement another counter associated with
-        ///     the <paramref name="item" />.
+        ///     the <paramref name="setItem" />.
         ///     The counter value will contain the total count and for each item the specific count and percentage of total count.
         /// </summary>
-        /// <param name="item">Item from the set for which to increment the counter value.</param>
+        /// <param name="setItem">Item from the set for which to increment the counter value.</param>
         /// <param name="amount">The amount with which to increment the counter.</param>
-        void Decrement(string item, long amount);
+        void Decrement(string setItem, long amount);
 
-        void Decrement(MetricItem item, long amount);
+        void Decrement(MetricSetItem setItem, long amount);
 
         /// <summary>
         ///     Increment the counter value.
@@ -51,13 +51,13 @@ namespace App.Metrics.Counter.Abstractions
         /// <summary>
         ///     Increment the counter value for an item from a set.
         ///     The counter value is incremented but the counter will also keep track and increment another counter associated with
-        ///     the <paramref name="item" />.
+        ///     the <paramref name="setItem" />.
         ///     The counter value will contain the total count and for each item the specific count and percentage of total count.
         /// </summary>
-        /// <param name="item">Item from the set for which to increment the counter value.</param>
-        void Increment(string item);
+        /// <param name="setItem">Item from the set for which to increment the counter value.</param>
+        void Increment(string setItem);
 
-        void Increment(MetricItem item);
+        void Increment(MetricSetItem setItem);
 
         /// <summary>
         ///     Increment the counter value with a specified amount.
@@ -68,13 +68,13 @@ namespace App.Metrics.Counter.Abstractions
         /// <summary>
         ///     Increment the counter value with a specified amount for an item from a set.
         ///     The counter value is incremented but the counter will also keep track and increment another counter associated with
-        ///     the <paramref name="item" />.
+        ///     the <paramref name="setItem" />.
         ///     The counter value will contain the total count and for each item the specific count and percentage of total count.
         /// </summary>
-        /// <param name="item">Item from the set for which to increment the counter value.</param>
+        /// <param name="setItem">Item from the set for which to increment the counter value.</param>
         /// <param name="amount">The amount with which to increment the counter.</param>
-        void Increment(string item, long amount);
+        void Increment(string setItem, long amount);
 
-        void Increment(MetricItem item, long amount);
+        void Increment(MetricSetItem setItem, long amount);
     }
 }

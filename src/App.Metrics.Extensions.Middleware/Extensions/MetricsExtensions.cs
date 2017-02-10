@@ -42,7 +42,7 @@ namespace App.Metrics
         {
             metrics.Measure.Meter.Mark(
                 OAuth2MetricsRegistry.Meters.EndpointHttpRequests(routeTemplate),
-                () => new MetricItem(new[] { "client_id", "http_status_code" }, new[] { clientId, httpStatusCode.ToString() }));
+                new MetricSetItem(new[] { "client_id", "http_status_code" }, new[] { clientId, httpStatusCode.ToString() }));
 
             return metrics;
         }
@@ -51,7 +51,7 @@ namespace App.Metrics
         {
             metrics.Measure.Meter.Mark(
                 HttpRequestMetricsRegistry.Meters.EndpointHttpErrorRequests(routeTemplate),
-                () => new MetricItem("http_status_code", httpStatusCode.ToString()));
+                new MetricSetItem("http_status_code", httpStatusCode.ToString()));
 
             return metrics;
         }
@@ -60,7 +60,7 @@ namespace App.Metrics
         {
             metrics.Measure.Meter.Mark(
                 HttpRequestMetricsRegistry.Meters.HttpErrorRequests,
-                () => new MetricItem("http_status_code", httpStatusCode.ToString()));
+                new MetricSetItem("http_status_code", httpStatusCode.ToString()));
 
             return metrics;
         }
@@ -69,7 +69,7 @@ namespace App.Metrics
         {
             metrics.Measure.Meter.Mark(
                 OAuth2MetricsRegistry.Meters.HttpRequests,
-                () => new MetricItem(new[] { "client_id", "http_status_code" }, new[] { clientId, httpStatusCode.ToString() }));
+                new MetricSetItem(new[] { "client_id", "http_status_code" }, new[] { clientId, httpStatusCode.ToString() }));
 
             return metrics;
         }

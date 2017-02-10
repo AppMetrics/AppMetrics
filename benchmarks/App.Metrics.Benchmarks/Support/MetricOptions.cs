@@ -47,19 +47,19 @@ namespace App.Metrics.Benchmarks.Support
         {
             public static readonly CounterOptions Options = new CounterOptions
                                                             {
-                                                                Context = nameof(MeasureCounterBenchmark),
+                                                                Context = nameof(MeasureCounterWithMetricItemBenchmark),
                                                                 Name = "test_counter"
                                                             };
 
             public static readonly CounterOptions OptionsWithMetricItem = new CounterOptions
                                                                           {
-                                                                              Context = nameof(MeasureCounterBenchmark),
+                                                                              Context = nameof(MeasureCounterWithMetricItemBenchmark),
                                                                               Name = "test_counter_with_metric_item"
                                                                           };
 
             public static readonly CounterOptions OptionsWithUserValue = new CounterOptions
                                                                          {
-                                                                             Context = nameof(MeasureCounterBenchmark),
+                                                                             Context = nameof(MeasureCounterWithMetricItemBenchmark),
                                                                              Name = "test_counter_with_user_value"
                                                                          };
         }

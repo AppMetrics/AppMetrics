@@ -7,6 +7,7 @@ using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Core;
 using App.Metrics.Core.Abstractions;
 using App.Metrics.Meter.Abstractions;
+using App.Metrics.Tagging;
 
 namespace App.Metrics.Meter.Extensions
 {
@@ -14,15 +15,15 @@ namespace App.Metrics.Meter.Extensions
     {
         private static readonly MeterValue EmptyMeter = new MeterValue(0, 0.0, 0.0, 0.0, 0.0, TimeUnit.Seconds);
 
+        public static MeterValue GetMeterValue(this IProvideMetricValues valueService, string context, string metricName)
+        {
+            return valueService.GetForContext(context).Meters.ValueFor(context, metricName);
+        }
+
         public static MeterValue GetValueOrDefault(this IMeter metric)
         {
             var implementation = metric as IMeterMetric;
             return implementation == null ? EmptyMeter : implementation.Value;
-        }
-
-        public static MeterValue GetMeterValue(this IProvideMetricValues valueService, string context, string metricName)
-        {
-            return valueService.GetForContext(context).Meters.ValueFor(context, metricName);
         }
 
         public static IEnumerable<MeterMetric> ToMetric(this IEnumerable<MeterValueSource> source) { return source.Select(x => x.ToMetric()); }
@@ -53,7 +54,7 @@ namespace App.Metrics.Meter.Extensions
                        FiveMinuteRate = source.Value.FiveMinuteRate,
                        FifteenMinuteRate = source.Value.FifteenMinuteRate,
                        MeanRate = source.Value.MeanRate,
-                       Tags = source.Tags
+                       Tags = source.Tags.ToDictionary()
                    };
         }
 
@@ -86,7 +87,7 @@ namespace App.Metrics.Meter.Extensions
                 rateUnit,
                 items);
 
-            return new MeterValueSource(source.Name, ConstantValue.Provider(meterValue), source.Unit, rateUnit, source.Tags);
+            return new MeterValueSource(source.Name, ConstantValue.Provider(meterValue), source.Unit, rateUnit, source.Tags.FromDictionary());
         }
 
         public static IEnumerable<MeterValueSource> ToMetricValueSource(this IEnumerable<MeterMetric> source)

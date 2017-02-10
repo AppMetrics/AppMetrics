@@ -59,8 +59,8 @@ namespace App.Metrics.Formatters.Json.Facts
             result.Value.Rate.RateUnit.Should().Be(_timer.Value.Rate.RateUnit);
             result.Value.ActiveSessions.Should().Be(_timer.Value.ActiveSessions);
             result.Value.TotalTime.Should().Be(_timer.Value.TotalTime);
-            result.Tags.Should().ContainKeys(_timer.Tags.Select(t => t.Key));
-            result.Tags.Should().ContainValues(_timer.Tags.Select(t => t.Value));
+            result.Tags.Keys.Should().Contain(_timer.Tags.Keys.ToArray());
+            result.Tags.Values.Should().Contain(_timer.Tags.Values.ToArray());
         }
 
         [Fact]

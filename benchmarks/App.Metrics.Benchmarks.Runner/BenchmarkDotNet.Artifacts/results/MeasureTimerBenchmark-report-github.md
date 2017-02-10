@@ -10,11 +10,11 @@ dotnet cli version=1.0.0-preview2-1-003177
 Job=Core  Runtime=Core  Allocated=327 B  
 
 ```
-                          Method |      Mean |    StdDev |
--------------------------------- |---------- |---------- |
-                  TimeAlgorithmR | 6.1268 us | 0.0533 us |
-      TimeAlgorithmRUsingContext | 6.2322 us | 0.0729 us |
-             TimeForwardDecaying | 6.4141 us | 0.1030 us |
- TimeForwardDecayingUsingContext | 6.2310 us | 0.0511 us |
-               TimeSlidingWindow | 6.1556 us | 0.1224 us |
-   TimeSlidingWindowUsingContext | 6.0575 us | 0.0595 us |
+                          Method |      Mean |    StdErr |    StdDev |
+-------------------------------- |---------- |---------- |---------- |
+                  TimeAlgorithmR | 6.4128 us | 0.0430 us | 0.1665 us |
+      TimeAlgorithmRUsingContext | 6.3577 us | 0.0172 us | 0.0667 us |
+             TimeForwardDecaying | 6.5900 us | 0.0151 us | 0.0523 us |
+ TimeForwardDecayingUsingContext | 6.4094 us | 0.0207 us | 0.0803 us |
+               TimeSlidingWindow | 6.1766 us | 0.0121 us | 0.0452 us |
+   TimeSlidingWindowUsingContext | 6.3266 us | 0.0690 us | 0.2844 us |

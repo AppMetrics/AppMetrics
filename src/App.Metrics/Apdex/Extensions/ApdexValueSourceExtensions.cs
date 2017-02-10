@@ -7,6 +7,7 @@ using App.Metrics.Abstractions.Metrics;
 using App.Metrics.Apdex.Abstractions;
 using App.Metrics.Core;
 using App.Metrics.Core.Abstractions;
+using App.Metrics.Tagging;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics.Apdex
@@ -39,14 +40,14 @@ namespace App.Metrics.Apdex
                        Satisfied = source.Value.Satisfied,
                        Tolerating = source.Value.Tolerating,
                        Frustrating = source.Value.Frustrating,
-                       Tags = source.Tags
+                       Tags = source.Tags.ToDictionary()
                    };
         }
 
         public static ApdexValueSource ToMetricValueSource(this ApdexMetric source)
         {
             var counterValue = new ApdexValue(source.Score, source.Satisfied, source.Tolerating, source.Frustrating, source.SampleSize);
-            return new ApdexValueSource(source.Name, ConstantValue.Provider(counterValue), source.Tags);
+            return new ApdexValueSource(source.Name, ConstantValue.Provider(counterValue), source.Tags.FromDictionary());
         }
 
         public static IEnumerable<ApdexValueSource> ToMetricValueSource(this IEnumerable<ApdexMetric> source)

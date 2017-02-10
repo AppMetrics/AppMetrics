@@ -22,7 +22,7 @@ namespace App.Metrics.Benchmarks.Facts
                 {
                     _fixture.Metrics.Measure.Counter.Decrement(
                         MetricOptions.Counter.Options,
-                        () => new MetricItem("key", "value"));
+                        new MetricSetItem("key", "value"));
                 });
         }
 
@@ -34,7 +34,7 @@ namespace App.Metrics.Benchmarks.Facts
                 {
                     _fixture.Metrics.Measure.Counter.Decrement(
                         MetricOptions.Counter.OptionsWithMetricItem,
-                        () => new MetricItem("key", "value"));
+                        new MetricSetItem("key", "value"));
                 });
         }
 
@@ -66,7 +66,7 @@ namespace App.Metrics.Benchmarks.Facts
                 {
                     _fixture.Metrics.Measure.Counter.Increment(
                         MetricOptions.Counter.OptionsWithMetricItem,
-                        () => new MetricItem("key", "value"));
+                        new MetricSetItem("key", "value"));
                 });
         }
 

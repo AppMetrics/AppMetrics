@@ -12,13 +12,13 @@ namespace App.Metrics.Registry.Internal
     {
         public void Mark() { }
 
-        public void Mark(MetricItem item, long amount) { }
+        public void Mark(MetricSetItem setItem, long amount) { }
 
         public void Mark(long amount) { }
 
         public void Mark(string item) { }
 
-        public void Mark(MetricItem item) { }
+        public void Mark(MetricSetItem setItem) { }
 
         public void Mark(string item, long amount) { }
 

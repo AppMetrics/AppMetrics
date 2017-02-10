@@ -17,7 +17,18 @@ namespace App.Metrics.Benchmarks
         {
             Fixture.Metrics.Measure.Meter.Mark(
                 MetricOptions.Meter.OptionsWithMetricItem,
-                () => new MetricItem("key", "value"));
+                new MetricSetItem("key", "value"));
+        }
+
+        [Benchmark]
+        public void MarkMetricItemWithMultipleTags()
+        {
+            var keys = new[] { "key1", "key2" };
+            var values = new[] { "value1", "value2" };
+
+            Fixture.Metrics.Measure.Meter.Mark(
+                MetricOptions.Meter.OptionsWithMetricItem,
+                new MetricSetItem(keys, values));
         }
 
         [Benchmark]

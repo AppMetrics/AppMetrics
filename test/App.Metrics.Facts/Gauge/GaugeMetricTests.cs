@@ -89,13 +89,13 @@ namespace App.Metrics.Facts.Gauge
         [Fact]
         public void can_create_gauge_from_value_source()
         {
-            var valueSource = new GaugeValueSource("test", new FunctionGauge(() => 2.0), Unit.Bytes, MetricTags.None);
+            var valueSource = new GaugeValueSource("test", new FunctionGauge(() => 2.0), Unit.Bytes, MetricTags.Empty);
 
             var gauge = GaugeMetric.FromGauge(valueSource);
 
             gauge.Value.Should().Be(2.0);
             gauge.Name.Should().Be("test");
-            gauge.Tags.Count.Should().Be(0);
+            gauge.Tags.Should().BeEmpty();
             Assert.True(gauge.Unit == Unit.Bytes);
         }
 

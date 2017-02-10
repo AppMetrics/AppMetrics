@@ -36,24 +36,24 @@ namespace App.Metrics.Counter
         public void Decrement(long value) { _counter.Add(-value); }
 
         /// <inheritdoc />
-        public void Decrement(string item)
+        public void Decrement(string setItem)
         {
             Decrement();
-            SetCounter(item).Decrement();
+            SetCounter(setItem).Decrement();
         }
 
         /// <inheritdoc />
-        public void Decrement(string item, long amount)
+        public void Decrement(string setItem, long amount)
         {
             Decrement(amount);
-            SetCounter(item).Add(-amount);
+            SetCounter(setItem).Add(-amount);
         }
 
         /// <inheritdoc />
-        public void Decrement(MetricItem item) { Decrement(item.ToString()); }
+        public void Decrement(MetricSetItem setItem) { Decrement(setItem.ToString()); }
 
         /// <inheritdoc />
-        public void Decrement(MetricItem item, long amount) { Decrement(item.ToString(), amount); }
+        public void Decrement(MetricSetItem setItem, long amount) { Decrement(setItem.ToString(), amount); }
 
         /// <inheritdoc />
         public CounterValue GetValue(bool resetMetric = false)
@@ -75,24 +75,24 @@ namespace App.Metrics.Counter
         public void Increment(long value) { _counter.Add(value); }
 
         /// <inheritdoc />
-        public void Increment(string item)
+        public void Increment(string setItem)
         {
             Increment();
-            SetCounter(item).Increment();
+            SetCounter(setItem).Increment();
         }
 
         /// <inheritdoc />
-        public void Increment(string item, long amount)
+        public void Increment(string setItem, long amount)
         {
             Increment(amount);
-            SetCounter(item).Add(amount);
+            SetCounter(setItem).Add(amount);
         }
 
         /// <inheritdoc />
-        public void Increment(MetricItem item) { Increment(item.ToString()); }
+        public void Increment(MetricSetItem setItem) { Increment(setItem.ToString()); }
 
         /// <inheritdoc />
-        public void Increment(MetricItem item, long amount) { Increment(item.ToString(), amount); }
+        public void Increment(MetricSetItem setItem, long amount) { Increment(setItem.ToString(), amount); }
 
         /// <inheritdoc />
         public void Reset()
@@ -121,7 +121,7 @@ namespace App.Metrics.Counter
             {
                 var itemValue = item.Value.GetValue();
 
-                var percent = total > 0 ? itemValue / (double)total * 100 : 0.0;
+                double percent = total > 0 ? itemValue / (double)total * 100 : 0.0;
                 var setCounter = new CounterValue.SetItem(item.Key, itemValue, percent);
                 items[index++] = setCounter;
                 if (index == items.Length)

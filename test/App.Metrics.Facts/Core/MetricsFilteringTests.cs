@@ -130,8 +130,8 @@ namespace App.Metrics.Facts.Core
 
             var counterValue = context.Counters.Single();
 
-            counterValue.Tags.Should().ContainKey("tag1");
-            counterValue.Tags.Should().ContainValue("value1");
+            counterValue.Tags.Keys.Should().Contain("tag1");
+            counterValue.Tags.Values.Should().Contain("value1");
 
             Assert.Null(context.Gauges.FirstOrDefault());
             Assert.Null(context.Meters.FirstOrDefault());
@@ -149,8 +149,8 @@ namespace App.Metrics.Facts.Core
             var counterValue = context.Counters.Single();
             var meterValue = context.Meters.Single();
 
-            counterValue.Tags.Should().ContainKey("tag1");
-            meterValue.Tags.Should().ContainKey("tag2");
+            counterValue.Tags.Keys.Should().Contain("tag1");
+            meterValue.Tags.Keys.Should().Contain("tag2");
 
             Assert.Null(context.Gauges.FirstOrDefault());
             Assert.Null(context.Histograms.FirstOrDefault());

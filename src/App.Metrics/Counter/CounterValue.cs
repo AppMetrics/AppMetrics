@@ -105,7 +105,7 @@ namespace App.Metrics.Counter
             /// </value>
             public double Percent { get; }
 
-            public MetricTags Tags => new MetricTags().FromSetItemString(Item);
+            public MetricTags Tags => MetricTags.FromSetItemString(Item);
 
             public static bool operator ==(SetItem left, SetItem right) { return left.Equals(right); }
 

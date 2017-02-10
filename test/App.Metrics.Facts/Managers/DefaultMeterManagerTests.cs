@@ -82,7 +82,7 @@ namespace App.Metrics.Facts.Managers
             var metricName = "test_mark_meter_with_metric_item";
             var options = new MeterOptions { Name = metricName };
 
-            _manager.Mark(options, () => new MetricItem("tagKey", "tagvalue"));
+            _manager.Mark(options, new MetricSetItem("tagKey", "tagvalue"));
 
             _fixture.Snapshot.GetMeterValue(_context, metricName).Items.Length.Should().Be(1);
         }
@@ -93,7 +93,7 @@ namespace App.Metrics.Facts.Managers
             var metricName = "test_mark_meter_with_metric_item_by_amount";
             var options = new MeterOptions { Name = metricName };
 
-            _manager.Mark(options, 5L, () => new MetricItem("tagKey", "tagvalue"));
+            _manager.Mark(options, 5L, new MetricSetItem("tagKey", "tagvalue"));
 
             _fixture.Snapshot.GetMeterValue(_context, metricName).Items.Length.Should().Be(1);
         }

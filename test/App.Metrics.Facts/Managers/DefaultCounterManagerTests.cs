@@ -76,7 +76,7 @@ namespace App.Metrics.Facts.Managers
 
             _manager.Decrement(
                 options,
-                () => new MetricItem("item4", "value4"));
+                new MetricSetItem("item4", "value4"));
 
             _fixture.Snapshot.GetCounterValue(_context, metricName).Count.Should().Be(-1L);
         }
@@ -90,7 +90,7 @@ namespace App.Metrics.Facts.Managers
             _manager.Decrement(
                 options,
                 3L,
-                () => new MetricItem("item3", "value3"));
+                new MetricSetItem("item3", "value3"));
 
             _fixture.Snapshot.GetCounterValue(_context, metricName).Count.Should().Be(-3L);
         }
@@ -147,7 +147,7 @@ namespace App.Metrics.Facts.Managers
 
             _manager.Increment(
                 options,
-                () => new MetricItem("item4", "value4"));
+                new MetricSetItem("item4", "value4"));
 
             _fixture.Snapshot.GetCounterValue(_context, metricName).Count.Should().Be(1L);
         }
@@ -161,7 +161,7 @@ namespace App.Metrics.Facts.Managers
             _manager.Increment(
                 options,
                 3L,
-                () => new MetricItem("item3", "value3"));
+                new MetricSetItem("item3", "value3"));
 
             _fixture.Snapshot.GetCounterValue(_context, metricName).Count.Should().Be(3L);
         }

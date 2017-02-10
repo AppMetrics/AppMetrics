@@ -53,8 +53,8 @@ namespace App.Metrics.Formatters.Json.Facts
             result.Value.Percentile99.Should().Be(_histogram.Value.Percentile99);
             result.Value.Percentile999.Should().Be(_histogram.Value.Percentile999);
             result.Value.SampleSize.Should().Be(_histogram.Value.SampleSize);
-            result.Tags.Should().ContainKeys(_histogram.Tags.Select(t => t.Key));
-            result.Tags.Should().ContainValues(_histogram.Tags.Select(t => t.Value));
+            result.Tags.Keys.Should().Contain(_histogram.Tags.Keys.ToArray());
+            result.Tags.Values.Should().Contain(_histogram.Tags.Values.ToArray());
         }
 
         [Fact]

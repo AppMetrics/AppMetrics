@@ -186,7 +186,7 @@ namespace App.Metrics.Filtering
                 isMatch = true;
             }
 
-            if (_tags != null && Array.Exists(_tags.ToArray(), t => sourceTags.Any(m => m.Key == t.Key && m.Value == t.Value)))
+            if (_tags != null && Array.Exists(_tags.ToArray(), t => sourceTags.Keys.Any(m => m == t.Key)))
             {
                 isMatch = true;
             }

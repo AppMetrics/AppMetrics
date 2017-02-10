@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using App.Metrics.Apdex;
-using App.Metrics.Core;
 using App.Metrics.Core.Abstractions;
 using App.Metrics.Counter;
 using App.Metrics.Health;

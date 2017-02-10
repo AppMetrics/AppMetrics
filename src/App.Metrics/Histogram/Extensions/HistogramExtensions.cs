@@ -7,6 +7,7 @@ using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Core;
 using App.Metrics.Core.Abstractions;
 using App.Metrics.Histogram.Abstractions;
+using App.Metrics.Tagging;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics.Histogram
@@ -67,7 +68,7 @@ namespace App.Metrics.Histogram
                        Percentile999 = source.Value.Percentile999,
                        SampleSize = source.Value.SampleSize,
                        StdDev = source.Value.StdDev,
-                       Tags = source.Tags
+                       Tags = source.Tags.ToDictionary()
                    };
         }
 
@@ -91,7 +92,7 @@ namespace App.Metrics.Histogram
                 source.Percentile999,
                 source.SampleSize);
 
-            return new HistogramValueSource(source.Name, ConstantValue.Provider(histogramValue), source.Unit, source.Tags);
+            return new HistogramValueSource(source.Name, ConstantValue.Provider(histogramValue), source.Unit, source.Tags.FromDictionary());
         }
 
         public static IEnumerable<HistogramValueSource> ToMetricValueSource(this IEnumerable<HistogramMetric> source)

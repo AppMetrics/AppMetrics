@@ -15,6 +15,6 @@ namespace App.Metrics.Benchmarks.XunitHarness
         public Counter(ITestOutputHelper output) { _output = output; }
 
         [Fact]
-        public void CostOfMeasuringCounter() { BenchmarkTestRunner.CanCompileAndRun<MeasureCounterBenchmark>(_output); }
+        public void CostOfMeasuringCounter() { BenchmarkTestRunner.CanCompileAndRun<MeasureCounterWithMetricItemBenchmark>(_output); }
     }
 }

@@ -3,6 +3,7 @@
 
 using App.Metrics.Core;
 using App.Metrics.Core.Abstractions;
+using App.Metrics.Tagging;
 
 namespace App.Metrics.Gauge
 {
@@ -33,8 +34,8 @@ namespace App.Metrics.Gauge
                        Name = gauge.Name,
                        Value = gauge.Value,
                        Unit = gauge.Unit.Name,
-                       Tags = gauge.Tags
-                   };
+                       Tags = gauge.Tags.ToDictionary()
+            };
         }
     }
 }

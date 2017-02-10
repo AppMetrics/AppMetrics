@@ -120,10 +120,10 @@ namespace App.Metrics.Meter
         public void Mark(string item) { Mark(item, 1L); }
 
         /// <inheritdoc />
-        public void Mark(MetricItem item) { Mark(item.ToString()); }
+        public void Mark(MetricSetItem setItem) { Mark(setItem.ToString()); }
 
         /// <inheritdoc />
-        public void Mark(MetricItem item, long amount) { Mark(item.ToString(), amount); }
+        public void Mark(MetricSetItem setItem, long amount) { Mark(setItem.ToString(), amount); }
 
         /// <inheritdoc />
         public void Mark(string item, long amount)

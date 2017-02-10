@@ -16,19 +16,19 @@ namespace App.Metrics.Facts
         public void Decrement() { }
 
         /// <inheritdoc />
-        public void Decrement(string item) { }
+        public void Decrement(string setItem) { }
 
         /// <inheritdoc />
-        public void Decrement(MetricItem item) { }
+        public void Decrement(MetricSetItem setItem) { }
 
         /// <inheritdoc />
         public void Decrement(long amount) { }
 
         /// <inheritdoc />
-        public void Decrement(string item, long amount) { }
+        public void Decrement(string setItem, long amount) { }
 
         /// <inheritdoc />
-        public void Decrement(MetricItem item, long amount) { }
+        public void Decrement(MetricSetItem setItem, long amount) { }
 
         /// <inheritdoc />
         public CounterValue GetValue(bool resetMetric = false) { return new CounterValue(1L); }
@@ -37,19 +37,19 @@ namespace App.Metrics.Facts
         public void Increment() { }
 
         /// <inheritdoc />
-        public void Increment(string item) { }
+        public void Increment(string setItem) { }
 
         /// <inheritdoc />
-        public void Increment(MetricItem item) { }
+        public void Increment(MetricSetItem setItem) { }
 
         /// <inheritdoc />
         public void Increment(long amount) { }
 
         /// <inheritdoc />
-        public void Increment(string item, long amount) { }
+        public void Increment(string setItem, long amount) { }
 
         /// <inheritdoc />
-        public void Increment(MetricItem item, long amount) { }
+        public void Increment(MetricSetItem setItem, long amount) { }
 
         /// <inheritdoc />
         public void Reset() { }

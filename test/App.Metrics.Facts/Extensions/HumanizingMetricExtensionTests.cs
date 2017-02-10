@@ -22,7 +22,7 @@ namespace App.Metrics.Facts.Extensions
         public void can_hummanize_counter()
         {
             var expected = "\r\n             Count = 1\r\n";
-            var counterValueSource = new CounterValueSource("test_counter", ConstantValue.Provider(new CounterValue(1)), Unit.None, MetricTags.None);
+            var counterValueSource = new CounterValueSource("test_counter", ConstantValue.Provider(new CounterValue(1)), Unit.None, MetricTags.Empty);
             var result = counterValueSource.Hummanize();
 
             Assert.Equal(result, expected);
@@ -43,7 +43,7 @@ namespace App.Metrics.Facts.Extensions
         public void can_hummanize_gauge()
         {
             var expected = "\r\n             value = 0.50 Calls\r\n";
-            var gaugeValueSource = new GaugeValueSource("test_gauge", ConstantValue.Provider(0.5), Unit.Calls, MetricTags.None);
+            var gaugeValueSource = new GaugeValueSource("test_gauge", ConstantValue.Provider(0.5), Unit.Calls, MetricTags.Empty);
             var result = gaugeValueSource.Hummanize();
 
             Assert.Equal(result, expected);
@@ -66,7 +66,7 @@ namespace App.Metrics.Facts.Extensions
             var expected =
                 "\r\n             Count = 1 Items\r\n              Last = 2.00 Items\r\n   Last User Value = 3\r\n               Min = 7.00 Items\r\n    Min User Value = 8\r\n               Max = 4.00 Items\r\n    Max User Value = 5\r\n              Mean = 6.00 Items\r\n            StdDev = 9.00 Items\r\n            Median = 10.00 Items\r\n              75% <= 11.00 Items\r\n              95% <= 12.00 Items\r\n              98% <= 13.00 Items\r\n              99% <= 14.00 Items\r\n            99.9% <= 15.00 Items\r\n";
             var histogramValue = new HistogramValue(1, 2, "3", 4, "5", 6, 7, "8", 9, 10, 11, 12, 13, 14, 15, 16);
-            var histogramValueSource = new HistogramValueSource("test_histgram", ConstantValue.Provider(histogramValue), Unit.Items, MetricTags.None);
+            var histogramValueSource = new HistogramValueSource("test_histgram", ConstantValue.Provider(histogramValue), Unit.Items, MetricTags.Empty);
             var result = histogramValueSource.Hummanize();
 
             Assert.Equal(result, expected);
@@ -93,7 +93,7 @@ namespace App.Metrics.Facts.Extensions
                 ConstantValue.Provider(meterValue),
                 Unit.Calls,
                 TimeUnit.Seconds,
-                MetricTags.None);
+                MetricTags.Empty);
             var result = meterValueSource.Hummanize();
 
             Assert.Equal(result, expected);
@@ -126,7 +126,7 @@ namespace App.Metrics.Facts.Extensions
                 Unit.Requests,
                 TimeUnit.Seconds,
                 TimeUnit.Milliseconds,
-                MetricTags.None);
+                MetricTags.Empty);
             var result = timerValueSource.Hummanize();
 
             Assert.Equal(result, expected);
