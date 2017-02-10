@@ -11,19 +11,6 @@
      1 Minute Rate = 0.00 /ms
      5 Minute Rate = 0.00 /ms
     15 Minute Rate = 0.00 /ms
-       Total Items = 2
-            Item 0 = 50.00%     1  [value1]
-             Count = 1
-        Mean Value = Infinity /ms
-     1 Minute Rate = 0.00 /ms
-     5 Minute Rate = 0.00 /ms
-    15 Minute Rate = 0.00 /ms
-            Item 1 = 50.00%     1  [value2]
-             Count = 1
-        Mean Value = Infinity /ms
-     1 Minute Rate = 0.00 /ms
-     5 Minute Rate = 0.00 /ms
-    15 Minute Rate = 0.00 /ms
 
              Count = 2
               Last = 2000.00 
