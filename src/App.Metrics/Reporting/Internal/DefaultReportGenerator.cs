@@ -48,7 +48,7 @@ namespace App.Metrics.Reporting.Internal
             IFilterMetrics reporterMetricsFilter,
             CancellationToken token)
         {
-            var startTimestamp = _logger.IsEnabled(LogLevel.Information) ? Stopwatch.GetTimestamp() : 0;
+            var startTimestamp = _logger.IsEnabled(LogLevel.Trace) ? Stopwatch.GetTimestamp() : 0;
 
             _logger.ReportedStarted(reporter);
 

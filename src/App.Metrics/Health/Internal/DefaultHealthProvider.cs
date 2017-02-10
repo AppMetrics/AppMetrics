@@ -29,7 +29,7 @@ namespace App.Metrics.Health.Internal
         /// <inheritdoc />
         public async Task<HealthStatus> ReadStatusAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            var startTimestamp = _logger.IsEnabled(LogLevel.Information) ? Stopwatch.GetTimestamp() : 0;
+            var startTimestamp = _logger.IsEnabled(LogLevel.Trace) ? Stopwatch.GetTimestamp() : 0;
 
             _logger.HealthCheckGetStatusExecuting();
 

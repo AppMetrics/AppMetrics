@@ -20,19 +20,19 @@ namespace Microsoft.Extensions.Logging
         static AppMetricsReportingLoggerExtensions()
         {
             ReportStartedAction = LoggerMessage.Define<string>(
-                LogLevel.Information,
+                LogLevel.Trace,
                 AppMetricsEventIds.Reports.Schedule,
                 $"Report {{reportType}} started");
 
             ReportRanAction = LoggerMessage.Define<string, double>(
-                LogLevel.Information,
+                LogLevel.Trace,
                 AppMetricsEventIds.Reports.Schedule,
                 $"Report {{reportType}} ran in {{elapsedMilliseconds}}ms");
         }
 
         public static void ReportedStarted(this ILogger logger, IMetricReporter reporter)
         {
-            if (!logger.IsEnabled(LogLevel.Information))
+            if (!logger.IsEnabled(LogLevel.Trace))
             {
                 return;
             }
@@ -67,7 +67,7 @@ namespace Microsoft.Extensions.Logging
 
         public static void ReportRan(this ILogger logger, IMetricReporter reporter, long startTimestamp)
         {
-            if (!logger.IsEnabled(LogLevel.Information))
+            if (!logger.IsEnabled(LogLevel.Trace))
             {
                 return;
             }
@@ -85,12 +85,12 @@ namespace Microsoft.Extensions.Logging
 
         public static void ReportRunning(this ILogger logger, IMetricReporter reporter)
         {
-            logger.LogInformation(AppMetricsEventIds.Reports.Schedule, $"Running {reporter.GetType()}");
+            logger.LogTrace(AppMetricsEventIds.Reports.Schedule, $"Running {reporter.GetType()}");
         }
 
         internal static class AppMetricsEventIds
         {
-            private const int MetricsStart = 9999;
+            private const int MetricsStart = 1000;
 
             public static class HealthChecks
             {
