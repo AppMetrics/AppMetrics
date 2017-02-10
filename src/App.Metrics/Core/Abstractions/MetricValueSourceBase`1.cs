@@ -26,7 +26,7 @@ namespace App.Metrics.Core.Abstractions
         /// <value>
         ///     The name.
         /// </value>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
         ///     Gets the Tags associated with the metric.
@@ -34,7 +34,7 @@ namespace App.Metrics.Core.Abstractions
         /// <value>
         ///     The tags.
         /// </value>
-        public MetricTags Tags { get; private set; }
+        public MetricTags Tags { get; }
 
         /// <summary>
         ///     Gets the Unit representing what the metric is measuring.
@@ -42,7 +42,7 @@ namespace App.Metrics.Core.Abstractions
         /// <value>
         ///     The unit.
         /// </value>
-        public Unit Unit { get; private set; }
+        public Unit Unit { get; }
 
         /// <summary>
         ///     Gets the current value of the metric.
