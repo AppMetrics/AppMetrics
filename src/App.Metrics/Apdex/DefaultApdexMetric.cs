@@ -35,7 +35,9 @@ namespace App.Metrics.Apdex
         ///     the score will intitially be 1 until enough samples have been recorded.
         /// </param>
         public DefaultApdexMetric(Lazy<IReservoir> reservoir, double apdexTSeconds, IClock clock, bool allowWarmup)
-            : this(new ApdexProvider(reservoir, apdexTSeconds), clock, allowWarmup) { }
+            : this(new ApdexProvider(reservoir, apdexTSeconds), clock, allowWarmup)
+        {
+        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultApdexMetric" /> class.
@@ -47,7 +49,9 @@ namespace App.Metrics.Apdex
         ///     the score will intitially be 1 until enough samples have been recorded.
         /// </param>
         public DefaultApdexMetric(Lazy<IReservoir> reservoir, IClock clock, bool allowWarmup)
-            : this(new ApdexProvider(reservoir, Constants.ReservoirSampling.DefaultApdexTSeconds), clock, allowWarmup) { }
+            : this(new ApdexProvider(reservoir, Constants.ReservoirSampling.DefaultApdexTSeconds), clock, allowWarmup)
+        {
+        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultApdexMetric" /> class.
@@ -78,19 +82,19 @@ namespace App.Metrics.Apdex
             _allowWarmup = allowWarmup;
         }
 
-        ~DefaultApdexMetric() { Dispose(false); }
-
         /// <inheritdoc />
         public ApdexValue Value => GetValue();
 
         /// <inheritdoc />
-        public long CurrentTime() { return _clock.Nanoseconds; }
+        public long CurrentTime()
+        {
+            return _clock.Nanoseconds;
+        }
 
         [AppMetricsExcludeFromCodeCoverage]
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         [AppMetricsExcludeFromCodeCoverage]
@@ -101,6 +105,12 @@ namespace App.Metrics.Apdex
                 if (disposing)
                 {
                     // Free any other managed objects here.
+                    if (_apdexProvider != null)
+                    {
+                        using (_apdexProvider)
+                        {
+                        }
+                    }
                 }
             }
 
@@ -108,7 +118,10 @@ namespace App.Metrics.Apdex
         }
 
         /// <inheritdoc />
-        public long EndRecording() { return _clock.Nanoseconds; }
+        public long EndRecording()
+        {
+            return _clock.Nanoseconds;
+        }
 
         /// <inheritdoc />
         public ApdexValue GetValue(bool resetMetric = false)
@@ -130,13 +143,22 @@ namespace App.Metrics.Apdex
         }
 
         /// <inheritdoc />
-        public ApdexContext NewContext() { return new ApdexContext(this); }
+        public ApdexContext NewContext()
+        {
+            return new ApdexContext(this);
+        }
 
         /// <inheritdoc />
-        public void Reset() { _apdexProvider.Reset(); }
+        public void Reset()
+        {
+            _apdexProvider.Reset();
+        }
 
         /// <inheritdoc />
-        public long StartRecording() { return _clock.Nanoseconds; }
+        public long StartRecording()
+        {
+            return _clock.Nanoseconds;
+        }
 
         /// <inheritdoc />
         public void Track(long duration)

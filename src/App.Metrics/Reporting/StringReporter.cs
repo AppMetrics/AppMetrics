@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using App.Metrics.Abstractions.Reporting;
-using App.Metrics.Core;
 using App.Metrics.Core.Abstractions;
 using App.Metrics.Core.Internal;
 using App.Metrics.Formatting.Humanize;
@@ -24,7 +23,9 @@ namespace App.Metrics.Reporting
         private bool _disposed;
 
         public StringReporter()
-            : this(typeof(StringReporter).Name) { }
+            : this(typeof(StringReporter).Name)
+        {
+        }
 
         public StringReporter(string name)
         {
@@ -37,19 +38,13 @@ namespace App.Metrics.Reporting
             _buffer = new StringBuilder();
         }
 
-        ~StringReporter() { Dispose(false); }
-
         public string Name { get; }
 
         public TimeSpan ReportInterval { get; } = TimeSpan.FromSeconds(5);
 
         public string Result => _buffer?.ToString();
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+        public void Dispose() { Dispose(true); }
 
         public void Dispose(bool disposing)
         {

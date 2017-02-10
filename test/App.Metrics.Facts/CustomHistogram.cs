@@ -12,8 +12,6 @@ namespace App.Metrics.Facts
     {
         private bool _disposed = false;
 
-        ~CustomHistogram() { Dispose(false); }
-
         public CustomReservoir Reservoir { get; } = new CustomReservoir();
 
         public HistogramValue Value => new HistogramValue(Reservoir.Values.Last(), null, Reservoir.GetSnapshot());
@@ -21,7 +19,6 @@ namespace App.Metrics.Facts
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         public void Dispose(bool disposing)
@@ -31,6 +28,7 @@ namespace App.Metrics.Facts
                 if (disposing)
                 {
                     // Free any other managed objects here.
+                    Reservoir?.Dispose();
                 }
             }
 

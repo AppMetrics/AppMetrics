@@ -25,7 +25,9 @@ namespace App.Metrics.Timer
         /// <param name="histogram">The histogram implementation to use.</param>
         /// <param name="clock">The clock to use to measure processing duration.</param>
         public DefaultTimerMetric(IHistogramMetric histogram, IClock clock)
-            : this(histogram, new DefaultMeterMetric(clock), clock) { }
+            : this(histogram, new DefaultMeterMetric(clock), clock)
+        {
+        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultTimerMetric" /> class.
@@ -33,7 +35,9 @@ namespace App.Metrics.Timer
         /// <param name="reservoir">The reservoir implementation to use for sampling values to generate the histogram.</param>
         /// <param name="clock">The clock to use to measure processing duration.</param>
         public DefaultTimerMetric(Lazy<IReservoir> reservoir, IClock clock)
-            : this(new DefaultHistogramMetric(reservoir), new DefaultMeterMetric(clock), clock) { }
+            : this(new DefaultHistogramMetric(reservoir), new DefaultMeterMetric(clock), clock)
+        {
+        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultTimerMetric" /> class.
@@ -42,7 +46,9 @@ namespace App.Metrics.Timer
         /// <param name="meter">The meter implementation to use to genreate the rate of events over time.</param>
         /// <param name="clock">The clock to use to measure processing duration.</param>
         public DefaultTimerMetric(Lazy<IReservoir> reservoir, IMeterMetric meter, IClock clock)
-            : this(new DefaultHistogramMetric(reservoir), meter, clock) { }
+            : this(new DefaultHistogramMetric(reservoir), meter, clock)
+        {
+        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultTimerMetric" /> class.
@@ -57,19 +63,19 @@ namespace App.Metrics.Timer
             _histogram = histogram;
         }
 
-        ~DefaultTimerMetric() { Dispose(false); }
-
         /// <inheritdoc />
         public TimerValue Value => GetValue();
 
         /// <inheritdoc />
-        public long CurrentTime() { return _clock.Nanoseconds; }
+        public long CurrentTime()
+        {
+            return _clock.Nanoseconds;
+        }
 
         /// <inheritdoc />
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         public void Dispose(bool disposing)
@@ -80,7 +86,6 @@ namespace App.Metrics.Timer
                 {
                     // Free any other managed objects here.
                     _histogram?.Dispose();
-
                     _meter?.Dispose();
                 }
             }
@@ -108,10 +113,16 @@ namespace App.Metrics.Timer
         }
 
         /// <inheritdoc />
-        public TimerContext NewContext(string userValue) { return new TimerContext(this, userValue); }
+        public TimerContext NewContext(string userValue)
+        {
+            return new TimerContext(this, userValue);
+        }
 
         /// <inheritdoc />
-        public TimerContext NewContext() { return NewContext(null); }
+        public TimerContext NewContext()
+        {
+            return NewContext(null);
+        }
 
         /// <inheritdoc />
         public void Record(long duration, TimeUnit unit, string userValue)
@@ -123,12 +134,15 @@ namespace App.Metrics.Timer
             }
 
             _histogram.Update(nanos, userValue);
-            _meter.Mark(userValue);
+            _meter.Mark();
             _totalRecordedTime.Add(nanos);
         }
 
         /// <inheritdoc />
-        public void Record(long time, TimeUnit unit) { Record(time, unit, null); }
+        public void Record(long time, TimeUnit unit)
+        {
+            Record(time, unit, null);
+        }
 
         /// <inheritdoc />
         public void Reset()
@@ -177,9 +191,15 @@ namespace App.Metrics.Timer
         }
 
         /// <inheritdoc />
-        public void Time(Action action) { Time(action, null); }
+        public void Time(Action action)
+        {
+            Time(action, null);
+        }
 
         /// <inheritdoc />
-        public T Time<T>(Func<T> action) { return Time(action, null); }
+        public T Time<T>(Func<T> action)
+        {
+            return Time(action, null);
+        }
     }
 }

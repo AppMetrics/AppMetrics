@@ -61,7 +61,9 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                 Constants.ReservoirSampling.DefaultSampleSize,
                 Constants.ReservoirSampling.DefaultExponentialDecayFactor,
                 new StopwatchClock(),
-                new DefaultTaskScheduler()) { }
+                new DefaultTaskScheduler())
+        {
+        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultForwardDecayingReservoir" /> class.
@@ -76,7 +78,9 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         ///     value the more biased the reservoir will be towards newer values.
         /// </param>
         public DefaultForwardDecayingReservoir(int sampleSize, double alpha)
-            : this(sampleSize, alpha, new StopwatchClock(), new DefaultTaskScheduler()) { }
+            : this(sampleSize, alpha, new StopwatchClock(), new DefaultTaskScheduler())
+        {
+        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultForwardDecayingReservoir" /> class.
@@ -106,11 +110,6 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         }
 
         /// <summary>
-        ///     Finalizes an instance of the <see cref="DefaultForwardDecayingReservoir" /> class.
-        /// </summary>
-        ~DefaultForwardDecayingReservoir() { Dispose(false); }
-
-        /// <summary>
         ///     Gets the size.
         /// </summary>
         /// <value>
@@ -124,7 +123,6 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -141,7 +139,9 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                 if (disposing)
                 {
                     // Free any other managed objects here.
-                    _rescaleScheduler?.Dispose();
+                    using (_rescaleScheduler)
+                    {
+                    }
                 }
             }
 
@@ -173,7 +173,10 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         }
 
         /// <inheritdoc />
-        public IReservoirSnapshot GetSnapshot() { return GetSnapshot(false); }
+        public IReservoirSnapshot GetSnapshot()
+        {
+            return GetSnapshot(false);
+        }
 
         /// <inheritdoc cref="IReservoir" />
         public void Reset()
@@ -194,10 +197,16 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         }
 
         /// <inheritdoc cref="IReservoir" />
-        public void Update(long value, string userValue) { Update(value, userValue, _clock.Seconds); }
+        public void Update(long value, string userValue)
+        {
+            Update(value, userValue, _clock.Seconds);
+        }
 
         /// <inheritdoc />
-        public void Update(long value) { Update(value, null); }
+        public void Update(long value)
+        {
+            Update(value, null);
+        }
 
         /// <summary>
         ///     A common feature of the above techniques—indeed, the key technique that

@@ -28,13 +28,7 @@ namespace App.Metrics.Scheduling
             _token = new CancellationTokenSource();
         }
 
-        ~DefaultTaskScheduler() { Dispose(false); }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+        public void Dispose() { Dispose(true); }
 
         public void Dispose(bool disposing)
         {

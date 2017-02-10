@@ -12,9 +12,9 @@ Job=Core  Runtime=Core
 ```
                                 Method |      Mean |    StdDev | Allocated |
 -------------------------------------- |---------- |---------- |---------- |
-                        TimeAlgorithmR | 6.1533 us | 0.0185 us |     327 B |
-      TrackUsingAlgorithmRUsingContext | 6.1301 us | 0.0233 us |     327 B |
-             TrackUsingForwardDecaying | 6.1095 us | 0.0646 us |     391 B |
- TrackUsingForwardDecayingUsingContext | 6.4140 us | 0.0470 us |     327 B |
-               TrackUsingSlidingWindow | 6.1876 us | 0.0458 us |     327 B |
-   TrackUsingSlidingWindowUsingContext | 6.0729 us | 0.0764 us |     327 B |
+                        TimeAlgorithmR | 6.3008 us | 0.2169 us |     327 B |
+      TrackUsingAlgorithmRUsingContext | 6.2410 us | 0.1050 us |     327 B |
+             TrackUsingForwardDecaying | 6.0495 us | 0.0328 us |     391 B |
+ TrackUsingForwardDecayingUsingContext | 6.3460 us | 0.0579 us |     327 B |
+               TrackUsingSlidingWindow | 6.0614 us | 0.0171 us |     327 B |
+   TrackUsingSlidingWindowUsingContext | 6.0760 us | 0.0425 us |     327 B |
