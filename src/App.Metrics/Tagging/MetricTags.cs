@@ -10,9 +10,6 @@ namespace App.Metrics.Tagging
 {
     public struct MetricTags : IEquatable<MetricTags>
     {
-        public static readonly MetricTags Empty = new MetricTags(EmptyArray, EmptyArray);
-
-        private static readonly string[] EmptyArray = new string[0];
         private readonly string _key;
         private readonly string[] _keys;
         private readonly string _value;
@@ -48,32 +45,39 @@ namespace App.Metrics.Tagging
 
         public MetricTags(string[] keys, string[] values)
         {
-            if (keys != null && values != null)
+            if (keys == null)
             {
-                if (keys.Length != values.Length)
-                {
-                    throw new InvalidOperationException($"{nameof(keys)} length must be equal to {nameof(values)} length");
-                }
+                throw new ArgumentNullException(nameof(keys), "keys cannot be null");
+            }
 
-                if (keys.Any(t => t == null))
-                {
-                    throw new ArgumentNullException(nameof(keys), "tag items cannot be null");
-                }
+            if (values == null)
+            {
+                throw new ArgumentNullException(nameof(keys), "values cannot be null");
+            }
 
-                if (values.Any(t => t == null))
-                {
-                    throw new ArgumentNullException(nameof(values), "value items cannot be null");
-                }
+            if (keys.Length != values.Length)
+            {
+                throw new InvalidOperationException($"{nameof(keys)} length must be equal to {nameof(values)} length");
+            }
 
-                if (keys.Any(string.IsNullOrWhiteSpace))
-                {
-                    throw new ArgumentNullException(nameof(keys), "tag items cannot be empty");
-                }
+            if (keys.Any(t => t == null))
+            {
+                throw new InvalidOperationException($"{nameof(keys)} keys cannot contains nulls");
+            }
 
-                if (values.Any(string.IsNullOrWhiteSpace))
-                {
-                    throw new ArgumentNullException(nameof(values), "value items cannot be empty");
-                }
+            if (values.Any(t => t == null))
+            {
+                throw new InvalidOperationException($"{nameof(values)} values cannot contains nulls");
+            }
+
+            if (keys.Any(string.IsNullOrWhiteSpace))
+            {
+                throw new InvalidOperationException($"{nameof(keys)} keys cannot contains empty or whitespace strings");
+            }
+
+            if (values.Any(string.IsNullOrWhiteSpace))
+            {
+                throw new InvalidOperationException($"{nameof(values)} keys cannot contains empty or whitespace strings");
             }
 
             _key = null;
@@ -126,7 +130,7 @@ namespace App.Metrics.Tagging
 
             for (var i = 0; i < count; i++)
             {
-                if (left.Keys[i] != right.Keys[i])
+                if (left.Keys[i] != right.Keys[i] || left.Values[i] != right.Values[i])
                 {
                     return false;
                 }
@@ -211,5 +215,10 @@ namespace App.Metrics.Tagging
 
         /// <inheritdoc />
         public bool Equals(MetricTags other) { return Equals(this, other); }
+
+#pragma warning disable SA1202
+        private static readonly string[] EmptyArray = new string[0];
+        public static readonly MetricTags Empty = new MetricTags(EmptyArray, EmptyArray);
+#pragma warning restore SA1202
     }
 }
