@@ -41,6 +41,14 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
+        public void can_tostring_set_item_with_single_value()
+        {
+            var setItem = new MetricSetItem("key", "value");
+
+            setItem.ToString().Should().Be("key:value");
+        }
+
+        [Fact]
         public void can_tostring_set_item_with_zero_count_should_be_null()
         {
             var keys = new string[0];

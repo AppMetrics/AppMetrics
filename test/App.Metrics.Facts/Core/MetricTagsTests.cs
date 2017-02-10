@@ -63,11 +63,9 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void can_get_tags_from_set_item_when_item_is_missing()
         {
-            var expectedTags = MetricTags.Empty;
-
             var tag = MetricTags.FromSetItemString(string.Empty);
 
-            Assert.Equal(expectedTags.ToString(), tag.ToString());
+            Assert.Equal(tag, MetricTags.Empty);
         }
 
         [Fact]
@@ -116,10 +114,141 @@ namespace App.Metrics.Facts.Core
             context.Timers.Single().Tags.ShouldBeEquivalentTo(tags);
         }
 
+        [Fact]
+        public void count_should_be_one_when_single_key_value()
+        {
+            var tags = new MetricTags("key", "value");
+
+            var count = tags.Count;
+
+            count.Should().Be(1);
+        }
+
+        [Fact]
+        public void count_should_total_key_values()
+        {
+            var keys = new[] { "key1", "key2" };
+            var values = new[] { "machine-1", "machine-2" };
+
+            var tags = new MetricTags(keys, values);
+
+            var count = tags.Count;
+
+            count.Should().Be(2);
+        }
+
         public void Dispose() { Dispose(true); }
 
         [Fact]
+        public void keys_and_values_be_same_length()
+        {
+            var keys = new[] { "key1", "key2" };
+            var values = new[] { "machine-1" };
+
+            Action setup = () =>
+            {
+                var tags = new MetricTags(keys, values);
+            };
+
+            setup.ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void keys_cannot_be_null()
+        {
+            var values = new[] { "machine-1" };
+
+            Action setup = () =>
+            {
+                var tags = new MetricTags(null, values);
+            };
+
+            setup.ShouldThrow<ArgumentNullException>();
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void keys_cannot_contain_empty_strings_or_whitespace(string key)
+        {
+            var keys = new[] { key };
+            var values = new[] { "machine-1" };
+
+            Action setup = () =>
+            {
+                var tags = new MetricTags(keys, values);
+            };
+
+            setup.ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void keys_cannot_contain_nulls()
+        {
+            var keys = new[] { null, "key2" };
+            var values = new[] { "machine-1", "machine-2" };
+
+            Action setup = () =>
+            {
+                var tags = new MetricTags(keys, values);
+            };
+
+            setup.ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void tags_with_different_keys_should_not_be_equal_with_operator()
+        {
+            var keysLeft = new[] { "key1", "key2" };
+            var keysRight = new[] { "key1", "key3" };
+            var values = new[] { "machine-1", "machine-2" };
+
+            var left = new MetricTags(keysLeft, values);
+            var right = new MetricTags(keysRight, values);
+
+            Assert.True(left != right);
+        }
+
+        [Fact]
+        public void tags_with_different_values_should_not_be_equal()
+        {
+            var keys = new[] { "key1", "key2" };
+            var valuesLeft = new[] { "machine-1", "machine-2" };
+            var valuesRight = new[] { "machine-1", "machine-3" };
+
+            var left = new MetricTags(keys, valuesLeft);
+            var right = new MetricTags(keys, valuesRight);
+
+            left.Equals(right).Should().Be(false);
+        }
+
+        [Fact]
+        public void tags_with_same_key_values_should_be_equal()
+        {
+            var keys = new[] { "key1", "key2" };
+            var values = new[] { "machine-1", "machine-2" };
+
+            var left = new MetricTags(keys, values);
+            var right = new MetricTags(keys, values);
+
+            left.Equals(right).Should().Be(true);
+        }
+
+        [Fact]
+        public void tags_with_same_key_values_should_be_equal_with_operator()
+        {
+            var keys = new[] { "key1", "key2" };
+            var values = new[] { "machine-1", "machine-2" };
+
+            var left = new MetricTags(keys, values);
+            var right = new MetricTags(keys, values);
+
+            Assert.True(left == right);
+        }
+
+        [Fact]
         public void when_creating_tags_from_set_item_and_only_one_set_item_exists_without_a_colon_use_the_single_value_as_the_tag_value_with_key_item(
+
         )
         {
             var tags = MetricTags.FromSetItemString("machine-1|machine-2");

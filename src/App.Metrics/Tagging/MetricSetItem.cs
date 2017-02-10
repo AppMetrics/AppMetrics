@@ -2,7 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Counter;
 using App.Metrics.Infrastructure;
@@ -27,9 +26,6 @@ namespace App.Metrics.Tagging
     /// </summary>
     public struct MetricSetItem : IEquatable<MetricSetItem>
     {
-        public static readonly MetricSetItem Empty = new MetricSetItem(EmptyArray, EmptyArray);
-
-        private static readonly string[] EmptyArray = new string[0];
         private readonly string _key;
         private readonly string[] _keys;
         private readonly string _value;
@@ -222,5 +218,10 @@ namespace App.Metrics.Tagging
 
         /// <inheritdoc />
         public bool Equals(MetricSetItem other) { return Equals(this, other); }
+
+#pragma warning disable SA1202
+        private static readonly string[] EmptyArray = new string[0];
+        public static readonly MetricSetItem Empty = new MetricSetItem(EmptyArray, EmptyArray);
+#pragma warning restore SA1202
     }
 }
