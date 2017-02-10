@@ -95,7 +95,7 @@ namespace App.Metrics.Meter
 
             public double Percent { get; }
 
-            public MetricTags Tags => new MetricTags().FromSetItemString(Item);
+            public MetricTags Tags => MetricTags.FromSetItemString(Item);
 
             public MeterValue Value { get; }
 

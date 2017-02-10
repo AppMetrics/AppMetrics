@@ -12,4 +12,4 @@ Job=Core  Runtime=Core  Allocated=0 B
 ```
  Method |      Mean |    StdDev |
 ------- |---------- |---------- |
- Update | 2.6429 us | 0.0833 us |
+ Update | 2.5794 us | 0.0941 us |

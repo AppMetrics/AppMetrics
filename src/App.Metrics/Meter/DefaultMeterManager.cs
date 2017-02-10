@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-using System;
 using App.Metrics.Core.Options;
 using App.Metrics.Meter.Abstractions;
 using App.Metrics.Registry.Abstractions;
@@ -47,15 +46,15 @@ namespace App.Metrics.Meter
         }
 
         /// <inheritdoc />
-        public void Mark(MeterOptions options, Func<MetricItem> itemSetup)
+        public void Mark(MeterOptions options, MetricSetItem itemSetup)
         {
-            _registry.Meter(options, () => _meterBuilder.Build(_clock)).Mark(itemSetup());
+            _registry.Meter(options, () => _meterBuilder.Build(_clock)).Mark(itemSetup);
         }
 
         /// <inheritdoc />
-        public void Mark(MeterOptions options, long amount, Func<MetricItem> itemSetup)
+        public void Mark(MeterOptions options, long amount, MetricSetItem itemSetup)
         {
-            _registry.Meter(options, () => _meterBuilder.Build(_clock)).Mark(itemSetup(), amount);
+            _registry.Meter(options, () => _meterBuilder.Build(_clock)).Mark(itemSetup, amount);
         }
 
         /// <inheritdoc />

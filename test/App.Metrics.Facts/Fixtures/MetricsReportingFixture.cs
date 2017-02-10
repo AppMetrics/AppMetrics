@@ -79,14 +79,14 @@ namespace App.Metrics.Facts.Fixtures
                                  {
                                      Name = "test_counter",
                                      MeasurementUnit = Unit.Requests,
-                                     Tags = new MetricTags().With("tag1", "value")
+                                     Tags = new MetricTags("tag1", "value")
                                  };
 
             var meterOptions = new MeterOptions
                                {
                                    Name = "test_meter",
                                    MeasurementUnit = Unit.None,
-                                   Tags = new MetricTags().With("tag2", "value")
+                                   Tags = new MetricTags("tag2", "value")
                                };
 
             var timerOptions = new TimerOptions

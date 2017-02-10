@@ -35,23 +35,23 @@ namespace App.Metrics.Meter.Abstractions
         /// <summary>
         ///     Mark the occurrence of an event for an item in a set.
         ///     The total rate of the event is updated, but the meter will also keep track and update a specific rate for each
-        ///     <paramref name="item" /> registered.
+        ///     <paramref name="setItem" /> registered.
         ///     The meter value will contain the total rate and for each registered item the specific rate and percentage of total
         ///     count.
         /// </summary>
-        /// <param name="item">Item from the set for which to record the event.</param>
-        void Mark(MetricItem item);
+        /// <param name="setItem">Item from the set for which to record the event.</param>
+        void Mark(MetricSetItem setItem);
 
         /// <summary>
         ///     Mark the occurrence of an event for an item in a set.
         ///     The total rate of the event is updated, but the meter will also keep track and update a specific rate for each
-        ///     <paramref name="item" /> registered.
+        ///     <paramref name="setItem" /> registered.
         ///     The meter value will contain the total rate and for each registered item the specific rate and percentage of total
         ///     count.
         /// </summary>
-        /// <param name="item">Item from the set for which to record the event.</param>
+        /// <param name="setItem">Item from the set for which to record the event.</param>
         /// <param name="amount">The amount to mark the meter.</param>
-        void Mark(MetricItem item, long amount);
+        void Mark(MetricSetItem setItem, long amount);
 
         /// <summary>
         ///     Mark the occurrence of <paramref name="amount" /> events.

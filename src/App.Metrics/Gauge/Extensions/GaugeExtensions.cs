@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Core;
 using App.Metrics.Core.Abstractions;
+using App.Metrics.Tagging;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics.Gauge
@@ -26,15 +27,16 @@ namespace App.Metrics.Gauge
                        Name = source.Name,
                        Value = source.Value,
                        Unit = source.Unit.Name,
-                       Tags = source.Tags
+                       Tags = source.Tags.ToDictionary()
                    };
         }
 
         public static GaugeValueSource ToMetricValueSource(this GaugeMetric source)
         {
+            var tags = source.Tags.FromDictionary();
             return source.Value.HasValue
-                ? new GaugeValueSource(source.Name, ConstantValue.Provider(source.Value.Value), source.Unit, source.Tags)
-                : new GaugeValueSource(source.Name, null, source.Unit, source.Tags);
+                ? new GaugeValueSource(source.Name, ConstantValue.Provider(source.Value.Value), source.Unit, tags)
+                : new GaugeValueSource(source.Name, null, source.Unit, tags);
         }
 
         public static IEnumerable<GaugeValueSource> ToMetricValueSource(this IEnumerable<GaugeMetric> source)

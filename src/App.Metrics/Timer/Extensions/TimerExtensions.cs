@@ -8,6 +8,7 @@ using App.Metrics.Core;
 using App.Metrics.Core.Abstractions;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
+using App.Metrics.Tagging;
 using App.Metrics.Timer.Abstractions;
 
 // ReSharper disable CheckNamespace
@@ -37,15 +38,15 @@ namespace App.Metrics.Timer
         private static readonly MeterValue EmptyMeter = new MeterValue(0, 0.0, 0.0, 0.0, 0.0, TimeUnit.Seconds);
         private static readonly TimerValue EmptyTimer = new TimerValue(EmptyMeter, EmptyHistogram, 0, 0, TimeUnit.Milliseconds);
 
+        public static TimerValue GetTimerValue(this IProvideMetricValues valueService, string context, string metricName)
+        {
+            return valueService.GetForContext(context).Timers.ValueFor(context, metricName);
+        }
+
         public static TimerValue GetValueOrDefault(this ITimer metric)
         {
             var implementation = metric as ITimerMetric;
             return implementation != null ? implementation.Value : EmptyTimer;
-        }
-
-        public static TimerValue GetTimerValue(this IProvideMetricValues valueService, string context, string metricName)
-        {
-            return valueService.GetForContext(context).Timers.ValueFor(context, metricName);
         }
 
         public static IEnumerable<TimerMetric> ToMetric(this IEnumerable<TimerValueSource> source) { return source.Select(ToMetric); }
@@ -90,7 +91,7 @@ namespace App.Metrics.Timer
                        Unit = source.Unit.Name,
                        RateUnit = source.RateUnit.Unit(),
                        DurationUnit = source.DurationUnit.Unit(),
-                       Tags = source.Tags
+                       Tags = source.Tags.ToDictionary()
                    };
         }
 
@@ -127,7 +128,13 @@ namespace App.Metrics.Timer
 
             var timerValue = new TimerValue(rateValue, histogramValue, source.ActiveSessions, source.TotalTime, durationUnit);
 
-            return new TimerValueSource(source.Name, ConstantValue.Provider(timerValue), source.Unit, rateUnit, durationUnit, source.Tags);
+            return new TimerValueSource(
+                source.Name,
+                ConstantValue.Provider(timerValue),
+                source.Unit,
+                rateUnit,
+                durationUnit,
+                source.Tags.FromDictionary());
         }
 
         public static IEnumerable<TimerValueSource> ToMetricValueSource(this IEnumerable<TimerMetric> source)

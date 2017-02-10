@@ -29,7 +29,7 @@ namespace App.Metrics.Benchmarks.Facts
                 {
                     _fixture.Metrics.Measure.Meter.Mark(
                         MetricOptions.Meter.OptionsWithMetricItem,
-                        () => new MetricItem("key", "value"));
+                        new MetricSetItem("key", "value"));
                 });
         }
 

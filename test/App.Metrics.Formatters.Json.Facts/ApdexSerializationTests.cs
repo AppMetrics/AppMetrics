@@ -41,8 +41,8 @@ namespace App.Metrics.Formatters.Json.Facts
             result.Value.Satisfied.Should().Be(_apdex.Value.Satisfied);
             result.Value.Tolerating.Should().Be(_apdex.Value.Tolerating);
             result.Value.Frustrating.Should().Be(_apdex.Value.Frustrating);
-            result.Tags.Should().ContainKeys(_apdex.Tags.Select(t => t.Key));
-            result.Tags.Should().ContainValues(_apdex.Tags.Select(t => t.Value));
+            result.Tags.Keys.Should().Contain(_apdex.Tags.Keys.ToArray());
+            result.Tags.Values.Should().Contain(_apdex.Tags.Values.ToArray());
         }
 
         [Fact]

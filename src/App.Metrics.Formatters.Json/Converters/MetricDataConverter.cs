@@ -3,7 +3,6 @@
 
 using System;
 using App.Metrics.Core;
-using App.Metrics.Data;
 using App.Metrics.Extensions;
 using Newtonsoft.Json;
 

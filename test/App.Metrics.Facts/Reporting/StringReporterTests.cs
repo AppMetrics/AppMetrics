@@ -57,7 +57,7 @@ namespace App.Metrics.Facts.Reporting
 
             metric.Track(1000);
 
-            sr.ReportMetric("test", new ApdexValueSource("apdex_name", metric, MetricTags.None));
+            sr.ReportMetric("test", new ApdexValueSource("apdex_name", metric, MetricTags.Empty));
 
             AssertReportResult(sr.Result, expected);
         }
@@ -68,7 +68,7 @@ namespace App.Metrics.Facts.Reporting
             var expected = StringReporterSamples.Counters.ExtractStringReporterSampleFromResourceFile();
             var sr = new StringReporter();
 
-            sr.ReportMetric("test", new CounterValueSource("counter_name", new DefaultCounterMetric(), Unit.None, MetricTags.None));
+            sr.ReportMetric("test", new CounterValueSource("counter_name", new DefaultCounterMetric(), Unit.None, MetricTags.Empty));
 
             AssertReportResult(sr.Result, expected);
         }
@@ -91,7 +91,7 @@ namespace App.Metrics.Facts.Reporting
             var expected = StringReporterSamples.Gauges.ExtractStringReporterSampleFromResourceFile();
             var sr = new StringReporter();
 
-            sr.ReportMetric("test", new GaugeValueSource("gauge_name", new FunctionGauge(() => 2), Unit.None, MetricTags.None));
+            sr.ReportMetric("test", new GaugeValueSource("gauge_name", new FunctionGauge(() => 2), Unit.None, MetricTags.Empty));
 
             AssertReportResult(sr.Result, expected);
         }
@@ -134,7 +134,7 @@ namespace App.Metrics.Facts.Reporting
             metric.Update(1000, "value1");
             metric.Update(2000, "value2");
 
-            sr.ReportMetric("test", new HistogramValueSource("histogram_name", metric, Unit.None, MetricTags.None));
+            sr.ReportMetric("test", new HistogramValueSource("histogram_name", metric, Unit.None, MetricTags.Empty));
 
             AssertReportResult(sr.Result, expected);
         }
@@ -148,7 +148,7 @@ namespace App.Metrics.Facts.Reporting
             var metric = new DefaultMeterMetric(clock, new TestTaskScheduler(clock));
             metric.Mark(1);
 
-            sr.ReportMetric("test", new MeterValueSource("meter_name", metric, Unit.None, TimeUnit.Milliseconds, MetricTags.None));
+            sr.ReportMetric("test", new MeterValueSource("meter_name", metric, Unit.None, TimeUnit.Milliseconds, MetricTags.Empty));
 
             AssertReportResult(sr.Result, expected);
         }
@@ -173,7 +173,7 @@ namespace App.Metrics.Facts.Reporting
                     Unit.None,
                     TimeUnit.Milliseconds,
                     TimeUnit.Milliseconds,
-                    MetricTags.None));
+                    MetricTags.Empty));
 
             AssertReportResult(sr.Result, expected);
         }

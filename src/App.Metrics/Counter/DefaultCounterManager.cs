@@ -32,15 +32,15 @@ namespace App.Metrics.Counter
         }
 
         /// <inheritdoc />
-        public void Decrement(CounterOptions options, string item)
+        public void Decrement(CounterOptions options, string setItem)
         {
-            _registry.Counter(options, () => _counterBuilder.Build()).Decrement(item);
+            _registry.Counter(options, () => _counterBuilder.Build()).Decrement(setItem);
         }
 
         /// <inheritdoc />
-        public void Decrement(CounterOptions options, long amount, string item)
+        public void Decrement(CounterOptions options, long amount, string setItem)
         {
-            _registry.Counter(options, () => _counterBuilder.Build()).Decrement(item, amount);
+            _registry.Counter(options, () => _counterBuilder.Build()).Decrement(setItem, amount);
         }
 
         /// <inheritdoc />
@@ -50,15 +50,15 @@ namespace App.Metrics.Counter
         }
 
         /// <inheritdoc />
-        public void Decrement(CounterOptions options, Func<MetricItem> itemSetup)
+        public void Decrement(CounterOptions options, MetricSetItem itemSetup)
         {
-            _registry.Counter(options, () => _counterBuilder.Build()).Decrement(itemSetup());
+            _registry.Counter(options, () => _counterBuilder.Build()).Decrement(itemSetup);
         }
 
         /// <inheritdoc />
-        public void Decrement(CounterOptions options, long amount, Func<MetricItem> itemSetup)
+        public void Decrement(CounterOptions options, long amount, MetricSetItem itemSetup)
         {
-            _registry.Counter(options, () => _counterBuilder.Build()).Decrement(itemSetup(), amount);
+            _registry.Counter(options, () => _counterBuilder.Build()).Decrement(itemSetup, amount);
         }
 
         /// <inheritdoc />
@@ -74,27 +74,27 @@ namespace App.Metrics.Counter
         }
 
         /// <inheritdoc />
-        public void Increment(CounterOptions options, string item)
+        public void Increment(CounterOptions options, string setItem)
         {
-            _registry.Counter(options, () => _counterBuilder.Build()).Increment(item);
+            _registry.Counter(options, () => _counterBuilder.Build()).Increment(setItem);
         }
 
         /// <inheritdoc />
-        public void Increment(CounterOptions options, long amount, string item)
+        public void Increment(CounterOptions options, long amount, string setItem)
         {
-            _registry.Counter(options, () => _counterBuilder.Build()).Increment(item, amount);
+            _registry.Counter(options, () => _counterBuilder.Build()).Increment(setItem, amount);
         }
 
         /// <inheritdoc />
-        public void Increment(CounterOptions options, Func<MetricItem> itemSetup)
+        public void Increment(CounterOptions options, MetricSetItem setItem)
         {
-            _registry.Counter(options, () => _counterBuilder.Build()).Increment(itemSetup());
+            _registry.Counter(options, () => _counterBuilder.Build()).Increment(setItem);
         }
 
         /// <inheritdoc />
-        public void Increment(CounterOptions options, long amount, Func<MetricItem> itemSetup)
+        public void Increment(CounterOptions options, long amount, MetricSetItem setItem)
         {
-            _registry.Counter(options, () => _counterBuilder.Build()).Increment(itemSetup(), amount);
+            _registry.Counter(options, () => _counterBuilder.Build()).Increment(setItem, amount);
         }
     }
 }

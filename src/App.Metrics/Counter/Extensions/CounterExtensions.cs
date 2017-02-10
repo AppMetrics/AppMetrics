@@ -7,6 +7,7 @@ using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Core;
 using App.Metrics.Core.Abstractions;
 using App.Metrics.Counter.Abstractions;
+using App.Metrics.Tagging;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics.Counter
@@ -43,7 +44,7 @@ namespace App.Metrics.Counter
                                        Percent = item.Percent,
                                        Item = item.Item
                                    }).ToArray(),
-                       Tags = source.Tags
+                       Tags = source.Tags.ToDictionary()
                    };
         }
 
@@ -51,7 +52,7 @@ namespace App.Metrics.Counter
         {
             var items = source.Items.Select(i => new CounterValue.SetItem(i.Item, i.Count, i.Percent)).ToArray();
             var counterValue = new CounterValue(source.Count, items);
-            return new CounterValueSource(source.Name, ConstantValue.Provider(counterValue), source.Unit, source.Tags);
+            return new CounterValueSource(source.Name, ConstantValue.Provider(counterValue), source.Unit, source.Tags.FromDictionary());
         }
 
         public static IEnumerable<CounterValueSource> ToMetricValueSource(this IEnumerable<CounterMetric> source)

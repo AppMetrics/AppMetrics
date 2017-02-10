@@ -48,9 +48,7 @@ namespace App.Metrics.Registry.Internal
             new MetricMetaCatalog<ITimer, TimerValueSource, TimerValue>();
 
         public DefaultMetricContextRegistry(string context)
-            : this(context, new GlobalMetricTags())
-        {
-        }
+            : this(context, new GlobalMetricTags()) { }
 
         public DefaultMetricContextRegistry(string context, GlobalMetricTags globalTags)
         {
@@ -179,10 +177,7 @@ namespace App.Metrics.Registry.Internal
                 });
         }
 
-        private MetricTags AllTags(MetricTags metricTags)
-        {
-            return new MetricTags(_globalTags.Concat(metricTags).ToDictionary(t => t.Key, t => t.Value));
-        }
+        private MetricTags AllTags(MetricTags metricTags) { return MetricTags.Concat(metricTags, _globalTags); }
 
         private sealed class MetricMetaCatalog<TMetric, TValue, TMetricValue>
             where TValue : MetricValueSourceBase<TMetricValue>

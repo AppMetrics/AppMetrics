@@ -41,8 +41,8 @@ namespace App.Metrics.Formatters.Json.Facts
             result.Value.OneMinuteRate.Should().Be(_meter.Value.OneMinuteRate);
             result.Value.MeanRate.Should().Be(_meter.Value.MeanRate);
             result.Value.RateUnit.Should().Be(_meter.Value.RateUnit);
-            result.Tags.Should().ContainKeys(_meter.Tags.Select(t => t.Key));
-            result.Tags.Should().ContainValues(_meter.Tags.Select(t => t.Value));
+            result.Tags.Keys.Should().Contain(_meter.Tags.Keys.ToArray());
+            result.Tags.Values.Should().Contain(_meter.Tags.Values.ToArray());
         }
 
         [Fact]
