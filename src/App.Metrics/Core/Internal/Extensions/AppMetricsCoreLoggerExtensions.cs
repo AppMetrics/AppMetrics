@@ -18,7 +18,7 @@ namespace Microsoft.Extensions.Logging
         static AppMetricsCoreLoggerExtensions()
         {
             _healthCheckRegistered = LoggerMessage.Define<string>(
-                LogLevel.Information,
+                LogLevel.Trace,
                 AppMetricsEventIds.HealthChecks.Registration,
                 $"Health Check Registered: {{name}}");
             _healthGetStatusExecuted = LoggerMessage.Define<double, int>(
@@ -37,14 +37,14 @@ namespace Microsoft.Extensions.Logging
                 $"Executed {nameof(HealthStatus)}, 0 health check results.");
         }
 
-        internal static void GettingMetricsData(this ILogger logger) { logger.LogDebug(AppMetricsEventIds.Metrics.Data, "GettingMetricsData"); }
+        internal static void GettingMetricsData(this ILogger logger) { logger.LogTrace(AppMetricsEventIds.Metrics.Data, "GettingMetricsData"); }
 
         internal static void HealthCheckGetStatusExecuted(
             this ILogger logger,
             HealthStatus healthStatus,
             long startTimestamp)
         {
-            if (!logger.IsEnabled(LogLevel.Information))
+            if (!logger.IsEnabled(LogLevel.Trace))
             {
                 return;
             }
@@ -87,16 +87,16 @@ namespace Microsoft.Extensions.Logging
 
         internal static void HealthCheckGetStatusExecuting(this ILogger logger)
         {
-            logger.LogDebug(AppMetricsEventIds.HealthChecks.Status, "Executing HealthCheck Get Status");
+            logger.LogTrace(AppMetricsEventIds.HealthChecks.Status, "Executing HealthCheck Get Status");
         }
 
         internal static void HealthCheckRegistered(this ILogger logger, string name) { _healthCheckRegistered(logger, name, null); }
 
-        internal static void RetrievedMetricsData(this ILogger logger) { logger.LogDebug(AppMetricsEventIds.Metrics.Data, "RetrievedMetricsData"); }
+        internal static void RetrievedMetricsData(this ILogger logger) { logger.LogTrace(AppMetricsEventIds.Metrics.Data, "RetrievedMetricsData"); }
 
         private static class AppMetricsEventIds
         {
-            private const int MetricsStart = 9999;
+            private const int MetricsStart = 2000;
 
             public static class HealthChecks
             {
