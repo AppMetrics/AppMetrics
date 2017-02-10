@@ -92,6 +92,33 @@ namespace App.Metrics.Tagging
 
         public string[] Values => _value != null ? new[] { _value } : _values;
 
+        public static MetricTags Concat(MetricTags tags1, MetricTags tags2)
+        {
+            var count1 = tags1.Count;
+            var count2 = tags2.Count;
+
+            if (count1 == 0)
+            {
+                return tags2;
+            }
+
+            if (count2 == 0)
+            {
+                return tags1;
+            }
+
+            var combinedKeys = new string[count1 + count2];
+            var combinedValues = new string[count1 + count2];
+
+            tags1.Keys.CopyTo(combinedKeys, 0);
+            tags2.Keys.CopyTo(combinedKeys, count1);
+
+            tags1.Values.CopyTo(combinedValues, 0);
+            tags2.Values.CopyTo(combinedValues, count1);
+
+            return new MetricTags(combinedKeys, combinedValues);
+        }
+
         public static MetricTags Concat(MetricTags tags1, Dictionary<string, string> tags2)
         {
             var count1 = tags1.Count;
@@ -214,7 +241,10 @@ namespace App.Metrics.Tagging
         }
 
         /// <inheritdoc />
-        public bool Equals(MetricTags other) { return Equals(this, other); }
+        public bool Equals(MetricTags other)
+        {
+            return Equals(this, other);
+        }
 
 #pragma warning disable SA1202
         private static readonly string[] EmptyArray = new string[0];

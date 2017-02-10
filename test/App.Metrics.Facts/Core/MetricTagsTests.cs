@@ -38,6 +38,19 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
+        public void can_concat_tags()
+        {
+            var tags1 = new MetricTags("tag1", "value1");
+            var tags2 = new MetricTags("tag2", "value2");
+
+            var result = MetricTags.Concat(tags1, tags2);
+
+            result.Keys.Should().Equal(new[] { "tag1", "tag2" });
+            result.Values.Should().Equal(new[] { "value1", "value2" });
+        }
+
+
+        [Fact]
         public void can_get_tags_from_set_item_string()
         {
             var tags = new[] { "item", "item" };
