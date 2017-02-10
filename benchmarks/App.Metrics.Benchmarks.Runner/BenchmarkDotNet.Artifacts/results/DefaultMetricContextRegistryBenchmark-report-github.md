@@ -10,11 +10,11 @@ dotnet cli version=1.0.0-preview2-1-003177
 Job=Core  Runtime=Core  Allocated=191 B  
 
 ```
-                       Method |       Mean |    StdErr |    StdDev |  Gen 0 |
------------------------------ |----------- |---------- |---------- |------- |
-     ResolveApdexFromRegistry | 77.9102 ns | 0.7275 ns | 2.7220 ns | 0.0424 |
-   ResolveCounterFromRegistry | 78.5771 ns | 1.0873 ns | 4.2112 ns | 0.0436 |
-     ResolveGaugeFromRegistry | 75.2492 ns | 0.2946 ns | 1.1410 ns | 0.0424 |
- ResolveHistogramFromRegistry | 81.3198 ns | 0.2382 ns | 0.8913 ns | 0.0431 |
-     ResolveMeterFromRegistry | 77.3595 ns | 0.1044 ns | 0.4044 ns | 0.0425 |
-     ResolveTimerFromRegistry | 74.9087 ns | 0.0729 ns | 0.2728 ns | 0.0423 |
+                       Method |       Mean |    StdDev |  Gen 0 |
+----------------------------- |----------- |---------- |------- |
+     ResolveApdexFromRegistry | 77.6779 ns | 0.6714 ns | 0.0423 |
+   ResolveCounterFromRegistry | 78.5300 ns | 0.4172 ns | 0.0423 |
+     ResolveGaugeFromRegistry | 76.2272 ns | 1.6039 ns | 0.0425 |
+ ResolveHistogramFromRegistry | 79.3706 ns | 0.5326 ns | 0.0426 |
+     ResolveMeterFromRegistry | 76.2006 ns | 0.4413 ns | 0.0422 |
+     ResolveTimerFromRegistry | 77.0501 ns | 0.9058 ns | 0.0424 |

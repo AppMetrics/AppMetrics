@@ -27,7 +27,9 @@ namespace App.Metrics.Meter
         /// </summary>
         /// <param name="systemClock">The system clock.</param>
         public DefaultMeterMetric(IClock systemClock)
-            : this(systemClock, new DefaultTaskScheduler()) { }
+            : this(systemClock, new DefaultTaskScheduler())
+        {
+        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultMeterMetric" /> class.
@@ -41,8 +43,6 @@ namespace App.Metrics.Meter
             _tickScheduler = scheduler;
             _tickScheduler.Interval(TickInterval, TaskCreationOptions.LongRunning, Tick);
         }
-
-        ~DefaultMeterMetric() { Dispose(false); }
 
         /// <inheritdoc />
         public MeterValue Value => GetValue();
@@ -114,16 +114,28 @@ namespace App.Metrics.Meter
         }
 
         /// <inheritdoc />
-        public void Mark() { Mark(1L); }
+        public void Mark()
+        {
+            Mark(1L);
+        }
 
         /// <inheritdoc />
-        public void Mark(string item) { Mark(item, 1L); }
+        public void Mark(string item)
+        {
+            Mark(item, 1L);
+        }
 
         /// <inheritdoc />
-        public void Mark(MetricSetItem setItem) { Mark(setItem.ToString()); }
+        public void Mark(MetricSetItem setItem)
+        {
+            Mark(setItem.ToString());
+        }
 
         /// <inheritdoc />
-        public void Mark(MetricSetItem setItem, long amount) { Mark(setItem.ToString(), amount); }
+        public void Mark(MetricSetItem setItem, long amount)
+        {
+            Mark(setItem.ToString(), amount);
+        }
 
         /// <inheritdoc />
         public void Mark(string item, long amount)

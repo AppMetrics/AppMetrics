@@ -12,7 +12,7 @@ Job=Core  Runtime=Core
 ```
                               Method |        Mean |     StdDev |  Gen 0 | Allocated |
 ------------------------------------ |------------ |----------- |------- |---------- |
-                 DecrementMetricItem | 356.5641 ns |  4.3973 ns | 0.0610 |     303 B |
- DecrementMetricItemWithMulitpleTags | 764.4359 ns | 25.1468 ns | 0.1345 |     662 B |
-                 IncrementMetricItem | 355.5709 ns |  4.5915 ns | 0.0610 |     303 B |
- IncrementMetricItemWithMulitpleTags | 812.5405 ns |  7.2268 ns | 0.1106 |     662 B |
+                 DecrementMetricItem | 354.5642 ns |  1.8053 ns | 0.0603 |     303 B |
+ DecrementMetricItemWithMulitpleTags | 767.3976 ns | 24.6548 ns | 0.1325 |     662 B |
+                 IncrementMetricItem | 351.1309 ns |  4.2417 ns | 0.0635 |     303 B |
+ IncrementMetricItemWithMulitpleTags | 761.7331 ns | 24.8115 ns | 0.1340 |     662 B |

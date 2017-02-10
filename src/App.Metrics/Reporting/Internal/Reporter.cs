@@ -98,13 +98,15 @@ namespace App.Metrics.Reporting.Internal
                              };
         }
 
-        ~Reporter() { Dispose(false); }
-
         /// <inheritdoc />
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            if (_scheduler != null)
+            {
+                using (_scheduler)
+                {
+                }
+            }
         }
 
         public void RunReports(IMetrics context, CancellationToken token)
@@ -142,14 +144,6 @@ namespace App.Metrics.Reporting.Internal
             catch (ObjectDisposedException ex)
             {
                 _logger.ReportingDisposedDuringExecution(ex);
-            }
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _scheduler?.Dispose();
             }
         }
 

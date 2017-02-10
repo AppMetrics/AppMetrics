@@ -29,16 +29,12 @@ namespace App.Metrics.Histogram
             _reservoir = reservoir;
         }
 
-        [AppMetricsExcludeFromCodeCoverage]
-        ~DefaultHistogramMetric() { Dispose(false); }
-
         public HistogramValue Value => GetValue();
 
         [AppMetricsExcludeFromCodeCoverage]
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         [AppMetricsExcludeFromCodeCoverage]
@@ -49,6 +45,12 @@ namespace App.Metrics.Histogram
                 if (disposing)
                 {
                     // Free any other managed objects here.
+                    if (_reservoir.IsValueCreated)
+                    {
+                        using (_reservoir.Value as IDisposable)
+                        {
+                        }
+                    }
                 }
             }
 
