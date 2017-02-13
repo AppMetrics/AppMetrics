@@ -5,7 +5,7 @@ namespace App.Metrics.Abstractions.Serialization
 {
     public interface IHealthStatusSerializer
     {
-        T Deserialize<T>(string json);
+        T Deserialize<T>(string value);
 
         string Serialize<T>(T value);
     }

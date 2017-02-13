@@ -22,7 +22,7 @@ namespace App.Metrics.Formatters.Json.Serialization
 
         public MetricDataSerializer(JsonSerializerSettings jsonSerializerSettings) { _settings = jsonSerializerSettings; }
 
-        public virtual T Deserialize<T>(string json) { return JsonConvert.DeserializeObject<T>(json, _settings); }
+        public virtual T Deserialize<T>(string value) { return JsonConvert.DeserializeObject<T>(value, _settings); }
 
         public virtual string Serialize<T>(T value) { return JsonConvert.SerializeObject(value, _settings); }
     }

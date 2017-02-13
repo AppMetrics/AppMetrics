@@ -9,8 +9,8 @@ using App.Metrics.Histogram.Abstractions;
 namespace App.Metrics.Abstractions.MetricTypes
 {
     /// <summary>
-    ///     Provides access to a histgram metric implementation e.g. <see cref="HistogramMetric" />, allows custom histograms
-    ///     to be implemented
+    ///     Provides access to a histgram metric implementation e.g. <see cref="DefaultHistogramMetric" />, allows custom
+    ///     histograms to be implemented
     /// </summary>
     /// <seealso cref="IHistogram" />
     /// <seealso cref="IMetricValueProvider{T}" />

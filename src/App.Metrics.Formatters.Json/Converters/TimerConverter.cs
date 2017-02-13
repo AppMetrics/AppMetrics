@@ -15,14 +15,14 @@ namespace App.Metrics.Formatters.Json.Converters
         {
             var source = serializer.Deserialize<TimerMetric>(reader);
 
-            return source.ToMetricValueSource();
+            return source.FromSerializableMetric();
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             var source = (TimerValueSource)value;
 
-            var target = source.ToMetric();
+            var target = source.ToSerializableMetric();
 
             serializer.Serialize(writer, target);
         }

@@ -3,7 +3,7 @@
 
 using System;
 using App.Metrics.Core;
-using App.Metrics.Extensions;
+using App.Metrics.Formatters.Json.Extensions;
 using Newtonsoft.Json;
 
 namespace App.Metrics.Formatters.Json.Converters

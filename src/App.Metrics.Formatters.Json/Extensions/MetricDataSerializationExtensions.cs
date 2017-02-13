@@ -5,13 +5,13 @@ using System.Linq;
 using App.Metrics.Core;
 using App.Metrics.Infrastructure;
 
-namespace App.Metrics.Extensions
+namespace App.Metrics.Formatters.Json.Extensions
 {
-    public static class MetricDataExtensions
+    public static class MetricDataSerializationExtensions
     {
         public static MetricData ToMetric(this MetricsDataValueSource source)
         {
-            var jsonContexts = source.Contexts.ToMetric();
+            var jsonContexts = source.Contexts.ToSerializableMetric();
 
             return new MetricData
                    {
@@ -23,7 +23,7 @@ namespace App.Metrics.Extensions
 
         public static MetricsDataValueSource ToMetricValueSource(this MetricData source)
         {
-            var contexts = source.Contexts.ToMetricValueSource();
+            var contexts = source.Contexts.FromSerializableMetric();
 
             return new MetricsDataValueSource(source.Timestamp, new EnvironmentInfo(source.Environment), contexts);
         }
