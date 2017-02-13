@@ -43,14 +43,14 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
                 HttpRequestMetricsRegistry.ContextName,
                 metricName);
 
-            getMeterValue("GET api/test/bad Http Error Requests").Count.Should().Be(1);
-            getMeterValue("GET api/test/error Http Error Requests").Count.Should().Be(2);
-            getMeterValue("GET api/test/unauth Http Error Requests").Count.Should().Be(1);
+            getMeterValue("GET api/test/bad").Count.Should().Be(1);
+            getMeterValue("GET api/test/error").Count.Should().Be(2);
+            getMeterValue("GET api/test/unauth").Count.Should().Be(1);
             getMeterValue("Http Error Requests").Count.Should().Be(4);
             getMeterValue("Http Error Requests").
                 Items.Length.Should().
                 Be(3, "there are three endpoints which had an unsuccessful status code");
-            getMeterValue("GET api/test/bad Http Error Requests").Count.Should().Be(1);
+            getMeterValue("GET api/test/bad").Count.Should().Be(1);
             getMeterValue("Http Error Requests").Count.Should().Be(4);
             getTimerValue("Http Requests").Histogram.Count.Should().Be(5);
         }

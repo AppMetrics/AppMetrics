@@ -18,6 +18,7 @@ namespace App.Metrics.Formatters.Json.Facts
     public class ApdexSerializationTests : IClassFixture<MetricProviderTestFixture>
     {
         private readonly ApdexValueSource _apdex;
+        private readonly ApdexValueSource _apdexWithGroup;
         private readonly ITestOutputHelper _output;
         private readonly MetricDataSerializer _serializer;
 
@@ -26,6 +27,9 @@ namespace App.Metrics.Formatters.Json.Facts
             _output = output;
             _serializer = new MetricDataSerializer();
             _apdex = fixture.ApdexScores.First();
+
+            _apdex = fixture.ApdexScores.First(x => x.Name == fixture.ApdexNameDefault);
+            _apdexWithGroup = fixture.ApdexScores.First(x => x.Name == fixture.ApdexNameWithGroup);
         }
 
         [Fact]
@@ -51,6 +55,16 @@ namespace App.Metrics.Formatters.Json.Facts
             var expected = MetricType.Apdex.SampleJson();
 
             var result = _serializer.Serialize(_apdex).ParseAsJson();
+
+            result.Should().Be(expected);
+        }
+
+        [Fact]
+        public void produces_expected_json_with_group()
+        {
+            var expected = MetricTypeSamples.ApdexWithGroup.SampleJson();
+
+            var result = _serializer.Serialize(_apdexWithGroup).ParseAsJson();
 
             result.Should().Be(expected);
         }

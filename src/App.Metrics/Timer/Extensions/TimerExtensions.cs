@@ -83,6 +83,7 @@ namespace App.Metrics.Timer
             return new TimerMetric
                    {
                        Name = source.Name,
+                       Group = source.Group,
                        Count = source.Value.Rate.Count,
                        ActiveSessions = source.Value.ActiveSessions,
                        TotalTime = source.Value.TotalTime,
@@ -130,6 +131,7 @@ namespace App.Metrics.Timer
 
             return new TimerValueSource(
                 source.Name,
+                source.Group,
                 ConstantValue.Provider(timerValue),
                 source.Unit,
                 rateUnit,

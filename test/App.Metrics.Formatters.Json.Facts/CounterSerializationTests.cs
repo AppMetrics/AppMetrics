@@ -18,6 +18,7 @@ namespace App.Metrics.Formatters.Json.Facts
     public class CounterSerializationTests : IClassFixture<MetricProviderTestFixture>
     {
         private readonly CounterValueSource _counter;
+        private readonly CounterValueSource _counterWithGroup;
         private readonly ITestOutputHelper _output;
         private readonly MetricDataSerializer _serializer;
 
@@ -26,6 +27,9 @@ namespace App.Metrics.Formatters.Json.Facts
             _output = output;
             _serializer = new MetricDataSerializer();
             _counter = fixture.Counters.First();
+
+            _counter = fixture.Counters.First(x => x.Name == fixture.CounterNameDefault);
+            _counterWithGroup = fixture.Counters.First(x => x.Name == fixture.CounterNameWithGroup);
         }
 
         [Fact]
@@ -50,6 +54,16 @@ namespace App.Metrics.Formatters.Json.Facts
             var expected = MetricType.Counter.SampleJson();
 
             var result = _serializer.Serialize(_counter).ParseAsJson();
+
+            result.Should().Be(expected);
+        }
+
+        [Fact]
+        public void produces_expected_json_with_group()
+        {
+            var expected = MetricTypeSamples.CounterWithGroup.SampleJson();
+
+            var result = _serializer.Serialize(_counterWithGroup).ParseAsJson();
 
             result.Should().Be(expected);
         }

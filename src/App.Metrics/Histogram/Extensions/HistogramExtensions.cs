@@ -33,15 +33,15 @@ namespace App.Metrics.Histogram
             0.0,
             0);
 
+        public static HistogramValue GetHistogramValue(this IProvideMetricValues valueService, string context, string metricName)
+        {
+            return valueService.GetForContext(context).Histograms.ValueFor(context, metricName);
+        }
+
         public static HistogramValue GetValueOrDefault(this IHistogram metric)
         {
             var implementation = metric as IHistogramMetric;
             return implementation != null ? implementation.Value : EmptyHistogram;
-        }
-
-        public static HistogramValue GetHistogramValue(this IProvideMetricValues valueService, string context, string metricName)
-        {
-            return valueService.GetForContext(context).Histograms.ValueFor(context, metricName);
         }
 
         public static IEnumerable<HistogramMetric> ToMetric(this IEnumerable<HistogramValueSource> source) { return source.Select(ToMetric); }
@@ -51,6 +51,7 @@ namespace App.Metrics.Histogram
             return new HistogramMetric
                    {
                        Name = source.Name,
+                       Group = source.Group,
                        Count = source.Value.Count,
                        Unit = source.Unit.Name,
                        LastUserValue = source.Value.LastUserValue,
@@ -92,7 +93,12 @@ namespace App.Metrics.Histogram
                 source.Percentile999,
                 source.SampleSize);
 
-            return new HistogramValueSource(source.Name, ConstantValue.Provider(histogramValue), source.Unit, source.Tags.FromDictionary());
+            return new HistogramValueSource(
+                source.Name,
+                source.Group,
+                ConstantValue.Provider(histogramValue),
+                source.Unit,
+                source.Tags.FromDictionary());
         }
 
         public static IEnumerable<HistogramValueSource> ToMetricValueSource(this IEnumerable<HistogramMetric> source)

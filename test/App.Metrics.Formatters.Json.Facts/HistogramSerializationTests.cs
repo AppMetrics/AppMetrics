@@ -18,6 +18,7 @@ namespace App.Metrics.Formatters.Json.Facts
     public class HistogramSerializationTests : IClassFixture<MetricProviderTestFixture>
     {
         private readonly HistogramValueSource _histogram;
+        private readonly HistogramValueSource _histogramWithGroup;
         private readonly ITestOutputHelper _output;
         private readonly MetricDataSerializer _serializer;
 
@@ -25,7 +26,8 @@ namespace App.Metrics.Formatters.Json.Facts
         {
             _output = output;
             _serializer = new MetricDataSerializer();
-            _histogram = fixture.Histograms.First();
+            _histogram = fixture.Histograms.First(x => x.Name == fixture.HistogramNameDefault);
+            _histogramWithGroup = fixture.Histograms.First(x => x.Name == fixture.HistogramNameWithGroup);
         }
 
         [Fact]
@@ -63,6 +65,16 @@ namespace App.Metrics.Formatters.Json.Facts
             var expected = MetricType.Histogram.SampleJson();
 
             var result = _serializer.Serialize(_histogram).ParseAsJson();
+
+            result.Should().Be(expected);
+        }
+
+        [Fact]
+        public void produces_expected_json_with_group()
+        {
+            var expected = MetricTypeSamples.HistogramWithGroup.SampleJson();
+
+            var result = _serializer.Serialize(_histogramWithGroup).ParseAsJson();
 
             result.Should().Be(expected);
         }

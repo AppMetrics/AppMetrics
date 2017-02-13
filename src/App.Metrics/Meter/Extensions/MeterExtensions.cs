@@ -31,17 +31,18 @@ namespace App.Metrics.Meter.Extensions
         public static MeterMetric ToMetric(this MeterValueSource source)
         {
             var items = source.Value.Items.Select(
-                i =>
-                    new MeterMetric.SetItem
-                    {
-                        Count = i.Value.Count,
-                        OneMinuteRate = i.Value.OneMinuteRate,
-                        FiveMinuteRate = i.Value.FiveMinuteRate,
-                        FifteenMinuteRate = i.Value.FifteenMinuteRate,
-                        MeanRate = i.Value.MeanRate,
-                        Item = i.Item,
-                        Percent = i.Percent
-                    }).ToArray();
+                                   i =>
+                                       new MeterMetric.SetItem
+                                       {
+                                           Count = i.Value.Count,
+                                           OneMinuteRate = i.Value.OneMinuteRate,
+                                           FiveMinuteRate = i.Value.FiveMinuteRate,
+                                           FifteenMinuteRate = i.Value.FifteenMinuteRate,
+                                           MeanRate = i.Value.MeanRate,
+                                           Item = i.Item,
+                                           Percent = i.Percent
+                                       }).
+                               ToArray();
 
             return new MeterMetric
                    {
@@ -49,6 +50,7 @@ namespace App.Metrics.Meter.Extensions
                        Items = items,
                        Count = source.Value.Count,
                        Name = source.Name,
+                       Group = source.Group,
                        Unit = source.Unit.Name,
                        OneMinuteRate = source.Value.OneMinuteRate,
                        FiveMinuteRate = source.Value.FiveMinuteRate,
@@ -62,21 +64,22 @@ namespace App.Metrics.Meter.Extensions
         {
             var rateUnit = source.RateUnit.FromUnit();
             var items = source.Items.Select(
-                i =>
-                {
-                    var value = new MeterValue(
-                        i.Count,
-                        i.MeanRate,
-                        i.OneMinuteRate,
-                        i.FiveMinuteRate,
-                        i.FifteenMinuteRate,
-                        rateUnit);
+                                   i =>
+                                   {
+                                       var value = new MeterValue(
+                                           i.Count,
+                                           i.MeanRate,
+                                           i.OneMinuteRate,
+                                           i.FiveMinuteRate,
+                                           i.FifteenMinuteRate,
+                                           rateUnit);
 
-                    return new MeterValue.SetItem(
-                        i.Item,
-                        i.Percent,
-                        value);
-                }).ToArray();
+                                       return new MeterValue.SetItem(
+                                           i.Item,
+                                           i.Percent,
+                                           value);
+                                   }).
+                               ToArray();
 
             var meterValue = new MeterValue(
                 source.Count,
@@ -87,7 +90,13 @@ namespace App.Metrics.Meter.Extensions
                 rateUnit,
                 items);
 
-            return new MeterValueSource(source.Name, ConstantValue.Provider(meterValue), source.Unit, rateUnit, source.Tags.FromDictionary());
+            return new MeterValueSource(
+                source.Name,
+                source.Group,
+                ConstantValue.Provider(meterValue),
+                source.Unit,
+                rateUnit,
+                source.Tags.FromDictionary());
         }
 
         public static IEnumerable<MeterValueSource> ToMetricValueSource(this IEnumerable<MeterMetric> source)

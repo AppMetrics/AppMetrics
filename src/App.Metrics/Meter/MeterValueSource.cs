@@ -12,8 +12,28 @@ namespace App.Metrics.Meter
     /// </summary>
     public sealed class MeterValueSource : MetricValueSourceBase<MeterValue>
     {
-        public MeterValueSource(string name, IMetricValueProvider<MeterValue> value, Unit unit, TimeUnit rateUnit, MetricTags tags)
-            : base(name, new ScaledValueProvider<MeterValue>(value, v => v.Scale(rateUnit)), unit, tags) { RateUnit = rateUnit; }
+        public MeterValueSource(
+            string name,
+            IMetricValueProvider<MeterValue> value,
+            Unit unit,
+            TimeUnit rateUnit,
+            MetricTags tags)
+            : base(name, new ScaledValueProvider<MeterValue>(value, v => v.Scale(rateUnit)), unit, tags)
+        {
+            RateUnit = rateUnit;
+        }
+
+        public MeterValueSource(
+            string name,
+            string group,
+            IMetricValueProvider<MeterValue> value,
+            Unit unit,
+            TimeUnit rateUnit,
+            MetricTags tags)
+            : base(name, group, new ScaledValueProvider<MeterValue>(value, v => v.Scale(rateUnit)), unit, tags)
+        {
+            RateUnit = rateUnit;
+        }
 
         public TimeUnit RateUnit { get; private set; }
     }

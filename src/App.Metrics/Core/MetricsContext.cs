@@ -9,6 +9,7 @@ using App.Metrics.Gauge;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
 using App.Metrics.Timer;
+using Newtonsoft.Json;
 
 namespace App.Metrics.Core
 {
@@ -20,6 +21,7 @@ namespace App.Metrics.Core
     {
         public IEnumerable<ApdexMetric> ApdexScores { get; set; } = Enumerable.Empty<ApdexMetric>();
 
+        [JsonProperty(Order = -2)]
         public string Context { get; set; }
 
         public IEnumerable<CounterMetric> Counters { get; set; } = Enumerable.Empty<CounterMetric>();

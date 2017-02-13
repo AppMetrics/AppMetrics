@@ -20,6 +20,23 @@ namespace App.Metrics.Core.Abstractions
             Tags = tags;
         }
 
+        protected MetricValueSourceBase(string name, string group, IMetricValueProvider<T> valueProvider, Unit unit, MetricTags tags)
+        {
+            Name = name;
+            Group = group;
+            Unit = unit;
+            ValueProvider = valueProvider;
+            Tags = tags;
+        }
+
+        /// <summary>
+        ///     Gets the Group of the metric within a context.
+        /// </summary>
+        /// <value>
+        ///     The group.
+        /// </value>
+        public string Group { get; }
+
         /// <summary>
         ///     Gets the Name of the metric.
         /// </summary>

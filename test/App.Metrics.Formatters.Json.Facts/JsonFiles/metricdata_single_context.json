@@ -1,4 +1,5 @@
 ﻿{
+  "timestamp": "0001-01-01T00:00:00Z",
   "environment": {
     "machineName": "machine_name",
     "processName": "process_name",
@@ -12,14 +13,28 @@
   },
   "contexts": [
     {
+      "context": "context_one",
       "apdexScores": [
         {
+          "name": "test_apdex",
           "frustrating": 10,
           "sampleSize": 200,
           "satisfied": 170,
           "score": 0.9,
           "tolerating": 20,
-          "name": "test_apdex",
+          "tags": {
+            "host": "server1",
+            "env": "staging"
+          }
+        },
+        {
+          "group": "test_group",
+          "name": "test_apdex_with_group",
+          "frustrating": 10,
+          "sampleSize": 200,
+          "satisfied": 170,
+          "score": 0.9,
+          "tolerating": 20,
           "tags": {
             "host": "server1",
             "env": "staging"
@@ -28,6 +43,8 @@
       ],
       "counters": [
         {
+          "name": "test_counter",
+          "unit": "Items",
           "count": 200,
           "items": [
             {
@@ -46,28 +63,64 @@
               "percent": 70.0
             }
           ],
-          "name": "test_counter",
           "tags": {
             "host": "server1",
             "env": "staging"
-          },
-          "unit": "Items"
+          }
+        },
+        {
+          "group": "test_group",
+          "name": "test_counter_with_group",
+          "unit": "Items",
+          "count": 200,
+          "items": [
+            {
+              "count": 20,
+              "item": "item1",
+              "percent": 10.0
+            },
+            {
+              "count": 40,
+              "item": "item2",
+              "percent": 20.0
+            },
+            {
+              "count": 140,
+              "item": "item3",
+              "percent": 70.0
+            }
+          ],
+          "tags": {
+            "host": "server1",
+            "env": "staging"
+          }
         }
       ],
       "gauges": [
         {
-          "value": 0.5,
           "name": "test_gauge",
+          "unit": "Calls",
+          "value": 0.5,
           "tags": {
             "host": "server1",
             "env": "staging"
-          },
-          "unit": "Calls"
+          }
+        },
+        {
+          "group": "test_group",
+          "name": "test_gauge_with_group",
+          "unit": "Calls",
+          "value": 0.5,
+          "tags": {
+            "host": "server1",
+            "env": "staging"
+          }
         }
       ],
-      "context": "context_one",
       "histograms": [
         {
+          "name": "test_histogram",
+          "unit": "Items",
           "count": 1,
           "lastUserValue": "3",
           "lastValue": 2.0,
@@ -84,16 +137,41 @@
           "percentile999": 15.0,
           "sampleSize": 16,
           "stdDev": 9.0,
-          "name": "test_histgram",
           "tags": {
             "host": "server1",
             "env": "staging"
-          },
-          "unit": "Items"
+          }
+        },
+        {
+          "group": "test_group",
+          "name": "test_histogram_with_group",
+          "unit": "Items",
+          "count": 1,
+          "lastUserValue": "3",
+          "lastValue": 2.0,
+          "max": 4.0,
+          "maxUserValue": "5",
+          "mean": 6.0,
+          "median": 10.0,
+          "min": 7.0,
+          "minUserValue": "8",
+          "percentile75": 11.0,
+          "percentile95": 12.0,
+          "percentile98": 13.0,
+          "percentile99": 14.0,
+          "percentile999": 15.0,
+          "sampleSize": 16,
+          "stdDev": 9.0,
+          "tags": {
+            "host": "server1",
+            "env": "staging"
+          }
         }
       ],
       "meters": [
         {
+          "name": "test_meter",
+          "unit": "Calls",
           "count": 5,
           "fifteenMinuteRate": 4.0,
           "fiveMinuteRate": 3.0,
@@ -111,16 +189,42 @@
           "meanRate": 1.0,
           "oneMinuteRate": 2.0,
           "rateUnit": "s",
-          "name": "test2",
           "tags": {
             "host": "server1",
             "env": "staging"
-          },
-          "unit": "Calls"
+          }
+        },
+        {
+          "group": "test_group",
+          "name": "test_meter_with_group",
+          "unit": "Calls",
+          "count": 5,
+          "fifteenMinuteRate": 4.0,
+          "fiveMinuteRate": 3.0,
+          "items": [
+            {
+              "count": 1,
+              "fifteenMinuteRate": 5.0,
+              "fiveMinuteRate": 4.0,
+              "item": "item",
+              "meanRate": 2.0,
+              "oneMinuteRate": 3.0,
+              "percent": 0.5
+            }
+          ],
+          "meanRate": 1.0,
+          "oneMinuteRate": 2.0,
+          "rateUnit": "s",
+          "tags": {
+            "host": "server1",
+            "env": "staging"
+          }
         }
       ],
       "timers": [
         {
+          "name": "test_timer",
+          "unit": "Requests",
           "activeSessions": 0,
           "count": 5,
           "durationUnit": "ms",
@@ -149,15 +253,49 @@
           },
           "rateUnit": "s",
           "totalTime": 0,
-          "name": "test_timer",
           "tags": {
             "host": "server1",
             "env": "staging"
+          }
+        },
+        {
+          "group": "test_group",
+          "name": "test_timer_with_group",
+          "unit": "Requests",
+          "activeSessions": 0,
+          "count": 5,
+          "durationUnit": "ms",
+          "histogram": {
+            "lastUserValue": "3",
+            "lastValue": 2E-06,
+            "max": 4E-06,
+            "maxUserValue": "5",
+            "mean": 6E-06,
+            "median": 9.9999999999999991E-06,
+            "min": 7E-06,
+            "minUserValue": "8",
+            "percentile75": 1.1E-05,
+            "percentile95": 1.2E-05,
+            "percentile98": 1.3E-05,
+            "percentile99": 1.4E-05,
+            "percentile999": 1.4999999999999999E-05,
+            "sampleSize": 16,
+            "stdDev": 9E-06
           },
-          "unit": "Requests"
+          "rate": {
+            "fifteenMinuteRate": 4.0,
+            "fiveMinuteRate": 3.0,
+            "meanRate": 1.0,
+            "oneMinuteRate": 2.0
+          },
+          "rateUnit": "s",
+          "totalTime": 0,
+          "tags": {
+            "host": "server1",
+            "env": "staging"
+          }
         }
       ]
     }
-  ],
-  "timestamp": "0001-01-01T00:00:00Z"  
+  ]
 }

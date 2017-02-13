@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections.Concurrent;
 using App.Metrics.Core.Options;
 
 namespace App.Metrics.Extensions.Middleware.Internal
@@ -55,38 +56,56 @@ namespace App.Metrics.Extensions.Middleware.Internal
 
         public static class Meters
         {
-            public static Func<string, MeterOptions> EndpointHttpErrorRequests =
-                routeTemplate => new MeterOptions
-                                 {
-                                     Context = ContextName,
-                                     Name = $"{routeTemplate} Http Error Requests",
-                                     MeasurementUnit = Unit.Requests
-                                 };
-
             public static MeterOptions HttpErrorRequests = new MeterOptions
                                                            {
                                                                Context = ContextName,
                                                                Name = "Http Error Requests",
                                                                MeasurementUnit = Unit.Requests
                                                            };
+
+            private static readonly ConcurrentDictionary<string, MeterOptions> EndpointHttpErrorRequestsCache =
+                new ConcurrentDictionary<string, MeterOptions>();
+
+            public static MeterOptions EndpointHttpErrorRequests(string routeTemplate)
+            {
+                return EndpointHttpErrorRequestsCache.GetOrAdd(
+                    routeTemplate,
+                    name => new MeterOptions
+                            {
+                                Context = ContextName,
+                                Name = name,
+                                Group = "Http Error Request Transactions",
+                                MeasurementUnit = Unit.Requests
+                            });
+            }
         }
 
         public static class Timers
         {
-            public static Func<string, TimerOptions> EndpointPerRequestTimer = routeTemplate => new TimerOptions
-                                                                                                {
-                                                                                                    Context = ContextName,
-                                                                                                    Name = routeTemplate,
-                                                                                                    MeasurementUnit = Unit.Requests
-                                                                                                };
-
             public static TimerOptions WebRequestTimer = new TimerOptions
                                                          {
                                                              Context = ContextName,
                                                              Name = "Http Requests",
                                                              MeasurementUnit = Unit.Requests
                                                          };
+
+            private static readonly ConcurrentDictionary<string, TimerOptions> EndpointPerRequestTimerCache =
+                new ConcurrentDictionary<string, TimerOptions>();
+
+            public static TimerOptions EndpointPerRequestTimer(string routeTemplate)
+            {
+                return EndpointPerRequestTimerCache.GetOrAdd(
+                    routeTemplate,
+                    name => new TimerOptions
+                            {
+                                Context = ContextName,
+                                Name = name,
+                                Group = "Http Request Transactions",
+                                MeasurementUnit = Unit.Requests
+                            });
+            }
         }
     }
+
 #pragma warning restore SA1401
 }

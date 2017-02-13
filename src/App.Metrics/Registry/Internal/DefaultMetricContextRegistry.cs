@@ -48,7 +48,9 @@ namespace App.Metrics.Registry.Internal
             new MetricMetaCatalog<ITimer, TimerValueSource, TimerValue>();
 
         public DefaultMetricContextRegistry(string context)
-            : this(context, new GlobalMetricTags()) { }
+            : this(context, new GlobalMetricTags())
+        {
+        }
 
         public DefaultMetricContextRegistry(string context, GlobalMetricTags globalTags)
         {
@@ -86,7 +88,12 @@ namespace App.Metrics.Registry.Internal
                 () =>
                 {
                     var apdex = builder();
-                    var valueSource = new ApdexValueSource(options.Name, apdex, AllTags(options.Tags), options.ResetOnReporting);
+                    var valueSource = new ApdexValueSource(
+                        options.Name,
+                        options.Group,
+                        apdex,
+                        AllTags(options.Tags),
+                        options.ResetOnReporting);
                     return Tuple.Create((IApdex)apdex, valueSource);
                 });
         }
@@ -110,6 +117,7 @@ namespace App.Metrics.Registry.Internal
                     var counter = builder();
                     var valueSource = new CounterValueSource(
                         options.Name,
+                        options.Group,
                         counter,
                         options.MeasurementUnit,
                         AllTags(options.Tags),
@@ -127,7 +135,12 @@ namespace App.Metrics.Registry.Internal
                 () =>
                 {
                     var gauge = valueProvider();
-                    var valueSource = new GaugeValueSource(options.Name, gauge, options.MeasurementUnit, AllTags(options.Tags));
+                    var valueSource = new GaugeValueSource(
+                        options.Name,
+                        options.Group,
+                        gauge,
+                        options.MeasurementUnit,
+                        AllTags(options.Tags));
                     return Tuple.Create(gauge, valueSource);
                 });
         }
@@ -140,7 +153,12 @@ namespace App.Metrics.Registry.Internal
                 () =>
                 {
                     var histogram = builder();
-                    var valueSource = new HistogramValueSource(options.Name, histogram, options.MeasurementUnit, AllTags(options.Tags));
+                    var valueSource = new HistogramValueSource(
+                        options.Name,
+                        options.Group,
+                        histogram,
+                        options.MeasurementUnit,
+                        AllTags(options.Tags));
                     return Tuple.Create((IHistogram)histogram, valueSource);
                 });
         }
@@ -153,7 +171,13 @@ namespace App.Metrics.Registry.Internal
                 () =>
                 {
                     var meter = builder();
-                    var valueSource = new MeterValueSource(options.Name, meter, options.MeasurementUnit, options.RateUnit, AllTags(options.Tags));
+                    var valueSource = new MeterValueSource(
+                        options.Name,
+                        options.Group,
+                        meter,
+                        options.MeasurementUnit,
+                        options.RateUnit,
+                        AllTags(options.Tags));
                     return Tuple.Create((IMeter)meter, valueSource);
                 });
         }
@@ -168,6 +192,7 @@ namespace App.Metrics.Registry.Internal
                     var timer = builder();
                     var valueSource = new TimerValueSource(
                         options.Name,
+                        options.Group,
                         timer,
                         options.MeasurementUnit,
                         options.RateUnit,
@@ -207,12 +232,13 @@ namespace App.Metrics.Registry.Internal
             public TMetric GetOrAdd(string name, Func<Tuple<TMetric, TValue>> metricProvider)
             {
                 return _metrics.GetOrAdd(
-                    name,
-                    n =>
-                    {
-                        var result = metricProvider();
-                        return new MetricMeta(result.Item1, result.Item2);
-                    }).Metric;
+                                    name,
+                                    n =>
+                                    {
+                                        var result = metricProvider();
+                                        return new MetricMeta(result.Item1, result.Item2);
+                                    }).
+                                Metric;
             }
 
             private sealed class MetricMeta
