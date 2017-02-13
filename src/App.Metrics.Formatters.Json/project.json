@@ -14,7 +14,7 @@
 
   "dependencies": {
     "App.Metrics": "1.0.0-rc1-*",
-    "Newtonsoft.Json": "9.0.2-beta1",
+    "Newtonsoft.Json": "9.0.1",
     "StyleCop.Analyzers": {
       "version": "1.0.0",
       "type": "build"
