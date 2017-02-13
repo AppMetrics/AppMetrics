@@ -15,7 +15,8 @@
   "percentile999": 15.0,
   "sampleSize": 16,
   "stdDev": 9.0,
-  "name": "test_histogram",
+  "name": "test_histogram_with_group",
+  "group": "test_group",
   "tags": {
     "host": "server1",
     "env": "staging"

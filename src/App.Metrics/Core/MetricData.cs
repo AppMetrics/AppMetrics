@@ -3,15 +3,20 @@
 
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace App.Metrics.Core
 {
     public sealed class MetricData
     {
+        [JsonProperty(Order = 3)]
         public IEnumerable<MetricsContext> Contexts { get; set; } = new MetricsContext[0];
+
+        [JsonProperty(Order = 2)]
 
         public IDictionary<string, string> Environment { get; set; }
 
+        [JsonProperty(Order = 1)]
         public DateTime Timestamp { get; set; }
     }
 }

@@ -1,6 +1,8 @@
+// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
 using System;
 using System.Linq;
-using App.Metrics.Data;
 using App.Metrics.Formatters.Json.Facts.Helpers;
 using App.Metrics.Formatters.Json.Facts.TestFixtures;
 using App.Metrics.Formatters.Json.Serialization;
@@ -18,12 +20,14 @@ namespace App.Metrics.Formatters.Json.Facts
         private readonly ITestOutputHelper _output;
         private readonly MetricDataSerializer _serializer;
         private readonly TimerValueSource _timer;
+        private readonly TimerValueSource _timerWithGroup;
 
         public TimerSerializationTests(ITestOutputHelper output, MetricProviderTestFixture fixture)
         {
             _output = output;
             _serializer = new MetricDataSerializer();
-            _timer = fixture.Timers.First();
+            _timer = fixture.Timers.First(x => x.Name == fixture.TimerNameDefault);
+            _timerWithGroup = fixture.Timers.First(x => x.Name == fixture.TimerNameWithGroup);
         }
 
         [Fact]
@@ -69,6 +73,16 @@ namespace App.Metrics.Formatters.Json.Facts
             var expected = MetricType.Timer.SampleJson();
 
             var result = _serializer.Serialize(_timer).ParseAsJson();
+
+            result.Should().Be(expected);
+        }
+
+        [Fact]
+        public void produces_expected_json_with_group()
+        {
+            var expected = MetricTypeSamples.TimerWithGroup.SampleJson();
+
+            var result = _serializer.Serialize(_timerWithGroup).ParseAsJson();
 
             result.Should().Be(expected);
         }

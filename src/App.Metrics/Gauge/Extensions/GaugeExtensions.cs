@@ -25,6 +25,7 @@ namespace App.Metrics.Gauge
             return new GaugeMetric
                    {
                        Name = source.Name,
+                       Group = source.Group,
                        Value = source.Value,
                        Unit = source.Unit.Name,
                        Tags = source.Tags.ToDictionary()
@@ -35,8 +36,8 @@ namespace App.Metrics.Gauge
         {
             var tags = source.Tags.FromDictionary();
             return source.Value.HasValue
-                ? new GaugeValueSource(source.Name, ConstantValue.Provider(source.Value.Value), source.Unit, tags)
-                : new GaugeValueSource(source.Name, null, source.Unit, tags);
+                ? new GaugeValueSource(source.Name, source.Group, ConstantValue.Provider(source.Value.Value), source.Unit, tags)
+                : new GaugeValueSource(source.Name, source.Group, null, source.Unit, tags);
         }
 
         public static IEnumerable<GaugeValueSource> ToMetricValueSource(this IEnumerable<GaugeMetric> source)

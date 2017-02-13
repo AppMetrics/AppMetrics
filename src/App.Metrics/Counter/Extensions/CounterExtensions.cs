@@ -35,15 +35,17 @@ namespace App.Metrics.Counter
             return new CounterMetric
                    {
                        Name = source.Name,
+                       Group = source.Group,
                        Count = source.Value.Count,
                        Unit = source.Unit.Name,
                        Items = source.Value.Items.Select(
-                           item => new CounterMetric.SetItem
-                                   {
-                                       Count = item.Count,
-                                       Percent = item.Percent,
-                                       Item = item.Item
-                                   }).ToArray(),
+                                          item => new CounterMetric.SetItem
+                                                  {
+                                                      Count = item.Count,
+                                                      Percent = item.Percent,
+                                                      Item = item.Item
+                                                  }).
+                                      ToArray(),
                        Tags = source.Tags.ToDictionary()
                    };
         }
@@ -52,7 +54,13 @@ namespace App.Metrics.Counter
         {
             var items = source.Items.Select(i => new CounterValue.SetItem(i.Item, i.Count, i.Percent)).ToArray();
             var counterValue = new CounterValue(source.Count, items);
-            return new CounterValueSource(source.Name, ConstantValue.Provider(counterValue), source.Unit, source.Tags.FromDictionary());
+
+            return new CounterValueSource(
+                source.Name,
+                source.Group,
+                ConstantValue.Provider(counterValue),
+                source.Unit,
+                source.Tags.FromDictionary());
         }
 
         public static IEnumerable<CounterValueSource> ToMetricValueSource(this IEnumerable<CounterMetric> source)

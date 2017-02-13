@@ -10,10 +10,7 @@ namespace App.Metrics.Core.Options
     /// </summary>
     public abstract class MetricValueOptionsBase
     {
-        protected MetricValueOptionsBase()
-        {
-            MeasurementUnit = Unit.None;
-        }
+        protected MetricValueOptionsBase() { MeasurementUnit = Unit.None; }
 
         /// <summary>
         ///     Gets or sets the context for which the metric belongs e.g. Application.WebRequests
@@ -22,6 +19,14 @@ namespace App.Metrics.Core.Options
         ///     The context.
         /// </value>
         public string Context { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the group of the Metric being measured
+        /// </summary>
+        /// <value>
+        ///     The group.
+        /// </value>
+        public string Group { get; set; }
 
         /// <summary>
         ///     Gets or sets the description of what is being measured, a <see cref="Unit" /> is something that is expressed in MB,

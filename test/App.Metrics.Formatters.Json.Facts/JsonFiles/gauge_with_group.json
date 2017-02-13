@@ -1,0 +1,10 @@
+﻿{
+  "value": 0.5,
+  "name": "test_gauge_with_group",
+  "group": "test_group",
+  "tags": {
+    "host": "server1",
+    "env": "staging"
+  },
+  "unit": "Calls"
+}

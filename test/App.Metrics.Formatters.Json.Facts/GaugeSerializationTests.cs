@@ -18,6 +18,7 @@ namespace App.Metrics.Formatters.Json.Facts
     public class GaugeSerializationTests : IClassFixture<MetricProviderTestFixture>
     {
         private readonly GaugeValueSource _gauge;
+        private readonly GaugeValueSource _gaugeWithGroup;
         private readonly ITestOutputHelper _output;
         private readonly MetricDataSerializer _serializer;
 
@@ -25,7 +26,8 @@ namespace App.Metrics.Formatters.Json.Facts
         {
             _output = output;
             _serializer = new MetricDataSerializer();
-            _gauge = fixture.Gauges.First();
+            _gauge = fixture.Gauges.First(x => x.Name == fixture.GaugeNameDefault);
+            _gaugeWithGroup = fixture.Gauges.First(x => x.Name == fixture.GaugeNameWithGroup);
         }
 
         [Fact]
@@ -46,6 +48,17 @@ namespace App.Metrics.Formatters.Json.Facts
             var expected = MetricType.Gauge.SampleJson();
 
             var result = _serializer.Serialize(_gauge).ParseAsJson();
+
+            result.Should().Be(expected);
+        }
+
+
+        [Fact]
+        public void produces_expected_json_with_group()
+        {
+            var expected = MetricTypeSamples.GaugeWithGroup.SampleJson();
+
+            var result = _serializer.Serialize(_gaugeWithGroup).ParseAsJson();
 
             result.Should().Be(expected);
         }
