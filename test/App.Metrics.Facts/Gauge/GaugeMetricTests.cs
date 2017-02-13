@@ -9,7 +9,6 @@ using App.Metrics.Gauge;
 using App.Metrics.Infrastructure;
 using App.Metrics.Meter;
 using App.Metrics.ReservoirSampling.Uniform;
-using App.Metrics.Tagging;
 using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;
@@ -84,19 +83,6 @@ namespace App.Metrics.Facts.Gauge
             var cacheHitRatioGauge = new HitRatioGauge(cacheHitMeter, dbQueryTimer);
 
             cacheHitRatioGauge.Value.Should().BeGreaterThan(0.0);
-        }
-
-        [Fact]
-        public void can_create_gauge_from_value_source()
-        {
-            var valueSource = new GaugeValueSource("test", new FunctionGauge(() => 2.0), Unit.Bytes, MetricTags.Empty);
-
-            var gauge = GaugeMetric.FromGauge(valueSource);
-
-            gauge.Value.Should().Be(2.0);
-            gauge.Name.Should().Be("test");
-            gauge.Tags.Should().BeEmpty();
-            Assert.True(gauge.Unit == Unit.Bytes);
         }
 
         [Fact]

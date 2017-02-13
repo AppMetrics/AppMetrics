@@ -7,6 +7,7 @@ using App.Metrics.Formatters.Json.Facts.Helpers;
 using App.Metrics.Formatters.Json.Facts.TestFixtures;
 using App.Metrics.Formatters.Json.Serialization;
 using App.Metrics.Gauge;
+using App.Metrics.Tagging;
 using FluentAssertions;
 using FluentAssertions.Json;
 using Newtonsoft.Json.Linq;
@@ -28,6 +29,19 @@ namespace App.Metrics.Formatters.Json.Facts
             _serializer = new MetricDataSerializer();
             _gauge = fixture.Gauges.First(x => x.Name == fixture.GaugeNameDefault);
             _gaugeWithGroup = fixture.Gauges.First(x => x.Name == fixture.GaugeNameWithGroup);
+        }
+
+        [Fact]
+        public void can_create_gauge_from_value_source()
+        {
+            var valueSource = new GaugeValueSource("test", new FunctionGauge(() => 2.0), Unit.Bytes, MetricTags.Empty);
+
+            var gauge = GaugeMetric.FromGauge(valueSource);
+
+            gauge.Value.Should().Be(2.0);
+            gauge.Name.Should().Be("test");
+            gauge.Tags.Should().BeEmpty();
+            Assert.True(gauge.Unit == Unit.Bytes);
         }
 
         [Fact]

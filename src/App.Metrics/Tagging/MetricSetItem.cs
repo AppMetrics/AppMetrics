@@ -3,20 +3,15 @@
 
 using System;
 using System.Linq;
-using App.Metrics.Counter;
 using App.Metrics.Infrastructure;
-using App.Metrics.Meter;
 using Microsoft.DotNet.PlatformAbstractions;
 
 namespace App.Metrics.Tagging
 {
     /// <summary>
     ///     <para>
-    ///         Metric items can be used with <see cref="CounterMetric" /> or <see cref="MeterMetric" />
-    ///         <see cref="MetricType" />s
-    ///     </para>
-    ///     <para>
-    ///         They provide the ability to track either a count or rate for each item in a counters or meters finite set
+    ///         Metric items provide the ability to track either a count or rate for each item in a counters or meters finite
+    ///         set
     ///         respectively. They also track the overall percentage of each item in the set.
     ///     </para>
     ///     <para>
@@ -217,7 +212,10 @@ namespace App.Metrics.Tagging
         }
 
         /// <inheritdoc />
-        public bool Equals(MetricSetItem other) { return Equals(this, other); }
+        public bool Equals(MetricSetItem other)
+        {
+            return Equals(this, other);
+        }
 
 #pragma warning disable SA1202
         private static readonly string[] EmptyArray = new string[0];

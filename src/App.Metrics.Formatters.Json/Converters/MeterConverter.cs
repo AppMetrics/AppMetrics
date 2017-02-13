@@ -3,7 +3,6 @@
 
 using System;
 using App.Metrics.Meter;
-using App.Metrics.Meter.Extensions;
 using Newtonsoft.Json;
 
 namespace App.Metrics.Formatters.Json.Converters
@@ -16,14 +15,14 @@ namespace App.Metrics.Formatters.Json.Converters
         {
             var source = serializer.Deserialize<MeterMetric>(reader);
 
-            return source.ToMetricValueSource();
+            return source.FromSerializableMetric();
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             var source = (MeterValueSource)value;
 
-            var target = source.ToMetric();
+            var target = source.ToSerializableMetric();
 
             serializer.Serialize(writer, target);
         }

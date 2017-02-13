@@ -14,14 +14,14 @@ namespace App.Metrics.Formatters.Json.Converters
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var source = serializer.Deserialize<ApdexMetric>(reader);
-            return source.ToMetricValueSource();
+            return source.FromSerializableMetric();
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             var source = (ApdexValueSource)value;
 
-            var target = source.ToMetric();
+            var target = source.ToSerializableMetric();
 
             serializer.Serialize(writer, target);
         }

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace App.Metrics.Core
+namespace App.Metrics.Formatters.Json
 {
     public sealed class MetricData
     {
