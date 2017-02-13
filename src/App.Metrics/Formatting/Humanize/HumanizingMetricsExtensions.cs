@@ -57,10 +57,14 @@ namespace App.Metrics.Formatting.Humanize
         {
             if (context.IsPresent())
             {
-                return $"\t[{context}] {valueSource.Name}";
+                return valueSource.Group.IsPresent()
+                    ? $"\t[{context}] {valueSource.Group} - {valueSource.Name}"
+                    : $"\t[{context}] {valueSource.Name}";
             }
 
-            return $"\t{valueSource.Name}";
+            return valueSource.Group.IsPresent()
+                ? $"\t{valueSource.Group} - {valueSource.Name}"
+                : $"\t{valueSource.Name}";
         }
 
         public static string Hummanize<T>(this MetricValueSourceBase<T> valueSource)
