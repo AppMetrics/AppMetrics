@@ -8,13 +8,11 @@ using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Apdex;
 using App.Metrics.Core.Internal;
 using App.Metrics.Counter;
-using App.Metrics.Data;
 using App.Metrics.Facts.Reporting.Helpers;
 using App.Metrics.Gauge;
 using App.Metrics.Health;
 using App.Metrics.Histogram;
 using App.Metrics.Infrastructure;
-using App.Metrics.Internal;
 using App.Metrics.Meter;
 using App.Metrics.Reporting;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
@@ -58,6 +56,27 @@ namespace App.Metrics.Facts.Reporting
             metric.Track(1000);
 
             sr.ReportMetric("test", new ApdexValueSource("apdex_name", metric, MetricTags.Empty));
+
+            AssertReportResult(sr.Result, expected);
+        }
+
+        [Fact]
+        public void can_report_apdex_with_group()
+        {
+            var expected = StringReporterSamples.ApdexWithGroup.ExtractStringReporterSampleFromResourceFile();
+            var sr = new StringReporter();
+            var clock = new TestClock();
+            var reservoir = new Lazy<IReservoir>(
+                () => new DefaultForwardDecayingReservoir(
+                    Constants.ReservoirSampling.DefaultSampleSize,
+                    Constants.ReservoirSampling.DefaultExponentialDecayFactor,
+                    clock,
+                    new TestTaskScheduler(clock)));
+            var metric = new DefaultApdexMetric(new ApdexProvider(reservoir, Constants.ReservoirSampling.DefaultApdexTSeconds), clock, true);
+
+            metric.Track(1000);
+
+            sr.ReportMetric("test", new ApdexValueSource("apdex_name", "testgroup", metric, MetricTags.Empty));
 
             AssertReportResult(sr.Result, expected);
         }
