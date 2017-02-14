@@ -5,7 +5,7 @@ using App.Metrics.Benchmarks.Support;
 using App.Metrics.Tagging;
 using BenchmarkDotNet.Attributes;
 
-namespace App.Metrics.Benchmarks
+namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
 {
     public class MeasureMeterBenchmark : DefaultBenchmarkBase
     {

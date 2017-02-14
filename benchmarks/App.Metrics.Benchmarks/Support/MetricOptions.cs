@@ -3,6 +3,7 @@
 
 using System;
 using App.Metrics.Abstractions.ReservoirSampling;
+using App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics;
 using App.Metrics.Core.Options;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 using App.Metrics.ReservoirSampling.SlidingWindow;

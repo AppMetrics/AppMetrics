@@ -1,25 +1,25 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using App.Metrics.Concurrency;
 using BenchmarkDotNet.Attributes;
 
-namespace App.Metrics.Benchmarks.ConcurrencyBenchmarks
+namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Concurrency
 {
-    public class AtomicLongBenchmark : DefaultBenchmarkBase
+    public class StripedLongAdderBenchmark : DefaultBenchmarkBase
     {
-        private AtomicLong _num;
+        private StripedLongAdder _num;
 
         [Setup]
         public override void Setup()
         {
-            _num = new AtomicLong();
+            _num = new StripedLongAdder();
         }
 
         [Benchmark]
         public void Decrement()
         {
-            _num.Decrement();
+            _num.Decrement(1);
         }
 
         [Benchmark]
@@ -31,7 +31,7 @@ namespace App.Metrics.Benchmarks.ConcurrencyBenchmarks
         [Benchmark]
         public void Increment()
         {
-            _num.Increment();
+            _num.Increment(1);
         }
     }
 }

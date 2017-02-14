@@ -4,7 +4,7 @@
 using App.Metrics.Benchmarks.Support;
 using BenchmarkDotNet.Attributes;
 
-namespace App.Metrics.Benchmarks
+namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
 {
     public class MeasureHistogramBenchmark : DefaultBenchmarkBase
     {

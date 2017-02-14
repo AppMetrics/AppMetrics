@@ -20,7 +20,7 @@ using App.Metrics.Timer;
 using App.Metrics.Timer.Abstractions;
 using BenchmarkDotNet.Attributes;
 
-namespace App.Metrics.Benchmarks
+namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
 {
     public class DefaultMetricContextRegistryBenchmark : DefaultBenchmarkBase
     {
