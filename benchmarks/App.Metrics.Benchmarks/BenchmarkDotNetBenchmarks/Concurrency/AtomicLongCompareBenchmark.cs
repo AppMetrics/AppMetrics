@@ -5,7 +5,7 @@ using App.Metrics.Concurrency;
 using App.Metrics.Concurrency.Internal;
 using BenchmarkDotNet.Attributes;
 
-namespace App.Metrics.Benchmarks.ConcurrencyBenchmarks
+namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Concurrency
 {    
     public class AtomicLongCompareBenchmark : DefaultBenchmarkBase
     {

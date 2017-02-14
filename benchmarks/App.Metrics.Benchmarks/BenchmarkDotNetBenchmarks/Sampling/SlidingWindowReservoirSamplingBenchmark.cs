@@ -9,7 +9,7 @@ using App.Metrics.Scheduling;
 using App.Metrics.Scheduling.Abstractions;
 using BenchmarkDotNet.Attributes;
 
-namespace App.Metrics.Benchmarks
+namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Sampling
 {
     public class SlidingWindowReservoirSamplingBenchmark : DefaultBenchmarkBase
     {

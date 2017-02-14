@@ -4,16 +4,16 @@
 using App.Metrics.Concurrency;
 using BenchmarkDotNet.Attributes;
 
-namespace App.Metrics.Benchmarks.ConcurrencyBenchmarks
+namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Concurrency
 {
-    public class ThreadLocalLongAdderBenchmark : DefaultBenchmarkBase
+    public class PaddedAtomicLongBenchmark : DefaultBenchmarkBase
     {
-        private ThreadLocalLongAdder _num;
+        private PaddedAtomicLong _num;
 
         [Setup]
         public override void Setup()
         {
-            _num = new ThreadLocalLongAdder();
+            _num = new PaddedAtomicLong();
         }
 
         [Benchmark]
