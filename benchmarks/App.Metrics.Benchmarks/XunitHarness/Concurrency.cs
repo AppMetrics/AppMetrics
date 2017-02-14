@@ -1,47 +1,51 @@
-﻿using BenchmarkDotNet.Running;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using App.Metrics.Benchmarks.ConcurrencyBenchmarks;
+using BenchmarkDotNet.Running;
 using Xunit;
 
-namespace App.Metrics.Concurrency.Benchmarks.Harness
+namespace App.Metrics.Benchmarks.XunitHarness
 {
-    public class BenchmarkHarness
+    public class Concurrency
     {
-        [Fact, Trait("MediumRun", "AtomicLongCompare")]
-        public void AtomicLongCompareBenchmark()
-        {
-            BenchmarkRunner.Run<AtomicLongCompareBenchmark>();
-        }
-
-        [Fact, Trait("QuickRun", "AtomicInt")]
+        [Fact]
         public void AtomicIntegerBenchmark()
         {
             BenchmarkRunner.Run<AtomicIntegerBenchmark>();
         }
 
-        [Fact, Trait("QuickRun", "LongArray")]
+        [Fact]
         public void AtomicLongArrayBenchmark()
         {
             BenchmarkRunner.Run<AtomicLongArrayBenchmark>();
         }
 
-        [Fact, Trait("QuickRun", "AtomicLong")]
+        [Fact]
         public void AtomicLongBenchmark()
         {
             BenchmarkRunner.Run<AtomicLongBenchmark>();
         }
 
-        [Fact, Trait("QuickRun", "PaddedAtomicLong")]
+        [Fact]
+        public void AtomicLongCompareBenchmark()
+        {
+            BenchmarkRunner.Run<AtomicLongCompareBenchmark>();
+        }
+
+        [Fact]
         public void PaddedAtomicLongBenchmark()
         {
             BenchmarkRunner.Run<PaddedAtomicLongBenchmark>();
         }
 
-        [Fact, Trait("QuickRun", "StripedLongAdder")]
+        [Fact]
         public void StripedLongAdderBenchmark()
         {
             BenchmarkRunner.Run<StripedLongAdderBenchmark>();
         }
 
-        [Fact, Trait("QuickRun", "ThreadLocalLongAdder")]
+        [Fact]
         public void ThreadLocalLongAdderBenchmark()
         {
             BenchmarkRunner.Run<ThreadLocalLongAdderBenchmark>();

@@ -1,16 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
-using App.Metrics.Concurrency.Benchmarks.Jobs;
+using App.Metrics.Concurrency;
 using App.Metrics.Concurrency.Internal;
 using BenchmarkDotNet.Attributes;
 
-namespace App.Metrics.Concurrency.Benchmarks
-{
-    [MediumRunJob]
-    public class AtomicLongCompareBenchmark
+namespace App.Metrics.Benchmarks.ConcurrencyBenchmarks
+{    
+    public class AtomicLongCompareBenchmark : DefaultBenchmarkBase
     {
-        private const int NumberOfRuns = 100;
-        private const int ThreadCount = 8;
+        private const int NumberOfRuns = 50;
+        private int _threadCount;
+
+        [Setup]
+        public override void Setup()
+        {
+            _threadCount = Environment.ProcessorCount;
+        }
 
         [Benchmark(Baseline = true)]
         public void AtomicLong()
@@ -36,12 +42,12 @@ namespace App.Metrics.Concurrency.Benchmarks
             Run<ThreadLocalLongAdder>();
         }
 
-        private static void Run<T>() where T : IValueAdder<long>, new()
+        private void Run<T>() where T : IValueAdder<long>, new()
         {
             var value = new T();
             var thread = new List<Thread>();
 
-            for (var i = 0; i < ThreadCount; i++)
+            for (var i = 0; i < _threadCount; i++)
             {
                 thread.Add(new Thread(() =>
                 {

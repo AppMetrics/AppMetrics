@@ -25,4 +25,4 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("a0666226-0f07-475f-bad5-41e99c112a9a")]
 [assembly: InternalsVisibleTo("App.Metrics.Concurrency.Facts")]
-[assembly: InternalsVisibleTo("App.Metrics.Concurrency.Benchmarks")]
+[assembly: InternalsVisibleTo("App.Metrics.Benchmarks")]
