@@ -12,7 +12,7 @@
   "copyright": "Allan Hardy 2016",
 
   "dependencies": {
-    "App.Metrics": "1.0.0-rc1-*",
+    "App.Metrics": "1.0.0-rc1",
     "Microsoft.AspNetCore.Routing": "1.1.0",
     "Microsoft.AspNetCore.Hosting": "1.1.0",
     "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
