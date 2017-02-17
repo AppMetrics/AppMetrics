@@ -2,7 +2,7 @@ version: 1.0.{build}
 nuget:
   disable_publish_on_pr: true
 build_script:
-- cmd: build.ps1
+- cmd: .\build.ps1
 test: off
 artifacts:
 - path: artifacts/packages/*.nupkg
