@@ -35,6 +35,9 @@ var buildNumber                 = HasArgument("BuildNumber") ? Argument<int>("Bu
                                   AppVeyor.IsRunningOnAppVeyor ? AppVeyor.Environment.Build.Number :
                                   TravisCI.IsRunningOnTravisCI ? TravisCI.Environment.Build.BuildNumber :
                                   EnvironmentVariable("BuildNumber") != null ? int.Parse(EnvironmentVariable("BuildNumber")) : 0;
+var openCoverFilter				= "+[App.Metrics*]* -[xunit.*]* -[*.Facts]*";
+var openCoverExcludeFile        = "*/*Designer.cs;*/*.g.cs;*/*.g.i.cs";
+var excludeFromCoverage			= "*.AppMetricsExcludeFromCodeCoverage*";
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -127,19 +130,20 @@ Task("RunTests")
                         NoBuild = true,
                         Verbose = false,
                         ArgumentCustomization = args =>
-                            args.Append("-xml").Append(testResultsDir.CombineWithFilePath(project.GetFilenameWithoutExtension()).FullPath + ".xml")
+                            args.Append("-xml").Append(testResultsDir.CombineWithFilePath(project.Segments[projects.Count()]) + ".xml")
                     });
                 };
 
                 if (!skipOpenCover) {
                     OpenCover(testAction,
                         testCoverageOutputFilePath,
-                        new OpenCoverSettings {                            
-                            ArgumentCustomization = args => args.Append("-mergeoutput -hideskipped:All -safemode:off -oldStyle")
+                        new OpenCoverSettings { 
+							ReturnTargetCodeOffset = 0,                           
+                            ArgumentCustomization = args => args.Append(@"-register:user -skipautoprops -safemode:off -returntargetcode -mergeoutput -hideskipped:All -oldStyle")
                         }
-                        .WithFilter("+[App.Metrics*]* -[xunit.*]* -[*.Facts]*")
-                        .ExcludeByAttribute("*.AppMetricsExcludeFromCodeCoverage*")
-                        .ExcludeByFile("*/*Designer.cs;*/*.g.cs;*/*.g.i.cs"));
+                        .WithFilter(openCoverFilter)
+                        .ExcludeByAttribute(excludeFromCoverage)
+                        .ExcludeByFile(openCoverExcludeFile));
                 } 
                 else 
                 {
