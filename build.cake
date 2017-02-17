@@ -9,10 +9,10 @@
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
-var target          = Argument("target", "Default");
-var configuration   = HasArgument("Configuration") ? Argument<string>("Configuration") :
-                      EnvironmentVariable("Configuration") != null ? EnvironmentVariable("Configuration") : "Release";
-var skipOpenCover   = Argument("skipOpenCover", false);
+var target                      = Argument("target", "Default");
+var configuration               = HasArgument("Configuration") ? Argument<string>("Configuration") :
+                                  EnvironmentVariable("Configuration") != null ? EnvironmentVariable("Configuration") : "Release";
+var skipOpenCover               = Argument("skipOpenCover", false);
 
 //////////////////////////////////////////////////////////////////////
 // DEFINE DIRECTORIES
@@ -20,23 +20,21 @@ var skipOpenCover   = Argument("skipOpenCover", false);
 var packDirs                    = new [] { Directory("./src/App.Metrics"), Directory("./src/App.Metrics.Concurrency"), Directory("./src/App.Metrics.Extensions.Middleware"), Directory("./src/App.Metrics.Extensions.Mvc"), Directory("./src/App.Metrics.Formatters.Json") };
 var artifactsDir                = (DirectoryPath) Directory("./artifacts");
 var testResultsDir              = (DirectoryPath) artifactsDir.Combine("test-results");
-var testCoverageOutputFilePath  = testResultsDir.CombineWithFilePath("OpenCover.xml");
+var coverageResultsDir          = (DirectoryPath) artifactsDir.Combine("coverage");
+var testCoverageOutputFilePath  = coverageResultsDir.CombineWithFilePath("OpenCover.xml");
 var packagesDir                 = artifactsDir.Combine("packages");
 
 //////////////////////////////////////////////////////////////////////
 // DEFINE PARAMS
 //////////////////////////////////////////////////////////////////////
-var isAppVeyorBuild             = AppVeyor.IsRunningOnAppVeyor;
 var coverallsToken              = Context.EnvironmentVariable("COVERALLS_REPO_TOKEN");
-var preReleaseSuffix =
-    HasArgument("PreReleaseSuffix") ? Argument<string>("PreReleaseSuffix") :
-	(AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Tag.IsTag) ? null :
-    EnvironmentVariable("PreReleaseSuffix") != null ? EnvironmentVariable("PreReleaseSuffix") :	"ci";
-var buildNumber =
-    HasArgument("BuildNumber") ? Argument<int>("BuildNumber") :
-    AppVeyor.IsRunningOnAppVeyor ? AppVeyor.Environment.Build.Number :
-    TravisCI.IsRunningOnTravisCI ? TravisCI.Environment.Build.BuildNumber :
-    EnvironmentVariable("BuildNumber") != null ? int.Parse(EnvironmentVariable("BuildNumber")) : 0;
+var preReleaseSuffix            = HasArgument("PreReleaseSuffix") ? Argument<string>("PreReleaseSuffix") :
+	                              (AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Tag.IsTag) ? null :
+                                  EnvironmentVariable("PreReleaseSuffix") != null ? EnvironmentVariable("PreReleaseSuffix") :	"ci";
+var buildNumber                 = HasArgument("BuildNumber") ? Argument<int>("BuildNumber") :
+                                  AppVeyor.IsRunningOnAppVeyor ? AppVeyor.Environment.Build.Number :
+                                  TravisCI.IsRunningOnTravisCI ? TravisCI.Environment.Build.BuildNumber :
+                                  EnvironmentVariable("BuildNumber") != null ? int.Parse(EnvironmentVariable("BuildNumber")) : 0;
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -53,12 +51,8 @@ Task("Restore")
     .Does(() =>
 {
     DotNetCoreRestore("./", new DotNetCoreRestoreSettings
-    {
-        Verbose = true,
-        Verbosity = DotNetCoreRestoreVerbosity.Verbose,
-        Sources = new [] {            
-            "https://api.nuget.org/v3/index.json",
-        }
+    {        
+        Sources = new [] { "https://api.nuget.org/v3/index.json" }
     });
 });
 
@@ -77,19 +71,6 @@ Task("Build")
         });
     }    
 });
-
-// Task("Version")
-//     .WithCriteria(() => !BuildSystem.IsLocalBuild)
-//     .Does(() => {        
-//         foreach(var packDir in packDirs)
-//         {
-//             var projectDotJson = packDir.ToString() + "/project.json";
-//             var updatedProjectJson = System.IO.File.ReadAllText(projectDotJson, Encoding.UTF8)
-//                 .Replace("1.0.0-*", gitVersionInfo.NuGetVersion);
-
-//             System.IO.File.WriteAllText(projectDotJson, updatedProjectJson, Encoding.UTF8);
-//         }                 
-//     });
 
 Task("Pack")
     .IsDependentOn("Restore")    
@@ -191,11 +172,10 @@ Task("HtmlCoverageReport")
     .IsDependentOn("RunTests")
     .Does(() => 
 {
-    ReportGenerator(testCoverageOutputFilePath, testResultsDir);
+    ReportGenerator(testCoverageOutputFilePath, coverageResultsDir);
 });
 
-Task("PublishCoverage")
-    // .WithCriteria(() => !BuildSystem.AppVeyor.Environment.PullRequest.IsPullRequest)
+Task("PublishCoverage")    
     .WithCriteria(() => FileExists(testCoverageOutputFilePath))
     .WithCriteria(() => !BuildSystem.IsLocalBuild)
     .WithCriteria(() => !string.IsNullOrEmpty(coverallsToken))
