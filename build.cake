@@ -43,7 +43,7 @@ var buildNumber                 = HasArgument("BuildNumber") ? Argument<int>("Bu
 Task("Clean")
     .Does(() =>
 {
-    CleanDirectory(artifactsDir);
+    CleanDirectory(artifactsDir);    
 });
 
 Task("Restore")
@@ -102,6 +102,7 @@ Task("RunTests")
     var projects = GetFiles("./test/**/project.json");
 
     CreateDirectory(testResultsDir);
+    CreateDirectory(coverageResultsDir);
 
     Context.Information("Found " + projects.Count() + " projects");
 
