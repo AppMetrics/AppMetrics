@@ -113,17 +113,8 @@ Task("RunTests")
     {
         if (IsRunningOnWindows())
         {
-            var apiUrl = EnvironmentVariable("APPVEYOR_API_URL");			
 			var folderName = new System.IO.DirectoryInfo(System.IO.Path.GetDirectoryName(project.ToString())).Name;
-            try
-            {
-                if (!string.IsNullOrEmpty(apiUrl))
-                {
-                    // Disable XUnit AppVeyorReporter see https://github.com/cake-build/cake/issues/1200
-                    System.Environment.SetEnvironmentVariable("APPVEYOR_API_URL", null);
-                }
-
-                Action<ICakeContext> testAction = tool => {
+			Action<ICakeContext> testAction = tool => {
 
                     tool.DotNetCoreTest(project.GetDirectory().FullPath, new DotNetCoreTestSettings {
                         Configuration = configuration,
@@ -149,14 +140,6 @@ Task("RunTests")
                 {
                     testAction(Context);
                 }
-            }
-            finally
-            {
-                if (!string.IsNullOrEmpty(apiUrl))
-                {
-                    System.Environment.SetEnvironmentVariable("APPVEYOR_API_URL", apiUrl);
-                }
-            }
         }
         else
         {
