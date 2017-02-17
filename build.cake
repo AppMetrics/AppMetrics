@@ -113,8 +113,8 @@ Task("RunTests")
     {
         if (IsRunningOnWindows())
         {
-            var apiUrl = EnvironmentVariable("APPVEYOR_API_URL");
-
+            var apiUrl = EnvironmentVariable("APPVEYOR_API_URL");			
+			var folderName = new System.IO.DirectoryInfo(System.IO.Path.GetDirectoryName(project.ToString())).Name;
             try
             {
                 if (!string.IsNullOrEmpty(apiUrl))
@@ -130,7 +130,7 @@ Task("RunTests")
                         NoBuild = true,
                         Verbose = false,
                         ArgumentCustomization = args =>
-                            args.Append("-xml").Append(testResultsDir.CombineWithFilePath(project.Segments[projects.Count()]) + ".xml")
+                            args.Append("-xml").Append(testResultsDir.CombineWithFilePath(folderName) + ".xml")
                     });
                 };
 
