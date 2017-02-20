@@ -5,7 +5,7 @@ environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 build_script:
-- ps: .\build.ps1 --ScriptArgs '-target=AppVeyor'
+- ps: .\build.ps1 -Target AppVeyor
 test: off
 artifacts:
 - path: artifacts/packages/*.nupkg
