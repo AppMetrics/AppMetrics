@@ -25,32 +25,81 @@ App Metrics also provides a health checking system allowing you to monitor the h
 - [Sample Applications & Grafana Dashbaords](https://github.com/alhardy/AppMetrics.Samples)
 - [Api Documentation](https://alhardy.github.io/app-metrics-docs/api/index.html)
 
+## How to build
+
+[AppVeyor](https://ci.appveyor.com/project/alhardy/appmetrics/branch/master) and [Travis CI](https://ci.appveyor.com/project/alhardy/appmetrics/branch/master) builds are triggered on commits and PRs to `dev` and `master` branches.
+
+See the following for build arguments and running locally.
+
+|Configuration|Description|Default|Environment|Required|
+|------|--------|:--------:|:--------:|:--------:|
+|Configuration|The configuration to run the build, **Debug** or **Release** |*Release*|All|Optional|
+|PreReleaseSuffix|The pre-release suffix for versioning nuget package artifacts e.g. `beta`|*ci*|All|Optional|
+|SkipOpenCover|**false** to calculate and report code coverage, **true** to skip. When **true**, an open cover code coverage file and html report will be generated at `./artifacts/coverage`|*true*|Windows Only|Optional|
+|BuildNumber|The build number to use for pre-release versions|*0*|All|Optional|
+
+
+### Windows
+
+Run `build.ps1` from the repositories root directory.
+
+```
+	.\build.ps1'
+```
+
+**With Arguments**
+
+```
+	.\build.ps1 --ScriptArgs '-Configuration=Release -PreReleaseSuffix=beta -skipOpenCover=false -BuildNumber=1'
+```
+
+### Linux & OSX
+
+Run `build.sh` from the repositories root directory. Code Coverage reports are now supported on Linux and OSX, it will be skipped running in these environments.
+
+```
+	.\build.sh'
+```
+
+**With Arguments**
+
+```
+	.\build.sh --ScriptArgs '-Configuration=Release -PreReleaseSuffix=beta -BuildNumber=1'
+```
+
 ## Contributing
 
 See the [contribution guidlines](CONTRIBUTING.md) for details.
 
 ## Acknowledgements
 
-**Built using the following open source projects**
-
 * [ASP.NET Core](https://github.com/aspnet)
 * [DocFX](https://dotnet.github.io/docfx/)
-* [Json.Net](http://www.newtonsoft.com/json)
 * [Fluent Assertions](http://www.fluentassertions.com/)
 * [XUnit](https://xunit.github.io/)
 * [StyleCopAnalyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers)
+* [Cake](https://github.com/cake-build/cake)
+* [OpenCover](https://github.com/OpenCover/opencover)
 
+***Thanks for providing free open source licensing***
+
+* [Jetbrains](https://www.jetbrains.com/dotnet/) 
+* [AppVeyor](https://www.appveyor.com/)
+* [Travis CI](https://travis-ci.org/)
+* [Coveralls](https://coveralls.io/)
 
 ## License
 
 This library is release under Apache 2.0 License ( see LICENSE ) Copyright (c) 2016 Allan Hardy
 
+See [LICENSE](https://github.com/alhardy/AppMetrics/blob/dev/LICENSE)
+
 ----------
 
-App Metrics is based on the [Metrics.NET](https://github.com/etishor/Metrics.NET) library, using the same reservoir sampling code from the original library, which is a port of the Java [Metrics](https://github.com/dropwizard/metrics) library. 
+App Metrics is based on the [Metrics.NET](https://github.com/etishor/Metrics.NET) library, and at the moment uses the same reservoir sampling code from the original library which is a port of the Java [Dropwizard Metrics](https://github.com/dropwizard/metrics) library. 
 
-Why another .NET port? The main reason for porting Metrics.NET was to have it run on .NET Standard and provide a more modern API into the libraries features.
+*Metrics.NET Licensed under these terms*:
+"Metrics.NET is release under Apache 2.0 License Copyright (c) 2014 Iulian Margarintescu" see [LICENSE](https://github.com/etishor/Metrics.NET/blob/master/LICENSE)
 
-The original metrics project is released under these terms:
-
-"Metrics.NET is release under Apache 2.0 License Copyright (c) 2014 Iulian Margarintescu"
+*Dropwizard Metrics* Licensed under these terms*:
+"Copyright (c) 2010-2013 Coda Hale, Yammer.com Published under Apache Software License 2.0, see [LICENSE](https://github.com/dropwizard/metrics/blob/3.2-development/LICENSE)"
