@@ -61,7 +61,7 @@ namespace App.Metrics.Facts.Health
 
             var factory = new HealthCheckFactory(_logger, healthChecks);
 
-            factory.RegisterProcessVirtualMemorySizeHealthCheck(name, int.MaxValue);
+            factory.RegisterProcessVirtualMemorySizeHealthCheck(name, long.MaxValue);
 
             var check = factory.Checks.FirstOrDefault();
             var result = await check.Value.ExecuteAsync().ConfigureAwait(false);

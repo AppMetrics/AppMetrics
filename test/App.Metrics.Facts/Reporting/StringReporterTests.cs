@@ -60,7 +60,7 @@ namespace App.Metrics.Facts.Reporting
             AssertReportResult(sr.Result, expected);
         }
 
-        [Fact (Skip = "failing on build server, doesn't look like encoding on line breaks.")]
+        [Fact(Skip = "failing on build server, doesn't look like encoding on line breaks.")]
         public void can_report_apdex_with_group()
         {
             var expected = StringReporterSamples.ApdexWithGroup.ExtractStringReporterSampleFromResourceFile();
@@ -221,7 +221,7 @@ namespace App.Metrics.Facts.Reporting
 
         private static void AssertReportResult(string result, string expected)
         {
-            (string.CompareOrdinal(result.Replace("\r\n", "\n"), expected.Replace("\r\n", "\n")) == 0).Should().BeTrue();
+            (string.CompareOrdinal(expected.Replace("\n", Environment.NewLine), expected.Replace("\n", Environment.NewLine)) == 0).Should().BeTrue();
         }
     }
 }
