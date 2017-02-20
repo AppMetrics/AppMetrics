@@ -1,6 +1,10 @@
 # App Metrics
 
-[![Official Site](https://img.shields.io/badge/site-appmetrics-blue.svg)](https://alhardy.github.io/app-metrics-docs/getting-started/intro.html) [![Build status](https://ci.appveyor.com/api/projects/status/r4x0et4g6mr5vttf?svg=true)](https://ci.appveyor.com/project/alhardy/appmetrics/branch/master) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Coverage Status](https://coveralls.io/repos/github/alhardy/AppMetrics/badge.svg?branch=master&cacheBuster=1)](https://coveralls.io/github/alhardy/AppMetrics?branch=master)
+[![Official Site](https://img.shields.io/badge/site-appmetrics-blue.svg)](https://alhardy.github.io/app-metrics-docs/getting-started/intro.html) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Coverage Status](https://coveralls.io/repos/github/alhardy/AppMetrics/badge.svg?branch=master&cacheBuster=1)](https://coveralls.io/github/alhardy/AppMetrics?branch=master)
+
+|AppVeyor|Travis|
+|:--------:|:--------:|
+|[![Build status](https://ci.appveyor.com/api/projects/status/r4x0et4g6mr5vttf?svg=true)](https://ci.appveyor.com/project/alhardy/appmetrics/branch/master)|[![Build status](https://travis-ci.org/alhardy/AppMetrics.svg?branch=master)](https://travis-ci.org/alhardy/AppMetrics.svg)|
 
 |Package|Dev Release|Pre Release|Latest Release|
 |------|:--------:|:--------:|:--------:|
@@ -50,7 +54,7 @@ Run `build.ps1` from the repositories root directory.
 **With Arguments**
 
 ```
-	.\build.ps1 --ScriptArgs '-Configuration=Release -PreReleaseSuffix=beta -skipOpenCover=false -BuildNumber=1'
+	.\build.ps1 --ScriptArgs '-Configuration=Release -PreReleaseSuffix=beta -SkipOpenCover=false -BuildNumber=1'
 ```
 
 ### Linux & OSX
