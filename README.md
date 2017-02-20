@@ -4,7 +4,7 @@
 
 |AppVeyor|Travis|
 |:--------:|:--------:|
-|[![Build status](https://ci.appveyor.com/api/projects/status/r4x0et4g6mr5vttf?svg=true)](https://ci.appveyor.com/project/alhardy/appmetrics/branch/master)|[![Build status](https://travis-ci.org/alhardy/AppMetrics.svg?branch=master)](https://travis-ci.org/alhardy/AppMetrics.svg)|
+|[![Build status](https://ci.appveyor.com/api/projects/status/r4x0et4g6mr5vttf?svg=true)](https://ci.appveyor.com/project/alhardy/appmetrics/branch/master)|[![Build status](https://travis-ci.org/alhardy/AppMetrics.svg?branch=1.0.0)](https://travis-ci.org/alhardy/AppMetrics)|
 
 |Package|Dev Release|Pre Release|Latest Release|
 |------|:--------:|:--------:|:--------:|
