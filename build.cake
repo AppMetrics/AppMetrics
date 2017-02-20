@@ -13,6 +13,13 @@ var target                      = Argument("target", "Default");
 var configuration               = HasArgument("Configuration") ? Argument<string>("Configuration") :
                                   EnvironmentVariable("Configuration") != null ? EnvironmentVariable("Configuration") : "Release";
 var skipOpenCover               = Argument("skipOpenCover", false);
+var preReleaseSuffix            = HasArgument("PreReleaseSuffix") ? Argument<string>("PreReleaseSuffix") :
+	                              (AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Tag.IsTag) ? null :
+                                  EnvironmentVariable("PreReleaseSuffix") != null ? EnvironmentVariable("PreReleaseSuffix") : "ci";
+var buildNumber                 = HasArgument("BuildNumber") ? Argument<int>("BuildNumber") :
+                                  AppVeyor.IsRunningOnAppVeyor ? AppVeyor.Environment.Build.Number :
+                                  TravisCI.IsRunningOnTravisCI ? TravisCI.Environment.Build.BuildNumber :
+                                  EnvironmentVariable("BuildNumber") != null ? int.Parse(EnvironmentVariable("BuildNumber")) : 0;
 
 //////////////////////////////////////////////////////////////////////
 // DEFINE DIRECTORIES
@@ -28,13 +35,6 @@ var packagesDir                 = artifactsDir.Combine("packages");
 // DEFINE PARAMS
 //////////////////////////////////////////////////////////////////////
 var coverallsToken              = Context.EnvironmentVariable("COVERALLS_REPO_TOKEN");
-var preReleaseSuffix            = HasArgument("PreReleaseSuffix") ? Argument<string>("PreReleaseSuffix") :
-	                              (AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Tag.IsTag) ? null :
-                                  EnvironmentVariable("PreReleaseSuffix") != null ? EnvironmentVariable("PreReleaseSuffix") :	"ci";
-var buildNumber                 = HasArgument("BuildNumber") ? Argument<int>("BuildNumber") :
-                                  AppVeyor.IsRunningOnAppVeyor ? AppVeyor.Environment.Build.Number :
-                                  TravisCI.IsRunningOnTravisCI ? TravisCI.Environment.Build.BuildNumber :
-                                  EnvironmentVariable("BuildNumber") != null ? int.Parse(EnvironmentVariable("BuildNumber")) : 0;
 var openCoverFilter				= "+[App.Metrics*]* -[xunit.*]* -[*.Facts]*";
 var openCoverExcludeFile        = "*/*Designer.cs;*/*.g.cs;*/*.g.i.cs";
 var excludeFromCoverage			= "*.AppMetricsExcludeFromCodeCoverage*";

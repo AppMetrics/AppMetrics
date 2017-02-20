@@ -22,6 +22,11 @@ namespace App.Metrics.Gauge
             {
                 var ratio = numerator() / denominator();
 
+                if (double.IsNaN(ratio) || double.IsInfinity(ratio))
+                {
+                    return double.NaN;
+                }
+
                 if (Math.Abs(ratio) < 0.0001)
                 {
                     return 0;

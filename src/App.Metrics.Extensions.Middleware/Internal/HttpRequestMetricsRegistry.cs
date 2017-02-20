@@ -42,6 +42,22 @@ namespace App.Metrics.Extensions.Middleware.Internal
                                                                      Name = "Percentage Error Requests",
                                                                      MeasurementUnit = Unit.Custom("Error Requests")
                                                                  };
+
+            private static readonly ConcurrentDictionary<string, GaugeOptions> PercentageErrorRequestsCache =
+                new ConcurrentDictionary<string, GaugeOptions>();
+
+            public static GaugeOptions EndpointPercentageErrorRequests(string routeTemplate)
+            {
+                return PercentageErrorRequestsCache.GetOrAdd(
+                    routeTemplate,
+                    name => new GaugeOptions
+                            {
+                                Context = ContextName,
+                                Name = name,
+                                Group = "Endpoint Percentage Error Requests",
+                                MeasurementUnit = Unit.Errors
+                            });
+            }
         }
 
         public static class Histograms

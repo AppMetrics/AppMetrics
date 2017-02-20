@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
@@ -87,6 +88,13 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         public IActionResult Get500()
         {
             return StatusCode(500);
+        }
+
+        [HttpGet("error-random/{passorfail}")]
+        public async Task<IActionResult> GetRandomError([FromRoute]string passorfail)
+        {
+            await Task.Delay(10);
+            return StatusCode(passorfail == "fail" ? 500 : 200);
         }
 
         [HttpPost]

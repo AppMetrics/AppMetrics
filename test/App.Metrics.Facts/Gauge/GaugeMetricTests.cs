@@ -21,12 +21,19 @@ namespace App.Metrics.Facts.Gauge
         [InlineData(2.0, 4.0, 50.0)]
         [InlineData(0.0, 4.0, 0.0)]
         [InlineData(4.0, 2.0, 100.0)]
-        [InlineData(4.0, 0.0, 100.0)]
         public void can_calculate_percentage(double numerator, double denominator, double expectedPercentage)
         {
             var hitPercentage = new PercentageGauge(() => numerator, () => denominator);
 
             hitPercentage.Value.Should().Be(expectedPercentage);
+        }
+
+        [Fact]
+        public void when_denomitator_is_zero_returns_NaN()
+        {
+            var hitPercentage = new PercentageGauge(() => 1, () => 0);
+
+            hitPercentage.Value.Should().Be(double.NaN);
         }
 
         [Fact]

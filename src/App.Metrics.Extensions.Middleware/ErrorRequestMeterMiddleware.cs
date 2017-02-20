@@ -53,6 +53,7 @@ namespace App.Metrics.Extensions.Middleware
                     Metrics.MarkHttpRequestEndpointError(routeTemplate, context.Response.StatusCode);
                     Metrics.MarkHttpRequestError(context.Response.StatusCode);
                     Metrics.ErrorRequestPercentage();
+                    Metrics.ErrorRequestPercentagePerEndpoint(routeTemplate);
                 }
             }
 

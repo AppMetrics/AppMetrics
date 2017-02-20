@@ -10,6 +10,7 @@ using App.Metrics.Tagging;
 namespace App.Metrics
 {
     // ReSharper restore CheckNamespace
+
     internal static class MetricsExtensions
     {
         public static IMetrics DecrementActiveRequests(this IMetrics metrics)
@@ -26,6 +27,18 @@ namespace App.Metrics
 
             metrics.Measure.Gauge.SetValue(
                 HttpRequestMetricsRegistry.Gauges.PercentageErrorRequests,
+                () => new HitPercentageGauge(errors, requests, m => m.OneMinuteRate));
+
+            return metrics;
+        }
+
+        public static IMetrics ErrorRequestPercentagePerEndpoint(this IMetrics metrics, string routeTemplate)
+        {
+            var errors = metrics.Provider.Meter.Instance(HttpRequestMetricsRegistry.Meters.EndpointHttpErrorRequests(routeTemplate));
+            var requests = metrics.Provider.Timer.Instance(HttpRequestMetricsRegistry.Timers.EndpointPerRequestTimer(routeTemplate));
+
+            metrics.Measure.Gauge.SetValue(
+                HttpRequestMetricsRegistry.Gauges.EndpointPercentageErrorRequests(routeTemplate),
                 () => new HitPercentageGauge(errors, requests, m => m.OneMinuteRate));
 
             return metrics;
@@ -76,10 +89,8 @@ namespace App.Metrics
 
         public static IMetrics RecordEndpointRequestTime(this IMetrics metrics, string clientId, string routeTemplate, long elapsed)
         {
-            metrics.Provider
-                   .Timer
-                   .Instance(HttpRequestMetricsRegistry.Timers.EndpointPerRequestTimer(routeTemplate))
-                   .Record(elapsed, TimeUnit.Nanoseconds, clientId.IsPresent() ? clientId : null);
+            metrics.Provider.Timer.Instance(HttpRequestMetricsRegistry.Timers.EndpointPerRequestTimer(routeTemplate)).
+                    Record(elapsed, TimeUnit.Nanoseconds, clientId.IsPresent() ? clientId : null);
 
             return metrics;
         }
