@@ -111,9 +111,10 @@ Task("RunTests")
 
     foreach (var project in projects)
     {
-        if (IsRunningOnWindows())
-        {
-			var folderName = new System.IO.DirectoryInfo(System.IO.Path.GetDirectoryName(project.ToString())).Name;
+		var folderName = new System.IO.DirectoryInfo(System.IO.Path.GetDirectoryName(project.ToString())).Name;
+        
+		if (IsRunningOnWindows())
+        {			
 			Action<ICakeContext> testAction = tool => {
 
                     tool.DotNetCoreTest(project.GetDirectory().FullPath, new DotNetCoreTestSettings {
@@ -141,7 +142,7 @@ Task("RunTests")
                     testAction(Context);
                 }
         }
-        else
+        else if (!folderName.Contains("Net452"))
         {
             var settings = new DotNetCoreTestSettings
             {

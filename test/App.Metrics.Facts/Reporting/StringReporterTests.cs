@@ -60,7 +60,7 @@ namespace App.Metrics.Facts.Reporting
             AssertReportResult(sr.Result, expected);
         }
 
-        [Fact(Skip = "failing on build server, doesn't look like encoding on line breaks.")]
+        [Fact]
         public void can_report_apdex_with_group()
         {
             var expected = StringReporterSamples.ApdexWithGroup.ExtractStringReporterSampleFromResourceFile();
