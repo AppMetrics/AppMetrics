@@ -8,7 +8,7 @@
   },
 
   "buildOptions": {
-    "debugType": "full",
+    "debugType": "portable",
     "embed": {
       "include": [ "Reporting/StringReports/*.txt" ]
     }

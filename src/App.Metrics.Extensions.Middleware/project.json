@@ -6,7 +6,7 @@
       "CS1591"
     ],
     "xmlDoc": true,
-    "debugType": "full",
+    "debugType": "portable",
     "additionalArguments": [ "/ruleset:../../AppMetrics.ruleset", "/additionalfile:../../stylecop.json" ]
   },
   "copyright": "Allan Hardy 2016",

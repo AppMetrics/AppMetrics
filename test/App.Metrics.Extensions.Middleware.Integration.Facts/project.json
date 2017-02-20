@@ -8,8 +8,8 @@
   },
 
   "buildOptions": {
-    "debugType": "full",
-    "copyToOutput": [ "DependencyInjection/TestConfiguration/*.json" ]    
+    "debugType": "portable",
+    "copyToOutput": [ "DependencyInjection/TestConfiguration/*.json" ]
   },
 
   "dependencies": {

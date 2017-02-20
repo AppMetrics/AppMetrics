@@ -7,7 +7,7 @@
     "win10-x64": {}
   },
 
-  "buildOptions": { "debugType": "full" },
+  "buildOptions": { "debugType": "portable" },
 
   "dependencies": {
     "App.Metrics": {
