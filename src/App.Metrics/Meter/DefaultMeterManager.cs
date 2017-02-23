@@ -46,15 +46,15 @@ namespace App.Metrics.Meter
         }
 
         /// <inheritdoc />
-        public void Mark(MeterOptions options, MetricSetItem itemSetup)
+        public void Mark(MeterOptions options, MetricSetItem setItem)
         {
-            _registry.Meter(options, () => _meterBuilder.Build(_clock)).Mark(itemSetup);
+            _registry.Meter(options, () => _meterBuilder.Build(_clock)).Mark(setItem);
         }
 
         /// <inheritdoc />
-        public void Mark(MeterOptions options, long amount, MetricSetItem itemSetup)
+        public void Mark(MeterOptions options, long amount, MetricSetItem setItem)
         {
-            _registry.Meter(options, () => _meterBuilder.Build(_clock)).Mark(itemSetup, amount);
+            _registry.Meter(options, () => _meterBuilder.Build(_clock)).Mark(setItem, amount);
         }
 
         /// <inheritdoc />
