@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
+using System;
+using App.Metrics.Core.Internal;
 using App.Metrics.Tagging;
 
 namespace App.Metrics.Core.Abstractions
@@ -18,7 +20,31 @@ namespace App.Metrics.Core.Abstractions
             Unit = unit;
             ValueProvider = valueProvider;
             Tags = tags;
+
+            if (name.Contains(Constants.Formatting.MetricNameDimensionSeparator))
+            {
+                IsMultidimensional = true;
+                MultidimensionalName =
+                    name.Split(new[] { Constants.Formatting.MetricNameDimensionSeparator }, StringSplitOptions.RemoveEmptyEntries)[0];
+            }
         }
+
+        /// <summary>
+        ///     Gets a value indicating whether this instance is a multidimensional metric.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if this instance is a multidimensional metric; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsMultidimensional { get; }
+
+        /// <summary>
+        ///     Gets the name of the multidimensional metric. If tags were set at runtime, this will be the name of the metric
+        ///     without the concatenated metric tags so that these metrics can be reported as one.
+        /// </summary>
+        /// <value>
+        ///     The name of the multidimensional metric.
+        /// </value>
+        public string MultidimensionalName { get; }
 
         /// <summary>
         ///     Gets the Name of the metric.
