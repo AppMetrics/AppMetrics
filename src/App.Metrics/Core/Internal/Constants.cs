@@ -11,6 +11,16 @@ namespace App.Metrics.Core.Internal
     {
         public const string InternalMetricsContext = "appmetrics.internal";
 
+        public static class Formatting
+        {
+            public static readonly string MetricNameDimensionSeparator = "|";
+            public static readonly string MetricSetItemFallbackKey = "item";
+            public static readonly char MetricSetItemKeyValueSeparator = ':';
+            public static readonly char MetricSetItemSeparator = ',';
+            public static readonly string MetricTagKeyValueSeparator = ":";
+            public static readonly string MetricTagSeparator = ",";
+        }
+
         public static class Health
         {
             internal const string DegradedStatusDisplay = "Degraded";

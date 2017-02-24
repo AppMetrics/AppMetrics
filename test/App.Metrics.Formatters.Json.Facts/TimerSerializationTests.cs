@@ -20,14 +20,12 @@ namespace App.Metrics.Formatters.Json.Facts
         private readonly ITestOutputHelper _output;
         private readonly MetricDataSerializer _serializer;
         private readonly TimerValueSource _timer;
-        private readonly TimerValueSource _timerWithGroup;
 
         public TimerSerializationTests(ITestOutputHelper output, MetricProviderTestFixture fixture)
         {
             _output = output;
             _serializer = new MetricDataSerializer();
             _timer = fixture.Timers.First(x => x.Name == fixture.TimerNameDefault);
-            _timerWithGroup = fixture.Timers.First(x => x.Name == fixture.TimerNameWithGroup);
         }
 
         [Fact]
@@ -73,16 +71,6 @@ namespace App.Metrics.Formatters.Json.Facts
             var expected = MetricType.Timer.SampleJson();
 
             var result = _serializer.Serialize(_timer).ParseAsJson();
-
-            result.Should().Be(expected);
-        }
-
-        [Fact]
-        public void produces_expected_json_with_group()
-        {
-            var expected = MetricTypeSamples.TimerWithGroup.SampleJson();
-
-            var result = _serializer.Serialize(_timerWithGroup).ParseAsJson();
 
             result.Should().Be(expected);
         }

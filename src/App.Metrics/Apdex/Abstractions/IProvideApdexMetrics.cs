@@ -4,6 +4,7 @@
 using System;
 using App.Metrics.Abstractions.Metrics;
 using App.Metrics.Core.Options;
+using App.Metrics.Tagging;
 
 namespace App.Metrics.Apdex.Abstractions
 {
@@ -11,7 +12,12 @@ namespace App.Metrics.Apdex.Abstractions
     {
         IApdex Instance(ApdexOptions options);
 
+        IApdex Instance(ApdexOptions options, MetricTags tags);
+
         IApdex Instance<T>(ApdexOptions options, Func<T> builder)
+            where T : IApdexMetric;
+
+        IApdex Instance<T>(ApdexOptions options, MetricTags tags, Func<T> builder)
             where T : IApdexMetric;
     }
 }

@@ -21,14 +21,6 @@ namespace App.Metrics.Core.Options
         public string Context { get; set; }
 
         /// <summary>
-        ///     Gets or sets the group of the Metric being measured
-        /// </summary>
-        /// <value>
-        ///     The group.
-        /// </value>
-        public string Group { get; set; }
-
-        /// <summary>
         ///     Gets or sets the description of what is being measured, a <see cref="Unit" /> is something that is expressed in MB,
         ///     kB for example
         /// </summary>

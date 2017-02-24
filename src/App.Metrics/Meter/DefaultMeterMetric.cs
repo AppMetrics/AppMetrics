@@ -66,7 +66,6 @@ namespace App.Metrics.Meter
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         public void Dispose(bool disposing)

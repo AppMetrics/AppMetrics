@@ -5,6 +5,7 @@ using System;
 using App.Metrics.Extensions.Middleware.Internal;
 using App.Metrics.Gauge;
 using App.Metrics.Tagging;
+using App.Metrics.Timer.Abstractions;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics
@@ -18,6 +19,15 @@ namespace App.Metrics
             metrics.Measure.Counter.Decrement(HttpRequestMetricsRegistry.Counters.ActiveRequests);
 
             return metrics;
+        }
+
+        public static ITimer EndpointRequestTimer(this IMetrics metrics, string routeTemplate, string clientId = null)
+        {
+            var tags = clientId.IsMissing()
+                ? new MetricTags("route", routeTemplate)
+                : new MetricTags(new[] { "clientid", "route" }, new[] { clientId, routeTemplate });
+
+            return metrics.Provider.Timer.Instance(HttpRequestMetricsRegistry.Timers.HttpRequestTransactions, tags);
         }
 
         public static IMetrics ErrorRequestPercentage(this IMetrics metrics)
@@ -34,11 +44,13 @@ namespace App.Metrics
 
         public static IMetrics ErrorRequestPercentagePerEndpoint(this IMetrics metrics, string routeTemplate)
         {
-            var errors = metrics.Provider.Meter.Instance(HttpRequestMetricsRegistry.Meters.EndpointHttpErrorRequests(routeTemplate));
-            var requests = metrics.Provider.Timer.Instance(HttpRequestMetricsRegistry.Timers.EndpointPerRequestTimer(routeTemplate));
+            var tags = new MetricTags("route", routeTemplate);
+            var errors = metrics.Provider.Meter.Instance(HttpRequestMetricsRegistry.Meters.EndpointHttpErrorRequests, tags);
+            var requests = metrics.EndpointRequestTimer(routeTemplate);
 
             metrics.Measure.Gauge.SetValue(
-                HttpRequestMetricsRegistry.Gauges.EndpointPercentageErrorRequests(routeTemplate),
+                HttpRequestMetricsRegistry.Gauges.EndpointPercentageErrorRequests,
+                tags,
                 () => new HitPercentageGauge(errors, requests, m => m.OneMinuteRate));
 
             return metrics;
@@ -62,8 +74,10 @@ namespace App.Metrics
 
         public static IMetrics MarkHttpRequestEndpointError(this IMetrics metrics, string routeTemplate, int httpStatusCode)
         {
+            var tags = new MetricTags("route", routeTemplate);
             metrics.Measure.Meter.Mark(
-                HttpRequestMetricsRegistry.Meters.EndpointHttpErrorRequests(routeTemplate),
+                HttpRequestMetricsRegistry.Meters.EndpointHttpErrorRequests,
+                tags,
                 new MetricSetItem("http_status_code", httpStatusCode.ToString()));
 
             return metrics;
@@ -89,8 +103,7 @@ namespace App.Metrics
 
         public static IMetrics RecordEndpointRequestTime(this IMetrics metrics, string clientId, string routeTemplate, long elapsed)
         {
-            metrics.Provider.Timer.Instance(HttpRequestMetricsRegistry.Timers.EndpointPerRequestTimer(routeTemplate)).
-                    Record(elapsed, TimeUnit.Nanoseconds, clientId.IsPresent() ? clientId : null);
+            metrics.EndpointRequestTimer(routeTemplate, clientId).Record(elapsed, TimeUnit.Nanoseconds, clientId.IsPresent() ? clientId : null);
 
             return metrics;
         }

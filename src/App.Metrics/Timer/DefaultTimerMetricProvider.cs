@@ -5,6 +5,7 @@ using System;
 using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Core.Options;
 using App.Metrics.Registry.Abstractions;
+using App.Metrics.Tagging;
 using App.Metrics.Timer.Abstractions;
 
 namespace App.Metrics.Timer
@@ -37,8 +38,26 @@ namespace App.Metrics.Timer
         }
 
         /// <inheritdoc />
+        public ITimer Instance(TimerOptions options, MetricTags tags)
+        {
+            return Instance(
+                options,
+                tags,
+                () => _timerBuilder.Build(options.Reservoir, _clock));
+        }
+
+        /// <inheritdoc />
         public ITimer Instance<T>(TimerOptions options, Func<T> builder)
-            where T : ITimerMetric { return _registry.Timer(options, builder); }
+            where T : ITimerMetric
+        {
+            return _registry.Timer(options, builder);
+        }
+
+        public ITimer Instance<T>(TimerOptions options, MetricTags tags, Func<T> builder)
+            where T : ITimerMetric
+        {
+            return _registry.Timer(options, tags, builder);
+        }
 
         /// <inheritdoc />
         public ITimer WithHistogram<T>(TimerOptions options, Func<T> histogramMetricBuilder)
@@ -46,6 +65,16 @@ namespace App.Metrics.Timer
         {
             return Instance(
                 options,
+                () => _timerBuilder.Build(histogramMetricBuilder(), _clock));
+        }
+
+        /// <inheritdoc />
+        public ITimer WithHistogram<T>(TimerOptions options, MetricTags tags, Func<T> histogramMetricBuilder)
+            where T : IHistogramMetric
+        {
+            return Instance(
+                options,
+                tags,
                 () => _timerBuilder.Build(histogramMetricBuilder(), _clock));
         }
     }

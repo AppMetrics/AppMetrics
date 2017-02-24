@@ -13,16 +13,6 @@ namespace App.Metrics.Gauge
     {
         public GaugeValueSource(
             string name,
-            string group,
-            IMetricValueProvider<double> value,
-            Unit unit,
-            MetricTags tags)
-            : base(name, group, value, unit, tags)
-        {
-        }
-
-        public GaugeValueSource(
-            string name,
             IMetricValueProvider<double> value,
             Unit unit,
             MetricTags tags)

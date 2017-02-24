@@ -35,7 +35,6 @@ namespace App.Metrics.Histogram
 
             return new HistogramValueSource(
                 source.Name,
-                source.Group,
                 ConstantValue.Provider(histogramValue),
                 source.Unit,
                 source.Tags.FromDictionary());
@@ -56,7 +55,6 @@ namespace App.Metrics.Histogram
             return new HistogramMetric
                    {
                        Name = source.Name,
-                       Group = source.Group,
                        Count = source.Value.Count,
                        Unit = source.Unit.Name,
                        LastUserValue = source.Value.LastUserValue,

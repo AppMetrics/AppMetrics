@@ -6,6 +6,7 @@ using App.Metrics.Core.Abstractions;
 using App.Metrics.Core.Options;
 using App.Metrics.Gauge.Abstractions;
 using App.Metrics.Registry.Abstractions;
+using App.Metrics.Tagging;
 
 namespace App.Metrics.Gauge
 {
@@ -26,9 +27,27 @@ namespace App.Metrics.Gauge
         }
 
         /// <inheritdoc />
-        public void SetValue(GaugeOptions options, Func<double> valueProvider) { _registry.Gauge(options, () => _gaugeBuilder.Build(valueProvider)); }
+        public void SetValue(GaugeOptions options, Func<double> valueProvider)
+        {
+            _registry.Gauge(options, () => _gaugeBuilder.Build(valueProvider));
+        }
 
         /// <inheritdoc />
-        public void SetValue(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider) { _registry.Gauge(options, valueProvider); }
+        public void SetValue(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider)
+        {
+            _registry.Gauge(options, valueProvider);
+        }
+
+        /// <inheritdoc />
+        public void SetValue(GaugeOptions options, MetricTags tags, Func<IMetricValueProvider<double>> valueProvider)
+        {
+            _registry.Gauge(options, tags, valueProvider);
+        }
+
+        /// <inheritdoc />
+        public void SetValue(GaugeOptions options, MetricTags tags, Func<double> valueProvider)
+        {
+            _registry.Gauge(options, tags, () => _gaugeBuilder.Build(valueProvider));
+        }
     }
 }

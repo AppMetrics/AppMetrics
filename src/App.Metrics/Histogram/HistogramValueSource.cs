@@ -19,15 +19,5 @@ namespace App.Metrics.Histogram
             : base(name, valueProvider, unit, tags)
         {
         }
-
-        public HistogramValueSource(
-            string name,
-            string group,
-            IMetricValueProvider<HistogramValue> valueProvider,
-            Unit unit,
-            MetricTags tags)
-            : base(name, group, valueProvider, unit, tags)
-        {
-        }
     }
 }

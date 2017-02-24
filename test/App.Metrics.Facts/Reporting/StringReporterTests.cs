@@ -61,27 +61,6 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void can_report_apdex_with_group()
-        {
-            var expected = StringReporterSamples.ApdexWithGroup.ExtractStringReporterSampleFromResourceFile();
-            var sr = new StringReporter();
-            var clock = new TestClock();
-            var reservoir = new Lazy<IReservoir>(
-                () => new DefaultForwardDecayingReservoir(
-                    Constants.ReservoirSampling.DefaultSampleSize,
-                    Constants.ReservoirSampling.DefaultExponentialDecayFactor,
-                    clock,
-                    new TestTaskScheduler(clock)));
-            var metric = new DefaultApdexMetric(new ApdexProvider(reservoir, Constants.ReservoirSampling.DefaultApdexTSeconds), clock, true);
-
-            metric.Track(1000);
-
-            sr.ReportMetric("test", new ApdexValueSource("apdex_name", "testgroup", metric, MetricTags.Empty));
-
-            AssertReportResult(sr.Result, expected);
-        }
-
-        [Fact]
         public void can_report_counters()
         {
             var expected = StringReporterSamples.Counters.ExtractStringReporterSampleFromResourceFile();

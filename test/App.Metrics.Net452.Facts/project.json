@@ -9,7 +9,7 @@
   },
 
   "buildOptions": {
-    "debugType": "portable",
+    "debugType": "full",
     "compile": {
       "includeFiles": [
         "../App.Metrics.Facts/Extensions/HumanizingMetricExtensionTests.cs",

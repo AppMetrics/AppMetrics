@@ -10,6 +10,7 @@ using App.Metrics.Core.Options;
 using App.Metrics.Counter.Abstractions;
 using App.Metrics.Histogram.Abstractions;
 using App.Metrics.Meter.Abstractions;
+using App.Metrics.Tagging;
 using App.Metrics.Timer.Abstractions;
 
 namespace App.Metrics.Registry.Abstractions
@@ -23,20 +24,37 @@ namespace App.Metrics.Registry.Abstractions
         IApdex Apdex<T>(ApdexOptions options, Func<T> builder)
             where T : IApdexMetric;
 
+        IApdex Apdex<T>(ApdexOptions options, MetricTags tags, Func<T> builder)
+            where T : IApdexMetric;
+
         void ClearAllMetrics();
 
         ICounter Counter<T>(CounterOptions options, Func<T> builder)
             where T : ICounterMetric;
 
+        ICounter Counter<T>(CounterOptions options, MetricTags tags, Func<T> builder)
+            where T : ICounterMetric;
+
         void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider);
 
+        void Gauge(GaugeOptions options, MetricTags tags, Func<IMetricValueProvider<double>> valueProvider);
+
         IHistogram Histogram<T>(HistogramOptions options, Func<T> builder)
+            where T : IHistogramMetric;
+
+        IHistogram Histogram<T>(HistogramOptions options, MetricTags tags, Func<T> builder)
             where T : IHistogramMetric;
 
         IMeter Meter<T>(MeterOptions options, Func<T> builder)
             where T : IMeterMetric;
 
+        IMeter Meter<T>(MeterOptions options, MetricTags tags, Func<T> builder)
+            where T : IMeterMetric;
+
         ITimer Timer<T>(TimerOptions options, Func<T> builder)
+            where T : ITimerMetric;
+
+        ITimer Timer<T>(TimerOptions options, MetricTags tags, Func<T> builder)
             where T : ITimerMetric;
     }
 }

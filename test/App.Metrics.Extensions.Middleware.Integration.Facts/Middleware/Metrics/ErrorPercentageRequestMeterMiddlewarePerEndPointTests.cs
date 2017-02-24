@@ -43,7 +43,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
                 HttpRequestMetricsRegistry.ContextName,
                 metricName);
 
-            getGaugeValue("GET api/test/error-random/{passorfail}").Should().BeApproximately(35, 5);
+            getGaugeValue("Endpoint Percentage Error Requests|route:GET api/test/error-random/{passorfail}").Should().BeApproximately(35, 5);
         }
     }
 }

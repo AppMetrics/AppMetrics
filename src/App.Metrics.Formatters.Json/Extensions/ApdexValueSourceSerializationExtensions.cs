@@ -16,7 +16,7 @@ namespace App.Metrics.Apdex
         public static ApdexValueSource FromSerializableMetric(this ApdexMetric source)
         {
             var counterValue = new ApdexValue(source.Score, source.Satisfied, source.Tolerating, source.Frustrating, source.SampleSize);
-            return new ApdexValueSource(source.Name, source.Group, ConstantValue.Provider(counterValue), source.Tags.FromDictionary());
+            return new ApdexValueSource(source.Name, ConstantValue.Provider(counterValue), source.Tags.FromDictionary());
         }
 
         public static IEnumerable<ApdexValueSource> FromSerializableMetric(this IEnumerable<ApdexMetric> source)
@@ -34,7 +34,6 @@ namespace App.Metrics.Apdex
             return new ApdexMetric
                    {
                        Name = source.Name,
-                       Group = source.Group,
                        Score = source.Value.Score,
                        SampleSize = source.Value.SampleSize,
                        Satisfied = source.Value.Satisfied,

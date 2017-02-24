@@ -6,6 +6,7 @@ using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Core.Options;
 using App.Metrics.Meter.Abstractions;
 using App.Metrics.Registry.Abstractions;
+using App.Metrics.Tagging;
 
 namespace App.Metrics.Meter
 {
@@ -29,10 +30,29 @@ namespace App.Metrics.Meter
         }
 
         /// <inheritdoc />
-        public IMeter Instance(MeterOptions options) { return Instance(options, () => _meterBuilder.Build(_clock)); }
+        public IMeter Instance(MeterOptions options)
+        {
+            return Instance(options, () => _meterBuilder.Build(_clock));
+        }
 
         /// <inheritdoc />
         public IMeter Instance<T>(MeterOptions options, Func<T> builder)
-            where T : IMeterMetric { return _registry.Meter(options, builder); }
+            where T : IMeterMetric
+        {
+            return _registry.Meter(options, builder);
+        }
+
+        /// <inheritdoc />
+        public IMeter Instance(MeterOptions options, MetricTags tags)
+        {
+            return Instance(options, tags, () => _meterBuilder.Build(_clock));
+        }
+
+        /// <inheritdoc />
+        public IMeter Instance<T>(MeterOptions options, MetricTags tags, Func<T> builder)
+            where T : IMeterMetric
+        {
+            return _registry.Meter(options, tags, builder);
+        }
     }
 }

@@ -2,7 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections.Concurrent;
 using App.Metrics.Core.Options;
 
 namespace App.Metrics.Extensions.Middleware.Internal
@@ -36,28 +35,19 @@ namespace App.Metrics.Extensions.Middleware.Internal
 
         public static class Gauges
         {
+            public static GaugeOptions EndpointPercentageErrorRequests = new GaugeOptions
+                                                                         {
+                                                                             Context = ContextName,
+                                                                             Name = "Endpoint Percentage Error Requests",
+                                                                             MeasurementUnit = Unit.Errors
+                                                                         };
+
             public static GaugeOptions PercentageErrorRequests = new GaugeOptions
                                                                  {
                                                                      Context = ContextName,
                                                                      Name = "Percentage Error Requests",
                                                                      MeasurementUnit = Unit.Custom("Error Requests")
                                                                  };
-
-            private static readonly ConcurrentDictionary<string, GaugeOptions> PercentageErrorRequestsCache =
-                new ConcurrentDictionary<string, GaugeOptions>();
-
-            public static GaugeOptions EndpointPercentageErrorRequests(string routeTemplate)
-            {
-                return PercentageErrorRequestsCache.GetOrAdd(
-                    routeTemplate,
-                    name => new GaugeOptions
-                            {
-                                Context = ContextName,
-                                Name = name,
-                                Group = "Endpoint Percentage Error Requests",
-                                MeasurementUnit = Unit.Errors
-                            });
-            }
         }
 
         public static class Histograms
@@ -72,54 +62,36 @@ namespace App.Metrics.Extensions.Middleware.Internal
 
         public static class Meters
         {
+            public static MeterOptions EndpointHttpErrorRequests = new MeterOptions
+                                                                   {
+                                                                       Context = ContextName,
+                                                                       Name = "Http Error Request Transactions",
+                                                                       MeasurementUnit = Unit.Requests
+                                                                   };
+
             public static MeterOptions HttpErrorRequests = new MeterOptions
                                                            {
                                                                Context = ContextName,
                                                                Name = "Http Error Requests",
                                                                MeasurementUnit = Unit.Requests
                                                            };
-
-            private static readonly ConcurrentDictionary<string, MeterOptions> EndpointHttpErrorRequestsCache =
-                new ConcurrentDictionary<string, MeterOptions>();
-
-            public static MeterOptions EndpointHttpErrorRequests(string routeTemplate)
-            {
-                return EndpointHttpErrorRequestsCache.GetOrAdd(
-                    routeTemplate,
-                    name => new MeterOptions
-                            {
-                                Context = ContextName,
-                                Name = name,
-                                Group = "Http Error Request Transactions",
-                                MeasurementUnit = Unit.Requests
-                            });
-            }
         }
 
         public static class Timers
         {
+            public static TimerOptions HttpRequestTransactions = new TimerOptions
+                                                                 {
+                                                                     Context = ContextName,
+                                                                     Name = "Http Request Transactions",
+                                                                     MeasurementUnit = Unit.Requests
+                                                                 };
+
             public static TimerOptions WebRequestTimer = new TimerOptions
                                                          {
                                                              Context = ContextName,
                                                              Name = "Http Requests",
                                                              MeasurementUnit = Unit.Requests
                                                          };
-
-            private static readonly ConcurrentDictionary<string, TimerOptions> EndpointPerRequestTimerCache =
-                new ConcurrentDictionary<string, TimerOptions>();
-
-            public static TimerOptions EndpointPerRequestTimer(string routeTemplate)
-            {
-                return EndpointPerRequestTimerCache.GetOrAdd(
-                    routeTemplate,
-                    name => new TimerOptions
-                            {
-                                Context = ContextName,
-                                Name = name,
-                                Group = "Http Request Transactions",
-                                MeasurementUnit = Unit.Requests
-                            });
-            }
         }
     }
 

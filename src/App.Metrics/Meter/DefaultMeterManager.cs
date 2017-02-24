@@ -40,9 +40,27 @@ namespace App.Metrics.Meter
         }
 
         /// <inheritdoc />
+        public void Mark(MeterOptions options, MetricTags tags, long amount)
+        {
+            _registry.Meter(options, tags, () => _meterBuilder.Build(_clock)).Mark(amount);
+        }
+
+        /// <inheritdoc />
+        public void Mark(MeterOptions options, MetricTags tags)
+        {
+            _registry.Meter(options, tags, () => _meterBuilder.Build(_clock)).Mark();
+        }
+
+        /// <inheritdoc />
         public void Mark(MeterOptions options, string item)
         {
             _registry.Meter(options, () => _meterBuilder.Build(_clock)).Mark(item);
+        }
+
+        /// <inheritdoc />
+        public void Mark(MeterOptions options, MetricTags tags, string item)
+        {
+            _registry.Meter(options, tags, () => _meterBuilder.Build(_clock)).Mark(item);
         }
 
         /// <inheritdoc />
@@ -52,9 +70,27 @@ namespace App.Metrics.Meter
         }
 
         /// <inheritdoc />
+        public void Mark(MeterOptions options, MetricTags tags, MetricSetItem setItem)
+        {
+            _registry.Meter(options, tags, () => _meterBuilder.Build(_clock)).Mark(setItem);
+        }
+
+        /// <inheritdoc />
+        public void Mark(MeterOptions options, MetricTags tags, long amount, string item)
+        {
+            _registry.Meter(options, tags, () => _meterBuilder.Build(_clock)).Mark(item, amount);
+        }
+
+        /// <inheritdoc />
         public void Mark(MeterOptions options, long amount, MetricSetItem setItem)
         {
             _registry.Meter(options, () => _meterBuilder.Build(_clock)).Mark(setItem, amount);
+        }
+
+        /// <inheritdoc />
+        public void Mark(MeterOptions options, MetricTags tags, long amount, MetricSetItem setItem)
+        {
+            _registry.Meter(options, tags, () => _meterBuilder.Build(_clock)).Mark(setItem, amount);
         }
 
         /// <inheritdoc />

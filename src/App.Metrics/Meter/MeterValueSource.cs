@@ -23,18 +23,6 @@ namespace App.Metrics.Meter
             RateUnit = rateUnit;
         }
 
-        public MeterValueSource(
-            string name,
-            string group,
-            IMetricValueProvider<MeterValue> value,
-            Unit unit,
-            TimeUnit rateUnit,
-            MetricTags tags)
-            : base(name, group, new ScaledValueProvider<MeterValue>(value, v => v.Scale(rateUnit)), unit, tags)
-        {
-            RateUnit = rateUnit;
-        }
-
-        public TimeUnit RateUnit { get; private set; }
+        public TimeUnit RateUnit { get; }
     }
 }

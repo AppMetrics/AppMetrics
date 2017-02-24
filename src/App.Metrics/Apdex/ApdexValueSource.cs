@@ -18,17 +18,6 @@ namespace App.Metrics.Apdex
             ResetOnReporting = resetOnReporting;
         }
 
-        public ApdexValueSource(
-            string name,
-            string group,
-            IMetricValueProvider<ApdexValue> value,
-            MetricTags tags,
-            bool resetOnReporting = false)
-            : base(name, group, value, Unit.Results, tags)
-        {
-            ResetOnReporting = resetOnReporting;
-        }
-
-        public bool ResetOnReporting { get; private set; }
+        public bool ResetOnReporting { get; }
     }
 }

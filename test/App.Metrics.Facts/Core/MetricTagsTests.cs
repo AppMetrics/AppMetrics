@@ -58,7 +58,7 @@ namespace App.Metrics.Facts.Core
 
             var expectedTags = new MetricTags(tags, values);
 
-            var tag = MetricTags.FromSetItemString("item:machine-1|item:machine-2");
+            var tag = MetricTags.FromSetItemString("item:machine-1,item:machine-2");
 
             Assert.Equal(expectedTags, tag);
         }
@@ -264,10 +264,21 @@ namespace App.Metrics.Facts.Core
 
         )
         {
-            var tags = MetricTags.FromSetItemString("machine-1|machine-2");
+            var tags = MetricTags.FromSetItemString("machine-1,machine-2");
 
             tags.Keys.Should().Equal(new[] { "item", "item" });
             tags.Values.Should().Equal(new[] { "machine-1", "machine-2" });
+        }
+
+        [Fact]
+        public void can_convert_to_multidimensional_metric_name()
+        {
+            var keys = new[] { "key1", "key2", "key3", "key4", "key5", "key6", "key7", "key8" };
+            var values = new[] { "value1", "value2", "value3", "value4", "value5", "value6", "value7", "value8" };
+
+            var tags = new MetricTags(keys, values);
+
+            tags.AsMetricName("metric_name").Should().Be("metric_name|key1:value1,key2:value2,key3:value3,key4:value4,key5:value5,key6:value6,key7:value7,key8:value8");
         }
 
         protected virtual void Dispose(bool disposing)

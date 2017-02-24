@@ -10,6 +10,7 @@ using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.Registry.Abstractions;
 using App.Metrics.Registry.Internal;
+using App.Metrics.Tagging;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Facts.Fixtures
@@ -38,6 +39,8 @@ namespace App.Metrics.Facts.Fixtures
 
         public IClock Clock { get; }
 
+        public string Context { get; }
+
         public IMeasureMetrics Managers { get; }
 
         public IProvideMetrics Providers { get; }
@@ -46,9 +49,15 @@ namespace App.Metrics.Facts.Fixtures
 
         public IProvideMetricValues Snapshot { get; }
 
-        public string Context { get; }
+        public MetricTags[] Tags => new[]
+                                    {
+                                        new MetricTags("key1", "key2"),
+                                        new MetricTags(new[] { "key1", "key2" }, new[] { "value1", "value2" })
+                                    };
 
         /// <inheritdoc />
-        public void Dispose() { }
+        public void Dispose()
+        {
+        }
     }
 }

@@ -20,7 +20,6 @@ namespace App.Metrics.Counter
             return new CounterMetric
                    {
                        Name = source.Name,
-                       Group = source.Group,
                        Count = source.Value.Count,
                        Unit = source.Unit.Name,
                        Items = source.Value.Items.Select(
@@ -42,7 +41,6 @@ namespace App.Metrics.Counter
 
             return new CounterValueSource(
                 source.Name,
-                source.Group,
                 ConstantValue.Provider(counterValue),
                 source.Unit,
                 source.Tags.FromDictionary());

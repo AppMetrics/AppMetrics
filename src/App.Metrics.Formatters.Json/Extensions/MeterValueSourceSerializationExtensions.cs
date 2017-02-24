@@ -45,7 +45,6 @@ namespace App.Metrics.Meter
 
             return new MeterValueSource(
                 source.Name,
-                source.Group,
                 ConstantValue.Provider(meterValue),
                 source.Unit,
                 rateUnit,
@@ -84,7 +83,6 @@ namespace App.Metrics.Meter
                        Items = items,
                        Count = source.Value.Count,
                        Name = source.Name,
-                       Group = source.Group,
                        Unit = source.Unit.Name,
                        OneMinuteRate = source.Value.OneMinuteRate,
                        FiveMinuteRate = source.Value.FiveMinuteRate,

@@ -26,14 +26,12 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
         [Fact]
         public async Task can_record_times_per_request()
         {
-            await Client.GetAsync("/api/test/300ms");
-            await Client.GetAsync("/api/test/30ms");
-
-            var metrics = Context.Snapshot.GetForContext(HttpRequestMetricsRegistry.ContextName);
+            await Client.GetAsync("api/test/300ms");
+            await Client.GetAsync("api/test/30ms");
 
             var timer1 = Context.Snapshot.GetTimerValue(
                 HttpRequestMetricsRegistry.ContextName,
-                "GET api/test/30ms");
+                "Http Request Transactions|route:GET api/test/30ms");
 
             timer1.Histogram.Min.Should().Be(30);
             timer1.Histogram.Max.Should().Be(30);
@@ -46,7 +44,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
 
             var timer2 = Context.Snapshot.GetTimerValue(
                 HttpRequestMetricsRegistry.ContextName,
-                "GET api/test/300ms");
+                "Http Request Transactions|route:GET api/test/300ms");
 
             timer2.Histogram.Min.Should().Be(300);
             timer2.Histogram.Max.Should().Be(300);

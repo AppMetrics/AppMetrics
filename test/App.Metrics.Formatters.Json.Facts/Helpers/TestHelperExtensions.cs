@@ -24,12 +24,7 @@ namespace App.Metrics.Formatters.Json.Facts.Helpers
 
     public enum MetricTypeSamples
     {
-        TimerWithGroup,
-        HistogramWithGroup,
-        MeterWithGroup,
-        CounterWithGroup,
-        ApdexWithGroup,
-        GaugeWithGroup
+        
     }
 
 
@@ -59,33 +54,7 @@ namespace App.Metrics.Formatters.Json.Facts.Helpers
                                                                                                         }
                                                                                                     };
 
-        private static readonly Dictionary<MetricTypeSamples, string> MetricTypeFileSampleMapping = new Dictionary<MetricTypeSamples, string>
-                                                                                               {
-                                                                                                   {
-                                                                                                       MetricTypeSamples.TimerWithGroup,
-                                                                                                       "timer_with_group"
-                                                                                                   },
-                                                                                                   {
-                                                                                                       MetricTypeSamples.MeterWithGroup,
-                                                                                                       "meter_with_group"
-                                                                                                   },
-                                                                                                   {
-                                                                                                       MetricTypeSamples.CounterWithGroup,
-                                                                                                       "counter_with_group"
-                                                                                                   },
-                                                                                                   {
-                                                                                                       MetricTypeSamples.HistogramWithGroup,
-                                                                                                       "histogram_with_group"
-                                                                                                   },
-                                                                                                   {
-                                                                                                       MetricTypeSamples.ApdexWithGroup,
-                                                                                                       "apdex_with_group"
-                                                                                                   },
-                                                                                                   {
-                                                                                                       MetricTypeSamples.GaugeWithGroup,
-                                                                                                       "gauge_with_group"
-                                                                                                   }
-                                                                                               };
+        private static readonly Dictionary<MetricTypeSamples, string> MetricTypeFileSampleMapping = new Dictionary<MetricTypeSamples, string>();
 
         public static JToken ExtractHealthStatusSampleFromResourceFile(this HealthStatusSamples sample)
         {

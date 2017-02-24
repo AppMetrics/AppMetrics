@@ -6,6 +6,7 @@ using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Core.Options;
 using App.Metrics.Histogram.Abstractions;
 using App.Metrics.Registry.Abstractions;
+using App.Metrics.Tagging;
 
 namespace App.Metrics.Histogram
 {
@@ -26,10 +27,29 @@ namespace App.Metrics.Histogram
         }
 
         /// <inheritdoc />
-        public IHistogram Instance(HistogramOptions options) { return Instance(options, () => _histogramBuilder.Build(options.Reservoir)); }
+        public IHistogram Instance(HistogramOptions options)
+        {
+            return Instance(options, () => _histogramBuilder.Build(options.Reservoir));
+        }
 
         /// <inheritdoc />
         public IHistogram Instance<T>(HistogramOptions options, Func<T> builder)
-            where T : IHistogramMetric { return _registry.Histogram(options, builder); }
+            where T : IHistogramMetric
+        {
+            return _registry.Histogram(options, builder);
+        }
+
+        /// <inheritdoc />
+        public IHistogram Instance(HistogramOptions options, MetricTags tags)
+        {
+            return Instance(options, tags, () => _histogramBuilder.Build(options.Reservoir));
+        }
+
+        /// <inheritdoc />
+        public IHistogram Instance<T>(HistogramOptions options, MetricTags tags, Func<T> builder)
+            where T : IHistogramMetric
+        {
+            return _registry.Histogram(options, tags, builder);
+        }
     }
 }

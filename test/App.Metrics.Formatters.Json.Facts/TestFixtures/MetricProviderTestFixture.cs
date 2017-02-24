@@ -18,24 +18,16 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
     public class MetricProviderTestFixture : IDisposable
     {
         public string ApdexNameDefault = "test_apdex";
-        public string ApdexNameWithGroup = "test_apdex_with_group";
 
         public string CounterNameDefault = "test_counter";
-        public string CounterNameWithGroup = "test_counter_with_group";
 
         public string GaugeNameDefault = "test_gauge";
-        public string GaugeNameWithGroup = "test_gauge_with_group";
-
-        public string GroupDefault = "test_group";
 
         public string HistogramNameDefault = "test_histogram";
-        public string HistogramNameWithGroup = "test_histogram_with_group";
 
         public string MeterNameDefault = "test_meter";
-        public string MeterNameWithGroup = "test_meter_with_group";
 
         public string TimerNameDefault = "test_timer";
-        public string TimerNameWithGroup = "test_timer_with_group";
 
         private readonly IClock _clock = new TestClock();
 
@@ -87,18 +79,14 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
             var apdexValue = new ApdexValue(0.9, 170, 20, 10, 200);
             var apdex = new ApdexValueSource(ApdexNameDefault, ConstantValue.Provider(apdexValue), Tags);
 
-            var apdexValueWithGroup = new ApdexValue(0.9, 170, 20, 10, 200);
-            var apdexWithGroup = new ApdexValueSource(ApdexNameWithGroup, GroupDefault, ConstantValue.Provider(apdexValueWithGroup), Tags);
-
-            return new[] { apdex, apdexWithGroup };
+            return new[] { apdex };
         }
 
         public IEnumerable<GaugeValueSource> SetupGauges()
         {
             var gauge = new GaugeValueSource(GaugeNameDefault, ConstantValue.Provider(0.5), Unit.Calls, Tags);
-            var gaugeWithGroup = new GaugeValueSource(GaugeNameWithGroup, GroupDefault, ConstantValue.Provider(0.5), Unit.Calls, Tags);
 
-            return new[] { gauge, gaugeWithGroup };
+            return new[] { gauge };
         }
 
         public IEnumerable<HistogramValueSource> SetupHistograms()
@@ -106,15 +94,7 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
             var histogramValue = new HistogramValue(1, 2, "3", 4, "5", 6, 7, "8", 9, 10, 11, 12, 13, 14, 15, 16);
             var histogram = new HistogramValueSource(HistogramNameDefault, ConstantValue.Provider(histogramValue), Unit.Items, Tags);
 
-            var histogramValueWithGroup = new HistogramValue(1, 2, "3", 4, "5", 6, 7, "8", 9, 10, 11, 12, 13, 14, 15, 16);
-            var histogramWithGroup = new HistogramValueSource(
-                HistogramNameWithGroup,
-                GroupDefault,
-                ConstantValue.Provider(histogramValueWithGroup),
-                Unit.Items,
-                Tags);
-
-            return new[] { histogram, histogramWithGroup };
+            return new[] { histogram };
         }
 
         public IEnumerable<MeterValueSource> SetupMeters()
@@ -143,15 +123,8 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
                 {
                     new MeterValue.SetItem("item", 0.5, new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds, new MeterValue.SetItem[0]))
                 });
-            var meterWithGroup = new MeterValueSource(
-                MeterNameWithGroup,
-                GroupDefault,
-                ConstantValue.Provider(meterValueWithGroup),
-                Unit.Calls,
-                TimeUnit.Seconds,
-                Tags);
 
-            return new[] { meter, meterWithGroup };
+            return new[] { meter };
         }
 
         public IEnumerable<TimerValueSource> SetupTimers()
@@ -180,18 +153,7 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
                 TimeUnit.Milliseconds,
                 Tags);
 
-            var timerValueWithGroup = new TimerValue(meterValue, histogramValue, 0, 1, TimeUnit.Nanoseconds);
-
-            var timerWithGroup = new TimerValueSource(
-                TimerNameWithGroup,
-                GroupDefault,
-                ConstantValue.Provider(timerValueWithGroup),
-                Unit.Requests,
-                TimeUnit.Seconds,
-                TimeUnit.Milliseconds,
-                Tags);
-
-            return new[] { timer, timerWithGroup };
+            return new[] { timer };
         }
 
         private MetricsContextValueSource SetupContextOne()
@@ -211,14 +173,7 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
             var counterValue = new CounterValue(200, items);
             var counter = new CounterValueSource(CounterNameDefault, ConstantValue.Provider(counterValue), Unit.Items, Tags);
 
-            var counterWithGroup = new CounterValueSource(
-                CounterNameWithGroup,
-                GroupDefault,
-                ConstantValue.Provider(counterValue),
-                Unit.Items,
-                Tags);
-
-            return new[] { counter, counterWithGroup };
+            return new[] { counter };
         }
 
         private MetricsDataValueSource SetupMetricsData(IEnumerable<MetricsContextValueSource> contextValueSources)

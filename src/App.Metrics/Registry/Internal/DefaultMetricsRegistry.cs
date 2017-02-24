@@ -17,6 +17,7 @@ using App.Metrics.Histogram.Abstractions;
 using App.Metrics.Infrastructure;
 using App.Metrics.Meter.Abstractions;
 using App.Metrics.Registry.Abstractions;
+using App.Metrics.Tagging;
 using App.Metrics.Timer.Abstractions;
 using Microsoft.Extensions.Logging;
 
@@ -62,6 +63,22 @@ namespace App.Metrics.Registry.Internal
             return contextRegistry.Apdex(options, builder);
         }
 
+        /// <inheritdoc />
+        public IApdex Apdex<T>(ApdexOptions options, MetricTags tags, Func<T> builder)
+            where T : IApdexMetric
+        {
+            if (_nullMetricsRegistry.IsValueCreated)
+            {
+                return _nullMetricsRegistry.Value.Apdex(options, tags, builder);
+            }
+
+            EnsureContextLabel(options);
+
+            var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
+
+            return contextRegistry.Apdex(options, tags, builder);
+        }
+
         public void Clear()
         {
             if (_nullMetricsRegistry.IsValueCreated)
@@ -90,6 +107,22 @@ namespace App.Metrics.Registry.Internal
             var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
 
             return contextRegistry.Counter(options, builder);
+        }
+
+        /// <inheritdoc />
+        public ICounter Counter<T>(CounterOptions options, MetricTags tags, Func<T> builder)
+            where T : ICounterMetric
+        {
+            if (_nullMetricsRegistry.IsValueCreated)
+            {
+                return _nullMetricsRegistry.Value.Counter(options, tags, builder);
+            }
+
+            EnsureContextLabel(options);
+
+            var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
+
+            return contextRegistry.Counter(options, tags, builder);
         }
 
         /// <inheritdoc />
@@ -122,6 +155,21 @@ namespace App.Metrics.Registry.Internal
             var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
 
             contextRegistry.Gauge(options, valueProvider);
+        }
+
+        /// <inheritdoc />
+        public void Gauge(GaugeOptions options, MetricTags tags, Func<IMetricValueProvider<double>> valueProvider)
+        {
+            if (_nullMetricsRegistry.IsValueCreated)
+            {
+                _nullMetricsRegistry.Value.Gauge(options, tags, valueProvider);
+            }
+
+            EnsureContextLabel(options);
+
+            var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
+
+            contextRegistry.Gauge(options, tags, valueProvider);
         }
 
         public MetricsDataValueSource GetData(IFilterMetrics filter)
@@ -172,6 +220,22 @@ namespace App.Metrics.Registry.Internal
             return contextRegistry.Histogram(options, builder);
         }
 
+        /// <inheritdoc />
+        public IHistogram Histogram<T>(HistogramOptions options, MetricTags tags, Func<T> builder)
+            where T : IHistogramMetric
+        {
+            if (_nullMetricsRegistry.IsValueCreated)
+            {
+                return _nullMetricsRegistry.Value.Histogram(options, tags, builder);
+            }
+
+            EnsureContextLabel(options);
+
+            var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
+
+            return contextRegistry.Histogram(options, tags, builder);
+        }
+
         public IMeter Meter<T>(MeterOptions options, Func<T> builder)
             where T : IMeterMetric
         {
@@ -185,6 +249,21 @@ namespace App.Metrics.Registry.Internal
             var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
 
             return contextRegistry.Meter(options, builder);
+        }
+
+        public IMeter Meter<T>(MeterOptions options, MetricTags tags, Func<T> builder)
+            where T : IMeterMetric
+        {
+            if (_nullMetricsRegistry.IsValueCreated)
+            {
+                return _nullMetricsRegistry.Value.Meter(options, tags, builder);
+            }
+
+            EnsureContextLabel(options);
+
+            var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
+
+            return contextRegistry.Meter(options, tags, builder);
         }
 
         public void RemoveContext(string context)
@@ -220,6 +299,22 @@ namespace App.Metrics.Registry.Internal
             var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
 
             return contextRegistry.Timer(options, builder);
+        }
+
+        /// <inheritdoc />
+        public ITimer Timer<T>(TimerOptions options, MetricTags tags, Func<T> builder)
+            where T : ITimerMetric
+        {
+            if (_nullMetricsRegistry.IsValueCreated)
+            {
+                _nullMetricsRegistry.Value.Timer(options, tags, builder);
+            }
+
+            EnsureContextLabel(options);
+
+            var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
+
+            return contextRegistry.Timer(options, tags, builder);
         }
 
         private void ForAllContexts(Action<IMetricContextRegistry> action)

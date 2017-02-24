@@ -6,6 +6,7 @@ using App.Metrics.Abstractions.Metrics;
 using App.Metrics.Apdex.Abstractions;
 using App.Metrics.Core.Options;
 using App.Metrics.Registry.Abstractions;
+using App.Metrics.Tagging;
 
 namespace App.Metrics.Apdex
 {
@@ -32,10 +33,23 @@ namespace App.Metrics.Apdex
         }
 
         /// <inheritdoc />
+        public IApdex Instance(ApdexOptions options, MetricTags tags)
+        {
+            return Instance(options, tags, () => _apdexBuidler.Build(options.Reservoir, options.ApdexTSeconds, options.AllowWarmup, _clock));
+        }
+
+        /// <inheritdoc />
         public IApdex Instance<T>(ApdexOptions options, Func<T> builder)
             where T : IApdexMetric
         {
             return _registry.Apdex(options, builder);
+        }
+
+        /// <inheritdoc />
+        public IApdex Instance<T>(ApdexOptions options, MetricTags tags, Func<T> builder)
+            where T : IApdexMetric
+        {
+            return _registry.Apdex(options, tags, builder);
         }
     }
 }

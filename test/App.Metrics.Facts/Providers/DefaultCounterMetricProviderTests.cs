@@ -43,6 +43,24 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
+        public void can_add_add_new_multidimensional_to_registry()
+        {
+            var metricName = "counter_metric_provider_test_multi";
+            var options = new CounterOptions
+                          {
+                              Name = metricName
+                          };
+
+            var counterMetric = _fixture.Builder.Counter.Build();
+
+            _provider.Instance(options, _fixture.Tags[0], () => counterMetric);
+
+            _filter.WhereMetricName(name => name == _fixture.Tags[0].AsMetricName(metricName));
+
+            _fixture.Registry.GetData(_filter).Contexts.First().Counters.Count().Should().Be(1);
+        }
+
+        [Fact]
         public void can_add_instance_to_registry()
         {
             var metricName = "counter_provider_test";
@@ -55,6 +73,23 @@ namespace App.Metrics.Facts.Providers
             _provider.Instance(options);
 
             _filter.WhereMetricName(name => name == metricName);
+
+            _fixture.Registry.GetData(_filter).Contexts.First().Counters.Count().Should().Be(1);
+        }
+
+        [Fact]
+        public void can_add_multidimensional_to_registry()
+        {
+            var metricName = "counter_provider_test_multi";
+
+            var options = new CounterOptions
+                          {
+                              Name = metricName
+                          };
+
+            _provider.Instance(options, _fixture.Tags[0]);
+
+            _filter.WhereMetricName(name => name == _fixture.Tags[0].AsMetricName(metricName));
 
             _fixture.Registry.GetData(_filter).Contexts.First().Counters.Count().Should().Be(1);
         }

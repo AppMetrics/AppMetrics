@@ -11,9 +11,6 @@ namespace App.Metrics.Formatters.Json
         [JsonProperty(Order = -3)]
         public string Name { get; set; }
 
-        [JsonProperty(Order = -4)]
-        public string Group { get; set; }
-
         public Dictionary<string, string> Tags { get; set; } = new Dictionary<string, string>();
 
         [JsonProperty(Order = -2)]

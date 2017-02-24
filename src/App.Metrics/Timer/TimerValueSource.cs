@@ -25,20 +25,6 @@ namespace App.Metrics.Timer
             DurationUnit = durationUnit;
         }
 
-        public TimerValueSource(
-            string name,
-            string group,
-            IMetricValueProvider<TimerValue> value,
-            Unit unit,
-            TimeUnit rateUnit,
-            TimeUnit durationUnit,
-            MetricTags tags)
-            : base(name, group, new ScaledValueProvider<TimerValue>(value, v => v.Scale(rateUnit, durationUnit)), unit, tags)
-        {
-            RateUnit = rateUnit;
-            DurationUnit = durationUnit;
-        }
-
         public TimeUnit DurationUnit { get; private set; }
 
         public TimeUnit RateUnit { get; private set; }

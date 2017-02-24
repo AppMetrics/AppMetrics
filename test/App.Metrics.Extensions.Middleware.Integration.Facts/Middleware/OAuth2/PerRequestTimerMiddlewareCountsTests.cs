@@ -1,7 +1,9 @@
-﻿using System;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using App.Metrics.Core;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
 using App.Metrics.Extensions.Middleware.Internal;
 using App.Metrics.Timer;
@@ -32,8 +34,8 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
                 HttpRequestMetricsRegistry.ContextName,
                 metricName);
 
-            getTimerValue("GET api/test").Histogram.Count.Should().Be(1);
-            getTimerValue("GET api/test/error").Histogram.Count.Should().Be(1);
+            getTimerValue("Http Request Transactions|route:GET api/test").Histogram.Count.Should().Be(1);
+            getTimerValue("Http Request Transactions|route:GET api/test/error").Histogram.Count.Should().Be(1);
             getTimerValue("Http Requests").Histogram.Count.Should().Be(2);
         }
     }

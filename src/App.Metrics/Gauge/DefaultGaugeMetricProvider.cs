@@ -6,6 +6,7 @@ using App.Metrics.Core.Abstractions;
 using App.Metrics.Core.Options;
 using App.Metrics.Gauge.Abstractions;
 using App.Metrics.Registry.Abstractions;
+using App.Metrics.Tagging;
 
 namespace App.Metrics.Gauge
 {
@@ -17,9 +18,21 @@ namespace App.Metrics.Gauge
         ///     Initializes a new instance of the <see cref="DefaultGaugeMetricProvider" /> class.
         /// </summary>
         /// <param name="registry">The registry.</param>
-        public DefaultGaugeMetricProvider(IMetricsRegistry registry) { _registry = registry; }
+        public DefaultGaugeMetricProvider(IMetricsRegistry registry)
+        {
+            _registry = registry;
+        }
 
         /// <inheritdoc />
-        public void Instance(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider) { _registry.Gauge(options, valueProvider); }
+        public void Instance(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider)
+        {
+            _registry.Gauge(options, valueProvider);
+        }
+
+        /// <inheritdoc />
+        public void Instance(GaugeOptions options, MetricTags tags, Func<IMetricValueProvider<double>> valueProvider)
+        {
+            _registry.Gauge(options, tags, valueProvider);
+        }
     }
 }

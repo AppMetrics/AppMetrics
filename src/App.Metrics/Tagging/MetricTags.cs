@@ -4,6 +4,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using App.Metrics.Core.Internal;
+using App.Metrics.Infrastructure;
 using Microsoft.DotNet.PlatformAbstractions;
 
 namespace App.Metrics.Tagging
@@ -173,11 +175,11 @@ namespace App.Metrics.Tagging
                 return Empty;
             }
 
-            var tagPairs = setItem.Split('|');
+            var tagPairs = setItem.Split(Constants.Formatting.MetricSetItemSeparator);
 
             if (tagPairs.Length <= 1)
             {
-                return new MetricTags("item", setItem);
+                return new MetricTags(Constants.Formatting.MetricSetItemFallbackKey, setItem);
             }
 
             var tags = new string[tagPairs.Length];
@@ -185,10 +187,10 @@ namespace App.Metrics.Tagging
 
             for (var i = 0; i < tagPairs.Length; i++)
             {
-                var tagKeyValue = tagPairs[i].Split(':');
+                var tagKeyValue = tagPairs[i].Split(Constants.Formatting.MetricSetItemKeyValueSeparator);
                 if (tagKeyValue.Length <= 1)
                 {
-                    tags[i] = "item";
+                    tags[i] = Constants.Formatting.MetricSetItemFallbackKey;
                     values[i] = tagPairs[i];
                     continue;
                 }
@@ -238,6 +240,53 @@ namespace App.Metrics.Tagging
             }
 
             return hcc.CombinedHash;
+        }
+
+        public string AsMetricName(string metricName)
+        {
+            if (_keys == null)
+            {
+                return string.Concat(
+                    metricName,
+                    Constants.Formatting.MetricNameDimensionSeparator,
+                    _key,
+                    Constants.Formatting.MetricTagKeyValueSeparator,
+                    _value);
+            }
+
+            switch (Count)
+            {
+                case 0:
+                    return null;
+                case 1:
+                    return string.Concat(
+                        metricName,
+                        Constants.Formatting.MetricNameDimensionSeparator,
+                        _keys[0],
+                        Constants.Formatting.MetricTagKeyValueSeparator,
+                        _values[0]);
+                default:
+                {
+                    var sb = StringBuilderCache.Acquire();
+
+                    sb.Append(metricName);
+                    sb.Append(Constants.Formatting.MetricNameDimensionSeparator);
+
+                    for (var i = 0; i < _keys.Length; i++)
+                    {
+                        sb.Append(_keys[i]);
+                        sb.Append(Constants.Formatting.MetricTagKeyValueSeparator);
+                        sb.Append(_values[i]);
+
+                        if (i < _keys.Length - 1)
+                        {
+                            sb.Append(Constants.Formatting.MetricTagSeparator);
+                        }
+                    }
+
+                    return StringBuilderCache.GetStringAndRelease(sb);
+                }
+            }
         }
 
         /// <inheritdoc />
