@@ -9,7 +9,6 @@
   },
 
   "buildOptions": {
-    "debugType": "portable"
   },
 
   "dependencies": {

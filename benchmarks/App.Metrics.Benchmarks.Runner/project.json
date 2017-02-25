@@ -16,7 +16,6 @@
   },
   "buildOptions": {
     "emitEntryPoint": true,
-    "debugType": "portable"
   },
   "frameworks": {
     "netcoreapp1.1": {

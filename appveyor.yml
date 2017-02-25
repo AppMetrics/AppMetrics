@@ -11,6 +11,8 @@ artifacts:
 - path: artifacts/packages/*.nupkg
 - path: artifacts/coverage/*.xml
 - path: artifacts/test-results/*.xml
+- path: artifacts/resharper-reports/*.xml
+- path: artifacts/resharper-reports/*.html
 deploy:
 - provider: NuGet
   server: https://www.myget.org/F/alhardy/api/v2/package

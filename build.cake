@@ -1,10 +1,12 @@
 #addin Cake.Coveralls
+#addin Cake.ReSharperReports
 
 #tool "nuget:?package=xunit.runner.console"
-#tool "nuget:https://www.nuget.org/api/v2?package=OpenCover&version=4.6.519"
-#tool "nuget:https://www.nuget.org/api/v2?package=ReportGenerator&version=2.4.5"
-#tool "nuget:?package=GitVersion.CommandLine"
-#tool coveralls.io
+#tool "nuget:?package=OpenCover"
+#tool "nuget:?package=ReportGenerator"
+#tool "nuget:?package=ReSharperReports"
+#tool "nuget:?package=JetBrains.ReSharper.CommandLineTools"
+#tool "nuget:?package=coveralls.io"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -13,6 +15,7 @@ var target                      = Argument("target", "Default");
 var configuration               = HasArgument("Configuration") ? Argument<string>("Configuration") :
                                   EnvironmentVariable("Configuration") != null ? EnvironmentVariable("Configuration") : "Release";
 var skipOpenCover               = Argument("SkipOpenCover", false);
+var skipReSharperCodeInspect    = Argument("SkipReSharperCodeInspect", false) || !IsRunningOnWindows();
 var preReleaseSuffix            = HasArgument("PreReleaseSuffix") ? Argument<string>("PreReleaseSuffix") :
 	                              (AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Tag.IsTag) ? null :
                                   EnvironmentVariable("PreReleaseSuffix") != null ? EnvironmentVariable("PreReleaseSuffix") : "ci";
@@ -22,14 +25,19 @@ var buildNumber                 = HasArgument("BuildNumber") ? Argument<int>("Bu
                                   EnvironmentVariable("BuildNumber") != null ? int.Parse(EnvironmentVariable("BuildNumber")) : 0;
 
 //////////////////////////////////////////////////////////////////////
-// DEFINE DIRECTORIES
+// DEFINE FILES & DIRECTORIES
 //////////////////////////////////////////////////////////////////////
 var packDirs                    = new [] { Directory("./src/App.Metrics"), Directory("./src/App.Metrics.Concurrency"), Directory("./src/App.Metrics.Extensions.Middleware"), Directory("./src/App.Metrics.Extensions.Mvc"), Directory("./src/App.Metrics.Formatters.Json") };
 var artifactsDir                = (DirectoryPath) Directory("./artifacts");
 var testResultsDir              = (DirectoryPath) artifactsDir.Combine("test-results");
 var coverageResultsDir          = (DirectoryPath) artifactsDir.Combine("coverage");
+var reSharperReportsDir         = (DirectoryPath) artifactsDir.Combine("resharper-reports");
 var testCoverageOutputFilePath  = coverageResultsDir.CombineWithFilePath("OpenCover.xml");
 var packagesDir                 = artifactsDir.Combine("packages");
+var resharperSettings			= "./AppMetrics.sln.DotSettings";
+var inspectCodeXml				= string.Format("{0}/inspectCode.xml", reSharperReportsDir);
+var inspectCodeHtml				= string.Format("{0}/inspectCode.html", reSharperReportsDir);
+var solutionFile				= "./AppMetrics.sln";
 
 //////////////////////////////////////////////////////////////////////
 // DEFINE PARAMS
@@ -67,8 +75,6 @@ Task("Build")
     
     foreach(var project in projects)
     {
-        Context.Information("Project: " + project.GetDirectory().FullPath);
-
         DotNetCoreBuild(project.GetDirectory().FullPath, new DotNetCoreBuildSettings {
             Configuration = configuration
         });
@@ -96,6 +102,14 @@ Task("Pack")
     {
         DotNetCorePack(packDir, settings);
     }    
+});
+
+Task("RunInspectCode")
+	.WithCriteria(() => !skipReSharperCodeInspect)
+    .Does(() =>
+{
+	InspectCode(solutionFile, new InspectCodeSettings { SolutionWideAnalysis = true, Profile = resharperSettings, OutputFile = inspectCodeXml });
+    ReSharperReports(inspectCodeXml, inspectCodeHtml);
 });
 
 Task("RunTests")
@@ -130,8 +144,12 @@ Task("RunTests")
                     OpenCover(testAction,
                         testCoverageOutputFilePath,
                         new OpenCoverSettings { 
-							ReturnTargetCodeOffset = 0,                           
-                            ArgumentCustomization = args => args.Append(@"-register:user -skipautoprops -safemode:off -returntargetcode -mergeoutput -hideskipped:All -oldStyle")
+							ReturnTargetCodeOffset = 1,
+							SkipAutoProps = true,
+							Register = "user",
+							OldStyle = true,
+							MergeOutput = true,
+							ArgumentCustomization = args => args.Append(@"-safemode:off")
                         }
                         .WithFilter(openCoverFilter)
                         .ExcludeByAttribute(excludeFromCoverage)
@@ -157,7 +175,7 @@ Task("RunTests")
 
 Task("HtmlCoverageReport")    
     .WithCriteria(() => FileExists(testCoverageOutputFilePath))
-    .WithCriteria(() => BuildSystem.IsLocalBuild)    
+    .WithCriteria(() => BuildSystem.IsLocalBuild)
     .IsDependentOn("RunTests")
     .Does(() => 
 {
@@ -181,16 +199,18 @@ Task("PublishCoverage")
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
 
-Task("Default")
+Task("Default")	
     .IsDependentOn("Build")
     .IsDependentOn("RunTests")
     .IsDependentOn("Pack")
+	.IsDependentOn("RunInspectCode")	
     .IsDependentOn("HtmlCoverageReport");
 
 Task("AppVeyor")
     .IsDependentOn("Build")
     .IsDependentOn("RunTests")
     .IsDependentOn("Pack")
+	.IsDependentOn("RunInspectCode")	
     .IsDependentOn("PublishCoverage");
 
 //////////////////////////////////////////////////////////////////////

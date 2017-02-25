@@ -8,7 +8,7 @@
     "osx.10.11-x64": {}
   },
 
-  "buildOptions": { "debugType": "portable" },
+  "buildOptions": { },
 
   "dependencies": {
     "App.Metrics": {
