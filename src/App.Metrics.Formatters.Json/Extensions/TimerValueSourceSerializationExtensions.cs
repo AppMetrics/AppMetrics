@@ -30,6 +30,7 @@ namespace App.Metrics.Timer
 
             var histogramValue = new HistogramValue(
                 source.Count,
+                source.Histogram.Sum,
                 source.Histogram.LastValue,
                 source.Histogram.LastUserValue,
                 source.Histogram.Max,
@@ -71,6 +72,7 @@ namespace App.Metrics.Timer
         {
             var histogramData = new TimerMetric.HistogramData
                                 {
+                                    Sum = source.Value.Histogram.Sum,
                                     LastValue = source.Value.Histogram.LastValue,
                                     LastUserValue = source.Value.Histogram.LastUserValue,
                                     Max = source.Value.Histogram.Max,

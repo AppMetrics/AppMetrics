@@ -64,6 +64,8 @@ namespace App.Metrics.Formatters.Json
             public int SampleSize { get; set; }
 
             public double StdDev { get; set; }
+
+            public double Sum { get; set; }
         }
 
         public sealed class RateData

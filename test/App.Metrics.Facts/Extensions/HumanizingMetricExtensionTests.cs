@@ -67,7 +67,7 @@ namespace App.Metrics.Facts.Extensions
         {
             var expected =
                 "\n             Count = 1 Items\n              Last = 2.00 Items\n   Last User Value = 3\n               Min = 7.00 Items\n    Min User Value = 8\n               Max = 4.00 Items\n    Max User Value = 5\n              Mean = 6.00 Items\n            StdDev = 9.00 Items\n            Median = 10.00 Items\n              75% <= 11.00 Items\n              95% <= 12.00 Items\n              98% <= 13.00 Items\n              99% <= 14.00 Items\n            99.9% <= 15.00 Items\n";
-            var histogramValue = new HistogramValue(1, 2, "3", 4, "5", 6, 7, "8", 9, 10, 11, 12, 13, 14, 15, 16);
+            var histogramValue = new HistogramValue(1, 1, 2, "3", 4, "5", 6, 7, "8", 9, 10, 11, 12, 13, 14, 15, 16);
             var histogramValueSource = new HistogramValueSource("test_histgram", ConstantValue.Provider(histogramValue), Unit.Items, MetricTags.Empty);
             var result = histogramValueSource.Hummanize();
 
@@ -119,7 +119,7 @@ namespace App.Metrics.Facts.Extensions
                 {
                     new MeterValue.SetItem("item", 0.5, new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds, new MeterValue.SetItem[0]))
                 });
-            var histogramValue = new HistogramValue(count, 2, "3", 4, "5", 6, 7, "8", 9, 10, 11, 12, 13, 14, 15, 16);
+            var histogramValue = new HistogramValue(count, 1, 2, "3", 4, "5", 6, 7, "8", 9, 10, 11, 12, 13, 14, 15, 16);
 
             var timerValue = new TimerValue(meterValue, histogramValue, 0, 1, TimeUnit.Nanoseconds);
             var timerValueSource = new TimerValueSource(

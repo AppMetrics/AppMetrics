@@ -33,18 +33,24 @@ namespace App.Metrics.ReservoirSampling.Uniform
         private readonly UserValueWrapper[] _values;
 
         private AtomicLong _count = new AtomicLong(0);
+        private AtomicDouble _sum = new AtomicDouble(0.0);
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultAlgorithmRReservoir" /> class.
         /// </summary>
         public DefaultAlgorithmRReservoir()
-            : this(Constants.ReservoirSampling.DefaultSampleSize) { }
+            : this(Constants.ReservoirSampling.DefaultSampleSize)
+        {
+        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultAlgorithmRReservoir" /> class.
         /// </summary>
         /// <param name="sampleSize">The number of samples to keep in the sampling reservoir</param>
-        public DefaultAlgorithmRReservoir(int sampleSize) { _values = new UserValueWrapper[sampleSize]; }
+        public DefaultAlgorithmRReservoir(int sampleSize)
+        {
+            _values = new UserValueWrapper[sampleSize];
+        }
 
         /// <summary>
         ///     Gets the size.
@@ -61,7 +67,7 @@ namespace App.Metrics.ReservoirSampling.Uniform
 
             if (size == 0)
             {
-                return new UniformSnapshot(0, Enumerable.Empty<long>());
+                return new UniformSnapshot(0, 0.0, Enumerable.Empty<long>());
             }
 
             var snapshotValues = new UserValueWrapper[size];
@@ -71,6 +77,7 @@ namespace App.Metrics.ReservoirSampling.Uniform
             if (resetReservoir)
             {
                 _count.SetValue(0L);
+                _sum.SetValue(0.0);
             }
 
             Array.Sort(snapshotValues, UserValueWrapper.Comparer);
@@ -80,6 +87,7 @@ namespace App.Metrics.ReservoirSampling.Uniform
 
             return new UniformSnapshot(
                 _count.GetValue(),
+                _sum.GetValue(),
                 snapshotValues.Select(v => v.Value),
                 valuesAreSorted: true,
                 minUserValue: minValue,
@@ -87,10 +95,17 @@ namespace App.Metrics.ReservoirSampling.Uniform
         }
 
         /// <inheritdoc />
-        public IReservoirSnapshot GetSnapshot() { return GetSnapshot(false); }
+        public IReservoirSnapshot GetSnapshot()
+        {
+            return GetSnapshot(false);
+        }
 
         /// <inheritdoc cref="IReservoir" />
-        public void Reset() { _count.SetValue(0L); }
+        public void Reset()
+        {
+            _count.SetValue(0L);
+            _sum.SetValue(0.0);
+        }
 
         /// <summary>
         ///     Updates the sample set adding the specified value using
@@ -119,6 +134,8 @@ namespace App.Metrics.ReservoirSampling.Uniform
         {
             var c = _count.Increment();
 
+            _sum.Add(value);
+
             if (c <= _values.Length)
             {
                 _values[(int)c - 1] = new UserValueWrapper(value, userValue);
@@ -135,6 +152,9 @@ namespace App.Metrics.ReservoirSampling.Uniform
         }
 
         /// <inheritdoc />
-        public void Update(long value) { Update(value, null); }
+        public void Update(long value)
+        {
+            Update(value, null);
+        }
     }
 }

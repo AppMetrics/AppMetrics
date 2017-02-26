@@ -124,6 +124,14 @@ namespace App.Metrics.Abstractions.ReservoirSampling
         double StdDev { get; }
 
         /// <summary>
+        ///     Gets the sum of observed values.
+        /// </summary>
+        /// <value>
+        ///     The sum.
+        /// </value>
+        double Sum { get; }
+
+        /// <summary>
         ///     Gets the samples of the snapshot
         /// </summary>
         /// <value>

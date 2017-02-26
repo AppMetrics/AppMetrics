@@ -10,6 +10,12 @@ namespace App.Metrics.Benchmarks.XunitHarness
     public class Concurrency
     {
         [Fact]
+        public void AtomicDoubleBenchmark()
+        {
+            BenchmarkRunner.Run<AtomicDoubleBenchmark>();
+        }
+
+        [Fact]
         public void AtomicIntegerBenchmark()
         {
             BenchmarkRunner.Run<AtomicIntegerBenchmark>();

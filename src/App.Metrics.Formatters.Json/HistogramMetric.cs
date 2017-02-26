@@ -26,6 +26,8 @@ namespace App.Metrics.Formatters.Json
     {
         public long Count { get; set; }
 
+        public double Sum { get; set; }
+
         public string LastUserValue { get; set; }
 
         public double LastValue { get; set; }

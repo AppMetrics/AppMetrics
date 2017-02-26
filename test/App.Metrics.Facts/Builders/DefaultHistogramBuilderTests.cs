@@ -23,7 +23,7 @@ namespace App.Metrics.Facts.Builders
         {
             var reservoirMock = new Mock<IReservoir>();
             reservoirMock.Setup(r => r.Update(It.IsAny<long>()));
-            reservoirMock.Setup(r => r.GetSnapshot()).Returns(() => new UniformSnapshot(100, new long[100]));
+            reservoirMock.Setup(r => r.GetSnapshot()).Returns(() => new UniformSnapshot(100, 100.0, new long[100]));
             reservoirMock.Setup(r => r.Reset());
 
             var reservoir = new Lazy<IReservoir>(() => reservoirMock.Object);

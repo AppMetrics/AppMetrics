@@ -48,6 +48,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
 
         private SpinLock _lock = default(SpinLock);
         private AtomicLong _startTime;
+        private AtomicDouble _sum = new AtomicDouble(0.0);
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultForwardDecayingReservoir" /> class.
@@ -155,7 +156,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
             try
             {
                 _lock.Enter(ref lockTaken);
-                var snapshot = new WeightedSnapshot(_count.GetValue(), _values.Values);
+                var snapshot = new WeightedSnapshot(_count.GetValue(), _sum.GetValue(), _values.Values);
                 if (resetReservoir)
                 {
                     ResetReservoir();
@@ -264,6 +265,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         {
             _values.Clear();
             _count.SetValue(0L);
+            _sum.SetValue(0.0);
             _startTime.SetValue(_clock.Seconds);
         }
 
@@ -290,6 +292,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                 var newCount = _count.GetValue();
                 newCount++;
                 _count.SetValue(newCount);
+                _sum.Add(value);
 
                 if (newCount <= _sampleSize)
                 {

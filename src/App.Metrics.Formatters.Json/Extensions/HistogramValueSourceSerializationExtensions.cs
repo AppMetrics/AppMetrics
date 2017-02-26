@@ -17,6 +17,7 @@ namespace App.Metrics.Histogram
         {
             var histogramValue = new HistogramValue(
                 source.Count,
+                source.Sum,
                 source.LastValue,
                 source.LastUserValue,
                 source.Max,
@@ -56,6 +57,7 @@ namespace App.Metrics.Histogram
                    {
                        Name = source.Name,
                        Count = source.Value.Count,
+                       Sum = source.Value.Sum,
                        Unit = source.Unit.Name,
                        LastUserValue = source.Value.LastUserValue,
                        LastValue = source.Value.LastValue,

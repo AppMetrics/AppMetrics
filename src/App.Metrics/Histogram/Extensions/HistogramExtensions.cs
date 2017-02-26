@@ -15,6 +15,7 @@ namespace App.Metrics.Histogram
         private static readonly HistogramValue EmptyHistogram = new HistogramValue(
             0,
             0.0,
+            0.0,
             null,
             0.0,
             null,

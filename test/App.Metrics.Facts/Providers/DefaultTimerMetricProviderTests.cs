@@ -151,7 +151,7 @@ namespace App.Metrics.Facts.Providers
         {
             var reservoirMock = new Mock<IReservoir>();
             reservoirMock.Setup(r => r.Update(It.IsAny<long>(), null));
-            reservoirMock.Setup(r => r.GetSnapshot()).Returns(() => new UniformSnapshot(100L, new long[100]));
+            reservoirMock.Setup(r => r.GetSnapshot()).Returns(() => new UniformSnapshot(100L, 100.0, new long[100]));
             reservoirMock.Setup(r => r.Reset());
 
             var reservoir = new Lazy<IReservoir>(() => reservoirMock.Object);
@@ -177,7 +177,7 @@ namespace App.Metrics.Facts.Providers
         {
             var reservoirMock = new Mock<IReservoir>();
             reservoirMock.Setup(r => r.Update(It.IsAny<long>(), null));
-            reservoirMock.Setup(r => r.GetSnapshot()).Returns(() => new UniformSnapshot(100L, new long[100]));
+            reservoirMock.Setup(r => r.GetSnapshot()).Returns(() => new UniformSnapshot(100L, 100.0, new long[100]));
             reservoirMock.Setup(r => r.Reset());
 
             var reservoir = new Lazy<IReservoir>(() => reservoirMock.Object);

@@ -72,6 +72,7 @@
           "name": "test_histogram",
           "unit": "Items",
           "count": 1,
+          "sum": 1.0,
           "lastUserValue": "3",
           "lastValue": 2.0,
           "max": 4.0,
@@ -128,6 +129,7 @@
           "count": 5,
           "durationUnit": "ms",
           "histogram": {
+            "sum": 1E-06,
             "lastUserValue": "3",
             "lastValue": 2E-06,
             "max": 4E-06,

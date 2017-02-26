@@ -111,7 +111,7 @@ namespace App.Metrics.Facts
 
             var samples = Enumerable.Range(0, values.Length).Select(i => new WeightedSample(values[i], null, weights[i]));
 
-            return new WeightedSnapshot(values.Length, samples);
+            return new WeightedSnapshot(values.Length, values.Sum(), samples);
         }
     }
 }

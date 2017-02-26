@@ -10,6 +10,8 @@ dotnet cli version=1.0.0-preview2-1-003177
 Job=Core  Runtime=Core  Allocated=0 B  
 
 ```
- Method |       Mean |    StdDev |
-------- |----------- |---------- |
- Update | 60.5636 ns | 0.3780 ns |
+    Method |       Mean |    StdErr |    StdDev |
+---------- |----------- |---------- |---------- |
+ Decrement | 11.3456 ns | 0.0239 ns | 0.0927 ns |
+       Get |  0.0019 ns | 0.0008 ns | 0.0033 ns |
+ Increment | 11.4161 ns | 0.0348 ns | 0.1348 ns |
