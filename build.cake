@@ -14,8 +14,8 @@
 var target                      = Argument("target", "Default");
 var configuration               = HasArgument("Configuration") ? Argument<string>("Configuration") :
                                   EnvironmentVariable("Configuration") != null ? EnvironmentVariable("Configuration") : "Release";
-var skipOpenCover               = Argument("SkipOpenCover", false);
-var skipReSharperCodeInspect    = Argument("SkipReSharperCodeInspect", false) || !IsRunningOnWindows();
+var skipOpenCover               = Argument("SkipCoverage", false);
+var skipReSharperCodeInspect    = Argument("SkipCodeInspect", false) || !IsRunningOnWindows();
 var preReleaseSuffix            = HasArgument("PreReleaseSuffix") ? Argument<string>("PreReleaseSuffix") :
 	                              (AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Tag.IsTag) ? null :
                                   EnvironmentVariable("PreReleaseSuffix") != null ? EnvironmentVariable("PreReleaseSuffix") : "ci";
