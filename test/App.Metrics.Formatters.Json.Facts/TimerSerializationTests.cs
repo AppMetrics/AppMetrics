@@ -60,7 +60,7 @@ namespace App.Metrics.Formatters.Json.Facts
             result.Value.Rate.MeanRate.Should().Be(_timer.Value.Rate.MeanRate);
             result.Value.Rate.RateUnit.Should().Be(_timer.Value.Rate.RateUnit);
             result.Value.ActiveSessions.Should().Be(_timer.Value.ActiveSessions);
-            result.Value.TotalTime.Should().Be(_timer.Value.TotalTime);
+            result.Value.Histogram.Sum.Should().Be(_timer.Value.Histogram.Sum);
             result.Tags.Keys.Should().Contain(_timer.Tags.Keys.ToArray());
             result.Tags.Values.Should().Contain(_timer.Tags.Values.ToArray());
         }

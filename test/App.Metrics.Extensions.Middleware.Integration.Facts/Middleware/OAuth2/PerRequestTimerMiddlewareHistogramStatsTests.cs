@@ -40,7 +40,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
             timer1.Histogram.Percentile98.Should().Be(30);
             timer1.Histogram.Percentile99.Should().Be(30);
             timer1.Histogram.Percentile999.Should().Be(30);
-            timer1.TotalTime.Should().Be(30);
+            timer1.Histogram.Sum.Should().Be(30);
 
             var timer2 = Context.Snapshot.GetTimerValue(
                 HttpRequestMetricsRegistry.ContextName,
@@ -54,7 +54,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
             timer2.Histogram.Percentile98.Should().Be(300);
             timer2.Histogram.Percentile99.Should().Be(300);
             timer2.Histogram.Percentile999.Should().Be(300);
-            timer2.TotalTime.Should().Be(300);
+            timer2.Histogram.Sum.Should().Be(300);
         }
     }
 }

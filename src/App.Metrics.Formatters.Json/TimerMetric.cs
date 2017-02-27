@@ -31,8 +31,6 @@ namespace App.Metrics.Formatters.Json
 
         public string RateUnit { get; set; }
 
-        public long TotalTime { get; set; }
-
         public sealed class HistogramData
         {
             public string LastUserValue { get; set; }

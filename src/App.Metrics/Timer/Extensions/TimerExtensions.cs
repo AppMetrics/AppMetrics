@@ -34,7 +34,7 @@ namespace App.Metrics.Timer
             0);
 
         private static readonly MeterValue EmptyMeter = new MeterValue(0, 0.0, 0.0, 0.0, 0.0, TimeUnit.Seconds);
-        private static readonly TimerValue EmptyTimer = new TimerValue(EmptyMeter, EmptyHistogram, 0, 0, TimeUnit.Milliseconds);
+        private static readonly TimerValue EmptyTimer = new TimerValue(EmptyMeter, EmptyHistogram, 0, TimeUnit.Milliseconds);
 
         public static TimerValue GetTimerValue(this IProvideMetricValues valueService, string context, string metricName)
         {

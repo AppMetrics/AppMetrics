@@ -144,7 +144,7 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
                 });
             var histogramValue = new HistogramValue(count, 1, 2, "3", 4, "5", 6, 7, "8", 9, 10, 11, 12, 13, 14, 15, 16);
 
-            var timerValue = new TimerValue(meterValue, histogramValue, 0, 1, TimeUnit.Nanoseconds);
+            var timerValue = new TimerValue(meterValue, histogramValue, 0, TimeUnit.Nanoseconds);
             var timer = new TimerValueSource(
                 TimerNameDefault,
                 ConstantValue.Provider(timerValue),

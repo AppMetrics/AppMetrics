@@ -31,7 +31,7 @@ namespace App.Metrics.Facts.Managers
 
             var timerValue = _fixture.Snapshot.GetTimerValue(_fixture.Context, metricName);
 
-            timerValue.TotalTime.Should().Be(100L);
+            timerValue.Histogram.Sum.Should().Be(100.0);
         }
 
         [Fact]
@@ -43,8 +43,8 @@ namespace App.Metrics.Facts.Managers
             _manager.Time(options, _fixture.Tags[0], () => _fixture.Clock.Advance(TimeUnit.Milliseconds, 100L));
             _manager.Time(options, _fixture.Tags[1], () => _fixture.Clock.Advance(TimeUnit.Milliseconds, 1000L));
 
-            _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[0].AsMetricName(metricName)).TotalTime.Should().Be(100L);
-            _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[1].AsMetricName(metricName)).TotalTime.Should().Be(1000L);
+            _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[0].AsMetricName(metricName)).Histogram.Sum.Should().Be(100.0);
+            _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[1].AsMetricName(metricName)).Histogram.Sum.Should().Be(1000.0);
         }
 
         [Fact]
@@ -58,11 +58,11 @@ namespace App.Metrics.Facts.Managers
             _manager.Time(options, _fixture.Tags[1], () => _fixture.Clock.Advance(TimeUnit.Milliseconds, 1000L), "value1");
             _manager.Time(options, _fixture.Tags[1], () => _fixture.Clock.Advance(TimeUnit.Milliseconds, 2000L), "value2");
 
-            _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[0].AsMetricName(metricName)).TotalTime.Should().Be(300L);
+            _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[0].AsMetricName(metricName)).Histogram.Sum.Should().Be(300.0);
             _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[0].AsMetricName(metricName)).Histogram.MinUserValue.Should().Be("value1");
             _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[0].AsMetricName(metricName)).Histogram.MaxUserValue.Should().Be("value2");
 
-            _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[1].AsMetricName(metricName)).TotalTime.Should().Be(3000L);
+            _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[1].AsMetricName(metricName)).Histogram.Sum.Should().Be(3000.0);
             _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[1].AsMetricName(metricName)).Histogram.MinUserValue.Should().Be("value1");
             _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[1].AsMetricName(metricName)).Histogram.MaxUserValue.Should().Be("value2");
         }
@@ -78,7 +78,7 @@ namespace App.Metrics.Facts.Managers
 
             var timerValue = _fixture.Snapshot.GetTimerValue(_fixture.Context, metricName);
 
-            timerValue.TotalTime.Should().Be(300L);
+            timerValue.Histogram.Sum.Should().Be(300.0);
             timerValue.Histogram.MinUserValue.Should().Be("value1");
             timerValue.Histogram.MaxUserValue.Should().Be("value2");
         }
@@ -96,7 +96,7 @@ namespace App.Metrics.Facts.Managers
 
             var timerValue = _fixture.Snapshot.GetTimerValue(_fixture.Context, metricName);
 
-            timerValue.TotalTime.Should().Be(100L);
+            timerValue.Histogram.Sum.Should().Be(100.0);
         }
 
         [Fact]
@@ -115,8 +115,8 @@ namespace App.Metrics.Facts.Managers
                 _fixture.Clock.Advance(TimeUnit.Milliseconds, 500L);
             }
 
-            _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[0].AsMetricName(metricName)).TotalTime.Should().Be(100L);
-            _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[1].AsMetricName(metricName)).TotalTime.Should().Be(500L);
+            _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[0].AsMetricName(metricName)).Histogram.Sum.Should().Be(100.0);
+            _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[1].AsMetricName(metricName)).Histogram.Sum.Should().Be(500.0);
         }
 
         [Fact]
@@ -145,11 +145,11 @@ namespace App.Metrics.Facts.Managers
                 _fixture.Clock.Advance(TimeUnit.Milliseconds, 2000L);
             }
 
-            _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[0].AsMetricName(metricName)).TotalTime.Should().Be(300L);
+            _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[0].AsMetricName(metricName)).Histogram.Sum.Should().Be(300.0);
             _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[0].AsMetricName(metricName)).Histogram.MinUserValue.Should().Be("value1");
             _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[0].AsMetricName(metricName)).Histogram.MaxUserValue.Should().Be("value2");
 
-            _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[1].AsMetricName(metricName)).TotalTime.Should().Be(3000L);
+            _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[1].AsMetricName(metricName)).Histogram.Sum.Should().Be(3000.0);
             _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[1].AsMetricName(metricName)).Histogram.MinUserValue.Should().Be("value1");
             _fixture.Snapshot.GetTimerValue(_fixture.Context, _fixture.Tags[1].AsMetricName(metricName)).Histogram.MaxUserValue.Should().Be("value2");
         }
@@ -172,7 +172,7 @@ namespace App.Metrics.Facts.Managers
 
             var timerValue = _fixture.Snapshot.GetTimerValue(_fixture.Context, metricName);
 
-            timerValue.TotalTime.Should().Be(300L);
+            timerValue.Histogram.Sum.Should().Be(300.0);
             timerValue.Histogram.MinUserValue.Should().Be("value1");
             timerValue.Histogram.MaxUserValue.Should().Be("value2");
         }

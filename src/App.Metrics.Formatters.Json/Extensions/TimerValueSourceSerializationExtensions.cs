@@ -47,7 +47,7 @@ namespace App.Metrics.Timer
                 source.Histogram.Percentile999,
                 source.Histogram.SampleSize);
 
-            var timerValue = new TimerValue(rateValue, histogramValue, source.ActiveSessions, source.TotalTime, durationUnit);
+            var timerValue = new TimerValue(rateValue, histogramValue, source.ActiveSessions, durationUnit);
 
             return new TimerValueSource(
                 source.Name,
@@ -103,7 +103,6 @@ namespace App.Metrics.Timer
                        Name = source.Name,
                        Count = source.Value.Rate.Count,
                        ActiveSessions = source.Value.ActiveSessions,
-                       TotalTime = source.Value.TotalTime,
                        Rate = rateData,
                        Histogram = histogramData,
                        Unit = source.Unit.Name,

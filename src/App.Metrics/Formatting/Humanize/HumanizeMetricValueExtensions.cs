@@ -55,6 +55,7 @@ namespace App.Metrics.Formatting.Humanize
         {
             sb.AppendLine();
             sb.AppendLine("Count".FormatReadableMetricValue(unit.FormatCount(histogram.Count)));
+            sb.AppendLine("Sum".FormatReadableMetricValue(unit.FormatDuration(histogram.Sum, null)));
             sb.AppendLine("Last".FormatReadableMetricValue(unit.FormatDuration(histogram.LastValue, null)));
 
             if (!string.IsNullOrWhiteSpace(histogram.LastUserValue))
@@ -114,7 +115,6 @@ namespace App.Metrics.Formatting.Humanize
         {
             sb.AppendLine();
             sb.AppendLine("Active Sessions".FormatReadableMetricValue(timer.Value.ActiveSessions.ToString()));
-            sb.AppendLine("Total Time".FormatReadableMetricValue(timer.Unit.FormatDuration(timer.Value.TotalTime, timer.DurationUnit)));
 
             sb.HumanizeMeter(timer.Value.Rate, timer.Unit);
             sb.HumanizeHistogram(timer.Value.Histogram, timer.Unit);

@@ -36,7 +36,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
 
             timerValue.Histogram.Min.Should().Be(30);
             timerValue.Histogram.Max.Should().Be(300);
-            timerValue.TotalTime.Should().Be(630);
+            timerValue.Histogram.Sum.Should().Be(630);
         }
     }
 }

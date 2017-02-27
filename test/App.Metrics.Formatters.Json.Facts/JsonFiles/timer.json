@@ -27,7 +27,6 @@
     "oneMinuteRate": 2.0
   },
   "rateUnit": "s",
-  "totalTime": 0,
   "name": "test_timer",
   "tags": {
     "host": "server1",

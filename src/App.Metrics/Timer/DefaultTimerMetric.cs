@@ -16,7 +16,6 @@ namespace App.Metrics.Timer
         private readonly IClock _clock;
         private readonly IHistogramMetric _histogram;
         private readonly IMeterMetric _meter;
-        private readonly StripedLongAdder _totalRecordedTime = new StripedLongAdder();
         private bool _disposed;
 
         /// <summary>
@@ -103,12 +102,10 @@ namespace App.Metrics.Timer
         /// <inheritdoc />
         public TimerValue GetValue(bool resetMetric = false)
         {
-            var total = resetMetric ? _totalRecordedTime.GetAndReset() : _totalRecordedTime.GetValue();
             return new TimerValue(
                 _meter.GetValue(resetMetric),
                 _histogram.GetValue(resetMetric),
                 _activeSessionsCounter.GetValue(),
-                total,
                 TimeUnit.Nanoseconds);
         }
 
@@ -135,7 +132,6 @@ namespace App.Metrics.Timer
 
             _histogram.Update(nanos, userValue);
             _meter.Mark();
-            _totalRecordedTime.Add(nanos);
         }
 
         /// <inheritdoc />
