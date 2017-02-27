@@ -108,3 +108,7 @@ App Metrics is based on the [Metrics.NET](https://github.com/etishor/Metrics.NET
 
 *Dropwizard Metrics* Licensed under these terms*:
 "Copyright (c) 2010-2013 Coda Hale, Yammer.com Published under Apache Software License 2.0, see [LICENSE](https://github.com/dropwizard/metrics/blob/3.2-development/LICENSE)"
+
+----------
+
+[![](https://codescene.io/projects/792/status.svg) Get more details at **codescene.io**.](https://codescene.io/projects/792/jobs/latest-successful/results)
