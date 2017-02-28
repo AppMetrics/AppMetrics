@@ -10,9 +10,9 @@ using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Apdex.Abstractions;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
-using App.Metrics.Core.Abstractions;
 using App.Metrics.Core.Options;
 using App.Metrics.Counter.Abstractions;
+using App.Metrics.Gauge;
 using App.Metrics.Histogram.Abstractions;
 using App.Metrics.Infrastructure;
 using App.Metrics.Meter.Abstractions;
@@ -143,33 +143,36 @@ namespace App.Metrics.Registry.Internal
             return options;
         }
 
-        public void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider)
+        /// <inheritdoc />
+        public IGauge Gauge<T>(GaugeOptions options, Func<T> builder)
+            where T : IGaugeMetric
         {
             if (_nullMetricsRegistry.IsValueCreated)
             {
-                _nullMetricsRegistry.Value.Gauge(options, valueProvider);
+                return _nullMetricsRegistry.Value.Gauge(options, builder);
             }
 
             EnsureContextLabel(options);
 
             var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
 
-            contextRegistry.Gauge(options, valueProvider);
+            return contextRegistry.Gauge(options, builder);
         }
 
         /// <inheritdoc />
-        public void Gauge(GaugeOptions options, MetricTags tags, Func<IMetricValueProvider<double>> valueProvider)
+        public IGauge Gauge<T>(GaugeOptions options, MetricTags tags, Func<T> builder)
+            where T : IGaugeMetric
         {
             if (_nullMetricsRegistry.IsValueCreated)
             {
-                _nullMetricsRegistry.Value.Gauge(options, tags, valueProvider);
+                return _nullMetricsRegistry.Value.Gauge(options, tags, builder);
             }
 
             EnsureContextLabel(options);
 
             var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
 
-            contextRegistry.Gauge(options, tags, valueProvider);
+            return contextRegistry.Gauge(options, tags, builder);
         }
 
         public MetricsDataValueSource GetData(IFilterMetrics filter)

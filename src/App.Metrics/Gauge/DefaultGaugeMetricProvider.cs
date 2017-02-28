@@ -2,7 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
-using App.Metrics.Core.Abstractions;
+using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Core.Options;
 using App.Metrics.Gauge.Abstractions;
 using App.Metrics.Registry.Abstractions;
@@ -12,27 +12,39 @@ namespace App.Metrics.Gauge
 {
     public class DefaultGaugeMetricProvider : IProvideGaugeMetrics
     {
+        private readonly IBuildGaugeMetrics _gaugeBuilder;
         private readonly IMetricsRegistry _registry;
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="DefaultGaugeMetricProvider" /> class.
-        /// </summary>
-        /// <param name="registry">The registry.</param>
-        public DefaultGaugeMetricProvider(IMetricsRegistry registry)
+        public DefaultGaugeMetricProvider(IBuildGaugeMetrics gaugeBuilder, IMetricsRegistry registry)
         {
+            _gaugeBuilder = gaugeBuilder;
             _registry = registry;
         }
 
         /// <inheritdoc />
-        public void Instance(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider)
+        public IGauge Instance(GaugeOptions options)
         {
-            _registry.Gauge(options, valueProvider);
+            return Instance(options, () => _gaugeBuilder.Build());
         }
 
         /// <inheritdoc />
-        public void Instance(GaugeOptions options, MetricTags tags, Func<IMetricValueProvider<double>> valueProvider)
+        public IGauge Instance(GaugeOptions options, MetricTags tags)
         {
-            _registry.Gauge(options, tags, valueProvider);
+            return Instance(options, tags, () => _gaugeBuilder.Build());
+        }
+
+        /// <inheritdoc />
+        public IGauge Instance<T>(GaugeOptions options, Func<T> builder)
+            where T : IGaugeMetric
+        {
+            return _registry.Gauge(options, builder);
+        }
+
+        /// <inheritdoc />
+        public IGauge Instance<T>(GaugeOptions options, MetricTags tags, Func<T> builder)
+            where T : IGaugeMetric
+        {
+            return _registry.Gauge(options, tags, builder);
         }
     }
 }

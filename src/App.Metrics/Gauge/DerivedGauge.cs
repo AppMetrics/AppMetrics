@@ -35,6 +35,21 @@ namespace App.Metrics.Gauge
         }
 
         /// <inheritdoc />
-        public double GetValue(bool resetMetric = false) { return Value; }
+        public double GetValue(bool resetMetric = false)
+        {
+            return Value;
+        }
+
+        /// <inheritdoc />
+        public void Reset()
+        {
+            throw new InvalidOperationException("Unable to reset a Derived Gauge");
+        }
+
+        /// <inheritdoc />
+        public void SetValue(double value)
+        {
+            throw new InvalidOperationException("Unable to set the value of a Derived Gauge");
+        }
     }
 }

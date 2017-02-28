@@ -14,10 +14,17 @@ namespace App.Metrics.Benchmarks.Facts
         public Gauge(MetricsCoreTestFixture fixture) { _fixture = fixture; }
 
         [Fact]
-        public void Increment()
+        public void SetValue()
         {
             SimpleBenchmarkRunner.Run(
                 () => { _fixture.Metrics.Measure.Gauge.SetValue(MetricOptions.Gauge.Options, () => _fixture.Rnd.NextDouble()); });
+        }
+
+        [Fact]
+        public void SetValueNotLazy()
+        {
+            SimpleBenchmarkRunner.Run(
+                () => { _fixture.Metrics.Measure.Gauge.SetValue(MetricOptions.Gauge.OptionsNotLazy, _fixture.Rnd.NextDouble()); });
         }
     }
 }

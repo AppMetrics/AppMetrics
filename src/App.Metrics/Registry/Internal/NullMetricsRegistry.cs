@@ -7,10 +7,10 @@ using App.Metrics.Abstractions.Metrics;
 using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Apdex.Abstractions;
 using App.Metrics.Core;
-using App.Metrics.Core.Abstractions;
 using App.Metrics.Core.Internal;
 using App.Metrics.Core.Options;
 using App.Metrics.Counter.Abstractions;
+using App.Metrics.Gauge;
 using App.Metrics.Histogram.Abstractions;
 using App.Metrics.Meter.Abstractions;
 using App.Metrics.Registry.Abstractions;
@@ -57,11 +57,18 @@ namespace App.Metrics.Registry.Internal
         {
         }
 
-        public void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider) { }
+        /// <inheritdoc />
+        public IGauge Gauge<T>(GaugeOptions options, Func<T> builder)
+            where T : IGaugeMetric
+        {
+            return _gaugeInstance;
+        }
 
         /// <inheritdoc />
-        public void Gauge(GaugeOptions options, MetricTags tags, Func<IMetricValueProvider<double>> valueProvider)
+        public IGauge Gauge<T>(GaugeOptions options, MetricTags tags, Func<T> builder)
+            where T : IGaugeMetric
         {
+            return _gaugeInstance;
         }
 
         public MetricsDataValueSource GetData(IFilterMetrics filter) { return MetricsDataValueSource.Empty; }
@@ -110,6 +117,7 @@ namespace App.Metrics.Registry.Internal
 #pragma warning disable SA1129
         private readonly IApdex _apdexInstance = new NullApdex();
         private readonly ICounter _counterInstance = new NullCounter();
+        private readonly IGauge _gaugeInstance = new NullGauge();
         private readonly IHistogram _histogramInstance = new NullHistogram();
         private readonly IMeter _meterInstance = new NullMeter();
         private readonly ITimer _timerInstance = new NullTimer();

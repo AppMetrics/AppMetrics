@@ -33,8 +33,8 @@ namespace App.Metrics.Registry.Internal
         private readonly MetricMetaCatalog<ICounter, CounterValueSource, CounterValue> _counters =
             new MetricMetaCatalog<ICounter, CounterValueSource, CounterValue>();
 
-        private readonly MetricMetaCatalog<IMetricValueProvider<double>, GaugeValueSource, double> _gauges =
-            new MetricMetaCatalog<IMetricValueProvider<double>, GaugeValueSource, double>();
+        private readonly MetricMetaCatalog<IGauge, GaugeValueSource, double> _gauges =
+            new MetricMetaCatalog<IGauge, GaugeValueSource, double>();
 
         private readonly GlobalMetricTags _globalTags;
 
@@ -169,38 +169,41 @@ namespace App.Metrics.Registry.Internal
                 });
         }
 
-        public void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider)
+        public IGauge Gauge<T>(GaugeOptions options, Func<T> builder)
+            where T : IGaugeMetric
         {
-            _gauges.GetOrAdd(
+            return _gauges.GetOrAdd(
                 options.Name,
                 () =>
                 {
-                    var gauge = valueProvider();
+                    var gauge = builder();
                     var valueSource = new GaugeValueSource(
                         options.Name,
                         gauge,
                         options.MeasurementUnit,
                         AllTags(options.Tags));
-                    return Tuple.Create(gauge, valueSource);
+                    return Tuple.Create((IGauge)gauge, valueSource);
                 });
         }
 
         /// <inheritdoc />
-        public void Gauge(GaugeOptions options, MetricTags tags, Func<IMetricValueProvider<double>> valueProvider)
+        public IGauge Gauge<T>(GaugeOptions options, MetricTags tags, Func<T> builder)
+            where T : IGaugeMetric
         {
             var metricName = tags.AsMetricName(options.Name);
 
-            _gauges.GetOrAdd(
+            return _gauges.GetOrAdd(
                 metricName,
                 () =>
                 {
-                    var gauge = valueProvider();
+                    var gauge = builder();
                     var valueSource = new GaugeValueSource(
                         metricName,
                         gauge,
                         options.MeasurementUnit,
                         AllTags(MetricTags.Concat(options.Tags, tags)));
-                    return Tuple.Create(gauge, valueSource);
+
+                    return Tuple.Create((IGauge)gauge, valueSource);
                 });
         }
 

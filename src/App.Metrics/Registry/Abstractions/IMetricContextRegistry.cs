@@ -5,9 +5,9 @@ using System;
 using App.Metrics.Abstractions.Metrics;
 using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Apdex.Abstractions;
-using App.Metrics.Core.Abstractions;
 using App.Metrics.Core.Options;
 using App.Metrics.Counter.Abstractions;
+using App.Metrics.Gauge;
 using App.Metrics.Histogram.Abstractions;
 using App.Metrics.Meter.Abstractions;
 using App.Metrics.Tagging;
@@ -35,9 +35,11 @@ namespace App.Metrics.Registry.Abstractions
         ICounter Counter<T>(CounterOptions options, MetricTags tags, Func<T> builder)
             where T : ICounterMetric;
 
-        void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider);
+        IGauge Gauge<T>(GaugeOptions options, Func<T> builder)
+            where T : IGaugeMetric;
 
-        void Gauge(GaugeOptions options, MetricTags tags, Func<IMetricValueProvider<double>> valueProvider);
+        IGauge Gauge<T>(GaugeOptions options, MetricTags tags, Func<T> builder)
+            where T : IGaugeMetric;
 
         IHistogram Histogram<T>(HistogramOptions options, Func<T> builder)
             where T : IHistogramMetric;

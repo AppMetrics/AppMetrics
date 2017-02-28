@@ -12,7 +12,7 @@ namespace App.Metrics.Abstractions.MetricTypes
     ///     Allows custom gauges to be implemented
     /// </summary>
     /// <seealso cref="IGaugeMetric" />
-    public interface IGaugeMetric : IMetricValueProvider<double>
+    public interface IGaugeMetric : IGauge, IMetricValueProvider<double>
     {
     }
 }

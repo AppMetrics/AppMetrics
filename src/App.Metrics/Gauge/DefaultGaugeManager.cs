@@ -33,15 +33,27 @@ namespace App.Metrics.Gauge
         }
 
         /// <inheritdoc />
+        public void SetValue(GaugeOptions options, double value)
+        {
+            _registry.Gauge(options, () => _gaugeBuilder.Build()).SetValue(value);
+        }
+
+        /// <inheritdoc />
+        public void SetValue(GaugeOptions options, MetricTags tags, double value)
+        {
+            _registry.Gauge(options, tags, () => _gaugeBuilder.Build()).SetValue(value);
+        }
+
+        /// <inheritdoc />
         public void SetValue(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider)
         {
-            _registry.Gauge(options, valueProvider);
+            _registry.Gauge(options, () => _gaugeBuilder.Build(valueProvider));
         }
 
         /// <inheritdoc />
         public void SetValue(GaugeOptions options, MetricTags tags, Func<IMetricValueProvider<double>> valueProvider)
         {
-            _registry.Gauge(options, tags, valueProvider);
+            _registry.Gauge(options, tags, () => _gaugeBuilder.Build(valueProvider));
         }
 
         /// <inheritdoc />

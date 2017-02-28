@@ -9,6 +9,15 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
     public class MeasureGaugeBenchmark : DefaultBenchmarkBase
     {
         [Benchmark]
-        public void SetValue() { Fixture.Metrics.Measure.Gauge.SetValue(MetricOptions.Gauge.Options, () => Fixture.Rnd.NextDouble()); }
+        public void SetValue()
+        {
+            Fixture.Metrics.Measure.Gauge.SetValue(MetricOptions.Gauge.Options, () => Fixture.Rnd.NextDouble());
+        }
+
+        [Benchmark]
+        public void SetValueNotLazy()
+        {
+            Fixture.Metrics.Measure.Gauge.SetValue(MetricOptions.Gauge.OptionsNotLazy, Fixture.Rnd.NextDouble());
+        }
     }
 }
