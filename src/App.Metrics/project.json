@@ -29,6 +29,7 @@
         "portable-net45+win8"
       ],
       "dependencies": {
+        "System.Net.Ping": "4.3.0",
         "System.Collections.Specialized": "4.3.0",
         "System.Diagnostics.Process": "4.3.0",
         "System.Net.NameResolution": "4.3.0",
