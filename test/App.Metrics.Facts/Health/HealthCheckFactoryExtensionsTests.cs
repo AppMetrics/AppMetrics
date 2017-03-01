@@ -44,7 +44,7 @@ namespace App.Metrics.Facts.Health
 
             var factory = new HealthCheckFactory(_logger, healthChecks);
 
-            factory.RegisterPingHealthCheck(name, "github.com", TimeSpan.FromMilliseconds(100));
+            factory.RegisterPingHealthCheck(name, "github.com", TimeSpan.FromSeconds(10));
 
             var check = factory.Checks.FirstOrDefault();
             var result = await check.Value.ExecuteAsync().ConfigureAwait(false);

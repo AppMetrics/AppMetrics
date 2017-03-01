@@ -12,8 +12,8 @@
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
 var target                      = Argument("target", "Default");
-var configuration               = HasArgument("Configuration") ? Argument<string>("Configuration") :
-                                  EnvironmentVariable("Configuration") != null ? EnvironmentVariable("Configuration") : "Release";
+var configuration               = HasArgument("BuildConfiguration") ? Argument<string>("BuildConfiguration") :
+                                  EnvironmentVariable("BuildConfiguration") != null ? EnvironmentVariable("BuildConfiguration") : "Release";
 var skipOpenCover               = Argument("SkipCoverage", false);
 var skipReSharperCodeInspect    = Argument("SkipCodeInspect", false) || !IsRunningOnWindows();
 var preReleaseSuffix            = HasArgument("PreReleaseSuffix") ? Argument<string>("PreReleaseSuffix") :
