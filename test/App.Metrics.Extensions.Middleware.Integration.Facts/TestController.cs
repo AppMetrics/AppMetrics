@@ -15,7 +15,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         public TestController(IMetrics metrics) { _metrics = metrics; }
 
         [HttpGet("400")]
-        public IActionResult BadRequest()
+        public IActionResult Bad()
         {
             return StatusCode(400);
         }
@@ -113,7 +113,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         }
 
         [HttpGet("401")]
-        public IActionResult Unauthorized()
+        public IActionResult Unauth()
         {
             return StatusCode(401);
         }
