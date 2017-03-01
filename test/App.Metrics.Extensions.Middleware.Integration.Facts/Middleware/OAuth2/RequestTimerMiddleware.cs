@@ -32,7 +32,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
 
             var timerValue = Context.Snapshot.GetTimerValue(
                 HttpRequestMetricsRegistry.ContextName,
-                "Http Requests");
+                "Overall Http Request Transactions");
 
             timerValue.Histogram.Min.Should().Be(30);
             timerValue.Histogram.Max.Should().Be(300);

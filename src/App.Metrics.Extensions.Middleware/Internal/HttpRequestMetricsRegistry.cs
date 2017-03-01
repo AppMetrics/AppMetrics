@@ -31,6 +31,14 @@ namespace App.Metrics.Extensions.Middleware.Internal
                                                               Name = "Active Requests",
                                                               MeasurementUnit = Unit.Custom("Active Requests")
                                                           };
+
+            public static CounterOptions ErrorRequests = new CounterOptions
+                                                          {
+                                                              Context = ContextName,
+                                                              Name = "Error Requests",
+                                                              ResetOnReporting = true,
+                                                              MeasurementUnit = Unit.Custom("Error Requests")
+                                                          };
         }
 
         public static class Gauges
@@ -39,6 +47,13 @@ namespace App.Metrics.Extensions.Middleware.Internal
                                                                  {
                                                                      Context = ContextName,
                                                                      Name = "Percentage Error Requests",
+                                                                     MeasurementUnit = Unit.Custom("Error Requests")
+                                                                 };
+
+            public static GaugeOptions OverallPercentageErrorRequests = new GaugeOptions
+                                                                 {
+                                                                     Context = ContextName,
+                                                                     Name = "Overall Percentage Error Requests",
                                                                      MeasurementUnit = Unit.Custom("Error Requests")
                                                                  };
         }
@@ -68,6 +83,13 @@ namespace App.Metrics.Extensions.Middleware.Internal
                                                                Name = "Overall Http Error Requests",
                                                                MeasurementUnit = Unit.Requests
                                                            };
+
+            public static MeterOptions TotalHttpErrorRequests = new MeterOptions
+                                                                  {
+                                                                      Context = ContextName,
+                                                                      Name = "Total Http Error Requests",
+                                                                      MeasurementUnit = Unit.Requests
+                                                                  };
         }
 
         public static class Timers
@@ -79,10 +101,10 @@ namespace App.Metrics.Extensions.Middleware.Internal
                                                                      MeasurementUnit = Unit.Requests
                                                                  };
 
-            public static TimerOptions WebRequestTimer = new TimerOptions
+            public static TimerOptions OverallHttpRequestTransactions = new TimerOptions
                                                          {
                                                              Context = ContextName,
-                                                             Name = "Http Requests",
+                                                             Name = "Overall Http Request Transactions",
                                                              MeasurementUnit = Unit.Requests
                                                          };
         }

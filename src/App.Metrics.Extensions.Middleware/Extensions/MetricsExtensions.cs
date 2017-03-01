@@ -32,17 +32,24 @@ namespace App.Metrics
 
         public static IMetrics ErrorRequestPercentage(this IMetrics metrics, string routeTemplate, string clientId = null)
         {
+            var errors = metrics.Provider.Meter.Instance(HttpRequestMetricsRegistry.Meters.TotalHttpErrorRequests);
+            var requests = metrics.Provider.Timer.Instance(HttpRequestMetricsRegistry.Timers.OverallHttpRequestTransactions);
+
+            metrics.Measure.Gauge.SetValue(
+                HttpRequestMetricsRegistry.Gauges.OverallPercentageErrorRequests,
+                () => new HitPercentageGauge(errors, requests, m => m.OneMinuteRate));
+
             var tags = clientId.IsMissing()
                 ? new MetricTags("route", routeTemplate)
-                : new MetricTags(new[] { "route", "clientid" }, new[] { routeTemplate, clientId });
+                : new MetricTags(new[] { "route", "client_id" }, new[] { routeTemplate, clientId });
 
-            var errors = metrics.Provider.Meter.Instance(HttpRequestMetricsRegistry.Meters.OverallHttpErrorRequests, tags);
-            var requests = metrics.EndpointRequestTimer(routeTemplate, clientId);
+            var routeErrors = metrics.Provider.Meter.Instance(HttpRequestMetricsRegistry.Meters.OverallHttpErrorRequests, tags);
+            var routeRequests = metrics.EndpointRequestTimer(routeTemplate, clientId);
 
             metrics.Measure.Gauge.SetValue(
                 HttpRequestMetricsRegistry.Gauges.PercentageErrorRequests,
                 tags,
-                () => new HitPercentageGauge(errors, requests, m => m.OneMinuteRate));
+                () => new HitPercentageGauge(routeErrors, routeRequests, m => m.OneMinuteRate));
 
             return metrics;
         }
@@ -81,6 +88,12 @@ namespace App.Metrics
             metrics.Measure.Meter.Mark(
                 HttpRequestMetricsRegistry.Meters.OverallHttpErrorRequests,
                 overallTags);
+
+            metrics.Measure.Meter.Mark(HttpRequestMetricsRegistry.Meters.TotalHttpErrorRequests);
+
+            var errorCounterTags = new MetricTags("http_status_code", httpStatusCode.ToString());
+
+            metrics.Measure.Counter.Increment(HttpRequestMetricsRegistry.Counters.ErrorRequests, errorCounterTags);
 
             return metrics;
         }

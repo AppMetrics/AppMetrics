@@ -25,7 +25,7 @@ namespace App.Metrics.Extensions.Middleware
         {
             _requestTimer = Metrics.Provider
                                    .Timer
-                                   .Instance(HttpRequestMetricsRegistry.Timers.WebRequestTimer);
+                                   .Instance(HttpRequestMetricsRegistry.Timers.OverallHttpRequestTransactions);
         }
 
         public async Task Invoke(HttpContext context)

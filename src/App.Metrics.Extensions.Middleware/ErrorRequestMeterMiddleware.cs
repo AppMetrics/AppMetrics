@@ -51,7 +51,7 @@ namespace App.Metrics.Extensions.Middleware
                 if (!context.Response.IsSuccessfulResponse() && ShouldTrackHttpStatusCode(context.Response.StatusCode))
                 {
                     Metrics.MarkHttpRequestError(routeTemplate, context.Response.StatusCode, GetOAuthClientIdIfRequired(context));
-                    Metrics.ErrorRequestPercentage(routeTemplate);
+                    Metrics.ErrorRequestPercentage(routeTemplate, GetOAuthClientIdIfRequired(context));
                 }
             }
 

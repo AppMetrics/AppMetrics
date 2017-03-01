@@ -36,7 +36,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
 
             getTimerValue("Http Request Transactions|route:GET api/test").Histogram.Count.Should().Be(1);
             getTimerValue("Http Request Transactions|route:GET api/test/error").Histogram.Count.Should().Be(1);
-            getTimerValue("Http Requests").Histogram.Count.Should().Be(2);
+            getTimerValue("Overall Http Request Transactions").Histogram.Count.Should().Be(2);
         }
     }
 }
