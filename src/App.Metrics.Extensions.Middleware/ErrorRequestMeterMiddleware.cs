@@ -48,7 +48,7 @@ namespace App.Metrics.Extensions.Middleware
 
                 var routeTemplate = context.GetMetricsCurrentRouteName();
 
-                if (!context.Response.IsSuccessfulResponse())
+                if (!context.Response.IsSuccessfulResponse() && ShouldTrackHttpStatusCode(context.Response.StatusCode))
                 {
                     Metrics.MarkHttpRequestEndpointError(routeTemplate, context.Response.StatusCode);
                     Metrics.MarkHttpRequestError(context.Response.StatusCode);

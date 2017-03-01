@@ -28,6 +28,8 @@ namespace App.Metrics.Extensions.Middleware.DependencyInjection.Options
 
         public bool HealthEndpointEnabled { get; set; }
 
+        public IList<int> IgnoredHttpStatusCodes { get; set; } = new List<int>();
+
         public IList<string> IgnoredRoutesRegexPatterns { get; set; } = new List<string>();
 
         public string MetricsEndpoint { get; set; } = Constants.DefaultRoutePaths.MetricsEndpoint.EnsureLeadingSlash();

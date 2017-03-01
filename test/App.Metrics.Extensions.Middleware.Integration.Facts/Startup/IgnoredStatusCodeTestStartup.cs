@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
 {
-    public class IgnoredRouteTestStartup : TestStartup
+    public class IgnoredStatusCodeTestStartup : TestStartup
     {
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
@@ -33,9 +33,9 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
                                            PingEndpointEnabled = true
                                        };
 
-            aspNetMetricsOptions.IgnoredRoutesRegexPatterns.Add("(?i)^api/test/ignore");
+            aspNetMetricsOptions.IgnoredHttpStatusCodes.Add(401);
 
             SetupServices(services, appMetricsOptions, aspNetMetricsOptions);
         }
-    }    
+    }
 }

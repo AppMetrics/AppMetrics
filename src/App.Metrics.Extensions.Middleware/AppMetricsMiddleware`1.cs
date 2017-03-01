@@ -50,15 +50,15 @@ namespace App.Metrics.Extensions.Middleware
 
             Next = next;
 
-            IReadOnlyList<Regex> ignoredRoutes = Options.IgnoredRoutesRegexPatterns
-                                                        .Select(p => new Regex(p, RegexOptions.Compiled | RegexOptions.IgnoreCase)).ToList();
+            IReadOnlyList<Regex> ignoredRoutes = Options.IgnoredRoutesRegexPatterns.
+                                                         Select(p => new Regex(p, RegexOptions.Compiled | RegexOptions.IgnoreCase)).
+                                                         ToList();
 
             if (ignoredRoutes.Any())
             {
                 _shouldRecordMetric = path => !ignoredRoutes.Any(
                     ignorePattern => ignorePattern.IsMatch(
-                        path.ToString()
-                            .RemoveLeadingSlash()));
+                        path.ToString().RemoveLeadingSlash()));
             }
             else
             {
@@ -87,6 +87,11 @@ namespace App.Metrics.Extensions.Middleware
             }
 
             return _shouldRecordMetric(context.Request.Path);
+        }
+
+        protected bool ShouldTrackHttpStatusCode(int httpStatusCode)
+        {
+            return Options.IgnoredHttpStatusCodes.All(i => i != httpStatusCode);
         }
 
         protected Task WriteResponseAsync(

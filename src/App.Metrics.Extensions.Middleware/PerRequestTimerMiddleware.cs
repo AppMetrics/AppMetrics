@@ -30,7 +30,7 @@ namespace App.Metrics.Extensions.Middleware
 
                 await Next(context);
 
-                if (context.HasMetricsCurrentRouteName() && context.Response.StatusCode != (int)HttpStatusCode.NotFound)
+                if (context.HasMetricsCurrentRouteName() && ShouldTrackHttpStatusCode(context.Response.StatusCode))
                 {
                     var clientId = context.OAuthClientId();
 

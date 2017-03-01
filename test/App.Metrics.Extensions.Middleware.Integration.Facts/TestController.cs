@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +12,12 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
     {
         private readonly IMetrics _metrics;
 
-        public TestController(IMetrics metrics)
+        public TestController(IMetrics metrics) { _metrics = metrics; }
+
+        [HttpGet("400")]
+        public IActionResult BadRequest()
         {
-            _metrics = metrics;
+            return StatusCode(400);
         }
 
         [HttpDelete("{id}")]
@@ -26,26 +31,6 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
             return new[] { "value1", "value2" };
         }
 
-        [HttpGet("ignore")]
-        public IEnumerable<string> Ignore()
-        {
-            return new[] { "value1", "value2" };
-        }
-
-        [HttpGet("oauth/{clientid}")]
-        public IActionResult OAuth(string clientId)
-        {
-            _metrics.Clock.Advance(TimeUnit.Milliseconds, 300);
-            return StatusCode(200);
-        }
-
-        [HttpGet("oauth/error/{clientid}")]
-        public IActionResult OAuthError(string clientId)
-        {
-            _metrics.Clock.Advance(TimeUnit.Milliseconds, 300);
-            return StatusCode(500);
-        }
-
         [HttpGet("{id}")]
         public string Get(int id)
         {
@@ -55,7 +40,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         [HttpGet("300ms")]
         // ReSharper disable InconsistentNaming
         public async Task<IActionResult> Get300ms()
-        // ReSharper restore InconsistentNaming
+            // ReSharper restore InconsistentNaming
         {
             _metrics.Clock.Advance(TimeUnit.Milliseconds, 300);
             await Task.FromResult(0);
@@ -65,7 +50,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         [HttpGet("30ms")]
         // ReSharper disable InconsistentNaming
         public async Task<IActionResult> Get30ms()
-        // ReSharper restore InconsistentNaming
+            // ReSharper restore InconsistentNaming
         {
             _metrics.Clock.Advance(TimeUnit.Milliseconds, 30);
             await Task.FromResult(0);
@@ -91,10 +76,30 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         }
 
         [HttpGet("error-random/{passorfail}")]
-        public async Task<IActionResult> GetRandomError([FromRoute]string passorfail)
+        public async Task<IActionResult> GetRandomError([FromRoute] string passorfail)
         {
             await Task.Delay(10);
             return StatusCode(passorfail == "fail" ? 500 : 200);
+        }
+
+        [HttpGet("ignore")]
+        public IEnumerable<string> Ignore()
+        {
+            return new[] { "value1", "value2" };
+        }
+
+        [HttpGet("oauth/{clientid}")]
+        public IActionResult OAuth(string clientId)
+        {
+            _metrics.Clock.Advance(TimeUnit.Milliseconds, 300);
+            return StatusCode(200);
+        }
+
+        [HttpGet("oauth/error/{clientid}")]
+        public IActionResult OAuthError(string clientId)
+        {
+            _metrics.Clock.Advance(TimeUnit.Milliseconds, 300);
+            return StatusCode(500);
         }
 
         [HttpPost]
@@ -105,6 +110,12 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
+        }
+
+        [HttpGet("401")]
+        public IActionResult Unauthorized()
+        {
+            return StatusCode(401);
         }
     }
 }

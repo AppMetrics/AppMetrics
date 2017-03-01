@@ -10,9 +10,9 @@ using Xunit;
 
 namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
 {
-    public class MetricsEndpointIgnoreRouteMiddlewareTests : IClassFixture<MetricsHostTestFixture<IgnoredRouteTestStartup>>
+    public class MetricsEndpointIgnoreStatusCodeMiddlewareTests : IClassFixture<MetricsHostTestFixture<IgnoredStatusCodeTestStartup>>
     {
-        public MetricsEndpointIgnoreRouteMiddlewareTests(MetricsHostTestFixture<IgnoredRouteTestStartup> fixture)
+        public MetricsEndpointIgnoreStatusCodeMiddlewareTests(MetricsHostTestFixture<IgnoredStatusCodeTestStartup> fixture)
         {
             Client = fixture.Client;
             Context = fixture.Context;
@@ -23,16 +23,20 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
         public IMetrics Context { get; }
 
         [Fact]
-        public async Task can_ignore_specified_routes()
+        public async Task can_ignore_specified_status_codes()
         {
-            var ignoreResult = await Client.GetAsync("/api/test/ignore");
-            ignoreResult.StatusCode.Should().Be(HttpStatusCode.OK);
+            var unauthorizedResponse = await Client.GetAsync("/api/test/401");
+            unauthorizedResponse.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+
+            var badResponse = await Client.GetAsync("/api/test/400");
+            badResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 
             var result = await Client.GetAsync("/metrics");
             result.StatusCode.Should().Be(HttpStatusCode.OK);
 
             var stringResult = await result.Content.ReadAsStringAsync();
-            stringResult.Should().NotContain("GET api/test/ignore");
+            stringResult.Should().NotContain("GET api/test/401");
+            stringResult.Should().Contain("GET api/test/400");
         }
     }
 }

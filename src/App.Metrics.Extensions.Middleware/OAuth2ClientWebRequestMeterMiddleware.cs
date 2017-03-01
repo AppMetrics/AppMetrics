@@ -31,7 +31,7 @@ namespace App.Metrics.Extensions.Middleware
 
                 var clientId = context.OAuthClientId();
 
-                if (clientId.IsPresent())
+                if (clientId.IsPresent() && ShouldTrackHttpStatusCode(context.Response.StatusCode))
                 {
                     var routeTemplate = context.GetMetricsCurrentRouteName();
 

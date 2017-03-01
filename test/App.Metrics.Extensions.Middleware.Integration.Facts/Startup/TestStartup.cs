@@ -112,6 +112,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
                         options.PingEndpoint = aspNetMetricsOptions.PingEndpoint;
 
                         options.IgnoredRoutesRegexPatterns = aspNetMetricsOptions.IgnoredRoutesRegexPatterns;
+                        options.IgnoredHttpStatusCodes = aspNetMetricsOptions.IgnoredHttpStatusCodes;
                     });
 
             if (filter != null)
