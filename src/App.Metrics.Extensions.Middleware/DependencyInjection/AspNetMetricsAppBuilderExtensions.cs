@@ -63,7 +63,6 @@ namespace Microsoft.AspNetCore.Builder
             {
                 app.UseMiddleware<ActiveRequestCounterEndpointMiddleware>();
                 app.UseMiddleware<ErrorRequestMeterMiddleware>();
-                app.UseMiddleware<OAuth2ClientWebRequestMeterMiddleware>();
                 app.UseMiddleware<PerRequestTimerMiddleware>();
                 app.UseMiddleware<PostAndPutRequestSizeHistogramMiddleware>();
                 app.UseMiddleware<RequestTimerMiddleware>();

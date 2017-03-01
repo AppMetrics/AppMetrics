@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
 using App.Metrics.Extensions.Middleware.Internal;
 using App.Metrics.Gauge;
-using App.Metrics.Meter;
-using App.Metrics.Meter.Extensions;
-using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;
 
@@ -43,7 +41,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
                 HttpRequestMetricsRegistry.ContextName,
                 metricName);
 
-            getGaugeValue("Endpoint Percentage Error Requests|route:GET api/test/error-random/{passorfail}").Should().BeApproximately(35, 5);
+            getGaugeValue("Percentage Error Requests|route:GET api/test/error-random/{passorfail}").Should().BeApproximately(35, 5);
         }
     }
 }

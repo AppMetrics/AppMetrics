@@ -74,6 +74,8 @@ namespace App.Metrics.Extensions.Middleware
 
         public TOptions Options { get; set; }
 
+        protected string GetOAuthClientIdIfRequired(HttpContext context) { return Options.OAuth2TrackingEnabled ? context.OAuthClientId() : null; }
+
         protected bool PerformMetric(HttpContext context)
         {
             if (Options.IgnoredRoutesRegexPatterns == null)
@@ -89,10 +91,7 @@ namespace App.Metrics.Extensions.Middleware
             return _shouldRecordMetric(context.Request.Path);
         }
 
-        protected bool ShouldTrackHttpStatusCode(int httpStatusCode)
-        {
-            return Options.IgnoredHttpStatusCodes.All(i => i != httpStatusCode);
-        }
+        protected bool ShouldTrackHttpStatusCode(int httpStatusCode) { return Options.IgnoredHttpStatusCodes.All(i => i != httpStatusCode); }
 
         protected Task WriteResponseAsync(
             HttpContext context,

@@ -35,13 +35,6 @@ namespace App.Metrics.Extensions.Middleware.Internal
 
         public static class Gauges
         {
-            public static GaugeOptions EndpointPercentageErrorRequests = new GaugeOptions
-                                                                         {
-                                                                             Context = ContextName,
-                                                                             Name = "Endpoint Percentage Error Requests",
-                                                                             MeasurementUnit = Unit.Errors
-                                                                         };
-
             public static GaugeOptions PercentageErrorRequests = new GaugeOptions
                                                                  {
                                                                      Context = ContextName,
@@ -62,17 +55,17 @@ namespace App.Metrics.Extensions.Middleware.Internal
 
         public static class Meters
         {
-            public static MeterOptions EndpointHttpErrorRequests = new MeterOptions
-                                                                   {
-                                                                       Context = ContextName,
-                                                                       Name = "Http Error Request Transactions",
-                                                                       MeasurementUnit = Unit.Requests
-                                                                   };
-
             public static MeterOptions HttpErrorRequests = new MeterOptions
                                                            {
                                                                Context = ContextName,
                                                                Name = "Http Error Requests",
+                                                               MeasurementUnit = Unit.Requests
+                                                           };
+
+            public static MeterOptions OverallHttpErrorRequests = new MeterOptions
+                                                           {
+                                                               Context = ContextName,
+                                                               Name = "Overall Http Error Requests",
                                                                MeasurementUnit = Unit.Requests
                                                            };
         }

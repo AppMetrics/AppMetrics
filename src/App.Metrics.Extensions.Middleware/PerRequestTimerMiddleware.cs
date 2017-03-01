@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-using System.Net;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using Microsoft.AspNetCore.Http;
@@ -18,7 +17,9 @@ namespace App.Metrics.Extensions.Middleware
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics)
-            : base(next, aspNetOptions, loggerFactory, metrics) { }
+            : base(next, aspNetOptions, loggerFactory, metrics)
+        {
+        }
 
         public async Task Invoke(HttpContext context)
         {
@@ -32,12 +33,13 @@ namespace App.Metrics.Extensions.Middleware
 
                 if (context.HasMetricsCurrentRouteName() && ShouldTrackHttpStatusCode(context.Response.StatusCode))
                 {
-                    var clientId = context.OAuthClientId();
-
                     var startTime = (long)context.Items[TimerItemsKey];
                     var elapsed = Metrics.Clock.Nanoseconds - startTime;
 
-                    Metrics.RecordEndpointRequestTime(clientId, context.GetMetricsCurrentRouteName(), elapsed);
+                    Metrics.RecordEndpointRequestTime(
+                        GetOAuthClientIdIfRequired(context),
+                        context.GetMetricsCurrentRouteName(),
+                        elapsed);
                 }
 
                 Logger.MiddlewareExecuted(GetType());
