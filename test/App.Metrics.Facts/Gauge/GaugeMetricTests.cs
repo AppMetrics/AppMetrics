@@ -29,14 +29,6 @@ namespace App.Metrics.Facts.Gauge
         }
 
         [Fact]
-        public void when_denomitator_is_zero_returns_NaN()
-        {
-            var hitPercentage = new PercentageGauge(() => 1, () => 0);
-
-            hitPercentage.Value.Should().Be(double.NaN);
-        }
-
-        [Fact]
         public void can_calculate_the_hit_ratio_as_a_guage()
         {
             var clock = new TestClock();
@@ -93,11 +85,44 @@ namespace App.Metrics.Facts.Gauge
         }
 
         [Fact]
+        public void can_get_and_reset_value_gauge()
+        {
+            var valueGauge = new ValueGauge();
+            valueGauge.SetValue(1.0);
+
+            var value = valueGauge.GetValue(true);
+
+            value.Should().Be(1.0);
+            valueGauge.Value.Should().Be(0.0);
+        }
+
+        [Fact]
+        public void can_reset_value_gauge()
+        {
+            var valueGauge = new ValueGauge();
+            valueGauge.SetValue(1.0);
+
+            valueGauge.Value.Should().Be(1.0);
+
+            valueGauge.Reset();
+
+            valueGauge.Value.Should().Be(0.0);
+        }
+
+        [Fact]
         public void should_report_nan_on_exception()
         {
             new FunctionGauge(() => { throw new InvalidOperationException("test"); }).Value.Should().Be(double.NaN);
 
             new DerivedGauge(new FunctionGauge(() => 5.0), (d) => { throw new InvalidOperationException("test"); }).Value.Should().Be(double.NaN);
+        }
+
+        [Fact]
+        public void when_denomitator_is_zero_returns_NaN()
+        {
+            var hitPercentage = new PercentageGauge(() => 1, () => 0);
+
+            hitPercentage.Value.Should().Be(double.NaN);
         }
     }
 }

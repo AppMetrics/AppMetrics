@@ -105,12 +105,6 @@ namespace App.Metrics.Apdex
                 if (disposing)
                 {
                     // Free any other managed objects here.
-                    if (_apdexProvider != null)
-                    {
-                        using (_apdexProvider)
-                        {
-                        }
-                    }
                 }
             }
 

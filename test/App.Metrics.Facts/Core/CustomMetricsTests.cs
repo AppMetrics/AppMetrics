@@ -6,7 +6,6 @@ using System.Linq;
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.ReservoirSampling;
 using FluentAssertions;
 using Xunit;
 
@@ -25,7 +24,7 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void can_register_timer_with_custom_histogram()
         {
-            var histogram = new CustomHistogram();
+            var histogram = new CustomHistogramMetric();
             var timerOptions = new TimerOptions
                                {
                                    Name = "custom",

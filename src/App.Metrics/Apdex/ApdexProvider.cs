@@ -19,7 +19,6 @@ namespace App.Metrics.Apdex
     {
         private readonly double _apdexTSeconds;
         private readonly Lazy<IReservoir> _reservoir;
-        private bool _disposed;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ApdexProvider" /> class.
@@ -29,9 +28,7 @@ namespace App.Metrics.Apdex
         /// </remarks>
         /// <param name="reservoir">The reservoir used to sample values in order to caclulate an apdex score.</param>
         public ApdexProvider(Lazy<IReservoir> reservoir)
-            : this(reservoir, Constants.ReservoirSampling.DefaultApdexTSeconds)
-        {
-        }
+            : this(reservoir, Constants.ReservoirSampling.DefaultApdexTSeconds) { }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ApdexProvider" /> class.
@@ -42,35 +39,6 @@ namespace App.Metrics.Apdex
         {
             _reservoir = reservoir;
             _apdexTSeconds = apdexTSeconds;
-        }
-
-        // <inheritdoc />
-        public void Dispose() { Dispose(true); }
-
-        /// <summary>
-        ///     Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposing">
-        ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
-        ///     unmanaged resources.
-        /// </param>
-        public void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    // Free any other managed objects here.
-                    if (_reservoir.IsValueCreated)
-                    {
-                        using (_reservoir.Value as IDisposable)
-                        {
-                        }
-                    }
-                }
-            }
-
-            _disposed = true;
         }
 
         // <inheritdoc />

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Histogram;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
+using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;
 
@@ -29,6 +30,14 @@ namespace App.Metrics.Facts.Histogram
             _histogram.Value.Count.Should().Be(1);
             _histogram.Update(1L);
             _histogram.Value.Count.Should().Be(2);
+        }
+
+        [Fact]
+        public void returns_empty_histogram_if_not_histogram_metric()
+        {
+            var histogram = new CustomHistogram();
+            var value = histogram.GetValueOrDefault();
+            value.Should().NotBeNull();
         }
 
         [Fact]

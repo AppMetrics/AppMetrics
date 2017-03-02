@@ -143,6 +143,14 @@ namespace App.Metrics.Facts.Timer
         }
 
         [Fact]
+        public void returns_empty_timer_if_not_timer_metric()
+        {
+            var timer = new CustomTimer();
+            var value = timer.GetValueOrDefault();
+            value.Should().NotBeNull();
+        }
+
+        [Fact]
         public void user_value_can_be_overwritten_after_context_creation()
         {
             using (var x = _timer.NewContext("a"))
