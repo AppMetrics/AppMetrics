@@ -35,10 +35,10 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta001">
-      <PrivateAssets>All</PrivateAssets>
-    </PackageReference>
-  </ItemGroup>
+	<PackageReference Include="StyleCop.Analyzers" Version="1.0.0">
+		<PrivateAssets>All</PrivateAssets>
+	</PackageReference>
+  </ItemGroup>  
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net452' ">
     <DefineConstants>$(DefineConstants);CLASSIC</DefineConstants>
@@ -46,7 +46,7 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
     <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.CSharp" />	
   </ItemGroup>
 
 </Project>

@@ -66,7 +66,7 @@ Task("Restore")
 {
     DotNetCoreRestore("./", new DotNetCoreRestoreSettings
     {        
-        Sources = new [] { "https://api.nuget.org/v3/index.json" }
+        Sources = new [] { "https://api.nuget.org/v3/index.json" }		
     });
 });
 
@@ -79,7 +79,9 @@ Task("Build")
     foreach(var project in projects)
     {		
         DotNetCoreBuild(project.Path.ToString(), new DotNetCoreBuildSettings {
-            Configuration = configuration
+            Configuration = configuration,
+			NoDependencies = true,
+			NoIncremental = true			
         });
     }    
 });
