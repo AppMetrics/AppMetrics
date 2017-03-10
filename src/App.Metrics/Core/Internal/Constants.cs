@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="Constants.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -33,7 +34,7 @@ namespace App.Metrics.Core.Internal
                     {
                         { HealthCheckStatus.Healthy, HealthyStatusDisplay },
                         { HealthCheckStatus.Unhealthy, UnhealthyStatusDisplay },
-                        { HealthCheckStatus.Degraded, DegradedStatusDisplay }
+                        { HealthCheckStatus.Degraded, DegradedStatusDisplay },
                     });
         }
 

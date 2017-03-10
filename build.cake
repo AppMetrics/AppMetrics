@@ -1,5 +1,6 @@
 #addin Cake.Coveralls
 #addin Cake.ReSharperReports
+#addin Cake.Incubator
 
 #tool "nuget:?package=xunit.runner.console"
 #tool "nuget:?package=OpenCover"
@@ -38,6 +39,7 @@ var resharperSettings			= "./AppMetrics.sln.DotSettings";
 var inspectCodeXml				= string.Format("{0}/inspectCode.xml", reSharperReportsDir);
 var inspectCodeHtml				= string.Format("{0}/inspectCode.html", reSharperReportsDir);
 var solutionFile				= "./AppMetrics.sln";
+var solution					= ParseSolution(new FilePath(solutionFile));
 
 //////////////////////////////////////////////////////////////////////
 // DEFINE PARAMS
@@ -70,12 +72,12 @@ Task("Restore")
 Task("Build")    
     .IsDependentOn("Restore")
     .Does(() =>
-{
-    var projects = GetFiles("./**/project.json");
+{	
+	var projects = solution.GetProjects();
     
     foreach(var project in projects)
-    {
-        DotNetCoreBuild(project.GetDirectory().FullPath, new DotNetCoreBuildSettings {
+    {		
+        DotNetCoreBuild(project.Path.ToString(), new DotNetCoreBuildSettings {
             Configuration = configuration
         });
     }    
@@ -116,7 +118,7 @@ Task("RunTests")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    var projects = GetFiles("./test/**/project.json");
+    var projects = GetFiles("./test/**/*.csproj");
 
     CreateDirectory(testResultsDir);
     CreateDirectory(coverageResultsDir);
@@ -124,20 +126,20 @@ Task("RunTests")
     Context.Information("Found " + projects.Count() + " projects");
 
     foreach (var project in projects)
-    {
-		var folderName = new System.IO.DirectoryInfo(System.IO.Path.GetDirectoryName(project.ToString())).Name;
+    {		
+		var folderName = new System.IO.DirectoryInfo(System.IO.Path.GetDirectoryName(project.ToString())).Name;				
         
 		if (IsRunningOnWindows())
         {			
 			Action<ICakeContext> testAction = tool => {
 
-                    tool.DotNetCoreTest(project.GetDirectory().FullPath, new DotNetCoreTestSettings {
+                    tool.DotNetCoreTest(project.ToString(), new DotNetCoreTestSettings {
                         Configuration = configuration,
                         NoBuild = true,
                         Verbose = false,
                         ArgumentCustomization = args =>
-                            args.Append("-xml").Append(testResultsDir.CombineWithFilePath(folderName) + ".xml")
-                    });
+                            args.Append("--logger:trx")
+                    });					
                 };
 
                 if (!skipOpenCover) {
@@ -149,7 +151,7 @@ Task("RunTests")
 							Register = "user",
 							OldStyle = true,
 							MergeOutput = true,
-							ArgumentCustomization = args => args.Append(@"-safemode:off")
+							ArgumentCustomization = args => args.Append(@"-safemode:off -hideskipped:All")
                         }
                         .WithFilter(openCoverFilter)
                         .ExcludeByAttribute(excludeFromCoverage)
@@ -169,7 +171,7 @@ Task("RunTests")
             };
 
             DotNetCoreTest(project.GetDirectory().FullPath, settings);
-        }
+        }		
     }    
 });
 

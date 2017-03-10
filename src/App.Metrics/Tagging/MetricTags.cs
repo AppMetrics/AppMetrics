@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MetricTags.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Collections.Generic;
@@ -266,7 +267,7 @@ namespace App.Metrics.Tagging
                         Constants.Formatting.MetricTagKeyValueSeparator,
                         _values[0]);
                 default:
-                {
+                    {
                     var sb = StringBuilderCache.Acquire();
 
                     sb.Append(metricName);
