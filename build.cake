@@ -1,13 +1,14 @@
 #addin Cake.Coveralls
 #addin Cake.ReSharperReports
 #addin Cake.Incubator
+#addin Cake.Compression
 
 #tool "nuget:?package=xunit.runner.console"
-#tool "nuget:?package=OpenCover"
-#tool "nuget:?package=ReportGenerator"
+#tool "nuget:?package=JetBrains.dotCover.CommandLineTools"
 #tool "nuget:?package=ReSharperReports"
 #tool "nuget:?package=JetBrains.ReSharper.CommandLineTools"
 #tool "nuget:?package=coveralls.io"
+#tool "nuget:?package=SharpZipLib"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -15,7 +16,7 @@
 var target                      = Argument("target", "Default");
 var configuration               = HasArgument("BuildConfiguration") ? Argument<string>("BuildConfiguration") :
                                   EnvironmentVariable("BuildConfiguration") != null ? EnvironmentVariable("BuildConfiguration") : "Release";
-var skipOpenCover               = HasArgument("SkipCoverage") ? Argument<bool>("SkipCoverage") :
+var skipCoverage                = HasArgument("SkipCoverage") ? Argument<bool>("SkipCoverage") :
                                   EnvironmentVariable("SkipCoverage") != null ? bool.Parse(EnvironmentVariable("SkipCoverage")) : false;
 var skipReSharperCodeInspect    = Argument("SkipCodeInspect", false) || !IsRunningOnWindows();
 var preReleaseSuffix            = HasArgument("PreReleaseSuffix") ? Argument<string>("PreReleaseSuffix") :
@@ -34,7 +35,10 @@ var artifactsDir                = (DirectoryPath) Directory("./artifacts");
 var testResultsDir              = (DirectoryPath) artifactsDir.Combine("test-results");
 var coverageResultsDir          = (DirectoryPath) artifactsDir.Combine("coverage");
 var reSharperReportsDir         = (DirectoryPath) artifactsDir.Combine("resharper-reports");
-var testCoverageOutputFilePath  = coverageResultsDir.CombineWithFilePath("OpenCover.xml");
+var testCoverageOutputFilePath  = coverageResultsDir.CombineWithFilePath("coverage.xml");
+var htmlCoverageReport			= coverageResultsDir.FullPath + "/coverage.html";
+var mergedCoverageSnapshots		= coverageResultsDir.FullPath + "/coverage.dcvr";
+var xmlCoverageReport			= coverageResultsDir.FullPath + "/coverage.xml";
 var packagesDir                 = artifactsDir.Combine("packages");
 var resharperSettings			= "./AppMetrics.sln.DotSettings";
 var inspectCodeXml				= string.Format("{0}/inspectCode.xml", reSharperReportsDir);
@@ -46,8 +50,8 @@ var solution					= ParseSolution(new FilePath(solutionFile));
 // DEFINE PARAMS
 //////////////////////////////////////////////////////////////////////
 var coverallsToken              = Context.EnvironmentVariable("COVERALLS_REPO_TOKEN");
-var openCoverFilter				= "+[App.Metrics*]* -[xunit.*]* -[*.Facts]*";
-var openCoverExcludeFile        = "*/*Designer.cs;*/*.g.cs;*/*.g.i.cs";
+var coverIncludeFilter			= "+:App.Metrics*";
+var coverExcludeFilter			= "-:*.Facts";
 var excludeFromCoverage			= "*.AppMetricsExcludeFromCodeCoverage*";
 
 //////////////////////////////////////////////////////////////////////
@@ -63,7 +67,7 @@ Task("Clean")
 Task("Restore")
     .IsDependentOn("Clean")    
     .Does(() =>
-{
+{	
     DotNetCoreRestore("./", new DotNetCoreRestoreSettings
     {        
         Sources = new [] { "https://api.nuget.org/v3/index.json" }		
@@ -79,9 +83,7 @@ Task("Build")
     foreach(var project in projects)
     {		
         DotNetCoreBuild(project.Path.ToString(), new DotNetCoreBuildSettings {
-            Configuration = configuration,
-			NoDependencies = true,
-			NoIncremental = true			
+            Configuration = configuration		
         });
     }    
 });
@@ -145,20 +147,21 @@ Task("RunTests")
                     });					
                 };
 
-                if (!skipOpenCover) {
-                    OpenCover(testAction,
-                        testCoverageOutputFilePath,
-                        new OpenCoverSettings { 
-							ReturnTargetCodeOffset = 1,
-							SkipAutoProps = true,
-							Register = "user",
-							OldStyle = true,
-							MergeOutput = true,
-							ArgumentCustomization = args => args.Append(@"-safemode:off -hideskipped:All")
-                        }
-                        .WithFilter(openCoverFilter)
-                        .ExcludeByAttribute(excludeFromCoverage)
-                        .ExcludeByFile(openCoverExcludeFile));
+                if (!skipCoverage) {                    
+					var dotCoverSettings = new DotCoverCoverSettings {
+								ArgumentCustomization = args => args.Append(@"/HideAutoProperties")
+									.Append(@"/AttributeFilters=" + excludeFromCoverage)
+									.Append(@"/ReturnTargetExitCode")								
+						  };
+					
+					dotCoverSettings.WithFilter(coverIncludeFilter).WithFilter(coverExcludeFilter);
+
+					var coverageFile = coverageResultsDir.FullPath + folderName + ".dcvr";					
+
+					DotCoverCover(testAction,
+						  new FilePath(coverageFile), dotCoverSettings);	
+
+					MoveFiles(coverageFile, coverageResultsDir);
                 } 
                 else 
                 {
@@ -174,18 +177,44 @@ Task("RunTests")
             };
 
             DotNetCoreTest(project.GetDirectory().FullPath, settings);
-        }		
+        }					
     }    
+
+	if(!skipCoverage && IsRunningOnWindows()) 
+	{
+		var snapshots = GetFiles(coverageResultsDir.FullPath + "/*.dcvr");		
+
+		if (snapshots != null && snapshots.Any()) 
+		{
+			DotCoverMerge(snapshots,
+				new FilePath(mergedCoverageSnapshots), null);			
+
+			DotCoverReport(
+				mergedCoverageSnapshots,
+				xmlCoverageReport,
+				new DotCoverReportSettings {
+				  ReportType = DotCoverReportType.XML
+			});
+		}
+	}
 });
 
 Task("HtmlCoverageReport")    
-    .WithCriteria(() => FileExists(testCoverageOutputFilePath))
-    .WithCriteria(() => BuildSystem.IsLocalBuild)
+    .WithCriteria(() => FileExists(testCoverageOutputFilePath))    
     .IsDependentOn("RunTests")
     .Does(() => 
 {
-    ReportGenerator(testCoverageOutputFilePath, coverageResultsDir);
+    if(!skipCoverage && IsRunningOnWindows()) 
+	{
+		DotCoverReport(
+				mergedCoverageSnapshots,
+				htmlCoverageReport,
+				new DotCoverReportSettings {
+				  ReportType = DotCoverReportType.HTML
+			});
+	}
 });
+
 
 Task("PublishCoverage")    
     .WithCriteria(() => FileExists(testCoverageOutputFilePath))
@@ -208,13 +237,14 @@ Task("Default")
     .IsDependentOn("Build")
     .IsDependentOn("RunTests")
     .IsDependentOn("Pack")
-	.IsDependentOn("RunInspectCode")	
-    .IsDependentOn("HtmlCoverageReport");
+	.IsDependentOn("RunInspectCode")
+	.IsDependentOn("HtmlCoverageReport");
 
 Task("AppVeyor")
     .IsDependentOn("Build")
     .IsDependentOn("RunTests")
     .IsDependentOn("Pack")
+	.IsDependentOn("HtmlCoverageReport")
 	.IsDependentOn("RunInspectCode")	
     .IsDependentOn("PublishCoverage");
 

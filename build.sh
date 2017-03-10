@@ -73,7 +73,7 @@ fi
 
 # Restore tools from NuGet.
 pushd "$TOOLS_DIR" >/dev/null
-if [ ! -f $PACKAGES_CONFIG_MD5 ] || [ "$( cat $PACKAGES_CONFIG_MD5 | sed 's/\r$//' )" != "$( $MD5_EXE $PACKAGES_CONFIG | awk '{ print $1 }' )" ]; then
+if [ ! -f "$PACKAGES_CONFIG_MD5" ] || [ "$( cat "$PACKAGES_CONFIG_MD5" | sed 's/\r$//' )" != "$( $MD5_EXE "$PACKAGES_CONFIG" | awk '{ print $1 }' )" ]; then
     find . -type d ! -name . | xargs rm -rf
 fi
 
@@ -83,7 +83,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-$MD5_EXE $PACKAGES_CONFIG | awk '{ print $1 }' >| $PACKAGES_CONFIG_MD5
+$MD5_EXE "$PACKAGES_CONFIG" | awk '{ print $1 }' >| "$PACKAGES_CONFIG_MD5"
 
 popd >/dev/null
 
@@ -92,10 +92,6 @@ if [ ! -f "$CAKE_EXE" ]; then
     echo "Could not find Cake.exe at '$CAKE_EXE'."
     exit 1
 fi
-
-# Dump dotnet version info to console 
-dotnet --info
-dotnet
 
 # Start Cake
 if $SHOW_VERSION; then
