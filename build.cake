@@ -253,13 +253,13 @@ Task("HtmlCoverageReport")
 
 
 Task("PublishCoverage")    
-    .WithCriteria(() => FileExists(testCoverageOutputFilePath))
+    .WithCriteria(() => FileExists(testOCoverageOutputFilePath))
     .WithCriteria(() => !BuildSystem.IsLocalBuild)
     .WithCriteria(() => !string.IsNullOrEmpty(coverallsToken))
     .IsDependentOn("RunTests")
     .Does(() => 
 {
-    CoverallsIo(testCoverageOutputFilePath, new CoverallsIoSettings()
+    CoverallsIo(testOCoverageOutputFilePath, new CoverallsIoSettings()
     {
         RepoToken = coverallsToken
     });
