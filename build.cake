@@ -96,7 +96,18 @@ Task("Build")
     {		
 		if (!IsRunningOnWindows())
         {
-			settings.Framework = "netcoreapp1.1";
+			var parsedProject = ParseProject(new FilePath(project.Path.ToString()), configuration);
+
+			if (parsedProject.IsLibrary())
+			{				
+				settings.Framework = "netstandard1.6";				
+			}
+			else
+			{
+				settings.Framework = "netcoreapp1.1";
+			}
+
+			Context.Information("Building as " + settings.Framework + ": " +  project.Path.ToString());
         }	 
 
         DotNetCoreBuild(project.Path.ToString(), settings);
