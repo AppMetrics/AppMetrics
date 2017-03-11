@@ -96,9 +96,15 @@ Task("Build")
     {		
 		if (!IsRunningOnWindows())
         {
+			// Ignore Net452 on non-windows environments
+			if (project.Path.ToString().Contains("Net452"))
+			{
+				continue;
+			}
+
 			var parsedProject = ParseProject(new FilePath(project.Path.ToString()), configuration);
 
-			if (parsedProject.IsLibrary())
+			if (parsedProject.IsLibrary() && !project.Path.ToString().Contains(".Facts"))
 			{				
 				settings.Framework = "netstandard1.6";				
 			}
