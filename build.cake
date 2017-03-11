@@ -104,7 +104,7 @@ Task("Build")
 
 			var parsedProject = ParseProject(new FilePath(project.Path.ToString()), configuration);
 
-			if (parsedProject.IsLibrary() && !project.Path.ToString().Contains(".Facts"))
+			if (parsedProject.IsLibrary() && !project.Path.ToString().Contains(".Facts") && && !project.Path.ToString().Contains(".Benchmarks"))
 			{				
 				settings.Framework = "netstandard1.6";				
 			}
