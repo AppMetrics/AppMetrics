@@ -4,9 +4,9 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <AssemblyName>App.Metrics.Extensions.Middleware.Integration.Facts</AssemblyName>
     <PackageId>App.Metrics.Extensions.Middleware.Integration.Facts</PackageId>
-    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-    <RuntimeIdentifiers>win7-x64;ubuntu.14.04-x64;win10-x64;osx.10.11-x64</RuntimeIdentifiers>
-    <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>    
+	<PackageTargetFallback Condition=" '$(TargetFramework)' == 'netcoreapp1.1' ">$(PackageTargetFallback);dnxcore50;portable-net45+win8</PackageTargetFallback>
+    <RuntimeFrameworkVersion Condition=" '$(TargetFramework)' == 'netcoreapp1.1' ">1.1.1</RuntimeFrameworkVersion>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>

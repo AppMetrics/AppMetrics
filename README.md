@@ -39,7 +39,7 @@ See the following for build arguments and running locally.
 |------|--------|:--------:|:--------:|:--------:|
 |BuildConfiguration|The configuration to run the build, **Debug** or **Release** |*Release*|All|Optional|
 |PreReleaseSuffix|The pre-release suffix for versioning nuget package artifacts e.g. `beta`|*ci*|All|Optional|
-|SkipCoverage|**false** to calculate and report code coverage, **true** to skip. When **true**, an open cover code coverage file and html report will be generated at `./artifacts/coverage`|*false*|Windows Only|Optional|
+|CoverWith|**DotCover** or **OpenCover** to calculate and report code coverage, **None** to skip. When not **None**, an coverage file and html report will be generated at `./artifacts/coverage`|*OpenCover*|Windows Only|Optional|
 |SkipCodeInspect|**false** to run ReSharper code inspect and report results, **true** to skip. When **true**, the code inspection html report and xml output will be generated at `./artifacts/resharper-reports`|*false*|Windows Only|Optional|
 |BuildNumber|The build number to use for pre-release versions|*0*|All|Optional|
 
