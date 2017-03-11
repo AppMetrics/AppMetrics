@@ -94,6 +94,11 @@ Task("Build")
 
     foreach(var project in projects)
     {		
+		if (!IsRunningOnWindows())
+        {
+			settings.Framework = "netcoreapp1.1";
+        }	 
+
         DotNetCoreBuild(project.Path.ToString(), settings);
     }    
 });
