@@ -5,10 +5,10 @@
 
 #tool "nuget:?package=xunit.runner.console"
 #tool "nuget:?package=JetBrains.dotCover.CommandLineTools"
+#tool "nuget:?package=OpenCover"
 #tool "nuget:?package=ReSharperReports"
 #tool "nuget:?package=JetBrains.ReSharper.CommandLineTools"
 #tool "nuget:?package=coveralls.io"
-#tool "nuget:?package=SharpZipLib"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -18,6 +18,8 @@ var configuration               = HasArgument("BuildConfiguration") ? Argument<s
                                   EnvironmentVariable("BuildConfiguration") != null ? EnvironmentVariable("BuildConfiguration") : "Release";
 var skipCoverage                = HasArgument("SkipCoverage") ? Argument<bool>("SkipCoverage") :
                                   EnvironmentVariable("SkipCoverage") != null ? bool.Parse(EnvironmentVariable("SkipCoverage")) : false;
+var useDotCover                  = HasArgument("UseDotCover") ? Argument<bool>("UseDotCover") :
+                                  EnvironmentVariable("UseDotCover") != null ? bool.Parse(EnvironmentVariable("UseDotCover")) : false;
 var skipReSharperCodeInspect    = Argument("SkipCodeInspect", false) || !IsRunningOnWindows();
 var preReleaseSuffix            = HasArgument("PreReleaseSuffix") ? Argument<string>("PreReleaseSuffix") :
 	                              (AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Tag.IsTag) ? null :
@@ -36,6 +38,7 @@ var testResultsDir              = (DirectoryPath) artifactsDir.Combine("test-res
 var coverageResultsDir          = (DirectoryPath) artifactsDir.Combine("coverage");
 var reSharperReportsDir         = (DirectoryPath) artifactsDir.Combine("resharper-reports");
 var testCoverageOutputFilePath  = coverageResultsDir.CombineWithFilePath("coverage.xml");
+var testOCoverageOutputFilePath = coverageResultsDir.CombineWithFilePath("openCoverCoverage.xml");
 var htmlCoverageReport			= coverageResultsDir.FullPath + "/coverage.html";
 var mergedCoverageSnapshots		= coverageResultsDir.FullPath + "/coverage.dcvr";
 var xmlCoverageReport			= coverageResultsDir.FullPath + "/coverage.xml";
@@ -50,6 +53,8 @@ var solution					= ParseSolution(new FilePath(solutionFile));
 // DEFINE PARAMS
 //////////////////////////////////////////////////////////////////////
 var coverallsToken              = Context.EnvironmentVariable("COVERALLS_REPO_TOKEN");
+var openCoverFilter				= "+[App.Metrics*]* -[xunit.*]* -[*.Facts]*";
+var openCoverExcludeFile        = "*/*Designer.cs;*/*.g.cs;*/*.g.i.cs";
 var coverIncludeFilter			= "+:App.Metrics*";
 var coverExcludeFilter			= "-:*.Facts";
 var excludeFromCoverage			= "*.AppMetricsExcludeFromCodeCoverage*";
@@ -147,21 +152,42 @@ Task("RunTests")
                     });					
                 };
 
-                if (!skipCoverage) {                    
-					var dotCoverSettings = new DotCoverCoverSettings {
-								ArgumentCustomization = args => args.Append(@"/HideAutoProperties")
-									.Append(@"/AttributeFilters=" + excludeFromCoverage)
-									.Append(@"/ReturnTargetExitCode")								
-						  };
+                if (!skipCoverage) 
+				{        
+				
+					if (!useDotCover) 
+					{
+						OpenCover(testAction,
+							testOCoverageOutputFilePath,
+							new OpenCoverSettings { 
+								ReturnTargetCodeOffset = 1,
+								SkipAutoProps = true,
+								Register = "user",
+								OldStyle = true,
+								MergeOutput = true,
+								ArgumentCustomization = args => args.Append(@"-safemode:off -hideskipped:All")
+							}
+							.WithFilter(openCoverFilter)
+							.ExcludeByAttribute(excludeFromCoverage)
+							.ExcludeByFile(openCoverExcludeFile));
+					} 
+					else
+					{
+						var dotCoverSettings = new DotCoverCoverSettings {
+									ArgumentCustomization = args => args.Append(@"/HideAutoProperties")
+										.Append(@"/AttributeFilters=" + excludeFromCoverage)
+										.Append(@"/ReturnTargetExitCode")								
+							  };
 					
-					dotCoverSettings.WithFilter(coverIncludeFilter).WithFilter(coverExcludeFilter);
+						dotCoverSettings.WithFilter(coverIncludeFilter).WithFilter(coverExcludeFilter);
 
-					var coverageFile = coverageResultsDir.FullPath + folderName + ".dcvr";					
+						var coverageFile = coverageResultsDir.FullPath + folderName + ".dcvr";					
 
-					DotCoverCover(testAction,
-						  new FilePath(coverageFile), dotCoverSettings);	
+						DotCoverCover(testAction,
+							  new FilePath(coverageFile), dotCoverSettings);	
 
-					MoveFiles(coverageFile, coverageResultsDir);
+						MoveFiles(coverageFile, coverageResultsDir);
+					}										
                 } 
                 else 
                 {
@@ -182,20 +208,23 @@ Task("RunTests")
 
 	if(!skipCoverage && IsRunningOnWindows()) 
 	{
-		var snapshots = GetFiles(coverageResultsDir.FullPath + "/*.dcvr");		
-
-		if (snapshots != null && snapshots.Any()) 
+		if (useDotCover) 
 		{
-			DotCoverMerge(snapshots,
-				new FilePath(mergedCoverageSnapshots), null);			
+			var snapshots = GetFiles(coverageResultsDir.FullPath + "/*.dcvr");		
 
-			DotCoverReport(
-				mergedCoverageSnapshots,
-				xmlCoverageReport,
-				new DotCoverReportSettings {
-				  ReportType = DotCoverReportType.XML
-			});
-		}
+			if (snapshots != null && snapshots.Any()) 
+			{
+				DotCoverMerge(snapshots,
+					new FilePath(mergedCoverageSnapshots), null);			
+
+				DotCoverReport(
+					mergedCoverageSnapshots,
+					xmlCoverageReport,
+					new DotCoverReportSettings {
+					  ReportType = DotCoverReportType.XML
+				});
+			}
+		}			
 	}
 });
 
@@ -205,13 +234,20 @@ Task("HtmlCoverageReport")
     .Does(() => 
 {
     if(!skipCoverage && IsRunningOnWindows()) 
-	{
-		DotCoverReport(
-				mergedCoverageSnapshots,
-				htmlCoverageReport,
-				new DotCoverReportSettings {
-				  ReportType = DotCoverReportType.HTML
-			});
+	{		
+		if (useDotCover)
+		{
+			DotCoverReport(
+					mergedCoverageSnapshots,
+					htmlCoverageReport,
+					new DotCoverReportSettings {
+					  ReportType = DotCoverReportType.HTML
+				});
+		}
+		else
+		{
+			ReportGenerator(testCoverageOutputFilePath, coverageResultsDir);
+		}
 	}
 });
 
