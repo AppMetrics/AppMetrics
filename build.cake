@@ -125,6 +125,12 @@ Task("Pack")
     .IsDependentOn("Clean")
     .Does(() =>
 {
+	if (!IsRunningOnWindows())
+	{
+		Context.Warning("Currently no way out-of-the-box to conditionally build & pack a project by framework, because app.metrics projects target both .NET 452 & dotnet standard skipping packages for now on non-windows environments");
+		return;
+	}
+
     string versionSuffix = null;
     if (!string.IsNullOrEmpty(preReleaseSuffix))
     {
@@ -134,7 +140,8 @@ Task("Pack")
     {
         Configuration = configuration,
         OutputDirectory = packagesDir,
-        VersionSuffix = versionSuffix
+        VersionSuffix = versionSuffix,
+		NoBuild = true
     };
     
     foreach(var packDir in packDirs)

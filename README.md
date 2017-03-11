@@ -55,7 +55,7 @@ Run `build.ps1` from the repositories root directory.
 **With Arguments**
 
 ```
-	.\build.ps1 --ScriptArgs '-BuildConfiguration=Release -PreReleaseSuffix=beta -SkipCoverage=false -SkipCodeInspect=false -BuildNumber=1'
+	.\build.ps1 --ScriptArgs '-BuildConfiguration=Release -PreReleaseSuffix=beta -CoverWith=OpenCover -SkipCodeInspect=false -BuildNumber=1'
 ```
 
 ### Linux & OSX
@@ -71,6 +71,11 @@ Run `build.sh` from the repositories root directory. Code Coverage reports are n
 ```
 	.\build.sh --ScriptArgs '-BuildConfiguration=Release -PreReleaseSuffix=beta -BuildNumber=1'
 ```
+
+> #### Nuget Packages
+> Nuget packages won't be generated on non-windows environments by default.
+> 
+> Unfortunately there is [currently no way out-of-the-box to conditionally build & pack a project by framework](https://github.com/dotnet/roslyn-project-system/issues/1586#issuecomment-280978851). Because `App.Metrics` packages target `.NET 4.5.2` as well as `dotnet standard` there is a work around in the build script to force `dotnet standard` on build but no work around for packaging on non-windows environments. 
 
 ## Contributing
 
