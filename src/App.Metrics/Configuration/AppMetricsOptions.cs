@@ -5,6 +5,7 @@
 using App.Metrics.Registry.Abstractions;
 using App.Metrics.Tagging;
 
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 namespace App.Metrics.Configuration
 {
     /// <summary>
@@ -48,4 +49,6 @@ namespace App.Metrics.Configuration
         /// </value>
         public bool ReportingEnabled { get; set; } = true;
     }
+
+    // ReSharper restore AutoPropertyCanBeMadeGetOnly.Global
 }

@@ -33,8 +33,8 @@ namespace App.Metrics.Facts.Core
 
             var result = MetricTags.Concat(tags1, tags2);
 
-            result.Keys.Should().Equal(new[] { "tag1", "tag2" });
-            result.Values.Should().Equal(new[] { "value1", "value2" });
+            result.Keys.Should().Equal("tag1", "tag2");
+            result.Values.Should().Equal("value1", "value2");
         }
 
         [Fact]
@@ -45,8 +45,8 @@ namespace App.Metrics.Facts.Core
 
             var result = MetricTags.Concat(tags1, tags2);
 
-            result.Keys.Should().Equal(new[] { "tag1", "tag2" });
-            result.Values.Should().Equal(new[] { "value1", "value2" });
+            result.Keys.Should().Equal("tag1", "tag2");
+            result.Values.Should().Equal("value1", "value2");
         }
 
 
@@ -160,7 +160,7 @@ namespace App.Metrics.Facts.Core
 
             Action setup = () =>
             {
-                var tags = new MetricTags(keys, values);
+                var unused = new MetricTags(keys, values);
             };
 
             setup.ShouldThrow<InvalidOperationException>();
@@ -173,7 +173,7 @@ namespace App.Metrics.Facts.Core
 
             Action setup = () =>
             {
-                var tags = new MetricTags(null, values);
+                var unused = new MetricTags(null, values);
             };
 
             setup.ShouldThrow<ArgumentNullException>();
@@ -189,7 +189,7 @@ namespace App.Metrics.Facts.Core
 
             Action setup = () =>
             {
-                var tags = new MetricTags(keys, values);
+                var unused = new MetricTags(keys, values);
             };
 
             setup.ShouldThrow<InvalidOperationException>();
@@ -203,7 +203,7 @@ namespace App.Metrics.Facts.Core
 
             Action setup = () =>
             {
-                var tags = new MetricTags(keys, values);
+                var unused = new MetricTags(keys, values);
             };
 
             setup.ShouldThrow<InvalidOperationException>();
@@ -266,8 +266,8 @@ namespace App.Metrics.Facts.Core
         {
             var tags = MetricTags.FromSetItemString("machine-1,machine-2");
 
-            tags.Keys.Should().Equal(new[] { "item", "item" });
-            tags.Values.Should().Equal(new[] { "machine-1", "machine-2" });
+            tags.Keys.Should().Equal("item", "item");
+            tags.Values.Should().Equal("machine-1", "machine-2");
         }
 
         [Fact]

@@ -15,8 +15,11 @@ using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;
 
+// ReSharper disable CheckNamespace
 namespace App.Metrics.Facts.Extensions
 {
+    // ReSharper restore CheckNamespace
+
     public class HumanizingMetricExtensionTests
     {
         [Fact]

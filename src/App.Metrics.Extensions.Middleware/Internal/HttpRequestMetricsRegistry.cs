@@ -16,98 +16,98 @@ namespace App.Metrics.Extensions.Middleware.Internal
         {
             public static readonly string ApdexMetricName = "Apdex";
 
-            public static Func<double, ApdexOptions> Apdex = apdexTSeconds => new ApdexOptions
-                                                                              {
-                                                                                  Context = ContextName,
-                                                                                  Name = ApdexMetricName,
-                                                                                  ApdexTSeconds = apdexTSeconds
-                                                                              };
+            public static readonly Func<double, ApdexOptions> Apdex = apdexTSeconds => new ApdexOptions
+                                                                                       {
+                                                                                           Context = ContextName,
+                                                                                           Name = ApdexMetricName,
+                                                                                           ApdexTSeconds = apdexTSeconds
+                                                                                       };
         }
 
         public static class Counters
         {
-            public static CounterOptions ActiveRequests = new CounterOptions
-                                                          {
-                                                              Context = ContextName,
-                                                              Name = "Active Requests",
-                                                              MeasurementUnit = Unit.Custom("Active Requests")
-                                                          };
+            public static readonly CounterOptions ActiveRequests = new CounterOptions
+                                                                   {
+                                                                       Context = ContextName,
+                                                                       Name = "Active Requests",
+                                                                       MeasurementUnit = Unit.Custom("Active Requests")
+                                                                   };
 
-            public static CounterOptions ErrorRequests = new CounterOptions
-                                                          {
-                                                              Context = ContextName,
-                                                              Name = "Error Requests",
-                                                              ResetOnReporting = true,
-                                                              MeasurementUnit = Unit.Custom("Error Requests")
-                                                          };
+            public static readonly CounterOptions ErrorRequests = new CounterOptions
+                                                                  {
+                                                                      Context = ContextName,
+                                                                      Name = "Error Requests",
+                                                                      ResetOnReporting = true,
+                                                                      MeasurementUnit = Unit.Custom("Error Requests")
+                                                                  };
         }
 
         public static class Gauges
         {
-            public static GaugeOptions PercentageErrorRequests = new GaugeOptions
-                                                                 {
-                                                                     Context = ContextName,
-                                                                     Name = "Percentage Error Requests",
-                                                                     MeasurementUnit = Unit.Custom("Error Requests")
-                                                                 };
+            public static readonly GaugeOptions OverallPercentageErrorRequests = new GaugeOptions
+                                                                                 {
+                                                                                     Context = ContextName,
+                                                                                     Name = "Overall Percentage Error Requests",
+                                                                                     MeasurementUnit = Unit.Custom("Error Requests")
+                                                                                 };
 
-            public static GaugeOptions OverallPercentageErrorRequests = new GaugeOptions
-                                                                 {
-                                                                     Context = ContextName,
-                                                                     Name = "Overall Percentage Error Requests",
-                                                                     MeasurementUnit = Unit.Custom("Error Requests")
-                                                                 };
+            public static readonly GaugeOptions PercentageErrorRequests = new GaugeOptions
+                                                                          {
+                                                                              Context = ContextName,
+                                                                              Name = "Percentage Error Requests",
+                                                                              MeasurementUnit = Unit.Custom("Error Requests")
+                                                                          };
         }
 
         public static class Histograms
         {
-            public static HistogramOptions PostAndPutRequestSize = new HistogramOptions
-                                                                   {
-                                                                       Context = ContextName,
-                                                                       Name = "Http Request Post & Put Size",
-                                                                       MeasurementUnit = Unit.Bytes
-                                                                   };
+            public static readonly HistogramOptions PostAndPutRequestSize = new HistogramOptions
+                                                                            {
+                                                                                Context = ContextName,
+                                                                                Name = "Http Request Post & Put Size",
+                                                                                MeasurementUnit = Unit.Bytes
+                                                                            };
         }
 
         public static class Meters
         {
-            public static MeterOptions HttpErrorRequests = new MeterOptions
-                                                           {
-                                                               Context = ContextName,
-                                                               Name = "Http Error Requests",
-                                                               MeasurementUnit = Unit.Requests
-                                                           };
+            public static readonly MeterOptions HttpErrorRequests = new MeterOptions
+                                                                    {
+                                                                        Context = ContextName,
+                                                                        Name = "Http Error Requests",
+                                                                        MeasurementUnit = Unit.Requests
+                                                                    };
 
-            public static MeterOptions OverallHttpErrorRequests = new MeterOptions
-                                                           {
-                                                               Context = ContextName,
-                                                               Name = "Overall Http Error Requests",
-                                                               MeasurementUnit = Unit.Requests
-                                                           };
+            public static readonly MeterOptions TotalHttpErrorRequests = new MeterOptions
+                                                                         {
+                                                                             Context = ContextName,
+                                                                             Name = "Total Http Error Requests",
+                                                                             MeasurementUnit = Unit.Requests
+                                                                         };
 
-            public static MeterOptions TotalHttpErrorRequests = new MeterOptions
-                                                                  {
-                                                                      Context = ContextName,
-                                                                      Name = "Total Http Error Requests",
-                                                                      MeasurementUnit = Unit.Requests
-                                                                  };
+            public static readonly MeterOptions OverallHttpErrorRequests = new MeterOptions
+                                                                            {
+                                                                                Context = ContextName,
+                                                                                Name = "Overall Http Error Requests",
+                                                                                MeasurementUnit = Unit.Requests
+                                                                            };
         }
 
         public static class Timers
         {
-            public static TimerOptions HttpRequestTransactions = new TimerOptions
-                                                                 {
-                                                                     Context = ContextName,
-                                                                     Name = "Http Request Transactions",
-                                                                     MeasurementUnit = Unit.Requests
-                                                                 };
+            public static readonly TimerOptions HttpRequestTransactions = new TimerOptions
+                                                                          {
+                                                                              Context = ContextName,
+                                                                              Name = "Http Request Transactions",
+                                                                              MeasurementUnit = Unit.Requests
+                                                                          };
 
-            public static TimerOptions OverallHttpRequestTransactions = new TimerOptions
-                                                         {
-                                                             Context = ContextName,
-                                                             Name = "Overall Http Request Transactions",
-                                                             MeasurementUnit = Unit.Requests
-                                                         };
+            public static readonly TimerOptions OverallHttpRequestTransactions = new TimerOptions
+                                                                                 {
+                                                                                     Context = ContextName,
+                                                                                     Name = "Overall Http Request Transactions",
+                                                                                     MeasurementUnit = Unit.Requests
+                                                                                 };
         }
     }
 

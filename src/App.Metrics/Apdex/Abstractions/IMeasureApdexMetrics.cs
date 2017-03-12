@@ -7,6 +7,7 @@ using App.Metrics.Abstractions.Metrics;
 using App.Metrics.Core.Options;
 using App.Metrics.Tagging;
 
+// ReSharper disable UnusedMember.Global
 namespace App.Metrics.Apdex.Abstractions
 {
     /// <summary>
@@ -56,4 +57,6 @@ namespace App.Metrics.Apdex.Abstractions
         /// </returns>
         ApdexContext Track(ApdexOptions options, MetricTags tags);
     }
+
+    // ReSharper restore UnusedMember.Global
 }

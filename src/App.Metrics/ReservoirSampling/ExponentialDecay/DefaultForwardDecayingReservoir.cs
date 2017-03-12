@@ -97,7 +97,9 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         ///     The scheduler to to rescale, allowing decayed weights to be tracked. Really only provided here
         ///     for testing purposes.
         /// </param>
+        // ReSharper disable MemberCanBePrivate.Global
         public DefaultForwardDecayingReservoir(int sampleSize, double alpha, IClock clock, IScheduler scheduler)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             _sampleSize = sampleSize;
             _alpha = alpha;
@@ -134,7 +136,9 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
         ///     unmanaged resources.
         /// </param>
+        // ReSharper disable MemberCanBePrivate.Global
         public void Dispose(bool disposing)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             if (!_disposed)
             {

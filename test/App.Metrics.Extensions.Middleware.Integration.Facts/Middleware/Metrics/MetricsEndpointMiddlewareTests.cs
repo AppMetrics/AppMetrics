@@ -15,12 +15,9 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
         public MetricsEndpointMiddlewareTests(MetricsHostTestFixture<DefaultTestStartup> fixture)
         {
             Client = fixture.Client;
-            Context = fixture.Context;
         }
 
-        public HttpClient Client { get; }
-
-        public IMetrics Context { get; }
+        private HttpClient Client { get; }
 
         [Fact]
         public async Task returns_correct_response_headers()

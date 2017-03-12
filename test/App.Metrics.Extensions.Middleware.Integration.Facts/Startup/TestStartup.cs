@@ -23,7 +23,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
 {
     public abstract class TestStartup
     {
-        public IMetrics Metrics { get; private set; }
+        protected IMetrics Metrics { get; private set; }
 
         protected void SetupAppBuilder(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {

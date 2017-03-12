@@ -39,7 +39,7 @@ namespace App.Metrics.Timer
 
         public static TimerValue GetTimerValue(this IProvideMetricValues valueService, string context, string metricName)
         {
-            return valueService.GetForContext(context).Timers.ValueFor(context, metricName);
+            return valueService.GetForContext(context).Timers.ValueFor(metricName);
         }
 
         public static TimerValue GetValueOrDefault(this ITimer metric)

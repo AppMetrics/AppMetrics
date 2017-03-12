@@ -38,12 +38,7 @@ namespace Microsoft.Extensions.DependencyInjection
 #if !NET452
         internal MetricsHostBuilder(IServiceCollection services)
         {
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-
-            Services = services;
+            Services = services ?? throw new ArgumentNullException(nameof(services));
             Environment = new MetricsAppEnvironment(PlatformServices.Default.Application);
         }
 #endif

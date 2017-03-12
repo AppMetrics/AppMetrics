@@ -4,7 +4,6 @@
 
 using System;
 using System.Text;
-using App.Metrics.Core;
 using App.Metrics.Core.Abstractions;
 using App.Metrics.Health;
 using App.Metrics.Infrastructure;

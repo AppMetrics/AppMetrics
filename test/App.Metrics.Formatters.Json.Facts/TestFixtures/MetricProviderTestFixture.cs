@@ -45,7 +45,7 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 
         public IEnumerable<ApdexValueSource> ApdexScores { get; }
 
-        public MetricsContextValueSource ContextOne { get; }
+        private MetricsContextValueSource ContextOne { get; }
 
         public IEnumerable<CounterValueSource> Counters { get; }
 
@@ -68,13 +68,13 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 
         public IEnumerable<MeterValueSource> Meters { get; }
 
-        public MetricTags Tags => new MetricTags(new[] { "host", "env" }, new[] { "server1", "staging" });
+        private MetricTags Tags => new MetricTags(new[] { "host", "env" }, new[] { "server1", "staging" });
 
         public IEnumerable<TimerValueSource> Timers { get; }
 
         public void Dispose() { }
 
-        public IEnumerable<ApdexValueSource> SetupApdexScores()
+        private IEnumerable<ApdexValueSource> SetupApdexScores()
         {
             var apdexValue = new ApdexValue(0.9, 170, 20, 10, 200);
             var apdex = new ApdexValueSource(ApdexNameDefault, ConstantValue.Provider(apdexValue), Tags);
@@ -82,14 +82,14 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
             return new[] { apdex };
         }
 
-        public IEnumerable<GaugeValueSource> SetupGauges()
+        private IEnumerable<GaugeValueSource> SetupGauges()
         {
             var gauge = new GaugeValueSource(GaugeNameDefault, ConstantValue.Provider(0.5), Unit.Calls, Tags);
 
             return new[] { gauge };
         }
 
-        public IEnumerable<HistogramValueSource> SetupHistograms()
+        private IEnumerable<HistogramValueSource> SetupHistograms()
         {
             var histogramValue = new HistogramValue(1, 1, 2, "3", 4, "5", 6, 7, "8", 9, 10, 11, 12, 13, 14, 15, 16);
             var histogram = new HistogramValueSource(HistogramNameDefault, ConstantValue.Provider(histogramValue), Unit.Items, Tags);
@@ -97,7 +97,7 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
             return new[] { histogram };
         }
 
-        public IEnumerable<MeterValueSource> SetupMeters()
+        private IEnumerable<MeterValueSource> SetupMeters()
         {
             var meterValue = new MeterValue(
                 5,
@@ -112,7 +112,7 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
                 });
             var meter = new MeterValueSource(MeterNameDefault, ConstantValue.Provider(meterValue), Unit.Calls, TimeUnit.Seconds, Tags);
 
-            var meterValueWithGroup = new MeterValue(
+            var unused = new MeterValue(
                 5,
                 1,
                 2,
@@ -127,7 +127,7 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
             return new[] { meter };
         }
 
-        public IEnumerable<TimerValueSource> SetupTimers()
+        private IEnumerable<TimerValueSource> SetupTimers()
         {
             const int count = 5;
 

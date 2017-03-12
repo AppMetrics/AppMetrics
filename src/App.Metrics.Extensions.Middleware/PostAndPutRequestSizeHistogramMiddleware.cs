@@ -10,7 +10,10 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Extensions.Middleware
 {
+    // ReSharper disable ClassNeverInstantiated.Global
+
     public class PostAndPutRequestSizeHistogramMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
+        // ReSharper restore ClassNeverInstantiated.Global
     {
         public PostAndPutRequestSizeHistogramMiddleware(
             RequestDelegate next,
@@ -19,7 +22,9 @@ namespace App.Metrics.Extensions.Middleware
             IMetrics metrics)
             : base(next, aspNetOptions, loggerFactory, metrics) { }
 
+        // ReSharper disable UnusedMember.Global
         public async Task Invoke(HttpContext context)
+            // ReSharper restore UnusedMember.Global
         {
             if (PerformMetric(context))
             {

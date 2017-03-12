@@ -10,6 +10,8 @@ using App.Metrics.Core.Internal;
 using App.Metrics.Health;
 
 // ReSharper disable CheckNamespace
+// ReSharper disable RedundantStringInterpolation
+// ReSharper disable UnusedMember.Local
 namespace Microsoft.Extensions.Logging
 {
     // ReSharper restore CheckNamespace
@@ -130,4 +132,7 @@ namespace Microsoft.Extensions.Logging
         // ReSharper restore InconsistentNaming
 #pragma warning disable SA1201
     }
+
+    // ReSharper restore RedundantStringInterpolation
+    // ReSharper restore UnusedMember.Local
 }

@@ -74,13 +74,17 @@ namespace App.Metrics.Health
         ///     specificied threshold, a degraded status could be returned rather than raising a critical alert.
         /// </summary>
         /// <returns>Degraded status response.</returns>
+        // ReSharper disable IntroduceOptionalParameters.Global
         public static HealthCheckResult Degraded() { return Degraded("DEGRADED"); }
+        // ReSharper restore IntroduceOptionalParameters.Global
 
         /// <summary>
         ///     Create a healthy status response.
         /// </summary>
         /// <returns>Healthy status response.</returns>
+        // ReSharper disable IntroduceOptionalParameters.Global
         public static HealthCheckResult Healthy() { return Healthy("OK"); }
+        // ReSharper restore IntroduceOptionalParameters.Global
 
         /// <summary>
         ///     Create a healthy status response.
@@ -104,7 +108,9 @@ namespace App.Metrics.Health
         ///     Create a unhealthy status response.
         /// </summary>
         /// <returns>Unhealthy status response.</returns>
+        // ReSharper disable IntroduceOptionalParameters.Global
         public static HealthCheckResult Unhealthy() { return Unhealthy("FAILED"); }
+        // ReSharper restore IntroduceOptionalParameters.Global
 
         /// <summary>
         ///     Create a unhealthy status response.

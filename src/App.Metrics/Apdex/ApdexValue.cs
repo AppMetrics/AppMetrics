@@ -30,14 +30,14 @@ namespace App.Metrics.Apdex
             }
         }
 
-        public int Frustrating { get; private set; }
+        public int Frustrating { get; }
 
-        public int SampleSize { get; private set; }
+        public int SampleSize { get; }
 
-        public int Satisfied { get; private set; }
+        public int Satisfied { get; }
 
-        public double Score { get; private set; }
+        public double Score { get; }
 
-        public int Tolerating { get; private set; }
+        public int Tolerating { get; }
     }
 }

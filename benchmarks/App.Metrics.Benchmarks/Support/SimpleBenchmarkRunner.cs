@@ -50,7 +50,7 @@ namespace App.Metrics.Benchmarks.Support
 
         private static void Warmup(Action action)
         {
-            foreach (var i in Enumerable.Range(1, WarmupRuns))
+            foreach (var unused in Enumerable.Range(1, WarmupRuns))
             {
                 action();
             }

@@ -30,13 +30,15 @@ namespace App.Metrics.Facts.Health
             {
                 var clock = new TestClock();
                 var options = new AppMetricsOptions();
-                Func<string, IMetricContextRegistry> newContextRegistry = name => new DefaultMetricContextRegistry(name);
+
+                IMetricContextRegistry NewContextRegistry(string name) => new DefaultMetricContextRegistry(name);
+
                 var registry = new DefaultMetricsRegistry(
                     LoggerFactory,
                     options,
                     clock,
                     new EnvironmentInfoProvider(),
-                    newContextRegistry);
+                    NewContextRegistry);
                 var metricBuilderFactory = new DefaultMetricsBuilderFactory();
                 var filter = new DefaultMetricsFilter();
                 var healthManager = new DefaultHealthProvider(LoggerFactory.CreateLogger<DefaultHealthProvider>(), healthCheckFactory);

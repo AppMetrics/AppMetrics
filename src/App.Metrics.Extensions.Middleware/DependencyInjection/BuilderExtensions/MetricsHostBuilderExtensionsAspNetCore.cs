@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 
 // ReSharper disable CheckNamespace
+// ReSharper disable UnusedMethodReturnValue.Global
 namespace Microsoft.Extensions.DependencyInjection
 {
     // ReSharper restore CheckNamespace
@@ -21,7 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return builder;
         }
-
-        internal static void AddAspNetCoreServices(this IMetricsHostBuilder builder) { }
     }
+
+    // ReSharper restore UnusedMethodReturnValue.Global
 }

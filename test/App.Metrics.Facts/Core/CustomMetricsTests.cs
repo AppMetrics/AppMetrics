@@ -59,14 +59,9 @@ namespace App.Metrics.Facts.Core
             snapshot.Values.Single().Should().Be(10L);
         }
 
-        public void Dispose() { Dispose(true); }
-
-        protected virtual void Dispose(bool disposing)
+        public void Dispose()
         {
-            if (disposing)
-            {
-                _fixture?.Dispose();
-            }
-        }
+            _fixture?.Dispose();
+        }        
     }
 }

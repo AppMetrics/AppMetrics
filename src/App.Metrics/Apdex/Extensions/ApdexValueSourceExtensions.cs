@@ -17,7 +17,7 @@ namespace App.Metrics.Apdex
 
         public static ApdexValue GetApdexValue(this IProvideMetricValues valueService, string context, string metricName)
         {
-            return valueService.GetForContext(context).ApdexScores.ValueFor(context, metricName);
+            return valueService.GetForContext(context).ApdexScores.ValueFor(metricName);
         }
 
         public static ApdexValue GetValueOrDefault(this IApdex metric)

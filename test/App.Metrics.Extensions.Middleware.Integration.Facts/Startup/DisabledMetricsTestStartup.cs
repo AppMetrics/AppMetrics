@@ -1,6 +1,5 @@
 ﻿using App.Metrics.Configuration;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
-using App.Metrics.Internal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,18 +17,18 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
         public void ConfigureServices(IServiceCollection services)
         {
             var appMetricsOptions = new AppMetricsOptions
-            {
-                DefaultContextLabel = "testing",
-                MetricsEnabled = false
-            };
+                                    {
+                                        DefaultContextLabel = "testing",
+                                        MetricsEnabled = false
+                                    };
 
             var aspNetMetricsOptions = new AspNetMetricsOptions
-            {
-                MetricsTextEndpointEnabled = true,
-                HealthEndpointEnabled = true,
-                MetricsEndpointEnabled = true,
-                PingEndpointEnabled = true
-            };
+                                       {
+                                           MetricsTextEndpointEnabled = true,
+                                           HealthEndpointEnabled = true,
+                                           MetricsEndpointEnabled = true,
+                                           PingEndpointEnabled = true
+                                       };
 
             SetupServices(services, appMetricsOptions, aspNetMetricsOptions);
         }

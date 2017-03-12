@@ -55,17 +55,13 @@ namespace App.Metrics.Registry.Internal
 
         public DefaultMetricContextRegistry(string context, GlobalMetricTags globalTags)
         {
-            if (globalTags == null)
-            {
-                throw new ArgumentNullException(nameof(globalTags));
-            }
+            _globalTags = globalTags ?? throw new ArgumentNullException(nameof(globalTags));
 
             if (context.IsMissing())
             {
                 throw new ArgumentException("Registry Context cannot be null or empty", nameof(context));
             }
 
-            _globalTags = globalTags;
             Context = context;
 
             DataProvider = new DefaultMetricRegistryManager(

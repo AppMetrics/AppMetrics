@@ -15,7 +15,9 @@ namespace App.Metrics.Abstractions.Reporting
 {
     public interface IMetricReporter : IHideObjectMembers, IDisposable
     {
+        // ReSharper disable UnusedMemberInSuper.Global
         string Name { get; }
+        // ReSharper restore UnusedMemberInSuper.Global
 
         TimeSpan ReportInterval { get; }
 
@@ -23,11 +25,13 @@ namespace App.Metrics.Abstractions.Reporting
 
         void ReportEnvironment(EnvironmentInfo environmentInfo);
 
+        // ReSharper disable UnusedParameter.Global
         void ReportHealth(
             GlobalMetricTags globalTags,
             IEnumerable<HealthCheck.Result> healthyChecks,
             IEnumerable<HealthCheck.Result> degradedChecks,
             IEnumerable<HealthCheck.Result> unhealthyChecks);
+        // ReSharper restore UnusedParameter.Global
 
         void ReportMetric<T>(string context, MetricValueSourceBase<T> valueSource);
 

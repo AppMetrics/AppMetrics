@@ -34,7 +34,7 @@ namespace App.Metrics.Histogram
 
         public static HistogramValue GetHistogramValue(this IProvideMetricValues valueService, string context, string metricName)
         {
-            return valueService.GetForContext(context).Histograms.ValueFor(context, metricName);
+            return valueService.GetForContext(context).Histograms.ValueFor(metricName);
         }
 
         public static HistogramValue GetValueOrDefault(this IHistogram metric)

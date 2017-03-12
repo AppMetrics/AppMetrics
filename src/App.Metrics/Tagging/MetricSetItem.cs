@@ -7,6 +7,7 @@ using System.Linq;
 using App.Metrics.Infrastructure;
 using Microsoft.DotNet.PlatformAbstractions;
 
+// ReSharper disable MemberCanBePrivate.Global
 namespace App.Metrics.Tagging
 {
     /// <summary>
@@ -169,8 +170,11 @@ namespace App.Metrics.Tagging
             var hcc = new HashCodeCombiner();
 #pragma warning restore SA1129
 
+            // ReSharper disable ForCanBeConvertedToForeach
             for (var i = 0; i < _keys.Length; i++)
             {
+                // ReSharper restore ForCanBeConvertedToForeach
+
                 hcc.Add(_keys[i]);
             }
 
@@ -222,5 +226,7 @@ namespace App.Metrics.Tagging
         private static readonly string[] EmptyArray = new string[0];
         public static readonly MetricSetItem Empty = new MetricSetItem(EmptyArray, EmptyArray);
 #pragma warning restore SA1202
+
+        // ReSharper restore MemberCanBePrivate.Global
     }
 }

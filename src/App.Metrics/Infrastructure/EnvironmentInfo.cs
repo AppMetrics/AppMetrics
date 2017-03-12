@@ -92,7 +92,9 @@ namespace App.Metrics.Infrastructure
 
         public string ProcessName { get; }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public string ProcessorCount { get; }
+        // ReSharper restore MemberCanBePrivate.Global
 
         public static bool operator ==(EnvironmentInfo left, EnvironmentInfo right) { return left.Equals(right); }
 
@@ -127,7 +129,9 @@ namespace App.Metrics.Infrastructure
             }
         }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public bool Equals(EnvironmentInfo other)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             return string.Equals(EntryAssemblyName, other.EntryAssemblyName) && string.Equals(EntryAssemblyVersion, other.EntryAssemblyVersion) &&
                    string.Equals(HostName, other.HostName) && string.Equals(LocalTimeString, other.LocalTimeString) &&

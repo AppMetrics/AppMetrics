@@ -14,6 +14,8 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Extensions.Middleware
 {
+    // ReSharper disable ClassNeverInstantiated.Global
+
     public class HealthCheckEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
         private readonly IHealthStatusSerializer _serializer;
@@ -26,15 +28,12 @@ namespace App.Metrics.Extensions.Middleware
             IHealthStatusSerializer serializer)
             : base(next, aspNetOptions, loggerFactory, metrics)
         {
-            if (serializer == null)
-            {
-                throw new ArgumentNullException(nameof(serializer));
-            }
-
-            _serializer = serializer;
+            _serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
         }
 
+        // ReSharper disable UnusedMember.Global
         public async Task Invoke(HttpContext context)
+            // ReSharper restore UnusedMember.Global
         {
             if (Options.HealthEndpointEnabled &&
                 Options.HealthEndpoint.IsPresent() &&
@@ -70,4 +69,6 @@ namespace App.Metrics.Extensions.Middleware
             await Next(context);
         }
     }
+
+    // ReSharper restore UnusedMember.Global
 }

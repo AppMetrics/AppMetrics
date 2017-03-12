@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using App.Metrics.Core;
-using App.Metrics.Infrastructure;
 using FluentAssertions;
 using Xunit;
 
 namespace App.Metrics.Facts.Core
 {
-    public class UserValueWrapper_EqualityTests
+    public class UserValueWrapperEqualityTests
     {
         [Theory]
         [InlineData(1L, "userValue", true)]

@@ -6,6 +6,9 @@ using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Core.Internal;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace App.Metrics.Core.Options
 {
     /// <summary>
@@ -74,4 +77,8 @@ namespace App.Metrics.Core.Options
         /// </value>
         public bool ResetOnReporting { get; set; }
     }
+
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
+    // ReSharper restore AutoPropertyCanBeMadeGetOnly.Global
+    // ReSharper restore MemberCanBePrivate.Global
 }

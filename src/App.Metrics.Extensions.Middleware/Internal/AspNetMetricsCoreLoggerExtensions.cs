@@ -22,7 +22,7 @@ namespace Microsoft.Extensions.Logging
             logger.LogTrace(AspNetMetricsEventIds.Middleware.MiddlewareExecutingId, $"Executing AspNet Metrics Middleware {middleware.FullName}");
         }
 
-        internal static class AspNetMetricsEventIds
+        private static class AspNetMetricsEventIds
         {
             public static class Middleware
             {

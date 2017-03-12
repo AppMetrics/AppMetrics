@@ -1,5 +1,4 @@
 ﻿using System;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using FluentAssertions;
 using Xunit;
 
@@ -36,10 +35,7 @@ namespace App.Metrics.Facts.Extensions
         [Fact]
         public void can_safe_get_string()
         {
-            Action action = () => StringExtensions.GetSafeString(() =>
-            {
-                throw new ArgumentNullException();
-            });
+            Action action = () => StringExtensions.GetSafeString(() => throw new ArgumentNullException());
 
             action.ShouldNotThrow();
         }

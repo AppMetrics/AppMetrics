@@ -6,7 +6,6 @@ using System;
 using System.Threading.Tasks;
 using App.Metrics.DependencyInjection.Internal;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Internal;
-using App.Metrics.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,12 +22,7 @@ namespace Microsoft.AspNetCore.Mvc.Filters
 
         public MetricsResourceFilter(IRouteNameResolver routeNameResolver)
         {
-            if (routeNameResolver == null)
-            {
-                throw new ArgumentNullException(nameof(routeNameResolver));
-            }
-
-            _routeNameResolver = routeNameResolver;
+            _routeNameResolver = routeNameResolver ?? throw new ArgumentNullException(nameof(routeNameResolver));
         }
 
         public async Task OnResourceExecutionAsync(ResourceExecutingContext context, ResourceExecutionDelegate next)

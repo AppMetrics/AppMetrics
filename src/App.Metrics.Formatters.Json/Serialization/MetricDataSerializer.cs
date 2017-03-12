@@ -11,7 +11,9 @@ namespace App.Metrics.Formatters.Json.Serialization
     {
         private readonly JsonSerializerSettings _settings;
 
+        // ReSharper disable UnusedMember.Global
         public MetricDataSerializer()
+            // ReSharper restore UnusedMember.Global
         {
             _settings = new JsonSerializerSettings
                         {

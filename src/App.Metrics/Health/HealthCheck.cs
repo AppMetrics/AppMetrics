@@ -31,9 +31,9 @@ namespace App.Metrics.Health
         {
             Name = name;
 
-            Func<CancellationToken, Task<HealthCheckResult>> checkWithToken = token => check();
+            Task<HealthCheckResult> CheckWithToken(CancellationToken token) => check();
 
-            _check = checkWithToken;
+            _check = CheckWithToken;
         }
 
         protected HealthCheck(string name)

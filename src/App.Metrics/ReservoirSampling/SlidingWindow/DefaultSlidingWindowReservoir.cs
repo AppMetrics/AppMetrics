@@ -4,7 +4,6 @@
 
 using System;
 using System.Linq;
-using System.Threading;
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Concurrency;
 using App.Metrics.Core;

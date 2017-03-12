@@ -44,7 +44,9 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
             }
         }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public bool Equals(WeightedSample other)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             // ReSharper disable ImpureMethodCallOnReadonlyValueField
             return string.Equals(UserValue, other.UserValue) && Value == other.Value && Weight.Equals(other.Weight);

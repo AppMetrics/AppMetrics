@@ -1,12 +1,8 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Configuration;
-using App.Metrics.Data;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Filtering;
 using App.Metrics.Health;

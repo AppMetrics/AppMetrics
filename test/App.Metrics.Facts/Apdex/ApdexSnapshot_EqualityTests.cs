@@ -7,7 +7,7 @@ using Xunit;
 
 namespace App.Metrics.Facts.Apdex
 {
-    public class ApdexSnapshot_EqualityTests
+    public class ApdexSnapshotEqualityTests
     {
         [Fact]
         public void equality_with_equals_false_when_not_same()

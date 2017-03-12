@@ -19,6 +19,8 @@ namespace App.Metrics.Apdex
             ResetOnReporting = resetOnReporting;
         }
 
-        public bool ResetOnReporting { get; }
+        // ReSharper disable UnusedAutoPropertyAccessor.Local
+        private bool ResetOnReporting { get; }
+        // ReSharper restore UnusedAutoPropertyAccessor.Local
     }
 }

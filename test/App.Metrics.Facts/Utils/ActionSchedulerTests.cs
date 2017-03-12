@@ -75,13 +75,14 @@ namespace App.Metrics.Facts.Utils
                 var data = 0;
                 var completionSource = new TaskCompletionSource<bool>();
 
+                var source = completionSource;
                 scheduler.Interval(
                     TimeSpan.FromMilliseconds(20),
                     TaskCreationOptions.LongRunning,
                     () =>
                     {
                         data++;
-                        completionSource.SetResult(true);
+                        source.SetResult(true);
                     });
 
                 completionSource.Task.Wait();
@@ -132,7 +133,7 @@ namespace App.Metrics.Facts.Utils
                     scheduledTask = scheduler.Interval(
                         TimeSpan.FromMilliseconds(20),
                         TaskCreationOptions.LongRunning,
-                        () => { throw new InvalidOperationException(); });
+                        () => throw new InvalidOperationException());
 
                     scheduledTask.Wait();
                 }

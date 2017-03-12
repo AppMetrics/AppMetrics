@@ -82,7 +82,9 @@ namespace App.Metrics.Timer
             Dispose(true);
         }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public void Dispose(bool disposing)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             if (!_disposed)
             {

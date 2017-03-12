@@ -17,7 +17,7 @@ namespace App.Metrics.Counter
 
         public static CounterValue GetCounterValue(this IProvideMetricValues valueService, string context, string metricName)
         {
-            return valueService.GetForContext(context).Counters.ValueFor(context, metricName);
+            return valueService.GetForContext(context).Counters.ValueFor(metricName);
         }
 
         public static CounterValue GetValueOrDefault(this ICounter metric)

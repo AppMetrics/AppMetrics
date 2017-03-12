@@ -9,6 +9,9 @@ using App.Metrics.Histogram.Abstractions;
 using App.Metrics.Meter.Abstractions;
 using App.Metrics.Timer.Abstractions;
 
+// ReSharper disable UnusedMemberInSuper.Global
+// ReSharper disable UnusedMember.Global
+
 namespace App.Metrics.Core.Abstractions
 {
     /// <summary>
@@ -64,4 +67,7 @@ namespace App.Metrics.Core.Abstractions
         /// </value>
         IMeasureTimerMetrics Timer { get; }
     }
+
+    // ReSharper restore UnusedMemberInSuper.Global
+    // ReSharper restore UnusedMember.Global
 }

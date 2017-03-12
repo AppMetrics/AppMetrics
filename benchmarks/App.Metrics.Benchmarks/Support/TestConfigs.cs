@@ -5,6 +5,7 @@ using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Engines;
 using BenchmarkDotNet.Jobs;
 
+// ReSharper disable UnusedMember.Global
 namespace App.Metrics.Benchmarks.Support
 {
     public class SingleRunFastConfig : ManualConfig
@@ -30,4 +31,6 @@ namespace App.Metrics.Benchmarks.Support
             Add(new Job { Run = { LaunchCount = 1, WarmupCount = 1, TargetCount = 50 } });
         }
     }
+
+    // ReSharper restore UnusedMember.Global
 }

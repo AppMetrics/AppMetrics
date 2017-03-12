@@ -22,12 +22,7 @@ namespace App.Metrics.Histogram
         /// <param name="reservoir">The reservoir to use for sampling.</param>
         public DefaultHistogramMetric(Lazy<IReservoir> reservoir)
         {
-            if (reservoir == null)
-            {
-                throw new ArgumentNullException(nameof(reservoir));
-            }
-
-            _reservoir = reservoir;
+            _reservoir = reservoir ?? throw new ArgumentNullException(nameof(reservoir));
         }
 
         public HistogramValue Value => GetValue();
@@ -39,7 +34,9 @@ namespace App.Metrics.Histogram
         }
 
         [AppMetricsExcludeFromCodeCoverage]
+        // ReSharper disable MemberCanBePrivate.Global
         public void Dispose(bool disposing)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             if (!_disposed)
             {

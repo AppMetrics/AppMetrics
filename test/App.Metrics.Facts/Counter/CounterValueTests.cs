@@ -10,7 +10,7 @@ namespace App.Metrics.Facts.Counter
 {
     public class CounterValueTests
     {
-        public MetricTags Tags => new MetricTags(new[] { "host", "env" }, new[] { "server1", "staging" });
+        private MetricTags Tags => new MetricTags(new[] { "host", "env" }, new[] { "server1", "staging" });
 
         [Fact]
         public void can_determine_if_are_same()
@@ -69,7 +69,7 @@ namespace App.Metrics.Facts.Counter
         {
             Action setupAction = () =>
             {
-                var value = new CounterValue(10L, null);
+                var unused = new CounterValue(10L, null);
             };
 
             setupAction.ShouldThrow<ArgumentNullException>();

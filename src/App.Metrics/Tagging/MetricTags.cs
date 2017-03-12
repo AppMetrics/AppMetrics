@@ -149,7 +149,9 @@ namespace App.Metrics.Tagging
             return new MetricTags(combinedKeys, combinedValues);
         }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public static bool Equals(MetricTags left, MetricTags right)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             var count = left.Count;
 
@@ -235,8 +237,11 @@ namespace App.Metrics.Tagging
             var hcc = new HashCodeCombiner();
 #pragma warning restore SA1129
 
+            // ReSharper disable ForCanBeConvertedToForeach
             for (var i = 0; i < _keys.Length; i++)
             {
+                // ReSharper restore ForCanBeConvertedToForeach
+
                 hcc.Add(_keys[i]);
             }
 

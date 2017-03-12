@@ -11,7 +11,9 @@ namespace App.Metrics.Benchmarks.Fixtures
     {
         public readonly Action ActionToTrack = () =>
         {
+            // ReSharper disable UnusedVariable
             var sum = Enumerable.Range(0, 1000).Sum();
+            // ReSharper restore UnusedVariable
         };
 
         public readonly Random Rnd = new Random();

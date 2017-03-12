@@ -59,7 +59,9 @@ namespace App.Metrics.ReservoirSampling.Uniform
         /// <value>
         ///     The size.
         /// </value>
+        // ReSharper disable MemberCanBePrivate.Global
         public int Size => Math.Min((int)_count.GetValue(), _values.Length);
+        // ReSharper restore MemberCanBePrivate.Global
 
         /// <inheritdoc cref="IReservoir" />
         public IReservoirSnapshot GetSnapshot(bool resetReservoir)

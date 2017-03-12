@@ -8,6 +8,7 @@ using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Core.Internal;
 
 // ReSharper disable CheckNamespace
+// ReSharper disable RedundantStringInterpolation
 namespace Microsoft.Extensions.Logging
 {
     // ReSharper restore CheckNamespace
@@ -110,4 +111,6 @@ namespace Microsoft.Extensions.Logging
             }
         }
     }
+
+    // ReSharper restore RedundantStringInterpolation
 }

@@ -24,18 +24,8 @@ namespace App.Metrics.Reporting.Internal
 
         public DefaultReportGenerator(AppMetricsOptions options, ILoggerFactory loggerFactory)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            if (loggerFactory == null)
-            {
-                throw new ArgumentNullException(nameof(loggerFactory));
-            }
-
-            _options = options;
-            _logger = loggerFactory.CreateLogger<DefaultReportGenerator>();
+            _options = options ?? throw new ArgumentNullException(nameof(options));
+            _logger = loggerFactory?.CreateLogger<DefaultReportGenerator>() ?? throw new ArgumentNullException(nameof(loggerFactory));
         }
 
         public Task<bool> GenerateAsync(

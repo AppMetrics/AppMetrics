@@ -90,7 +90,7 @@ namespace App.Metrics.Facts.Core
 
             Action setup = () =>
             {
-                var setItem = new MetricSetItem(keys, values);
+                var unused = new MetricSetItem(keys, values);
             };
 
             setup.ShouldThrow<InvalidOperationException>();
@@ -103,7 +103,7 @@ namespace App.Metrics.Facts.Core
 
             Action setup = () =>
             {
-                var setItem = new MetricSetItem(null, values);
+                var unused = new MetricSetItem(null, values);
             };
 
             setup.ShouldThrow<ArgumentNullException>();
@@ -119,7 +119,7 @@ namespace App.Metrics.Facts.Core
 
             Action setup = () =>
             {
-                var setItem = new MetricSetItem(keys, values);
+                var unused = new MetricSetItem(keys, values);
             };
 
             setup.ShouldThrow<InvalidOperationException>();
@@ -133,7 +133,7 @@ namespace App.Metrics.Facts.Core
 
             Action setup = () =>
             {
-                var setItem = new MetricSetItem(keys, values);
+                var unused = new MetricSetItem(keys, values);
             };
 
             setup.ShouldThrow<InvalidOperationException>();
@@ -223,7 +223,7 @@ namespace App.Metrics.Facts.Core
 
             Action setup = () =>
             {
-                var setItem = new MetricSetItem(keys, null);
+                var unused = new MetricSetItem(keys, null);
             };
 
             setup.ShouldThrow<ArgumentNullException>();
@@ -239,7 +239,7 @@ namespace App.Metrics.Facts.Core
 
             Action setup = () =>
             {
-                var setItem = new MetricSetItem(keys, values);
+                var unused = new MetricSetItem(keys, values);
             };
 
             setup.ShouldThrow<InvalidOperationException>();
@@ -253,7 +253,7 @@ namespace App.Metrics.Facts.Core
 
             Action setup = () =>
             {
-                var setItem = new MetricSetItem(keys, values);
+                var unused = new MetricSetItem(keys, values);
             };
 
             setup.ShouldThrow<InvalidOperationException>();

@@ -68,7 +68,9 @@ namespace App.Metrics.Infrastructure
         ///     called.
         /// </summary>
         /// <param name="sb">The string builder instance.</param>
+        // ReSharper disable MemberCanBePrivate.Global
         public static void Release(StringBuilder sb)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             if (sb.Capacity <= MaxBuilderSize)
             {

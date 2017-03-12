@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
@@ -20,9 +19,9 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
             Context = fixture.Context;
         }
 
-        public HttpClient Client { get; }
+        private HttpClient Client { get; }
 
-        public IMetrics Context { get; }
+        private IMetrics Context { get; }
 
         [Fact]
         public async Task can_count_requests_per_endpoint_and_also_get_a_total_count()
@@ -30,13 +29,13 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
             await Client.GetAsync("/api/test");
             await Client.GetAsync("/api/test/error");
 
-            Func<string, TimerValue> getTimerValue = metricName => Context.Snapshot.GetTimerValue(
+            TimerValue GetTimerValue(string metricName) => Context.Snapshot.GetTimerValue(
                 HttpRequestMetricsRegistry.ContextName,
                 metricName);
 
-            getTimerValue("Http Request Transactions|route:GET api/test").Histogram.Count.Should().Be(1);
-            getTimerValue("Http Request Transactions|route:GET api/test/error").Histogram.Count.Should().Be(1);
-            getTimerValue("Overall Http Request Transactions").Histogram.Count.Should().Be(2);
+            GetTimerValue("Http Request Transactions|route:GET api/test").Histogram.Count.Should().Be(1);
+            GetTimerValue("Http Request Transactions|route:GET api/test/error").Histogram.Count.Should().Be(1);
+            GetTimerValue("Overall Http Request Transactions").Histogram.Count.Should().Be(2);
         }
     }
 }

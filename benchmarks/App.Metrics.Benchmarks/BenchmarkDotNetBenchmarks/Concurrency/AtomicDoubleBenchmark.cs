@@ -25,13 +25,21 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Concurrency
         [Benchmark]
         public void Get()
         {
+            // ReSharper disable UnusedVariable
             var x = _num.GetValue();
+            // ReSharper restore UnusedVariable
         }
 
         [Benchmark]
         public void Increment()
         {
             _num.Increment();
+        }
+
+        [Benchmark]
+        public void IncrementValue()
+        {
+            _num.Increment(2);
         }
     }
 }

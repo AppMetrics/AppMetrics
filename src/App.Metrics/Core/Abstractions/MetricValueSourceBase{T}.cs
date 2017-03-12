@@ -6,6 +6,7 @@ using System;
 using App.Metrics.Core.Internal;
 using App.Metrics.Tagging;
 
+// ReSharper disable MemberCanBePrivate.Global
 namespace App.Metrics.Core.Abstractions
 {
     /// <summary>
@@ -36,7 +37,9 @@ namespace App.Metrics.Core.Abstractions
         /// <value>
         ///     <c>true</c> if this instance is a multidimensional metric; otherwise, <c>false</c>.
         /// </value>
+        // ReSharper disable UnusedAutoPropertyAccessor.Global
         public bool IsMultidimensional { get; }
+        // ReSharper restore UnusedAutoPropertyAccessor.Global
 
         /// <summary>
         ///     Gets the name of the multidimensional metric. If tags were set at runtime, this will be the name of the metric
@@ -45,7 +48,9 @@ namespace App.Metrics.Core.Abstractions
         /// <value>
         ///     The name of the multidimensional metric.
         /// </value>
+        // ReSharper disable UnusedAutoPropertyAccessor.Global
         public string MultidimensionalName { get; }
+        // ReSharper restore UnusedAutoPropertyAccessor.Global
 
         /// <summary>
         ///     Gets the Name of the metric.
@@ -87,4 +92,6 @@ namespace App.Metrics.Core.Abstractions
         /// </value>
         public IMetricValueProvider<T> ValueProvider { get; }
     }
+
+    // ReSharper restore MemberCanBePrivate.Global
 }

@@ -50,7 +50,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.DependencyInjectio
             options.HealthEndpointEnabled.Should().Be(true);
         }
 
-        public IServiceProvider SetupServicesAndConfiguration(Action<AspNetMetricsOptions> setupAction = null)
+        private IServiceProvider SetupServicesAndConfiguration(Action<AspNetMetricsOptions> setupAction = null)
         {
             var services = new ServiceCollection();
 

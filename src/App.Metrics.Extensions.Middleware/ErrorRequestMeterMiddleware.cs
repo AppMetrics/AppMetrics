@@ -14,7 +14,9 @@ namespace App.Metrics.Extensions.Middleware
     ///     Measures the overall error request rate as well as the rate per endpoint.
     ///     Also measures these error rates per OAuth2 Client as a separate metric
     /// </summary>
+    // ReSharper disable ClassNeverInstantiated.Global
     public class ErrorRequestMeterMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
+        // ReSharper restore ClassNeverInstantiated.Global
     {
         public ErrorRequestMeterMiddleware(
             RequestDelegate next,
@@ -39,8 +41,11 @@ namespace App.Metrics.Extensions.Middleware
             }
         }
 
+        // ReSharper disable UnusedMember.Global
         public async Task Invoke(HttpContext context)
         {
+            // ReSharper restore UnusedMember.Global
+
             await Next(context);
 
             if (PerformMetric(context))

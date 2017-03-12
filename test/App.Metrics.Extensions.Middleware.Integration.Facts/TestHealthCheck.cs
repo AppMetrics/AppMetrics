@@ -1,15 +1,14 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Core;
 using App.Metrics.Health;
 
 namespace App.Metrics.Extensions.Middleware.Integration.Facts
 {
+    // ReSharper disable UnusedMember.Global this is automatically registered
     public class TestHealthCheck : HealthCheck
+        // ReSharper restore UnusedMember.Global
     {
-        public TestHealthCheck() : base("Test Health Check")
-        {
-        }
+        public TestHealthCheck() : base("Test Health Check") { }
 
         protected override Task<HealthCheckResult> CheckAsync(CancellationToken token = default(CancellationToken))
         {

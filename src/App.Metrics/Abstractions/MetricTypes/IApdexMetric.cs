@@ -7,7 +7,9 @@ using App.Metrics.Apdex;
 using App.Metrics.Apdex.Abstractions;
 using App.Metrics.Core.Abstractions;
 
+// ReSharper disable CheckNamespace
 namespace App.Metrics.Abstractions.Metrics
+    // ReSharper restore CheckNamespace
 {
     /// <summary>
     ///     Provides access to a adpex metric implementation e.g. <see cref="DefaultApdexMetric" />

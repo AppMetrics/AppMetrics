@@ -23,8 +23,8 @@ namespace App.Metrics.Formatters.Json
 
         public double? Value
         {
-            get { return _value; }
-            set { _value = value ?? double.NaN; }
+            get => _value;
+            set => _value = value ?? double.NaN;
         }
 
         public static GaugeMetric FromGauge(MetricValueSourceBase<double> gauge)

@@ -15,7 +15,7 @@ namespace App.Metrics.Meter.Extensions
 
         public static MeterValue GetMeterValue(this IProvideMetricValues valueService, string context, string metricName)
         {
-            return valueService.GetForContext(context).Meters.ValueFor(context, metricName);
+            return valueService.GetForContext(context).Meters.ValueFor(metricName);
         }
 
         public static MeterValue GetValueOrDefault(this IMeter metric)

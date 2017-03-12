@@ -7,7 +7,7 @@ using Xunit;
 
 namespace App.Metrics.Facts.Meter
 {
-    public class MeterValueSetItem_EqualityTests
+    public class MeterValueSetItemEqualityTests
     {
         [Fact]
         public void equality_with_equals_false_when_not_same_by_percent()

@@ -28,14 +28,12 @@ namespace App.Metrics.Reporting
         {
         }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public StringReporter(string name)
+            // ReSharper restore MemberCanBePrivate.Global
         {
-            if (name == null)
-            {
-                throw new ArgumentNullException(nameof(name));
-            }
+            Name = name ?? throw new ArgumentNullException(nameof(name));
 
-            Name = name;
             _buffer = new StringBuilder();
         }
 
@@ -47,7 +45,9 @@ namespace App.Metrics.Reporting
 
         public void Dispose() { Dispose(true); }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public void Dispose(bool disposing)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             if (!_disposed)
             {

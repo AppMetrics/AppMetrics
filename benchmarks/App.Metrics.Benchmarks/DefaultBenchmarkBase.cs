@@ -10,7 +10,7 @@ namespace App.Metrics.Benchmarks
     [Config(typeof(DefaultConfig))]
     public abstract class DefaultBenchmarkBase
     {
-        public MetricsCoreTestFixture Fixture { get; private set; }
+        protected MetricsCoreTestFixture Fixture { get; private set; }
 
         [Setup]
         public virtual void Setup() { Fixture = new MetricsCoreTestFixture(); }

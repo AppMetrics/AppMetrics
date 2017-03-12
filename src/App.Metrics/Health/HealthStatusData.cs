@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace App.Metrics.Health
 {
     public sealed class HealthStatusData
@@ -18,4 +19,6 @@ namespace App.Metrics.Health
 
         public Dictionary<string, string> Unhealthy { get; set; } = new Dictionary<string, string>();
     }
+
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 }

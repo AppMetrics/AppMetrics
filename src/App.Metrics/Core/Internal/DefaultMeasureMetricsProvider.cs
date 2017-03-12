@@ -5,7 +5,6 @@
 using App.Metrics.Apdex;
 using App.Metrics.Apdex.Abstractions;
 using App.Metrics.Core.Abstractions;
-using App.Metrics.Core.Interfaces;
 using App.Metrics.Counter;
 using App.Metrics.Counter.Abstractions;
 using App.Metrics.Gauge;
@@ -20,7 +19,9 @@ using App.Metrics.Timer.Abstractions;
 
 namespace App.Metrics.Core.Internal
 {
+    // ReSharper disable ClassNeverInstantiated.Global
     internal sealed class DefaultMeasureMetricsProvider : IMeasureMetrics
+        // ReSharper restore ClassNeverInstantiated.Global
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultMeasureMetricsProvider" /> class.

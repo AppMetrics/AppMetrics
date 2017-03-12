@@ -54,24 +54,26 @@ namespace App.Metrics.Formatters.Json.Facts.Helpers
                                                                                                         }
                                                                                                     };
 
+        // ReSharper disable CollectionNeverUpdated.Local no metric type sample files yet
         private static readonly Dictionary<MetricTypeSamples, string> MetricTypeFileSampleMapping = new Dictionary<MetricTypeSamples, string>();
+        // ReSharper restore CollectionNeverUpdated.Local
 
-        public static JToken ExtractHealthStatusSampleFromResourceFile(this HealthStatusSamples sample)
+        private static JToken ExtractHealthStatusSampleFromResourceFile(this HealthStatusSamples sample)
         {
             return ExtractJsonFromEmbeddedResource(HealthStatusFileSampleMapping[sample]);
         }
 
-        public static JToken ExtractMetricDataSampleFromResourceFile(this MetricDataSamples sample)
+        private static JToken ExtractMetricDataSampleFromResourceFile(this MetricDataSamples sample)
         {
             return ExtractJsonFromEmbeddedResource(MetricDataFileSampleMapping[sample]);
         }
 
-        public static JToken ExtractMetricSampleFromResourceFile(this MetricType metricType)
+        private static JToken ExtractMetricSampleFromResourceFile(this MetricType metricType)
         {
             return ExtractJsonFromEmbeddedResource(metricType.ToString().ToLower());
         }
 
-        public static JToken ExtractMetricTypeSampleFromResourceFile(this MetricTypeSamples sample)
+        private static JToken ExtractMetricTypeSampleFromResourceFile(this MetricTypeSamples sample)
         {
             return ExtractJsonFromEmbeddedResource(MetricTypeFileSampleMapping[sample]);
         }

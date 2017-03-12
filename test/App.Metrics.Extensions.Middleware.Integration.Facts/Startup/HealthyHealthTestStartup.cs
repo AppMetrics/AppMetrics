@@ -1,8 +1,4 @@
-// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 using App.Metrics.Configuration;
-using App.Metrics.Core;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using App.Metrics.Health;
 using Microsoft.AspNetCore.Builder;

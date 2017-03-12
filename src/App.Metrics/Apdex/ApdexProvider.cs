@@ -24,19 +24,9 @@ namespace App.Metrics.Apdex
         /// <summary>
         ///     Initializes a new instance of the <see cref="ApdexProvider" /> class.
         /// </summary>
-        /// <remarks>
-        ///     The apdex T <see cref="Constants.ReservoirSampling">default</see> value will be used
-        /// </remarks>
-        /// <param name="reservoir">The reservoir used to sample values in order to caclulate an apdex score.</param>
-        public ApdexProvider(Lazy<IReservoir> reservoir)
-            : this(reservoir, Constants.ReservoirSampling.DefaultApdexTSeconds) { }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="ApdexProvider" /> class.
-        /// </summary>
         /// <param name="reservoir">The reservoir used to sample values in order to caclulate an apdex score.</param>
         /// <param name="apdexTSeconds">The apdex t seconds used to calculate satisfied, tolerating and frustrating counts.</param>
-        public ApdexProvider(Lazy<IReservoir> reservoir, double apdexTSeconds)
+        public ApdexProvider(Lazy<IReservoir> reservoir, double apdexTSeconds = Constants.ReservoirSampling.DefaultApdexTSeconds)
         {
             _reservoir = reservoir;
             _apdexTSeconds = apdexTSeconds;

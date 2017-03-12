@@ -88,7 +88,9 @@ namespace App.Metrics.Formatting.Humanize
             sb.AppendLine("99.9%".FormatReadableMetricValue(unit.FormatDuration(histogram.Percentile999, null), sign: "<="));
         }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public static void HumanizeMeter(this StringBuilder sb, MeterValue value, Unit unit)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             sb.AppendLine("Count".FormatReadableMetricValue(unit.FormatCount(value.Count)));
             sb.AppendLine("Mean Value".FormatReadableMetricValue(unit.FormatRate(value.MeanRate, value.RateUnit)));

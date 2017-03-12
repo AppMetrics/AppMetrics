@@ -29,7 +29,9 @@ namespace App.Metrics.Concurrency
 
         public static double NextDouble() { return LocalRandom.Value.NextDouble(); }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public static long NextLong()
+            // ReSharper restore MemberCanBePrivate.Global
         {
             long heavy = LocalRandom.Value.Next();
             long light = LocalRandom.Value.Next();

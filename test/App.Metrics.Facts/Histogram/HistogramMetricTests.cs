@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Histogram;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
-using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;
 
@@ -78,8 +77,7 @@ namespace App.Metrics.Facts.Histogram
         public void records_lifetime_sum_of_observed_values()
         {
             double sum = Enumerable.Range(1, 10000).Sum();
-            var options = new ParallelOptions();
-            options.MaxDegreeOfParallelism = Environment.ProcessorCount;
+            var options = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount };
             Parallel.For(
                 1,
                 10001,

@@ -8,6 +8,9 @@ using App.Metrics.Extensions.Middleware.Internal;
 
 namespace App.Metrics.Extensions.Middleware.DependencyInjection.Options
 {
+    // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+    // ReSharper disable CollectionNeverUpdated.Global
+    // ReSharper disable MemberCanBePrivate.Global
     public class AspNetMetricsOptions
     {
         public AspNetMetricsOptions()
@@ -46,5 +49,8 @@ namespace App.Metrics.Extensions.Middleware.DependencyInjection.Options
         public string PingEndpoint { get; set; } = Constants.DefaultRoutePaths.PingEndpoint.EnsureLeadingSlash();
 
         public bool PingEndpointEnabled { get; set; }
+        // ReSharper restore AutoPropertyCanBeMadeGetOnly.Global
+        // ReSharper restore CollectionNeverUpdated.Global
+        // ReSharper restore MemberCanBePrivate.Global
     }
 }

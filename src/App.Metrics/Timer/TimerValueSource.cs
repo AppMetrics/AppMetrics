@@ -26,8 +26,8 @@ namespace App.Metrics.Timer
             DurationUnit = durationUnit;
         }
 
-        public TimeUnit DurationUnit { get; private set; }
+        public TimeUnit DurationUnit { get; }
 
-        public TimeUnit RateUnit { get; private set; }
+        public TimeUnit RateUnit { get; }
     }
 }

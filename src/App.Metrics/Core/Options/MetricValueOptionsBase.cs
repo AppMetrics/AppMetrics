@@ -4,6 +4,7 @@
 
 using App.Metrics.Tagging;
 
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace App.Metrics.Core.Options
 {
     /// <summary>
@@ -46,5 +47,7 @@ namespace App.Metrics.Core.Options
         ///     The tags.
         /// </value>
         public MetricTags Tags { get; set; }
+
+        // ReSharper restore UnusedAutoPropertyAccessor.Global
     }
 }

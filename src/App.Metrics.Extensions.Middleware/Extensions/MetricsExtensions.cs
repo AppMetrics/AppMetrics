@@ -12,6 +12,7 @@ using App.Metrics.Timer.Abstractions;
 namespace App.Metrics
 {
     // ReSharper restore CheckNamespace
+    // ReSharper disable UnusedMethodReturnValue.Global
 
     internal static class MetricsExtensions
     {
@@ -20,15 +21,6 @@ namespace App.Metrics
             metrics.Measure.Counter.Decrement(HttpRequestMetricsRegistry.Counters.ActiveRequests);
 
             return metrics;
-        }
-
-        public static ITimer EndpointRequestTimer(this IMetrics metrics, string routeTemplate, string clientId = null)
-        {
-            var tags = clientId.IsMissing()
-                ? new MetricTags("route", routeTemplate)
-                : new MetricTags(new[] { "route", "client_id" }, new[] { routeTemplate, clientId });
-
-            return metrics.Provider.Timer.Instance(HttpRequestMetricsRegistry.Timers.HttpRequestTransactions, tags);
         }
 
         public static IMetrics ErrorRequestPercentage(this IMetrics metrics, string routeTemplate, string clientId = null)
@@ -116,5 +108,16 @@ namespace App.Metrics
 
             return metrics;
         }
+
+        private static ITimer EndpointRequestTimer(this IMetrics metrics, string routeTemplate, string clientId = null)
+        {
+            var tags = clientId.IsMissing()
+                ? new MetricTags("route", routeTemplate)
+                : new MetricTags(new[] { "route", "client_id" }, new[] { routeTemplate, clientId });
+
+            return metrics.Provider.Timer.Instance(HttpRequestMetricsRegistry.Timers.HttpRequestTransactions, tags);
+        }
     }
+
+    // ReSharper restore UnusedMethodReturnValue.Global
 }

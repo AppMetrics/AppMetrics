@@ -31,7 +31,9 @@ namespace App.Metrics.Scheduling
 
         public void Dispose() { Dispose(true); }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public void Dispose(bool disposing)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             if (!_disposed)
             {

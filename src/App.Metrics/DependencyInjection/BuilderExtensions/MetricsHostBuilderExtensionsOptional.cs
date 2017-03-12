@@ -60,7 +60,11 @@ namespace Microsoft.Extensions.DependencyInjection
             return builder;
         }
 
+        // ReSharper disable UnusedMethodReturnValue.Global
+        // ReSharper disable MemberCanBePrivate.Global
         public static IMetricsHostBuilder AddHealthChecks(this IMetricsHostBuilder builder, Action<IHealthCheckFactory> setupAction)
+            // ReSharper restore MemberCanBePrivate.Global
+            // ReSharper restore UnusedMethodReturnValue.Global
         {
             if (builder == null)
             {

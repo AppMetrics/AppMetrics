@@ -12,7 +12,9 @@ using App.Metrics.Meter.Abstractions;
 using App.Metrics.Registry.Abstractions;
 using App.Metrics.Timer.Abstractions;
 
+// ReSharper disable CheckNamespace
 namespace App.Metrics.Core.Interfaces
+    // ReSharper restore CheckNamespace
 {
     /// <summary>
     ///     Provides access to APIs which get or add metrics to the <see cref="IMetricsRegistry" /> and return the instance.

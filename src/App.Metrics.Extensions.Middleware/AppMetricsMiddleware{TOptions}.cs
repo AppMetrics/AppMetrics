@@ -25,31 +25,10 @@ namespace App.Metrics.Extensions.Middleware
             ILoggerFactory loggerFactory,
             IMetrics metrics)
         {
-            if (next == null)
-            {
-                throw new ArgumentNullException(nameof(next));
-            }
-
-            if (aspNetOptions == null)
-            {
-                throw new ArgumentNullException(nameof(aspNetOptions));
-            }
-
-            if (loggerFactory == null)
-            {
-                throw new ArgumentNullException(nameof(loggerFactory));
-            }
-
-            if (metrics == null)
-            {
-                throw new ArgumentNullException(nameof(metrics));
-            }
-
-            Options = aspNetOptions;
-            Logger = loggerFactory.CreateLogger(GetType().FullName);
-            Metrics = metrics;
-
-            Next = next;
+            Options = aspNetOptions ?? throw new ArgumentNullException(nameof(aspNetOptions));
+            Logger = loggerFactory?.CreateLogger(GetType().FullName) ?? throw new ArgumentNullException(nameof(loggerFactory));
+            Metrics = metrics ?? throw new ArgumentNullException(nameof(metrics));
+            Next = next ?? throw new ArgumentNullException(nameof(next));
 
             IReadOnlyList<Regex> ignoredRoutes = Options.IgnoredRoutesRegexPatterns.
                                                          Select(p => new Regex(p, RegexOptions.Compiled | RegexOptions.IgnoreCase)).
@@ -67,13 +46,13 @@ namespace App.Metrics.Extensions.Middleware
             }
         }
 
-        public ILogger Logger { get; set; }
+        protected ILogger Logger { get; }
 
-        public IMetrics Metrics { get; set; }
+        protected IMetrics Metrics { get; }
 
-        public RequestDelegate Next { get; set; }
+        protected RequestDelegate Next { get; }
 
-        public TOptions Options { get; set; }
+        protected TOptions Options { get; }
 
         protected string GetOAuthClientIdIfRequired(HttpContext context) { return Options.OAuth2TrackingEnabled ? context.OAuthClientId() : null; }
 

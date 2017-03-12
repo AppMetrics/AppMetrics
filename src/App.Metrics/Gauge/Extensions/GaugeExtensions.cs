@@ -13,7 +13,7 @@ namespace App.Metrics.Gauge
     {
         public static double GetGaugeValue(this IProvideMetricValues valueService, string context, string metricName)
         {
-            return valueService.GetForContext(context).Gauges.ValueFor(context, metricName);
+            return valueService.GetForContext(context).Gauges.ValueFor(metricName);
         }
     }
 }

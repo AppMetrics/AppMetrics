@@ -1,4 +1,3 @@
-using App.Metrics.Core;
 using App.Metrics.Core.Options;
 using App.Metrics.Tagging;
 

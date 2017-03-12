@@ -29,6 +29,7 @@ namespace App.Metrics.DependencyInjection.Internal
             }
         }
 
+        // ReSharper disable MemberCanBePrivate.Global
         internal static bool IsHealthCheck(
             TypeInfo typeInfo,
             ISet<Assembly> candidateAssemblies)
@@ -78,6 +79,8 @@ namespace App.Metrics.DependencyInjection.Internal
 
             return true;
         }
+
+        // ReSharper restore MemberCanBePrivate.Global
 
         private static bool DerivesFromHealthCheck(TypeInfo typeInfo, ISet<Assembly> candidateAssemblies)
         {

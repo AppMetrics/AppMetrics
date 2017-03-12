@@ -20,8 +20,6 @@ namespace App.Metrics.Formatters.Json.Serialization
 {
     public class MetricContractResolver : CamelCasePropertyNamesContractResolver
     {
-        public static readonly MetricContractResolver Instance = new MetricContractResolver();
-
         protected override JsonContract CreateContract(Type objectType)
         {
             var contract = base.CreateContract(objectType);

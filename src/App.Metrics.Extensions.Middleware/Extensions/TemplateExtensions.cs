@@ -5,9 +5,9 @@
 using System.Linq;
 
 // ReSharper disable CheckNamespace
+// ReSharper disable MemberCanBePrivate.Global
 namespace Microsoft.AspNetCore.Routing.Template
 {
-    // ReSharper restore CheckNamespace
     internal static class TemplateExtensions
     {
         public static string ToTemplatePartString(this TemplatePart templatePart)
@@ -35,5 +35,7 @@ namespace Microsoft.AspNetCore.Routing.Template
                                    .Select(s => s.ToTemplateSegmentString()))
                   .Replace("{controller}", controller)
                   .Replace("{action}", action).ToLower();
+        // ReSharper restore CheckNamespace
+        // ReSharper restore MemberCanBePrivate.Global
     }
 }

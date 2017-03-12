@@ -13,6 +13,7 @@ namespace App.Metrics.DependencyInjection.Internal
 {
     internal static class DefaultMetricsAssemblyDiscoveryProvider
     {
+        // ReSharper disable MemberCanBePrivate.Global
         internal static HashSet<string> ReferenceAssemblies { get; } = new HashSet<string>(StringComparer.Ordinal)
                                                                        {
                                                                            "App.Metrics"
@@ -56,5 +57,7 @@ namespace App.Metrics.DependencyInjection.Internal
             return !ReferenceAssemblies.Contains(library.Name) &&
                    library.Dependencies.Any(dependency => ReferenceAssemblies.Contains(dependency.Name));
         }
+
+        // ReSharper restore MemberCanBePrivate.Global
     }
 }

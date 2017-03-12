@@ -1,8 +1,6 @@
 using System.Linq;
-using System.Threading.Tasks;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Filtering;
-using App.Metrics.Internal;
 using FluentAssertions;
 using Xunit;
 

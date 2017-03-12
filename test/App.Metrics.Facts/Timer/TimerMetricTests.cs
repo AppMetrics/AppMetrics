@@ -111,7 +111,7 @@ namespace App.Metrics.Facts.Timer
         [Fact]
         public void counts_even_when_action_throws()
         {
-            Action action = () => _timer.Time(() => { throw new InvalidOperationException(); });
+            Action action = () => _timer.Time(() => throw new InvalidOperationException());
 
             action.ShouldThrow<InvalidOperationException>();
 

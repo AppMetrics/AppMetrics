@@ -1,7 +1,6 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-using System;
 using System.Linq;
 using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Histogram;
@@ -10,7 +9,7 @@ namespace App.Metrics.Facts
 {
     public class CustomHistogramMetric : IHistogramMetric
     {
-        private bool _disposed = false;
+        private bool _disposed;
 
         public CustomReservoir Reservoir { get; } = new CustomReservoir();
 
@@ -18,18 +17,9 @@ namespace App.Metrics.Facts
 
         public void Dispose()
         {
-            Dispose(true);
-        }
-
-        public void Dispose(bool disposing)
-        {
             if (!_disposed)
             {
-                if (disposing)
-                {
-                    // Free any other managed objects here.
-                    Reservoir?.Dispose();
-                }
+                Reservoir?.Dispose();
             }
 
             _disposed = true;

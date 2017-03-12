@@ -33,7 +33,7 @@ namespace App.Metrics.Facts.Apdex
 
             IApdexMetric apdexMetric = new DefaultApdexMetric(reservoir, apdexTSeconds, clock, false);
 
-            foreach (var requestNumber in Enumerable.Range(0, 1000))
+            foreach (var unused in Enumerable.Range(0, 1000))
             {
                 using (apdexMetric.NewContext())
                 {

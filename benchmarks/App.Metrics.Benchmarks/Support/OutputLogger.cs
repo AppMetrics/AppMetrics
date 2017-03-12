@@ -11,12 +11,7 @@ namespace App.Metrics.Benchmarks.Support
 
         public OutputLogger(ITestOutputHelper testOutputHelper)
         {
-            if (testOutputHelper == null)
-            {
-                throw new ArgumentNullException(nameof(testOutputHelper));
-            }
-
-            _testOutputHelper = testOutputHelper;
+            _testOutputHelper = testOutputHelper ?? throw new ArgumentNullException(nameof(testOutputHelper));
         }
 
         public override void Write(LogKind logKind, string text)

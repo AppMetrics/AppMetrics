@@ -5,7 +5,9 @@
 using System;
 using System.ComponentModel;
 
+// ReSharper disable CheckNamespace
 namespace App.Metrics.Core.Interfaces
+    // ReSharper restore CheckNamespace
 {
     /// <summary>
     ///     Marker interface to cleanup editor visible members.

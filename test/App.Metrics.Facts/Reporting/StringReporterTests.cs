@@ -1,7 +1,4 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Abstractions.ReservoirSampling;
@@ -51,7 +48,7 @@ namespace App.Metrics.Facts.Reporting
                     Constants.ReservoirSampling.DefaultExponentialDecayFactor,
                     clock,
                     new TestTaskScheduler(clock)));
-            var metric = new DefaultApdexMetric(new ApdexProvider(reservoir, Constants.ReservoirSampling.DefaultApdexTSeconds), clock, true);
+            var metric = new DefaultApdexMetric(new ApdexProvider(reservoir), clock, true);
 
             metric.Track(1000);
 
@@ -181,7 +178,7 @@ namespace App.Metrics.Facts.Reporting
         {
             Action action = () =>
             {
-                var sr = new StringReporter(null);
+                var unused = new StringReporter(null);
             };
 
             action.ShouldThrow<ArgumentNullException>();

@@ -27,12 +27,7 @@ namespace App.Metrics
 
         private Unit(string name)
         {
-            if (name == null)
-            {
-                throw new ArgumentNullException(nameof(name));
-            }
-
-            Name = name;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
         }
 
         public string Name { get; }
@@ -59,7 +54,9 @@ namespace App.Metrics
 
         public override string ToString() { return Name; }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public bool Equals(Unit other) { return string.Equals(Name, other.Name); }
+        // ReSharper restore MemberCanBePrivate.Global
 
         public string FormatCount(long value)
         {

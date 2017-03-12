@@ -146,6 +146,8 @@ namespace App.Metrics.Abstractions.ReservoirSampling
         /// </summary>
         /// <param name="quantile">The quantile.</param>
         /// <returns>The quantile value</returns>
+        // ReSharper disable UnusedMemberInSuper.Global
         double GetValue(double quantile);
+        // ReSharper restore UnusedMemberInSuper.Global
     }
 }

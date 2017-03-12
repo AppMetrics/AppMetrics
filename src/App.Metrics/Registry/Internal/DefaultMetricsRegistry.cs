@@ -134,7 +134,11 @@ namespace App.Metrics.Registry.Internal
             _nullMetricsRegistry.Value.Disable();
         }
 
+        // ReSharper disable MemberCanBePrivate.Global
+        // ReSharper disable UnusedMethodReturnValue.Global
         public MetricValueOptionsBase EnsureContextLabel(MetricValueOptionsBase options)
+            // ReSharper restore UnusedMethodReturnValue.Global
+            // ReSharper restore MemberCanBePrivate.Global
         {
             if (options.Context.IsMissing())
             {

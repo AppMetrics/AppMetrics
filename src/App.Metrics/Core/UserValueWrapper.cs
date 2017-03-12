@@ -43,7 +43,9 @@ namespace App.Metrics.Core
             }
         }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public bool Equals(UserValueWrapper other) { return string.Equals(UserValue, other.UserValue) && Value == other.Value; }
+        // ReSharper restore MemberCanBePrivate.Global
 
         private sealed class UserValueComparer : IComparer<UserValueWrapper>
         {

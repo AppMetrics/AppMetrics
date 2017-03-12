@@ -1,5 +1,4 @@
 using System;
-using App.Metrics.Core;
 using App.Metrics.Health;
 using FluentAssertions;
 using Xunit;
@@ -50,7 +49,7 @@ namespace App.Metrics.Facts.Health
         [Fact]
         public void message_defaults_to_degraded()
         {
-            var id = Guid.NewGuid();
+            var unused = Guid.NewGuid();
             var result = HealthCheckResult.Degraded();
 
             result.Message.Should().Be("DEGRADED");

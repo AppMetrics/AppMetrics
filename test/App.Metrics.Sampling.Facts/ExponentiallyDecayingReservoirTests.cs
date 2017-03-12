@@ -9,7 +9,7 @@ using App.Metrics.Scheduling.Abstractions;
 using FluentAssertions;
 using Xunit;
 
-namespace App.Metrics.Facts
+namespace App.Metrics.Sampling.Facts
 {
     public class ExponentiallyDecayingReservoirTests
     {

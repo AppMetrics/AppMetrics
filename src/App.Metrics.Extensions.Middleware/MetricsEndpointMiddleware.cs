@@ -11,7 +11,9 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Extensions.Middleware
 {
+    // ReSharper disable ClassNeverInstantiated.Global
     public class MetricsEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
+        // ReSharper restore ClassNeverInstantiated.Global
     {
         private const string MetricsMimeType = "application/vnd.app.metrics.v1.metrics+json";
         private readonly RequestDelegate _next;
@@ -25,22 +27,14 @@ namespace App.Metrics.Extensions.Middleware
             IMetricDataSerializer serializer)
             : base(next, aspNetOptions, loggerFactory, metrics)
         {
-            if (next == null)
-            {
-                throw new ArgumentNullException(nameof(next));
-            }
-
-            if (serializer == null)
-            {
-                throw new ArgumentNullException(nameof(serializer));
-            }
-
-            _serializer = serializer;
-            _next = next;
+            _serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
+            _next = next ?? throw new ArgumentNullException(nameof(next));
             _serializer = serializer;
         }
 
+        // ReSharper disable UnusedMember.Global
         public async Task Invoke(HttpContext context)
+            // ReSharper restore UnusedMember.Global
         {
             if (Options.MetricsEndpointEnabled && Options.MetricsEndpoint.IsPresent() && Options.MetricsEndpoint == context.Request.Path)
             {

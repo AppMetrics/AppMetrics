@@ -18,14 +18,9 @@ namespace Microsoft.AspNetCore.Mvc.Internal
         public MvcRouteTemplateResolver()
             : this(new AspNetCoreRouteTemplateResolver()) { }
 
-        public MvcRouteTemplateResolver(IRouteNameResolver routeNameResolver)
+        private MvcRouteTemplateResolver(IRouteNameResolver routeNameResolver)
         {
-            if (routeNameResolver == null)
-            {
-                throw new ArgumentNullException(nameof(routeNameResolver));
-            }
-
-            _routeNameResolver = routeNameResolver;
+            _routeNameResolver = routeNameResolver ?? throw new ArgumentNullException(nameof(routeNameResolver));
         }
 
         public async Task<string> ResolveMatchingTemplateRouteAsync(RouteData routeData)

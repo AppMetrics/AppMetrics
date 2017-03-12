@@ -9,6 +9,7 @@ using App.Metrics.Meter.Extensions;
 using App.Metrics.Timer;
 using App.Metrics.Timer.Abstractions;
 
+// ReSharper disable MemberCanBePrivate.Global
 namespace App.Metrics.Gauge
 {
     public sealed class HitRatioGauge : RatioGauge
@@ -69,4 +70,6 @@ namespace App.Metrics.Gauge
         public HitRatioGauge(IMeter hitMeter, ITimer totalTimer, Func<MeterValue, double> meterRateFunc)
             : base(() => meterRateFunc(hitMeter.GetValueOrDefault()), () => meterRateFunc(totalTimer.GetValueOrDefault().Rate)) { }
     }
+
+    // ReSharper restore MemberCanBePrivate.Global
 }

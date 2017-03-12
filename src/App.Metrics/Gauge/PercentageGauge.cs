@@ -18,7 +18,9 @@ namespace App.Metrics.Gauge
         /// </summary>
         /// <param name="numerator">The numerator.</param>
         /// <param name="denominator">The denominator.</param>
+        // ReSharper disable MemberCanBeProtected.Global
         public PercentageGauge(Func<double> numerator, Func<double> denominator)
+            // ReSharper restore MemberCanBeProtected.Global
             : base(() =>
             {
                 var ratio = numerator() / denominator();

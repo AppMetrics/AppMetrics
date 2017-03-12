@@ -5,6 +5,7 @@
 using System;
 using App.Metrics.Abstractions.ReservoirSampling;
 
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace App.Metrics.Core.Options
 {
     /// <summary>
@@ -23,4 +24,6 @@ namespace App.Metrics.Core.Options
         /// </remarks>
         public Lazy<IReservoir> Reservoir { get; set; }
     }
+
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 }

@@ -10,7 +10,9 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Extensions.Middleware
 {
+    // ReSharper disable ClassNeverInstantiated.Global
     public class ActiveRequestCounterEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
+        // ReSharper restore ClassNeverInstantiated.Global
     {
         public ActiveRequestCounterEndpointMiddleware(
             RequestDelegate next,

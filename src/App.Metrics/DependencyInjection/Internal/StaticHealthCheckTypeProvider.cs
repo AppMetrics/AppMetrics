@@ -23,7 +23,9 @@ namespace App.Metrics.DependencyInjection.Internal
         /// </summary>
         /// <param name="controllerTypes">The controller types.</param>
         /// <exception cref="System.ArgumentNullException">if controller types is null.</exception>
+        // ReSharper disable MemberCanBePrivate.Global
         public StaticHealthCheckTypeProvider(IEnumerable<TypeInfo> controllerTypes)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             if (controllerTypes == null)
             {

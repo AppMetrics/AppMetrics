@@ -132,7 +132,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services">The application services collection.</param>
         /// <returns>The metrics host builder</returns>
+        // ReSharper disable MemberCanBePrivate.Global
         public static IMetricsHostBuilder AddMetrics(this IServiceCollection services)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             var builder = services.AddMetricsHostBuilder();
 
@@ -220,7 +222,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services">The application services collection.</param>
         /// <returns>The metrics host builder</returns>
+        // ReSharper disable MemberCanBePrivate.Global
         internal static IMetricsHostBuilder AddMetricsHostBuilder(this IServiceCollection services) { return new MetricsHostBuilder(services); }
+        // ReSharper restore MemberCanBePrivate.Global
 #endif
     }
 }

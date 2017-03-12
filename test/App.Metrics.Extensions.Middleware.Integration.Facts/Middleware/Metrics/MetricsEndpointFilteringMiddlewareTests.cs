@@ -18,15 +18,12 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
         public MetricsEndpointFilteringMiddlewareTests(MetricsHostTestFixture<FitleredMetricsEndpointStartup> fixture)
         {
             Client = fixture.Client;
-            Context = fixture.Context;
             JsonMetricsSerializer = fixture.JsonMetricsSerializer;
         }
 
-        public HttpClient Client { get; }
+        private HttpClient Client { get; }
 
-        public IMetrics Context { get; }
-
-        public MetricDataSerializer JsonMetricsSerializer { get; }
+        private MetricDataSerializer JsonMetricsSerializer { get; }
 
         [Fact]
         public async Task can_filter_metrics()

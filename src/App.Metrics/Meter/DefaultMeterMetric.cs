@@ -37,7 +37,9 @@ namespace App.Metrics.Meter
         /// </summary>
         /// <param name="clock">The clock.</param>
         /// <param name="scheduler">The scheduler.</param>
+        // ReSharper disable MemberCanBePrivate.Global
         public DefaultMeterMetric(IClock clock, IScheduler scheduler)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             _clock = clock;
             _startTime = _clock.Nanoseconds;
@@ -69,7 +71,9 @@ namespace App.Metrics.Meter
             Dispose(true);
         }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public void Dispose(bool disposing)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             if (!_disposed)
             {

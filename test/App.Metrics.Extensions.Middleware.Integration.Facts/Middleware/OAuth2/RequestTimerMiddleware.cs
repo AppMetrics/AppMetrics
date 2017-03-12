@@ -19,9 +19,9 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
             Context = fixture.Context;
         }
 
-        public HttpClient Client { get; }
+        private HttpClient Client { get; }
 
-        public IMetrics Context { get; }
+        private IMetrics Context { get; }
 
         [Fact]
         public async Task record_request_times()

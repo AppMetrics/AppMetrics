@@ -10,7 +10,9 @@ namespace App.Metrics.Health
     [AppMetricsExcludeFromCodeCoverage]
     public static class ApplicationHealthMetricRegistry
     {
+        // ReSharper disable MemberCanBePrivate.Global
         public static readonly string Context = "Health";
+        // ReSharper restore MemberCanBePrivate.Global
 
         public static CounterOptions DegradedCheckCounter => new CounterOptions
                                                              {

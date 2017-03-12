@@ -19,12 +19,7 @@ namespace App.Metrics.Core.Internal
 
         internal TestTaskScheduler(IClock clock)
         {
-            if (clock == null)
-            {
-                throw new ArgumentNullException(nameof(clock));
-            }
-
-            _clock = clock;
+            _clock = clock ?? throw new ArgumentNullException(nameof(clock));
             _clock.Advanced += (s, l) => RunIfNeeded();
         }
 

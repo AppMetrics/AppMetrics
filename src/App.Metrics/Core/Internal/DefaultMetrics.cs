@@ -18,7 +18,9 @@ namespace App.Metrics.Core.Internal
     ///     This is the entry point to the application's metrics registry
     /// </remarks>
     /// <seealso cref="IMetrics" />
+    // ReSharper disable ClassNeverInstantiated.Global
     internal sealed class DefaultMetrics : IMetrics
+        // ReSharper restore ClassNeverInstantiated.Global
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultMetrics" /> class.

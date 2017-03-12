@@ -20,9 +20,9 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
             Context = fixture.Context;
         }
 
-        public HttpClient Client { get; }
+        private HttpClient Client { get; }
 
-        public IMetrics Context { get; }
+        private IMetrics Context { get; }
 
         [Fact]
         public async Task can_count_overall_400_401_and_500_error_requests()

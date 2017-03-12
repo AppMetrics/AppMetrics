@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 namespace Microsoft.Extensions.DependencyInjection
 {
     // ReSharper restore CheckNamespace
+
     public static class MetricsHostExtensions
     {
         public static IMetricsHostBuilder AddJsonSerialization(this IMetricsHostBuilder host)

@@ -5,6 +5,8 @@
 using App.Metrics.Core.Abstractions;
 using App.Metrics.Tagging;
 
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace App.Metrics.Counter
 {
     /// <summary>
@@ -42,5 +44,8 @@ namespace App.Metrics.Counter
         public bool ReportSetItems { get; }
 
         public bool ResetOnReporting { get; }
+
+        // ReSharper restore MemberCanBePrivate.Global
+        // ReSharper restore UnusedAutoPropertyAccessor.Global
     }
 }

@@ -54,9 +54,12 @@ namespace App.Metrics.Apdex
             }
         }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public bool Equals(ApdexSnapshot other)
         {
             return FrustratingSize == other.FrustratingSize && SatisfiedSize == other.SatisfiedSize && ToleratingSize == other.ToleratingSize;
         }
+
+        // ReSharper restore MemberCanBePrivate.Global
     }
 }

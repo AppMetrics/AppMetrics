@@ -40,6 +40,8 @@ namespace App.Metrics.Infrastructure
             }
         }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public bool Equals(EnvironmentInfoEntry other) { return string.Equals(Name, other.Name) && string.Equals(Value, other.Value); }
+        // ReSharper restore MemberCanBePrivate.Global
     }
 }

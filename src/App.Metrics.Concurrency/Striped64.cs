@@ -39,7 +39,7 @@ namespace App.Metrics.Concurrency
         /// </summary>
         /// <param name="instance">instance for whch to calculate the size.</param>
         /// <returns>The size of the instance in bytes.</returns>
-        public static int GetEstimatedFootprintInBytes(Striped64 instance)
+        protected static int GetEstimatedFootprintInBytes(Striped64 instance)
         {
             var cells = instance.Cells;
             var cellsLength = cells?.Length ?? 0;
@@ -203,7 +203,7 @@ namespace App.Metrics.Concurrency
 
         protected sealed class Cell
         {
-            public static int SizeInBytes = PaddedAtomicLong.SizeInBytes + 16;
+            public static readonly int SizeInBytes = PaddedAtomicLong.SizeInBytes + 16;
 
             public PaddedAtomicLong Value;
 

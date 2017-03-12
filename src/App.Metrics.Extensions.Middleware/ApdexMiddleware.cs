@@ -12,7 +12,9 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Extensions.Middleware
 {
+    // ReSharper disable ClassNeverInstantiated.Global
     public class ApdexMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
+        // ReSharper restore ClassNeverInstantiated.Global
     {
         private const string ApdexItemsKey = "__App.Metrics.Apdex__";
         private readonly IApdex _apdexTracking;

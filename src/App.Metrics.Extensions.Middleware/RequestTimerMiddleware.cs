@@ -12,7 +12,10 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Extensions.Middleware
 {
+    // ReSharper disable ClassNeverInstantiated.Global
+
     public class RequestTimerMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
+        // ReSharper restore ClassNeverInstantiated.Global
     {
         private const string TimerItemsKey = "__App.Metrics.RequestTimer__";
         private readonly ITimer _requestTimer;
@@ -29,7 +32,9 @@ namespace App.Metrics.Extensions.Middleware
                                    .Instance(HttpRequestMetricsRegistry.Timers.OverallHttpRequestTransactions);
         }
 
+        // ReSharper disable UnusedMember.Global
         public async Task Invoke(HttpContext context)
+            // ReSharper restore UnusedMember.Global
         {
             if (PerformMetric(context))
             {
