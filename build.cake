@@ -283,6 +283,7 @@ Task("PublishTestResults")
 			Context.Information("Moving " + filePath.FullPath + " to " + testResultsDir);
 
 			MoveFiles(filePath.FullPath, testResultsDir);
+			System.IO.File.Move(testResultsDir + @"\" + filePath.GetFilename(), testResultsDir + @"\" + folderName + ".trx");
 		}
 	}	
 });
