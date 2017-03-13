@@ -261,6 +261,11 @@ Task("PublishTestResults")
 	.IsDependentOn("RunTests")
     .Does(() =>
 {
+	if (!IsRunningOnWindows())
+	{
+		return;
+	}
+
 	CreateDirectory(testResultsDir);
 
 	var projects = GetFiles("./test/**/*.csproj");
