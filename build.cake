@@ -251,8 +251,35 @@ Task("RunTestsWithOpenCover")
 		openCoverSettings.ExcludeByAttribute(excludeFromCoverage);
 		openCoverSettings.ExcludeByFile(openCoverExcludeFile);
 
-        OpenCover(testAction, testOCoverageOutputFilePath, openCoverSettings);					
+		OpenCover(testAction, testOCoverageOutputFilePath, openCoverSettings);			
     }
+});
+
+Task("PublishTestResults")
+	.IsDependentOn("RunTestsWithDotCover")
+	.IsDependentOn("RunTestsWithOpenCover")
+	.IsDependentOn("RunTests")
+    .Does(() =>
+{
+	CreateDirectory(testResultsDir);
+
+	var projects = GetFiles("./test/**/*.csproj");
+	
+	foreach (var project in projects)
+    {		
+		var folderName = new System.IO.DirectoryInfo(System.IO.Path.GetDirectoryName(project.ToString())).Name;		
+
+		IEnumerable<FilePath> filePaths = GetFiles(System.IO.Path.GetDirectoryName(project.ToString()) + "/TestResults" + "/*.trx");
+
+		Context.Information("Found " + filePaths.Count() + " .trx files");
+
+		foreach(var filePath in filePaths)
+		{
+			Context.Information("Moving " + filePath.FullPath + " to " + testResultsDir);
+
+			MoveFiles(filePath.FullPath, testResultsDir);
+		}
+	}	
 });
 
 Task("RunTestsWithDotCover")
@@ -261,8 +288,7 @@ Task("RunTestsWithDotCover")
     .Does(() =>
 {
 	var projects = GetFiles("./test/**/*.csproj");
-
-    CreateDirectory(testResultsDir);
+    
     CreateDirectory(coverageResultsDir);
 
     Context.Information("Found " + projects.Count() + " projects");
@@ -330,18 +356,14 @@ Task("PublishCoverage")
 
 Task("Default")	
     .IsDependentOn("Build")
-	.IsDependentOn("RunTestsWithOpenCover")
-	.IsDependentOn("RunTestsWithDotCover")
-    .IsDependentOn("RunTests")
+	.IsDependentOn("PublishTestResults")	
     .IsDependentOn("Pack")
 	.IsDependentOn("HtmlCoverageReport")
 	.IsDependentOn("RunInspectCode");	
 
 Task("AppVeyor")
     .IsDependentOn("Build")
-	.IsDependentOn("RunTestsWithOpenCover")
-	.IsDependentOn("RunTestsWithDotCover")
-    .IsDependentOn("RunTests")
+	.IsDependentOn("PublishTestResults")	
     .IsDependentOn("Pack")
 	.IsDependentOn("HtmlCoverageReport")
 	.IsDependentOn("RunInspectCode")	

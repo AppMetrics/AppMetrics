@@ -67,6 +67,7 @@ namespace App.Metrics.Facts.Utils
             scheduledTask.Status.Should().Be(TaskStatus.RanToCompletion);
         }
 
+        //TODO: What did this test start to cause the test runner to hang after upgraded to VS2017
         //[Fact]
         //public void executes_scheduled_action_muliple_times()
         //{
