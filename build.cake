@@ -260,31 +260,29 @@ Task("PublishTestResults")
 	.IsDependentOn("RunTests")
     .Does(() =>
 {
-	if (!IsRunningOnWindows())
-	{
-		return;
-	}
+	if (IsRunningOnWindows())
+	{		
+		CreateDirectory(testResultsDir);
 
-	CreateDirectory(testResultsDir);
-
-	var projects = GetFiles("./test/**/*.csproj");
+		var projects = GetFiles("./test/**/*.csproj");
 	
-	foreach (var project in projects)
-    {		
-		var folderName = new System.IO.DirectoryInfo(System.IO.Path.GetDirectoryName(project.ToString())).Name;		
+		foreach (var project in projects)
+		{		
+			var folderName = new System.IO.DirectoryInfo(System.IO.Path.GetDirectoryName(project.ToString())).Name;		
 
-		IEnumerable<FilePath> filePaths = GetFiles(System.IO.Path.GetDirectoryName(project.ToString()) + "/TestResults" + "/*.trx");
+			IEnumerable<FilePath> filePaths = GetFiles(System.IO.Path.GetDirectoryName(project.ToString()) + "/TestResults" + "/*.trx");
 
-		Context.Information("Found " + filePaths.Count() + " .trx files");
+			Context.Information("Found " + filePaths.Count() + " .trx files");
 
-		foreach(var filePath in filePaths)
-		{
-			Context.Information("Moving " + filePath.FullPath + " to " + testResultsDir);
+			foreach(var filePath in filePaths)
+			{
+				Context.Information("Moving " + filePath.FullPath + " to " + testResultsDir);
 
-			MoveFiles(filePath.FullPath, testResultsDir);
-			MoveFile(testResultsDir + @"\" + filePath.GetFilename(), testResultsDir + @"\" + folderName + ".trx");
-		}
-	}	
+				MoveFiles(filePath.FullPath, testResultsDir);
+				MoveFile(testResultsDir + "/" + filePath.GetFilename(), testResultsDir + "/" + folderName + ".trx");
+			}
+		}	
+	}
 });
 
 Task("RunTestsWithDotCover")
