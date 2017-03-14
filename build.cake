@@ -1,7 +1,6 @@
 #addin Cake.Coveralls
 #addin Cake.ReSharperReports
 #addin Cake.Incubator
-#addin Cake.Compression
 
 #tool "nuget:?package=xunit.runner.console"
 #tool "nuget:?package=JetBrains.dotCover.CommandLineTools"
@@ -64,7 +63,9 @@ var excludeFromCoverage			= "*.AppMetricsExcludeFromCodeCoverage*";
 Task("Clean")
     .Does(() =>
 {
-    CleanDirectory(artifactsDir);    
+    CleanDirectory(artifactsDir); 
+	CleanDirectory(coverageResultsDir);
+	CleanDirectory(testResultsDir);
 });
 
 Task("Restore")
@@ -165,7 +166,6 @@ Task("RunTests")
 {
     var projects = GetFiles("./test/**/*.csproj");
 
-    CreateDirectory(testResultsDir);
     CreateDirectory(coverageResultsDir);
 
     Context.Information("Found " + projects.Count() + " projects");
@@ -221,7 +221,6 @@ Task("RunTestsWithOpenCover")
 {
 	var projects = GetFiles("./test/**/*.csproj");
 
-    CreateDirectory(testResultsDir);
     CreateDirectory(coverageResultsDir);
 
     Context.Information("Found " + projects.Count() + " projects");
