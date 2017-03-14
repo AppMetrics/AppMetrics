@@ -1,4 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<!--EXTERNAL_PROPERTIES: TargetFramework-->
+<!--EXTERNAL_PROPERTIES: DefineConstants-->
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <Description>App Metrics Formattor, formatting metrics data to JSON using Json.NET</Description>
@@ -16,13 +18,12 @@
     <PackageProjectUrl>https://alhardy.github.io/app-metrics-docs/getting-started/reporting/index.html#text-file-reporter</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/alhardy/AppMetrics/blob/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>git://github.com/alhardy/AppMetrics</RepositoryUrl>
-    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.6' ">$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
+    <RepositoryUrl>git://github.com/alhardy/AppMetrics</RepositoryUrl>    
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
-	<CodeAnalysisRuleSet>..\..\AppMetrics.ruleset</CodeAnalysisRuleSet>
+	  <CodeAnalysisRuleSet>..\..\AppMetrics.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>

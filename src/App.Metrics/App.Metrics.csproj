@@ -1,4 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<!--EXTERNAL_PROPERTIES: TargetFramework-->
+<!--EXTERNAL_PROPERTIES: DefineConstants-->
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <Description>App Metrics is an open-source and cross-platform .NET library used to record metrics within an application. Abstracts away the underlaying repository of your Metrics for example InfluxDB, Graphite, Elasticsearch etc, by sampling and aggregating in memory and providing extensibility points to flush metrics to a repository. App Metrics provides various metric types to measure things such as the rate of requests, counting the number of user logins over time, measure the time taken to execute a database query, measure the amount of free memory and so on. Metrics types supported are Gauges, Counters, Meters, Histograms and Timers. Also provides a health checking system allowing you to monitor the health of your application through user defined checks.</Description>
@@ -6,7 +8,7 @@
     <AssemblyTitle>App.Metrics</AssemblyTitle>
     <Authors>Allan Hardy</Authors>
     <TargetFrameworks>netstandard1.6;net452</TargetFrameworks>
-    <NoWarn>1701;1702;1705;CS1591;CS1570</NoWarn>
+    <NoWarn>$(NoWarn);1701;1702;1705;CS1591;CS1570</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>App.Metrics</AssemblyName>
@@ -17,13 +19,12 @@
     <PackageLicenseUrl>https://github.com/alhardy/AppMetrics/blob/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>git://github.com/alhardy/AppMetrics</RepositoryUrl>
-    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.6' ">$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
-	<CodeAnalysisRuleSet>..\..\AppMetrics.ruleset</CodeAnalysisRuleSet>
-	<DebugType>full</DebugType>
+	  <CodeAnalysisRuleSet>..\..\AppMetrics.ruleset</CodeAnalysisRuleSet>
+	  <DebugType>full</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
