@@ -10,14 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.travis.yml = .travis.yml
 		AppMetrics.ruleset = AppMetrics.ruleset
 		appveyor.yml = appveyor.yml
-		build.cake = build.cake
-		build.ps1 = build.ps1
-		build.sh = build.sh
-		build_travis.sh = build_travis.sh
-		CONTRIBUTING.md = CONTRIBUTING.md
-		GitReleaseManager.yaml = GitReleaseManager.yaml
 		global.json = global.json
-		ISSUE_TEMPLATE.md = ISSUE_TEMPLATE.md
 		stylecop.json = stylecop.json
 	EndProjectSection
 EndProject
@@ -50,6 +43,24 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Benchmarks", "benchmarks\App.Metrics.Benchmarks\App.Metrics.Benchmarks.csproj", "{A94935F7-D2B8-47EF-A775-F3AD8338D0AD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Benchmarks.Runner", "benchmarks\App.Metrics.Benchmarks.Runner\App.Metrics.Benchmarks.Runner.csproj", "{65ADCB85-A4F1-4600-A09B-496F71467ED3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cake", "Cake", "{99DA9961-5DF1-4EA9-B37A-BE346449F512}"
+	ProjectSection(SolutionItems) = preProject
+		build.cake = build.cake
+		build.ps1 = build.ps1
+		build.sh = build.sh
+		build_travis.sh = build_travis.sh
+		tools\packages.config = tools\packages.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Git", "Git", "{3B3721C0-41F4-48D5-92AC-0AE97D94031D}"
+	ProjectSection(SolutionItems) = preProject
+		CONTRIBUTING.md = CONTRIBUTING.md
+		GitReleaseManager.yaml = GitReleaseManager.yaml
+		ISSUE_TEMPLATE.md = ISSUE_TEMPLATE.md
+		PULL_REQUEST_TEMPLATE.md = PULL_REQUEST_TEMPLATE.md
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,5 +138,7 @@ Global
 		{E228403B-8087-4089-8B75-82A662985653} = {DD2E4647-7125-4CE3-9BA5-B45A26113A31}
 		{A94935F7-D2B8-47EF-A775-F3AD8338D0AD} = {A335612E-C4C6-4AF4-98A9-EB9FF40CA258}
 		{65ADCB85-A4F1-4600-A09B-496F71467ED3} = {A335612E-C4C6-4AF4-98A9-EB9FF40CA258}
+		{99DA9961-5DF1-4EA9-B37A-BE346449F512} = {31A4DDB1-952E-4EED-96EF-29C669279A86}
+		{3B3721C0-41F4-48D5-92AC-0AE97D94031D} = {31A4DDB1-952E-4EED-96EF-29C669279A86}
 	EndGlobalSection
 EndGlobal

@@ -6,6 +6,7 @@ environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   CoverWith: OpenCover
+  PreReleaseSuffix: stable
 build_script:
 - ps: .\build.ps1 -Target AppVeyor
 test: off
