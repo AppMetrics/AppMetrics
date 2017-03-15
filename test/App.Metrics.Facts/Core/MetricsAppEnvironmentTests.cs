@@ -13,7 +13,11 @@ namespace App.Metrics.Facts.Core
 
     public class MetricsAppEnvironmentTests
     {
+#if NET452
         [Fact(Skip = "broken after vs2017 upgrade")]
+#else
+        [Fact]
+#endif
         public void can_get_required_env_params()
         {
 #if NET452
