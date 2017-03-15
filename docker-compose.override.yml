@@ -1,0 +1,8 @@
+version: '2'
+
+services:
+  app.metrics.sandbox:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
