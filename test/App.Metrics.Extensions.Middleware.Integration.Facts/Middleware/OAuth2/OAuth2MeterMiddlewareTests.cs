@@ -43,20 +43,20 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
                 metricName);
 
             var errorMeterClient1 = GetMeterValue(
-                "Http Error Requests|route:GET api/test/oauth/error/{clientid},http_status_code:500,client_id:client1");
-            var errorTimerClient1 = GetTimerValue("Http Request Transactions|route:GET api/test/oauth/error/{clientid},client_id:client1");
+                "Error Rate Per Endpoint And Status Code|route:GET api/test/oauth/error/{clientid},http_status_code:500,client_id:client1");
+            var errorTimerClient1 = GetTimerValue("Transactions Per Endpoint|route:GET api/test/oauth/error/{clientid},client_id:client1");
 
             errorMeterClient1.Count.Should().Be(1);
             errorTimerClient1.Histogram.Count.Should().Be(1);
 
             var errorMeterClient2 = GetMeterValue(
-                "Http Error Requests|route:GET api/test/oauth/error/{clientid},http_status_code:500,client_id:client2");
-            var errorTimerClient2 = GetTimerValue("Http Request Transactions|route:GET api/test/oauth/error/{clientid},client_id:client2");
+                "Error Rate Per Endpoint And Status Code|route:GET api/test/oauth/error/{clientid},http_status_code:500,client_id:client2");
+            var errorTimerClient2 = GetTimerValue("Transactions Per Endpoint|route:GET api/test/oauth/error/{clientid},client_id:client2");
 
             errorMeterClient2.Count.Should().Be(2);
             errorTimerClient2.Histogram.Count.Should().Be(2);
 
-            var okTimerClient1 = GetTimerValue("Http Request Transactions|route:GET api/test/oauth/{clientid},client_id:client1");
+            var okTimerClient1 = GetTimerValue("Transactions Per Endpoint|route:GET api/test/oauth/{clientid},client_id:client1");
 
             okTimerClient1.Histogram.Count.Should().Be(2);
         }

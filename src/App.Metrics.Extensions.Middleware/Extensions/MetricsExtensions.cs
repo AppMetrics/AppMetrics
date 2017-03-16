@@ -127,8 +127,8 @@ namespace App.Metrics
             var statuCodeTags = clientId.IsMissing()
                 ? new MetricTags(new[] { Constants.DefaultTagKeys.Route, Constants.DefaultTagKeys.HttpStatusCode }, new[] { routeTemplate, httpStatusCode.ToString() })
                 : new MetricTags(
-                    new[] { Constants.DefaultTagKeys.Route, Constants.DefaultTagKeys.ClientId },
-                    new[] { routeTemplate, clientId });
+                    new[] { Constants.DefaultTagKeys.Route, Constants.DefaultTagKeys.HttpStatusCode, Constants.DefaultTagKeys.ClientId },
+                    new[] { routeTemplate, httpStatusCode.ToString(), clientId });
 
             metrics.Measure.Meter.Mark(
                 HttpRequestMetricsRegistry.Meters.EndpointErrorRequestPerStatusCodeRate,

@@ -14,6 +14,7 @@ namespace App.Metrics.Sandbox.JustForTesting
 
         public static void Run(CancellationToken token)
         {
+            var randomBufferGenerator = new RandomBufferGenerator(50000);
             var scheduler = new DefaultTaskScheduler();
             var httpClient = new HttpClient
                              {
@@ -44,6 +45,25 @@ namespace App.Metrics.Sandbox.JustForTesting
                         var satisfied = httpClient.GetAsync("api/randomstatuscode", token);                        
 
                         await Task.WhenAll(satisfied);
+                    },
+                    token),
+                token);
+
+            Task.Run(
+                () => scheduler.Interval(
+                    TimeSpan.FromSeconds(2),
+                    TaskCreationOptions.None,
+                    async () =>
+                    {
+                        var putBytes = new ByteArrayContent(randomBufferGenerator.GenerateBufferFromSeed());
+                        var putFormData = new MultipartFormDataContent { { putBytes, "put-file", "rnd-put" } };
+                        var putRequest = httpClient.PutAsync("api/file", putFormData, token);
+
+                        var postBytes = new ByteArrayContent(randomBufferGenerator.GenerateBufferFromSeed());
+                        var postFormData = new MultipartFormDataContent { { postBytes, "post-file", "rnd-post" } };
+                        var postRequest = httpClient.PostAsync("api/file", postFormData, token);
+
+                        await Task.WhenAll(putRequest, postRequest);
                     },
                     token),
                 token);

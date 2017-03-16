@@ -140,7 +140,7 @@
     },
     "refresh": "5s",
     "schemaVersion": 13,
-    "version": 12,
+    "version": 15,
     "links": [],
     "gnetId": null,
     "rows": [
@@ -1505,10 +1505,303 @@
         },
         {
             "title": "Dashboard Row",
-            "panels": [],
+            "panels": [
+                {
+                    "id": 14,
+                    "title": "Post Request Size",
+                    "error": false,
+                    "span": 6,
+                    "editable": true,
+                    "type": "graph",
+                    "targets": [
+                        {
+                            "policy": "default",
+                            "dsType": "influxdb",
+                            "resultFormat": "time_series",
+                            "tags": [],
+                            "groupBy": [
+                                {
+                                    "type": "time",
+                                    "params": [
+                                        "$interval"
+                                    ]
+                                },
+                                {
+                                    "type": "fill",
+                                    "params": [
+                                        "null"
+                                    ]
+                                }
+                            ],
+                            "select": [
+                                [
+                                    {
+                                        "type": "field",
+                                        "params": [
+                                            "p95"
+                                        ]
+                                    },
+                                    {
+                                        "type": "last",
+                                        "params": []
+                                    },
+                                    {
+                                        "type": "alias",
+                                        "params": [
+                                            "95th percentile"
+                                        ]
+                                    }
+                                ],
+                                [
+                                    {
+                                        "type": "field",
+                                        "params": [
+                                            "p98"
+                                        ]
+                                    },
+                                    {
+                                        "type": "last",
+                                        "params": []
+                                    },
+                                    {
+                                        "type": "alias",
+                                        "params": [
+                                            "98th percentile"
+                                        ]
+                                    }
+                                ],
+                                [
+                                    {
+                                        "type": "field",
+                                        "params": [
+                                            "p99"
+                                        ]
+                                    },
+                                    {
+                                        "type": "last",
+                                        "params": []
+                                    },
+                                    {
+                                        "type": "alias",
+                                        "params": [
+                                            "99th percentile"
+                                        ]
+                                    }
+                                ]
+                            ],
+                            "refId": "A",
+                            "measurement": "application.httprequests__post_size",
+                            "alias": "$col"
+                        }
+                    ],
+                    "datasource": "AppMetricsSandbox",
+                    "renderer": "flot",
+                    "yaxes": [
+                        {
+                            "label": null,
+                            "show": true,
+                            "logBase": 1,
+                            "min": null,
+                            "max": null,
+                            "format": "short"
+                        },
+                        {
+                            "label": null,
+                            "show": true,
+                            "logBase": 1,
+                            "min": null,
+                            "max": null,
+                            "format": "short"
+                        }
+                    ],
+                    "xaxis": {
+                        "show": true,
+                        "mode": "time",
+                        "name": null,
+                        "values": []
+                    },
+                    "lines": true,
+                    "fill": 1,
+                    "linewidth": 1,
+                    "points": false,
+                    "pointradius": 5,
+                    "bars": false,
+                    "stack": false,
+                    "percentage": false,
+                    "legend": {
+                        "show": true,
+                        "values": false,
+                        "min": false,
+                        "max": false,
+                        "current": false,
+                        "total": false,
+                        "avg": false
+                    },
+                    "nullPointMode": "connected",
+                    "steppedLine": false,
+                    "tooltip": {
+                        "value_type": "individual",
+                        "shared": true,
+                        "sort": 0,
+                        "msResolution": false
+                    },
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "aliasColors": {},
+                    "seriesOverrides": [],
+                    "thresholds": [],
+                    "links": []
+                },
+                {
+                    "id": 15,
+                    "title": "Put Request Size",
+                    "error": false,
+                    "span": 6,
+                    "editable": true,
+                    "type": "graph",
+                    "targets": [
+                        {
+                            "policy": "default",
+                            "dsType": "influxdb",
+                            "resultFormat": "time_series",
+                            "tags": [],
+                            "groupBy": [
+                                {
+                                    "type": "time",
+                                    "params": [
+                                        "$interval"
+                                    ]
+                                },
+                                {
+                                    "type": "fill",
+                                    "params": [
+                                        "null"
+                                    ]
+                                }
+                            ],
+                            "select": [
+                                [
+                                    {
+                                        "type": "field",
+                                        "params": [
+                                            "p95"
+                                        ]
+                                    },
+                                    {
+                                        "type": "last",
+                                        "params": []
+                                    },
+                                    {
+                                        "type": "alias",
+                                        "params": [
+                                            "95th percentile"
+                                        ]
+                                    }
+                                ],
+                                [
+                                    {
+                                        "type": "field",
+                                        "params": [
+                                            "p98"
+                                        ]
+                                    },
+                                    {
+                                        "type": "last",
+                                        "params": []
+                                    },
+                                    {
+                                        "type": "alias",
+                                        "params": [
+                                            "98th percentile"
+                                        ]
+                                    }
+                                ],
+                                [
+                                    {
+                                        "type": "field",
+                                        "params": [
+                                            "p99"
+                                        ]
+                                    },
+                                    {
+                                        "type": "last",
+                                        "params": []
+                                    },
+                                    {
+                                        "type": "alias",
+                                        "params": [
+                                            "99th percentile"
+                                        ]
+                                    }
+                                ]
+                            ],
+                            "refId": "A",
+                            "measurement": "application.httprequests__put_size",
+                            "alias": "$col"
+                        }
+                    ],
+                    "datasource": "AppMetricsSandbox",
+                    "renderer": "flot",
+                    "yaxes": [
+                        {
+                            "label": null,
+                            "show": true,
+                            "logBase": 1,
+                            "min": null,
+                            "max": null,
+                            "format": "short"
+                        },
+                        {
+                            "label": null,
+                            "show": true,
+                            "logBase": 1,
+                            "min": null,
+                            "max": null,
+                            "format": "short"
+                        }
+                    ],
+                    "xaxis": {
+                        "show": true,
+                        "mode": "time",
+                        "name": null,
+                        "values": []
+                    },
+                    "lines": true,
+                    "fill": 1,
+                    "linewidth": 1,
+                    "points": false,
+                    "pointradius": 5,
+                    "bars": false,
+                    "stack": false,
+                    "percentage": false,
+                    "legend": {
+                        "show": true,
+                        "values": false,
+                        "min": false,
+                        "max": false,
+                        "current": false,
+                        "total": false,
+                        "avg": false
+                    },
+                    "nullPointMode": "connected",
+                    "steppedLine": false,
+                    "tooltip": {
+                        "value_type": "individual",
+                        "shared": true,
+                        "sort": 0,
+                        "msResolution": false
+                    },
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "aliasColors": {},
+                    "seriesOverrides": [],
+                    "thresholds": [],
+                    "links": []
+                }
+            ],
             "showTitle": false,
             "titleSize": "h6",
-            "height": 250,
+            "height": "300",
             "repeat": null,
             "repeatRowId": null,
             "repeatIteration": null,

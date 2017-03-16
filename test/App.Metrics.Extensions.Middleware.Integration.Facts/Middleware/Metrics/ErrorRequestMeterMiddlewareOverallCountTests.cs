@@ -37,40 +37,40 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
 
             var meterValueBad = Context.Snapshot.GetMeterValue(
                 HttpRequestMetricsRegistry.ContextName,
-                "Http Error Requests|route:GET api/test/bad,http_status_code:400");            
+                "Error Rate Per Endpoint And Status Code|route:GET api/test/bad,http_status_code:400");            
 
             var timerValueBad = Context.Snapshot.GetTimerValue(
                 HttpRequestMetricsRegistry.ContextName,
-                "Http Request Transactions|route:GET api/test/bad");
+                "Transactions Per Endpoint|route:GET api/test/bad");
 
             meterValueBad.Count.Should().Be(3L);
             timerValueBad.Histogram.Count.Should().Be(3L);
 
             var meterValueError = Context.Snapshot.GetMeterValue(
                 HttpRequestMetricsRegistry.ContextName,
-                "Http Error Requests|route:GET api/test/error,http_status_code:500");
+                "Error Rate Per Endpoint And Status Code|route:GET api/test/error,http_status_code:500");
 
             var timerValueError = Context.Snapshot.GetTimerValue(
                 HttpRequestMetricsRegistry.ContextName,
-                "Http Request Transactions|route:GET api/test/error");
+                "Transactions Per Endpoint|route:GET api/test/error");
 
             meterValueError.Count.Should().Be(2L);
             timerValueError.Histogram.Count.Should().Be(2L);
 
             var meterValueUnauth = Context.Snapshot.GetMeterValue(
                 HttpRequestMetricsRegistry.ContextName,
-                "Http Error Requests|route:GET api/test/unauth,http_status_code:401");
+                "Error Rate Per Endpoint And Status Code|route:GET api/test/unauth,http_status_code:401");
 
             var timerValueUnauth = Context.Snapshot.GetTimerValue(
                 HttpRequestMetricsRegistry.ContextName,
-                "Http Request Transactions|route:GET api/test/unauth");
+                "Transactions Per Endpoint|route:GET api/test/unauth");
 
             meterValueUnauth.Count.Should().Be(1L);
             timerValueUnauth.Histogram.Count.Should().Be(1L);
 
            var timerValueOk = Context.Snapshot.GetTimerValue(
                 HttpRequestMetricsRegistry.ContextName,
-                "Http Request Transactions|route:GET api/test");
+                "Transactions Per Endpoint|route:GET api/test");
 
             timerValueOk.Histogram.Count.Should().Be(1L);
         }
