@@ -41,25 +41,46 @@
     "templating": {
         "list": [
             {
-                "auto": false,
-                "auto_count": 30,
-                "auto_min": "10s",
+                "allValue": null,
                 "current": {
-                    "text": "30s",
-                    "value": "30s"
+                    "text": "All",
+                    "value": "$__all"
                 },
+                "datasource": "AppMetricsSandbox",
                 "hide": 0,
+                "includeAll": true,
                 "label": null,
+                "multi": true,
+                "name": "environment",
+                "options": [],
+                "query": "SHOW TAG VALUES WITH KEY = \"env\"",
+                "refresh": 2,
+                "regex": "",
+                "sort": 0,
+                "tagValuesQuery": null,
+                "tagsQuery": null,
+                "type": "query"
+            },
+            {
+                "type": "interval",
                 "name": "summarize",
+                "hide": 0,
+                "label": "summarize",
+                "refresh": 2,
                 "options": [
                     {
-                        "text": "30s",
-                        "value": "30s",
+                        "text": "5s",
+                        "value": "5s",
                         "selected": true
                     },
                     {
-                        "text": "1m",
-                        "value": "1m",
+                        "text": "10s",
+                        "value": "10s",
+                        "selected": false
+                    },
+                    {
+                        "text": "30s1m",
+                        "value": "30s1m",
                         "selected": false
                     },
                     {
@@ -108,30 +129,14 @@
                         "selected": false
                     }
                 ],
-                "query": "30s,1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
-                "refresh": 2,
-                "type": "interval"
-            },
-            {
-                "allValue": null,
                 "current": {
-                    "text": "All",
-                    "value": "$__all"
+                    "text": "5s",
+                    "value": "5s"
                 },
-                "datasource": "AppMetricsSandbox",
-                "hide": 0,
-                "includeAll": true,
-                "label": null,
-                "multi": true,
-                "name": "env",
-                "options": [],
-                "query": "SHOW TAG VALUES WITH KEY = \"env\"",
-                "refresh": 2,
-                "regex": "",
-                "sort": 0,
-                "tagValuesQuery": null,
-                "tagsQuery": null,
-                "type": "query"
+                "query": "5s,10s,30s1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
+                "auto": false,
+                "auto_min": "10s",
+                "auto_count": 30
             }
         ]
     },
@@ -140,7 +145,7 @@
     },
     "refresh": "5s",
     "schemaVersion": 13,
-    "version": 15,
+    "version": 19,
     "links": [],
     "gnetId": null,
     "rows": [
@@ -354,7 +359,7 @@
                     "fill": 1,
                     "height": "",
                     "id": 9,
-                    "interval": "$summarize",
+                    "interval": "",
                     "legend": {
                         "alignAsTable": true,
                         "avg": false,
@@ -464,7 +469,7 @@
                     "fill": 1,
                     "height": "",
                     "id": 7,
-                    "interval": "$summarize",
+                    "interval": "",
                     "legend": {
                         "avg": false,
                         "current": false,
@@ -498,7 +503,7 @@
                                 },
                                 {
                                     "params": [
-                                        "0"
+                                        "null"
                                     ],
                                     "type": "fill"
                                 }
@@ -602,7 +607,7 @@
                     "error": false,
                     "fill": 1,
                     "id": 1,
-                    "interval": "$summarize",
+                    "interval": "",
                     "legend": {
                         "avg": false,
                         "current": true,
@@ -755,7 +760,7 @@
                     "error": false,
                     "fill": 1,
                     "id": 2,
-                    "interval": "$summarize",
+                    "interval": "",
                     "legend": {
                         "alignAsTable": false,
                         "avg": false,
@@ -1195,7 +1200,7 @@
                     "error": false,
                     "fill": 2,
                     "id": 13,
-                    "interval": "$summarize",
+                    "interval": "",
                     "legend": {
                         "avg": false,
                         "current": false,
@@ -1319,7 +1324,7 @@
                     "fill": 1,
                     "height": "250px",
                     "id": 3,
-                    "interval": "$summarize",
+                    "interval": "",
                     "legend": {
                         "alignAsTable": true,
                         "avg": false,
@@ -1361,14 +1366,14 @@
                                     "type": "tag"
                                 },
                                 {
-                                    "type": "tag",
                                     "params": [
                                         "route"
-                                    ]
+                                    ],
+                                    "type": "tag"
                                 },
                                 {
                                     "params": [
-                                        "0"
+                                        "null"
                                     ],
                                     "type": "fill"
                                 }
@@ -1428,7 +1433,8 @@
                             "min": null,
                             "show": true
                         }
-                    ]
+                    ],
+                    "decimals": 2
                 },
                 {
                     "aliasColors": {},
@@ -1507,296 +1513,302 @@
             "title": "Dashboard Row",
             "panels": [
                 {
-                    "id": 14,
-                    "title": "Post Request Size",
-                    "error": false,
-                    "span": 6,
+                    "aliasColors": {},
+                    "bars": false,
+                    "datasource": "AppMetricsSandbox",
                     "editable": true,
-                    "type": "graph",
+                    "error": false,
+                    "fill": 1,
+                    "id": 14,
+                    "legend": {
+                        "avg": false,
+                        "current": true,
+                        "max": false,
+                        "min": false,
+                        "show": true,
+                        "total": false,
+                        "values": true,
+                        "alignAsTable": true,
+                        "rightSide": true,
+                        "hideEmpty": false
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "connected",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
                     "targets": [
                         {
-                            "policy": "default",
+                            "alias": "$col",
                             "dsType": "influxdb",
-                            "resultFormat": "time_series",
-                            "tags": [],
                             "groupBy": [
                                 {
-                                    "type": "time",
                                     "params": [
                                         "$interval"
-                                    ]
+                                    ],
+                                    "type": "time"
                                 },
                                 {
-                                    "type": "fill",
                                     "params": [
                                         "null"
-                                    ]
+                                    ],
+                                    "type": "fill"
                                 }
                             ],
+                            "measurement": "application.httprequests__post_size",
+                            "policy": "default",
+                            "refId": "A",
+                            "resultFormat": "time_series",
                             "select": [
                                 [
                                     {
-                                        "type": "field",
                                         "params": [
                                             "p95"
-                                        ]
+                                        ],
+                                        "type": "field"
                                     },
                                     {
-                                        "type": "last",
-                                        "params": []
+                                        "params": [],
+                                        "type": "last"
                                     },
                                     {
-                                        "type": "alias",
                                         "params": [
                                             "95th percentile"
-                                        ]
+                                        ],
+                                        "type": "alias"
                                     }
                                 ],
                                 [
                                     {
-                                        "type": "field",
                                         "params": [
                                             "p98"
-                                        ]
+                                        ],
+                                        "type": "field"
                                     },
                                     {
-                                        "type": "last",
-                                        "params": []
+                                        "params": [],
+                                        "type": "last"
                                     },
                                     {
-                                        "type": "alias",
                                         "params": [
                                             "98th percentile"
-                                        ]
+                                        ],
+                                        "type": "alias"
                                     }
                                 ],
                                 [
                                     {
-                                        "type": "field",
                                         "params": [
                                             "p99"
-                                        ]
+                                        ],
+                                        "type": "field"
                                     },
                                     {
-                                        "type": "last",
-                                        "params": []
+                                        "params": [],
+                                        "type": "last"
                                     },
                                     {
-                                        "type": "alias",
                                         "params": [
                                             "99th percentile"
-                                        ]
+                                        ],
+                                        "type": "alias"
                                     }
                                 ]
                             ],
-                            "refId": "A",
-                            "measurement": "application.httprequests__post_size",
-                            "alias": "$col"
+                            "tags": []
                         }
                     ],
-                    "datasource": "AppMetricsSandbox",
-                    "renderer": "flot",
-                    "yaxes": [
-                        {
-                            "label": null,
-                            "show": true,
-                            "logBase": 1,
-                            "min": null,
-                            "max": null,
-                            "format": "short"
-                        },
-                        {
-                            "label": null,
-                            "show": true,
-                            "logBase": 1,
-                            "min": null,
-                            "max": null,
-                            "format": "short"
-                        }
-                    ],
-                    "xaxis": {
-                        "show": true,
-                        "mode": "time",
-                        "name": null,
-                        "values": []
-                    },
-                    "lines": true,
-                    "fill": 1,
-                    "linewidth": 1,
-                    "points": false,
-                    "pointradius": 5,
-                    "bars": false,
-                    "stack": false,
-                    "percentage": false,
-                    "legend": {
-                        "show": true,
-                        "values": false,
-                        "min": false,
-                        "max": false,
-                        "current": false,
-                        "total": false,
-                        "avg": false
-                    },
-                    "nullPointMode": "connected",
-                    "steppedLine": false,
-                    "tooltip": {
-                        "value_type": "individual",
-                        "shared": true,
-                        "sort": 0,
-                        "msResolution": false
-                    },
+                    "thresholds": [],
                     "timeFrom": null,
                     "timeShift": null,
-                    "aliasColors": {},
-                    "seriesOverrides": [],
-                    "thresholds": [],
-                    "links": []
+                    "title": "Post Request Size",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "decbytes",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ],
+                    "interval": ""
                 },
                 {
-                    "id": 15,
-                    "title": "Put Request Size",
-                    "error": false,
-                    "span": 6,
+                    "aliasColors": {},
+                    "bars": false,
+                    "datasource": "AppMetricsSandbox",
                     "editable": true,
-                    "type": "graph",
+                    "error": false,
+                    "fill": 1,
+                    "id": 15,
+                    "legend": {
+                        "avg": false,
+                        "current": true,
+                        "max": false,
+                        "min": false,
+                        "show": true,
+                        "total": false,
+                        "values": true,
+                        "alignAsTable": true,
+                        "rightSide": true
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "connected",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
                     "targets": [
                         {
-                            "policy": "default",
+                            "alias": "$col",
                             "dsType": "influxdb",
-                            "resultFormat": "time_series",
-                            "tags": [],
                             "groupBy": [
                                 {
-                                    "type": "time",
                                     "params": [
                                         "$interval"
-                                    ]
+                                    ],
+                                    "type": "time"
                                 },
                                 {
-                                    "type": "fill",
                                     "params": [
                                         "null"
-                                    ]
+                                    ],
+                                    "type": "fill"
                                 }
                             ],
+                            "measurement": "application.httprequests__put_size",
+                            "policy": "default",
+                            "refId": "A",
+                            "resultFormat": "time_series",
                             "select": [
                                 [
                                     {
-                                        "type": "field",
                                         "params": [
                                             "p95"
-                                        ]
+                                        ],
+                                        "type": "field"
                                     },
                                     {
-                                        "type": "last",
-                                        "params": []
+                                        "params": [],
+                                        "type": "last"
                                     },
                                     {
-                                        "type": "alias",
                                         "params": [
                                             "95th percentile"
-                                        ]
+                                        ],
+                                        "type": "alias"
                                     }
                                 ],
                                 [
                                     {
-                                        "type": "field",
                                         "params": [
                                             "p98"
-                                        ]
+                                        ],
+                                        "type": "field"
                                     },
                                     {
-                                        "type": "last",
-                                        "params": []
+                                        "params": [],
+                                        "type": "last"
                                     },
                                     {
-                                        "type": "alias",
                                         "params": [
                                             "98th percentile"
-                                        ]
+                                        ],
+                                        "type": "alias"
                                     }
                                 ],
                                 [
                                     {
-                                        "type": "field",
                                         "params": [
                                             "p99"
-                                        ]
+                                        ],
+                                        "type": "field"
                                     },
                                     {
-                                        "type": "last",
-                                        "params": []
+                                        "params": [],
+                                        "type": "last"
                                     },
                                     {
-                                        "type": "alias",
                                         "params": [
                                             "99th percentile"
-                                        ]
+                                        ],
+                                        "type": "alias"
                                     }
                                 ]
                             ],
-                            "refId": "A",
-                            "measurement": "application.httprequests__put_size",
-                            "alias": "$col"
+                            "tags": []
                         }
                     ],
-                    "datasource": "AppMetricsSandbox",
-                    "renderer": "flot",
-                    "yaxes": [
-                        {
-                            "label": null,
-                            "show": true,
-                            "logBase": 1,
-                            "min": null,
-                            "max": null,
-                            "format": "short"
-                        },
-                        {
-                            "label": null,
-                            "show": true,
-                            "logBase": 1,
-                            "min": null,
-                            "max": null,
-                            "format": "short"
-                        }
-                    ],
-                    "xaxis": {
-                        "show": true,
-                        "mode": "time",
-                        "name": null,
-                        "values": []
-                    },
-                    "lines": true,
-                    "fill": 1,
-                    "linewidth": 1,
-                    "points": false,
-                    "pointradius": 5,
-                    "bars": false,
-                    "stack": false,
-                    "percentage": false,
-                    "legend": {
-                        "show": true,
-                        "values": false,
-                        "min": false,
-                        "max": false,
-                        "current": false,
-                        "total": false,
-                        "avg": false
-                    },
-                    "nullPointMode": "connected",
-                    "steppedLine": false,
-                    "tooltip": {
-                        "value_type": "individual",
-                        "shared": true,
-                        "sort": 0,
-                        "msResolution": false
-                    },
+                    "thresholds": [],
                     "timeFrom": null,
                     "timeShift": null,
-                    "aliasColors": {},
-                    "seriesOverrides": [],
-                    "thresholds": [],
-                    "links": []
+                    "title": "Put Request Size",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "bytes",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
                 }
             ],
             "showTitle": false,
