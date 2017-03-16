@@ -74,7 +74,7 @@ Task("Restore")
 {	
 	var settings = new DotNetCoreRestoreSettings
     {        
-        Sources = new [] { "https://api.nuget.org/v3/index.json" }		
+        Sources = new [] { "https://api.nuget.org/v3/index.json", "https://www.myget.org/F/alhardy/api/v3/index.json" }
     };
 
 	var projects = solution.GetProjects();
