@@ -145,7 +145,7 @@
     },
     "refresh": "5s",
     "schemaVersion": 13,
-    "version": 19,
+    "version": 21,
     "links": [],
     "gnetId": null,
     "rows": [
@@ -626,7 +626,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
-                    "span": 7,
+                    "span": 6,
                     "stack": false,
                     "steppedLine": false,
                     "targets": [
@@ -781,7 +781,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
-                    "span": 5,
+                    "span": 6,
                     "stack": false,
                     "steppedLine": false,
                     "targets": [
@@ -911,6 +911,262 @@
             "showTitle": false,
             "titleSize": "h6",
             "height": "350px",
+            "repeat": null,
+            "repeatRowId": null,
+            "repeatIteration": null,
+            "collapse": false
+        },
+        {
+            "title": "Dashboard Row",
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "datasource": "AppMetricsSandbox",
+                    "editable": true,
+                    "error": false,
+                    "fill": 1,
+                    "id": 16,
+                    "interval": "",
+                    "legend": {
+                        "avg": false,
+                        "current": false,
+                        "max": false,
+                        "min": false,
+                        "show": true,
+                        "total": false,
+                        "values": false,
+                        "alignAsTable": true,
+                        "rightSide": true
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "connected",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "alias": "$tag_route",
+                            "dsType": "influxdb",
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "$interval"
+                                    ],
+                                    "type": "time"
+                                },
+                                {
+                                    "type": "tag",
+                                    "params": [
+                                        "route"
+                                    ]
+                                },
+                                {
+                                    "params": [
+                                        "null"
+                                    ],
+                                    "type": "fill"
+                                }
+                            ],
+                            "measurement": "application.httprequests__transactions_per_endpoint",
+                            "policy": "default",
+                            "refId": "A",
+                            "resultFormat": "time_series",
+                            "select": [
+                                [
+                                    {
+                                        "type": "field",
+                                        "params": [
+                                            "rate1m"
+                                        ]
+                                    },
+                                    {
+                                        "type": "last",
+                                        "params": []
+                                    }
+                                ]
+                            ],
+                            "tags": [
+                                {
+                                    "key": "env",
+                                    "operator": "=",
+                                    "value": "stage"
+                                }
+                            ]
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Throughput / Endpoint",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "rpm",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "datasource": "AppMetricsSandbox",
+                    "editable": true,
+                    "error": false,
+                    "fill": 1,
+                    "id": 17,
+                    "interval": "",
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": false,
+                        "current": false,
+                        "max": false,
+                        "min": false,
+                        "rightSide": true,
+                        "show": true,
+                        "total": false,
+                        "values": false
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "connected",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "alias": "$tag_route",
+                            "dsType": "influxdb",
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "$interval"
+                                    ],
+                                    "type": "time"
+                                },
+                                {
+                                    "type": "tag",
+                                    "params": [
+                                        "route"
+                                    ]
+                                },
+                                {
+                                    "params": [
+                                        "null"
+                                    ],
+                                    "type": "fill"
+                                }
+                            ],
+                            "measurement": "application.httprequests__transactions_per_endpoint",
+                            "policy": "default",
+                            "refId": "A",
+                            "resultFormat": "time_series",
+                            "select": [
+                                [
+                                    {
+                                        "type": "field",
+                                        "params": [
+                                            "p95"
+                                        ]
+                                    },
+                                    {
+                                        "type": "last",
+                                        "params": []
+                                    },
+                                    {
+                                        "type": "alias",
+                                        "params": [
+                                            "95th Percentile"
+                                        ]
+                                    }
+                                ]
+                            ],
+                            "tags": [
+                                {
+                                    "key": "env",
+                                    "operator": "=",
+                                    "value": "stage"
+                                }
+                            ]
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Response Time / Endpoint",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "ms",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
+                }
+            ],
+            "showTitle": false,
+            "titleSize": "h6",
+            "height": "300",
             "repeat": null,
             "repeatRowId": null,
             "repeatIteration": null,
