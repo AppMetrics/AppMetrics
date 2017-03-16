@@ -1,5 +1,8 @@
 ﻿using System;
 using App.Metrics.Configuration;
+using App.Metrics.Extensions.Reporting.InfluxDB;
+using App.Metrics.Extensions.Reporting.InfluxDB.Client;
+using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Sandbox.JustForTesting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +16,8 @@ namespace App.Metrics.Sandbox
     public class Startup
     {
         private static bool HaveAppRunSampleRequests = true;
+        private static readonly string InfluxDbDatabase = "AppMetricsSandbox";
+        private static readonly Uri InfluxDbUri = new Uri("http://127.0.0.1:8086");
 
         public Startup(IHostingEnvironment env)
         {
@@ -32,6 +37,7 @@ namespace App.Metrics.Sandbox
             loggerFactory.AddDebug();
 
             app.UseMetrics();
+            app.UseMetricsReporting(lifetime);
 
             app.UseMvc();
 
@@ -58,6 +64,22 @@ namespace App.Metrics.Sandbox
                                  });
                          }).
                      AddJsonSerialization().
+                     AddReporting(
+                         factory =>
+                         {
+                             factory.AddInfluxDb(
+                                 new InfluxDBReporterSettings
+                                 {
+                                     HttpPolicy = new HttpPolicy
+                                                  {
+                                                      FailuresBeforeBackoff = 3,
+                                                      BackoffPeriod = TimeSpan.FromSeconds(30),
+                                                      Timeout = TimeSpan.FromSeconds(3)
+                                                  },
+                                     InfluxDbSettings = new InfluxDBSettings(InfluxDbDatabase, InfluxDbUri),
+                                     ReportInterval = TimeSpan.FromSeconds(5)
+                                 });
+                         }).
                      AddHealthChecks(
                          factory =>
                          {

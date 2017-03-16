@@ -41,10 +41,9 @@ namespace App.Metrics.Sandbox.JustForTesting
                     TaskCreationOptions.None,
                     async () =>
                     {
-                        var satisfied = httpClient.GetAsync("api/randomstatuscode", token);
-                        var internalException = httpClient.GetAsync("api/randomstatuscode/500", token);
+                        var satisfied = httpClient.GetAsync("api/randomstatuscode", token);                        
 
-                        await Task.WhenAll(satisfied, internalException);
+                        await Task.WhenAll(satisfied);
                     },
                     token),
                 token);

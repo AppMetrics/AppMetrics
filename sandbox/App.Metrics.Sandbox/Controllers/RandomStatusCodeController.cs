@@ -12,12 +12,7 @@ namespace App.Metrics.Sandbox.Controllers
 
         public RandomStatusCodeController(IMetrics metrics, RandomStatusCodeForTesting randomStatusCodeForTesting)
         {
-            if (metrics == null)
-            {
-                throw new ArgumentNullException(nameof(metrics));
-            }
-
-            _metrics = metrics;
+            _metrics = metrics ?? throw new ArgumentNullException(nameof(metrics));
             _randomStatusCodeForTesting = randomStatusCodeForTesting;
         }
 

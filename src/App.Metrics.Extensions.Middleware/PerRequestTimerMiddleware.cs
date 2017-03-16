@@ -42,7 +42,7 @@ namespace App.Metrics.Extensions.Middleware
                     var startTime = (long)context.Items[TimerItemsKey];
                     var elapsed = Metrics.Clock.Nanoseconds - startTime;
 
-                    Metrics.RecordEndpointRequestTime(
+                    Metrics.RecordEndpointsRequestTime(
                         GetOAuthClientIdIfRequired(context),
                         context.GetMetricsCurrentRouteName(),
                         elapsed);

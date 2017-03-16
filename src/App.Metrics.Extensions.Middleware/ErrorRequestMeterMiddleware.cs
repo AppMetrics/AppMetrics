@@ -44,8 +44,6 @@ namespace App.Metrics.Extensions.Middleware
         // ReSharper disable UnusedMember.Global
         public async Task Invoke(HttpContext context)
         {
-            // ReSharper restore UnusedMember.Global
-
             await Next(context);
 
             if (PerformMetric(context))
@@ -56,12 +54,13 @@ namespace App.Metrics.Extensions.Middleware
 
                 if (!context.Response.IsSuccessfulResponse() && ShouldTrackHttpStatusCode(context.Response.StatusCode))
                 {
-                    Metrics.MarkHttpRequestError(routeTemplate, context.Response.StatusCode, GetOAuthClientIdIfRequired(context));
-                    Metrics.ErrorRequestPercentage(routeTemplate, GetOAuthClientIdIfRequired(context));
+                    Metrics.RecordHttpRequestError(routeTemplate, context.Response.StatusCode, GetOAuthClientIdIfRequired(context));
                 }
             }
 
             Logger.MiddlewareExecuted(GetType());
         }
+
+        // ReSharper restore UnusedMember.Global
     }
 }

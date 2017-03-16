@@ -14,7 +14,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<Func<double, RequestDurationForApdexTesting>>(
                 provider => { return apdexTSeconds => new RequestDurationForApdexTesting(apdexTSeconds); });
 
-            services.AddTransient<RandomStatusCodeController>();
+            services.AddTransient<RandomStatusCodeForTesting>();
 
             services.AddTransient(
                 provider =>

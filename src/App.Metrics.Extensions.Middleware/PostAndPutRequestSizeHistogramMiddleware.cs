@@ -20,7 +20,9 @@ namespace App.Metrics.Extensions.Middleware
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics)
-            : base(next, aspNetOptions, loggerFactory, metrics) { }
+            : base(next, aspNetOptions, loggerFactory, metrics)
+        {
+        }
 
         // ReSharper disable UnusedMember.Global
         public async Task Invoke(HttpContext context)
@@ -32,11 +34,18 @@ namespace App.Metrics.Extensions.Middleware
 
                 var httpMethod = context.Request.Method.ToUpperInvariant();
 
-                if (httpMethod == "POST" || httpMethod == "PUT")
+                if (httpMethod == "POST")
                 {
                     if (context.Request.Headers != null && context.Request.Headers.ContainsKey("Content-Length"))
                     {
-                        Metrics.UpdatePostAndPutRequestSize(long.Parse(context.Request.Headers["Content-Length"].First()));
+                        Metrics.UpdatePostRequestSize(long.Parse(context.Request.Headers["Content-Length"].First()));
+                    }
+                }
+                else if (httpMethod == "PUT")
+                {
+                    if (context.Request.Headers != null && context.Request.Headers.ContainsKey("Content-Length"))
+                    {
+                        Metrics.UpdatePutRequestSize(long.Parse(context.Request.Headers["Content-Length"].First()));
                     }
                 }
 

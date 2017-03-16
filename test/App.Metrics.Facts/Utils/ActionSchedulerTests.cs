@@ -107,7 +107,7 @@ namespace App.Metrics.Facts.Utils
                 var completionSource = new TaskCompletionSource<bool>();
 
                 scheduler.Interval(
-                    TimeSpan.FromMilliseconds(20),
+                    TimeSpan.FromMilliseconds(100),
                     TaskCreationOptions.LongRunning,
                     () =>
                     {

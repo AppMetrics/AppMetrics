@@ -29,7 +29,7 @@ namespace App.Metrics.Extensions.Middleware
         {
             _requestTimer = Metrics.Provider
                                    .Timer
-                                   .Instance(HttpRequestMetricsRegistry.Timers.OverallHttpRequestTransactions);
+                                   .Instance(HttpRequestMetricsRegistry.Timers.RequestTransactionDuration);
         }
 
         // ReSharper disable UnusedMember.Global
