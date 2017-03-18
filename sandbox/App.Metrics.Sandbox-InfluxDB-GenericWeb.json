@@ -43,30 +43,35 @@
             {
                 "allValue": null,
                 "current": {
-                    "text": "All",
-                    "value": "$__all"
+                    "text": "stage",
+                    "value": "stage"
                 },
-                "datasource": "AppMetricsSandbox",
+                "datasource": "$datasource",
                 "hide": 0,
-                "includeAll": true,
+                "includeAll": false,
                 "label": null,
-                "multi": true,
+                "multi": false,
                 "name": "environment",
                 "options": [],
                 "query": "SHOW TAG VALUES WITH KEY = \"env\"",
                 "refresh": 2,
                 "regex": "",
-                "sort": 0,
+                "sort": 1,
                 "tagValuesQuery": null,
                 "tagsQuery": null,
                 "type": "query"
             },
             {
-                "type": "interval",
-                "name": "health_duration",
+                "auto": false,
+                "auto_count": 30,
+                "auto_min": "10s",
+                "current": {
+                    "text": "5s",
+                    "value": "5s"
+                },
                 "hide": 0,
                 "label": "health check duration",
-                "refresh": 2,
+                "name": "health_duration",
                 "options": [
                     {
                         "text": "5s",
@@ -139,14 +144,9 @@
                         "selected": false
                     }
                 ],
-                "current": {
-                    "text": "5s",
-                    "value": "5s"
-                },
                 "query": "5s,10s,30s,1m,5m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
-                "auto": false,
-                "auto_min": "10s",
-                "auto_count": 30
+                "refresh": 2,
+                "type": "interval"
             },
             {
                 "allValue": null,
@@ -156,41 +156,46 @@
                     ],
                     "text": "App.Metrics.Sandbox"
                 },
-                "datasource": "AppMetricsSandbox",
+                "datasource": "$datasource",
                 "hide": 0,
-                "includeAll": true,
+                "includeAll": false,
                 "label": null,
-                "multi": true,
+                "multi": false,
                 "name": "application",
                 "options": [],
                 "query": "SHOW TAG VALUES WITH KEY = \"app\"",
                 "refresh": 2,
                 "regex": "",
-                "sort": 0,
+                "sort": 1,
                 "tagValuesQuery": null,
                 "tagsQuery": null,
                 "type": "query"
             },
             {
-                "type": "datasource",
-                "name": "datasource",
-                "hide": 0,
-                "label": null,
                 "current": {
                     "text": "AppMetricsSandbox",
                     "value": "AppMetricsSandbox"
                 },
-                "regex": "",
-                "options": [],
-                "query": "influxdb",
-                "refresh": 1
-            },
-            {
-                "type": "interval",
-                "name": "summarize",
                 "hide": 0,
                 "label": null,
-                "refresh": 2,
+                "name": "datasource",
+                "options": [],
+                "query": "influxdb",
+                "refresh": 1,
+                "regex": "",
+                "type": "datasource"
+            },
+            {
+                "auto": false,
+                "auto_count": 30,
+                "auto_min": "10s",
+                "current": {
+                    "text": "30s",
+                    "value": "30s"
+                },
+                "hide": 0,
+                "label": null,
+                "name": "summarize",
                 "options": [
                     {
                         "text": "5s",
@@ -258,22 +263,18 @@
                         "selected": false
                     }
                 ],
-                "current": {
-                    "text": "30s",
-                    "value": "30s"
-                },
                 "query": "5s,10s,30s,1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
-                "auto": false,
-                "auto_min": "10s",
-                "auto_count": 30
+                "refresh": 2,
+                "type": "interval"
             }
         ]
     },
     "annotations": {
         "list": []
     },
+    "refresh": "5s",
     "schemaVersion": 13,
-    "version": 48,
+    "version": 49,
     "links": [],
     "gnetId": null,
     "rows": [
@@ -767,6 +768,7 @@
                     "editable": true,
                     "error": false,
                     "fill": 1,
+                    "height": "350",
                     "id": 1,
                     "interval": "$summarize",
                     "legend": {
@@ -917,8 +919,7 @@
                             "min": null,
                             "show": true
                         }
-                    ],
-                    "height": "350"
+                    ]
                 },
                 {
                     "aliasColors": {},
@@ -927,6 +928,7 @@
                     "editable": true,
                     "error": false,
                     "fill": 1,
+                    "height": "350",
                     "id": 2,
                     "interval": "$summarize",
                     "legend": {
@@ -1079,8 +1081,7 @@
                             "min": null,
                             "show": true
                         }
-                    ],
-                    "height": "350"
+                    ]
                 },
                 {
                     "aliasColors": {},
@@ -1220,9 +1221,9 @@
                     "legend": {
                         "percentage": true,
                         "show": true,
-                        "values": true,
+                        "sort": null,
                         "sortDesc": null,
-                        "sort": null
+                        "values": true
                     },
                     "legendType": "Right side",
                     "links": [],
@@ -1339,56 +1340,56 @@
                             "select": [
                                 [
                                     {
-                                        "type": "field",
                                         "params": [
                                             "rate1m"
-                                        ]
+                                        ],
+                                        "type": "field"
                                     },
                                     {
-                                        "type": "last",
-                                        "params": []
+                                        "params": [],
+                                        "type": "last"
                                     },
                                     {
-                                        "type": "alias",
                                         "params": [
                                             "1min rate"
-                                        ]
+                                        ],
+                                        "type": "alias"
                                     }
                                 ],
                                 [
                                     {
-                                        "type": "field",
                                         "params": [
                                             "rate5m"
-                                        ]
+                                        ],
+                                        "type": "field"
                                     },
                                     {
-                                        "type": "last",
-                                        "params": []
+                                        "params": [],
+                                        "type": "last"
                                     },
                                     {
-                                        "type": "alias",
                                         "params": [
                                             "5min rate"
-                                        ]
+                                        ],
+                                        "type": "alias"
                                     }
                                 ],
                                 [
                                     {
-                                        "type": "field",
                                         "params": [
                                             "rate15m"
-                                        ]
+                                        ],
+                                        "type": "field"
                                     },
                                     {
-                                        "type": "last",
-                                        "params": []
+                                        "params": [],
+                                        "type": "last"
                                     },
                                     {
-                                        "type": "alias",
                                         "params": [
                                             "15min rate"
-                                        ]
+                                        ],
+                                        "type": "alias"
                                     }
                                 ]
                             ],
@@ -1462,6 +1463,7 @@
                     "editable": true,
                     "error": false,
                     "fill": 1,
+                    "height": "350",
                     "id": 16,
                     "interval": "$summarize",
                     "legend": {
@@ -1472,10 +1474,10 @@
                         "min": false,
                         "rightSide": true,
                         "show": true,
-                        "total": false,
-                        "values": false,
+                        "sort": "current",
                         "sortDesc": true,
-                        "sort": "current"
+                        "total": false,
+                        "values": false
                     },
                     "lines": true,
                     "linewidth": 1,
@@ -1556,6 +1558,7 @@
                         "sort": 2,
                         "value_type": "individual"
                     },
+                    "transparent": false,
                     "type": "graph",
                     "xaxis": {
                         "mode": "time",
@@ -1580,9 +1583,7 @@
                             "min": null,
                             "show": true
                         }
-                    ],
-                    "transparent": false,
-                    "height": "350"
+                    ]
                 },
                 {
                     "aliasColors": {},
@@ -1591,6 +1592,7 @@
                     "editable": true,
                     "error": false,
                     "fill": 1,
+                    "height": "350",
                     "id": 17,
                     "interval": "$summarize",
                     "legend": {
@@ -1713,8 +1715,7 @@
                             "min": null,
                             "show": true
                         }
-                    ],
-                    "height": "350"
+                    ]
                 },
                 {
                     "columns": [
@@ -1995,14 +1996,14 @@
                             "select": [
                                 [
                                     {
-                                        "type": "field",
                                         "params": [
                                             "rate1m"
-                                        ]
+                                        ],
+                                        "type": "field"
                                     },
                                     {
-                                        "type": "last",
-                                        "params": []
+                                        "params": [],
+                                        "type": "last"
                                     }
                                 ]
                             ],
@@ -2038,125 +2039,92 @@
             "title": "Health",
             "panels": [
                 {
-                    "id": 22,
-                    "title": "Results",
-                    "error": false,
-                    "span": 9,
-                    "editable": true,
-                    "type": "table",
-                    "targets": [
-                        {
-                            "policy": "default",
-                            "dsType": "influxdb",
-                            "resultFormat": "time_series",
-                            "tags": [
-                                {
-                                    "key": "env",
-                                    "operator": "=~",
-                                    "value": "/^$environment$/"
-                                },
-                                {
-                                    "condition": "AND",
-                                    "key": "app",
-                                    "operator": "=~",
-                                    "value": "/^$application$/"
-                                }
-                            ],
-                            "groupBy": [
-                                {
-                                    "type": "time",
-                                    "params": [
-                                        "$interval"
-                                    ]
-                                },
-                                {
-                                    "type": "tag",
-                                    "params": [
-                                        "health_check_name"
-                                    ]
-                                },
-                                {
-                                    "type": "fill",
-                                    "params": [
-                                        "null"
-                                    ]
-                                }
-                            ],
-                            "select": [
-                                [
-                                    {
-                                        "type": "field",
-                                        "params": [
-                                            "value"
-                                        ]
-                                    },
-                                    {
-                                        "type": "last",
-                                        "params": []
-                                    }
-                                ]
-                            ],
-                            "refId": "A",
-                            "measurement": "application.health__results",
-                            "alias": "$tag_health_check_name"
-                        }
-                    ],
-                    "styles": [
-                        {
-                            "type": "date",
-                            "pattern": "Time",
-                            "dateFormat": "YYYY-MM-DD HH:mm:ss"
-                        },
-                        {
-                            "unit": "short",
-                            "type": "number",
-                            "decimals": 1,
-                            "colors": [
-                                "rgba(245, 54, 54, 0.9)",
-                                "rgba(237, 129, 40, 0.89)",
-                                "rgba(50, 172, 45, 0.97)"
-                            ],
-                            "colorMode": "row",
-                            "pattern": "/.*/",
-                            "thresholds": [
-                                "0.5",
-                                "1"
-                            ]
-                        }
-                    ],
-                    "transform": "timeseries_aggregations",
-                    "pageSize": null,
-                    "showHeader": true,
                     "columns": [
                         {
                             "text": "Current",
                             "value": "current"
                         }
                     ],
-                    "scroll": true,
+                    "datasource": "$datasource",
+                    "editable": true,
+                    "error": false,
                     "fontSize": "100%",
+                    "hideTimeOverride": true,
+                    "id": 22,
+                    "links": [],
+                    "pageSize": null,
+                    "scroll": true,
+                    "showHeader": true,
                     "sort": {
                         "col": 0,
                         "desc": true
                     },
-                    "datasource": "$datasource",
-                    "links": [],
-                    "timeFrom": "$health_duration",
-                    "transparent": true,
-                    "hideTimeOverride": true
-                },
-                {
-                    "id": 19,
-                    "title": "",
-                    "error": false,
-                    "span": 3,
-                    "editable": true,
-                    "type": "singlestat",
+                    "span": 9,
+                    "styles": [
+                        {
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                            "pattern": "Time",
+                            "type": "date"
+                        },
+                        {
+                            "colorMode": "row",
+                            "colors": [
+                                "rgba(245, 54, 54, 0.9)",
+                                "rgba(237, 129, 40, 0.89)",
+                                "rgba(50, 172, 45, 0.97)"
+                            ],
+                            "decimals": 1,
+                            "pattern": "/.*/",
+                            "thresholds": [
+                                "0.5",
+                                "1"
+                            ],
+                            "type": "number",
+                            "unit": "short"
+                        }
+                    ],
                     "targets": [
                         {
-                            "policy": "default",
+                            "alias": "$tag_health_check_name",
                             "dsType": "influxdb",
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "$interval"
+                                    ],
+                                    "type": "time"
+                                },
+                                {
+                                    "params": [
+                                        "health_check_name"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "null"
+                                    ],
+                                    "type": "fill"
+                                }
+                            ],
+                            "measurement": "application.health__results",
+                            "policy": "default",
+                            "refId": "A",
                             "resultFormat": "time_series",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "value"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "last"
+                                    }
+                                ]
+                            ],
                             "tags": [
                                 {
                                     "key": "env",
@@ -2169,69 +2137,44 @@
                                     "operator": "=~",
                                     "value": "/^$application$/"
                                 }
-                            ],
-                            "groupBy": [
-                                {
-                                    "type": "time",
-                                    "params": [
-                                        "$interval"
-                                    ]
-                                },
-                                {
-                                    "type": "fill",
-                                    "params": [
-                                        "null"
-                                    ]
-                                }
-                            ],
-                            "select": [
-                                [
-                                    {
-                                        "type": "field",
-                                        "params": [
-                                            "value"
-                                        ]
-                                    },
-                                    {
-                                        "type": "last",
-                                        "params": []
-                                    }
-                                ]
-                            ],
-                            "refId": "A",
-                            "measurement": "application.health__score"
+                            ]
                         }
                     ],
+                    "timeFrom": "$health_duration",
+                    "title": "Results",
+                    "transform": "timeseries_aggregations",
+                    "transparent": true,
+                    "type": "table"
+                },
+                {
+                    "cacheTimeout": null,
+                    "colorBackground": true,
+                    "colorValue": false,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "datasource": "$datasource",
+                    "editable": true,
+                    "error": false,
+                    "format": "none",
+                    "gauge": {
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": false,
+                        "thresholdLabels": false,
+                        "thresholdMarkers": true
+                    },
+                    "hideTimeOverride": true,
+                    "id": 19,
+                    "interval": null,
                     "links": [
                         {
                             "type": "dashboard"
                         }
                     ],
-                    "datasource": "$datasource",
-                    "maxDataPoints": 100,
-                    "interval": null,
-                    "cacheTimeout": null,
-                    "format": "none",
-                    "prefix": "",
-                    "postfix": "",
-                    "nullText": null,
-                    "valueMaps": [
-                        {
-                            "value": "0",
-                            "op": "=",
-                            "text": "Unhealthy"
-                        },
-                        {
-                            "value": "0.5",
-                            "op": "=",
-                            "text": "Degraded"
-                        },
-                        {
-                            "value": "1.0",
-                            "op": "=",
-                            "text": "Healthy"
-                        }
-                    ],
+                    "mappingType": 2,
                     "mappingTypes": [
                         {
                             "name": "value to text",
@@ -2242,53 +2185,111 @@
                             "value": 2
                         }
                     ],
+                    "maxDataPoints": 100,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "postfix": "",
+                    "postfixFontSize": "50%",
+                    "prefix": "",
+                    "prefixFontSize": "50%",
                     "rangeMaps": [
                         {
                             "from": "0",
-                            "to": "0.49",
-                            "text": "Unhealthy"
+                            "text": "Unhealthy",
+                            "to": "0.49"
                         },
                         {
                             "from": "0.5",
-                            "to": "0.9",
-                            "text": "Degraded"
+                            "text": "Degraded",
+                            "to": "0.9"
                         },
                         {
                             "from": "1.0",
-                            "to": "2.0",
-                            "text": "Healthy"
+                            "text": "Healthy",
+                            "to": "2.0"
                         }
                     ],
-                    "mappingType": 2,
-                    "nullPointMode": "connected",
-                    "valueName": "current",
-                    "prefixFontSize": "50%",
-                    "valueFontSize": "80%",
-                    "postfixFontSize": "50%",
-                    "thresholds": "0.5,1",
-                    "colorBackground": true,
-                    "colorValue": false,
-                    "colors": [
-                        "rgba(245, 54, 54, 0.9)",
-                        "rgba(237, 129, 40, 0.89)",
-                        "rgba(50, 172, 45, 0.97)"
-                    ],
+                    "span": 3,
                     "sparkline": {
-                        "show": false,
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
                         "full": false,
                         "lineColor": "rgb(31, 120, 193)",
-                        "fillColor": "rgba(31, 118, 189, 0.18)"
+                        "show": false
                     },
-                    "gauge": {
-                        "show": false,
-                        "minValue": 0,
-                        "maxValue": 100,
-                        "thresholdMarkers": true,
-                        "thresholdLabels": false
-                    },
+                    "targets": [
+                        {
+                            "dsType": "influxdb",
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "$interval"
+                                    ],
+                                    "type": "time"
+                                },
+                                {
+                                    "params": [
+                                        "null"
+                                    ],
+                                    "type": "fill"
+                                }
+                            ],
+                            "measurement": "application.health__score",
+                            "policy": "default",
+                            "refId": "A",
+                            "resultFormat": "time_series",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "value"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "last"
+                                    }
+                                ]
+                            ],
+                            "tags": [
+                                {
+                                    "key": "env",
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
+                                }
+                            ]
+                        }
+                    ],
+                    "thresholds": "0.5,1",
                     "timeFrom": "$health_duration",
+                    "title": "",
                     "transparent": true,
-                    "hideTimeOverride": true
+                    "type": "singlestat",
+                    "valueFontSize": "80%",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "Unhealthy",
+                            "value": "0"
+                        },
+                        {
+                            "op": "=",
+                            "text": "Degraded",
+                            "value": "0.5"
+                        },
+                        {
+                            "op": "=",
+                            "text": "Healthy",
+                            "value": "1.0"
+                        }
+                    ],
+                    "valueName": "current"
                 }
             ],
             "showTitle": true,
@@ -2360,74 +2361,74 @@
                             "select": [
                                 [
                                     {
-                                        "type": "field",
                                         "params": [
                                             "p95"
-                                        ]
+                                        ],
+                                        "type": "field"
                                     },
                                     {
-                                        "type": "last",
-                                        "params": []
+                                        "params": [],
+                                        "type": "last"
                                     },
                                     {
-                                        "type": "alias",
                                         "params": [
                                             "95th percentile"
-                                        ]
+                                        ],
+                                        "type": "alias"
                                     }
                                 ],
                                 [
                                     {
-                                        "type": "field",
                                         "params": [
                                             "p98"
-                                        ]
+                                        ],
+                                        "type": "field"
                                     },
                                     {
-                                        "type": "last",
-                                        "params": []
+                                        "params": [],
+                                        "type": "last"
                                     },
                                     {
-                                        "type": "alias",
                                         "params": [
                                             "98th percentile"
-                                        ]
+                                        ],
+                                        "type": "alias"
                                     }
                                 ],
                                 [
                                     {
-                                        "type": "field",
                                         "params": [
                                             "p99"
-                                        ]
+                                        ],
+                                        "type": "field"
                                     },
                                     {
-                                        "type": "last",
-                                        "params": []
+                                        "params": [],
+                                        "type": "last"
                                     },
                                     {
-                                        "type": "alias",
                                         "params": [
                                             "99th percentile"
-                                        ]
+                                        ],
+                                        "type": "alias"
                                     }
                                 ],
                                 [
                                     {
-                                        "type": "field",
                                         "params": [
                                             "last"
-                                        ]
+                                        ],
+                                        "type": "field"
                                     },
                                     {
-                                        "type": "median",
-                                        "params": []
+                                        "params": [],
+                                        "type": "median"
                                     },
                                     {
-                                        "type": "alias",
                                         "params": [
                                             "median"
-                                        ]
+                                        ],
+                                        "type": "alias"
                                     }
                                 ]
                             ],
@@ -2490,6 +2491,7 @@
                     "error": false,
                     "fill": 1,
                     "id": 15,
+                    "interval": "$summarize",
                     "legend": {
                         "alignAsTable": true,
                         "avg": false,
@@ -2538,74 +2540,74 @@
                             "select": [
                                 [
                                     {
-                                        "type": "field",
                                         "params": [
                                             "p95"
-                                        ]
+                                        ],
+                                        "type": "field"
                                     },
                                     {
-                                        "type": "last",
-                                        "params": []
+                                        "params": [],
+                                        "type": "last"
                                     },
                                     {
-                                        "type": "alias",
                                         "params": [
                                             "95th percentile"
-                                        ]
+                                        ],
+                                        "type": "alias"
                                     }
                                 ],
                                 [
                                     {
-                                        "type": "field",
                                         "params": [
                                             "p98"
-                                        ]
+                                        ],
+                                        "type": "field"
                                     },
                                     {
-                                        "type": "last",
-                                        "params": []
+                                        "params": [],
+                                        "type": "last"
                                     },
                                     {
-                                        "type": "alias",
                                         "params": [
                                             "98th percentile"
-                                        ]
+                                        ],
+                                        "type": "alias"
                                     }
                                 ],
                                 [
                                     {
-                                        "type": "field",
                                         "params": [
                                             "p99"
-                                        ]
+                                        ],
+                                        "type": "field"
                                     },
                                     {
-                                        "type": "last",
-                                        "params": []
+                                        "params": [],
+                                        "type": "last"
                                     },
                                     {
-                                        "type": "alias",
                                         "params": [
                                             "99th percentile"
-                                        ]
+                                        ],
+                                        "type": "alias"
                                     }
                                 ],
                                 [
                                     {
-                                        "type": "field",
                                         "params": [
                                             "median"
-                                        ]
+                                        ],
+                                        "type": "field"
                                     },
                                     {
-                                        "type": "median",
-                                        "params": []
+                                        "params": [],
+                                        "type": "median"
                                     },
                                     {
-                                        "type": "alias",
                                         "params": [
                                             "median"
-                                        ]
+                                        ],
+                                        "type": "alias"
                                     }
                                 ]
                             ],
@@ -2658,8 +2660,7 @@
                             "min": null,
                             "show": true
                         }
-                    ],
-                    "interval": "$summarize"
+                    ]
                 }
             ],
             "showTitle": true,

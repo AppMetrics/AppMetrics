@@ -29,7 +29,17 @@ App Metrics also provides a health checking system allowing you to monitor the h
 - [Sample Applications & Grafana Dashbaords](https://github.com/alhardy/AppMetrics.Samples)
 - [Api Documentation](https://alhardy.github.io/app-metrics-docs/api/index.html)
 
-![Grafana/InfluxDB Demo](https://github.com/alhardy/AppMetrics.DocFx/blob/master/images/generic_grafana_dashboard_demo.gif)
+#### Grafana/InfluxDB Web Monitoring
+
+![Grafana/InfluxDB Generic Web Dashboard Demo](https://github.com/alhardy/AppMetrics.DocFx/blob/master/images/generic_grafana_dashboard_demo.gif)
+
+> Grab the dashboard [here](https://github.com/alhardy/AppMetrics/blob/1.0.0/sandbox/App.Metrics.Sandbox-InfluxDB-GenericWeb.json)
+
+#### Grafana/InfluxDB OAuth2 Client Monitoring on a Web API
+
+![Grafana/InfluxDB Generic OAuth2 Web Dashboard Demo](https://github.com/alhardy/AppMetrics.DocFx/blob/master/images/generic_grafana_oauth2_dashboard_demo.gif)
+
+> Grab the dashboard [here](https://github.com/alhardy/AppMetrics/blob/1.0.0/sandbox/App.Metrics.Sandbox-InfluxDB-GenericWebOAuth2.json)
 
 ## How to build
 

@@ -70,6 +70,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sanbox", "Sanbox", "{F1ECA1
 	ProjectSection(SolutionItems) = preProject
 		sandbox\App.Metrics.Sandbox-InfluxDB-GenericWeb.json = sandbox\App.Metrics.Sandbox-InfluxDB-GenericWeb.json
 		sandbox\App.Metrics.Sandbox-InfluxDB-GenericWebOAuth2.json = sandbox\App.Metrics.Sandbox-InfluxDB-GenericWebOAuth2.json
+		sandbox\generic_grafana_dashboard_demo.gif = sandbox\generic_grafana_dashboard_demo.gif
 	EndProjectSection
 EndProject
 Global

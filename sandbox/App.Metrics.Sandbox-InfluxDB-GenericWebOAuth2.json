@@ -42,9 +42,9 @@
                 "allValue": null,
                 "current": {
                     "value": [
-                        "client-2"
+                        "client-1"
                     ],
-                    "text": "client-2"
+                    "text": "client-1"
                 },
                 "datasource": "AppMetricsSandbox",
                 "hide": 0,
@@ -83,6 +83,156 @@
                 "tagValuesQuery": null,
                 "tagsQuery": null,
                 "type": "query"
+            },
+            {
+                "type": "datasource",
+                "name": "datasource",
+                "hide": 0,
+                "label": null,
+                "current": {
+                    "text": "AppMetricsSandbox",
+                    "value": "AppMetricsSandbox"
+                },
+                "regex": "",
+                "options": [],
+                "query": "influxdb",
+                "refresh": 1
+            },
+            {
+                "type": "interval",
+                "name": "summarize",
+                "hide": 0,
+                "label": null,
+                "refresh": 2,
+                "options": [
+                    {
+                        "text": "5s",
+                        "value": "5s",
+                        "selected": true
+                    },
+                    {
+                        "text": "10s",
+                        "value": "10s",
+                        "selected": false
+                    },
+                    {
+                        "text": "30s",
+                        "value": "30s",
+                        "selected": false
+                    },
+                    {
+                        "text": "1m",
+                        "value": "1m",
+                        "selected": false
+                    },
+                    {
+                        "text": "10m",
+                        "value": "10m",
+                        "selected": false
+                    },
+                    {
+                        "text": "30m",
+                        "value": "30m",
+                        "selected": false
+                    },
+                    {
+                        "text": "1h",
+                        "value": "1h",
+                        "selected": false
+                    },
+                    {
+                        "text": "6h",
+                        "value": "6h",
+                        "selected": false
+                    },
+                    {
+                        "text": "12h",
+                        "value": "12h",
+                        "selected": false
+                    },
+                    {
+                        "text": "1d",
+                        "value": "1d",
+                        "selected": false
+                    },
+                    {
+                        "text": "7d",
+                        "value": "7d",
+                        "selected": false
+                    },
+                    {
+                        "text": "14d",
+                        "value": "14d",
+                        "selected": false
+                    },
+                    {
+                        "text": "30d",
+                        "value": "30d",
+                        "selected": false
+                    }
+                ],
+                "current": {
+                    "text": "5s",
+                    "value": "5s"
+                },
+                "query": "5s,10s,30s,1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
+                "auto": false,
+                "auto_min": "10s",
+                "auto_count": 30
+            },
+            {
+                "type": "query",
+                "label": null,
+                "query": "SHOW TAG VALUES WITH KEY = \"app\"",
+                "regex": "",
+                "sort": 1,
+                "datasource": "$datasource",
+                "refresh": 0,
+                "hide": 0,
+                "name": "application",
+                "multi": false,
+                "includeAll": false,
+                "allValue": null,
+                "options": [
+                    {
+                        "text": "App.Metrics.Sandbox",
+                        "value": "App.Metrics.Sandbox",
+                        "selected": true
+                    }
+                ],
+                "current": {
+                    "text": "App.Metrics.Sandbox",
+                    "value": "App.Metrics.Sandbox"
+                },
+                "tagsQuery": null,
+                "tagValuesQuery": null
+            },
+            {
+                "type": "query",
+                "label": null,
+                "query": "SHOW TAG VALUES WITH KEY = \"env\"",
+                "regex": "",
+                "sort": 1,
+                "datasource": "$datasource",
+                "refresh": 0,
+                "hide": 0,
+                "name": "environment",
+                "multi": false,
+                "includeAll": false,
+                "allValue": null,
+                "options": [
+                    {
+                        "text": "stage",
+                        "value": "stage",
+                        "selected": true
+                    }
+                ],
+                "current": {
+                    "text": "stage",
+                    "value": "stage"
+                },
+                "tagsQuery": null,
+                "tagValuesQuery": null
             }
         ]
     },
@@ -91,7 +241,7 @@
     },
     "refresh": "5s",
     "schemaVersion": 13,
-    "version": 18,
+    "version": 19,
     "links": [],
     "gnetId": null,
     "rows": [
@@ -101,7 +251,7 @@
                 {
                     "aliasColors": {},
                     "bars": false,
-                    "datasource": "AppMetricsSandbox",
+                    "datasource": "$datasource",
                     "decimals": 2,
                     "editable": true,
                     "error": false,
@@ -191,6 +341,18 @@
                                     "key": "route",
                                     "operator": "=~",
                                     "value": "/^$route$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "env",
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
                                 }
                             ]
                         }
@@ -229,7 +391,8 @@
                             "min": null,
                             "show": true
                         }
-                    ]
+                    ],
+                    "interval": "$summarize"
                 }
             ],
             "showTitle": false,
@@ -246,7 +409,7 @@
                 {
                     "aliasColors": {},
                     "bars": false,
-                    "datasource": "AppMetricsSandbox",
+                    "datasource": "$datasource",
                     "decimals": 2,
                     "editable": true,
                     "error": false,
@@ -336,6 +499,18 @@
                                     "key": "route",
                                     "operator": "=~",
                                     "value": "/^$route$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "env",
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
                                 }
                             ]
                         }
@@ -374,7 +549,8 @@
                             "min": null,
                             "show": true
                         }
-                    ]
+                    ],
+                    "interval": "$summarize"
                 },
                 {
                     "aliasColors": {},
@@ -383,7 +559,7 @@
                         "label": "Others",
                         "threshold": 0
                     },
-                    "datasource": "AppMetricsSandbox",
+                    "datasource": "$datasource",
                     "editable": true,
                     "error": false,
                     "fontSize": "80%",
@@ -463,6 +639,18 @@
                                     "key": "route",
                                     "operator": "=~",
                                     "value": "/^$route$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "env",
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
                                 }
                             ]
                         }
@@ -486,7 +674,7 @@
                 {
                     "aliasColors": {},
                     "bars": false,
-                    "datasource": "AppMetricsSandbox",
+                    "datasource": "$datasource",
                     "editable": true,
                     "error": false,
                     "fill": 1,
@@ -575,6 +763,18 @@
                                     "key": "route",
                                     "operator": "=~",
                                     "value": "/^$route$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "env",
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
                                 }
                             ]
                         }
@@ -613,12 +813,13 @@
                             "min": null,
                             "show": true
                         }
-                    ]
+                    ],
+                    "interval": "$summarize"
                 },
                 {
                     "aliasColors": {},
                     "bars": false,
-                    "datasource": "AppMetricsSandbox",
+                    "datasource": "$datasource",
                     "decimals": 2,
                     "editable": true,
                     "error": false,
@@ -708,6 +909,18 @@
                                     "key": "route",
                                     "operator": "=~",
                                     "value": "/^$route$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "env",
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
                                 }
                             ]
                         }
@@ -746,7 +959,8 @@
                             "min": null,
                             "show": true
                         }
-                    ]
+                    ],
+                    "interval": "$summarize"
                 }
             ],
             "showTitle": false,
