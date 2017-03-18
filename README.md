@@ -98,6 +98,21 @@ Run `build.sh` from the repositories root directory. Code Coverage reports are n
 > 
 > Unfortunately there is [currently no way out-of-the-box to conditionally build & pack a project by framework](https://github.com/dotnet/roslyn-project-system/issues/1586#issuecomment-280978851). Because `App.Metrics` packages target `.NET 4.5.2` as well as `dotnet standard` there is a work around in the build script to force `dotnet standard` on build but no work around for packaging on non-windows environments. 
 
+## How to run benchmarks
+
+App.Metrics includes bencmarking using [BenchmarkDotNet](https://github.com/dotnet/BenchmarkDotNet). You can find the benchmark results [here](https://github.com/alhardy/AppMetrics/tree/master/benchmarks/App.Metrics.Benchmarks.Runner/BenchmarkDotNet.Artifacts/results).
+
+To run, fron the solution's root:
+
+```
+	cd .\benchmarks\App.Metrics.Benchmarks.Runner\
+	dotnet run -c "Release"
+```
+
+You'll then be prompted to choose a benchmark to run which will output a markdown file with the result in directory `.\benchmarks\App.Metrics.Benchmarks.Runner\BenchmarkDotNet.Artifacts\results`.
+
+Alternatively, you can run the same benchmarks from visual studio using XUnit in the [benchmark project](https://github.com/alhardy/AppMetrics/tree/master/benchmarks/App.Metrics.Benchmarks).
+
 ## Contributing
 
 See the [contribution guidlines](CONTRIBUTING.md) for details.
