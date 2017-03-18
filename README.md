@@ -41,6 +41,15 @@ App Metrics also provides a health checking system allowing you to monitor the h
 
 > Grab the dashboard [here](https://github.com/alhardy/AppMetrics/blob/1.0.0/sandbox/App.Metrics.Sandbox-InfluxDB-GenericWebOAuth2.json)
 
+## Grafana/InfluxDB Web Application Setup
+
+- Download and install [InfluxDB](https://docs.influxdata.com/influxdb/v1.2/introduction/installation/). *Runs well on Windows using* `Bash on Windows on Ubuntu`
+- Download and install [Grafana](https://grafana.com/grafana/download), then import App.Metrics [web dashboard](https://github.com/alhardy/AppMetrics/blob/1.0.0/sandbox/App.Metrics.Sandbox-InfluxDB-GenericWeb.json)
+- Drop in the `App.Metrics.Extensions.Mvc` and `App.Metrics.Extensions.Reporting.InfluxDB` nuget packages into your web application. 
+- Create a new [InfluxDB Database](https://docs.influxdata.com/influxdb/v1.2/introduction/getting_started/). *Keep note of this for configuring the InfluxDB reporter in your web application*
+- Add [App.Metrics configuration](https://alhardy.github.io/app-metrics-docs/getting-started/fundamentals/middleware-configuration.html) to the `Startup.cs` of your web application, including the [InfluxDB reporter configuration](https://alhardy.github.io/app-metrics-docs/getting-started/reporting/index.html#influxdb-reporter). *You might want to check out the [Sandbox](https://github.com/alhardy/AppMetrics/tree/1.0.0/sandbox/App.Metrics.Sandbox) or [Sample](https://github.com/alhardy/AppMetrics.Samples) projects if you get stuck*
+- Run your app and Grafana at visit `http://localhost:3000`
+
 ## How to build
 
 [AppVeyor](https://ci.appveyor.com/project/alhardy/appmetrics/branch/master) and [Travis CI](https://travis-ci.org/alhardy/AppMetrics) builds are triggered on commits and PRs to `dev` and `master` branches.
@@ -61,7 +70,7 @@ See the following for build arguments and running locally.
 Run `build.ps1` from the repositories root directory.
 
 ```
-	.\build.ps1'
+	.\build.ps1
 ```
 
 **With Arguments**
@@ -75,7 +84,7 @@ Run `build.ps1` from the repositories root directory.
 Run `build.sh` from the repositories root directory. Code Coverage reports are now supported on Linux and OSX, it will be skipped running in these environments.
 
 ```
-	.\build.sh'
+	.\build.sh
 ```
 
 **With Arguments**
