@@ -1,8 +1,7 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Metrics.Extensions.Middleware.Integration.Facts
@@ -23,6 +22,12 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+        [HttpPost("oauth/file/{clientid}")]
+        public IActionResult File(IFormFile file)
+        {
+            return Created(new Uri("http://localhost"), 0);
         }
 
         [HttpGet]
@@ -105,6 +110,12 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
         [HttpPost]
         public void Post([FromBody] string value)
         {
+        }
+
+        [HttpPut("oauth/file/{clientid}")]
+        public IActionResult Put(IFormFile file)
+        {
+            return Ok();
         }
 
         [HttpPut("{id}")]

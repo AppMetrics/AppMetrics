@@ -16,6 +16,7 @@ namespace App.Metrics.Sandbox
     public class Startup
     {
         private static bool HaveAppRunSampleRequests = true;
+        private static bool RunSamplesWithClientId = true;
         private static readonly string InfluxDbDatabase = "AppMetricsSandbox";
         private static readonly Uri InfluxDbUri = new Uri("http://127.0.0.1:8086");
 
@@ -33,6 +34,16 @@ namespace App.Metrics.Sandbox
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime lifetime)
         {
+            if (RunSamplesWithClientId && HaveAppRunSampleRequests)
+            {
+                app.Use(
+                    (context, func) =>
+                    {
+                        RandomClientIdForTesting.SetTheFakeClaimsPrincipal(context);
+                        return func();
+                    });
+            }
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 

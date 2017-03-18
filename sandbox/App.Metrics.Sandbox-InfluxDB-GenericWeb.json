@@ -62,11 +62,16 @@
                 "type": "query"
             },
             {
-                "type": "interval",
-                "name": "summarize",
+                "auto": false,
+                "auto_count": 30,
+                "auto_min": "10s",
+                "current": {
+                    "text": "5s",
+                    "value": "5s"
+                },
                 "hide": 0,
                 "label": "summarize",
-                "refresh": 2,
+                "name": "summarize",
                 "options": [
                     {
                         "text": "5s",
@@ -129,14 +134,9 @@
                         "selected": false
                     }
                 ],
-                "current": {
-                    "text": "5s",
-                    "value": "5s"
-                },
                 "query": "5s,10s,30s1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
-                "auto": false,
-                "auto_min": "10s",
-                "auto_count": 30
+                "refresh": 2,
+                "type": "interval"
             }
         ]
     },
@@ -145,7 +145,7 @@
     },
     "refresh": "5s",
     "schemaVersion": 13,
-    "version": 21,
+    "version": 31,
     "links": [],
     "gnetId": null,
     "rows": [
@@ -929,15 +929,17 @@
                     "id": 16,
                     "interval": "",
                     "legend": {
+                        "alignAsTable": true,
                         "avg": false,
                         "current": false,
                         "max": false,
                         "min": false,
+                        "rightSide": true,
                         "show": true,
                         "total": false,
                         "values": false,
-                        "alignAsTable": true,
-                        "rightSide": true
+                        "sortDesc": true,
+                        "sort": "current"
                     },
                     "lines": true,
                     "linewidth": 1,
@@ -949,7 +951,7 @@
                     "renderer": "flot",
                     "seriesOverrides": [],
                     "span": 6,
-                    "stack": false,
+                    "stack": true,
                     "steppedLine": false,
                     "targets": [
                         {
@@ -963,10 +965,10 @@
                                     "type": "time"
                                 },
                                 {
-                                    "type": "tag",
                                     "params": [
                                         "route"
-                                    ]
+                                    ],
+                                    "type": "tag"
                                 },
                                 {
                                     "params": [
@@ -982,14 +984,14 @@
                             "select": [
                                 [
                                     {
-                                        "type": "field",
                                         "params": [
                                             "rate1m"
-                                        ]
+                                        ],
+                                        "type": "field"
                                     },
                                     {
-                                        "type": "last",
-                                        "params": []
+                                        "params": [],
+                                        "type": "last"
                                     }
                                 ]
                             ],
@@ -1009,7 +1011,7 @@
                     "tooltip": {
                         "msResolution": false,
                         "shared": true,
-                        "sort": 0,
+                        "sort": 2,
                         "value_type": "individual"
                     },
                     "type": "graph",
@@ -1036,7 +1038,8 @@
                             "min": null,
                             "show": true
                         }
-                    ]
+                    ],
+                    "transparent": false
                 },
                 {
                     "aliasColors": {},
@@ -1082,10 +1085,10 @@
                                     "type": "time"
                                 },
                                 {
-                                    "type": "tag",
                                     "params": [
                                         "route"
-                                    ]
+                                    ],
+                                    "type": "tag"
                                 },
                                 {
                                     "params": [
@@ -1101,20 +1104,20 @@
                             "select": [
                                 [
                                     {
-                                        "type": "field",
                                         "params": [
                                             "p95"
-                                        ]
+                                        ],
+                                        "type": "field"
                                     },
                                     {
-                                        "type": "last",
-                                        "params": []
+                                        "params": [],
+                                        "type": "last"
                                     },
                                     {
-                                        "type": "alias",
                                         "params": [
                                             "95th Percentile"
-                                        ]
+                                        ],
+                                        "type": "alias"
                                     }
                                 ]
                             ],
@@ -1187,7 +1190,7 @@
                     "error": false,
                     "fontSize": "100%",
                     "id": 10,
-                    "interval": "$summarize",
+                    "interval": "",
                     "links": [],
                     "pageSize": null,
                     "scroll": true,
@@ -1575,6 +1578,7 @@
                     "aliasColors": {},
                     "bars": false,
                     "datasource": "AppMetricsSandbox",
+                    "decimals": 2,
                     "editable": true,
                     "error": false,
                     "fill": 1,
@@ -1606,7 +1610,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "alias": "$tag_http_status_code",
+                            "alias": "$col",
                             "dsType": "influxdb",
                             "groupBy": [
                                 {
@@ -1617,38 +1621,68 @@
                                 },
                                 {
                                     "params": [
-                                        "http_status_code"
-                                    ],
-                                    "type": "tag"
-                                },
-                                {
-                                    "params": [
-                                        "route"
-                                    ],
-                                    "type": "tag"
-                                },
-                                {
-                                    "params": [
                                         "null"
                                     ],
                                     "type": "fill"
                                 }
                             ],
-                            "measurement": "application.httprequests__error_rate_per_endpoint_and_status_code",
+                            "measurement": "application.httprequests__error_rate",
                             "policy": "default",
                             "refId": "A",
                             "resultFormat": "time_series",
                             "select": [
                                 [
                                     {
+                                        "type": "field",
                                         "params": [
                                             "rate1m"
-                                        ],
-                                        "type": "field"
+                                        ]
                                     },
                                     {
-                                        "params": [],
-                                        "type": "last"
+                                        "type": "last",
+                                        "params": []
+                                    },
+                                    {
+                                        "type": "alias",
+                                        "params": [
+                                            "1min rate"
+                                        ]
+                                    }
+                                ],
+                                [
+                                    {
+                                        "type": "field",
+                                        "params": [
+                                            "rate5m"
+                                        ]
+                                    },
+                                    {
+                                        "type": "last",
+                                        "params": []
+                                    },
+                                    {
+                                        "type": "alias",
+                                        "params": [
+                                            "5min rate"
+                                        ]
+                                    }
+                                ],
+                                [
+                                    {
+                                        "type": "field",
+                                        "params": [
+                                            "rate15m"
+                                        ]
+                                    },
+                                    {
+                                        "type": "last",
+                                        "params": []
+                                    },
+                                    {
+                                        "type": "alias",
+                                        "params": [
+                                            "15min rate"
+                                        ]
                                     }
                                 ]
                             ],
@@ -1662,7 +1696,7 @@
                     "tooltip": {
                         "msResolution": false,
                         "shared": true,
-                        "sort": 0,
+                        "sort": 2,
                         "value_type": "individual"
                     },
                     "type": "graph",
@@ -1689,8 +1723,7 @@
                             "min": null,
                             "show": true
                         }
-                    ],
-                    "decimals": 2
+                    ]
                 },
                 {
                     "aliasColors": {},
@@ -1710,7 +1743,9 @@
                     "legend": {
                         "percentage": true,
                         "show": true,
-                        "values": true
+                        "values": true,
+                        "sortDesc": null,
+                        "sort": null
                     },
                     "legendType": "Right side",
                     "links": [],
@@ -1776,17 +1811,18 @@
                     "error": false,
                     "fill": 1,
                     "id": 14,
+                    "interval": "",
                     "legend": {
+                        "alignAsTable": true,
                         "avg": false,
                         "current": true,
+                        "hideEmpty": false,
                         "max": false,
                         "min": false,
+                        "rightSide": true,
                         "show": true,
                         "total": false,
-                        "values": true,
-                        "alignAsTable": true,
-                        "rightSide": true,
-                        "hideEmpty": false
+                        "values": true
                     },
                     "lines": true,
                     "linewidth": 1,
@@ -1825,56 +1861,74 @@
                             "select": [
                                 [
                                     {
+                                        "type": "field",
                                         "params": [
                                             "p95"
-                                        ],
-                                        "type": "field"
+                                        ]
                                     },
                                     {
-                                        "params": [],
-                                        "type": "last"
+                                        "type": "last",
+                                        "params": []
                                     },
                                     {
+                                        "type": "alias",
                                         "params": [
                                             "95th percentile"
-                                        ],
-                                        "type": "alias"
+                                        ]
                                     }
                                 ],
                                 [
                                     {
+                                        "type": "field",
                                         "params": [
                                             "p98"
-                                        ],
-                                        "type": "field"
+                                        ]
                                     },
                                     {
-                                        "params": [],
-                                        "type": "last"
+                                        "type": "last",
+                                        "params": []
                                     },
                                     {
+                                        "type": "alias",
                                         "params": [
                                             "98th percentile"
-                                        ],
-                                        "type": "alias"
+                                        ]
                                     }
                                 ],
                                 [
                                     {
+                                        "type": "field",
                                         "params": [
                                             "p99"
-                                        ],
-                                        "type": "field"
+                                        ]
                                     },
                                     {
-                                        "params": [],
-                                        "type": "last"
+                                        "type": "last",
+                                        "params": []
                                     },
                                     {
+                                        "type": "alias",
                                         "params": [
                                             "99th percentile"
-                                        ],
-                                        "type": "alias"
+                                        ]
+                                    }
+                                ],
+                                [
+                                    {
+                                        "type": "field",
+                                        "params": [
+                                            "last"
+                                        ]
+                                    },
+                                    {
+                                        "type": "median",
+                                        "params": []
+                                    },
+                                    {
+                                        "type": "alias",
+                                        "params": [
+                                            "median"
+                                        ]
                                     }
                                 ]
                             ],
@@ -1915,8 +1969,7 @@
                             "min": null,
                             "show": true
                         }
-                    ],
-                    "interval": ""
+                    ]
                 },
                 {
                     "aliasColors": {},
@@ -1927,15 +1980,15 @@
                     "fill": 1,
                     "id": 15,
                     "legend": {
+                        "alignAsTable": true,
                         "avg": false,
                         "current": true,
                         "max": false,
                         "min": false,
+                        "rightSide": true,
                         "show": true,
                         "total": false,
-                        "values": true,
-                        "alignAsTable": true,
-                        "rightSide": true
+                        "values": true
                     },
                     "lines": true,
                     "linewidth": 1,
@@ -1974,56 +2027,74 @@
                             "select": [
                                 [
                                     {
+                                        "type": "field",
                                         "params": [
                                             "p95"
-                                        ],
-                                        "type": "field"
+                                        ]
                                     },
                                     {
-                                        "params": [],
-                                        "type": "last"
+                                        "type": "last",
+                                        "params": []
                                     },
                                     {
+                                        "type": "alias",
                                         "params": [
                                             "95th percentile"
-                                        ],
-                                        "type": "alias"
+                                        ]
                                     }
                                 ],
                                 [
                                     {
+                                        "type": "field",
                                         "params": [
                                             "p98"
-                                        ],
-                                        "type": "field"
+                                        ]
                                     },
                                     {
-                                        "params": [],
-                                        "type": "last"
+                                        "type": "last",
+                                        "params": []
                                     },
                                     {
+                                        "type": "alias",
                                         "params": [
                                             "98th percentile"
-                                        ],
-                                        "type": "alias"
+                                        ]
                                     }
                                 ],
                                 [
                                     {
+                                        "type": "field",
                                         "params": [
                                             "p99"
-                                        ],
-                                        "type": "field"
+                                        ]
                                     },
                                     {
-                                        "params": [],
-                                        "type": "last"
+                                        "type": "last",
+                                        "params": []
                                     },
                                     {
+                                        "type": "alias",
                                         "params": [
                                             "99th percentile"
-                                        ],
-                                        "type": "alias"
+                                        ]
+                                    }
+                                ],
+                                [
+                                    {
+                                        "type": "field",
+                                        "params": [
+                                            "median"
+                                        ]
+                                    },
+                                    {
+                                        "type": "median",
+                                        "params": []
+                                    },
+                                    {
+                                        "type": "alias",
+                                        "params": [
+                                            "median"
+                                        ]
                                     }
                                 ]
                             ],

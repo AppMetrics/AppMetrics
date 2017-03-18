@@ -68,7 +68,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Metrics.Sandbox", "sand
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sanbox", "Sanbox", "{F1ECA197-26EE-4A52-8026-D906C14685A2}"
 	ProjectSection(SolutionItems) = preProject
-		App.Metrics.Sandbox-InfluxDB-GenericWeb.json = App.Metrics.Sandbox-InfluxDB-GenericWeb.json
+		sandbox\App.Metrics.Sandbox-InfluxDB-GenericWeb.json = sandbox\App.Metrics.Sandbox-InfluxDB-GenericWeb.json
+		sandbox\App.Metrics.Sandbox-InfluxDB-GenericWebOAuth2.json = sandbox\App.Metrics.Sandbox-InfluxDB-GenericWebOAuth2.json
 	EndProjectSection
 EndProject
 Global
