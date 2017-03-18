@@ -18,7 +18,7 @@ namespace App.Metrics.Sandbox.Controllers
 
         [HttpGet]
         public IActionResult Get()
-        {
+        {            
             return StatusCode(_randomStatusCodeForTesting.NextStatusCode);
         }
     }

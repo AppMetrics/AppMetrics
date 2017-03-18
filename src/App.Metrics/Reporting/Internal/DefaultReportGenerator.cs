@@ -12,7 +12,9 @@ using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
+using App.Metrics.Core.Internal;
 using App.Metrics.Health;
+using App.Metrics.Tagging;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporting.Internal
@@ -136,21 +138,6 @@ namespace App.Metrics.Reporting.Internal
             var degraded = healthStatus.Results.Where(r => r.Check.Status.IsDegraded()).ToArray();
 
             reporter.ReportHealth(_options.GlobalTags, passed, degraded, failed);
-
-            foreach (var check in passed)
-            {
-                metrics.Measure.Counter.Increment(ApplicationHealthMetricRegistry.HealthyCheckCounter, check.Name);
-            }
-
-            foreach (var check in degraded)
-            {
-                metrics.Measure.Counter.Increment(ApplicationHealthMetricRegistry.DegradedCheckCounter, check.Name);
-            }
-
-            foreach (var check in failed)
-            {
-                metrics.Measure.Counter.Increment(ApplicationHealthMetricRegistry.UnhealthyCheckCounter, check.Name);
-            }
         }
     }
 }

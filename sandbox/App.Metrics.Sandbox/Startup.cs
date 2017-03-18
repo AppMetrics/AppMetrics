@@ -93,7 +93,7 @@ namespace App.Metrics.Sandbox
                          }).
                      AddHealthChecks(
                          factory =>
-                         {
+                         {                             
                              factory.RegisterPingHealthCheck("google ping", "google.com", TimeSpan.FromSeconds(10));
                              factory.RegisterHttpGetHealthCheck("github", new Uri("https://github.com/"), TimeSpan.FromSeconds(10));
                          }).

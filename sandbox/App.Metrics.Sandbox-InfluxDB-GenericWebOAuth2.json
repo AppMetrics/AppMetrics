@@ -39,50 +39,50 @@
     "templating": {
         "list": [
             {
-                "type": "query",
-                "label": null,
-                "query": "SHOW TAG VALUES FROM \"application.oauth2__request_rate\" WITH KEY = \"client_id\"",
-                "regex": "",
-                "sort": 1,
-                "datasource": "AppMetricsSandbox",
-                "refresh": 2,
-                "hide": 0,
-                "name": "client_id",
-                "multi": true,
-                "includeAll": true,
                 "allValue": null,
-                "options": [],
                 "current": {
                     "value": [
                         "client-2"
                     ],
                     "text": "client-2"
                 },
-                "tagsQuery": null,
-                "tagValuesQuery": null
-            },
-            {
-                "type": "query",
+                "datasource": "AppMetricsSandbox",
+                "hide": 0,
+                "includeAll": true,
                 "label": null,
-                "query": "SHOW TAG VALUES FROM \"application.oauth2__request_rate\" WITH KEY = \"route\"",
+                "multi": true,
+                "name": "client_id",
+                "options": [],
+                "query": "SHOW TAG VALUES FROM \"application.oauth2__request_rate\" WITH KEY = \"client_id\"",
+                "refresh": 2,
                 "regex": "",
                 "sort": 1,
-                "datasource": "AppMetricsSandbox",
-                "refresh": 2,
-                "hide": 0,
-                "name": "route",
-                "multi": true,
-                "includeAll": true,
+                "tagValuesQuery": null,
+                "tagsQuery": null,
+                "type": "query"
+            },
+            {
                 "allValue": null,
-                "options": [],
                 "current": {
                     "value": [
                         "$__all"
                     ],
                     "text": "All"
                 },
+                "datasource": "AppMetricsSandbox",
+                "hide": 0,
+                "includeAll": true,
+                "label": null,
+                "multi": true,
+                "name": "route",
+                "options": [],
+                "query": "SHOW TAG VALUES FROM \"application.oauth2__request_rate\" WITH KEY = \"route\"",
+                "refresh": 2,
+                "regex": "",
+                "sort": 1,
+                "tagValuesQuery": null,
                 "tagsQuery": null,
-                "tagValuesQuery": null
+                "type": "query"
             }
         ]
     },
@@ -91,7 +91,7 @@
     },
     "refresh": "5s",
     "schemaVersion": 13,
-    "version": 17,
+    "version": 18,
     "links": [],
     "gnetId": null,
     "rows": [
@@ -99,17 +99,87 @@
             "title": "Dashboard Row",
             "panels": [
                 {
-                    "id": 3,
-                    "title": "Throughput",
-                    "error": false,
-                    "span": 12,
+                    "aliasColors": {},
+                    "bars": false,
+                    "datasource": "AppMetricsSandbox",
+                    "decimals": 2,
                     "editable": true,
-                    "type": "graph",
+                    "error": false,
+                    "fill": 1,
+                    "id": 3,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": false,
+                        "current": true,
+                        "max": false,
+                        "min": false,
+                        "rightSide": true,
+                        "show": true,
+                        "sort": "current",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "connected",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "span": 12,
+                    "stack": false,
+                    "steppedLine": false,
                     "targets": [
                         {
-                            "policy": "default",
+                            "alias": "[$tag_client_id] $tag_route",
                             "dsType": "influxdb",
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "$interval"
+                                    ],
+                                    "type": "time"
+                                },
+                                {
+                                    "params": [
+                                        "client_id"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "route"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "null"
+                                    ],
+                                    "type": "fill"
+                                }
+                            ],
+                            "measurement": "application.oauth2__request_rate",
+                            "policy": "default",
+                            "refId": "A",
                             "resultFormat": "time_series",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "rate1m"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "last"
+                                    }
+                                ]
+                            ],
                             "tags": [
                                 {
                                     "key": "client_id",
@@ -122,114 +192,44 @@
                                     "operator": "=~",
                                     "value": "/^$route$/"
                                 }
-                            ],
-                            "groupBy": [
-                                {
-                                    "type": "time",
-                                    "params": [
-                                        "$interval"
-                                    ]
-                                },
-                                {
-                                    "type": "tag",
-                                    "params": [
-                                        "client_id"
-                                    ]
-                                },
-                                {
-                                    "type": "tag",
-                                    "params": [
-                                        "route"
-                                    ]
-                                },
-                                {
-                                    "type": "fill",
-                                    "params": [
-                                        "null"
-                                    ]
-                                }
-                            ],
-                            "select": [
-                                [
-                                    {
-                                        "type": "field",
-                                        "params": [
-                                            "rate1m"
-                                        ]
-                                    },
-                                    {
-                                        "type": "last",
-                                        "params": []
-                                    }
-                                ]
-                            ],
-                            "refId": "A",
-                            "measurement": "application.oauth2__request_rate",
-                            "alias": "[$tag_client_id] $tag_route"
+                            ]
                         }
                     ],
-                    "datasource": "AppMetricsSandbox",
-                    "renderer": "flot",
-                    "yaxes": [
-                        {
-                            "label": null,
-                            "show": true,
-                            "logBase": 1,
-                            "min": null,
-                            "max": null,
-                            "format": "rpm"
-                        },
-                        {
-                            "label": "",
-                            "show": true,
-                            "logBase": 1,
-                            "min": null,
-                            "max": null,
-                            "format": "rpm"
-                        }
-                    ],
-                    "xaxis": {
-                        "show": true,
-                        "mode": "time",
-                        "name": null,
-                        "values": []
-                    },
-                    "lines": true,
-                    "fill": 1,
-                    "linewidth": 1,
-                    "points": false,
-                    "pointradius": 5,
-                    "bars": false,
-                    "stack": false,
-                    "percentage": false,
-                    "legend": {
-                        "show": true,
-                        "values": true,
-                        "min": false,
-                        "max": false,
-                        "current": true,
-                        "total": false,
-                        "avg": false,
-                        "alignAsTable": true,
-                        "rightSide": true,
-                        "sortDesc": true,
-                        "sort": "current"
-                    },
-                    "nullPointMode": "connected",
-                    "steppedLine": false,
-                    "tooltip": {
-                        "value_type": "individual",
-                        "shared": true,
-                        "sort": 2,
-                        "msResolution": false
-                    },
+                    "thresholds": [],
                     "timeFrom": null,
                     "timeShift": null,
-                    "aliasColors": {},
-                    "seriesOverrides": [],
-                    "thresholds": [],
-                    "links": [],
-                    "decimals": 2
+                    "title": "Throughput",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 2,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "rpm",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "rpm",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
                 }
             ],
             "showTitle": false,
@@ -244,150 +244,87 @@
             "title": "Dashboard Row",
             "panels": [
                 {
-                    "id": 4,
-                    "title": "Error Rate",
-                    "error": false,
-                    "span": 8,
-                    "editable": true,
-                    "type": "graph",
-                    "targets": [
-                        {
-                            "policy": "default",
-                            "dsType": "influxdb",
-                            "resultFormat": "time_series",
-                            "tags": [
-                                {
-                                    "key": "client_id",
-                                    "operator": "=~",
-                                    "value": "/^$client_id$/"
-                                },
-                                {
-                                    "condition": "AND",
-                                    "key": "route",
-                                    "operator": "=~",
-                                    "value": "/^$route$/"
-                                }
-                            ],
-                            "groupBy": [
-                                {
-                                    "type": "time",
-                                    "params": [
-                                        "$interval"
-                                    ]
-                                },
-                                {
-                                    "type": "tag",
-                                    "params": [
-                                        "client_id"
-                                    ]
-                                },
-                                {
-                                    "type": "tag",
-                                    "params": [
-                                        "route"
-                                    ]
-                                },
-                                {
-                                    "type": "fill",
-                                    "params": [
-                                        "null"
-                                    ]
-                                }
-                            ],
-                            "select": [
-                                [
-                                    {
-                                        "type": "field",
-                                        "params": [
-                                            "rate1m"
-                                        ]
-                                    },
-                                    {
-                                        "type": "last",
-                                        "params": []
-                                    }
-                                ]
-                            ],
-                            "refId": "A",
-                            "measurement": "application.oauth2__error_rate",
-                            "alias": "[$tag_client_id] $tag_route"
-                        }
-                    ],
+                    "aliasColors": {},
+                    "bars": false,
                     "datasource": "AppMetricsSandbox",
-                    "renderer": "flot",
-                    "yaxes": [
-                        {
-                            "label": null,
-                            "show": true,
-                            "logBase": 1,
-                            "min": null,
-                            "max": null,
-                            "format": "rpm"
-                        },
-                        {
-                            "label": "",
-                            "show": true,
-                            "logBase": 1,
-                            "min": null,
-                            "max": null,
-                            "format": "rpm"
-                        }
-                    ],
-                    "xaxis": {
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 1,
+                    "id": 4,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": false,
+                        "current": true,
+                        "max": false,
+                        "min": false,
+                        "rightSide": true,
                         "show": true,
-                        "mode": "time",
-                        "name": null,
-                        "values": []
+                        "sort": "current",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
                     },
                     "lines": true,
-                    "fill": 1,
                     "linewidth": 1,
-                    "points": false,
-                    "pointradius": 5,
-                    "bars": false,
-                    "stack": false,
-                    "percentage": false,
-                    "legend": {
-                        "show": true,
-                        "values": true,
-                        "min": false,
-                        "max": false,
-                        "current": true,
-                        "total": false,
-                        "avg": false,
-                        "alignAsTable": true,
-                        "rightSide": true,
-                        "sortDesc": true,
-                        "sort": "current"
-                    },
-                    "nullPointMode": "connected",
-                    "steppedLine": false,
-                    "tooltip": {
-                        "value_type": "individual",
-                        "shared": true,
-                        "sort": 2,
-                        "msResolution": false
-                    },
-                    "timeFrom": null,
-                    "timeShift": null,
-                    "aliasColors": {},
-                    "seriesOverrides": [],
-                    "thresholds": [],
                     "links": [],
-                    "decimals": 2
-                },
-                {
-                    "id": 5,
-                    "title": "Errors",
-                    "error": false,
-                    "span": 4,
-                    "editable": true,
-                    "type": "grafana-piechart-panel",
+                    "nullPointMode": "connected",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "span": 8,
+                    "stack": false,
+                    "steppedLine": false,
                     "targets": [
                         {
-                            "policy": "default",
+                            "alias": "[$tag_client_id] $tag_route",
                             "dsType": "influxdb",
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "$interval"
+                                    ],
+                                    "type": "time"
+                                },
+                                {
+                                    "params": [
+                                        "client_id"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "route"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "null"
+                                    ],
+                                    "type": "fill"
+                                }
+                            ],
+                            "measurement": "application.oauth2__error_rate",
+                            "policy": "default",
+                            "refId": "A",
                             "resultFormat": "time_series",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "rate1m"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "last"
+                                    }
+                                ]
+                            ],
                             "tags": [
                                 {
                                     "key": "client_id",
@@ -400,76 +337,139 @@
                                     "operator": "=~",
                                     "value": "/^$route$/"
                                 }
-                            ],
+                            ]
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Error Rate",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 2,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "rpm",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "rpm",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {},
+                    "cacheTimeout": null,
+                    "combine": {
+                        "label": "Others",
+                        "threshold": 0
+                    },
+                    "datasource": "AppMetricsSandbox",
+                    "editable": true,
+                    "error": false,
+                    "fontSize": "80%",
+                    "format": "rpm",
+                    "id": 5,
+                    "interval": null,
+                    "legend": {
+                        "percentage": true,
+                        "show": true,
+                        "sort": null,
+                        "sortDesc": null,
+                        "values": false
+                    },
+                    "legendType": "Right side",
+                    "links": [],
+                    "maxDataPoints": 3,
+                    "nullPointMode": "connected",
+                    "pieType": "pie",
+                    "span": 4,
+                    "strokeWidth": 1,
+                    "targets": [
+                        {
+                            "alias": "$tag_client_id $tag_http_status_code",
+                            "dsType": "influxdb",
                             "groupBy": [
                                 {
-                                    "type": "time",
                                     "params": [
                                         "$interval"
-                                    ]
+                                    ],
+                                    "type": "time"
                                 },
                                 {
-                                    "type": "tag",
                                     "params": [
                                         "http_status_code"
-                                    ]
+                                    ],
+                                    "type": "tag"
                                 },
                                 {
-                                    "type": "tag",
                                     "params": [
                                         "client_id"
-                                    ]
+                                    ],
+                                    "type": "tag"
                                 },
                                 {
-                                    "type": "fill",
                                     "params": [
                                         "null"
-                                    ]
+                                    ],
+                                    "type": "fill"
                                 }
                             ],
+                            "measurement": "application.oauth2__error_rate",
+                            "policy": "default",
+                            "refId": "A",
+                            "resultFormat": "time_series",
                             "select": [
                                 [
                                     {
-                                        "type": "field",
                                         "params": [
                                             "rate1m"
-                                        ]
+                                        ],
+                                        "type": "field"
                                     },
                                     {
-                                        "type": "last",
-                                        "params": []
+                                        "params": [],
+                                        "type": "last"
                                     }
                                 ]
                             ],
-                            "refId": "A",
-                            "measurement": "application.oauth2__error_rate",
-                            "alias": "$tag_client_id $tag_http_status_code"
+                            "tags": [
+                                {
+                                    "key": "client_id",
+                                    "operator": "=~",
+                                    "value": "/^$client_id$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "route",
+                                    "operator": "=~",
+                                    "value": "/^$route$/"
+                                }
+                            ]
                         }
                     ],
-                    "pieType": "pie",
-                    "legend": {
-                        "show": true,
-                        "values": false,
-                        "percentage": true,
-                        "sortDesc": null,
-                        "sort": null
-                    },
-                    "links": [],
-                    "datasource": "AppMetricsSandbox",
-                    "maxDataPoints": 3,
-                    "interval": null,
-                    "cacheTimeout": null,
-                    "nullPointMode": "connected",
-                    "legendType": "Right side",
-                    "aliasColors": {},
-                    "format": "rpm",
-                    "valueName": "current",
-                    "strokeWidth": 1,
-                    "fontSize": "80%",
-                    "combine": {
-                        "threshold": 0,
-                        "label": "Others"
-                    }
+                    "title": "Errors",
+                    "type": "grafana-piechart-panel",
+                    "valueName": "current"
                 }
             ],
             "showTitle": false,
@@ -484,149 +484,86 @@
             "title": "Dashboard Row",
             "panels": [
                 {
-                    "id": 1,
-                    "title": "Post Request Size",
-                    "error": false,
-                    "span": 6,
+                    "aliasColors": {},
+                    "bars": false,
+                    "datasource": "AppMetricsSandbox",
                     "editable": true,
-                    "type": "graph",
+                    "error": false,
+                    "fill": 1,
+                    "id": 1,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": false,
+                        "current": true,
+                        "max": false,
+                        "min": false,
+                        "rightSide": true,
+                        "show": true,
+                        "sort": "current",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "connected",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "span": 6,
+                    "stack": true,
+                    "steppedLine": false,
                     "targets": [
                         {
-                            "policy": "default",
+                            "alias": "[$tag_client_id] $tag_route",
                             "dsType": "influxdb",
-                            "resultFormat": "time_series",
-                            "tags": [
-                                {
-                                    "key": "client_id",
-                                    "operator": "=~",
-                                    "value": "/^$client_id$/"
-                                },
-                                {
-                                    "condition": "AND",
-                                    "key": "route",
-                                    "operator": "=~",
-                                    "value": "/^$route$/"
-                                }
-                            ],
                             "groupBy": [
                                 {
-                                    "type": "time",
                                     "params": [
                                         "$interval"
-                                    ]
+                                    ],
+                                    "type": "time"
                                 },
                                 {
-                                    "type": "tag",
                                     "params": [
                                         "client_id"
-                                    ]
+                                    ],
+                                    "type": "tag"
                                 },
                                 {
-                                    "type": "tag",
                                     "params": [
                                         "route"
-                                    ]
+                                    ],
+                                    "type": "tag"
                                 },
                                 {
-                                    "type": "fill",
                                     "params": [
                                         "null"
-                                    ]
+                                    ],
+                                    "type": "fill"
                                 }
                             ],
+                            "measurement": "application.oauth2__post_size",
+                            "policy": "default",
+                            "refId": "A",
+                            "resultFormat": "time_series",
                             "select": [
                                 [
                                     {
-                                        "type": "field",
                                         "params": [
                                             "last"
-                                        ]
+                                        ],
+                                        "type": "field"
                                     },
                                     {
-                                        "type": "last",
-                                        "params": []
+                                        "params": [],
+                                        "type": "last"
                                     }
                                 ]
                             ],
-                            "refId": "A",
-                            "measurement": "application.oauth2__post_size",
-                            "alias": "[$tag_client_id] $tag_route"
-                        }
-                    ],
-                    "datasource": "AppMetricsSandbox",
-                    "renderer": "flot",
-                    "yaxes": [
-                        {
-                            "label": null,
-                            "show": true,
-                            "logBase": 1,
-                            "min": null,
-                            "max": null,
-                            "format": "decbytes"
-                        },
-                        {
-                            "label": null,
-                            "show": true,
-                            "logBase": 1,
-                            "min": null,
-                            "max": null,
-                            "format": "short"
-                        }
-                    ],
-                    "xaxis": {
-                        "show": true,
-                        "mode": "time",
-                        "name": null,
-                        "values": []
-                    },
-                    "lines": true,
-                    "fill": 1,
-                    "linewidth": 1,
-                    "points": false,
-                    "pointradius": 5,
-                    "bars": false,
-                    "stack": true,
-                    "percentage": false,
-                    "legend": {
-                        "show": true,
-                        "values": true,
-                        "min": false,
-                        "max": false,
-                        "current": true,
-                        "total": false,
-                        "avg": false,
-                        "rightSide": true,
-                        "alignAsTable": true,
-                        "sortDesc": true,
-                        "sort": "current"
-                    },
-                    "nullPointMode": "connected",
-                    "steppedLine": false,
-                    "tooltip": {
-                        "value_type": "individual",
-                        "shared": true,
-                        "sort": 0,
-                        "msResolution": false
-                    },
-                    "timeFrom": null,
-                    "timeShift": null,
-                    "aliasColors": {},
-                    "seriesOverrides": [],
-                    "thresholds": [],
-                    "links": []
-                },
-                {
-                    "id": 2,
-                    "title": "Put Request Size",
-                    "error": false,
-                    "span": 6,
-                    "editable": true,
-                    "type": "graph",
-                    "targets": [
-                        {
-                            "policy": "default",
-                            "dsType": "influxdb",
-                            "resultFormat": "time_series",
                             "tags": [
                                 {
                                     "key": "client_id",
@@ -639,114 +576,177 @@
                                     "operator": "=~",
                                     "value": "/^$route$/"
                                 }
-                            ],
+                            ]
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Post Request Size",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "decbytes",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "datasource": "AppMetricsSandbox",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 1,
+                    "id": 2,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": false,
+                        "current": true,
+                        "max": false,
+                        "min": false,
+                        "rightSide": true,
+                        "show": true,
+                        "sort": "current",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "connected",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "span": 6,
+                    "stack": true,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "alias": "[$tag_client_id] $tag_route",
+                            "dsType": "influxdb",
                             "groupBy": [
                                 {
-                                    "type": "time",
                                     "params": [
                                         "$interval"
-                                    ]
+                                    ],
+                                    "type": "time"
                                 },
                                 {
-                                    "type": "tag",
                                     "params": [
                                         "client_id"
-                                    ]
+                                    ],
+                                    "type": "tag"
                                 },
                                 {
-                                    "type": "tag",
                                     "params": [
                                         "route"
-                                    ]
+                                    ],
+                                    "type": "tag"
                                 },
                                 {
-                                    "type": "fill",
                                     "params": [
                                         "null"
-                                    ]
+                                    ],
+                                    "type": "fill"
                                 }
                             ],
+                            "measurement": "application.oauth2__put_size",
+                            "policy": "default",
+                            "refId": "A",
+                            "resultFormat": "time_series",
                             "select": [
                                 [
                                     {
-                                        "type": "field",
                                         "params": [
                                             "p95"
-                                        ]
+                                        ],
+                                        "type": "field"
                                     },
                                     {
-                                        "type": "last",
-                                        "params": []
+                                        "params": [],
+                                        "type": "last"
                                     }
                                 ]
                             ],
-                            "refId": "A",
-                            "measurement": "application.oauth2__put_size",
-                            "alias": "[$tag_client_id] $tag_route"
+                            "tags": [
+                                {
+                                    "key": "client_id",
+                                    "operator": "=~",
+                                    "value": "/^$client_id$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "route",
+                                    "operator": "=~",
+                                    "value": "/^$route$/"
+                                }
+                            ]
                         }
                     ],
-                    "datasource": "AppMetricsSandbox",
-                    "renderer": "flot",
-                    "yaxes": [
-                        {
-                            "label": null,
-                            "show": true,
-                            "logBase": 1,
-                            "min": null,
-                            "max": null,
-                            "format": "decbytes"
-                        },
-                        {
-                            "label": "",
-                            "show": true,
-                            "logBase": 1,
-                            "min": null,
-                            "max": null,
-                            "format": "decbytes"
-                        }
-                    ],
-                    "xaxis": {
-                        "show": true,
-                        "mode": "time",
-                        "name": null,
-                        "values": []
-                    },
-                    "lines": true,
-                    "fill": 1,
-                    "linewidth": 1,
-                    "points": false,
-                    "pointradius": 5,
-                    "bars": false,
-                    "stack": true,
-                    "percentage": false,
-                    "legend": {
-                        "show": true,
-                        "values": true,
-                        "min": false,
-                        "max": false,
-                        "current": true,
-                        "total": false,
-                        "avg": false,
-                        "rightSide": true,
-                        "alignAsTable": true,
-                        "sortDesc": true,
-                        "sort": "current"
-                    },
-                    "nullPointMode": "connected",
-                    "steppedLine": false,
-                    "tooltip": {
-                        "value_type": "individual",
-                        "shared": true,
-                        "sort": 0,
-                        "msResolution": false
-                    },
+                    "thresholds": [],
                     "timeFrom": null,
                     "timeShift": null,
-                    "aliasColors": {},
-                    "seriesOverrides": [],
-                    "thresholds": [],
-                    "links": [],
-                    "decimals": 2
+                    "title": "Put Request Size",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "decbytes",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "decbytes",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
                 }
             ],
             "showTitle": false,

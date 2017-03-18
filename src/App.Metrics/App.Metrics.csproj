@@ -43,6 +43,7 @@
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.0">
 		<PrivateAssets>All</PrivateAssets>
 	</PackageReference>
+    <PackageReference Include="System.ValueTuple" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">

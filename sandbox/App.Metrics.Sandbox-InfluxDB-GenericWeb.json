@@ -10,7 +10,7 @@
     "sharedCrosshair": true,
     "hideControls": false,
     "time": {
-        "from": "now-5m",
+        "from": "now-15m",
         "to": "now"
     },
     "timepicker": {
@@ -62,16 +62,11 @@
                 "type": "query"
             },
             {
-                "auto": false,
-                "auto_count": 30,
-                "auto_min": "10s",
-                "current": {
-                    "text": "5s",
-                    "value": "5s"
-                },
+                "type": "interval",
+                "name": "health_duration",
                 "hide": 0,
-                "label": "summarize",
-                "name": "summarize",
+                "label": "health check duration",
+                "refresh": 2,
                 "options": [
                     {
                         "text": "5s",
@@ -84,8 +79,18 @@
                         "selected": false
                     },
                     {
-                        "text": "30s1m",
-                        "value": "30s1m",
+                        "text": "30s",
+                        "value": "30s",
+                        "selected": false
+                    },
+                    {
+                        "text": "1m",
+                        "value": "1m",
+                        "selected": false
+                    },
+                    {
+                        "text": "5m",
+                        "value": "5m",
                         "selected": false
                     },
                     {
@@ -134,23 +139,146 @@
                         "selected": false
                     }
                 ],
-                "query": "5s,10s,30s1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
+                "current": {
+                    "text": "5s",
+                    "value": "5s"
+                },
+                "query": "5s,10s,30s,1m,5m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
+                "auto": false,
+                "auto_min": "10s",
+                "auto_count": 30
+            },
+            {
+                "allValue": null,
+                "current": {
+                    "value": [
+                        "App.Metrics.Sandbox"
+                    ],
+                    "text": "App.Metrics.Sandbox"
+                },
+                "datasource": "AppMetricsSandbox",
+                "hide": 0,
+                "includeAll": true,
+                "label": null,
+                "multi": true,
+                "name": "application",
+                "options": [],
+                "query": "SHOW TAG VALUES WITH KEY = \"app\"",
                 "refresh": 2,
-                "type": "interval"
+                "regex": "",
+                "sort": 0,
+                "tagValuesQuery": null,
+                "tagsQuery": null,
+                "type": "query"
+            },
+            {
+                "type": "datasource",
+                "name": "datasource",
+                "hide": 0,
+                "label": null,
+                "current": {
+                    "text": "AppMetricsSandbox",
+                    "value": "AppMetricsSandbox"
+                },
+                "regex": "",
+                "options": [],
+                "query": "influxdb",
+                "refresh": 1
+            },
+            {
+                "type": "interval",
+                "name": "summarize",
+                "hide": 0,
+                "label": null,
+                "refresh": 2,
+                "options": [
+                    {
+                        "text": "5s",
+                        "value": "5s",
+                        "selected": false
+                    },
+                    {
+                        "text": "10s",
+                        "value": "10s",
+                        "selected": false
+                    },
+                    {
+                        "text": "30s",
+                        "value": "30s",
+                        "selected": true
+                    },
+                    {
+                        "text": "1m",
+                        "value": "1m",
+                        "selected": false
+                    },
+                    {
+                        "text": "10m",
+                        "value": "10m",
+                        "selected": false
+                    },
+                    {
+                        "text": "30m",
+                        "value": "30m",
+                        "selected": false
+                    },
+                    {
+                        "text": "1h",
+                        "value": "1h",
+                        "selected": false
+                    },
+                    {
+                        "text": "6h",
+                        "value": "6h",
+                        "selected": false
+                    },
+                    {
+                        "text": "12h",
+                        "value": "12h",
+                        "selected": false
+                    },
+                    {
+                        "text": "1d",
+                        "value": "1d",
+                        "selected": false
+                    },
+                    {
+                        "text": "7d",
+                        "value": "7d",
+                        "selected": false
+                    },
+                    {
+                        "text": "14d",
+                        "value": "14d",
+                        "selected": false
+                    },
+                    {
+                        "text": "30d",
+                        "value": "30d",
+                        "selected": false
+                    }
+                ],
+                "current": {
+                    "text": "30s",
+                    "value": "30s"
+                },
+                "query": "5s,10s,30s,1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
+                "auto": false,
+                "auto_min": "10s",
+                "auto_count": 30
             }
         ]
     },
     "annotations": {
         "list": []
     },
-    "refresh": "5s",
     "schemaVersion": 13,
-    "version": 31,
+    "version": 48,
     "links": [],
     "gnetId": null,
     "rows": [
         {
-            "title": "Dashboard Row",
+            "title": "Overview",
             "panels": [
                 {
                     "cacheTimeout": null,
@@ -161,7 +289,7 @@
                         "rgba(237, 129, 40, 0.89)",
                         "rgba(50, 172, 45, 0.97)"
                     ],
-                    "datasource": "AppMetricsSandbox",
+                    "datasource": "$datasource",
                     "editable": true,
                     "error": false,
                     "format": "rpm",
@@ -173,7 +301,7 @@
                         "thresholdMarkers": true
                     },
                     "id": 8,
-                    "interval": "$summarize",
+                    "interval": "",
                     "links": [],
                     "mappingType": 1,
                     "mappingTypes": [
@@ -242,7 +370,19 @@
                                     }
                                 ]
                             ],
-                            "tags": []
+                            "tags": [
+                                {
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "env",
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
+                                }
+                            ]
                         }
                     ],
                     "thresholds": "",
@@ -267,7 +407,7 @@
                         "rgba(237, 129, 40, 0.89)",
                         "rgba(245, 54, 54, 0.9)"
                     ],
-                    "datasource": "AppMetricsSandbox",
+                    "datasource": "$datasource",
                     "decimals": 4,
                     "editable": true,
                     "error": false,
@@ -334,7 +474,19 @@
                                     }
                                 ]
                             ],
-                            "tags": []
+                            "tags": [
+                                {
+                                    "key": "env",
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
+                                }
+                            ]
                         }
                     ],
                     "thresholds": "",
@@ -353,23 +505,20 @@
                 {
                     "aliasColors": {},
                     "bars": false,
-                    "datasource": "AppMetricsSandbox",
+                    "datasource": "$datasource",
                     "editable": true,
                     "error": false,
-                    "fill": 1,
-                    "height": "",
-                    "id": 9,
-                    "interval": "",
+                    "fill": 2,
+                    "id": 13,
+                    "interval": "$summarize",
                     "legend": {
-                        "alignAsTable": true,
                         "avg": false,
-                        "current": true,
+                        "current": false,
                         "max": false,
                         "min": false,
-                        "rightSide": true,
                         "show": false,
                         "total": false,
-                        "values": true
+                        "values": false
                     },
                     "lines": true,
                     "linewidth": 1,
@@ -401,7 +550,7 @@
                                     "type": "fill"
                                 }
                             ],
-                            "measurement": "application.httprequests__one_minute_error_percentage_rate",
+                            "measurement": "application.httprequests__active",
                             "policy": "default",
                             "refId": "A",
                             "resultFormat": "time_series",
@@ -419,13 +568,25 @@
                                     }
                                 ]
                             ],
-                            "tags": []
+                            "tags": [
+                                {
+                                    "key": "env",
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
+                                }
+                            ]
                         }
                     ],
                     "thresholds": [],
                     "timeFrom": null,
                     "timeShift": null,
-                    "title": "Error Rate %",
+                    "title": "Active Requests",
                     "tooltip": {
                         "msResolution": false,
                         "shared": true,
@@ -441,11 +602,11 @@
                     },
                     "yaxes": [
                         {
-                            "format": "percent",
+                            "format": "short",
                             "label": null,
                             "logBase": 1,
-                            "max": "100",
-                            "min": "0",
+                            "max": null,
+                            "min": null,
                             "show": true
                         },
                         {
@@ -463,13 +624,13 @@
                         "application.httprequests__apdex.last": "#6ED0E0"
                     },
                     "bars": false,
-                    "datasource": "AppMetricsSandbox",
+                    "datasource": "$datasource",
                     "editable": true,
                     "error": false,
                     "fill": 1,
                     "height": "",
                     "id": 7,
-                    "interval": "",
+                    "interval": "$summarize",
                     "legend": {
                         "avg": false,
                         "current": false,
@@ -526,7 +687,19 @@
                                     }
                                 ]
                             ],
-                            "tags": []
+                            "tags": [
+                                {
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "env",
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
+                                }
+                            ]
                         }
                     ],
                     "thresholds": [
@@ -586,28 +759,16 @@
                             "show": false
                         }
                     ]
-                }
-            ],
-            "showTitle": false,
-            "titleSize": "h6",
-            "height": "250",
-            "repeat": null,
-            "repeatRowId": null,
-            "repeatIteration": null,
-            "collapse": false
-        },
-        {
-            "title": "Overall",
-            "panels": [
+                },
                 {
                     "aliasColors": {},
                     "bars": false,
-                    "datasource": "AppMetricsSandbox",
+                    "datasource": "$datasource",
                     "editable": true,
                     "error": false,
                     "fill": 1,
                     "id": 1,
-                    "interval": "",
+                    "interval": "$summarize",
                     "legend": {
                         "avg": false,
                         "current": true,
@@ -710,8 +871,14 @@
                             "tags": [
                                 {
                                     "key": "env",
-                                    "operator": "=",
-                                    "value": "stage"
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
                                 }
                             ]
                         }
@@ -750,17 +917,18 @@
                             "min": null,
                             "show": true
                         }
-                    ]
+                    ],
+                    "height": "350"
                 },
                 {
                     "aliasColors": {},
                     "bars": false,
-                    "datasource": "AppMetricsSandbox",
+                    "datasource": "$datasource",
                     "editable": true,
                     "error": false,
                     "fill": 1,
                     "id": 2,
-                    "interval": "",
+                    "interval": "$summarize",
                     "legend": {
                         "alignAsTable": false,
                         "avg": false,
@@ -865,8 +1033,14 @@
                             "tags": [
                                 {
                                     "key": "env",
-                                    "operator": "=",
-                                    "value": "stage"
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
                                 }
                             ]
                         }
@@ -905,569 +1079,29 @@
                             "min": null,
                             "show": true
                         }
-                    ]
-                }
-            ],
-            "showTitle": false,
-            "titleSize": "h6",
-            "height": "350px",
-            "repeat": null,
-            "repeatRowId": null,
-            "repeatIteration": null,
-            "collapse": false
-        },
-        {
-            "title": "Dashboard Row",
-            "panels": [
+                    ],
+                    "height": "350"
+                },
                 {
                     "aliasColors": {},
                     "bars": false,
-                    "datasource": "AppMetricsSandbox",
+                    "datasource": "$datasource",
                     "editable": true,
                     "error": false,
                     "fill": 1,
-                    "id": 16,
-                    "interval": "",
+                    "height": "",
+                    "id": 9,
+                    "interval": "$summarize",
                     "legend": {
                         "alignAsTable": true,
                         "avg": false,
-                        "current": false,
+                        "current": true,
                         "max": false,
                         "min": false,
                         "rightSide": true,
-                        "show": true,
-                        "total": false,
-                        "values": false,
-                        "sortDesc": true,
-                        "sort": "current"
-                    },
-                    "lines": true,
-                    "linewidth": 1,
-                    "links": [],
-                    "nullPointMode": "connected",
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "seriesOverrides": [],
-                    "span": 6,
-                    "stack": true,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "alias": "$tag_route",
-                            "dsType": "influxdb",
-                            "groupBy": [
-                                {
-                                    "params": [
-                                        "$interval"
-                                    ],
-                                    "type": "time"
-                                },
-                                {
-                                    "params": [
-                                        "route"
-                                    ],
-                                    "type": "tag"
-                                },
-                                {
-                                    "params": [
-                                        "null"
-                                    ],
-                                    "type": "fill"
-                                }
-                            ],
-                            "measurement": "application.httprequests__transactions_per_endpoint",
-                            "policy": "default",
-                            "refId": "A",
-                            "resultFormat": "time_series",
-                            "select": [
-                                [
-                                    {
-                                        "params": [
-                                            "rate1m"
-                                        ],
-                                        "type": "field"
-                                    },
-                                    {
-                                        "params": [],
-                                        "type": "last"
-                                    }
-                                ]
-                            ],
-                            "tags": [
-                                {
-                                    "key": "env",
-                                    "operator": "=",
-                                    "value": "stage"
-                                }
-                            ]
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeShift": null,
-                    "title": "Throughput / Endpoint",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 2,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "rpm",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ],
-                    "transparent": false
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "datasource": "AppMetricsSandbox",
-                    "editable": true,
-                    "error": false,
-                    "fill": 1,
-                    "id": 17,
-                    "interval": "",
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": false,
-                        "current": false,
-                        "max": false,
-                        "min": false,
-                        "rightSide": true,
-                        "show": true,
-                        "total": false,
-                        "values": false
-                    },
-                    "lines": true,
-                    "linewidth": 1,
-                    "links": [],
-                    "nullPointMode": "connected",
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "seriesOverrides": [],
-                    "span": 6,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "alias": "$tag_route",
-                            "dsType": "influxdb",
-                            "groupBy": [
-                                {
-                                    "params": [
-                                        "$interval"
-                                    ],
-                                    "type": "time"
-                                },
-                                {
-                                    "params": [
-                                        "route"
-                                    ],
-                                    "type": "tag"
-                                },
-                                {
-                                    "params": [
-                                        "null"
-                                    ],
-                                    "type": "fill"
-                                }
-                            ],
-                            "measurement": "application.httprequests__transactions_per_endpoint",
-                            "policy": "default",
-                            "refId": "A",
-                            "resultFormat": "time_series",
-                            "select": [
-                                [
-                                    {
-                                        "params": [
-                                            "p95"
-                                        ],
-                                        "type": "field"
-                                    },
-                                    {
-                                        "params": [],
-                                        "type": "last"
-                                    },
-                                    {
-                                        "params": [
-                                            "95th Percentile"
-                                        ],
-                                        "type": "alias"
-                                    }
-                                ]
-                            ],
-                            "tags": [
-                                {
-                                    "key": "env",
-                                    "operator": "=",
-                                    "value": "stage"
-                                }
-                            ]
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeShift": null,
-                    "title": "Response Time / Endpoint",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "ms",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ]
-                }
-            ],
-            "showTitle": false,
-            "titleSize": "h6",
-            "height": "300",
-            "repeat": null,
-            "repeatRowId": null,
-            "repeatIteration": null,
-            "collapse": false
-        },
-        {
-            "title": "Dashboard Row",
-            "panels": [
-                {
-                    "columns": [
-                        {
-                            "text": "Current",
-                            "value": "current"
-                        }
-                    ],
-                    "datasource": "AppMetricsSandbox",
-                    "editable": true,
-                    "error": false,
-                    "fontSize": "100%",
-                    "id": 10,
-                    "interval": "",
-                    "links": [],
-                    "pageSize": null,
-                    "scroll": true,
-                    "showHeader": true,
-                    "sort": {
-                        "col": null,
-                        "desc": false
-                    },
-                    "span": 3,
-                    "styles": [
-                        {
-                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
-                            "pattern": "Time",
-                            "type": "date"
-                        },
-                        {
-                            "colorMode": null,
-                            "colors": [
-                                "rgba(245, 54, 54, 0.9)",
-                                "rgba(237, 129, 40, 0.89)",
-                                "rgba(50, 172, 45, 0.97)"
-                            ],
-                            "decimals": 2,
-                            "pattern": "/.*/",
-                            "thresholds": [],
-                            "type": "number",
-                            "unit": "ms"
-                        }
-                    ],
-                    "targets": [
-                        {
-                            "alias": "$tag_route",
-                            "dsType": "influxdb",
-                            "groupBy": [
-                                {
-                                    "params": [
-                                        "$interval"
-                                    ],
-                                    "type": "time"
-                                },
-                                {
-                                    "params": [
-                                        "route"
-                                    ],
-                                    "type": "tag"
-                                },
-                                {
-                                    "params": [
-                                        "null"
-                                    ],
-                                    "type": "fill"
-                                }
-                            ],
-                            "measurement": "application.httprequests__transactions_per_endpoint",
-                            "policy": "default",
-                            "refId": "A",
-                            "resultFormat": "time_series",
-                            "select": [
-                                [
-                                    {
-                                        "params": [
-                                            "p95"
-                                        ],
-                                        "type": "field"
-                                    },
-                                    {
-                                        "params": [],
-                                        "type": "last"
-                                    }
-                                ]
-                            ],
-                            "tags": []
-                        }
-                    ],
-                    "title": "Response Times / Endpoint",
-                    "transform": "timeseries_aggregations",
-                    "type": "table"
-                },
-                {
-                    "columns": [
-                        {
-                            "text": "Current",
-                            "value": "current"
-                        }
-                    ],
-                    "datasource": "AppMetricsSandbox",
-                    "editable": true,
-                    "error": false,
-                    "fontSize": "100%",
-                    "id": 12,
-                    "interval": "$summarize",
-                    "links": [],
-                    "pageSize": null,
-                    "scroll": true,
-                    "showHeader": true,
-                    "sort": {
-                        "col": null,
-                        "desc": false
-                    },
-                    "span": 3,
-                    "styles": [
-                        {
-                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
-                            "pattern": "Time",
-                            "type": "date"
-                        },
-                        {
-                            "colorMode": null,
-                            "colors": [
-                                "rgba(245, 54, 54, 0.9)",
-                                "rgba(237, 129, 40, 0.89)",
-                                "rgba(50, 172, 45, 0.97)"
-                            ],
-                            "decimals": 2,
-                            "pattern": "/.*/",
-                            "thresholds": [],
-                            "type": "number",
-                            "unit": "rpm"
-                        }
-                    ],
-                    "targets": [
-                        {
-                            "alias": "$tag_route",
-                            "dsType": "influxdb",
-                            "groupBy": [
-                                {
-                                    "params": [
-                                        "$interval"
-                                    ],
-                                    "type": "time"
-                                },
-                                {
-                                    "params": [
-                                        "route"
-                                    ],
-                                    "type": "tag"
-                                },
-                                {
-                                    "params": [
-                                        "null"
-                                    ],
-                                    "type": "fill"
-                                }
-                            ],
-                            "measurement": "application.httprequests__transactions_per_endpoint",
-                            "policy": "default",
-                            "refId": "A",
-                            "resultFormat": "time_series",
-                            "select": [
-                                [
-                                    {
-                                        "params": [
-                                            "rate1m"
-                                        ],
-                                        "type": "field"
-                                    },
-                                    {
-                                        "params": [],
-                                        "type": "mean"
-                                    }
-                                ]
-                            ],
-                            "tags": []
-                        }
-                    ],
-                    "title": "Throughput / Endpoint",
-                    "transform": "timeseries_aggregations",
-                    "type": "table"
-                },
-                {
-                    "columns": [
-                        {
-                            "text": "Current",
-                            "value": "current"
-                        }
-                    ],
-                    "datasource": "AppMetricsSandbox",
-                    "editable": true,
-                    "error": false,
-                    "fontSize": "100%",
-                    "id": 11,
-                    "interval": "$summarize",
-                    "links": [],
-                    "pageSize": null,
-                    "scroll": true,
-                    "showHeader": true,
-                    "sort": {
-                        "col": null,
-                        "desc": false
-                    },
-                    "span": 3,
-                    "styles": [
-                        {
-                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
-                            "pattern": "Time",
-                            "type": "date"
-                        },
-                        {
-                            "colorMode": null,
-                            "colors": [
-                                "rgba(245, 54, 54, 0.9)",
-                                "rgba(237, 129, 40, 0.89)",
-                                "rgba(50, 172, 45, 0.97)"
-                            ],
-                            "decimals": 0,
-                            "pattern": "/.*/",
-                            "thresholds": [],
-                            "type": "number",
-                            "unit": "percent"
-                        }
-                    ],
-                    "targets": [
-                        {
-                            "alias": "$tag_route",
-                            "dsType": "influxdb",
-                            "groupBy": [
-                                {
-                                    "params": [
-                                        "$interval"
-                                    ],
-                                    "type": "time"
-                                },
-                                {
-                                    "params": [
-                                        "route"
-                                    ],
-                                    "type": "tag"
-                                },
-                                {
-                                    "params": [
-                                        "null"
-                                    ],
-                                    "type": "fill"
-                                }
-                            ],
-                            "measurement": "application.httprequests__one_minute_error_percentage_rate_per_endpoint",
-                            "policy": "default",
-                            "refId": "A",
-                            "resultFormat": "time_series",
-                            "select": [
-                                [
-                                    {
-                                        "params": [
-                                            "value"
-                                        ],
-                                        "type": "field"
-                                    },
-                                    {
-                                        "params": [],
-                                        "type": "last"
-                                    }
-                                ]
-                            ],
-                            "tags": []
-                        }
-                    ],
-                    "title": "Error Request Percentage / Endpoint",
-                    "transform": "timeseries_aggregations",
-                    "type": "table"
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "datasource": "AppMetricsSandbox",
-                    "editable": true,
-                    "error": false,
-                    "fill": 2,
-                    "id": 13,
-                    "interval": "",
-                    "legend": {
-                        "avg": false,
-                        "current": false,
-                        "max": false,
-                        "min": false,
                         "show": false,
                         "total": false,
-                        "values": false
+                        "values": true
                     },
                     "lines": true,
                     "linewidth": 1,
@@ -1478,12 +1112,12 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
-                    "span": 3,
+                    "span": 4,
                     "stack": false,
                     "steppedLine": false,
                     "targets": [
                         {
-                            "alias": "$summarize",
+                            "alias": "",
                             "dsType": "influxdb",
                             "groupBy": [
                                 {
@@ -1499,7 +1133,7 @@
                                     "type": "fill"
                                 }
                             ],
-                            "measurement": "application.httprequests__active",
+                            "measurement": "application.httprequests__one_minute_error_percentage_rate",
                             "policy": "default",
                             "refId": "A",
                             "resultFormat": "time_series",
@@ -1519,9 +1153,15 @@
                             ],
                             "tags": [
                                 {
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
+                                },
+                                {
+                                    "condition": "AND",
                                     "key": "env",
-                                    "operator": "=",
-                                    "value": "stage"
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
                                 }
                             ]
                         }
@@ -1529,7 +1169,7 @@
                     "thresholds": [],
                     "timeFrom": null,
                     "timeShift": null,
-                    "title": "Active Requests",
+                    "title": "Error Rate %",
                     "tooltip": {
                         "msResolution": false,
                         "shared": true,
@@ -1545,11 +1185,11 @@
                     },
                     "yaxes": [
                         {
-                            "format": "short",
+                            "format": "percent",
                             "label": null,
                             "logBase": 1,
-                            "max": null,
-                            "min": null,
+                            "max": "100",
+                            "min": "0",
                             "show": true
                         },
                         {
@@ -1561,30 +1201,96 @@
                             "show": true
                         }
                     ]
-                }
-            ],
-            "showTitle": false,
-            "titleSize": "h6",
-            "height": "300",
-            "repeat": null,
-            "repeatRowId": null,
-            "repeatIteration": null,
-            "collapse": false
-        },
-        {
-            "title": "Dashboard Row",
-            "panels": [
+                },
+                {
+                    "aliasColors": {},
+                    "cacheTimeout": null,
+                    "combine": {
+                        "label": "Others",
+                        "threshold": 0
+                    },
+                    "datasource": "$datasource",
+                    "editable": true,
+                    "error": false,
+                    "fontSize": "80%",
+                    "format": "percent",
+                    "height": "250px",
+                    "id": 4,
+                    "interval": "",
+                    "legend": {
+                        "percentage": true,
+                        "show": true,
+                        "values": true,
+                        "sortDesc": null,
+                        "sort": null
+                    },
+                    "legendType": "Right side",
+                    "links": [],
+                    "maxDataPoints": 3,
+                    "nullPointMode": "connected",
+                    "pieType": "pie",
+                    "span": 3,
+                    "strokeWidth": 1,
+                    "targets": [
+                        {
+                            "alias": "$tag_http_status_code",
+                            "dsType": "influxdb",
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "http_status_code"
+                                    ],
+                                    "type": "tag"
+                                }
+                            ],
+                            "measurement": "application.httprequests__errors",
+                            "policy": "default",
+                            "refId": "A",
+                            "resultFormat": "time_series",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "value"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "sum"
+                                    }
+                                ]
+                            ],
+                            "tags": [
+                                {
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "env",
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
+                                }
+                            ]
+                        }
+                    ],
+                    "title": "Errors",
+                    "type": "grafana-piechart-panel",
+                    "valueName": "current"
+                },
                 {
                     "aliasColors": {},
                     "bars": false,
-                    "datasource": "AppMetricsSandbox",
+                    "datasource": "$datasource",
                     "decimals": 2,
                     "editable": true,
                     "error": false,
                     "fill": 1,
                     "height": "250px",
                     "id": 3,
-                    "interval": "",
+                    "interval": "$summarize",
                     "legend": {
                         "alignAsTable": true,
                         "avg": false,
@@ -1605,7 +1311,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
-                    "span": 8,
+                    "span": 5,
                     "stack": false,
                     "steppedLine": false,
                     "targets": [
@@ -1686,7 +1392,19 @@
                                     }
                                 ]
                             ],
-                            "tags": []
+                            "tags": [
+                                {
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "env",
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
+                                }
+                            ]
                         }
                     ],
                     "thresholds": [],
@@ -1724,49 +1442,450 @@
                             "show": true
                         }
                     ]
-                },
+                }
+            ],
+            "showTitle": true,
+            "titleSize": "h6",
+            "height": "250",
+            "repeat": null,
+            "repeatRowId": null,
+            "repeatIteration": null,
+            "collapse": true
+        },
+        {
+            "title": "Endpoints",
+            "panels": [
                 {
                     "aliasColors": {},
-                    "cacheTimeout": null,
-                    "combine": {
-                        "label": "Others",
-                        "threshold": 0
-                    },
-                    "datasource": "AppMetricsSandbox",
+                    "bars": false,
+                    "datasource": "$datasource",
                     "editable": true,
                     "error": false,
-                    "fontSize": "80%",
-                    "format": "percent",
-                    "height": "250px",
-                    "id": 4,
-                    "interval": null,
+                    "fill": 1,
+                    "id": 16,
+                    "interval": "$summarize",
                     "legend": {
-                        "percentage": true,
+                        "alignAsTable": true,
+                        "avg": false,
+                        "current": false,
+                        "max": false,
+                        "min": false,
+                        "rightSide": true,
                         "show": true,
-                        "values": true,
-                        "sortDesc": null,
-                        "sort": null
+                        "total": false,
+                        "values": false,
+                        "sortDesc": true,
+                        "sort": "current"
                     },
-                    "legendType": "Right side",
+                    "lines": true,
+                    "linewidth": 1,
                     "links": [],
-                    "maxDataPoints": 3,
                     "nullPointMode": "connected",
-                    "pieType": "pie",
-                    "span": 4,
-                    "strokeWidth": 1,
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "span": 6,
+                    "stack": true,
+                    "steppedLine": false,
                     "targets": [
                         {
-                            "alias": "$tag_http_status_code",
+                            "alias": "$tag_route",
                             "dsType": "influxdb",
                             "groupBy": [
                                 {
                                     "params": [
-                                        "http_status_code"
+                                        "$interval"
+                                    ],
+                                    "type": "time"
+                                },
+                                {
+                                    "params": [
+                                        "route"
                                     ],
                                     "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "null"
+                                    ],
+                                    "type": "fill"
                                 }
                             ],
-                            "measurement": "application.httprequests__errors",
+                            "measurement": "application.httprequests__transactions_per_endpoint",
+                            "policy": "default",
+                            "refId": "A",
+                            "resultFormat": "time_series",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "rate1m"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "last"
+                                    }
+                                ]
+                            ],
+                            "tags": [
+                                {
+                                    "key": "env",
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
+                                }
+                            ]
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Throughput / Endpoint",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 2,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "rpm",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ],
+                    "transparent": false,
+                    "height": "350"
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "datasource": "$datasource",
+                    "editable": true,
+                    "error": false,
+                    "fill": 1,
+                    "id": 17,
+                    "interval": "$summarize",
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": false,
+                        "current": false,
+                        "max": false,
+                        "min": false,
+                        "rightSide": true,
+                        "show": true,
+                        "total": false,
+                        "values": false
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "connected",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "alias": "$tag_route",
+                            "dsType": "influxdb",
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "$interval"
+                                    ],
+                                    "type": "time"
+                                },
+                                {
+                                    "params": [
+                                        "route"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "null"
+                                    ],
+                                    "type": "fill"
+                                }
+                            ],
+                            "measurement": "application.httprequests__transactions_per_endpoint",
+                            "policy": "default",
+                            "refId": "A",
+                            "resultFormat": "time_series",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "p95"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "last"
+                                    },
+                                    {
+                                        "params": [
+                                            "95th Percentile"
+                                        ],
+                                        "type": "alias"
+                                    }
+                                ]
+                            ],
+                            "tags": [
+                                {
+                                    "key": "env",
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
+                                }
+                            ]
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Response Time / Endpoint",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "ms",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ],
+                    "height": "350"
+                },
+                {
+                    "columns": [
+                        {
+                            "text": "Current",
+                            "value": "current"
+                        }
+                    ],
+                    "datasource": "$datasource",
+                    "editable": true,
+                    "error": false,
+                    "fontSize": "100%",
+                    "id": 10,
+                    "interval": "",
+                    "links": [],
+                    "pageSize": null,
+                    "scroll": true,
+                    "showHeader": true,
+                    "sort": {
+                        "col": 1,
+                        "desc": true
+                    },
+                    "span": 4,
+                    "styles": [
+                        {
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                            "pattern": "Time",
+                            "type": "date"
+                        },
+                        {
+                            "colorMode": null,
+                            "colors": [
+                                "rgba(245, 54, 54, 0.9)",
+                                "rgba(237, 129, 40, 0.89)",
+                                "rgba(50, 172, 45, 0.97)"
+                            ],
+                            "decimals": 2,
+                            "pattern": "/.*/",
+                            "thresholds": [],
+                            "type": "number",
+                            "unit": "ms"
+                        }
+                    ],
+                    "targets": [
+                        {
+                            "alias": "$tag_route",
+                            "dsType": "influxdb",
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "$interval"
+                                    ],
+                                    "type": "time"
+                                },
+                                {
+                                    "params": [
+                                        "route"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "null"
+                                    ],
+                                    "type": "fill"
+                                }
+                            ],
+                            "measurement": "application.httprequests__transactions_per_endpoint",
+                            "policy": "default",
+                            "refId": "A",
+                            "resultFormat": "time_series",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "p95"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "last"
+                                    }
+                                ]
+                            ],
+                            "tags": [
+                                {
+                                    "key": "env",
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
+                                }
+                            ]
+                        }
+                    ],
+                    "title": "Response Times / Endpoint",
+                    "transform": "timeseries_aggregations",
+                    "type": "table"
+                },
+                {
+                    "columns": [
+                        {
+                            "text": "Current",
+                            "value": "current"
+                        }
+                    ],
+                    "datasource": "$datasource",
+                    "editable": true,
+                    "error": false,
+                    "fontSize": "100%",
+                    "id": 11,
+                    "interval": "",
+                    "links": [],
+                    "pageSize": null,
+                    "scroll": true,
+                    "showHeader": true,
+                    "sort": {
+                        "col": null,
+                        "desc": false
+                    },
+                    "span": 4,
+                    "styles": [
+                        {
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                            "pattern": "Time",
+                            "type": "date"
+                        },
+                        {
+                            "colorMode": null,
+                            "colors": [
+                                "rgba(245, 54, 54, 0.9)",
+                                "rgba(237, 129, 40, 0.89)",
+                                "rgba(50, 172, 45, 0.97)"
+                            ],
+                            "decimals": 0,
+                            "pattern": "/.*/",
+                            "thresholds": [],
+                            "type": "number",
+                            "unit": "percent"
+                        }
+                    ],
+                    "targets": [
+                        {
+                            "alias": "$tag_route",
+                            "dsType": "influxdb",
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "$interval"
+                                    ],
+                                    "type": "time"
+                                },
+                                {
+                                    "params": [
+                                        "route"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "null"
+                                    ],
+                                    "type": "fill"
+                                }
+                            ],
+                            "measurement": "application.httprequests__one_minute_error_percentage_rate_per_endpoint",
                             "policy": "default",
                             "refId": "A",
                             "resultFormat": "time_series",
@@ -1780,38 +1899,418 @@
                                     },
                                     {
                                         "params": [],
-                                        "type": "sum"
+                                        "type": "last"
                                     }
                                 ]
                             ],
-                            "tags": []
+                            "tags": [
+                                {
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "env",
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
+                                }
+                            ]
                         }
                     ],
-                    "title": "Errors",
-                    "type": "grafana-piechart-panel",
-                    "valueName": "current"
+                    "title": "Error Request Percentage / Endpoint",
+                    "transform": "timeseries_aggregations",
+                    "type": "table"
+                },
+                {
+                    "columns": [
+                        {
+                            "text": "Current",
+                            "value": "current"
+                        }
+                    ],
+                    "datasource": "$datasource",
+                    "editable": true,
+                    "error": false,
+                    "fontSize": "100%",
+                    "id": 12,
+                    "interval": "",
+                    "links": [],
+                    "pageSize": null,
+                    "scroll": true,
+                    "showHeader": true,
+                    "sort": {
+                        "col": null,
+                        "desc": false
+                    },
+                    "span": 4,
+                    "styles": [
+                        {
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                            "pattern": "Time",
+                            "type": "date"
+                        },
+                        {
+                            "colorMode": null,
+                            "colors": [
+                                "rgba(245, 54, 54, 0.9)",
+                                "rgba(237, 129, 40, 0.89)",
+                                "rgba(50, 172, 45, 0.97)"
+                            ],
+                            "decimals": 2,
+                            "pattern": "/.*/",
+                            "thresholds": [],
+                            "type": "number",
+                            "unit": "rpm"
+                        }
+                    ],
+                    "targets": [
+                        {
+                            "alias": "$tag_route",
+                            "dsType": "influxdb",
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "$interval"
+                                    ],
+                                    "type": "time"
+                                },
+                                {
+                                    "params": [
+                                        "route"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "null"
+                                    ],
+                                    "type": "fill"
+                                }
+                            ],
+                            "measurement": "application.httprequests__transactions_per_endpoint",
+                            "policy": "default",
+                            "refId": "A",
+                            "resultFormat": "time_series",
+                            "select": [
+                                [
+                                    {
+                                        "type": "field",
+                                        "params": [
+                                            "rate1m"
+                                        ]
+                                    },
+                                    {
+                                        "type": "last",
+                                        "params": []
+                                    }
+                                ]
+                            ],
+                            "tags": [
+                                {
+                                    "key": "env",
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
+                                }
+                            ]
+                        }
+                    ],
+                    "title": "Throughput / Endpoint",
+                    "transform": "timeseries_aggregations",
+                    "type": "table"
                 }
             ],
-            "showTitle": false,
+            "showTitle": true,
             "titleSize": "h6",
-            "height": 250,
+            "height": "300",
             "repeat": null,
             "repeatRowId": null,
             "repeatIteration": null,
-            "collapse": false
+            "collapse": true
         },
         {
-            "title": "Dashboard Row",
+            "title": "Health",
+            "panels": [
+                {
+                    "id": 22,
+                    "title": "Results",
+                    "error": false,
+                    "span": 9,
+                    "editable": true,
+                    "type": "table",
+                    "targets": [
+                        {
+                            "policy": "default",
+                            "dsType": "influxdb",
+                            "resultFormat": "time_series",
+                            "tags": [
+                                {
+                                    "key": "env",
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
+                                }
+                            ],
+                            "groupBy": [
+                                {
+                                    "type": "time",
+                                    "params": [
+                                        "$interval"
+                                    ]
+                                },
+                                {
+                                    "type": "tag",
+                                    "params": [
+                                        "health_check_name"
+                                    ]
+                                },
+                                {
+                                    "type": "fill",
+                                    "params": [
+                                        "null"
+                                    ]
+                                }
+                            ],
+                            "select": [
+                                [
+                                    {
+                                        "type": "field",
+                                        "params": [
+                                            "value"
+                                        ]
+                                    },
+                                    {
+                                        "type": "last",
+                                        "params": []
+                                    }
+                                ]
+                            ],
+                            "refId": "A",
+                            "measurement": "application.health__results",
+                            "alias": "$tag_health_check_name"
+                        }
+                    ],
+                    "styles": [
+                        {
+                            "type": "date",
+                            "pattern": "Time",
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss"
+                        },
+                        {
+                            "unit": "short",
+                            "type": "number",
+                            "decimals": 1,
+                            "colors": [
+                                "rgba(245, 54, 54, 0.9)",
+                                "rgba(237, 129, 40, 0.89)",
+                                "rgba(50, 172, 45, 0.97)"
+                            ],
+                            "colorMode": "row",
+                            "pattern": "/.*/",
+                            "thresholds": [
+                                "0.5",
+                                "1"
+                            ]
+                        }
+                    ],
+                    "transform": "timeseries_aggregations",
+                    "pageSize": null,
+                    "showHeader": true,
+                    "columns": [
+                        {
+                            "text": "Current",
+                            "value": "current"
+                        }
+                    ],
+                    "scroll": true,
+                    "fontSize": "100%",
+                    "sort": {
+                        "col": 0,
+                        "desc": true
+                    },
+                    "datasource": "$datasource",
+                    "links": [],
+                    "timeFrom": "$health_duration",
+                    "transparent": true,
+                    "hideTimeOverride": true
+                },
+                {
+                    "id": 19,
+                    "title": "",
+                    "error": false,
+                    "span": 3,
+                    "editable": true,
+                    "type": "singlestat",
+                    "targets": [
+                        {
+                            "policy": "default",
+                            "dsType": "influxdb",
+                            "resultFormat": "time_series",
+                            "tags": [
+                                {
+                                    "key": "env",
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
+                                }
+                            ],
+                            "groupBy": [
+                                {
+                                    "type": "time",
+                                    "params": [
+                                        "$interval"
+                                    ]
+                                },
+                                {
+                                    "type": "fill",
+                                    "params": [
+                                        "null"
+                                    ]
+                                }
+                            ],
+                            "select": [
+                                [
+                                    {
+                                        "type": "field",
+                                        "params": [
+                                            "value"
+                                        ]
+                                    },
+                                    {
+                                        "type": "last",
+                                        "params": []
+                                    }
+                                ]
+                            ],
+                            "refId": "A",
+                            "measurement": "application.health__score"
+                        }
+                    ],
+                    "links": [
+                        {
+                            "type": "dashboard"
+                        }
+                    ],
+                    "datasource": "$datasource",
+                    "maxDataPoints": 100,
+                    "interval": null,
+                    "cacheTimeout": null,
+                    "format": "none",
+                    "prefix": "",
+                    "postfix": "",
+                    "nullText": null,
+                    "valueMaps": [
+                        {
+                            "value": "0",
+                            "op": "=",
+                            "text": "Unhealthy"
+                        },
+                        {
+                            "value": "0.5",
+                            "op": "=",
+                            "text": "Degraded"
+                        },
+                        {
+                            "value": "1.0",
+                            "op": "=",
+                            "text": "Healthy"
+                        }
+                    ],
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "rangeMaps": [
+                        {
+                            "from": "0",
+                            "to": "0.49",
+                            "text": "Unhealthy"
+                        },
+                        {
+                            "from": "0.5",
+                            "to": "0.9",
+                            "text": "Degraded"
+                        },
+                        {
+                            "from": "1.0",
+                            "to": "2.0",
+                            "text": "Healthy"
+                        }
+                    ],
+                    "mappingType": 2,
+                    "nullPointMode": "connected",
+                    "valueName": "current",
+                    "prefixFontSize": "50%",
+                    "valueFontSize": "80%",
+                    "postfixFontSize": "50%",
+                    "thresholds": "0.5,1",
+                    "colorBackground": true,
+                    "colorValue": false,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "sparkline": {
+                        "show": false,
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "fillColor": "rgba(31, 118, 189, 0.18)"
+                    },
+                    "gauge": {
+                        "show": false,
+                        "minValue": 0,
+                        "maxValue": 100,
+                        "thresholdMarkers": true,
+                        "thresholdLabels": false
+                    },
+                    "timeFrom": "$health_duration",
+                    "transparent": true,
+                    "hideTimeOverride": true
+                }
+            ],
+            "showTitle": true,
+            "titleSize": "h6",
+            "height": "250",
+            "repeat": null,
+            "repeatRowId": null,
+            "repeatIteration": null,
+            "collapse": true
+        },
+        {
+            "title": "PUT & POST Request Size",
             "panels": [
                 {
                     "aliasColors": {},
                     "bars": false,
-                    "datasource": "AppMetricsSandbox",
+                    "datasource": "$datasource",
                     "editable": true,
                     "error": false,
                     "fill": 1,
                     "id": 14,
-                    "interval": "",
+                    "interval": "$summarize",
                     "legend": {
                         "alignAsTable": true,
                         "avg": false,
@@ -1932,7 +2431,19 @@
                                     }
                                 ]
                             ],
-                            "tags": []
+                            "tags": [
+                                {
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "env",
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
+                                }
+                            ]
                         }
                     ],
                     "thresholds": [],
@@ -1974,7 +2485,7 @@
                 {
                     "aliasColors": {},
                     "bars": false,
-                    "datasource": "AppMetricsSandbox",
+                    "datasource": "$datasource",
                     "editable": true,
                     "error": false,
                     "fill": 1,
@@ -2098,7 +2609,19 @@
                                     }
                                 ]
                             ],
-                            "tags": []
+                            "tags": [
+                                {
+                                    "key": "app",
+                                    "operator": "=~",
+                                    "value": "/^$application$/"
+                                },
+                                {
+                                    "condition": "AND",
+                                    "key": "env",
+                                    "operator": "=~",
+                                    "value": "/^$environment$/"
+                                }
+                            ]
                         }
                     ],
                     "thresholds": [],
@@ -2135,16 +2658,17 @@
                             "min": null,
                             "show": true
                         }
-                    ]
+                    ],
+                    "interval": "$summarize"
                 }
             ],
-            "showTitle": false,
+            "showTitle": true,
             "titleSize": "h6",
             "height": "300",
             "repeat": null,
             "repeatRowId": null,
             "repeatIteration": null,
-            "collapse": false
+            "collapse": true
         }
     ]
 }

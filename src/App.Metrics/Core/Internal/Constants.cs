@@ -24,9 +24,19 @@ namespace App.Metrics.Core.Internal
 
         public static class Health
         {
+#pragma warning disable SA1008
+            public static readonly (double healthy, double degraded, double unhealthy) HealthScore = (1.0, 0.5, 0.0);
+#pragma warning restore SA1008
+
             internal const string DegradedStatusDisplay = "Degraded";
             internal const string HealthyStatusDisplay = "Healthy";
             internal const string UnhealthyStatusDisplay = "Unhealthy";
+
+            public static class TagKeys
+            {
+                public const string HealthCheckName = "health_check_name";
+                public const string HealthCheckStatus = "health_check_status";
+            }
 
             public static ReadOnlyDictionary<HealthCheckStatus, string> HealthStatusDisplay =>
                 new ReadOnlyDictionary<HealthCheckStatus, string>(

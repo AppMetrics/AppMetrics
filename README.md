@@ -29,6 +29,8 @@ App Metrics also provides a health checking system allowing you to monitor the h
 - [Sample Applications & Grafana Dashbaords](https://github.com/alhardy/AppMetrics.Samples)
 - [Api Documentation](https://alhardy.github.io/app-metrics-docs/api/index.html)
 
+![Grafana/InfluxDB Demo](https://github.com/alhardy/AppMetrics.DocFx/blob/master/images/generic_grafana_dashboard_demo.gif)
+
 ## How to build
 
 [AppVeyor](https://ci.appveyor.com/project/alhardy/appmetrics/branch/master) and [Travis CI](https://travis-ci.org/alhardy/AppMetrics) builds are triggered on commits and PRs to `dev` and `master` branches.
