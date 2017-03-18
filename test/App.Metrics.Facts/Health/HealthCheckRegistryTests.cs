@@ -23,6 +23,7 @@ namespace App.Metrics.Facts.Health
         private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
         private readonly HealthCheckFactory _healthCheckFactory = new HealthCheckFactory(LoggerFactory.CreateLogger<HealthCheckFactory>());
         private readonly Func<IHealthCheckFactory, IMetrics> _metircsSetup;
+        private IMetrics _metrics;
 
         public HealthCheckRegistryTests()
         {
@@ -41,7 +42,7 @@ namespace App.Metrics.Facts.Health
                     NewContextRegistry);
                 var metricBuilderFactory = new DefaultMetricsBuilderFactory();
                 var filter = new DefaultMetricsFilter();
-                var healthManager = new DefaultHealthProvider(LoggerFactory.CreateLogger<DefaultHealthProvider>(), healthCheckFactory);
+                var healthManager = new DefaultHealthProvider(new Lazy<IMetrics>(() => _metrics), LoggerFactory.CreateLogger<DefaultHealthProvider>(), healthCheckFactory);
                 var dataManager = new DefaultMetricValuesProvider(
                     filter,
                     registry);
@@ -50,7 +51,7 @@ namespace App.Metrics.Facts.Health
                 var metricsManagerAdvancedFactory = new DefaultMetricsProvider(registry, metricBuilderFactory, clock);
                 var metricsManager = new DefaultMetricsManager(registry, LoggerFactory.CreateLogger<DefaultMetricsManager>());
 
-                return new DefaultMetrics(
+                _metrics = new DefaultMetrics(
                     clock,
                     filter,
                     metricsManagerFactory,
@@ -59,6 +60,8 @@ namespace App.Metrics.Facts.Health
                     dataManager,
                     metricsManager,
                     healthManager);
+
+                return _metrics;
             };
         }
 

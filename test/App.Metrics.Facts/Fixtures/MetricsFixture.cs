@@ -32,7 +32,7 @@ namespace App.Metrics.Facts.Fixtures
             var metricBuilderFactory = new DefaultMetricsBuilderFactory();
             var filter = new DefaultMetricsFilter();
             var dataManager = new DefaultMetricValuesProvider(filter, registry);
-            var healthStatusProvider = new DefaultHealthProvider(_loggerFactory.CreateLogger<DefaultHealthProvider>(), healthCheckFactory);
+            var healthStatusProvider = new DefaultHealthProvider(new Lazy<IMetrics>(() => Metrics), _loggerFactory.CreateLogger<DefaultHealthProvider>(), healthCheckFactory);
             var metricsManagerFactory = new DefaultMeasureMetricsProvider(registry, metricBuilderFactory, clock);
             var metricsManagerAdvancedFactory = new DefaultMetricsProvider(registry, metricBuilderFactory, clock);
             var metricsManager = new DefaultMetricsManager(registry, _loggerFactory.CreateLogger<DefaultMetricsManager>());
