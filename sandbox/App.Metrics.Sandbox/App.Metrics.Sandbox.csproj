@@ -24,5 +24,10 @@
     <ProjectReference Include="..\..\src\App.Metrics.Formatters.Json\App.Metrics.Formatters.Json.csproj" />
     <ProjectReference Include="..\..\src\App.Metrics\App.Metrics.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
 </Project>

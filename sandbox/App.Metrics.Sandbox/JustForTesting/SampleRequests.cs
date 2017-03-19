@@ -10,7 +10,7 @@ namespace App.Metrics.Sandbox.JustForTesting
 {
     public static class SampleRequests
     {
-        private static readonly Uri ApiBaseAddress = new Uri("http://localhost:1111");
+        private static readonly Uri ApiBaseAddress = new Uri("http://localhost:5000/");
 
         public static void Run(CancellationToken token)
         {
