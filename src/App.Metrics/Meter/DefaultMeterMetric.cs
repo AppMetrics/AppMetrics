@@ -18,7 +18,6 @@ namespace App.Metrics.Meter
     {
         private static readonly TimeSpan TickInterval = TimeSpan.FromSeconds(5);
         private readonly IClock _clock;
-        private readonly IScheduler _tickScheduler;
         private bool _disposed;
         private ConcurrentDictionary<string, SimpleMeter> _setMeters;
         private long _startTime;
@@ -26,25 +25,23 @@ namespace App.Metrics.Meter
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultMeterMetric" /> class.
         /// </summary>
-        /// <param name="systemClock">The system clock.</param>
-        public DefaultMeterMetric(IClock systemClock)
-            : this(systemClock, new DefaultTaskScheduler())
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="DefaultMeterMetric" /> class.
-        /// </summary>
         /// <param name="clock">The clock.</param>
-        /// <param name="scheduler">The scheduler.</param>
+        /// <param name="scheduler">the sc</param>
         // ReSharper disable MemberCanBePrivate.Global
-        public DefaultMeterMetric(IClock clock, IScheduler scheduler)
+        public DefaultMeterMetric(IClock clock, IScheduler scheduler = null)
             // ReSharper restore MemberCanBePrivate.Global
         {
             _clock = clock;
             _startTime = _clock.Nanoseconds;
-            _tickScheduler = scheduler;
-            _tickScheduler.Interval(TickInterval, TaskCreationOptions.LongRunning, Tick);
+
+            if (scheduler == null)
+            {
+                DefaultMeterTickerScheduler.Instance.ScheduleTick(this);
+            }
+            else
+            {
+                DefaultMeterTickerScheduler.Instance.WithScheduler(scheduler).ScheduleTick(this);
+            }
         }
 
         /// <inheritdoc />
@@ -79,12 +76,7 @@ namespace App.Metrics.Meter
             {
                 if (disposing)
                 {
-                    // Free any other managed objects here.
-                    if (_tickScheduler != null)
-                    {
-                        _tickScheduler.Stop();
-                        _tickScheduler.Dispose();
-                    }
+                    DefaultMeterTickerScheduler.Instance.RemoveSchedule(this);
 
                     if (_setMeters != null)
                     {

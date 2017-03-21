@@ -2,6 +2,7 @@
 using App.Metrics.Configuration;
 using App.Metrics.Extensions.Reporting.InfluxDB;
 using App.Metrics.Extensions.Reporting.InfluxDB.Client;
+using App.Metrics.Filtering;
 using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Sandbox.JustForTesting;
 using Microsoft.AspNetCore.Builder;
@@ -45,7 +46,7 @@ namespace App.Metrics.Sandbox
             }
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            // loggerFactory.AddDebug();
 
             app.UseMetrics();
             app.UseMetricsReporting(lifetime);
@@ -64,6 +65,9 @@ namespace App.Metrics.Sandbox
             services.AddLogging().AddRouting(options => { options.LowercaseUrls = true; });
 
             services.AddMvc(options => options.AddMetricsResourceFilter());
+
+            var reportFilter = new DefaultMetricsFilter();
+            reportFilter.WithHealthChecks(false);
 
             services.AddMetrics(Configuration.GetSection("AppMetrics"),
                          options =>
@@ -85,11 +89,11 @@ namespace App.Metrics.Sandbox
                                                   {
                                                       FailuresBeforeBackoff = 3,
                                                       BackoffPeriod = TimeSpan.FromSeconds(30),
-                                                      Timeout = TimeSpan.FromSeconds(3)
+                                                      Timeout = TimeSpan.FromSeconds(10)
                                                   },
                                      InfluxDbSettings = new InfluxDBSettings(InfluxDbDatabase, InfluxDbUri),
                                      ReportInterval = TimeSpan.FromSeconds(5)
-                                 });
+                                 }, reportFilter);
                          }).
                      AddHealthChecks(
                          factory =>
