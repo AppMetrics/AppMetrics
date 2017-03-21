@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="IMetricReporter.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,9 @@ namespace App.Metrics.Abstractions.Reporting
 {
     public interface IMetricReporter : IHideObjectMembers, IDisposable
     {
+        // ReSharper disable UnusedMemberInSuper.Global
         string Name { get; }
+        // ReSharper restore UnusedMemberInSuper.Global
 
         TimeSpan ReportInterval { get; }
 
@@ -22,11 +25,13 @@ namespace App.Metrics.Abstractions.Reporting
 
         void ReportEnvironment(EnvironmentInfo environmentInfo);
 
+        // ReSharper disable UnusedParameter.Global
         void ReportHealth(
             GlobalMetricTags globalTags,
             IEnumerable<HealthCheck.Result> healthyChecks,
             IEnumerable<HealthCheck.Result> degradedChecks,
             IEnumerable<HealthCheck.Result> unhealthyChecks);
+        // ReSharper restore UnusedParameter.Global
 
         void ReportMetric<T>(string context, MetricValueSourceBase<T> valueSource);
 

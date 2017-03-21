@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="GaugeValueSourceSerializationExtensions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +18,8 @@ namespace App.Metrics.Gauge
         {
             var tags = source.Tags.FromDictionary();
             return source.Value.HasValue
-                ? new GaugeValueSource(source.Name, source.Group, ConstantValue.Provider(source.Value.Value), source.Unit, tags)
-                : new GaugeValueSource(source.Name, source.Group, null, source.Unit, tags);
+                ? new GaugeValueSource(source.Name, ConstantValue.Provider(source.Value.Value), source.Unit, tags)
+                : new GaugeValueSource(source.Name, null, source.Unit, tags);
         }
 
         public static IEnumerable<GaugeValueSource> FromSerializableMetric(this IEnumerable<GaugeMetric> source)
@@ -36,7 +37,6 @@ namespace App.Metrics.Gauge
             return new GaugeMetric
                    {
                        Name = source.Name,
-                       Group = source.Group,
                        Value = source.Value,
                        Unit = source.Unit.Name,
                        Tags = source.Tags.ToDictionary()

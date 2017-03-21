@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MetricsEndpointTextEndpointMiddleware.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Threading.Tasks;
@@ -12,7 +13,9 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Extensions.Middleware
 {
+    // ReSharper disable ClassNeverInstantiated.Global
     public class MetricsEndpointTextEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
+        // ReSharper restore ClassNeverInstantiated.Global
     {
         private readonly DefaultReportGenerator _reportGenerator;
 
@@ -24,8 +27,11 @@ namespace App.Metrics.Extensions.Middleware
             IMetrics metrics)
             : base(next, aspNetOptions, loggerFactory, metrics) { _reportGenerator = new DefaultReportGenerator(appMetricsOptions, loggerFactory); }
 
+        // ReSharper disable UnusedMember.Global
         public async Task Invoke(HttpContext context)
         {
+            // ReSharper restore UnusedMember.Global
+
             if (Options.MetricsTextEndpointEnabled && Options.MetricsTextEndpoint.IsPresent() && Options.MetricsTextEndpoint == context.Request.Path)
             {
                 Logger.MiddlewareExecuting(GetType());

@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultReportGenerator.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,9 @@ using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
+using App.Metrics.Core.Internal;
 using App.Metrics.Health;
+using App.Metrics.Tagging;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporting.Internal
@@ -23,18 +26,8 @@ namespace App.Metrics.Reporting.Internal
 
         public DefaultReportGenerator(AppMetricsOptions options, ILoggerFactory loggerFactory)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            if (loggerFactory == null)
-            {
-                throw new ArgumentNullException(nameof(loggerFactory));
-            }
-
-            _options = options;
-            _logger = loggerFactory.CreateLogger<DefaultReportGenerator>();
+            _options = options ?? throw new ArgumentNullException(nameof(options));
+            _logger = loggerFactory?.CreateLogger<DefaultReportGenerator>() ?? throw new ArgumentNullException(nameof(loggerFactory));
         }
 
         public Task<bool> GenerateAsync(
@@ -145,21 +138,6 @@ namespace App.Metrics.Reporting.Internal
             var degraded = healthStatus.Results.Where(r => r.Check.Status.IsDegraded()).ToArray();
 
             reporter.ReportHealth(_options.GlobalTags, passed, degraded, failed);
-
-            foreach (var check in passed)
-            {
-                metrics.Measure.Counter.Increment(ApplicationHealthMetricRegistry.HealthyCheckCounter, check.Name);
-            }
-
-            foreach (var check in degraded)
-            {
-                metrics.Measure.Counter.Increment(ApplicationHealthMetricRegistry.DegradedCheckCounter, check.Name);
-            }
-
-            foreach (var check in failed)
-            {
-                metrics.Measure.Counter.Increment(ApplicationHealthMetricRegistry.UnhealthyCheckCounter, check.Name);
-            }
         }
     }
 }

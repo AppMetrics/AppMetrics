@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MeterValue.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Collections.Generic;
@@ -31,18 +32,13 @@ namespace App.Metrics.Meter
             TimeUnit rateUnit,
             SetItem[] items)
         {
-            if (items == null)
-            {
-                throw new ArgumentNullException(nameof(items));
-            }
-
+            Items = items ?? throw new ArgumentNullException(nameof(items));
             Count = count;
             MeanRate = meanRate;
             OneMinuteRate = oneMinuteRate;
             FiveMinuteRate = fiveMinuteRate;
             FifteenMinuteRate = fifteenMinuteRate;
             RateUnit = rateUnit;
-            Items = items;
         }
 
         internal MeterValue(long count, double meanRate, double oneMinuteRate, double fiveMinuteRate, double fifteenMinuteRate, TimeUnit rateUnit)
@@ -124,7 +120,9 @@ namespace App.Metrics.Meter
                 }
             }
 
+            // ReSharper disable MemberCanBePrivate.Global
             public bool Equals(SetItem other)
+                // ReSharper restore MemberCanBePrivate.Global
             {
                 return string.Equals(Item, other.Item) && Percent.Equals(other.Percent) && Equals(Value, other.Value);
             }

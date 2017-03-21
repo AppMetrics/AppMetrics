@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DerivedGauge.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using App.Metrics.Abstractions.MetricTypes;
@@ -35,6 +36,21 @@ namespace App.Metrics.Gauge
         }
 
         /// <inheritdoc />
-        public double GetValue(bool resetMetric = false) { return Value; }
+        public double GetValue(bool resetMetric = false)
+        {
+            return Value;
+        }
+
+        /// <inheritdoc />
+        public void Reset()
+        {
+            throw new InvalidOperationException("Unable to reset a Derived Gauge");
+        }
+
+        /// <inheritdoc />
+        public void SetValue(double value)
+        {
+            throw new InvalidOperationException("Unable to set the value of a Derived Gauge");
+        }
     }
 }

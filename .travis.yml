@@ -1,0 +1,37 @@
+notifications:
+  email:
+    recipients:
+      - al_hardy@live.com.au
+
+language: csharp
+
+os:
+  - osx
+  - linux
+script:
+  - ./build_travis.sh
+
+# .NET CLI require Ubuntu 14.04
+sudo: required
+dist: trusty
+addons:
+  apt:
+    packages: 
+    - gettext
+    - libcurl4-openssl-dev
+    - libicu-dev
+    - libssl-dev
+    - libunwind8
+
+# .NET CLI require OSX 10.10
+osx_image: xcode7.1
+before_install:  
+  - if test "$TRAVIS_OS_NAME" == "osx"; then brew update; brew install openssl; ln -s /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib /usr/local/lib/; ln -s /usr/local/opt/openssl/lib/libssl.1.0.0.dylib /usr/local/lib/; fi
+
+mono:  
+  - 4.6.0
+
+cache:
+  directories:
+    - src/packages
+    - tools

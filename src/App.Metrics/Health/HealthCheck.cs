@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="HealthCheck.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Threading;
@@ -30,9 +31,9 @@ namespace App.Metrics.Health
         {
             Name = name;
 
-            Func<CancellationToken, Task<HealthCheckResult>> checkWithToken = token => check();
+            Task<HealthCheckResult> CheckWithToken(CancellationToken token) => check();
 
-            _check = checkWithToken;
+            _check = CheckWithToken;
         }
 
         protected HealthCheck(string name)

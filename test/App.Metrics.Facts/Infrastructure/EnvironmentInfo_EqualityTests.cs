@@ -1,15 +1,13 @@
 ﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-using System;
-using System.Linq;
 using App.Metrics.Infrastructure;
 using FluentAssertions;
 using Xunit;
 
 namespace App.Metrics.Facts.Infrastructure
 {
-    public class EnvironmentInfo_EqualityTests
+    public class EnvironmentInfoEqualityTests
     {
         [Fact]
         public void equality_with_equals()

@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="IProvideMetrics.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Abstractions.Metrics;
 using App.Metrics.Abstractions.MetricTypes;
@@ -11,7 +12,9 @@ using App.Metrics.Meter.Abstractions;
 using App.Metrics.Registry.Abstractions;
 using App.Metrics.Timer.Abstractions;
 
+// ReSharper disable CheckNamespace
 namespace App.Metrics.Core.Interfaces
+    // ReSharper restore CheckNamespace
 {
     /// <summary>
     ///     Provides access to APIs which get or add metrics to the <see cref="IMetricsRegistry" /> and return the instance.

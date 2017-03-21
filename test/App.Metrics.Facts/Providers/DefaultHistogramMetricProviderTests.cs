@@ -50,6 +50,26 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
+        public void can_add_add_new_multidimensional_to_registry()
+        {
+            var metricName = "histogram_provider_metric_test_multi";
+            var options = new HistogramOptions
+                          {
+                              Name = metricName
+                          };
+
+            var reservoir = new Lazy<IReservoir>(() => new DefaultAlgorithmRReservoir(1028));
+
+            var apdexMetric = _fixture.Builder.Histogram.Build(reservoir);
+
+            _provider.Instance(options, _fixture.Tags[0], () => apdexMetric);
+
+            _filter.WhereMetricName(name => name == _fixture.Tags[0].AsMetricName(metricName));
+
+            _fixture.Registry.GetData(_filter).Contexts.First().Histograms.Count().Should().Be(1);
+        }
+
+        [Fact]
         public void can_add_instance_to_registry()
         {
             var metricName = "histogram_provider_test";
@@ -65,13 +85,29 @@ namespace App.Metrics.Facts.Providers
             _fixture.Registry.GetData(_filter).Contexts.First().Histograms.Count().Should().Be(1);
         }
 
+        [Fact]
+        public void can_add_multidimensional_to_registry()
+        {
+            var metricName = "histogram_provider_test_multi";
+            var options = new HistogramOptions
+                          {
+                              Name = metricName
+                          };
+
+            _provider.Instance(options, _fixture.Tags[0]);
+
+            _filter.WhereMetricName(name => name == _fixture.Tags[0].AsMetricName(metricName));
+
+            _fixture.Registry.GetData(_filter).Contexts.First().Histograms.Count().Should().Be(1);
+        }
+
 
         [Fact]
         public void can_use_custom_reservoir()
         {
             var reservoirMock = new Mock<IReservoir>();
             reservoirMock.Setup(r => r.Update(100L));
-            reservoirMock.Setup(r => r.GetSnapshot()).Returns(() => new UniformSnapshot(100L, new long[100]));
+            reservoirMock.Setup(r => r.GetSnapshot()).Returns(() => new UniformSnapshot(100L, 100.0, new long[100]));
             reservoirMock.Setup(r => r.Reset());
 
             var reservoir = new Lazy<IReservoir>(() => reservoirMock.Object);
@@ -83,6 +119,29 @@ namespace App.Metrics.Facts.Providers
                           };
 
             var histogram = _provider.Instance(options);
+
+            histogram.Update(100L);
+
+            reservoirMock.Verify(r => r.Update(100L), Times.Once);
+        }
+
+        [Fact]
+        public void can_use_custom_reservoir_when_multidimensional()
+        {
+            var reservoirMock = new Mock<IReservoir>();
+            reservoirMock.Setup(r => r.Update(100L));
+            reservoirMock.Setup(r => r.GetSnapshot()).Returns(() => new UniformSnapshot(100L, 100.0, new long[100]));
+            reservoirMock.Setup(r => r.Reset());
+
+            var reservoir = new Lazy<IReservoir>(() => reservoirMock.Object);
+
+            var options = new HistogramOptions
+                          {
+                              Name = "histogram_provider_custom_test_multi",
+                              Reservoir = reservoir
+                          };
+
+            var histogram = _provider.Instance(options, _fixture.Tags[0]);
 
             histogram.Update(100L);
 

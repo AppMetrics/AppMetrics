@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="ReportFactory.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Collections.Generic;
@@ -23,24 +24,9 @@ namespace App.Metrics.Reporting
 
         public ReportFactory(AppMetricsOptions options, IMetrics metrics, ILoggerFactory loggerFactory)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            if (metrics == null)
-            {
-                throw new ArgumentNullException(nameof(metrics));
-            }
-
-            if (loggerFactory == null)
-            {
-                throw new ArgumentNullException(nameof(loggerFactory));
-            }
-
-            _options = options;
-            _metrics = metrics;
-            _loggerFactory = loggerFactory;
+            _options = options ?? throw new ArgumentNullException(nameof(options));
+            _metrics = metrics ?? throw new ArgumentNullException(nameof(metrics));
+            _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
         }
 
         public void AddProvider(IReporterProvider provider)

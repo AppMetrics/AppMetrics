@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="Unit.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Diagnostics;
@@ -26,12 +27,7 @@ namespace App.Metrics
 
         private Unit(string name)
         {
-            if (name == null)
-            {
-                throw new ArgumentNullException(nameof(name));
-            }
-
-            Name = name;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
         }
 
         public string Name { get; }
@@ -58,7 +54,9 @@ namespace App.Metrics
 
         public override string ToString() { return Name; }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public bool Equals(Unit other) { return string.Equals(Name, other.Name); }
+        // ReSharper restore MemberCanBePrivate.Global
 
         public string FormatCount(long value)
         {

@@ -1,11 +1,22 @@
 version: 1.0.{build}
-nuget:
-  disable_publish_on_pr: true
+image: Visual Studio 2017
+environment:
+  COVERALLS_REPO_TOKEN:
+    secure: /LGVRUGY8A52YwD3XDfKRVNoMh8eaJQ9hNRe+8Yx5i9n57qclPrhrze4VoDqs2uV  
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  CoverWith: OpenCover
+  PreReleaseSuffix: stable
 build_script:
-- cmd: build.cmd
+- ps: .\build.ps1 -Target AppVeyor
 test: off
 artifacts:
 - path: artifacts/packages/*.nupkg
+- path: artifacts/coverage/*.xml
+- path: artifacts/test-results/*.trx
+- path: artifacts/resharper-reports/*.xml
+- path: artifacts/resharper-reports/*.html
+- path: artifacts/coverage/coverage.dcvr
 deploy:
 - provider: NuGet
   server: https://www.myget.org/F/alhardy/api/v2/package

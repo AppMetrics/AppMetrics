@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MvcRouteTemplateResolver.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Linq;
@@ -17,14 +18,9 @@ namespace Microsoft.AspNetCore.Mvc.Internal
         public MvcRouteTemplateResolver()
             : this(new AspNetCoreRouteTemplateResolver()) { }
 
-        public MvcRouteTemplateResolver(IRouteNameResolver routeNameResolver)
+        private MvcRouteTemplateResolver(IRouteNameResolver routeNameResolver)
         {
-            if (routeNameResolver == null)
-            {
-                throw new ArgumentNullException(nameof(routeNameResolver));
-            }
-
-            _routeNameResolver = routeNameResolver;
+            _routeNameResolver = routeNameResolver ?? throw new ArgumentNullException(nameof(routeNameResolver));
         }
 
         public async Task<string> ResolveMatchingTemplateRouteAsync(RouteData routeData)

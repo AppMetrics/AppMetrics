@@ -140,6 +140,14 @@ namespace App.Metrics.Facts.Meter
         }
 
         [Fact]
+        public void returns_empty_meter_if_not_meter_metric()
+        {
+            var meter = new CustomMeter();
+            var value = meter.GetValueOrDefault();
+            value.Should().NotBeNull();
+        }
+
+        [Fact]
         public void value_can_scale_down()
         {
             _meter.Mark();

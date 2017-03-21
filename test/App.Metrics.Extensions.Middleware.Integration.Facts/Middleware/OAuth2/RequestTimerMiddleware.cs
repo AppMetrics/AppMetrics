@@ -19,9 +19,9 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
             Context = fixture.Context;
         }
 
-        public HttpClient Client { get; }
+        private HttpClient Client { get; }
 
-        public IMetrics Context { get; }
+        private IMetrics Context { get; }
 
         [Fact]
         public async Task record_request_times()
@@ -32,11 +32,11 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
 
             var timerValue = Context.Snapshot.GetTimerValue(
                 HttpRequestMetricsRegistry.ContextName,
-                "Http Requests");
+                "Transactions");
 
             timerValue.Histogram.Min.Should().Be(30);
             timerValue.Histogram.Max.Should().Be(300);
-            timerValue.TotalTime.Should().Be(630);
+            timerValue.Histogram.Sum.Should().Be(630);
         }
     }
 }

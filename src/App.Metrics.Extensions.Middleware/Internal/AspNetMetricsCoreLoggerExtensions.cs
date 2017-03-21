@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="AspNetMetricsCoreLoggerExtensions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using App.Metrics.Core.Internal;
@@ -21,7 +22,7 @@ namespace Microsoft.Extensions.Logging
             logger.LogTrace(AspNetMetricsEventIds.Middleware.MiddlewareExecutingId, $"Executing AspNet Metrics Middleware {middleware.FullName}");
         }
 
-        internal static class AspNetMetricsEventIds
+        private static class AspNetMetricsEventIds
         {
             public static class Middleware
             {

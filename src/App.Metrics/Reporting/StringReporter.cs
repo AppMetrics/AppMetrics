@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="StringReporter.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Collections.Generic;
@@ -27,14 +28,12 @@ namespace App.Metrics.Reporting
         {
         }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public StringReporter(string name)
+            // ReSharper restore MemberCanBePrivate.Global
         {
-            if (name == null)
-            {
-                throw new ArgumentNullException(nameof(name));
-            }
+            Name = name ?? throw new ArgumentNullException(nameof(name));
 
-            Name = name;
             _buffer = new StringBuilder();
         }
 
@@ -46,7 +45,9 @@ namespace App.Metrics.Reporting
 
         public void Dispose() { Dispose(true); }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public void Dispose(bool disposing)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             if (!_disposed)
             {

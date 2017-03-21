@@ -8,6 +8,7 @@ using BenchmarkDotNet.Running;
 
 namespace App.Metrics.Benchmarks.Runner
 {
+    // ReSharper disable UnusedMember.Global
     public class Program
     {
         public static void Main(string[] args)
@@ -25,4 +26,6 @@ namespace App.Metrics.Benchmarks.Runner
             } while (keyInfo.Key != ConsoleKey.Escape);            
         }
     }
+
+    // ReSharper restore UnusedMember.Global
 }

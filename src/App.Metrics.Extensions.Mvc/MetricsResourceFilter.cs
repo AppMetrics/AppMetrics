@@ -1,11 +1,11 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MetricsResourceFilter.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Threading.Tasks;
 using App.Metrics.DependencyInjection.Internal;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Internal;
-using App.Metrics.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,12 +22,7 @@ namespace Microsoft.AspNetCore.Mvc.Filters
 
         public MetricsResourceFilter(IRouteNameResolver routeNameResolver)
         {
-            if (routeNameResolver == null)
-            {
-                throw new ArgumentNullException(nameof(routeNameResolver));
-            }
-
-            _routeNameResolver = routeNameResolver;
+            _routeNameResolver = routeNameResolver ?? throw new ArgumentNullException(nameof(routeNameResolver));
         }
 
         public async Task OnResourceExecutionAsync(ResourceExecutingContext context, ResourceExecutionDelegate next)

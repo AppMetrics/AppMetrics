@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="ApdexValue.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using App.Metrics.Core.Internal;
@@ -29,14 +30,14 @@ namespace App.Metrics.Apdex
             }
         }
 
-        public int Frustrating { get; private set; }
+        public int Frustrating { get; }
 
-        public int SampleSize { get; private set; }
+        public int SampleSize { get; }
 
-        public int Satisfied { get; private set; }
+        public int Satisfied { get; }
 
-        public double Score { get; private set; }
+        public double Score { get; }
 
-        public int Tolerating { get; private set; }
+        public int Tolerating { get; }
     }
 }

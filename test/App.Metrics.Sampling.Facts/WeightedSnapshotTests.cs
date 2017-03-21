@@ -4,12 +4,11 @@
 using System;
 using System.Linq;
 using App.Metrics.Abstractions.ReservoirSampling;
-using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 using FluentAssertions;
 using Xunit;
 
-namespace App.Metrics.Facts
+namespace App.Metrics.Sampling.Facts
 {
     public class WeightedSnapshotTests
     {
@@ -88,7 +87,7 @@ namespace App.Metrics.Facts
         public void weight_snapshot_has_size() { _snapshot.Size.Should().Be(5); }
 
         [Fact]
-        public void weight_snapshot_has_values() { _snapshot.Values.Should().Equal(new long[] { 1, 2, 3, 4, 5 }); }
+        public void weight_snapshot_has_values() { _snapshot.Values.Should().Equal(1, 2, 3, 4, 5); }
 
 
         [Fact]
@@ -111,7 +110,7 @@ namespace App.Metrics.Facts
 
             var samples = Enumerable.Range(0, values.Length).Select(i => new WeightedSample(values[i], null, weights[i]));
 
-            return new WeightedSnapshot(values.Length, samples);
+            return new WeightedSnapshot(values.Length, values.Sum(), samples);
         }
     }
 }

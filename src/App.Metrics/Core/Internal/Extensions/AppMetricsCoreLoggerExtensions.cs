@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="AppMetricsCoreLoggerExtensions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,8 @@ using App.Metrics.Core.Internal;
 using App.Metrics.Health;
 
 // ReSharper disable CheckNamespace
+// ReSharper disable RedundantStringInterpolation
+// ReSharper disable UnusedMember.Local
 namespace Microsoft.Extensions.Logging
 {
     // ReSharper restore CheckNamespace
@@ -129,4 +132,7 @@ namespace Microsoft.Extensions.Logging
         // ReSharper restore InconsistentNaming
 #pragma warning disable SA1201
     }
+
+    // ReSharper restore RedundantStringInterpolation
+    // ReSharper restore UnusedMember.Local
 }

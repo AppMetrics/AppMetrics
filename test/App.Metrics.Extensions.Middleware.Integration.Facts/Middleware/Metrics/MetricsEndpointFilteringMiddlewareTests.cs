@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics.Core;
-using App.Metrics.Data;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
 using App.Metrics.Formatters.Json.Serialization;
 using FluentAssertions;
@@ -16,15 +18,12 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
         public MetricsEndpointFilteringMiddlewareTests(MetricsHostTestFixture<FitleredMetricsEndpointStartup> fixture)
         {
             Client = fixture.Client;
-            Context = fixture.Context;
             JsonMetricsSerializer = fixture.JsonMetricsSerializer;
         }
 
-        public HttpClient Client { get; }
+        private HttpClient Client { get; }
 
-        public IMetrics Context { get; }
-
-        public MetricDataSerializer JsonMetricsSerializer { get; }
+        private MetricDataSerializer JsonMetricsSerializer { get; }
 
         [Fact]
         public async Task can_filter_metrics()

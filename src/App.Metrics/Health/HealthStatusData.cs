@@ -1,8 +1,10 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="HealthStatusData.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Collections.Generic;
 
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace App.Metrics.Health
 {
     public sealed class HealthStatusData
@@ -17,4 +19,6 @@ namespace App.Metrics.Health
 
         public Dictionary<string, string> Unhealthy { get; set; } = new Dictionary<string, string>();
     }
+
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 }

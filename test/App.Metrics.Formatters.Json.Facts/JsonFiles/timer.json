@@ -17,7 +17,8 @@
     "percentile99": 1.4E-05,
     "percentile999": 1.4999999999999999E-05,
     "sampleSize": 16,
-    "stdDev": 9E-06
+    "stdDev": 9E-06,
+    "sum": 1E-06
   },
   "rate": {
     "fifteenMinuteRate": 4.0,
@@ -26,7 +27,6 @@
     "oneMinuteRate": 2.0
   },
   "rateUnit": "s",
-  "totalTime": 0,
   "name": "test_timer",
   "tags": {
     "host": "server1",

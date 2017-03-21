@@ -1,3 +1,6 @@
+// Copyright (c) Allan Hardy. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -12,12 +15,9 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
         public MetricsEndpointDisabledMiddlewareTests(MetricsHostTestFixture<DisabledMetricsEndpointStartup> fixture)
         {
             Client = fixture.Client;
-            Context = fixture.Context;
         }
 
-        public HttpClient Client { get; }
-
-        public IMetrics Context { get; }
+        private HttpClient Client { get; }
 
         [Fact]
         public async Task can_disable_metrics_endpoint_when_metrics_enabled()

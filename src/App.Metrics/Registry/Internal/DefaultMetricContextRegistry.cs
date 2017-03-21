@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+// <copyright file="DefaultMetricContextRegistry.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Collections.Concurrent;
@@ -33,8 +34,8 @@ namespace App.Metrics.Registry.Internal
         private readonly MetricMetaCatalog<ICounter, CounterValueSource, CounterValue> _counters =
             new MetricMetaCatalog<ICounter, CounterValueSource, CounterValue>();
 
-        private readonly MetricMetaCatalog<IMetricValueProvider<double>, GaugeValueSource, double> _gauges =
-            new MetricMetaCatalog<IMetricValueProvider<double>, GaugeValueSource, double>();
+        private readonly MetricMetaCatalog<IGauge, GaugeValueSource, double> _gauges =
+            new MetricMetaCatalog<IGauge, GaugeValueSource, double>();
 
         private readonly GlobalMetricTags _globalTags;
 
@@ -54,17 +55,13 @@ namespace App.Metrics.Registry.Internal
 
         public DefaultMetricContextRegistry(string context, GlobalMetricTags globalTags)
         {
-            if (globalTags == null)
-            {
-                throw new ArgumentNullException(nameof(globalTags));
-            }
+            _globalTags = globalTags ?? throw new ArgumentNullException(nameof(globalTags));
 
             if (context.IsMissing())
             {
                 throw new ArgumentException("Registry Context cannot be null or empty", nameof(context));
             }
 
-            _globalTags = globalTags;
             Context = context;
 
             DataProvider = new DefaultMetricRegistryManager(
@@ -90,9 +87,28 @@ namespace App.Metrics.Registry.Internal
                     var apdex = builder();
                     var valueSource = new ApdexValueSource(
                         options.Name,
-                        options.Group,
                         apdex,
                         AllTags(options.Tags),
+                        options.ResetOnReporting);
+                    return Tuple.Create((IApdex)apdex, valueSource);
+                });
+        }
+
+        /// <inheritdoc />
+        public IApdex Apdex<T>(ApdexOptions options, MetricTags tags, Func<T> builder)
+            where T : IApdexMetric
+        {
+            var metricName = tags.AsMetricName(options.Name);
+
+            return _apdexScores.GetOrAdd(
+                metricName,
+                () =>
+                {
+                    var apdex = builder();
+                    var valueSource = new ApdexValueSource(
+                        metricName,
+                        apdex,
+                        AllTags(MetricTags.Concat(options.Tags, tags)),
                         options.ResetOnReporting);
                     return Tuple.Create((IApdex)apdex, valueSource);
                 });
@@ -117,7 +133,6 @@ namespace App.Metrics.Registry.Internal
                     var counter = builder();
                     var valueSource = new CounterValueSource(
                         options.Name,
-                        options.Group,
                         counter,
                         options.MeasurementUnit,
                         AllTags(options.Tags),
@@ -128,20 +143,64 @@ namespace App.Metrics.Registry.Internal
                 });
         }
 
-        public void Gauge(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider)
+        /// <inheritdoc />
+        public ICounter Counter<T>(CounterOptions options, MetricTags tags, Func<T> builder)
+            where T : ICounterMetric
         {
-            _gauges.GetOrAdd(
+            var metricName = tags.AsMetricName(options.Name);
+
+            return _counters.GetOrAdd(
+                metricName,
+                () =>
+                {
+                    var counter = builder();
+                    var valueSource = new CounterValueSource(
+                        metricName,
+                        counter,
+                        options.MeasurementUnit,
+                        AllTags(MetricTags.Concat(options.Tags, tags)),
+                        options.ResetOnReporting,
+                        options.ReportItemPercentages,
+                        options.ReportSetItems);
+                    return Tuple.Create((ICounter)counter, valueSource);
+                });
+        }
+
+        public IGauge Gauge<T>(GaugeOptions options, Func<T> builder)
+            where T : IGaugeMetric
+        {
+            return _gauges.GetOrAdd(
                 options.Name,
                 () =>
                 {
-                    var gauge = valueProvider();
+                    var gauge = builder();
                     var valueSource = new GaugeValueSource(
                         options.Name,
-                        options.Group,
                         gauge,
                         options.MeasurementUnit,
                         AllTags(options.Tags));
-                    return Tuple.Create(gauge, valueSource);
+                    return Tuple.Create((IGauge)gauge, valueSource);
+                });
+        }
+
+        /// <inheritdoc />
+        public IGauge Gauge<T>(GaugeOptions options, MetricTags tags, Func<T> builder)
+            where T : IGaugeMetric
+        {
+            var metricName = tags.AsMetricName(options.Name);
+
+            return _gauges.GetOrAdd(
+                metricName,
+                () =>
+                {
+                    var gauge = builder();
+                    var valueSource = new GaugeValueSource(
+                        metricName,
+                        gauge,
+                        options.MeasurementUnit,
+                        AllTags(MetricTags.Concat(options.Tags, tags)));
+
+                    return Tuple.Create((IGauge)gauge, valueSource);
                 });
         }
 
@@ -155,10 +214,29 @@ namespace App.Metrics.Registry.Internal
                     var histogram = builder();
                     var valueSource = new HistogramValueSource(
                         options.Name,
-                        options.Group,
                         histogram,
                         options.MeasurementUnit,
                         AllTags(options.Tags));
+                    return Tuple.Create((IHistogram)histogram, valueSource);
+                });
+        }
+
+        /// <inheritdoc />
+        public IHistogram Histogram<T>(HistogramOptions options, MetricTags tags, Func<T> builder)
+            where T : IHistogramMetric
+        {
+            var metricName = tags.AsMetricName(options.Name);
+
+            return _histograms.GetOrAdd(
+                metricName,
+                () =>
+                {
+                    var histogram = builder();
+                    var valueSource = new HistogramValueSource(
+                        metricName,
+                        histogram,
+                        options.MeasurementUnit,
+                        AllTags(MetricTags.Concat(options.Tags, tags)));
                     return Tuple.Create((IHistogram)histogram, valueSource);
                 });
         }
@@ -173,11 +251,31 @@ namespace App.Metrics.Registry.Internal
                     var meter = builder();
                     var valueSource = new MeterValueSource(
                         options.Name,
-                        options.Group,
                         meter,
                         options.MeasurementUnit,
                         options.RateUnit,
                         AllTags(options.Tags));
+                    return Tuple.Create((IMeter)meter, valueSource);
+                });
+        }
+
+        /// <inheritdoc />
+        public IMeter Meter<T>(MeterOptions options, MetricTags tags, Func<T> builder)
+            where T : IMeterMetric
+        {
+            var metricName = tags.AsMetricName(options.Name);
+
+            return _meters.GetOrAdd(
+                metricName,
+                () =>
+                {
+                    var meter = builder();
+                    var valueSource = new MeterValueSource(
+                        metricName,
+                        meter,
+                        options.MeasurementUnit,
+                        options.RateUnit,
+                        AllTags(MetricTags.Concat(options.Tags, tags)));
                     return Tuple.Create((IMeter)meter, valueSource);
                 });
         }
@@ -192,12 +290,33 @@ namespace App.Metrics.Registry.Internal
                     var timer = builder();
                     var valueSource = new TimerValueSource(
                         options.Name,
-                        options.Group,
                         timer,
                         options.MeasurementUnit,
                         options.RateUnit,
                         options.DurationUnit,
                         AllTags(options.Tags));
+                    return Tuple.Create((ITimer)timer, valueSource);
+                });
+        }
+
+        /// <inheritdoc />
+        public ITimer Timer<T>(TimerOptions options, MetricTags tags, Func<T> builder)
+            where T : ITimerMetric
+        {
+            var metricName = tags.AsMetricName(options.Name);
+
+            return _timers.GetOrAdd(
+                metricName,
+                () =>
+                {
+                    var timer = builder();
+                    var valueSource = new TimerValueSource(
+                        metricName,
+                        timer,
+                        options.MeasurementUnit,
+                        options.RateUnit,
+                        options.DurationUnit,
+                        AllTags(MetricTags.Concat(options.Tags, tags)));
                     return Tuple.Create((ITimer)timer, valueSource);
                 });
         }

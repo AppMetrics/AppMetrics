@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="RequestTimerMiddleware.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Threading.Tasks;
@@ -11,7 +12,10 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Extensions.Middleware
 {
+    // ReSharper disable ClassNeverInstantiated.Global
+
     public class RequestTimerMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
+        // ReSharper restore ClassNeverInstantiated.Global
     {
         private const string TimerItemsKey = "__App.Metrics.RequestTimer__";
         private readonly ITimer _requestTimer;
@@ -25,10 +29,12 @@ namespace App.Metrics.Extensions.Middleware
         {
             _requestTimer = Metrics.Provider
                                    .Timer
-                                   .Instance(HttpRequestMetricsRegistry.Timers.WebRequestTimer);
+                                   .Instance(HttpRequestMetricsRegistry.Timers.RequestTransactionDuration);
         }
 
+        // ReSharper disable UnusedMember.Global
         public async Task Invoke(HttpContext context)
+            // ReSharper restore UnusedMember.Global
         {
             if (PerformMetric(context))
             {

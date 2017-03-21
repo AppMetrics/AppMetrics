@@ -12,12 +12,9 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Ping
         public PingEndpointDisabledMiddlewareTests(MetricsHostTestFixture<PingDisabledTestStartup> fixture)
         {
             Client = fixture.Client;
-            Context = fixture.Context;
         }
 
-        public HttpClient Client { get; }
-
-        public IMetrics Context { get; }
+        private HttpClient Client { get; }
 
         [Fact]
         public async Task when_enabled_returns_pong()

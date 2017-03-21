@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MetricContextSerializationExtensions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,12 @@ namespace App.Metrics.Formatters.Json
             return source.Select(x => x.FromSerializableMetric());
         }
 
-        public static MetricsContextValueSource FromSerializableMetric(this MetricsContext source)
+        public static IEnumerable<MetricsContext> ToSerializableMetric(this IEnumerable<MetricsContextValueSource> source)
+        {
+            return source.Select(ToSerializableMetric);
+        }
+
+        private static MetricsContextValueSource FromSerializableMetric(this MetricsContext source)
         {
             var jsonCounters = source.Counters.FromSerializableMetric();
             var jsonMeters = source.Meters.FromSerializableMetric();
@@ -34,7 +40,7 @@ namespace App.Metrics.Formatters.Json
             return new MetricsContextValueSource(source.Context, jsonGauges, jsonCounters, jsonMeters, jsonHistograms, jsonTimers, jsonApdexScores);
         }
 
-        public static MetricsContext ToSerializableMetric(this MetricsContextValueSource source)
+        private static MetricsContext ToSerializableMetric(this MetricsContextValueSource source)
         {
             var jsonCoutners = source.Counters.ToSerializableMetric();
             var jsonMeters = source.Meters.ToSerializableMetric();
@@ -53,11 +59,6 @@ namespace App.Metrics.Formatters.Json
                        Context = source.Context,
                        ApdexScores = jsonApdexScores
                    };
-        }
-
-        public static IEnumerable<MetricsContext> ToSerializableMetric(this IEnumerable<MetricsContextValueSource> source)
-        {
-            return source.Select(ToSerializableMetric);
         }
     }
 }

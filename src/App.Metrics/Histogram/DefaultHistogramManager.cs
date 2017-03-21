@@ -1,9 +1,11 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultHistogramManager.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Core.Options;
 using App.Metrics.Histogram.Abstractions;
 using App.Metrics.Registry.Abstractions;
+using App.Metrics.Tagging;
 
 namespace App.Metrics.Histogram
 {
@@ -26,15 +28,25 @@ namespace App.Metrics.Histogram
         /// <inheritdoc />
         public void Update(HistogramOptions options, long value)
         {
-            _registry.Histogram(options, () => _histogramBuilder.Build(options.Reservoir))
-                     .Update(value);
+            _registry.Histogram(options, () => _histogramBuilder.Build(options.Reservoir)).Update(value);
+        }
+
+        /// <inheritdoc />
+        public void Update(HistogramOptions options, MetricTags tags, long value)
+        {
+            _registry.Histogram(options, tags, () => _histogramBuilder.Build(options.Reservoir)).Update(value);
         }
 
         /// <inheritdoc />
         public void Update(HistogramOptions options, long value, string userValue)
         {
-            _registry.Histogram(options, () => _histogramBuilder.Build(options.Reservoir))
-                     .Update(value, userValue);
+            _registry.Histogram(options, () => _histogramBuilder.Build(options.Reservoir)).Update(value, userValue);
+        }
+
+        /// <inheritdoc />
+        public void Update(HistogramOptions options, MetricTags tags, long value, string userValue)
+        {
+            _registry.Histogram(options, tags, () => _histogramBuilder.Build(options.Reservoir)).Update(value, userValue);
         }
     }
 }

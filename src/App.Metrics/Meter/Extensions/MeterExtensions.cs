@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MeterExtensions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Core;
@@ -14,7 +15,7 @@ namespace App.Metrics.Meter.Extensions
 
         public static MeterValue GetMeterValue(this IProvideMetricValues valueService, string context, string metricName)
         {
-            return valueService.GetForContext(context).Meters.ValueFor(context, metricName);
+            return valueService.GetForContext(context).Meters.ValueFor(metricName);
         }
 
         public static MeterValue GetValueOrDefault(this IMeter metric)

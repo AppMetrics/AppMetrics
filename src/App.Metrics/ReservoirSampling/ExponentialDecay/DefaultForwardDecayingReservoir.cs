@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultForwardDecayingReservoir.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Collections.Generic;
@@ -33,21 +34,16 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
     /// <seealso cref="IReservoir" />
     public sealed class DefaultForwardDecayingReservoir : IReservoir, IDisposable
     {
-        private static readonly TimeSpan RescaleInterval = TimeSpan.FromHours(1);
-
         private readonly double _alpha;
-
         private readonly IClock _clock;
-
-        private readonly IScheduler _rescaleScheduler;
         private readonly int _sampleSize;
-
         private readonly SortedList<double, WeightedSample> _values;
+
         private AtomicLong _count = new AtomicLong(0);
         private bool _disposed;
-
         private SpinLock _lock = default(SpinLock);
         private AtomicLong _startTime;
+        private AtomicDouble _sum = new AtomicDouble(0.0);
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultForwardDecayingReservoir" /> class.
@@ -60,8 +56,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
             : this(
                 Constants.ReservoirSampling.DefaultSampleSize,
                 Constants.ReservoirSampling.DefaultExponentialDecayFactor,
-                new StopwatchClock(),
-                new DefaultTaskScheduler())
+                new StopwatchClock())
         {
         }
 
@@ -78,7 +73,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         ///     value the more biased the reservoir will be towards newer values.
         /// </param>
         public DefaultForwardDecayingReservoir(int sampleSize, double alpha)
-            : this(sampleSize, alpha, new StopwatchClock(), new DefaultTaskScheduler())
+            : this(sampleSize, alpha, new StopwatchClock())
         {
         }
 
@@ -91,22 +86,26 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         ///     value the more biased the reservoir will be towards newer values.
         /// </param>
         /// <param name="clock">The <see cref="IClock">clock</see> type to use for calculating processing time.</param>
-        /// <param name="scheduler">
-        ///     The scheduler to to rescale, allowing decayed weights to be tracked. Really only provided here
-        ///     for testing purposes.
-        /// </param>
-        public DefaultForwardDecayingReservoir(int sampleSize, double alpha, IClock clock, IScheduler scheduler)
+        /// <param name="scheduler">asdfasf</param>
+        // ReSharper disable MemberCanBePrivate.Global
+        public DefaultForwardDecayingReservoir(int sampleSize, double alpha, IClock clock, IScheduler scheduler = null)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             _sampleSize = sampleSize;
             _alpha = alpha;
             _clock = clock;
 
             _values = new SortedList<double, WeightedSample>(sampleSize, ReverseOrderDoubleComparer.Instance);
-
-            _rescaleScheduler = scheduler;
-            _rescaleScheduler.Interval(RescaleInterval, TaskCreationOptions.LongRunning, Rescale);
-
             _startTime = new AtomicLong(clock.Seconds);
+
+            if (scheduler == null)
+            {
+                DefaultForwaredDecayingReservoirRescaleScheduler.Instance.ScheduleReScaling(this);
+            }
+            else
+            {
+                DefaultForwaredDecayingReservoirRescaleScheduler.Instance.WithScheduler(scheduler).ScheduleReScaling(this);
+            }
         }
 
         /// <summary>
@@ -132,16 +131,15 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
         ///     unmanaged resources.
         /// </param>
+        // ReSharper disable MemberCanBePrivate.Global
         public void Dispose(bool disposing)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             if (!_disposed)
             {
                 if (disposing)
                 {
-                    // Free any other managed objects here.
-                    using (_rescaleScheduler)
-                    {
-                    }
+                    DefaultForwaredDecayingReservoirRescaleScheduler.Instance.RemoveSchedule(this);
                 }
             }
 
@@ -155,7 +153,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
             try
             {
                 _lock.Enter(ref lockTaken);
-                var snapshot = new WeightedSnapshot(_count.GetValue(), _values.Values);
+                var snapshot = new WeightedSnapshot(_count.GetValue(), _sum.GetValue(), _values.Values);
                 if (resetReservoir)
                 {
                     ResetReservoir();
@@ -227,7 +225,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         ///     landmark L′ (and then use this new L′ at query time). This can be done with
         ///     a linear pass over whatever data structure is being used."
         /// </summary>
-        private void Rescale()
+        public void Rescale()
         {
             var lockTaken = false;
             try
@@ -264,6 +262,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         {
             _values.Clear();
             _count.SetValue(0L);
+            _sum.SetValue(0.0);
             _startTime.SetValue(_clock.Seconds);
         }
 
@@ -290,6 +289,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                 var newCount = _count.GetValue();
                 newCount++;
                 _count.SetValue(newCount);
+                _sum.Add(value);
 
                 if (newCount <= _sampleSize)
                 {

@@ -1,9 +1,11 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MetricsAppEnvironment.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
-using System;
 using Microsoft.Extensions.PlatformAbstractions;
+
 #if NET452
+using System;
 using System.Reflection;
 using App.Metrics.Core.Internal;
 #endif

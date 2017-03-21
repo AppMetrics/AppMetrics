@@ -1,10 +1,13 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="IHideObjectMembers.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.ComponentModel;
 
+// ReSharper disable CheckNamespace
 namespace App.Metrics.Core.Interfaces
+    // ReSharper restore CheckNamespace
 {
     /// <summary>
     ///     Marker interface to cleanup editor visible members.

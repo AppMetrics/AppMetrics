@@ -1,12 +1,13 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="TemplateExtensions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Linq;
 
 // ReSharper disable CheckNamespace
+// ReSharper disable MemberCanBePrivate.Global
 namespace Microsoft.AspNetCore.Routing.Template
 {
-    // ReSharper restore CheckNamespace
     internal static class TemplateExtensions
     {
         public static string ToTemplatePartString(this TemplatePart templatePart)
@@ -34,5 +35,7 @@ namespace Microsoft.AspNetCore.Routing.Template
                                    .Select(s => s.ToTemplateSegmentString()))
                   .Replace("{controller}", controller)
                   .Replace("{action}", action).ToLower();
+        // ReSharper restore CheckNamespace
+        // ReSharper restore MemberCanBePrivate.Global
     }
 }

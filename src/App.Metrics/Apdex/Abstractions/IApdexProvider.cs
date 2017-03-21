@@ -1,17 +1,16 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="IApdexProvider.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
-using System;
 using App.Metrics.Abstractions.ReservoirSampling;
 
 namespace App.Metrics.Apdex.Abstractions
 {
     /// <summary>
-    ///     Provides access to an ApdexProvider Implementation responsible for sampling measured duration to calcualte an apdex
+    ///     Provides access to an ApdexProvider Implementation responsible for sampling measured duration to calculate an apdex
     ///     score
     /// </summary>
-    /// <seealso cref="IDisposable" />
-    public interface IApdexProvider : IDisposable
+    public interface IApdexProvider
     {
         /// <summary>
         ///     Gets a <see cref="ApdexSnapshot">snapshot</see> including the number of satisfied, tolerating, frustrating

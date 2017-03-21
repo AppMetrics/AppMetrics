@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="CounterValue.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Collections.Generic;
@@ -20,13 +21,8 @@ namespace App.Metrics.Counter
 
         public CounterValue(long count, SetItem[] items)
         {
-            if (items == null)
-            {
-                throw new ArgumentNullException(nameof(items));
-            }
-
+            Items = items ?? throw new ArgumentNullException(nameof(items));
             Count = count;
-            Items = items;
         }
 
         internal CounterValue(long count)
@@ -70,7 +66,9 @@ namespace App.Metrics.Counter
             }
         }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public bool Equals(CounterValue other) { return Count == other.Count && Equals(Items, other.Items); }
+        // ReSharper restore MemberCanBePrivate.Global
 
         public struct SetItem
         {
@@ -132,7 +130,9 @@ namespace App.Metrics.Counter
                 }
             }
 
+            // ReSharper disable MemberCanBePrivate.Global
             public bool Equals(SetItem other) { return Count == other.Count && string.Equals(Item, other.Item) && Percent.Equals(other.Percent); }
+            // ReSharper restore MemberCanBePrivate.Global
         }
     }
 }

@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MetricsContextValueSourceExtensions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace App.Metrics.Core
 {
     public static class MetricsContextValueSourceExtensions
     {
-        public static T ValueFor<T>(this IEnumerable<MetricValueSourceBase<T>> values, string context, string metricName)
+        public static T ValueFor<T>(this IEnumerable<MetricValueSourceBase<T>> values, string metricName)
         {
             var metricValueSources = values as MetricValueSourceBase<T>[] ?? values.ToArray();
 

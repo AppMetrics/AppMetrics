@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultApdexMetric.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using App.Metrics.Abstractions.Metrics;
@@ -49,7 +50,9 @@ namespace App.Metrics.Apdex
         ///     the score will intitially be 1 until enough samples have been recorded.
         /// </param>
         public DefaultApdexMetric(Lazy<IReservoir> reservoir, IClock clock, bool allowWarmup)
+            // ReSharper disable RedundantArgumentDefaultValue
             : this(new ApdexProvider(reservoir, Constants.ReservoirSampling.DefaultApdexTSeconds), clock, allowWarmup)
+        // ReSharper restore RedundantArgumentDefaultValue
         {
         }
 
@@ -67,18 +70,8 @@ namespace App.Metrics.Apdex
         /// </exception>
         public DefaultApdexMetric(IApdexProvider apdexProvider, IClock clock, bool allowWarmup)
         {
-            if (clock == null)
-            {
-                throw new ArgumentNullException(nameof(clock));
-            }
-
-            if (apdexProvider == null)
-            {
-                throw new ArgumentNullException(nameof(apdexProvider));
-            }
-
-            _apdexProvider = apdexProvider;
-            _clock = clock;
+            _apdexProvider = apdexProvider ?? throw new ArgumentNullException(nameof(apdexProvider));
+            _clock = clock ?? throw new ArgumentNullException(nameof(clock));
             _allowWarmup = allowWarmup;
         }
 
@@ -95,26 +88,6 @@ namespace App.Metrics.Apdex
         public void Dispose()
         {
             Dispose(true);
-        }
-
-        [AppMetricsExcludeFromCodeCoverage]
-        public void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    // Free any other managed objects here.
-                    if (_apdexProvider != null)
-                    {
-                        using (_apdexProvider)
-                        {
-                        }
-                    }
-                }
-            }
-
-            _disposed = true;
         }
 
         /// <inheritdoc />
@@ -197,6 +170,20 @@ namespace App.Metrics.Apdex
             {
                 Track(_clock.Nanoseconds - start);
             }
+        }
+
+        [AppMetricsExcludeFromCodeCoverage]
+        private void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // Free any other managed objects here.
+                }
+            }
+
+            _disposed = true;
         }
     }
 }

@@ -111,7 +111,7 @@ namespace App.Metrics.Facts.Timer
         [Fact]
         public void counts_even_when_action_throws()
         {
-            Action action = () => _timer.Time(() => { throw new InvalidOperationException(); });
+            Action action = () => _timer.Time(() => throw new InvalidOperationException());
 
             action.ShouldThrow<InvalidOperationException>();
 
@@ -140,6 +140,14 @@ namespace App.Metrics.Facts.Timer
 
             _timer.Value.Histogram.MinUserValue.Should().Be("A");
             _timer.Value.Histogram.MaxUserValue.Should().Be("B");
+        }
+
+        [Fact]
+        public void returns_empty_timer_if_not_timer_metric()
+        {
+            var timer = new CustomTimer();
+            var value = timer.GetValueOrDefault();
+            value.Should().NotBeNull();
         }
 
         [Fact]

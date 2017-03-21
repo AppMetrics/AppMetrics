@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="HitRatioGauge.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using App.Metrics.Meter;
@@ -8,6 +9,7 @@ using App.Metrics.Meter.Extensions;
 using App.Metrics.Timer;
 using App.Metrics.Timer.Abstractions;
 
+// ReSharper disable MemberCanBePrivate.Global
 namespace App.Metrics.Gauge
 {
     public sealed class HitRatioGauge : RatioGauge
@@ -68,4 +70,6 @@ namespace App.Metrics.Gauge
         public HitRatioGauge(IMeter hitMeter, ITimer totalTimer, Func<MeterValue, double> meterRateFunc)
             : base(() => meterRateFunc(hitMeter.GetValueOrDefault()), () => meterRateFunc(totalTimer.GetValueOrDefault().Rate)) { }
     }
+
+    // ReSharper restore MemberCanBePrivate.Global
 }

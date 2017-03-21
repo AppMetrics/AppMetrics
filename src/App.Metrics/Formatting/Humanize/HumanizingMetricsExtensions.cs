@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="HumanizingMetricsExtensions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Collections.Generic;
@@ -55,16 +56,7 @@ namespace App.Metrics.Formatting.Humanize
 
         public static string HumanzizeName<T>(this MetricValueSourceBase<T> valueSource, string context = null)
         {
-            if (context.IsPresent())
-            {
-                return valueSource.Group.IsPresent()
-                    ? $"\t[{context}] {valueSource.Group} - {valueSource.Name}"
-                    : $"\t[{context}] {valueSource.Name}";
-            }
-
-            return valueSource.Group.IsPresent()
-                ? $"\t{valueSource.Group} - {valueSource.Name}"
-                : $"\t{valueSource.Name}";
+            return context.IsPresent() ? $"\t[{context}] {valueSource.Name}" : $"\t{valueSource.Name}";
         }
 
         public static string Hummanize<T>(this MetricValueSourceBase<T> valueSource)

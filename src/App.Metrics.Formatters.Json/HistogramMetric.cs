@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="HistogramMetric.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Abstractions.ReservoirSampling;
 
@@ -25,6 +26,8 @@ namespace App.Metrics.Formatters.Json
     public sealed class HistogramMetric : MetricBase
     {
         public long Count { get; set; }
+
+        public double Sum { get; set; }
 
         public string LastUserValue { get; set; }
 

@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultMeterManager.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Core.Options;
 using App.Metrics.Meter.Abstractions;
@@ -40,21 +41,57 @@ namespace App.Metrics.Meter
         }
 
         /// <inheritdoc />
+        public void Mark(MeterOptions options, MetricTags tags, long amount)
+        {
+            _registry.Meter(options, tags, () => _meterBuilder.Build(_clock)).Mark(amount);
+        }
+
+        /// <inheritdoc />
+        public void Mark(MeterOptions options, MetricTags tags)
+        {
+            _registry.Meter(options, tags, () => _meterBuilder.Build(_clock)).Mark();
+        }
+
+        /// <inheritdoc />
         public void Mark(MeterOptions options, string item)
         {
             _registry.Meter(options, () => _meterBuilder.Build(_clock)).Mark(item);
         }
 
         /// <inheritdoc />
-        public void Mark(MeterOptions options, MetricSetItem itemSetup)
+        public void Mark(MeterOptions options, MetricTags tags, string item)
         {
-            _registry.Meter(options, () => _meterBuilder.Build(_clock)).Mark(itemSetup);
+            _registry.Meter(options, tags, () => _meterBuilder.Build(_clock)).Mark(item);
         }
 
         /// <inheritdoc />
-        public void Mark(MeterOptions options, long amount, MetricSetItem itemSetup)
+        public void Mark(MeterOptions options, MetricSetItem setItem)
         {
-            _registry.Meter(options, () => _meterBuilder.Build(_clock)).Mark(itemSetup, amount);
+            _registry.Meter(options, () => _meterBuilder.Build(_clock)).Mark(setItem);
+        }
+
+        /// <inheritdoc />
+        public void Mark(MeterOptions options, MetricTags tags, MetricSetItem setItem)
+        {
+            _registry.Meter(options, tags, () => _meterBuilder.Build(_clock)).Mark(setItem);
+        }
+
+        /// <inheritdoc />
+        public void Mark(MeterOptions options, MetricTags tags, long amount, string item)
+        {
+            _registry.Meter(options, tags, () => _meterBuilder.Build(_clock)).Mark(item, amount);
+        }
+
+        /// <inheritdoc />
+        public void Mark(MeterOptions options, long amount, MetricSetItem setItem)
+        {
+            _registry.Meter(options, () => _meterBuilder.Build(_clock)).Mark(setItem, amount);
+        }
+
+        /// <inheritdoc />
+        public void Mark(MeterOptions options, MetricTags tags, long amount, MetricSetItem setItem)
+        {
+            _registry.Meter(options, tags, () => _meterBuilder.Build(_clock)).Mark(setItem, amount);
         }
 
         /// <inheritdoc />

@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultTimerMetric.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using App.Metrics.Abstractions.MetricTypes;
@@ -16,7 +17,6 @@ namespace App.Metrics.Timer
         private readonly IClock _clock;
         private readonly IHistogramMetric _histogram;
         private readonly IMeterMetric _meter;
-        private readonly StripedLongAdder _totalRecordedTime = new StripedLongAdder();
         private bool _disposed;
 
         /// <summary>
@@ -25,8 +25,10 @@ namespace App.Metrics.Timer
         /// <param name="histogram">The histogram implementation to use.</param>
         /// <param name="clock">The clock to use to measure processing duration.</param>
         public DefaultTimerMetric(IHistogramMetric histogram, IClock clock)
-            : this(histogram, new DefaultMeterMetric(clock), clock)
         {
+            _clock = clock;
+            _histogram = histogram;
+            _meter = new DefaultMeterMetric(clock);
         }
 
         /// <summary>
@@ -35,8 +37,10 @@ namespace App.Metrics.Timer
         /// <param name="reservoir">The reservoir implementation to use for sampling values to generate the histogram.</param>
         /// <param name="clock">The clock to use to measure processing duration.</param>
         public DefaultTimerMetric(Lazy<IReservoir> reservoir, IClock clock)
-            : this(new DefaultHistogramMetric(reservoir), new DefaultMeterMetric(clock), clock)
         {
+            _clock = clock;
+            _histogram = new DefaultHistogramMetric(reservoir);
+            _meter = new DefaultMeterMetric(clock);
         }
 
         /// <summary>
@@ -78,7 +82,9 @@ namespace App.Metrics.Timer
             Dispose(true);
         }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public void Dispose(bool disposing)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             if (!_disposed)
             {
@@ -103,12 +109,10 @@ namespace App.Metrics.Timer
         /// <inheritdoc />
         public TimerValue GetValue(bool resetMetric = false)
         {
-            var total = resetMetric ? _totalRecordedTime.GetAndReset() : _totalRecordedTime.GetValue();
             return new TimerValue(
                 _meter.GetValue(resetMetric),
                 _histogram.GetValue(resetMetric),
                 _activeSessionsCounter.GetValue(),
-                total,
                 TimeUnit.Nanoseconds);
         }
 
@@ -135,7 +139,6 @@ namespace App.Metrics.Timer
 
             _histogram.Update(nanos, userValue);
             _meter.Mark();
-            _totalRecordedTime.Add(nanos);
         }
 
         /// <inheritdoc />

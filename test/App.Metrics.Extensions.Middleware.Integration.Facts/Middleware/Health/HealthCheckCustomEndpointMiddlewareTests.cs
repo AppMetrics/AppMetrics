@@ -12,12 +12,9 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Health
         public HealthCheckCustomEndpointMiddlewareTests(MetricsHostTestFixture<CustomHealthCheckTestStartup> fixture)
         {
             Client = fixture.Client;
-            Context = fixture.Context;
         }
 
-        public HttpClient Client { get; }
-
-        public IMetrics Context { get; }
+        private HttpClient Client { get; }
 
         [Fact]
         public async Task can_change_health_endpoint()

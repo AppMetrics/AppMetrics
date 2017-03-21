@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="TimerValue.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
@@ -13,12 +14,11 @@ namespace App.Metrics.Timer
     {
         private readonly TimeUnit _durationUnit;
 
-        public TimerValue(MeterValue rate, HistogramValue histogram, long activeSessions, long totalTime, TimeUnit durationUnit)
+        public TimerValue(MeterValue rate, HistogramValue histogram, long activeSessions, TimeUnit durationUnit)
         {
             Rate = rate;
             Histogram = histogram;
             ActiveSessions = activeSessions;
-            TotalTime = totalTime;
             _durationUnit = durationUnit;
         }
 
@@ -28,13 +28,10 @@ namespace App.Metrics.Timer
 
         public MeterValue Rate { get; }
 
-        public long TotalTime { get; }
-
         public TimerValue Scale(TimeUnit rate, TimeUnit duration)
         {
             var durationFactor = _durationUnit.ScalingFactorFor(duration);
-            var total = _durationUnit.Convert(duration, TotalTime);
-            return new TimerValue(Rate.Scale(rate), Histogram.Scale(durationFactor), ActiveSessions, total, duration);
+            return new TimerValue(Rate.Scale(rate), Histogram.Scale(durationFactor), ActiveSessions, duration);
         }
     }
 }

@@ -4,16 +4,15 @@
 using System;
 using System.Linq;
 using App.Metrics.Abstractions.ReservoirSampling;
-using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.Uniform;
 using FluentAssertions;
 using Xunit;
 
-namespace App.Metrics.Facts
+namespace App.Metrics.Sampling.Facts
 {
     public class UniformSnapshotTest
     {
-        private readonly UniformSnapshot _snapshot = new UniformSnapshot(5, new[] { 5L, 1, 2, 3, 4 });
+        private readonly UniformSnapshot _snapshot = new UniformSnapshot(5, 5.0, new[] { 5L, 1, 2, 3, 4 });
 
         [Fact]
         public void UniformSnapshot_BigQuantilesAreTheLastValue() { _snapshot.GetValue(1.0).Should().BeApproximately(5, 0.1); }
@@ -21,35 +20,35 @@ namespace App.Metrics.Facts
         [Fact]
         public void UniformSnapshot_CalculatesAMaxOfZeroForAnEmptySnapshot()
         {
-            IReservoirSnapshot snapshot = new UniformSnapshot(0, Enumerable.Empty<long>());
+            IReservoirSnapshot snapshot = new UniformSnapshot(0, 0.0, Enumerable.Empty<long>());
             snapshot.Max.Should().Be(0);
         }
 
         [Fact]
         public void UniformSnapshot_CalculatesAMeanOfZeroForAnEmptySnapshot()
         {
-            IReservoirSnapshot snapshot = new UniformSnapshot(0, Enumerable.Empty<long>());
+            IReservoirSnapshot snapshot = new UniformSnapshot(0, 0.0, Enumerable.Empty<long>());
             snapshot.Mean.Should().Be(0);
         }
 
         [Fact]
         public void UniformSnapshot_CalculatesAMinOfZeroForAnEmptySnapshot()
         {
-            IReservoirSnapshot snapshot = new UniformSnapshot(0, Enumerable.Empty<long>());
+            IReservoirSnapshot snapshot = new UniformSnapshot(0, 0.0, Enumerable.Empty<long>());
             snapshot.Min.Should().Be(0);
         }
 
         [Fact]
         public void UniformSnapshot_CalculatesAStdDevOfZeroForAnEmptySnapshot()
         {
-            IReservoirSnapshot snapshot = new UniformSnapshot(0, Enumerable.Empty<long>());
+            IReservoirSnapshot snapshot = new UniformSnapshot(0, 0.0, Enumerable.Empty<long>());
             snapshot.StdDev.Should().Be(0);
         }
 
         [Fact]
         public void UniformSnapshot_CalculatesAStdDevOfZeroForASingletonSnapshot()
         {
-            IReservoirSnapshot snapshot = new UniformSnapshot(0, new[] { 1L });
+            IReservoirSnapshot snapshot = new UniformSnapshot(0, 0.0, new[] { 1L });
             snapshot.StdDev.Should().Be(0);
         }
 

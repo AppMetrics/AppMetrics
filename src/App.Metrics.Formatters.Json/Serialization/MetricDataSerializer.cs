@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MetricDataSerializer.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Abstractions.Serialization;
 using Newtonsoft.Json;
@@ -10,7 +11,9 @@ namespace App.Metrics.Formatters.Json.Serialization
     {
         private readonly JsonSerializerSettings _settings;
 
+        // ReSharper disable UnusedMember.Global
         public MetricDataSerializer()
+            // ReSharper restore UnusedMember.Global
         {
             _settings = new JsonSerializerSettings
                         {

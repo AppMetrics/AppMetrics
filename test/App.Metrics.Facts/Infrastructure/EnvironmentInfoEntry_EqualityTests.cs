@@ -7,7 +7,7 @@ using Xunit;
 
 namespace App.Metrics.Facts.Infrastructure
 {
-    public class EnvironmentInfoEntry_EqualityTests
+    public class EnvironmentInfoEntryEqualityTests
     {
         [Theory]
         [InlineData("name", "value", true)]

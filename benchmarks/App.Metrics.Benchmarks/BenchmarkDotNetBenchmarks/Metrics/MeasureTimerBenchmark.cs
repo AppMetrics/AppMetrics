@@ -8,7 +8,7 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
 {
     public class MeasureTimerBenchmark : DefaultBenchmarkBase
     {
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public void TimeAlgorithmR()
         {
             Fixture.Metrics.Measure.Timer.Time(

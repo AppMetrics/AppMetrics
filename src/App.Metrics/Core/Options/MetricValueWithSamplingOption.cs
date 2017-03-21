@@ -1,9 +1,11 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MetricValueWithSamplingOption.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using App.Metrics.Abstractions.ReservoirSampling;
 
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace App.Metrics.Core.Options
 {
     /// <summary>
@@ -22,4 +24,6 @@ namespace App.Metrics.Core.Options
         /// </remarks>
         public Lazy<IReservoir> Reservoir { get; set; }
     }
+
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 }

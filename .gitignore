@@ -58,6 +58,10 @@ BuildOutput/*
 WebPublish
 WebPublish/*
 
+#Cake
+tools/*
+!tools/packages.config
+
 .vs
 
 # visual studio database projects

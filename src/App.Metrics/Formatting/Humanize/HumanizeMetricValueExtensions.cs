@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="HumanizeMetricValueExtensions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Globalization;
 using System.Linq;
@@ -55,6 +56,7 @@ namespace App.Metrics.Formatting.Humanize
         {
             sb.AppendLine();
             sb.AppendLine("Count".FormatReadableMetricValue(unit.FormatCount(histogram.Count)));
+            sb.AppendLine("Sum".FormatReadableMetricValue(unit.FormatDuration(histogram.Sum, null)));
             sb.AppendLine("Last".FormatReadableMetricValue(unit.FormatDuration(histogram.LastValue, null)));
 
             if (!string.IsNullOrWhiteSpace(histogram.LastUserValue))
@@ -86,7 +88,9 @@ namespace App.Metrics.Formatting.Humanize
             sb.AppendLine("99.9%".FormatReadableMetricValue(unit.FormatDuration(histogram.Percentile999, null), sign: "<="));
         }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public static void HumanizeMeter(this StringBuilder sb, MeterValue value, Unit unit)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             sb.AppendLine("Count".FormatReadableMetricValue(unit.FormatCount(value.Count)));
             sb.AppendLine("Mean Value".FormatReadableMetricValue(unit.FormatRate(value.MeanRate, value.RateUnit)));
@@ -114,7 +118,6 @@ namespace App.Metrics.Formatting.Humanize
         {
             sb.AppendLine();
             sb.AppendLine("Active Sessions".FormatReadableMetricValue(timer.Value.ActiveSessions.ToString()));
-            sb.AppendLine("Total Time".FormatReadableMetricValue(timer.Unit.FormatDuration(timer.Value.TotalTime, timer.DurationUnit)));
 
             sb.HumanizeMeter(timer.Value.Rate, timer.Unit);
             sb.HumanizeHistogram(timer.Value.Histogram, timer.Unit);

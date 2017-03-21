@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultSlidingWindowReservoir.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace App.Metrics.ReservoirSampling.SlidingWindow
     {
         private readonly UserValueWrapper[] _values;
         private AtomicLong _count = new AtomicLong(0);
+        private AtomicDouble _sum = new AtomicDouble(0.0);
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultSlidingWindowReservoir" /> class.
@@ -42,7 +44,7 @@ namespace App.Metrics.ReservoirSampling.SlidingWindow
 
             if (size == 0)
             {
-                return new UniformSnapshot(0, Enumerable.Empty<long>());
+                return new UniformSnapshot(0, 0.0, Enumerable.Empty<long>());
             }
 
             var snapshotValues = new UserValueWrapper[size];
@@ -56,6 +58,7 @@ namespace App.Metrics.ReservoirSampling.SlidingWindow
 
             var result = new UniformSnapshot(
                 _count.GetValue(),
+                _sum.GetValue(),
                 snapshotValues.Select(v => v.Value),
                 true,
                 minValue,
@@ -65,6 +68,7 @@ namespace App.Metrics.ReservoirSampling.SlidingWindow
             {
                 Array.Clear(_values, 0, snapshotValues.Length);
                 _count.SetValue(0L);
+                _sum.SetValue(0.0);
             }
 
             return result;
@@ -78,12 +82,15 @@ namespace App.Metrics.ReservoirSampling.SlidingWindow
         {
             Array.Clear(_values, 0, _values.Length);
             _count.SetValue(0L);
+            _sum.SetValue(0.0);
         }
 
         /// <inheritdoc cref="IReservoir" />
         public void Update(long value, string userValue)
         {
             var newCount = _count.Increment();
+
+            _sum.Add(value);
 
             _values[(int)((newCount - 1) % _values.Length)] = new UserValueWrapper(value, userValue);
         }

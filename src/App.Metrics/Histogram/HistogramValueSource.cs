@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+// <copyright file="HistogramValueSource.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Core.Abstractions;
 using App.Metrics.Tagging;
@@ -17,16 +18,6 @@ namespace App.Metrics.Histogram
             Unit unit,
             MetricTags tags)
             : base(name, valueProvider, unit, tags)
-        {
-        }
-
-        public HistogramValueSource(
-            string name,
-            string group,
-            IMetricValueProvider<HistogramValue> valueProvider,
-            Unit unit,
-            MetricTags tags)
-            : base(name, group, valueProvider, unit, tags)
         {
         }
     }

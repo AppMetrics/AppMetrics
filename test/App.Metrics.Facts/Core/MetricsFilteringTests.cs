@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Threading.Tasks;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Filtering;
 using FluentAssertions;
@@ -166,7 +165,7 @@ namespace App.Metrics.Facts.Core
 
             var timerValue = context.Timers.Single();
             timerValue.Name.Should().Be("test_timer");
-            timerValue.Value.TotalTime.Should().Be(10);
+            timerValue.Value.Histogram.Sum.Should().Be(10.0);
 
             Assert.Null(context.Counters.FirstOrDefault());
             Assert.Null(context.Gauges.FirstOrDefault());

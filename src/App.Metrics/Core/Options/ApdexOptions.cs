@@ -1,10 +1,14 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="ApdexOptions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Core.Internal;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace App.Metrics.Core.Options
 {
     /// <summary>
@@ -73,4 +77,8 @@ namespace App.Metrics.Core.Options
         /// </value>
         public bool ResetOnReporting { get; set; }
     }
+
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
+    // ReSharper restore AutoPropertyCanBeMadeGetOnly.Global
+    // ReSharper restore MemberCanBePrivate.Global
 }

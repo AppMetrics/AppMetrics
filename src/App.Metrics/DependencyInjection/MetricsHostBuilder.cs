@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MetricsHostBuilder.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 #if NET452
@@ -37,12 +38,7 @@ namespace Microsoft.Extensions.DependencyInjection
 #if !NET452
         internal MetricsHostBuilder(IServiceCollection services)
         {
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-
-            Services = services;
+            Services = services ?? throw new ArgumentNullException(nameof(services));
             Environment = new MetricsAppEnvironment(PlatformServices.Default.Application);
         }
 #endif

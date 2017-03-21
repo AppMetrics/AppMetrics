@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="HistogramValue.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using App.Metrics.Abstractions.ReservoirSampling;
@@ -14,6 +15,7 @@ namespace App.Metrics.Histogram
         public HistogramValue(double lastValue, string lastUserValue, IReservoirSnapshot snapshot)
             : this(
                 snapshot.Count,
+                snapshot.Sum,
                 lastValue,
                 lastUserValue,
                 snapshot.Max,
@@ -32,6 +34,7 @@ namespace App.Metrics.Histogram
 
         public HistogramValue(
             long count,
+            double sum,
             double lastValue,
             string lastUserValue,
             double max,
@@ -49,6 +52,7 @@ namespace App.Metrics.Histogram
             int sampleSize)
         {
             Count = count;
+            Sum = sum;
             LastValue = lastValue;
             LastUserValue = lastUserValue;
             Max = max;
@@ -67,6 +71,8 @@ namespace App.Metrics.Histogram
         }
 
         public long Count { get; }
+
+        public double Sum { get; }
 
         public string LastUserValue { get; }
 
@@ -107,6 +113,7 @@ namespace App.Metrics.Histogram
 
             return new HistogramValue(
                 Count,
+                Sum * factor,
                 LastValue * factor,
                 LastUserValue,
                 Max * factor,

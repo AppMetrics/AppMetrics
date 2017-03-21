@@ -1,8 +1,10 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+// <copyright file="MetricValueOptionsBase.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Tagging;
 
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace App.Metrics.Core.Options
 {
     /// <summary>
@@ -19,14 +21,6 @@ namespace App.Metrics.Core.Options
         ///     The context.
         /// </value>
         public string Context { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the group of the Metric being measured
-        /// </summary>
-        /// <value>
-        ///     The group.
-        /// </value>
-        public string Group { get; set; }
 
         /// <summary>
         ///     Gets or sets the description of what is being measured, a <see cref="Unit" /> is something that is expressed in MB,
@@ -53,5 +47,7 @@ namespace App.Metrics.Core.Options
         ///     The tags.
         /// </value>
         public MetricTags Tags { get; set; }
+
+        // ReSharper restore UnusedAutoPropertyAccessor.Global
     }
 }

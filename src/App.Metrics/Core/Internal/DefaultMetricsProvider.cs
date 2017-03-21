@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultMetricsProvider.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Apdex;
 using App.Metrics.Apdex.Abstractions;
@@ -25,16 +26,16 @@ namespace App.Metrics.Core.Internal
         ///     Initializes a new instance of the <see cref="DefaultMetricsProvider" /> class.
         /// </summary>
         /// <param name="registry">The metrics registry.</param>
-        /// <param name="buideFactory">The buide factory.</param>
+        /// <param name="builderFactory">The buide factory.</param>
         /// <param name="clock">The clock.</param>
-        public DefaultMetricsProvider(IMetricsRegistry registry, IBuildMetrics buideFactory, IClock clock)
+        public DefaultMetricsProvider(IMetricsRegistry registry, IBuildMetrics builderFactory, IClock clock)
         {
-            Apdex = new DefaultApdexMetricProvider(buideFactory.Apdex, registry, clock);
-            Counter = new DefaultCounterMetricProvider(buideFactory.Counter, registry);
-            Gauge = new DefaultGaugeMetricProvider(registry);
-            Histogram = new DefaultHistogramMetricProvider(buideFactory.Histogram, registry);
-            Meter = new DefaultMeterMetricProvider(buideFactory.Meter, registry, clock);
-            Timer = new DefaultTimerMetricProvider(buideFactory.Timer, registry, clock);
+            Apdex = new DefaultApdexMetricProvider(builderFactory.Apdex, registry, clock);
+            Counter = new DefaultCounterMetricProvider(builderFactory.Counter, registry);
+            Gauge = new DefaultGaugeMetricProvider(builderFactory.Gauge, registry);
+            Histogram = new DefaultHistogramMetricProvider(builderFactory.Histogram, registry);
+            Meter = new DefaultMeterMetricProvider(builderFactory.Meter, registry, clock);
+            Timer = new DefaultTimerMetricProvider(builderFactory.Timer, registry, clock);
         }
 
         /// <inheritdoc />

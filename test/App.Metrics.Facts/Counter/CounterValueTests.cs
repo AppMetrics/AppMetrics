@@ -1,5 +1,8 @@
 using System;
+using App.Metrics.Core;
 using App.Metrics.Counter;
+using App.Metrics.Gauge;
+using App.Metrics.Tagging;
 using FluentAssertions;
 using Xunit;
 
@@ -7,6 +10,8 @@ namespace App.Metrics.Facts.Counter
 {
     public class CounterValueTests
     {
+        private MetricTags Tags => new MetricTags(new[] { "host", "env" }, new[] { "server1", "staging" });
+
         [Fact]
         public void can_determine_if_are_same()
         {
@@ -23,6 +28,22 @@ namespace App.Metrics.Facts.Counter
             var second = new CounterValue(1L);
 
             first.Should().NotBe(second);
+        }
+
+        [Fact]
+        public void can_determine_if_multidimensional()
+        {
+            var valueSource = new GaugeValueSource("test_gauge|host:server1,env:staging", ConstantValue.Provider(0.5), Unit.Calls, Tags);
+
+            valueSource.IsMultidimensional.Should().BeTrue();
+        }
+
+        [Fact]
+        public void can_get_multidimensional_metric_name()
+        {
+            var valueSource = new GaugeValueSource("test_gauge|host:server1,env:staging", ConstantValue.Provider(0.5), Unit.Calls, Tags);
+
+            valueSource.MultidimensionalName.Should().Be("test_gauge");
         }
 
         [Fact]
@@ -48,7 +69,7 @@ namespace App.Metrics.Facts.Counter
         {
             Action setupAction = () =>
             {
-                var value = new CounterValue(10L, null);
+                var unused = new CounterValue(10L, null);
             };
 
             setupAction.ShouldThrow<ArgumentNullException>();

@@ -66,7 +66,9 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Concurrency
             thread.ForEach(t => t.Start());
             thread.ForEach(t => t.Join());
 
+            // ReSharper disable UnusedVariable
             var result = value.GetValue();
+            // ReSharper restore UnusedVariable
         }
     }
 }

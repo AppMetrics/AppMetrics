@@ -6,7 +6,6 @@ using System.Linq;
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.ReservoirSampling;
 using FluentAssertions;
 using Xunit;
 
@@ -25,7 +24,7 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void can_register_timer_with_custom_histogram()
         {
-            var histogram = new CustomHistogram();
+            var histogram = new CustomHistogramMetric();
             var timerOptions = new TimerOptions
                                {
                                    Name = "custom",
@@ -60,14 +59,9 @@ namespace App.Metrics.Facts.Core
             snapshot.Values.Single().Should().Be(10L);
         }
 
-        public void Dispose() { Dispose(true); }
-
-        protected virtual void Dispose(bool disposing)
+        public void Dispose()
         {
-            if (disposing)
-            {
-                _fixture?.Dispose();
-            }
-        }
+            _fixture?.Dispose();
+        }        
     }
 }

@@ -51,6 +51,26 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
+        public void can_add_add_new_multidimensional_to_registry()
+        {
+            var metricName = "timer_provider_metric_test_multi";
+            var options = new TimerOptions
+                          {
+                              Name = metricName
+                          };
+
+            var reservoir = new Lazy<IReservoir>(() => new DefaultAlgorithmRReservoir(1028));
+
+            var timerMetric = _fixture.Builder.Timer.Build(reservoir, _fixture.Clock);
+
+            _provider.Instance(options, _fixture.Tags[0], () => timerMetric);
+
+            _filter.WhereMetricName(name => name == _fixture.Tags[0].AsMetricName(metricName));
+
+            _fixture.Registry.GetData(_filter).Contexts.First().Timers.Count().Should().Be(1);
+        }
+
+        [Fact]
         public void can_add_instance_to_registry()
         {
             var metricName = "timer_provider_test";
@@ -88,13 +108,50 @@ namespace App.Metrics.Facts.Providers
             reservoirMock.Verify(r => r.Update(It.IsAny<long>(), null), Times.Once);
         }
 
+        [Fact]
+        public void can_add_multidimensional_to_registry()
+        {
+            var metricName = "timer_provider_test_multi";
+            var options = new TimerOptions
+                          {
+                              Name = metricName
+                          };
+
+            _provider.Instance(options, _fixture.Tags[0]);
+
+            _filter.WhereMetricName(name => name == _fixture.Tags[0].AsMetricName(metricName));
+
+            _fixture.Registry.GetData(_filter).Contexts.First().Timers.Count().Should().Be(1);
+        }
+
+        [Fact]
+        public void can_add_multidimensional_with_histogram()
+        {
+            var reservoirMock = new Mock<IHistogramMetric>();
+            reservoirMock.Setup(r => r.Update(It.IsAny<long>(), null));
+            reservoirMock.Setup(r => r.Reset());
+
+            var options = new TimerOptions
+                          {
+                              Name = "timer_custom_histogram_multi"
+                          };
+
+            var timer = _provider.WithHistogram(options, _fixture.Tags[0], () => reservoirMock.Object);
+
+            using (timer.NewContext())
+            {
+                _fixture.Clock.Advance(TimeUnit.Milliseconds, 100);
+            }
+
+            reservoirMock.Verify(r => r.Update(It.IsAny<long>(), null), Times.Once);
+        }
 
         [Fact]
         public void can_use_custom_reservoir()
         {
             var reservoirMock = new Mock<IReservoir>();
             reservoirMock.Setup(r => r.Update(It.IsAny<long>(), null));
-            reservoirMock.Setup(r => r.GetSnapshot()).Returns(() => new UniformSnapshot(100L, new long[100]));
+            reservoirMock.Setup(r => r.GetSnapshot()).Returns(() => new UniformSnapshot(100L, 100.0, new long[100]));
             reservoirMock.Setup(r => r.Reset());
 
             var reservoir = new Lazy<IReservoir>(() => reservoirMock.Object);
@@ -106,6 +163,32 @@ namespace App.Metrics.Facts.Providers
                           };
 
             var timer = _provider.Instance(options);
+
+            using (timer.NewContext())
+            {
+                _fixture.Clock.Advance(TimeUnit.Milliseconds, 100);
+            }
+
+            reservoirMock.Verify(r => r.Update(It.IsAny<long>(), null), Times.Once);
+        }
+
+        [Fact]
+        public void can_use_custom_reservoir_when_multidimensional()
+        {
+            var reservoirMock = new Mock<IReservoir>();
+            reservoirMock.Setup(r => r.Update(It.IsAny<long>(), null));
+            reservoirMock.Setup(r => r.GetSnapshot()).Returns(() => new UniformSnapshot(100L, 100.0, new long[100]));
+            reservoirMock.Setup(r => r.Reset());
+
+            var reservoir = new Lazy<IReservoir>(() => reservoirMock.Object);
+
+            var options = new TimerOptions
+                          {
+                              Name = "timer_provider_custom_test_multi",
+                              Reservoir = reservoir
+                          };
+
+            var timer = _provider.Instance(options, _fixture.Tags[0]);
 
             using (timer.NewContext())
             {

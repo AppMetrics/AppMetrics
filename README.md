@@ -1,6 +1,10 @@
 # App Metrics
 
-[![Official Site](https://img.shields.io/badge/site-appmetrics-blue.svg)](https://alhardy.github.io/app-metrics-docs/getting-started/intro.html) [![Build status](https://ci.appveyor.com/api/projects/status/r4x0et4g6mr5vttf?svg=true)](https://ci.appveyor.com/project/alhardy/appmetrics/branch/master) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Coverage Status](https://coveralls.io/repos/github/alhardy/AppMetrics/badge.svg?branch=master&cacheBuster=1)](https://coveralls.io/github/alhardy/AppMetrics?branch=master)
+[![Official Site](https://img.shields.io/badge/site-appmetrics-blue.svg)](https://alhardy.github.io/app-metrics-docs/getting-started/intro.html) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Coverage Status](https://coveralls.io/repos/github/alhardy/AppMetrics/badge.svg?branch=master&cacheBuster=1)](https://coveralls.io/github/alhardy/AppMetrics?branch=master)
+
+|AppVeyor|Travis|
+|:--------:|:--------:|
+|[![Build status](https://ci.appveyor.com/api/projects/status/r4x0et4g6mr5vttf?svg=true)](https://ci.appveyor.com/project/alhardy/appmetrics/branch/master)|[![Build status](https://travis-ci.org/alhardy/AppMetrics.svg?branch=1.0.0)](https://travis-ci.org/alhardy/AppMetrics)|
 
 |Package|Dev Release|Pre Release|Latest Release|
 |------|:--------:|:--------:|:--------:|
@@ -25,32 +29,127 @@ App Metrics also provides a health checking system allowing you to monitor the h
 - [Sample Applications & Grafana Dashbaords](https://github.com/alhardy/AppMetrics.Samples)
 - [Api Documentation](https://alhardy.github.io/app-metrics-docs/api/index.html)
 
+#### Grafana/InfluxDB Web Monitoring
+
+![Grafana/InfluxDB Generic Web Dashboard Demo](https://github.com/alhardy/AppMetrics.DocFx/blob/master/images/generic_grafana_dashboard_demo.gif)
+
+> Grab the dashboard [here](https://github.com/alhardy/AppMetrics/blob/1.0.0/sandbox/App.Metrics.Sandbox-InfluxDB-GenericWeb.json)
+
+#### Grafana/InfluxDB OAuth2 Client Monitoring on a Web API
+
+![Grafana/InfluxDB Generic OAuth2 Web Dashboard Demo](https://github.com/alhardy/AppMetrics.DocFx/blob/master/images/generic_grafana_oauth2_dashboard_demo.gif)
+
+> Grab the dashboard [here](https://github.com/alhardy/AppMetrics/blob/1.0.0/sandbox/App.Metrics.Sandbox-InfluxDB-GenericWebOAuth2.json)
+
+## Grafana/InfluxDB Web Application Setup
+
+- Download and install [InfluxDB](https://docs.influxdata.com/influxdb/v1.2/introduction/installation/). *Runs well on Windows using* `Bash on Windows on Ubuntu`
+- Download and install [Grafana](https://grafana.com/grafana/download), then import App.Metrics [web dashboard](https://github.com/alhardy/AppMetrics/blob/1.0.0/sandbox/App.Metrics.Sandbox-InfluxDB-GenericWeb.json)
+- Drop in the `App.Metrics.Extensions.Mvc` and `App.Metrics.Extensions.Reporting.InfluxDB` nuget packages into your web application. 
+- Create a new [InfluxDB Database](https://docs.influxdata.com/influxdb/v1.2/introduction/getting_started/). *Keep note of this for configuring the InfluxDB reporter in your web application*
+- Add [App.Metrics configuration](https://alhardy.github.io/app-metrics-docs/getting-started/fundamentals/middleware-configuration.html) to the `Startup.cs` of your web application, including the [InfluxDB reporter configuration](https://alhardy.github.io/app-metrics-docs/getting-started/reporting/index.html#influxdb-reporter). *You might want to check out the [Sandbox](https://github.com/alhardy/AppMetrics/tree/1.0.0/sandbox/App.Metrics.Sandbox) or [Sample](https://github.com/alhardy/AppMetrics.Samples) projects if you get stuck*
+- Run your app and Grafana at visit `http://localhost:3000`
+
+## How to build
+
+[AppVeyor](https://ci.appveyor.com/project/alhardy/appmetrics/branch/master) and [Travis CI](https://travis-ci.org/alhardy/AppMetrics) builds are triggered on commits and PRs to `dev` and `master` branches.
+
+See the following for build arguments and running locally.
+
+|Configuration|Description|Default|Environment|Required|
+|------|--------|:--------:|:--------:|:--------:|
+|BuildConfiguration|The configuration to run the build, **Debug** or **Release** |*Release*|All|Optional|
+|PreReleaseSuffix|The pre-release suffix for versioning nuget package artifacts e.g. `beta`|*ci*|All|Optional|
+|CoverWith|**DotCover** or **OpenCover** to calculate and report code coverage, **None** to skip. When not **None**, a coverage file and html report will be generated at `./artifacts/coverage`|*OpenCover*|Windows Only|Optional|
+|SkipCodeInspect|**false** to run ReSharper code inspect and report results, **true** to skip. When **true**, the code inspection html report and xml output will be generated at `./artifacts/resharper-reports`|*false*|Windows Only|Optional|
+|BuildNumber|The build number to use for pre-release versions|*0*|All|Optional|
+
+
+### Windows
+
+Run `build.ps1` from the repositories root directory.
+
+```
+	.\build.ps1
+```
+
+**With Arguments**
+
+```
+	.\build.ps1 --ScriptArgs '-BuildConfiguration=Release -PreReleaseSuffix=beta -CoverWith=OpenCover -SkipCodeInspect=false -BuildNumber=1'
+```
+
+### Linux & OSX
+
+Run `build.sh` from the repositories root directory. Code Coverage reports are now supported on Linux and OSX, it will be skipped running in these environments.
+
+```
+	.\build.sh
+```
+
+**With Arguments**
+
+```
+	.\build.sh --ScriptArgs '-BuildConfiguration=Release -PreReleaseSuffix=beta -BuildNumber=1'
+```
+
+> #### Nuget Packages
+> Nuget packages won't be generated on non-windows environments by default.
+> 
+> Unfortunately there is [currently no way out-of-the-box to conditionally build & pack a project by framework](https://github.com/dotnet/roslyn-project-system/issues/1586#issuecomment-280978851). Because `App.Metrics` packages target `.NET 4.5.2` as well as `dotnet standard` there is a work around in the build script to force `dotnet standard` on build but no work around for packaging on non-windows environments. 
+
+## How to run benchmarks
+
+App.Metrics includes bencmarking using [BenchmarkDotNet](https://github.com/dotnet/BenchmarkDotNet). You can find the benchmark results [here](https://github.com/alhardy/AppMetrics/tree/master/benchmarks/App.Metrics.Benchmarks.Runner/BenchmarkDotNet.Artifacts/results).
+
+To run, fron the solution's root:
+
+```
+	cd .\benchmarks\App.Metrics.Benchmarks.Runner\
+	dotnet run -c "Release"
+```
+
+You'll then be prompted to choose a benchmark to run which will output a markdown file with the result in directory `.\benchmarks\App.Metrics.Benchmarks.Runner\BenchmarkDotNet.Artifacts\results`.
+
+Alternatively, you can run the same benchmarks from visual studio using XUnit in the [benchmark project](https://github.com/alhardy/AppMetrics/tree/master/benchmarks/App.Metrics.Benchmarks).
+
 ## Contributing
 
 See the [contribution guidlines](CONTRIBUTING.md) for details.
 
 ## Acknowledgements
 
-**Built using the following open source projects**
-
 * [ASP.NET Core](https://github.com/aspnet)
 * [DocFX](https://dotnet.github.io/docfx/)
-* [Json.Net](http://www.newtonsoft.com/json)
 * [Fluent Assertions](http://www.fluentassertions.com/)
 * [XUnit](https://xunit.github.io/)
 * [StyleCopAnalyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers)
+* [Cake](https://github.com/cake-build/cake)
+* [OpenCover](https://github.com/OpenCover/opencover)
 
+***Thanks for providing free open source licensing***
+
+* [Jetbrains](https://www.jetbrains.com/dotnet/) 
+* [AppVeyor](https://www.appveyor.com/)
+* [Travis CI](https://travis-ci.org/)
+* [Coveralls](https://coveralls.io/)
 
 ## License
 
 This library is release under Apache 2.0 License ( see LICENSE ) Copyright (c) 2016 Allan Hardy
 
+See [LICENSE](https://github.com/alhardy/AppMetrics/blob/dev/LICENSE)
+
 ----------
 
-App Metrics is based on the [Metrics.NET](https://github.com/etishor/Metrics.NET) library, using the same reservoir sampling code from the original library, which is a port of the Java [Metrics](https://github.com/dropwizard/metrics) library. 
+App Metrics is based on the [Metrics.NET](https://github.com/etishor/Metrics.NET) library, and at the moment uses the same reservoir sampling code from the original library which is a port of the Java [Dropwizard Metrics](https://github.com/dropwizard/metrics) library. 
 
-Why another .NET port? The main reason for porting Metrics.NET was to have it run on .NET Standard and provide a more modern API into the libraries features.
+*Metrics.NET Licensed under these terms*:
+"Metrics.NET is release under Apache 2.0 License Copyright (c) 2014 Iulian Margarintescu" see [LICENSE](https://github.com/etishor/Metrics.NET/blob/master/LICENSE)
 
-The original metrics project is released under these terms:
+*Dropwizard Metrics* Licensed under these terms*:
+"Copyright (c) 2010-2013 Coda Hale, Yammer.com Published under Apache Software License 2.0, see [LICENSE](https://github.com/dropwizard/metrics/blob/3.2-development/LICENSE)"
 
-"Metrics.NET is release under Apache 2.0 License Copyright (c) 2014 Iulian Margarintescu"
+----------
+
+[![](https://codescene.io/projects/792/status.svg) Get more details at **codescene.io**.](https://codescene.io/projects/792/jobs/latest-successful/results)

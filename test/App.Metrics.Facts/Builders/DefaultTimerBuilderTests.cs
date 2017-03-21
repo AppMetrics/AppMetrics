@@ -37,16 +37,47 @@ namespace App.Metrics.Facts.Builders
         }
 
         [Fact]
+        public void can_build_with_histogram_and_meter()
+        {
+            var histogramMock = new Mock<IHistogramMetric>();
+            var meterMock = new Mock<IMeterMetric>();
+            histogramMock.Setup(r => r.Update(It.IsAny<long>(), null));
+            histogramMock.Setup(r => r.Reset());
+            meterMock.Setup(r => r.GetValue(false));
+
+            var timer = _builder.Build(histogramMock.Object, meterMock.Object, _fixture.Clock);
+
+            timer.Should().NotBeNull();
+        }
+
+        [Fact]
         public void can_build_with_reservoir()
         {
             var reservoirMock = new Mock<IReservoir>();
             reservoirMock.Setup(r => r.Update(It.IsAny<long>()));
-            reservoirMock.Setup(r => r.GetSnapshot()).Returns(() => new UniformSnapshot(100, new long[100]));
+            reservoirMock.Setup(r => r.GetSnapshot()).Returns(() => new UniformSnapshot(100, 100.0, new long[100]));
             reservoirMock.Setup(r => r.Reset());
 
             var reservoir = new Lazy<IReservoir>(() => reservoirMock.Object);
 
             var timer = _builder.Build(reservoir, _fixture.Clock);
+
+            timer.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void can_build_with_reservoir_and_meter()
+        {
+            var reservoirMock = new Mock<IReservoir>();
+            var meterMock = new Mock<IMeterMetric>();
+            reservoirMock.Setup(r => r.Update(It.IsAny<long>()));
+            reservoirMock.Setup(r => r.GetSnapshot()).Returns(() => new UniformSnapshot(100, 100.0, new long[100]));
+            reservoirMock.Setup(r => r.Reset());
+            meterMock.Setup(r => r.GetValue(false));
+
+            var reservoir = new Lazy<IReservoir>(() => reservoirMock.Object);
+
+            var timer = _builder.Build(reservoir, meterMock.Object, _fixture.Clock);
 
             timer.Should().NotBeNull();
         }

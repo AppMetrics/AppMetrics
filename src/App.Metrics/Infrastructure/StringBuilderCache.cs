@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="StringBuilderCache.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Text;
@@ -12,7 +13,7 @@ namespace App.Metrics.Infrastructure
     internal static class StringBuilderCache
     {
         // The value 360 was chosen in discussion with performance experts as a compromise between using
-        // as litle memory (per thread) as possible and still covering a large part of short-lived
+        // as little memory (per thread) as possible and still covering a large part of short-lived
         // StringBuilder creations on the startup path of VS designers.
         private const int MaxBuilderSize = 360;
 
@@ -67,7 +68,9 @@ namespace App.Metrics.Infrastructure
         ///     called.
         /// </summary>
         /// <param name="sb">The string builder instance.</param>
+        // ReSharper disable MemberCanBePrivate.Global
         public static void Release(StringBuilder sb)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             if (sb.Capacity <= MaxBuilderSize)
             {

@@ -37,5 +37,5 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
 
             SetupServices(services, appMetricsOptions, aspNetMetricsOptions);
         }
-    }
+    }    
 }

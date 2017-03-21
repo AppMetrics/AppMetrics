@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="UniformSnapshot.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Collections.Generic;
@@ -23,19 +24,22 @@ namespace App.Metrics.ReservoirSampling.Uniform
         /// <summary>
         ///     Initializes a new instance of the <see cref="UniformSnapshot" /> class.
         /// </summary>
-        /// <param name="count">The count of the sample set.</param>
+        /// <param name="count">The count of all observed values.</param>
+        /// <param name="sum">The sum of all observed values.</param>
         /// <param name="values">The values within the sample set.</param>
         /// <param name="valuesAreSorted">if set to <c>true</c> [values are already sorted].</param>
         /// <param name="minUserValue">The minimum user value.</param>
         /// <param name="maxUserValue">The maximum user value.</param>
         public UniformSnapshot(
             long count,
+            double sum,
             IEnumerable<long> values,
             bool valuesAreSorted = false,
             string minUserValue = null,
             string maxUserValue = null)
         {
             Count = count;
+            Sum = sum;
             _values = values.ToArray();
 
             if (!valuesAreSorted)
@@ -102,6 +106,8 @@ namespace App.Metrics.ReservoirSampling.Uniform
                 return Math.Sqrt(sum / (_values.Length - 1));
             }
         }
+
+        public double Sum { get; }
 
         /// <inheritdoc />
         public IEnumerable<long> Values => _values;

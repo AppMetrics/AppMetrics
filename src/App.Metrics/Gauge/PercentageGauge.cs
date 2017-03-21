@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="PercentageGauge.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using App.Metrics.Abstractions.MetricTypes;
@@ -17,10 +18,17 @@ namespace App.Metrics.Gauge
         /// </summary>
         /// <param name="numerator">The numerator.</param>
         /// <param name="denominator">The denominator.</param>
+        // ReSharper disable MemberCanBeProtected.Global
         public PercentageGauge(Func<double> numerator, Func<double> denominator)
+            // ReSharper restore MemberCanBeProtected.Global
             : base(() =>
             {
                 var ratio = numerator() / denominator();
+
+                if (double.IsNaN(ratio) || double.IsInfinity(ratio))
+                {
+                    return double.NaN;
+                }
 
                 if (Math.Abs(ratio) < 0.0001)
                 {

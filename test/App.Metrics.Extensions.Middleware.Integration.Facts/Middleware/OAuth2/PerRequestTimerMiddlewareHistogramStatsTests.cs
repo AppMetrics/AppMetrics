@@ -19,21 +19,19 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
             Context = fixture.Context;
         }
 
-        public HttpClient Client { get; }
+        private HttpClient Client { get; }
 
-        public IMetrics Context { get; }
+        private IMetrics Context { get; }
 
         [Fact]
         public async Task can_record_times_per_request()
         {
-            await Client.GetAsync("/api/test/300ms");
-            await Client.GetAsync("/api/test/30ms");
-
-            var metrics = Context.Snapshot.GetForContext(HttpRequestMetricsRegistry.ContextName);
+            await Client.GetAsync("api/test/300ms");
+            await Client.GetAsync("api/test/30ms");
 
             var timer1 = Context.Snapshot.GetTimerValue(
                 HttpRequestMetricsRegistry.ContextName,
-                "GET api/test/30ms");
+                "Transactions Per Endpoint|route:GET api/test/30ms");
 
             timer1.Histogram.Min.Should().Be(30);
             timer1.Histogram.Max.Should().Be(30);
@@ -42,11 +40,11 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
             timer1.Histogram.Percentile98.Should().Be(30);
             timer1.Histogram.Percentile99.Should().Be(30);
             timer1.Histogram.Percentile999.Should().Be(30);
-            timer1.TotalTime.Should().Be(30);
+            timer1.Histogram.Sum.Should().Be(30);
 
             var timer2 = Context.Snapshot.GetTimerValue(
                 HttpRequestMetricsRegistry.ContextName,
-                "GET api/test/300ms");
+                "Transactions Per Endpoint|route:GET api/test/300ms");
 
             timer2.Histogram.Min.Should().Be(300);
             timer2.Histogram.Max.Should().Be(300);
@@ -56,7 +54,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
             timer2.Histogram.Percentile98.Should().Be(300);
             timer2.Histogram.Percentile99.Should().Be(300);
             timer2.Histogram.Percentile999.Should().Be(300);
-            timer2.TotalTime.Should().Be(300);
+            timer2.Histogram.Sum.Should().Be(300);
         }
     }
 }

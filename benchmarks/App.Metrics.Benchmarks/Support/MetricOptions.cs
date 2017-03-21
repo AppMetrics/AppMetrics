@@ -72,6 +72,12 @@ namespace App.Metrics.Benchmarks.Support
                                                               Context = nameof(MeasureGaugeBenchmark),
                                                               Name = "test_gauge"
                                                           };
+
+            public static readonly GaugeOptions OptionsNotLazy = new GaugeOptions
+                                                          {
+                                                              Context = nameof(MeasureGaugeBenchmark),
+                                                              Name = "test_gauge_not_lazy"
+                                                          };
         }
 
         public static class Histogram

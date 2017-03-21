@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="SimpleMeter.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using App.Metrics.Concurrency;
@@ -38,7 +39,10 @@ namespace App.Metrics.Meter
         ///     Marks the specified count.
         /// </summary>
         /// <param name="count">The count.</param>
-        public virtual void Mark(long count) { _uncounted.Add(count); }
+        public virtual void Mark(long count)
+        {
+            _uncounted.Add(count);
+        }
 
         /// <summary>
         ///     Resets all the meters values.
@@ -95,10 +99,10 @@ namespace App.Metrics.Meter
 
                 rate = _m15Rate.GetValue();
                 _m15Rate.SetValue(rate + (M15Alpha * (instantRate - rate)));
+                // ReSharper restore ArrangeRedundantParentheses
             }
             else
             {
-                // ReSharper restore ArrangeRedundantParentheses
                 _m1Rate.SetValue(instantRate);
                 _m5Rate.SetValue(instantRate);
                 _m15Rate.SetValue(instantRate);

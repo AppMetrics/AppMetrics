@@ -12,12 +12,9 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Ping
         public PingEndpointMiddlewareTests(MetricsHostTestFixture<PingTestStartup> fixture)
         {
             Client = fixture.Client;
-            Context = fixture.Context;
         }
 
-        public HttpClient Client { get; }
-
-        public IMetrics Context { get; }
+        private HttpClient Client { get; }
 
         [Fact]
         public async Task resposne_is_plain_text_content_type()

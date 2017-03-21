@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="HealthChecksAsServices.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,9 @@ namespace App.Metrics.DependencyInjection.Internal
 {
     internal static class HealthChecksAsServices
     {
+        // ReSharper disable MemberCanBePrivate.Global
         public static void AddHealthChecksAsServices(IServiceCollection services, IEnumerable<Type> types)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             if (services == null)
             {

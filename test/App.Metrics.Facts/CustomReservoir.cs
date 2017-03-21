@@ -3,8 +3,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using App.Metrics.Abstractions.ReservoirSampling;
-using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.Uniform;
 
 namespace App.Metrics.Facts
@@ -21,9 +21,9 @@ namespace App.Metrics.Facts
 
         public void Dispose() { Dispose(true); }
 
-        public IReservoirSnapshot GetSnapshot(bool resetReservoir) { return new UniformSnapshot(_values.Count, _values); }
+        public IReservoirSnapshot GetSnapshot(bool resetReservoir) { return new UniformSnapshot(_values.Count, _values.Sum(), _values); }
 
-        public IReservoirSnapshot GetSnapshot() { return new UniformSnapshot(_values.Count, _values); }
+        public IReservoirSnapshot GetSnapshot() { return new UniformSnapshot(_values.Count, _values.Sum(), _values); }
 
         public void Reset() { _values.Clear(); }
 

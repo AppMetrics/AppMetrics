@@ -1,7 +1,7 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="PerRequestTimerMiddleware.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
-using System.Net;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using Microsoft.AspNetCore.Http;
@@ -9,7 +9,10 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Extensions.Middleware
 {
+    // ReSharper disable ClassNeverInstantiated.Global
+
     public class PerRequestTimerMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
+        // ReSharper restore ClassNeverInstantiated.Global
     {
         private const string TimerItemsKey = "__App.Metrics.PerRequestStartTime__";
 
@@ -18,9 +21,13 @@ namespace App.Metrics.Extensions.Middleware
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics)
-            : base(next, aspNetOptions, loggerFactory, metrics) { }
+            : base(next, aspNetOptions, loggerFactory, metrics)
+        {
+        }
 
+        // ReSharper disable UnusedMember.Global
         public async Task Invoke(HttpContext context)
+            // ReSharper restore UnusedMember.Global
         {
             if (PerformMetric(context))
             {
@@ -30,14 +37,15 @@ namespace App.Metrics.Extensions.Middleware
 
                 await Next(context);
 
-                if (context.HasMetricsCurrentRouteName() && context.Response.StatusCode != (int)HttpStatusCode.NotFound)
+                if (context.HasMetricsCurrentRouteName() && ShouldTrackHttpStatusCode(context.Response.StatusCode))
                 {
-                    var clientId = context.OAuthClientId();
-
                     var startTime = (long)context.Items[TimerItemsKey];
                     var elapsed = Metrics.Clock.Nanoseconds - startTime;
 
-                    Metrics.RecordEndpointRequestTime(clientId, context.GetMetricsCurrentRouteName(), elapsed);
+                    Metrics.RecordEndpointsRequestTime(
+                        GetOAuthClientIdIfRequired(context),
+                        context.GetMetricsCurrentRouteName(),
+                        elapsed);
                 }
 
                 Logger.MiddlewareExecuted(GetType());

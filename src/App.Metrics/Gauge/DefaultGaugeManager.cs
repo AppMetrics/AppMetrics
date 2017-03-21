@@ -1,11 +1,13 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultGaugeManager.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using App.Metrics.Core.Abstractions;
 using App.Metrics.Core.Options;
 using App.Metrics.Gauge.Abstractions;
 using App.Metrics.Registry.Abstractions;
+using App.Metrics.Tagging;
 
 namespace App.Metrics.Gauge
 {
@@ -26,9 +28,39 @@ namespace App.Metrics.Gauge
         }
 
         /// <inheritdoc />
-        public void SetValue(GaugeOptions options, Func<double> valueProvider) { _registry.Gauge(options, () => _gaugeBuilder.Build(valueProvider)); }
+        public void SetValue(GaugeOptions options, Func<double> valueProvider)
+        {
+            _registry.Gauge(options, () => _gaugeBuilder.Build(valueProvider));
+        }
 
         /// <inheritdoc />
-        public void SetValue(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider) { _registry.Gauge(options, valueProvider); }
+        public void SetValue(GaugeOptions options, double value)
+        {
+            _registry.Gauge(options, () => _gaugeBuilder.Build()).SetValue(value);
+        }
+
+        /// <inheritdoc />
+        public void SetValue(GaugeOptions options, MetricTags tags, double value)
+        {
+            _registry.Gauge(options, tags, () => _gaugeBuilder.Build()).SetValue(value);
+        }
+
+        /// <inheritdoc />
+        public void SetValue(GaugeOptions options, Func<IMetricValueProvider<double>> valueProvider)
+        {
+            _registry.Gauge(options, () => _gaugeBuilder.Build(valueProvider));
+        }
+
+        /// <inheritdoc />
+        public void SetValue(GaugeOptions options, MetricTags tags, Func<IMetricValueProvider<double>> valueProvider)
+        {
+            _registry.Gauge(options, tags, () => _gaugeBuilder.Build(valueProvider));
+        }
+
+        /// <inheritdoc />
+        public void SetValue(GaugeOptions options, MetricTags tags, Func<double> valueProvider)
+        {
+            _registry.Gauge(options, tags, () => _gaugeBuilder.Build(valueProvider));
+        }
     }
 }

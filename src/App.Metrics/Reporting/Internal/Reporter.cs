@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="Reporter.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Collections.Generic;
@@ -41,33 +42,18 @@ namespace App.Metrics.Reporting.Internal
                 throw new ArgumentNullException(nameof(options));
             }
 
-            if (reportFactory == null)
-            {
-                throw new ArgumentNullException(nameof(reportFactory));
-            }
-
-            if (metrics == null)
-            {
-                throw new ArgumentNullException(nameof(metrics));
-            }
-
-            if (scheduler == null)
-            {
-                throw new ArgumentNullException(nameof(scheduler));
-            }
-
             if (loggerFactory == null)
             {
                 throw new ArgumentNullException(nameof(loggerFactory));
             }
 
+            _metrics = metrics ?? throw new ArgumentNullException(nameof(metrics));
+            _scheduler = scheduler ?? throw new ArgumentNullException(nameof(scheduler));
+            _providers = reportFactory?.GetProviders() ?? throw new ArgumentNullException(nameof(reportFactory));
+
             _reportGenerator = new DefaultReportGenerator(options, loggerFactory);
-            _metrics = metrics;
-            _scheduler = scheduler;
             _loggerFactory = loggerFactory;
             _logger = loggerFactory.CreateLogger<Reporter>();
-
-            _providers = reportFactory.GetProviders();
 
             if (_providers.Count <= 0)
             {

@@ -1,7 +1,12 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="HealthCheckFactoryExtensions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
+using System;
 using System.Diagnostics;
+using System.Net.Http;
+using System.Net.NetworkInformation;
+using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Health;
 using App.Metrics.Health.Abstractions;
@@ -10,8 +15,58 @@ using App.Metrics.Health.Abstractions;
 namespace App.Metrics
 {
     // ReSharper restore CheckNamespace
+
     public static class HealthCheckFactoryExtensions
     {
+        private static readonly HttpClient HttpClient = new HttpClient { DefaultRequestHeaders = { { "cache-control", "no-cache" } } };
+
+        public static IHealthCheckFactory RegisterHttpGetHealthCheck(
+            this IHealthCheckFactory factory,
+            string name,
+            Uri uri,
+            TimeSpan timeout,
+            CancellationToken token = default(CancellationToken))
+        {
+            factory.Register(
+                name,
+                async () =>
+                {
+                    using (var tokenWithTimeout = CancellationTokenSource.CreateLinkedTokenSource(token))
+                    {
+                        tokenWithTimeout.CancelAfter(timeout);
+
+                        var response = await HttpClient.GetAsync(uri, tokenWithTimeout.Token).ConfigureAwait(false);
+
+                        return response.IsSuccessStatusCode
+                            ? HealthCheckResult.Healthy($"OK. {uri}")
+                            : HealthCheckResult.Unhealthy($"FAILED. {uri} status code was {response.StatusCode}");
+                    }
+                });
+
+            return factory;
+        }
+
+        public static IHealthCheckFactory RegisterPingHealthCheck(
+            this IHealthCheckFactory factory,
+            string name,
+            string host,
+            TimeSpan timeout)
+        {
+            factory.Register(
+                name,
+                async () =>
+                {
+                    var ping = new Ping();
+                    var result = await ping.SendPingAsync(host, (int)timeout.TotalMilliseconds).ConfigureAwait(false);
+
+                    return result.Status == IPStatus.Success
+                        ? HealthCheckResult.Healthy($"OK. {host}")
+                        : HealthCheckResult.Unhealthy($"FAILED. {host} ping result was {result.Status}");
+                });
+
+            return factory;
+        }
+
         /// <summary>
         ///     Registers a health check on the process confirming that the current amount of physical memory is below the
         ///     threshold.

@@ -12,6 +12,6 @@ Job=Core  Runtime=Core  Allocated=287 B
 ```
                 Method |        Mean |    StdDev |  Gen 0 |
 ---------------------- |------------ |---------- |------- |
-      UpdateAlgorithmR | 360.2939 ns | 1.4336 ns | 0.0434 |
- UpdateForwardDecaying | 527.5828 ns | 3.1648 ns | 0.0429 |
-   UpdateSlidingWindow | 320.9964 ns | 1.4441 ns | 0.0552 |
+      UpdateAlgorithmR | 365.0749 ns | 1.8497 ns | 0.0555 |
+ UpdateForwardDecaying | 471.1176 ns | 2.8898 ns | 0.0449 |
+   UpdateSlidingWindow | 290.3999 ns | 1.7528 ns | 0.0555 |

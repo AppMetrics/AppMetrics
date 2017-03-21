@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="IReservoirSnapshot.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Collections.Generic;
 
@@ -124,6 +125,14 @@ namespace App.Metrics.Abstractions.ReservoirSampling
         double StdDev { get; }
 
         /// <summary>
+        ///     Gets the sum of observed values.
+        /// </summary>
+        /// <value>
+        ///     The sum.
+        /// </value>
+        double Sum { get; }
+
+        /// <summary>
         ///     Gets the samples of the snapshot
         /// </summary>
         /// <value>
@@ -137,6 +146,8 @@ namespace App.Metrics.Abstractions.ReservoirSampling
         /// </summary>
         /// <param name="quantile">The quantile.</param>
         /// <returns>The quantile value</returns>
+        // ReSharper disable UnusedMemberInSuper.Global
         double GetValue(double quantile);
+        // ReSharper restore UnusedMemberInSuper.Global
     }
 }

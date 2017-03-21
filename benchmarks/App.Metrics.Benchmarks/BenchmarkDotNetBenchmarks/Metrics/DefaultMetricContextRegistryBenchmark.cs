@@ -86,7 +86,9 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
         [Benchmark]
         public void ResolveApdexFromRegistry()
         {
+            // ReSharper disable UnusedVariable
             var metric = _registry.Apdex(
+                // ReSharper restore UnusedVariable
                 ApdexOptions,
                 () => ApdexBuilder.Build(ApdexOptions.ApdexTSeconds, ApdexOptions.AllowWarmup, Clock));
         }
@@ -94,7 +96,9 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
         [Benchmark]
         public void ResolveCounterFromRegistry()
         {
+            // ReSharper disable UnusedVariable
             var metric = _registry.Counter(
+                // ReSharper restore UnusedVariable
                 CounterOptions,
                 () => CounterBuilder.Build());
         }
@@ -110,7 +114,9 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
         [Benchmark]
         public void ResolveHistogramFromRegistry()
         {
+            // ReSharper disable UnusedVariable
             var metric = _registry.Histogram(
+                // ReSharper restore UnusedVariable
                 HistogramOptions,
                 () => HistogramBuilder.Build(HistogramOptions.Reservoir));
         }
@@ -118,7 +124,9 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
         [Benchmark]
         public void ResolveMeterFromRegistry()
         {
+            // ReSharper disable UnusedVariable
             var metric = _registry.Meter(
+                // ReSharper restore UnusedVariable
                 MeterOptions,
                 () => MeterBuilder.Build(Clock));
         }
@@ -126,7 +134,9 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
         [Benchmark]
         public void ResolveTimerFromRegistry()
         {
+            // ReSharper disable UnusedVariable
             var metric = _registry.Timer(
+                // ReSharper restore UnusedVariable
                 TimerOptions,
                 () => TimerBuilder.Build(TimerOptions.Reservoir, Clock));
         }

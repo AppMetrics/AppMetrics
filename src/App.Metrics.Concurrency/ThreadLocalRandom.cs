@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="ThreadLocalRandom.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Threading;
@@ -28,7 +29,9 @@ namespace App.Metrics.Concurrency
 
         public static double NextDouble() { return LocalRandom.Value.NextDouble(); }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public static long NextLong()
+            // ReSharper restore MemberCanBePrivate.Global
         {
             long heavy = LocalRandom.Value.Next();
             long light = LocalRandom.Value.Next();

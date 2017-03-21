@@ -112,7 +112,7 @@ namespace App.Metrics.Facts.Apdex
         [Fact]
         public void can_track_func()
         {
-            var result = _apdex.Track(
+            var unused = _apdex.Track(
                 () =>
                 {
                     _clock.Advance(TimeUnit.Milliseconds, 100);
@@ -173,10 +173,9 @@ namespace App.Metrics.Facts.Apdex
         [Fact]
         public void throws_if_apdex_provider_is_null()
         {
-            IApdexProvider provider = null;
             Action createApdex = () =>
             {
-                var apdex = new DefaultApdexMetric(provider, _clock, true);
+                var unused = new DefaultApdexMetric((IApdexProvider)null, _clock, true);
             };
 
             createApdex.ShouldThrow<ArgumentNullException>();
@@ -188,7 +187,7 @@ namespace App.Metrics.Facts.Apdex
             Action createApdex = () =>
             {
                 var reservoir = new Lazy<IReservoir>(() => new DefaultForwardDecayingReservoir());
-                var apdex = new DefaultApdexMetric(
+                var unused = new DefaultApdexMetric(
                         reservoir,
                         Constants.ReservoirSampling.DefaultApdexTSeconds,
                         null,

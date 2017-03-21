@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="TimerMetric.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 namespace App.Metrics.Formatters.Json
 {
@@ -30,8 +31,6 @@ namespace App.Metrics.Formatters.Json
         public RateData Rate { get; set; }
 
         public string RateUnit { get; set; }
-
-        public long TotalTime { get; set; }
 
         public sealed class HistogramData
         {
@@ -64,6 +63,8 @@ namespace App.Metrics.Formatters.Json
             public int SampleSize { get; set; }
 
             public double StdDev { get; set; }
+
+            public double Sum { get; set; }
         }
 
         public sealed class RateData

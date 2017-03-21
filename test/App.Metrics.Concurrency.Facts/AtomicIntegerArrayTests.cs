@@ -172,7 +172,7 @@ namespace App.Metrics.Concurrency.Facts
         {
             Action action = () =>
             {
-                var atomicIntArray = new AtomicIntArray(-2);
+                var unused = new AtomicIntArray(-2);
             };
 
             action.ShouldThrow<ArgumentException>();

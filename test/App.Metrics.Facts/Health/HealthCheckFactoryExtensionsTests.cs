@@ -1,10 +1,7 @@
-﻿#region copyright
-
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-#endregion
-
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using App.Metrics.Health;
@@ -20,6 +17,40 @@ namespace App.Metrics.Facts.Health
         private readonly ILogger<HealthCheckFactory> _logger;
 
         public HealthCheckFactoryExtensionsTests() { _logger = new LoggerFactory().CreateLogger<HealthCheckFactory>(); }
+
+        [Fact]
+        [Trait("Category", "Requires Connectivity")]
+        public async Task can_execute_http_get_check()
+        {
+            var healthChecks = Enumerable.Empty<HealthCheck>();
+            var name = "github home";
+
+            var factory = new HealthCheckFactory(_logger, healthChecks);
+
+            factory.RegisterHttpGetHealthCheck(name, new Uri("https://github.com"), TimeSpan.FromSeconds(10));
+
+            var check = factory.Checks.FirstOrDefault();
+            var result = await check.Value.ExecuteAsync().ConfigureAwait(false);
+
+            result.Check.Status.Should().Be(HealthCheckStatus.Healthy);
+        }
+
+        [Fact]
+        [Trait("Category", "Requires Connectivity")]
+        public async Task can_execute_ping_check()
+        {
+            var healthChecks = Enumerable.Empty<HealthCheck>();
+            var name = "github ping";
+
+            var factory = new HealthCheckFactory(_logger, healthChecks);
+
+            factory.RegisterPingHealthCheck(name, "github.com", TimeSpan.FromSeconds(10));
+
+            var check = factory.Checks.FirstOrDefault();
+            var result = await check.Value.ExecuteAsync().ConfigureAwait(false);
+
+            result.Check.Status.Should().Be(HealthCheckStatus.Healthy);
+        }
 
         [Fact]
         public async Task can_execute_process_physical_memory_check()
@@ -61,7 +92,7 @@ namespace App.Metrics.Facts.Health
 
             var factory = new HealthCheckFactory(_logger, healthChecks);
 
-            factory.RegisterProcessVirtualMemorySizeHealthCheck(name, int.MaxValue);
+            factory.RegisterProcessVirtualMemorySizeHealthCheck(name, long.MaxValue);
 
             var check = factory.Checks.FirstOrDefault();
             var result = await check.Value.ExecuteAsync().ConfigureAwait(false);

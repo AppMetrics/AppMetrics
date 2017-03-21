@@ -1,11 +1,13 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MetricSetItem.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Linq;
 using App.Metrics.Infrastructure;
 using Microsoft.DotNet.PlatformAbstractions;
 
+// ReSharper disable MemberCanBePrivate.Global
 namespace App.Metrics.Tagging
 {
     /// <summary>
@@ -168,8 +170,11 @@ namespace App.Metrics.Tagging
             var hcc = new HashCodeCombiner();
 #pragma warning restore SA1129
 
+            // ReSharper disable ForCanBeConvertedToForeach
             for (var i = 0; i < _keys.Length; i++)
             {
+                // ReSharper restore ForCanBeConvertedToForeach
+
                 hcc.Add(_keys[i]);
             }
 
@@ -191,7 +196,7 @@ namespace App.Metrics.Tagging
                 case 1:
                     return string.Concat(_keys[0], ":", _values[0]);
                 default:
-                {
+                    {
                     var sb = StringBuilderCache.Acquire();
 
                     for (var i = 0; i < _keys.Length; i++)
@@ -221,5 +226,7 @@ namespace App.Metrics.Tagging
         private static readonly string[] EmptyArray = new string[0];
         public static readonly MetricSetItem Empty = new MetricSetItem(EmptyArray, EmptyArray);
 #pragma warning restore SA1202
+
+        // ReSharper restore MemberCanBePrivate.Global
     }
 }

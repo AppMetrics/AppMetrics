@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultMetrics.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Core.Abstractions;
@@ -17,7 +18,9 @@ namespace App.Metrics.Core.Internal
     ///     This is the entry point to the application's metrics registry
     /// </remarks>
     /// <seealso cref="IMetrics" />
+    // ReSharper disable ClassNeverInstantiated.Global
     internal sealed class DefaultMetrics : IMetrics
+        // ReSharper restore ClassNeverInstantiated.Global
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultMetrics" /> class.

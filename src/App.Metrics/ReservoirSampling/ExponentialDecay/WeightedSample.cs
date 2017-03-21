@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="WeightedSample.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 namespace App.Metrics.ReservoirSampling.ExponentialDecay
 {
@@ -43,7 +44,9 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
             }
         }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public bool Equals(WeightedSample other)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             // ReSharper disable ImpureMethodCallOnReadonlyValueField
             return string.Equals(UserValue, other.UserValue) && Value == other.Value && Weight.Equals(other.Weight);

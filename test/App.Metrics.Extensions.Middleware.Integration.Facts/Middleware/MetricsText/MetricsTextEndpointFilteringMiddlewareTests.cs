@@ -12,12 +12,9 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
         public MetricsTextEndpointFilteringMiddlewareTests(MetricsHostTestFixture<FitleredMetricsEndpointStartup> fixture)
         {
             Client = fixture.Client;
-            Context = fixture.Context;
         }
 
-        public HttpClient Client { get; }
-
-        public IMetrics Context { get; }
+        private HttpClient Client { get; }
 
         [Fact]
         public async Task can_filter_metrics()

@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="TimerValueSourceSerializationExtensions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,7 @@ namespace App.Metrics.Timer
 
             var histogramValue = new HistogramValue(
                 source.Count,
+                source.Histogram.Sum,
                 source.Histogram.LastValue,
                 source.Histogram.LastUserValue,
                 source.Histogram.Max,
@@ -46,11 +48,10 @@ namespace App.Metrics.Timer
                 source.Histogram.Percentile999,
                 source.Histogram.SampleSize);
 
-            var timerValue = new TimerValue(rateValue, histogramValue, source.ActiveSessions, source.TotalTime, durationUnit);
+            var timerValue = new TimerValue(rateValue, histogramValue, source.ActiveSessions, durationUnit);
 
             return new TimerValueSource(
                 source.Name,
-                source.Group,
                 ConstantValue.Provider(timerValue),
                 source.Unit,
                 rateUnit,
@@ -72,6 +73,7 @@ namespace App.Metrics.Timer
         {
             var histogramData = new TimerMetric.HistogramData
                                 {
+                                    Sum = source.Value.Histogram.Sum,
                                     LastValue = source.Value.Histogram.LastValue,
                                     LastUserValue = source.Value.Histogram.LastUserValue,
                                     Max = source.Value.Histogram.Max,
@@ -100,10 +102,8 @@ namespace App.Metrics.Timer
             return new TimerMetric
                    {
                        Name = source.Name,
-                       Group = source.Group,
                        Count = source.Value.Rate.Count,
                        ActiveSessions = source.Value.ActiveSessions,
-                       TotalTime = source.Value.TotalTime,
                        Rate = rateData,
                        Histogram = histogramData,
                        Unit = source.Unit.Name,

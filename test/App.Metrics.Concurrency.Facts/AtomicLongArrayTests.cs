@@ -131,7 +131,7 @@ namespace App.Metrics.Concurrency.Facts
         {
             Action setupAction = () =>
             {
-                var array = new AtomicLongArray(-1);
+                var unused = new AtomicLongArray(-1);
             };
 
             setupAction.ShouldThrow<ArgumentException>();

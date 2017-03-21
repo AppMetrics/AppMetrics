@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultTimerBuilder.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using App.Metrics.Abstractions.MetricTypes;
@@ -33,6 +34,23 @@ namespace App.Metrics.Timer
             }
 
             return new DefaultTimerMetric(reservoir, clock);
+        }
+
+        /// <inheritdoc />
+        public ITimerMetric Build(IHistogramMetric histogram, IMeterMetric meter, IClock clock)
+        {
+            return new DefaultTimerMetric(histogram, meter, clock);
+        }
+
+        /// <inheritdoc />
+        public ITimerMetric Build(Lazy<IReservoir> reservoir, IMeterMetric meter, IClock clock)
+        {
+            if (reservoir == null)
+            {
+                reservoir = _defaultSamplingReservoirProvider.Instance();
+            }
+
+            return new DefaultTimerMetric(reservoir, meter, clock);
         }
     }
 }

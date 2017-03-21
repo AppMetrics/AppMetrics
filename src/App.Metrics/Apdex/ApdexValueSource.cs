@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+// <copyright file="ApdexValueSource.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Core.Abstractions;
 using App.Metrics.Tagging;
@@ -18,17 +19,8 @@ namespace App.Metrics.Apdex
             ResetOnReporting = resetOnReporting;
         }
 
-        public ApdexValueSource(
-            string name,
-            string group,
-            IMetricValueProvider<ApdexValue> value,
-            MetricTags tags,
-            bool resetOnReporting = false)
-            : base(name, group, value, Unit.Results, tags)
-        {
-            ResetOnReporting = resetOnReporting;
-        }
-
-        public bool ResetOnReporting { get; private set; }
+        // ReSharper disable UnusedAutoPropertyAccessor.Local
+        private bool ResetOnReporting { get; }
+        // ReSharper restore UnusedAutoPropertyAccessor.Local
     }
 }

@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="ErrorRequestMeterMiddleware.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Threading.Tasks;
@@ -13,7 +14,9 @@ namespace App.Metrics.Extensions.Middleware
     ///     Measures the overall error request rate as well as the rate per endpoint.
     ///     Also measures these error rates per OAuth2 Client as a separate metric
     /// </summary>
+    // ReSharper disable ClassNeverInstantiated.Global
     public class ErrorRequestMeterMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
+        // ReSharper restore ClassNeverInstantiated.Global
     {
         public ErrorRequestMeterMiddleware(
             RequestDelegate next,
@@ -38,6 +41,7 @@ namespace App.Metrics.Extensions.Middleware
             }
         }
 
+        // ReSharper disable UnusedMember.Global
         public async Task Invoke(HttpContext context)
         {
             await Next(context);
@@ -48,15 +52,15 @@ namespace App.Metrics.Extensions.Middleware
 
                 var routeTemplate = context.GetMetricsCurrentRouteName();
 
-                if (!context.Response.IsSuccessfulResponse())
+                if (!context.Response.IsSuccessfulResponse() && ShouldTrackHttpStatusCode(context.Response.StatusCode))
                 {
-                    Metrics.MarkHttpRequestEndpointError(routeTemplate, context.Response.StatusCode);
-                    Metrics.MarkHttpRequestError(context.Response.StatusCode);
-                    Metrics.ErrorRequestPercentage();
+                    Metrics.RecordHttpRequestError(routeTemplate, context.Response.StatusCode);
                 }
             }
 
             Logger.MiddlewareExecuted(GetType());
         }
+
+        // ReSharper restore UnusedMember.Global
     }
 }

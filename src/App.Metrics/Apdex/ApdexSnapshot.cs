@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="ApdexSnapshot.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Collections.Generic;
 using System.Linq;
@@ -53,9 +54,12 @@ namespace App.Metrics.Apdex
             }
         }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public bool Equals(ApdexSnapshot other)
         {
             return FrustratingSize == other.FrustratingSize && SatisfiedSize == other.SatisfiedSize && ToleratingSize == other.ToleratingSize;
         }
+
+        // ReSharper restore MemberCanBePrivate.Global
     }
 }

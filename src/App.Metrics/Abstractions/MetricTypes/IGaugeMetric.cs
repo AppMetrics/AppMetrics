@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="IGaugeMetric.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Core.Abstractions;
 using App.Metrics.Gauge;
@@ -12,7 +13,7 @@ namespace App.Metrics.Abstractions.MetricTypes
     ///     Allows custom gauges to be implemented
     /// </summary>
     /// <seealso cref="IGaugeMetric" />
-    public interface IGaugeMetric : IMetricValueProvider<double>
+    public interface IGaugeMetric : IGauge, IMetricValueProvider<double>
     {
     }
 }

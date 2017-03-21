@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="HistogramExtensions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Core;
@@ -14,6 +15,7 @@ namespace App.Metrics.Histogram
     {
         private static readonly HistogramValue EmptyHistogram = new HistogramValue(
             0,
+            0.0,
             0.0,
             null,
             0.0,
@@ -32,7 +34,7 @@ namespace App.Metrics.Histogram
 
         public static HistogramValue GetHistogramValue(this IProvideMetricValues valueService, string context, string metricName)
         {
-            return valueService.GetForContext(context).Histograms.ValueFor(context, metricName);
+            return valueService.GetForContext(context).Histograms.ValueFor(metricName);
         }
 
         public static HistogramValue GetValueOrDefault(this IHistogram metric)

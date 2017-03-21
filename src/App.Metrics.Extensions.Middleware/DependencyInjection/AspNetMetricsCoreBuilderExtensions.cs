@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="AspNetMetricsCoreBuilderExtensions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
@@ -10,15 +11,8 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     // ReSharper restore CheckNamespace
     public static class AspNetMetricsCoreBuilderExtensions
+        // ReSharper restore UnusedMember.Global
     {
-        public static IMetricsHostBuilder AddMetricsMiddleware(this IMetricsHostBuilder builder)
-        {
-            builder.AddRequiredAspNetPlatformServices();
-            builder.AddAspNetCoreServices();
-
-            return builder;
-        }
-
         public static IMetricsHostBuilder AddMetricsMiddleware(this IMetricsHostBuilder builder, IConfiguration configuration)
         {
             builder.Services.Configure<AspNetMetricsOptions>(configuration);
@@ -39,6 +33,13 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             builder.Services.Configure(setupAction);
             return builder.AddMetricsMiddleware();
+        }
+
+        private static IMetricsHostBuilder AddMetricsMiddleware(this IMetricsHostBuilder builder)
+        {
+            builder.AddRequiredAspNetPlatformServices();
+
+            return builder;
         }
     }
 }

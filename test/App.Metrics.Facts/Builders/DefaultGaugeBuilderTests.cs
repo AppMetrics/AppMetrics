@@ -15,6 +15,15 @@ namespace App.Metrics.Facts.Builders
         public DefaultGaugeBuilderTests(MetricCoreTestFixture fixture) { _builder = fixture.Builder.Gauge; }
 
         [Fact]
+        public void can_build_custom_instance()
+        {
+            var counter = _builder.Build(() => new CustomGauge());
+
+            counter.Should().NotBeNull();
+            counter.Should().BeOfType<CustomGauge>();
+        }
+
+        [Fact]
         public void can_build_new_instance()
         {
             var gauge = _builder.Build(() => 1.0);

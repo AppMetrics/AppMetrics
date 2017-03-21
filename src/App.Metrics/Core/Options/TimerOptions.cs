@@ -1,6 +1,10 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="TimerOptions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global.
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 namespace App.Metrics.Core.Options
 {
     public class TimerOptions : MetricValueWithSamplingOption
@@ -27,4 +31,8 @@ namespace App.Metrics.Core.Options
         /// </value>
         public TimeUnit RateUnit { get; set; }
     }
+
+    // ReSharper restore AutoPropertyCanBeMadeGetOnly.Global
+    // ReSharper restore MemberCanBePrivate.Global
+    // ReSharper restore AutoPropertyCanBeMadeGetOnly.Global
 }

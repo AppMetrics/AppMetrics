@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="Constants.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 namespace App.Metrics.Extensions.Middleware.Internal
 {
@@ -11,6 +12,13 @@ namespace App.Metrics.Extensions.Middleware.Internal
             public const string MetricsEndpoint = "/metrics";
             public const string MetricsTextEndpoint = "/metrics-text";
             public const string PingEndpoint = "/ping";
+        }
+
+        public static class DefaultTagKeys
+        {
+            public const string Route = "route";
+            public const string ClientId = "client_id";
+            public const string HttpStatusCode = "http_status_code";
         }
     }
 }

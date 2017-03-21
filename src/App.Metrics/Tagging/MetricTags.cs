@@ -1,9 +1,12 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MetricTags.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using App.Metrics.Core.Internal;
+using App.Metrics.Infrastructure;
 using Microsoft.DotNet.PlatformAbstractions;
 
 namespace App.Metrics.Tagging
@@ -146,7 +149,9 @@ namespace App.Metrics.Tagging
             return new MetricTags(combinedKeys, combinedValues);
         }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public static bool Equals(MetricTags left, MetricTags right)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             var count = left.Count;
 
@@ -173,11 +178,11 @@ namespace App.Metrics.Tagging
                 return Empty;
             }
 
-            var tagPairs = setItem.Split('|');
+            var tagPairs = setItem.Split(Constants.Formatting.MetricSetItemSeparator);
 
             if (tagPairs.Length <= 1)
             {
-                return new MetricTags("item", setItem);
+                return new MetricTags(Constants.Formatting.MetricSetItemFallbackKey, setItem);
             }
 
             var tags = new string[tagPairs.Length];
@@ -185,10 +190,10 @@ namespace App.Metrics.Tagging
 
             for (var i = 0; i < tagPairs.Length; i++)
             {
-                var tagKeyValue = tagPairs[i].Split(':');
+                var tagKeyValue = tagPairs[i].Split(Constants.Formatting.MetricSetItemKeyValueSeparator);
                 if (tagKeyValue.Length <= 1)
                 {
-                    tags[i] = "item";
+                    tags[i] = Constants.Formatting.MetricSetItemFallbackKey;
                     values[i] = tagPairs[i];
                     continue;
                 }
@@ -232,12 +237,62 @@ namespace App.Metrics.Tagging
             var hcc = new HashCodeCombiner();
 #pragma warning restore SA1129
 
+            // ReSharper disable ForCanBeConvertedToForeach
             for (var i = 0; i < _keys.Length; i++)
             {
+                // ReSharper restore ForCanBeConvertedToForeach
+
                 hcc.Add(_keys[i]);
             }
 
             return hcc.CombinedHash;
+        }
+
+        public string AsMetricName(string metricName)
+        {
+            if (_keys == null)
+            {
+                return string.Concat(
+                    metricName,
+                    Constants.Formatting.MetricNameDimensionSeparator,
+                    _key,
+                    Constants.Formatting.MetricTagKeyValueSeparator,
+                    _value);
+            }
+
+            switch (Count)
+            {
+                case 0:
+                    return null;
+                case 1:
+                    return string.Concat(
+                        metricName,
+                        Constants.Formatting.MetricNameDimensionSeparator,
+                        _keys[0],
+                        Constants.Formatting.MetricTagKeyValueSeparator,
+                        _values[0]);
+                default:
+                    {
+                    var sb = StringBuilderCache.Acquire();
+
+                    sb.Append(metricName);
+                    sb.Append(Constants.Formatting.MetricNameDimensionSeparator);
+
+                    for (var i = 0; i < _keys.Length; i++)
+                    {
+                        sb.Append(_keys[i]);
+                        sb.Append(Constants.Formatting.MetricTagKeyValueSeparator);
+                        sb.Append(_values[i]);
+
+                        if (i < _keys.Length - 1)
+                        {
+                            sb.Append(Constants.Formatting.MetricTagSeparator);
+                        }
+                    }
+
+                    return StringBuilderCache.GetStringAndRelease(sb);
+                }
+            }
         }
 
         /// <inheritdoc />

@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="CounterExtensions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Core;
@@ -16,7 +17,7 @@ namespace App.Metrics.Counter
 
         public static CounterValue GetCounterValue(this IProvideMetricValues valueService, string context, string metricName)
         {
-            return valueService.GetForContext(context).Counters.ValueFor(context, metricName);
+            return valueService.GetForContext(context).Counters.ValueFor(metricName);
         }
 
         public static CounterValue GetValueOrDefault(this ICounter metric)

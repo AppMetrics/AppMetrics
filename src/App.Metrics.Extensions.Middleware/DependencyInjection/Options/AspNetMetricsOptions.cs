@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="AspNetMetricsOptions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,9 @@ using App.Metrics.Extensions.Middleware.Internal;
 
 namespace App.Metrics.Extensions.Middleware.DependencyInjection.Options
 {
+    // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+    // ReSharper disable CollectionNeverUpdated.Global
+    // ReSharper disable MemberCanBePrivate.Global
     public class AspNetMetricsOptions
     {
         public AspNetMetricsOptions()
@@ -28,6 +32,8 @@ namespace App.Metrics.Extensions.Middleware.DependencyInjection.Options
 
         public bool HealthEndpointEnabled { get; set; }
 
+        public IList<int> IgnoredHttpStatusCodes { get; set; } = new List<int>();
+
         public IList<string> IgnoredRoutesRegexPatterns { get; set; } = new List<string>();
 
         public string MetricsEndpoint { get; set; } = Constants.DefaultRoutePaths.MetricsEndpoint.EnsureLeadingSlash();
@@ -43,5 +49,8 @@ namespace App.Metrics.Extensions.Middleware.DependencyInjection.Options
         public string PingEndpoint { get; set; } = Constants.DefaultRoutePaths.PingEndpoint.EnsureLeadingSlash();
 
         public bool PingEndpointEnabled { get; set; }
+        // ReSharper restore AutoPropertyCanBeMadeGetOnly.Global
+        // ReSharper restore CollectionNeverUpdated.Global
+        // ReSharper restore MemberCanBePrivate.Global
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
+// Copyright (c) Allan Hardy. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
@@ -9,7 +9,7 @@ using App.Metrics.Scheduling;
 using App.Metrics.Scheduling.Abstractions;
 using BenchmarkDotNet.Attributes;
 
-namespace App.Metrics.Benchmarks
+namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Sampling
 {
     public class ForwardDecayReservoirSamplingBenchmark : DefaultBenchmarkBase
     {

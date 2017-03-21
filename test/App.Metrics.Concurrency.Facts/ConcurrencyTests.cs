@@ -77,6 +77,19 @@ namespace App.Metrics.Concurrency.Facts
 
         [Theory]
         [
+            InlineData(1000000.0, 16),
+            InlineData(1000000.0, 8),
+            InlineData(1000000.0, 4),
+            InlineData(1000000.0, 2),
+            InlineData(1000000.0, 1),
+        ]
+        public void double_is_correct_with_concurrency(double total, int threadCount)
+        {
+            ConcurrencyTest<AtomicDouble, double>(total, threadCount);
+        }
+
+        [Theory]
+        [
             InlineData(1000000, 16),
             InlineData(1000000, 8),
             InlineData(1000000, 4),
@@ -177,12 +190,34 @@ namespace App.Metrics.Concurrency.Facts
             var result = value.GetValue();
             if (result is int)
             {
-                ((object)value.GetValue()).Should().Be((int)total * threadCount);
+                ((object)result).Should().Be((int)total * threadCount);
             }
             else
             {
-                ((object)value.GetValue()).Should().Be(total * threadCount);
+                ((object)result).Should().Be(total * threadCount);
             }
+        }
+
+        private static void ConcurrencyTest<T, TU>(double total, int threadCount) where T : IValueAdder<TU>, new()
+        {
+            var value = new T();
+            var thread = new List<Thread>();
+
+            for (var i = 0; i < threadCount; i++)
+            {
+                thread.Add(new Thread(() =>
+                {
+                    for (var j = 0.0; j < total; j++)
+                    {
+                        value.Increment();
+                    }
+                }));
+            }
+
+            thread.ForEach(t => t.Start());
+            thread.ForEach(t => t.Join());
+
+            ((object)value.GetValue()).Should().Be(total * threadCount);
         }
     }
 }

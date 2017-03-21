@@ -21,7 +21,9 @@ namespace App.Metrics.Facts.Reporting.Helpers
             _throwEx = throwEx;
         }
 
-        public IFilterMetrics Filter { get; set; }
+        // ReSharper disable UnassignedGetOnlyAutoProperty
+        public IFilterMetrics Filter { get; }
+        // ReSharper restore UnassignedGetOnlyAutoProperty
 
         public IMetricReporter CreateMetricReporter(string name, ILoggerFactory loggerFactory)
         {

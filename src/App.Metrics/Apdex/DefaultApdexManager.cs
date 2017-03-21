@@ -1,10 +1,12 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultApdexManager.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using App.Metrics.Apdex.Abstractions;
 using App.Metrics.Core.Options;
 using App.Metrics.Registry.Abstractions;
+using App.Metrics.Tagging;
 
 namespace App.Metrics.Apdex
 {
@@ -38,6 +40,31 @@ namespace App.Metrics.Apdex
             {
                 action();
             }
+        }
+
+        /// <inheritdoc />
+        public void Track(ApdexOptions options, MetricTags tags, Action action)
+        {
+            var apdex = _registry.Apdex(
+                options,
+                tags,
+                () => _apdexBuilder.Build(options.Reservoir, options.ApdexTSeconds, options.AllowWarmup, _clock));
+
+            using (apdex.NewContext())
+            {
+                action();
+            }
+        }
+
+        /// <inheritdoc />
+        public ApdexContext Track(ApdexOptions options, MetricTags tags)
+        {
+            var apdex = _registry.Apdex(
+                options,
+                tags,
+                () => _apdexBuilder.Build(options.Reservoir, options.ApdexTSeconds, options.AllowWarmup, _clock));
+
+            return apdex.NewContext();
         }
 
         /// <inheritdoc />

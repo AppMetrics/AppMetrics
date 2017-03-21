@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="HitPercentageGauge.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using App.Metrics.Meter;
@@ -37,7 +38,9 @@ namespace App.Metrics.Gauge
         ///     Creates a new HitPercentageGauge with externally tracked Meters, and uses the provided meter rate function to
         ///     extract the value for the percentage.
         /// </remarks>
+        // ReSharper disable MemberCanBePrivate.Global
         public HitPercentageGauge(IMeter hitMeter, IMeter totalMeter, Func<MeterValue, double> meterRateFunc)
+            // ReSharper restore MemberCanBePrivate.Global
             : base(() => meterRateFunc(hitMeter.GetValueOrDefault()), () => meterRateFunc(totalMeter.GetValueOrDefault())) { }
 
         /// <summary>

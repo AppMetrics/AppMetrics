@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="GaugeExtensions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Core;
 using App.Metrics.Core.Abstractions;
@@ -12,7 +13,7 @@ namespace App.Metrics.Gauge
     {
         public static double GetGaugeValue(this IProvideMetricValues valueService, string context, string metricName)
         {
-            return valueService.GetForContext(context).Gauges.ValueFor(context, metricName);
+            return valueService.GetForContext(context).Gauges.ValueFor(metricName);
         }
     }
 }

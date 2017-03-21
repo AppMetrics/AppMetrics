@@ -9,7 +9,6 @@ using App.Metrics.Configuration;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Facts.Reporting.Helpers;
 using App.Metrics.Reporting;
-using App.Metrics.Reporting.Abstractions;
 using App.Metrics.Reporting.Internal;
 using App.Metrics.Scheduling;
 using App.Metrics.Scheduling.Abstractions;
@@ -52,7 +51,7 @@ namespace App.Metrics.Facts.Reporting
                 var scheduler = new DefaultTaskScheduler();
                 var metrics = new Mock<IMetrics>();
                 var factory = SetupReportFactory(metrics.Object);
-                var reporter = new Reporter(_options, factory, null, scheduler, _loggerFactory);
+                var unused = new Reporter(_options, factory, null, scheduler, _loggerFactory);
             };
 
             action.ShouldThrow<ArgumentNullException>();
@@ -65,7 +64,7 @@ namespace App.Metrics.Facts.Reporting
             {
                 var scheduler = new DefaultTaskScheduler();
                 var factory = SetupReportFactory();
-                var reporter = new Reporter(_options, factory, _fixture.Metrics, scheduler, null);
+                var unused = new Reporter(_options, factory, _fixture.Metrics, scheduler, null);
             };
 
             action.ShouldThrow<ArgumentNullException>();
@@ -76,7 +75,7 @@ namespace App.Metrics.Facts.Reporting
         {
             Action action = () =>
             {
-                var generator = new DefaultReportGenerator(_options, null);
+                var unused = new DefaultReportGenerator(_options, null);
             };
 
             action.ShouldThrow<ArgumentNullException>();
@@ -89,7 +88,7 @@ namespace App.Metrics.Facts.Reporting
             {
                 var loggerFactory = new LoggerFactory();
                 var scheduler = new DefaultTaskScheduler();
-                var reporter = new Reporter(_options, null, _fixture.Metrics, scheduler, loggerFactory);
+                var unused = new Reporter(_options, null, _fixture.Metrics, scheduler, loggerFactory);
             };
 
             action.ShouldThrow<ArgumentNullException>();
@@ -101,7 +100,7 @@ namespace App.Metrics.Facts.Reporting
             Action action = () =>
             {
                 var factory = SetupReportFactory();
-                var reporter = new Reporter(_options, factory, _fixture.Metrics, null, _loggerFactory);
+                var unused = new Reporter(_options, factory, _fixture.Metrics, null, _loggerFactory);
             };
 
             action.ShouldThrow<ArgumentNullException>();

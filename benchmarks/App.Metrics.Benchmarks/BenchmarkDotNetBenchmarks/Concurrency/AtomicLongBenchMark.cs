@@ -25,7 +25,9 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Concurrency
         [Benchmark]
         public void Get()
         {
+            // ReSharper disable UnusedVariable
             var x = _num.GetValue();
+            // ReSharper restore UnusedVariable
         }
 
         [Benchmark]

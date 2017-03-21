@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MetricsHostBuilderExtensionsAspNetCore.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Extensions.Middleware.DependencyInjection.Internal;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 
 // ReSharper disable CheckNamespace
+// ReSharper disable UnusedMethodReturnValue.Global
 namespace Microsoft.Extensions.DependencyInjection
 {
     // ReSharper restore CheckNamespace
@@ -20,7 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return builder;
         }
-
-        internal static void AddAspNetCoreServices(this IMetricsHostBuilder builder) { }
     }
+
+    // ReSharper restore UnusedMethodReturnValue.Global
 }

@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="EnvironmentInfoProvider.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Diagnostics;
@@ -14,31 +15,18 @@ namespace App.Metrics.Infrastructure
     {
         public EnvironmentInfo Build()
         {
-            var process = Process.GetCurrentProcess();
-
-            var processName = StringExtensions.GetSafeString(() => process.ProcessName);
-            var operatingSystemVersion = RuntimeEnvironment.OperatingSystemVersion;
-            var os = RuntimeEnvironment.OperatingSystem;
-            var processorCount = Environment.ProcessorCount.ToString();
-            var machineName = process.MachineName;
-            var hostName = StringExtensions.GetSafeString(Dns.GetHostName);
             var localTimeString = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.ffffK", CultureInfo.InvariantCulture);
 
-            var entryAssembly = Assembly.GetEntryAssembly();
-
-            var entryAssemblyName = StringExtensions.GetSafeString(() => entryAssembly.GetName().Name);
-            var entryAssemblyVersion = StringExtensions.GetSafeString(() => entryAssembly.GetName().Version.ToString());
-
             return new EnvironmentInfo(
-                entryAssemblyName,
-                entryAssemblyVersion,
-                hostName,
+                EnvironmentInfoProviderCache.Instance.EntryAssemblyName,
+                EnvironmentInfoProviderCache.Instance.EntryAssemblyVersion,
+                EnvironmentInfoProviderCache.Instance.HostName,
                 localTimeString,
-                machineName,
-                os,
-                operatingSystemVersion,
-                processName,
-                processorCount);
+                EnvironmentInfoProviderCache.Instance.MachineName,
+                EnvironmentInfoProviderCache.Instance.Os,
+                EnvironmentInfoProviderCache.Instance.OperatingSystemVersion,
+                EnvironmentInfoProviderCache.Instance.ProcessName,
+                EnvironmentInfoProviderCache.Instance.ProcessorCount);
         }
     }
 }

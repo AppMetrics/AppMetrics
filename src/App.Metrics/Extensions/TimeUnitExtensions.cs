@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="TimeUnitExtensions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Collections.ObjectModel;
 namespace App.Metrics
 {
     // ReSharper restore CheckNamespace
+
     public static class TimeUnitExtensions
     {
         private static readonly long[,] ConversionFactors = BuildConversionFactorsMatrix();
@@ -23,7 +25,7 @@ namespace App.Metrics
                     { "s", TimeUnit.Seconds },
                     { "min", TimeUnit.Minutes },
                     { "h", TimeUnit.Hours },
-                    { "days", TimeUnit.Days }
+                    { "days", TimeUnit.Days },
                 });
 
         private static readonly IReadOnlyDictionary<TimeUnit, string> ValueTimeUnitMapping =
@@ -36,7 +38,7 @@ namespace App.Metrics
                     { TimeUnit.Seconds, "s" },
                     { TimeUnit.Minutes, "min" },
                     { TimeUnit.Hours, "h" },
-                    { TimeUnit.Days, "days" }
+                    { TimeUnit.Days, "days" },
                 });
 
         public static long Convert(this TimeUnit sourceUnit, TimeUnit targetUnit, long value)
@@ -115,7 +117,7 @@ namespace App.Metrics
                                     1000L, // Milliseconds to seconds
                                     60L, // Seconds to minutes
                                     60L, // Minutes to hours
-                                    24L // Hours to days
+                                    24L, // Hours to days
                                 };
 
             for (var source = 0; source < count; source++)

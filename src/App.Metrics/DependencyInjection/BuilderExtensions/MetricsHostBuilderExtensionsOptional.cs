@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MetricsHostBuilderExtensionsOptional.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Collections.Generic;
@@ -59,7 +60,11 @@ namespace Microsoft.Extensions.DependencyInjection
             return builder;
         }
 
+        // ReSharper disable UnusedMethodReturnValue.Global
+        // ReSharper disable MemberCanBePrivate.Global
         public static IMetricsHostBuilder AddHealthChecks(this IMetricsHostBuilder builder, Action<IHealthCheckFactory> setupAction)
+            // ReSharper restore MemberCanBePrivate.Global
+            // ReSharper restore UnusedMethodReturnValue.Global
         {
             if (builder == null)
             {

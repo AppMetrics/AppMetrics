@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="IReporterSettings.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 
@@ -7,6 +8,8 @@ namespace App.Metrics.Abstractions.Reporting
 {
     public interface IReporterSettings
     {
+        // ReSharper disable UnusedMember.Global
         TimeSpan ReportInterval { get; }
+        // ReSharper restore UnusedMember.Global
     }
 }

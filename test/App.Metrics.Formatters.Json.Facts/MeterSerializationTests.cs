@@ -18,7 +18,6 @@ namespace App.Metrics.Formatters.Json.Facts
     public class MeterSerializationTests : IClassFixture<MetricProviderTestFixture>
     {
         private readonly MeterValueSource _meter;
-        private readonly MeterValueSource _meterWithGroup;
         private readonly ITestOutputHelper _output;
         private readonly MetricDataSerializer _serializer;
 
@@ -27,7 +26,6 @@ namespace App.Metrics.Formatters.Json.Facts
             _output = output;
             _serializer = new MetricDataSerializer();
             _meter = fixture.Meters.First(x => x.Name == fixture.MeterNameDefault);
-            _meterWithGroup = fixture.Meters.First(x => x.Name == fixture.MeterNameWithGroup);
         }
 
         [Fact]
@@ -55,16 +53,6 @@ namespace App.Metrics.Formatters.Json.Facts
             var expected = MetricType.Meter.SampleJson();
 
             var result = _serializer.Serialize(_meter).ParseAsJson();
-
-            result.Should().Be(expected);
-        }
-
-        [Fact]
-        public void produces_expected_json_with_group()
-        {
-            var expected = MetricTypeSamples.MeterWithGroup.SampleJson();
-
-            var result = _serializer.Serialize(_meterWithGroup).ParseAsJson();
 
             result.Should().Be(expected);
         }

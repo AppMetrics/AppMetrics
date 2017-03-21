@@ -7,6 +7,7 @@
     <Rule Id="UseConfigureAwait" Action="Error" />
   </Rules>
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+	<Rule Id="AD0001" Action="None" />
     <Rule Id="CA1001" Action="Warning" />
     <Rule Id="CA1009" Action="Warning" />
     <Rule Id="CA1016" Action="Warning" />
@@ -87,6 +88,7 @@
     <Rule Id="SA1121" Action="Error" />
     <Rule Id="SA1122" Action="Error" />
     <Rule Id="SA1133" Action="Error" />
+	<Rule Id="SA1137" Action="None" />
 	<Rule Id="SA1200" Action="None" />
 	<Rule Id="SA1201" Action="None" />
     <Rule Id="SA1300" Action="Error" />
@@ -107,7 +109,8 @@
     <Rule Id="SA1408" Action="Error" />
     <Rule Id="SA1410" Action="Error" />
     <Rule Id="SA1411" Action="Error" />
-    <Rule Id="SA1412" Action="Warning" />
+    <Rule Id="SA1412" Action="None" />
+	<Rule Id="SA1413" Action="None" />
 	<Rule Id="SA1502" Action="None" />
 	<Rule Id="SA1503" Action="Error" />
 	<Rule Id="SA1512" Action="None" />

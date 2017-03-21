@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="WeightedSnapshot.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Collections.Generic;
@@ -17,13 +18,15 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         private readonly long[] _values;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="WeightedSnapshot" /> class.
+        /// Initializes a new instance of the <see cref="WeightedSnapshot" /> class.
         /// </summary>
-        /// <param name="count">The count of the sample set.</param>
+        /// <param name="count">The count of all observed values.</param>
+        /// <param name="sum">The sum of all observed values.</param>
         /// <param name="values">The values within the sample set.</param>
-        public WeightedSnapshot(long count, IEnumerable<WeightedSample> values)
+        public WeightedSnapshot(long count, double sum, IEnumerable<WeightedSample> values)
         {
             Count = count;
+            Sum = sum;
             var sample = values.ToArray();
             Array.Sort(sample, WeightedSampleComparer.Instance);
 
@@ -49,6 +52,8 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
 
         /// <inheritdoc />
         public long Count { get; }
+
+        public double Sum { get; }
 
         /// <inheritdoc />
         public long Max => _values.LastOrDefault();

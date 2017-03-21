@@ -1,9 +1,11 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultTimerManager.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using App.Metrics.Core.Options;
 using App.Metrics.Registry.Abstractions;
+using App.Metrics.Tagging;
 using App.Metrics.Timer.Abstractions;
 
 namespace App.Metrics.Timer
@@ -32,9 +34,23 @@ namespace App.Metrics.Timer
         {
             using (
                 _registry.Timer(
-                             options,
-                             () => _timerBuilder.Build(options.Reservoir, _clock))
-                         .NewContext())
+                              options,
+                              () => _timerBuilder.Build(options.Reservoir, _clock)).
+                          NewContext())
+            {
+                action();
+            }
+        }
+
+        /// <inheritdoc />
+        public void Time(TimerOptions options, MetricTags tags, Action action)
+        {
+            using (
+                _registry.Timer(
+                              options,
+                              tags,
+                              () => _timerBuilder.Build(options.Reservoir, _clock)).
+                          NewContext())
             {
                 action();
             }
@@ -45,12 +61,49 @@ namespace App.Metrics.Timer
         {
             using (
                 _registry.Timer(
-                             options,
-                             () => _timerBuilder.Build(options.Reservoir, _clock))
-                         .NewContext(userValue))
+                              options,
+                              () => _timerBuilder.Build(options.Reservoir, _clock)).
+                          NewContext(userValue))
             {
                 action();
             }
+        }
+
+        /// <inheritdoc />
+        public void Time(TimerOptions options, MetricTags tags, Action action, string userValue)
+        {
+            using (
+                _registry.Timer(
+                              options,
+                              tags,
+                              () => _timerBuilder.Build(options.Reservoir, _clock)).
+                          NewContext(userValue))
+            {
+                action();
+            }
+        }
+
+        /// <inheritdoc />
+        public TimerContext Time(TimerOptions options, MetricTags tags, string userValue)
+        {
+            return _registry.Timer(
+                                 options,
+                                 tags,
+                                 () => _timerBuilder.Build(
+                                     options.Reservoir,
+                                     _clock)).
+                             NewContext(userValue);
+        }
+
+        /// <inheritdoc />
+        public TimerContext Time(TimerOptions options, MetricTags tags)
+        {
+            return
+                _registry.Timer(
+                              options,
+                              tags,
+                              () => _timerBuilder.Build(options.Reservoir, _clock)).
+                          NewContext();
         }
 
         /// <inheritdoc />
@@ -58,20 +111,20 @@ namespace App.Metrics.Timer
         {
             return
                 _registry.Timer(
-                             options,
-                             () => _timerBuilder.Build(options.Reservoir, _clock))
-                         .NewContext();
+                              options,
+                              () => _timerBuilder.Build(options.Reservoir, _clock)).
+                          NewContext();
         }
 
         /// <inheritdoc />
         public TimerContext Time(TimerOptions options, string userValue)
         {
             return _registry.Timer(
-                                options,
-                                () => _timerBuilder.Build(
-                                    options.Reservoir,
-                                    _clock))
-                            .NewContext(userValue);
+                                 options,
+                                 () => _timerBuilder.Build(
+                                     options.Reservoir,
+                                     _clock)).
+                             NewContext(userValue);
         }
     }
 }

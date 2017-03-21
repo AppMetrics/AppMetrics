@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="PostAndPutRequestSizeHistogramMiddleware.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,16 +10,23 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Extensions.Middleware
 {
+    // ReSharper disable ClassNeverInstantiated.Global
+
     public class PostAndPutRequestSizeHistogramMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
+        // ReSharper restore ClassNeverInstantiated.Global
     {
         public PostAndPutRequestSizeHistogramMiddleware(
             RequestDelegate next,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics)
-            : base(next, aspNetOptions, loggerFactory, metrics) { }
+            : base(next, aspNetOptions, loggerFactory, metrics)
+        {
+        }
 
+        // ReSharper disable UnusedMember.Global
         public async Task Invoke(HttpContext context)
+            // ReSharper restore UnusedMember.Global
         {
             if (PerformMetric(context))
             {
@@ -26,11 +34,18 @@ namespace App.Metrics.Extensions.Middleware
 
                 var httpMethod = context.Request.Method.ToUpperInvariant();
 
-                if (httpMethod == "POST" || httpMethod == "PUT")
+                if (httpMethod == "POST")
                 {
                     if (context.Request.Headers != null && context.Request.Headers.ContainsKey("Content-Length"))
                     {
-                        Metrics.UpdatePostAndPutRequestSize(long.Parse(context.Request.Headers["Content-Length"].First()));
+                        Metrics.UpdatePostRequestSize(long.Parse(context.Request.Headers["Content-Length"].First()));
+                    }
+                }
+                else if (httpMethod == "PUT")
+                {
+                    if (context.Request.Headers != null && context.Request.Headers.ContainsKey("Content-Length"))
+                    {
+                        Metrics.UpdatePutRequestSize(long.Parse(context.Request.Headers["Content-Length"].First()));
                     }
                 }
 

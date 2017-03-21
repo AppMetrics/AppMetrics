@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="IMeasureMetrics.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Apdex.Abstractions;
 using App.Metrics.Counter.Abstractions;
@@ -7,6 +8,9 @@ using App.Metrics.Gauge.Abstractions;
 using App.Metrics.Histogram.Abstractions;
 using App.Metrics.Meter.Abstractions;
 using App.Metrics.Timer.Abstractions;
+
+// ReSharper disable UnusedMemberInSuper.Global
+// ReSharper disable UnusedMember.Global
 
 namespace App.Metrics.Core.Abstractions
 {
@@ -63,4 +67,7 @@ namespace App.Metrics.Core.Abstractions
         /// </value>
         IMeasureTimerMetrics Timer { get; }
     }
+
+    // ReSharper restore UnusedMemberInSuper.Global
+    // ReSharper restore UnusedMember.Global
 }

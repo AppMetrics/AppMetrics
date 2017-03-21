@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultMetricsAssemblyDiscoveryProvider.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace App.Metrics.DependencyInjection.Internal
 {
     internal static class DefaultMetricsAssemblyDiscoveryProvider
     {
+        // ReSharper disable MemberCanBePrivate.Global
         internal static HashSet<string> ReferenceAssemblies { get; } = new HashSet<string>(StringComparer.Ordinal)
                                                                        {
                                                                            "App.Metrics"
@@ -55,5 +57,7 @@ namespace App.Metrics.DependencyInjection.Internal
             return !ReferenceAssemblies.Contains(library.Name) &&
                    library.Dependencies.Any(dependency => ReferenceAssemblies.Contains(dependency.Name));
         }
+
+        // ReSharper restore MemberCanBePrivate.Global
     }
 }

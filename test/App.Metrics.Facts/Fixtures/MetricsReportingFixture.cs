@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System;
+using System.Threading;
 using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
@@ -26,12 +27,14 @@ namespace App.Metrics.Facts.Fixtures
             var healthFactoryLogger = _loggerFactory.CreateLogger<HealthCheckFactory>();
             var options = new AppMetricsOptions();
             var clock = new TestClock();
-            Func<string, IMetricContextRegistry> newContextRegistry = name => new DefaultMetricContextRegistry(name);
-            var registry = new DefaultMetricsRegistry(_loggerFactory, options, clock, new EnvironmentInfoProvider(), newContextRegistry);
+
+            IMetricContextRegistry NewContextRegistry(string name) => new DefaultMetricContextRegistry(name);
+
+            var registry = new DefaultMetricsRegistry(_loggerFactory, options, clock, new EnvironmentInfoProvider(), NewContextRegistry);
             var healthCheckFactory = new HealthCheckFactory(healthFactoryLogger);
             var metricBuilderFactory = new DefaultMetricsBuilderFactory();
-            var filter = new DefaultMetricsFilter();
-            var healthManager = new DefaultHealthProvider(_loggerFactory.CreateLogger<DefaultHealthProvider>(), healthCheckFactory);
+            var filter = new DefaultMetricsFilter();            
+            var healthManager = new DefaultHealthProvider(new Lazy<IMetrics>(() => Metrics), _loggerFactory.CreateLogger<DefaultHealthProvider>(), healthCheckFactory);
             var dataManager = new DefaultMetricValuesProvider(
                 filter,
                 registry);

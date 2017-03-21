@@ -1,11 +1,13 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultCounterMetricProvider.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Core.Options;
 using App.Metrics.Counter.Abstractions;
 using App.Metrics.Registry.Abstractions;
+using App.Metrics.Tagging;
 
 namespace App.Metrics.Counter
 {
@@ -27,9 +29,28 @@ namespace App.Metrics.Counter
 
         /// <inheritdoc />
         public ICounter Instance<T>(CounterOptions options, Func<T> builder)
-            where T : ICounterMetric { return _registry.Counter(options, builder); }
+            where T : ICounterMetric
+        {
+            return _registry.Counter(options, builder);
+        }
 
         /// <inheritdoc />
-        public ICounter Instance(CounterOptions options) { return Instance(options, () => _counterBuilder.Build()); }
+        public ICounter Instance(CounterOptions options, MetricTags tags)
+        {
+            return Instance(options, tags, () => _counterBuilder.Build());
+        }
+
+        /// <inheritdoc />
+        public ICounter Instance<T>(CounterOptions options, MetricTags tags, Func<T> builder)
+            where T : ICounterMetric
+        {
+            return _registry.Counter(options, tags, builder);
+        }
+
+        /// <inheritdoc />
+        public ICounter Instance(CounterOptions options)
+        {
+            return Instance(options, () => _counterBuilder.Build());
+        }
     }
 }

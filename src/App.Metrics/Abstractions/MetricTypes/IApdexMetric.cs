@@ -1,12 +1,15 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="IApdexMetric.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using App.Metrics.Apdex;
 using App.Metrics.Apdex.Abstractions;
 using App.Metrics.Core.Abstractions;
 
+// ReSharper disable CheckNamespace
 namespace App.Metrics.Abstractions.Metrics
+    // ReSharper restore CheckNamespace
 {
     /// <summary>
     ///     Provides access to a adpex metric implementation e.g. <see cref="DefaultApdexMetric" />

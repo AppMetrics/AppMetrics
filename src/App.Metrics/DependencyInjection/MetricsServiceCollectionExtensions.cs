@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MetricsServiceCollectionExtensions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using App.Metrics.Configuration;
@@ -131,7 +132,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services">The application services collection.</param>
         /// <returns>The metrics host builder</returns>
+        // ReSharper disable MemberCanBePrivate.Global
         public static IMetricsHostBuilder AddMetrics(this IServiceCollection services)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             var builder = services.AddMetricsHostBuilder();
 
@@ -219,7 +222,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services">The application services collection.</param>
         /// <returns>The metrics host builder</returns>
+        // ReSharper disable MemberCanBePrivate.Global
         internal static IMetricsHostBuilder AddMetricsHostBuilder(this IServiceCollection services) { return new MetricsHostBuilder(services); }
+        // ReSharper restore MemberCanBePrivate.Global
 #endif
     }
 }

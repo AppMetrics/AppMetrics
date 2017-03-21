@@ -5,7 +5,7 @@ using App.Metrics.ReservoirSampling.Uniform;
 using FluentAssertions;
 using Xunit;
 
-namespace App.Metrics.Facts
+namespace App.Metrics.Sampling.Facts
 {
     public class UniformReservoirTests
     {
