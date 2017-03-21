@@ -1,4 +1,4 @@
-﻿// <copyright file="CounterValueSource.cs" company="Allan Hardy">
+// <copyright file="CounterValueSource.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 

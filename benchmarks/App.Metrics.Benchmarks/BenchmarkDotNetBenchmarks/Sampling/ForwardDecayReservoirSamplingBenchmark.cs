@@ -4,17 +4,17 @@
 using System;
 using System.Threading.Tasks;
 using App.Metrics.Benchmarks.Fixtures;
-using App.Metrics.ReservoirSampling.Uniform;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
 using App.Metrics.Scheduling;
 using App.Metrics.Scheduling.Abstractions;
 using BenchmarkDotNet.Attributes;
 
-namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Sampling
+namespace App.Metrics.Benchmarks
 {
-    public class AlgorithmRReservoirSamplingBenchmark : DefaultBenchmarkBase
+    public class ForwardDecayReservoirSamplingBenchmark : DefaultBenchmarkBase
     {
         private MetricsCoreTestFixture _fixture;
-        private DefaultAlgorithmRReservoir _reservoir;
+        private DefaultForwardDecayingReservoir _reservoir;
         private IScheduler _scheduler;
 
         [Setup]
@@ -22,7 +22,7 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Sampling
         {
             _fixture = new MetricsCoreTestFixture();
 
-            _reservoir = new DefaultAlgorithmRReservoir();
+            _reservoir = new DefaultForwardDecayingReservoir();
 
             _scheduler = new DefaultTaskScheduler();
 
@@ -36,13 +36,10 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Sampling
                 });
         }
 
+        [Cleanup]
+        public void Cleanup() { _scheduler.Dispose(); }
+
         [Benchmark]
         public void Update() { _reservoir.Update(_fixture.Rnd.Next(0, 1000), _fixture.RandomUserValue); }
-
-        [Cleanup]
-        public void Cleanup()
-        {
-            _scheduler.Dispose();
-        }
     }
 }

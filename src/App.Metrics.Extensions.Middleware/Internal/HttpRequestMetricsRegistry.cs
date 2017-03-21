@@ -1,4 +1,4 @@
-﻿// <copyright file="HttpRequestMetricsRegistry.cs" company="Allan Hardy">
+// <copyright file="HttpRequestMetricsRegistry.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
