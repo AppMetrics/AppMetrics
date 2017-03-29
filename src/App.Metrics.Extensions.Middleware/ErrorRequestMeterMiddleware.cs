@@ -51,6 +51,7 @@ namespace App.Metrics.Extensions.Middleware
             catch
             {
                 context.Response.StatusCode = 500;
+                throw;
             }
             finally
             {
