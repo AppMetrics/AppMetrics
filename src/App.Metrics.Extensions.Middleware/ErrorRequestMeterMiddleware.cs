@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Net;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using Microsoft.AspNetCore.Http;
@@ -46,18 +47,12 @@ namespace App.Metrics.Extensions.Middleware
         {
             try
             {
+                Logger.MiddlewareExecuting(GetType());
+
                 await Next(context);
-            }
-            catch
-            {
-                context.Response.StatusCode = 500;
-            }
-            finally
-            {
+
                 if (PerformMetric(context))
                 {
-                    Logger.MiddlewareExecuting(GetType());
-
                     var routeTemplate = context.GetMetricsCurrentRouteName();
 
                     if (!context.Response.IsSuccessfulResponse() && ShouldTrackHttpStatusCode(context.Response.StatusCode))
@@ -67,6 +62,18 @@ namespace App.Metrics.Extensions.Middleware
                 }
 
                 Logger.MiddlewareExecuted(GetType());
+            }
+            catch (Exception)
+            {
+                if (!PerformMetric(context))
+                {
+                    throw;
+                }
+
+                var routeTemplate = context.GetMetricsCurrentRouteName();
+                Metrics.RecordHttpRequestError(routeTemplate, (int)HttpStatusCode.InternalServerError);
+
+                throw;
             }
         }
 
