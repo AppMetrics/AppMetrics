@@ -10,16 +10,16 @@ namespace App.Metrics.Sandbox.JustForTesting
 {
     public static class SampleRequests
     {
-        private static readonly Uri ApiBaseAddress = new Uri("http://localhost:1111/");        
+        private static readonly Uri ApiBaseAddress = new Uri("http://localhost:2222/");
 
         public static void Run(CancellationToken token)
         {
             var randomBufferGenerator = new RandomBufferGenerator(50000);
             var scheduler = new DefaultTaskScheduler();
             var httpClient = new HttpClient
-                             {
-                                 BaseAddress = ApiBaseAddress
-                             };
+            {
+                BaseAddress = ApiBaseAddress
+            };
 
             Task.Run(
                 () => scheduler.Interval(
@@ -42,7 +42,10 @@ namespace App.Metrics.Sandbox.JustForTesting
                     TaskCreationOptions.None,
                     async () =>
                     {
-                        await httpClient.GetAsync("api/randomstatuscode", token);                        
+                        var randomStatusCode = httpClient.GetAsync("api/randomstatuscode", token);
+                        var exceptionThrower = httpClient.GetAsync("api/exceptionThrowing", token);
+
+                        await Task.WhenAll(randomStatusCode, exceptionThrower);
                     },
                     token),
                 token);
