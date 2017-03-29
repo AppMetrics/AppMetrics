@@ -44,21 +44,30 @@ namespace App.Metrics.Extensions.Middleware
         // ReSharper disable UnusedMember.Global
         public async Task Invoke(HttpContext context)
         {
-            await Next(context);
-
-            if (PerformMetric(context))
+            try
             {
-                Logger.MiddlewareExecuting(GetType());
-
-                var routeTemplate = context.GetMetricsCurrentRouteName();
-
-                if (!context.Response.IsSuccessfulResponse() && ShouldTrackHttpStatusCode(context.Response.StatusCode))
-                {
-                    Metrics.RecordHttpRequestError(routeTemplate, context.Response.StatusCode);
-                }
+                await Next(context);
             }
+            catch
+            {
+                context.Response.StatusCode = 500;
+            }
+            finally
+            {
+                if (PerformMetric(context))
+                {
+                    Logger.MiddlewareExecuting(GetType());
 
-            Logger.MiddlewareExecuted(GetType());
+                    var routeTemplate = context.GetMetricsCurrentRouteName();
+
+                    if (!context.Response.IsSuccessfulResponse() && ShouldTrackHttpStatusCode(context.Response.StatusCode))
+                    {
+                        Metrics.RecordHttpRequestError(routeTemplate, context.Response.StatusCode);
+                    }
+                }
+
+                Logger.MiddlewareExecuted(GetType());
+            }
         }
 
         // ReSharper restore UnusedMember.Global
