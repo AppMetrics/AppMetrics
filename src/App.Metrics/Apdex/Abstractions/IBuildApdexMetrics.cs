@@ -12,6 +12,6 @@ namespace App.Metrics.Apdex.Abstractions
     {
         IApdexMetric Build(double apdexTSeconds, bool allowWarmup, IClock clock);
 
-        IApdexMetric Build(Lazy<IReservoir> reservoir, double apdexTSeconds, bool allowWarmup, IClock clock);
+        IApdexMetric Build(Func<IReservoir> reservoir, double apdexTSeconds, bool allowWarmup, IClock clock);
     }
 }

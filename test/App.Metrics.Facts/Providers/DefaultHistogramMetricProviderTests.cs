@@ -38,9 +38,7 @@ namespace App.Metrics.Facts.Providers
                               Name = metricName
                           };
 
-            var reservoir = new Lazy<IReservoir>(() => new DefaultAlgorithmRReservoir(1028));
-
-            var apdexMetric = _fixture.Builder.Histogram.Build(reservoir);
+            var apdexMetric = _fixture.Builder.Histogram.Build(() => new DefaultAlgorithmRReservoir(1028));
 
             _provider.Instance(options, () => apdexMetric);
 
@@ -58,9 +56,7 @@ namespace App.Metrics.Facts.Providers
                               Name = metricName
                           };
 
-            var reservoir = new Lazy<IReservoir>(() => new DefaultAlgorithmRReservoir(1028));
-
-            var apdexMetric = _fixture.Builder.Histogram.Build(reservoir);
+            var apdexMetric = _fixture.Builder.Histogram.Build(() => new DefaultAlgorithmRReservoir(1028));
 
             _provider.Instance(options, _fixture.Tags[0], () => apdexMetric);
 
@@ -110,13 +106,12 @@ namespace App.Metrics.Facts.Providers
             reservoirMock.Setup(r => r.GetSnapshot()).Returns(() => new UniformSnapshot(100L, 100.0, new long[100]));
             reservoirMock.Setup(r => r.Reset());
 
-            var reservoir = new Lazy<IReservoir>(() => reservoirMock.Object);
 
             var options = new HistogramOptions
                           {
                               Name = "histogram_provider_custom_test",
-                              Reservoir = reservoir
-                          };
+                              Reservoir = () => reservoirMock.Object
+            };
 
             var histogram = _provider.Instance(options);
 
@@ -133,13 +128,11 @@ namespace App.Metrics.Facts.Providers
             reservoirMock.Setup(r => r.GetSnapshot()).Returns(() => new UniformSnapshot(100L, 100.0, new long[100]));
             reservoirMock.Setup(r => r.Reset());
 
-            var reservoir = new Lazy<IReservoir>(() => reservoirMock.Object);
-
             var options = new HistogramOptions
                           {
                               Name = "histogram_provider_custom_test_multi",
-                              Reservoir = reservoir
-                          };
+                              Reservoir = () => reservoirMock.Object
+            };
 
             var histogram = _provider.Instance(options, _fixture.Tags[0]);
 

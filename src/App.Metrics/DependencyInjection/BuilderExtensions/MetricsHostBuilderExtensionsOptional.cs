@@ -41,7 +41,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="builder">The metrics host builder.</param>
         /// <param name="reservoirBuilder">The reservoir builder to use as the default reservoir for sampling.</param>
         /// <returns>The same instance of the metrics host builder.</returns>
-        public static IMetricsHostBuilder AddDefaultReservoir(this IMetricsHostBuilder builder, Func<Lazy<IReservoir>> reservoirBuilder)
+        public static IMetricsHostBuilder AddDefaultReservoir(this IMetricsHostBuilder builder, Func<IReservoir> reservoirBuilder)
         {
             builder.Services.Remove(ServiceDescriptor.Singleton(new DefaultSamplingReservoirProvider(reservoirBuilder)));
             return builder;

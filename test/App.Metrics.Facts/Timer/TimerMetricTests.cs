@@ -7,6 +7,7 @@ using App.Metrics.Core.Internal;
 using App.Metrics.Histogram;
 using App.Metrics.Infrastructure;
 using App.Metrics.Meter;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
 using App.Metrics.ReservoirSampling.Uniform;
 using App.Metrics.Timer;
 using FluentAssertions;
@@ -21,10 +22,8 @@ namespace App.Metrics.Facts.Timer
 
         public TimerMetricTests()
         {
-            var reservoir = new Lazy<IReservoir>(() => new DefaultAlgorithmRReservoir(1028));
-
             _timer = new DefaultTimerMetric(
-                new DefaultHistogramMetric(reservoir),
+                new DefaultHistogramMetric(new DefaultForwardDecayingReservoir()),
                 new DefaultMeterMetric(_clock, new TestTaskScheduler(_clock)),
                 _clock);
         }

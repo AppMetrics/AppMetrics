@@ -12,10 +12,10 @@ namespace App.Metrics.Timer.Abstractions
     {
         ITimerMetric Build(IHistogramMetric histogram, IClock clock);
 
-        ITimerMetric Build(Lazy<IReservoir> reservoir, IClock clock);
+        ITimerMetric Build(Func<IReservoir> reservoir, IClock clock);
 
         ITimerMetric Build(IHistogramMetric histogram, IMeterMetric meter, IClock clock);
 
-        ITimerMetric Build(Lazy<IReservoir> reservoir, IMeterMetric meter, IClock clock);
+        ITimerMetric Build(Func<IReservoir> reservoir, IMeterMetric meter, IClock clock);
     }
 }

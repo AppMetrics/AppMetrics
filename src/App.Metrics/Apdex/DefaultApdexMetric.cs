@@ -35,7 +35,7 @@ namespace App.Metrics.Apdex
         ///     if set to <c>true</c> allows the service to warmup before starting to calculate the apdex,
         ///     the score will intitially be 1 until enough samples have been recorded.
         /// </param>
-        public DefaultApdexMetric(Lazy<IReservoir> reservoir, double apdexTSeconds, IClock clock, bool allowWarmup)
+        public DefaultApdexMetric(IReservoir reservoir, double apdexTSeconds, IClock clock, bool allowWarmup)
             : this(new ApdexProvider(reservoir, apdexTSeconds), clock, allowWarmup)
         {
         }
@@ -49,7 +49,7 @@ namespace App.Metrics.Apdex
         ///     if set to <c>true</c> allows the service to warmup before starting to calculate the apdex,
         ///     the score will intitially be 1 until enough samples have been recorded.
         /// </param>
-        public DefaultApdexMetric(Lazy<IReservoir> reservoir, IClock clock, bool allowWarmup)
+        public DefaultApdexMetric(IReservoir reservoir, IClock clock, bool allowWarmup)
             // ReSharper disable RedundantArgumentDefaultValue
             : this(new ApdexProvider(reservoir, Constants.ReservoirSampling.DefaultApdexTSeconds), clock, allowWarmup)
         // ReSharper restore RedundantArgumentDefaultValue

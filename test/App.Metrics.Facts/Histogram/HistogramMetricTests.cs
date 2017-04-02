@@ -18,8 +18,7 @@ namespace App.Metrics.Facts.Histogram
 
         public HistogramMetricTests()
         {
-            var reservoir = new Lazy<IReservoir>(() => new DefaultForwardDecayingReservoir());
-            _histogram = new DefaultHistogramMetric(reservoir);
+            _histogram = new DefaultHistogramMetric(new DefaultForwardDecayingReservoir());
         }
 
         [Fact]

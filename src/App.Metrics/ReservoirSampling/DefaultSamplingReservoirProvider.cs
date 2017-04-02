@@ -10,10 +10,10 @@ namespace App.Metrics.ReservoirSampling
 {
     public class DefaultSamplingReservoirProvider
     {
-        public DefaultSamplingReservoirProvider() { Instance = () => new Lazy<IReservoir>(() => new DefaultForwardDecayingReservoir()); }
+        public DefaultSamplingReservoirProvider() { Instance = () => new DefaultForwardDecayingReservoir(); }
 
-        public DefaultSamplingReservoirProvider(Func<Lazy<IReservoir>> instance) { Instance = instance; }
+        public DefaultSamplingReservoirProvider(Func<IReservoir> instance) { Instance = instance; }
 
-        public Func<Lazy<IReservoir>> Instance { get; }
+        public Func<IReservoir> Instance { get; }
     }
 }
