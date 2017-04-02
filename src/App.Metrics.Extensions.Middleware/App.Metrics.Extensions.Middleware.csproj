@@ -23,6 +23,7 @@
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
 	  <CodeAnalysisRuleSet>..\..\AppMetrics.ruleset</CodeAnalysisRuleSet>
 	  <DebugType>full</DebugType>
+	  <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
