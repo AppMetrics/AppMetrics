@@ -4,7 +4,7 @@
 
 using App.Metrics.Core.Abstractions;
 
-namespace App.Metrics.Gauge
+namespace App.Metrics.Gauge.Abstractions
 {
     public interface IGauge : IResetableMetric
     {
