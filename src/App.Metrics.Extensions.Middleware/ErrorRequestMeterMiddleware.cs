@@ -60,8 +60,6 @@ namespace App.Metrics.Extensions.Middleware
                         Metrics.RecordHttpRequestError(routeTemplate, context.Response.StatusCode);
                     }
                 }
-
-                Logger.MiddlewareExecuted(GetType());
             }
             catch (Exception)
             {
@@ -74,6 +72,10 @@ namespace App.Metrics.Extensions.Middleware
                 Metrics.RecordHttpRequestError(routeTemplate, (int)HttpStatusCode.InternalServerError);
 
                 throw;
+            }
+            finally
+            {
+                Logger.MiddlewareExecuted(GetType());
             }
         }
 
