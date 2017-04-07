@@ -15,5 +15,5 @@ Before submitting a pull request, please have a quick read through the [contribu
 
 - [ ] I have ensured that I have merged the latest changes from the dev branch
 - [ ] I have successfully run a [local build](https://github.com/alhardy/AppMetrics#how-to-build)
-- [ ] I have included unit tests the issue/feature
+- [ ] I have included unit tests for the issue/feature
 - [ ] I have included the github issue number in my commits 
