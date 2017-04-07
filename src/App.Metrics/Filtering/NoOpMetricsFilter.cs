@@ -18,7 +18,7 @@ namespace App.Metrics.Internal
     // ReSharper restore CheckNamespace
 {
     [AppMetricsExcludeFromCodeCoverage]
-    internal sealed class NoOpMetricsFilter : IFilterMetrics
+    public sealed class NoOpMetricsFilter : IFilterMetrics
     {
         /// <inheritdoc />
         public bool ReportEnvironment => true;
