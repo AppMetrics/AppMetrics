@@ -7,7 +7,7 @@
     <Copyright>Allan Hardy 2016</Copyright>
     <AssemblyTitle>App.Metrics.Formatters.Json</AssemblyTitle>
     <Authors>Allan Hardy</Authors>
-    <TargetFrameworks>netstandard1.6;net452</TargetFrameworks>
+    <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -32,21 +32,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\App.Metrics.Extensions.Middleware\App.Metrics.Extensions.Middleware.csproj" />
     <ProjectReference Include="..\App.Metrics\App.Metrics.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-	<PackageReference Include="StyleCop.Analyzers" Version="1.0.0">
-		<PrivateAssets>All</PrivateAssets>
-	</PackageReference>
-  </ItemGroup>  
+	  <PackageReference Include="StyleCop.Analyzers" Version="1.0.0">
+		  <PrivateAssets>All</PrivateAssets>
+	  </PackageReference>
+  </ItemGroup>    
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net452' ">
-    <DefineConstants>$(DefineConstants);CLASSIC</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />	
   </ItemGroup>
