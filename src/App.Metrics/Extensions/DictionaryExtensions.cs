@@ -3,11 +3,15 @@
 // </copyright>
 
 // ReSharper disable CheckNamespace
+
+using System.Diagnostics;
+
 namespace System.Collections.Generic
     // ReSharper restore CheckNamespace
 {
     public static class DictionaryExtensions
     {
+        [DebuggerStepThrough]
         public static void AddIfNotNanOrInfinity(this IDictionary<string, object> values, string key, double value)
         {
             if (!double.IsNaN(value) && !double.IsInfinity(value))
@@ -16,6 +20,7 @@ namespace System.Collections.Generic
             }
         }
 
+        [DebuggerStepThrough]
         public static void AddIfPresent(this IDictionary<string, object> values, string key, string value)
         {
             if (value.IsPresent())
