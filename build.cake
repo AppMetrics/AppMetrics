@@ -132,11 +132,16 @@ Task("Pack")
 		return;
 	}
 
+	Context.Information("Packing using preReleaseSuffix: " + preReleaseSuffix);
+
     string versionSuffix = null;
     if (!string.IsNullOrEmpty(preReleaseSuffix))
     {
         versionSuffix = preReleaseSuffix + "-" + buildNumber.ToString("D4");
     }
+
+	Context.Information("Packing using versionSuffix: " + versionSuffix);
+
     var settings = new DotNetCorePackSettings
     {
         Configuration = configuration,
