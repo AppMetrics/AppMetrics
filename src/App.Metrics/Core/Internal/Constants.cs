@@ -64,7 +64,7 @@ namespace App.Metrics.Core.Internal
             public static readonly string MetricSetItemSuffix = "  items";
             public static readonly string TimerMetricTypeValue = "timer";
             public static readonly string ItemDataTotalKey = "total";
-            public static readonly string ItemDataPercentKey = "total";
+            public static readonly string ItemDataPercentKey = "percent";
             public static readonly string MetricTagsTypeKey = "type";
 
             public static readonly Dictionary<Type, string> MetricValueSourceTypeMapping = new Dictionary<Type, string>
