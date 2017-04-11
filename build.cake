@@ -63,8 +63,10 @@ var excludeFromCoverage			= "*.AppMetricsExcludeFromCodeCoverage*";
 Task("Clean")
     .Does(() =>
 {
+	Context.Information("Cleaning files *.trx");
 	var rootDir = new System.IO.DirectoryInfo("./");
 	rootDir.GetFiles("*.trx", SearchOption.AllDirectories).ToList().ForEach(file=>file.Delete());
+
     CleanDirectory(artifactsDir); 
 	CleanDirectory(coverageResultsDir);
 	CleanDirectory(testResultsDir);
