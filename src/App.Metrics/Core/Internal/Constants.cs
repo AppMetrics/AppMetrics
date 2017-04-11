@@ -2,9 +2,15 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using App.Metrics.Apdex;
+using App.Metrics.Counter;
 using App.Metrics.Health;
+using App.Metrics.Histogram;
+using App.Metrics.Meter;
+using App.Metrics.Timer;
 
 namespace App.Metrics.Core.Internal
 {
@@ -32,12 +38,6 @@ namespace App.Metrics.Core.Internal
             internal const string HealthyStatusDisplay = "Healthy";
             internal const string UnhealthyStatusDisplay = "Unhealthy";
 
-            public static class TagKeys
-            {
-                public const string HealthCheckName = "health_check_name";
-                public const string HealthCheckStatus = "health_check_status";
-            }
-
             public static ReadOnlyDictionary<HealthCheckStatus, string> HealthStatusDisplay =>
                 new ReadOnlyDictionary<HealthCheckStatus, string>(
                     new Dictionary<HealthCheckStatus, string>
@@ -46,6 +46,36 @@ namespace App.Metrics.Core.Internal
                         { HealthCheckStatus.Unhealthy, UnhealthyStatusDisplay },
                         { HealthCheckStatus.Degraded, DegradedStatusDisplay },
                     });
+
+            public static class TagKeys
+            {
+                public const string HealthCheckName = "health_check_name";
+                public const string HealthCheckStatus = "health_check_status";
+            }
+        }
+
+        public static class Pack
+        {
+            public static readonly string ApdexMetricTypeValue = "apdex";
+            public static readonly string CounterMetricTypeValue = "counter";
+            public static readonly string GaugeMetricTypeValue = "gauge";
+            public static readonly string HistogramMetricTypeValue = "histogram";
+            public static readonly string MeterMetricTypeValue = "meter";
+            public static readonly string MetricSetItemSuffix = "  items";
+            public static readonly string TimerMetricTypeValue = "timer";
+            public static readonly string ItemDataTotalKey = "total";
+            public static readonly string ItemDataPercentKey = "total";
+            public static readonly string MetricTagsTypeKey = "type";
+
+            public static readonly Dictionary<Type, string> MetricValueSourceTypeMapping = new Dictionary<Type, string>
+                                                                                            {
+                                                                                                { typeof(double), GaugeMetricTypeValue },
+                                                                                                { typeof(CounterValue), CounterMetricTypeValue },
+                                                                                                { typeof(MeterValue), MeterMetricTypeValue },
+                                                                                                { typeof(TimerValue), TimerMetricTypeValue },
+                                                                                                { typeof(HistogramValue), HistogramMetricTypeValue },
+                                                                                                { typeof(ApdexValue), ApdexMetricTypeValue }
+                                                                                            };
         }
 
         public static class ReservoirSampling
