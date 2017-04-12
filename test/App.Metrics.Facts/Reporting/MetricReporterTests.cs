@@ -44,11 +44,11 @@ namespace App.Metrics.Facts.Reporting
                     Be(
                         "application__test_counter tag1=value type=counter value=1i" + Environment.NewLine +
                         "application__test_gauge type=gauge value=8" + Environment.NewLine +
-                        "application__test_histogram type=histogram samples=1i last=5 count=1i sum=5 min=5 max=5 mean=5 median=5 stddev=0 p999=5 p99=5 p98=5 p95=5 p75=5" +
+                        "application__test_histogram type=histogram samples=1i last=5 count.hist=1i sum=5 min=5 max=5 mean=5 median=5 stddev=0 p999=5 p99=5 p98=5 p95=5 p75=5" +
                         Environment.NewLine +
                         "application__test_meter tag2=value type=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=6000" +
                         Environment.NewLine +
-                        "application__test_timer type=timer count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=6000 samples=1i last=10 count=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 p75=10" +
+                        "application__test_timer type=timer count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=6000 samples=1i last=10 count.hist=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 p75=10" +
                         Environment.NewLine);
         }
 
@@ -70,11 +70,11 @@ namespace App.Metrics.Facts.Reporting
                     Be(
                         "application__test_counter tag1=value type=counter value=1i" + Environment.NewLine +
                         "application__test_gauge type=gauge value=8" + Environment.NewLine +
-                        "application__test_histogram type=histogram samples=1i last=5 count=1i sum=5 min=5 max=5 mean=5 median=5 stddev=0 p999=5 p99=5 p98=5 p95=5 75th_percentile=5" +
+                        "application__test_histogram type=histogram samples=1i last=5 count.hist=1i sum=5 min=5 max=5 mean=5 median=5 stddev=0 p999=5 p99=5 p98=5 p95=5 75th_percentile=5" +
                         Environment.NewLine +
                         "application__test_meter tag2=value type=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=6000" +
                         Environment.NewLine +
-                        "application__test_timer type=timer count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=6000 samples=1i last=10 count=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 75th_percentile=10" +
+                        "application__test_timer type=timer count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=6000 samples=1i last=10 count.hist=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 75th_percentile=10" +
                         Environment.NewLine);
         }
 
@@ -96,11 +96,11 @@ namespace App.Metrics.Facts.Reporting
                     Be(
                         "application__test_counter tag1=value type=counter value=1i" + Environment.NewLine +
                         "application__test_gauge type=gauge value=8" + Environment.NewLine +
-                        "application__test_histogram type=histogram samples=1i last=5 count=1i sum=5 min=5 max=5 mean=5 median=5 stddev=0 p999=5 p99=5 p98=5 p95=5 p75=5" +
+                        "application__test_histogram type=histogram samples=1i last=5 count.hist=1i sum=5 min=5 max=5 mean=5 median=5 stddev=0 p999=5 p99=5 p98=5 p95=5 p75=5" +
                         Environment.NewLine +
                         "application__test_meter tag2=value type=meter count.meter=1i 1_min_rate=0 rate5m=0 rate15m=0 rate.mean=6000" +
                         Environment.NewLine +
-                        "application__test_timer type=timer count.meter=1i 1_min_rate=0 rate5m=0 rate15m=0 rate.mean=6000 samples=1i last=10 count=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 p75=10" +
+                        "application__test_timer type=timer count.meter=1i 1_min_rate=0 rate5m=0 rate15m=0 rate.mean=6000 samples=1i last=10 count.hist=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 p75=10" +
                         Environment.NewLine);
         }        
     }
