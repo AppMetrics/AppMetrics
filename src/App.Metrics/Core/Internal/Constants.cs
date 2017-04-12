@@ -35,7 +35,7 @@ namespace App.Metrics.Core.Internal
                                                                                                        { HistogramDataKeys.Samples, "samples" },
                                                                                                        { HistogramDataKeys.LastValue, "last" },
                                                                                                        { HistogramDataKeys.Sum, "sum" },
-                                                                                                       { HistogramDataKeys.Count, "count" },
+                                                                                                       { HistogramDataKeys.Count, "count.hist" },
                                                                                                        { HistogramDataKeys.Min, "min" },
                                                                                                        { HistogramDataKeys.Max, "max" },
                                                                                                        { HistogramDataKeys.Mean, "mean" },
