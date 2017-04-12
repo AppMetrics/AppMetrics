@@ -10,6 +10,7 @@ using App.Metrics.Counter;
 using App.Metrics.Health;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
+using App.Metrics.Reporting;
 using App.Metrics.Timer;
 
 namespace App.Metrics.Core.Internal
@@ -17,6 +18,51 @@ namespace App.Metrics.Core.Internal
     internal static class Constants
     {
         public const string InternalMetricsContext = "appmetrics.internal";
+
+        public static class DataKeyMapping
+        {
+            public static IDictionary<ApdexValueDataKeys, string> Apdex => new Dictionary<ApdexValueDataKeys, string>
+                                                                                                {
+                                                                                                    { ApdexValueDataKeys.Samples, "samples" },
+                                                                                                    { ApdexValueDataKeys.Score, "score" },
+                                                                                                    { ApdexValueDataKeys.Satisfied, "satisfied" },
+                                                                                                    { ApdexValueDataKeys.Tolerating, "tolerating" },
+                                                                                                    { ApdexValueDataKeys.Frustrating, "frustrating" }
+                                                                                                };
+
+            public static IDictionary<HistogramDataKeys, string> Histogram => new Dictionary<HistogramDataKeys, string>
+                                                                                                   {
+                                                                                                       { HistogramDataKeys.Samples, "samples" },
+                                                                                                       { HistogramDataKeys.LastValue, "last" },
+                                                                                                       { HistogramDataKeys.Sum, "sum" },
+                                                                                                       { HistogramDataKeys.Count, "count" },
+                                                                                                       { HistogramDataKeys.Min, "min" },
+                                                                                                       { HistogramDataKeys.Max, "max" },
+                                                                                                       { HistogramDataKeys.Mean, "mean" },
+                                                                                                       { HistogramDataKeys.Median, "median" },
+                                                                                                       { HistogramDataKeys.StdDev, "stddev" },
+                                                                                                       { HistogramDataKeys.P999, "p999" },
+                                                                                                       { HistogramDataKeys.P99, "p99" },
+                                                                                                       { HistogramDataKeys.P98, "p98" },
+                                                                                                       { HistogramDataKeys.P95, "p95" },
+                                                                                                       { HistogramDataKeys.P75, "p75" },
+                                                                                                       {
+                                                                                                           HistogramDataKeys.UserLastValue,
+                                                                                                           "user.last"
+                                                                                                       },
+                                                                                                       { HistogramDataKeys.UserMinValue, "user.min" },
+                                                                                                       { HistogramDataKeys.UserMaxValue, "user.max" }
+                                                                                                   };
+
+            public static IDictionary<MeterValueDataKeys, string> Meter => new Dictionary<MeterValueDataKeys, string>
+                                                                                                {
+                                                                                                    { MeterValueDataKeys.Count, "count.meter" },
+                                                                                                    { MeterValueDataKeys.Rate1M, "rate1m" },
+                                                                                                    { MeterValueDataKeys.Rate5M, "rate5m" },
+                                                                                                    { MeterValueDataKeys.Rate15M, "rate15m" },
+                                                                                                    { MeterValueDataKeys.RateMean, "rate.mean" }
+                                                                                                };
+        }
 
         public static class Formatting
         {
@@ -60,22 +106,23 @@ namespace App.Metrics.Core.Internal
             public static readonly string CounterMetricTypeValue = "counter";
             public static readonly string GaugeMetricTypeValue = "gauge";
             public static readonly string HistogramMetricTypeValue = "histogram";
+            public static readonly string ItemDataPercentKey = "percent";
+            public static readonly string ItemDataTotalKey = "total";
             public static readonly string MeterMetricTypeValue = "meter";
             public static readonly string MetricSetItemSuffix = "  items";
-            public static readonly string TimerMetricTypeValue = "timer";
-            public static readonly string ItemDataTotalKey = "total";
-            public static readonly string ItemDataPercentKey = "percent";
             public static readonly string MetricTagsTypeKey = "type";
 
+            public static readonly string TimerMetricTypeValue = "timer";
+
             public static readonly Dictionary<Type, string> MetricValueSourceTypeMapping = new Dictionary<Type, string>
-                                                                                            {
-                                                                                                { typeof(double), GaugeMetricTypeValue },
-                                                                                                { typeof(CounterValue), CounterMetricTypeValue },
-                                                                                                { typeof(MeterValue), MeterMetricTypeValue },
-                                                                                                { typeof(TimerValue), TimerMetricTypeValue },
-                                                                                                { typeof(HistogramValue), HistogramMetricTypeValue },
-                                                                                                { typeof(ApdexValue), ApdexMetricTypeValue }
-                                                                                            };
+                                                                                           {
+                                                                                               { typeof(double), GaugeMetricTypeValue },
+                                                                                               { typeof(CounterValue), CounterMetricTypeValue },
+                                                                                               { typeof(MeterValue), MeterMetricTypeValue },
+                                                                                               { typeof(TimerValue), TimerMetricTypeValue },
+                                                                                               { typeof(HistogramValue), HistogramMetricTypeValue },
+                                                                                               { typeof(ApdexValue), ApdexMetricTypeValue }
+                                                                                           };
         }
 
         public static class ReservoirSampling

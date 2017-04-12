@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Apdex;
 using App.Metrics.Core.Abstractions;
+using App.Metrics.Core.Extensions;
 using App.Metrics.Core.Internal;
 using App.Metrics.Counter;
 using App.Metrics.Histogram;
@@ -24,8 +25,15 @@ namespace App.Metrics.Reporting
             Func<string, string, string> metricNameFormatter,
             string context,
             MetricValueSourceBase<ApdexValue> valueSource,
-            Dictionary<string, object> data)
+            Dictionary<ApdexValueDataKeys, string> customDataKeys = null)
         {
+            if (valueSource == null)
+            {
+                return;
+            }
+
+            var data = new Dictionary<string, object>();
+            valueSource.Value.AddApdexValues(data, customDataKeys);
             PackMetric(payloadBuilder, metricNameFormatter, context, valueSource, data);
         }
 
@@ -36,26 +44,28 @@ namespace App.Metrics.Reporting
             MetricValueSourceBase<CounterValue> valueSource,
             CounterValueSource counterValueSource)
         {
-            var count = valueSource.ValueProvider.GetValue(resetMetric: counterValueSource.ResetOnReporting).Count;
-            PackMetricValue(payloadBuilder, metricNameFormatter, context, valueSource, count);
-        }
-
-        public static void PackCounterSetItems<T>(
-            this IMetricPayloadBuilder<T> payloadBuilder,
-            Func<string, string, string> metricNameFormatter,
-            string context,
-            MetricValueSourceBase<CounterValue> valueSource,
-            CounterValue.SetItem setItem,
-            CounterValueSource counterValueSource)
-        {
-            var itemData = new Dictionary<string, object> { { Constants.Pack.ItemDataTotalKey, setItem.Count } };
-
-            if (counterValueSource.ReportItemPercentages)
+            if (counterValueSource == null)
             {
-                itemData.AddIfNotNanOrInfinity(Constants.Pack.ItemDataPercentKey, setItem.Percent);
+                return;
             }
 
-            PackMetricWithSetItems(payloadBuilder, metricNameFormatter, context, valueSource, setItem.Tags, itemData);
+            if (counterValueSource.Value.Items.Any() && counterValueSource.ReportSetItems)
+            {
+                foreach (var item in counterValueSource.Value.Items.Distinct())
+                {
+                    var itemData = new Dictionary<string, object> { { Constants.Pack.ItemDataTotalKey, item.Count } };
+
+                    if (counterValueSource.ReportItemPercentages)
+                    {
+                        itemData.AddIfNotNanOrInfinity(Constants.Pack.ItemDataPercentKey, item.Percent);
+                    }
+
+                    PackMetricWithSetItems(payloadBuilder, metricNameFormatter, context, valueSource, item.Tags, itemData);
+                }
+            }
+
+            var count = valueSource.ValueProvider.GetValue(resetMetric: counterValueSource.ResetOnReporting).Count;
+            PackMetricValue(payloadBuilder, metricNameFormatter, context, valueSource, count);
         }
 
         public static void PackGauge<T>(
@@ -64,7 +74,10 @@ namespace App.Metrics.Reporting
             string context,
             MetricValueSourceBase<double> valueSource)
         {
-            PackMetricValue(payloadBuilder, metricNameFormatter, context, valueSource, valueSource.Value);
+            if (!double.IsNaN(valueSource.Value) && !double.IsInfinity(valueSource.Value))
+            {
+                PackMetricValue(payloadBuilder, metricNameFormatter, context, valueSource, valueSource.Value);
+            }
         }
 
         public static void PackHistogram<T>(
@@ -72,8 +85,10 @@ namespace App.Metrics.Reporting
             Func<string, string, string> metricNameFormatter,
             string context,
             MetricValueSourceBase<HistogramValue> valueSource,
-            Dictionary<string, object> data)
+            Dictionary<HistogramDataKeys, string> customDataKeys = null)
         {
+            var data = new Dictionary<string, object>();
+            valueSource.Value.AddHistogramValues(data, customDataKeys);
             PackMetric(payloadBuilder, metricNameFormatter, context, valueSource, data);
         }
 
@@ -82,20 +97,23 @@ namespace App.Metrics.Reporting
             Func<string, string, string> metricNameFormatter,
             string context,
             MetricValueSourceBase<MeterValue> valueSource,
-            Dictionary<string, object> data)
+            Dictionary<MeterValueDataKeys, string> customDataKeys = null)
         {
-            PackMetric(payloadBuilder, metricNameFormatter, context, valueSource, data);
-        }
+            if (valueSource.Value.Items.Any())
+            {
+                foreach (var item in valueSource.Value.Items.Distinct())
+                {
+                    var setItemData = new Dictionary<string, object>();
+                    valueSource.Value.AddMeterValues(setItemData, customDataKeys);
+                    setItemData.AddIfNotNanOrInfinity(Constants.Pack.ItemDataPercentKey, item.Percent);
+                    PackMetricWithSetItems(payloadBuilder, metricNameFormatter, context, valueSource, item.Tags, setItemData);
+                }
+            }
 
-        public static void PackMeterSetItems<T>(
-            this IMetricPayloadBuilder<T> payloadBuilder,
-            Func<string, string, string> metricNameFormatter,
-            string context,
-            MetricValueSourceBase<MeterValue> valueSource,
-            MetricTags setItemTags,
-            Dictionary<string, object> itemData)
-        {
-            PackMetricWithSetItems(payloadBuilder, metricNameFormatter, context, valueSource, setItemTags, itemData);
+            var data = new Dictionary<string, object>();
+            valueSource.Value.AddMeterValues(data, customDataKeys);
+
+            PackMetric(payloadBuilder, metricNameFormatter, context, valueSource, data);
         }
 
         public static void PackTimer<T>(
@@ -103,8 +121,13 @@ namespace App.Metrics.Reporting
             Func<string, string, string> metricNameFormatter,
             string context,
             MetricValueSourceBase<TimerValue> valueSource,
-            Dictionary<string, object> data)
+            Dictionary<MeterValueDataKeys, string> customMeterDataKeys = null,
+            Dictionary<HistogramDataKeys, string> customHistogramDataKeys = null)
         {
+            var data = new Dictionary<string, object>();
+            valueSource.Value.Rate.AddMeterValues(data, customMeterDataKeys);
+            valueSource.Value.Histogram.AddHistogramValues(data, customHistogramDataKeys);
+
             PackMetric(payloadBuilder, metricNameFormatter, context, valueSource, data);
         }
 
@@ -126,11 +149,11 @@ namespace App.Metrics.Reporting
             return tags;
         }
 
-        private static void PackMetric<T, TU>(
-            IMetricPayloadBuilder<T> payloadBuilder,
+        private static void PackMetric<T1, T2>(
+            IMetricPayloadBuilder<T1> payloadBuilder,
             Func<string, string, string> metricNameFormatter,
             string context,
-            MetricValueSourceBase<TU> valueSource,
+            MetricValueSourceBase<T2> valueSource,
             Dictionary<string, object> data)
         {
             var keys = data.Keys.ToList();
