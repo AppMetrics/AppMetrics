@@ -58,7 +58,7 @@ namespace App.Metrics.Facts.Reporting
             // Arrange
             var token = CancellationToken.None;
             var payloadBuilder = new TestPayloadBuilder();
-            var reporter = new TestReporter(payloadBuilder, new CustomDataKeys {Histogram = { {HistogramDataKeys.P75, "75th_percentile"}}});
+            var reporter = new TestReporter(payloadBuilder, new CustomPackMetricDataKeys { Histogram = { {HistogramDataKeys.P75, "75th_percentile"}}});
             var filter = new DefaultMetricsFilter().WithEnvironmentInfo(false);
 
             // Act
@@ -84,7 +84,7 @@ namespace App.Metrics.Facts.Reporting
             // Arrange
             var token = CancellationToken.None;
             var payloadBuilder = new TestPayloadBuilder();
-            var reporter = new TestReporter(payloadBuilder, new CustomDataKeys { Meter = { {MeterValueDataKeys.Rate1M, "1_min_rate" } } });
+            var reporter = new TestReporter(payloadBuilder, new CustomPackMetricDataKeys { Meter = { {MeterValueDataKeys.Rate1M, "1_min_rate" } } });
             var filter = new DefaultMetricsFilter().WithEnvironmentInfo(false);
 
             // Act

@@ -19,13 +19,13 @@ namespace App.Metrics.Facts.Reporting.Helpers
     public class TestReporter : IMetricReporter
     {
         private readonly IMetricPayloadBuilder<TestMetricPayload> _payloadBuilder;
-        private readonly CustomDataKeys _customDataKeys;
+        private readonly CustomPackMetricDataKeys _customDataKeys;
         private readonly Func<string, string, string> _metricNameFormatter;
         private bool _disposed;
 
-        public TestReporter(IMetricPayloadBuilder<TestMetricPayload> payloadBuilder, CustomDataKeys customDataKeys = null)
+        public TestReporter(IMetricPayloadBuilder<TestMetricPayload> payloadBuilder, CustomPackMetricDataKeys customDataKeys = null)
         {
-            _customDataKeys = customDataKeys ?? new CustomDataKeys();
+            _customDataKeys = customDataKeys ?? new CustomPackMetricDataKeys();
             _payloadBuilder = payloadBuilder;
             _metricNameFormatter = (metricContext, metricName) => metricContext.IsMissing()
                 ? $"{metricName}".Replace(' ', '_').ToLowerInvariant()
