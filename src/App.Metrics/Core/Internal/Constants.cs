@@ -115,7 +115,7 @@ namespace App.Metrics.Core.Internal
             public static readonly string HistogramMetricTypeValue = "histogram";
             public static readonly string MeterMetricTypeValue = "meter";
             public static readonly string MetricSetItemSuffix = "  items";
-            public static readonly string MetricTagsTypeKey = "type";
+            public static readonly string MetricTagsTypeKey = "mtype";
 
             public static readonly string TimerMetricTypeValue = "timer";
 

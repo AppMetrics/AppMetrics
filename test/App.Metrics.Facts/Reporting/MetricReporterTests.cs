@@ -58,13 +58,13 @@ namespace App.Metrics.Facts.Reporting
             // Assert
             payload.Should().
                     Be(
-                        "application__test_counter tag1=value type=counter value=1i" + Environment.NewLine +
-                        "application__test_gauge type=gauge value=8" + Environment.NewLine +
-                        "application__test_histogram type=histogram samples=1i last=5 count.hist=1i sum=5 min=5 max=5 mean=5 median=5 stddev=0 p999=5 p99=5 p98=5 p95=5 p75=5" +
+                        "application__test_counter tag1=value mtype=counter value=1i" + Environment.NewLine +
+                        "application__test_gauge mtype=gauge value=8" + Environment.NewLine +
+                        "application__test_histogram mtype=histogram samples=1i last=5 count.hist=1i sum=5 min=5 max=5 mean=5 median=5 stddev=0 p999=5 p99=5 p98=5 p95=5 p75=5" +
                         Environment.NewLine +
-                        "application__test_meter tag2=value type=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=6000" +
+                        "application__test_meter tag2=value mtype=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=6000" +
                         Environment.NewLine +
-                        "application__test_timer type=timer count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=6000 samples=1i last=10 count.hist=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 p75=10" +
+                        "application__test_timer mtype=timer count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=6000 samples=1i last=10 count.hist=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 p75=10" +
                         Environment.NewLine);
         }
 
@@ -88,13 +88,13 @@ namespace App.Metrics.Facts.Reporting
             // Assert
             payload.Should().
                     Be(
-                        "application__test_counter tag1=value type=counter value=1i" + Environment.NewLine +
-                        "application__test_gauge type=gauge value=8" + Environment.NewLine +
-                        "application__test_histogram type=histogram samples=1i last=5 count.hist=1i sum=5 min=5 max=5 mean=5 median=5 stddev=0 p999=5 p99=5 p98=5 p95=5 75th_percentile=5" +
+                        "application__test_counter tag1=value mtype=counter value=1i" + Environment.NewLine +
+                        "application__test_gauge mtype=gauge value=8" + Environment.NewLine +
+                        "application__test_histogram mtype=histogram samples=1i last=5 count.hist=1i sum=5 min=5 max=5 mean=5 median=5 stddev=0 p999=5 p99=5 p98=5 p95=5 75th_percentile=5" +
                         Environment.NewLine +
-                        "application__test_meter tag2=value type=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=6000" +
+                        "application__test_meter tag2=value mtype=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=6000" +
                         Environment.NewLine +
-                        "application__test_timer type=timer count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=6000 samples=1i last=10 count.hist=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 75th_percentile=10" +
+                        "application__test_timer mtype=timer count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=6000 samples=1i last=10 count.hist=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 75th_percentile=10" +
                         Environment.NewLine);
         }
 
@@ -116,13 +116,13 @@ namespace App.Metrics.Facts.Reporting
             // Assert
             payload.Should().
                     Be(
-                        "application__test_counter tag1=value type=counter value=1i" + Environment.NewLine +
-                        "application__test_gauge type=gauge value=8" + Environment.NewLine +
-                        "application__test_histogram type=histogram samples=1i last=5 count.hist=1i sum=5 min=5 max=5 mean=5 median=5 stddev=0 p999=5 p99=5 p98=5 p95=5 p75=5" +
+                        "application__test_counter tag1=value mtype=counter value=1i" + Environment.NewLine +
+                        "application__test_gauge mtype=gauge value=8" + Environment.NewLine +
+                        "application__test_histogram mtype=histogram samples=1i last=5 count.hist=1i sum=5 min=5 max=5 mean=5 median=5 stddev=0 p999=5 p99=5 p98=5 p95=5 p75=5" +
                         Environment.NewLine +
-                        "application__test_meter tag2=value type=meter count.meter=1i 1_min_rate=0 rate5m=0 rate15m=0 rate.mean=6000" +
+                        "application__test_meter tag2=value mtype=meter count.meter=1i 1_min_rate=0 rate5m=0 rate15m=0 rate.mean=6000" +
                         Environment.NewLine +
-                        "application__test_timer type=timer count.meter=1i 1_min_rate=0 rate5m=0 rate15m=0 rate.mean=6000 samples=1i last=10 count.hist=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 p75=10" +
+                        "application__test_timer mtype=timer count.meter=1i 1_min_rate=0 rate5m=0 rate15m=0 rate.mean=6000 samples=1i last=10 count.hist=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 p75=10" +
                         Environment.NewLine);
         }
 
@@ -145,7 +145,7 @@ namespace App.Metrics.Facts.Reporting
 
             payloadBuilder.PayloadFormatted().
                            Should().
-                           Be("test__test_apdex type=apdex samples=0i score=0 satisfied=0i tolerating=0i frustrating=0i" + Environment.NewLine);
+                           Be("test__test_apdex mtype=apdex samples=0i score=0 satisfied=0i tolerating=0i frustrating=0i" + Environment.NewLine);
         }
 
         [Fact]
@@ -168,7 +168,7 @@ namespace App.Metrics.Facts.Reporting
             payloadBuilder.PayloadFormatted().
                            Should().
                            Be(
-                               "test__test_apdex host=server1 env=staging type=apdex samples=0i score=0 satisfied=0i tolerating=0i frustrating=0i" +
+                               "test__test_apdex host=server1 env=staging mtype=apdex samples=0i score=0 satisfied=0i tolerating=0i frustrating=0i" +
                                Environment.NewLine);
         }
 
@@ -192,7 +192,7 @@ namespace App.Metrics.Facts.Reporting
             payloadBuilder.PayloadFormatted().
                            Should().
                            Be(
-                               "test__test_apdex key1=value1 key2=value2 type=apdex samples=0i score=0 satisfied=0i tolerating=0i frustrating=0i" +
+                               "test__test_apdex key1=value1 key2=value2 mtype=apdex samples=0i score=0 satisfied=0i tolerating=0i frustrating=0i" +
                                Environment.NewLine);
         }
 
@@ -216,7 +216,7 @@ namespace App.Metrics.Facts.Reporting
             payloadBuilder.PayloadFormatted().
                            Should().
                            Be(
-                               "test__test_apdex host=server1 env=staging anothertag=thevalue type=apdex samples=0i score=0 satisfied=0i tolerating=0i frustrating=0i" +
+                               "test__test_apdex host=server1 env=staging anothertag=thevalue mtype=apdex samples=0i score=0 satisfied=0i tolerating=0i frustrating=0i" +
                                Environment.NewLine);
         }
 
@@ -241,9 +241,9 @@ namespace App.Metrics.Facts.Reporting
             payloadBuilder.PayloadFormatted().
                            Should().
                            Be(
-                               "test__test_counter__items item=item1:value1 type=counter total=1i percent=50" + Environment.NewLine +
-                               "test__test_counter__items item=item2:value2 type=counter total=1i percent=50" + Environment.NewLine +
-                               "test__test_counter type=counter value=2i" + Environment.NewLine);
+                               "test__test_counter__items item=item1:value1 mtype=counter total=1i percent=50" + Environment.NewLine +
+                               "test__test_counter__items item=item2:value2 mtype=counter total=1i percent=50" + Environment.NewLine +
+                               "test__test_counter mtype=counter value=2i" + Environment.NewLine);
         }
 
         [Fact]
@@ -273,11 +273,11 @@ namespace App.Metrics.Facts.Reporting
             payloadBuilder.PayloadFormatted().
                            Should().
                            Be(
-                               "test__test_counter__items key1=value1 key2=value2 item=item1:value1 type=counter count=1i %=50" +
+                               "test__test_counter__items key1=value1 key2=value2 item=item1:value1 mtype=counter count=1i %=50" +
                                Environment.NewLine +
-                               "test__test_counter__items key1=value1 key2=value2 item=item2:value2 type=counter count=1i %=50" +
+                               "test__test_counter__items key1=value1 key2=value2 item=item2:value2 mtype=counter count=1i %=50" +
                                Environment.NewLine +
-                               "test__test_counter key1=value1 key2=value2 type=counter value=2i" + Environment.NewLine);
+                               "test__test_counter key1=value1 key2=value2 mtype=counter value=2i" + Environment.NewLine);
         }
 
         [Fact]
@@ -301,11 +301,11 @@ namespace App.Metrics.Facts.Reporting
             payloadBuilder.PayloadFormatted().
                            Should().
                            Be(
-                               "test__test_counter__items key1=value1 key2=value2 item=item1:value1 type=counter total=1i percent=50" +
+                               "test__test_counter__items key1=value1 key2=value2 item=item1:value1 mtype=counter total=1i percent=50" +
                                Environment.NewLine +
-                               "test__test_counter__items key1=value1 key2=value2 item=item2:value2 type=counter total=1i percent=50" +
+                               "test__test_counter__items key1=value1 key2=value2 item=item2:value2 mtype=counter total=1i percent=50" +
                                Environment.NewLine +
-                               "test__test_counter key1=value1 key2=value2 type=counter value=2i" + Environment.NewLine);
+                               "test__test_counter key1=value1 key2=value2 mtype=counter value=2i" + Environment.NewLine);
         }
 
         [Fact]
@@ -330,11 +330,11 @@ namespace App.Metrics.Facts.Reporting
             payloadBuilder.PayloadFormatted().
                            Should().
                            Be(
-                               "test__test_counter__items host=server1 env=staging key1=value1 key2=value2 item=item1:value1 type=counter total=1i percent=50" +
+                               "test__test_counter__items host=server1 env=staging key1=value1 key2=value2 item=item1:value1 mtype=counter total=1i percent=50" +
                                Environment.NewLine +
-                               "test__test_counter__items host=server1 env=staging key1=value1 key2=value2 item=item2:value2 type=counter total=1i percent=50" +
+                               "test__test_counter__items host=server1 env=staging key1=value1 key2=value2 item=item2:value2 mtype=counter total=1i percent=50" +
                                Environment.NewLine +
-                               "test__test_counter host=server1 env=staging key1=value1 key2=value2 type=counter value=2i" + Environment.NewLine);
+                               "test__test_counter host=server1 env=staging key1=value1 key2=value2 mtype=counter value=2i" + Environment.NewLine);
         }
 
         [Fact]
@@ -359,9 +359,9 @@ namespace App.Metrics.Facts.Reporting
             payloadBuilder.PayloadFormatted().
                            Should().
                            Be(
-                               "test__test_counter__items item=item1:value1 type=counter total=1i" + Environment.NewLine +
-                               "test__test_counter__items item=item2:value2 type=counter total=1i" + Environment.NewLine +
-                               "test__test_counter type=counter value=2i" + Environment.NewLine);
+                               "test__test_counter__items item=item1:value1 mtype=counter total=1i" + Environment.NewLine +
+                               "test__test_counter__items item=item2:value2 mtype=counter total=1i" + Environment.NewLine +
+                               "test__test_counter mtype=counter value=2i" + Environment.NewLine);
         }
 
         [Fact]
@@ -381,7 +381,7 @@ namespace App.Metrics.Facts.Reporting
             reporter.StartReportRun(metricsMock.Object);
             reporter.ReportMetric("test", counterValueSource);
 
-            payloadBuilder.PayloadFormatted().Should().Be("test__test_counter type=counter value=1i" + Environment.NewLine);
+            payloadBuilder.PayloadFormatted().Should().Be("test__test_counter mtype=counter value=1i" + Environment.NewLine);
         }
 
         [Fact]
@@ -401,7 +401,7 @@ namespace App.Metrics.Facts.Reporting
             reporter.StartReportRun(metricsMock.Object);
             reporter.ReportMetric("test", counterValueSource);
 
-            payloadBuilder.PayloadFormatted().Should().Be("test__test_counter host=server1 env=staging type=counter value=1i" + Environment.NewLine);
+            payloadBuilder.PayloadFormatted().Should().Be("test__test_counter host=server1 env=staging mtype=counter value=1i" + Environment.NewLine);
         }
 
         [Fact]
@@ -420,7 +420,7 @@ namespace App.Metrics.Facts.Reporting
             reporter.StartReportRun(metricsMock.Object);
             reporter.ReportMetric("test", gaugeValueSource);
 
-            payloadBuilder.PayloadFormatted().Should().Be("test__test_gauge type=gauge value=1" + Environment.NewLine);
+            payloadBuilder.PayloadFormatted().Should().Be("test__test_gauge mtype=gauge value=1" + Environment.NewLine);
         }
 
         [Fact]
@@ -439,7 +439,7 @@ namespace App.Metrics.Facts.Reporting
             reporter.StartReportRun(metricsMock.Object);
             reporter.ReportMetric("test", gaugeValueSource);
 
-            payloadBuilder.PayloadFormatted().Should().Be("test__gauge-group host=server1 env=staging type=gauge value=1" + Environment.NewLine);
+            payloadBuilder.PayloadFormatted().Should().Be("test__gauge-group host=server1 env=staging mtype=gauge value=1" + Environment.NewLine);
         }
 
         [Fact]
@@ -462,7 +462,7 @@ namespace App.Metrics.Facts.Reporting
             payloadBuilder.PayloadFormatted().
                            Should().
                            Be(
-                               "test__test_histogram type=histogram samples=1i last=1000 count.hist=1i sum=1000 min=1000 max=1000 mean=1000 median=1000 stddev=0 p999=1000 p99=1000 p98=1000 p95=1000 p75=1000 user.last=\"client1\" user.min=\"client1\" user.max=\"client1\"" +
+                               "test__test_histogram mtype=histogram samples=1i last=1000 count.hist=1i sum=1000 min=1000 max=1000 mean=1000 median=1000 stddev=0 p999=1000 p99=1000 p98=1000 p95=1000 p75=1000 user.last=\"client1\" user.min=\"client1\" user.max=\"client1\"" +
                                Environment.NewLine);
         }
 
@@ -486,7 +486,7 @@ namespace App.Metrics.Facts.Reporting
             payloadBuilder.PayloadFormatted().
                            Should().
                            Be(
-                               "test__test_histogram host=server1 env=staging type=histogram samples=1i last=1000 count.hist=1i sum=1000 min=1000 max=1000 mean=1000 median=1000 stddev=0 p999=1000 p99=1000 p98=1000 p95=1000 p75=1000 user.last=\"client1\" user.min=\"client1\" user.max=\"client1\"" +
+                               "test__test_histogram host=server1 env=staging mtype=histogram samples=1i last=1000 count.hist=1i sum=1000 min=1000 max=1000 mean=1000 median=1000 stddev=0 p999=1000 p99=1000 p98=1000 p95=1000 p75=1000 user.last=\"client1\" user.min=\"client1\" user.max=\"client1\"" +
                                Environment.NewLine);
         }
 
@@ -511,7 +511,7 @@ namespace App.Metrics.Facts.Reporting
 
             payloadBuilder.PayloadFormatted().
                            Should().
-                           Be("test__test_meter type=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0" + Environment.NewLine);
+                           Be("test__test_meter mtype=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0" + Environment.NewLine);
         }
 
         [Fact]
@@ -536,7 +536,7 @@ namespace App.Metrics.Facts.Reporting
             payloadBuilder.PayloadFormatted().
                            Should().
                            Be(
-                               "test__test_meter host=server1 env=staging type=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0" +
+                               "test__test_meter host=server1 env=staging mtype=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0" +
                                Environment.NewLine);
         }
 
@@ -563,11 +563,11 @@ namespace App.Metrics.Facts.Reporting
             payloadBuilder.PayloadFormatted().
                            Should().
                            Be(
-                               "test__test_meter__items item=item1:value1 type=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0 percent=50" +
+                               "test__test_meter__items item=item1:value1 mtype=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0 percent=50" +
                                Environment.NewLine +
-                               "test__test_meter__items item=item2:value2 type=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0 percent=50" +
+                               "test__test_meter__items item=item2:value2 mtype=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0 percent=50" +
                                Environment.NewLine +
-                               "test__test_meter type=meter count.meter=2i rate1m=0 rate5m=0 rate15m=0" + Environment.NewLine);
+                               "test__test_meter mtype=meter count.meter=2i rate1m=0 rate5m=0 rate15m=0" + Environment.NewLine);
         }
 
         [Fact]
@@ -593,11 +593,11 @@ namespace App.Metrics.Facts.Reporting
             payloadBuilder.PayloadFormatted().
                            Should().
                            Be(
-                               "test__test_meter__items host=server1 env=staging item=item1:value1 type=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0 percent=50" +
+                               "test__test_meter__items host=server1 env=staging item=item1:value1 mtype=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0 percent=50" +
                                Environment.NewLine +
-                               "test__test_meter__items host=server1 env=staging item=item2:value2 type=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0 percent=50" +
+                               "test__test_meter__items host=server1 env=staging item=item2:value2 mtype=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0 percent=50" +
                                Environment.NewLine +
-                               "test__test_meter host=server1 env=staging type=meter count.meter=2i rate1m=0 rate5m=0 rate15m=0" +
+                               "test__test_meter host=server1 env=staging mtype=meter count.meter=2i rate1m=0 rate5m=0 rate15m=0" +
                                Environment.NewLine);
         }
 
@@ -624,7 +624,7 @@ namespace App.Metrics.Facts.Reporting
             payloadBuilder.PayloadFormatted().
                            Should().
                            Be(
-                               "test__test_timer type=timer count.meter=1i rate1m=0 rate5m=0 rate15m=0 samples=1i last=1000 count.hist=1i sum=1000 min=1000 max=1000 mean=1000 median=1000 stddev=0 p999=1000 p99=1000 p98=1000 p95=1000 p75=1000 user.last=\"client1\" user.min=\"client1\" user.max=\"client1\"" +
+                               "test__test_timer mtype=timer count.meter=1i rate1m=0 rate5m=0 rate15m=0 samples=1i last=1000 count.hist=1i sum=1000 min=1000 max=1000 mean=1000 median=1000 stddev=0 p999=1000 p99=1000 p98=1000 p95=1000 p75=1000 user.last=\"client1\" user.min=\"client1\" user.max=\"client1\"" +
                                Environment.NewLine);
         }
 
@@ -651,7 +651,7 @@ namespace App.Metrics.Facts.Reporting
             payloadBuilder.PayloadFormatted().
                            Should().
                            Be(
-                               "test__test_timer host=server1 env=staging type=timer count.meter=1i rate1m=0 rate5m=0 rate15m=0 samples=1i last=1000 count.hist=1i sum=1000 min=1000 max=1000 mean=1000 median=1000 stddev=0 p999=1000 p99=1000 p98=1000 p95=1000 p75=1000 user.last=\"client1\" user.min=\"client1\" user.max=\"client1\"" +
+                               "test__test_timer host=server1 env=staging mtype=timer count.meter=1i rate1m=0 rate5m=0 rate15m=0 samples=1i last=1000 count.hist=1i sum=1000 min=1000 max=1000 mean=1000 median=1000 stddev=0 p999=1000 p99=1000 p98=1000 p95=1000 p75=1000 user.last=\"client1\" user.min=\"client1\" user.max=\"client1\"" +
                                Environment.NewLine);
         }
     }
