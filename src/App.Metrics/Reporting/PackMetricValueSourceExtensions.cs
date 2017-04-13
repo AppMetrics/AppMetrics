@@ -42,22 +42,25 @@ namespace App.Metrics.Reporting
             Func<string, string, string> metricNameFormatter,
             string context,
             MetricValueSourceBase<CounterValue> valueSource,
-            CounterValueSource counterValueSource)
+            CounterValueSource counterValueSource,
+            Dictionary<CounterValueDataKeys, string> customDataKeys = null)
         {
             if (counterValueSource == null)
             {
                 return;
             }
 
+            var dataKeys = Constants.DataKeyMapping.Counter.MergeDifference(customDataKeys);
+
             if (counterValueSource.Value.Items.Any() && counterValueSource.ReportSetItems)
             {
                 foreach (var item in counterValueSource.Value.Items.Distinct())
                 {
-                    var itemData = new Dictionary<string, object> { { Constants.Pack.ItemDataTotalKey, item.Count } };
+                    var itemData = new Dictionary<string, object> { { dataKeys[CounterValueDataKeys.Total], item.Count } };
 
                     if (counterValueSource.ReportItemPercentages)
                     {
-                        itemData.AddIfNotNanOrInfinity(Constants.Pack.ItemDataPercentKey, item.Percent);
+                        itemData.AddIfNotNanOrInfinity(dataKeys[CounterValueDataKeys.SetItemPercent], item.Percent);
                     }
 
                     PackMetricWithSetItems(payloadBuilder, metricNameFormatter, context, valueSource, item.Tags, itemData);
@@ -104,8 +107,7 @@ namespace App.Metrics.Reporting
                 foreach (var item in valueSource.Value.Items.Distinct())
                 {
                     var setItemData = new Dictionary<string, object>();
-                    item.Value.AddMeterValues(setItemData, customDataKeys);
-                    setItemData.AddIfNotNanOrInfinity(Constants.Pack.ItemDataPercentKey, item.Percent);
+                    item.AddMeterSetItemValues(setItemData, customDataKeys);
                     PackMetricWithSetItems(payloadBuilder, metricNameFormatter, context, valueSource, item.Tags, setItemData);
                 }
             }

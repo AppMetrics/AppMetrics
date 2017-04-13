@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Abstractions.ReservoirSampling;
@@ -239,6 +240,40 @@ namespace App.Metrics.Facts.Reporting
                                "test__test_counter__items item=item1:value1 type=counter total=1i percent=50" + Environment.NewLine +
                                "test__test_counter__items item=item2:value2 type=counter total=1i percent=50" + Environment.NewLine +
                                "test__test_counter type=counter value=2i" + Environment.NewLine);
+        }
+
+        [Fact]
+        public void can_report_counter_with_items_and_custom_data_keys()
+        {
+            var metricsMock = new Mock<IMetrics>();
+            var counter = new DefaultCounterMetric();
+            counter.Increment(new MetricSetItem("item1", "value1"), 1);
+            counter.Increment(new MetricSetItem("item2", "value2"), 1);
+            var counterValueSource = new CounterValueSource(
+                "test counter",
+                ConstantValue.Provider(counter.Value),
+                Unit.None,
+                new MetricTags(new[] { "key1", "key2" }, new[] { "value1", "value2" }));
+            var payloadBuilder = new TestPayloadBuilder();
+            var customDataKeys = new CustomPackMetricDataKeys(
+                counter: new Dictionary<CounterValueDataKeys, string>
+                         {
+                             { CounterValueDataKeys.SetItemPercent, "%" },
+                             { CounterValueDataKeys.Total, "count" }
+                         });
+            var reporter = new TestReporter(payloadBuilder, customDataKeys);
+
+            reporter.StartReportRun(metricsMock.Object);
+            reporter.ReportMetric("test", counterValueSource);
+
+            payloadBuilder.PayloadFormatted().
+                           Should().
+                           Be(
+                               "test__test_counter__items key1=value1 key2=value2 item=item1:value1 type=counter count=1i %=50" +
+                               Environment.NewLine +
+                               "test__test_counter__items key1=value1 key2=value2 item=item2:value2 type=counter count=1i %=50" +
+                               Environment.NewLine +
+                               "test__test_counter key1=value1 key2=value2 type=counter value=2i" + Environment.NewLine);
         }
 
         [Fact]

@@ -53,6 +53,17 @@ namespace App.Metrics.Core.Extensions
             values.AddIfPresent(dataKeys[HistogramDataKeys.UserMaxValue], histogram.MaxUserValue);
         }
 
+        public static void AddMeterSetItemValues(
+            this MeterValue.SetItem meterItem,
+            IDictionary<string, object> values,
+            IDictionary<MeterValueDataKeys, string> customDataKeys = null)
+        {
+            var dataKeys = Constants.DataKeyMapping.Meter.MergeDifference(customDataKeys);
+
+            AddMeterKeyValues(meterItem.Value, values, dataKeys);
+            values.AddIfNotNanOrInfinity(dataKeys[MeterValueDataKeys.SetItemPercent], meterItem.Percent);
+        }
+
         public static void AddMeterValues(
             this MeterValue meter,
             IDictionary<string, object> values,
@@ -60,6 +71,11 @@ namespace App.Metrics.Core.Extensions
         {
             var dataKeys = Constants.DataKeyMapping.Meter.MergeDifference(customDataKeys);
 
+            AddMeterKeyValues(meter, values, dataKeys);
+        }
+
+        private static void AddMeterKeyValues(MeterValue meter, IDictionary<string, object> values, IDictionary<MeterValueDataKeys, string> dataKeys)
+        {
             values.Add(dataKeys[MeterValueDataKeys.Count], meter.Count);
             values.AddIfNotNanOrInfinity(dataKeys[MeterValueDataKeys.Rate1M], meter.OneMinuteRate);
             values.AddIfNotNanOrInfinity(dataKeys[MeterValueDataKeys.Rate5M], meter.FiveMinuteRate);

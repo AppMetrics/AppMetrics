@@ -1,17 +1,13 @@
-﻿// <copyright file="MeterValueDataKeys.cs" company="Allan Hardy">
+﻿// <copyright file="CounterValueDataKeys.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
 namespace App.Metrics.Reporting
 {
-    public enum MeterValueDataKeys
+    public enum CounterValueDataKeys
     {
 #pragma warning disable SA1602
-        Count,
-        Rate1M,
-        Rate5M,
-        Rate15M,
-        RateMean,
+        Total,
         SetItemPercent
 #pragma warning restore SA1602
     }

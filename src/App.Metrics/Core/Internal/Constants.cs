@@ -60,8 +60,15 @@ namespace App.Metrics.Core.Internal
                                                                                                     { MeterValueDataKeys.Rate1M, "rate1m" },
                                                                                                     { MeterValueDataKeys.Rate5M, "rate5m" },
                                                                                                     { MeterValueDataKeys.Rate15M, "rate15m" },
-                                                                                                    { MeterValueDataKeys.RateMean, "rate.mean" }
+                                                                                                    { MeterValueDataKeys.RateMean, "rate.mean" },
+                                                                                                    { MeterValueDataKeys.SetItemPercent, "percent" }
                                                                                                 };
+
+            public static IDictionary<CounterValueDataKeys, string> Counter => new Dictionary<CounterValueDataKeys, string>
+                                                                           {
+                                                                               { CounterValueDataKeys.Total, "total" },
+                                                                               { CounterValueDataKeys.SetItemPercent, "percent" }
+                                                                           };
         }
 
         public static class Formatting
@@ -106,8 +113,6 @@ namespace App.Metrics.Core.Internal
             public static readonly string CounterMetricTypeValue = "counter";
             public static readonly string GaugeMetricTypeValue = "gauge";
             public static readonly string HistogramMetricTypeValue = "histogram";
-            public static readonly string ItemDataPercentKey = "percent";
-            public static readonly string ItemDataTotalKey = "total";
             public static readonly string MeterMetricTypeValue = "meter";
             public static readonly string MetricSetItemSuffix = "  items";
             public static readonly string MetricTagsTypeKey = "type";

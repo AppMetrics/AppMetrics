@@ -118,7 +118,7 @@ namespace App.Metrics.Facts.Reporting.Helpers
         private void ReportCounter(string context, MetricValueSourceBase<CounterValue> valueSource)
         {
             var counterValueSource = valueSource as CounterValueSource;
-            _payloadBuilder.PackCounter(_metricNameFormatter, context, valueSource, counterValueSource);
+            _payloadBuilder.PackCounter(_metricNameFormatter, context, valueSource, counterValueSource, _customDataKeys.Counter);
         }
 
         private void ReportGauge(string context, MetricValueSourceBase<double> valueSource)
