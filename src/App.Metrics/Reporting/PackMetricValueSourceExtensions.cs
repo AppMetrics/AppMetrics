@@ -104,7 +104,7 @@ namespace App.Metrics.Reporting
                 foreach (var item in valueSource.Value.Items.Distinct())
                 {
                     var setItemData = new Dictionary<string, object>();
-                    valueSource.Value.AddMeterValues(setItemData, customDataKeys);
+                    item.Value.AddMeterValues(setItemData, customDataKeys);
                     setItemData.AddIfNotNanOrInfinity(Constants.Pack.ItemDataPercentKey, item.Percent);
                     PackMetricWithSetItems(payloadBuilder, metricNameFormatter, context, valueSource, item.Tags, setItemData);
                 }

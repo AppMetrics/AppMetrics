@@ -62,9 +62,9 @@ namespace App.Metrics.Core.Extensions
 
             values.Add(dataKeys[MeterValueDataKeys.Count], meter.Count);
             values.AddIfNotNanOrInfinity(dataKeys[MeterValueDataKeys.Rate1M], meter.OneMinuteRate);
-            values.Add(dataKeys[MeterValueDataKeys.Rate5M], meter.FiveMinuteRate);
-            values.Add(dataKeys[MeterValueDataKeys.Rate15M], meter.FifteenMinuteRate);
-            values.Add(dataKeys[MeterValueDataKeys.RateMean], meter.MeanRate);
+            values.AddIfNotNanOrInfinity(dataKeys[MeterValueDataKeys.Rate5M], meter.FiveMinuteRate);
+            values.AddIfNotNanOrInfinity(dataKeys[MeterValueDataKeys.Rate15M], meter.FifteenMinuteRate);
+            values.AddIfNotNanOrInfinity(dataKeys[MeterValueDataKeys.RateMean], meter.MeanRate);
         }
     }
 }
