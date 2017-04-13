@@ -10,7 +10,7 @@ namespace App.Metrics.Abstractions.Reporting
     public interface IReporterSettings
     {
         // ReSharper disable UnusedMember.Global
-        CustomPackMetricDataKeys CustomDataKeys { get; }
+        MetricValueDataKeys DataKeys { get; }
 
         TimeSpan ReportInterval { get; }
         // ReSharper restore UnusedMember.Global

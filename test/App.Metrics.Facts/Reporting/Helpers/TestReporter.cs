@@ -19,13 +19,13 @@ namespace App.Metrics.Facts.Reporting.Helpers
     public class TestReporter : IMetricReporter
     {
         private readonly IMetricPayloadBuilder<TestMetricPayload> _payloadBuilder;
-        private readonly CustomPackMetricDataKeys _customDataKeys;
+        private readonly MetricValueDataKeys _dataKeys;
         private readonly Func<string, string, string> _metricNameFormatter;
         private bool _disposed;
 
-        public TestReporter(IMetricPayloadBuilder<TestMetricPayload> payloadBuilder, CustomPackMetricDataKeys customDataKeys = null)
+        public TestReporter(IMetricPayloadBuilder<TestMetricPayload> payloadBuilder, MetricValueDataKeys dataKeys = null)
         {
-            _customDataKeys = customDataKeys ?? new CustomPackMetricDataKeys();
+            _dataKeys = dataKeys ?? new MetricValueDataKeys();
             _payloadBuilder = payloadBuilder;
             _metricNameFormatter = (metricContext, metricName) => metricContext.IsMissing()
                 ? $"{metricName}".Replace(' ', '_').ToLowerInvariant()
@@ -112,13 +112,13 @@ namespace App.Metrics.Facts.Reporting.Helpers
 
         private void ReportApdex(string context, MetricValueSourceBase<ApdexValue> valueSource)
         {
-            _payloadBuilder.PackApdex(_metricNameFormatter, context, valueSource);
+            _payloadBuilder.PackApdex(_metricNameFormatter, context, valueSource, _dataKeys.Apdex);
         }
 
         private void ReportCounter(string context, MetricValueSourceBase<CounterValue> valueSource)
         {
             var counterValueSource = valueSource as CounterValueSource;
-            _payloadBuilder.PackCounter(_metricNameFormatter, context, valueSource, counterValueSource, _customDataKeys.Counter);
+            _payloadBuilder.PackCounter(_metricNameFormatter, context, valueSource, counterValueSource, _dataKeys.Counter);
         }
 
         private void ReportGauge(string context, MetricValueSourceBase<double> valueSource)
@@ -128,17 +128,17 @@ namespace App.Metrics.Facts.Reporting.Helpers
 
         private void ReportHistogram(string context, MetricValueSourceBase<HistogramValue> valueSource)
         {
-            _payloadBuilder.PackHistogram(_metricNameFormatter, context, valueSource, _customDataKeys.Histogram);
+            _payloadBuilder.PackHistogram(_metricNameFormatter, context, valueSource, _dataKeys.Histogram);
         }
 
         private void ReportMeter(string context, MetricValueSourceBase<MeterValue> valueSource)
         {
-            _payloadBuilder.PackMeter(_metricNameFormatter, context, valueSource, _customDataKeys.Meter);
+            _payloadBuilder.PackMeter(_metricNameFormatter, context, valueSource, _dataKeys.Meter);
         }
 
         private void ReportTimer(string context, MetricValueSourceBase<TimerValue> valueSource)
         {
-            _payloadBuilder.PackTimer(_metricNameFormatter, context, valueSource, _customDataKeys.Meter, _customDataKeys.Histogram);
+            _payloadBuilder.PackTimer(_metricNameFormatter, context, valueSource, _dataKeys.Meter, _dataKeys.Histogram);
         }
     }
 }

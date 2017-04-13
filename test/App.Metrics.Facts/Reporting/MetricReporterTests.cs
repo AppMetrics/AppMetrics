@@ -72,11 +72,13 @@ namespace App.Metrics.Facts.Reporting
         public async Task can_pack_metrics_with_custom_histogram_keys()
         {
             // Arrange
+            var dataKeys = new MetricValueDataKeys(
+                histogram: new Dictionary<HistogramValueDataKeys, string> { { HistogramValueDataKeys.P75, "75th_percentile" } });
             var token = CancellationToken.None;
             var payloadBuilder = new TestPayloadBuilder();
             var reporter = new TestReporter(
                 payloadBuilder,
-                new CustomPackMetricDataKeys { Histogram = { { HistogramDataKeys.P75, "75th_percentile" } } });
+                dataKeys);
             var filter = new DefaultMetricsFilter().WithEnvironmentInfo(false);
 
             // Act
@@ -100,9 +102,11 @@ namespace App.Metrics.Facts.Reporting
         public async Task can_pack_metrics_with_custom_meter_keys()
         {
             // Arrange
+            var dataKeys = new MetricValueDataKeys(
+                meter: new Dictionary<MeterValueDataKeys, string> { { MeterValueDataKeys.Rate1M, "1_min_rate" } });
             var token = CancellationToken.None;
             var payloadBuilder = new TestPayloadBuilder();
-            var reporter = new TestReporter(payloadBuilder, new CustomPackMetricDataKeys { Meter = { { MeterValueDataKeys.Rate1M, "1_min_rate" } } });
+            var reporter = new TestReporter(payloadBuilder, dataKeys);
             var filter = new DefaultMetricsFilter().WithEnvironmentInfo(false);
 
             // Act
@@ -255,7 +259,7 @@ namespace App.Metrics.Facts.Reporting
                 Unit.None,
                 new MetricTags(new[] { "key1", "key2" }, new[] { "value1", "value2" }));
             var payloadBuilder = new TestPayloadBuilder();
-            var customDataKeys = new CustomPackMetricDataKeys(
+            var customDataKeys = new MetricValueDataKeys(
                 counter: new Dictionary<CounterValueDataKeys, string>
                          {
                              { CounterValueDataKeys.SetItemPercent, "%" },

@@ -30,28 +30,28 @@ namespace App.Metrics.Core.Internal
                                                                                                     { ApdexValueDataKeys.Frustrating, "frustrating" }
                                                                                                 };
 
-            public static IDictionary<HistogramDataKeys, string> Histogram => new Dictionary<HistogramDataKeys, string>
+            public static IDictionary<HistogramValueDataKeys, string> Histogram => new Dictionary<HistogramValueDataKeys, string>
                                                                                                    {
-                                                                                                       { HistogramDataKeys.Samples, "samples" },
-                                                                                                       { HistogramDataKeys.LastValue, "last" },
-                                                                                                       { HistogramDataKeys.Sum, "sum" },
-                                                                                                       { HistogramDataKeys.Count, "count.hist" },
-                                                                                                       { HistogramDataKeys.Min, "min" },
-                                                                                                       { HistogramDataKeys.Max, "max" },
-                                                                                                       { HistogramDataKeys.Mean, "mean" },
-                                                                                                       { HistogramDataKeys.Median, "median" },
-                                                                                                       { HistogramDataKeys.StdDev, "stddev" },
-                                                                                                       { HistogramDataKeys.P999, "p999" },
-                                                                                                       { HistogramDataKeys.P99, "p99" },
-                                                                                                       { HistogramDataKeys.P98, "p98" },
-                                                                                                       { HistogramDataKeys.P95, "p95" },
-                                                                                                       { HistogramDataKeys.P75, "p75" },
+                                                                                                       { HistogramValueDataKeys.Samples, "samples" },
+                                                                                                       { HistogramValueDataKeys.LastValue, "last" },
+                                                                                                       { HistogramValueDataKeys.Sum, "sum" },
+                                                                                                       { HistogramValueDataKeys.Count, "count.hist" },
+                                                                                                       { HistogramValueDataKeys.Min, "min" },
+                                                                                                       { HistogramValueDataKeys.Max, "max" },
+                                                                                                       { HistogramValueDataKeys.Mean, "mean" },
+                                                                                                       { HistogramValueDataKeys.Median, "median" },
+                                                                                                       { HistogramValueDataKeys.StdDev, "stddev" },
+                                                                                                       { HistogramValueDataKeys.P999, "p999" },
+                                                                                                       { HistogramValueDataKeys.P99, "p99" },
+                                                                                                       { HistogramValueDataKeys.P98, "p98" },
+                                                                                                       { HistogramValueDataKeys.P95, "p95" },
+                                                                                                       { HistogramValueDataKeys.P75, "p75" },
                                                                                                        {
-                                                                                                           HistogramDataKeys.UserLastValue,
+                                                                                                           HistogramValueDataKeys.UserLastValue,
                                                                                                            "user.last"
                                                                                                        },
-                                                                                                       { HistogramDataKeys.UserMinValue, "user.min" },
-                                                                                                       { HistogramDataKeys.UserMaxValue, "user.max" }
+                                                                                                       { HistogramValueDataKeys.UserMinValue, "user.min" },
+                                                                                                       { HistogramValueDataKeys.UserMaxValue, "user.max" }
                                                                                                    };
 
             public static IDictionary<MeterValueDataKeys, string> Meter => new Dictionary<MeterValueDataKeys, string>

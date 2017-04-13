@@ -1,10 +1,10 @@
-﻿// <copyright file="HistogramDataKeys.cs" company="Allan Hardy">
+﻿// <copyright file="HistogramValueDataKeys.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
 namespace App.Metrics.Reporting
 {
-    public enum HistogramDataKeys
+    public enum HistogramValueDataKeys
     {
 #pragma warning disable SA1602
         Samples,
