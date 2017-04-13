@@ -585,7 +585,7 @@ namespace App.Metrics.Facts.Reporting
                 TimeUnit.Milliseconds,
                 MetricTags.Empty);
             var payloadBuilder = new TestPayloadBuilder();
-            var reporter = new TestReporter(payloadBuilder);
+            var reporter = new TestReporter(payloadBuilder, dataKeys);
 
             reporter.StartReportRun(metricsMock.Object);
             reporter.ReportMetric("test", meterValueSource);
