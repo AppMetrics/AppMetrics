@@ -150,7 +150,7 @@ namespace App.Metrics.Facts.Reporting
 
         [Fact]
         public void can_report_apdex__when_multidimensional()
-        {
+        {            
             var metricsMock = new Mock<IMetrics>();
             var clock = new TestClock();
             var gauge = new DefaultApdexMetric(_defaultReservoir, clock, false);
@@ -243,6 +243,34 @@ namespace App.Metrics.Facts.Reporting
                            Be(
                                "test__test_counter__items item=item1:value1 mtype=counter total=1i percent=50" + Environment.NewLine +
                                "test__test_counter__items item=item2:value2 mtype=counter total=1i percent=50" + Environment.NewLine +
+                               "test__test_counter mtype=counter value=2i" + Environment.NewLine);
+        }
+
+        [Fact]
+        public void can_report_counter_with_items_using_custom_key()
+        {
+            var dataKeys = new MetricValueDataKeys(
+                counter: new Dictionary<CounterValueDataKeys, string> { { CounterValueDataKeys.MetricSetItemSuffix, " setitem" } });
+            var metricsMock = new Mock<IMetrics>();
+            var counter = new DefaultCounterMetric();
+            counter.Increment(new MetricSetItem("item1", "value1"), 1);
+            counter.Increment(new MetricSetItem("item2", "value2"), 1);
+            var counterValueSource = new CounterValueSource(
+                "test counter",
+                ConstantValue.Provider(counter.Value),
+                Unit.None,
+                MetricTags.Empty);
+            var payloadBuilder = new TestPayloadBuilder();
+            var reporter = new TestReporter(payloadBuilder, dataKeys);
+
+            reporter.StartReportRun(metricsMock.Object);
+            reporter.ReportMetric("test", counterValueSource);
+
+            payloadBuilder.PayloadFormatted().
+                           Should().
+                           Be(
+                               "test__test_counter_setitem item=item1:value1 mtype=counter total=1i percent=50" + Environment.NewLine +
+                               "test__test_counter_setitem item=item2:value2 mtype=counter total=1i percent=50" + Environment.NewLine +
                                "test__test_counter mtype=counter value=2i" + Environment.NewLine);
         }
 
@@ -538,6 +566,38 @@ namespace App.Metrics.Facts.Reporting
                            Be(
                                "test__test_meter host=server1 env=staging mtype=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0" +
                                Environment.NewLine);
+        }       
+
+        [Fact]
+        public void can_report_meters_with_items_using_custom_item_key()
+        {
+            var dataKeys = new MetricValueDataKeys(
+                meter: new Dictionary<MeterValueDataKeys, string> { { MeterValueDataKeys.MetricSetItemSuffix, " setitem" } });
+            var metricsMock = new Mock<IMetrics>();
+            var clock = new TestClock();
+            var meter = new DefaultMeterMetric(clock);
+            meter.Mark(new MetricSetItem("item1", "value1"), 1);
+            meter.Mark(new MetricSetItem("item2", "value2"), 1);
+            var meterValueSource = new MeterValueSource(
+                "test meter",
+                ConstantValue.Provider(meter.Value),
+                Unit.None,
+                TimeUnit.Milliseconds,
+                MetricTags.Empty);
+            var payloadBuilder = new TestPayloadBuilder();
+            var reporter = new TestReporter(payloadBuilder);
+
+            reporter.StartReportRun(metricsMock.Object);
+            reporter.ReportMetric("test", meterValueSource);
+
+            payloadBuilder.PayloadFormatted().
+                           Should().
+                           Be(
+                               "test__test_meter_setitem item=item1:value1 mtype=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0 percent=50" +
+                               Environment.NewLine +
+                               "test__test_meter_setitem item=item2:value2 mtype=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0 percent=50" +
+                               Environment.NewLine +
+                               "test__test_meter mtype=meter count.meter=2i rate1m=0 rate5m=0 rate15m=0" + Environment.NewLine);
         }
 
         [Fact]

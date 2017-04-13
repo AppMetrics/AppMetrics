@@ -8,7 +8,8 @@ namespace App.Metrics.Reporting
     {
 #pragma warning disable SA1602
         Total,
-        SetItemPercent
+        SetItemPercent,
+        MetricSetItemSuffix
 #pragma warning restore SA1602
     }
 }

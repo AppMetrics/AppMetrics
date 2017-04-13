@@ -61,7 +61,7 @@ namespace App.Metrics.Reporting
                         itemData.AddIfNotNanOrInfinity(dataKeys[CounterValueDataKeys.SetItemPercent], item.Percent);
                     }
 
-                    PackMetricWithSetItems(payloadBuilder, metricNameFormatter, context, valueSource, item.Tags, itemData);
+                    PackMetricWithSetItems(payloadBuilder, metricNameFormatter, context, valueSource, item.Tags, itemData, dataKeys[CounterValueDataKeys.MetricSetItemSuffix]);
                 }
             }
 
@@ -98,14 +98,14 @@ namespace App.Metrics.Reporting
             Func<string, string, string> metricNameFormatter,
             string context,
             MetricValueSourceBase<MeterValue> valueSource,
-            IDictionary<MeterValueDataKeys, string> dataKeys = null)
+            IDictionary<MeterValueDataKeys, string> dataKeys)
         {
             if (valueSource.Value.Items.Any())
             {
                 foreach (var item in valueSource.Value.Items.Distinct())
                 {
                     item.AddMeterSetItemValues(out IDictionary<string, object> setItemData, dataKeys);
-                    PackMetricWithSetItems(payloadBuilder, metricNameFormatter, context, valueSource, item.Tags, setItemData);
+                    PackMetricWithSetItems(payloadBuilder, metricNameFormatter, context, valueSource, item.Tags, setItemData, dataKeys[MeterValueDataKeys.MetricSetItemSuffix]);
                 }
             }
 
@@ -119,8 +119,8 @@ namespace App.Metrics.Reporting
             Func<string, string, string> metricNameFormatter,
             string context,
             MetricValueSourceBase<TimerValue> valueSource,
-            IDictionary<MeterValueDataKeys, string> meterDataKeys = null,
-            IDictionary<HistogramValueDataKeys, string> histogramDataKeys = null)
+            IDictionary<MeterValueDataKeys, string> meterDataKeys,
+            IDictionary<HistogramValueDataKeys, string> histogramDataKeys)
         {
             valueSource.Value.Rate.AddMeterValues(out IDictionary<string, object> data, meterDataKeys);
             valueSource.Value.Histogram.AddHistogramValues(data, histogramDataKeys);
@@ -199,7 +199,8 @@ namespace App.Metrics.Reporting
             string context,
             MetricValueSourceBase<TU> valueSource,
             MetricTags setItemTags,
-            IDictionary<string, object> itemData)
+            IDictionary<string, object> itemData,
+            string metricSetItemSuffix)
         {
             var keys = itemData.Keys.ToList();
             var values = keys.Select(k => itemData[k]);
@@ -208,7 +209,7 @@ namespace App.Metrics.Reporting
             if (valueSource.IsMultidimensional)
             {
                 payloadBuilder.Pack(
-                    metricNameFormatter(context, valueSource.MultidimensionalName + Constants.Pack.MetricSetItemSuffix),
+                    metricNameFormatter(context, valueSource.MultidimensionalName + metricSetItemSuffix),
                     keys,
                     values,
                     tags);
@@ -216,7 +217,7 @@ namespace App.Metrics.Reporting
                 return;
             }
 
-            payloadBuilder.Pack(metricNameFormatter(context, valueSource.Name + Constants.Pack.MetricSetItemSuffix), keys, values, tags);
+            payloadBuilder.Pack(metricNameFormatter(context, valueSource.Name + metricSetItemSuffix), keys, values, tags);
         }
     }
 }
