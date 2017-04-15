@@ -9,6 +9,7 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="App.Metrics.Extensions.Reporting.ElasticSearch" Version="1.1.0-alpha-0322" />
     <PackageReference Include="App.Metrics.Extensions.Reporting.InfluxDB" Version="1.1.0-alpha-0322" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />

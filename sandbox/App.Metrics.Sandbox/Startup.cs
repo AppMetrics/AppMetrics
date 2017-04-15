@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using App.Metrics.Configuration;
+using App.Metrics.Extensions.Reporting.ElasticSearch;
+using App.Metrics.Extensions.Reporting.ElasticSearch.Client;
 using App.Metrics.Extensions.Reporting.InfluxDB;
 using App.Metrics.Extensions.Reporting.InfluxDB.Client;
 using App.Metrics.Filtering;
+using App.Metrics.Reporting;
 using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Sandbox.JustForTesting;
 using Microsoft.AspNetCore.Builder;
@@ -11,14 +16,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using HttpPolicy = App.Metrics.Extensions.Reporting.InfluxDB.HttpPolicy;
 
 namespace App.Metrics.Sandbox
 {
+    public enum ReportType
+    {
+        InfluxDB,
+        ElasticSearch
+    }
+
     public class Startup
     {
+        private static List<ReportType> ReportTypes = new List<ReportType> { ReportType.ElasticSearch, ReportType.InfluxDB };
         private static bool HaveAppRunSampleRequests = true;
         private static bool RunSamplesWithClientId = true;
         private static readonly string InfluxDbDatabase = "AppMetricsSandbox";
+        private static readonly string ElasticSearchIndex = "appmetricssandbox";
+        private static readonly Uri ElasticSearchUri = new Uri("http://127.0.0.1:9200");
         private static readonly Uri InfluxDbUri = new Uri("http://127.0.0.1:8086");
 
         public Startup(IHostingEnvironment env)
@@ -82,18 +97,37 @@ namespace App.Metrics.Sandbox
                      AddReporting(
                          factory =>
                          {
-                             factory.AddInfluxDb(
-                                 new InfluxDBReporterSettings
-                                 {
-                                     HttpPolicy = new HttpPolicy
-                                                  {
-                                                      FailuresBeforeBackoff = 3,
-                                                      BackoffPeriod = TimeSpan.FromSeconds(30),
-                                                      Timeout = TimeSpan.FromSeconds(10)
-                                                  },
-                                     InfluxDbSettings = new InfluxDBSettings(InfluxDbDatabase, InfluxDbUri),
-                                     ReportInterval = TimeSpan.FromSeconds(5)
-                                 }, reportFilter);
+                             if (ReportTypes.Any(r => r == ReportType.InfluxDB))
+                             {
+                                 factory.AddInfluxDb(
+                                     new InfluxDBReporterSettings
+                                     {
+                                         HttpPolicy = new HttpPolicy
+                                                      {
+                                                          FailuresBeforeBackoff = 3,
+                                                          BackoffPeriod = TimeSpan.FromSeconds(30),
+                                                          Timeout = TimeSpan.FromSeconds(10)
+                                                      },
+                                         InfluxDbSettings = new InfluxDBSettings(InfluxDbDatabase, InfluxDbUri),
+                                         ReportInterval = TimeSpan.FromSeconds(5)
+                                     }, reportFilter);
+                             }
+
+                             if (ReportTypes.Any(r => r == ReportType.ElasticSearch))
+                             {
+                                 factory.AddElasticSearch(
+                                     new ElasticSearchReporterSettings
+                                     {
+                                         HttpPolicy = new Extensions.Reporting.ElasticSearch.HttpPolicy
+                                                      {
+                                                          FailuresBeforeBackoff = 3,
+                                                          BackoffPeriod = TimeSpan.FromSeconds(30),
+                                                          Timeout = TimeSpan.FromSeconds(10)
+                                                      },
+                                         ElasticSearchSettings = new ElasticSearchSettings(ElasticSearchUri, ElasticSearchIndex),
+                                         ReportInterval = TimeSpan.FromSeconds(5)
+                                     }, reportFilter);
+                             }
                          }).
                      AddHealthChecks(
                          factory =>
