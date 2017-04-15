@@ -1,0 +1,218 @@
+DELETE /appmetricssandbox
+
+PUT appmetricssandbox
+{
+    "settings" : {
+        "index" : {
+            "number_of_shards" : 3,
+            "number_of_replicas" : 2
+        }
+    }
+}
+
+PUT appmetricssandbox/_mapping/timer?update_all_types
+{
+  "properties": {
+    "tags.env": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.app": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.route": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.item": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.client_id": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.http_status_code": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.health_check_name": { 
+      "type":     "text",
+      "fielddata": true
+    }
+  }
+}
+
+PUT appmetricssandbox/_mapping/counter?update_all_types
+{
+  "properties": {
+     "tags.env": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.app": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.route": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.item": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.client_id": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.http_status_code": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.health_check_name": { 
+      "type":     "text",
+      "fielddata": true
+    }
+  }
+}
+
+PUT appmetricssandbox/_mapping/apdex?update_all_types
+{
+  "properties": {
+     "tags.env": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.app": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.route": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.item": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.client_id": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.http_status_code": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.health_check_name": { 
+      "type":     "text",
+      "fielddata": true
+    }
+  }
+}
+
+PUT appmetricssandbox/_mapping/gauge?update_all_types
+{
+  "properties": {
+     "tags.env": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.app": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.route": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.item": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.client_id": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.http_status_code": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.health_check_name": { 
+      "type":     "text",
+      "fielddata": true
+    }
+  }
+}
+
+PUT appmetricssandbox/_mapping/histogram?update_all_types
+{
+  "properties": {
+     "tags.env": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.app": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.route": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.item": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.client_id": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.http_status_code": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.health_check_name": { 
+      "type":     "text",
+      "fielddata": true
+    }
+  }
+}
+
+PUT appmetricssandbox/_mapping/meter?update_all_types
+{
+  "properties": {
+    "tags.env": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.app": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.route": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.item": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.client_id": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.http_status_code": { 
+      "type":     "text",
+      "fielddata": true
+    },
+    "tags.health_check_name": { 
+      "type":     "text",
+      "fielddata": true
+    }
+  }
+}
+
+
+

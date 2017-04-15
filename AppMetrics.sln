@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26228.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2D805782-756E-4C98-B22E-F502BEE95318}"
 EndProject
@@ -68,6 +68,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Metrics.Sandbox", "sand
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sanbox", "Sanbox", "{F1ECA197-26EE-4A52-8026-D906C14685A2}"
 	ProjectSection(SolutionItems) = preProject
+		sandbox\App.Metrics.Sandbox-Elasticsearch-GenericWeb.json = sandbox\App.Metrics.Sandbox-Elasticsearch-GenericWeb.json
+		sandbox\App.Metrics.Sandbox-Elasticsearch-GenericWebOAuth2.json = sandbox\App.Metrics.Sandbox-Elasticsearch-GenericWebOAuth2.json
+		sandbox\App.Metrics.Sandbox-Elasticsearch-IndexAndMappingSetup.json = sandbox\App.Metrics.Sandbox-Elasticsearch-IndexAndMappingSetup.json
 		sandbox\App.Metrics.Sandbox-InfluxDB-GenericWeb.json = sandbox\App.Metrics.Sandbox-InfluxDB-GenericWeb.json
 		sandbox\App.Metrics.Sandbox-InfluxDB-GenericWebOAuth2.json = sandbox\App.Metrics.Sandbox-InfluxDB-GenericWebOAuth2.json
 		sandbox\generic_grafana_dashboard_demo.gif = sandbox\generic_grafana_dashboard_demo.gif
