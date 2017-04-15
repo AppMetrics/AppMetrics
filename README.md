@@ -19,7 +19,11 @@ App Metrics is an open-source and cross-platform .NET library used to record met
 
 App Metrics provides various metric types to measure things such as the rate of requests, counting the number of user logins over time, measure the time taken to execute a database query, measure the amount of free memory and so on. Metrics types supported are Gauges, Counters, Meters, Histograms and Timers and Application Performance Indexes [Apdex](http://apdex.org/overview.html).
 
-For metric reporting capabilities see the [reporting repo](https://github.com/alhardy/AppMetrics.Reporters).
+For metric reporting capabilities see:
+
+- [Console & Text File Reporters](https://github.com/alhardy/AppMetrics.Reporters)
+- [InfluxDB Extensions](https://github.com/alhardy/AppMetrics.Extensions.InfluxDB)
+- [Elasticsearch Extensions](https://github.com/alhardy/AppMetrics.Extensions.Elasticsearch)
 
 `App.Metrics` includes an Exponentially Forward Decaying, Sliding Window and Algorithm R reservoir implementations, for additional reservoir sampling see the [reservoir repo](https://github.com/alhardy/AppMetrics.Reservoirs). For more details on reservoir sampling see the [docs](https://alhardy.github.io/app-metrics-docs/getting-started/sampling/index.html).
 
@@ -29,26 +33,17 @@ App Metrics also provides a health checking system allowing you to monitor the h
 - [Sample Applications & Grafana Dashbaords](https://github.com/alhardy/AppMetrics.Samples)
 - [Api Documentation](https://alhardy.github.io/app-metrics-docs/api/index.html)
 
-#### Grafana/InfluxDB Web Monitoring
+#### Grafana Web Monitoring
 
 ![Grafana/InfluxDB Generic Web Dashboard Demo](https://github.com/alhardy/AppMetrics.DocFx/blob/master/images/generic_grafana_dashboard_demo.gif)
 
-> Grab the dashboard [here](https://github.com/alhardy/AppMetrics/blob/1.0.0/sandbox/App.Metrics.Sandbox-InfluxDB-GenericWeb.json)
+> Grab the [InfluxDB](https://github.com/alhardy/AppMetrics.Extensions.InfluxDB/blob/1.1.0-alpha/visualization/grafana-dashbaords/App.Metrics.Sandbox-InfluxDB-GenericWeb.json) or [Elasticsearch](https://github.com/alhardy/AppMetrics.Extensions.Elasticsearch/blob/1.1.0-alpha/visualization/grafana-dashboards/App.Metrics.Sandbox-Elasticsearch-GenericWeb.json) dashboard.
 
-#### Grafana/InfluxDB OAuth2 Client Monitoring on a Web API
+#### Grafana OAuth2 Client Web Monitoring
 
 ![Grafana/InfluxDB Generic OAuth2 Web Dashboard Demo](https://github.com/alhardy/AppMetrics.DocFx/blob/master/images/generic_grafana_oauth2_dashboard_demo.gif)
 
-> Grab the dashboard [here](https://github.com/alhardy/AppMetrics/blob/1.0.0/sandbox/App.Metrics.Sandbox-InfluxDB-GenericWebOAuth2.json)
-
-## Grafana/InfluxDB Web Application Setup
-
-- Download and install [InfluxDB](https://docs.influxdata.com/influxdb/v1.2/introduction/installation/). *Runs well on Windows using* `Bash on Windows on Ubuntu`
-- Download and install [Grafana](https://grafana.com/grafana/download), then import App.Metrics [web dashboard](https://github.com/alhardy/AppMetrics/blob/1.0.0/sandbox/App.Metrics.Sandbox-InfluxDB-GenericWeb.json)
-- Drop in the `App.Metrics.Extensions.Mvc` and `App.Metrics.Extensions.Reporting.InfluxDB` nuget packages into your web application. 
-- Create a new [InfluxDB Database](https://docs.influxdata.com/influxdb/v1.2/introduction/getting_started/). *Keep note of this for configuring the InfluxDB reporter in your web application*
-- Add [App.Metrics configuration](https://alhardy.github.io/app-metrics-docs/getting-started/fundamentals/middleware-configuration.html) to the `Startup.cs` of your web application, including the [InfluxDB reporter configuration](https://alhardy.github.io/app-metrics-docs/getting-started/reporting/index.html#influxdb-reporter). *You might want to check out the [Sandbox](https://github.com/alhardy/AppMetrics/tree/1.0.0/sandbox/App.Metrics.Sandbox) or [Sample](https://github.com/alhardy/AppMetrics.Samples) projects if you get stuck*
-- Run your app and Grafana at visit `http://localhost:3000`
+> Grab the [InfluxDB](https://github.com/alhardy/AppMetrics.Extensions.InfluxDB/blob/1.1.0-alpha/visualization/grafana-dashbaords/App.Metrics.Sandbox-InfluxDB-GenericWebOAuth2.json) or [Elasticsearch](https://github.com/alhardy/AppMetrics.Extensions.Elasticsearch/blob/1.1.0-alpha/visualization/grafana-dashboards/App.Metrics.Sandbox-Elasticsearch-GenericWebOAuth2.json) dashboard
 
 ## How to build
 
