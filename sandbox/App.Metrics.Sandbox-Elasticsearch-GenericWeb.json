@@ -238,7 +238,7 @@
                                 }
                             ],
                             "policy": "default",
-                            "query": "name:application.httprequests__percentage_error_requests",
+                            "query": "name:application.httprequests__one_minute_error_percentage_rate",
                             "rawQuery": false,
                             "refId": "A",
                             "resultFormat": "time_series",
@@ -1196,7 +1196,7 @@
                                     "id": "1",
                                     "meta": {},
                                     "settings": {},
-                                    "type": "max"
+                                    "type": "sum"
                                 }
                             ],
                             "policy": "default",
@@ -3172,5 +3172,5 @@
     },
     "timezone": "browser",
     "title": "App.Metrics.Sandbox - Elasticsearch- Generic Web",
-    "version": 13
+    "version": 16
 }
