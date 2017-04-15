@@ -7,7 +7,6 @@ using App.Metrics.Extensions.Reporting.ElasticSearch.Client;
 using App.Metrics.Extensions.Reporting.InfluxDB;
 using App.Metrics.Extensions.Reporting.InfluxDB.Client;
 using App.Metrics.Filtering;
-using App.Metrics.Reporting;
 using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Sandbox.JustForTesting;
 using Microsoft.AspNetCore.Builder;
@@ -28,13 +27,13 @@ namespace App.Metrics.Sandbox
 
     public class Startup
     {
-        private static List<ReportType> ReportTypes = new List<ReportType> { ReportType.ElasticSearch, ReportType.InfluxDB };
-        private static bool HaveAppRunSampleRequests = true;
-        private static bool RunSamplesWithClientId = true;
-        private static readonly string InfluxDbDatabase = "AppMetricsSandbox";
         private static readonly string ElasticSearchIndex = "appmetricssandbox";
         private static readonly Uri ElasticSearchUri = new Uri("http://127.0.0.1:9200");
+        private static readonly string InfluxDbDatabase = "AppMetricsSandbox";
         private static readonly Uri InfluxDbUri = new Uri("http://127.0.0.1:8086");
+        private static readonly bool HaveAppRunSampleRequests = true;
+        private static readonly List<ReportType> ReportTypes = new List<ReportType> { ReportType.ElasticSearch, ReportType.InfluxDB };
+        private static readonly bool RunSamplesWithClientId = true;
 
         public Startup(IHostingEnvironment env)
         {
@@ -84,14 +83,12 @@ namespace App.Metrics.Sandbox
             var reportFilter = new DefaultMetricsFilter();
             reportFilter.WithHealthChecks(false);
 
-            services.AddMetrics(Configuration.GetSection("AppMetrics"),
+            services.AddMetrics(
+                         Configuration.GetSection("AppMetrics"),
                          options =>
                          {
                              options.WithGlobalTags(
-                                 (globalTags, info) =>
-                                 {
-                                     globalTags.Add("app", info.EntryAssemblyName);
-                                 });
+                                 (globalTags, info) => { globalTags.Add("app", info.EntryAssemblyName); });
                          }).
                      AddJsonSerialization().
                      AddReporting(
@@ -110,7 +107,8 @@ namespace App.Metrics.Sandbox
                                                       },
                                          InfluxDbSettings = new InfluxDBSettings(InfluxDbDatabase, InfluxDbUri),
                                          ReportInterval = TimeSpan.FromSeconds(5)
-                                     }, reportFilter);
+                                     },
+                                     reportFilter);
                              }
 
                              if (ReportTypes.Any(r => r == ReportType.ElasticSearch))
@@ -126,12 +124,13 @@ namespace App.Metrics.Sandbox
                                                       },
                                          ElasticSearchSettings = new ElasticSearchSettings(ElasticSearchUri, ElasticSearchIndex),
                                          ReportInterval = TimeSpan.FromSeconds(5)
-                                     }, reportFilter);
+                                     },
+                                     reportFilter);
                              }
                          }).
                      AddHealthChecks(
                          factory =>
-                         {                             
+                         {
                              factory.RegisterPingHealthCheck("google ping", "google.com", TimeSpan.FromSeconds(10));
                              factory.RegisterHttpGetHealthCheck("github", new Uri("https://github.com/"), TimeSpan.FromSeconds(10));
                          }).
