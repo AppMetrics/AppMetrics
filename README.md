@@ -37,13 +37,13 @@ App Metrics also provides a health checking system allowing you to monitor the h
 
 ![Grafana/InfluxDB Generic Web Dashboard Demo](https://github.com/alhardy/AppMetrics.DocFx/blob/master/images/generic_grafana_dashboard_demo.gif)
 
-> Grab the [InfluxDB](https://github.com/alhardy/AppMetrics.Extensions.InfluxDB/blob/1.1.0-alpha/visualization/grafana-dashbaords/App.Metrics.Sandbox-InfluxDB-GenericWeb.json) or [Elasticsearch](https://github.com/alhardy/AppMetrics.Extensions.Elasticsearch/blob/1.1.0-alpha/visualization/grafana-dashboards/App.Metrics.Sandbox-Elasticsearch-GenericWeb.json) dashboard.
+> Grab the [InfluxDB](https://github.com/alhardy/AppMetrics.Extensions.InfluxDB/blob/master/visualization/grafana-dashbaords/App.Metrics.Sandbox-InfluxDB-GenericWeb.json) or [Elasticsearch](https://github.com/alhardy/AppMetrics.Extensions.Elasticsearch/blob/master/visualization/grafana-dashboards/App.Metrics.Sandbox-Elasticsearch-GenericWeb.json) dashboard.
 
 #### Grafana OAuth2 Client Web Monitoring
 
 ![Grafana/InfluxDB Generic OAuth2 Web Dashboard Demo](https://github.com/alhardy/AppMetrics.DocFx/blob/master/images/generic_grafana_oauth2_dashboard_demo.gif)
 
-> Grab the [InfluxDB](https://github.com/alhardy/AppMetrics.Extensions.InfluxDB/blob/1.1.0-alpha/visualization/grafana-dashbaords/App.Metrics.Sandbox-InfluxDB-GenericWebOAuth2.json) or [Elasticsearch](https://github.com/alhardy/AppMetrics.Extensions.Elasticsearch/blob/1.1.0-alpha/visualization/grafana-dashboards/App.Metrics.Sandbox-Elasticsearch-GenericWebOAuth2.json) dashboard
+> Grab the [InfluxDB](https://github.com/alhardy/AppMetrics.Extensions.InfluxDB/blob/master/visualization/grafana-dashbaords/App.Metrics.Sandbox-InfluxDB-GenericWebOAuth2.json) or [Elasticsearch](https://github.com/alhardy/AppMetrics.Extensions.Elasticsearch/blob/master/visualization/grafana-dashboards/App.Metrics.Sandbox-Elasticsearch-GenericWebOAuth2.json) dashboard
 
 ## How to build
 
