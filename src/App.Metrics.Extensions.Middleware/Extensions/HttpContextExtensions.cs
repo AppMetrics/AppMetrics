@@ -10,6 +10,7 @@ using System.Net;
 namespace Microsoft.AspNetCore.Http
 {
     // ReSharper restore CheckNamespace
+
     internal static class HttpContextExtensions
     {
         private static readonly string MetricsCurrentRouteName = "__App.Metrics.CurrentRouteName__";
@@ -44,6 +45,13 @@ namespace Microsoft.AspNetCore.Http
             var clientId = claimsPrincipal?.Claims.FirstOrDefault(c => c.Type == "client_id");
 
             return clientId?.Value;
+        }
+
+        public static void SetNoCacheHeaders(this HttpContext context)
+        {
+            context.Response.Headers["Cache-Control"] = new[] { "no-cache, no-store, must-revalidate" };
+            context.Response.Headers["Pragma"] = new[] { "no-cache" };
+            context.Response.Headers["Expires"] = new[] { "0" };
         }
     }
 }

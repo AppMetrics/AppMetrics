@@ -82,7 +82,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
                         options.MetricsEnabled = appMetricsOptions.MetricsEnabled;
                     })
                 .AddJsonSerialization()
-                .AddDefaultReservoir(() => new Lazy<IReservoir>(() => new DefaultAlgorithmRReservoir(1028)))
+                .AddDefaultReservoir(() => new DefaultAlgorithmRReservoir(1028))
                 .AddClockType<TestClock>()
                 .AddHealthChecks(
                     factory =>

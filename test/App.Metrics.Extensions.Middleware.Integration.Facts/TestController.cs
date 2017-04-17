@@ -36,6 +36,12 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
             return new[] { "value1", "value2" };
         }
 
+        [HttpGet("exception")]
+        public IActionResult GetException()
+        {
+            throw new Exception("test exception");
+        }
+
         [HttpGet("{id}")]
         public string Get(int id)
         {

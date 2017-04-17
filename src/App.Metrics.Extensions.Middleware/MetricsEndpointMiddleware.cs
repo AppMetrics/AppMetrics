@@ -3,8 +3,9 @@
 // </copyright>
 
 using System;
+using System.Net;
 using System.Threading.Tasks;
-using App.Metrics.Abstractions.Serialization;
+using App.Metrics.Extensions.Middleware.Abstractions;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -15,21 +16,19 @@ namespace App.Metrics.Extensions.Middleware
     public class MetricsEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
         // ReSharper restore ClassNeverInstantiated.Global
     {
-        private const string MetricsMimeType = "application/vnd.app.metrics.v1.metrics+json";
+        private readonly IMetricsResponseWriter _metricsResponseWriter;
         private readonly RequestDelegate _next;
-        private readonly IMetricDataSerializer _serializer;
 
         public MetricsEndpointMiddleware(
             RequestDelegate next,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics,
-            IMetricDataSerializer serializer)
+            IMetricsResponseWriter metricsResponseWriter)
             : base(next, aspNetOptions, loggerFactory, metrics)
         {
-            _serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
+            _metricsResponseWriter = metricsResponseWriter ?? throw new ArgumentNullException(nameof(metricsResponseWriter));
             _next = next ?? throw new ArgumentNullException(nameof(next));
-            _serializer = serializer;
         }
 
         // ReSharper disable UnusedMember.Global
@@ -40,11 +39,11 @@ namespace App.Metrics.Extensions.Middleware
             {
                 Logger.MiddlewareExecuting(GetType());
 
-                var metricsData = Metrics.Snapshot.Get();
+                context.Response.Headers["Content-Type"] = new[] { _metricsResponseWriter.ContentType };
+                context.SetNoCacheHeaders();
+                context.Response.StatusCode = (int)HttpStatusCode.OK;
 
-                var json = _serializer.Serialize(metricsData);
-
-                await WriteResponseAsync(context, json, MetricsMimeType);
+                await _metricsResponseWriter.WriteAsync(context, Metrics.Snapshot.Get(), context.RequestAborted).ConfigureAwait(false);
 
                 Logger.MiddlewareExecuted(GetType());
 

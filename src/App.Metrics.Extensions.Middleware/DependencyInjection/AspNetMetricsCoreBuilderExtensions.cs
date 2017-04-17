@@ -3,8 +3,11 @@
 // </copyright>
 
 using System;
+using App.Metrics.Extensions.Middleware.Abstractions;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
+using App.Metrics.Extensions.Middleware.Internal;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
@@ -37,6 +40,9 @@ namespace Microsoft.Extensions.DependencyInjection
 
         private static IMetricsHostBuilder AddMetricsMiddleware(this IMetricsHostBuilder builder)
         {
+            builder.Services.TryAddSingleton<IMetricsResponseWriter, NoOpMetricsResponseWriter>();
+            builder.Services.TryAddSingleton<IHealthResponseWriter, NoOpHealthStatusResponseWriter>();
+
             builder.AddRequiredAspNetPlatformServices();
 
             return builder;

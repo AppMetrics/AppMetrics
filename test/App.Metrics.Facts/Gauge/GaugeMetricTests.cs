@@ -33,10 +33,9 @@ namespace App.Metrics.Facts.Gauge
         {
             var clock = new TestClock();
             var scheduler = new TestTaskScheduler(clock);
-            var reservoir = new Lazy<IReservoir>(() => new DefaultAlgorithmRReservoir(1028));
 
             var cacheHitMeter = new DefaultMeterMetric(clock, scheduler);
-            var dbQueryTimer = new DefaultTimerMetric(reservoir, clock);
+            var dbQueryTimer = new DefaultTimerMetric(new DefaultAlgorithmRReservoir(1028), clock);
 
             foreach (var index in Enumerable.Range(0, 1000))
             {
@@ -61,10 +60,9 @@ namespace App.Metrics.Facts.Gauge
         {
             var clock = new TestClock();
             var scheduler = new TestTaskScheduler(clock);
-            var reservoir = new Lazy<IReservoir>(() => new DefaultAlgorithmRReservoir(1028));
 
             var cacheHitMeter = new DefaultMeterMetric(clock, scheduler);
-            var dbQueryTimer = new DefaultTimerMetric(reservoir, clock);
+            var dbQueryTimer = new DefaultTimerMetric(new DefaultAlgorithmRReservoir(1028), clock);
 
             foreach (var index in Enumerable.Range(0, 1000))
             {

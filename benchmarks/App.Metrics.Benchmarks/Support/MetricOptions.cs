@@ -19,7 +19,7 @@ namespace App.Metrics.Benchmarks.Support
                                                                     {
                                                                         Context = nameof(MeasureApdexBenchmark),
                                                                         Name = "test_apdex_algorithmr",
-                                                                        Reservoir = new Lazy<IReservoir>(() => new DefaultAlgorithmRReservoir()),
+                                                                        Reservoir = () => new DefaultAlgorithmRReservoir(),
                                                                         MeasurementUnit = Unit.Results,
                                                                         AllowWarmup = false
                                                                     };
@@ -29,7 +29,7 @@ namespace App.Metrics.Benchmarks.Support
                                                                              Context = nameof(MeasureApdexBenchmark),
                                                                              Name = "test_apdex_forwarddecaying",
                                                                              Reservoir =
-                                                                                 new Lazy<IReservoir>(() => new DefaultForwardDecayingReservoir()),
+                                                                                 () => new DefaultForwardDecayingReservoir(),
                                                                              MeasurementUnit = Unit.Results,
                                                                              AllowWarmup = false
                                                                          };
@@ -38,7 +38,7 @@ namespace App.Metrics.Benchmarks.Support
                                                                        {
                                                                            Context = nameof(MeasureApdexBenchmark),
                                                                            Name = "test_apdex_slidingwindow",
-                                                                           Reservoir = new Lazy<IReservoir>(() => new DefaultSlidingWindowReservoir()),
+                                                                           Reservoir = () => new DefaultSlidingWindowReservoir(),
                                                                            MeasurementUnit = Unit.Results,
                                                                            AllowWarmup = false
                                                                        };
@@ -86,7 +86,7 @@ namespace App.Metrics.Benchmarks.Support
                                                                         {
                                                                             Context = nameof(MeasureHistogramBenchmark),
                                                                             Name = "test_histogram_algorithmr",
-                                                                            Reservoir = new Lazy<IReservoir>(() => new DefaultAlgorithmRReservoir())
+                                                                            Reservoir = () => new DefaultAlgorithmRReservoir()
                                                                         };
 
             public static readonly HistogramOptions OptionsForwardDecaying = new HistogramOptions
@@ -94,7 +94,7 @@ namespace App.Metrics.Benchmarks.Support
                                                                                  Context = nameof(MeasureHistogramBenchmark),
                                                                                  Name = "test_histogram_forwarddecaying",
                                                                                  Reservoir =
-                                                                                     new Lazy<IReservoir>(() => new DefaultForwardDecayingReservoir())
+                                                                                     () => new DefaultForwardDecayingReservoir()
                                                                              };
 
             public static readonly HistogramOptions OptionsSlidingWindow = new HistogramOptions
@@ -102,7 +102,7 @@ namespace App.Metrics.Benchmarks.Support
                                                                                Context = nameof(MeasureHistogramBenchmark),
                                                                                Name = "test_histogram_slidingwindow",
                                                                                Reservoir =
-                                                                                   new Lazy<IReservoir>(() => new DefaultSlidingWindowReservoir())
+                                                                                   () => new DefaultSlidingWindowReservoir()
                                                                            };
         }
 
@@ -133,7 +133,7 @@ namespace App.Metrics.Benchmarks.Support
                                                                     {
                                                                         Context = nameof(MeasureTimerBenchmark),
                                                                         Name = "test_timer_algorithmr",
-                                                                        Reservoir = new Lazy<IReservoir>(() => new DefaultAlgorithmRReservoir()),
+                                                                        Reservoir = () => new DefaultAlgorithmRReservoir(),
                                                                         DurationUnit = TimeUnit.Milliseconds,
                                                                         MeasurementUnit = Unit.Results
                                                                     };
@@ -143,7 +143,7 @@ namespace App.Metrics.Benchmarks.Support
                                                                              Context = nameof(MeasureTimerBenchmark),
                                                                              Name = "test_timer_forwarddecaying",
                                                                              Reservoir =
-                                                                                 new Lazy<IReservoir>(() => new DefaultForwardDecayingReservoir()),
+                                                                                 () => new DefaultForwardDecayingReservoir(),
                                                                              DurationUnit = TimeUnit.Milliseconds,
                                                                              MeasurementUnit = Unit.Results
                                                                          };
@@ -152,7 +152,7 @@ namespace App.Metrics.Benchmarks.Support
                                                                        {
                                                                            Context = nameof(MeasureTimerBenchmark),
                                                                            Name = "test_timer_slidingwindow",
-                                                                           Reservoir = new Lazy<IReservoir>(() => new DefaultSlidingWindowReservoir()),
+                                                                           Reservoir = () => new DefaultSlidingWindowReservoir(),
                                                                            DurationUnit = TimeUnit.Milliseconds,
                                                                            MeasurementUnit = Unit.Results
                                                                        };

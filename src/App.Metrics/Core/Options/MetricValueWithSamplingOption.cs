@@ -22,7 +22,7 @@ namespace App.Metrics.Core.Options
         /// <remarks>
         ///     Reservoir sampling avoids unbound memory usage, allows metrics to be generated from a reservoir of values.
         /// </remarks>
-        public Lazy<IReservoir> Reservoir { get; set; }
+        public Func<IReservoir> Reservoir { get; set; }
     }
 
     // ReSharper restore UnusedAutoPropertyAccessor.Global

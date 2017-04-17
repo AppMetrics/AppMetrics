@@ -42,21 +42,19 @@ namespace App.Metrics.Facts.Core
         [Fact]
         public void can_register_timer_with_custom_reservoir()
         {
-            var reservoir = new Lazy<IReservoir>(() => new CustomReservoir());
             var timerOptions = new TimerOptions
                                {
                                    Name = "custom",
                                    MeasurementUnit = Unit.Calls,
-                                   Reservoir = reservoir
-                               };
+                                   Reservoir = () => new CustomReservoir()
+            };
             var timer = _fixture.Metrics.Provider.Timer.Instance(timerOptions);
 
             timer.Record(10L, TimeUnit.Nanoseconds);
 
-            var snapshot = reservoir.Value.GetSnapshot();
+            var snapshot = _fixture.Metrics.Snapshot.Get();
 
-            snapshot.Size.Should().Be(1);
-            snapshot.Values.Single().Should().Be(10L);
+            snapshot.Contexts.First().Timers.First().Value.Histogram.Count.Should().Be(1);
         }
 
         public void Dispose()

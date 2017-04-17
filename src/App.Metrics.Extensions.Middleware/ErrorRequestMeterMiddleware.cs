@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Net;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using Microsoft.AspNetCore.Http;
@@ -44,21 +45,38 @@ namespace App.Metrics.Extensions.Middleware
         // ReSharper disable UnusedMember.Global
         public async Task Invoke(HttpContext context)
         {
-            await Next(context);
-
-            if (PerformMetric(context))
+            try
             {
                 Logger.MiddlewareExecuting(GetType());
 
-                var routeTemplate = context.GetMetricsCurrentRouteName();
+                await Next(context);
 
-                if (!context.Response.IsSuccessfulResponse() && ShouldTrackHttpStatusCode(context.Response.StatusCode))
+                if (PerformMetric(context))
                 {
-                    Metrics.RecordHttpRequestError(routeTemplate, context.Response.StatusCode);
+                    var routeTemplate = context.GetMetricsCurrentRouteName();
+
+                    if (!context.Response.IsSuccessfulResponse() && ShouldTrackHttpStatusCode(context.Response.StatusCode))
+                    {
+                        Metrics.RecordHttpRequestError(routeTemplate, context.Response.StatusCode);
+                    }
                 }
             }
+            catch (Exception)
+            {
+                if (!PerformMetric(context))
+                {
+                    throw;
+                }
 
-            Logger.MiddlewareExecuted(GetType());
+                var routeTemplate = context.GetMetricsCurrentRouteName();
+                Metrics.RecordHttpRequestError(routeTemplate, (int)HttpStatusCode.InternalServerError);
+
+                throw;
+            }
+            finally
+            {
+                Logger.MiddlewareExecuted(GetType());
+            }
         }
 
         // ReSharper restore UnusedMember.Global

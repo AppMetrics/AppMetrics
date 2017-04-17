@@ -40,11 +40,20 @@ namespace App.Metrics.Extensions.Middleware
 
                 Metrics.IncrementActiveRequests();
 
-                await Next(context);
-
-                Metrics.DecrementActiveRequests();
-
-                Logger.MiddlewareExecuted(GetType());
+                try
+                {
+                    await Next(context);
+                    Metrics.DecrementActiveRequests();
+                }
+                catch (Exception)
+                {
+                    Metrics.DecrementActiveRequests();
+                    throw;
+                }
+                finally
+                {
+                    Logger.MiddlewareExecuted(GetType());
+                }
             }
             else
             {

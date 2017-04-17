@@ -18,7 +18,7 @@ namespace App.Metrics.Facts.Providers
 {
     public class DefaultApdexMetricProviderTests : IClassFixture<MetricCoreTestFixture>
     {
-        private readonly Lazy<IReservoir> _defaultReservoir = new Lazy<IReservoir>(() => new DefaultAlgorithmRReservoir(1028));
+        private readonly Func<IReservoir> _defaultReservoir = () => new DefaultAlgorithmRReservoir(1028);
         private readonly IFilterMetrics _filter = new DefaultMetricsFilter().WhereType(MetricType.Apdex);
         private readonly MetricCoreTestFixture _fixture;
         private readonly IProvideApdexMetrics _provider;
@@ -108,7 +108,7 @@ namespace App.Metrics.Facts.Providers
             var options = new ApdexOptions
                           {
                               Name = "apdex_custom_reservoir",
-                              Reservoir = new Lazy<IReservoir>(() => reservoirMock.Object)
+                              Reservoir = () => reservoirMock.Object
                           };
 
             var apdex = _provider.Instance(options);
@@ -129,7 +129,7 @@ namespace App.Metrics.Facts.Providers
             var options = new ApdexOptions
                           {
                               Name = "apdex_custom_reservoir_multi",
-                              Reservoir = new Lazy<IReservoir>(() => reservoirMock.Object)
+                              Reservoir = () => reservoirMock.Object
                           };
 
             var apdex = _provider.Instance(options, _fixture.Tags[0]);

@@ -19,14 +19,14 @@ namespace App.Metrics.Apdex
     public class ApdexProvider : IApdexProvider
     {
         private readonly double _apdexTSeconds;
-        private readonly Lazy<IReservoir> _reservoir;
+        private readonly IReservoir _reservoir;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ApdexProvider" /> class.
         /// </summary>
         /// <param name="reservoir">The reservoir used to sample values in order to caclulate an apdex score.</param>
         /// <param name="apdexTSeconds">The apdex t seconds used to calculate satisfied, tolerating and frustrating counts.</param>
-        public ApdexProvider(Lazy<IReservoir> reservoir, double apdexTSeconds = Constants.ReservoirSampling.DefaultApdexTSeconds)
+        public ApdexProvider(IReservoir reservoir, double apdexTSeconds = Constants.ReservoirSampling.DefaultApdexTSeconds)
         {
             _reservoir = reservoir;
             _apdexTSeconds = apdexTSeconds;
@@ -35,15 +35,15 @@ namespace App.Metrics.Apdex
         // <inheritdoc />
         public ApdexSnapshot GetSnapshot(bool resetReservoir = false)
         {
-            var reservoirSnapshot = _reservoir.Value.GetSnapshot(resetReservoir);
+            var reservoirSnapshot = _reservoir.GetSnapshot(resetReservoir);
 
             return new ApdexSnapshot(reservoirSnapshot.Values, _apdexTSeconds);
         }
 
         // <inheritdoc />
-        public void Reset() { _reservoir.Value.Reset(); }
+        public void Reset() { _reservoir.Reset(); }
 
         // <inheritdoc />
-        public void Update(long value) { _reservoir.Value.Update(value); }
+        public void Update(long value) { _reservoir.Update(value); }
     }
 }

@@ -26,9 +26,7 @@ namespace App.Metrics.Facts.Builders
             reservoirMock.Setup(r => r.GetSnapshot()).Returns(() => new UniformSnapshot(100, 100.0, new long[100]));
             reservoirMock.Setup(r => r.Reset());
 
-            var reservoir = new Lazy<IReservoir>(() => reservoirMock.Object);
-
-            var histogram = _builder.Build(reservoir);
+            var histogram = _builder.Build(() => reservoirMock.Object);
 
             histogram.Should().NotBeNull();
         }

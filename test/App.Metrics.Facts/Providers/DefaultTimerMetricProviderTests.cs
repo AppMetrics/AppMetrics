@@ -9,7 +9,9 @@ using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Filtering;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
 using App.Metrics.ReservoirSampling.Uniform;
+using App.Metrics.Tagging;
 using App.Metrics.Timer.Abstractions;
 using FluentAssertions;
 using Moq;
@@ -39,9 +41,7 @@ namespace App.Metrics.Facts.Providers
                               Name = metricName
                           };
 
-            var reservoir = new Lazy<IReservoir>(() => new DefaultAlgorithmRReservoir(1028));
-
-            var timerMetric = _fixture.Builder.Timer.Build(reservoir, _fixture.Clock);
+            var timerMetric = _fixture.Builder.Timer.Build(() => new DefaultAlgorithmRReservoir(1028), _fixture.Clock);
 
             _provider.Instance(options, () => timerMetric);
 
@@ -59,9 +59,7 @@ namespace App.Metrics.Facts.Providers
                               Name = metricName
                           };
 
-            var reservoir = new Lazy<IReservoir>(() => new DefaultAlgorithmRReservoir(1028));
-
-            var timerMetric = _fixture.Builder.Timer.Build(reservoir, _fixture.Clock);
+            var timerMetric = _fixture.Builder.Timer.Build(() => new DefaultAlgorithmRReservoir(1028), _fixture.Clock);
 
             _provider.Instance(options, _fixture.Tags[0], () => timerMetric);
 
@@ -154,13 +152,13 @@ namespace App.Metrics.Facts.Providers
             reservoirMock.Setup(r => r.GetSnapshot()).Returns(() => new UniformSnapshot(100L, 100.0, new long[100]));
             reservoirMock.Setup(r => r.Reset());
 
-            var reservoir = new Lazy<IReservoir>(() => reservoirMock.Object);
+            IReservoir Reservoir() => reservoirMock.Object;
 
             var options = new TimerOptions
                           {
                               Name = "timer_provider_custom_test",
-                              Reservoir = reservoir
-                          };
+                              Reservoir = Reservoir
+            };
 
             var timer = _provider.Instance(options);
 
@@ -180,12 +178,12 @@ namespace App.Metrics.Facts.Providers
             reservoirMock.Setup(r => r.GetSnapshot()).Returns(() => new UniformSnapshot(100L, 100.0, new long[100]));
             reservoirMock.Setup(r => r.Reset());
 
-            var reservoir = new Lazy<IReservoir>(() => reservoirMock.Object);
+            IReservoir Reservoir() => reservoirMock.Object;
 
             var options = new TimerOptions
                           {
                               Name = "timer_provider_custom_test_multi",
-                              Reservoir = reservoir
+                              Reservoir = Reservoir
                           };
 
             var timer = _provider.Instance(options, _fixture.Tags[0]);
@@ -197,5 +195,34 @@ namespace App.Metrics.Facts.Providers
 
             reservoirMock.Verify(r => r.Update(It.IsAny<long>(), null), Times.Once);
         }
+
+        [Fact]
+        public void multidimensional_should_not_share_resevoirs_when_changed_from_default()
+        {
+            var timerDef = new TimerOptions
+                           {
+                               Reservoir = () => new DefaultForwardDecayingReservoir()
+                           };
+
+            using (var metricsFixture = new MetricsFixture())
+            {
+                var timer1 = metricsFixture.Metrics.Provider.Timer.Instance(timerDef, new MetricTags("test", "1"));
+                var timer2 = metricsFixture.Metrics.Provider.Timer.Instance(timerDef, new MetricTags("test", "2"));
+
+                timer1.Record(100, TimeUnit.Seconds);
+                timer1.Record(100, TimeUnit.Seconds);
+                timer1.Record(100, TimeUnit.Seconds);
+                timer1.Record(100, TimeUnit.Seconds);
+                timer1.Record(100, TimeUnit.Seconds);
+
+                var timers = metricsFixture.Metrics.Snapshot.Get().Contexts.First().Timers.ToArray();
+
+                Assert.Equal(5, timers[0].Value.Histogram.Count);
+                Assert.Equal(100_000, timers[0].Value.Histogram.Mean);
+
+                Assert.Equal(0, timers[1].Value.Histogram.Mean);
+                Assert.Equal(0, timers[1].Value.Histogram.Count);
+            }
+        }        
     }
 }

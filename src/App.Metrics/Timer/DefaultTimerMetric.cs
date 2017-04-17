@@ -36,7 +36,7 @@ namespace App.Metrics.Timer
         /// </summary>
         /// <param name="reservoir">The reservoir implementation to use for sampling values to generate the histogram.</param>
         /// <param name="clock">The clock to use to measure processing duration.</param>
-        public DefaultTimerMetric(Lazy<IReservoir> reservoir, IClock clock)
+        public DefaultTimerMetric(IReservoir reservoir, IClock clock)
         {
             _clock = clock;
             _histogram = new DefaultHistogramMetric(reservoir);
@@ -49,7 +49,7 @@ namespace App.Metrics.Timer
         /// <param name="reservoir">The reservoir to use for sampling within the histogram.</param>
         /// <param name="meter">The meter implementation to use to genreate the rate of events over time.</param>
         /// <param name="clock">The clock to use to measure processing duration.</param>
-        public DefaultTimerMetric(Lazy<IReservoir> reservoir, IMeterMetric meter, IClock clock)
+        public DefaultTimerMetric(IReservoir reservoir, IMeterMetric meter, IClock clock)
             : this(new DefaultHistogramMetric(reservoir), meter, clock)
         {
         }

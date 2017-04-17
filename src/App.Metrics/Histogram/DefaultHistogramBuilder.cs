@@ -20,12 +20,14 @@ namespace App.Metrics.Histogram
         }
 
         /// <inheritdoc />
-        public IHistogramMetric Build(Lazy<IReservoir> reservoir)
+        public IHistogramMetric Build(Func<IReservoir> setupReservoir)
         {
-            if (reservoir == null)
+            if (setupReservoir == null)
             {
-                reservoir = _defaultSamplingReservoirProvider.Instance();
+                setupReservoir = _defaultSamplingReservoirProvider.Instance;
             }
+
+            var reservoir = setupReservoir() ?? _defaultSamplingReservoirProvider.Instance();
 
             return new DefaultHistogramMetric(reservoir);
         }

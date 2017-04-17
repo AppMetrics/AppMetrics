@@ -29,9 +29,7 @@ namespace App.Metrics.Facts.Apdex
             var random = new Random();
             var clock = new TestClock();
 
-            var reservoir = new Lazy<IReservoir>(() => new DefaultForwardDecayingReservoir());
-
-            IApdexMetric apdexMetric = new DefaultApdexMetric(reservoir, apdexTSeconds, clock, false);
+            IApdexMetric apdexMetric = new DefaultApdexMetric(new DefaultForwardDecayingReservoir(), apdexTSeconds, clock, false);
 
             foreach (var unused in Enumerable.Range(0, 1000))
             {

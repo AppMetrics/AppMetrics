@@ -2,7 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Abstractions.Serialization;
+using App.Metrics.Formatters.Json.Abstractions.Serialization;
 using Newtonsoft.Json;
 
 namespace App.Metrics.Formatters.Json.Serialization

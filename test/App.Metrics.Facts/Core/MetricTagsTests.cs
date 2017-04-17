@@ -281,6 +281,34 @@ namespace App.Metrics.Facts.Core
             tags.AsMetricName("metric_name").Should().Be("metric_name|key1:value1,key2:value2,key3:value3,key4:value4,key5:value5,key6:value6,key7:value7,key8:value8");
         }
 
+        [Fact]
+        public void can_convert_to_dictionary()
+        {
+            var tags = new MetricTags(new [] {"key_1", "key_2"}, new [] { "value 1", "value 2"});
+
+            var dictionary = tags.ToDictionary();
+
+            dictionary.Count.Should().Be(2);
+            dictionary.Keys.Should().Contain("key_1");
+            dictionary.Keys.Should().Contain("key_2");
+            dictionary.Values.Should().Contain("value 1");
+            dictionary.Values.Should().Contain("value 2");
+        }
+
+        [Fact]
+        public void can_convert_to_dictionary_and_format_values()
+        {
+            var tags = new MetricTags(new[] { "key_1", "key_2" }, new[] { "value 1", "value 2" });
+
+            var dictionary = tags.ToDictionary(tagValue => tagValue.Replace(' ', '_'));
+
+            dictionary.Count.Should().Be(2);
+            dictionary.Keys.Should().Contain("key_1");
+            dictionary.Keys.Should().Contain("key_2");
+            dictionary.Values.Should().Contain("value_1");
+            dictionary.Values.Should().Contain("value_2");
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)
