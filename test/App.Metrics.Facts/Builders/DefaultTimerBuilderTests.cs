@@ -58,9 +58,7 @@ namespace App.Metrics.Facts.Builders
             reservoirMock.Setup(r => r.GetSnapshot()).Returns(() => new UniformSnapshot(100, 100.0, new long[100]));
             reservoirMock.Setup(r => r.Reset());
 
-            var reservoir = new Lazy<IReservoir>(() => reservoirMock.Object);
-
-            var timer = _builder.Build(reservoir, _fixture.Clock);
+            var timer = _builder.Build(() => reservoirMock.Object, _fixture.Clock);
 
             timer.Should().NotBeNull();
         }
@@ -75,9 +73,7 @@ namespace App.Metrics.Facts.Builders
             reservoirMock.Setup(r => r.Reset());
             meterMock.Setup(r => r.GetValue(false));
 
-            var reservoir = new Lazy<IReservoir>(() => reservoirMock.Object);
-
-            var timer = _builder.Build(reservoir, meterMock.Object, _fixture.Clock);
+            var timer = _builder.Build(() => reservoirMock.Object, meterMock.Object, _fixture.Clock);
 
             timer.Should().NotBeNull();
         }

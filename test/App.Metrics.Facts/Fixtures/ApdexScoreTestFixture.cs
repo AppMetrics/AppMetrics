@@ -38,9 +38,7 @@ namespace App.Metrics.Facts.Fixtures
                 Enumerable.Range(1, frustratingRequest)
                           .Select(x => random.Next(minFrustratedDurationMilliseconds, minFrustratedDurationMilliseconds * 2));
 
-            var reservoir = new Lazy<IReservoir>(() => new DefaultForwardDecayingReservoir());
-
-            var apdexMetric = new DefaultApdexMetric(reservoir, apdexTSeconds, clock, false);
+            var apdexMetric = new DefaultApdexMetric(new DefaultForwardDecayingReservoir(), apdexTSeconds, clock, false);
 
             if (testSamplePreference == TestSamplePreference.Satisified)
             {

@@ -2,7 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-namespace App.Metrics.Abstractions.Serialization
+namespace App.Metrics.Formatters.Json.Abstractions.Serialization
 {
     public interface IMetricDataSerializer
     {

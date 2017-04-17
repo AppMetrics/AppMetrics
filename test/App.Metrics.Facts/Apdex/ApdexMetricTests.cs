@@ -21,9 +21,7 @@ namespace App.Metrics.Facts.Apdex
 
         public ApdexMetricTests()
         {
-            var reservoir = new Lazy<IReservoir>(() => new DefaultForwardDecayingReservoir());
-
-            _apdex = new DefaultApdexMetric(reservoir, Constants.ReservoirSampling.DefaultApdexTSeconds, _clock, false);
+            _apdex = new DefaultApdexMetric(new DefaultForwardDecayingReservoir(), Constants.ReservoirSampling.DefaultApdexTSeconds, _clock, false);
         }
 
         [Fact]
@@ -186,9 +184,8 @@ namespace App.Metrics.Facts.Apdex
         {
             Action createApdex = () =>
             {
-                var reservoir = new Lazy<IReservoir>(() => new DefaultForwardDecayingReservoir());
                 var unused = new DefaultApdexMetric(
-                        reservoir,
+                        new DefaultForwardDecayingReservoir(),
                         Constants.ReservoirSampling.DefaultApdexTSeconds,
                         null,
                         false)

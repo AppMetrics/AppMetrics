@@ -5,7 +5,6 @@
 using System;
 using App.Metrics;
 using App.Metrics.Abstractions.Filtering;
-using App.Metrics.Abstractions.Serialization;
 using App.Metrics.Configuration;
 using App.Metrics.Core.Abstractions;
 using App.Metrics.Core.Interfaces;
@@ -20,7 +19,6 @@ using App.Metrics.Registry.Internal;
 using App.Metrics.Reporting.Abstractions;
 using App.Metrics.Reporting.Internal;
 using App.Metrics.ReservoirSampling;
-using App.Metrics.Serialization;
 using App.Metrics.Tagging;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
@@ -56,8 +54,6 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.TryAddSingleton<IClock, StopwatchClock>();
             builder.Services.TryAddSingleton<IFilterMetrics, DefaultMetricsFilter>();
             builder.Services.TryAddSingleton<EnvironmentInfoProvider, EnvironmentInfoProvider>();
-            builder.Services.TryAddSingleton<IMetricDataSerializer, NoOpMetricDataSerializer>();
-            builder.Services.TryAddSingleton<IHealthStatusSerializer, NoOpHealthStatusSerializer>();
             builder.Services.TryAddSingleton<IMeasureMetrics, DefaultMeasureMetricsProvider>();
             builder.Services.TryAddSingleton<IBuildMetrics, DefaultMetricsBuilderFactory>();
             builder.Services.TryAddSingleton<IProvideMetrics, DefaultMetricsProvider>();

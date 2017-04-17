@@ -11,6 +11,7 @@ using App.Metrics.Core;
 using App.Metrics.Core.Options;
 using App.Metrics.Counter.Abstractions;
 using App.Metrics.Gauge;
+using App.Metrics.Gauge.Abstractions;
 using App.Metrics.Histogram.Abstractions;
 using App.Metrics.Meter.Abstractions;
 using App.Metrics.Tagging;

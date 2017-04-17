@@ -5,8 +5,8 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using App.Metrics.Abstractions.Serialization;
 using App.Metrics.Core.Internal;
+using App.Metrics.Extensions.Middleware.Abstractions;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using App.Metrics.Health;
 using Microsoft.AspNetCore.Http;
@@ -18,17 +18,17 @@ namespace App.Metrics.Extensions.Middleware
 
     public class HealthCheckEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
     {
-        private readonly IHealthStatusSerializer _serializer;
+        private readonly IHealthResponseWriter _healthResponseWriter;
 
         public HealthCheckEndpointMiddleware(
             RequestDelegate next,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics,
-            IHealthStatusSerializer serializer)
+            IHealthResponseWriter healthResponseWriter)
             : base(next, aspNetOptions, loggerFactory, metrics)
         {
-            _serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
+            _healthResponseWriter = healthResponseWriter ?? throw new ArgumentNullException(nameof(healthResponseWriter));
         }
 
         // ReSharper disable UnusedMember.Global
@@ -57,9 +57,16 @@ namespace App.Metrics.Extensions.Middleware
                     warning = Constants.Health.DegradedStatusDisplay;
                 }
 
-                var json = _serializer.Serialize(healthStatus);
+                context.Response.Headers["Content-Type"] = new[] { _healthResponseWriter.ContentType };
+                context.SetNoCacheHeaders();
+                context.Response.StatusCode = (int)responseStatusCode;
 
-                await WriteResponseAsync(context, json, "application/json", responseStatusCode, warning);
+                if (warning.IsPresent())
+                {
+                    context.Response.Headers["Warning"] = new[] { $"Warning: 100 '{warning}'" };
+                }
+
+                await _healthResponseWriter.WriteAsync(context, healthStatus, context.RequestAborted).ConfigureAwait(false);
 
                 Logger.MiddlewareExecuted(GetType());
 

@@ -10,6 +10,6 @@ namespace App.Metrics.Histogram.Abstractions
 {
     public interface IBuildHistogramMetrics
     {
-        IHistogramMetric Build(Lazy<IReservoir> reservoir);
+        IHistogramMetric Build(Func<IReservoir> setupReservoir);
     }
 }

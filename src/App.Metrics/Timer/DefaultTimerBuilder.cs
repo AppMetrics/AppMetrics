@@ -26,12 +26,14 @@ namespace App.Metrics.Timer
         }
 
         /// <inheritdoc />
-        public ITimerMetric Build(Lazy<IReservoir> reservoir, IClock clock)
+        public ITimerMetric Build(Func<IReservoir> setupReservoir, IClock clock)
         {
-            if (reservoir == null)
+            if (setupReservoir == null)
             {
-                reservoir = _defaultSamplingReservoirProvider.Instance();
+                setupReservoir = _defaultSamplingReservoirProvider.Instance;
             }
+
+            var reservoir = setupReservoir() ?? _defaultSamplingReservoirProvider.Instance();
 
             return new DefaultTimerMetric(reservoir, clock);
         }
@@ -43,12 +45,14 @@ namespace App.Metrics.Timer
         }
 
         /// <inheritdoc />
-        public ITimerMetric Build(Lazy<IReservoir> reservoir, IMeterMetric meter, IClock clock)
+        public ITimerMetric Build(Func<IReservoir> setupReservoir, IMeterMetric meter, IClock clock)
         {
-            if (reservoir == null)
+            if (setupReservoir == null)
             {
-                reservoir = _defaultSamplingReservoirProvider.Instance();
+                setupReservoir = _defaultSamplingReservoirProvider.Instance;
             }
+
+            var reservoir = setupReservoir() ?? _defaultSamplingReservoirProvider.Instance();
 
             return new DefaultTimerMetric(reservoir, meter, clock);
         }

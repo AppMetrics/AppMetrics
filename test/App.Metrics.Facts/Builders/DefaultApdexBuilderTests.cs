@@ -31,9 +31,7 @@ namespace App.Metrics.Facts.Builders
             reservoirMock.Setup(r => r.GetSnapshot()).Returns(() => new UniformSnapshot(100, 100.0, new long[100]));
             reservoirMock.Setup(r => r.Reset());
 
-            var reservoir = new Lazy<IReservoir>(() => reservoirMock.Object);
-
-            var apdex = _builder.Build(reservoir, 0.5, true, _fixture.Clock);
+            var apdex = _builder.Build(() => reservoirMock.Object, 0.5, true, _fixture.Clock);
 
             apdex.Should().NotBeNull();
         }

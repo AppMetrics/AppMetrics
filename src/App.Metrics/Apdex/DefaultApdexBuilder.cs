@@ -32,17 +32,17 @@ namespace App.Metrics.Apdex
 
         /// <inheritdoc />
         public IApdexMetric Build(
-            Lazy<IReservoir> reservoir,
+            Func<IReservoir> reservoir,
             double apdexTSeconds,
             bool allowWarmup,
             IClock clock)
         {
             if (reservoir == null)
             {
-                reservoir = _defaultSamplingReservoirProvider.Instance();
+                reservoir = _defaultSamplingReservoirProvider.Instance;
             }
 
-            return new DefaultApdexMetric(new ApdexProvider(reservoir, apdexTSeconds), clock, allowWarmup);
+            return new DefaultApdexMetric(new ApdexProvider(reservoir(), apdexTSeconds), clock, allowWarmup);
         }
     }
 }

@@ -4,6 +4,7 @@
 
 using App.Metrics.Core.Abstractions;
 using App.Metrics.Gauge;
+using App.Metrics.Gauge.Abstractions;
 
 namespace App.Metrics.Abstractions.MetricTypes
 {
