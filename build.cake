@@ -27,7 +27,6 @@ var buildNumber                 = HasArgument("BuildNumber") ? Argument<int>("Bu
                                   TravisCI.IsRunningOnTravisCI ? TravisCI.Environment.Build.BuildNumber :
                                   EnvironmentVariable("BuildNumber") != null ? int.Parse(EnvironmentVariable("BuildNumber")) : 0;
 var gitUser						= HasArgument("GitUser") ? Argument<string>("GitUser") : EnvironmentVariable("GitUser");
-var gitOwner					= HasArgument("GitOwner") ? Argument<string>("GitOwner") : EnvironmentVariable("GitOwner");
 var gitPassword					= HasArgument("GitPassword") ? Argument<string>("GitPassword") : EnvironmentVariable("GitPassword");
 
 //////////////////////////////////////////////////////////////////////
@@ -64,15 +63,6 @@ var excludeFromCoverage			= "*.AppMetricsExcludeFromCodeCoverage*";
 // TASKS
 //////////////////////////////////////////////////////////////////////
 
-Task("Init")
-    .Does(() =>
-{
-	if (AppVeyor.IsRunningOnAppVeyor)
-	{
-		AppVeyor.Environment.Dump();
-	}	
-});
-
 Task("Clean")
     .Does(() =>
 {
@@ -92,8 +82,10 @@ Task("ReleaseNotes")
 {	
 	var preRelease = preReleaseSuffix != null;
 	var milestone = "1.1.0"; // AppVeyor.Environment.Repository.Tag.Name;
+	var owner = AppVeyor.Environment.Repository.Name.Split('/')[0];
+	var repo = AppVeyor.Environment.Repository.Name.Split('/')[1];
 
-	GitReleaseManagerCreate(gitUser, gitPassword, gitOwner, AppVeyor.Environment.Repository.Name, new GitReleaseManagerCreateSettings {
+	GitReleaseManagerCreate(gitUser, gitPassword, owner, repo, new GitReleaseManagerCreateSettings {
 		Milestone         = milestone,
 		Prerelease        = preRelease
 	});
@@ -403,8 +395,7 @@ Task("Default")
 	.IsDependentOn("HtmlCoverageReport")
 	.IsDependentOn("RunInspectCode");	
 
-Task("AppVeyor")	
-	.IsDependentOn("Init")
+Task("AppVeyor")		
     .IsDependentOn("Build")
 	.IsDependentOn("PublishTestResults")	
     .IsDependentOn("Pack")
