@@ -1,0 +1,30 @@
+<Project>
+	<PropertyGroup>
+		<Copyright>Allan Hardy 2016</Copyright>
+		<Authors>Allan Hardy</Authors>
+		<NoWarn>$(NoWarn);1701;1702;1705;CS1591;CS1570</NoWarn>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<PackageIconUrl>https://alhardy.github.io/app-metrics-docs/logo.png</PackageIconUrl>
+		<PackageProjectUrl>https://alhardy.github.io/app-metrics-docs</PackageProjectUrl>
+		<PackageLicenseUrl>https://github.com/alhardy/AppMetrics/blob/master/LICENSE</PackageLicenseUrl>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>git://github.com/alhardy/AppMetrics</RepositoryUrl>
+		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+		<GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
+		<GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+		<CodeAnalysisRuleSet>..\..\AppMetrics.ruleset</CodeAnalysisRuleSet>		
+	</PropertyGroup>
+
+	<ItemGroup>
+		<AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />		
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="StyleCop.Analyzers" Version="1.0.0">
+		  <PrivateAssets>All</PrivateAssets>
+		</PackageReference>
+	</ItemGroup>
+  
+</Project>

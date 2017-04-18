@@ -2,30 +2,17 @@
 <!--EXTERNAL_PROPERTIES: DefineConstants-->
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\..\build\common.props" />
+
   <PropertyGroup>
     <Summary>App Metrics is an open-source and cross-platform .NET library used to record and monitor application metrics and health.</Summary>
-    <Description>App Metrics is an open-source and cross-platform .NET library used to record metrics within an application. Abstracts away the underlaying repository of your Metrics for example InfluxDB, Graphite, Elasticsearch etc, by sampling and aggregating in memory and providing extensibility points to flush metrics to a repository. App Metrics provides various metric types to measure things such as the rate of requests, counting the number of user logins over time, measure the time taken to execute a database query, measure the amount of free memory and so on. Metrics types supported are Gauges, Counters, Meters, Histograms and Timers. Also provides a health checking system allowing you to monitor the health of your application through user defined checks.</Description>
-    <Copyright>Allan Hardy 2016</Copyright>
-    <AssemblyTitle>App.Metrics</AssemblyTitle>
-    <Authors>Allan Hardy</Authors>
-    <TargetFrameworks>netstandard1.6;net452</TargetFrameworks>
-    <NoWarn>$(NoWarn);1701;1702;1705;CS1591;CS1570</NoWarn>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Description>App Metrics is an open-source and cross-platform .NET library used to record metrics within an application. Abstracts away the underlaying repository of your Metrics for example InfluxDB, Graphite, Elasticsearch etc, by sampling and aggregating in memory and providing extensibility points to flush metrics to a repository. App Metrics provides various metric types to measure things such as the rate of requests, counting the number of user logins over time, measure the time taken to execute a database query, measure the amount of free memory and so on. Metrics types supported are Gauges, Counters, Meters, Histograms and Timers. Also provides a health checking system allowing you to monitor the health of your application through user defined checks.</Description>    
+    <AssemblyTitle>App.Metrics</AssemblyTitle>    
+    <TargetFrameworks>netstandard1.6;net452</TargetFrameworks>     
     <AssemblyName>App.Metrics</AssemblyName>
     <PackageId>App.Metrics</PackageId>
     <PackageTags>Metrics;Monitoring;Instrumentation;Performance</PackageTags>
-    <PackageIconUrl>https://alhardy.github.io/app-metrics-docs/logo.png</PackageIconUrl>
-    <PackageProjectUrl>https://alhardy.github.io/app-metrics-docs</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/alhardy/AppMetrics/blob/master/LICENSE</PackageLicenseUrl>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>git://github.com/alhardy/AppMetrics</RepositoryUrl>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
-    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
-	<CodeAnalysisRuleSet>..\..\AppMetrics.ruleset</CodeAnalysisRuleSet>
-	<DebugType>full</DebugType>
+    <DebugType>full</DebugType>
     <VersionPrefix>1.1.0</VersionPrefix>
   </PropertyGroup>
 
@@ -43,11 +30,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net452|AnyCPU'">
     <DocumentationFile>bin\Debug\net452\App.Metrics.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
-  </ItemGroup>
+  </PropertyGroup>  
 
   <ItemGroup>
     <ProjectReference Include="..\App.Metrics.Concurrency\App.Metrics.Concurrency.csproj" />
@@ -57,10 +40,7 @@
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="1.1.1" />
-    <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.0.0">
-		<PrivateAssets>All</PrivateAssets>
-	</PackageReference>
+    <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />    
     <PackageReference Include="System.ValueTuple" Version="4.3.0" />
   </ItemGroup>
 
