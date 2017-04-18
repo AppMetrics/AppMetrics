@@ -8,6 +8,7 @@
 #tool "nuget:?package=ReSharperReports"
 #tool "nuget:?package=JetBrains.ReSharper.CommandLineTools"
 #tool "nuget:?package=coveralls.io"
+#tool "nuget:?package=gitreleasemanager"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -25,6 +26,9 @@ var buildNumber                 = HasArgument("BuildNumber") ? Argument<int>("Bu
                                   AppVeyor.IsRunningOnAppVeyor ? AppVeyor.Environment.Build.Number :
                                   TravisCI.IsRunningOnTravisCI ? TravisCI.Environment.Build.BuildNumber :
                                   EnvironmentVariable("BuildNumber") != null ? int.Parse(EnvironmentVariable("BuildNumber")) : 0;
+var gitUser						= HasArgument("GitUser") ? Argument<string>("GitUser") : EnvironmentVariable("GitUser");
+var gitOwner					= HasArgument("GitOwner") ? Argument<string>("GitOwner") : EnvironmentVariable("GitOwner");
+var gitPassword					= HasArgument("GitPassword") ? Argument<string>("GitPassword") : EnvironmentVariable("GitPassword");
 
 //////////////////////////////////////////////////////////////////////
 // DEFINE FILES & DIRECTORIES
@@ -60,6 +64,15 @@ var excludeFromCoverage			= "*.AppMetricsExcludeFromCodeCoverage*";
 // TASKS
 //////////////////////////////////////////////////////////////////////
 
+Task("Init")
+    .Does(() =>
+{
+	if (AppVeyor.IsRunningOnAppVeyor)
+	{
+		AppVeyor.Environment.Dump();
+	}	
+});
+
 Task("Clean")
     .Does(() =>
 {
@@ -70,6 +83,23 @@ Task("Clean")
     CleanDirectory(artifactsDir); 
 	CleanDirectory(coverageResultsDir);
 	CleanDirectory(testResultsDir);
+});
+
+Task("ReleaseNotes")
+    .IsDependentOn("Clean")    
+	.WithCriteria(() => AppVeyor.IsRunningOnAppVeyor /* && AppVeyor.Environment.Repository.Tag.IsTag && AppVeyor.Environment.Repository.Branch == "master" */)
+    .Does(() =>
+{	
+	var preRelease = preReleaseSuffix != null;
+	var milestone = "1.1.0"; // AppVeyor.Environment.Repository.Tag.Name;
+
+	GitReleaseManagerCreate(gitUser, gitPassword, gitOwner, AppVeyor.Environment.Repository.Name, new GitReleaseManagerCreateSettings {
+		Milestone         = milestone,
+		Prerelease        = preRelease
+	});
+
+	// GitReleaseManagerPublish(gitUser, gitPassword, gitOwner, AppVeyor.Environment.Repository.Name, AppVeyor.Environment.Repository.Tag.Name);
+	// GitReleaseManagerClose(gitUser, gitPassword, gitOwner, AppVeyor.Environment.Repository.Name, milestone);
 });
 
 Task("Restore")
@@ -366,20 +396,22 @@ Task("PublishCoverage")
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
 
-Task("Default")	
+Task("Default")		
     .IsDependentOn("Build")
 	.IsDependentOn("PublishTestResults")	
     .IsDependentOn("Pack")
 	.IsDependentOn("HtmlCoverageReport")
 	.IsDependentOn("RunInspectCode");	
 
-Task("AppVeyor")
+Task("AppVeyor")	
+	.IsDependentOn("Init")
     .IsDependentOn("Build")
 	.IsDependentOn("PublishTestResults")	
     .IsDependentOn("Pack")
 	.IsDependentOn("HtmlCoverageReport")
 	.IsDependentOn("RunInspectCode")	
-    .IsDependentOn("PublishCoverage");
+    .IsDependentOn("PublishCoverage")
+	.IsDependentOn("ReleaseNotes");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
