@@ -84,6 +84,7 @@ Task("ReleaseNotes")
 	var milestone = AppVeyor.Environment.Repository.Tag.Name;
 	var owner = AppVeyor.Environment.Repository.Name.Split('/')[0];
 	var repo = AppVeyor.Environment.Repository.Name.Split('/')[1];
+	var tag = AppVeyor.Environment.Repository.Tag.Name;
 
 	Context.Information("Creating release notes for Milestone " + milestone);
 	GitReleaseManagerCreate(gitUser, gitPassword, owner, repo, new GitReleaseManagerCreateSettings {
@@ -91,11 +92,11 @@ Task("ReleaseNotes")
 		Prerelease        = preRelease
 	});
 
-	Context.Information("Publishing Release Notes for Tag " + AppVeyor.Environment.Repository.Tag.Name);
-	GitReleaseManagerPublish(gitUser, gitPassword, gitOwner, AppVeyor.Environment.Repository.Name, AppVeyor.Environment.Repository.Tag.Name);
+	Context.Information("Publishing Release Notes for Tag " + tag);
+	GitReleaseManagerPublish(gitUser, gitPassword, owner, repo, tag);
 
 	Context.Information("Closing Milestone " + milestone);
-	GitReleaseManagerClose(gitUser, gitPassword, gitOwner, AppVeyor.Environment.Repository.Name, milestone);
+	GitReleaseManagerClose(gitUser, gitPassword, owner, repo, milestone);
 });
 
 Task("Restore")
