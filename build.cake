@@ -77,21 +77,25 @@ Task("Clean")
 
 Task("ReleaseNotes")
     .IsDependentOn("Clean")    
-	.WithCriteria(() => AppVeyor.IsRunningOnAppVeyor /* && AppVeyor.Environment.Repository.Tag.IsTag && AppVeyor.Environment.Repository.Branch == "master" */)
+	.WithCriteria(() => AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Tag.IsTag && AppVeyor.Environment.Repository.Branch == "master")
     .Does(() =>
 {	
 	var preRelease = preReleaseSuffix != null;
-	var milestone = "1.1.0"; // AppVeyor.Environment.Repository.Tag.Name;
+	var milestone = AppVeyor.Environment.Repository.Tag.Name;
 	var owner = AppVeyor.Environment.Repository.Name.Split('/')[0];
 	var repo = AppVeyor.Environment.Repository.Name.Split('/')[1];
 
+	Context.Information("Creating release notes for Milestone " + milestone);
 	GitReleaseManagerCreate(gitUser, gitPassword, owner, repo, new GitReleaseManagerCreateSettings {
 		Milestone         = milestone,
 		Prerelease        = preRelease
 	});
 
-	// GitReleaseManagerPublish(gitUser, gitPassword, gitOwner, AppVeyor.Environment.Repository.Name, AppVeyor.Environment.Repository.Tag.Name);
-	// GitReleaseManagerClose(gitUser, gitPassword, gitOwner, AppVeyor.Environment.Repository.Name, milestone);
+	Context.Information("Publishing Release Notes for Tag " + AppVeyor.Environment.Repository.Tag.Name);
+	GitReleaseManagerPublish(gitUser, gitPassword, gitOwner, AppVeyor.Environment.Repository.Name, AppVeyor.Environment.Repository.Tag.Name);
+
+	Context.Information("Closing Milestone " + milestone);
+	GitReleaseManagerClose(gitUser, gitPassword, gitOwner, AppVeyor.Environment.Repository.Name, milestone);
 });
 
 Task("Restore")
