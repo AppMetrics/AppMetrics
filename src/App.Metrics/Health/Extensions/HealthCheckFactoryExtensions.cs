@@ -112,7 +112,7 @@ namespace App.Metrics
                     return Task.FromResult(
                         currentSize <= thresholdBytes
                             ? HealthCheckResult.Healthy($"OK. {thresholdBytes} bytes")
-                            : HealthCheckResult.Unhealthy($"FAILED. {currentSize} > {thresholdBytes}"));
+                            : HealthCheckResult.Unhealthy($"FAILED. {currentSize} > {thresholdBytes} bytes"));
                 });
 
             return factory;
@@ -139,7 +139,7 @@ namespace App.Metrics
                     return Task.FromResult(
                         currentSize <= thresholdBytes
                             ? HealthCheckResult.Healthy($"OK. {thresholdBytes} bytes")
-                            : HealthCheckResult.Unhealthy($"FAILED. {currentSize} > {thresholdBytes}"));
+                            : HealthCheckResult.Unhealthy($"FAILED. {currentSize} > {thresholdBytes} bytes"));
                 });
 
             return factory;
