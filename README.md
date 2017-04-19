@@ -106,7 +106,7 @@ To run, fron the solution's root:
 
 You'll then be prompted to choose a benchmark to run which will output a markdown file with the result in directory `.\benchmarks\App.Metrics.Benchmarks.Runner\BenchmarkDotNet.Artifacts\results`.
 
-Alternatively, you can run the same benchmarks from visual studio using XUnit in the [benchmark project](https://github.com/alhardy/AppMetrics/tree/master/benchmarks/App.Metrics.Benchmarks).
+Alternatively, you can run the same benchmarks from visual studio using xUnit.net in the [benchmark project](https://github.com/alhardy/AppMetrics/tree/master/benchmarks/App.Metrics.Benchmarks).
 
 ## Contributing
 
@@ -117,7 +117,7 @@ See the [contribution guidlines](CONTRIBUTING.md) for details.
 * [ASP.NET Core](https://github.com/aspnet)
 * [DocFX](https://dotnet.github.io/docfx/)
 * [Fluent Assertions](http://www.fluentassertions.com/)
-* [XUnit](https://xunit.github.io/)
+* [xUnit.net](https://xunit.github.io/)
 * [StyleCopAnalyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers)
 * [Cake](https://github.com/cake-build/cake)
 * [OpenCover](https://github.com/OpenCover/opencover)
