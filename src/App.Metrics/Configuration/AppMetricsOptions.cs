@@ -33,7 +33,8 @@ namespace App.Metrics.Configuration
         public GlobalMetricTags GlobalTags { get; set; } = new GlobalMetricTags();
 
         /// <summary>
-        ///     Gets or sets a value indicating whether [metrics enabled].
+        ///     Gets or sets a value indicating whether [metrics tracking enabled]. This will also avoid registering all metric
+        ///     tracking middleware if using App.Metrics.Extensions.Middleware.
         /// </summary>
         /// <remarks>If disabled no metrics will be recorded or stored in memory</remarks>
         /// <value>

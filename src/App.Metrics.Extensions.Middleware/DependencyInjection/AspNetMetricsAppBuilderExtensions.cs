@@ -60,7 +60,7 @@ namespace Microsoft.AspNetCore.Builder
                 app.UseMiddleware<MetricsEndpointMiddleware>();
             }
 
-            if (appMetricsOptions.MetricsEnabled)
+            if (appMetricsOptions.MetricsEnabled && aspNetMetricsOptions.DefaultTrackingEnabled)
             {
                 app.UseMiddleware<ActiveRequestCounterEndpointMiddleware>();
                 app.UseMiddleware<ErrorRequestMeterMiddleware>();
@@ -68,6 +68,10 @@ namespace Microsoft.AspNetCore.Builder
                 app.UseMiddleware<OAuthTrackingMiddleware>();
                 app.UseMiddleware<PostAndPutRequestSizeHistogramMiddleware>();
                 app.UseMiddleware<RequestTimerMiddleware>();
+            }
+
+            if (appMetricsOptions.MetricsEnabled && aspNetMetricsOptions.ApdexTrackingEnabled)
+            {
                 app.UseMiddleware<ApdexMiddleware>();
             }
 
