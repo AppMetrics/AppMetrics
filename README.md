@@ -115,6 +115,7 @@ See the [contribution guidlines](CONTRIBUTING.md) for details.
 ## Acknowledgements
 
 * [ASP.NET Core](https://github.com/aspnet)
+* [Grafana](https://grafana.com/)
 * [DocFX](https://dotnet.github.io/docfx/)
 * [Fluent Assertions](http://www.fluentassertions.com/)
 * [XUnit](https://xunit.github.io/)
