@@ -97,7 +97,7 @@ Run `build.sh` from the repositories root directory. Code Coverage reports are n
 
 ## How to run benchmarks
 
-App.Metrics includes bencmarking using [BenchmarkDotNet](https://github.com/dotnet/BenchmarkDotNet). You can find the benchmark results [here](https://github.com/alhardy/AppMetrics/tree/master/benchmarks/App.Metrics.Benchmarks.Runner/BenchmarkDotNet.Artifacts/results).
+App.Metrics includes benchmarking using [BenchmarkDotNet](https://github.com/dotnet/BenchmarkDotNet). You can find the benchmark results [here](https://github.com/alhardy/AppMetrics/tree/master/benchmarks/App.Metrics.Benchmarks.Runner/BenchmarkDotNet.Artifacts/results).
 
 To run, fron the solution's root:
 
@@ -108,7 +108,7 @@ To run, fron the solution's root:
 
 You'll then be prompted to choose a benchmark to run which will output a markdown file with the result in directory `.\benchmarks\App.Metrics.Benchmarks.Runner\BenchmarkDotNet.Artifacts\results`.
 
-Alternatively, you can run the same benchmarks from visual studio using XUnit in the [benchmark project](https://github.com/alhardy/AppMetrics/tree/master/benchmarks/App.Metrics.Benchmarks).
+Alternatively, you can run the same benchmarks from visual studio using xUnit.net in the [benchmark project](https://github.com/alhardy/AppMetrics/tree/master/benchmarks/App.Metrics.Benchmarks).
 
 ## Contributing
 
@@ -120,7 +120,7 @@ See the [contribution guidlines](CONTRIBUTING.md) for details.
 * [Grafana](https://grafana.com/)
 * [DocFX](https://dotnet.github.io/docfx/)
 * [Fluent Assertions](http://www.fluentassertions.com/)
-* [XUnit](https://xunit.github.io/)
+* [xUnit.net](https://xunit.github.io/)
 * [StyleCopAnalyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers)
 * [Cake](https://github.com/cake-build/cake)
 * [OpenCover](https://github.com/OpenCover/opencover)
