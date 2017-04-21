@@ -2,11 +2,16 @@ version: 1.0.{build}
 image: Visual Studio 2017
 environment:
   COVERALLS_REPO_TOKEN:
-    secure: /LGVRUGY8A52YwD3XDfKRVNoMh8eaJQ9hNRe+8Yx5i9n57qclPrhrze4VoDqs2uV  
+    secure: /LGVRUGY8A52YwD3XDfKRVNoMh8eaJQ9hNRe+8Yx5i9n57qclPrhrze4VoDqs2uV
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   CoverWith: OpenCover
-  PreReleaseSuffix: alpha
+  GitUser:
+    secure: zAdAOUUof3XGDsdOBRYg7J7wZS44iL4VjI/MVGw+JnU=
+  GitOwner:
+    secure: n6W5JZ7Q/xfZC7b2k3+ORA==
+  GitPassword:
+    secure: G1CZ0EzJTYjH60jzYYaitkieeslue7VdeeVW4vYS+msXQ9gSCf7KstBKEbXdI+W2
 build_script:
 - ps: .\build.ps1 -Target AppVeyor
 test: off

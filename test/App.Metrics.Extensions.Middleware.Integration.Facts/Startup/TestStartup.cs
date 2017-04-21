@@ -79,7 +79,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
                     options =>
                     {
                         options.DefaultContextLabel = appMetricsOptions.DefaultContextLabel;
-                        options.MetricsEnabled = appMetricsOptions.MetricsEnabled;
+                        options.MetricsEnabled = appMetricsOptions.MetricsEnabled;                        
                     })
                 .AddJsonSerialization()
                 .AddDefaultReservoir(() => new DefaultAlgorithmRReservoir(1028))
@@ -113,6 +113,8 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
 
                         options.IgnoredRoutesRegexPatterns = aspNetMetricsOptions.IgnoredRoutesRegexPatterns;
                         options.IgnoredHttpStatusCodes = aspNetMetricsOptions.IgnoredHttpStatusCodes;
+
+                        options.DefaultTrackingEnabled = aspNetMetricsOptions.DefaultTrackingEnabled;
                     });
 
             if (filter != null)

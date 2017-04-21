@@ -71,6 +71,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sanbox", "Sanbox", "{F1ECA1
 		sandbox\generic_grafana_dashboard_demo.gif = sandbox\generic_grafana_dashboard_demo.gif
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{07876CE3-350D-45E9-8BAD-89D35A3E1C58}"
+	ProjectSection(SolutionItems) = preProject
+		build\common.props = build\common.props
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -155,5 +160,6 @@ Global
 		{3B3721C0-41F4-48D5-92AC-0AE97D94031D} = {31A4DDB1-952E-4EED-96EF-29C669279A86}
 		{77C04C92-E5B0-4C44-A4CC-EF3E19C7FEE8} = {C0BC96C5-46E1-4323-9C5D-58D9A96549CD}
 		{F1ECA197-26EE-4A52-8026-D906C14685A2} = {31A4DDB1-952E-4EED-96EF-29C669279A86}
+		{07876CE3-350D-45E9-8BAD-89D35A3E1C58} = {31A4DDB1-952E-4EED-96EF-29C669279A86}
 	EndGlobalSection
 EndGlobal
