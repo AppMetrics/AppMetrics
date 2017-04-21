@@ -24,6 +24,8 @@ For metric reporting capabilities see:
 - [Console & Text File Reporters](https://github.com/alhardy/AppMetrics.Reporters)
 - [InfluxDB Extensions](https://github.com/alhardy/AppMetrics.Extensions.InfluxDB)
 - [Elasticsearch Extensions](https://github.com/alhardy/AppMetrics.Extensions.Elasticsearch)
+- [Prometheus Extensions](https://github.com/alhardy/AppMetrics.Extensions.Prometheus)
+- [Graphite Extensions](https://github.com/alhardy/AppMetrics.Extensions.Graphite) - *Work in Progress*
 
 `App.Metrics` includes an Exponentially Forward Decaying, Sliding Window and Algorithm R reservoir implementations, for additional reservoir sampling see the [reservoir repo](https://github.com/alhardy/AppMetrics.Reservoirs). For more details on reservoir sampling see the [docs](https://alhardy.github.io/app-metrics-docs/getting-started/sampling/index.html).
 
