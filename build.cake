@@ -77,7 +77,7 @@ Task("Clean")
 
 Task("ReleaseNotes")
     .IsDependentOn("Clean")    
-	.WithCriteria(() => AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Tag.IsTag && AppVeyor.Environment.Repository.Branch == "master")
+	.WithCriteria(() => AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Tag.IsTag)
     .Does(() =>
 {	
 	var preRelease = preReleaseSuffix != null;
