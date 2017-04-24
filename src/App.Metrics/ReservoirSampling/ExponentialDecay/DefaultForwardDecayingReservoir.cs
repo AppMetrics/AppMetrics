@@ -22,12 +22,12 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
     ///     <see href="https://en.wikipedia.org/wiki/Quantile">quantiles</see> which are representative of (roughly) the last
     ///     five minutes of data.
     ///     <p>
-    ///         The resevoir is produced by using a
-    ///         <see href="http://dimacs.rutgers.edu/~graham/pubs/papers/fwddecay.pdf">forward-decaying resevoir</see> with an
+    ///         The reservoir is produced by using a
+    ///         <see href="http://dimacs.rutgers.edu/~graham/pubs/papers/fwddecay.pdf">forward-decaying reservoir</see> with an
     ///         exponential weighty towards recent data unlike a Uniform Reservoir which does not provide a sense of recency.
     ///     </p>
     ///     <p>
-    ///         This sampling resevoir can be used when you are interested in recent changes to the distribution of data rather
+    ///         This sampling reservoir can be used when you are interested in recent changes to the distribution of data rather
     ///         than a median on the lifetime of the histgram.
     ///     </p>
     /// </summary>

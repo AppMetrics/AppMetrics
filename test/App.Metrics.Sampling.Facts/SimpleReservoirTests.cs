@@ -16,14 +16,14 @@ using Xunit;
 
 namespace App.Metrics.Sampling.Facts
 {
-    public class SimpleResevoirTests
+    public class SimpleReservoirTests
     {
         private readonly IEnumerable<long> _samples;
 
-        public SimpleResevoirTests() { _samples = new long[] { 0, 4, 1, 5 }.AsEnumerable(); }
+        public SimpleReservoirTests() { _samples = new long[] { 0, 4, 1, 5 }.AsEnumerable(); }
 
         [Fact]
-        public void ExponentialDecayingResevoir()
+        public void ExponentialDecayingReservoir()
         {
             var reservoir = new DefaultForwardDecayingReservoir(
                 Constants.ReservoirSampling.DefaultSampleSize,
@@ -40,7 +40,7 @@ namespace App.Metrics.Sampling.Facts
         }
 
         [Fact]
-        public void SlidingWindowResevoir()
+        public void SlidingWindowReservoir()
         {
             var reservoir = new DefaultSlidingWindowReservoir(Constants.ReservoirSampling.DefaultSampleSize);
 
@@ -55,7 +55,7 @@ namespace App.Metrics.Sampling.Facts
         }
 
         [Fact]
-        public void UniformResevoir()
+        public void UniformReservoir()
         {
             var reservoir = new DefaultAlgorithmRReservoir(Constants.ReservoirSampling.DefaultSampleSize);
 
