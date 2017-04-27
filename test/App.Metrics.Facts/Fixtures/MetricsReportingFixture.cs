@@ -1,21 +1,13 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-using System;
-using System.Threading;
-using App.Metrics.Abstractions.Filtering;
+﻿using System;
 using App.Metrics.Configuration;
-using App.Metrics.Core;
-using App.Metrics.Core.Abstractions;
-using App.Metrics.Core.Interfaces;
 using App.Metrics.Core.Internal;
 using App.Metrics.Core.Options;
 using App.Metrics.Filtering;
-using App.Metrics.Health.Abstractions;
 using App.Metrics.Health.Internal;
 using App.Metrics.Infrastructure;
 using App.Metrics.Registry.Abstractions;
 using App.Metrics.Registry.Internal;
+using App.Metrics.Reporting.Internal;
 using App.Metrics.Tagging;
 using Microsoft.Extensions.Logging;
 
@@ -32,26 +24,31 @@ namespace App.Metrics.Facts.Fixtures
             var clock = new TestClock();
 
             IMetricContextRegistry NewContextRegistry(string name) => new DefaultMetricContextRegistry(name);
-
-            var registry = new DefaultMetricsRegistry(_loggerFactory, options, clock, new EnvironmentInfoProvider(), NewContextRegistry);
-            var healthCheckFactory = new HealthCheckFactory(healthFactoryLogger);
-            var metricBuilderFactory = new DefaultMetricsBuilderFactory();
-            var filter = new DefaultMetricsFilter();
-            var dataManager = new DefaultMetricValuesProvider(
-                filter,
-                registry);
+            DefaultMetrics defaultMetrics = null;
+            ReportGenerator = new DefaultReportGenerator(new AppMetricsOptions(), new LoggerFactory());
 
 
-            var metricsManagerFactory = new DefaultMeasureMetricsProvider(registry, metricBuilderFactory, clock);
-            var metricsManagerAdvancedFactory = new DefaultMetricsProvider(registry, metricBuilderFactory, clock);
-            var metricsManager = new DefaultMetricsManager(registry, _loggerFactory.CreateLogger<DefaultMetricsManager>());
-
-            var samplesRun = false;
-            
             Metrics = () =>
             {
-                var healthManager = new DefaultHealthProvider(new Lazy<IMetrics>(Metrics), _loggerFactory.CreateLogger<DefaultHealthProvider>(), healthCheckFactory);
-                var defaultMetrics = new DefaultMetrics(
+                var registry = new DefaultMetricsRegistry(_loggerFactory, options, clock, new EnvironmentInfoProvider(), NewContextRegistry);
+                var healthCheckFactory = new HealthCheckFactory(healthFactoryLogger);
+                var metricBuilderFactory = new DefaultMetricsBuilderFactory();
+                var filter = new DefaultMetricsFilter();
+                var dataManager = new DefaultMetricValuesProvider(
+                    filter,
+                    registry);
+
+                var metricsManagerFactory = new DefaultMeasureMetricsProvider(registry, metricBuilderFactory, clock);
+                var metricsManagerAdvancedFactory = new DefaultMetricsProvider(registry, metricBuilderFactory, clock);
+                var metricsManager = new DefaultMetricsManager(registry, _loggerFactory.CreateLogger<DefaultMetricsManager>());
+
+
+                var healthManager = new DefaultHealthProvider(
+                    new Lazy<IMetrics>(Metrics),
+                    _loggerFactory.CreateLogger<DefaultHealthProvider>(),
+                    healthCheckFactory);
+
+                defaultMetrics = new DefaultMetrics(
                     clock,
                     filter,
                     metricsManagerFactory,
@@ -61,11 +58,7 @@ namespace App.Metrics.Facts.Fixtures
                     metricsManager,
                     healthManager);
 
-                if (!samplesRun)
-                {
-                    RecordSomeMetrics(defaultMetrics);
-                    samplesRun = true;
-                }
+                RecordSomeMetrics(defaultMetrics);
 
                 return defaultMetrics;
             };
@@ -74,11 +67,11 @@ namespace App.Metrics.Facts.Fixtures
 
         public Func<IMetrics> Metrics { get; }
 
+        public DefaultReportGenerator ReportGenerator { get; }
+
         public void Dispose() { Dispose(true); }
 
-        protected virtual void Dispose(bool disposing)
-        {
-        }
+        protected virtual void Dispose(bool disposing) { }
 
         private void RecordSomeMetrics(IMetrics metrics)
         {
@@ -99,12 +92,14 @@ namespace App.Metrics.Facts.Fixtures
             var timerOptions = new TimerOptions
                                {
                                    Name = "test_timer",
+                                   Reservoir = () => new CustomReservoir(),
                                    MeasurementUnit = Unit.Requests
                                };
 
             var histogramOptions = new HistogramOptions
                                    {
                                        Name = "test_histogram",
+                                       Reservoir = () => new CustomReservoir(),
                                        MeasurementUnit = Unit.Requests
                                    };
 
@@ -112,7 +107,6 @@ namespace App.Metrics.Facts.Fixtures
                                {
                                    Name = "test_gauge"
                                };
-
 
             metrics.Measure.Counter.Increment(counterOptions);
             metrics.Measure.Meter.Mark(meterOptions);
