@@ -16,14 +16,14 @@ using Xunit;
 
 namespace App.Metrics.Sampling.Facts
 {
-    public class SimpleResevoirTests
+    public class SimpleReservoirTests
     {
         private readonly IEnumerable<long> _samples;
 
-        public SimpleResevoirTests() { _samples = new long[] { 0, 4, 1, 5 }.AsEnumerable(); }
+        public SimpleReservoirTests() { _samples = new long[] { 0, 4, 1, 5 }.AsEnumerable(); }
 
         [Fact]
-        public void ExponentialDecayingResevoir()
+        public void ExponentialDecayingReservoir()
         {
             var reservoir = new DefaultForwardDecayingReservoir(
                 Constants.ReservoirSampling.DefaultSampleSize,
@@ -40,7 +40,7 @@ namespace App.Metrics.Sampling.Facts
         }
 
         [Fact]
-        public void SlidingWindowResevoir()
+        public void SlidingWindowReservoir()
         {
             var reservoir = new DefaultSlidingWindowReservoir(Constants.ReservoirSampling.DefaultSampleSize);
 
@@ -55,7 +55,7 @@ namespace App.Metrics.Sampling.Facts
         }
 
         [Fact]
-        public void UniformResevoir()
+        public void UniformReservoir()
         {
             var reservoir = new DefaultAlgorithmRReservoir(Constants.ReservoirSampling.DefaultSampleSize);
 
@@ -76,7 +76,7 @@ namespace App.Metrics.Sampling.Facts
 
             if (snapshot is WeightedSnapshot)
             {
-                snapshot.Mean.Should().Be(2.5);
+                snapshot.Mean.Should().BeApproximately(2.5, 1);
                 snapshot.Median.Should().Be(4.0);
                 snapshot.Percentile75.Should().Be(5.0);
             }
@@ -88,10 +88,10 @@ namespace App.Metrics.Sampling.Facts
             }
 
             snapshot.Min.Should().Be(0);
-            snapshot.Percentile95.Should().Be(5.0);
-            snapshot.Percentile98.Should().Be(5.0);
-            snapshot.Percentile99.Should().Be(5.0);
-            snapshot.Percentile999.Should().Be(5.0);
+            snapshot.Percentile95.Should().BeApproximately(5.0, 1);
+            snapshot.Percentile98.Should().BeApproximately(5.0, 1);
+            snapshot.Percentile99.Should().BeApproximately(5.0, 1);
+            snapshot.Percentile999.Should().BeApproximately(5.0, 1);
             snapshot.Size.Should().Be(4);
             snapshot.StdDev.Should().BeApproximately(2.3, 1);
         }

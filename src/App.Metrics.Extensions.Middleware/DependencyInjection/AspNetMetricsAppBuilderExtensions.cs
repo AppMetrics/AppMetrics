@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Configuration;
 using App.Metrics.DependencyInjection.Internal;
@@ -106,7 +107,7 @@ namespace Microsoft.AspNetCore.Builder
             var metrics = app.ApplicationServices.GetRequiredService<IMetrics>();
             var reporter = reportFactory.CreateReporter();
 
-            lifetime.ApplicationStarted.Register(() => { reporter.RunReports(metrics, lifetime.ApplicationStopping); });
+            lifetime.ApplicationStarted.Register(() => { Task.Run(() => reporter.RunReports(metrics, lifetime.ApplicationStopping), lifetime.ApplicationStopping); });
 
             return app;
         }

@@ -6,12 +6,13 @@ environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   CoverWith: OpenCover
+  PreReleaseSuffix: stable
   GitUser:
     secure: zAdAOUUof3XGDsdOBRYg7J7wZS44iL4VjI/MVGw+JnU=
   GitOwner:
     secure: n6W5JZ7Q/xfZC7b2k3+ORA==
   GitPassword:
-    secure: G1CZ0EzJTYjH60jzYYaitkieeslue7VdeeVW4vYS+msXQ9gSCf7KstBKEbXdI+W2
+    secure: fHangGPAk14u3V1eP3kg5EdekQoKdOsKC0F/A1mvh9IODHCZ92FGjfWb0U2aQ8bu
 build_script:
 - ps: .\build.ps1 -Target AppVeyor
 test: off

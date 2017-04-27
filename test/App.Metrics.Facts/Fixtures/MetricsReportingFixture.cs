@@ -1,11 +1,5 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-using System;
-using System.Threading;
-using App.Metrics.Abstractions.Filtering;
+﻿using System;
 using App.Metrics.Configuration;
-using App.Metrics.Core;
 using App.Metrics.Core.Internal;
 using App.Metrics.Core.Options;
 using App.Metrics.Filtering;
@@ -13,6 +7,7 @@ using App.Metrics.Health.Internal;
 using App.Metrics.Infrastructure;
 using App.Metrics.Registry.Abstractions;
 using App.Metrics.Registry.Internal;
+using App.Metrics.Reporting.Internal;
 using App.Metrics.Tagging;
 using Microsoft.Extensions.Logging;
 
@@ -29,54 +24,56 @@ namespace App.Metrics.Facts.Fixtures
             var clock = new TestClock();
 
             IMetricContextRegistry NewContextRegistry(string name) => new DefaultMetricContextRegistry(name);
+            DefaultMetrics defaultMetrics = null;
+            ReportGenerator = new DefaultReportGenerator(new AppMetricsOptions(), new LoggerFactory());
 
-            var registry = new DefaultMetricsRegistry(_loggerFactory, options, clock, new EnvironmentInfoProvider(), NewContextRegistry);
-            var healthCheckFactory = new HealthCheckFactory(healthFactoryLogger);
-            var metricBuilderFactory = new DefaultMetricsBuilderFactory();
-            var filter = new DefaultMetricsFilter();            
-            var healthManager = new DefaultHealthProvider(new Lazy<IMetrics>(() => Metrics), _loggerFactory.CreateLogger<DefaultHealthProvider>(), healthCheckFactory);
-            var dataManager = new DefaultMetricValuesProvider(
-                filter,
-                registry);
 
-            var metricsManagerFactory = new DefaultMeasureMetricsProvider(registry, metricBuilderFactory, clock);
-            var metricsManagerAdvancedFactory = new DefaultMetricsProvider(registry, metricBuilderFactory, clock);
-            var metricsManager = new DefaultMetricsManager(registry, _loggerFactory.CreateLogger<DefaultMetricsManager>());
+            Metrics = () =>
+            {
+                var registry = new DefaultMetricsRegistry(_loggerFactory, options, clock, new EnvironmentInfoProvider(), NewContextRegistry);
+                var healthCheckFactory = new HealthCheckFactory(healthFactoryLogger);
+                var metricBuilderFactory = new DefaultMetricsBuilderFactory();
+                var filter = new DefaultMetricsFilter();
+                var dataManager = new DefaultMetricValuesProvider(
+                    filter,
+                    registry);
 
-            Metrics = new DefaultMetrics(
-                clock,
-                filter,
-                metricsManagerFactory,
-                metricBuilderFactory,
-                metricsManagerAdvancedFactory,
-                dataManager,
-                metricsManager,
-                healthManager);
+                var metricsManagerFactory = new DefaultMeasureMetricsProvider(registry, metricBuilderFactory, clock);
+                var metricsManagerAdvancedFactory = new DefaultMetricsProvider(registry, metricBuilderFactory, clock);
+                var metricsManager = new DefaultMetricsManager(registry, _loggerFactory.CreateLogger<DefaultMetricsManager>());
 
-            RecordSomeMetrics();
+
+                var healthManager = new DefaultHealthProvider(
+                    new Lazy<IMetrics>(Metrics),
+                    _loggerFactory.CreateLogger<DefaultHealthProvider>(),
+                    healthCheckFactory);
+
+                defaultMetrics = new DefaultMetrics(
+                    clock,
+                    filter,
+                    metricsManagerFactory,
+                    metricBuilderFactory,
+                    metricsManagerAdvancedFactory,
+                    dataManager,
+                    metricsManager,
+                    healthManager);
+
+                RecordSomeMetrics(defaultMetrics);
+
+                return defaultMetrics;
+            };
         }
 
-        public Func<IMetrics, MetricsDataValueSource> CurrentData =>
-            ctx => Metrics.Snapshot.Get();
 
-        public Func<IMetrics, IFilterMetrics, MetricsDataValueSource> CurrentDataWithFilter
-            => (ctx, filter) => Metrics.Snapshot.Get(filter);
+        public Func<IMetrics> Metrics { get; }
 
-        public IMetrics Metrics { get; }
+        public DefaultReportGenerator ReportGenerator { get; }
 
         public void Dispose() { Dispose(true); }
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposing)
-            {
-                return;
-            }
+        protected virtual void Dispose(bool disposing) { }
 
-            Metrics?.Manage.Reset();
-        }
-
-        private void RecordSomeMetrics()
+        private void RecordSomeMetrics(IMetrics metrics)
         {
             var counterOptions = new CounterOptions
                                  {
@@ -95,12 +92,14 @@ namespace App.Metrics.Facts.Fixtures
             var timerOptions = new TimerOptions
                                {
                                    Name = "test_timer",
+                                   Reservoir = () => new CustomReservoir(),
                                    MeasurementUnit = Unit.Requests
                                };
 
             var histogramOptions = new HistogramOptions
                                    {
                                        Name = "test_histogram",
+                                       Reservoir = () => new CustomReservoir(),
                                        MeasurementUnit = Unit.Requests
                                    };
 
@@ -109,11 +108,11 @@ namespace App.Metrics.Facts.Fixtures
                                    Name = "test_gauge"
                                };
 
-            Metrics.Measure.Counter.Increment(counterOptions);
-            Metrics.Measure.Meter.Mark(meterOptions);
-            Metrics.Measure.Timer.Time(timerOptions, () => Metrics.Clock.Advance(TimeUnit.Milliseconds, 10));
-            Metrics.Measure.Histogram.Update(histogramOptions, 5);
-            Metrics.Measure.Gauge.SetValue(gaugeOptions, () => 8);
+            metrics.Measure.Counter.Increment(counterOptions);
+            metrics.Measure.Meter.Mark(meterOptions);
+            metrics.Measure.Timer.Time(timerOptions, () => metrics.Clock.Advance(TimeUnit.Milliseconds, 10));
+            metrics.Measure.Histogram.Update(histogramOptions, 5);
+            metrics.Measure.Gauge.SetValue(gaugeOptions, () => 8);
         }
     }
 }

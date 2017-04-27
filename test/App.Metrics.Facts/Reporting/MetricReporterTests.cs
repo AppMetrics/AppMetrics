@@ -26,20 +26,16 @@ using Xunit;
 
 namespace App.Metrics.Facts.Reporting
 {
-    public class MetricReporterTests
+    public class MetricReporterTests : IClassFixture<MetricsReportingFixture>
     {
         private const string MultidimensionalMetricNameSuffix = "|host:server1,env:staging";
         private readonly IReservoir _defaultReservoir = new DefaultForwardDecayingReservoir();
-        private readonly IMetrics _metrics;
-        private readonly DefaultReportGenerator _reportGenerator;
         private readonly MetricTags _tags = new MetricTags(new[] { "host", "env" }, new[] { "server1", "staging" });
+        private readonly MetricsReportingFixture _fixture;
 
-        public MetricReporterTests()
+        public MetricReporterTests(MetricsReportingFixture fixture)
         {
-            // DEVNOTE: Don't want to share metrics between tests
-            var fixture = new MetricsReportingFixture();
-            _metrics = fixture.Metrics;
-            _reportGenerator = new DefaultReportGenerator(new AppMetricsOptions(), new LoggerFactory());
+            _fixture = fixture;
         }
 
         [Fact]
@@ -52,7 +48,7 @@ namespace App.Metrics.Facts.Reporting
             var filter = new DefaultMetricsFilter().WithEnvironmentInfo(false);
 
             // Act
-            await _reportGenerator.GenerateAsync(reporter, _metrics, filter, token);
+            await _fixture.ReportGenerator.GenerateAsync(reporter, _fixture.Metrics(), filter, token);
             var payload = payloadBuilder.PayloadFormatted();
 
             // Assert
@@ -62,9 +58,9 @@ namespace App.Metrics.Facts.Reporting
                         "application__test_gauge mtype=gauge value=8" + Environment.NewLine +
                         "application__test_histogram mtype=histogram samples=1i last=5 count.hist=1i sum=5 min=5 max=5 mean=5 median=5 stddev=0 p999=5 p99=5 p98=5 p95=5 p75=5" +
                         Environment.NewLine +
-                        "application__test_meter tag2=value mtype=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=6000" +
+                        "application__test_meter tag2=value mtype=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=3000" +
                         Environment.NewLine +
-                        "application__test_timer mtype=timer count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=6000 samples=1i last=10 count.hist=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 p75=10" +
+                        "application__test_timer mtype=timer count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=3000 samples=1i last=10 count.hist=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 p75=10" +
                         Environment.NewLine);
         }
 
@@ -82,7 +78,7 @@ namespace App.Metrics.Facts.Reporting
             var filter = new DefaultMetricsFilter().WithEnvironmentInfo(false);
 
             // Act
-            await _reportGenerator.GenerateAsync(reporter, _metrics, filter, token);
+            await _fixture.ReportGenerator.GenerateAsync(reporter, _fixture.Metrics(), filter, token);
             var payload = payloadBuilder.PayloadFormatted();
 
             // Assert
@@ -92,9 +88,9 @@ namespace App.Metrics.Facts.Reporting
                         "application__test_gauge mtype=gauge value=8" + Environment.NewLine +
                         "application__test_histogram mtype=histogram samples=1i last=5 count.hist=1i sum=5 min=5 max=5 mean=5 median=5 stddev=0 p999=5 p99=5 p98=5 p95=5 75th_percentile=5" +
                         Environment.NewLine +
-                        "application__test_meter tag2=value mtype=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=6000" +
+                        "application__test_meter tag2=value mtype=meter count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=3000" +
                         Environment.NewLine +
-                        "application__test_timer mtype=timer count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=6000 samples=1i last=10 count.hist=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 75th_percentile=10" +
+                        "application__test_timer mtype=timer count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=3000 samples=1i last=10 count.hist=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 75th_percentile=10" +
                         Environment.NewLine);
         }
 
@@ -110,7 +106,7 @@ namespace App.Metrics.Facts.Reporting
             var filter = new DefaultMetricsFilter().WithEnvironmentInfo(false);
 
             // Act
-            await _reportGenerator.GenerateAsync(reporter, _metrics, filter, token);
+            await _fixture.ReportGenerator.GenerateAsync(reporter, _fixture.Metrics(), filter, token);
             var payload = payloadBuilder.PayloadFormatted();
 
             // Assert
@@ -120,9 +116,9 @@ namespace App.Metrics.Facts.Reporting
                         "application__test_gauge mtype=gauge value=8" + Environment.NewLine +
                         "application__test_histogram mtype=histogram samples=1i last=5 count.hist=1i sum=5 min=5 max=5 mean=5 median=5 stddev=0 p999=5 p99=5 p98=5 p95=5 p75=5" +
                         Environment.NewLine +
-                        "application__test_meter tag2=value mtype=meter count.meter=1i 1_min_rate=0 rate5m=0 rate15m=0 rate.mean=6000" +
+                        "application__test_meter tag2=value mtype=meter count.meter=1i 1_min_rate=0 rate5m=0 rate15m=0 rate.mean=3000" +
                         Environment.NewLine +
-                        "application__test_timer mtype=timer count.meter=1i 1_min_rate=0 rate5m=0 rate15m=0 rate.mean=6000 samples=1i last=10 count.hist=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 p75=10" +
+                        "application__test_timer mtype=timer count.meter=1i 1_min_rate=0 rate5m=0 rate15m=0 rate.mean=3000 samples=1i last=10 count.hist=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 p75=10" +
                         Environment.NewLine);
         }
 

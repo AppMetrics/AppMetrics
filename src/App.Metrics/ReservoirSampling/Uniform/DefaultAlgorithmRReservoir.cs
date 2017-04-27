@@ -17,7 +17,7 @@ namespace App.Metrics.ReservoirSampling.Uniform
     ///     A histogram with a uniform reservoir produces <see href="https://en.wikipedia.org/wiki/Quantile">quantiles</see>
     ///     which are valid for the entirely of the histogram’s lifetime.
     ///     <p>
-    ///         This sampling resevoir can be used when you are interested in long-term measurements, it does not offer a sence
+    ///         This sampling reservoir can be used when you are interested in long-term measurements, it does not offer a sence
     ///         of recency.
     ///     </p>
     ///     <p>
@@ -26,7 +26,7 @@ namespace App.Metrics.ReservoirSampling.Uniform
     /// </summary>
     /// <remarks>
     ///     Uses <see href="http://www.cs.umd.edu/~samir/498/vitter.pdf">Vitter's Algorithm R</see> for
-    ///     <see cref="IReservoir">resevoir</see> sampling
+    ///     <see cref="IReservoir">reservoir</see> sampling
     /// </remarks>
     /// <seealso cref="IReservoir" />
     public sealed class DefaultAlgorithmRReservoir : IReservoir

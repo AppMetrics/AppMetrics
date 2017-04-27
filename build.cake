@@ -108,25 +108,24 @@ Task("Restore")
         Sources = new [] { "https://api.nuget.org/v3/index.json", "https://www.myget.org/F/alhardy/api/v3/index.json" }
     };
 
-	var projects = solution.GetProjects();
-
-	foreach(var project in projects)
-	{
-	    DotNetCoreRestore(project.Path.ToString(), settings);
-    }    
+	DotNetCoreRestore(solutionFile, settings);
 });
 
 Task("Build")    
     .IsDependentOn("Restore")
     .Does(() =>
 {	
-	var projects = solution.GetProjects();
-    
 	var settings = new DotNetCoreBuildSettings  { Configuration = configuration };
 
-    foreach(var project in projects)
-    {		
-		if (!IsRunningOnWindows())
+	if (IsRunningOnWindows())
+	{
+		DotNetCoreBuild(solutionFile, settings);
+	}
+	else
+	{
+		var projects = solution.GetProjects();
+
+		foreach(var project in projects)
         {
 			// Ignore Net452 on non-windows environments
 			if (project.Path.ToString().Contains("Net452"))
@@ -146,10 +145,11 @@ Task("Build")
 			}
 
 			Context.Information("Building as " + settings.Framework + ": " +  project.Path.ToString());
-        }	 
 
-        DotNetCoreBuild(project.Path.ToString(), settings);
-    }    
+			DotNetCoreBuild(project.Path.ToString(), settings);
+		}
+
+	}
 });
 
 Task("Pack")

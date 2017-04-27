@@ -197,7 +197,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void multidimensional_should_not_share_resevoirs_when_changed_from_default()
+        public void multidimensional_should_not_share_reservoir_when_changed_from_default()
         {
             var timerDef = new TimerOptions
                            {
