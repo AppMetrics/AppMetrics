@@ -30,7 +30,7 @@ namespace App.Metrics.Facts.Reporting
     {
         private const string MultidimensionalMetricNameSuffix = "|host:server1,env:staging";
         private readonly IReservoir _defaultReservoir = new DefaultForwardDecayingReservoir();
-        private readonly IMetrics _metrics;
+        private readonly Func<IMetrics> _metrics;
         private readonly DefaultReportGenerator _reportGenerator;
         private readonly MetricTags _tags = new MetricTags(new[] { "host", "env" }, new[] { "server1", "staging" });
 
@@ -52,7 +52,7 @@ namespace App.Metrics.Facts.Reporting
             var filter = new DefaultMetricsFilter().WithEnvironmentInfo(false);
 
             // Act
-            await _reportGenerator.GenerateAsync(reporter, _metrics, filter, token);
+            await _reportGenerator.GenerateAsync(reporter, _metrics(), filter, token);
             var payload = payloadBuilder.PayloadFormatted();
 
             // Assert
@@ -82,7 +82,7 @@ namespace App.Metrics.Facts.Reporting
             var filter = new DefaultMetricsFilter().WithEnvironmentInfo(false);
 
             // Act
-            await _reportGenerator.GenerateAsync(reporter, _metrics, filter, token);
+            await _reportGenerator.GenerateAsync(reporter, _metrics(), filter, token);
             var payload = payloadBuilder.PayloadFormatted();
 
             // Assert
@@ -110,7 +110,7 @@ namespace App.Metrics.Facts.Reporting
             var filter = new DefaultMetricsFilter().WithEnvironmentInfo(false);
 
             // Act
-            await _reportGenerator.GenerateAsync(reporter, _metrics, filter, token);
+            await _reportGenerator.GenerateAsync(reporter, _metrics(), filter, token);
             var payload = payloadBuilder.PayloadFormatted();
 
             // Assert

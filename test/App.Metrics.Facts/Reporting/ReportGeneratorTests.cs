@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Abstractions.Reporting;
@@ -17,7 +18,7 @@ namespace App.Metrics.Facts.Reporting
 {
     public class ReportGeneratorTests : IClassFixture<MetricsReportingFixture>
     {
-        private readonly IMetrics _metrics;
+        private readonly Func<IMetrics> _metrics;
         private readonly DefaultReportGenerator _reportGenerator;
 
         public ReportGeneratorTests(MetricsReportingFixture fixture)
@@ -34,7 +35,7 @@ namespace App.Metrics.Facts.Reporting
             var token = CancellationToken.None;
             var filter = new DefaultMetricsFilter().WithEnvironmentInfo(false);
 
-            await _reportGenerator.GenerateAsync(metricReporter.Object, _metrics, filter, token);
+            await _reportGenerator.GenerateAsync(metricReporter.Object, _metrics(), filter, token);
 
             metricReporter.Verify(p => p.ReportEnvironment(It.IsAny<EnvironmentInfo>()), Times.Never);
         }
@@ -52,7 +53,7 @@ namespace App.Metrics.Facts.Reporting
             var token = CancellationToken.None;
             var filter = new DefaultMetricsFilter().WithHealthChecks(false);
 
-            await _reportGenerator.GenerateAsync(metricReporter.Object, _metrics, filter, token);
+            await _reportGenerator.GenerateAsync(metricReporter.Object, _metrics(), filter, token);
 
             metricReporter.Verify(
                 p => p.ReportHealth(
@@ -70,7 +71,7 @@ namespace App.Metrics.Facts.Reporting
             metricReporter.Setup(x => x.ReportEnvironment(It.IsAny<EnvironmentInfo>()));
             var token = CancellationToken.None;
 
-            await _reportGenerator.GenerateAsync(metricReporter.Object, _metrics, token);
+            await _reportGenerator.GenerateAsync(metricReporter.Object, _metrics(), token);
 
             metricReporter.Verify(p => p.ReportEnvironment(It.IsAny<EnvironmentInfo>()), Times.Once);
         }
@@ -87,7 +88,7 @@ namespace App.Metrics.Facts.Reporting
                     It.IsAny<IEnumerable<HealthCheck.Result>>()));
             var token = CancellationToken.None;
 
-            await _reportGenerator.GenerateAsync(metricReporter.Object, _metrics, token);
+            await _reportGenerator.GenerateAsync(metricReporter.Object, _metrics(), token);
 
             metricReporter.Verify(
                 p => p.ReportHealth(
@@ -107,7 +108,7 @@ namespace App.Metrics.Facts.Reporting
             metricReporter.Setup(x => x.EndAndFlushReportRunAsync(It.IsAny<IMetrics>())).Returns(Task.FromResult(true));
             var token = CancellationToken.None;
 
-            await _reportGenerator.GenerateAsync(metricReporter.Object, _metrics, token);
+            await _reportGenerator.GenerateAsync(metricReporter.Object, _metrics(), token);
 
             metricReporter.Verify(p => p.StartReportRun(It.IsAny<IMetrics>()), Times.Once);
             metricReporter.Verify(p => p.EndAndFlushReportRunAsync(It.IsAny<IMetrics>()), Times.Once);

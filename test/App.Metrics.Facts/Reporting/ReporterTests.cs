@@ -34,11 +34,11 @@ namespace App.Metrics.Facts.Reporting
             var factory = SetupReportFactory();
             factory.AddProvider(new TestReportProvider(true, TimeSpan.FromMilliseconds(10)));
             var scheduler = new DefaultTaskScheduler();
-            var reporter = new Reporter(new AppMetricsOptions(), factory, _fixture.Metrics, scheduler, _loggerFactory);
+            var reporter = new Reporter(new AppMetricsOptions(), factory, _fixture.Metrics(), scheduler, _loggerFactory);
             var token = new CancellationTokenSource();
             token.CancelAfter(100);
 
-            Action action = () => { reporter.RunReports(_fixture.Metrics, token.Token); };
+            Action action = () => { reporter.RunReports(_fixture.Metrics(), token.Token); };
 
             action.ShouldNotThrow();
         }
@@ -64,7 +64,7 @@ namespace App.Metrics.Facts.Reporting
             {
                 var scheduler = new DefaultTaskScheduler();
                 var factory = SetupReportFactory();
-                var unused = new Reporter(_options, factory, _fixture.Metrics, scheduler, null);
+                var unused = new Reporter(_options, factory, _fixture.Metrics(), scheduler, null);
             };
 
             action.ShouldThrow<ArgumentNullException>();
@@ -88,7 +88,7 @@ namespace App.Metrics.Facts.Reporting
             {
                 var loggerFactory = new LoggerFactory();
                 var scheduler = new DefaultTaskScheduler();
-                var unused = new Reporter(_options, null, _fixture.Metrics, scheduler, loggerFactory);
+                var unused = new Reporter(_options, null, _fixture.Metrics(), scheduler, loggerFactory);
             };
 
             action.ShouldThrow<ArgumentNullException>();
@@ -100,7 +100,7 @@ namespace App.Metrics.Facts.Reporting
             Action action = () =>
             {
                 var factory = SetupReportFactory();
-                var unused = new Reporter(_options, factory, _fixture.Metrics, null, _loggerFactory);
+                var unused = new Reporter(_options, factory, _fixture.Metrics(), null, _loggerFactory);
             };
 
             action.ShouldThrow<ArgumentNullException>();
@@ -122,9 +122,11 @@ namespace App.Metrics.Facts.Reporting
             provider.Setup(p => p.CreateMetricReporter(It.IsAny<string>(), It.IsAny<ILoggerFactory>())).Returns(metricReporter.Object);
             factory.AddProvider(provider.Object);
 
-            var reporter = new Reporter(_options, factory, _fixture.Metrics, scheduler.Object, loggerFactory);
+            var metrics = _fixture.Metrics();
 
-            reporter.RunReports(_fixture.Metrics, CancellationToken.None);
+            var reporter = new Reporter(_options, factory, metrics, scheduler.Object, loggerFactory);
+
+            reporter.RunReports(metrics, CancellationToken.None);
 
             scheduler.Verify(
                 p => p.Interval(interval, TaskCreationOptions.LongRunning, It.IsAny<Action>(), It.IsAny<CancellationToken>()),
@@ -137,11 +139,13 @@ namespace App.Metrics.Facts.Reporting
             var factory = SetupReportFactory();
             factory.AddProvider(new TestReportProvider(false, TimeSpan.FromMilliseconds(10), new Exception()));
             var scheduler = new DefaultTaskScheduler();
-            var reporter = new Reporter(_options, factory, _fixture.Metrics, scheduler, _loggerFactory);
+            var metrics = _fixture.Metrics();
+
+            var reporter = new Reporter(_options, factory, metrics, scheduler, _loggerFactory);
             var token = new CancellationTokenSource();
             token.CancelAfter(100);
 
-            Action action = () => { reporter.RunReports(_fixture.Metrics, token.Token); };
+            Action action = () => { reporter.RunReports(metrics, token.Token); };
 
             action.ShouldNotThrow();
         }
@@ -152,11 +156,12 @@ namespace App.Metrics.Facts.Reporting
             var factory = SetupReportFactory();
             factory.AddProvider(new TestReportProvider(false, TimeSpan.FromMilliseconds(10)));
             var scheduler = new DefaultTaskScheduler();
-            var reporter = new Reporter(_options, factory, _fixture.Metrics, scheduler, _loggerFactory);
+            var metrics = _fixture.Metrics();
+            var reporter = new Reporter(_options, factory, metrics, scheduler, _loggerFactory);
             var token = new CancellationTokenSource();
             token.CancelAfter(100);
 
-            Action action = () => { reporter.RunReports(_fixture.Metrics, token.Token); };
+            Action action = () => { reporter.RunReports(metrics, token.Token); };
 
             action.ShouldNotThrow();
         }
@@ -166,9 +171,10 @@ namespace App.Metrics.Facts.Reporting
         {
             var factory = SetupReportFactory();
             var scheduler = new Mock<IScheduler>();
-            var reporter = new Reporter(_options, factory, _fixture.Metrics, scheduler.Object, _loggerFactory);
+            var metrics = _fixture.Metrics();
+            var reporter = new Reporter(_options, factory, metrics, scheduler.Object, _loggerFactory);
 
-            reporter.RunReports(_fixture.Metrics, CancellationToken.None);
+            reporter.RunReports(metrics, CancellationToken.None);
         }
 
         [Fact]
@@ -181,19 +187,20 @@ namespace App.Metrics.Facts.Reporting
             metricReporter.Setup(r => r.GetType()).Returns(typeof(IMetricReporter));
             provider.Setup(p => p.CreateMetricReporter(It.IsAny<string>(), It.IsAny<ILoggerFactory>())).Returns(metricReporter.Object);
             factory.AddProvider(provider.Object);
+            var metrics = _fixture.Metrics();
 
-            var reporter = new Reporter(_options, factory, _fixture.Metrics, scheduler.Object, _loggerFactory);
+            var reporter = new Reporter(_options, factory, metrics, scheduler.Object, _loggerFactory);
 
             provider.Verify(p => p.CreateMetricReporter(It.IsAny<string>(), It.IsAny<ILoggerFactory>()), Times.Once);
 
-            reporter.RunReports(_fixture.Metrics, CancellationToken.None);
+            reporter.RunReports(metrics, CancellationToken.None);
         }
 
         private ReportFactory SetupReportFactory(IMetrics metrics = null)
         {
             if (metrics == null)
             {
-                metrics = _fixture.Metrics;
+                metrics = _fixture.Metrics();
             }
             
             return new ReportFactory(_options, metrics, new LoggerFactory());

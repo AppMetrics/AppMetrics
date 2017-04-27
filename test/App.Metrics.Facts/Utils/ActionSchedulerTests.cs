@@ -21,7 +21,7 @@ namespace App.Metrics.Facts.Utils
                 var completionSource = new TaskCompletionSource<bool>();
 
                 scheduler.Interval(
-                    TimeSpan.FromMilliseconds(20),
+                    TimeSpan.FromMilliseconds(40),
                     TaskCreationOptions.LongRunning,
                     () =>
                     {
@@ -47,7 +47,7 @@ namespace App.Metrics.Facts.Utils
                 using (var scheduler = new DefaultTaskScheduler())
                 {
                     scheduledTask = scheduler.Interval(
-                        TimeSpan.FromMilliseconds(20),
+                        TimeSpan.FromMilliseconds(40),
                         TaskCreationOptions.LongRunning,
                         async () =>
                         {
@@ -132,7 +132,7 @@ namespace App.Metrics.Facts.Utils
                 using (var scheduler = new DefaultTaskScheduler())
                 {
                     scheduledTask = scheduler.Interval(
-                        TimeSpan.FromMilliseconds(20),
+                        TimeSpan.FromMilliseconds(40),
                         TaskCreationOptions.LongRunning,
                         () => throw new InvalidOperationException());
 
@@ -153,7 +153,7 @@ namespace App.Metrics.Facts.Utils
                 var completionSource = new TaskCompletionSource<bool>();
 
                 scheduler.Interval(
-                    TimeSpan.FromMilliseconds(20),
+                    TimeSpan.FromMilliseconds(40),
                     TaskCreationOptions.LongRunning,
                     () =>
                     {
