@@ -1,8 +1,5 @@
 # App Metrics [![Official Site](https://img.shields.io/badge/site-appmetrics-blue.svg?style=flat-square)](https://alhardy.github.io/app-metrics-docs/getting-started/intro.html) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
 
-----------
-
-
 |Branch|AppVeyor|Travis|Coverage|
 |------|:--------:|:--------:|:--------:|
 |dev|[![AppVeyor](https://img.shields.io/appveyor/ci/alhardy/AppMetrics/dev.svg?style=flat-square&label=appveyor%20build)](https://ci.appveyor.com/project/alhardy/appmetrics/branch/dev)|[![Travis](https://img.shields.io/travis/alhardy/AppMetrics/dev.svg?style=flat-square&label=travis%20build)](https://travis-ci.org/alhardy/AppMetrics)|[![Coveralls](https://img.shields.io/coveralls/alhardy/AppMetrics/dev.svg?style=flat-square)](https://coveralls.io/github/alhardy/AppMetrics?branch=dev)
