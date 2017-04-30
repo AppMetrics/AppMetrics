@@ -88,7 +88,11 @@ namespace App.Metrics.Sandbox
                          options =>
                          {
                              options.WithGlobalTags(
-                                 (globalTags, info) => { globalTags.Add("app", info.EntryAssemblyName); });
+                                 (globalTags, info) =>
+                                 {
+                                     globalTags.Add("app", info.EntryAssemblyName);
+                                     globalTags.Add("server", info.MachineName);
+                                 });
                          }).
                      AddJsonSerialization().
                      AddReporting(

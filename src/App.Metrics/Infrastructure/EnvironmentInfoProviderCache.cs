@@ -20,7 +20,7 @@ namespace App.Metrics.Infrastructure
             OperatingSystemVersion = RuntimeEnvironment.OperatingSystemVersion;
             Os = RuntimeEnvironment.OperatingSystem;
             ProcessorCount = Environment.ProcessorCount.ToString();
-            MachineName = process.MachineName;
+            MachineName = StringExtensions.GetSafeString(() => Environment.MachineName);
             HostName = StringExtensions.GetSafeString(Dns.GetHostName);
 
             var entryAssembly = Assembly.GetEntryAssembly();
