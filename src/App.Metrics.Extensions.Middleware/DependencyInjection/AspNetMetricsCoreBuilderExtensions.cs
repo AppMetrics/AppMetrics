@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IMetricsHostBuilder AddMetricsMiddleware(this IMetricsHostBuilder builder, IConfiguration configuration)
         {
             builder.Services.Configure<AspNetMetricsOptions>(configuration);
-            return builder.AddMetricsMiddleware();
+            return builder.AddMetricsMiddlewareCore();
         }
 
         public static IMetricsHostBuilder AddMetricsMiddleware(
@@ -29,16 +29,21 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             builder.Services.Configure<AspNetMetricsOptions>(configuration);
             builder.Services.Configure(setupAction);
-            return builder.AddMetricsMiddleware();
+            return builder.AddMetricsMiddlewareCore();
         }
 
         public static IMetricsHostBuilder AddMetricsMiddleware(this IMetricsHostBuilder builder, Action<AspNetMetricsOptions> setupAction)
         {
             builder.Services.Configure(setupAction);
-            return builder.AddMetricsMiddleware();
+            return builder.AddMetricsMiddlewareCore();
         }
 
-        private static IMetricsHostBuilder AddMetricsMiddleware(this IMetricsHostBuilder builder)
+        public static IMetricsHostBuilder AddMetricsMiddleware(this IMetricsHostBuilder builder)
+        {
+            return builder.AddMetricsMiddlewareCore();
+        }
+
+        private static IMetricsHostBuilder AddMetricsMiddlewareCore(this IMetricsHostBuilder builder)
         {
             builder.Services.TryAddSingleton<IMetricsResponseWriter, NoOpMetricsResponseWriter>();
             builder.Services.TryAddSingleton<IHealthResponseWriter, NoOpHealthStatusResponseWriter>();

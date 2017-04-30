@@ -134,7 +134,7 @@ namespace App.Metrics.Sandbox
                              factory.RegisterPingHealthCheck("google ping", "google.com", TimeSpan.FromSeconds(10));
                              factory.RegisterHttpGetHealthCheck("github", new Uri("https://github.com/"), TimeSpan.FromSeconds(10));
                          }).
-                     AddMetricsMiddleware(Configuration.GetSection("AspNetMetrics"));
+                     AddMetricsMiddleware();
         }
     }
 }
