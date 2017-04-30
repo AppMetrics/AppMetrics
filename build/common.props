@@ -5,8 +5,8 @@
 		<NoWarn>$(NoWarn);1701;1702;1705;CS1591;CS1570</NoWarn>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<PackageIconUrl>https://alhardy.github.io/app-metrics-docs/logo.png</PackageIconUrl>
-		<PackageProjectUrl>https://alhardy.github.io/app-metrics-docs</PackageProjectUrl>
+		<PackageIconUrl>http://app-metrics.io/logo.png</PackageIconUrl>
+		<PackageProjectUrl>http://app-metrics.io/</PackageProjectUrl>
 		<PackageLicenseUrl>https://github.com/alhardy/AppMetrics/blob/master/LICENSE</PackageLicenseUrl>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>git://github.com/alhardy/AppMetrics</RepositoryUrl>
