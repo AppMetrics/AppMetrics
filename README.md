@@ -1,5 +1,5 @@
-# App Metrics <img src="https://alhardy.github.io/app-metrics-docs/logo.png" alt="App Metrics" width="50px"/> 
-[![Official Site](https://img.shields.io/badge/site-appmetrics-blue.svg?style=flat-square)](https://alhardy.github.io/app-metrics-docs/getting-started/intro.html) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
+# App Metrics <img src="http://app-metrics.io/logo.png" alt="App Metrics" width="50px"/> 
+[![Official Site](https://img.shields.io/badge/site-appmetrics-blue.svg?style=flat-square)](http://app-metrics.io/getting-started/intro.html) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
 
 ## What is App Metrics?
 
@@ -15,13 +15,13 @@ For metric reporting capabilities see:
 - [Prometheus Extensions](https://github.com/alhardy/AppMetrics.Extensions.Prometheus)
 - [Graphite Extensions](https://github.com/alhardy/AppMetrics.Extensions.Graphite) - *Work in Progress*
 
-`App.Metrics` includes an Exponentially Forward Decaying, Sliding Window and Algorithm R reservoir implementations, for additional reservoir sampling see the [reservoir repo](https://github.com/alhardy/AppMetrics.Reservoirs). For more details on reservoir sampling see the [docs](https://alhardy.github.io/app-metrics-docs/getting-started/sampling/index.html).
+`App.Metrics` includes an Exponentially Forward Decaying, Sliding Window and Algorithm R reservoir implementations, for additional reservoir sampling see the [reservoir repo](https://github.com/alhardy/AppMetrics.Reservoirs). For more details on reservoir sampling see the [docs](http://app-metrics.io/getting-started/sampling/index.html).
 
 App Metrics also provides a health checking system allowing you to monitor the health of your application through user defined checks.
 
-- [Getting Started](https://alhardy.github.io/app-metrics-docs/getting-started/intro.html)
+- [Getting Started](http://app-metrics.io/getting-started/intro.html)
 - [Sample Applications & Grafana Dashbaords](https://github.com/alhardy/AppMetrics.Samples)
-- [Api Documentation](https://alhardy.github.io/app-metrics-docs/api/index.html)
+- [Api Documentation](http://app-metrics.io/api/index.html)
 
 ## Latest Builds, Packages & Repo Stats
 
