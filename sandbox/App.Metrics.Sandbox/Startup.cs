@@ -43,12 +43,16 @@ namespace App.Metrics.Sandbox
                                                      AddEnvironmentVariables();
 
             Configuration = builder.Build();
+            Env = env;
         }
 
         public IConfigurationRoot Configuration { get; }
 
+        public IHostingEnvironment Env { get; }
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime lifetime)
         {
+
             if (RunSamplesWithClientId && HaveAppRunSampleRequests)
             {
                 app.Use(
@@ -92,6 +96,8 @@ namespace App.Metrics.Sandbox
                                  {
                                      globalTags.Add("app", info.EntryAssemblyName);
                                      globalTags.Add("server", info.MachineName);
+                                     globalTags.Add("env", Env.IsStaging() ? "stage" : Env.IsProduction() ? "prod" : "dev");
+                                     globalTags.Add("version", info.EntryAssemblyVersion);
                                  });
                          }).
                      AddJsonSerialization().
