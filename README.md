@@ -1,17 +1,5 @@
-# App Metrics
-
-[![Official Site](https://img.shields.io/badge/site-appmetrics-blue.svg)](https://alhardy.github.io/app-metrics-docs/getting-started/intro.html) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Coverage Status](https://coveralls.io/repos/github/alhardy/AppMetrics/badge.svg?branch=master&cacheBuster=1)](https://coveralls.io/github/alhardy/AppMetrics?branch=master)
-
-|AppVeyor|Travis|
-|:--------:|:--------:|
-|[![Build status](https://ci.appveyor.com/api/projects/status/r4x0et4g6mr5vttf?svg=true)](https://ci.appveyor.com/project/alhardy/appmetrics/branch/master)|[![Build status](https://travis-ci.org/alhardy/AppMetrics.svg?branch=master)](https://travis-ci.org/alhardy/AppMetrics)|
-
-|Package|Dev Release|Pre-Release|Release|
-|------|:--------:|:--------:|:--------:|
-|App.Metrics|[![MyGet Status](https://img.shields.io/myget/alhardy/v/App.Metrics.svg)](https://www.myget.org/feed/alhardy/package/nuget/App.Metrics)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.svg)](https://www.nuget.org/packages/App.Metrics/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.svg)](https://www.nuget.org/packages/App.Metrics/)
-|App.Metrics.Extensions.Mvc|[![MyGet Status](https://img.shields.io/myget/alhardy/v/App.Metrics.Extensions.Mvc.svg)](https://www.myget.org/feed/alhardy/package/nuget/App.Metrics.Extensions.Mvc)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Extensions.Mvc.svg)](https://www.nuget.org/packages/App.Metrics.Extensions.Mvc/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Extensions.Mvc.svg)](https://www.nuget.org/packages/App.Metrics.Extensions.Mvc/)
-|App.Metrics.Extensions.Middleware|[![MyGet Status](https://img.shields.io/myget/alhardy/v/App.Metrics.Extensions.Middleware.svg)](https://www.myget.org/feed/alhardy/package/nuget/App.Metrics.Extensions.Middleware)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Extensions.Middleware.svg)](https://www.nuget.org/packages/App.Metrics.Extensions.Middleware/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Extensions.Middleware.svg)](https://www.nuget.org/packages/App.Metrics.Extensions.Middleware/)
-|App.Metrics.Formatters.Json|[![MyGet Status](https://img.shields.io/myget/alhardy/v/App.Metrics.Formatters.Json.svg)](https://www.myget.org/feed/alhardy/package/nuget/App.Metrics.Formatters.Json)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Formatters.Json.svg)](https://www.nuget.org/packages/App.Metrics.Formatters.Json/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Formatters.Json.svg)](https://www.nuget.org/packages/App.Metrics.Formatters.Json/)|
+# App Metrics <img src="http://app-metrics.io/logo.png" alt="App Metrics" width="50px"/> 
+[![Official Site](https://img.shields.io/badge/site-appmetrics-blue.svg?style=flat-square)](http://app-metrics.io/getting-started/intro.html) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
 
 ## What is App Metrics?
 
@@ -27,25 +15,44 @@ For metric reporting capabilities see:
 - [Prometheus Extensions](https://github.com/alhardy/AppMetrics.Extensions.Prometheus)
 - [Graphite Extensions](https://github.com/alhardy/AppMetrics.Extensions.Graphite) - *Work in Progress*
 
-`App.Metrics` includes an Exponentially Forward Decaying, Sliding Window and Algorithm R reservoir implementations, for additional reservoir sampling see the [reservoir repo](https://github.com/alhardy/AppMetrics.Reservoirs). For more details on reservoir sampling see the [docs](https://alhardy.github.io/app-metrics-docs/getting-started/sampling/index.html).
+`App.Metrics` includes an Exponentially Forward Decaying, Sliding Window and Algorithm R reservoir implementations, for additional reservoir sampling see the [reservoir repo](https://github.com/alhardy/AppMetrics.Reservoirs). For more details on reservoir sampling see the [docs](http://app-metrics.io/getting-started/sampling/index.html).
 
 App Metrics also provides a health checking system allowing you to monitor the health of your application through user defined checks.
 
-- [Getting Started](https://alhardy.github.io/app-metrics-docs/getting-started/intro.html)
+- [Getting Started](http://app-metrics.io/getting-started/intro.html)
 - [Sample Applications & Grafana Dashbaords](https://github.com/alhardy/AppMetrics.Samples)
-- [Api Documentation](https://alhardy.github.io/app-metrics-docs/api/index.html)
+- [Api Documentation](http://app-metrics.io/api/index.html)
+
+## Latest Builds, Packages & Repo Stats
+
+|Branch|AppVeyor|Travis|Coverage|
+|------|:--------:|:--------:|:--------:|
+|dev|[![AppVeyor](https://img.shields.io/appveyor/ci/alhardy/AppMetrics/dev.svg?style=flat-square&label=appveyor%20build)](https://ci.appveyor.com/project/alhardy/appmetrics/branch/dev)|[![Travis](https://img.shields.io/travis/alhardy/AppMetrics/dev.svg?style=flat-square&label=travis%20build)](https://travis-ci.org/alhardy/AppMetrics)|[![Coveralls](https://img.shields.io/coveralls/alhardy/AppMetrics/dev.svg?style=flat-square)](https://coveralls.io/github/alhardy/AppMetrics?branch=dev)
+|master|[![AppVeyor](https://img.shields.io/appveyor/ci/alhardy/AppMetrics/master.svg?style=flat-square&label=appveyor%20build)](https://ci.appveyor.com/project/alhardy/appmetrics/branch/master)| [![Travis](https://img.shields.io/travis/alhardy/AppMetrics/master.svg?style=flat-square&label=travis%20build)](https://travis-ci.org/alhardy/AppMetrics)| [![Coveralls](https://img.shields.io/coveralls/alhardy/AppMetrics/master.svg?style=flat-square)](https://coveralls.io/github/alhardy/AppMetrics?branch=master)|
+
+|Package|Dev Release|Pre-Release|Release|
+|------|:--------:|:--------:|:--------:|
+|App.Metrics|[![MyGet Status](https://img.shields.io/myget/alhardy/v/App.Metrics.svg?style=flat-square)](https://www.myget.org/feed/alhardy/package/nuget/App.Metrics)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics/)
+|App.Metrics.Extensions.Mvc|[![MyGet Status](https://img.shields.io/myget/alhardy/v/App.Metrics.Extensions.Mvc.svg?style=flat-square0)](https://www.myget.org/feed/alhardy/package/nuget/App.Metrics.Extensions.Mvc)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Extensions.Mvc.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Extensions.Mvc/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Extensions.Mvc.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Extensions.Mvc/)
+|App.Metrics.Extensions.Middleware|[![MyGet Status](https://img.shields.io/myget/alhardy/v/App.Metrics.Extensions.Middleware.svg?style=flat-square&maxAge=7200)](https://www.myget.org/feed/alhardy/package/nuget/App.Metrics.Extensions.Middleware)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Extensions.Middleware.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Extensions.Middleware/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Extensions.Middleware.svg)](https://www.nuget.org/packages/App.Metrics.Extensions.Middleware/)
+|App.Metrics.Formatters.Json|[![MyGet Status](https://img.shields.io/myget/alhardy/v/App.Metrics.Formatters.Json.svg?style=flat-square)](https://www.myget.org/feed/alhardy/package/nuget/App.Metrics.Formatters.Json)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Formatters.Json.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Json/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Formatters.Json.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Json/)|
+
+[![GitHub issues](https://img.shields.io/github/issues/alhardy/AppMetrics.svg?style=flat-square&maxAge=7200)](https://github.com/alhardy/AppMetrics/issues?q=is%3Aopen+is%3Aissue) [![GitHub closed issues](https://img.shields.io/github/issues-closed/alhardy/AppMetrics.svg?style=flat-square&maxAge=7200)](https://github.com/alhardy/AppMetrics/issues?q=is%3Aissue+is%3Aclosed) [![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/alhardy/AppMetrics.svg?style=flat-square&maxAge=7200)](https://github.com/alhardy/AppMetrics/pulls?q=is%3Apr+is%3Aclosed) [![Issue Stats](https://img.shields.io/issuestats/p/long/github/alhardy/AppMetrics.svg?style=flat-square&maxAge=7200)](http://www.issuestats.com/github/alhardy/AppMetrics) [![Issue Stats](https://img.shields.io/issuestats/i/github/alhardy/AppMetrics.svg?style=flat-square&maxAge=7200)](http://www.issuestats.com/github/alhardy/AppMetrics)
+----------
+
+## Visualization
 
 #### Grafana Web Monitoring
 
 ![Grafana/InfluxDB Generic Web Dashboard Demo](https://github.com/alhardy/AppMetrics.DocFx/blob/master/images/generic_grafana_dashboard_demo.gif)
 
-> Grab the [InfluxDB](https://github.com/alhardy/AppMetrics.Extensions.InfluxDB/blob/master/visualization/grafana-dashbaords/App.Metrics.Sandbox-InfluxDB-GenericWeb.json) or [Elasticsearch](https://github.com/alhardy/AppMetrics.Extensions.Elasticsearch/blob/master/visualization/grafana-dashboards/App.Metrics.Sandbox-Elasticsearch-GenericWeb.json) dashboard.
+> Grab the [InfluxDB](https://grafana.com/dashboards/2125) or [Elasticsearch](https://grafana.com/dashboards/2140) dashboard.
 
 #### Grafana OAuth2 Client Web Monitoring
 
 ![Grafana/InfluxDB Generic OAuth2 Web Dashboard Demo](https://github.com/alhardy/AppMetrics.DocFx/blob/master/images/generic_grafana_oauth2_dashboard_demo.gif)
 
-> Grab the [InfluxDB](https://github.com/alhardy/AppMetrics.Extensions.InfluxDB/blob/master/visualization/grafana-dashbaords/App.Metrics.Sandbox-InfluxDB-GenericWebOAuth2.json) or [Elasticsearch](https://github.com/alhardy/AppMetrics.Extensions.Elasticsearch/blob/master/visualization/grafana-dashboards/App.Metrics.Sandbox-Elasticsearch-GenericWebOAuth2.json) dashboard
+> Grab the [InfluxDB](https://grafana.com/dashboards/2137) or [Elasticsearch](https://grafana.com/dashboards/2143) dashboard
 
 ## How to build
 

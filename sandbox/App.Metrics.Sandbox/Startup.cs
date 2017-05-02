@@ -43,12 +43,16 @@ namespace App.Metrics.Sandbox
                                                      AddEnvironmentVariables();
 
             Configuration = builder.Build();
+            Env = env;
         }
 
         public IConfigurationRoot Configuration { get; }
 
+        public IHostingEnvironment Env { get; }
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime lifetime)
         {
+
             if (RunSamplesWithClientId && HaveAppRunSampleRequests)
             {
                 app.Use(
@@ -88,7 +92,13 @@ namespace App.Metrics.Sandbox
                          options =>
                          {
                              options.WithGlobalTags(
-                                 (globalTags, info) => { globalTags.Add("app", info.EntryAssemblyName); });
+                                 (globalTags, info) =>
+                                 {
+                                     globalTags.Add("app", info.EntryAssemblyName);
+                                     globalTags.Add("server", info.MachineName);
+                                     globalTags.Add("env", Env.IsStaging() ? "stage" : Env.IsProduction() ? "prod" : "dev");
+                                     globalTags.Add("version", info.EntryAssemblyVersion);
+                                 });
                          }).
                      AddJsonSerialization().
                      AddReporting(
@@ -134,7 +144,7 @@ namespace App.Metrics.Sandbox
                              factory.RegisterPingHealthCheck("google ping", "google.com", TimeSpan.FromSeconds(10));
                              factory.RegisterHttpGetHealthCheck("github", new Uri("https://github.com/"), TimeSpan.FromSeconds(10));
                          }).
-                     AddMetricsMiddleware(Configuration.GetSection("AspNetMetrics"));
+                     AddMetricsMiddleware();
         }
     }
 }
