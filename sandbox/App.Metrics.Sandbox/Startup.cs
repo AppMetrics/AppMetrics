@@ -4,6 +4,8 @@ using System.Linq;
 using App.Metrics.Configuration;
 using App.Metrics.Extensions.Reporting.ElasticSearch;
 using App.Metrics.Extensions.Reporting.ElasticSearch.Client;
+using App.Metrics.Extensions.Reporting.Graphite;
+using App.Metrics.Extensions.Reporting.Graphite.Client;
 using App.Metrics.Extensions.Reporting.InfluxDB;
 using App.Metrics.Extensions.Reporting.InfluxDB.Client;
 using App.Metrics.Filtering;
@@ -22,17 +24,22 @@ namespace App.Metrics.Sandbox
     public enum ReportType
     {
         InfluxDB,
-        ElasticSearch
+        ElasticSearch,
+        Graphite
     }
 
     public class Startup
     {
         private static readonly string ElasticSearchIndex = "appmetricssandbox";
         private static readonly Uri ElasticSearchUri = new Uri("http://127.0.0.1:9200");
+        private static readonly Uri GraphiteUri = new Uri("net.tcp://127.0.0.1:32776");
+        private static readonly bool HaveAppRunSampleRequests = true;
         private static readonly string InfluxDbDatabase = "AppMetricsSandbox";
         private static readonly Uri InfluxDbUri = new Uri("http://127.0.0.1:8086");
-        private static readonly bool HaveAppRunSampleRequests = true;
-        private static readonly List<ReportType> ReportTypes = new List<ReportType> { ReportType.ElasticSearch, ReportType.InfluxDB };
+
+        private static readonly List<ReportType> ReportTypes =
+            new List<ReportType> { ReportType.ElasticSearch, ReportType.InfluxDB, ReportType.Graphite };
+
         private static readonly bool RunSamplesWithClientId = true;
 
         public Startup(IHostingEnvironment env)
@@ -52,7 +59,6 @@ namespace App.Metrics.Sandbox
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime lifetime)
         {
-
             if (RunSamplesWithClientId && HaveAppRunSampleRequests)
             {
                 app.Use(
@@ -97,7 +103,6 @@ namespace App.Metrics.Sandbox
                                      globalTags.Add("app", info.EntryAssemblyName);
                                      globalTags.Add("server", info.MachineName);
                                      globalTags.Add("env", Env.IsStaging() ? "stage" : Env.IsProduction() ? "prod" : "dev");
-                                     globalTags.Add("version", info.EntryAssemblyVersion);
                                  });
                          }).
                      AddJsonSerialization().
@@ -136,6 +141,22 @@ namespace App.Metrics.Sandbox
                                          ReportInterval = TimeSpan.FromSeconds(5)
                                      },
                                      reportFilter);
+                             }
+
+                             if (ReportTypes.Any(r => r == ReportType.ElasticSearch))
+                             {
+                                 factory.AddGraphite(
+                                     new GraphiteReporterSettings
+                                     {
+                                         HttpPolicy = new Extensions.Reporting.Graphite.HttpPolicy
+                                                      {
+                                                          FailuresBeforeBackoff = 3,
+                                                          BackoffPeriod = TimeSpan.FromSeconds(30),
+                                                          Timeout = TimeSpan.FromSeconds(3)
+                                                      },
+                                         GraphiteSettings = new GraphiteSettings(GraphiteUri),
+                                         ReportInterval = TimeSpan.FromSeconds(5)
+                                     });
                              }
                          }).
                      AddHealthChecks(
