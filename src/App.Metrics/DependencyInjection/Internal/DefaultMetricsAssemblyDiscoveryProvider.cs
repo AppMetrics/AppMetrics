@@ -16,7 +16,10 @@ namespace App.Metrics.DependencyInjection.Internal
         // ReSharper disable MemberCanBePrivate.Global
         internal static HashSet<string> ReferenceAssemblies { get; } = new HashSet<string>(StringComparer.Ordinal)
                                                                        {
-                                                                           "App.Metrics"
+                                                                           "App.Metrics",
+                                                                           "App.Metrics.Extensions.Mvc",
+                                                                           "App.Metrics.Extensions.Middleware",
+                                                                           "App.Metrics.Formatters.Json"
                                                                        };
 
         internal static IEnumerable<Assembly> DiscoverAssemblies(string entryPointAssemblyName)
@@ -35,9 +38,9 @@ namespace App.Metrics.DependencyInjection.Internal
                 return new[] { entryAssembly };
             }
 
-            return GetCandidateLibraries(dependencyContext)
-                .SelectMany(library => library.GetDefaultAssemblyNames(dependencyContext))
-                .Select(Assembly.Load);
+            return GetCandidateLibraries(dependencyContext).
+                SelectMany(library => library.GetDefaultAssemblyNames(dependencyContext)).
+                Select(Assembly.Load);
         }
 
         internal static IEnumerable<RuntimeLibrary> GetCandidateLibraries(DependencyContext dependencyContext)
