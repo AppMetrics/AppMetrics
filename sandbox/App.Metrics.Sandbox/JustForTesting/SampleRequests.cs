@@ -11,6 +11,10 @@ namespace App.Metrics.Sandbox.JustForTesting
     public static class SampleRequests
     {
         private static readonly Uri ApiBaseAddress = new Uri("http://localhost:1111/");
+        private const int ApdexSamplesInterval = 2;
+        private const int RandomSamplesInterval = 10;
+        private const int GetEndpointSuccessInterval = 1;
+        private const int PutAndPostRequestsInterval = 6;
 
         public static void Run(CancellationToken token)
         {
@@ -23,7 +27,7 @@ namespace App.Metrics.Sandbox.JustForTesting
 
             Task.Run(
                 () => scheduler.Interval(
-                    TimeSpan.FromSeconds(1),
+                    TimeSpan.FromSeconds(ApdexSamplesInterval),
                     TaskCreationOptions.None,
                     async () =>
                     {
@@ -38,21 +42,21 @@ namespace App.Metrics.Sandbox.JustForTesting
 
             Task.Run(
                 () => scheduler.Interval(
-                    TimeSpan.FromSeconds(3),
+                    TimeSpan.FromSeconds(RandomSamplesInterval),
                     TaskCreationOptions.None,
                     async () =>
                     {
                         var randomStatusCode = httpClient.GetAsync("api/randomstatuscode", token);
-                        var exceptionThrower = httpClient.GetAsync("api/exceptionThrowing", token);
+                        var randomException = httpClient.GetAsync("api/randomexception", token);
 
-                        await Task.WhenAll(randomStatusCode, exceptionThrower);
+                        await Task.WhenAll(randomStatusCode, randomException);
                     },
                     token),
                 token);
 
             Task.Run(
                 () => scheduler.Interval(
-                    TimeSpan.FromSeconds(3),
+                    TimeSpan.FromSeconds(GetEndpointSuccessInterval),
                     TaskCreationOptions.None,
                     async () =>
                     {
@@ -63,7 +67,7 @@ namespace App.Metrics.Sandbox.JustForTesting
 
             Task.Run(
                 () => scheduler.Interval(
-                    TimeSpan.FromSeconds(2),
+                    TimeSpan.FromSeconds(PutAndPostRequestsInterval),
                     TaskCreationOptions.None,
                     async () =>
                     {

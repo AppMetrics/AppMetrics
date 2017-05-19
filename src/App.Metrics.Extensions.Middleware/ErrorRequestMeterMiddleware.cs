@@ -61,7 +61,7 @@ namespace App.Metrics.Extensions.Middleware
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception exception)
             {
                 if (!PerformMetric(context))
                 {
@@ -69,7 +69,9 @@ namespace App.Metrics.Extensions.Middleware
                 }
 
                 var routeTemplate = context.GetMetricsCurrentRouteName();
+
                 Metrics.RecordHttpRequestError(routeTemplate, (int)HttpStatusCode.InternalServerError);
+                Metrics.RecordException(routeTemplate, exception.GetType().FullName);
 
                 throw;
             }

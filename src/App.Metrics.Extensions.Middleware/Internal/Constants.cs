@@ -17,6 +17,7 @@ namespace App.Metrics.Extensions.Middleware.Internal
         public static class DefaultTagKeys
         {
             public const string Route = "route";
+            public const string Exception = "exception";
             public const string ClientId = "client_id";
             public const string HttpStatusCode = "http_status_code";
         }

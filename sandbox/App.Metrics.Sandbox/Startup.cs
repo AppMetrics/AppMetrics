@@ -38,7 +38,7 @@ namespace App.Metrics.Sandbox
         private static readonly Uri InfluxDbUri = new Uri("http://127.0.0.1:8086");
 
         private static readonly List<ReportType> ReportTypes =
-            new List<ReportType> { ReportType.ElasticSearch, ReportType.InfluxDB, ReportType.Graphite };
+            new List<ReportType> { ReportType.InfluxDB/*, ReportType.ElasticSearch, ReportType.Graphite*/ };
 
         private static readonly bool RunSamplesWithClientId = true;
 

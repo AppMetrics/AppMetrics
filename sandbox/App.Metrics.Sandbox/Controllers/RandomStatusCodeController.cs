@@ -7,19 +7,19 @@ namespace App.Metrics.Sandbox.Controllers
     [Route("api/[controller]")]
     public class RandomStatusCodeController : Controller
     {
-        private readonly RandomStatusCodeForTesting _randomStatusCodeForTesting;
+        private readonly RandomValuesForTesting _randomValuesForTesting;
         private readonly IMetrics _metrics;
 
-        public RandomStatusCodeController(IMetrics metrics, RandomStatusCodeForTesting randomStatusCodeForTesting)
+        public RandomStatusCodeController(IMetrics metrics, RandomValuesForTesting randomValuesForTesting)
         {
             _metrics = metrics ?? throw new ArgumentNullException(nameof(metrics));
-            _randomStatusCodeForTesting = randomStatusCodeForTesting;
+            _randomValuesForTesting = randomValuesForTesting;
         }
 
         [HttpGet]
         public IActionResult Get()
         {            
-            return StatusCode(_randomStatusCodeForTesting.NextStatusCode);
+            return StatusCode(_randomValuesForTesting.NextStatusCode());
         }
     }
 }

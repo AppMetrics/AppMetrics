@@ -1,6 +1,5 @@
 ﻿using System;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
-using App.Metrics.Sandbox.Controllers;
 using App.Metrics.Sandbox.JustForTesting;
 
 // ReSharper disable CheckNamespace
@@ -14,7 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<Func<double, RequestDurationForApdexTesting>>(
                 provider => { return apdexTSeconds => new RequestDurationForApdexTesting(apdexTSeconds); });
 
-            services.AddTransient<RandomStatusCodeForTesting>();
+            services.AddSingleton<RandomValuesForTesting>();
 
             services.AddTransient(
                 provider =>

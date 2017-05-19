@@ -84,6 +84,23 @@ namespace App.Metrics
         }
 
         /// <summary>
+        ///     Records metrics around unhanded exceptions, counts the total number of errors for each exception type.
+        /// </summary>
+        /// <param name="metrics">The metrics.</param>
+        /// <param name="routeTemplate">The route template of the endpoint.</param>
+        /// <param name="exception">The type of exception.</param>
+        public static void RecordException(
+            this IMetrics metrics,
+            string routeTemplate,
+            string exception)
+        {
+            var tags = new MetricTags(
+                new[] { Constants.DefaultTagKeys.Route, Constants.DefaultTagKeys.Exception },
+                new[] { routeTemplate, exception });
+            metrics.Measure.Counter.Increment(HttpRequestMetricsRegistry.Counters.UnhandledExceptionCount, tags);
+        }
+
+        /// <summary>
         ///     Records metrics about an HTTP request error, counts the total number of errors for each status code, measures the
         ///     rate and percentage of HTTP error requests tagging by client id (if it exists) the endpoints route template and
         ///     HTTP status code.
