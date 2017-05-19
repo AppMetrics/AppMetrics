@@ -24,7 +24,7 @@ namespace App.Metrics.Registry.Internal
 
         public void Track(long duration) { }
 
-        public void Track(Action action) { }
+        public void Track(Action action) { action(); }
 
         public T Track<T>(Func<T> action) { return action(); }
     }
