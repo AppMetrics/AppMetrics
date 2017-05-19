@@ -93,18 +93,7 @@ namespace App.Metrics.Sandbox
             var reportFilter = new DefaultMetricsFilter();
             reportFilter.WithHealthChecks(false);
 
-            services.AddMetrics(
-                         Configuration.GetSection("AppMetrics"),
-                         options =>
-                         {
-                             options.WithGlobalTags(
-                                 (globalTags, info) =>
-                                 {
-                                     globalTags.Add("app", info.EntryAssemblyName);
-                                     globalTags.Add("server", info.MachineName);
-                                     globalTags.Add("env", Env.IsStaging() ? "stage" : Env.IsProduction() ? "prod" : "dev");
-                                 });
-                         }).
+            services.AddMetrics(Configuration.GetSection("AppMetrics")).
                      AddJsonSerialization().
                      AddReporting(
                          factory =>

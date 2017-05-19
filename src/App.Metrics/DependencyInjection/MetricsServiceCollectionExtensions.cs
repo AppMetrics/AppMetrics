@@ -168,7 +168,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configuration">
         ///     The <see cref="IConfiguration">IConfiguration</see> from where to load
         ///     <see cref="AppMetricsOptions">options</see>. Any shared configuration options with the options delegate will be
-        ///     overriden by using this configuration.
+        ///     overridden by using this configuration.
         /// </param>
         /// <returns>The metrics host builder</returns>
         [AppMetricsExcludeFromCodeCoverage] // DEVNOTE: No need to test Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions
