@@ -9,6 +9,7 @@
 #tool "nuget:?package=JetBrains.ReSharper.CommandLineTools"
 #tool "nuget:?package=coveralls.io"
 #tool "nuget:?package=gitreleasemanager"
+#tool "nuget:?package=ReportGenerator"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -37,7 +38,6 @@ var artifactsDir                = (DirectoryPath) Directory("./artifacts");
 var testResultsDir              = (DirectoryPath) artifactsDir.Combine("test-results");
 var coverageResultsDir          = (DirectoryPath) artifactsDir.Combine("coverage");
 var reSharperReportsDir         = (DirectoryPath) artifactsDir.Combine("resharper-reports");
-var testCoverageOutputFilePath  = coverageResultsDir.CombineWithFilePath("coverage.xml");
 var testOCoverageOutputFilePath = coverageResultsDir.CombineWithFilePath("openCoverCoverage.xml");
 var htmlCoverageReport			= coverageResultsDir.FullPath + "/coverage.html";
 var mergedCoverageSnapshots		= coverageResultsDir.FullPath + "/coverage.dcvr";
@@ -231,7 +231,7 @@ Task("RunTests")
 });
 
 Task("HtmlCoverageReport")    
-    .WithCriteria(() => FileExists(testCoverageOutputFilePath) && coverWith != "None" && IsRunningOnWindows())    
+    .WithCriteria(() => FileExists(testOCoverageOutputFilePath) && coverWith != "None" && IsRunningOnWindows())    
     .IsDependentOn("RunTests")
     .Does(() => 
 {
@@ -246,7 +246,7 @@ Task("HtmlCoverageReport")
 	}
 	else if (coverWith == "OpenCover")
 	{
-		ReportGenerator(testCoverageOutputFilePath, coverageResultsDir);
+		ReportGenerator(testOCoverageOutputFilePath, coverageResultsDir);
 	}
 });
 
