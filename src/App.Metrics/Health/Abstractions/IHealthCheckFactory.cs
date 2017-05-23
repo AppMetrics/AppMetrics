@@ -12,6 +12,8 @@ namespace App.Metrics.Health.Abstractions
     {
         ConcurrentDictionary<string, HealthCheck> Checks { get; }
 
+        Lazy<IMetrics> Metrics { get; }
+
         void Register(string name, Func<Task<string>> check);
 
         void Register(string name, Func<Task<HealthCheckResult>> check);

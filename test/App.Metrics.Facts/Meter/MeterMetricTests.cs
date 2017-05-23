@@ -4,7 +4,6 @@
 using App.Metrics.Core.Internal;
 using App.Metrics.Infrastructure;
 using App.Metrics.Meter;
-using App.Metrics.Meter.Extensions;
 using FluentAssertions;
 using Xunit;
 

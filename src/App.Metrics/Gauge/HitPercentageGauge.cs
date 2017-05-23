@@ -5,7 +5,6 @@
 using System;
 using App.Metrics.Meter;
 using App.Metrics.Meter.Abstractions;
-using App.Metrics.Meter.Extensions;
 using App.Metrics.Timer;
 using App.Metrics.Timer.Abstractions;
 

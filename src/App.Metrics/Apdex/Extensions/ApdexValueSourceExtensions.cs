@@ -6,6 +6,7 @@ using App.Metrics.Abstractions.Metrics;
 using App.Metrics.Apdex.Abstractions;
 using App.Metrics.Core;
 using App.Metrics.Core.Abstractions;
+using App.Metrics.Tagging;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics.Apdex
@@ -18,6 +19,11 @@ namespace App.Metrics.Apdex
         public static ApdexValue GetApdexValue(this IProvideMetricValues valueService, string context, string metricName)
         {
             return valueService.GetForContext(context).ApdexScores.ValueFor(metricName);
+        }
+
+        public static ApdexValue GetApdexValue(this IProvideMetricValues valueService, string context, string metricName, MetricTags tags)
+        {
+            return valueService.GetForContext(context).ApdexScores.ValueFor(tags.AsMetricName(metricName));
         }
 
         public static ApdexValue GetValueOrDefault(this IApdex metric)

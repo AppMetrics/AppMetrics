@@ -14,6 +14,7 @@ namespace App.Metrics.Sandbox.JustForTesting
         private const int ApdexSamplesInterval = 2;
         private const int RandomSamplesInterval = 10;
         private const int GetEndpointSuccessInterval = 1;
+        private const int SlaEndpointsInterval = 2;
         private const int PutAndPostRequestsInterval = 6;
 
         public static void Run(CancellationToken token)
@@ -61,6 +62,17 @@ namespace App.Metrics.Sandbox.JustForTesting
                     async () =>
                     {
                         await httpClient.GetAsync("api/test", token);
+                    },
+                    token),
+                token);
+
+            Task.Run(
+                () => scheduler.Interval(
+                    TimeSpan.FromSeconds(SlaEndpointsInterval),
+                    TaskCreationOptions.None,
+                    async () =>
+                    {
+                        await httpClient.GetAsync("api/slatest/timer", token);
                     },
                     token),
                 token);

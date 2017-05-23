@@ -31,7 +31,7 @@ namespace App.Metrics.Facts.Fixtures
             Metrics = () =>
             {
                 var registry = new DefaultMetricsRegistry(_loggerFactory, options, clock, new EnvironmentInfoProvider(), NewContextRegistry);
-                var healthCheckFactory = new HealthCheckFactory(healthFactoryLogger);
+                var healthCheckFactory = new HealthCheckFactory(healthFactoryLogger, new Lazy<IMetrics>());
                 var metricBuilderFactory = new DefaultMetricsBuilderFactory();
                 var filter = new DefaultMetricsFilter();
                 var dataManager = new DefaultMetricValuesProvider(

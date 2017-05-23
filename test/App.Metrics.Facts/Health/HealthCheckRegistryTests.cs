@@ -21,7 +21,7 @@ namespace App.Metrics.Facts.Health
     public class HealthCheckRegistryTests
     {
         private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
-        private readonly HealthCheckFactory _healthCheckFactory = new HealthCheckFactory(LoggerFactory.CreateLogger<HealthCheckFactory>());
+        private readonly HealthCheckFactory _healthCheckFactory = new HealthCheckFactory(LoggerFactory.CreateLogger<HealthCheckFactory>(), new Lazy<IMetrics>());
         private readonly Func<IHealthCheckFactory, IMetrics> _metircsSetup;
         private IMetrics _metrics;
 

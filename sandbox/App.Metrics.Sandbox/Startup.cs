@@ -11,6 +11,7 @@ using App.Metrics.Extensions.Reporting.InfluxDB.Client;
 using App.Metrics.Filtering;
 using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Sandbox.JustForTesting;
+using App.Metrics.Tagging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -152,7 +153,17 @@ namespace App.Metrics.Sandbox
                          factory =>
                          {
                              factory.RegisterPingHealthCheck("google ping", "google.com", TimeSpan.FromSeconds(10));
+
                              factory.RegisterHttpGetHealthCheck("github", new Uri("https://github.com/"), TimeSpan.FromSeconds(10));
+                             
+                             factory.RegisterMetricCheck(
+                                 name: "Database Call Duration",
+                                 options: SandboxMetricsRegistry.DatabaseTimer,
+                                 tags: new MetricTags("client_id", "client-9"),
+                                 passing: value => (message: $"OK. 98th Percentile < 100ms ({value.Histogram.Percentile98}{SandboxMetricsRegistry.DatabaseTimer.DurationUnit.Unit()})", result: value.Histogram.Percentile98 < 100),
+                                 warning: value => (message: $"WARNING. 98th Percentile > 100ms ({value.Histogram.Percentile98}{SandboxMetricsRegistry.DatabaseTimer.DurationUnit.Unit()})", result: value.Histogram.Percentile98 < 200),
+                                 failing: value => (message: $"FAILED. 98th Percentile > 200ms ({value.Histogram.Percentile98}{SandboxMetricsRegistry.DatabaseTimer.DurationUnit.Unit()})", result: value.Histogram.Percentile98 > 200));
+
                          }).
                      AddMetricsMiddleware();
         }

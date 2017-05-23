@@ -25,7 +25,8 @@ namespace App.Metrics.Formatters.Json.Converters
             var healthy = source.Healthy.Keys.Select(k => new HealthCheck.Result(k, HealthCheckResult.Healthy(source.Healthy[k])));
             var unhealthy = source.Unhealthy.Keys.Select(k => new HealthCheck.Result(k, HealthCheckResult.Unhealthy(source.Unhealthy[k])));
             var degraded = source.Degraded.Keys.Select(k => new HealthCheck.Result(k, HealthCheckResult.Degraded(source.Degraded[k])));
-            var target = new HealthStatus(healthy.Concat(unhealthy).Concat(degraded));
+            var ignored = source.Ignored.Keys.Select(k => new HealthCheck.Result(k, HealthCheckResult.Ignore(source.Ignored[k])));
+            var target = new HealthStatus(healthy.Concat(unhealthy).Concat(degraded).Concat(ignored));
             return target;
         }
 
@@ -51,6 +52,10 @@ namespace App.Metrics.Formatters.Json.Converters
                                  .Select(c => new KeyValuePair<string, string>(c.Name, c.Check.Message))
                                  .ToDictionary(pair => pair.Key, pair => pair.Value);
 
+            var ignored = source.Results.Where(r => r.Check.Status.IsIgnored())
+                                 .Select(c => new KeyValuePair<string, string>(c.Name, c.Check.Message))
+                                 .ToDictionary(pair => pair.Key, pair => pair.Value);
+
             if (healthy.Any())
             {
                 target.Healthy = healthy;
@@ -64,6 +69,11 @@ namespace App.Metrics.Formatters.Json.Converters
             if (degraded.Any())
             {
                 target.Degraded = degraded;
+            }
+
+            if (ignored.Any())
+            {
+                target.Ignored = ignored;
             }
 
             serializer.Serialize(writer, target);

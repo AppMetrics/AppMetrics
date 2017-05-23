@@ -1,11 +1,8 @@
-// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
 using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
 using App.Metrics.Extensions.Middleware.Internal;
-using App.Metrics.Meter.Extensions;
+using App.Metrics.Meter;
 using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;
@@ -37,7 +34,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
 
             var meterValueBad = Context.Snapshot.GetMeterValue(
                 HttpRequestMetricsRegistry.ContextName,
-                "Error Rate Per Endpoint And Status Code|route:GET api/test/bad,http_status_code:400");            
+                "Error Rate Per Endpoint And Status Code|route:GET api/test/bad,http_status_code:400");
 
             var timerValueBad = Context.Snapshot.GetTimerValue(
                 HttpRequestMetricsRegistry.ContextName,
@@ -68,7 +65,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
             meterValueUnauth.Count.Should().Be(1L);
             timerValueUnauth.Histogram.Count.Should().Be(1L);
 
-           var timerValueOk = Context.Snapshot.GetTimerValue(
+            var timerValueOk = Context.Snapshot.GetTimerValue(
                 HttpRequestMetricsRegistry.ContextName,
                 "Transactions Per Endpoint|route:GET api/test");
 

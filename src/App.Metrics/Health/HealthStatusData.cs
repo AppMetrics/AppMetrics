@@ -13,6 +13,8 @@ namespace App.Metrics.Health
 
         public Dictionary<string, string> Healthy { get; set; } = new Dictionary<string, string>();
 
+        public Dictionary<string, string> Ignored { get; set; } = new Dictionary<string, string>();
+
         public string Status { get; set; }
 
         public string Timestamp { get; set; }

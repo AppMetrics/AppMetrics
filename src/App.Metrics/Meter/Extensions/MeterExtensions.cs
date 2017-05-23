@@ -6,8 +6,11 @@ using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Core;
 using App.Metrics.Core.Abstractions;
 using App.Metrics.Meter.Abstractions;
+using App.Metrics.Tagging;
 
-namespace App.Metrics.Meter.Extensions
+// ReSharper disable CheckNamespace
+namespace App.Metrics.Meter
+    // ReSharper restore CheckNamespace
 {
     public static class MeterExtensions
     {
@@ -16,6 +19,11 @@ namespace App.Metrics.Meter.Extensions
         public static MeterValue GetMeterValue(this IProvideMetricValues valueService, string context, string metricName)
         {
             return valueService.GetForContext(context).Meters.ValueFor(metricName);
+        }
+
+        public static MeterValue GetMeterValue(this IProvideMetricValues valueService, string context, string metricName, MetricTags tags)
+        {
+            return valueService.GetForContext(context).Meters.ValueFor(tags.AsMetricName(metricName));
         }
 
         public static MeterValue GetValueOrDefault(this IMeter metric)
