@@ -21,6 +21,8 @@ namespace App.Metrics.Formatting.Humanize
 
         public static void WriteFailedHealthChecksHeader(this StringBuilder buffer) { buffer.AppendLine("\tFAILED CHECKS"); }
 
+        public static void WriteIgnoredHealthChecksHeader(this StringBuilder buffer) { buffer.AppendLine("\tIGNORED CHECKS"); }
+
         public static void WriteHealthCheckResult(this StringBuilder buffer, HealthCheck.Result healthCheckResult)
         {
             buffer.AppendLine(Environment.NewLine + healthCheckResult.Hummanize());

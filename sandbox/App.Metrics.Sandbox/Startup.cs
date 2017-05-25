@@ -1,15 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using App.Metrics.Configuration;
-using App.Metrics.Extensions.Reporting.ElasticSearch;
-using App.Metrics.Extensions.Reporting.ElasticSearch.Client;
-using App.Metrics.Extensions.Reporting.Graphite;
-using App.Metrics.Extensions.Reporting.Graphite.Client;
-using App.Metrics.Extensions.Reporting.InfluxDB;
-using App.Metrics.Extensions.Reporting.InfluxDB.Client;
 using App.Metrics.Filtering;
-using App.Metrics.Reporting.Interfaces;
 using App.Metrics.Sandbox.JustForTesting;
 using App.Metrics.Tagging;
 using Microsoft.AspNetCore.Builder;
@@ -18,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using HttpPolicy = App.Metrics.Extensions.Reporting.InfluxDB.HttpPolicy;
 
 namespace App.Metrics.Sandbox
 {
@@ -94,61 +84,63 @@ namespace App.Metrics.Sandbox
             var reportFilter = new DefaultMetricsFilter();
             reportFilter.WithHealthChecks(false);
 
-            services.AddMetrics(Configuration.GetSection("AppMetrics")).
-                     AddJsonSerialization().
-                     AddReporting(
-                         factory =>
-                         {
-                             if (ReportTypes.Any(r => r == ReportType.InfluxDB))
-                             {
-                                 factory.AddInfluxDb(
-                                     new InfluxDBReporterSettings
-                                     {
-                                         HttpPolicy = new HttpPolicy
-                                                      {
-                                                          FailuresBeforeBackoff = 3,
-                                                          BackoffPeriod = TimeSpan.FromSeconds(30),
-                                                          Timeout = TimeSpan.FromSeconds(10)
-                                                      },
-                                         InfluxDbSettings = new InfluxDBSettings(InfluxDbDatabase, InfluxDbUri),
-                                         ReportInterval = TimeSpan.FromSeconds(5)
-                                     },
-                                     reportFilter);
-                             }
+            services.AddMetrics(Configuration.GetSection("AppMetrics")).                     
+                     AddJsonMetricsSerialization().
+                     AddAsciiHealthSerialization().
+                     AddAsciiMetricsTextSerialization().
+                     // AddReporting(
+                     //    factory =>
+                     //    {
+                     //        if (ReportTypes.Any(r => r == ReportType.InfluxDB))
+                     //        {
+                     //            factory.AddInfluxDb(
+                     //                new InfluxDBReporterSettings
+                     //                {
+                     //                    HttpPolicy = new HttpPolicy
+                     //                                 {
+                     //                                     FailuresBeforeBackoff = 3,
+                     //                                     BackoffPeriod = TimeSpan.FromSeconds(30),
+                     //                                     Timeout = TimeSpan.FromSeconds(10)
+                     //                                 },
+                     //                    InfluxDbSettings = new InfluxDBSettings(InfluxDbDatabase, InfluxDbUri),
+                     //                    ReportInterval = TimeSpan.FromSeconds(5)                                         
+                     //                },
+                     //                reportFilter);
+                     //        }
 
-                             if (ReportTypes.Any(r => r == ReportType.ElasticSearch))
-                             {
-                                 factory.AddElasticSearch(
-                                     new ElasticSearchReporterSettings
-                                     {
-                                         HttpPolicy = new Extensions.Reporting.ElasticSearch.HttpPolicy
-                                                      {
-                                                          FailuresBeforeBackoff = 3,
-                                                          BackoffPeriod = TimeSpan.FromSeconds(30),
-                                                          Timeout = TimeSpan.FromSeconds(10)
-                                                      },
-                                         ElasticSearchSettings = new ElasticSearchSettings(ElasticSearchUri, ElasticSearchIndex),
-                                         ReportInterval = TimeSpan.FromSeconds(5)
-                                     },
-                                     reportFilter);
-                             }
+                     //        if (ReportTypes.Any(r => r == ReportType.ElasticSearch))
+                     //        {
+                     //            factory.AddElasticSearch(
+                     //                new ElasticSearchReporterSettings
+                     //                {
+                     //                    HttpPolicy = new Extensions.Reporting.ElasticSearch.HttpPolicy
+                     //                                 {
+                     //                                     FailuresBeforeBackoff = 3,
+                     //                                     BackoffPeriod = TimeSpan.FromSeconds(30),
+                     //                                     Timeout = TimeSpan.FromSeconds(10)
+                     //                                 },
+                     //                    ElasticSearchSettings = new ElasticSearchSettings(ElasticSearchUri, ElasticSearchIndex),
+                     //                    ReportInterval = TimeSpan.FromSeconds(5)
+                     //                },
+                     //                reportFilter);
+                     //        }
 
-                             if (ReportTypes.Any(r => r == ReportType.ElasticSearch))
-                             {
-                                 factory.AddGraphite(
-                                     new GraphiteReporterSettings
-                                     {
-                                         HttpPolicy = new Extensions.Reporting.Graphite.HttpPolicy
-                                                      {
-                                                          FailuresBeforeBackoff = 3,
-                                                          BackoffPeriod = TimeSpan.FromSeconds(30),
-                                                          Timeout = TimeSpan.FromSeconds(3)
-                                                      },
-                                         GraphiteSettings = new GraphiteSettings(GraphiteUri),
-                                         ReportInterval = TimeSpan.FromSeconds(5)
-                                     });
-                             }
-                         }).
+                     //        if (ReportTypes.Any(r => r == ReportType.ElasticSearch))
+                     //        {
+                     //            factory.AddGraphite(
+                     //                new GraphiteReporterSettings
+                     //                {
+                     //                    HttpPolicy = new Extensions.Reporting.Graphite.HttpPolicy
+                     //                                 {
+                     //                                     FailuresBeforeBackoff = 3,
+                     //                                     BackoffPeriod = TimeSpan.FromSeconds(30),
+                     //                                     Timeout = TimeSpan.FromSeconds(3)
+                     //                                 },
+                     //                    GraphiteSettings = new GraphiteSettings(GraphiteUri),
+                     //                    ReportInterval = TimeSpan.FromSeconds(5)
+                     //                });
+                     //        }
+                     //    }).
                      AddHealthChecks(
                          factory =>
                          {

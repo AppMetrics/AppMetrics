@@ -5,7 +5,7 @@
 namespace App.Metrics.Health
 {
     /// <summary>
-    ///     Posible status values of a health check result
+    ///     Possible status values of a health check result
     /// </summary>
     public enum HealthCheckStatus
     {

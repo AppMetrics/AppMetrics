@@ -22,10 +22,8 @@ namespace App.Metrics.Reporting
 {
     public class ReportRunner<T> : IMetricReporter
     {
-        private readonly MetricValueDataKeys _dataKeys;
         private readonly Func<IMetricPayloadBuilder<T>, Task<bool>> _flushAsync;
         private readonly ILogger<ReportRunner<T>> _logger;
-        private readonly Func<string, string, string> _metricNameFormatter;
         private readonly IMetricPayloadBuilder<T> _payloadBuilder;
         private bool _disposed;
 
@@ -33,17 +31,13 @@ namespace App.Metrics.Reporting
             Func<IMetricPayloadBuilder<T>, Task<bool>> flushAsync,
             IMetricPayloadBuilder<T> payloadBuilder,
             TimeSpan reportInterval,
-            ILoggerFactory loggerFactory,
-            Func<string, string, string> metricNameFormatter,
-            MetricValueDataKeys customDataKeys = null)
+            ILoggerFactory loggerFactory)
             : this(
                 flushAsync,
                 payloadBuilder,
                 reportInterval,
                 typeof(ReportRunner<T>).Name,
-                loggerFactory,
-                metricNameFormatter,
-                customDataKeys)
+                loggerFactory)
         {
         }
 
@@ -52,16 +46,12 @@ namespace App.Metrics.Reporting
             IMetricPayloadBuilder<T> payloadBuilder,
             TimeSpan reportInterval,
             string name,
-            ILoggerFactory loggerFactory,
-            Func<string, string, string> metricNameFormatter,
-            MetricValueDataKeys customDataKeys = null)
+            ILoggerFactory loggerFactory)
         {
             ReportInterval = reportInterval;
             Name = name;
 
             _payloadBuilder = payloadBuilder;
-            _metricNameFormatter = metricNameFormatter;
-            _dataKeys = customDataKeys ?? new MetricValueDataKeys();
             _logger = loggerFactory.CreateLogger<ReportRunner<T>>();
             _flushAsync = flushAsync;
         }
@@ -160,33 +150,33 @@ namespace App.Metrics.Reporting
 
         private void ReportApdex(string context, MetricValueSourceBase<ApdexValue> valueSource)
         {
-            _payloadBuilder.PackApdex(_metricNameFormatter, context, valueSource, _dataKeys.Apdex);
+            _payloadBuilder.PackApdex(context, valueSource);
         }
 
         private void ReportCounter(string context, MetricValueSourceBase<CounterValue> valueSource)
         {
             var counterValueSource = valueSource as CounterValueSource;
-            _payloadBuilder.PackCounter(_metricNameFormatter, context, valueSource, counterValueSource, _dataKeys.Counter);
+            _payloadBuilder.PackCounter(context, valueSource, counterValueSource);
         }
 
         private void ReportGauge(string context, MetricValueSourceBase<double> valueSource)
         {
-            _payloadBuilder.PackGauge(_metricNameFormatter, context, valueSource);
+            _payloadBuilder.PackGauge(context, valueSource);
         }
 
         private void ReportHistogram(string context, MetricValueSourceBase<HistogramValue> valueSource)
         {
-            _payloadBuilder.PackHistogram(_metricNameFormatter, context, valueSource, _dataKeys.Histogram);
+            _payloadBuilder.PackHistogram(context, valueSource);
         }
 
         private void ReportMeter(string context, MetricValueSourceBase<MeterValue> valueSource)
         {
-            _payloadBuilder.PackMeter(_metricNameFormatter, context, valueSource, _dataKeys.Meter);
+            _payloadBuilder.PackMeter(context, valueSource);
         }
 
         private void ReportTimer(string context, MetricValueSourceBase<TimerValue> valueSource)
         {
-            _payloadBuilder.PackTimer(_metricNameFormatter, context, valueSource, _dataKeys.Meter, _dataKeys.Histogram);
+            _payloadBuilder.PackTimer(context, valueSource);
         }
     }
 }

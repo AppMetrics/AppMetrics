@@ -71,10 +71,9 @@ namespace App.Metrics.Facts.Reporting
             var dataKeys = new MetricValueDataKeys(
                 histogram: new Dictionary<HistogramValueDataKeys, string> { { HistogramValueDataKeys.P75, "75th_percentile" } });
             var token = CancellationToken.None;
-            var payloadBuilder = new TestPayloadBuilder();
+            var payloadBuilder = new TestPayloadBuilder(dataKeys);
             var reporter = new TestReporter(
-                payloadBuilder,
-                dataKeys);
+                payloadBuilder);
             var filter = new DefaultMetricsFilter().WithEnvironmentInfo(false);
 
             // Act
@@ -101,8 +100,8 @@ namespace App.Metrics.Facts.Reporting
             var dataKeys = new MetricValueDataKeys(
                 meter: new Dictionary<MeterValueDataKeys, string> { { MeterValueDataKeys.Rate1M, "1_min_rate" } });
             var token = CancellationToken.None;
-            var payloadBuilder = new TestPayloadBuilder();
-            var reporter = new TestReporter(payloadBuilder, dataKeys);
+            var payloadBuilder = new TestPayloadBuilder(dataKeys);
+            var reporter = new TestReporter(payloadBuilder);
             var filter = new DefaultMetricsFilter().WithEnvironmentInfo(false);
 
             // Act
@@ -256,8 +255,8 @@ namespace App.Metrics.Facts.Reporting
                 ConstantValue.Provider(counter.Value),
                 Unit.None,
                 MetricTags.Empty);
-            var payloadBuilder = new TestPayloadBuilder();
-            var reporter = new TestReporter(payloadBuilder, dataKeys);
+            var payloadBuilder = new TestPayloadBuilder(dataKeys);
+            var reporter = new TestReporter(payloadBuilder);
 
             reporter.StartReportRun(metricsMock.Object);
             reporter.ReportMetric("test", counterValueSource);
@@ -282,14 +281,15 @@ namespace App.Metrics.Facts.Reporting
                 ConstantValue.Provider(counter.Value),
                 Unit.None,
                 new MetricTags(new[] { "key1", "key2" }, new[] { "value1", "value2" }));
-            var payloadBuilder = new TestPayloadBuilder();
             var customDataKeys = new MetricValueDataKeys(
                 counter: new Dictionary<CounterValueDataKeys, string>
                          {
                              { CounterValueDataKeys.SetItemPercent, "%" },
                              { CounterValueDataKeys.Total, "count" }
                          });
-            var reporter = new TestReporter(payloadBuilder, customDataKeys);
+            var payloadBuilder = new TestPayloadBuilder(customDataKeys);
+            
+            var reporter = new TestReporter(payloadBuilder);
 
             reporter.StartReportRun(metricsMock.Object);
             reporter.ReportMetric("test", counterValueSource);
@@ -580,8 +580,8 @@ namespace App.Metrics.Facts.Reporting
                 Unit.None,
                 TimeUnit.Milliseconds,
                 MetricTags.Empty);
-            var payloadBuilder = new TestPayloadBuilder();
-            var reporter = new TestReporter(payloadBuilder, dataKeys);
+            var payloadBuilder = new TestPayloadBuilder(dataKeys);
+            var reporter = new TestReporter(payloadBuilder);
 
             reporter.StartReportRun(metricsMock.Object);
             reporter.ReportMetric("test", meterValueSource);

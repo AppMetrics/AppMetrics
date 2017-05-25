@@ -27,6 +27,7 @@ using System.Runtime.InteropServices;
 [assembly: Guid("7ad4f2aa-a152-4092-b79f-2648cbedffbc")]
 [assembly: InternalsVisibleTo("App.Metrics.Extensions.Middleware")]
 [assembly: InternalsVisibleTo("App.Metrics.Formatters.Json")]
+[assembly: InternalsVisibleTo("App.Metrics.Formatters.Ascii")]
 [assembly: InternalsVisibleTo("App.Metrics.Facts")]
 [assembly: InternalsVisibleTo("App.Metrics.Extensions.Middleware.Integration.Facts")]
 [assembly: InternalsVisibleTo("App.Metrics.Benchmarks")]

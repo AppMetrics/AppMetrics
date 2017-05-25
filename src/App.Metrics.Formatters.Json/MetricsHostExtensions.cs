@@ -59,6 +59,33 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         /// <summary>
+        /// Enables JSON serialization on the metric-text endpoint's response
+        /// </summary>
+        /// <param name="host">The metrics host builder.</param>
+        /// <returns>The metrics host builder</returns>
+        public static IMetricsHostBuilder AddJsonMetricsTextSerialization(this IMetricsHostBuilder host)
+        {
+            host.Services.Replace(ServiceDescriptor.Transient<IMetricsTextResponseWriter, JsonMetricsTextResponseWriter>());
+            host.Services.Replace(ServiceDescriptor.Transient<IMetricDataSerializer, MetricDataSerializer>());
+
+            return host;
+        }
+
+        /// <summary>
+        /// Enables JSON serialization on the metric-text endpoint's response
+        /// </summary>
+        /// <param name="host">The metrics host builder.</param>
+        /// <param name="serializerSettings">The JSON serializer settings.</param>
+        /// <returns>The metrics host builder</returns>
+        public static IMetricsHostBuilder AddJsonMetricsTextSerialization(this IMetricsHostBuilder host, JsonSerializerSettings serializerSettings)
+        {
+            host.Services.Replace(ServiceDescriptor.Transient<IMetricsTextResponseWriter, JsonMetricsTextResponseWriter>());
+            host.Services.Replace(ServiceDescriptor.Transient<IMetricDataSerializer>(provider => new MetricDataSerializer(serializerSettings)));
+
+            return host;
+        }
+
+        /// <summary>
         /// Enables JSON serialization on the metric endpoint's response
         /// </summary>
         /// <param name="host">The metrics host builder.</param>
@@ -82,6 +109,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             host.AddJsonHealthSerialization();
             host.AddJsonMetricsSerialization();
+            host.AddJsonMetricsTextSerialization();
 
             return host;
         }
@@ -97,6 +125,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             host.AddJsonHealthSerialization(serializerSettings);
             host.AddJsonMetricsSerialization(serializerSettings);
+            host.AddJsonMetricsTextSerialization(serializerSettings);
 
             return host;
         }

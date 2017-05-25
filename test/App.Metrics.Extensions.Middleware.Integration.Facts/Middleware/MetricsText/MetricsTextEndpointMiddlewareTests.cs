@@ -33,7 +33,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
             var result = await Client.GetAsync("/metrics-text");
 
             result.StatusCode.Should().Be(HttpStatusCode.OK);
-            result.Content.Headers.ContentType.ToString().Should().Match<string>(s => s == "text/plain");
+            result.Content.Headers.ContentType.ToString().Should().Match<string>(s => s == "text/vnd.app.metrics.v1.metrics+plain");
         }
     }
 }

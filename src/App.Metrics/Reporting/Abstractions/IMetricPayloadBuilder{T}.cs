@@ -9,13 +9,16 @@ namespace App.Metrics.Reporting.Abstractions
 {
     public interface IMetricPayloadBuilder<out T>
     {
+        MetricValueDataKeys DataKeys { get; }
+
         void Clear();
 
         void Init();
 
-        void Pack(string name, object value, MetricTags tags);
+        void Pack(string context, string name, object value, MetricTags tags);
 
         void Pack(
+            string context,
             string name,
             IEnumerable<string> columns,
             IEnumerable<object> values,

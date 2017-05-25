@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using App.Metrics.Reporting;
 using App.Metrics.Reporting.Abstractions;
 using App.Metrics.Tagging;
 
@@ -9,6 +11,28 @@ namespace App.Metrics.Facts.Reporting.Helpers
     public class TestPayloadBuilder : IMetricPayloadBuilder<TestMetricPayload>
     {
         private TestMetricPayload _payload;
+        private readonly Func<string, string, string> _metricNameFormatter = (metricContext, metricName) => metricContext.IsMissing()
+            ? $"{metricName}".Replace(' ', '_').ToLowerInvariant()
+            : $"{metricContext}__{metricName}".Replace(' ', '_').ToLowerInvariant();
+
+        public TestPayloadBuilder()
+            :this (new MetricValueDataKeys())
+        {
+            
+        }
+
+        public TestPayloadBuilder(MetricValueDataKeys dataKeys)
+        {
+            _payload = new TestMetricPayload();
+            DataKeys = dataKeys ?? new MetricValueDataKeys();            
+        }
+
+        public TestPayloadBuilder(Func<string, string, string> metricNameFormatter, MetricValueDataKeys dataKeys)
+        {
+            _payload = new TestMetricPayload();
+            DataKeys = dataKeys ?? new MetricValueDataKeys();
+            _metricNameFormatter = metricNameFormatter;
+        }
 
         public void Clear() { _payload = null; }
 
@@ -17,12 +41,18 @@ namespace App.Metrics.Facts.Reporting.Helpers
             _payload = new TestMetricPayload();
         }
 
-        public void Pack(string name, object value, MetricTags tags)
+        public MetricValueDataKeys DataKeys { get; }
+
+
+        public void Pack(string context, string name, object value, MetricTags tags)
         {
-            _payload.Add(new TestMetricPoint(name, new Dictionary<string, object> { { "value", value } }, tags));
+            var measurement = _metricNameFormatter(context, name);
+
+            _payload.Add(new TestMetricPoint(measurement, new Dictionary<string, object> { { "value", value } }, tags));
         }
 
         public void Pack(
+            string context,
             string name,
             IEnumerable<string> columns,
             IEnumerable<object> values,
@@ -31,7 +61,9 @@ namespace App.Metrics.Facts.Reporting.Helpers
             var fields = columns.Zip(values, (column, data) => new { column, data })
                                 .ToDictionary(pair => pair.column, pair => pair.data);
 
-            _payload.Add(new TestMetricPoint(name, fields, tags));
+            var measurement = _metricNameFormatter(context, name);
+
+            _payload.Add(new TestMetricPoint(measurement, fields, tags));
         }
 
         public TestMetricPayload Payload() { return _payload; }

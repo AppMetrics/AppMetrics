@@ -3,11 +3,10 @@
 // </copyright>
 
 using System;
+using System.Net;
 using System.Threading.Tasks;
-using App.Metrics.Configuration;
+using App.Metrics.Extensions.Middleware.Abstractions;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
-using App.Metrics.Reporting;
-using App.Metrics.Reporting.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -17,29 +16,32 @@ namespace App.Metrics.Extensions.Middleware
     public class MetricsEndpointTextEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
         // ReSharper restore ClassNeverInstantiated.Global
     {
-        private readonly DefaultReportGenerator _reportGenerator;
+        private readonly IMetricsTextResponseWriter _metricsTextResponseWriter;
 
         public MetricsEndpointTextEndpointMiddleware(
             RequestDelegate next,
-            AppMetricsOptions appMetricsOptions,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
-            IMetrics metrics)
-            : base(next, aspNetOptions, loggerFactory, metrics) { _reportGenerator = new DefaultReportGenerator(appMetricsOptions, loggerFactory); }
+            IMetrics metrics,
+            IMetricsTextResponseWriter metricsTextResponseWriter)
+            : base(next, aspNetOptions, loggerFactory, metrics)
+        {
+            _metricsTextResponseWriter = metricsTextResponseWriter ?? throw new ArgumentNullException(nameof(metricsTextResponseWriter));
+        }
 
         // ReSharper disable UnusedMember.Global
         public async Task Invoke(HttpContext context)
-        {
             // ReSharper restore UnusedMember.Global
-
+        {
             if (Options.MetricsTextEndpointEnabled && Options.MetricsTextEndpoint.IsPresent() && Options.MetricsTextEndpoint == context.Request.Path)
             {
                 Logger.MiddlewareExecuting(GetType());
 
-                var stringReporter = new StringReporter();
-                await _reportGenerator.GenerateAsync(stringReporter, Metrics, context.RequestAborted);
+                context.Response.Headers["Content-Type"] = new[] { _metricsTextResponseWriter.ContentType };
+                context.SetNoCacheHeaders();
+                context.Response.StatusCode = (int)HttpStatusCode.OK;
 
-                await WriteResponseAsync(context, stringReporter.Result, "text/plain");
+                await _metricsTextResponseWriter.WriteAsync(context, Metrics.Snapshot.Get(), context.RequestAborted).ConfigureAwait(false);
 
                 Logger.MiddlewareExecuted(GetType());
 

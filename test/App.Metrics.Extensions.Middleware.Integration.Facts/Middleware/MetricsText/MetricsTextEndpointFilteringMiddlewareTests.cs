@@ -23,11 +23,11 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
 
             var result = await response.Content.ReadAsStringAsync();
 
-            result.Should().Contain("Counter");
-            result.Should().NotContain("Gauge");
-            result.Should().NotContain("Meter");
-            result.Should().NotContain("Timers");
-            result.Should().NotContain("Histogram");
+            result.Should().Contain("test_counter");
+            result.Should().NotContain("test_gauge");
+            result.Should().NotContain("test_meter");
+            result.Should().NotContain("test_timer");
+            result.Should().NotContain("test_histogram");
 
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
