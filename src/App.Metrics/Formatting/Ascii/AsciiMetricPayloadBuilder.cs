@@ -17,13 +17,21 @@ namespace App.Metrics.Formatting.Ascii
         private readonly Func<string, string, string> _metricNameFormatter;
         private AsciiMetricPayload _payload;
 
-        public AsciiMetricPayloadBuilder()
+        public AsciiMetricPayloadBuilder(Func<string, string, string> metricNameFormatter = null, MetricValueDataKeys dataKeys = null)
         {
             _payload = new AsciiMetricPayload();
-            _metricNameFormatter = (metricContext, metricName) => metricContext.IsMissing()
-                ? metricName
-                : $"[{metricContext}] {metricName}";
-            DataKeys = new MetricValueDataKeys();
+            if (_metricNameFormatter == null)
+            {
+                _metricNameFormatter = (metricContext, metricName) => metricContext.IsMissing()
+                    ? metricName
+                    : $"[{metricContext}] {metricName}";
+            }
+            else
+            {
+                _metricNameFormatter = metricNameFormatter;
+            }
+
+            DataKeys = dataKeys ?? new MetricValueDataKeys();
         }
 
         public MetricValueDataKeys DataKeys { get; }

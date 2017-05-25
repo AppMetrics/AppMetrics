@@ -87,8 +87,12 @@ namespace App.Metrics.Reporting
             return result;
         }
 
+        // TODO: Remove in 2.0.0
+        [Obsolete("Remove in 2.0.0 - Doesn't make sense to report environment info as part of metric reporting")]
         public void ReportEnvironment(EnvironmentInfo environmentInfo) { }
 
+        // TODO: Remove in 2.0.0
+        [Obsolete("Remove in 2.0.0 - Doesn't make sense to report health status as part of metric reporting, health check results are reported as guages as well")]
         public void ReportHealth(
             GlobalMetricTags globalTags,
             IEnumerable<HealthCheck.Result> healthyChecks,
