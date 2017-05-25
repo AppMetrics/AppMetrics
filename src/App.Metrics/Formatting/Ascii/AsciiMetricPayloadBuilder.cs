@@ -20,7 +20,7 @@ namespace App.Metrics.Formatting.Ascii
         public AsciiMetricPayloadBuilder(Func<string, string, string> metricNameFormatter = null, MetricValueDataKeys dataKeys = null)
         {
             _payload = new AsciiMetricPayload();
-            if (_metricNameFormatter == null)
+            if (metricNameFormatter == null)
             {
                 _metricNameFormatter = (metricContext, metricName) => metricContext.IsMissing()
                     ? metricName
