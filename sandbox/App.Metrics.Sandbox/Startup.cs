@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using App.Metrics.Extensions.Reporting.ElasticSearch;
+using App.Metrics.Extensions.Reporting.ElasticSearch.Client;
 using App.Metrics.Extensions.Reporting.InfluxDB;
 using App.Metrics.Extensions.Reporting.InfluxDB.Client;
 using App.Metrics.Filtering;
@@ -13,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using HttpPolicy = App.Metrics.Extensions.Reporting.InfluxDB.HttpPolicy;
 
 namespace App.Metrics.Sandbox
 {
@@ -92,6 +95,7 @@ namespace App.Metrics.Sandbox
                      AddJsonMetricsSerialization().
                      AddAsciiHealthSerialization().
                      AddAsciiMetricsTextSerialization().
+                     // AddPrometheusPlainTextSerialization().
                       AddReporting(
                          factory =>
                          {
@@ -101,50 +105,50 @@ namespace App.Metrics.Sandbox
                                      new InfluxDBReporterSettings
                                      {
                                          HttpPolicy = new HttpPolicy
-                                         {
-                                             FailuresBeforeBackoff = 3,
-                                             BackoffPeriod = TimeSpan.FromSeconds(30),
-                                             Timeout = TimeSpan.FromSeconds(10)
-                                         },
+                                                      {
+                                                          FailuresBeforeBackoff = 3,
+                                                          BackoffPeriod = TimeSpan.FromSeconds(30),
+                                                          Timeout = TimeSpan.FromSeconds(10)
+                                                      },
                                          InfluxDbSettings = new InfluxDBSettings(InfluxDbDatabase, InfluxDbUri),
                                          ReportInterval = TimeSpan.FromSeconds(5)
                                      },
                                      reportFilter);
-                             }}).
 
-                             //        if (ReportTypes.Any(r => r == ReportType.ElasticSearch))
-                             //        {
-                             //            factory.AddElasticSearch(
-                             //                new ElasticSearchReporterSettings
-                             //                {
-                             //                    HttpPolicy = new Extensions.Reporting.ElasticSearch.HttpPolicy
-                             //                                 {
-                             //                                     FailuresBeforeBackoff = 3,
-                             //                                     BackoffPeriod = TimeSpan.FromSeconds(30),
-                             //                                     Timeout = TimeSpan.FromSeconds(10)
-                             //                                 },
-                             //                    ElasticSearchSettings = new ElasticSearchSettings(ElasticSearchUri, ElasticSearchIndex),
-                             //                    ReportInterval = TimeSpan.FromSeconds(5)
-                             //                },
-                             //                reportFilter);
-                             //        }
+                                 // if (ReportTypes.Any(r => r == ReportType.ElasticSearch))
+                                 // {
+                                 //     factory.AddElasticSearch(
+                                 //         new ElasticSearchReporterSettings
+                                 //         {
+                                 //             HttpPolicy = new Extensions.Reporting.ElasticSearch.HttpPolicy
+                                 //             {
+                                 //                 FailuresBeforeBackoff = 3,
+                                 //                 BackoffPeriod = TimeSpan.FromSeconds(30),
+                                 //                 Timeout = TimeSpan.FromSeconds(10)
+                                 //             },
+                                 //             ElasticSearchSettings = new ElasticSearchSettings(ElasticSearchUri, ElasticSearchIndex),
+                                 //             ReportInterval = TimeSpan.FromSeconds(5)
+                                 //         },
+                                 //         reportFilter);
+                                 // }
 
-                             //        if (ReportTypes.Any(r => r == ReportType.ElasticSearch))
-                             //        {
-                             //            factory.AddGraphite(
-                             //                new GraphiteReporterSettings
-                             //                {
-                             //                    HttpPolicy = new Extensions.Reporting.Graphite.HttpPolicy
-                             //                                 {
-                             //                                     FailuresBeforeBackoff = 3,
-                             //                                     BackoffPeriod = TimeSpan.FromSeconds(30),
-                             //                                     Timeout = TimeSpan.FromSeconds(3)
-                             //                                 },
-                             //                    GraphiteSettings = new GraphiteSettings(GraphiteUri),
-                             //                    ReportInterval = TimeSpan.FromSeconds(5)
-                             //                });
-                             //        }
-                             //    }).
+                                 // if (ReportTypes.Any(r => r == ReportType.ElasticSearch))
+                                 // {
+                                 //     factory.AddGraphite(
+                                 //         new GraphiteReporterSettings
+                                 //         {
+                                 //             HttpPolicy = new Extensions.Reporting.Graphite.HttpPolicy
+                                 //                          {
+                                 //                              FailuresBeforeBackoff = 3,
+                                 //                              BackoffPeriod = TimeSpan.FromSeconds(30),
+                                 //                              Timeout = TimeSpan.FromSeconds(3)
+                                 //                          },
+                                 //             GraphiteSettings = new GraphiteSettings(GraphiteUri),
+                                 //             ReportInterval = TimeSpan.FromSeconds(5)
+                                 //         });
+                                 // }
+                             }
+                         }).
                              AddHealthChecks(
                          factory =>
                          {
