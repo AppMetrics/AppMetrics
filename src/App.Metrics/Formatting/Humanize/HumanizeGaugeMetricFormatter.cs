@@ -8,6 +8,8 @@ using App.Metrics.Gauge;
 
 namespace App.Metrics.Formatting.Humanize
 {
+    // TODO: Remove in 2.0.0
+    [Obsolete("Replaced with formatting packages which can be used with the Report Runner")]
     public sealed class HumanizeGaugeMetricFormatter : ICustomFormatter
     {
         public string Format(string format, object arg, IFormatProvider formatProvider)

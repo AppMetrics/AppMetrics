@@ -8,6 +8,7 @@ using System.Linq;
 
 namespace App.Metrics.Formatting.Ascii
 {
+    // TODO: Remove in 2.0.0 - Add to separate formatting package
     public class AsciiMetricPayload
     {
         private readonly List<AsciiMetricPoint> _points = new List<AsciiMetricPoint>();

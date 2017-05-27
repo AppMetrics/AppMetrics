@@ -8,6 +8,7 @@ using App.Metrics.Reporting.Abstractions;
 
 namespace App.Metrics.Formatting.Ascii
 {
+    // TODO: Remove in 2.0.0 - Add to separate formatting package
     public class AsciiHealthStatusPayloadBuilder : IHealthStatusPayloadBuilder<AsciiHealthStatusPayload>
     {
         private AsciiHealthStatusPayload _payload;

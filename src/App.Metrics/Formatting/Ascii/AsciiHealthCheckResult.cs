@@ -8,6 +8,7 @@ using App.Metrics.Health;
 
 namespace App.Metrics.Formatting.Ascii
 {
+    // TODO: Remove in 2.0.0 - Add to separate formatting package
     public class AsciiHealthCheckResult
     {
         public AsciiHealthCheckResult(string name, string message, HealthCheckStatus status)
