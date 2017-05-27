@@ -48,7 +48,7 @@ namespace App.Metrics.Facts.Formatting
             formatter.Build(_fixture.Metrics.Snapshot.Get(), payloadBuilder);
 
             // Assert
-            payloadBuilder.PayloadFormatted().Should().Be("[test] counter1 countervalue = 1\n");
+            payloadBuilder.PayloadFormatted().Should().Be("[test] counter1 counter none value = 1\n");
         }
     }
 }

@@ -2,7 +2,6 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Apdex;
@@ -57,7 +56,13 @@ namespace App.Metrics.Reporting
                         itemData.AddIfNotNanOrInfinity(payloadBuilder.DataKeys.Counter[CounterValueDataKeys.SetItemPercent], item.Percent);
                     }
 
-                    PackMetricWithSetItems(payloadBuilder, context, valueSource, item.Tags, itemData, payloadBuilder.DataKeys.Counter[CounterValueDataKeys.MetricSetItemSuffix]);
+                    PackMetricWithSetItems(
+                        payloadBuilder,
+                        context,
+                        valueSource,
+                        item.Tags,
+                        itemData,
+                        payloadBuilder.DataKeys.Counter[CounterValueDataKeys.MetricSetItemSuffix]);
                 }
             }
 
@@ -96,7 +101,13 @@ namespace App.Metrics.Reporting
                 foreach (var item in valueSource.Value.Items.Distinct())
                 {
                     item.AddMeterSetItemValues(out IDictionary<string, object> setItemData, payloadBuilder.DataKeys.Meter);
-                    PackMetricWithSetItems(payloadBuilder, context, valueSource, item.Tags, setItemData, payloadBuilder.DataKeys.Meter[MeterValueDataKeys.MetricSetItemSuffix]);
+                    PackMetricWithSetItems(
+                        payloadBuilder,
+                        context,
+                        valueSource,
+                        item.Tags,
+                        setItemData,
+                        payloadBuilder.DataKeys.Meter[MeterValueDataKeys.MetricSetItemSuffix]);
                 }
             }
 
@@ -116,22 +127,55 @@ namespace App.Metrics.Reporting
             PackMetric(payloadBuilder, context, valueSource, data);
         }
 
+        private static MetricTags ConcatIntrinsicMetricTags<T>(MetricValueSourceBase<T> valueSource)
+        {
+            var intrinsicTags = new MetricTags(Constants.Pack.MetricTagsUnitKey, valueSource.Unit.ToString());
+
+            if (typeof(T) == typeof(TimerValue))
+            {
+                var timerValueSource = valueSource as MetricValueSourceBase<TimerValue>;
+
+                var timerIntrinsicTags = new MetricTags(
+                    new[] { Constants.Pack.MetricTagsUnitRateDurationKey, Constants.Pack.MetricTagsUnitRateKey },
+                    new[] { timerValueSource.Value.DurationUnit.Unit(), timerValueSource.Value.Rate.RateUnit.Unit() });
+
+                intrinsicTags = MetricTags.Concat(intrinsicTags, timerIntrinsicTags);
+            }
+            else if (typeof(T) == typeof(MeterValue))
+            {
+                var meterValueSource = valueSource as MetricValueSourceBase<MeterValue>;
+
+                var meterIntrinsicTags = new MetricTags(Constants.Pack.MetricTagsUnitRateKey, meterValueSource.Value.RateUnit.Unit());
+                intrinsicTags = MetricTags.Concat(intrinsicTags, meterIntrinsicTags);
+            }
+
+            if (Constants.Pack.MetricValueSourceTypeMapping.ContainsKey(typeof(T)))
+            {
+                var metricTypeTag = new MetricTags(Constants.Pack.MetricTagsTypeKey, Constants.Pack.MetricValueSourceTypeMapping[typeof(T)]);
+                intrinsicTags = MetricTags.Concat(metricTypeTag, intrinsicTags);
+            }
+            else
+            {
+                var metricTypeTag = new MetricTags(Constants.Pack.MetricTagsTypeKey, typeof(T).Name.ToLowerInvariant());
+                intrinsicTags = MetricTags.Concat(metricTypeTag, intrinsicTags);
+            }
+
+            return intrinsicTags;
+        }
+
         private static MetricTags ConcatMetricTags<T>(MetricValueSourceBase<T> valueSource, MetricTags setItemTags)
         {
             var tagsWithSetItems = MetricTags.Concat(valueSource.Tags, setItemTags);
-            var tags = Constants.Pack.MetricValueSourceTypeMapping.ContainsKey(typeof(T))
-                ? MetricTags.Concat(tagsWithSetItems, new MetricTags(Constants.Pack.MetricTagsTypeKey, Constants.Pack.MetricValueSourceTypeMapping[typeof(T)]))
-                : tagsWithSetItems;
+            var intrinsicTags = ConcatIntrinsicMetricTags(valueSource);
 
-            return tags;
+            return MetricTags.Concat(tagsWithSetItems, intrinsicTags);
         }
 
         private static MetricTags ConcatMetricTags<T>(MetricValueSourceBase<T> valueSource)
         {
-            var tags = Constants.Pack.MetricValueSourceTypeMapping.ContainsKey(typeof(T))
-                ? MetricTags.Concat(valueSource.Tags, new MetricTags(Constants.Pack.MetricTagsTypeKey, Constants.Pack.MetricValueSourceTypeMapping[typeof(T)]))
-                : valueSource.Tags;
-            return tags;
+            var intrinsicTags = ConcatIntrinsicMetricTags(valueSource);
+
+            return MetricTags.Concat(valueSource.Tags, intrinsicTags);
         }
 
         private static void PackMetric<T1, T2>(

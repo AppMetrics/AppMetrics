@@ -31,7 +31,7 @@
       "counters": [
         {
           "name": "test_counter",
-          "unit": "Items",
+          "unit": "items",
           "count": 200,
           "items": [
             {
@@ -59,7 +59,7 @@
       "gauges": [
         {
           "name": "test_gauge",
-          "unit": "Calls",
+          "unit": "calls",
           "value": 0.5,
           "tags": {
             "host": "server1",
@@ -70,7 +70,7 @@
       "histograms": [
         {
           "name": "test_histogram",
-          "unit": "Items",
+          "unit": "items",
           "count": 1,
           "sum": 1.0,
           "lastUserValue": "3",
@@ -97,7 +97,7 @@
       "meters": [
         {
           "name": "test_meter",
-          "unit": "Calls",
+          "unit": "calls",
           "count": 5,
           "fifteenMinuteRate": 4.0,
           "fiveMinuteRate": 3.0,
@@ -124,7 +124,7 @@
       "timers": [
         {
           "name": "test_timer",
-          "unit": "Requests",
+          "unit": "req",
           "activeSessions": 0,
           "count": 5,
           "durationUnit": "ms",

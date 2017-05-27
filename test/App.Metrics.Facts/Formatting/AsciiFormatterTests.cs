@@ -49,7 +49,7 @@ namespace App.Metrics.Facts.Formatting
             formatter.Build(_fixture.Metrics.Snapshot.Get(), payloadBuilder);
 
             // Assert
-            payloadBuilder.PayloadFormatted().Should().Be("# MEASUREMENT: [test] counter1\n# TAGS:\n             mtype = counter\n# FIELDS:\n             value = 1\n--------------------------------------------------------------\n");
+            payloadBuilder.PayloadFormatted().Should().Be("# MEASUREMENT: [test] counter1\n# TAGS:\n             mtype = counter\n              unit = none\n# FIELDS:\n             value = 1\n--------------------------------------------------------------\n");
         }
 
         [Fact]
@@ -65,7 +65,7 @@ namespace App.Metrics.Facts.Formatting
             formatter.Build(_fixture.Metrics.Snapshot.Get(), payloadBuilder);
 
             // Assert
-            payloadBuilder.PayloadFormatted().Should().Be("# MEASUREMENT: test---counter1\n# TAGS:\n             mtype = counter\n# FIELDS:\n             value = 1\n--------------------------------------------------------------\n");
+            payloadBuilder.PayloadFormatted().Should().Be("# MEASUREMENT: test---counter1\n# TAGS:\n             mtype = counter\n              unit = none\n# FIELDS:\n             value = 1\n--------------------------------------------------------------\n");
         }
     }
 }

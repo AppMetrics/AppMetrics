@@ -43,6 +43,7 @@ namespace App.Metrics.Facts.Formatting.TestHelpers
 
             foreach (var f in Fields)
             {
+                textWriter.Write(' ');
                 textWriter.Write($"{f.Key} = {f.Value}");
             }
         }

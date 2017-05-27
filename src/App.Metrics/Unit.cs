@@ -11,19 +11,29 @@ namespace App.Metrics
     [DebuggerDisplay("{" + nameof(Name) + "}")]
     public struct Unit
     {
-        public static readonly Unit Bytes = new Unit("bytes");
-        public static readonly Unit Calls = new Unit("Calls");
-        public static readonly Unit Commands = new Unit("Commands");
-        public static readonly Unit Errors = new Unit("Errors");
-        public static readonly Unit Events = new Unit("Events");
-        public static readonly Unit Items = new Unit("Items");
-        public static readonly Unit KiloBytes = new Unit("Kb");
-        public static readonly Unit MegaBytes = new Unit("Mb");
-        public static readonly Unit None = new Unit(string.Empty);
-        public static readonly Unit Percent = new Unit("%");
-        public static readonly Unit Requests = new Unit("Requests");
-        public static readonly Unit Results = new Unit("Results");
-        public static readonly Unit Threads = new Unit("Threads");
+        public static readonly Unit Bits = new Unit("b");
+        public static readonly Unit Bytes = new Unit("B");
+        public static readonly Unit Calls = new Unit("calls");
+        public static readonly Unit Commands = new Unit("command");
+        public static readonly Unit Connections = new Unit("conn");
+        public static readonly Unit Errors = new Unit("err");
+        public static readonly Unit Events = new Unit("event");
+        public static readonly Unit Items = new Unit("items");
+        public static readonly Unit KiloBytes = new Unit("kB");
+        public static readonly Unit MegaBytes = new Unit("MB");
+        public static readonly Unit GigaBytes = new Unit("GB");
+        public static readonly Unit TeraBytes = new Unit("TB");
+        public static readonly Unit PetaBytes = new Unit("PB");
+        public static readonly Unit None = new Unit("none");
+        public static readonly Unit Percent = new Unit("percent");
+
+        /// <summary>
+        /// HTTP requests, database queries, etc
+        /// </summary>
+        public static readonly Unit Requests = new Unit("req");
+        public static readonly Unit Results = new Unit("result");
+        public static readonly Unit Threads = new Unit("thread");
+        public static readonly Unit Warnings = new Unit("warn");
 
         private Unit(string name)
         {

@@ -12,14 +12,12 @@ namespace App.Metrics.Timer
     /// </summary>
     public sealed class TimerValue
     {
-        private readonly TimeUnit _durationUnit;
-
         public TimerValue(MeterValue rate, HistogramValue histogram, long activeSessions, TimeUnit durationUnit)
         {
             Rate = rate;
             Histogram = histogram;
             ActiveSessions = activeSessions;
-            _durationUnit = durationUnit;
+            DurationUnit = durationUnit;
         }
 
         public long ActiveSessions { get; }
@@ -28,9 +26,11 @@ namespace App.Metrics.Timer
 
         public MeterValue Rate { get; }
 
+        public TimeUnit DurationUnit { get; }
+
         public TimerValue Scale(TimeUnit rate, TimeUnit duration)
         {
-            var durationFactor = _durationUnit.ScalingFactorFor(duration);
+            var durationFactor = DurationUnit.ScalingFactorFor(duration);
             return new TimerValue(Rate.Scale(rate), Histogram.Scale(durationFactor), ActiveSessions, duration);
         }
     }
