@@ -45,6 +45,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
         private static IMetricsHostBuilder AddMetricsMiddlewareCore(this IMetricsHostBuilder builder)
         {
+            builder.Services.TryAddSingleton<IEnvironmentInfoResponseWriter, NoOpEnvironmentInfoResponseWriter>();
             builder.Services.TryAddSingleton<IMetricsResponseWriter, NoOpMetricsResponseWriter>();
             builder.Services.TryAddSingleton<IMetricsTextResponseWriter, NoOpMetricsTextResponseWriter>();
             builder.Services.TryAddSingleton<IHealthResponseWriter, NoOpHealthStatusResponseWriter>();

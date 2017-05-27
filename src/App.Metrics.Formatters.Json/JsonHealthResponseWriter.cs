@@ -24,6 +24,7 @@ namespace App.Metrics.Formatters.Json
         /// <inheritdoc />
         public string ContentType => "application/vnd.app.metrics.v1.health+json";
 
+        /// <inheritdoc />
         public Task WriteAsync(HttpContext context, HealthStatus healthStatus, CancellationToken token = default(CancellationToken))
         {
             var json = _serializer.Serialize(healthStatus);

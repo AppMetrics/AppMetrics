@@ -15,7 +15,7 @@ namespace App.Metrics.Formatters.Ascii
     public class AsciiHealthResponseWriter : IHealthResponseWriter
     {
         /// <inheritdoc />
-        public string ContentType => "text/vnd.app.metrics.v1.health+plain";
+        public string ContentType => "text/plain; app.metrics=vnd.app.metrics.v1.health;";
 
         public Task WriteAsync(HttpContext context, HealthStatus healthStatus, CancellationToken token = default(CancellationToken))
         {

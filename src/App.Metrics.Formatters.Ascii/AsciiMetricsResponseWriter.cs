@@ -15,7 +15,7 @@ namespace App.Metrics.Formatters.Ascii
     public class AsciiMetricsResponseWriter : IMetricsResponseWriter
     {
         /// <inheritdoc />
-        public string ContentType => "text/vnd.app.metrics.v1.metrics+plain";
+        public string ContentType => "text/plain; app.metrics=vnd.app.metrics.v1.metrics;";
 
         public Task WriteAsync(HttpContext context, MetricsDataValueSource metricsData, CancellationToken token = default(CancellationToken))
         {

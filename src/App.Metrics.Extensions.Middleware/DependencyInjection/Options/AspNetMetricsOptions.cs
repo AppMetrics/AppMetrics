@@ -19,6 +19,7 @@ namespace App.Metrics.Extensions.Middleware.DependencyInjection.Options
             MetricsEndpointEnabled = true;
             MetricsTextEndpointEnabled = true;
             PingEndpointEnabled = true;
+            EnvironmentInfoEndpointEnabled = true;
             OAuth2TrackingEnabled = true;
             ApdexTrackingEnabled = true;
             ApdexTSeconds = Core.Internal.Constants.ReservoirSampling.DefaultApdexTSeconds;
@@ -135,12 +136,29 @@ namespace App.Metrics.Extensions.Middleware.DependencyInjection.Options
         public string PingEndpoint { get; set; } = Constants.DefaultRoutePaths.PingEndpoint.EnsureLeadingSlash();
 
         /// <summary>
+        ///     Gets or sets the environment info endpoint, defaults to /env.
+        /// </summary>
+        /// <value>
+        ///     The environment info endpoint.
+        /// </value>
+        public string EnvironmentInfoEndpoint { get; set; } = Constants.DefaultRoutePaths.EnvironmentInfoEndpoint.EnsureLeadingSlash();
+
+        /// <summary>
         ///     Gets or sets a value indicating whether [ping endpoint should be enabled], if disabled endpoint responds with 404.
         /// </summary>
         /// <value>
         ///     <c>true</c> if [ping endpoint enabled]; otherwise, <c>false</c>.
         /// </value>
         public bool PingEndpointEnabled { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether [environment info endpoint should be enabled], if disabled endpoint
+        ///     responds with 404.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if [environment info endpoint enabled]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnvironmentInfoEndpointEnabled { get; set; }
         // ReSharper restore AutoPropertyCanBeMadeGetOnly.Global
         // ReSharper restore CollectionNeverUpdated.Global
         // ReSharper restore MemberCanBePrivate.Global

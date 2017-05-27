@@ -2,12 +2,13 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
+using App.Metrics.Formatters.Json.Abstractions.Serialization;
 using App.Metrics.Formatters.Json.Converters;
 using Newtonsoft.Json;
 
 namespace App.Metrics.Formatters.Json.Serialization
 {
-    public class EnvironmentInfoSerializer
+    public class EnvironmentInfoSerializer : IEnvironmentInfoSerializer
     {
         private readonly JsonSerializerSettings _settings;
 
@@ -22,6 +23,8 @@ namespace App.Metrics.Formatters.Json.Serialization
 
             _settings.Converters.Add(new EnvironmentInfoConverter());
         }
+
+        public EnvironmentInfoSerializer(JsonSerializerSettings serializerSettings) { _settings = serializerSettings; }
 
         public virtual T Deserialize<T>(string json) { return JsonConvert.DeserializeObject<T>(json, _settings); }
 

@@ -42,7 +42,10 @@ namespace Microsoft.AspNetCore.Builder
             var appMetricsOptions = app.ApplicationServices.GetRequiredService<AppMetricsOptions>();
             var aspNetMetricsOptions = app.ApplicationServices.GetRequiredService<AspNetMetricsOptions>();
 
-            app.UseMiddleware<PingEndpointMiddleware>();
+            if (aspNetMetricsOptions.PingEndpointEnabled)
+            {
+                app.UseMiddleware<PingEndpointMiddleware>();
+            }
 
             if (aspNetMetricsOptions.HealthEndpointEnabled)
             {
@@ -59,6 +62,11 @@ namespace Microsoft.AspNetCore.Builder
             if (aspNetMetricsOptions.MetricsEndpointEnabled && appMetricsOptions.MetricsEnabled)
             {
                 app.UseMiddleware<MetricsEndpointMiddleware>();
+            }
+
+            if (aspNetMetricsOptions.EnvironmentInfoEndpointEnabled)
+            {
+                app.UseMiddleware<EnvironmentInfoMiddleware>();
             }
 
             if (appMetricsOptions.MetricsEnabled && aspNetMetricsOptions.DefaultTrackingEnabled)

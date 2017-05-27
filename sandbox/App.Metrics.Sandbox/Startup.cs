@@ -93,12 +93,15 @@ namespace App.Metrics.Sandbox
 
             services.AddMetrics(Configuration.GetSection("AppMetrics")).                     
                      // AddJsonMetricsSerialization().
-                     AddElasticsearchMetricsSerialization(ElasticSearchIndex).
+                     // AddElasticsearchMetricsSerialization(ElasticSearchIndex).
+                     AddJsonMetricsSerialization().
                      AddAsciiHealthSerialization().
-                     // AddAsciiMetricsTextSerialization().
+                     AddAsciiMetricsTextSerialization().
                      // AddPrometheusPlainTextSerialization().
-                     AddInfluxDBLineProtocolMetricsTextSerialization().
-                      AddReporting(
+                     // AddInfluxDBLineProtocolMetricsTextSerialization().
+                     // AddAsciiEnvironmentInfoSerialization().
+                     AddJsonEnvironmentInfoSerialization().
+                     AddReporting(
                          factory =>
                          {
                              if (ReportTypes.Any(r => r == ReportType.InfluxDB))
@@ -167,7 +170,7 @@ namespace App.Metrics.Sandbox
                                  failing: value => (message: $"FAILED. 98th Percentile > 200ms ({value.Histogram.Percentile98}{SandboxMetricsRegistry.DatabaseTimer.DurationUnit.Unit()})", result: value.Histogram.Percentile98 > 200));
 
                          }).
-                     AddMetricsMiddleware();
+                     AddMetricsMiddleware(Configuration.GetSection("AspNetMetrics"));
         }
     }
 }

@@ -13,7 +13,19 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class MetricsHostExtensions
     {
         /// <summary>
-        /// Enables Plain Text serialization on the health endpoint's response
+        ///     Enables Plain Text serialization on the environment info endpoint's response
+        /// </summary>
+        /// <param name="host">The metrics host builder.</param>
+        /// <returns>The metrics host builder</returns>
+        public static IMetricsHostBuilder AddAsciiEnvironmentInfoSerialization(this IMetricsHostBuilder host)
+        {
+            host.Services.Replace(ServiceDescriptor.Transient<IEnvironmentInfoResponseWriter, AsciiEnvironmentInfoResponseWriter>());
+
+            return host;
+        }
+
+        /// <summary>
+        ///     Enables Plain Text serialization on the health endpoint's response
         /// </summary>
         /// <param name="host">The metrics host builder.</param>
         /// <returns>The metrics host builder</returns>
@@ -25,7 +37,7 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         /// <summary>
-        /// Enables Plain Text serialization on the metric endpoint's response
+        ///     Enables Plain Text serialization on the metric endpoint's response
         /// </summary>
         /// <param name="host">The metrics host builder.</param>
         /// <returns>The metrics host builder</returns>
@@ -37,7 +49,7 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         /// <summary>
-        /// Enables Plain Text serialization on the metric endpoint's response
+        ///     Enables Plain Text serialization on the metric endpoint's response
         /// </summary>
         /// <param name="host">The metrics host builder.</param>
         /// <returns>The metrics host builder</returns>
@@ -49,12 +61,13 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         /// <summary>
-        /// Enables Plain Text serialization on the metric and health endpoint responses
+        ///     Enables Plain Text serialization on the metric and health endpoint responses
         /// </summary>
         /// <param name="host">The metrics host builder.</param>
         /// <returns>The metrics host builder</returns>
         public static IMetricsHostBuilder AddAsciiSerialization(this IMetricsHostBuilder host)
         {
+            host.AddAsciiEnvironmentInfoSerialization();
             host.AddAsciiHealthSerialization();
             host.AddAsciiMetricsSerialization();
             host.AddAsciiMetricsTextSerialization();

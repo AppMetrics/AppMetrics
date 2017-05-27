@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
@@ -33,7 +34,8 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
             var result = await Client.GetAsync("/metrics-text");
 
             result.StatusCode.Should().Be(HttpStatusCode.OK);
-            result.Content.Headers.ContentType.ToString().Should().Match<string>(s => s == "text/vnd.app.metrics.v1.metrics+plain");
+            var value = result.Content.Headers.GetValues("Content-Type");
+            value.First().Should().Be("text/plain; app.metrics=vnd.app.metrics.v1.metrics;");
         }
     }
 }
