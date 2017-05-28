@@ -30,7 +30,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\App.Metrics\App.Metrics.csproj" />
+    <ProjectReference Include="..\App.Metrics\App.Metrics.csproj" Version="1.2.0-*" />
   </ItemGroup>
 
   <ItemGroup>

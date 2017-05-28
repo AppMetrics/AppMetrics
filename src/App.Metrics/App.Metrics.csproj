@@ -32,7 +32,7 @@
   </PropertyGroup>  
 
   <ItemGroup>
-    <ProjectReference Include="..\App.Metrics.Concurrency\App.Metrics.Concurrency.csproj" />
+    <ProjectReference Include="..\App.Metrics.Concurrency\App.Metrics.Concurrency.csproj" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>
