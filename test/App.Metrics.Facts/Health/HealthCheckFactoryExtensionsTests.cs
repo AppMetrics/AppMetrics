@@ -35,7 +35,7 @@ namespace App.Metrics.Facts.Health
             result.Check.Status.Should().Be(HealthCheckStatus.Healthy);
         }
 
-        [Fact]
+        [Fact(Skip = "Mock HTTP Call")]
         [Trait("Category", "Requires Connectivity")]
         public async Task can_execute_ping_check()
         {
