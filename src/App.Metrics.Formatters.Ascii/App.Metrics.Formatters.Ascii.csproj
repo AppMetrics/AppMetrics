@@ -31,8 +31,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\App.Metrics.Extensions.Middleware\App.Metrics.Extensions.Middleware.csproj"  Version="1.2.0-*" />
-    <ProjectReference Include="..\App.Metrics\App.Metrics.csproj" Version="1.2.0-*" />
+    <ProjectReference Include="..\App.Metrics.Extensions.Middleware\App.Metrics.Extensions.Middleware.csproj" />
+    <ProjectReference Include="..\App.Metrics\App.Metrics.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
