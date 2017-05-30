@@ -32,7 +32,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="App.Metrics.Concurrency" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="1.1.1" />
@@ -55,6 +54,10 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\App.Metrics.Concurrency\App.Metrics.Concurrency.csproj" />
   </ItemGroup>
 
 </Project>
