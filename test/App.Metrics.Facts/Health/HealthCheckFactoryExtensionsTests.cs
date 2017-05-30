@@ -25,7 +25,7 @@ namespace App.Metrics.Facts.Health
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "github home";
 
-            var factory = new HealthCheckFactory(_logger, healthChecks);
+            var factory = new HealthCheckFactory(_logger, new Lazy<IMetrics>(),  healthChecks);
 
             factory.RegisterHttpGetHealthCheck(name, new Uri("https://github.com"), TimeSpan.FromSeconds(10));
 
@@ -35,14 +35,14 @@ namespace App.Metrics.Facts.Health
             result.Check.Status.Should().Be(HealthCheckStatus.Healthy);
         }
 
-        [Fact]
+        [Fact(Skip = "Mock HTTP Call")]
         [Trait("Category", "Requires Connectivity")]
         public async Task can_execute_ping_check()
         {
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "github ping";
 
-            var factory = new HealthCheckFactory(_logger, healthChecks);
+            var factory = new HealthCheckFactory(_logger, new Lazy<IMetrics>(), healthChecks);
 
             factory.RegisterPingHealthCheck(name, "github.com", TimeSpan.FromSeconds(10));
 
@@ -58,7 +58,7 @@ namespace App.Metrics.Facts.Health
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "physical memory";
 
-            var factory = new HealthCheckFactory(_logger, healthChecks);
+            var factory = new HealthCheckFactory(_logger, new Lazy<IMetrics>(), healthChecks);
 
             factory.RegisterProcessPhysicalMemoryHealthCheck(name, int.MaxValue);
 
@@ -74,7 +74,7 @@ namespace App.Metrics.Facts.Health
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "private memory";
 
-            var factory = new HealthCheckFactory(_logger, healthChecks);
+            var factory = new HealthCheckFactory(_logger, new Lazy<IMetrics>(), healthChecks);
 
             factory.RegisterProcessPrivateMemorySizeHealthCheck(name, int.MaxValue);
 
@@ -90,7 +90,7 @@ namespace App.Metrics.Facts.Health
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "virtual memory";
 
-            var factory = new HealthCheckFactory(_logger, healthChecks);
+            var factory = new HealthCheckFactory(_logger, new Lazy<IMetrics>(), healthChecks);
 
             factory.RegisterProcessVirtualMemorySizeHealthCheck(name, long.MaxValue);
 
@@ -106,7 +106,7 @@ namespace App.Metrics.Facts.Health
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "physical memory";
 
-            var factory = new HealthCheckFactory(_logger, healthChecks);
+            var factory = new HealthCheckFactory(_logger, new Lazy<IMetrics>(), healthChecks);
 
             factory.RegisterProcessPhysicalMemoryHealthCheck(name, 100);
 
@@ -120,7 +120,7 @@ namespace App.Metrics.Facts.Health
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "private memory";
 
-            var factory = new HealthCheckFactory(_logger, healthChecks);
+            var factory = new HealthCheckFactory(_logger, new Lazy<IMetrics>(), healthChecks);
 
             factory.RegisterProcessPrivateMemorySizeHealthCheck(name, 100);
 
@@ -134,7 +134,7 @@ namespace App.Metrics.Facts.Health
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "virtual memory";
 
-            var factory = new HealthCheckFactory(_logger, healthChecks);
+            var factory = new HealthCheckFactory(_logger, new Lazy<IMetrics>(), healthChecks);
 
             factory.RegisterProcessVirtualMemorySizeHealthCheck(name, 100);
 

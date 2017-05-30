@@ -30,7 +30,7 @@ namespace App.Metrics.Registry.Internal
 
         public T Time<T>(Func<T> action, string userValue) { return action(); }
 
-        public void Time(Action action) { }
+        public void Time(Action action) { action(); }
 
         public T Time<T>(Func<T> action) { return action(); }
 

@@ -7,7 +7,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using App.Metrics.Abstractions.Filtering;
-using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Configuration;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using App.Metrics.Health;
@@ -81,7 +80,8 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
                         options.DefaultContextLabel = appMetricsOptions.DefaultContextLabel;
                         options.MetricsEnabled = appMetricsOptions.MetricsEnabled;                        
                     })
-                .AddJsonSerialization()
+                .AddJsonMetricsSerialization()
+                .AddAsciiMetricsTextSerialization()
                 .AddDefaultReservoir(() => new DefaultAlgorithmRReservoir(1028))
                 .AddClockType<TestClock>()
                 .AddHealthChecks(

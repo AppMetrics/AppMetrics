@@ -1,15 +1,8 @@
-// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
 using App.Metrics.Extensions.Middleware.Internal;
-using App.Metrics.Histogram;
 using App.Metrics.Meter;
-using App.Metrics.Meter.Extensions;
-using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;
 
@@ -57,5 +50,5 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
                 "Error Rate|client_id:client2,route:GET api/test/oauth/error/{clientid},http_status_code:500");
             errorMeterClient2.Count.Should().Be(2);
         }
-    }    
+    }
 }

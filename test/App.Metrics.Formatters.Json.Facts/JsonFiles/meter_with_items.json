@@ -35,5 +35,5 @@
   "rateUnit": "ms",
   "name": "Http Error Requests",
   "tags": {},
-  "unit": "Requests"
+  "unit": "req"
 }

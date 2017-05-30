@@ -82,6 +82,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     {
                         var logFactory = provider.GetRequiredService<ILoggerFactory>();
                         var logger = logFactory.CreateLogger<HealthCheckFactory>();
+                        var metrics = provider.GetRequiredService<Lazy<IMetrics>>();
 
                         var autoScannedHealthChecks = Enumerable.Empty<HealthCheck>();
 
@@ -91,10 +92,10 @@ namespace Microsoft.Extensions.DependencyInjection
                         }
                         catch (Exception ex)
                         {
-                            logger.LogError(new EventId(5000), ex, "Failed to load autoscanned health checks, health checks won't be registered");
+                            logger.LogError(new EventId(5000), ex, "Failed to load auto scanned health checks, health checks won't be registered");
                         }
 
-                        var factory = new HealthCheckFactory(logger, autoScannedHealthChecks);
+                        var factory = new HealthCheckFactory(logger, metrics, autoScannedHealthChecks);
                         setupAction?.Invoke(factory);
                         return factory;
                     }));

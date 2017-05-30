@@ -6,6 +6,7 @@ using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Core;
 using App.Metrics.Core.Abstractions;
 using App.Metrics.Counter.Abstractions;
+using App.Metrics.Tagging;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics.Counter
@@ -18,6 +19,11 @@ namespace App.Metrics.Counter
         public static CounterValue GetCounterValue(this IProvideMetricValues valueService, string context, string metricName)
         {
             return valueService.GetForContext(context).Counters.ValueFor(metricName);
+        }
+
+        public static CounterValue GetCounterValue(this IProvideMetricValues valueService, string context, string metricName, MetricTags tags)
+        {
+            return valueService.GetForContext(context).Counters.ValueFor(tags.AsMetricName(metricName));
         }
 
         public static CounterValue GetValueOrDefault(this ICounter metric)

@@ -14,6 +14,8 @@ using App.Metrics.Timer;
 
 namespace App.Metrics.Formatting.Humanize
 {
+    // TODO: Remove in 2.0.0
+    [Obsolete("Replaced with formatting packages which can be used with the Report Runner")]
     public sealed class HumanizeMetricValueFormatProvider<T> : IFormatProvider
     {
         private readonly IDictionary<Type, Func<ICustomFormatter>> _customFormaterTypesFactor = new Dictionary<Type, Func<ICustomFormatter>>

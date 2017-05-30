@@ -9,6 +9,7 @@
 #tool "nuget:?package=JetBrains.ReSharper.CommandLineTools"
 #tool "nuget:?package=coveralls.io"
 #tool "nuget:?package=gitreleasemanager"
+#tool "nuget:?package=ReportGenerator"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -28,16 +29,16 @@ var buildNumber                 = HasArgument("BuildNumber") ? Argument<int>("Bu
                                   EnvironmentVariable("BuildNumber") != null ? int.Parse(EnvironmentVariable("BuildNumber")) : 0;
 var gitUser						= HasArgument("GitUser") ? Argument<string>("GitUser") : EnvironmentVariable("GitUser");
 var gitPassword					= HasArgument("GitPassword") ? Argument<string>("GitPassword") : EnvironmentVariable("GitPassword");
+var skipHtmlCoverageReport	= Argument("SkipHtmlCoverageReport", true) || !IsRunningOnWindows();
 
 //////////////////////////////////////////////////////////////////////
 // DEFINE FILES & DIRECTORIES
 //////////////////////////////////////////////////////////////////////
-var packDirs                    = new [] { Directory("./src/App.Metrics"), Directory("./src/App.Metrics.Concurrency"), Directory("./src/App.Metrics.Extensions.Middleware"), Directory("./src/App.Metrics.Extensions.Mvc"), Directory("./src/App.Metrics.Formatters.Json") };
+var packDirs                    = new [] { Directory("./src/App.Metrics"), Directory("./src/App.Metrics.Concurrency"), Directory("./src/App.Metrics.Extensions.Middleware"), Directory("./src/App.Metrics.Extensions.Mvc"), Directory("./src/App.Metrics.Formatters.Json"), Directory("./src/App.Metrics.Formatters.Ascii") };
 var artifactsDir                = (DirectoryPath) Directory("./artifacts");
 var testResultsDir              = (DirectoryPath) artifactsDir.Combine("test-results");
 var coverageResultsDir          = (DirectoryPath) artifactsDir.Combine("coverage");
 var reSharperReportsDir         = (DirectoryPath) artifactsDir.Combine("resharper-reports");
-var testCoverageOutputFilePath  = coverageResultsDir.CombineWithFilePath("coverage.xml");
 var testOCoverageOutputFilePath = coverageResultsDir.CombineWithFilePath("openCoverCoverage.xml");
 var htmlCoverageReport			= coverageResultsDir.FullPath + "/coverage.html";
 var mergedCoverageSnapshots		= coverageResultsDir.FullPath + "/coverage.dcvr";
@@ -58,6 +59,7 @@ var openCoverExcludeFile        = "*/*Designer.cs;*/*.g.cs;*/*.g.i.cs";
 var coverIncludeFilter			= "+:App.Metrics*";
 var coverExcludeFilter			= "-:*.Facts";
 var excludeFromCoverage			= "*.AppMetricsExcludeFromCodeCoverage*";
+var versionSuffix				= !string.IsNullOrEmpty(preReleaseSuffix) ? preReleaseSuffix + "-" + buildNumber.ToString("D4") : !AppVeyor.Environment.Repository.Tag.IsTag ? buildNumber.ToString("D4") : null;
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -115,7 +117,13 @@ Task("Build")
     .IsDependentOn("Restore")
     .Does(() =>
 {	
-	var settings = new DotNetCoreBuildSettings  { Configuration = configuration };
+	var settings = new DotNetCoreBuildSettings  { Configuration = configuration, VersionSuffix = versionSuffix };
+
+	Context.Information("Building using preReleaseSuffix: " + preReleaseSuffix);
+	Context.Information("Building using versionSuffix: " + versionSuffix);
+
+	// Workaround to fixing pre-release version package references - https://github.com/NuGet/Home/issues/4337
+	settings.ArgumentCustomization = args=>args.Append("/t:Restore /p:RestoreSources=" + @"""C:\Program Files (x86)\Microsoft SDKs\NuGetPackages\""" + ";https://api.nuget.org/v3/index.json;https://www.myget.org/F/alhardy/api/v3/index.json;");
 
 	if (IsRunningOnWindows())
 	{
@@ -164,13 +172,6 @@ Task("Pack")
 	}
 
 	Context.Information("Packing using preReleaseSuffix: " + preReleaseSuffix);
-
-    string versionSuffix = null;
-    if (!string.IsNullOrEmpty(preReleaseSuffix))
-    {
-        versionSuffix = preReleaseSuffix + "-" + buildNumber.ToString("D4");
-    }
-
 	Context.Information("Packing using versionSuffix: " + versionSuffix);
 
     var settings = new DotNetCorePackSettings
@@ -231,7 +232,7 @@ Task("RunTests")
 });
 
 Task("HtmlCoverageReport")    
-    .WithCriteria(() => FileExists(testCoverageOutputFilePath) && coverWith != "None" && IsRunningOnWindows())    
+    .WithCriteria(() => FileExists(testOCoverageOutputFilePath) && coverWith != "None" && IsRunningOnWindows() && !skipHtmlCoverageReport)    
     .IsDependentOn("RunTests")
     .Does(() => 
 {
@@ -246,7 +247,7 @@ Task("HtmlCoverageReport")
 	}
 	else if (coverWith == "OpenCover")
 	{
-		ReportGenerator(testCoverageOutputFilePath, coverageResultsDir);
+		ReportGenerator(testOCoverageOutputFilePath, coverageResultsDir);
 	}
 });
 

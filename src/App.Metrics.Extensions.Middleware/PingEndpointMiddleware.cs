@@ -15,12 +15,17 @@ namespace App.Metrics.Extensions.Middleware
     public class PingEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
         // ReSharper restore ClassNeverInstantiated.Global
     {
+        private readonly RequestDelegate _next;
+
         public PingEndpointMiddleware(
             RequestDelegate next,
             AspNetMetricsOptions aspNetOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics)
-            : base(next, aspNetOptions, loggerFactory, metrics) { }
+            : base(next, aspNetOptions, loggerFactory, metrics)
+        {
+            _next = next ?? throw new ArgumentNullException(nameof(next));
+        }
 
         // ReSharper disable UnusedMember.Global
         public async Task Invoke(HttpContext context)
@@ -37,7 +42,7 @@ namespace App.Metrics.Extensions.Middleware
                 return;
             }
 
-            await Next(context);
+            await _next(context);
         }
     }
 }

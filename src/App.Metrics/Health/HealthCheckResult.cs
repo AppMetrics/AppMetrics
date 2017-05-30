@@ -38,7 +38,7 @@ namespace App.Metrics.Health
         ///     Create a Degraded status response. This is useful for when a health check may
         ///     fail but the application itself is still functioning correct. E.g. There could be a
         ///     health check checking the number of messages in a queue, if that number reaches a
-        ///     specificied threshold, a degraded status could be returned rather than raising a critical alert.
+        ///     specified threshold, a degraded status could be returned rather than raising a critical alert.
         /// </summary>
         /// <param name="message">Status message.</param>
         /// <param name="values">Values to format the status message with.</param>
@@ -55,7 +55,7 @@ namespace App.Metrics.Health
         ///     Create a Degraded status response. This is useful for when a health check may
         ///     fail but the application itself is still functioning correct. E.g. There could be a
         ///     health check checking the number of messages in a queue, if that number reaches a
-        ///     specificied threshold, a degraded status could be returned rather than raising a critical alert.
+        ///     specified threshold, a degraded status could be returned rather than raising a critical alert.
         /// </summary>
         /// <param name="exception">Exception to use for reason.</param>
         /// <returns>Degraded status response.</returns>
@@ -71,7 +71,7 @@ namespace App.Metrics.Health
         ///     Create a Degraded status response. This is useful for when a health check may
         ///     fail but the application itself is still functioning correct. E.g. There could be a
         ///     health check checking the number of messages in a queue, if that number reaches a
-        ///     specificied threshold, a degraded status could be returned rather than raising a critical alert.
+        ///     specified threshold, a degraded status could be returned rather than raising a critical alert.
         /// </summary>
         /// <returns>Degraded status response.</returns>
         // ReSharper disable IntroduceOptionalParameters.Global
@@ -101,8 +101,15 @@ namespace App.Metrics.Health
         /// <summary>
         ///     Ignores this health check.
         /// </summary>
-        /// <returns>An ignored health check restul</returns>
+        /// <returns>An ignored health check result</returns>
         public static HealthCheckResult Ignore() { return new HealthCheckResult(HealthCheckStatus.Ignored, "ignored check"); }
+
+        /// <summary>
+        ///     Ignores this health check.
+        /// </summary>
+        /// <param name="message">Status message.</param>
+        /// <returns>An ignored health check result</returns>
+        public static HealthCheckResult Ignore(string message) { return new HealthCheckResult(HealthCheckStatus.Ignored, message); }
 
         /// <summary>
         ///     Create a unhealthy status response.

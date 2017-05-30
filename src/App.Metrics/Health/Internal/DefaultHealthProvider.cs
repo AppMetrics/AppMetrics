@@ -68,7 +68,7 @@ namespace App.Metrics.Health.Internal
                 }
             }
 
-            var healthStatus = new HealthStatus(results.Where(h => !h.Check.Status.IsIgnored()));
+            var healthStatus = new HealthStatus(results);
 
             var overallHealthStatus = Constants.Health.HealthScore.healthy;
 

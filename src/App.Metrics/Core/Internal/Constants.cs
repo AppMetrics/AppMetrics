@@ -117,6 +117,9 @@ namespace App.Metrics.Core.Internal
             public static readonly string HistogramMetricTypeValue = "histogram";
             public static readonly string MeterMetricTypeValue = "meter";
             public static readonly string MetricTagsTypeKey = "mtype";
+            public static readonly string MetricTagsUnitKey = "unit";
+            public static readonly string MetricTagsUnitRateKey = "unit_rate";
+            public static readonly string MetricTagsUnitRateDurationKey = "unit_dur";
 
             public static readonly string TimerMetricTypeValue = "timer";
 

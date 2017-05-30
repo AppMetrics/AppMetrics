@@ -1,13 +1,8 @@
-// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
 using App.Metrics.Extensions.Middleware.Internal;
-using App.Metrics.Meter.Extensions;
-using App.Metrics.Timer;
+using App.Metrics.Meter;
 using FluentAssertions;
 using Xunit;
 
@@ -39,7 +34,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
 
             var meterValueError = Context.Snapshot.GetMeterValue(
                 HttpRequestMetricsRegistry.ContextName,
-                "Error Rate Per Endpoint And Status Code|route:GET api/test/exception,http_status_code:500");            
+                "Error Rate Per Endpoint And Status Code|route:GET api/test/exception,http_status_code:500");
 
             meterValueError.Count.Should().Be(1L);
         }

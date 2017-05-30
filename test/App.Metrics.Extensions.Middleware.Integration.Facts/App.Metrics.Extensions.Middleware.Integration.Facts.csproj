@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\App.Metrics.Formatters.Ascii\App.Metrics.Formatters.Ascii.csproj" />
     <ProjectReference Include="..\..\src\App.Metrics.Formatters.Json\App.Metrics.Formatters.Json.csproj" />
     <ProjectReference Include="..\..\src\App.Metrics.Extensions.Mvc\App.Metrics.Extensions.Mvc.csproj" />
   </ItemGroup>

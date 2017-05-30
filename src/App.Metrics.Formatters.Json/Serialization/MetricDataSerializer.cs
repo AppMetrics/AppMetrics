@@ -19,7 +19,7 @@ namespace App.Metrics.Formatters.Json.Serialization
                         {
                             ContractResolver = new MetricContractResolver(),
                             Formatting = Newtonsoft.Json.Formatting.Indented,
-                            NullValueHandling = NullValueHandling.Ignore,
+                            NullValueHandling = NullValueHandling.Ignore
                         };
         }
 

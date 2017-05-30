@@ -49,6 +49,14 @@ namespace App.Metrics.Configuration
         ///     <c>true</c> if [reporting enabled]; otherwise, <c>false</c>.
         /// </value>
         public bool ReportingEnabled { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not to [add default global tags]. e.g. app, server, env
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if [add default global tags]; otherwise, <c>false</c>.
+        /// </value>
+        public bool AddDefaultGlobalTags { get; set; } = true;
     }
 
     // ReSharper restore AutoPropertyCanBeMadeGetOnly.Global

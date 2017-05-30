@@ -2,7 +2,6 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Apdex;
@@ -22,10 +21,8 @@ namespace App.Metrics.Reporting
     {
         public static void PackApdex<T>(
             this IMetricPayloadBuilder<T> payloadBuilder,
-            Func<string, string, string> metricNameFormatter,
             string context,
-            MetricValueSourceBase<ApdexValue> valueSource,
-            IDictionary<ApdexValueDataKeys, string> dataKeys)
+            MetricValueSourceBase<ApdexValue> valueSource)
         {
             if (valueSource == null)
             {
@@ -33,17 +30,15 @@ namespace App.Metrics.Reporting
             }
 
             var data = new Dictionary<string, object>();
-            valueSource.Value.AddApdexValues(data, dataKeys);
-            PackMetric(payloadBuilder, metricNameFormatter, context, valueSource, data);
+            valueSource.Value.AddApdexValues(data, payloadBuilder.DataKeys.Apdex);
+            PackMetric(payloadBuilder, context, valueSource, data);
         }
 
         public static void PackCounter<T>(
             this IMetricPayloadBuilder<T> payloadBuilder,
-            Func<string, string, string> metricNameFormatter,
             string context,
             MetricValueSourceBase<CounterValue> valueSource,
-            CounterValueSource counterValueSource,
-            IDictionary<CounterValueDataKeys, string> dataKeys)
+            CounterValueSource counterValueSource)
         {
             if (counterValueSource == null)
             {
@@ -54,101 +49,137 @@ namespace App.Metrics.Reporting
             {
                 foreach (var item in counterValueSource.Value.Items.Distinct())
                 {
-                    var itemData = new Dictionary<string, object> { { dataKeys[CounterValueDataKeys.Total], item.Count } };
+                    var itemData = new Dictionary<string, object> { { payloadBuilder.DataKeys.Counter[CounterValueDataKeys.Total], item.Count } };
 
                     if (counterValueSource.ReportItemPercentages)
                     {
-                        itemData.AddIfNotNanOrInfinity(dataKeys[CounterValueDataKeys.SetItemPercent], item.Percent);
+                        itemData.AddIfNotNanOrInfinity(payloadBuilder.DataKeys.Counter[CounterValueDataKeys.SetItemPercent], item.Percent);
                     }
 
-                    PackMetricWithSetItems(payloadBuilder, metricNameFormatter, context, valueSource, item.Tags, itemData, dataKeys[CounterValueDataKeys.MetricSetItemSuffix]);
+                    PackMetricWithSetItems(
+                        payloadBuilder,
+                        context,
+                        valueSource,
+                        item.Tags,
+                        itemData,
+                        payloadBuilder.DataKeys.Counter[CounterValueDataKeys.MetricSetItemSuffix]);
                 }
             }
 
             var count = valueSource.ValueProvider.GetValue(resetMetric: counterValueSource.ResetOnReporting).Count;
-            PackMetricValue(payloadBuilder, metricNameFormatter, context, valueSource, count);
+            PackMetricValue(payloadBuilder, context, valueSource, count);
         }
 
         public static void PackGauge<T>(
             this IMetricPayloadBuilder<T> payloadBuilder,
-            Func<string, string, string> metricNameFormatter,
             string context,
             MetricValueSourceBase<double> valueSource)
         {
             if (!double.IsNaN(valueSource.Value) && !double.IsInfinity(valueSource.Value))
             {
-                PackMetricValue(payloadBuilder, metricNameFormatter, context, valueSource, valueSource.Value);
+                PackMetricValue(payloadBuilder, context, valueSource, valueSource.Value);
             }
         }
 
         public static void PackHistogram<T>(
             this IMetricPayloadBuilder<T> payloadBuilder,
-            Func<string, string, string> metricNameFormatter,
             string context,
-            MetricValueSourceBase<HistogramValue> valueSource,
-            IDictionary<HistogramValueDataKeys, string> dataKeys)
+            MetricValueSourceBase<HistogramValue> valueSource)
         {
             var data = new Dictionary<string, object>();
-            valueSource.Value.AddHistogramValues(data, dataKeys);
-            PackMetric(payloadBuilder, metricNameFormatter, context, valueSource, data);
+            valueSource.Value.AddHistogramValues(data, payloadBuilder.DataKeys.Histogram);
+            PackMetric(payloadBuilder, context, valueSource, data);
         }
 
         public static void PackMeter<T>(
             this IMetricPayloadBuilder<T> payloadBuilder,
-            Func<string, string, string> metricNameFormatter,
             string context,
-            MetricValueSourceBase<MeterValue> valueSource,
-            IDictionary<MeterValueDataKeys, string> dataKeys)
+            MetricValueSourceBase<MeterValue> valueSource)
         {
             if (valueSource.Value.Items.Any())
             {
                 foreach (var item in valueSource.Value.Items.Distinct())
                 {
-                    item.AddMeterSetItemValues(out IDictionary<string, object> setItemData, dataKeys);
-                    PackMetricWithSetItems(payloadBuilder, metricNameFormatter, context, valueSource, item.Tags, setItemData, dataKeys[MeterValueDataKeys.MetricSetItemSuffix]);
+                    item.AddMeterSetItemValues(out IDictionary<string, object> setItemData, payloadBuilder.DataKeys.Meter);
+                    PackMetricWithSetItems(
+                        payloadBuilder,
+                        context,
+                        valueSource,
+                        item.Tags,
+                        setItemData,
+                        payloadBuilder.DataKeys.Meter[MeterValueDataKeys.MetricSetItemSuffix]);
                 }
             }
 
-            valueSource.Value.AddMeterValues(out IDictionary<string, object> data, dataKeys);
+            valueSource.Value.AddMeterValues(out IDictionary<string, object> data, payloadBuilder.DataKeys.Meter);
 
-            PackMetric(payloadBuilder, metricNameFormatter, context, valueSource, data);
+            PackMetric(payloadBuilder, context, valueSource, data);
         }
 
         public static void PackTimer<T>(
             this IMetricPayloadBuilder<T> payloadBuilder,
-            Func<string, string, string> metricNameFormatter,
             string context,
-            MetricValueSourceBase<TimerValue> valueSource,
-            IDictionary<MeterValueDataKeys, string> meterDataKeys,
-            IDictionary<HistogramValueDataKeys, string> histogramDataKeys)
+            MetricValueSourceBase<TimerValue> valueSource)
         {
-            valueSource.Value.Rate.AddMeterValues(out IDictionary<string, object> data, meterDataKeys);
-            valueSource.Value.Histogram.AddHistogramValues(data, histogramDataKeys);
+            valueSource.Value.Rate.AddMeterValues(out IDictionary<string, object> data, payloadBuilder.DataKeys.Meter);
+            valueSource.Value.Histogram.AddHistogramValues(data, payloadBuilder.DataKeys.Histogram);
 
-            PackMetric(payloadBuilder, metricNameFormatter, context, valueSource, data);
+            PackMetric(payloadBuilder, context, valueSource, data);
+        }
+
+        private static MetricTags ConcatIntrinsicMetricTags<T>(MetricValueSourceBase<T> valueSource)
+        {
+            var intrinsicTags = new MetricTags(Constants.Pack.MetricTagsUnitKey, valueSource.Unit.ToString());
+
+            if (typeof(T) == typeof(TimerValue))
+            {
+                var timerValueSource = valueSource as MetricValueSourceBase<TimerValue>;
+
+                var timerIntrinsicTags = new MetricTags(
+                    new[] { Constants.Pack.MetricTagsUnitRateDurationKey, Constants.Pack.MetricTagsUnitRateKey },
+                    new[] { timerValueSource.Value.DurationUnit.Unit(), timerValueSource.Value.Rate.RateUnit.Unit() });
+
+                intrinsicTags = MetricTags.Concat(intrinsicTags, timerIntrinsicTags);
+            }
+            else if (typeof(T) == typeof(MeterValue))
+            {
+                var meterValueSource = valueSource as MetricValueSourceBase<MeterValue>;
+
+                var meterIntrinsicTags = new MetricTags(Constants.Pack.MetricTagsUnitRateKey, meterValueSource.Value.RateUnit.Unit());
+                intrinsicTags = MetricTags.Concat(intrinsicTags, meterIntrinsicTags);
+            }
+
+            if (Constants.Pack.MetricValueSourceTypeMapping.ContainsKey(typeof(T)))
+            {
+                var metricTypeTag = new MetricTags(Constants.Pack.MetricTagsTypeKey, Constants.Pack.MetricValueSourceTypeMapping[typeof(T)]);
+                intrinsicTags = MetricTags.Concat(metricTypeTag, intrinsicTags);
+            }
+            else
+            {
+                var metricTypeTag = new MetricTags(Constants.Pack.MetricTagsTypeKey, typeof(T).Name.ToLowerInvariant());
+                intrinsicTags = MetricTags.Concat(metricTypeTag, intrinsicTags);
+            }
+
+            return intrinsicTags;
         }
 
         private static MetricTags ConcatMetricTags<T>(MetricValueSourceBase<T> valueSource, MetricTags setItemTags)
         {
             var tagsWithSetItems = MetricTags.Concat(valueSource.Tags, setItemTags);
-            var tags = Constants.Pack.MetricValueSourceTypeMapping.ContainsKey(typeof(T))
-                ? MetricTags.Concat(tagsWithSetItems, new MetricTags(Constants.Pack.MetricTagsTypeKey, Constants.Pack.MetricValueSourceTypeMapping[typeof(T)]))
-                : tagsWithSetItems;
+            var intrinsicTags = ConcatIntrinsicMetricTags(valueSource);
 
-            return tags;
+            return MetricTags.Concat(tagsWithSetItems, intrinsicTags);
         }
 
         private static MetricTags ConcatMetricTags<T>(MetricValueSourceBase<T> valueSource)
         {
-            var tags = Constants.Pack.MetricValueSourceTypeMapping.ContainsKey(typeof(T))
-                ? MetricTags.Concat(valueSource.Tags, new MetricTags(Constants.Pack.MetricTagsTypeKey, Constants.Pack.MetricValueSourceTypeMapping[typeof(T)]))
-                : valueSource.Tags;
-            return tags;
+            var intrinsicTags = ConcatIntrinsicMetricTags(valueSource);
+
+            return MetricTags.Concat(valueSource.Tags, intrinsicTags);
         }
 
         private static void PackMetric<T1, T2>(
             IMetricPayloadBuilder<T1> payloadBuilder,
-            Func<string, string, string> metricNameFormatter,
             string context,
             MetricValueSourceBase<T2> valueSource,
             IDictionary<string, object> data)
@@ -160,7 +191,8 @@ namespace App.Metrics.Reporting
             if (valueSource.IsMultidimensional)
             {
                 payloadBuilder.Pack(
-                    metricNameFormatter(context, valueSource.MultidimensionalName),
+                    context,
+                    valueSource.MultidimensionalName,
                     keys,
                     values,
                     tags);
@@ -168,12 +200,11 @@ namespace App.Metrics.Reporting
                 return;
             }
 
-            payloadBuilder.Pack(metricNameFormatter(context, valueSource.Name), keys, values, tags);
+            payloadBuilder.Pack(context, valueSource.Name, keys, values, tags);
         }
 
         private static void PackMetricValue<T, TU>(
             IMetricPayloadBuilder<T> payloadBuilder,
-            Func<string, string, string> metricNameFormatter,
             string context,
             MetricValueSourceBase<TU> valueSource,
             object value)
@@ -183,19 +214,19 @@ namespace App.Metrics.Reporting
             if (valueSource.IsMultidimensional)
             {
                 payloadBuilder.Pack(
-                    metricNameFormatter(context, valueSource.MultidimensionalName),
+                    context,
+                    valueSource.MultidimensionalName,
                     value,
                     tags);
 
                 return;
             }
 
-            payloadBuilder.Pack(metricNameFormatter(context, valueSource.Name), value, tags);
+            payloadBuilder.Pack(context, valueSource.Name, value, tags);
         }
 
         private static void PackMetricWithSetItems<T, TU>(
             IMetricPayloadBuilder<T> payloadBuilder,
-            Func<string, string, string> metricNameFormatter,
             string context,
             MetricValueSourceBase<TU> valueSource,
             MetricTags setItemTags,
@@ -209,7 +240,8 @@ namespace App.Metrics.Reporting
             if (valueSource.IsMultidimensional)
             {
                 payloadBuilder.Pack(
-                    metricNameFormatter(context, valueSource.MultidimensionalName + metricSetItemSuffix),
+                    context,
+                    valueSource.MultidimensionalName + metricSetItemSuffix,
                     keys,
                     values,
                     tags);
@@ -217,7 +249,7 @@ namespace App.Metrics.Reporting
                 return;
             }
 
-            payloadBuilder.Pack(metricNameFormatter(context, valueSource.Name + metricSetItemSuffix), keys, values, tags);
+            payloadBuilder.Pack(context, valueSource.Name + metricSetItemSuffix, keys, values, tags);
         }
     }
 }

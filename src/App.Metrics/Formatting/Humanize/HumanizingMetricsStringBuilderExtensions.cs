@@ -10,6 +10,8 @@ using App.Metrics.Infrastructure;
 
 namespace App.Metrics.Formatting.Humanize
 {
+    // TODO: Remove in 2.0.0
+    [Obsolete("Replaced with formatting packages which can be used with the Report Runner")]
     public static class HumanizingMetricsStringBuilderExtensions
     {
         public static void WriteDegradedHealthChecksHeader(this StringBuilder buffer) { buffer.AppendLine("\tDEGRADED CHECKS"); }
@@ -20,6 +22,8 @@ namespace App.Metrics.Formatting.Humanize
         }
 
         public static void WriteFailedHealthChecksHeader(this StringBuilder buffer) { buffer.AppendLine("\tFAILED CHECKS"); }
+
+        public static void WriteIgnoredHealthChecksHeader(this StringBuilder buffer) { buffer.AppendLine("\tIGNORED CHECKS"); }
 
         public static void WriteHealthCheckResult(this StringBuilder buffer, HealthCheck.Result healthCheckResult)
         {

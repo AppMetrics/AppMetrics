@@ -22,5 +22,5 @@
     "host": "server1",
     "env": "staging"
   },
-  "unit": "Items"
+  "unit": "items"
 }

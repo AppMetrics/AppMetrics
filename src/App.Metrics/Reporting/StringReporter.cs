@@ -17,6 +17,8 @@ using App.Metrics.Tagging;
 
 namespace App.Metrics.Reporting
 {
+    // TODO: Remove in 2.0.0
+    [Obsolete("Replaced with formatting packages which can be used with the Report Runner")]
     public sealed class StringReporter : IMetricReporter
     {
         private static readonly List<string> MetricTypesReported = new List<string>();

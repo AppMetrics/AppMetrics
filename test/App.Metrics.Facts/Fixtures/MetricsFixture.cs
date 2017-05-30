@@ -7,6 +7,7 @@ using App.Metrics.Configuration;
 using App.Metrics.Core;
 using App.Metrics.Core.Internal;
 using App.Metrics.Filtering;
+using App.Metrics.Health.Abstractions;
 using App.Metrics.Health.Internal;
 using App.Metrics.Infrastructure;
 using App.Metrics.Registry.Abstractions;
@@ -22,22 +23,22 @@ namespace App.Metrics.Facts.Fixtures
         public MetricsFixture()
         {
             var healthFactoryLogger = _loggerFactory.CreateLogger<HealthCheckFactory>();
-            var clock = new TestClock();
+            Clock = new TestClock();
             var options = new AppMetricsOptions();
 
             IMetricContextRegistry NewContextRegistry(string name) => new DefaultMetricContextRegistry(name);
 
-            var registry = new DefaultMetricsRegistry(_loggerFactory, options, clock, new EnvironmentInfoProvider(), NewContextRegistry);
-            var healthCheckFactory = new HealthCheckFactory(healthFactoryLogger);
+            var registry = new DefaultMetricsRegistry(_loggerFactory, options, Clock, new EnvironmentInfoProvider(), NewContextRegistry);
+            HealthCheckFactory = new HealthCheckFactory(healthFactoryLogger, new Lazy<IMetrics>(() => Metrics));
             var metricBuilderFactory = new DefaultMetricsBuilderFactory();
             var filter = new DefaultMetricsFilter();
             var dataManager = new DefaultMetricValuesProvider(filter, registry);
-            var healthStatusProvider = new DefaultHealthProvider(new Lazy<IMetrics>(() => Metrics), _loggerFactory.CreateLogger<DefaultHealthProvider>(), healthCheckFactory);
-            var metricsManagerFactory = new DefaultMeasureMetricsProvider(registry, metricBuilderFactory, clock);
-            var metricsManagerAdvancedFactory = new DefaultMetricsProvider(registry, metricBuilderFactory, clock);
+            var healthStatusProvider = new DefaultHealthProvider(new Lazy<IMetrics>(() => Metrics), _loggerFactory.CreateLogger<DefaultHealthProvider>(), HealthCheckFactory);
+            var metricsManagerFactory = new DefaultMeasureMetricsProvider(registry, metricBuilderFactory, Clock);
+            var metricsManagerAdvancedFactory = new DefaultMetricsProvider(registry, metricBuilderFactory, Clock);
             var metricsManager = new DefaultMetricsManager(registry, _loggerFactory.CreateLogger<DefaultMetricsManager>());
             Metrics = new DefaultMetrics(
-                clock,
+                Clock,
                 filter,
                 metricsManagerFactory,
                 metricBuilderFactory,
@@ -54,6 +55,10 @@ namespace App.Metrics.Facts.Fixtures
             => (ctx, filter) => Metrics.Snapshot.Get(filter);
 
         public IMetrics Metrics { get; }
+
+        public IHealthCheckFactory HealthCheckFactory { get; }
+
+        public IClock Clock { get; }
 
         public void Dispose()
         {

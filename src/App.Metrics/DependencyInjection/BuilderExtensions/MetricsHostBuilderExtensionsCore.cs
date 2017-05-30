@@ -35,6 +35,7 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.TryAddSingleton<MetricsMarkerService, MetricsMarkerService>();
             builder.Services.AddOptions();
             builder.Services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<AppMetricsOptions>>().Value);
+            builder.Services.AddSingleton<IConfigureOptions<AppMetricsOptions>, ConfigureAppMetricsOptions>();
 
             return builder;
         }

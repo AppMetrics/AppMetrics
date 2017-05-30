@@ -9,7 +9,6 @@ using App.Metrics.Facts.Fixtures;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
-using App.Metrics.Meter.Extensions;
 using App.Metrics.Tagging;
 using App.Metrics.Timer;
 using FluentAssertions;
@@ -49,6 +48,22 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
+        public void can_get_apdex_value_with_tags()
+        {
+            var metricName = "DefaultMetricValuesProviderTests_apdex";
+            var options = new ApdexOptions
+                          {
+                              Name = metricName,
+                              Context = Context
+                          };
+            var tags = new MetricTags("key", "value");
+
+            _measure.Apdex.Track(options, tags, () => _clock.Advance(TimeUnit.Seconds, 3));
+
+            _provider.GetApdexValue(Context, tags.AsMetricName(metricName)).Frustrating.Should().Be(1);
+        }
+
+        [Fact]
         public void can_get_counter_value()
         {
             var metricName = "DefaultMetricValuesProviderTests_counter";
@@ -60,6 +75,22 @@ namespace App.Metrics.Facts.Providers
             _measure.Counter.Increment(options);
 
             _provider.GetCounterValue(Context, metricName).Count.Should().Be(1);
+        }
+
+        [Fact]
+        public void can_get_counter_value_with_tags()
+        {
+            var metricName = "DefaultMetricValuesProviderTests_counter";
+            var options = new CounterOptions
+                          {
+                              Name = metricName,
+                              Context = Context
+                          };
+            var tags = new MetricTags("key", "value");
+
+            _measure.Counter.Increment(options, tags);
+
+            _provider.GetCounterValue(Context, tags.AsMetricName(metricName)).Count.Should().Be(1);
         }
 
         [Fact]
@@ -78,6 +109,22 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
+        public void can_get_gauge_value_with_tags()
+        {
+            var metricName = "DefaultMetricValuesProviderTests_gauge";
+            var options = new GaugeOptions
+                          {
+                              Name = metricName,
+                              Context = Context
+                          };
+            var tags = new MetricTags("key", "value");
+
+            _measure.Gauge.SetValue(options, tags, () => 1.0);
+
+            _provider.GetGaugeValue(Context, tags.AsMetricName(metricName)).Should().Be(1);
+        }
+
+        [Fact]
         public void can_get_histogram_value()
         {
             var metricName = "DefaultMetricValuesProviderTests_histogram";
@@ -93,6 +140,22 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
+        public void can_get_histogram_value_with_tags()
+        {
+            var metricName = "DefaultMetricValuesProviderTests_histogram";
+            var options = new HistogramOptions
+                          {
+                              Name = metricName,
+                              Context = Context
+                          };
+            var tags = new MetricTags("key", "value");
+
+            _measure.Histogram.Update(options, tags, 1L);
+
+            _provider.GetHistogramValue(Context, tags.AsMetricName(metricName)).Count.Should().Be(1);
+        }
+
+        [Fact]
         public void can_get_meter_value()
         {
             var metricName = "DefaultMetricValuesProviderTests_meter";
@@ -105,6 +168,23 @@ namespace App.Metrics.Facts.Providers
             _measure.Meter.Mark(options, 1L);
 
             _provider.GetMeterValue(Context, metricName).Count.Should().Be(1);
+        }
+
+        [Fact]
+        public void can_get_meter_value_with_tags()
+        {
+            var metricName = "DefaultMetricValuesProviderTests_meter";
+            var options = new MeterOptions
+                          {
+                              Name = metricName,
+                              Context = Context
+                          };
+            var tags = new MetricTags("key", "value");
+
+
+            _measure.Meter.Mark(options, tags, 1L);
+
+            _provider.GetMeterValue(Context, tags.AsMetricName(metricName)).Count.Should().Be(1);
         }
 
         [Fact]
@@ -210,6 +290,22 @@ namespace App.Metrics.Facts.Providers
             _measure.Timer.Time(options, () => { _clock.Advance(TimeUnit.Milliseconds, 1000); });
 
             _provider.GetTimerValue(Context, metricName).Histogram.Count.Should().Be(1);
+        }
+
+        [Fact]
+        public void can_get_timer_value_with_tags()
+        {
+            var metricName = "DefaultMetricValuesProviderTests_timer";
+            var options = new TimerOptions
+                          {
+                              Name = metricName,
+                              Context = Context
+                          };
+            var tags = new MetricTags("key", "value");
+
+            _measure.Timer.Time(options, tags, () => { _clock.Advance(TimeUnit.Milliseconds, 1000); });
+
+            _provider.GetTimerValue(Context, tags.AsMetricName(metricName)).Histogram.Count.Should().Be(1);
         }
 
         [Fact]

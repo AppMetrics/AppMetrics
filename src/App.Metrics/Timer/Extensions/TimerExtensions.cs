@@ -7,6 +7,7 @@ using App.Metrics.Core;
 using App.Metrics.Core.Abstractions;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
+using App.Metrics.Tagging;
 using App.Metrics.Timer.Abstractions;
 
 // ReSharper disable CheckNamespace
@@ -40,6 +41,11 @@ namespace App.Metrics.Timer
         public static TimerValue GetTimerValue(this IProvideMetricValues valueService, string context, string metricName)
         {
             return valueService.GetForContext(context).Timers.ValueFor(metricName);
+        }
+
+        public static TimerValue GetTimerValue(this IProvideMetricValues valueService, string context, string metricName, MetricTags tags)
+        {
+            return valueService.GetForContext(context).Timers.ValueFor(tags.AsMetricName(metricName));
         }
 
         public static TimerValue GetValueOrDefault(this ITimer metric)

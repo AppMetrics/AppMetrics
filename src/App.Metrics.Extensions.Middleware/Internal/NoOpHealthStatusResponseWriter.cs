@@ -20,7 +20,9 @@ namespace App.Metrics.Extensions.Middleware.Internal
         /// <inheritdoc />
         public Task WriteAsync(HttpContext context, HealthStatus healthStatus, CancellationToken token = default(CancellationToken))
         {
-            return context.Response.WriteAsync("No formatter has been registered. See App.Metrics.Formatters.Json for example.", token);
+            return context.Response.WriteAsync(
+                "No formatter has been registered. See App.Metrics.Formatters.Ascii & App.Metrics.Formatters.Json for example.",
+                token);
         }
     }
 }

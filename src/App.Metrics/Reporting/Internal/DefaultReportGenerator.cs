@@ -12,9 +12,7 @@ using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
-using App.Metrics.Core.Internal;
 using App.Metrics.Health;
-using App.Metrics.Tagging;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporting.Internal

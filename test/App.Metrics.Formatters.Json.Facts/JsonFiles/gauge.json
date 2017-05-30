@@ -5,5 +5,5 @@
     "host": "server1",
     "env": "staging"
   },
-  "unit": "Calls"
+  "unit": "calls"
 }

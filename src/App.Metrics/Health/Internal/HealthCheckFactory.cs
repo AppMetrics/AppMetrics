@@ -15,9 +15,13 @@ namespace App.Metrics.Health.Internal
     {
         private readonly ILogger<HealthCheckFactory> _logger;
 
-        public HealthCheckFactory(ILogger<HealthCheckFactory> logger, IEnumerable<HealthCheck> healthChecks)
+        public HealthCheckFactory(
+            ILogger<HealthCheckFactory> logger,
+            Lazy<IMetrics> metrics,
+            IEnumerable<HealthCheck> healthChecks)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            Metrics = metrics ?? throw new ArgumentNullException(nameof(metrics));
 
             foreach (var check in healthChecks)
             {
@@ -25,12 +29,22 @@ namespace App.Metrics.Health.Internal
             }
         }
 
-        public HealthCheckFactory(ILogger<HealthCheckFactory> logger) { _logger = logger; }
+        public HealthCheckFactory(ILogger<HealthCheckFactory> logger, Lazy<IMetrics> metrics)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            Metrics = metrics ?? throw new ArgumentNullException(nameof(metrics));
+        }
 
+        /// <inheritdoc />
         public ConcurrentDictionary<string, HealthCheck> Checks { get; } = new ConcurrentDictionary<string, HealthCheck>();
 
+        /// <inheritdoc />
+        public Lazy<IMetrics> Metrics { get; }
+
+        /// <inheritdoc />
         public void Register(string name, Func<Task<string>> check) { Register(new HealthCheck(name, check)); }
 
+        /// <inheritdoc />
         public void Register(string name, Func<Task<HealthCheckResult>> check) { Register(new HealthCheck(name, check)); }
 
         internal void Register(HealthCheck healthCheck)

@@ -2,8 +2,12 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
+using System;
+
 namespace App.Metrics.Formatting.Humanize
 {
+    // TODO: Remove in 2.0.0
+    [Obsolete("Replaced with formatting packages which can be used with the Report Runner")]
     public static class MetricValueStringExtensions
     {
         private const int Padding = 20;

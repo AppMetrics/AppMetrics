@@ -15,6 +15,9 @@ namespace App.Metrics.Health.Internal
     {
         public ConcurrentDictionary<string, HealthCheck> Checks { get; } = new ConcurrentDictionary<string, HealthCheck>();
 
+        /// <inheritdoc />
+        public Lazy<IMetrics> Metrics { get; } = new Lazy<IMetrics>();
+
         public void Register(string name, Func<Task<string>> check) { }
 
         public void Register(string name, Func<Task<HealthCheckResult>> check) { }
