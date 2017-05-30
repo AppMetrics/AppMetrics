@@ -29,13 +29,10 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net452|AnyCPU'">
     <DocumentationFile>bin\Debug\net452\App.Metrics.xml</DocumentationFile>
-  </PropertyGroup>  
+  </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\App.Metrics.Concurrency\App.Metrics.Concurrency.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="App.Metrics.Concurrency" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="1.1.1" />
