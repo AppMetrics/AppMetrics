@@ -19,9 +19,9 @@ var configuration               = HasArgument("BuildConfiguration") ? Argument<s
                                   EnvironmentVariable("BuildConfiguration") != null ? EnvironmentVariable("BuildConfiguration") : "Release";
 var coverWith					= HasArgument("CoverWith") ? Argument<string>("CoverWith") :
                                   EnvironmentVariable("CoverWith") != null ? EnvironmentVariable("CoverWith") : "OpenCover"; // None, DotCover, OpenCover
-var skipReSharperCodeInspect    = Argument("SkipCodeInspect", false) || !IsRunningOnWindows();
+var skipReSharperCodeInspect    = HasArgument("SkipCodeInspect") ? Argument<bool>("SkipCodeInspect", false) || !IsRunningOnWindows(): true;
 var preReleaseSuffix            = HasArgument("PreReleaseSuffix") ? Argument<string>("PreReleaseSuffix") :
-	                              (AppVeyor.IsRunningOnAppVeyor && EnvironmentVariable("PreReleaseSuffix") == null || AppVeyor.Environment.Repository.Tag.IsTag) ? null :
+	                              (AppVeyor.IsRunningOnAppVeyor && EnvironmentVariable("PreReleaseSuffix") == null) || (AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Tag.IsTag) ? null :
                                   EnvironmentVariable("PreReleaseSuffix") != null ? EnvironmentVariable("PreReleaseSuffix") : "ci";
 var buildNumber                 = HasArgument("BuildNumber") ? Argument<int>("BuildNumber") :
                                   AppVeyor.IsRunningOnAppVeyor ? AppVeyor.Environment.Build.Number :
@@ -29,7 +29,7 @@ var buildNumber                 = HasArgument("BuildNumber") ? Argument<int>("Bu
                                   EnvironmentVariable("BuildNumber") != null ? int.Parse(EnvironmentVariable("BuildNumber")) : 0;
 var gitUser						= HasArgument("GitUser") ? Argument<string>("GitUser") : EnvironmentVariable("GitUser");
 var gitPassword					= HasArgument("GitPassword") ? Argument<string>("GitPassword") : EnvironmentVariable("GitPassword");
-var skipHtmlCoverageReport	= Argument("SkipHtmlCoverageReport", true) || !IsRunningOnWindows();
+var skipHtmlCoverageReport		= HasArgument("SkipHtmlCoverageReport") ? Argument<bool>("SkipHtmlCoverageReport", true) || !IsRunningOnWindows() : true;
 
 //////////////////////////////////////////////////////////////////////
 // DEFINE FILES & DIRECTORIES
@@ -59,7 +59,17 @@ var openCoverExcludeFile        = "*/*Designer.cs;*/*.g.cs;*/*.g.i.cs";
 var coverIncludeFilter			= "+:App.Metrics*";
 var coverExcludeFilter			= "-:*.Facts";
 var excludeFromCoverage			= "*.AppMetricsExcludeFromCodeCoverage*";
-var versionSuffix				= !string.IsNullOrEmpty(preReleaseSuffix) ? preReleaseSuffix + "-" + buildNumber.ToString("D4") : !AppVeyor.Environment.Repository.Tag.IsTag ? buildNumber.ToString("D4") : null;
+string versionSuffix			= null;
+
+if (!string.IsNullOrEmpty(preReleaseSuffix))
+{
+	versionSuffix = preReleaseSuffix + "-" + buildNumber.ToString("D4");
+}
+ else if (AppVeyor.IsRunningOnAppVeyor && !AppVeyor.Environment.Repository.Tag.IsTag)
+ {
+ 	versionSuffix = buildNumber.ToString("D4");
+ }
+
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -123,7 +133,8 @@ Task("Build")
 	Context.Information("Building using versionSuffix: " + versionSuffix);
 
 	// Workaround to fixing pre-release version package references - https://github.com/NuGet/Home/issues/4337
-	settings.ArgumentCustomization = args=>args.Append("/t:Restore /p:RestoreSources=" + @"""C:\Program Files (x86)\Microsoft SDKs\NuGetPackages\""" + ";https://api.nuget.org/v3/index.json;https://www.myget.org/F/alhardy/api/v3/index.json;");
+	settings.ArgumentCustomization = args=>args.Append("/t:Restore /p:RestoreSources=https://api.nuget.org/v3/index.json;https://www.myget.org/F/alhardy/api/v3/index.json;");
+
 
 	if (IsRunningOnWindows())
 	{
@@ -232,7 +243,7 @@ Task("RunTests")
 });
 
 Task("HtmlCoverageReport")    
-    .WithCriteria(() => FileExists(testOCoverageOutputFilePath) && coverWith != "None" && IsRunningOnWindows() && !skipHtmlCoverageReport)    
+    .WithCriteria(() => IsRunningOnWindows() && FileExists(testOCoverageOutputFilePath) && coverWith != "None" && !skipHtmlCoverageReport)    
     .IsDependentOn("RunTests")
     .Does(() => 
 {
