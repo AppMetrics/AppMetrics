@@ -28,16 +28,6 @@ namespace App.Metrics.Filtering
         private Dictionary<string, string> _tags;
         private HashSet<MetricType> _types;
 
-        public DefaultMetricsFilter()
-        {
-            ReportHealthChecks = true;
-            ReportEnvironment = true;
-        }
-
-        public bool ReportEnvironment { get; private set; }
-
-        public bool ReportHealthChecks { get; private set; }
-
         /// <inheritdoc />
         public bool IsApdexMatch(ApdexValueSource apdex)
         {
@@ -154,20 +144,6 @@ namespace App.Metrics.Filtering
         public IFilterMetrics WhereType(params MetricType[] types)
         {
             _types = new HashSet<MetricType>(types);
-            return this;
-        }
-
-        /// <inheritdoc />
-        public IFilterMetrics WithEnvironmentInfo(bool report)
-        {
-            ReportEnvironment = report;
-            return this;
-        }
-
-        /// <inheritdoc />
-        public IFilterMetrics WithHealthChecks(bool report)
-        {
-            ReportHealthChecks = report;
             return this;
         }
 

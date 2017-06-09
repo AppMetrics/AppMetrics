@@ -34,7 +34,6 @@ namespace App.Metrics.Formatters.Json.Facts
 
             result.Timestamp.Should().Be(_metrics.Timestamp);
             result.Contexts.Count().Should().Be(_metrics.Contexts.Count());
-            result.Environment.Entries.Count().Should().Be(_metrics.Environment.Entries.Count());
         }
 
         [Fact]

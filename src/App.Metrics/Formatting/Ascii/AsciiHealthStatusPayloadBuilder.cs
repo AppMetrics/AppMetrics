@@ -13,15 +13,9 @@ namespace App.Metrics.Formatting.Ascii
     {
         private AsciiHealthStatusPayload _payload;
 
-        public AsciiHealthStatusPayloadBuilder()
-        {
-            _payload = new AsciiHealthStatusPayload();
-        }
+        public AsciiHealthStatusPayloadBuilder() { _payload = new AsciiHealthStatusPayload(); }
 
-        public void Clear()
-        {
-            _payload = null;
-        }
+        public void Clear() { _payload = null; }
 
         /// <inheritdoc />
         public void Init()

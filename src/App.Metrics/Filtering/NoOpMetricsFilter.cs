@@ -21,12 +21,6 @@ namespace App.Metrics.Internal
     public sealed class NoOpMetricsFilter : IFilterMetrics
     {
         /// <inheritdoc />
-        public bool ReportEnvironment => true;
-
-        /// <inheritdoc />
-        public bool ReportHealthChecks => true;
-
-        /// <inheritdoc />
         public bool IsApdexMatch(ApdexValueSource apdex) { return true; }
 
         /// <inheritdoc />
@@ -67,11 +61,5 @@ namespace App.Metrics.Internal
 
         /// <inheritdoc />
         public IFilterMetrics WhereType(params MetricType[] types) { return this; }
-
-        /// <inheritdoc />
-        public IFilterMetrics WithEnvironmentInfo(bool report) { return this; }
-
-        /// <inheritdoc />
-        public IFilterMetrics WithHealthChecks(bool report) { return this; }
     }
 }

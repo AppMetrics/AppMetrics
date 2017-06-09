@@ -178,7 +178,7 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 
         private MetricsDataValueSource SetupMetricsData(IEnumerable<MetricsContextValueSource> contextValueSources)
         {
-            return new MetricsDataValueSource(_clock.UtcDateTime, Env, contextValueSources);
+            return new MetricsDataValueSource(_clock.UtcDateTime, contextValueSources);
         }
     }
 }

@@ -4,7 +4,6 @@
 
 using System.Linq;
 using App.Metrics.Core;
-using App.Metrics.Infrastructure;
 
 namespace App.Metrics.Formatters.Json.Extensions
 {
@@ -16,7 +15,6 @@ namespace App.Metrics.Formatters.Json.Extensions
 
             return new MetricData
                    {
-                       Environment = source.Environment.ToEnvDictionary(),
                        Timestamp = source.Timestamp,
                        Contexts = jsonContexts.ToArray()
                    };
@@ -26,7 +24,7 @@ namespace App.Metrics.Formatters.Json.Extensions
         {
             var contexts = source.Contexts.FromSerializableMetric();
 
-            return new MetricsDataValueSource(source.Timestamp, new EnvironmentInfo(source.Environment), contexts);
+            return new MetricsDataValueSource(source.Timestamp, contexts);
         }
     }
 }

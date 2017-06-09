@@ -3,13 +3,9 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using App.Metrics.Core.Abstractions;
 using App.Metrics.Core.Interfaces;
-using App.Metrics.Health;
-using App.Metrics.Infrastructure;
-using App.Metrics.Tagging;
 
 namespace App.Metrics.Abstractions.Reporting
 {
@@ -22,16 +18,6 @@ namespace App.Metrics.Abstractions.Reporting
         TimeSpan ReportInterval { get; }
 
         Task<bool> EndAndFlushReportRunAsync(IMetrics metrics);
-
-        void ReportEnvironment(EnvironmentInfo environmentInfo);
-
-        // ReSharper disable UnusedParameter.Global
-        void ReportHealth(
-            GlobalMetricTags globalTags,
-            IEnumerable<HealthCheck.Result> healthyChecks,
-            IEnumerable<HealthCheck.Result> degradedChecks,
-            IEnumerable<HealthCheck.Result> unhealthyChecks);
-        // ReSharper restore UnusedParameter.Global
 
         void ReportMetric<T>(string context, MetricValueSourceBase<T> valueSource);
 

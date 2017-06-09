@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\App.Metrics.Facts\Extensions\HumanizingMetricExtensionTests.cs;..\App.Metrics.Facts\Core\MetricsAppEnvironmentTests.cs" />
+    <!--<Compile Include="..\App.Metrics.Facts\Extensions\HumanizingMetricExtensionTests.cs;..\App.Metrics.Facts\Core\MetricsAppEnvironmentTests.cs" />-->
   </ItemGroup>
 
   <ItemGroup>

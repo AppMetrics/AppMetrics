@@ -45,7 +45,7 @@ namespace App.Metrics.Facts.Reporting
             var token = CancellationToken.None;
             var payloadBuilder = new TestPayloadBuilder();
             var reporter = new TestReporter(payloadBuilder);
-            var filter = new DefaultMetricsFilter().WithEnvironmentInfo(false);
+            var filter = new DefaultMetricsFilter();
 
             // Act
             await _fixture.ReportGenerator.GenerateAsync(reporter, _fixture.Metrics(), filter, token);
@@ -58,9 +58,9 @@ namespace App.Metrics.Facts.Reporting
                         "application__test_gauge mtype=gauge unit=none value=8" + Environment.NewLine +
                         "application__test_histogram mtype=histogram unit=req samples=1i last=5 count.hist=1i sum=5 min=5 max=5 mean=5 median=5 stddev=0 p999=5 p99=5 p98=5 p95=5 p75=5" +
                         Environment.NewLine +
-                        "application__test_meter tag2=value mtype=meter unit=none unit_rate=min count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=3000" +
+                        "application__test_meter tag2=value mtype=meter unit=none unit_rate=min count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=6000" +
                         Environment.NewLine +
-                        "application__test_timer mtype=timer unit=req unit_dur=ms unit_rate=min count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=3000 samples=1i last=10 count.hist=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 p75=10" +
+                        "application__test_timer mtype=timer unit=req unit_dur=ms unit_rate=min count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=6000 samples=1i last=10 count.hist=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 p75=10" +
                         Environment.NewLine);
         }
 
@@ -74,7 +74,7 @@ namespace App.Metrics.Facts.Reporting
             var payloadBuilder = new TestPayloadBuilder(dataKeys);
             var reporter = new TestReporter(
                 payloadBuilder);
-            var filter = new DefaultMetricsFilter().WithEnvironmentInfo(false);
+            var filter = new DefaultMetricsFilter();
 
             // Act
             await _fixture.ReportGenerator.GenerateAsync(reporter, _fixture.Metrics(), filter, token);
@@ -87,9 +87,9 @@ namespace App.Metrics.Facts.Reporting
                         "application__test_gauge mtype=gauge unit=none value=8" + Environment.NewLine +
                         "application__test_histogram mtype=histogram unit=req samples=1i last=5 count.hist=1i sum=5 min=5 max=5 mean=5 median=5 stddev=0 p999=5 p99=5 p98=5 p95=5 75th_percentile=5" +
                         Environment.NewLine +
-                        "application__test_meter tag2=value mtype=meter unit=none unit_rate=min count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=3000" +
+                        "application__test_meter tag2=value mtype=meter unit=none unit_rate=min count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=6000" +
                         Environment.NewLine +
-                        "application__test_timer mtype=timer unit=req unit_dur=ms unit_rate=min count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=3000 samples=1i last=10 count.hist=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 75th_percentile=10" +
+                        "application__test_timer mtype=timer unit=req unit_dur=ms unit_rate=min count.meter=1i rate1m=0 rate5m=0 rate15m=0 rate.mean=6000 samples=1i last=10 count.hist=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 75th_percentile=10" +
                         Environment.NewLine);
         }
 
@@ -102,7 +102,7 @@ namespace App.Metrics.Facts.Reporting
             var token = CancellationToken.None;
             var payloadBuilder = new TestPayloadBuilder(dataKeys);
             var reporter = new TestReporter(payloadBuilder);
-            var filter = new DefaultMetricsFilter().WithEnvironmentInfo(false);
+            var filter = new DefaultMetricsFilter();
 
             // Act
             await _fixture.ReportGenerator.GenerateAsync(reporter, _fixture.Metrics(), filter, token);
@@ -115,9 +115,9 @@ namespace App.Metrics.Facts.Reporting
                         "application__test_gauge mtype=gauge unit=none value=8" + Environment.NewLine +
                         "application__test_histogram mtype=histogram unit=req samples=1i last=5 count.hist=1i sum=5 min=5 max=5 mean=5 median=5 stddev=0 p999=5 p99=5 p98=5 p95=5 p75=5" +
                         Environment.NewLine +
-                        "application__test_meter tag2=value mtype=meter unit=none unit_rate=min count.meter=1i 1_min_rate=0 rate5m=0 rate15m=0 rate.mean=3000" +
+                        "application__test_meter tag2=value mtype=meter unit=none unit_rate=min count.meter=1i 1_min_rate=0 rate5m=0 rate15m=0 rate.mean=6000" +
                         Environment.NewLine +
-                        "application__test_timer mtype=timer unit=req unit_dur=ms unit_rate=min count.meter=1i 1_min_rate=0 rate5m=0 rate15m=0 rate.mean=3000 samples=1i last=10 count.hist=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 p75=10" +
+                        "application__test_timer mtype=timer unit=req unit_dur=ms unit_rate=min count.meter=1i 1_min_rate=0 rate5m=0 rate15m=0 rate.mean=6000 samples=1i last=10 count.hist=1i sum=10 min=10 max=10 mean=10 median=10 stddev=0 p999=10 p99=10 p98=10 p95=10 p75=10" +
                         Environment.NewLine);
         }
 

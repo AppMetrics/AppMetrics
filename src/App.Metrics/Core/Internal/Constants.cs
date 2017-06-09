@@ -92,6 +92,7 @@ namespace App.Metrics.Core.Internal
             internal const string DegradedStatusDisplay = "Degraded";
             internal const string HealthyStatusDisplay = "Healthy";
             internal const string UnhealthyStatusDisplay = "Unhealthy";
+            internal const string IgnoredStatusDisplay = "Ignored";
 
             public static ReadOnlyDictionary<HealthCheckStatus, string> HealthStatusDisplay =>
                 new ReadOnlyDictionary<HealthCheckStatus, string>(
@@ -100,12 +101,12 @@ namespace App.Metrics.Core.Internal
                         { HealthCheckStatus.Healthy, HealthyStatusDisplay },
                         { HealthCheckStatus.Unhealthy, UnhealthyStatusDisplay },
                         { HealthCheckStatus.Degraded, DegradedStatusDisplay },
+                        { HealthCheckStatus.Ignored, IgnoredStatusDisplay },
                     });
 
             public static class TagKeys
             {
                 public const string HealthCheckName = "health_check_name";
-                public const string HealthCheckStatus = "health_check_status";
             }
         }
 

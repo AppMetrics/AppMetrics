@@ -1,16 +1,5 @@
 ﻿{
-  "timestamp": "0001-01-01T00:00:00Z",
-  "environment": {
-    "machineName": "machine_name",
-    "processName": "process_name",
-    "os": "os",
-    "osVersion": "os_version",
-    "cpuCount": "8",
-    "hostName": "host_name",
-    "localTime": "localtime",
-    "entryAssemblyName": "assembly_name",
-    "entryAssemblyVersion": "assembly_version"
-  },
+  "timestamp": "0001-01-01T00:00:00Z", 
   "contexts": [
     {
       "context": "context_one",

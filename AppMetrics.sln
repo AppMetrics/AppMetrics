@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2D805782-756E-4C98-B22E-F502BEE95318}"
 EndProject
@@ -18,8 +18,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{DD2E4647-7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmarks", "benchmarks", "{A335612E-C4C6-4AF4-98A9-EB9FF40CA258}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Concurrency", "src\App.Metrics.Concurrency\App.Metrics.Concurrency.csproj", "{9CABAC36-9FF4-45E7-B065-645C6046E190}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics", "src\App.Metrics\App.Metrics.csproj", "{8E0E0579-ACB1-4412-BF8E-1FCA4341EFE7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Extensions.Middleware", "src\App.Metrics.Extensions.Middleware\App.Metrics.Extensions.Middleware.csproj", "{4E281FFD-BE0C-4842-827A-4DF45B7AAA04}"
@@ -27,8 +25,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Extensions.Mvc", "src\App.Metrics.Extensions.Mvc\App.Metrics.Extensions.Mvc.csproj", "{21C3203D-DC15-4435-84D7-E6F2FDD71C2C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Formatters.Json", "src\App.Metrics.Formatters.Json\App.Metrics.Formatters.Json.csproj", "{E8ED85F4-9A6D-476B-B12F-64BA07F52A18}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Concurrency.Facts", "test\App.Metrics.Concurrency.Facts\App.Metrics.Concurrency.Facts.csproj", "{C0176564-D3C9-486D-B227-48711B2499A6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Extensions.Middleware.Integration.Facts", "test\App.Metrics.Extensions.Middleware.Integration.Facts\App.Metrics.Extensions.Middleware.Integration.Facts.csproj", "{88EF39BF-1B5D-440F-A29C-5BC9470ABA38}"
 EndProject
@@ -49,7 +45,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cake", "Cake", "{99DA9961-5
 		build.cake = build.cake
 		build.ps1 = build.ps1
 		build.sh = build.sh
-		build_travis.sh = build_travis.sh
 		tools\packages.config = tools\packages.config
 	EndProjectSection
 EndProject
@@ -84,10 +79,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9CABAC36-9FF4-45E7-B065-645C6046E190}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9CABAC36-9FF4-45E7-B065-645C6046E190}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9CABAC36-9FF4-45E7-B065-645C6046E190}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9CABAC36-9FF4-45E7-B065-645C6046E190}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8E0E0579-ACB1-4412-BF8E-1FCA4341EFE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8E0E0579-ACB1-4412-BF8E-1FCA4341EFE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E0E0579-ACB1-4412-BF8E-1FCA4341EFE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -104,10 +95,6 @@ Global
 		{E8ED85F4-9A6D-476B-B12F-64BA07F52A18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8ED85F4-9A6D-476B-B12F-64BA07F52A18}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8ED85F4-9A6D-476B-B12F-64BA07F52A18}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C0176564-D3C9-486D-B227-48711B2499A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C0176564-D3C9-486D-B227-48711B2499A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C0176564-D3C9-486D-B227-48711B2499A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C0176564-D3C9-486D-B227-48711B2499A6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{88EF39BF-1B5D-440F-A29C-5BC9470ABA38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{88EF39BF-1B5D-440F-A29C-5BC9470ABA38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88EF39BF-1B5D-440F-A29C-5BC9470ABA38}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -149,12 +136,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{9CABAC36-9FF4-45E7-B065-645C6046E190} = {2D805782-756E-4C98-B22E-F502BEE95318}
 		{8E0E0579-ACB1-4412-BF8E-1FCA4341EFE7} = {2D805782-756E-4C98-B22E-F502BEE95318}
 		{4E281FFD-BE0C-4842-827A-4DF45B7AAA04} = {2D805782-756E-4C98-B22E-F502BEE95318}
 		{21C3203D-DC15-4435-84D7-E6F2FDD71C2C} = {2D805782-756E-4C98-B22E-F502BEE95318}
 		{E8ED85F4-9A6D-476B-B12F-64BA07F52A18} = {2D805782-756E-4C98-B22E-F502BEE95318}
-		{C0176564-D3C9-486D-B227-48711B2499A6} = {DD2E4647-7125-4CE3-9BA5-B45A26113A31}
 		{88EF39BF-1B5D-440F-A29C-5BC9470ABA38} = {DD2E4647-7125-4CE3-9BA5-B45A26113A31}
 		{27179ACE-674A-4E05-B8A6-9591DE34D5D7} = {DD2E4647-7125-4CE3-9BA5-B45A26113A31}
 		{19A47DA9-3FA4-49BD-808F-CD44CEBB28DE} = {DD2E4647-7125-4CE3-9BA5-B45A26113A31}

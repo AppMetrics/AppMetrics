@@ -16,28 +16,6 @@ namespace App.Metrics.Abstractions.Filtering
     public interface IFilterMetrics
     {
         /// <summary>
-        ///     Gets a value indicating whether [report environment].
-        /// </summary>
-        /// <remarks>
-        ///     If <c>false</c> when metrics data is retrieved the environment information will not be populated
-        /// </remarks>
-        /// <value>
-        ///     <c>true</c> if [report environment]; otherwise, <c>false</c>.
-        /// </value>
-        bool ReportEnvironment { get; }
-
-        /// <summary>
-        ///     Gets a value indicating whether [report health checks].
-        /// </summary>
-        /// <remarks>
-        ///     If <c>false</c> when metrics data is retrieved the health information will not be populated
-        /// </remarks>
-        /// <value>
-        ///     <c>true</c> if [report health checks]; otherwise, <c>false</c>.
-        /// </value>
-        bool ReportHealthChecks { get; }
-
-        /// <summary>
         ///     Determines whether the specified apdex is match.
         /// </summary>
         /// <param name="apdex">The apdex.</param>
@@ -129,14 +107,10 @@ namespace App.Metrics.Abstractions.Filtering
         IFilterMetrics WhereMetricTaggedWithKeyValue(TagKeyValueFilter tags);
 
         /// <summary>
-        ///     Fitlers metrics by matching types
+        ///     Filters metrics by matching types
         /// </summary>
         /// <param name="types">The metric types to filter on.</param>
         /// <returns>A filter where metrics types should match</returns>
         IFilterMetrics WhereType(params MetricType[] types);
-
-        IFilterMetrics WithEnvironmentInfo(bool report);
-
-        IFilterMetrics WithHealthChecks(bool report);
     }
 }

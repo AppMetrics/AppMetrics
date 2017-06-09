@@ -89,7 +89,6 @@ namespace App.Metrics.Sandbox
             services.AddMvc(options => options.AddMetricsResourceFilter());
 
             var reportFilter = new DefaultMetricsFilter();
-            reportFilter.WithHealthChecks(false);
 
             services.AddMetrics(Configuration.GetSection("AppMetrics")).                     
                      // AddJsonMetricsSerialization().
@@ -99,8 +98,8 @@ namespace App.Metrics.Sandbox
                      AddAsciiMetricsTextSerialization().
                      // AddPrometheusPlainTextSerialization().
                      // AddInfluxDBLineProtocolMetricsTextSerialization().
-                     // AddAsciiEnvironmentInfoSerialization().
-                     AddJsonEnvironmentInfoSerialization().
+                     AddAsciiEnvironmentInfoSerialization().
+                     // AddJsonEnvironmentInfoSerialization().
                      AddReporting(
                          factory =>
                          {

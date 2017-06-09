@@ -3,18 +3,14 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Apdex;
 using App.Metrics.Core.Abstractions;
 using App.Metrics.Counter;
-using App.Metrics.Health;
 using App.Metrics.Histogram;
-using App.Metrics.Infrastructure;
 using App.Metrics.Meter;
 using App.Metrics.Reporting.Abstractions;
-using App.Metrics.Tagging;
 using App.Metrics.Timer;
 using Microsoft.Extensions.Logging;
 
@@ -87,21 +83,6 @@ namespace App.Metrics.Reporting
             return result;
         }
 
-        // TODO: Remove in 2.0.0
-        [Obsolete("Remove in 2.0.0 - Doesn't make sense to report environment info as part of metric reporting")]
-        public void ReportEnvironment(EnvironmentInfo environmentInfo) { }
-
-        // TODO: Remove in 2.0.0
-        [Obsolete("Remove in 2.0.0 - Doesn't make sense to report health status as part of metric reporting, health check results are reported as guages as well")]
-        public void ReportHealth(
-            GlobalMetricTags globalTags,
-            IEnumerable<HealthCheck.Result> healthyChecks,
-            IEnumerable<HealthCheck.Result> degradedChecks,
-            IEnumerable<HealthCheck.Result> unhealthyChecks)
-        {
-            // Health checks are reported as metrics as well
-        }
-
         public void ReportMetric<TMetric>(string context, MetricValueSourceBase<TMetric> valueSource)
         {
             _logger.LogTrace($"Packing Metric {typeof(T)} for {Name}");
@@ -152,10 +133,7 @@ namespace App.Metrics.Reporting
             _payloadBuilder.Init();
         }
 
-        private void ReportApdex(string context, MetricValueSourceBase<ApdexValue> valueSource)
-        {
-            _payloadBuilder.PackApdex(context, valueSource);
-        }
+        private void ReportApdex(string context, MetricValueSourceBase<ApdexValue> valueSource) { _payloadBuilder.PackApdex(context, valueSource); }
 
         private void ReportCounter(string context, MetricValueSourceBase<CounterValue> valueSource)
         {
@@ -163,24 +141,15 @@ namespace App.Metrics.Reporting
             _payloadBuilder.PackCounter(context, valueSource, counterValueSource);
         }
 
-        private void ReportGauge(string context, MetricValueSourceBase<double> valueSource)
-        {
-            _payloadBuilder.PackGauge(context, valueSource);
-        }
+        private void ReportGauge(string context, MetricValueSourceBase<double> valueSource) { _payloadBuilder.PackGauge(context, valueSource); }
 
         private void ReportHistogram(string context, MetricValueSourceBase<HistogramValue> valueSource)
         {
             _payloadBuilder.PackHistogram(context, valueSource);
         }
 
-        private void ReportMeter(string context, MetricValueSourceBase<MeterValue> valueSource)
-        {
-            _payloadBuilder.PackMeter(context, valueSource);
-        }
+        private void ReportMeter(string context, MetricValueSourceBase<MeterValue> valueSource) { _payloadBuilder.PackMeter(context, valueSource); }
 
-        private void ReportTimer(string context, MetricValueSourceBase<TimerValue> valueSource)
-        {
-            _payloadBuilder.PackTimer(context, valueSource);
-        }
+        private void ReportTimer(string context, MetricValueSourceBase<TimerValue> valueSource) { _payloadBuilder.PackTimer(context, valueSource); }
     }
 }

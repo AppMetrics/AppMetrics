@@ -12,7 +12,6 @@ using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Configuration;
 using App.Metrics.Core;
-using App.Metrics.Health;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporting.Internal
@@ -51,16 +50,6 @@ namespace App.Metrics.Reporting.Internal
             reporter.StartReportRun(metrics);
 
             var data = metrics.Snapshot.Get(reporterMetricsFilter);
-
-            if (data.Environment.Entries.Any() && reporterMetricsFilter.ReportEnvironment)
-            {
-                reporter.ReportEnvironment(data.Environment);
-            }
-
-            if (reporterMetricsFilter.ReportHealthChecks)
-            {
-                await ReportHealth(reporter, metrics, token);
-            }
 
             ReportMetricTypes(reporter, token, data);
 
@@ -125,17 +114,6 @@ namespace App.Metrics.Reporting.Internal
                     t => { reporter.ReportMetric($"{contextValueSource.Context}", t); },
                     token);
             }
-        }
-
-        private async Task ReportHealth(IMetricReporter reporter, IMetrics metrics, CancellationToken token)
-        {
-            var healthStatus = await metrics.Health.ReadStatusAsync(token);
-
-            var passed = healthStatus.Results.Where(r => r.Check.Status.IsHealthy()).ToArray();
-            var failed = healthStatus.Results.Where(r => r.Check.Status.IsUnhealthy()).ToArray();
-            var degraded = healthStatus.Results.Where(r => r.Check.Status.IsDegraded()).ToArray();
-
-            reporter.ReportHealth(_options.GlobalTags, passed, degraded, failed);
         }
     }
 }

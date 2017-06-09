@@ -195,8 +195,6 @@ namespace App.Metrics.Registry.Internal
                 return MetricsDataValueSource.Empty;
             }
 
-            var environment = _environmentInfoProvider.Build();
-
             var contexts = _contexts.Values.Select(
                 g => new MetricsContextValueSource(
                     g.Context,
@@ -207,7 +205,7 @@ namespace App.Metrics.Registry.Internal
                     g.DataProvider.Timers.ToArray(),
                     g.DataProvider.ApdexScores.ToArray()));
 
-            var data = new MetricsDataValueSource(_clock.UtcDateTime, environment, contexts);
+            var data = new MetricsDataValueSource(_clock.UtcDateTime,  contexts);
 
             _logger.GettingMetricsData();
 
