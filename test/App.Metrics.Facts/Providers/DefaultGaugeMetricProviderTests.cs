@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultGaugeMetricProviderTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Linq;
 using App.Metrics.Abstractions.Filtering;
@@ -26,7 +27,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_instance_to_registry()
+        public void Can_add_instance_to_registry()
         {
             var metricName = "gauge_provider_test";
 
@@ -43,7 +44,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_instance_to_registry_with_default_builder()
+        public void Can_add_instance_to_registry_with_default_builder()
         {
             var metricName = "gauge_provider_test_default_builder";
 
@@ -60,7 +61,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_multidimensional_to_registry()
+        public void Can_add_multidimensional_to_registry()
         {
             var metricName = "gauge_provider_test_multi";
 
@@ -77,7 +78,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_multidimensional_to_registry_with_default_builder()
+        public void Can_add_multidimensional_to_registry_with_default_builder()
         {
             var metricName = "gauge_provider_test_default_builder";
 
@@ -94,7 +95,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void same_metric_only_added_once()
+        public void Same_metric_only_added_once()
         {
             var metricName = "gauge_provider_test";
 
@@ -112,7 +113,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void same_metric_only_added_once_when_multidimensional()
+        public void Same_metric_only_added_once_when_multidimensional()
         {
             var metricName = "gauge_provider_test_multi";
 

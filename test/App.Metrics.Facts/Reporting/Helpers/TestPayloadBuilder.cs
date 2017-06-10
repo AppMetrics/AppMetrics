@@ -1,3 +1,7 @@
+// <copyright file="TestPayloadBuilder.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,21 +14,21 @@ namespace App.Metrics.Facts.Reporting.Helpers
 {
     public class TestPayloadBuilder : IMetricPayloadBuilder<TestMetricPayload>
     {
-        private TestMetricPayload _payload;
         private readonly Func<string, string, string> _metricNameFormatter = (metricContext, metricName) => metricContext.IsMissing()
             ? $"{metricName}".Replace(' ', '_').ToLowerInvariant()
             : $"{metricContext}__{metricName}".Replace(' ', '_').ToLowerInvariant();
 
+        private TestMetricPayload _payload;
+
         public TestPayloadBuilder()
-            :this (new MetricValueDataKeys())
+            : this(new MetricValueDataKeys())
         {
-            
         }
 
         public TestPayloadBuilder(MetricValueDataKeys dataKeys)
         {
             _payload = new TestMetricPayload();
-            DataKeys = dataKeys ?? new MetricValueDataKeys();            
+            DataKeys = dataKeys ?? new MetricValueDataKeys();
         }
 
         public TestPayloadBuilder(Func<string, string, string> metricNameFormatter, MetricValueDataKeys dataKeys)
@@ -34,15 +38,11 @@ namespace App.Metrics.Facts.Reporting.Helpers
             _metricNameFormatter = metricNameFormatter;
         }
 
-        public void Clear() { _payload = null; }
-
-        public void Init()
-        {
-            _payload = new TestMetricPayload();
-        }
-
         public MetricValueDataKeys DataKeys { get; }
 
+        public void Clear() { _payload = null; }
+
+        public void Init() { _payload = new TestMetricPayload(); }
 
         public void Pack(string context, string name, object value, MetricTags tags)
         {
@@ -58,8 +58,7 @@ namespace App.Metrics.Facts.Reporting.Helpers
             IEnumerable<object> values,
             MetricTags tags)
         {
-            var fields = columns.Zip(values, (column, data) => new { column, data })
-                                .ToDictionary(pair => pair.column, pair => pair.data);
+            var fields = columns.Zip(values, (column, data) => new { column, data }).ToDictionary(pair => pair.column, pair => pair.data);
 
             var measurement = _metricNameFormatter(context, name);
 

@@ -1,4 +1,8 @@
-﻿using App.Metrics.Configuration;
+﻿// <copyright file="DisabledMetricsTestStartup.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using App.Metrics.Configuration;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

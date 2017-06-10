@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// <copyright file="Meter_MetricValueExtensionsTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System.Collections.Generic;
 using App.Metrics.Core.Extensions;
 using App.Metrics.Meter;
 using App.Metrics.Reporting;
@@ -14,7 +18,7 @@ namespace App.Metrics.Facts.Core.Extensions
         private static readonly MetricValueDataKeys DataKeys = new MetricValueDataKeys();
 
         [Fact]
-        public void meter_can_use_custom_data_keys_and_should_provide_corresponding_values()
+        public void Meter_can_use_custom_data_keys_and_should_provide_corresponding_values()
         {
             // Arrange
             var value = new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds);
@@ -36,7 +40,7 @@ namespace App.Metrics.Facts.Core.Extensions
         }
 
         [Fact]
-        public void meter_default_data_keys_should_provide_corresponding_values()
+        public void Meter_default_data_keys_should_provide_corresponding_values()
         {
             // Arrange
             var value = new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds);

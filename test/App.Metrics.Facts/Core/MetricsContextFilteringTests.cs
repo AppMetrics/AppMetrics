@@ -1,3 +1,7 @@
+// <copyright file="MetricsContextFilteringTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
 using System.Linq;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Filtering;
@@ -10,13 +14,10 @@ namespace App.Metrics.Facts.Core
     {
         private readonly IMetrics _metrics;
 
-        public MetricsContextFilteringTests(MetricsWithMultipleContextsSamplesFixture fixture)
-        {
-            _metrics = fixture.Metrics;
-        }
+        public MetricsContextFilteringTests(MetricsWithMultipleContextsSamplesFixture fixture) { _metrics = fixture.Metrics; }
 
         [Fact]
-        public void can_filter_metrics_by_context()
+        public void Can_filter_metrics_by_context()
         {
             var filter = new DefaultMetricsFilter().WhereContext("test_context1");
             var currentData = _metrics.Snapshot.Get(filter);
@@ -33,7 +34,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void can_filter_metrics_by_context_via_data_provider()
+        public void Can_filter_metrics_by_context_via_data_provider()
         {
             var currentData = _metrics.Snapshot.GetForContext("test_context1");
 

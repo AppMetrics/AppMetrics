@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="HealthCheckFactoryExtensionsTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Linq;
@@ -20,12 +21,12 @@ namespace App.Metrics.Facts.Health
 
         [Fact]
         [Trait("Category", "Requires Connectivity")]
-        public async Task can_execute_http_get_check()
+        public async Task Can_execute_http_get_check()
         {
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "github home";
 
-            var factory = new HealthCheckFactory(_logger, new Lazy<IMetrics>(),  healthChecks);
+            var factory = new HealthCheckFactory(_logger, new Lazy<IMetrics>(), healthChecks);
 
             factory.RegisterHttpGetHealthCheck(name, new Uri("https://github.com"), TimeSpan.FromSeconds(10));
 
@@ -35,9 +36,11 @@ namespace App.Metrics.Facts.Health
             result.Check.Status.Should().Be(HealthCheckStatus.Healthy);
         }
 
+#pragma warning disable xUnit1004 // Test methods should not be skipped
         [Fact(Skip = "Mock HTTP Call")]
+#pragma warning restore xUnit1004 // Test methods should not be skipped
         [Trait("Category", "Requires Connectivity")]
-        public async Task can_execute_ping_check()
+        public async Task Can_execute_ping_check()
         {
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "github ping";
@@ -53,7 +56,7 @@ namespace App.Metrics.Facts.Health
         }
 
         [Fact]
-        public async Task can_execute_process_physical_memory_check()
+        public async Task Can_execute_process_physical_memory_check()
         {
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "physical memory";
@@ -69,7 +72,7 @@ namespace App.Metrics.Facts.Health
         }
 
         [Fact]
-        public async Task can_execute_process_private_memory_check()
+        public async Task Can_execute_process_private_memory_check()
         {
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "private memory";
@@ -85,7 +88,7 @@ namespace App.Metrics.Facts.Health
         }
 
         [Fact]
-        public async Task can_execute_process_virtual_memory_check()
+        public async Task Can_execute_process_virtual_memory_check()
         {
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "virtual memory";
@@ -101,7 +104,7 @@ namespace App.Metrics.Facts.Health
         }
 
         [Fact]
-        public void can_register_process_physical_memory_check()
+        public void Can_register_process_physical_memory_check()
         {
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "physical memory";
@@ -115,7 +118,7 @@ namespace App.Metrics.Facts.Health
         }
 
         [Fact]
-        public void can_register_process_private_memory_check()
+        public void Can_register_process_private_memory_check()
         {
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "private memory";
@@ -129,7 +132,7 @@ namespace App.Metrics.Facts.Health
         }
 
         [Fact]
-        public void can_register_process_virtual_memory_check()
+        public void Can_register_process_virtual_memory_check()
         {
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "virtual memory";

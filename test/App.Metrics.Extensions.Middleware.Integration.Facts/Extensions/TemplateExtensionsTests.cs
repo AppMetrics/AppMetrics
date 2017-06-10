@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// <copyright file="TemplateExtensionsTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -16,7 +20,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Extensions
         private static readonly IInlineConstraintResolver InlineConstraintResolver = GetInlineConstraintResolver();
 
         [Fact]
-        public void can_format_template_segements()
+        public void Can_format_template_segements()
         {
             var expected = "{p}";
             var segments = new List<TemplateSegment> { new TemplateSegment() };
@@ -32,7 +36,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Extensions
         [InlineData("{*p}", "p", true, false)]
         [InlineData("{*p?}", "p", true, true)]
         [InlineData("{p?}", "p", false, true)]
-        public void formats_template_parameters_correctly(string expected, string template, bool isCatchAll, bool isOptional)
+        public void Formats_template_parameters_correctly(string expected, string template, bool isCatchAll, bool isOptional)
         {
             var templatePart = TemplatePart.CreateParameter(template, isCatchAll, isOptional, defaultValue: null, inlineConstraints: null);
 
@@ -42,7 +46,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Extensions
         }
 
         [Fact]
-        public void if_not_parameter_return_text()
+        public void If_not_parameter_return_text()
         {
             var expected = "test";
             var templatePart = TemplatePart.CreateLiteral(expected);
@@ -53,7 +57,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Extensions
         }
 
         [Fact]
-        public void can_get_template_from_route()
+        public void Can_get_template_from_route()
         {
             var expected = "test/action";
 

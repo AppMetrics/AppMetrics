@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultApdexManagerTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void track_action_adds_multidimensional_metrics_to_registry()
+        public void Track_action_adds_multidimensional_metrics_to_registry()
         {
             var metricName = "test_apdex_multi";
 
@@ -40,7 +41,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void track_action_adds_to_registry()
+        public void Track_action_adds_to_registry()
         {
             var metricName = "test_apdex";
             var options = new ApdexOptions { Name = metricName };
@@ -53,7 +54,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public async Task track_adds_multidimensional_metrics_to_registry()
+        public async Task Track_adds_multidimensional_metrics_to_registry()
         {
             var metricName = "test_apdex_no_action_multi";
             var options = new ApdexOptions { Name = metricName };
@@ -75,7 +76,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public async Task track_adds_to_registry()
+        public async Task Track_adds_to_registry()
         {
             var metricName = "test_apdex_no_action";
             var options = new ApdexOptions { Name = metricName };

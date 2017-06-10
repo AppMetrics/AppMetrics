@@ -1,5 +1,6 @@
+// <copyright file="MetricProviderTestFixture.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+// </copyright>
 
 using System;
 using System.Collections.Generic;
@@ -17,17 +18,17 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 {
     public class MetricProviderTestFixture : IDisposable
     {
-        public string ApdexNameDefault = "test_apdex";
+        public string ApdexNameDefault { get; } = "test_apdex";
 
-        public string CounterNameDefault = "test_counter";
+        public string CounterNameDefault { get; } = "test_counter";
 
-        public string GaugeNameDefault = "test_gauge";
+        public string GaugeNameDefault { get; } = "test_gauge";
 
-        public string HistogramNameDefault = "test_histogram";
+        public string HistogramNameDefault { get; } = "test_histogram";
 
-        public string MeterNameDefault = "test_meter";
+        public string MeterNameDefault { get; } = "test_meter";
 
-        public string TimerNameDefault = "test_timer";
+        public string TimerNameDefault { get; } = "test_timer";
 
         private readonly IClock _clock = new TestClock();
 
@@ -44,8 +45,6 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
         }
 
         public IEnumerable<ApdexValueSource> ApdexScores { get; }
-
-        private MetricsContextValueSource ContextOne { get; }
 
         public IEnumerable<CounterValueSource> Counters { get; }
 
@@ -68,9 +67,11 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 
         public IEnumerable<MeterValueSource> Meters { get; }
 
-        private MetricTags Tags => new MetricTags(new[] { "host", "env" }, new[] { "server1", "staging" });
-
         public IEnumerable<TimerValueSource> Timers { get; }
+
+        private MetricsContextValueSource ContextOne { get; }
+
+        private MetricTags Tags => new MetricTags(new[] { "host", "env" }, new[] { "server1", "staging" });
 
         public void Dispose() { }
 
@@ -80,6 +81,26 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
             var apdex = new ApdexValueSource(ApdexNameDefault, ConstantValue.Provider(apdexValue), Tags);
 
             return new[] { apdex };
+        }
+
+        private MetricsContextValueSource SetupContextOne()
+        {
+            return new MetricsContextValueSource("context_one", Gauges, Counters, Meters, Histograms, Timers, ApdexScores);
+        }
+
+        private IEnumerable<CounterValueSource> SetupCounters()
+        {
+            var items = new[]
+                        {
+                            new CounterValue.SetItem("item1", 20, 10),
+                            new CounterValue.SetItem("item2", 40, 20),
+                            new CounterValue.SetItem("item3", 140, 70)
+                        };
+
+            var counterValue = new CounterValue(200, items);
+            var counter = new CounterValueSource(CounterNameDefault, ConstantValue.Provider(counterValue), Unit.Items, Tags);
+
+            return new[] { counter };
         }
 
         private IEnumerable<GaugeValueSource> SetupGauges()
@@ -96,6 +117,8 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 
             return new[] { histogram };
         }
+
+#pragma warning disable SA1118 // Parameter must not span multiple lines
 
         private IEnumerable<MeterValueSource> SetupMeters()
         {
@@ -127,6 +150,11 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
             return new[] { meter };
         }
 
+        private MetricsDataValueSource SetupMetricsData(IEnumerable<MetricsContextValueSource> contextValueSources)
+        {
+            return new MetricsDataValueSource(_clock.UtcDateTime, contextValueSources);
+        }
+
         private IEnumerable<TimerValueSource> SetupTimers()
         {
             const int count = 5;
@@ -155,30 +183,6 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 
             return new[] { timer };
         }
-
-        private MetricsContextValueSource SetupContextOne()
-        {
-            return new MetricsContextValueSource("context_one", Gauges, Counters, Meters, Histograms, Timers, ApdexScores);
-        }
-
-        private IEnumerable<CounterValueSource> SetupCounters()
-        {
-            var items = new[]
-                        {
-                            new CounterValue.SetItem("item1", 20, 10),
-                            new CounterValue.SetItem("item2", 40, 20),
-                            new CounterValue.SetItem("item3", 140, 70)
-                        };
-
-            var counterValue = new CounterValue(200, items);
-            var counter = new CounterValueSource(CounterNameDefault, ConstantValue.Provider(counterValue), Unit.Items, Tags);
-
-            return new[] { counter };
-        }
-
-        private MetricsDataValueSource SetupMetricsData(IEnumerable<MetricsContextValueSource> contextValueSources)
-        {
-            return new MetricsDataValueSource(_clock.UtcDateTime, contextValueSources);
-        }
     }
+#pragma warning restore SA1118 // Parameter must not span multiple lines
 }

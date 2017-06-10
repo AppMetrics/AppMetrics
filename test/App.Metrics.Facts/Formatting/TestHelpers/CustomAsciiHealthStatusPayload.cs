@@ -1,8 +1,11 @@
+// <copyright file="CustomAsciiHealthStatusPayload.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using App.Metrics.Core.Internal;
-using App.Metrics.Formatting.Ascii;
 using App.Metrics.Health;
 
 namespace App.Metrics.Facts.Formatting.TestHelpers

@@ -1,4 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿// <copyright file="CustomAsciiFormatterTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System.Threading.Tasks;
 using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Facts.Formatting.TestHelpers;
@@ -15,12 +19,12 @@ namespace App.Metrics.Facts.Formatting
 
         public CustomAsciiFormatterTests()
         {
-            //DEVNOTE: Don't want Metrics to be shared between tests
+            // DEVNOTE: Don't want Metrics to be shared between tests
             _fixture = new MetricsFixture();
         }
 
         [Fact]
-        public async Task can_apply_custom_ascii_health_formatting()
+        public async Task Can_apply_custom_ascii_health_formatting()
         {
             // Arrange
             _fixture.HealthCheckFactory.Register("test", () => Task.FromResult(HealthCheckResult.Healthy()));
@@ -36,7 +40,7 @@ namespace App.Metrics.Facts.Formatting
         }
 
         [Fact]
-        public void can_apply_custom_ascii_metric_formatting()
+        public void Can_apply_custom_ascii_metric_formatting()
         {
             // Arrange
             var counter = new CounterOptions { Context = "test", Name = "counter1" };

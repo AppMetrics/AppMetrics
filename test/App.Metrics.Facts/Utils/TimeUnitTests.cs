@@ -1,4 +1,8 @@
-﻿using FluentAssertions;
+﻿// <copyright file="TimeUnitTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using FluentAssertions;
 using Xunit;
 
 namespace App.Metrics.Facts.Utils
@@ -6,7 +10,7 @@ namespace App.Metrics.Facts.Utils
     public class TimeUnitTests
     {
         [Fact]
-        public void can_convert_between_units()
+        public void Can_convert_between_units()
         {
             TimeUnit.Nanoseconds.ToNanoseconds(10L).Should().Be(10L);
             TimeUnit.Nanoseconds.ToMicroseconds(10L * 1000L).Should().Be(10L);
@@ -66,13 +70,13 @@ namespace App.Metrics.Facts.Utils
         }
 
         [Fact]
-        public void converts_to_zero_on_fractional_unit()
+        public void Converts_to_zero_on_fractional_unit()
         {
             TimeUnit.Seconds.ToMinutes(30L).Should().Be(0);
         }
 
         [Fact]
-        public void has_correct_scaling_factor()
+        public void Has_correct_scaling_factor()
         {
             TimeUnit.Nanoseconds.ScalingFactorFor(TimeUnit.Nanoseconds).Should().Be(1.0);
             TimeUnit.Nanoseconds.ScalingFactorFor(TimeUnit.Microseconds).Should().Be(1.0 * 0.001);
@@ -80,9 +84,8 @@ namespace App.Metrics.Facts.Utils
             TimeUnit.Nanoseconds.ScalingFactorFor(TimeUnit.Seconds).Should().Be(1.0 * 0.001 * 0.001 * 0.001);
             TimeUnit.Nanoseconds.ScalingFactorFor(TimeUnit.Minutes).Should().Be(1.0 * 0.001 * 0.001 * 0.001 * 1 / 60.0);
             TimeUnit.Nanoseconds.ScalingFactorFor(TimeUnit.Hours).Should().Be(1.0 * 0.001 * 0.001 * 0.001 * 1 / 60.0 * 1 / 60.0);
-            TimeUnit.Nanoseconds.ScalingFactorFor(TimeUnit.Days)
-                .Should()
-                .BeApproximately(1.0 * 0.001 * 0.001 * 0.001 * 1 / 60.0 * 1 / 60.0 * 1 / 24.0, 1.0E-20);
+            TimeUnit.Nanoseconds.ScalingFactorFor(TimeUnit.Days).Should().
+                     BeApproximately(1.0 * 0.001 * 0.001 * 0.001 * 1 / 60.0 * 1 / 60.0 * 1 / 24.0, 1.0E-20);
 
             TimeUnit.Microseconds.ScalingFactorFor(TimeUnit.Nanoseconds).Should().Be(1.0 * 1000);
             TimeUnit.Microseconds.ScalingFactorFor(TimeUnit.Microseconds).Should().Be(1);

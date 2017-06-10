@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultCounterMetricProviderTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Linq;
 using App.Metrics.Abstractions.Filtering;
@@ -25,7 +26,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_add_new_instance_to_registry()
+        public void Can_add_add_new_instance_to_registry()
         {
             var metricName = "counter_metric_provider_test";
             var options = new CounterOptions
@@ -43,7 +44,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_add_new_multidimensional_to_registry()
+        public void Can_add_add_new_multidimensional_to_registry()
         {
             var metricName = "counter_metric_provider_test_multi";
             var options = new CounterOptions
@@ -61,7 +62,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_instance_to_registry()
+        public void Can_add_instance_to_registry()
         {
             var metricName = "counter_provider_test";
 
@@ -78,7 +79,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_multidimensional_to_registry()
+        public void Can_add_multidimensional_to_registry()
         {
             var metricName = "counter_provider_test_multi";
 

@@ -1,7 +1,10 @@
+// <copyright file="AsciiFormatterTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
 using System.Threading.Tasks;
 using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Facts.Formatting.TestHelpers;
 using App.Metrics.Formatting;
 using App.Metrics.Formatting.Ascii;
 using App.Metrics.Health;
@@ -16,12 +19,12 @@ namespace App.Metrics.Facts.Formatting
 
         public AsciiFormatterTests()
         {
-            //DEVNOTE: Don't want Metrics to be shared between tests
+            // DEVNOTE: Don't want Metrics to be shared between tests
             _fixture = new MetricsFixture();
         }
 
         [Fact]
-        public async Task can_apply_ascii_health_formatting()
+        public async Task Can_apply_ascii_health_formatting()
         {
             // Arrange
             _fixture.HealthCheckFactory.Register("test", () => Task.FromResult(HealthCheckResult.Healthy()));
@@ -33,11 +36,12 @@ namespace App.Metrics.Facts.Formatting
             formatter.Build(healthStatus, payloadBuilder);
 
             // Assert
-            payloadBuilder.PayloadFormatted().Should().Be("# OVERALL STATUS: Healthy\n--------------------------------------------------------------\n# CHECK: test\n\n           MESSAGE = OK\n            STATUS = Healthy\n--------------------------------------------------------------\n");
+            payloadBuilder.PayloadFormatted().Should().Be(
+                "# OVERALL STATUS: Healthy\n--------------------------------------------------------------\n# CHECK: test\n\n           MESSAGE = OK\n            STATUS = Healthy\n--------------------------------------------------------------\n");
         }
 
         [Fact]
-        public void can_apply_ascii_metric_formatting()
+        public void Can_apply_ascii_metric_formatting()
         {
             // Arrange
             var counter = new CounterOptions { Context = "test", Name = "counter1" };
@@ -49,11 +53,12 @@ namespace App.Metrics.Facts.Formatting
             formatter.Build(_fixture.Metrics.Snapshot.Get(), payloadBuilder);
 
             // Assert
-            payloadBuilder.PayloadFormatted().Should().Be("# MEASUREMENT: [test] counter1\n# TAGS:\n             mtype = counter\n              unit = none\n# FIELDS:\n             value = 1\n--------------------------------------------------------------\n");
+            payloadBuilder.PayloadFormatted().Should().Be(
+                "# MEASUREMENT: [test] counter1\n# TAGS:\n             mtype = counter\n              unit = none\n# FIELDS:\n             value = 1\n--------------------------------------------------------------\n");
         }
 
         [Fact]
-        public void can_apply_ascii_metric_formatting_with_custom_name_formatter()
+        public void Can_apply_ascii_metric_formatting_with_custom_name_formatter()
         {
             // Arrange
             var counter = new CounterOptions { Context = "test", Name = "counter1" };
@@ -65,7 +70,8 @@ namespace App.Metrics.Facts.Formatting
             formatter.Build(_fixture.Metrics.Snapshot.Get(), payloadBuilder);
 
             // Assert
-            payloadBuilder.PayloadFormatted().Should().Be("# MEASUREMENT: test---counter1\n# TAGS:\n             mtype = counter\n              unit = none\n# FIELDS:\n             value = 1\n--------------------------------------------------------------\n");
+            payloadBuilder.PayloadFormatted().Should().Be(
+                "# MEASUREMENT: test---counter1\n# TAGS:\n             mtype = counter\n              unit = none\n# FIELDS:\n             value = 1\n--------------------------------------------------------------\n");
         }
     }
 }

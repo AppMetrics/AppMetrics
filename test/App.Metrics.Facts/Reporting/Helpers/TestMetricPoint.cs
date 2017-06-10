@@ -1,3 +1,7 @@
+// <copyright file="TestMetricPoint.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -66,6 +70,15 @@ namespace App.Metrics.Facts.Reporting.Helpers
 
         public DateTime? UtcTimestamp { get; }
 
+        public static string FormatValue(object value)
+        {
+            var v = value ?? string.Empty;
+
+            return Formatters.TryGetValue(v.GetType(), out Func<object, string> format)
+                ? format(v)
+                : FormatString(v.ToString());
+        }
+
         public void Format(StringBuilder sb)
         {
             sb.Append((string)Measurement);
@@ -91,15 +104,6 @@ namespace App.Metrics.Facts.Reporting.Helpers
                 sb.Append('=');
                 sb.Append((string)FormatValue(f.Value));
             }
-        }
-
-        public static string FormatValue(object value)
-        {
-            var v = value ?? string.Empty;
-
-            return Formatters.TryGetValue(v.GetType(), out Func<object, string> format)
-                ? format(v)
-                : FormatString(v.ToString());
         }
 
         private static string FormatBoolean(object b) { return (bool)b ? "t" : "f"; }

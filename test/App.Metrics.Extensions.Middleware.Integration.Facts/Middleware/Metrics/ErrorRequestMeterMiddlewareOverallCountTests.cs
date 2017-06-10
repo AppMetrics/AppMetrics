@@ -1,3 +1,7 @@
+// <copyright file="ErrorRequestMeterMiddlewareOverallCountTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
 using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
@@ -22,7 +26,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
         private IMetrics Context { get; }
 
         [Fact]
-        public async Task can_count_overall_400_401_and_500_error_requests()
+        public async Task Can_count_overall_400_401_and_500_error_requests()
         {
             await Client.GetAsync("/api/test");
             await Client.GetAsync("/api/test/unauth");

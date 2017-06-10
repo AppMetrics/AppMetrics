@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="SlidingWindowReservoirSamplingBenchmark.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Sampling
         private DefaultSlidingWindowReservoir _reservoir;
         private IScheduler _scheduler;
 
-        [Setup]
+        [GlobalSetup]
         public override void Setup()
         {
             _fixture = new MetricsCoreTestFixture();
@@ -36,7 +37,7 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Sampling
                 });
         }
 
-        [Cleanup]
+        [GlobalCleanup]
         public void Cleanup() { _scheduler.Dispose(); }
 
         [Benchmark]

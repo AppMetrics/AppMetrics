@@ -1,4 +1,8 @@
-﻿using System.Linq;
+﻿// <copyright file="MetricsTextEndpointMiddlewareTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -18,7 +22,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
         private HttpClient Client { get; }
 
         [Fact]
-        public async Task returns_correct_response_headers()
+        public async Task Returns_correct_response_headers()
         {
             var result = await Client.GetAsync("/metrics-text");
 
@@ -29,7 +33,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
         }
 
         [Fact]
-        public async Task uses_correct_mimetype()
+        public async Task Uses_correct_mimetype()
         {
             var result = await Client.GetAsync("/metrics-text");
 

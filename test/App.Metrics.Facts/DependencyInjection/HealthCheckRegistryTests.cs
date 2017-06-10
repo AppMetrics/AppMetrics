@@ -1,4 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿// <copyright file="HealthCheckRegistryTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System.Threading.Tasks;
 using App.Metrics.Health;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,14 +13,13 @@ namespace App.Metrics.Facts.DependencyInjection
     public class HealthCheckRegistryTests
     {
         [Fact]
-        public async Task can_register_inline_health_checks()
+        public async Task Can_register_inline_health_checks()
         {
             var services = new ServiceCollection();
             services.AddLogging();
             services.AddSingleton<IDatabase, Database>();
-            services.AddMetrics()
-                .AddHealthChecks(
-                    factory => { factory.Register("DatabaseConnected", () => Task.FromResult("Database Connection OK")); });
+            services.AddMetrics().AddHealthChecks(
+                factory => { factory.Register("DatabaseConnected", () => Task.FromResult("Database Connection OK")); });
             var provider = services.BuildServiceProvider();
             var metricsContext = provider.GetRequiredService<IMetrics>();
 
@@ -27,7 +30,7 @@ namespace App.Metrics.Facts.DependencyInjection
         }
 
         [Fact]
-        public async Task should_report_healthy_when_all_checks_pass()
+        public async Task Should_report_healthy_when_all_checks_pass()
         {
             var services = new ServiceCollection();
             services.AddLogging();
@@ -43,15 +46,16 @@ namespace App.Metrics.Facts.DependencyInjection
         }
 
         [Fact]
-        public async Task should_report_unhealthy_when_all_checks_pass()
+        public async Task Should_report_unhealthy_when_all_checks_pass()
         {
             var services = new ServiceCollection();
             services.AddLogging();
             services.AddSingleton<IDatabase, Database>();
-            services.AddMetrics()
-                .AddHealthChecks(factory =>
+            services.AddMetrics().AddHealthChecks(
+                factory =>
                 {
-                    factory.Register("DatabaseConnected",
+                    factory.Register(
+                        "DatabaseConnected",
                         () => Task.FromResult(HealthCheckResult.Unhealthy("Failed")));
                 });
             var provider = services.BuildServiceProvider();
@@ -63,7 +67,7 @@ namespace App.Metrics.Facts.DependencyInjection
         }
 
         [Fact]
-        public async Task should_scan_assembly_and_register_health_checks_and_ignore_obsolete_checks()
+        public async Task Should_scan_assembly_and_register_health_checks_and_ignore_obsolete_checks()
         {
             var services = new ServiceCollection();
             services.AddLogging();

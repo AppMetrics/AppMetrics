@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultMeterMetricProviderTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Linq;
 using App.Metrics.Abstractions.Filtering;
@@ -18,7 +19,6 @@ namespace App.Metrics.Facts.Providers
         private readonly MetricCoreTestFixture _fixture;
         private readonly IProvideMeterMetrics _provide;
 
-
         public DefaultMeterMetricProviderTests(MetricCoreTestFixture fixture)
         {
             _fixture = fixture;
@@ -26,7 +26,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_add_new_instance_to_registry()
+        public void Can_add_add_new_instance_to_registry()
         {
             var metricName = "meter_provider_metric_test";
             var options = new MeterOptions
@@ -44,7 +44,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_add_new_multidimensional_to_registry()
+        public void Can_add_add_new_multidimensional_to_registry()
         {
             var metricName = "meter_provider_metric_test_multi";
             var options = new MeterOptions
@@ -62,7 +62,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_instance_to_registry()
+        public void Can_add_instance_to_registry()
         {
             var metricName = "meter_provider_test";
             var options = new MeterOptions
@@ -78,7 +78,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_multidimensional_to_registry()
+        public void Can_add_multidimensional_to_registry()
         {
             var metricName = "meter_provider_test_multi";
             var options = new MeterOptions

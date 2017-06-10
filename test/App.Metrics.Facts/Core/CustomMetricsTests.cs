@@ -1,9 +1,9 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="CustomMetricsTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Linq;
-using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
 using FluentAssertions;
@@ -17,12 +17,12 @@ namespace App.Metrics.Facts.Core
 
         public CustomMetricsTests()
         {
-            //DEVNOTE: Don't want Metrics to be shared between tests
+            // DEVNOTE: Don't want Metrics to be shared between tests
             _fixture = new MetricsFixture();
         }
 
         [Fact]
-        public void can_register_timer_with_custom_histogram()
+        public void Can_register_timer_with_custom_histogram()
         {
             var histogram = new CustomHistogramMetric();
             var timerOptions = new TimerOptions
@@ -40,14 +40,14 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void can_register_timer_with_custom_reservoir()
+        public void Can_register_timer_with_custom_reservoir()
         {
             var timerOptions = new TimerOptions
                                {
                                    Name = "custom",
                                    MeasurementUnit = Unit.Calls,
                                    Reservoir = () => new CustomReservoir()
-            };
+                               };
             var timer = _fixture.Metrics.Provider.Timer.Instance(timerOptions);
 
             timer.Record(10L, TimeUnit.Nanoseconds);
@@ -57,9 +57,6 @@ namespace App.Metrics.Facts.Core
             snapshot.Contexts.First().Timers.First().Value.Histogram.Count.Should().Be(1);
         }
 
-        public void Dispose()
-        {
-            _fixture?.Dispose();
-        }        
+        public void Dispose() { _fixture?.Dispose(); }
     }
 }

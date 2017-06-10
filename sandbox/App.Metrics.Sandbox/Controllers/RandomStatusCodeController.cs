@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="RandomStatusCodeController.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System;
 using App.Metrics.Sandbox.JustForTesting;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +22,7 @@ namespace App.Metrics.Sandbox.Controllers
 
         [HttpGet]
         public IActionResult Get()
-        {            
+        {
             return StatusCode(_randomValuesForTesting.NextStatusCode());
         }
     }

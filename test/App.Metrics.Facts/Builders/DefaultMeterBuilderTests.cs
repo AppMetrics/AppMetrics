@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultMeterBuilderTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Meter.Abstractions;
@@ -20,7 +21,7 @@ namespace App.Metrics.Facts.Builders
         }
 
         [Fact]
-        public void can_mark()
+        public void Can_mark()
         {
             var meter = _builder.Build(_fixture.Clock);
 

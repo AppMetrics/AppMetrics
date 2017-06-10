@@ -1,7 +1,7 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultHistogramMetricProviderTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
-using System;
 using System.Linq;
 using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Abstractions.ReservoirSampling;
@@ -22,7 +22,6 @@ namespace App.Metrics.Facts.Providers
         private readonly MetricCoreTestFixture _fixture;
         private readonly IProvideHistogramMetrics _provider;
 
-
         public DefaultHistogramMetricProviderTests(MetricCoreTestFixture fixture)
         {
             _fixture = fixture;
@@ -30,7 +29,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_add_new_instance_to_registry()
+        public void Can_add_add_new_instance_to_registry()
         {
             var metricName = "histogram_provider_metric_test";
             var options = new HistogramOptions
@@ -48,7 +47,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_add_new_multidimensional_to_registry()
+        public void Can_add_add_new_multidimensional_to_registry()
         {
             var metricName = "histogram_provider_metric_test_multi";
             var options = new HistogramOptions
@@ -66,7 +65,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_instance_to_registry()
+        public void Can_add_instance_to_registry()
         {
             var metricName = "histogram_provider_test";
             var options = new HistogramOptions
@@ -82,7 +81,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_multidimensional_to_registry()
+        public void Can_add_multidimensional_to_registry()
         {
             var metricName = "histogram_provider_test_multi";
             var options = new HistogramOptions
@@ -97,21 +96,19 @@ namespace App.Metrics.Facts.Providers
             _fixture.Registry.GetData(_filter).Contexts.First().Histograms.Count().Should().Be(1);
         }
 
-
         [Fact]
-        public void can_use_custom_reservoir()
+        public void Can_use_custom_reservoir()
         {
             var reservoirMock = new Mock<IReservoir>();
             reservoirMock.Setup(r => r.Update(100L));
             reservoirMock.Setup(r => r.GetSnapshot()).Returns(() => new UniformSnapshot(100L, 100.0, new long[100]));
             reservoirMock.Setup(r => r.Reset());
 
-
             var options = new HistogramOptions
                           {
                               Name = "histogram_provider_custom_test",
                               Reservoir = () => reservoirMock.Object
-            };
+                          };
 
             var histogram = _provider.Instance(options);
 
@@ -121,7 +118,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_use_custom_reservoir_when_multidimensional()
+        public void Can_use_custom_reservoir_when_multidimensional()
         {
             var reservoirMock = new Mock<IReservoir>();
             reservoirMock.Setup(r => r.Update(100L));
@@ -132,7 +129,7 @@ namespace App.Metrics.Facts.Providers
                           {
                               Name = "histogram_provider_custom_test_multi",
                               Reservoir = () => reservoirMock.Object
-            };
+                          };
 
             var histogram = _provider.Instance(options, _fixture.Tags[0]);
 

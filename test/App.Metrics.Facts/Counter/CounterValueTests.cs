@@ -1,3 +1,7 @@
+// <copyright file="CounterValueTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
 using System;
 using App.Metrics.Core;
 using App.Metrics.Counter;
@@ -13,7 +17,7 @@ namespace App.Metrics.Facts.Counter
         private MetricTags Tags => new MetricTags(new[] { "host", "env" }, new[] { "server1", "staging" });
 
         [Fact]
-        public void can_determine_if_are_same()
+        public void Can_determine_if_are_same()
         {
             var first = new CounterValue(10L);
             var second = new CounterValue(10L);
@@ -22,7 +26,7 @@ namespace App.Metrics.Facts.Counter
         }
 
         [Fact]
-        public void can_determine_if_diff()
+        public void Can_determine_if_diff()
         {
             var first = new CounterValue(10L);
             var second = new CounterValue(1L);
@@ -31,23 +35,7 @@ namespace App.Metrics.Facts.Counter
         }
 
         [Fact]
-        public void can_determine_if_multidimensional()
-        {
-            var valueSource = new GaugeValueSource("test_gauge|host:server1,env:staging", ConstantValue.Provider(0.5), Unit.Calls, Tags);
-
-            valueSource.IsMultidimensional.Should().BeTrue();
-        }
-
-        [Fact]
-        public void can_get_multidimensional_metric_name()
-        {
-            var valueSource = new GaugeValueSource("test_gauge|host:server1,env:staging", ConstantValue.Provider(0.5), Unit.Calls, Tags);
-
-            valueSource.MultidimensionalName.Should().Be("test_gauge");
-        }
-
-        [Fact]
-        public void can_determine_if_diff_using_operator()
+        public void Can_determine_if_diff_using_operator()
         {
             var first = new CounterValue(10L);
             var second = new CounterValue(1L);
@@ -56,7 +44,15 @@ namespace App.Metrics.Facts.Counter
         }
 
         [Fact]
-        public void can_determine_if_same_using_operator()
+        public void Can_determine_if_multidimensional()
+        {
+            var valueSource = new GaugeValueSource("test_gauge|host:server1,env:staging", ConstantValue.Provider(0.5), Unit.Calls, Tags);
+
+            valueSource.IsMultidimensional.Should().BeTrue();
+        }
+
+        [Fact]
+        public void Can_determine_if_same_using_operator()
         {
             var first = new CounterValue(10L);
             var second = new CounterValue(10L);
@@ -65,7 +61,15 @@ namespace App.Metrics.Facts.Counter
         }
 
         [Fact]
-        public void counter_value_with_null_set_items_throws()
+        public void Can_get_multidimensional_metric_name()
+        {
+            var valueSource = new GaugeValueSource("test_gauge|host:server1,env:staging", ConstantValue.Provider(0.5), Unit.Calls, Tags);
+
+            valueSource.MultidimensionalName.Should().Be("test_gauge");
+        }
+
+        [Fact]
+        public void Counter_value_with_null_set_items_throws()
         {
             Action setupAction = () =>
             {
@@ -76,7 +80,7 @@ namespace App.Metrics.Facts.Counter
         }
 
         [Fact]
-        public void hash_codes_differ_between_instances()
+        public void Hash_codes_differ_between_instances()
         {
             var first = new CounterValue(10L).GetHashCode();
             var second = new CounterValue(1L).GetHashCode();
@@ -85,7 +89,7 @@ namespace App.Metrics.Facts.Counter
         }
 
         [Fact]
-        public void hash_codes_same_for_same_instance()
+        public void Hash_codes_same_for_same_instance()
         {
             var first = new CounterValue(1);
             var second = first;
@@ -94,7 +98,7 @@ namespace App.Metrics.Facts.Counter
         }
 
         [Fact]
-        public void reference_equality_should_be_correct()
+        public void Reference_equality_should_be_correct()
         {
             var first = new CounterValue(10L);
             var second = new CounterValue(1L);

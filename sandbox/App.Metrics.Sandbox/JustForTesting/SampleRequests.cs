@@ -1,6 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿// <copyright file="SampleRequests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,12 +12,12 @@ namespace App.Metrics.Sandbox.JustForTesting
 {
     public static class SampleRequests
     {
-        private static readonly Uri ApiBaseAddress = new Uri("http://localhost:1111/");
         private const int ApdexSamplesInterval = 2;
         private const int RandomSamplesInterval = 10;
         private const int GetEndpointSuccessInterval = 1;
         private const int SlaEndpointsInterval = 2;
         private const int PutAndPostRequestsInterval = 6;
+        private static readonly Uri ApiBaseAddress = new Uri("http://localhost:1111/");
 
         public static void Run(CancellationToken token)
         {

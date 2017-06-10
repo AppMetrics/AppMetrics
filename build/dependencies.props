@@ -1,0 +1,15 @@
+<Project>
+  <PropertyGroup>
+    <AspNetCoreVersion>2.0.0-*</AspNetCoreVersion>
+    <BenchmarkDotNetVersion>0.10.8</BenchmarkDotNetVersion>
+    <MoqVersion>4.7.1</MoqVersion>
+    <NETStandardLibraryNETFrameworkVersion>2.0.0-*</NETStandardLibraryNETFrameworkVersion>
+    <RoslynVersion>2.0.0</RoslynVersion>
+    <RuntimeFrameworkVersion Condition="'$(TargetFramework)'=='netcoreapp2.0'">2.0.0-*</RuntimeFrameworkVersion>
+    <TestSdkVersion>15.3.0-*</TestSdkVersion>
+    <XunitVersion>2.3.0-beta3-*</XunitVersion>
+    <FluentAssertionsVersion>4.19.2</FluentAssertionsVersion>
+    <FluentAssertionsJsonVersion>4.19.0</FluentAssertionsJsonVersion>
+    <StyleCopAnalyzersVersion>1.0.0</StyleCopAnalyzersVersion>
+  </PropertyGroup>
+</Project>

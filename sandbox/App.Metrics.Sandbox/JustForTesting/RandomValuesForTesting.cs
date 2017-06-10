@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="RandomValuesForTesting.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 
 namespace App.Metrics.Sandbox.JustForTesting

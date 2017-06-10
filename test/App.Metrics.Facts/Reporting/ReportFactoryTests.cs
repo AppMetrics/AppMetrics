@@ -1,3 +1,7 @@
+// <copyright file="ReportFactoryTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
 using System;
 using App.Metrics.Configuration;
 using App.Metrics.Reporting;
@@ -12,7 +16,7 @@ namespace App.Metrics.Facts.Reporting
     public class ReportFactoryTests
     {
         [Fact]
-        public void can_create_reporter_with_custom_scheduler()
+        public void Can_create_reporter_with_custom_scheduler()
         {
             var metrics = new Mock<IMetrics>();
             var options = new AppMetricsOptions();
@@ -29,7 +33,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void can_create_reporter_with_default_scheduler()
+        public void Can_create_reporter_with_default_scheduler()
         {
             var metrics = new Mock<IMetrics>();
             var options = new AppMetricsOptions();
@@ -45,7 +49,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void imetrics_is_required()
+        public void Imetrics_is_required()
         {
             Action action = () =>
             {
@@ -56,7 +60,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void logger_factory_is_required()
+        public void Logger_factory_is_required()
         {
             var metrics = new Mock<IMetrics>();
             var options = new AppMetricsOptions();
@@ -70,7 +74,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void options_are_required()
+        public void Options_are_required()
         {
             var metrics = new Mock<IMetrics>();
 

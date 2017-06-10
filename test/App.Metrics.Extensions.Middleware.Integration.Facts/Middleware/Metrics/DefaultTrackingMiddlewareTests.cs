@@ -1,4 +1,8 @@
-﻿using System.Net;
+﻿// <copyright file="DefaultTrackingMiddlewareTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
@@ -14,7 +18,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
         private HttpClient Client { get; }
 
         [Fact]
-        public async Task can_disable_registring_off_default_tracking_middleware()
+        public async Task Can_disable_registring_off_default_tracking_middleware()
         {
             var unauthorizedResponse = await Client.GetAsync("/api/test/401");
             unauthorizedResponse.StatusCode.Should().Be(HttpStatusCode.Unauthorized);

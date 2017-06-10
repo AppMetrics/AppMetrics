@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultMetricsBuilderFactoryTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Core.Internal;
 using FluentAssertions;
@@ -14,21 +15,39 @@ namespace App.Metrics.Facts.Builders
         public DefaultMetricsBuilderFactoryTests() { _factory = new DefaultMetricsBuilderFactory(); }
 
         [Fact]
-        public void creates_apdex_builder() { _factory.Apdex.Should().NotBeNull(); }
+        public void Creates_apdex_builder()
+        {
+            _factory.Apdex.Should().NotBeNull();
+        }
 
         [Fact]
-        public void creates_counter_builder() { _factory.Counter.Should().NotBeNull(); }
+        public void Creates_counter_builder()
+        {
+            _factory.Counter.Should().NotBeNull();
+        }
 
         [Fact]
-        public void creates_gauge_builder() { _factory.Gauge.Should().NotBeNull(); }
+        public void Creates_gauge_builder()
+        {
+            _factory.Gauge.Should().NotBeNull();
+        }
 
         [Fact]
-        public void creates_histogram_builder() { _factory.Histogram.Should().NotBeNull(); }
+        public void Creates_histogram_builder()
+        {
+            _factory.Histogram.Should().NotBeNull();
+        }
 
         [Fact]
-        public void creates_meter_builder() { _factory.Meter.Should().NotBeNull(); }
+        public void Creates_meter_builder()
+        {
+            _factory.Meter.Should().NotBeNull();
+        }
 
         [Fact]
-        public void creates_timer_builder() { _factory.Timer.Should().NotBeNull(); }
+        public void Creates_timer_builder()
+        {
+            _factory.Timer.Should().NotBeNull();
+        }
     }
 }

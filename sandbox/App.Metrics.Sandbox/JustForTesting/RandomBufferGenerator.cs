@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="RandomBufferGenerator.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System;
 
 namespace App.Metrics.Sandbox.JustForTesting
 {

@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MetricsTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Linq;
@@ -16,12 +17,12 @@ namespace App.Metrics.Facts.Core
 
         public MetricsTests()
         {
-            //DEVNOTE: Don't want Metrics to be shared between tests
+            // DEVNOTE: Don't want Metrics to be shared between tests
             _fixture = new MetricsFixture();
         }
 
         [Fact]
-        public void can_clear_metrics_at_runtime()
+        public void Can_clear_metrics_at_runtime()
         {
             var counterOptions = new CounterOptions
                                  {
@@ -42,7 +43,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void can_disable_metrics_at_runtime()
+        public void Can_disable_metrics_at_runtime()
         {
             var counterOptions = new CounterOptions
                                  {
@@ -62,9 +63,8 @@ namespace App.Metrics.Facts.Core
             data.Contexts.Should().BeNullOrEmpty();
         }
 
-
         [Fact]
-        public void can_record_metric_in_new_context()
+        public void Can_record_metric_in_new_context()
         {
             var counterOptions = new CounterOptions
                                  {
@@ -85,7 +85,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void can_shutdown_metric_contexts()
+        public void Can_shutdown_metric_contexts()
         {
             var context = "test";
             var counterOptions = new CounterOptions
@@ -109,7 +109,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void child_with_same_name_are_same_context()
+        public void Child_with_same_name_are_same_context()
         {
             var counterOptions = new CounterOptions
                                  {
@@ -124,7 +124,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void data_provider_reflects_new_metrics()
+        public void Data_provider_reflects_new_metrics()
         {
             var counterOptions = new CounterOptions
                                  {
@@ -145,7 +145,7 @@ namespace App.Metrics.Facts.Core
         public void Dispose() { Dispose(true); }
 
         [Fact]
-        public void does_not_throw_on_metrics_of_different_type_with_same_name()
+        public void Does_not_throw_on_metrics_of_different_type_with_same_name()
         {
             ((Action)(() =>
             {
@@ -197,7 +197,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void metrics_added_are_visible_in_the_data_provider()
+        public void Metrics_added_are_visible_in_the_data_provider()
         {
             var context = "test";
             var counterOptions = new CounterOptions
@@ -219,7 +219,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void metrics_are_present_in_metrics_data()
+        public void Metrics_are_present_in_metrics_data()
         {
             var counterOptions = new CounterOptions
                                  {

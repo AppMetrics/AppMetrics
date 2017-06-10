@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="ErrorPercentageRequestMeterMiddlewarePerEndPointTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -24,15 +25,17 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
         private IMetrics Context { get; }
 
         [Fact]
-        public async Task calculates_error_percentages_per_endpoint()
+        public async Task Calculates_error_percentages_per_endpoint()
         {
             for (var i = 0; i < 500; i++)
             {
                 var passorfail = "pass";
+
                 if (i % 3 == 0)
                 {
                     passorfail = "fail";
                 }
+
                 await Client.GetAsync($"/api/test/error-random/{passorfail}");
             }
 

@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultHistogramManagerTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
@@ -24,7 +25,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_update()
+        public void Can_update()
         {
             var metricName = "test_update_histogram";
             var options = new HistogramOptions { Name = metricName };
@@ -35,7 +36,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_update_multidimensional()
+        public void Can_update_multidimensional()
         {
             var metricName = "test_update_histogram_multi";
             var options = new HistogramOptions { Name = metricName };
@@ -48,7 +49,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_update_multidimensional_with_user_value()
+        public void Can_update_multidimensional_with_user_value()
         {
             var metricName = "test_update_histogram_user_value_multi";
             var options = new HistogramOptions { Name = metricName };
@@ -63,7 +64,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_update_with_user_value()
+        public void Can_update_with_user_value()
         {
             var metricName = "test_update_histogram_user_value";
             var options = new HistogramOptions { Name = metricName };

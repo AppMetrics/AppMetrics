@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="PerRequestTimerMiddlewareHistogramStatsTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
         private IMetrics Context { get; }
 
         [Fact]
-        public async Task can_record_times_per_request()
+        public async Task Can_record_times_per_request()
         {
             await Client.GetAsync("api/test/300ms");
             await Client.GetAsync("api/test/30ms");

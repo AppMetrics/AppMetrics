@@ -1,5 +1,6 @@
+// <copyright file="MetricsEndpointMiddlewareDisabledTests.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+// </copyright>
 
 using System.Net;
 using System.Net.Http;
@@ -20,7 +21,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
         private HttpClient Client { get; }
 
         [Fact]
-        public async Task can_disable_metrics()
+        public async Task Can_disable_metrics()
         {
             var result = await Client.GetAsync("/metrics");
 

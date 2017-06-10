@@ -1,4 +1,8 @@
-﻿using System.Threading;
+﻿// <copyright file="TestHealthCheck.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Health;
 
@@ -8,7 +12,8 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts
     public class TestHealthCheck : HealthCheck
         // ReSharper restore UnusedMember.Global
     {
-        public TestHealthCheck() : base("Test Health Check") { }
+        public TestHealthCheck()
+            : base("Test Health Check") { }
 
         protected override Task<HealthCheckResult> CheckAsync(CancellationToken token = default(CancellationToken))
         {

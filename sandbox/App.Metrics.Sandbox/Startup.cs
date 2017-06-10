@@ -1,5 +1,10 @@
-﻿using System;
+﻿// <copyright file="Startup.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using App.Metrics.Extensions.Reporting.ElasticSearch;
 using App.Metrics.Extensions.Reporting.ElasticSearch.Client;
@@ -21,9 +26,11 @@ namespace App.Metrics.Sandbox
 {
     public enum ReportType
     {
+#pragma warning disable SA1602 // Enumeration items must be documented
         InfluxDB,
         ElasticSearch,
         Graphite
+#pragma warning restore SA1602 // Enumeration items must be documented
     }
 
     public class Startup
@@ -48,14 +55,24 @@ namespace App.Metrics.Sandbox
                                                      AddEnvironmentVariables();
 
             Configuration = builder.Build();
-            Env = env;
         }
 
         public IConfigurationRoot Configuration { get; }
 
-        public IHostingEnvironment Env { get; }
+        public static void Main(string[] args)
+        {
+            var host = new WebHostBuilder().UseContentRoot(Directory.GetCurrentDirectory()).
+                                            ConfigureLogging(
+                                                factory =>
+                                                {
+                                                    factory.AddConsole();
+                                                }).UseIISIntegration().UseKestrel().
+                                            UseStartup<Startup>().Build();
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime lifetime)
+            host.Run();
+        }
+
+        public void Configure(IApplicationBuilder app, IApplicationLifetime lifetime)
         {
             if (RunSamplesWithClientId && HaveAppRunSampleRequests)
             {
@@ -66,9 +83,6 @@ namespace App.Metrics.Sandbox
                         return func();
                     });
             }
-
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            // loggerFactory.AddDebug();
 
             app.UseMetrics();
             app.UseMetricsReporting(lifetime);
@@ -90,7 +104,7 @@ namespace App.Metrics.Sandbox
 
             var reportFilter = new DefaultMetricsFilter();
 
-            services.AddMetrics(Configuration.GetSection("AppMetrics")).                     
+            services.AddMetrics(Configuration.GetSection("AppMetrics")).
                      // AddJsonMetricsSerialization().
                      // AddElasticsearchMetricsSerialization(ElasticSearchIndex).
                      AddJsonMetricsSerialization().
@@ -125,50 +139,62 @@ namespace App.Metrics.Sandbox
                                          new ElasticSearchReporterSettings
                                          {
                                              HttpPolicy = new Extensions.Reporting.ElasticSearch.HttpPolicy
-                                             {
-                                                 FailuresBeforeBackoff = 3,
-                                                 BackoffPeriod = TimeSpan.FromSeconds(30),
-                                                 Timeout = TimeSpan.FromSeconds(10)
-                                             },
+                                                          {
+                                                              FailuresBeforeBackoff = 3,
+                                                              BackoffPeriod = TimeSpan.FromSeconds(30),
+                                                              Timeout = TimeSpan.FromSeconds(10)
+                                                          },
                                              ElasticSearchSettings = new ElasticSearchSettings(ElasticSearchUri, ElasticSearchIndex),
                                              ReportInterval = TimeSpan.FromSeconds(5)
                                          },
                                          reportFilter);
                                  }
 
-                                 //if (ReportTypes.Any(r => r == ReportType.Graphite))
-                                 //{
-                                 //    factory.AddGraphite(
-                                 //        new GraphiteReporterSettings
-                                 //        {
-                                 //            HttpPolicy = new Extensions.Reporting.Graphite.HttpPolicy
-                                 //            {
-                                 //                FailuresBeforeBackoff = 3,
-                                 //                BackoffPeriod = TimeSpan.FromSeconds(30),
-                                 //                Timeout = TimeSpan.FromSeconds(3)
-                                 //            },
-                                 //            GraphiteSettings = new GraphiteSettings(GraphiteUri),
-                                 //            ReportInterval = TimeSpan.FromSeconds(5)
-                                 //        });
-                                 //}
+                                 // if (ReportTypes.Any(r => r == ReportType.Graphite))
+                                 // {
+                                 //     factory.AddGraphite(
+                                 //         new GraphiteReporterSettings
+                                 //         {
+                                 //             HttpPolicy = new Extensions.Reporting.Graphite.HttpPolicy
+                                 //             {
+                                 //                 FailuresBeforeBackoff = 3,
+                                 //                 BackoffPeriod = TimeSpan.FromSeconds(30),
+                                 //                 Timeout = TimeSpan.FromSeconds(3)
+                                 //             },
+                                 //             GraphiteSettings = new GraphiteSettings(GraphiteUri),
+                                 //             ReportInterval = TimeSpan.FromSeconds(5)
+                                 //         });
+                                 // }
                              }
                          }).
-                             AddHealthChecks(
+                     AddHealthChecks(
                          factory =>
                          {
                              factory.RegisterPingHealthCheck("google ping", "google.com", TimeSpan.FromSeconds(10));
 
                              factory.RegisterHttpGetHealthCheck("github", new Uri("https://github.com/"), TimeSpan.FromSeconds(10));
-                             
+#pragma warning disable SA1008 // Opening parenthesis must be spaced correctly
+
                              factory.RegisterMetricCheck(
                                  name: "Database Call Duration",
                                  options: SandboxMetricsRegistry.DatabaseTimer,
                                  tags: new MetricTags("client_id", "client-9"),
-                                 passing: value => (message: $"OK. 98th Percentile < 100ms ({value.Histogram.Percentile98}{SandboxMetricsRegistry.DatabaseTimer.DurationUnit.Unit()})", result: value.Histogram.Percentile98 < 100),
-                                 warning: value => (message: $"WARNING. 98th Percentile > 100ms ({value.Histogram.Percentile98}{SandboxMetricsRegistry.DatabaseTimer.DurationUnit.Unit()})", result: value.Histogram.Percentile98 < 200),
-                                 failing: value => (message: $"FAILED. 98th Percentile > 200ms ({value.Histogram.Percentile98}{SandboxMetricsRegistry.DatabaseTimer.DurationUnit.Unit()})", result: value.Histogram.Percentile98 > 200));
-
-                         }).
+                                 passing: value => (message:
+                                     $"OK. 98th Percentile < 100ms ({value.Histogram.Percentile98}{SandboxMetricsRegistry.DatabaseTimer.DurationUnit.Unit()})"
+                                     , result: value.Histogram.Percentile98 < 100),
+                                 warning: value => (message:
+                                     $"WARNING. 98th Percentile > 100ms ({value.Histogram.Percentile98}{SandboxMetricsRegistry.DatabaseTimer.DurationUnit.Unit()})"
+                                     , result: value.Histogram.Percentile98 < 200),
+                                 failing: value => (message:
+                                     $"FAILED. 98th Percentile > 200ms ({value.Histogram.Percentile98}{SandboxMetricsRegistry.DatabaseTimer.DurationUnit.Unit()})"
+                                     , result: value.Histogram.Percentile98 > 200));
+                         }
+#pragma warning restore SA1008 // Opening parenthesis must be spaced correctly
+#pragma warning disable SA1111 // Closing parenthesis must be on line of last parameter
+#pragma warning disable SA1009 // Closing parenthesis must be spaced correctly
+                     ).
+#pragma warning restore SA1009 // Closing parenthesis must be spaced correctly
+#pragma warning restore SA1111 // Closing parenthesis must be on line of last parameter
                      AddMetricsMiddleware(Configuration.GetSection("AspNetMetrics"));
         }
     }

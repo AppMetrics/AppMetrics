@@ -1,4 +1,8 @@
-﻿using System.Net;
+﻿// <copyright file="MetricsTextEndpointDisabledMiddlewareTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
@@ -17,7 +21,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
         private HttpClient Client { get; }
 
         [Fact]
-        public async Task can_disable_metrics_text_endpoint_when_metrics_enabled()
+        public async Task Can_disable_metrics_text_endpoint_when_metrics_enabled()
         {
             var result = await Client.GetAsync("/metrics-text");
 

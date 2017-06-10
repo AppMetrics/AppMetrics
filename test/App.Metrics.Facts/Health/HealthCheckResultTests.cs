@@ -1,3 +1,7 @@
+// <copyright file="HealthCheckResultTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
 using System;
 using App.Metrics.Health;
 using FluentAssertions;
@@ -8,7 +12,7 @@ namespace App.Metrics.Facts.Health
     public class HealthCheckResultTests
     {
         [Fact]
-        public void can_create_degraded()
+        public void Can_create_degraded()
         {
             var result = HealthCheckResult.Degraded("degrading api");
 
@@ -17,7 +21,7 @@ namespace App.Metrics.Facts.Health
         }
 
         [Fact]
-        public void can_create_degraded_with_exception_info()
+        public void Can_create_degraded_with_exception_info()
         {
             var exception = new InvalidOperationException();
             var exceptionString = $"EXCEPTION: {exception.GetType().Name} - {exception.Message}";
@@ -28,7 +32,7 @@ namespace App.Metrics.Facts.Health
         }
 
         [Fact]
-        public void can_create_degraded_with_formatted_values()
+        public void Can_create_degraded_with_formatted_values()
         {
             var id = Guid.NewGuid();
             var result = HealthCheckResult.Degraded("degrading api {0}", id);
@@ -38,7 +42,7 @@ namespace App.Metrics.Facts.Health
         }
 
         [Fact]
-        public void can_create_ignored()
+        public void Can_create_ignored()
         {
             var result = HealthCheckResult.Ignore();
 
@@ -47,7 +51,7 @@ namespace App.Metrics.Facts.Health
         }
 
         [Fact]
-        public void message_defaults_to_degraded()
+        public void Message_defaults_to_degraded()
         {
             var unused = Guid.NewGuid();
             var result = HealthCheckResult.Degraded();

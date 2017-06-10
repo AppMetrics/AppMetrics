@@ -1,14 +1,13 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="TimerMetricTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
-using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Core.Internal;
 using App.Metrics.Histogram;
 using App.Metrics.Infrastructure;
 using App.Metrics.Meter;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
-using App.Metrics.ReservoirSampling.Uniform;
 using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;
@@ -29,16 +28,18 @@ namespace App.Metrics.Facts.Timer
         }
 
         [Fact]
-        public void can_count()
+        public void Can_count()
         {
             _timer.Value.Rate.Count.Should().Be(0);
             using (_timer.NewContext())
             {
             }
+
             _timer.Value.Rate.Count.Should().Be(1);
             using (_timer.NewContext())
             {
             }
+
             _timer.Value.Rate.Count.Should().Be(2);
             _timer.Time(() => { });
             _timer.Value.Rate.Count.Should().Be(3);
@@ -47,7 +48,7 @@ namespace App.Metrics.Facts.Timer
         }
 
         [Fact]
-        public void can_reset()
+        public void Can_reset()
         {
             using (_timer.NewContext())
             {
@@ -64,7 +65,7 @@ namespace App.Metrics.Facts.Timer
         }
 
         [Fact]
-        public void can_track_time()
+        public void Can_track_time()
         {
             using (_timer.NewContext())
             {
@@ -85,7 +86,7 @@ namespace App.Metrics.Facts.Timer
         }
 
         [Fact]
-        public void context_records_time_only_on_first_dispose()
+        public void Context_records_time_only_on_first_dispose()
         {
             var context = _timer.NewContext();
             _clock.Advance(TimeUnit.Milliseconds, 100);
@@ -98,7 +99,7 @@ namespace App.Metrics.Facts.Timer
         }
 
         [Fact]
-        public void context_reports_elapsed_time()
+        public void Context_reports_elapsed_time()
         {
             using (var context = _timer.NewContext())
             {
@@ -108,7 +109,7 @@ namespace App.Metrics.Facts.Timer
         }
 
         [Fact]
-        public void counts_even_when_action_throws()
+        public void Counts_even_when_action_throws()
         {
             Action action = () => _timer.Time(() => throw new InvalidOperationException());
 
@@ -118,7 +119,7 @@ namespace App.Metrics.Facts.Timer
         }
 
         [Fact]
-        public void records_active_sessions()
+        public void Records_active_sessions()
         {
             _timer.Value.ActiveSessions.Should().Be(0);
             var context1 = _timer.NewContext();
@@ -132,7 +133,7 @@ namespace App.Metrics.Facts.Timer
         }
 
         [Fact]
-        public void records_user_value()
+        public void Records_user_value()
         {
             _timer.Record(1L, TimeUnit.Milliseconds, "A");
             _timer.Record(10L, TimeUnit.Milliseconds, "B");
@@ -142,7 +143,7 @@ namespace App.Metrics.Facts.Timer
         }
 
         [Fact]
-        public void returns_empty_timer_if_not_timer_metric()
+        public void Returns_empty_timer_if_not_timer_metric()
         {
             var timer = new CustomTimer();
             var value = timer.GetValueOrDefault();
@@ -150,7 +151,7 @@ namespace App.Metrics.Facts.Timer
         }
 
         [Fact]
-        public void user_value_can_be_overwritten_after_context_creation()
+        public void User_value_can_be_overwritten_after_context_creation()
         {
             using (var x = _timer.NewContext("a"))
             {
@@ -161,7 +162,7 @@ namespace App.Metrics.Facts.Timer
         }
 
         [Fact]
-        public void user_value_can_be_set_after_context_creation()
+        public void User_value_can_be_set_after_context_creation()
         {
             using (var x = _timer.NewContext())
             {

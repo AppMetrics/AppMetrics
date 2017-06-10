@@ -1,4 +1,8 @@
-﻿using System.Threading;
+﻿// <copyright file="ReportGeneratorTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Facts.Fixtures;
@@ -13,9 +17,8 @@ namespace App.Metrics.Facts.Reporting
 
         public ReportGeneratorTests(MetricsReportingFixture fixture) { _fixture = fixture; }
 
-
         [Fact]
-        public async Task reports_the_start_and_end_of_the_report()
+        public async Task Reports_the_start_and_end_of_the_report()
         {
             var metricReporter = new Mock<IMetricReporter>();
             metricReporter.Setup(x => x.StartReportRun(It.IsAny<IMetrics>()));

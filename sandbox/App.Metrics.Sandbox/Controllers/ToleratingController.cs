@@ -1,3 +1,7 @@
+// <copyright file="ToleratingController.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
 using System;
 using System.Threading.Tasks;
 using App.Metrics.Sandbox.JustForTesting;

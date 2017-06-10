@@ -1,7 +1,7 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultHistogramBuilderTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
-using System;
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Histogram.Abstractions;
@@ -19,7 +19,7 @@ namespace App.Metrics.Facts.Builders
         public DefaultHistogramBuilderTests(MetricCoreTestFixture fixture) { _builder = fixture.Builder.Histogram; }
 
         [Fact]
-        public void can_build_with_reservoir()
+        public void Can_build_with_reservoir()
         {
             var reservoirMock = new Mock<IReservoir>();
             reservoirMock.Setup(r => r.Update(It.IsAny<long>()));

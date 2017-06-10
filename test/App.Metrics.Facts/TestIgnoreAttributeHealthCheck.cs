@@ -1,3 +1,7 @@
+// <copyright file="TestIgnoreAttributeHealthCheck.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -6,11 +10,10 @@ using App.Metrics.Health;
 namespace App.Metrics.Facts
 {
     [Obsolete]
-    public class IgnoreAttributeHealthCheck : HealthCheck
+    public class TestIgnoreAttributeHealthCheck : HealthCheck
     {
-        public IgnoreAttributeHealthCheck() : base("Referencing Assembly - Sample Healthy")
-        {
-        }
+        public TestIgnoreAttributeHealthCheck()
+            : base("Referencing Assembly - Sample Healthy") { }
 
         protected override Task<HealthCheckResult> CheckAsync(CancellationToken token = default(CancellationToken))
         {

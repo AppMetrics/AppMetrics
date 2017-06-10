@@ -1,8 +1,8 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="ApdexMetricTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
-using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Apdex;
 using App.Metrics.Apdex.Abstractions;
 using App.Metrics.Core.Internal;
@@ -25,7 +25,7 @@ namespace App.Metrics.Facts.Apdex
         }
 
         [Fact]
-        public void can_reset()
+        public void Can_reset()
         {
             using (_apdex.NewContext())
             {
@@ -48,7 +48,7 @@ namespace App.Metrics.Facts.Apdex
         }
 
         [Fact]
-        public void can_reset_and_get_value()
+        public void Can_reset_and_get_value()
         {
             using (_apdex.NewContext())
             {
@@ -63,7 +63,7 @@ namespace App.Metrics.Facts.Apdex
         [Theory]
         [InlineData(1, 1.0, 600, 0.75, 10000, 0.5)]
         [InlineData(10000, 0, 1, 0.5, 600, 0.5)]
-        public void can_score(
+        public void Can_score(
             long durationFirstRequest,
             double apdexAfterFirstRequest,
             long durationSecondRequest,
@@ -96,7 +96,7 @@ namespace App.Metrics.Facts.Apdex
         }
 
         [Fact]
-        public void can_track_action()
+        public void Can_track_action()
         {
             _apdex.Track(() => _clock.Advance(TimeUnit.Milliseconds, 100));
 
@@ -108,7 +108,7 @@ namespace App.Metrics.Facts.Apdex
         }
 
         [Fact]
-        public void can_track_func()
+        public void Can_track_func()
         {
             var unused = _apdex.Track(
                 () =>
@@ -125,7 +125,7 @@ namespace App.Metrics.Facts.Apdex
         }
 
         [Fact]
-        public void context_records_only_on_first_dispose()
+        public void Context_records_only_on_first_dispose()
         {
             var context = _apdex.NewContext();
             _clock.Advance(TimeUnit.Milliseconds, 100);
@@ -137,7 +137,7 @@ namespace App.Metrics.Facts.Apdex
         }
 
         [Fact]
-        public void context_reports_elapsed_time()
+        public void Context_reports_elapsed_time()
         {
             using (var context = _apdex.NewContext())
             {
@@ -147,17 +147,17 @@ namespace App.Metrics.Facts.Apdex
         }
 
         [Fact]
-        public void counts_even_when_action_throws()
+        public void Counts_even_when_action_throws()
         {
-            //Action action = () => this._apdex.Time(() => { throw new InvalidOperationException(); });
+            Action action = () => _apdex.Track(() => throw new InvalidOperationException());
 
-            //action.ShouldThrow<InvalidOperationException>();
+            action.ShouldThrow<InvalidOperationException>();
 
-            //this._apdex.Value.Score.Should().BeGreaterThan(0);
+            _apdex.Value.Score.Should().BeGreaterThan(0);
         }
 
         [Fact]
-        public void if_duration_smaller_than_zero_dont_update()
+        public void If_duration_smaller_than_zero_dont_update()
         {
             var providerMock = new Mock<IApdexProvider>();
 
@@ -169,7 +169,7 @@ namespace App.Metrics.Facts.Apdex
         }
 
         [Fact]
-        public void throws_if_apdex_provider_is_null()
+        public void Throws_if_apdex_provider_is_null()
         {
             Action createApdex = () =>
             {
@@ -180,7 +180,7 @@ namespace App.Metrics.Facts.Apdex
         }
 
         [Fact]
-        public void throws_if_clock_is_null()
+        public void Throws_if_clock_is_null()
         {
             Action createApdex = () =>
             {

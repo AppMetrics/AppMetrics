@@ -1,5 +1,6 @@
+// <copyright file="TestMetricReporter.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+// </copyright>
 
 using System;
 using System.Collections.Generic;
@@ -46,7 +47,9 @@ namespace App.Metrics.Facts.Reporting.Helpers
             GlobalMetricTags globalTags,
             IEnumerable<HealthCheck.Result> healthyChecks,
             IEnumerable<HealthCheck.Result> degradedChecks,
-            IEnumerable<HealthCheck.Result> unhealthyChecks) { }
+            IEnumerable<HealthCheck.Result> unhealthyChecks)
+        {
+        }
 
         public void ReportMetric<T>(string context, MetricValueSourceBase<T> valueSource) { }
 

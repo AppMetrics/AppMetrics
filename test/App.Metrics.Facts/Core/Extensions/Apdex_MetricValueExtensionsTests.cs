@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// <copyright file="Apdex_MetricValueExtensionsTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System.Collections.Generic;
 using App.Metrics.Apdex;
 using App.Metrics.Core.Extensions;
 using App.Metrics.Reporting;
@@ -14,7 +18,7 @@ namespace App.Metrics.Facts.Core.Extensions
         private static readonly MetricValueDataKeys DataKeys = new MetricValueDataKeys();
 
         [Fact]
-        public void apdex_can_use_custom_data_keys_and_should_provide_corresponding_values()
+        public void Apdex_can_use_custom_data_keys_and_should_provide_corresponding_values()
         {
             // Arrange
             var value = new ApdexValue(1, 2, 3, 4, 5);
@@ -34,7 +38,7 @@ namespace App.Metrics.Facts.Core.Extensions
         }
 
         [Fact]
-        public void apdex_default_data_keys_should_provide_corresponding_values()
+        public void Apdex_default_data_keys_should_provide_corresponding_values()
         {
             // Arrange
             var value = new ApdexValue(1, 2, 3, 4, 5);

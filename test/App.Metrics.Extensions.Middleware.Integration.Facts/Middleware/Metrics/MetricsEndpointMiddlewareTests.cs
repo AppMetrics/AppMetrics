@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MetricsEndpointMiddlewareTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Net;
 using System.Net.Http;
@@ -20,7 +21,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
         private HttpClient Client { get; }
 
         [Fact]
-        public async Task returns_correct_response_headers()
+        public async Task Returns_correct_response_headers()
         {
             var result = await Client.GetAsync("/health");
 
@@ -31,7 +32,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
         }
 
         [Fact]
-        public async Task uses_correct_mimetype_for_json_version()
+        public async Task Uses_correct_mimetype_for_json_version()
         {
             var result = await Client.GetAsync("/metrics");
 

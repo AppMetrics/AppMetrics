@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultCounterBuilderTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Counter.Abstractions;
 using App.Metrics.Facts.Fixtures;
@@ -15,7 +16,7 @@ namespace App.Metrics.Facts.Builders
         public DefaultCounterBuilderTests(MetricCoreTestFixture fixture) { _builder = fixture.Builder.Counter; }
 
         [Fact]
-        public void can_build_custom_instance()
+        public void Can_build_custom_instance()
         {
             var counter = _builder.Build(() => new CustomCounter());
 
@@ -24,7 +25,7 @@ namespace App.Metrics.Facts.Builders
         }
 
         [Fact]
-        public void can_build_new_instance()
+        public void Can_build_new_instance()
         {
             var counter = _builder.Build();
 

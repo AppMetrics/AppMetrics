@@ -1,3 +1,7 @@
+// <copyright file="PingEndpointDisabledMiddlewareTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -17,7 +21,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Ping
         private HttpClient Client { get; }
 
         [Fact]
-        public async Task when_enabled_returns_pong()
+        public async Task When_enabled_returns_pong()
         {
             var result = await Client.GetAsync("/ping");
 

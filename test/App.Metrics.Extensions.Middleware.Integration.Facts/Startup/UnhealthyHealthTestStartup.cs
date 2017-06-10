@@ -1,3 +1,7 @@
+// <copyright file="UnhealthyHealthTestStartup.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
 using App.Metrics.Configuration;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using App.Metrics.Health;

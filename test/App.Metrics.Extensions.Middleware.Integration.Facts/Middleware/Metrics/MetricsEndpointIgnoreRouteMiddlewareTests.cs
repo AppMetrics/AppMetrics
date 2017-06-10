@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MetricsEndpointIgnoreRouteMiddlewareTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Net;
 using System.Net.Http;
@@ -20,7 +21,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
         private HttpClient Client { get; }
 
         [Fact]
-        public async Task can_ignore_specified_routes()
+        public async Task Can_ignore_specified_routes()
         {
             var ignoreResult = await Client.GetAsync("/api/test/ignore");
             ignoreResult.StatusCode.Should().Be(HttpStatusCode.OK);

@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultApdexMetricProviderTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_add_new_instance_to_registry()
+        public void Can_add_add_new_instance_to_registry()
         {
             var metricName = "apdex_metric_test";
             var options = new ApdexOptions
@@ -48,7 +49,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_add_new_multidimensional_to_registry()
+        public void Can_add_add_new_multidimensional_to_registry()
         {
             var metricName = "apdex_metric_test_multi";
             var options = new ApdexOptions
@@ -66,7 +67,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_instance_to_registry()
+        public void Can_add_instance_to_registry()
         {
             var metricName = "apdex_test";
             var options = new ApdexOptions
@@ -82,7 +83,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_multidimensional_to_registry()
+        public void Can_add_multidimensional_to_registry()
         {
             var metricName = "apdex_test_multi";
             var options = new ApdexOptions
@@ -98,7 +99,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_use_custom_reservoir()
+        public void Can_use_custom_reservoir()
         {
             var reservoirMock = new Mock<IReservoir>();
             reservoirMock.Setup(r => r.Update(It.IsAny<long>()));
@@ -119,7 +120,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_use_custom_reservoir_when_multidimensional()
+        public void Can_use_custom_reservoir_when_multidimensional()
         {
             var reservoirMock = new Mock<IReservoir>();
             reservoirMock.Setup(r => r.Update(It.IsAny<long>()));

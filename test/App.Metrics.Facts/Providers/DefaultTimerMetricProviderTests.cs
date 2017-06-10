@@ -1,7 +1,7 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultTimerMetricProviderTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
-using System;
 using System.Linq;
 using App.Metrics.Abstractions.Filtering;
 using App.Metrics.Abstractions.MetricTypes;
@@ -25,7 +25,6 @@ namespace App.Metrics.Facts.Providers
         private readonly MetricCoreTestFixture _fixture;
         private readonly IProvideTimerMetrics _provider;
 
-
         public DefaultTimerMetricProviderTests(MetricCoreTestFixture fixture)
         {
             _fixture = fixture;
@@ -33,7 +32,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_add_new_instance_to_registry()
+        public void Can_add_add_new_instance_to_registry()
         {
             var metricName = "timer_provider_metric_test";
             var options = new TimerOptions
@@ -51,7 +50,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_add_new_multidimensional_to_registry()
+        public void Can_add_add_new_multidimensional_to_registry()
         {
             var metricName = "timer_provider_metric_test_multi";
             var options = new TimerOptions
@@ -69,7 +68,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_instance_to_registry()
+        public void Can_add_instance_to_registry()
         {
             var metricName = "timer_provider_test";
             var options = new TimerOptions
@@ -85,7 +84,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_instance_with_histogram()
+        public void Can_add_instance_with_histogram()
         {
             var reservoirMock = new Mock<IHistogramMetric>();
             reservoirMock.Setup(r => r.Update(It.IsAny<long>(), null));
@@ -107,7 +106,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_multidimensional_to_registry()
+        public void Can_add_multidimensional_to_registry()
         {
             var metricName = "timer_provider_test_multi";
             var options = new TimerOptions
@@ -123,7 +122,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_multidimensional_with_histogram()
+        public void Can_add_multidimensional_with_histogram()
         {
             var reservoirMock = new Mock<IHistogramMetric>();
             reservoirMock.Setup(r => r.Update(It.IsAny<long>(), null));
@@ -145,7 +144,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_use_custom_reservoir()
+        public void Can_use_custom_reservoir()
         {
             var reservoirMock = new Mock<IReservoir>();
             reservoirMock.Setup(r => r.Update(It.IsAny<long>(), null));
@@ -158,7 +157,7 @@ namespace App.Metrics.Facts.Providers
                           {
                               Name = "timer_provider_custom_test",
                               Reservoir = Reservoir
-            };
+                          };
 
             var timer = _provider.Instance(options);
 
@@ -171,7 +170,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_use_custom_reservoir_when_multidimensional()
+        public void Can_use_custom_reservoir_when_multidimensional()
         {
             var reservoirMock = new Mock<IReservoir>();
             reservoirMock.Setup(r => r.Update(It.IsAny<long>(), null));
@@ -197,7 +196,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void multidimensional_should_not_share_reservoir_when_changed_from_default()
+        public void Multidimensional_should_not_share_reservoir_when_changed_from_default()
         {
             var timerDef = new TimerOptions
                            {
@@ -223,6 +222,6 @@ namespace App.Metrics.Facts.Providers
                 Assert.Equal(0, timers[1].Value.Histogram.Mean);
                 Assert.Equal(0, timers[1].Value.Histogram.Count);
             }
-        }        
+        }
     }
 }

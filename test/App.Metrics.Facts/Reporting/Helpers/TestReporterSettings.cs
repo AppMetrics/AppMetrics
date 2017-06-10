@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="TestReporterSettings.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System;
 using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Reporting;
 
@@ -17,9 +21,9 @@ namespace App.Metrics.Facts.Reporting.Helpers
         /// <inheritdoc />
         public MetricValueDataKeys DataKeys { get; }
 
+        public Func<string, string, string> MetricNameFormatter { get; set; }
+
         /// <inheritdoc />
         public TimeSpan ReportInterval { get; }
-
-        public Func<string, string, string> MetricNameFormatter { get; set; }
     }
 }

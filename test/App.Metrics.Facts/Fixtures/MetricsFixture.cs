@@ -1,5 +1,6 @@
+// <copyright file="MetricsFixture.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+// </copyright>
 
 using System;
 using App.Metrics.Abstractions.Filtering;
@@ -33,7 +34,10 @@ namespace App.Metrics.Facts.Fixtures
             var metricBuilderFactory = new DefaultMetricsBuilderFactory();
             var filter = new DefaultMetricsFilter();
             var dataManager = new DefaultMetricValuesProvider(filter, registry);
-            var healthStatusProvider = new DefaultHealthProvider(new Lazy<IMetrics>(() => Metrics), _loggerFactory.CreateLogger<DefaultHealthProvider>(), HealthCheckFactory);
+            var healthStatusProvider = new DefaultHealthProvider(
+                new Lazy<IMetrics>(() => Metrics),
+                _loggerFactory.CreateLogger<DefaultHealthProvider>(),
+                HealthCheckFactory);
             var metricsManagerFactory = new DefaultMeasureMetricsProvider(registry, metricBuilderFactory, Clock);
             var metricsManagerAdvancedFactory = new DefaultMetricsProvider(registry, metricBuilderFactory, Clock);
             var metricsManager = new DefaultMetricsManager(registry, _loggerFactory.CreateLogger<DefaultMetricsManager>());
@@ -48,21 +52,18 @@ namespace App.Metrics.Facts.Fixtures
                 healthStatusProvider);
         }
 
+        public IClock Clock { get; }
+
         public Func<IMetrics, MetricsDataValueSource> CurrentData =>
             ctx => Metrics.Snapshot.Get();
 
         public Func<IMetrics, IFilterMetrics, MetricsDataValueSource> CurrentDataWithFilter
             => (ctx, filter) => Metrics.Snapshot.Get(filter);
 
-        public IMetrics Metrics { get; }
-
         public IHealthCheckFactory HealthCheckFactory { get; }
 
-        public IClock Clock { get; }
+        public IMetrics Metrics { get; }
 
-        public void Dispose()
-        {
-            Metrics?.Manage.Reset();
-        }
+        public void Dispose() { Metrics?.Manage.Reset(); }
     }
 }

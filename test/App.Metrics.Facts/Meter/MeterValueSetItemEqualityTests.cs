@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MeterValueSetItemEqualityTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Meter;
 using FluentAssertions;
@@ -10,7 +11,7 @@ namespace App.Metrics.Facts.Meter
     public class MeterValueSetItemEqualityTests
     {
         [Fact]
-        public void equality_with_equals_false_when_not_same_by_percent()
+        public void Equality_with_equals_false_when_not_same_by_percent()
         {
             var meterValue = new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds);
 
@@ -21,7 +22,7 @@ namespace App.Metrics.Facts.Meter
         }
 
         [Fact]
-        public void equality_with_equals_false_when_not_same_by_value()
+        public void Equality_with_equals_false_when_not_same_by_value()
         {
             var meterValue = new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds);
 
@@ -32,7 +33,7 @@ namespace App.Metrics.Facts.Meter
         }
 
         [Fact]
-        public void equality_with_equals_false_when_same_object()
+        public void Equality_with_equals_false_when_same_object()
         {
             var meterValue = new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds);
 
@@ -43,10 +44,10 @@ namespace App.Metrics.Facts.Meter
         }
 
         [Fact]
-        public void equality_with_equals_operator()
+        public void Equality_with_equals_operator()
         {
             var meterValue = new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds);
-            
+
             var value = new MeterValue.SetItem("item", 0.5, meterValue);
             var other = new MeterValue.SetItem("item", 0.5, meterValue);
 
@@ -54,7 +55,7 @@ namespace App.Metrics.Facts.Meter
         }
 
         [Fact]
-        public void equality_with_equals_true_when_same()
+        public void Equality_with_equals_true_when_same()
         {
             var meterValue = new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds);
 
@@ -65,7 +66,7 @@ namespace App.Metrics.Facts.Meter
         }
 
         [Fact]
-        public void equality_with_not_equals_operator()
+        public void Equality_with_not_equals_operator()
         {
             var meterValue = new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds);
 

@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="ReporterTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Threading;
@@ -25,11 +26,10 @@ namespace App.Metrics.Facts.Reporting
         private readonly ILoggerFactory _loggerFactory = new LoggerFactory();
         private readonly AppMetricsOptions _options = new AppMetricsOptions();
 
-
         public ReporterTests(MetricsReportingFixture fixture) { _fixture = fixture; }
 
         [Fact]
-        public void can_generate_report_successfully()
+        public void Can_generate_report_successfully()
         {
             var factory = SetupReportFactory();
             factory.AddProvider(new TestReportProvider(true, TimeSpan.FromMilliseconds(10)));
@@ -44,7 +44,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void imetrics_is_required()
+        public void Imetrics_is_required()
         {
             Action action = () =>
             {
@@ -58,7 +58,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void logger_factory_is_required()
+        public void Logger_factory_is_required()
         {
             Action action = () =>
             {
@@ -71,7 +71,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void logger_factory_is_required_when_instantiating_default_report_generator()
+        public void Logger_factory_is_required_when_instantiating_default_report_generator()
         {
             Action action = () =>
             {
@@ -82,7 +82,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void report_factory_is_required()
+        public void Report_factory_is_required()
         {
             Action action = () =>
             {
@@ -95,7 +95,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void scheduler_is_required()
+        public void Scheduler_is_required()
         {
             Action action = () =>
             {
@@ -107,7 +107,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void schedules_reports_to_run_at_the_specified_interval()
+        public void Schedules_reports_to_run_at_the_specified_interval()
         {
             var interval = TimeSpan.FromSeconds(60);
             var loggerFactory = new LoggerFactory();
@@ -134,7 +134,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void when_metric_report_fails_should_not_throw()
+        public void When_metric_report_fails_should_not_throw()
         {
             var factory = SetupReportFactory();
             factory.AddProvider(new TestReportProvider(false, TimeSpan.FromMilliseconds(10), new Exception()));
@@ -151,7 +151,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void when_metric_reporter_fails_continues_to_retry()
+        public void When_metric_reporter_fails_continues_to_retry()
         {
             var factory = SetupReportFactory();
             factory.AddProvider(new TestReportProvider(false, TimeSpan.FromMilliseconds(10)));
@@ -167,7 +167,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void when_null_providers_doest_throw()
+        public void When_null_providers_doest_throw()
         {
             var factory = SetupReportFactory();
             var scheduler = new Mock<IScheduler>();
@@ -178,7 +178,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void when_provider_added_the_associated_metric_reporter_is_created()
+        public void When_provider_added_the_associated_metric_reporter_is_created()
         {
             var factory = SetupReportFactory();
             var provider = new Mock<IReporterProvider>();
@@ -202,7 +202,7 @@ namespace App.Metrics.Facts.Reporting
             {
                 metrics = _fixture.Metrics();
             }
-            
+
             return new ReportFactory(_options, metrics, new LoggerFactory());
         }
     }

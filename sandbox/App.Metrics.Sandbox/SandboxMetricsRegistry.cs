@@ -1,4 +1,8 @@
-﻿using App.Metrics.Core.Options;
+﻿// <copyright file="SandboxMetricsRegistry.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using App.Metrics.Core.Options;
 
 namespace App.Metrics.Sandbox
 {
@@ -9,7 +13,7 @@ namespace App.Metrics.Sandbox
         public static readonly TimerOptions DatabaseTimer = new TimerOptions
                                                             {
                                                                 Context = ContextName,
-                                                                Name = "Database Call"                                                                
+                                                                Name = "Database Call"
                                                             };
     }
 }

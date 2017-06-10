@@ -34,7 +34,7 @@ var skipHtmlCoverageReport		= HasArgument("SkipHtmlCoverageReport") ? Argument<b
 //////////////////////////////////////////////////////////////////////
 // DEFINE FILES & DIRECTORIES
 //////////////////////////////////////////////////////////////////////
-var packDirs                    = new [] { Directory("./src/App.Metrics"), Directory("./src/App.Metrics.Concurrency"), Directory("./src/App.Metrics.Extensions.Middleware"), Directory("./src/App.Metrics.Extensions.Mvc"), Directory("./src/App.Metrics.Formatters.Json"), Directory("./src/App.Metrics.Formatters.Ascii") };
+var packDirs                    = new [] { Directory("./src/App.Metrics"), Directory("./src/App.Metrics.Extensions.Middleware"), Directory("./src/App.Metrics.Extensions.Mvc"), Directory("./src/App.Metrics.Formatters.Json"), Directory("./src/App.Metrics.Formatters.Ascii") };
 var artifactsDir                = (DirectoryPath) Directory("./artifacts");
 var testResultsDir              = (DirectoryPath) artifactsDir.Combine("test-results");
 var coverageResultsDir          = (DirectoryPath) artifactsDir.Combine("coverage");
@@ -156,11 +156,11 @@ Task("Build")
 
 			if (parsedProject.IsLibrary() && !project.Path.ToString().Contains(".Sandbox")&& !project.Path.ToString().Contains(".Facts") && !project.Path.ToString().Contains(".Benchmarks"))
 			{				
-				settings.Framework = "netstandard1.6";				
+				settings.Framework = "netstandard2.0";				
 			}
 			else
 			{
-				settings.Framework = "netcoreapp1.1";
+				settings.Framework = "netcoreapp2.0";
 			}
 
 			Context.Information("Building as " + settings.Framework + ": " +  project.Path.ToString());
@@ -235,7 +235,7 @@ Task("RunTests")
 
 		if (!IsRunningOnWindows())
         {
-			settings.Framework = "netcoreapp1.1";
+			settings.Framework = "netcoreapp2.0";
         }	 
 
 		DotNetCoreTest(project.FullPath, settings);

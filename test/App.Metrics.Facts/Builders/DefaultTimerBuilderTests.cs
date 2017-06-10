@@ -1,7 +1,7 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultTimerBuilderTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
-using System;
 using App.Metrics.Abstractions.MetricTypes;
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Facts.Fixtures;
@@ -25,7 +25,7 @@ namespace App.Metrics.Facts.Builders
         }
 
         [Fact]
-        public void can_build_with_histogram()
+        public void Can_build_with_histogram()
         {
             var histogram = new Mock<IHistogramMetric>();
             histogram.Setup(r => r.Update(It.IsAny<long>(), null));
@@ -37,7 +37,7 @@ namespace App.Metrics.Facts.Builders
         }
 
         [Fact]
-        public void can_build_with_histogram_and_meter()
+        public void Can_build_with_histogram_and_meter()
         {
             var histogramMock = new Mock<IHistogramMetric>();
             var meterMock = new Mock<IMeterMetric>();
@@ -51,7 +51,7 @@ namespace App.Metrics.Facts.Builders
         }
 
         [Fact]
-        public void can_build_with_reservoir()
+        public void Can_build_with_reservoir()
         {
             var reservoirMock = new Mock<IReservoir>();
             reservoirMock.Setup(r => r.Update(It.IsAny<long>()));
@@ -64,7 +64,7 @@ namespace App.Metrics.Facts.Builders
         }
 
         [Fact]
-        public void can_build_with_reservoir_and_meter()
+        public void Can_build_with_reservoir_and_meter()
         {
             var reservoirMock = new Mock<IReservoir>();
             var meterMock = new Mock<IMeterMetric>();

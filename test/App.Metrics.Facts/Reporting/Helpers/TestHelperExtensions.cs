@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="TestHelperExtensions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Collections.Generic;
 using System.IO;
@@ -9,6 +10,7 @@ namespace App.Metrics.Facts.Reporting.Helpers
 {
     public enum StringReporterSamples
     {
+#pragma warning disable SA1602 // Enumeration items must be documented
         EnvironmentInfo,
         HealthChecks,
         Counters,
@@ -19,6 +21,7 @@ namespace App.Metrics.Facts.Reporting.Helpers
         Apdex,
         ApdexWithGroup,
         Timers
+#pragma warning restore SA1602 // Enumeration items must be documented
     }
 
     public static class TestHelperExtensions
@@ -48,7 +51,10 @@ namespace App.Metrics.Facts.Reporting.Helpers
                                                                                                                 "histograms"
                                                                                                             },
                                                                                                             { StringReporterSamples.Apdex, "apdex" },
-                                                                                                            { StringReporterSamples.ApdexWithGroup, "apdex_with_group" },
+                                                                                                            {
+                                                                                                                StringReporterSamples.ApdexWithGroup,
+                                                                                                                "apdex_with_group"
+                                                                                                            },
                                                                                                             { StringReporterSamples.Timers, "timers" }
                                                                                                         };
 
@@ -68,6 +74,7 @@ namespace App.Metrics.Facts.Reporting.Helpers
                 {
                     return null;
                 }
+
                 using (var textReader = new StreamReader(fileStream))
                 {
                     return textReader.ReadToEnd();

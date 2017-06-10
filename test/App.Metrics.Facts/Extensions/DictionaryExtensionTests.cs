@@ -11,7 +11,7 @@ namespace App.Metrics.Facts.Extensions
     public class DictionaryExtensionTests
     {
         [Fact]
-        public void does_add_double_if_not_nan_or_infinity()
+        public void Does_add_double_if_not_nan_or_infinity()
         {
             // Arrange
             var sut = new Dictionary<string, object>();
@@ -24,7 +24,7 @@ namespace App.Metrics.Facts.Extensions
         }
 
         [Fact]
-        public void does_add_string_if_present()
+        public void Does_add_string_if_present()
         {
             // Arrange
             var sut = new Dictionary<string, object>();
@@ -39,7 +39,7 @@ namespace App.Metrics.Facts.Extensions
         [Theory]
         [InlineData(double.PositiveInfinity)]
         [InlineData(double.NegativeInfinity)]
-        public void does_not_add_double_if_infinity(double value)
+        public void Does_not_add_double_if_infinity(double value)
         {
             // Arrange
             var sut = new Dictionary<string, object>();
@@ -52,7 +52,7 @@ namespace App.Metrics.Facts.Extensions
         }
 
         [Fact]
-        public void does_not_add_double_if_nan()
+        public void Does_not_add_double_if_nan()
         {
             // Arrange
             var sut = new Dictionary<string, object>();
@@ -67,7 +67,7 @@ namespace App.Metrics.Facts.Extensions
         [Theory]
         [InlineData("")]
         [InlineData(null)]
-        public void does_not_add_string_if_missing(string value)
+        public void Does_not_add_string_if_missing(string value)
         {
             // Arrange
             var sut = new Dictionary<string, object>();

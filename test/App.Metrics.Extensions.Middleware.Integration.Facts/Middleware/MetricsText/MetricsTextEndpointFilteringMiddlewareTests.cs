@@ -1,4 +1,8 @@
-﻿using System.Net;
+﻿// <copyright file="MetricsTextEndpointFilteringMiddlewareTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
@@ -17,7 +21,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
         private HttpClient Client { get; }
 
         [Fact]
-        public async Task can_filter_metrics()
+        public async Task Can_filter_metrics()
         {
             var response = await Client.GetAsync("/metrics-text");
 
@@ -28,7 +32,6 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
             result.Should().NotContain("test_meter");
             result.Should().NotContain("test_timer");
             result.Should().NotContain("test_histogram");
-
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
         }

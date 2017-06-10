@@ -1,3 +1,7 @@
+// <copyright file="EnvironmentInfoSerializationTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
 using System;
 using App.Metrics.Formatters.Json.Facts.Helpers;
 using App.Metrics.Formatters.Json.Facts.TestFixtures;
@@ -25,7 +29,7 @@ namespace App.Metrics.Formatters.Json.Facts
         }
 
         [Fact]
-        public void can_deserialize()
+        public void Can_deserialize()
         {
             var json = _env.SampleJson();
 
@@ -43,7 +47,7 @@ namespace App.Metrics.Formatters.Json.Facts
         }
 
         [Fact]
-        public void produces_expected_json()
+        public void Produces_expected_json()
         {
             var expected = _env.SampleJson();
 
@@ -53,7 +57,7 @@ namespace App.Metrics.Formatters.Json.Facts
         }
 
         [Fact]
-        public void produces_valid_Json()
+        public void Produces_valid_Json()
         {
             var json = _serializer.Serialize(_env);
             _output.WriteLine("Json Env Info: {0}", json);

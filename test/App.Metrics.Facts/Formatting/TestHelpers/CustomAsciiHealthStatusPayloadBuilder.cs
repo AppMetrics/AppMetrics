@@ -1,4 +1,8 @@
-﻿using System.IO;
+﻿// <copyright file="CustomAsciiHealthStatusPayloadBuilder.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System.IO;
 using App.Metrics.Health;
 using App.Metrics.Reporting.Abstractions;
 

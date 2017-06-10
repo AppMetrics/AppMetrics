@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="ApdexSnapshotEqualityTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Apdex;
 using FluentAssertions;
@@ -10,7 +11,7 @@ namespace App.Metrics.Facts.Apdex
     public class ApdexSnapshotEqualityTests
     {
         [Fact]
-        public void equality_with_equals_false_when_not_same()
+        public void Equality_with_equals_false_when_not_same()
         {
             var snapshot = new ApdexSnapshot(new[] { 1L, 2L, 3L }, 0.5);
             var other = new ApdexSnapshot(new[] { 1L, 2L }, 0.5);
@@ -19,7 +20,7 @@ namespace App.Metrics.Facts.Apdex
         }
 
         [Fact]
-        public void equality_with_equals_operator()
+        public void Equality_with_equals_operator()
         {
             var snapshot = new ApdexSnapshot(new[] { 1L, 2L, 3L }, 0.5);
             var other = new ApdexSnapshot(new[] { 1L, 2L, 3L }, 0.5);
@@ -28,7 +29,7 @@ namespace App.Metrics.Facts.Apdex
         }
 
         [Fact]
-        public void equality_with_equals_true_when_same()
+        public void Equality_with_equals_true_when_same()
         {
             var snapshot = new ApdexSnapshot(new[] { 1L, 2L, 3L }, 0.5);
             var other = new ApdexSnapshot(new[] { 1L, 2L, 3L }, 0.5);
@@ -37,7 +38,7 @@ namespace App.Metrics.Facts.Apdex
         }
 
         [Fact]
-        public void equality_with_equals_true_when_same_object()
+        public void Equality_with_equals_true_when_same_object()
         {
             var snapshot = new ApdexSnapshot(new[] { 1L, 2L, 3L }, 0.5);
             object other = snapshot;
@@ -46,7 +47,7 @@ namespace App.Metrics.Facts.Apdex
         }
 
         [Fact]
-        public void equality_with_not_equals_operator()
+        public void Equality_with_not_equals_operator()
         {
             var snapshot = new ApdexSnapshot(new[] { 1L, 2L, 3L }, 0.5);
             var other = new ApdexSnapshot(new[] { 1L, 2L }, 0.5);

@@ -1,10 +1,13 @@
-﻿using System;
+﻿// <copyright file="MetricReporterTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Apdex;
-using App.Metrics.Configuration;
 using App.Metrics.Core;
 using App.Metrics.Counter;
 using App.Metrics.Facts.Fixtures;
@@ -15,12 +18,10 @@ using App.Metrics.Histogram;
 using App.Metrics.Infrastructure;
 using App.Metrics.Meter;
 using App.Metrics.Reporting;
-using App.Metrics.Reporting.Internal;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 using App.Metrics.Tagging;
 using App.Metrics.Timer;
 using FluentAssertions;
-using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -30,25 +31,23 @@ namespace App.Metrics.Facts.Reporting
     {
         private const string MultidimensionalMetricNameSuffix = "|host:server1,env:staging";
         private readonly IReservoir _defaultReservoir = new DefaultForwardDecayingReservoir();
-        private readonly MetricTags _tags = new MetricTags(new[] { "host", "env" }, new[] { "server1", "staging" });
         private readonly MetricsReportingFixture _fixture;
+        private readonly MetricTags _tags = new MetricTags(new[] { "host", "env" }, new[] { "server1", "staging" });
 
-        public MetricReporterTests(MetricsReportingFixture fixture)
-        {
-            _fixture = fixture;
-        }
+        public MetricReporterTests(MetricsReportingFixture fixture) { _fixture = fixture; }
 
         [Fact]
-        public async Task can_pack_metrics()
+        public async Task Can_pack_metrics()
         {
             // Arrange
             var token = CancellationToken.None;
             var payloadBuilder = new TestPayloadBuilder();
             var reporter = new TestReporter(payloadBuilder);
             var filter = new DefaultMetricsFilter();
+            var metrics = _fixture.Metrics();
 
             // Act
-            await _fixture.ReportGenerator.GenerateAsync(reporter, _fixture.Metrics(), filter, token);
+            await _fixture.ReportGenerator.GenerateAsync(reporter, metrics, filter, token);
             var payload = payloadBuilder.PayloadFormatted();
 
             // Assert
@@ -65,7 +64,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public async Task can_pack_metrics_with_custom_histogram_keys()
+        public async Task Can_pack_metrics_with_custom_histogram_keys()
         {
             // Arrange
             var dataKeys = new MetricValueDataKeys(
@@ -94,7 +93,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public async Task can_pack_metrics_with_custom_meter_keys()
+        public async Task Can_pack_metrics_with_custom_meter_keys()
         {
             // Arrange
             var dataKeys = new MetricValueDataKeys(
@@ -122,7 +121,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void can_report_apdex()
+        public void Can_report_apdex()
         {
             var metricsMock = new Mock<IMetrics>();
             var clock = new TestClock();
@@ -140,12 +139,14 @@ namespace App.Metrics.Facts.Reporting
 
             payloadBuilder.PayloadFormatted().
                            Should().
-                           Be("test__test_apdex mtype=apdex unit=result samples=0i score=0 satisfied=0i tolerating=0i frustrating=0i" + Environment.NewLine);
+                           Be(
+                               "test__test_apdex mtype=apdex unit=result samples=0i score=0 satisfied=0i tolerating=0i frustrating=0i" +
+                               Environment.NewLine);
         }
 
         [Fact]
-        public void can_report_apdex__when_multidimensional()
-        {            
+        public void Can_report_apdex__when_multidimensional()
+        {
             var metricsMock = new Mock<IMetrics>();
             var clock = new TestClock();
             var gauge = new DefaultApdexMetric(_defaultReservoir, clock, false);
@@ -168,7 +169,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void can_report_apdex_with_tags()
+        public void Can_report_apdex_with_tags()
         {
             var metricsMock = new Mock<IMetrics>();
             var clock = new TestClock();
@@ -192,7 +193,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void can_report_apdex_with_tags_when_multidimensional()
+        public void Can_report_apdex_with_tags_when_multidimensional()
         {
             var metricsMock = new Mock<IMetrics>();
             var clock = new TestClock();
@@ -216,7 +217,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void can_report_counter_with_items()
+        public void Can_report_counter_with_items()
         {
             var metricsMock = new Mock<IMetrics>();
             var counter = new DefaultCounterMetric();
@@ -242,35 +243,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void can_report_counter_with_items_using_custom_key()
-        {
-            var dataKeys = new MetricValueDataKeys(
-                counter: new Dictionary<CounterValueDataKeys, string> { { CounterValueDataKeys.MetricSetItemSuffix, " setitem" } });
-            var metricsMock = new Mock<IMetrics>();
-            var counter = new DefaultCounterMetric();
-            counter.Increment(new MetricSetItem("item1", "value1"), 1);
-            counter.Increment(new MetricSetItem("item2", "value2"), 1);
-            var counterValueSource = new CounterValueSource(
-                "test counter",
-                ConstantValue.Provider(counter.Value),
-                Unit.None,
-                MetricTags.Empty);
-            var payloadBuilder = new TestPayloadBuilder(dataKeys);
-            var reporter = new TestReporter(payloadBuilder);
-
-            reporter.StartReportRun(metricsMock.Object);
-            reporter.ReportMetric("test", counterValueSource);
-
-            payloadBuilder.PayloadFormatted().
-                           Should().
-                           Be(
-                               "test__test_counter_setitem item=item1:value1 mtype=counter unit=none total=1i percent=50" + Environment.NewLine +
-                               "test__test_counter_setitem item=item2:value2 mtype=counter unit=none total=1i percent=50" + Environment.NewLine +
-                               "test__test_counter mtype=counter unit=none value=2i" + Environment.NewLine);
-        }
-
-        [Fact]
-        public void can_report_counter_with_items_and_custom_data_keys()
+        public void Can_report_counter_with_items_and_custom_data_keys()
         {
             var metricsMock = new Mock<IMetrics>();
             var counter = new DefaultCounterMetric();
@@ -288,7 +261,7 @@ namespace App.Metrics.Facts.Reporting
                              { CounterValueDataKeys.Total, "count" }
                          });
             var payloadBuilder = new TestPayloadBuilder(customDataKeys);
-            
+
             var reporter = new TestReporter(payloadBuilder);
 
             reporter.StartReportRun(metricsMock.Object);
@@ -305,7 +278,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void can_report_counter_with_items_and_tags()
+        public void Can_report_counter_with_items_and_tags()
         {
             var metricsMock = new Mock<IMetrics>();
             var counter = new DefaultCounterMetric();
@@ -333,7 +306,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void can_report_counter_with_items_tags_when_multidimensional()
+        public void Can_report_counter_with_items_tags_when_multidimensional()
         {
             var counterTags = new MetricTags(new[] { "key1", "key2" }, new[] { "value1", "value2" });
             var metricsMock = new Mock<IMetrics>();
@@ -358,11 +331,40 @@ namespace App.Metrics.Facts.Reporting
                                Environment.NewLine +
                                "test__test_counter__items host=server1 env=staging key1=value1 key2=value2 item=item2:value2 mtype=counter unit=none total=1i percent=50" +
                                Environment.NewLine +
-                               "test__test_counter host=server1 env=staging key1=value1 key2=value2 mtype=counter unit=none value=2i" + Environment.NewLine);
+                               "test__test_counter host=server1 env=staging key1=value1 key2=value2 mtype=counter unit=none value=2i" +
+                               Environment.NewLine);
         }
 
         [Fact]
-        public void can_report_counter_with_items_with_option_not_to_report_percentage()
+        public void Can_report_counter_with_items_using_custom_key()
+        {
+            var dataKeys = new MetricValueDataKeys(
+                counter: new Dictionary<CounterValueDataKeys, string> { { CounterValueDataKeys.MetricSetItemSuffix, " setitem" } });
+            var metricsMock = new Mock<IMetrics>();
+            var counter = new DefaultCounterMetric();
+            counter.Increment(new MetricSetItem("item1", "value1"), 1);
+            counter.Increment(new MetricSetItem("item2", "value2"), 1);
+            var counterValueSource = new CounterValueSource(
+                "test counter",
+                ConstantValue.Provider(counter.Value),
+                Unit.None,
+                MetricTags.Empty);
+            var payloadBuilder = new TestPayloadBuilder(dataKeys);
+            var reporter = new TestReporter(payloadBuilder);
+
+            reporter.StartReportRun(metricsMock.Object);
+            reporter.ReportMetric("test", counterValueSource);
+
+            payloadBuilder.PayloadFormatted().
+                           Should().
+                           Be(
+                               "test__test_counter_setitem item=item1:value1 mtype=counter unit=none total=1i percent=50" + Environment.NewLine +
+                               "test__test_counter_setitem item=item2:value2 mtype=counter unit=none total=1i percent=50" + Environment.NewLine +
+                               "test__test_counter mtype=counter unit=none value=2i" + Environment.NewLine);
+        }
+
+        [Fact]
+        public void Can_report_counter_with_items_with_option_not_to_report_percentage()
         {
             var metricsMock = new Mock<IMetrics>();
             var counter = new DefaultCounterMetric();
@@ -389,7 +391,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void can_report_counters()
+        public void Can_report_counters()
         {
             var metricsMock = new Mock<IMetrics>();
             var counter = new DefaultCounterMetric();
@@ -409,7 +411,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void can_report_counters__when_multidimensional()
+        public void Can_report_counters__when_multidimensional()
         {
             var metricsMock = new Mock<IMetrics>();
             var counter = new DefaultCounterMetric();
@@ -425,11 +427,12 @@ namespace App.Metrics.Facts.Reporting
             reporter.StartReportRun(metricsMock.Object);
             reporter.ReportMetric("test", counterValueSource);
 
-            payloadBuilder.PayloadFormatted().Should().Be("test__test_counter host=server1 env=staging mtype=counter unit=none value=1i" + Environment.NewLine);
+            payloadBuilder.PayloadFormatted().Should().Be(
+                "test__test_counter host=server1 env=staging mtype=counter unit=none value=1i" + Environment.NewLine);
         }
 
         [Fact]
-        public void can_report_gauges()
+        public void Can_report_gauges()
         {
             var metricsMock = new Mock<IMetrics>();
             var gauge = new FunctionGauge(() => 1);
@@ -448,7 +451,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void can_report_gauges__when_multidimensional()
+        public void Can_report_gauges__when_multidimensional()
         {
             var metricsMock = new Mock<IMetrics>();
             var gauge = new FunctionGauge(() => 1);
@@ -463,11 +466,12 @@ namespace App.Metrics.Facts.Reporting
             reporter.StartReportRun(metricsMock.Object);
             reporter.ReportMetric("test", gaugeValueSource);
 
-            payloadBuilder.PayloadFormatted().Should().Be("test__gauge-group host=server1 env=staging mtype=gauge unit=none value=1" + Environment.NewLine);
+            payloadBuilder.PayloadFormatted().Should().Be(
+                "test__gauge-group host=server1 env=staging mtype=gauge unit=none value=1" + Environment.NewLine);
         }
 
         [Fact]
-        public void can_report_histograms()
+        public void Can_report_histograms()
         {
             var metricsMock = new Mock<IMetrics>();
             var histogram = new DefaultHistogramMetric(_defaultReservoir);
@@ -491,7 +495,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void can_report_histograms_when_multidimensional()
+        public void Can_report_histograms_when_multidimensional()
         {
             var metricsMock = new Mock<IMetrics>();
             var histogram = new DefaultHistogramMetric(_defaultReservoir);
@@ -515,7 +519,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void can_report_meters()
+        public void Can_report_meters()
         {
             var metricsMock = new Mock<IMetrics>();
             var clock = new TestClock();
@@ -539,7 +543,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void can_report_meters_when_multidimensional()
+        public void Can_report_meters_when_multidimensional()
         {
             var metricsMock = new Mock<IMetrics>();
             var clock = new TestClock();
@@ -562,42 +566,10 @@ namespace App.Metrics.Facts.Reporting
                            Be(
                                "test__test_meter host=server1 env=staging mtype=meter unit=none unit_rate=ms count.meter=1i rate1m=0 rate5m=0 rate15m=0" +
                                Environment.NewLine);
-        }       
-
-        [Fact]
-        public void can_report_meters_with_items_using_custom_item_key()
-        {
-            var dataKeys = new MetricValueDataKeys(
-                meter: new Dictionary<MeterValueDataKeys, string> { { MeterValueDataKeys.MetricSetItemSuffix, " setitem" } });
-            var metricsMock = new Mock<IMetrics>();
-            var clock = new TestClock();
-            var meter = new DefaultMeterMetric(clock);
-            meter.Mark(new MetricSetItem("item1", "value1"), 1);
-            meter.Mark(new MetricSetItem("item2", "value2"), 1);
-            var meterValueSource = new MeterValueSource(
-                "test meter",
-                ConstantValue.Provider(meter.Value),
-                Unit.None,
-                TimeUnit.Minutes,
-                MetricTags.Empty);
-            var payloadBuilder = new TestPayloadBuilder(dataKeys);
-            var reporter = new TestReporter(payloadBuilder);
-
-            reporter.StartReportRun(metricsMock.Object);
-            reporter.ReportMetric("test", meterValueSource);
-
-            payloadBuilder.PayloadFormatted().
-                           Should().
-                           Be(
-                               "test__test_meter_setitem item=item1:value1 mtype=meter unit=none unit_rate=min count.meter=1i rate1m=0 rate5m=0 rate15m=0 percent=50" +
-                               Environment.NewLine +
-                               "test__test_meter_setitem item=item2:value2 mtype=meter unit=none unit_rate=min count.meter=1i rate1m=0 rate5m=0 rate15m=0 percent=50" +
-                               Environment.NewLine +
-                               "test__test_meter mtype=meter unit=none unit_rate=min count.meter=2i rate1m=0 rate5m=0 rate15m=0" + Environment.NewLine);
         }
 
         [Fact]
-        public void can_report_meters_with_items()
+        public void Can_report_meters_with_items()
         {
             var metricsMock = new Mock<IMetrics>();
             var clock = new TestClock();
@@ -623,11 +595,12 @@ namespace App.Metrics.Facts.Reporting
                                Environment.NewLine +
                                "test__test_meter__items item=item2:value2 mtype=meter unit=none unit_rate=ms count.meter=1i rate1m=0 rate5m=0 rate15m=0 percent=50" +
                                Environment.NewLine +
-                               "test__test_meter mtype=meter unit=none unit_rate=ms count.meter=2i rate1m=0 rate5m=0 rate15m=0" + Environment.NewLine);
+                               "test__test_meter mtype=meter unit=none unit_rate=ms count.meter=2i rate1m=0 rate5m=0 rate15m=0" +
+                               Environment.NewLine);
         }
 
         [Fact]
-        public void can_report_meters_with_items_tags_when_multidimensional()
+        public void Can_report_meters_with_items_tags_when_multidimensional()
         {
             var metricsMock = new Mock<IMetrics>();
             var clock = new TestClock();
@@ -658,7 +631,40 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void can_report_timers()
+        public void Can_report_meters_with_items_using_custom_item_key()
+        {
+            var dataKeys = new MetricValueDataKeys(
+                meter: new Dictionary<MeterValueDataKeys, string> { { MeterValueDataKeys.MetricSetItemSuffix, " setitem" } });
+            var metricsMock = new Mock<IMetrics>();
+            var clock = new TestClock();
+            var meter = new DefaultMeterMetric(clock);
+            meter.Mark(new MetricSetItem("item1", "value1"), 1);
+            meter.Mark(new MetricSetItem("item2", "value2"), 1);
+            var meterValueSource = new MeterValueSource(
+                "test meter",
+                ConstantValue.Provider(meter.Value),
+                Unit.None,
+                TimeUnit.Minutes,
+                MetricTags.Empty);
+            var payloadBuilder = new TestPayloadBuilder(dataKeys);
+            var reporter = new TestReporter(payloadBuilder);
+
+            reporter.StartReportRun(metricsMock.Object);
+            reporter.ReportMetric("test", meterValueSource);
+
+            payloadBuilder.PayloadFormatted().
+                           Should().
+                           Be(
+                               "test__test_meter_setitem item=item1:value1 mtype=meter unit=none unit_rate=min count.meter=1i rate1m=0 rate5m=0 rate15m=0 percent=50" +
+                               Environment.NewLine +
+                               "test__test_meter_setitem item=item2:value2 mtype=meter unit=none unit_rate=min count.meter=1i rate1m=0 rate5m=0 rate15m=0 percent=50" +
+                               Environment.NewLine +
+                               "test__test_meter mtype=meter unit=none unit_rate=min count.meter=2i rate1m=0 rate5m=0 rate15m=0" +
+                               Environment.NewLine);
+        }
+
+        [Fact]
+        public void Can_report_timers()
         {
             var metricsMock = new Mock<IMetrics>();
             var clock = new TestClock();
@@ -685,7 +691,7 @@ namespace App.Metrics.Facts.Reporting
         }
 
         [Fact]
-        public void can_report_timers__when_multidimensional()
+        public void Can_report_timers__when_multidimensional()
         {
             var metricsMock = new Mock<IMetrics>();
             var clock = new TestClock();

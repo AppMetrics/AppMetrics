@@ -1,17 +1,17 @@
+// <copyright file="TestReporter.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Apdex;
 using App.Metrics.Core.Abstractions;
 using App.Metrics.Counter;
-using App.Metrics.Health;
 using App.Metrics.Histogram;
-using App.Metrics.Infrastructure;
 using App.Metrics.Meter;
 using App.Metrics.Reporting;
 using App.Metrics.Reporting.Abstractions;
-using App.Metrics.Tagging;
 using App.Metrics.Timer;
 
 namespace App.Metrics.Facts.Reporting.Helpers
@@ -21,14 +21,19 @@ namespace App.Metrics.Facts.Reporting.Helpers
         private readonly IMetricPayloadBuilder<TestMetricPayload> _payloadBuilder;
         private bool _disposed;
 
-        public TestReporter(IMetricPayloadBuilder<TestMetricPayload> payloadBuilder)
-        {
-            _payloadBuilder = payloadBuilder;
-           
-        }
+        public TestReporter(IMetricPayloadBuilder<TestMetricPayload> payloadBuilder) { _payloadBuilder = payloadBuilder; }
 
         /// <inheritdoc />
-        public void Dispose() { Dispose(true); }
+        public string Name { get; }
+
+        /// <inheritdoc />
+        public TimeSpan ReportInterval { get; }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            Dispose(true);
+        }
 
         public void Dispose(bool disposing)
         {
@@ -45,22 +50,10 @@ namespace App.Metrics.Facts.Reporting.Helpers
         }
 
         /// <inheritdoc />
-        public string Name { get; }
-
-        /// <inheritdoc />
-        public TimeSpan ReportInterval { get; }
-
-        /// <inheritdoc />
         public Task<bool> EndAndFlushReportRunAsync(IMetrics metrics)
         {
             return AppMetricsTaskCache.SuccessTask;
         }
-
-        /// <inheritdoc />
-        public void ReportEnvironment(EnvironmentInfo environmentInfo) { }
-
-        /// <inheritdoc />
-        public void ReportHealth(GlobalMetricTags globalTags, IEnumerable<HealthCheck.Result> healthyChecks, IEnumerable<HealthCheck.Result> degradedChecks, IEnumerable<HealthCheck.Result> unhealthyChecks) {  }
 
         /// <inheritdoc />
         public void ReportMetric<T>(string context, MetricValueSourceBase<T> valueSource)
@@ -103,12 +96,12 @@ namespace App.Metrics.Facts.Reporting.Helpers
         }
 
         /// <inheritdoc />
-        public void StartReportRun(IMetrics metrics) { _payloadBuilder.Init(); }
-
-        private void ReportApdex(string context, MetricValueSourceBase<ApdexValue> valueSource)
+        public void StartReportRun(IMetrics metrics)
         {
-            _payloadBuilder.PackApdex(context, valueSource);
+            _payloadBuilder.Init();
         }
+
+        private void ReportApdex(string context, MetricValueSourceBase<ApdexValue> valueSource) { _payloadBuilder.PackApdex(context, valueSource); }
 
         private void ReportCounter(string context, MetricValueSourceBase<CounterValue> valueSource)
         {
@@ -116,24 +109,15 @@ namespace App.Metrics.Facts.Reporting.Helpers
             _payloadBuilder.PackCounter(context, valueSource, counterValueSource);
         }
 
-        private void ReportGauge(string context, MetricValueSourceBase<double> valueSource)
-        {
-            _payloadBuilder.PackGauge(context, valueSource);
-        }
+        private void ReportGauge(string context, MetricValueSourceBase<double> valueSource) { _payloadBuilder.PackGauge(context, valueSource); }
 
         private void ReportHistogram(string context, MetricValueSourceBase<HistogramValue> valueSource)
         {
             _payloadBuilder.PackHistogram(context, valueSource);
         }
 
-        private void ReportMeter(string context, MetricValueSourceBase<MeterValue> valueSource)
-        {
-            _payloadBuilder.PackMeter(context, valueSource);
-        }
+        private void ReportMeter(string context, MetricValueSourceBase<MeterValue> valueSource) { _payloadBuilder.PackMeter(context, valueSource); }
 
-        private void ReportTimer(string context, MetricValueSourceBase<TimerValue> valueSource)
-        {
-            _payloadBuilder.PackTimer(context, valueSource);
-        }
+        private void ReportTimer(string context, MetricValueSourceBase<TimerValue> valueSource) { _payloadBuilder.PackTimer(context, valueSource); }
     }
 }

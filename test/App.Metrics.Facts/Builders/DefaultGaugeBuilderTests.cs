@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultGaugeBuilderTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Gauge.Abstractions;
@@ -15,7 +16,7 @@ namespace App.Metrics.Facts.Builders
         public DefaultGaugeBuilderTests(MetricCoreTestFixture fixture) { _builder = fixture.Builder.Gauge; }
 
         [Fact]
-        public void can_build_custom_instance()
+        public void Can_build_custom_instance()
         {
             var counter = _builder.Build(() => new CustomGauge());
 
@@ -24,7 +25,7 @@ namespace App.Metrics.Facts.Builders
         }
 
         [Fact]
-        public void can_build_new_instance()
+        public void Can_build_new_instance()
         {
             var gauge = _builder.Build(() => 1.0);
 

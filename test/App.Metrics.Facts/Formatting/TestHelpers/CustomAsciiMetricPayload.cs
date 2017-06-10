@@ -1,3 +1,7 @@
+// <copyright file="CustomAsciiMetricPayload.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

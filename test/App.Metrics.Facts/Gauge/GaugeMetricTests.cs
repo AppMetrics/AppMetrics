@@ -1,9 +1,9 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="GaugeMetricTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Linq;
-using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Core.Internal;
 using App.Metrics.Gauge;
 using App.Metrics.Infrastructure;
@@ -21,7 +21,7 @@ namespace App.Metrics.Facts.Gauge
         [InlineData(2.0, 4.0, 50.0)]
         [InlineData(0.0, 4.0, 0.0)]
         [InlineData(4.0, 2.0, 100.0)]
-        public void can_calculate_percentage(double numerator, double denominator, double expectedPercentage)
+        public void Can_calculate_percentage(double numerator, double denominator, double expectedPercentage)
         {
             var hitPercentage = new PercentageGauge(() => numerator, () => denominator);
 
@@ -29,17 +29,17 @@ namespace App.Metrics.Facts.Gauge
         }
 
         [Fact]
-        public void can_calculate_the_hit_ratio_as_a_guage()
+        public void Can_calculate_the_hit_ratio_as_a_guage()
         {
             var clock = new TestClock();
             var scheduler = new TestTaskScheduler(clock);
 
             var cacheHitMeter = new DefaultMeterMetric(clock, scheduler);
-            var dbQueryTimer = new DefaultTimerMetric(new DefaultAlgorithmRReservoir(1028), clock);
+            var queryTimer = new DefaultTimerMetric(new DefaultAlgorithmRReservoir(1028), clock);
 
             foreach (var index in Enumerable.Range(0, 1000))
             {
-                using (dbQueryTimer.NewContext())
+                using (queryTimer.NewContext())
                 {
                     clock.Advance(TimeUnit.Milliseconds, 100);
                 }
@@ -50,23 +50,23 @@ namespace App.Metrics.Facts.Gauge
                 }
             }
 
-            var cacheHitRatioGauge = new HitRatioGauge(cacheHitMeter, dbQueryTimer, value => value.OneMinuteRate);
+            var cacheHitRatioGauge = new HitRatioGauge(cacheHitMeter, queryTimer, value => value.OneMinuteRate);
 
             cacheHitRatioGauge.Value.Should().BeGreaterThan(0.0);
         }
 
         [Fact]
-        public void can_calculate_the_hit_ratio_as_a_guage_with_one_min_rate_as_default()
+        public void Can_calculate_the_hit_ratio_as_a_guage_with_one_min_rate_as_default()
         {
             var clock = new TestClock();
             var scheduler = new TestTaskScheduler(clock);
 
             var cacheHitMeter = new DefaultMeterMetric(clock, scheduler);
-            var dbQueryTimer = new DefaultTimerMetric(new DefaultAlgorithmRReservoir(1028), clock);
+            var queryTimer = new DefaultTimerMetric(new DefaultAlgorithmRReservoir(1028), clock);
 
             foreach (var index in Enumerable.Range(0, 1000))
             {
-                using (dbQueryTimer.NewContext())
+                using (queryTimer.NewContext())
                 {
                     clock.Advance(TimeUnit.Milliseconds, 100);
                 }
@@ -77,13 +77,13 @@ namespace App.Metrics.Facts.Gauge
                 }
             }
 
-            var cacheHitRatioGauge = new HitRatioGauge(cacheHitMeter, dbQueryTimer);
+            var cacheHitRatioGauge = new HitRatioGauge(cacheHitMeter, queryTimer);
 
             cacheHitRatioGauge.Value.Should().BeGreaterThan(0.0);
         }
 
         [Fact]
-        public void can_get_and_reset_value_gauge()
+        public void Can_get_and_reset_value_gauge()
         {
             var valueGauge = new ValueGauge();
             valueGauge.SetValue(1.0);
@@ -95,7 +95,7 @@ namespace App.Metrics.Facts.Gauge
         }
 
         [Fact]
-        public void can_reset_value_gauge()
+        public void Can_reset_value_gauge()
         {
             var valueGauge = new ValueGauge();
             valueGauge.SetValue(1.0);
@@ -108,7 +108,7 @@ namespace App.Metrics.Facts.Gauge
         }
 
         [Fact]
-        public void should_report_nan_on_exception()
+        public void Should_report_nan_on_exception()
         {
             new FunctionGauge(() => throw new InvalidOperationException("test")).Value.Should().Be(double.NaN);
 
@@ -116,7 +116,7 @@ namespace App.Metrics.Facts.Gauge
         }
 
         [Fact]
-        public void when_denomitator_is_zero_returns_NaN()
+        public void When_denomitator_is_zero_returns_NaN()
         {
             var hitPercentage = new PercentageGauge(() => 1, () => 0);
 

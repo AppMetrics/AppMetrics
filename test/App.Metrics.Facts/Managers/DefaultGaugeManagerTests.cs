@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultGaugeManagerTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Linq;
 using App.Metrics.Core.Options;
@@ -23,7 +24,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_set_value()
+        public void Can_set_value()
         {
             var metricName = "test_set_gauge";
             var options = new GaugeOptions { Name = metricName };
@@ -36,11 +37,11 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_set_value_gauge()
+        public void Can_set_value_gauge()
         {
             var metricName = "test_set_value_gauge";
             var options = new GaugeOptions { Name = metricName };
-            
+
             _manager.SetValue(options, 2.0);
             _manager.SetValue(options, 3.0);
             _manager.SetValue(options, 4.0);
@@ -51,13 +52,13 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_set_value_when_multidimensional()
+        public void Can_set_value_gauge_when_multidimensional()
         {
-            var metricName = "test_set_gauge_multi";
+            var metricName = "test_set_value_gauge_multi";
             var options = new GaugeOptions { Name = metricName };
 
-            _manager.SetValue(options, _fixture.Tags[0], () => 2.0);
-            _manager.SetValue(options, _fixture.Tags[1], () => 4.0);
+            _manager.SetValue(options, _fixture.Tags[0], 2.0);
+            _manager.SetValue(options, _fixture.Tags[1], 4.0);
 
             var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
 
@@ -66,13 +67,13 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_set_value_gauge_when_multidimensional()
+        public void Can_set_value_when_multidimensional()
         {
-            var metricName = "test_set_value_gauge_multi";
+            var metricName = "test_set_gauge_multi";
             var options = new GaugeOptions { Name = metricName };
 
-            _manager.SetValue(options, _fixture.Tags[0], 2.0);
-            _manager.SetValue(options, _fixture.Tags[1], 4.0);
+            _manager.SetValue(options, _fixture.Tags[0], () => 2.0);
+            _manager.SetValue(options, _fixture.Tags[1], () => 4.0);
 
             var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
 

@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="HealthCheckRegistryTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Threading.Tasks;
@@ -21,7 +22,10 @@ namespace App.Metrics.Facts.Health
     public class HealthCheckRegistryTests
     {
         private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
-        private readonly HealthCheckFactory _healthCheckFactory = new HealthCheckFactory(LoggerFactory.CreateLogger<HealthCheckFactory>(), new Lazy<IMetrics>());
+
+        private readonly HealthCheckFactory _healthCheckFactory =
+            new HealthCheckFactory(LoggerFactory.CreateLogger<HealthCheckFactory>(), new Lazy<IMetrics>());
+
         private readonly Func<IHealthCheckFactory, IMetrics> _metircsSetup;
         private IMetrics _metrics;
 
@@ -42,7 +46,10 @@ namespace App.Metrics.Facts.Health
                     NewContextRegistry);
                 var metricBuilderFactory = new DefaultMetricsBuilderFactory();
                 var filter = new DefaultMetricsFilter();
-                var healthManager = new DefaultHealthProvider(new Lazy<IMetrics>(() => _metrics), LoggerFactory.CreateLogger<DefaultHealthProvider>(), healthCheckFactory);
+                var healthManager = new DefaultHealthProvider(
+                    new Lazy<IMetrics>(() => _metrics),
+                    LoggerFactory.CreateLogger<DefaultHealthProvider>(),
+                    healthCheckFactory);
                 var dataManager = new DefaultMetricValuesProvider(
                     filter,
                     registry);
@@ -66,7 +73,7 @@ namespace App.Metrics.Facts.Health
         }
 
         [Fact]
-        public void registry_does_not_throw_on_duplicate_registration()
+        public void Registry_does_not_throw_on_duplicate_registration()
         {
             _healthCheckFactory.Register("test", () => Task.FromResult(HealthCheckResult.Healthy()));
 
@@ -75,7 +82,7 @@ namespace App.Metrics.Facts.Health
         }
 
         [Fact]
-        public async Task registry_status_is_degraded_if_one_check_is_degraded()
+        public async Task Registry_status_is_degraded_if_one_check_is_degraded()
         {
             _healthCheckFactory.Register("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
             _healthCheckFactory.Register("degraded", () => Task.FromResult(HealthCheckResult.Degraded()));
@@ -88,9 +95,8 @@ namespace App.Metrics.Facts.Health
             status.Results.Length.Should().Be(2);
         }
 
-
         [Fact]
-        public async Task registry_status_is_failed_if_one_check_fails()
+        public async Task Registry_status_is_failed_if_one_check_fails()
         {
             _healthCheckFactory.Register("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
             _healthCheckFactory.Register("bad", () => Task.FromResult(HealthCheckResult.Unhealthy()));
@@ -104,7 +110,7 @@ namespace App.Metrics.Facts.Health
         }
 
         [Fact]
-        public async Task registry_status_is_healthy_if_all_checks_are_healthy()
+        public async Task Registry_status_is_healthy_if_all_checks_are_healthy()
         {
             _healthCheckFactory.Register("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
             _healthCheckFactory.Register("another", () => Task.FromResult(HealthCheckResult.Healthy()));
@@ -118,7 +124,7 @@ namespace App.Metrics.Facts.Health
         }
 
         [Fact]
-        public async Task registry_status_is_unhealthy_if_any_one_check_fails_even_when_degraded()
+        public async Task Registry_status_is_unhealthy_if_any_one_check_fails_even_when_degraded()
         {
             _healthCheckFactory.Register("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
             _healthCheckFactory.Register("bad", () => Task.FromResult(HealthCheckResult.Unhealthy()));

@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultTaskSchedulerTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Threading;
@@ -13,7 +14,7 @@ namespace App.Metrics.Facts.Utils
     public class DefaultTaskSchedulerTests
     {
         [Fact]
-        public void can_execute_scheduled_action()
+        public void Can_execute_scheduled_action()
         {
             using (var scheduler = new DefaultTaskScheduler())
             {
@@ -37,7 +38,7 @@ namespace App.Metrics.Facts.Utils
         }
 
         [Fact]
-        public void can_provide_own_token_with_is_then_linked()
+        public void Can_provide_own_token_with_is_then_linked()
         {
             Task scheduledTask = null;
             var token = new CancellationTokenSource();
@@ -67,38 +68,34 @@ namespace App.Metrics.Facts.Utils
             scheduledTask.Status.Should().Be(TaskStatus.RanToCompletion);
         }
 
-        //TODO: What did this test start to cause the test runner to hang after upgraded to VS2017
-        //[Fact]
-        //public void executes_scheduled_action_muliple_times()
-        //{
-        //    using (var scheduler = new DefaultTaskScheduler())
-        //    {
-        //        var data = 0;
-        //        var completionSource = new TaskCompletionSource<bool>();
-
-        //        var source = completionSource;
-        //        scheduler.Interval(
-        //            TimeSpan.FromMilliseconds(20),
-        //            TaskCreationOptions.LongRunning,
-        //            () =>
-        //            {
-        //                data++;
-        //                source.SetResult(true);
-        //            });
-
-        //        completionSource.Task.Wait();
-        //        data.Should().Be(1);
-
-        //        completionSource = new TaskCompletionSource<bool>();
-        //        completionSource.Task.Wait();
-        //        data.Should().BeGreaterOrEqualTo(2);
-
-        //        scheduler.Stop();
-        //    }
-        //}
+        // TODO: What did this test start to cause the test runner to hang after upgraded to VS2017
+        // [Fact]
+        // public void executes_scheduled_action_muliple_times()
+        // {
+        //     using (var scheduler = new DefaultTaskScheduler())
+        //     {
+        //         var data = 0;
+        //         var completionSource = new TaskCompletionSource<bool>();
+        //         var source = completionSource;
+        //         scheduler.Interval(
+        //             TimeSpan.FromMilliseconds(20),
+        //             TaskCreationOptions.LongRunning,
+        //             () =>
+        //             {
+        //                 data++;
+        //                 source.SetResult(true);
+        //             });
+        //         completionSource.Task.Wait();
+        //         data.Should().Be(1);
+        //         completionSource = new TaskCompletionSource<bool>();
+        //         completionSource.Task.Wait();
+        //         data.Should().BeGreaterOrEqualTo(2);
+        //         scheduler.Stop();
+        //     }
+        // }
 
         [Fact]
-        public void executes_scheduled_action_with_token()
+        public void Executes_scheduled_action_with_token()
         {
             using (var scheduler = new DefaultTaskScheduler())
             {
@@ -123,7 +120,7 @@ namespace App.Metrics.Facts.Utils
         }
 
         [Fact]
-        public void gracefully_cancel_task_if_the_action_throws()
+        public void Gracefully_cancel_task_if_the_action_throws()
         {
             Task scheduledTask = null;
 
@@ -145,7 +142,7 @@ namespace App.Metrics.Facts.Utils
         }
 
         [Fact]
-        public void if_task_has_already_started_just_return_the_started_task()
+        public void If_task_has_already_started_just_return_the_started_task()
         {
             using (var scheduler = new DefaultTaskScheduler(false))
             {
@@ -178,7 +175,7 @@ namespace App.Metrics.Facts.Utils
         }
 
         [Fact]
-        public void throws_if_poll_interval_is_zero()
+        public void Throws_if_poll_interval_is_zero()
         {
             Action action = () =>
             {

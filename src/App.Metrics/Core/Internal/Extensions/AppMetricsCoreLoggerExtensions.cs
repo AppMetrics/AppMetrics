@@ -130,7 +130,7 @@ namespace Microsoft.Extensions.Logging
         private static readonly double TimestampToTicks = TimeSpan.TicksPerSecond / (double)Stopwatch.Frequency;
 
         // ReSharper restore InconsistentNaming
-#pragma warning disable SA1201
+#pragma warning restore SA1201
     }
 
     // ReSharper restore RedundantStringInterpolation

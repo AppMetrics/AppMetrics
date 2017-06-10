@@ -1,3 +1,7 @@
+// <copyright file="PingEndpointMiddlewareTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -17,7 +21,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Ping
         private HttpClient Client { get; }
 
         [Fact]
-        public async Task resposne_is_plain_text_content_type()
+        public async Task Resposne_is_plain_text_content_type()
         {
             var result = await Client.GetAsync("/ping");
 
@@ -26,7 +30,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Ping
         }
 
         [Fact]
-        public async Task returns_correct_response_headers()
+        public async Task Returns_correct_response_headers()
         {
             var result = await Client.GetAsync("/ping");
 
@@ -37,7 +41,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Ping
         }
 
         [Fact]
-        public async Task when_enabled_returns_pong()
+        public async Task When_enabled_returns_pong()
         {
             var result = await Client.GetAsync("/ping");
             var response = await result.Content.ReadAsStringAsync();

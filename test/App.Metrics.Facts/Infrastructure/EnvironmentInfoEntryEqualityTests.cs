@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="EnvironmentInfoEntryEqualityTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Infrastructure;
 using FluentAssertions;
@@ -13,7 +14,7 @@ namespace App.Metrics.Facts.Infrastructure
         [InlineData("name", "value", true)]
         [InlineData("name1", "value", false)]
         [InlineData("name", "value1", false)]
-        public void equality_with_equals(string name, string value, bool expected)
+        public void Equality_with_equals(string name, string value, bool expected)
         {
             var env = new EnvironmentInfoEntry("name", "value");
             var other = new EnvironmentInfoEntry(name, value);
@@ -22,7 +23,7 @@ namespace App.Metrics.Facts.Infrastructure
         }
 
         [Fact]
-        public void equality_with_equals_false_when_same_object()
+        public void Equality_with_equals_false_when_same_object()
         {
             var env = new EnvironmentInfoEntry("name", "value");
 
@@ -35,7 +36,7 @@ namespace App.Metrics.Facts.Infrastructure
         [InlineData("name", "value", true)]
         [InlineData("name1", "value", false)]
         [InlineData("name", "value1", false)]
-        public void equality_with_equals_operator(string name, string value, bool expected)
+        public void Equality_with_equals_operator(string name, string value, bool expected)
         {
             var env = new EnvironmentInfoEntry("name", "value");
             var other = new EnvironmentInfoEntry(name, value);
@@ -47,7 +48,7 @@ namespace App.Metrics.Facts.Infrastructure
         [InlineData("name", "value", true)]
         [InlineData("name1", "value", false)]
         [InlineData("name", "value1", false)]
-        public void equality_with_not_equals_operator(string name, string value, bool expected)
+        public void Equality_with_not_equals_operator(string name, string value, bool expected)
         {
             var env = new EnvironmentInfoEntry("name", "value");
             var other = new EnvironmentInfoEntry(name, value);

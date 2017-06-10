@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="HealthStatusSerializationTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace App.Metrics.Formatters.Json.Facts
         }
 
         [Fact]
-        public void can_deserialize()
+        public void Can_deserialize()
         {
             var expected = HealthStatusSamples.Valid.SampleJson();
 
@@ -52,7 +53,7 @@ namespace App.Metrics.Formatters.Json.Facts
         }
 
         [Fact]
-        public void produces_expected_json()
+        public void Produces_expected_json()
         {
             var expected = HealthStatusSamples.Valid.SampleJson();
 
@@ -62,7 +63,7 @@ namespace App.Metrics.Formatters.Json.Facts
         }
 
         [Fact]
-        public void produces_expected_json_when_null_healthy_checks()
+        public void Produces_expected_json_when_null_healthy_checks()
         {
             var expected = HealthStatusSamples.NullUnhealthy.SampleJson();
             var unhealthyOne = new HealthCheck.Result("test_three_unhealthy", HealthCheckResult.Unhealthy("something failed"));
@@ -78,7 +79,7 @@ namespace App.Metrics.Formatters.Json.Facts
         }
 
         [Fact]
-        public void produces_expected_json_when_null_unhealthy_checks()
+        public void Produces_expected_json_when_null_unhealthy_checks()
         {
             var expected = HealthStatusSamples.NullHealthy.SampleJson();
             var healthyOne = new HealthCheck.Result("test_one_healthy", HealthCheckResult.Healthy("first check was good"));
@@ -94,7 +95,7 @@ namespace App.Metrics.Formatters.Json.Facts
         }
 
         [Fact]
-        public void produces_valid_Json()
+        public void Produces_valid_Json()
         {
             var json = _serializer.Serialize(_healthStatus);
             _output.WriteLine("HealthStatus: {0}", json);

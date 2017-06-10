@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="MetricsDataSerializationTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System;
 using System.Linq;
 using App.Metrics.Core;
 using App.Metrics.Formatters.Json.Facts.Helpers;
@@ -26,7 +30,7 @@ namespace App.Metrics.Formatters.Json.Facts
         }
 
         [Fact]
-        public void can_deserialize()
+        public void Can_deserialize()
         {
             var json = MetricDataSamples.SingleContext.SampleJson();
 
@@ -37,7 +41,7 @@ namespace App.Metrics.Formatters.Json.Facts
         }
 
         [Fact]
-        public void produces_expected_json()
+        public void Produces_expected_json()
         {
             var expected = MetricDataSamples.SingleContext.SampleJson();
 
@@ -47,7 +51,7 @@ namespace App.Metrics.Formatters.Json.Facts
         }
 
         [Fact]
-        public void produces_valid_Json()
+        public void Produces_valid_Json()
         {
             var json = _serializer.Serialize(_metrics);
             _output.WriteLine("Json Metrics Data: {0}", json);

@@ -1,4 +1,8 @@
-﻿using System.Net;
+﻿// <copyright file="HealthCheckCustomEndpointMiddlewareTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
@@ -17,7 +21,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Health
         private HttpClient Client { get; }
 
         [Fact]
-        public async Task can_change_health_endpoint()
+        public async Task Can_change_health_endpoint()
         {
             var result = await Client.GetAsync("/health");
             result.StatusCode.Should().Be(HttpStatusCode.NotFound);

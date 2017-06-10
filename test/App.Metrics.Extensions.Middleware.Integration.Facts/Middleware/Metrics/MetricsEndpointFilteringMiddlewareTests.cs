@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MetricsEndpointFilteringMiddlewareTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Linq;
 using System.Net;
@@ -26,7 +27,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
         private MetricDataSerializer JsonMetricsSerializer { get; }
 
         [Fact]
-        public async Task can_filter_metrics()
+        public async Task Can_filter_metrics()
         {
             var response = await Client.GetAsync("/metrics");
 

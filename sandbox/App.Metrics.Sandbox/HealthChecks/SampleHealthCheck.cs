@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="SampleHealthCheck.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Health;
@@ -7,8 +11,10 @@ namespace App.Metrics.Sandbox.HealthChecks
 {
     public class SampleHealthCheck : HealthCheck
     {
-        /// <inheritdoc />
-        public SampleHealthCheck() : base("Random Health Check")
+        public SampleHealthCheck()
+#pragma warning disable SA1003, SA1028 // Symbols must be spaced correctly
+            : base("Random Health Check")
+#pragma warning restore SA1003, SA1028 // Symbols must be spaced correctly
         {
         }
 

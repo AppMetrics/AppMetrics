@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="MetricsHostTestFixture{TStartup}.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System;
 using System.Net.Http;
 using App.Metrics.Formatters.Json.Serialization;
 using Microsoft.AspNetCore.Hosting;
@@ -7,7 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace App.Metrics.Extensions.Middleware.Integration.Facts
 {
-    public class MetricsHostTestFixture<TStartup> : IDisposable where TStartup : class
+    public class MetricsHostTestFixture<TStartup> : IDisposable
+        where TStartup : class
     {
         private readonly TestServer _server;
 

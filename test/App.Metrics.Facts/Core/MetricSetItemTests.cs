@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MetricSetItemTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using App.Metrics.Tagging;
@@ -11,7 +12,7 @@ namespace App.Metrics.Facts.Core
     public class MetricSetItemTests
     {
         [Fact]
-        public void can_tostring_set_item_with_multiple_key_values()
+        public void Can_tostring_set_item_with_multiple_key_values()
         {
             var keys = new[] { "key1", "key2", "key3", "key4", "key5", "key6", "key7", "key8" };
             var values = new[] { "value1", "value2", "value3", "value4", "value5", "value6", "value7", "value8" };
@@ -22,7 +23,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void can_tostring_set_item_with_single_key_value()
+        public void Can_tostring_set_item_with_single_key_value()
         {
             var setItem = new MetricSetItem("key", "value");
 
@@ -30,7 +31,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void can_tostring_set_item_with_single_key_value_array()
+        public void Can_tostring_set_item_with_single_key_value_array()
         {
             var keys = new[] { "key1" };
             var values = new[] { "machine-1" };
@@ -41,7 +42,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void can_tostring_set_item_with_single_value()
+        public void Can_tostring_set_item_with_single_value()
         {
             var setItem = new MetricSetItem("key", "value");
 
@@ -49,7 +50,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void can_tostring_set_item_with_zero_count_should_be_null()
+        public void Can_tostring_set_item_with_zero_count_should_be_null()
         {
             var keys = new string[0];
             var values = new string[0];
@@ -60,7 +61,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void count_should_be_one_when_single_key_value()
+        public void Count_should_be_one_when_single_key_value()
         {
             var setItem = new MetricSetItem("key", "value");
 
@@ -70,7 +71,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void count_should_total_key_values()
+        public void Count_should_total_key_values()
         {
             var keys = new[] { "key1", "key2" };
             var values = new[] { "machine-1", "machine-2" };
@@ -83,7 +84,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void keys_and_values_be_same_length()
+        public void Keys_and_values_be_same_length()
         {
             var keys = new[] { "key1", "key2" };
             var values = new[] { "machine-1" };
@@ -97,7 +98,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void keys_cannot_be_null()
+        public void Keys_cannot_be_null()
         {
             var values = new[] { "machine-1" };
 
@@ -112,7 +113,7 @@ namespace App.Metrics.Facts.Core
         [Theory]
         [InlineData("")]
         [InlineData(" ")]
-        public void keys_cannot_contain_empty_strings_or_whitespace(string key)
+        public void Keys_cannot_contain_empty_strings_or_whitespace(string key)
         {
             var keys = new[] { key };
             var values = new[] { "machine-1" };
@@ -126,7 +127,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void keys_cannot_contain_nulls()
+        public void Keys_cannot_contain_nulls()
         {
             var keys = new[] { null, "key2" };
             var values = new[] { "machine-1", "machine-2" };
@@ -140,7 +141,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void set_items_with_different_counts_should_not_be_equal()
+        public void Set_items_with_different_counts_should_not_be_equal()
         {
             var keysLeft = new[] { "key1", "key2" };
             var keysRight = new[] { "key1", "key2", "key3" };
@@ -154,7 +155,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void set_items_with_different_keys_should_not_be_equal()
+        public void Set_items_with_different_keys_should_not_be_equal()
         {
             var keysLeft = new[] { "key1", "key2" };
             var keysRight = new[] { "key1", "key3" };
@@ -167,7 +168,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void set_items_with_different_keys_should_not_be_equal_with_operator()
+        public void Set_items_with_different_keys_should_not_be_equal_with_operator()
         {
             var keysLeft = new[] { "key1", "key2" };
             var keysRight = new[] { "key1", "key3" };
@@ -180,7 +181,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void set_items_with_different_values_should_not_be_equal()
+        public void Set_items_with_different_values_should_not_be_equal()
         {
             var keys = new[] { "key1", "key2" };
             var valuesLeft = new[] { "machine-1", "machine-2" };
@@ -193,7 +194,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void set_items_with_same_key_values_should_be_equal()
+        public void Set_items_with_same_key_values_should_be_equal()
         {
             var keys = new[] { "key1", "key2" };
             var values = new[] { "machine-1", "machine-2" };
@@ -205,7 +206,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void set_items_with_same_key_values_should_be_equal_with_operator()
+        public void Set_items_with_same_key_values_should_be_equal_with_operator()
         {
             var keys = new[] { "key1", "key2" };
             var values = new[] { "machine-1", "machine-2" };
@@ -217,7 +218,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void values_cannot_be_null()
+        public void Values_cannot_be_null()
         {
             var keys = new[] { "key1", "key2" };
 
@@ -232,7 +233,7 @@ namespace App.Metrics.Facts.Core
         [Theory]
         [InlineData("")]
         [InlineData(" ")]
-        public void values_cannot_contain_empty_strings_or_whitespace(string value)
+        public void Values_cannot_contain_empty_strings_or_whitespace(string value)
         {
             var keys = new[] { "key1" };
             var values = new[] { value };
@@ -246,7 +247,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void values_cannot_contain_nulls()
+        public void Values_cannot_contain_nulls()
         {
             var keys = new[] { "key1", "key2" };
             var values = new[] { "machine-1", null };

@@ -1,8 +1,7 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MetricOptions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
-using System;
-using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics;
 using App.Metrics.Core.Options;
 using App.Metrics.ReservoirSampling.ExponentialDecay;

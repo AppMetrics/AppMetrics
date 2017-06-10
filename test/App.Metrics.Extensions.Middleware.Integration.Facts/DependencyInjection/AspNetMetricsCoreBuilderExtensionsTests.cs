@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="AspNetMetricsCoreBuilderExtensionsTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +15,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.DependencyInjectio
     public class AspNetMetricsCoreBuilderExtensionsTests
     {
         [Fact]
-        public void can_load_settings_from_configuration()
+        public void Can_load_settings_from_configuration()
         {
             var options = new AspNetMetricsOptions();
             var provider = SetupServicesAndConfiguration();
@@ -31,7 +35,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.DependencyInjectio
         }
 
         [Fact]
-        public void can_override_settings_from_configuration()
+        public void Can_override_settings_from_configuration()
         {
             var options = new AspNetMetricsOptions();
             var provider = SetupServicesAndConfiguration(

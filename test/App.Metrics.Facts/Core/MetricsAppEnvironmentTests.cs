@@ -1,7 +1,12 @@
-﻿using App.Metrics.Infrastructure;
+﻿// <copyright file="MetricsAppEnvironmentTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using App.Metrics.Infrastructure;
 using FluentAssertions;
 using Microsoft.Extensions.PlatformAbstractions;
 using Xunit;
+
 #if NET452
 using System.Reflection;
 #endif
@@ -18,7 +23,7 @@ namespace App.Metrics.Facts.Core
 #else
         [Fact]
 #endif
-        public void can_get_required_env_params()
+        public void Can_get_required_env_params()
         {
 #if NET452
             var assemblyName = Assembly.GetEntryAssembly().GetName();

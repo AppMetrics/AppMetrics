@@ -1,10 +1,10 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="ApdexScoreTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Linq;
 using App.Metrics.Abstractions.Metrics;
-using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Apdex;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Infrastructure;
@@ -21,7 +21,7 @@ namespace App.Metrics.Facts.Apdex
         public ApdexScoreTests(ApdexScoreTestFixture fixture) { _fixture = fixture; }
 
         [Fact]
-        public void apdex_score_should_be_between_zero_and_one()
+        public void Apdex_score_should_be_between_zero_and_one()
         {
             const double apdexTSeconds = 0.5;
             const int fromMilliSeconds = 20;
@@ -52,7 +52,7 @@ namespace App.Metrics.Facts.Apdex
         [InlineData(0.5, 340, 40, 20, 0.9)]
         [InlineData(1.0, 250, 800, 60, 0.59)]
         [InlineData(3.0, 60, 30, 10, 0.75)]
-        public void can_calculate_apdex_score(
+        public void Can_calculate_apdex_score(
             double apdexTSeconds,
             int satisifedRequests,
             int toleratingRequests,
@@ -73,7 +73,7 @@ namespace App.Metrics.Facts.Apdex
 
         [Theory]
         [InlineData(0.5, 3000, 1000, 5000, 0.5)]
-        public void recent_failures_should_reduce_apdex(
+        public void Recent_failures_should_reduce_apdex(
             double apdexTSeconds,
             int satisifedRequests,
             int toleratingRequests,
@@ -94,7 +94,7 @@ namespace App.Metrics.Facts.Apdex
 
         [Theory]
         [InlineData(0.5, 3000, 1000, 5000, 0.5)]
-        public void recent_satisifed_should_increase_apdex(
+        public void Recent_satisifed_should_increase_apdex(
             double apdexTSeconds,
             int satisifedRequests,
             int toleratingRequests,

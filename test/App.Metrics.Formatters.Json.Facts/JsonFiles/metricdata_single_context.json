@@ -1,5 +1,5 @@
 ﻿{
-  "timestamp": "0001-01-01T00:00:00Z", 
+  "timestamp": "0001-01-01T00:00:00Z",
   "contexts": [
     {
       "context": "context_one",
@@ -15,7 +15,7 @@
             "host": "server1",
             "env": "staging"
           }
-        }       
+        }
       ],
       "counters": [
         {
@@ -43,7 +43,7 @@
             "host": "server1",
             "env": "staging"
           }
-        }        
+        }
       ],
       "gauges": [
         {
@@ -146,7 +146,7 @@
             "host": "server1",
             "env": "staging"
           }
-        }        
+        }
       ]
     }
   ]

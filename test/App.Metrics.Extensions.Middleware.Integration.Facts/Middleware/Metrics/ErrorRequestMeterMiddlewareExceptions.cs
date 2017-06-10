@@ -1,3 +1,7 @@
+// <copyright file="ErrorRequestMeterMiddlewareExceptions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
 using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
@@ -21,7 +25,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
         private IMetrics Context { get; }
 
         [Fact]
-        public async Task can_count_requests_throwing_exceptions_as_errors()
+        public async Task Can_count_requests_throwing_exceptions_as_errors()
         {
             try
             {

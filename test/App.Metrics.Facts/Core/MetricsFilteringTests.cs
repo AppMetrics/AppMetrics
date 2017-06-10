@@ -1,4 +1,8 @@
-﻿using System.Linq;
+﻿// <copyright file="MetricsFilteringTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System.Linq;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Filtering;
 using FluentAssertions;
@@ -10,13 +14,10 @@ namespace App.Metrics.Facts.Core
     {
         private readonly IMetrics _metrics;
 
-        public MetricsFilteringTests(MetricsWithSamplesFixture fixture)
-        {
-            _metrics = fixture.Metrics;
-        }
+        public MetricsFilteringTests(MetricsWithSamplesFixture fixture) { _metrics = fixture.Metrics; }
 
         [Fact]
-        public void can_filter_metrics_by_context()
+        public void Can_filter_metrics_by_context()
         {
             var filter = new DefaultMetricsFilter().WhereMetricName(name => name == "test_gauge");
             var currentData = _metrics.Snapshot.Get(filter);
@@ -33,7 +34,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void can_filter_metrics_by_counters()
+        public void Can_filter_metrics_by_counters()
         {
             var filter = new DefaultMetricsFilter().WhereType(MetricType.Counter);
             var currentData = _metrics.Snapshot.Get(filter);
@@ -50,7 +51,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void can_filter_metrics_by_gauge()
+        public void Can_filter_metrics_by_gauge()
         {
             var filter = new DefaultMetricsFilter().WhereType(MetricType.Gauge);
             var currentData = _metrics.Snapshot.Get(filter);
@@ -67,7 +68,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void can_filter_metrics_by_histograms()
+        public void Can_filter_metrics_by_histograms()
         {
             var filter = new DefaultMetricsFilter().WhereType(MetricType.Histogram);
             var currentData = _metrics.Snapshot.Get(filter);
@@ -84,7 +85,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void can_filter_metrics_by_meters()
+        public void Can_filter_metrics_by_meters()
         {
             var filter = new DefaultMetricsFilter().WhereType(MetricType.Meter);
             var currentData = _metrics.Snapshot.Get(filter);
@@ -101,7 +102,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void can_filter_metrics_by_name_starting_with()
+        public void Can_filter_metrics_by_name_starting_with()
         {
             var filter = new DefaultMetricsFilter().WhereMetricNameStartsWith("test_");
             var currentData = _metrics.Snapshot.Get(filter);
@@ -121,7 +122,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void can_filter_metrics_by_tags()
+        public void Can_filter_metrics_by_tags()
         {
             var filter = new DefaultMetricsFilter().WhereMetricTaggedWithKeyValue(new TagKeyValueFilter { { "tag1", "value1" } });
             var currentData = _metrics.Snapshot.Get(filter);
@@ -139,7 +140,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void can_filter_metrics_by_tags_keys()
+        public void Can_filter_metrics_by_tags_keys()
         {
             var filter = new DefaultMetricsFilter().WhereMetricTaggedWithKey("tag1", "tag2");
             var currentData = _metrics.Snapshot.Get(filter);
@@ -157,7 +158,7 @@ namespace App.Metrics.Facts.Core
         }
 
         [Fact]
-        public void can_filter_metrics_by_timers()
+        public void Can_filter_metrics_by_timers()
         {
             var filter = new DefaultMetricsFilter().WhereType(MetricType.Timer);
             var currentData = _metrics.Snapshot.Get(filter);

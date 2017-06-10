@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="MetricsReportingFixture.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System;
 using App.Metrics.Configuration;
 using App.Metrics.Core.Internal;
 using App.Metrics.Core.Options;
@@ -24,9 +28,9 @@ namespace App.Metrics.Facts.Fixtures
             var clock = new TestClock();
 
             IMetricContextRegistry NewContextRegistry(string name) => new DefaultMetricContextRegistry(name);
+
             DefaultMetrics defaultMetrics = null;
             ReportGenerator = new DefaultReportGenerator(new AppMetricsOptions(), new LoggerFactory());
-
 
             Metrics = () =>
             {
@@ -41,7 +45,6 @@ namespace App.Metrics.Facts.Fixtures
                 var metricsManagerFactory = new DefaultMeasureMetricsProvider(registry, metricBuilderFactory, clock);
                 var metricsManagerAdvancedFactory = new DefaultMetricsProvider(registry, metricBuilderFactory, clock);
                 var metricsManager = new DefaultMetricsManager(registry, _loggerFactory.CreateLogger<DefaultMetricsManager>());
-
 
                 var healthManager = new DefaultHealthProvider(
                     new Lazy<IMetrics>(Metrics),
@@ -63,7 +66,6 @@ namespace App.Metrics.Facts.Fixtures
                 return defaultMetrics;
             };
         }
-
 
         public Func<IMetrics> Metrics { get; }
 

@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="HealthCheckTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Health;
@@ -10,7 +14,7 @@ namespace App.Metrics.Facts.Health
     public class HealthCheckTests
     {
         [Fact]
-        public async Task failed_and_does_not_throw_unhandled_exception_if_action_throws_exception_with_brackets_in_message()
+        public async Task Failed_and_does_not_throw_unhandled_exception_if_action_throws_exception_with_brackets_in_message()
         {
             var name = "test";
 
@@ -40,7 +44,7 @@ namespace App.Metrics.Facts.Health
         }
 
         [Fact]
-        public async Task failed_if_action_throws()
+        public async Task Failed_if_action_throws()
         {
             var name = "test";
             var check1 = new HealthCheck(name, () => ThrowException());
@@ -69,7 +73,7 @@ namespace App.Metrics.Facts.Health
         }
 
         [Fact]
-        public async Task failed_if_result_is_unhealthy()
+        public async Task Failed_if_result_is_unhealthy()
         {
             var check = new HealthCheck("test", () => Task.FromResult(HealthCheckResult.Unhealthy()));
             var result = await check.ExecuteAsync();
@@ -77,7 +81,7 @@ namespace App.Metrics.Facts.Health
         }
 
         [Fact]
-        public async Task returns_correct_message()
+        public async Task Returns_correct_message()
         {
             var message = "message";
             var check1 = new HealthCheck("test", () => Task.FromResult(HealthCheckResult.Unhealthy(message)));
@@ -98,7 +102,7 @@ namespace App.Metrics.Facts.Health
         }
 
         [Fact]
-        public async Task returns_result_with_correct_name()
+        public async Task Returns_result_with_correct_name()
         {
             var name = "test";
             var check1 = new HealthCheck(name, () => Task.FromResult(HealthCheckResult.Healthy()));
@@ -115,7 +119,7 @@ namespace App.Metrics.Facts.Health
         }
 
         [Fact]
-        public async Task success_if_action_does_not_throw()
+        public async Task Success_if_action_does_not_throw()
         {
             var name = "test";
             var check1 = new HealthCheck(name, () => Task.FromResult(HealthCheckResult.Healthy()));
