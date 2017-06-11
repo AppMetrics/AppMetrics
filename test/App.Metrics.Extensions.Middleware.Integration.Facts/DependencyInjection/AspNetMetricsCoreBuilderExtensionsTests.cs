@@ -7,7 +7,6 @@ using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.PlatformAbstractions;
 using Xunit;
 
 namespace App.Metrics.Extensions.Middleware.Integration.Facts.DependencyInjection
@@ -59,7 +58,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.DependencyInjectio
             var services = new ServiceCollection();
 
             var builder = new ConfigurationBuilder()
-                .SetBasePath(PlatformServices.Default.Application.ApplicationBasePath)
+                .SetBasePath(AppContext.BaseDirectory)
                 .AddJsonFile("DependencyInjection/TestConfiguration/appsettings.json", optional: true, reloadOnChange: true);
 
             var configuration = builder.Build();

@@ -146,12 +146,6 @@ Task("Build")
 
 		foreach(var project in projects)
         {
-			// Ignore Net452 on non-windows environments
-			if (project.Path.ToString().Contains("Net452"))
-			{
-				continue;
-			}
-
 			var parsedProject = ParseProject(new FilePath(project.Path.ToString()), configuration);
 
 			if (parsedProject.IsLibrary() && !project.Path.ToString().Contains(".Sandbox")&& !project.Path.ToString().Contains(".Facts") && !project.Path.ToString().Contains(".Benchmarks"))
@@ -226,12 +220,6 @@ Task("RunTests")
 			Configuration = configuration,
 			 ArgumentCustomization = args => args.Append("--logger:trx")
 		};
-
-		// Ignore Net452 on non-windows environments
-		if (folderName.Contains("Net452") && !IsRunningOnWindows())
-		{
-			continue;
-		}
 
 		if (!IsRunningOnWindows())
         {
