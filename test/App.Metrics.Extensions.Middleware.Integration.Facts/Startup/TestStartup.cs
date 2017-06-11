@@ -64,7 +64,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
         protected void SetupServices(
             IServiceCollection services,
             AppMetricsOptions appMetricsOptions,
-            AspNetMetricsOptions aspNetMetricsOptions,
+            AppMetricsMiddlewareOptions appMetricsMiddlewareOptions,
             IFilterMetrics filter = null,
             IEnumerable<HealthCheckResult> healthChecks = null)
         {
@@ -81,8 +81,6 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
                         options.DefaultContextLabel = appMetricsOptions.DefaultContextLabel;
                         options.MetricsEnabled = appMetricsOptions.MetricsEnabled;
                     })
-                .AddJsonMetricsSerialization()
-                .AddAsciiMetricsTextSerialization()
                 .AddDefaultReservoir(() => new DefaultAlgorithmRReservoir(1028))
                 .AddClockType<TestClock>()
                 .AddHealthChecks(
@@ -101,21 +99,25 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
                 .AddMetricsMiddleware(
                     options =>
                     {
-                        options.MetricsTextEndpointEnabled = aspNetMetricsOptions.MetricsTextEndpointEnabled;
-                        options.HealthEndpointEnabled = aspNetMetricsOptions.HealthEndpointEnabled;
-                        options.MetricsEndpointEnabled = aspNetMetricsOptions.MetricsEndpointEnabled;
-                        options.PingEndpointEnabled = aspNetMetricsOptions.PingEndpointEnabled;
-                        options.OAuth2TrackingEnabled = aspNetMetricsOptions.OAuth2TrackingEnabled;
+                        options.MetricsTextEndpointEnabled = appMetricsMiddlewareOptions.MetricsTextEndpointEnabled;
+                        options.HealthEndpointEnabled = appMetricsMiddlewareOptions.HealthEndpointEnabled;
+                        options.MetricsEndpointEnabled = appMetricsMiddlewareOptions.MetricsEndpointEnabled;
+                        options.PingEndpointEnabled = appMetricsMiddlewareOptions.PingEndpointEnabled;
+                        options.OAuth2TrackingEnabled = appMetricsMiddlewareOptions.OAuth2TrackingEnabled;
 
-                        options.HealthEndpoint = aspNetMetricsOptions.HealthEndpoint;
-                        options.MetricsEndpoint = aspNetMetricsOptions.MetricsEndpoint;
-                        options.MetricsTextEndpoint = aspNetMetricsOptions.MetricsTextEndpoint;
-                        options.PingEndpoint = aspNetMetricsOptions.PingEndpoint;
+                        options.HealthEndpoint = appMetricsMiddlewareOptions.HealthEndpoint;
+                        options.MetricsEndpoint = appMetricsMiddlewareOptions.MetricsEndpoint;
+                        options.MetricsTextEndpoint = appMetricsMiddlewareOptions.MetricsTextEndpoint;
+                        options.PingEndpoint = appMetricsMiddlewareOptions.PingEndpoint;
 
-                        options.IgnoredRoutesRegexPatterns = aspNetMetricsOptions.IgnoredRoutesRegexPatterns;
-                        options.IgnoredHttpStatusCodes = aspNetMetricsOptions.IgnoredHttpStatusCodes;
+                        options.IgnoredRoutesRegexPatterns = appMetricsMiddlewareOptions.IgnoredRoutesRegexPatterns;
+                        options.IgnoredHttpStatusCodes = appMetricsMiddlewareOptions.IgnoredHttpStatusCodes;
 
-                        options.DefaultTrackingEnabled = aspNetMetricsOptions.DefaultTrackingEnabled;
+                        options.DefaultTrackingEnabled = appMetricsMiddlewareOptions.DefaultTrackingEnabled;
+                    },
+                    optionsBuilder =>
+                    {
+                        optionsBuilder.AddJsonMetricsSerialization().AddAsciiMetricsTextSerialization();
                     });
 
             if (filter != null)

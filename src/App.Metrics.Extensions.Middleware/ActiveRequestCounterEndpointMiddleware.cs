@@ -11,24 +11,24 @@ using Microsoft.Extensions.Logging;
 namespace App.Metrics.Extensions.Middleware
 {
     // ReSharper disable ClassNeverInstantiated.Global
-    public class ActiveRequestCounterEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
+    public class ActiveRequestCounterEndpointMiddleware : AppMetricsMiddleware<AppMetricsMiddlewareOptions>
         // ReSharper restore ClassNeverInstantiated.Global
     {
         public ActiveRequestCounterEndpointMiddleware(
             RequestDelegate next,
-            AspNetMetricsOptions aspNetOptions,
+            AppMetricsMiddlewareOptions appMiddlewareOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics)
-            : base(next, aspNetOptions, loggerFactory, metrics)
+            : base(next, appMiddlewareOptions, loggerFactory, metrics)
         {
             if (next == null)
             {
                 throw new ArgumentNullException(nameof(next));
             }
 
-            if (aspNetOptions == null)
+            if (appMiddlewareOptions == null)
             {
-                throw new ArgumentNullException(nameof(aspNetOptions));
+                throw new ArgumentNullException(nameof(appMiddlewareOptions));
             }
         }
 

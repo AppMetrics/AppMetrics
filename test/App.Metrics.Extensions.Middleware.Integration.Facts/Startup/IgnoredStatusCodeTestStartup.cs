@@ -26,7 +26,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
                                         MetricsEnabled = true
                                     };
 
-            var aspNetMetricsOptions = new AspNetMetricsOptions
+            var appMetricsMiddlewareOptions = new AppMetricsMiddlewareOptions
                                        {
                                            MetricsTextEndpointEnabled = true,
                                            HealthEndpointEnabled = true,
@@ -34,9 +34,9 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
                                            PingEndpointEnabled = true
                                        };
 
-            aspNetMetricsOptions.IgnoredHttpStatusCodes.Add(401);
+            appMetricsMiddlewareOptions.IgnoredHttpStatusCodes.Add(401);
 
-            SetupServices(services, appMetricsOptions, aspNetMetricsOptions);
+            SetupServices(services, appMetricsOptions, appMetricsMiddlewareOptions);
         }
     }
 }

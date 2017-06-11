@@ -23,12 +23,12 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
         {
             var appMetricsOptions = new AppMetricsOptions();
 
-            var aspNetMetricsOptions = new AspNetMetricsOptions
+            var appMetricsMiddlewareOptions = new AppMetricsMiddlewareOptions
             {
                 MetricsEndpoint = new PathString("/metrics-json")
             };
 
-            SetupServices(services, appMetricsOptions, aspNetMetricsOptions);
+            SetupServices(services, appMetricsOptions, appMetricsMiddlewareOptions);
         }
     }
 }

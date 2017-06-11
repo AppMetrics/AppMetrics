@@ -13,18 +13,18 @@ using Microsoft.Extensions.Logging;
 namespace App.Metrics.Extensions.Middleware
 {
     // ReSharper disable ClassNeverInstantiated.Global
-    public class MetricsEndpointTextEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
+    public class MetricsEndpointTextEndpointMiddleware : AppMetricsMiddleware<AppMetricsMiddlewareOptions>
         // ReSharper restore ClassNeverInstantiated.Global
     {
         private readonly IMetricsTextResponseWriter _metricsTextResponseWriter;
 
         public MetricsEndpointTextEndpointMiddleware(
             RequestDelegate next,
-            AspNetMetricsOptions aspNetOptions,
+            AppMetricsMiddlewareOptions appMiddlewareOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics,
             IMetricsTextResponseWriter metricsTextResponseWriter)
-            : base(next, aspNetOptions, loggerFactory, metrics)
+            : base(next, appMiddlewareOptions, loggerFactory, metrics)
         {
             _metricsTextResponseWriter = metricsTextResponseWriter ?? throw new ArgumentNullException(nameof(metricsTextResponseWriter));
         }

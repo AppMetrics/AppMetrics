@@ -12,15 +12,15 @@ namespace App.Metrics.Extensions.Middleware
 {
     // ReSharper disable ClassNeverInstantiated.Global
 
-    public class PostAndPutRequestSizeHistogramMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
+    public class PostAndPutRequestSizeHistogramMiddleware : AppMetricsMiddleware<AppMetricsMiddlewareOptions>
         // ReSharper restore ClassNeverInstantiated.Global
     {
         public PostAndPutRequestSizeHistogramMiddleware(
             RequestDelegate next,
-            AspNetMetricsOptions aspNetOptions,
+            AppMetricsMiddlewareOptions appMiddlewareOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics)
-            : base(next, aspNetOptions, loggerFactory, metrics)
+            : base(next, appMiddlewareOptions, loggerFactory, metrics)
         {
         }
 

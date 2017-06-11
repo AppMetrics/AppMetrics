@@ -4,6 +4,7 @@
 
 using App.Metrics.Core.Internal;
 using App.Metrics.Extensions.Middleware.Abstractions;
+using App.Metrics.Extensions.Middleware.DependencyInjection;
 using App.Metrics.Formatters.Json;
 using App.Metrics.Formatters.Json.Abstractions.Serialization;
 using App.Metrics.Formatters.Json.Serialization;
@@ -20,145 +21,145 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         ///     Enables JSON serialization on the environment info endpoint's response
         /// </summary>
-        /// <param name="host">The metrics host builder.</param>
-        /// <returns>The metrics host builder</returns>
-        public static IMetricsHostBuilder AddJsonEnvironmentInfoSerialization(this IMetricsHostBuilder host)
+        /// <param name="options">The metrics middleware options builder.</param>
+        /// <returns>The metrics middleware options builder</returns>
+        public static IMetricsMiddlewareOptionsBuilder AddJsonEnvironmentInfoSerialization(this IMetricsMiddlewareOptionsBuilder options)
         {
-            host.Services.Replace(ServiceDescriptor.Transient<IEnvironmentInfoResponseWriter, JsonEnvironmentInfoResponseWriter>());
-            host.Services.Replace(ServiceDescriptor.Transient<IEnvironmentInfoSerializer, EnvironmentInfoSerializer>());
+            options.MetricsHostBuilder.Services.Replace(ServiceDescriptor.Transient<IEnvironmentInfoResponseWriter, JsonEnvironmentInfoResponseWriter>());
+            options.MetricsHostBuilder.Services.Replace(ServiceDescriptor.Transient<IEnvironmentInfoSerializer, EnvironmentInfoSerializer>());
 
-            return host;
+            return options;
         }
 
         /// <summary>
         ///     Enables JSON serialization on the environment info endpoint's response
         /// </summary>
-        /// <param name="host">The metrics host builder.</param>
+        /// <param name="options">The metrics middleware options builder.</param>
         /// <param name="serializerSettings">The JSON serializer settings.</param>
-        /// <returns>The metrics host builder</returns>
-        public static IMetricsHostBuilder AddJsonEnvironmentInfoSerialization(
-            this IMetricsHostBuilder host,
+        /// <returns>The metrics middleware options builder</returns>
+        public static IMetricsMiddlewareOptionsBuilder AddJsonEnvironmentInfoSerialization(
+            this IMetricsMiddlewareOptionsBuilder options,
             JsonSerializerSettings serializerSettings)
         {
-            host.Services.Replace(ServiceDescriptor.Transient<IEnvironmentInfoResponseWriter, JsonEnvironmentInfoResponseWriter>());
-            host.Services.Replace(
+            options.MetricsHostBuilder.Services.Replace(ServiceDescriptor.Transient<IEnvironmentInfoResponseWriter, JsonEnvironmentInfoResponseWriter>());
+            options.MetricsHostBuilder.Services.Replace(
                 ServiceDescriptor.Transient<IEnvironmentInfoSerializer>(provider => new EnvironmentInfoSerializer(serializerSettings)));
 
-            return host;
+            return options;
         }
 
         /// <summary>
         ///     Enables JSON serialization on the health endpoint's response
         /// </summary>
-        /// <param name="host">The metrics host builder.</param>
-        /// <returns>The metrics host builder</returns>
-        public static IMetricsHostBuilder AddJsonHealthSerialization(this IMetricsHostBuilder host)
+        /// <param name="options">The metrics middleware options builder.</param>
+        /// <returns>The metrics middleware options builder</returns>
+        public static IMetricsMiddlewareOptionsBuilder AddJsonHealthSerialization(this IMetricsMiddlewareOptionsBuilder options)
         {
-            host.Services.Replace(ServiceDescriptor.Transient<IHealthResponseWriter, JsonHealthResponseWriter>());
-            host.Services.Replace(ServiceDescriptor.Transient<IHealthStatusSerializer, HealthStatusSerializer>());
+            options.MetricsHostBuilder.Services.Replace(ServiceDescriptor.Transient<IHealthResponseWriter, JsonHealthResponseWriter>());
+            options.MetricsHostBuilder.Services.Replace(ServiceDescriptor.Transient<IHealthStatusSerializer, HealthStatusSerializer>());
 
-            return host;
+            return options;
         }
 
         /// <summary>
         ///     Enables JSON serialization on the health endpoint's response
         /// </summary>
-        /// <param name="host">The metrics host builder.</param>
+        /// <param name="options">The metrics middleware options builder.</param>
         /// <param name="serializerSettings">The JSON serializer settings.</param>
-        /// <returns>The metrics host builder</returns>
+        /// <returns>The metrics middleware options builder</returns>
         [AppMetricsExcludeFromCodeCoverage] // DEVNOTE: No need to test JsonSerializerSettings really
-        public static IMetricsHostBuilder AddJsonHealthSerialization(this IMetricsHostBuilder host, JsonSerializerSettings serializerSettings)
+        public static IMetricsMiddlewareOptionsBuilder AddJsonHealthSerialization(this IMetricsMiddlewareOptionsBuilder options, JsonSerializerSettings serializerSettings)
         {
-            host.Services.Replace(ServiceDescriptor.Transient<IHealthResponseWriter, JsonHealthResponseWriter>());
-            host.Services.Replace(ServiceDescriptor.Transient<IHealthStatusSerializer>(provider => new HealthStatusSerializer(serializerSettings)));
+            options.MetricsHostBuilder.Services.Replace(ServiceDescriptor.Transient<IHealthResponseWriter, JsonHealthResponseWriter>());
+            options.MetricsHostBuilder.Services.Replace(ServiceDescriptor.Transient<IHealthStatusSerializer>(provider => new HealthStatusSerializer(serializerSettings)));
 
-            return host;
+            return options;
         }
 
         /// <summary>
         ///     Enables JSON serialization on the metric endpoint's response
         /// </summary>
-        /// <param name="host">The metrics host builder.</param>
-        /// <returns>The metrics host builder</returns>
-        public static IMetricsHostBuilder AddJsonMetricsSerialization(this IMetricsHostBuilder host)
+        /// <param name="options">The metrics middleware options builder.</param>
+        /// <returns>The metrics middleware options builder</returns>
+        public static IMetricsMiddlewareOptionsBuilder AddJsonMetricsSerialization(this IMetricsMiddlewareOptionsBuilder options)
         {
-            host.Services.Replace(ServiceDescriptor.Transient<IMetricsResponseWriter, JsonMetricsResponseWriter>());
-            host.Services.Replace(ServiceDescriptor.Transient<IMetricDataSerializer, MetricDataSerializer>());
+            options.MetricsHostBuilder.Services.Replace(ServiceDescriptor.Transient<IMetricsResponseWriter, JsonMetricsResponseWriter>());
+            options.MetricsHostBuilder.Services.Replace(ServiceDescriptor.Transient<IMetricDataSerializer, MetricDataSerializer>());
 
-            return host;
+            return options;
         }
 
         /// <summary>
         ///     Enables JSON serialization on the metric endpoint's response
         /// </summary>
-        /// <param name="host">The metrics host builder.</param>
+        /// <param name="options">The metrics middleware options builder.</param>
         /// <param name="serializerSettings">The JSON serializer settings.</param>
-        /// <returns>The metrics host builder</returns>
+        /// <returns>The metrics middleware options builder</returns>
         [AppMetricsExcludeFromCodeCoverage] // DEVNOTE: No need to test JsonSerializerSettings really
-        public static IMetricsHostBuilder AddJsonMetricsSerialization(this IMetricsHostBuilder host, JsonSerializerSettings serializerSettings)
+        public static IMetricsMiddlewareOptionsBuilder AddJsonMetricsSerialization(this IMetricsMiddlewareOptionsBuilder options, JsonSerializerSettings serializerSettings)
         {
-            host.Services.Replace(ServiceDescriptor.Transient<IMetricsResponseWriter, JsonMetricsResponseWriter>());
-            host.Services.Replace(ServiceDescriptor.Transient<IMetricDataSerializer>(provider => new MetricDataSerializer(serializerSettings)));
+            options.MetricsHostBuilder.Services.Replace(ServiceDescriptor.Transient<IMetricsResponseWriter, JsonMetricsResponseWriter>());
+            options.MetricsHostBuilder.Services.Replace(ServiceDescriptor.Transient<IMetricDataSerializer>(provider => new MetricDataSerializer(serializerSettings)));
 
-            return host;
+            return options;
         }
 
         /// <summary>
         ///     Enables JSON serialization on the metric-text endpoint's response
         /// </summary>
-        /// <param name="host">The metrics host builder.</param>
-        /// <returns>The metrics host builder</returns>
-        public static IMetricsHostBuilder AddJsonMetricsTextSerialization(this IMetricsHostBuilder host)
+        /// <param name="options">The metrics middleware options builder.</param>
+        /// <returns>The metrics middleware options builder</returns>
+        public static IMetricsMiddlewareOptionsBuilder AddJsonMetricsTextSerialization(this IMetricsMiddlewareOptionsBuilder options)
         {
-            host.Services.Replace(ServiceDescriptor.Transient<IMetricsTextResponseWriter, JsonMetricsTextResponseWriter>());
-            host.Services.Replace(ServiceDescriptor.Transient<IMetricDataSerializer, MetricDataSerializer>());
+            options.MetricsHostBuilder.Services.Replace(ServiceDescriptor.Transient<IMetricsTextResponseWriter, JsonMetricsTextResponseWriter>());
+            options.MetricsHostBuilder.Services.Replace(ServiceDescriptor.Transient<IMetricDataSerializer, MetricDataSerializer>());
 
-            return host;
+            return options;
         }
 
         /// <summary>
         ///     Enables JSON serialization on the metric-text endpoint's response
         /// </summary>
-        /// <param name="host">The metrics host builder.</param>
+        /// <param name="options">The metrics middleware options builder.</param>
         /// <param name="serializerSettings">The JSON serializer settings.</param>
-        /// <returns>The metrics host builder</returns>
-        public static IMetricsHostBuilder AddJsonMetricsTextSerialization(this IMetricsHostBuilder host, JsonSerializerSettings serializerSettings)
+        /// <returns>The metrics middleware options builder</returns>
+        public static IMetricsMiddlewareOptionsBuilder AddJsonMetricsTextSerialization(this IMetricsMiddlewareOptionsBuilder options, JsonSerializerSettings serializerSettings)
         {
-            host.Services.Replace(ServiceDescriptor.Transient<IMetricsTextResponseWriter, JsonMetricsTextResponseWriter>());
-            host.Services.Replace(ServiceDescriptor.Transient<IMetricDataSerializer>(provider => new MetricDataSerializer(serializerSettings)));
+            options.MetricsHostBuilder.Services.Replace(ServiceDescriptor.Transient<IMetricsTextResponseWriter, JsonMetricsTextResponseWriter>());
+            options.MetricsHostBuilder.Services.Replace(ServiceDescriptor.Transient<IMetricDataSerializer>(provider => new MetricDataSerializer(serializerSettings)));
 
-            return host;
+            return options;
         }
 
         /// <summary>
         ///     Enables JSON serialization on the metric and health endpoint responses
         /// </summary>
-        /// <param name="host">The metrics host builder.</param>
-        /// <returns>The metrics host builder</returns>
-        public static IMetricsHostBuilder AddJsonSerialization(this IMetricsHostBuilder host)
+        /// <param name="options">The metrics middleware options builder.</param>
+        /// <returns>The metrics middleware options builder</returns>
+        public static IMetricsMiddlewareOptionsBuilder AddJsonSerialization(this IMetricsMiddlewareOptionsBuilder options)
         {
-            host.AddJsonHealthSerialization();
-            host.AddJsonMetricsSerialization();
-            host.AddJsonMetricsTextSerialization();
+            options.AddJsonHealthSerialization();
+            options.AddJsonMetricsSerialization();
+            options.AddJsonMetricsTextSerialization();
 
-            return host;
+            return options;
         }
 
         /// <summary>
         ///     Enables JSON serialization on the metric and health endpoint responses
         /// </summary>
-        /// <param name="host">The metrics host builder.</param>
+        /// <param name="options">The metrics middleware options builder.</param>
         /// <param name="serializerSettings">The JSON serializer settings.</param>
-        /// <returns>The metrics host builder</returns>
+        /// <returns>The metrics middleware options builder</returns>
         [AppMetricsExcludeFromCodeCoverage] // DEVNOTE: No need to test JsonSerializerSettings really
-        public static IMetricsHostBuilder AddJsonSerialization(this IMetricsHostBuilder host, JsonSerializerSettings serializerSettings)
+        public static IMetricsMiddlewareOptionsBuilder AddJsonSerialization(this IMetricsMiddlewareOptionsBuilder options, JsonSerializerSettings serializerSettings)
         {
-            host.AddJsonEnvironmentInfoSerialization(serializerSettings);
-            host.AddJsonHealthSerialization(serializerSettings);
-            host.AddJsonMetricsSerialization(serializerSettings);
-            host.AddJsonMetricsTextSerialization(serializerSettings);
+            options.AddJsonEnvironmentInfoSerialization(serializerSettings);
+            options.AddJsonHealthSerialization(serializerSettings);
+            options.AddJsonMetricsSerialization(serializerSettings);
+            options.AddJsonMetricsTextSerialization(serializerSettings);
 
-            return host;
+            return options;
         }
     }
 }

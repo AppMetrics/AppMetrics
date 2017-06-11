@@ -18,7 +18,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             builder.Services.TryAddSingleton<AspNetMetricsMarkerService, AspNetMetricsMarkerService>();
             builder.Services.AddRouting();
-            builder.Services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<AspNetMetricsOptions>>().Value);
+            builder.Services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<AppMetricsMiddlewareOptions>>().Value);
 
             return builder;
         }

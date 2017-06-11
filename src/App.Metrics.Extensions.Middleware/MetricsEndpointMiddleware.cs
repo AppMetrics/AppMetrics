@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 namespace App.Metrics.Extensions.Middleware
 {
     // ReSharper disable ClassNeverInstantiated.Global
-    public class MetricsEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
+    public class MetricsEndpointMiddleware : AppMetricsMiddleware<AppMetricsMiddlewareOptions>
         // ReSharper restore ClassNeverInstantiated.Global
     {
         private readonly IMetricsResponseWriter _metricsResponseWriter;
@@ -21,11 +21,11 @@ namespace App.Metrics.Extensions.Middleware
 
         public MetricsEndpointMiddleware(
             RequestDelegate next,
-            AspNetMetricsOptions aspNetOptions,
+            AppMetricsMiddlewareOptions appMiddlewareOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics,
             IMetricsResponseWriter metricsResponseWriter)
-            : base(next, aspNetOptions, loggerFactory, metrics)
+            : base(next, appMiddlewareOptions, loggerFactory, metrics)
         {
             _metricsResponseWriter = metricsResponseWriter ?? throw new ArgumentNullException(nameof(metricsResponseWriter));
             _next = next ?? throw new ArgumentNullException(nameof(next));

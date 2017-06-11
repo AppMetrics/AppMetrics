@@ -14,7 +14,7 @@ namespace App.Metrics.Extensions.Middleware
 {
     // ReSharper disable ClassNeverInstantiated.Global
 
-    public class RequestTimerMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
+    public class RequestTimerMiddleware : AppMetricsMiddleware<AppMetricsMiddlewareOptions>
         // ReSharper restore ClassNeverInstantiated.Global
     {
         private const string TimerItemsKey = "__App.Metrics.RequestTimer__";
@@ -22,10 +22,10 @@ namespace App.Metrics.Extensions.Middleware
 
         public RequestTimerMiddleware(
             RequestDelegate next,
-            AspNetMetricsOptions aspNetOptions,
+            AppMetricsMiddlewareOptions appMiddlewareOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics)
-            : base(next, aspNetOptions, loggerFactory, metrics)
+            : base(next, appMiddlewareOptions, loggerFactory, metrics)
         {
             _requestTimer = Metrics.Provider
                                    .Timer

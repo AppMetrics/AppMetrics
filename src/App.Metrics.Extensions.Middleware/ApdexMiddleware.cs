@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 namespace App.Metrics.Extensions.Middleware
 {
     // ReSharper disable ClassNeverInstantiated.Global
-    public class ApdexMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
+    public class ApdexMiddleware : AppMetricsMiddleware<AppMetricsMiddlewareOptions>
         // ReSharper restore ClassNeverInstantiated.Global
     {
         private const string ApdexItemsKey = "__App.Metrics.Apdex__";
@@ -21,14 +21,14 @@ namespace App.Metrics.Extensions.Middleware
 
         public ApdexMiddleware(
             RequestDelegate next,
-            AspNetMetricsOptions aspNetOptions,
+            AppMetricsMiddlewareOptions appMiddlewareOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics)
-            : base(next, aspNetOptions, loggerFactory, metrics)
+            : base(next, appMiddlewareOptions, loggerFactory, metrics)
         {
             _apdexTracking = Metrics.Provider
                                     .Apdex
-                                    .Instance(HttpRequestMetricsRegistry.ApdexScores.Apdex(aspNetOptions.ApdexTSeconds));
+                                    .Instance(HttpRequestMetricsRegistry.ApdexScores.Apdex(appMiddlewareOptions.ApdexTSeconds));
         }
 
         public async Task Invoke(HttpContext context)

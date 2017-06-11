@@ -22,12 +22,12 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
         {
             var appMetricsOptions = new AppMetricsOptions();
 
-            var aspNetMetricsOptions = new AspNetMetricsOptions
+            var appMetricsMiddlewareOptions = new AppMetricsMiddlewareOptions
                                        {
                                            MetricsTextEndpointEnabled = false
                                        };
 
-            SetupServices(services, appMetricsOptions, aspNetMetricsOptions);
+            SetupServices(services, appMetricsOptions, appMetricsMiddlewareOptions);
         }
     }
 }

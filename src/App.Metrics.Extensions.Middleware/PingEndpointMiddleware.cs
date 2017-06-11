@@ -12,17 +12,17 @@ namespace App.Metrics.Extensions.Middleware
 {
     // ReSharper disable ClassNeverInstantiated.Global
 
-    public class PingEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
+    public class PingEndpointMiddleware : AppMetricsMiddleware<AppMetricsMiddlewareOptions>
         // ReSharper restore ClassNeverInstantiated.Global
     {
         private readonly RequestDelegate _next;
 
         public PingEndpointMiddleware(
             RequestDelegate next,
-            AspNetMetricsOptions aspNetOptions,
+            AppMetricsMiddlewareOptions appMiddlewareOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics)
-            : base(next, aspNetOptions, loggerFactory, metrics)
+            : base(next, appMiddlewareOptions, loggerFactory, metrics)
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
         }

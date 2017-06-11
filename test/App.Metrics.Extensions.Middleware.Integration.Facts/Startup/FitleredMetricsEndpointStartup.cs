@@ -30,12 +30,12 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
                                         MetricsEnabled = true,
                                     };
 
-            var aspNetMetricsOptions = new AspNetMetricsOptions();
+            var appMetricsMiddlewareOptions = new AppMetricsMiddlewareOptions();
 
             SetupServices(
                 services,
                 appMetricsOptions,
-                aspNetMetricsOptions,
+                appMetricsMiddlewareOptions,
                 new DefaultMetricsFilter().WhereType(MetricType.Counter));
         }
 

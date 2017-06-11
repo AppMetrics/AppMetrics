@@ -1,4 +1,4 @@
-﻿// <copyright file="AspNetMetricsOptions.cs" company="Allan Hardy">
+﻿// <copyright file="AppMetricsMiddlewareOptions.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
@@ -11,9 +11,9 @@ namespace App.Metrics.Extensions.Middleware.DependencyInjection.Options
     // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
     // ReSharper disable CollectionNeverUpdated.Global
     // ReSharper disable MemberCanBePrivate.Global
-    public class AspNetMetricsOptions
+    public class AppMetricsMiddlewareOptions
     {
-        public AspNetMetricsOptions()
+        public AppMetricsMiddlewareOptions()
         {
             HealthEndpointEnabled = true;
             MetricsEndpointEnabled = true;

@@ -15,8 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.AspNetCore.Builder
+// ReSharper restore CheckNamespace
 {
-    // ReSharper restore CheckNamespace
     public static class AspNetMetricsAppBuilderExtensions
     {
         /// <summary>
@@ -25,7 +25,7 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app">The <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder" />.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        /// <exception cref="System.ArgumentNullException">
+        /// <exception cref="ArgumentNullException">
         ///     <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder" /> cannot be null
         /// </exception>
         public static IApplicationBuilder UseMetrics(this IApplicationBuilder app)
@@ -40,7 +40,7 @@ namespace Microsoft.AspNetCore.Builder
             MetricsServicesHelper.ThrowIfMetricsNotRegistered(app.ApplicationServices);
 
             var appMetricsOptions = app.ApplicationServices.GetRequiredService<AppMetricsOptions>();
-            var aspNetMetricsOptions = app.ApplicationServices.GetRequiredService<AspNetMetricsOptions>();
+            var aspNetMetricsOptions = app.ApplicationServices.GetRequiredService<AppMetricsMiddlewareOptions>();
 
             if (aspNetMetricsOptions.PingEndpointEnabled)
             {

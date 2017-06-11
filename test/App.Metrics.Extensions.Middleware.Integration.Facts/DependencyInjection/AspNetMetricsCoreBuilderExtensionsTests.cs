@@ -16,9 +16,9 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.DependencyInjectio
         [Fact]
         public void Can_load_settings_from_configuration()
         {
-            var options = new AspNetMetricsOptions();
+            var options = new AppMetricsMiddlewareOptions();
             var provider = SetupServicesAndConfiguration();
-            Action resolveOptions = () => { options = provider.GetRequiredService<AspNetMetricsOptions>(); };
+            Action resolveOptions = () => { options = provider.GetRequiredService<AppMetricsMiddlewareOptions>(); };
 
             resolveOptions.ShouldNotThrow();
             options.ApdexTrackingEnabled.Should().Be(false);
@@ -36,7 +36,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.DependencyInjectio
         [Fact]
         public void Can_override_settings_from_configuration()
         {
-            var options = new AspNetMetricsOptions();
+            var options = new AppMetricsMiddlewareOptions();
             var provider = SetupServicesAndConfiguration(
                 (o) =>
                 {
@@ -45,7 +45,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.DependencyInjectio
                     o.HealthEndpointEnabled = true;
                 });
 
-            Action resolveOptions = () => { options = provider.GetRequiredService<AspNetMetricsOptions>(); };
+            Action resolveOptions = () => { options = provider.GetRequiredService<AppMetricsMiddlewareOptions>(); };
 
             resolveOptions.ShouldNotThrow();
             options.ApdexTrackingEnabled.Should().Be(true);
@@ -53,7 +53,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.DependencyInjectio
             options.HealthEndpointEnabled.Should().Be(true);
         }
 
-        private IServiceProvider SetupServicesAndConfiguration(Action<AspNetMetricsOptions> setupAction = null)
+        private IServiceProvider SetupServicesAndConfiguration(Action<AppMetricsMiddlewareOptions> setupAction = null)
         {
             var services = new ServiceCollection();
 
@@ -67,11 +67,28 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.DependencyInjectio
 
             if (setupAction == null)
             {
-                metricsBuidler.AddMetricsMiddleware(configuration.GetSection("AspNetMetrics"));
+                metricsBuidler.AddMetricsMiddleware(
+                    configuration.GetSection("AspNetMetrics"),
+                    optionsBuilder =>
+                    {
+                        optionsBuilder.AddAsciiEnvironmentInfoSerialization().
+                                      AddAsciiHealthSerialization().
+                                      AddJsonMetricsSerialization().
+                                      AddJsonMetricsTextSerialization();
+                    });
             }
             else
             {
-                metricsBuidler.AddMetricsMiddleware(configuration.GetSection("AspNetMetrics"), setupAction);
+                metricsBuidler.AddMetricsMiddleware(
+                    configuration.GetSection("AspNetMetrics"),
+                    setupAction,
+                    optionsBuilder =>
+                    {
+                        optionsBuilder.AddAsciiEnvironmentInfoSerialization().
+                                       AddAsciiHealthSerialization().
+                                       AddJsonMetricsSerialization().
+                                       AddJsonMetricsTextSerialization();
+                    });
             }
 
             return services.BuildServiceProvider();

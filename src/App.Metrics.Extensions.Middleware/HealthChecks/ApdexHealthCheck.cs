@@ -19,18 +19,18 @@ namespace App.Metrics
         private readonly string _context = HttpRequestMetricsRegistry.ContextName;
         private readonly string _metricName = HttpRequestMetricsRegistry.ApdexScores.ApdexMetricName;
         private readonly Lazy<IMetrics> _metrics;
-        private readonly AspNetMetricsOptions _options;
+        private readonly AppMetricsMiddlewareOptions _middlewareOptions;
 
-        public ApdexHealthCheck(Lazy<IMetrics> metrics, AspNetMetricsOptions options)
+        public ApdexHealthCheck(Lazy<IMetrics> metrics, AppMetricsMiddlewareOptions middlewareOptions)
             : base("Apdex Score")
         {
             _metrics = metrics;
-            _options = options;
+            _middlewareOptions = middlewareOptions;
         }
 
         protected override Task<HealthCheckResult> CheckAsync(CancellationToken token = default(CancellationToken))
         {
-            if (!_options.ApdexTrackingEnabled)
+            if (!_middlewareOptions.ApdexTrackingEnabled)
             {
                 return Task.FromResult(HealthCheckResult.Ignore());
             }

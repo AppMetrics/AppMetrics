@@ -22,7 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient(
                 provider =>
                 {
-                    var options = provider.GetRequiredService<AspNetMetricsOptions>();
+                    var options = provider.GetRequiredService<AppMetricsMiddlewareOptions>();
                     return new RequestDurationForApdexTesting(options.ApdexTSeconds);
                 });
 

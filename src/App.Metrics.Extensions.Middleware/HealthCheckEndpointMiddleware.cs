@@ -16,17 +16,17 @@ namespace App.Metrics.Extensions.Middleware
 {
     // ReSharper disable ClassNeverInstantiated.Global
 
-    public class HealthCheckEndpointMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
+    public class HealthCheckEndpointMiddleware : AppMetricsMiddleware<AppMetricsMiddlewareOptions>
     {
         private readonly IHealthResponseWriter _healthResponseWriter;
 
         public HealthCheckEndpointMiddleware(
             RequestDelegate next,
-            AspNetMetricsOptions aspNetOptions,
+            AppMetricsMiddlewareOptions appMiddlewareOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics,
             IHealthResponseWriter healthResponseWriter)
-            : base(next, aspNetOptions, loggerFactory, metrics)
+            : base(next, appMiddlewareOptions, loggerFactory, metrics)
         {
             _healthResponseWriter = healthResponseWriter ?? throw new ArgumentNullException(nameof(healthResponseWriter));
         }

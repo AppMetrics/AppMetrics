@@ -4,6 +4,7 @@
 
 using System;
 using App.Metrics.Extensions.Middleware.Abstractions;
+using App.Metrics.Extensions.Middleware.DependencyInjection;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using App.Metrics.Extensions.Middleware.Internal;
 using Microsoft.Extensions.Configuration;
@@ -11,40 +12,58 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
-{
     // ReSharper restore CheckNamespace
+{
     public static class AspNetMetricsCoreBuilderExtensions
         // ReSharper restore UnusedMember.Global
     {
-        public static IMetricsHostBuilder AddMetricsMiddleware(this IMetricsHostBuilder builder, IConfiguration configuration)
+        public static IMetricsHostBuilder AddMetricsMiddleware(
+            this IMetricsHostBuilder builder,
+            IConfiguration configuration,
+            Action<IMetricsMiddlewareOptionsBuilder> setupMiddlewareOptionsAction)
         {
-            builder.Services.Configure<AspNetMetricsOptions>(configuration);
-            return builder.AddMetricsMiddlewareCore();
+            builder.Services.Configure<AppMetricsMiddlewareOptions>(configuration);
+            return builder.AddMetricsMiddlewareCore(setupMiddlewareOptionsAction);
         }
 
         public static IMetricsHostBuilder AddMetricsMiddleware(
             this IMetricsHostBuilder builder,
             IConfiguration configuration,
-            Action<AspNetMetricsOptions> setupAction)
+            Action<AppMetricsMiddlewareOptions> setupAction,
+            Action<IMetricsMiddlewareOptionsBuilder> setupMiddleware)
         {
-            builder.Services.Configure<AspNetMetricsOptions>(configuration);
+            builder.Services.Configure<AppMetricsMiddlewareOptions>(configuration);
             builder.Services.Configure(setupAction);
-            return builder.AddMetricsMiddlewareCore();
+            return builder.AddMetricsMiddlewareCore(setupMiddleware);
         }
 
-        public static IMetricsHostBuilder AddMetricsMiddleware(this IMetricsHostBuilder builder, Action<AspNetMetricsOptions> setupAction)
+        public static IMetricsHostBuilder AddMetricsMiddleware(
+            this IMetricsHostBuilder builder,
+            Action<AppMetricsMiddlewareOptions> setupOptionsAction,
+            Action<IMetricsMiddlewareOptionsBuilder> setupMiddlewareOptionsAction)
         {
-            builder.Services.Configure(setupAction);
-            return builder.AddMetricsMiddlewareCore();
+            builder.Services.Configure(setupOptionsAction);
+            return builder.AddMetricsMiddlewareCore(setupMiddlewareOptionsAction);
         }
 
-        public static IMetricsHostBuilder AddMetricsMiddleware(this IMetricsHostBuilder builder)
+        public static IMetricsHostBuilder AddMetricsMiddleware(
+            this IMetricsHostBuilder builder,
+            Action<IMetricsMiddlewareOptionsBuilder> setupMiddleware)
         {
-            return builder.AddMetricsMiddlewareCore();
+            return builder.AddMetricsMiddlewareCore(setupMiddleware);
         }
 
-        private static IMetricsHostBuilder AddMetricsMiddlewareCore(this IMetricsHostBuilder builder)
+        internal static IMetricsMiddlewareOptionsBuilder AddMetricsMiddlewareHostBuilder(this IMetricsHostBuilder metricsHostBuilder)
         {
+            return new MetricsMiddlewareOptionsBuilder(metricsHostBuilder);
+        }
+
+        private static IMetricsHostBuilder AddMetricsMiddlewareCore(
+            this IMetricsHostBuilder builder,
+            Action<IMetricsMiddlewareOptionsBuilder> setupMiddleware)
+        {
+            setupMiddleware(builder.AddMetricsMiddlewareHostBuilder());
+
             builder.Services.TryAddSingleton<IEnvironmentInfoResponseWriter, NoOpEnvironmentInfoResponseWriter>();
             builder.Services.TryAddSingleton<IMetricsResponseWriter, NoOpMetricsResponseWriter>();
             builder.Services.TryAddSingleton<IMetricsTextResponseWriter, NoOpMetricsTextResponseWriter>();

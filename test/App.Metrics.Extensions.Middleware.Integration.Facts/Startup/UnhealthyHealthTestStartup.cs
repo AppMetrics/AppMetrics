@@ -27,7 +27,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
                                         MetricsEnabled = true
                                     };
 
-            var aspNetMetricsOptions = new AspNetMetricsOptions
+            var appMetricsMiddlewareOptions = new AppMetricsMiddlewareOptions
                                        {
                                            MetricsTextEndpointEnabled = true,
                                            HealthEndpointEnabled = true,
@@ -38,7 +38,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
             SetupServices(
                 services,
                 appMetricsOptions,
-                aspNetMetricsOptions,
+                appMetricsMiddlewareOptions,
                 healthChecks: new[] { HealthCheckResult.Healthy(), HealthCheckResult.Degraded(), HealthCheckResult.Unhealthy() });
         }
     }

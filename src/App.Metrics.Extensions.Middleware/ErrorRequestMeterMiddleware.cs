@@ -16,24 +16,24 @@ namespace App.Metrics.Extensions.Middleware
     ///     Also measures these error rates per OAuth2 Client as a separate metric
     /// </summary>
     // ReSharper disable ClassNeverInstantiated.Global
-    public class ErrorRequestMeterMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
+    public class ErrorRequestMeterMiddleware : AppMetricsMiddleware<AppMetricsMiddlewareOptions>
         // ReSharper restore ClassNeverInstantiated.Global
     {
         public ErrorRequestMeterMiddleware(
             RequestDelegate next,
-            AspNetMetricsOptions aspNetOptions,
+            AppMetricsMiddlewareOptions appMiddlewareOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics)
-            : base(next, aspNetOptions, loggerFactory, metrics)
+            : base(next, appMiddlewareOptions, loggerFactory, metrics)
         {
             if (next == null)
             {
                 throw new ArgumentNullException(nameof(next));
             }
 
-            if (aspNetOptions == null)
+            if (appMiddlewareOptions == null)
             {
-                throw new ArgumentNullException(nameof(aspNetOptions));
+                throw new ArgumentNullException(nameof(appMiddlewareOptions));
             }
 
             if (metrics == null)

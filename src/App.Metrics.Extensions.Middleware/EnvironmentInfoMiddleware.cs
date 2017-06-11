@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 namespace App.Metrics.Extensions.Middleware
 {
     // ReSharper disable ClassNeverInstantiated.Global
-    public class EnvironmentInfoMiddleware : AppMetricsMiddleware<AspNetMetricsOptions>
+    public class EnvironmentInfoMiddleware : AppMetricsMiddleware<AppMetricsMiddlewareOptions>
         // ReSharper restore ClassNeverInstantiated.Global
     {
         private readonly EnvironmentInfoProvider _environmentInfoProvider;
@@ -23,12 +23,12 @@ namespace App.Metrics.Extensions.Middleware
 
         public EnvironmentInfoMiddleware(
             RequestDelegate next,
-            AspNetMetricsOptions aspNetOptions,
+            AppMetricsMiddlewareOptions appMiddlewareOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics,
             IEnvironmentInfoResponseWriter environmentInfoResponseWriter,
             EnvironmentInfoProvider environmentInfoProvider)
-            : base(next, aspNetOptions, loggerFactory, metrics)
+            : base(next, appMiddlewareOptions, loggerFactory, metrics)
         {
             _environmentInfoProvider = environmentInfoProvider;
             _environmentInfoResponseWriter = environmentInfoResponseWriter ?? throw new ArgumentNullException(nameof(environmentInfoResponseWriter));

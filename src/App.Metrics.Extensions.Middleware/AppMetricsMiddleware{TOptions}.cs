@@ -15,17 +15,17 @@ using Microsoft.Extensions.Logging;
 namespace App.Metrics.Extensions.Middleware
 {
     public abstract class AppMetricsMiddleware<TOptions>
-        where TOptions : AspNetMetricsOptions, new()
+        where TOptions : AppMetricsMiddlewareOptions, new()
     {
         private readonly Func<PathString, bool> _shouldRecordMetric;
 
         protected AppMetricsMiddleware(
             RequestDelegate next,
-            TOptions aspNetOptions,
+            TOptions appMiddlewareOptions,
             ILoggerFactory loggerFactory,
             IMetrics metrics)
         {
-            Options = aspNetOptions ?? throw new ArgumentNullException(nameof(aspNetOptions));
+            Options = appMiddlewareOptions ?? throw new ArgumentNullException(nameof(appMiddlewareOptions));
             Logger = loggerFactory?.CreateLogger(GetType().FullName) ?? throw new ArgumentNullException(nameof(loggerFactory));
             Metrics = metrics ?? throw new ArgumentNullException(nameof(metrics));
             Next = next ?? throw new ArgumentNullException(nameof(next));
