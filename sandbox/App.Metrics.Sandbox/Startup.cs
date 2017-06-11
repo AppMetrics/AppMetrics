@@ -19,27 +19,34 @@ namespace App.Metrics.Sandbox
         private static readonly bool HaveAppRunSampleRequests = true;
         private static readonly bool RunSamplesWithClientId = true;
 
-        public Startup(IHostingEnvironment env)
-        {
-            var builder = new ConfigurationBuilder().SetBasePath(env.ContentRootPath).
-                                                     AddJsonFile("appsettings.json", optional: false, reloadOnChange: true).
-                                                     AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true).
-                                                     AddEnvironmentVariables();
+        public Startup(IConfiguration configuration) { Configuration = configuration; }
 
-            Configuration = builder.Build();
+        public IConfiguration Configuration { get; }
+
+        public static IWebHost BuildSandboxWebHost(string[] args)
+        {
+            return new WebHostBuilder().UseContentRoot(Directory.GetCurrentDirectory()).
+                                        ConfigureAppConfiguration(
+                                            (context, builder) =>
+                                            {
+                                                builder.SetBasePath(context.HostingEnvironment.ContentRootPath).
+                                                        AddJsonFile("appsettings.json", optional: false, reloadOnChange: true).
+                                                        AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", optional: true).
+                                                        AddEnvironmentVariables();
+                                            }).
+                                        ConfigureLogging(
+                                            factory =>
+                                            {
+                                                factory.AddConsole();
+                                                // factory.AddDebug();
+                                            }).
+                                        UseIISIntegration().
+                                        UseKestrel().
+                                        UseStartup<Startup>().
+                                        Build();
         }
 
-        public IConfigurationRoot Configuration { get; }
-
-        public static void Main(string[] args)
-        {
-            var host = new WebHostBuilder().UseContentRoot(Directory.GetCurrentDirectory()).
-                                            ConfigureLogging(
-                                                factory => { factory.AddConsole(); }).UseIISIntegration().UseKestrel().
-                                            UseStartup<Startup>().Build();
-
-            host.Run();
-        }
+        public static void Main(string[] args) { BuildSandboxWebHost(args).Run(); }
 
         public void Configure(IApplicationBuilder app, IApplicationLifetime lifetime)
         {
@@ -80,9 +87,9 @@ namespace App.Metrics.Sandbox
                          optionsBuilder =>
                          {
                              optionsBuilder.AddJsonMetricsSerialization().
-                                     AddAsciiHealthSerialization().
-                                     AddAsciiMetricsTextSerialization().
-                                     AddAsciiEnvironmentInfoSerialization();
+                                            AddAsciiHealthSerialization().
+                                            AddAsciiMetricsTextSerialization().
+                                            AddAsciiEnvironmentInfoSerialization();
                          });
         }
     }
