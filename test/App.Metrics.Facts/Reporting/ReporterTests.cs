@@ -5,14 +5,13 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Abstractions.Reporting;
-using App.Metrics.Configuration;
+using App.Metrics.Core.Internal;
+using App.Metrics.Core.Reporting;
+using App.Metrics.Core.Scheduling;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Facts.Reporting.Helpers;
 using App.Metrics.Reporting;
-using App.Metrics.Reporting.Internal;
 using App.Metrics.Scheduling;
-using App.Metrics.Scheduling.Abstractions;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -24,7 +23,6 @@ namespace App.Metrics.Facts.Reporting
     {
         private readonly MetricsReportingFixture _fixture;
         private readonly ILoggerFactory _loggerFactory = new LoggerFactory();
-        private readonly AppMetricsOptions _options = new AppMetricsOptions();
 
         public ReporterTests(MetricsReportingFixture fixture) { _fixture = fixture; }
 
@@ -34,7 +32,7 @@ namespace App.Metrics.Facts.Reporting
             var factory = SetupReportFactory();
             factory.AddProvider(new TestReportProvider(true, TimeSpan.FromMilliseconds(10)));
             var scheduler = new DefaultTaskScheduler();
-            var reporter = new Reporter(new AppMetricsOptions(), factory, _fixture.Metrics(), scheduler, _loggerFactory);
+            var reporter = new DefaultReporter(factory, _fixture.Metrics(), scheduler, _loggerFactory);
             var token = new CancellationTokenSource();
             token.CancelAfter(100);
 
@@ -51,7 +49,7 @@ namespace App.Metrics.Facts.Reporting
                 var scheduler = new DefaultTaskScheduler();
                 var metrics = new Mock<IMetrics>();
                 var factory = SetupReportFactory(metrics.Object);
-                var unused = new Reporter(_options, factory, null, scheduler, _loggerFactory);
+                var unused = new DefaultReporter(factory, null, scheduler, _loggerFactory);
             };
 
             action.ShouldThrow<ArgumentNullException>();
@@ -64,7 +62,7 @@ namespace App.Metrics.Facts.Reporting
             {
                 var scheduler = new DefaultTaskScheduler();
                 var factory = SetupReportFactory();
-                var unused = new Reporter(_options, factory, _fixture.Metrics(), scheduler, null);
+                var unused = new DefaultReporter(factory, _fixture.Metrics(), scheduler, null);
             };
 
             action.ShouldThrow<ArgumentNullException>();
@@ -75,7 +73,7 @@ namespace App.Metrics.Facts.Reporting
         {
             Action action = () =>
             {
-                var unused = new DefaultReportGenerator(_options, null);
+                var unused = new DefaultReportGenerator(null);
             };
 
             action.ShouldThrow<ArgumentNullException>();
@@ -88,7 +86,7 @@ namespace App.Metrics.Facts.Reporting
             {
                 var loggerFactory = new LoggerFactory();
                 var scheduler = new DefaultTaskScheduler();
-                var unused = new Reporter(_options, null, _fixture.Metrics(), scheduler, loggerFactory);
+                var unused = new DefaultReporter(null, _fixture.Metrics(), scheduler, loggerFactory);
             };
 
             action.ShouldThrow<ArgumentNullException>();
@@ -100,7 +98,7 @@ namespace App.Metrics.Facts.Reporting
             Action action = () =>
             {
                 var factory = SetupReportFactory();
-                var unused = new Reporter(_options, factory, _fixture.Metrics(), null, _loggerFactory);
+                var unused = new DefaultReporter(factory, _fixture.Metrics(), null, _loggerFactory);
             };
 
             action.ShouldThrow<ArgumentNullException>();
@@ -119,12 +117,12 @@ namespace App.Metrics.Facts.Reporting
             var settings = new Mock<IReporterSettings>();
             settings.Setup(s => s.ReportInterval).Returns(interval);
             metricReporter.Setup(r => r.ReportInterval).Returns(interval);
-            provider.Setup(p => p.CreateMetricReporter(It.IsAny<string>(), It.IsAny<ILoggerFactory>())).Returns(metricReporter.Object);
+            provider.Setup(p => p.CreateMetricReporter(It.IsAny<string>())).Returns(metricReporter.Object);
             factory.AddProvider(provider.Object);
 
             var metrics = _fixture.Metrics();
 
-            var reporter = new Reporter(_options, factory, metrics, scheduler.Object, loggerFactory);
+            var reporter = new DefaultReporter(factory, metrics, scheduler.Object, loggerFactory);
 
             reporter.RunReports(metrics, CancellationToken.None);
 
@@ -141,7 +139,7 @@ namespace App.Metrics.Facts.Reporting
             var scheduler = new DefaultTaskScheduler();
             var metrics = _fixture.Metrics();
 
-            var reporter = new Reporter(_options, factory, metrics, scheduler, _loggerFactory);
+            var reporter = new DefaultReporter(factory, metrics, scheduler, _loggerFactory);
             var token = new CancellationTokenSource();
             token.CancelAfter(100);
 
@@ -157,7 +155,7 @@ namespace App.Metrics.Facts.Reporting
             factory.AddProvider(new TestReportProvider(false, TimeSpan.FromMilliseconds(10)));
             var scheduler = new DefaultTaskScheduler();
             var metrics = _fixture.Metrics();
-            var reporter = new Reporter(_options, factory, metrics, scheduler, _loggerFactory);
+            var reporter = new DefaultReporter(factory, metrics, scheduler, _loggerFactory);
             var token = new CancellationTokenSource();
             token.CancelAfter(100);
 
@@ -172,7 +170,7 @@ namespace App.Metrics.Facts.Reporting
             var factory = SetupReportFactory();
             var scheduler = new Mock<IScheduler>();
             var metrics = _fixture.Metrics();
-            var reporter = new Reporter(_options, factory, metrics, scheduler.Object, _loggerFactory);
+            var reporter = new DefaultReporter(factory, metrics, scheduler.Object, _loggerFactory);
 
             reporter.RunReports(metrics, CancellationToken.None);
         }
@@ -185,13 +183,13 @@ namespace App.Metrics.Facts.Reporting
             var scheduler = new Mock<IScheduler>();
             var metricReporter = new Mock<IMetricReporter>();
             metricReporter.Setup(r => r.GetType()).Returns(typeof(IMetricReporter));
-            provider.Setup(p => p.CreateMetricReporter(It.IsAny<string>(), It.IsAny<ILoggerFactory>())).Returns(metricReporter.Object);
+            provider.Setup(p => p.CreateMetricReporter(It.IsAny<string>())).Returns(metricReporter.Object);
             factory.AddProvider(provider.Object);
             var metrics = _fixture.Metrics();
 
-            var reporter = new Reporter(_options, factory, metrics, scheduler.Object, _loggerFactory);
+            var reporter = new DefaultReporter(factory, metrics, scheduler.Object, _loggerFactory);
 
-            provider.Verify(p => p.CreateMetricReporter(It.IsAny<string>(), It.IsAny<ILoggerFactory>()), Times.Once);
+            provider.Verify(p => p.CreateMetricReporter(It.IsAny<string>()), Times.Once);
 
             reporter.RunReports(metrics, CancellationToken.None);
         }
@@ -203,7 +201,7 @@ namespace App.Metrics.Facts.Reporting
                 metrics = _fixture.Metrics();
             }
 
-            return new ReportFactory(_options, metrics, new LoggerFactory());
+            return new ReportFactory(metrics, new LoggerFactory());
         }
     }
 }

@@ -5,30 +5,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using App.Metrics.Extensions.Reporting.ElasticSearch;
-using App.Metrics.Extensions.Reporting.ElasticSearch.Client;
-using App.Metrics.Extensions.Reporting.InfluxDB;
-using App.Metrics.Extensions.Reporting.InfluxDB.Client;
-using App.Metrics.Filtering;
-using App.Metrics.Reporting.Abstractions;
-using App.Metrics.Reporting.Interfaces;
-using App.Metrics.Tagging;
+using App.Metrics.Builder;
+using App.Metrics.Core.Filtering;
+using App.Metrics.Reporting;
 using Microsoft.Extensions.DependencyInjection;
-using HttpPolicy = App.Metrics.Extensions.Reporting.ElasticSearch.HttpPolicy;
 
 namespace App.Metrics.Sandbox.Extensions
 {
 #pragma warning disable SA1111, SA1009, SA1008
     public static class SandboxMetricsHostExtensions
     {
-        private static readonly string ElasticSearchIndex = "appmetricssandbox";
-
-        private static readonly Uri ElasticSearchUri = new Uri("http://127.0.0.1:9200");
-
+        // private static readonly string ElasticSearchIndex = "appmetricssandbox";
+        // private static readonly Uri ElasticSearchUri = new Uri("http://127.0.0.1:9200");
         // private static readonly Uri GraphiteUri = new Uri("net.tcp://127.0.0.1:32776");
-        private static readonly string InfluxDbDatabase = "AppMetricsSandbox";
-
-        private static readonly Uri InfluxDbUri = new Uri("http://127.0.0.1:8086");
+        // private static readonly string InfluxDbDatabase = "AppMetricsSandbox";
+        // private static readonly Uri InfluxDbUri = new Uri("http://127.0.0.1:8086");
 
         private static readonly List<ReportType> ReportTypes =
             new List<ReportType> { ReportType.InfluxDB, ReportType.ElasticSearch, /*ReportType.Graphite*/ };
@@ -87,19 +78,19 @@ namespace App.Metrics.Sandbox.Extensions
 
         private static void AddElasticSearchReporting(IReportFactory factory, DefaultMetricsFilter reportFilter)
         {
-            factory.AddElasticSearch(
-                new ElasticSearchReporterSettings
-                {
-                    HttpPolicy = new HttpPolicy
-                                 {
-                                     FailuresBeforeBackoff = 3,
-                                     BackoffPeriod = TimeSpan.FromSeconds(30),
-                                     Timeout = TimeSpan.FromSeconds(10)
-                                 },
-                    ElasticSearchSettings = new ElasticSearchSettings(ElasticSearchUri, ElasticSearchIndex),
-                    ReportInterval = TimeSpan.FromSeconds(5)
-                },
-                reportFilter);
+            // factory.AddElasticSearch(
+            //     new ElasticSearchReporterSettings
+            //     {
+            //         HttpPolicy = new HttpPolicy
+            //                      {
+            //                          FailuresBeforeBackoff = 3,
+            //                          BackoffPeriod = TimeSpan.FromSeconds(30),
+            //                          Timeout = TimeSpan.FromSeconds(10)
+            //                      },
+            //         ElasticSearchSettings = new ElasticSearchSettings(ElasticSearchUri, ElasticSearchIndex),
+            //         ReportInterval = TimeSpan.FromSeconds(5)
+            //     },
+            //     reportFilter);
         }
 
         private static void AddGraphiteReporting(IReportFactory factory, DefaultMetricsFilter reportFilter)
@@ -120,19 +111,19 @@ namespace App.Metrics.Sandbox.Extensions
 
         private static void AddInfluxReporting(IReportFactory factory, DefaultMetricsFilter reportFilter)
         {
-            factory.AddInfluxDb(
-                new InfluxDBReporterSettings
-                {
-                    HttpPolicy = new Metrics.Extensions.Reporting.InfluxDB.HttpPolicy
-                                 {
-                                     FailuresBeforeBackoff = 3,
-                                     BackoffPeriod = TimeSpan.FromSeconds(30),
-                                     Timeout = TimeSpan.FromSeconds(10)
-                                 },
-                    InfluxDbSettings = new InfluxDBSettings(InfluxDbDatabase, InfluxDbUri),
-                    ReportInterval = TimeSpan.FromSeconds(5)
-                },
-                reportFilter);
+            // factory.AddInfluxDb(
+            //     new InfluxDBReporterSettings
+            //     {
+            //         HttpPolicy = new Metrics.Extensions.Reporting.InfluxDB.HttpPolicy
+            //                      {
+            //                          FailuresBeforeBackoff = 3,
+            //                          BackoffPeriod = TimeSpan.FromSeconds(30),
+            //                          Timeout = TimeSpan.FromSeconds(10)
+            //                      },
+            //         InfluxDbSettings = new InfluxDBSettings(InfluxDbDatabase, InfluxDbUri),
+            //         ReportInterval = TimeSpan.FromSeconds(5)
+            //     },
+            //     reportFilter);
         }
     }
 #pragma warning restore SA1111, SA1009, SA1008

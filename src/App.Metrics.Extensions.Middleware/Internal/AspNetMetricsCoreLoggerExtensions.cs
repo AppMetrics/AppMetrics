@@ -3,13 +3,13 @@
 // </copyright>
 
 using System;
-using App.Metrics.Core.Internal;
+using System.Diagnostics.CodeAnalysis;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.Extensions.Logging
-{
     // ReSharper restore CheckNamespace
-    [AppMetricsExcludeFromCodeCoverage]
+{
+    [ExcludeFromCodeCoverage]
     internal static class AspNetMetricsCoreLoggerExtensions
     {
         public static void MiddlewareExecuted(this ILogger logger, Type middleware)

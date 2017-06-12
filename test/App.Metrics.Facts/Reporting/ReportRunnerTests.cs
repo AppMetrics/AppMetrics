@@ -4,21 +4,25 @@
 
 using System;
 using System.Text;
-using System.Threading.Tasks;
-using App.Metrics.Abstractions.Reporting;
-using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Apdex;
 using App.Metrics.Core;
+using App.Metrics.Core.Apdex;
+using App.Metrics.Core.Counter;
+using App.Metrics.Core.Gauge;
+using App.Metrics.Core.Histogram;
+using App.Metrics.Core.Infrastructure;
+using App.Metrics.Core.Meter;
+using App.Metrics.Core.Reporting;
+using App.Metrics.Core.ReservoirSampling.ExponentialDecay;
+using App.Metrics.Core.Timer;
 using App.Metrics.Counter;
 using App.Metrics.Facts.Reporting.Helpers;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
-using App.Metrics.Infrastructure;
+using App.Metrics.Internal;
 using App.Metrics.Meter;
 using App.Metrics.Reporting;
-using App.Metrics.Reporting.Abstractions;
-using App.Metrics.ReservoirSampling.ExponentialDecay;
-using App.Metrics.Tagging;
+using App.Metrics.ReservoirSampling;
 using App.Metrics.Timer;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
@@ -572,8 +576,8 @@ namespace App.Metrics.Facts.Reporting
             var reporter = new ReportRunner<TestMetricPayload>(
                 p =>
                 {
-                    var payload = p.Payload();
-                    return AppMetricsTaskCache.SuccessTask;
+                    p.Payload();
+                    return TaskCache<bool>.DefaultCompletedTask;
                 },
                 payloadBuilder,
                 settings.ReportInterval,

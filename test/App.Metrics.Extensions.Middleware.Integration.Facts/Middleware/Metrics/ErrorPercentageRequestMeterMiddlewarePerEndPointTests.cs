@@ -4,6 +4,7 @@
 
 using System.Net.Http;
 using System.Threading.Tasks;
+using App.Metrics.Core;
 using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
 using App.Metrics.Extensions.Middleware.Internal;
 using App.Metrics.Gauge;

@@ -2,7 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Core.Options;
+using App.Metrics.Timer;
 
 namespace App.Metrics.Sandbox
 {

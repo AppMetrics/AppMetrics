@@ -5,9 +5,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using App.Metrics.Core.Options;
+using App.Metrics.Core;
+using App.Metrics.Core.Tagging;
+using App.Metrics.Counter;
 using App.Metrics.Facts.Fixtures;
+using App.Metrics.Histogram;
+using App.Metrics.Meter;
 using App.Metrics.Tagging;
+using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;
 

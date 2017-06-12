@@ -6,9 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using App.Metrics.Core.Reporting;
 using App.Metrics.Reporting;
-using App.Metrics.Reporting.Abstractions;
-using App.Metrics.Tagging;
 
 namespace App.Metrics.Facts.Reporting.Helpers
 {

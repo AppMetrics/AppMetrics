@@ -3,7 +3,7 @@
 // </copyright>
 
 using System;
-using App.Metrics.Tagging;
+using App.Metrics.Core.Tagging;
 using FluentAssertions;
 using Xunit;
 

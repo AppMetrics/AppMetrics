@@ -4,10 +4,9 @@
 
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Core;
+using App.Metrics.Core.Formatting;
+using App.Metrics.Core.Formatting.Ascii;
 using App.Metrics.Extensions.Middleware.Abstractions;
-using App.Metrics.Formatting;
-using App.Metrics.Formatting.Ascii;
 using Microsoft.AspNetCore.Http;
 
 namespace App.Metrics.Formatters.Ascii

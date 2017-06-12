@@ -6,12 +6,11 @@ using System;
 using System.Collections.Generic;
 using App.Metrics.Apdex;
 using App.Metrics.Core;
+using App.Metrics.Core.Infrastructure;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
-using App.Metrics.Infrastructure;
 using App.Metrics.Meter;
-using App.Metrics.Tagging;
 using App.Metrics.Timer;
 
 namespace App.Metrics.Formatters.Json.Facts.TestFixtures

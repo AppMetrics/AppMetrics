@@ -2,11 +2,16 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Configuration;
-using App.Metrics.Core.Options;
+using App.Metrics.Core;
+using App.Metrics.Core.Configuration;
+using App.Metrics.Core.Filtering;
+using App.Metrics.Core.Tagging;
+using App.Metrics.Counter;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
-using App.Metrics.Filtering;
-using App.Metrics.Tagging;
+using App.Metrics.Gauge;
+using App.Metrics.Histogram;
+using App.Metrics.Meter;
+using App.Metrics.Timer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;

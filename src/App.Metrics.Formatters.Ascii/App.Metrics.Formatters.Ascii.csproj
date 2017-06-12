@@ -10,12 +10,12 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>App.Metrics.Formatters.Ascii</AssemblyName>
     <PackageId>App.Metrics.Formatters.Ascii</PackageId>
-    <PackageTags>metrics;monitoring;instrumentation</PackageTags>
+    <PackageTags>metrics;formatting</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\App.Metrics.Extensions.Middleware\App.Metrics.Extensions.Middleware.csproj" />
-    <ProjectReference Include="..\App.Metrics\App.Metrics.csproj" />
+    <ProjectReference Include="..\App.Metrics.Health\App.Metrics.Health.csproj" />
   </ItemGroup>
 
 </Project>

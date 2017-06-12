@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using App.Metrics.Core.Infrastructure;
 using App.Metrics.Infrastructure;
 using Newtonsoft.Json;
 

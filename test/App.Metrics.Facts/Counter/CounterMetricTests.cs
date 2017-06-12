@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using App.Metrics.Core.Counter;
+using App.Metrics.Core.Tagging;
 using App.Metrics.Counter;
-using App.Metrics.Tagging;
 using FluentAssertions;
 using Xunit;
 

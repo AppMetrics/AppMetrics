@@ -3,14 +3,11 @@
 // </copyright>
 
 using App.Metrics.Apdex;
-using App.Metrics.Core.Abstractions;
-using App.Metrics.Core.Options;
 using App.Metrics.Counter;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
-using App.Metrics.Tagging;
 using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;

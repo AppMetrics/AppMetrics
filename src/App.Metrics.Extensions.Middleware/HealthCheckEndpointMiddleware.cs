@@ -5,9 +5,10 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using App.Metrics.Core.Internal;
+using App.Metrics.Core;
 using App.Metrics.Extensions.Middleware.Abstractions;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
+using App.Metrics.Extensions.Middleware.Internal;
 using App.Metrics.Health;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -54,7 +55,7 @@ namespace App.Metrics.Extensions.Middleware
                 if (healthStatus.Status.IsDegraded())
                 {
                     responseStatusCode = HttpStatusCode.OK;
-                    warning = Constants.Health.DegradedStatusDisplay;
+                    warning = "Degraded";
                 }
 
                 context.Response.Headers["Content-Type"] = new[] { _healthResponseWriter.ContentType };

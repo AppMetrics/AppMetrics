@@ -4,7 +4,6 @@
 
 using System;
 using System.Linq;
-using App.Metrics.Core;
 using App.Metrics.Formatters.Json.Facts.Helpers;
 using App.Metrics.Formatters.Json.Facts.TestFixtures;
 using App.Metrics.Formatters.Json.Serialization;

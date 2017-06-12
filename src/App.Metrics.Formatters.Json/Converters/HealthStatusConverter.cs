@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using App.Metrics.Core.Internal;
+using App.Metrics.Core;
 using App.Metrics.Health;
 using Newtonsoft.Json;
 
@@ -36,7 +36,7 @@ namespace App.Metrics.Formatters.Json.Converters
 
             var target = new HealthStatusData
                          {
-                             Status = Constants.Health.HealthStatusDisplay[source.Status],
+                             Status = HealthConstants.HealthStatusDisplay[source.Status],
                              Timestamp = _clock.FormatTimestamp(_clock.UtcDateTime)
                          };
 

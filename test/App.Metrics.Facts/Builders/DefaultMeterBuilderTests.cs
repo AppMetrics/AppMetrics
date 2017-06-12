@@ -3,7 +3,7 @@
 // </copyright>
 
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Meter.Abstractions;
+using App.Metrics.Meter;
 using FluentAssertions;
 using Xunit;
 

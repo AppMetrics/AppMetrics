@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using App.Metrics.Extensions.Middleware.Internal;
+using App.Metrics.Internal;
 
 namespace App.Metrics.Extensions.Middleware.DependencyInjection.Options
 {
@@ -22,7 +23,7 @@ namespace App.Metrics.Extensions.Middleware.DependencyInjection.Options
             EnvironmentInfoEndpointEnabled = true;
             OAuth2TrackingEnabled = true;
             ApdexTrackingEnabled = true;
-            ApdexTSeconds = Core.Internal.Constants.ReservoirSampling.DefaultApdexTSeconds;
+            ApdexTSeconds = ReservoirSamplingConstants.DefaultApdexTSeconds;
             DefaultTrackingEnabled = true;
         }
 
@@ -57,7 +58,7 @@ namespace App.Metrics.Extensions.Middleware.DependencyInjection.Options
         /// <value>
         ///     The health endpoint.
         /// </value>
-        public string HealthEndpoint { get; set; } = Constants.DefaultRoutePaths.HealthEndpoint.EnsureLeadingSlash();
+        public string HealthEndpoint { get; set; } = MiddlewareConstants.DefaultRoutePaths.HealthEndpoint.EnsureLeadingSlash();
 
         /// <summary>
         ///     Gets or sets a value indicating whether [health endpoint should be enabled], if disabled endpoint responds with
@@ -90,7 +91,7 @@ namespace App.Metrics.Extensions.Middleware.DependencyInjection.Options
         /// <value>
         ///     The metrics endpoint.
         /// </value>
-        public string MetricsEndpoint { get; set; } = Constants.DefaultRoutePaths.MetricsEndpoint.EnsureLeadingSlash();
+        public string MetricsEndpoint { get; set; } = MiddlewareConstants.DefaultRoutePaths.MetricsEndpoint.EnsureLeadingSlash();
 
         /// <summary>
         ///     Gets or sets a value indicating whether [metrics endpoint should be enabled], if disabled endpoint responds with
@@ -107,7 +108,7 @@ namespace App.Metrics.Extensions.Middleware.DependencyInjection.Options
         /// <value>
         ///     The metrics text endpoint.
         /// </value>
-        public string MetricsTextEndpoint { get; set; } = Constants.DefaultRoutePaths.MetricsTextEndpoint.EnsureLeadingSlash();
+        public string MetricsTextEndpoint { get; set; } = MiddlewareConstants.DefaultRoutePaths.MetricsTextEndpoint.EnsureLeadingSlash();
 
         /// <summary>
         ///     Gets or sets a value indicating whether [metrics text endpoint should be enabled], if disabled endpoint responds
@@ -133,7 +134,7 @@ namespace App.Metrics.Extensions.Middleware.DependencyInjection.Options
         /// <value>
         ///     The ping endpoint.
         /// </value>
-        public string PingEndpoint { get; set; } = Constants.DefaultRoutePaths.PingEndpoint.EnsureLeadingSlash();
+        public string PingEndpoint { get; set; } = MiddlewareConstants.DefaultRoutePaths.PingEndpoint.EnsureLeadingSlash();
 
         /// <summary>
         ///     Gets or sets the environment info endpoint, defaults to /env.
@@ -141,7 +142,7 @@ namespace App.Metrics.Extensions.Middleware.DependencyInjection.Options
         /// <value>
         ///     The environment info endpoint.
         /// </value>
-        public string EnvironmentInfoEndpoint { get; set; } = Constants.DefaultRoutePaths.EnvironmentInfoEndpoint.EnsureLeadingSlash();
+        public string EnvironmentInfoEndpoint { get; set; } = MiddlewareConstants.DefaultRoutePaths.EnvironmentInfoEndpoint.EnsureLeadingSlash();
 
         /// <summary>
         ///     Gets or sets a value indicating whether [ping endpoint should be enabled], if disabled endpoint responds with 404.

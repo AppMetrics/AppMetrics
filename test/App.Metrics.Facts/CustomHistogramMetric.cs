@@ -3,7 +3,7 @@
 // </copyright>
 
 using System.Linq;
-using App.Metrics.Abstractions.MetricTypes;
+using App.Metrics.Core.Histogram;
 using App.Metrics.Histogram;
 
 namespace App.Metrics.Facts

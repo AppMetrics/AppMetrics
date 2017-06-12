@@ -9,12 +9,17 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>App.Metrics.Extensions.Middleware</AssemblyName>
     <PackageId>App.Metrics.Extensions.Middleware</PackageId>
-    <PackageTags>mvc;measurements;charts;timer;histogram;graphite;influxdb;health checks;metrics</PackageTags>
+    <PackageTags>metrics;mvc;measurements;instrumentation;apdex;meter;gauge;counter;timer;histogram</PackageTags>
 	  <DebugType>full</DebugType>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <Compile Include="..\shared\ApdexMetricHealthCheckFactoryExtensions.cs" Link="Health\ApdexMetricHealthCheckFactoryExtensions.cs" />
+    <Compile Include="..\shared\MetricHealthCheckFactoryExtensions.cs" Link="Health\MetricHealthCheckFactoryExtensions.cs" />
+  </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\App.Metrics\App.Metrics.csproj" />
+    <ProjectReference Include="..\App.Metrics.Core\App.Metrics.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

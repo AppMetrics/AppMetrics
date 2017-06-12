@@ -2,16 +2,15 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Core;
-using App.Metrics.Core.Internal;
 using App.Metrics.Extensions.Middleware.Abstractions;
 using Microsoft.AspNetCore.Http;
 
 namespace App.Metrics.Extensions.Middleware.Internal
 {
-    [AppMetricsExcludeFromCodeCoverage]
+    [ExcludeFromCodeCoverage]
     internal class NoOpMetricsTextResponseWriter : IMetricsTextResponseWriter
     {
         /// <inheritdoc />

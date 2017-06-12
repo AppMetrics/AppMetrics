@@ -2,6 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
+using App.Metrics.Core.Counter;
 using App.Metrics.Counter;
 using FluentAssertions;
 using Xunit;

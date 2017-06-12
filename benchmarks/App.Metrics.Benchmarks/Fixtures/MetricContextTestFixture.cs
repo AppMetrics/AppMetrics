@@ -4,23 +4,22 @@
 
 using System;
 using App.Metrics.Apdex;
-using App.Metrics.Apdex.Abstractions;
-using App.Metrics.Core.Options;
+using App.Metrics.Core.Apdex;
+using App.Metrics.Core.Counter;
+using App.Metrics.Core.Gauge;
+using App.Metrics.Core.Histogram;
+using App.Metrics.Core.Infrastructure;
+using App.Metrics.Core.Internal;
+using App.Metrics.Core.Meter;
+using App.Metrics.Core.ReservoirSampling;
+using App.Metrics.Core.Tagging;
+using App.Metrics.Core.Timer;
 using App.Metrics.Counter;
-using App.Metrics.Counter.Abstractions;
 using App.Metrics.Gauge;
-using App.Metrics.Gauge.Abstractions;
 using App.Metrics.Histogram;
-using App.Metrics.Histogram.Abstractions;
-using App.Metrics.Infrastructure;
 using App.Metrics.Meter;
-using App.Metrics.Meter.Abstractions;
-using App.Metrics.Registry.Abstractions;
-using App.Metrics.Registry.Internal;
-using App.Metrics.ReservoirSampling;
-using App.Metrics.Tagging;
+using App.Metrics.Registry;
 using App.Metrics.Timer;
-using App.Metrics.Timer.Abstractions;
 
 namespace App.Metrics.Benchmarks.Fixtures
 {

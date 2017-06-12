@@ -6,7 +6,7 @@ using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Scheduling;
+using App.Metrics.Core.Scheduling;
 
 namespace App.Metrics.Sandbox.JustForTesting
 {

@@ -3,11 +3,13 @@
 // </copyright>
 
 using System;
+using App.Metrics.Core;
+using App.Metrics.Core.Histogram;
+using App.Metrics.Core.Infrastructure;
 using App.Metrics.Core.Internal;
-using App.Metrics.Histogram;
-using App.Metrics.Infrastructure;
-using App.Metrics.Meter;
-using App.Metrics.ReservoirSampling.ExponentialDecay;
+using App.Metrics.Core.Meter;
+using App.Metrics.Core.ReservoirSampling.ExponentialDecay;
+using App.Metrics.Core.Timer;
 using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;

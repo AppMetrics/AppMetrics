@@ -3,7 +3,7 @@
 // </copyright>
 
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Gauge.Abstractions;
+using App.Metrics.Gauge;
 using FluentAssertions;
 using Xunit;
 

@@ -4,8 +4,9 @@
 
 using System.Collections.Generic;
 using App.Metrics.Configuration;
-using App.Metrics.Infrastructure;
-using App.Metrics.Tagging;
+using App.Metrics.Core.Configuration;
+using App.Metrics.Core.Infrastructure;
+using App.Metrics.Core.Tagging;
 using FluentAssertions;
 using Xunit;
 

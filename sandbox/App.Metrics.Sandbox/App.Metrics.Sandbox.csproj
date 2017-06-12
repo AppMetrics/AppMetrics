@@ -8,13 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="App.Metrics.Extensions.Reporting.ElasticSearch" Version="1.1.0-*" />
+    <!--<PackageReference Include="App.Metrics.Extensions.Reporting.ElasticSearch" Version="1.1.0-*" />
     <PackageReference Include="App.Metrics.Extensions.Reporting.InfluxDB" Version="1.2.0" />
     <PackageReference Include="App.Metrics.Formatters.ElasticSearch" Version="1.0.0" />
     <PackageReference Include="App.Metrics.Formatters.InfluxDB" Version="1.0.0-*" />
     <PackageReference Include="App.Metrics.Formatters.Prometheus" Version="1.1.1-*" />
     <PackageReference Include="App.Metrics.Formatting.ElasticSearch" Version="1.0.0" />
-    <PackageReference Include="App.Metrics.Formatting.InfluxDB" Version="1.0.0-*" />    
+    <PackageReference Include="App.Metrics.Formatting.InfluxDB" Version="1.0.0-*" />-->    
     <PackageReference Include="Microsoft.AspNetCore" Version="$(AspNetCoreVersion)" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="$(AspNetCoreVersion)" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="$(AspNetCoreVersion)" />
@@ -23,6 +23,7 @@
     <ProjectReference Include="..\..\src\App.Metrics.Extensions.Mvc\App.Metrics.Extensions.Mvc.csproj" />
     <ProjectReference Include="..\..\src\App.Metrics.Formatters.Ascii\App.Metrics.Formatters.Ascii.csproj" />
     <ProjectReference Include="..\..\src\App.Metrics.Formatters.Json\App.Metrics.Formatters.Json.csproj" />
+    <ProjectReference Include="..\..\src\App.Metrics.Health\App.Metrics.Health.csproj" />
     <ProjectReference Include="..\..\src\App.Metrics\App.Metrics.csproj" />
   </ItemGroup>
   

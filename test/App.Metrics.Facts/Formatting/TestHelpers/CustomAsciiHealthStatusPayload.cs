@@ -5,7 +5,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using App.Metrics.Core.Internal;
 using App.Metrics.Health;
 
 namespace App.Metrics.Facts.Formatting.TestHelpers
@@ -47,19 +46,19 @@ namespace App.Metrics.Facts.Formatting.TestHelpers
 
         private static string GetOverallStatus(IReadOnlyCollection<CustomAsciiHealthCheckResult> results)
         {
-            var status = Constants.Health.DegradedStatusDisplay;
+            var status = HealthConstants.DegradedStatusDisplay;
 
             var failed = results.Any(c => c.Status == HealthCheckStatus.Unhealthy);
             var degraded = results.Any(c => c.Status == HealthCheckStatus.Degraded);
 
             if (!degraded && !failed)
             {
-                status = Constants.Health.HealthyStatusDisplay;
+                status = HealthConstants.HealthyStatusDisplay;
             }
 
             if (failed)
             {
-                status = Constants.Health.UnhealthyStatusDisplay;
+                status = HealthConstants.UnhealthyStatusDisplay;
             }
 
             return status;

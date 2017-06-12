@@ -10,20 +10,12 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>App.Metrics</AssemblyName>
     <PackageId>App.Metrics</PackageId>
-    <PackageTags>Metrics;Monitoring;Instrumentation;Performance</PackageTags>
+    <PackageTags>metrics;performance;measurements;instrumentation;apdex;meter;gauge;counter;timer;histogram</PackageTags>
     <DebugType>full</DebugType>
-  </PropertyGroup> 
+  </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="App.Metrics.Concurrency" Version="1.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(AspNetCoreVersion)" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(AspNetCoreVersion)" />
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="$(DependencyModelVersion)" />
-    <PackageReference Include="System.Net.Ping" Version="4.3.0" />
-    <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
-    <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
-    <PackageReference Include="System.Net.NameResolution" Version="4.3.0" />
-    <PackageReference Include="System.Threading.Thread" Version="4.3.0" />
-  </ItemGroup>
+    <ProjectReference Include="..\App.Metrics.Core\App.Metrics.Core.csproj" />
+  </ItemGroup> 
 
 </Project>

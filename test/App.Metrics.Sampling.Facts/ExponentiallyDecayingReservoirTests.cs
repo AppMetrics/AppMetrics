@@ -3,10 +3,10 @@
 // </copyright>
 
 using System.Linq;
+using App.Metrics.Core.Infrastructure;
 using App.Metrics.Core.Internal;
-using App.Metrics.Infrastructure;
-using App.Metrics.ReservoirSampling.ExponentialDecay;
-using App.Metrics.Scheduling.Abstractions;
+using App.Metrics.Core.ReservoirSampling.ExponentialDecay;
+using App.Metrics.Scheduling;
 using FluentAssertions;
 using Xunit;
 

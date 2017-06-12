@@ -3,8 +3,9 @@
 // </copyright>
 
 using System;
+using App.Metrics.Core;
+using App.Metrics.Core.Timer;
 using App.Metrics.Timer;
-using App.Metrics.Timer.Abstractions;
 
 namespace App.Metrics.Facts
 {

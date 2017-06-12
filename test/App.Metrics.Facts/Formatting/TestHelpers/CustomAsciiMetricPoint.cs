@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using App.Metrics.Tagging;
+using App.Metrics.Core.Tagging;
 
 namespace App.Metrics.Facts.Formatting.TestHelpers
 {

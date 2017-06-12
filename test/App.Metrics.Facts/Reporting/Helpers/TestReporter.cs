@@ -4,14 +4,13 @@
 
 using System;
 using System.Threading.Tasks;
-using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Apdex;
-using App.Metrics.Core.Abstractions;
+using App.Metrics.Core.Reporting;
 using App.Metrics.Counter;
 using App.Metrics.Histogram;
+using App.Metrics.Internal;
 using App.Metrics.Meter;
 using App.Metrics.Reporting;
-using App.Metrics.Reporting.Abstractions;
 using App.Metrics.Timer;
 
 namespace App.Metrics.Facts.Reporting.Helpers
@@ -52,7 +51,7 @@ namespace App.Metrics.Facts.Reporting.Helpers
         /// <inheritdoc />
         public Task<bool> EndAndFlushReportRunAsync(IMetrics metrics)
         {
-            return AppMetricsTaskCache.SuccessTask;
+            return TaskCache<bool>.DefaultCompletedTask;
         }
 
         /// <inheritdoc />

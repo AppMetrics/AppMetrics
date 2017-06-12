@@ -2,9 +2,9 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Abstractions.MetricTypes;
+using App.Metrics.Core.Counter;
+using App.Metrics.Core.Tagging;
 using App.Metrics.Counter;
-using App.Metrics.Tagging;
 
 namespace App.Metrics.Facts
 {

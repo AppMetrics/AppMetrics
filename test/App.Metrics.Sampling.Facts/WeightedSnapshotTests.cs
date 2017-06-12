@@ -4,8 +4,8 @@
 
 using System;
 using System.Linq;
-using App.Metrics.Abstractions.ReservoirSampling;
-using App.Metrics.ReservoirSampling.ExponentialDecay;
+using App.Metrics.Core.ReservoirSampling.ExponentialDecay;
+using App.Metrics.ReservoirSampling;
 using FluentAssertions;
 using Xunit;
 

@@ -3,9 +3,8 @@
 // </copyright>
 
 using System;
-using App.Metrics.Abstractions.Filtering;
-using App.Metrics.Abstractions.Reporting;
-using Microsoft.Extensions.Logging;
+using App.Metrics.Filters;
+using App.Metrics.Reporting;
 
 namespace App.Metrics.Facts.Reporting.Helpers
 {
@@ -26,7 +25,7 @@ namespace App.Metrics.Facts.Reporting.Helpers
         public IFilterMetrics Filter { get; }
         // ReSharper restore UnassignedGetOnlyAutoProperty
 
-        public IMetricReporter CreateMetricReporter(string name, ILoggerFactory loggerFactory)
+        public IMetricReporter CreateMetricReporter(string name)
         {
             return new TestMetricReporter(_pass, _reportInterval, _throwEx);
         }

@@ -2,7 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Core.Internal;
+using System.Diagnostics.CodeAnalysis;
 using App.Metrics.Extensions.Middleware.Abstractions;
 using App.Metrics.Extensions.Middleware.DependencyInjection;
 using App.Metrics.Formatters.Json;
@@ -67,7 +67,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="options">The metrics middleware options builder.</param>
         /// <param name="serializerSettings">The JSON serializer settings.</param>
         /// <returns>The metrics middleware options builder</returns>
-        [AppMetricsExcludeFromCodeCoverage] // DEVNOTE: No need to test JsonSerializerSettings really
+        [ExcludeFromCodeCoverage] // DEVNOTE: No need to test JsonSerializerSettings really
         public static IMetricsMiddlewareOptionsBuilder AddJsonHealthSerialization(this IMetricsMiddlewareOptionsBuilder options, JsonSerializerSettings serializerSettings)
         {
             options.MetricsHostBuilder.Services.Replace(ServiceDescriptor.Transient<IHealthResponseWriter, JsonHealthResponseWriter>());
@@ -95,7 +95,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="options">The metrics middleware options builder.</param>
         /// <param name="serializerSettings">The JSON serializer settings.</param>
         /// <returns>The metrics middleware options builder</returns>
-        [AppMetricsExcludeFromCodeCoverage] // DEVNOTE: No need to test JsonSerializerSettings really
+        [ExcludeFromCodeCoverage] // DEVNOTE: No need to test JsonSerializerSettings really
         public static IMetricsMiddlewareOptionsBuilder AddJsonMetricsSerialization(this IMetricsMiddlewareOptionsBuilder options, JsonSerializerSettings serializerSettings)
         {
             options.MetricsHostBuilder.Services.Replace(ServiceDescriptor.Transient<IMetricsResponseWriter, JsonMetricsResponseWriter>());
@@ -151,7 +151,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="options">The metrics middleware options builder.</param>
         /// <param name="serializerSettings">The JSON serializer settings.</param>
         /// <returns>The metrics middleware options builder</returns>
-        [AppMetricsExcludeFromCodeCoverage] // DEVNOTE: No need to test JsonSerializerSettings really
+        [ExcludeFromCodeCoverage] // DEVNOTE: No need to test JsonSerializerSettings really
         public static IMetricsMiddlewareOptionsBuilder AddJsonSerialization(this IMetricsMiddlewareOptionsBuilder options, JsonSerializerSettings serializerSettings)
         {
             options.AddJsonEnvironmentInfoSerialization(serializerSettings);

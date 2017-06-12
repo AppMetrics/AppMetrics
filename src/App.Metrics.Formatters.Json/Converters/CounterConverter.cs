@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using App.Metrics.Core.Counter;
 using App.Metrics.Counter;
 using Newtonsoft.Json;
 

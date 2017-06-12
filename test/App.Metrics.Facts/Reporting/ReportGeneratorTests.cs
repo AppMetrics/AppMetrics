@@ -4,8 +4,8 @@
 
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Abstractions.Reporting;
 using App.Metrics.Facts.Fixtures;
+using App.Metrics.Reporting;
 using Moq;
 using Xunit;
 

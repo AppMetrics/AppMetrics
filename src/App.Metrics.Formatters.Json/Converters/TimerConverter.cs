@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using App.Metrics.Core.Timer;
 using App.Metrics.Timer;
 using Newtonsoft.Json;
 

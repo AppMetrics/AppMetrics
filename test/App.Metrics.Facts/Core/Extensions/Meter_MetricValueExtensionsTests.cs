@@ -3,7 +3,8 @@
 // </copyright>
 
 using System.Collections.Generic;
-using App.Metrics.Core.Extensions;
+using App.Metrics.Core.Internal;
+using App.Metrics.Core.Reporting;
 using App.Metrics.Meter;
 using App.Metrics.Reporting;
 using FluentAssertions;

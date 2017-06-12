@@ -4,7 +4,6 @@
 
 using System.IO;
 using App.Metrics.Health;
-using App.Metrics.Reporting.Abstractions;
 
 namespace App.Metrics.Facts.Formatting.TestHelpers
 {

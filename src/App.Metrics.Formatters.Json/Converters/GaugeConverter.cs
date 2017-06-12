@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using App.Metrics.Core.Gauge;
 using App.Metrics.Gauge;
 using Newtonsoft.Json;
 

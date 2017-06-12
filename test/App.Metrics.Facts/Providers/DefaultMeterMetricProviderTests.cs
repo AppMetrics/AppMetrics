@@ -3,11 +3,11 @@
 // </copyright>
 
 using System.Linq;
-using App.Metrics.Abstractions.Filtering;
-using App.Metrics.Core.Options;
+using App.Metrics.Core;
+using App.Metrics.Core.Filtering;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Filtering;
-using App.Metrics.Meter.Abstractions;
+using App.Metrics.Filters;
+using App.Metrics.Meter;
 using FluentAssertions;
 using Xunit;
 

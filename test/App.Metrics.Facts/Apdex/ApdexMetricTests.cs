@@ -4,10 +4,12 @@
 
 using System;
 using App.Metrics.Apdex;
-using App.Metrics.Apdex.Abstractions;
+using App.Metrics.Core;
+using App.Metrics.Core.Apdex;
+using App.Metrics.Core.Infrastructure;
 using App.Metrics.Core.Internal;
-using App.Metrics.Infrastructure;
-using App.Metrics.ReservoirSampling.ExponentialDecay;
+using App.Metrics.Core.ReservoirSampling.ExponentialDecay;
+using App.Metrics.Internal;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -21,7 +23,7 @@ namespace App.Metrics.Facts.Apdex
 
         public ApdexMetricTests()
         {
-            _apdex = new DefaultApdexMetric(new DefaultForwardDecayingReservoir(), Constants.ReservoirSampling.DefaultApdexTSeconds, _clock, false);
+            _apdex = new DefaultApdexMetric(new DefaultForwardDecayingReservoir(), ReservoirSamplingConstants.DefaultApdexTSeconds, _clock, false);
         }
 
         [Fact]
@@ -186,7 +188,7 @@ namespace App.Metrics.Facts.Apdex
             {
                 var unused = new DefaultApdexMetric(
                         new DefaultForwardDecayingReservoir(),
-                        Constants.ReservoirSampling.DefaultApdexTSeconds,
+                        ReservoirSamplingConstants.DefaultApdexTSeconds,
                         null,
                         false)
                     ;

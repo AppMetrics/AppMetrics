@@ -3,16 +3,16 @@
 // </copyright>
 
 using System;
+using App.Metrics.Core;
+using App.Metrics.Core.Gauge;
+using App.Metrics.Core.Tagging;
 using App.Metrics.Extensions.Middleware.Internal;
-using App.Metrics.Gauge;
-using App.Metrics.Tagging;
-using App.Metrics.Timer.Abstractions;
+using App.Metrics.Timer;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics
-{
     // ReSharper restore CheckNamespace
-
+{
     /// <summary>
     ///     Provides extension methods on <see cref="IMetrics" /> to simplify measuring web application metrics.
     /// </summary>
@@ -53,7 +53,7 @@ namespace App.Metrics
             string clientId)
         {
             var tags = new MetricTags(
-                new[] { Constants.DefaultTagKeys.ClientId, Constants.DefaultTagKeys.Route, Constants.DefaultTagKeys.HttpStatusCode },
+                new[] { MiddlewareConstants.DefaultTagKeys.ClientId, MiddlewareConstants.DefaultTagKeys.Route, MiddlewareConstants.DefaultTagKeys.HttpStatusCode },
                 new[] { clientId, routeTemplate, httpStatusCode.ToString() });
 
             metrics.Measure.Meter.Mark(OAuthRequestMetricsRegistry.Meters.ErrorRate, tags);
@@ -61,7 +61,7 @@ namespace App.Metrics
 
         public static void RecordClientRequestRate(this IMetrics metrics, string routeTemplate, string clientId)
         {
-            var tags = new MetricTags(new[] { Constants.DefaultTagKeys.ClientId, Constants.DefaultTagKeys.Route }, new[] { clientId, routeTemplate });
+            var tags = new MetricTags(new[] { MiddlewareConstants.DefaultTagKeys.ClientId, MiddlewareConstants.DefaultTagKeys.Route }, new[] { clientId, routeTemplate });
 
             metrics.Measure.Meter.Mark(OAuthRequestMetricsRegistry.Meters.RequestRate, tags);
         }
@@ -95,7 +95,7 @@ namespace App.Metrics
             string exception)
         {
             var tags = new MetricTags(
-                new[] { Constants.DefaultTagKeys.Route, Constants.DefaultTagKeys.Exception },
+                new[] { MiddlewareConstants.DefaultTagKeys.Route, MiddlewareConstants.DefaultTagKeys.Exception },
                 new[] { routeTemplate, exception });
             metrics.Measure.Counter.Increment(HttpRequestMetricsRegistry.Counters.UnhandledExceptionCount, tags);
         }
@@ -131,7 +131,7 @@ namespace App.Metrics
         /// <param name="routeTemplate">The route template of the endpoint.</param>
         public static void UpdateClientPostRequestSize(this IMetrics metrics, long value, string clientId, string routeTemplate)
         {
-            var tags = new MetricTags(new[] { Constants.DefaultTagKeys.ClientId, Constants.DefaultTagKeys.Route }, new[] { clientId, routeTemplate });
+            var tags = new MetricTags(new[] { MiddlewareConstants.DefaultTagKeys.ClientId, MiddlewareConstants.DefaultTagKeys.Route }, new[] { clientId, routeTemplate });
             metrics.Measure.Histogram.Update(OAuthRequestMetricsRegistry.Histograms.PostRequestSizeHistogram, tags, value);
         }
 
@@ -144,7 +144,7 @@ namespace App.Metrics
         /// <param name="routeTemplate">The route template of the endpoint.</param>
         public static void UpdateClientPutRequestSize(this IMetrics metrics, long value, string clientId, string routeTemplate)
         {
-            var tags = new MetricTags(new[] { Constants.DefaultTagKeys.ClientId, Constants.DefaultTagKeys.Route }, new[] { clientId, routeTemplate });
+            var tags = new MetricTags(new[] { MiddlewareConstants.DefaultTagKeys.ClientId, MiddlewareConstants.DefaultTagKeys.Route }, new[] { clientId, routeTemplate });
             metrics.Measure.Histogram.Update(OAuthRequestMetricsRegistry.Histograms.PutRequestSizeHistogram, tags, value);
         }
 
@@ -170,23 +170,23 @@ namespace App.Metrics
 
         private static void CountOverallErrorRequestsByHttpStatusCode(IMetrics metrics, int httpStatusCode)
         {
-            var errorCounterTags = new MetricTags(Constants.DefaultTagKeys.HttpStatusCode, httpStatusCode.ToString());
+            var errorCounterTags = new MetricTags(MiddlewareConstants.DefaultTagKeys.HttpStatusCode, httpStatusCode.ToString());
             metrics.Measure.Counter.Increment(HttpRequestMetricsRegistry.Counters.TotalErrorRequestCount, errorCounterTags);
         }
 
         private static ITimer EndpointRequestTimer(this IMetrics metrics, string routeTemplate)
         {
-            var tags = new MetricTags(Constants.DefaultTagKeys.Route, routeTemplate);
+            var tags = new MetricTags(MiddlewareConstants.DefaultTagKeys.Route, routeTemplate);
             return metrics.Provider.Timer.Instance(HttpRequestMetricsRegistry.Timers.EndpointRequestTransactionDuration, tags);
         }
 
         private static void RecordEndpointsHttpRequestErrors(IMetrics metrics, string routeTemplate, int httpStatusCode)
         {
-            var endpointErrorRequestTags = new MetricTags(Constants.DefaultTagKeys.Route, routeTemplate);
+            var endpointErrorRequestTags = new MetricTags(MiddlewareConstants.DefaultTagKeys.Route, routeTemplate);
             metrics.Measure.Meter.Mark(HttpRequestMetricsRegistry.Meters.EndpointErrorRequestRate, endpointErrorRequestTags);
 
             var endpointErrorRequestPerStatusCodeTags = new MetricTags(
-                new[] { Constants.DefaultTagKeys.Route, Constants.DefaultTagKeys.HttpStatusCode },
+                new[] { MiddlewareConstants.DefaultTagKeys.Route, MiddlewareConstants.DefaultTagKeys.HttpStatusCode },
                 new[] { routeTemplate, httpStatusCode.ToString() });
 
             metrics.Measure.Meter.Mark(
@@ -196,7 +196,7 @@ namespace App.Metrics
 
         private static void RecordEndpointsPercentageOfErrorRequests(IMetrics metrics, string routeTemplate)
         {
-            var tags = new MetricTags(Constants.DefaultTagKeys.Route, routeTemplate);
+            var tags = new MetricTags(MiddlewareConstants.DefaultTagKeys.Route, routeTemplate);
 
             var endpointsErrorRate = metrics.Provider.Meter.Instance(HttpRequestMetricsRegistry.Meters.EndpointErrorRequestRate, tags);
             var endpointsRequestTransactionTime = metrics.EndpointRequestTimer(routeTemplate);

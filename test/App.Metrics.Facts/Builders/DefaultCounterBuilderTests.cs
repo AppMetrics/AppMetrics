@@ -2,7 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Counter.Abstractions;
+using App.Metrics.Counter;
 using App.Metrics.Facts.Fixtures;
 using FluentAssertions;
 using Xunit;

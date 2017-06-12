@@ -2,8 +2,13 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Core.Options;
-using App.Metrics.Tagging;
+using App.Metrics.Core;
+using App.Metrics.Core.Tagging;
+using App.Metrics.Counter;
+using App.Metrics.Gauge;
+using App.Metrics.Histogram;
+using App.Metrics.Meter;
+using App.Metrics.Timer;
 
 namespace App.Metrics.Facts.Fixtures
 {

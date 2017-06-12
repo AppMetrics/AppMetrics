@@ -5,8 +5,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Extensions.Middleware.Abstractions;
-using App.Metrics.Formatting;
-using App.Metrics.Formatting.Ascii;
 using App.Metrics.Health;
 using Microsoft.AspNetCore.Http;
 

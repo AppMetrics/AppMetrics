@@ -3,6 +3,7 @@
 // </copyright>
 
 using App.Metrics.Apdex;
+using App.Metrics.Core.Apdex;
 using FluentAssertions;
 using Xunit;
 

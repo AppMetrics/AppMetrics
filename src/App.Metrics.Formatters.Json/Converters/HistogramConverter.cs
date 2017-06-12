@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using App.Metrics.Core.Histogram;
 using App.Metrics.Histogram;
 using Newtonsoft.Json;
 

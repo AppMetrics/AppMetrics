@@ -3,16 +3,14 @@
 // </copyright>
 
 using System;
-using App.Metrics.Abstractions.Filtering;
-using App.Metrics.Configuration;
-using App.Metrics.Core;
+using App.Metrics.Core.Configuration;
+using App.Metrics.Core.Filtering;
+using App.Metrics.Core.Infrastructure;
 using App.Metrics.Core.Internal;
-using App.Metrics.Filtering;
-using App.Metrics.Health.Abstractions;
+using App.Metrics.Filters;
+using App.Metrics.Health;
 using App.Metrics.Health.Internal;
-using App.Metrics.Infrastructure;
-using App.Metrics.Registry.Abstractions;
-using App.Metrics.Registry.Internal;
+using App.Metrics.Registry;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Facts.Fixtures
@@ -29,7 +27,7 @@ namespace App.Metrics.Facts.Fixtures
 
             IMetricContextRegistry NewContextRegistry(string name) => new DefaultMetricContextRegistry(name);
 
-            var registry = new DefaultMetricsRegistry(_loggerFactory, options, Clock, new EnvironmentInfoProvider(), NewContextRegistry);
+            var registry = new DefaultMetricsRegistry(_loggerFactory, options, Clock, NewContextRegistry);
             HealthCheckFactory = new HealthCheckFactory(healthFactoryLogger, new Lazy<IMetrics>(() => Metrics));
             var metricBuilderFactory = new DefaultMetricsBuilderFactory();
             var filter = new DefaultMetricsFilter();

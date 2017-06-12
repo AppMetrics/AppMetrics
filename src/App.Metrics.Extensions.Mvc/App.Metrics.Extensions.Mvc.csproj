@@ -9,7 +9,7 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>App.Metrics.Extensions.Mvc</AssemblyName>
     <PackageId>App.Metrics.Extensions.Mvc</PackageId>
-    <PackageTags>mvc;measurements;charts;timer;histogram;graphite;influxdb;health checks;metrics</PackageTags>
+    <PackageTags>mvc;measurements;instrumentationcharts;timer;histogram;healthchecks;metrics</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

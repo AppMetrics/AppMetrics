@@ -3,9 +3,9 @@
 // </copyright>
 
 using System.Linq;
-using App.Metrics.Core.Options;
+using App.Metrics.Core.Internal;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Gauge.Abstractions;
+using App.Metrics.Gauge;
 using App.Metrics.Internal;
 using FluentAssertions;
 using Xunit;

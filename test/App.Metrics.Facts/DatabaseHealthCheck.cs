@@ -5,6 +5,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Health;
+using App.Metrics.Internal;
 
 namespace App.Metrics.Facts
 {
@@ -23,7 +24,7 @@ namespace App.Metrics.Facts
             // exceptions will be caught and the result will be unhealthy
             _database.Ping();
 
-            return AppMetricsTaskCache.CompletedHealthyTask;
+            return TaskCache.HealthCheckResultHealthyCompletedTask;
         }
     }
 }

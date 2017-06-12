@@ -7,12 +7,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using App.Metrics.Abstractions.Filtering;
-using App.Metrics.Configuration;
+using App.Metrics.Builder;
+using App.Metrics.Core;
+using App.Metrics.Core.Configuration;
+using App.Metrics.Core.Infrastructure;
+using App.Metrics.Core.ReservoirSampling.Uniform;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
+using App.Metrics.Filters;
 using App.Metrics.Health;
-using App.Metrics.Infrastructure;
-using App.Metrics.ReservoirSampling.Uniform;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +41,7 @@ namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
                         clientId = context.Request.Path.Value.Split('/').Last();
                     }
 
-                    if (clientId.IsPresent())
+                    if (!string.IsNullOrWhiteSpace(clientId))
                     {
                         context.User =
                             new ClaimsPrincipal(

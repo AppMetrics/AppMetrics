@@ -5,9 +5,9 @@
 using System;
 using System.Threading.Tasks;
 using App.Metrics.Benchmarks.Fixtures;
-using App.Metrics.ReservoirSampling.SlidingWindow;
+using App.Metrics.Core.ReservoirSampling.SlidingWindow;
+using App.Metrics.Core.Scheduling;
 using App.Metrics.Scheduling;
-using App.Metrics.Scheduling.Abstractions;
 using BenchmarkDotNet.Attributes;
 
 namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Sampling

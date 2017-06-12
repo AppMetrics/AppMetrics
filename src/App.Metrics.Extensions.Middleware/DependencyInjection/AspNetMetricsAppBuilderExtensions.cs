@@ -5,11 +5,13 @@
 using System;
 using System.Threading.Tasks;
 using App.Metrics;
-using App.Metrics.Configuration;
-using App.Metrics.DependencyInjection.Internal;
+using App.Metrics.Core;
+using App.Metrics.Core.Configuration;
+using App.Metrics.Core.DependencyInjection.Internal;
 using App.Metrics.Extensions.Middleware;
+using App.Metrics.Extensions.Middleware.DependencyInjection.Internal;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
-using App.Metrics.Reporting.Abstractions;
+using App.Metrics.Reporting;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 

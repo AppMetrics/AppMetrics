@@ -3,16 +3,17 @@
 // </copyright>
 
 using System;
-using App.Metrics.Configuration;
+using App.Metrics.Core.Configuration;
+using App.Metrics.Core.Filtering;
+using App.Metrics.Core.Infrastructure;
 using App.Metrics.Core.Internal;
-using App.Metrics.Core.Options;
-using App.Metrics.Filtering;
+using App.Metrics.Counter;
+using App.Metrics.Gauge;
 using App.Metrics.Health.Internal;
-using App.Metrics.Infrastructure;
-using App.Metrics.Registry.Abstractions;
-using App.Metrics.Registry.Internal;
-using App.Metrics.Reporting.Internal;
-using App.Metrics.Tagging;
+using App.Metrics.Histogram;
+using App.Metrics.Meter;
+using App.Metrics.Registry;
+using App.Metrics.Timer;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Facts.Fixtures
@@ -29,12 +30,12 @@ namespace App.Metrics.Facts.Fixtures
 
             IMetricContextRegistry NewContextRegistry(string name) => new DefaultMetricContextRegistry(name);
 
-            DefaultMetrics defaultMetrics = null;
-            ReportGenerator = new DefaultReportGenerator(new AppMetricsOptions(), new LoggerFactory());
+            DefaultMetrics defaultMetrics;
+            ReportGenerator = new DefaultReportGenerator(new LoggerFactory());
 
             Metrics = () =>
             {
-                var registry = new DefaultMetricsRegistry(_loggerFactory, options, clock, new EnvironmentInfoProvider(), NewContextRegistry);
+                var registry = new DefaultMetricsRegistry(_loggerFactory, options, clock, NewContextRegistry);
                 var healthCheckFactory = new HealthCheckFactory(healthFactoryLogger, new Lazy<IMetrics>());
                 var metricBuilderFactory = new DefaultMetricsBuilderFactory();
                 var filter = new DefaultMetricsFilter();
@@ -69,7 +70,7 @@ namespace App.Metrics.Facts.Fixtures
 
         public Func<IMetrics> Metrics { get; }
 
-        public DefaultReportGenerator ReportGenerator { get; }
+        internal DefaultReportGenerator ReportGenerator { get; }
 
         public void Dispose() { Dispose(true); }
 

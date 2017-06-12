@@ -4,7 +4,7 @@
 
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Infrastructure;
+using App.Metrics.Core.Infrastructure;
 using Microsoft.AspNetCore.Http;
 
 namespace App.Metrics.Extensions.Middleware.Abstractions

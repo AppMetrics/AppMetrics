@@ -4,7 +4,7 @@
 
 using System;
 using System.Threading.Tasks;
-using App.Metrics.Apdex.Abstractions;
+using App.Metrics.Apdex;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using App.Metrics.Extensions.Middleware.Internal;
 using Microsoft.AspNetCore.Http;

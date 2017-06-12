@@ -4,6 +4,7 @@
 
 using System;
 using System.Net.Http;
+using App.Metrics.Core;
 using App.Metrics.Formatters.Json.Serialization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;

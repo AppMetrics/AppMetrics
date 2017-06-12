@@ -3,10 +3,11 @@
 // </copyright>
 
 using System.Threading.Tasks;
-using App.Metrics.Core.Options;
+using App.Metrics.Core.Formatting;
+using App.Metrics.Counter;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Facts.Formatting.TestHelpers;
-using App.Metrics.Formatting;
+using App.Metrics.Formatters.Ascii;
 using App.Metrics.Health;
 using FluentAssertions;
 using Xunit;

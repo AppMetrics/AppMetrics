@@ -3,7 +3,7 @@
 // </copyright>
 
 using App.Metrics.Benchmarks.Support;
-using App.Metrics.Tagging;
+using App.Metrics.Core.Tagging;
 using BenchmarkDotNet.Attributes;
 
 namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics

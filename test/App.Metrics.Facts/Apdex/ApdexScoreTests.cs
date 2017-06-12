@@ -4,11 +4,12 @@
 
 using System;
 using System.Linq;
-using App.Metrics.Abstractions.Metrics;
 using App.Metrics.Apdex;
+using App.Metrics.Core;
+using App.Metrics.Core.Apdex;
+using App.Metrics.Core.Infrastructure;
+using App.Metrics.Core.ReservoirSampling.ExponentialDecay;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Infrastructure;
-using App.Metrics.ReservoirSampling.ExponentialDecay;
 using FluentAssertions;
 using Xunit;
 

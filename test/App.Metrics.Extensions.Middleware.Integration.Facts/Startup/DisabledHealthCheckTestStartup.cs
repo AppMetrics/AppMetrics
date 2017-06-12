@@ -2,7 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Configuration;
+using App.Metrics.Core.Configuration;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

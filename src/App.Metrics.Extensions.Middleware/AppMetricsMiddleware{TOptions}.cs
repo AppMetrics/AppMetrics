@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using App.Metrics.Core;
 using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;

@@ -3,8 +3,8 @@
 // </copyright>
 
 using System;
-using App.Metrics.Meter.Abstractions;
-using App.Metrics.Tagging;
+using App.Metrics.Core.Tagging;
+using App.Metrics.Meter;
 
 namespace App.Metrics.Facts
 {

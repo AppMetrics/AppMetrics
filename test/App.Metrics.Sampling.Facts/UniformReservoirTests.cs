@@ -2,7 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.ReservoirSampling.Uniform;
+using App.Metrics.Core.ReservoirSampling.Uniform;
 using FluentAssertions;
 using Xunit;
 

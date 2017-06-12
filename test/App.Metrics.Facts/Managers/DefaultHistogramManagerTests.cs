@@ -2,10 +2,8 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Histogram;
-using App.Metrics.Histogram.Abstractions;
 using FluentAssertions;
 using Xunit;
 

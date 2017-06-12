@@ -3,7 +3,6 @@
 // </copyright>
 
 using System.Linq;
-using App.Metrics.Core;
 
 namespace App.Metrics.Formatters.Json.Extensions
 {

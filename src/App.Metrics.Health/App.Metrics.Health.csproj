@@ -1,0 +1,26 @@
+﻿<!--EXTERNAL_PROPERTIES: TargetFramework-->
+<!--EXTERNAL_PROPERTIES: DefineConstants-->
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\common.props" />
+
+  <PropertyGroup>
+    <Description>Adds health checking capablities to App Metrics</Description>    
+    <AssemblyTitle>App.Metrics.Health</AssemblyTitle>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>App.Metrics.Health</AssemblyName>
+    <PackageId>App.Metrics.Health</PackageId>
+    <PackageTags>healthchecks</PackageTags>
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\shared\ApdexMetricHealthCheckFactoryExtensions.cs" Link="Extensions\ApdexMetricHealthCheckFactoryExtensions.cs" />
+    <Compile Include="..\shared\MetricHealthCheckFactoryExtensions.cs" Link="DependencyInjection\Internal\MetricHealthCheckFactoryExtensions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\App.Metrics.Core\App.Metrics.Core.csproj" />
+  </ItemGroup>
+
+</Project>

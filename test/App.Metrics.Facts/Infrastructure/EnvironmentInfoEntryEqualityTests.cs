@@ -2,7 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Infrastructure;
+using App.Metrics.Core.Infrastructure;
 using FluentAssertions;
 using Xunit;
 

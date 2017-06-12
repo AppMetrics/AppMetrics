@@ -4,7 +4,7 @@
 
 using System;
 using App.Metrics.Apdex;
-using App.Metrics.Apdex.Abstractions;
+using App.Metrics.Core.Apdex;
 
 namespace App.Metrics.Facts
 {

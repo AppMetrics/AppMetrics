@@ -4,6 +4,7 @@
 
 using System;
 using App.Metrics.Apdex;
+using App.Metrics.Core.Apdex;
 using Newtonsoft.Json;
 
 namespace App.Metrics.Formatters.Json.Converters

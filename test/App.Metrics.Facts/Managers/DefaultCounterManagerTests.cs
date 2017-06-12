@@ -2,11 +2,9 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Core.Options;
+using App.Metrics.Core.Tagging;
 using App.Metrics.Counter;
-using App.Metrics.Counter.Abstractions;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Tagging;
 using FluentAssertions;
 using Xunit;
 

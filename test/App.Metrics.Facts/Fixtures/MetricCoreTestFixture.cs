@@ -3,15 +3,11 @@
 // </copyright>
 
 using System;
-using App.Metrics.Configuration;
-using App.Metrics.Core.Abstractions;
-using App.Metrics.Core.Interfaces;
+using App.Metrics.Core.Configuration;
+using App.Metrics.Core.Infrastructure;
 using App.Metrics.Core.Internal;
-using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
-using App.Metrics.Registry.Abstractions;
-using App.Metrics.Registry.Internal;
-using App.Metrics.Tagging;
+using App.Metrics.Registry;
 using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Facts.Fixtures
@@ -28,7 +24,7 @@ namespace App.Metrics.Facts.Fixtures
 
             IMetricContextRegistry ContextRegistrySetup(string context) => new DefaultMetricContextRegistry(context);
 
-            var registry = new DefaultMetricsRegistry(loggerFactory, options, Clock, new EnvironmentInfoProvider(), ContextRegistrySetup);
+            var registry = new DefaultMetricsRegistry(loggerFactory, options, Clock, ContextRegistrySetup);
 
             Registry = registry;
             Providers = new DefaultMetricsProvider(Registry, Builder, Clock);
