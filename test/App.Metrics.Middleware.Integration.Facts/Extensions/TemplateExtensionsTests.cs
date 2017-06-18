@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Routing.Template;
 using Moq;
 using Xunit;
 
-namespace App.Metrics.Extensions.Middleware.Integration.Facts.Extensions
+namespace App.Metrics.Middleware.Integration.Facts.Extensions
 {
     public class TemplateExtensionsTests
     {

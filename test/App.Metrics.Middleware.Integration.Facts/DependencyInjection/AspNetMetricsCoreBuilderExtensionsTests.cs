@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
-namespace App.Metrics.Extensions.Middleware.Integration.Facts.DependencyInjection
+namespace App.Metrics.Middleware.Integration.Facts.DependencyInjection
 {
     public class AspNetMetricsCoreBuilderExtensionsTests
     {

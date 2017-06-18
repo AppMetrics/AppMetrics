@@ -5,11 +5,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using App.Metrics.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace App.Metrics.Extensions.Middleware.Integration.Facts
+namespace App.Metrics.Middleware.Integration.Facts
 {
     [Route("api/[controller]")]
     public class TestController : Controller

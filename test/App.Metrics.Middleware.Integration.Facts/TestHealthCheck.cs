@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Health;
 
-namespace App.Metrics.Extensions.Middleware.Integration.Facts
+namespace App.Metrics.Middleware.Integration.Facts
 {
     // ReSharper disable UnusedMember.Global this is automatically registered
     public class TestHealthCheck : HealthCheck

@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Middleware", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Mvc", "src\App.Metrics.Mvc\App.Metrics.Mvc.csproj", "{21C3203D-DC15-4435-84D7-E6F2FDD71C2C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Formatters.Json", "src\App.Metrics.Formatters.Json\App.Metrics.Formatters.Json.csproj", "{E8ED85F4-9A6D-476B-B12F-64BA07F52A18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Middleware.Formatters.Json", "src\App.Metrics.Middleware.Formatters.Json\App.Metrics.Middleware.Formatters.Json.csproj", "{E8ED85F4-9A6D-476B-B12F-64BA07F52A18}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cake", "Cake", "{99DA9961-5DF1-4EA9-B37A-BE346449F512}"
 	ProjectSection(SolutionItems) = preProject
@@ -57,7 +57,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{07876CE3
 		build\dependencies.props = build\dependencies.props
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Formatters.Ascii", "src\App.Metrics.Formatters.Ascii\App.Metrics.Formatters.Ascii.csproj", "{D7EEFE8B-0B2E-43C3-972E-13B091C5E78B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Middleware.Formatters.Ascii", "src\App.Metrics.Middleware.Formatters.Ascii\App.Metrics.Middleware.Formatters.Ascii.csproj", "{D7EEFE8B-0B2E-43C3-972E-13B091C5E78B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Sandbox", "sandbox\App.Metrics.Sandbox\App.Metrics.Sandbox.csproj", "{4D8A4CB5-76A5-45F1-AB3D-5C71AD81E42F}"
 EndProject
@@ -71,7 +71,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Middleware.Inte
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Sampling.Facts", "test\App.Metrics.Sampling.Facts\App.Metrics.Sampling.Facts.csproj", "{0F9B20A3-0474-43F4-AF59-54AE764ACA7C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Formatters.Json.Facts", "test\App.Metrics.Formatters.Json.Facts\App.Metrics.Formatters.Json.Facts.csproj", "{137401A6-7B61-4EAE-B71A-709E072DA0BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Middleware.Formatters.Json.Facts", "test\App.Metrics.Middleware.Formatters.Json.Facts\App.Metrics.Middleware.Formatters.Json.Facts.csproj", "{137401A6-7B61-4EAE-B71A-709E072DA0BD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Health", "src\App.Metrics.Health\App.Metrics.Health.csproj", "{B7BC929B-B801-4367-9E81-394B86A61DFE}"
 EndProject

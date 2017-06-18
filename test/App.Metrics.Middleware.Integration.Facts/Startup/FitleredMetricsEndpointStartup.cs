@@ -2,10 +2,8 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Core;
 using App.Metrics.Core.Configuration;
 using App.Metrics.Core.Filtering;
-using App.Metrics.Core.Tagging;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
@@ -17,7 +15,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
+namespace App.Metrics.Middleware.Integration.Facts.Startup
 {
     public class FitleredMetricsEndpointStartup : TestStartup
     {

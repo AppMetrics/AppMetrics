@@ -2,13 +2,11 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using App.Metrics.Builder;
-using App.Metrics.Core;
 using App.Metrics.Core.Configuration;
 using App.Metrics.Core.Infrastructure;
 using App.Metrics.Core.ReservoirSampling.Uniform;
@@ -21,7 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
+namespace App.Metrics.Middleware.Integration.Facts.Startup
 {
     public abstract class TestStartup
     {

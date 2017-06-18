@@ -6,12 +6,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
-using App.Metrics.Formatters.Json.Serialization;
+using App.Metrics.Middleware.Formatters.Json.Serialization;
+using App.Metrics.Middleware.Integration.Facts.Startup;
 using FluentAssertions;
 using Xunit;
 
-namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Metrics
+namespace App.Metrics.Middleware.Integration.Facts.Middleware.Metrics
 {
     public class MetricsEndpointFilteringMiddlewareTests : IClassFixture<MetricsHostTestFixture<FitleredMetricsEndpointStartup>>
     {

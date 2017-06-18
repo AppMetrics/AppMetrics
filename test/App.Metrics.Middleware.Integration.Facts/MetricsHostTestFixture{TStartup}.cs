@@ -4,13 +4,12 @@
 
 using System;
 using System.Net.Http;
-using App.Metrics.Core;
-using App.Metrics.Formatters.Json.Serialization;
+using App.Metrics.Middleware.Formatters.Json.Serialization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace App.Metrics.Extensions.Middleware.Integration.Facts
+namespace App.Metrics.Middleware.Integration.Facts
 {
     public class MetricsHostTestFixture<TStartup> : IDisposable
         where TStartup : class

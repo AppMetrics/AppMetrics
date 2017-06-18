@@ -4,14 +4,13 @@
 
 using System.Net.Http;
 using System.Threading.Tasks;
-using App.Metrics.Core;
-using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
+using App.Metrics.Middleware.Integration.Facts.Startup;
 using App.Metrics.Middleware.Internal;
 using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;
 
-namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.OAuth2
+namespace App.Metrics.Middleware.Integration.Facts.Middleware.OAuth2
 {
     public class PerRequestTimerMiddlewareHistogramStatsTests : IClassFixture<MetricsHostTestFixture<DefaultTestStartup>>
     {

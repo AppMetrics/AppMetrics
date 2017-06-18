@@ -5,11 +5,11 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using App.Metrics.Extensions.Middleware.Integration.Facts.Startup;
+using App.Metrics.Middleware.Integration.Facts.Startup;
 using FluentAssertions;
 using Xunit;
 
-namespace App.Metrics.Extensions.Middleware.Integration.Facts.Middleware.Ping
+namespace App.Metrics.Middleware.Integration.Facts.Middleware.Ping
 {
     public class PingEndpointDisabledMiddlewareTests : IClassFixture<MetricsHostTestFixture<PingDisabledTestStartup>>
     {

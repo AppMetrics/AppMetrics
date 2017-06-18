@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace App.Metrics.Extensions.Middleware.Integration.Facts.Startup
+namespace App.Metrics.Middleware.Integration.Facts.Startup
 {
     public class HealthyHealthTestStartup : TestStartup
     {
