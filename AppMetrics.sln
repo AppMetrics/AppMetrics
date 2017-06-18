@@ -21,9 +21,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmarks", "benchmarks", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics", "src\App.Metrics\App.Metrics.csproj", "{8E0E0579-ACB1-4412-BF8E-1FCA4341EFE7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Extensions.Middleware", "src\App.Metrics.Extensions.Middleware\App.Metrics.Extensions.Middleware.csproj", "{4E281FFD-BE0C-4842-827A-4DF45B7AAA04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Middleware", "src\App.Metrics.Middleware\App.Metrics.Middleware.csproj", "{4E281FFD-BE0C-4842-827A-4DF45B7AAA04}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Extensions.Mvc", "src\App.Metrics.Extensions.Mvc\App.Metrics.Extensions.Mvc.csproj", "{21C3203D-DC15-4435-84D7-E6F2FDD71C2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Mvc", "src\App.Metrics.Mvc\App.Metrics.Mvc.csproj", "{21C3203D-DC15-4435-84D7-E6F2FDD71C2C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Formatters.Json", "src\App.Metrics.Formatters.Json\App.Metrics.Formatters.Json.csproj", "{E8ED85F4-9A6D-476B-B12F-64BA07F52A18}"
 EndProject
@@ -67,7 +67,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Benchmarks.Runn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Facts", "test\App.Metrics.Facts\App.Metrics.Facts.csproj", "{ECAF07D0-A5C0-4D73-8FB2-DB870B6321C7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Extensions.Middleware.Integration.Facts", "test\App.Metrics.Extensions.Middleware.Integration.Facts\App.Metrics.Extensions.Middleware.Integration.Facts.csproj", "{92522DDA-8C3D-4084-9719-E01F601F49B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Middleware.Integration.Facts", "test\App.Metrics.Middleware.Integration.Facts\App.Metrics.Middleware.Integration.Facts.csproj", "{92522DDA-8C3D-4084-9719-E01F601F49B4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Sampling.Facts", "test\App.Metrics.Sampling.Facts\App.Metrics.Sampling.Facts.csproj", "{0F9B20A3-0474-43F4-AF59-54AE764ACA7C}"
 EndProject
@@ -82,8 +82,15 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{F758A1AA-F4B9-4288-9B45-674EEF618E1B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{936C69BF-F19F-433F-A63E-CE028DF7F656}"
+	ProjectSection(SolutionItems) = preProject
+		src\shared\ApdexMetricHealthCheckFactoryExtensions.cs = src\shared\ApdexMetricHealthCheckFactoryExtensions.cs
+		src\shared\MetricHealthCheckFactoryExtensions.cs = src\shared\MetricHealthCheckFactoryExtensions.cs
+		src\shared\StringExtensions.cs = src\shared\StringExtensions.cs
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Health.Facts", "test\App.Metrics.Health.Facts\App.Metrics.Health.Facts.csproj", "{F9585D75-2714-497B-A490-E6DA981075F5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Middleware.Abstractions", "src\App.Metrics.Middleware.Abstractions\App.Metrics.Middleware.Abstractions.csproj", "{BE1B0701-E2F3-41CF-8683-F74A1B924347}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -155,6 +162,10 @@ Global
 		{F9585D75-2714-497B-A490-E6DA981075F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9585D75-2714-497B-A490-E6DA981075F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9585D75-2714-497B-A490-E6DA981075F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE1B0701-E2F3-41CF-8683-F74A1B924347}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE1B0701-E2F3-41CF-8683-F74A1B924347}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE1B0701-E2F3-41CF-8683-F74A1B924347}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE1B0701-E2F3-41CF-8683-F74A1B924347}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -182,5 +193,6 @@ Global
 		{F758A1AA-F4B9-4288-9B45-674EEF618E1B} = {2D805782-756E-4C98-B22E-F502BEE95318}
 		{936C69BF-F19F-433F-A63E-CE028DF7F656} = {2D805782-756E-4C98-B22E-F502BEE95318}
 		{F9585D75-2714-497B-A490-E6DA981075F5} = {DD2E4647-7125-4CE3-9BA5-B45A26113A31}
+		{BE1B0701-E2F3-41CF-8683-F74A1B924347} = {F758A1AA-F4B9-4288-9B45-674EEF618E1B}
 	EndGlobalSection
 EndGlobal

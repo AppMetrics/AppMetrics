@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.IO;
+using App.Metrics.Builder;
 using App.Metrics.Sandbox.Extensions;
 using App.Metrics.Sandbox.JustForTesting;
 using Microsoft.AspNetCore.Builder;

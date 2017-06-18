@@ -3,6 +3,7 @@
 // </copyright>
 
 using App.Metrics.Core.Infrastructure;
+using App.Metrics.Infrastructure;
 using Microsoft.Extensions.Options;
 
 namespace App.Metrics.Core.Configuration

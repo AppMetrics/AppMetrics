@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using App.Metrics.Core.Infrastructure;
 using App.Metrics.Core.Tagging;
 using App.Metrics.Health;
+using App.Metrics.Infrastructure;
 using App.Metrics.Reporting;
 
 namespace App.Metrics.Facts.Reporting.Helpers

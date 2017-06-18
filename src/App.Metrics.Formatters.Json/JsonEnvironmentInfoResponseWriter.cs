@@ -5,10 +5,9 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Core.Infrastructure;
-using App.Metrics.Extensions.Middleware.Abstractions;
 using App.Metrics.Formatters.Json.Abstractions.Serialization;
 using App.Metrics.Infrastructure;
+using App.Metrics.Middleware;
 using Microsoft.AspNetCore.Http;
 
 namespace App.Metrics.Formatters.Json

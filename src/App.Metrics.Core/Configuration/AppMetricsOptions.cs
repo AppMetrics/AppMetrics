@@ -34,7 +34,7 @@ namespace App.Metrics.Core.Configuration
 
         /// <summary>
         ///     Gets or sets a value indicating whether [metrics tracking enabled]. This will also avoid registering all metric
-        ///     tracking middleware if using App.Metrics.Extensions.Middleware.
+        ///     tracking middleware if using App.Metrics.Middleware.
         /// </summary>
         /// <remarks>If disabled no metrics will be recorded or stored in memory</remarks>
         /// <value>

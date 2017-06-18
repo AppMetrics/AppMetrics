@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\App.Metrics.Extensions.Middleware\App.Metrics.Extensions.Middleware.csproj" />
+    <ProjectReference Include="..\App.Metrics.Middleware\App.Metrics.Middleware.csproj" />
     <ProjectReference Include="..\App.Metrics.Health\App.Metrics.Health.csproj" />
   </ItemGroup>
 

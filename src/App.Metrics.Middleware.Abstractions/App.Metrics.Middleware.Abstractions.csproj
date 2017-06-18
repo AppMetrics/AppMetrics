@@ -1,0 +1,26 @@
+﻿<!--EXTERNAL_PROPERTIES: TargetFramework-->
+<!--EXTERNAL_PROPERTIES: DefineConstants-->
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\common.props" />
+  
+  <PropertyGroup>
+    <Description>App Metrics Middleware abstractions and interfaces for routing, HTTP response formatting and more.</Description>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>App.Metrics.Middleware.Abstractions</AssemblyName>
+    <PackageId>App.Metrics.Middleware.Abstractions</PackageId>
+    <PackageTags>metrics;middleware;measurements;instrumentation;apdex;meter;gauge;counter;timer;histogram</PackageTags>
+	  <DebugType>full</DebugType>
+	  <RootNamespace>App.Metrics.Middleware</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\App.Metrics.Abstractions\App.Metrics.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="$(AspNetCoreVersion)" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="$(AspNetCoreVersion)" />    
+  </ItemGroup>
+
+</Project>

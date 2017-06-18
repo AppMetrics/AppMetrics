@@ -5,6 +5,7 @@
 using System;
 using System.IO;
 using App.Metrics.Core.Infrastructure;
+using App.Metrics.Infrastructure;
 
 namespace App.Metrics.Core.Formatting.Ascii
 {

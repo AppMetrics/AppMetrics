@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using App.Metrics.Core.Configuration;
 using App.Metrics.Core.Infrastructure;
+using App.Metrics.Infrastructure;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics.Configuration

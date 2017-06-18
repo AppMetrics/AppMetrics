@@ -10,6 +10,7 @@ using App.Metrics.Core.Infrastructure;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
+using App.Metrics.Infrastructure;
 using App.Metrics.Meter;
 using App.Metrics.Timer;
 
