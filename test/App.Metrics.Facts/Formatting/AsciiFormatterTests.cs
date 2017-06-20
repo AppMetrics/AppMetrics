@@ -4,11 +4,10 @@
 
 using System.Threading.Tasks;
 using App.Metrics.Core.Formatting;
-using App.Metrics.Core.Formatting.Ascii;
 using App.Metrics.Counter;
 using App.Metrics.Facts.Fixtures;
+using App.Metrics.Formatters.Ascii;
 using App.Metrics.Health;
-using App.Metrics.Middleware.Formatters.Ascii;
 using FluentAssertions;
 using Xunit;
 

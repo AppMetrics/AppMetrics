@@ -6,12 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using App.Metrics.Core.Reporting;
 using App.Metrics.Reporting;
 
-namespace App.Metrics.Core.Formatting.Ascii
+namespace App.Metrics.Formatters.Ascii
 {
-    // TODO: Remove in 2.0.0 - Add to separate formatting package
     public class AsciiMetricPayloadBuilder : IMetricPayloadBuilder<AsciiMetricPayload>
     {
         private readonly Func<string, string, string> _metricNameFormatter;
@@ -22,7 +20,7 @@ namespace App.Metrics.Core.Formatting.Ascii
             _payload = new AsciiMetricPayload();
             if (metricNameFormatter == null)
             {
-                _metricNameFormatter = (metricContext, metricName) => metricContext.IsMissing()
+                _metricNameFormatter = (metricContext, metricName) => string.IsNullOrWhiteSpace(metricContext)
                     ? metricName
                     : $"[{metricContext}] {metricName}";
             }

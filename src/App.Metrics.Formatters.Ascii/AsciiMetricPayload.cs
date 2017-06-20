@@ -6,9 +6,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace App.Metrics.Core.Formatting.Ascii
+namespace App.Metrics.Formatters.Ascii
 {
-    // TODO: Remove in 2.0.0 - Add to separate formatting package
     public class AsciiMetricPayload
     {
         private readonly List<AsciiMetricPoint> _points = new List<AsciiMetricPoint>();

@@ -5,7 +5,7 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Core.Formatting.Ascii;
+using App.Metrics.Formatters.Ascii;
 using App.Metrics.Infrastructure;
 using Microsoft.AspNetCore.Http;
 

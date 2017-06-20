@@ -92,6 +92,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Health.Facts", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Middleware.Abstractions", "src\App.Metrics.Middleware.Abstractions\App.Metrics.Middleware.Abstractions.csproj", "{BE1B0701-E2F3-41CF-8683-F74A1B924347}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Formatters.Ascii", "src\App.Metrics.Formatters.Ascii\App.Metrics.Formatters.Ascii.csproj", "{B91E8DBE-519D-4150-A5DD-B3A7F4C0072B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Formatters.Json", "src\App.Metrics.Formatters.Json\App.Metrics.Formatters.Json.csproj", "{ADBF5CB8-019B-46FE-B3B0-49BE774C3F80}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -166,6 +170,14 @@ Global
 		{BE1B0701-E2F3-41CF-8683-F74A1B924347}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE1B0701-E2F3-41CF-8683-F74A1B924347}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE1B0701-E2F3-41CF-8683-F74A1B924347}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B91E8DBE-519D-4150-A5DD-B3A7F4C0072B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B91E8DBE-519D-4150-A5DD-B3A7F4C0072B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B91E8DBE-519D-4150-A5DD-B3A7F4C0072B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B91E8DBE-519D-4150-A5DD-B3A7F4C0072B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADBF5CB8-019B-46FE-B3B0-49BE774C3F80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADBF5CB8-019B-46FE-B3B0-49BE774C3F80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADBF5CB8-019B-46FE-B3B0-49BE774C3F80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADBF5CB8-019B-46FE-B3B0-49BE774C3F80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -194,5 +206,7 @@ Global
 		{936C69BF-F19F-433F-A63E-CE028DF7F656} = {2D805782-756E-4C98-B22E-F502BEE95318}
 		{F9585D75-2714-497B-A490-E6DA981075F5} = {DD2E4647-7125-4CE3-9BA5-B45A26113A31}
 		{BE1B0701-E2F3-41CF-8683-F74A1B924347} = {F758A1AA-F4B9-4288-9B45-674EEF618E1B}
+		{B91E8DBE-519D-4150-A5DD-B3A7F4C0072B} = {2D805782-756E-4C98-B22E-F502BEE95318}
+		{ADBF5CB8-019B-46FE-B3B0-49BE774C3F80} = {2D805782-756E-4C98-B22E-F502BEE95318}
 	EndGlobalSection
 EndGlobal

@@ -4,12 +4,10 @@
 
 using System;
 using System.IO;
-using App.Metrics.Core.Formatting.Ascii;
 using App.Metrics.Health;
 
-namespace App.Metrics.Middleware.Formatters.Ascii
+namespace App.Metrics.Formatters.Ascii
 {
-    // TODO: Remove in 2.0.0 - Add to separate formatting package
     public class AsciiHealthCheckResult
     {
         public AsciiHealthCheckResult(string name, string message, HealthCheckStatus status)

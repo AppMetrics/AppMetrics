@@ -5,9 +5,8 @@
 using System.IO;
 using App.Metrics.Health;
 
-namespace App.Metrics.Middleware.Formatters.Ascii
+namespace App.Metrics.Formatters.Ascii
 {
-    // TODO: Remove in 2.0.0 - Add to separate formatting package
     public class AsciiHealthStatusPayloadBuilder : IHealthStatusPayloadBuilder<AsciiHealthStatusPayload>
     {
         private AsciiHealthStatusPayload _payload;

@@ -5,7 +5,7 @@
 using System.Linq;
 using App.Metrics.Health;
 
-namespace App.Metrics.Middleware.Formatters.Ascii
+namespace App.Metrics.Core.Formatting
 {
     public class HealthStatusPayloadFormatter
     {
