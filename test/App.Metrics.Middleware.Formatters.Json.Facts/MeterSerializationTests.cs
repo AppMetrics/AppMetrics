@@ -4,10 +4,10 @@
 
 using System;
 using System.Linq;
+using App.Metrics.Formatters.Json.Serialization;
 using App.Metrics.Meter;
 using App.Metrics.Middleware.Formatters.Json.Facts.Helpers;
 using App.Metrics.Middleware.Formatters.Json.Facts.TestFixtures;
-using App.Metrics.Middleware.Formatters.Json.Serialization;
 using FluentAssertions;
 using FluentAssertions.Json;
 using Newtonsoft.Json.Linq;

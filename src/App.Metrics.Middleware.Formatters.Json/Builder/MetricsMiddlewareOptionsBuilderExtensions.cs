@@ -3,11 +3,10 @@
 // </copyright>
 
 using System.Diagnostics.CodeAnalysis;
+using App.Metrics.Formatters.Json.Serialization;
 using App.Metrics.Middleware;
 using App.Metrics.Middleware.DependencyInjection;
 using App.Metrics.Middleware.Formatters.Json;
-using App.Metrics.Middleware.Formatters.Json.Abstractions.Serialization;
-using App.Metrics.Middleware.Formatters.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json;

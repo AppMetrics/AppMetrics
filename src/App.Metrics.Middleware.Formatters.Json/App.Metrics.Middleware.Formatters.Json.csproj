@@ -14,8 +14,8 @@
   </PropertyGroup>  
 
   <ItemGroup>
+    <ProjectReference Include="..\App.Metrics.Formatters.Json\App.Metrics.Formatters.Json.csproj" />
     <ProjectReference Include="..\App.Metrics.Middleware\App.Metrics.Middleware.csproj" />
-    <ProjectReference Include="..\App.Metrics.Health\App.Metrics.Health.csproj" />
   </ItemGroup>
 
   <ItemGroup>

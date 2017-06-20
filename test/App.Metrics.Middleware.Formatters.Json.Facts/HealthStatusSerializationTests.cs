@@ -5,9 +5,9 @@
 using System;
 using System.Linq;
 using App.Metrics.Core.Infrastructure;
+using App.Metrics.Formatters.Json.Serialization;
 using App.Metrics.Health;
 using App.Metrics.Middleware.Formatters.Json.Facts.Helpers;
-using App.Metrics.Middleware.Formatters.Json.Serialization;
 using FluentAssertions;
 using FluentAssertions.Json;
 using Newtonsoft.Json.Linq;
