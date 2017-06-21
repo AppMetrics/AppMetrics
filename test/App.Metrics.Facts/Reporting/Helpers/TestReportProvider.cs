@@ -25,9 +25,6 @@ namespace App.Metrics.Facts.Reporting.Helpers
         public IFilterMetrics Filter { get; }
         // ReSharper restore UnassignedGetOnlyAutoProperty
 
-        public IMetricReporter CreateMetricReporter(string name)
-        {
-            return new TestMetricReporter(_pass, _reportInterval, _throwEx);
-        }
+        public IMetricReporter CreateMetricReporter(string name) { return new TestMetricReporter(_pass, _reportInterval, _throwEx); }
     }
 }

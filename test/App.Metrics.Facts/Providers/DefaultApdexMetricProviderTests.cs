@@ -5,7 +5,6 @@
 using System;
 using System.Linq;
 using App.Metrics.Apdex;
-using App.Metrics.Core;
 using App.Metrics.Core.Filtering;
 using App.Metrics.Core.ReservoirSampling.Uniform;
 using App.Metrics.Facts.Fixtures;

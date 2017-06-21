@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using App.Metrics.Core.Tagging;
 
 namespace App.Metrics.Facts.Reporting.Helpers
 {

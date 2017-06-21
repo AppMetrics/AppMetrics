@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using App.Metrics.Core.Histogram;
 using App.Metrics.Core.ReservoirSampling.ExponentialDecay;
+using App.Metrics.Facts.TestHelpers;
 using App.Metrics.Histogram;
 using FluentAssertions;
 using Xunit;

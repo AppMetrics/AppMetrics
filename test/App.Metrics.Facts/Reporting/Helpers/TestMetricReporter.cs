@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using App.Metrics.Core.Infrastructure;
 using App.Metrics.Core.Tagging;
 using App.Metrics.Health;
 using App.Metrics.Infrastructure;

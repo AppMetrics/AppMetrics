@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using App.Metrics.Core.Reporting;
 using App.Metrics.Reporting;
 
 namespace App.Metrics.Facts.Reporting.Helpers

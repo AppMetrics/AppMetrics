@@ -3,6 +3,7 @@
 // </copyright>
 
 using App.Metrics.Facts.Fixtures;
+using App.Metrics.Facts.TestHelpers;
 using App.Metrics.Gauge;
 using FluentAssertions;
 using Xunit;

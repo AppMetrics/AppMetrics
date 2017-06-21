@@ -2,7 +2,6 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Core.Tagging;
 using App.Metrics.Counter;
 using App.Metrics.Facts.Fixtures;
 using FluentAssertions;

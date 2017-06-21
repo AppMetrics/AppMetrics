@@ -7,7 +7,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Core.Counter;
-using App.Metrics.Core.Tagging;
 using App.Metrics.Counter;
 using FluentAssertions;
 using Xunit;

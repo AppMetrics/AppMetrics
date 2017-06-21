@@ -7,11 +7,10 @@ using App.Metrics.Core.Configuration;
 using App.Metrics.Core.Filtering;
 using App.Metrics.Core.Infrastructure;
 using App.Metrics.Core.Internal;
-using App.Metrics.Filters;
 using App.Metrics.Health;
-using App.Metrics.Health.Internal;
 using App.Metrics.Registry;
 using Microsoft.Extensions.Logging;
+using Moq;
 
 namespace App.Metrics.Facts.Fixtures
 {
@@ -21,24 +20,20 @@ namespace App.Metrics.Facts.Fixtures
 
         public MetricsFixture()
         {
-            var healthFactoryLogger = _loggerFactory.CreateLogger<HealthCheckFactory>();
+            var stubMetricsHealthProvider = new Mock<IProvideHealth>().Object;
             Clock = new TestClock();
             var options = new AppMetricsOptions();
 
             IMetricContextRegistry NewContextRegistry(string name) => new DefaultMetricContextRegistry(name);
 
             var registry = new DefaultMetricsRegistry(_loggerFactory, options, Clock, NewContextRegistry);
-            HealthCheckFactory = new HealthCheckFactory(healthFactoryLogger, new Lazy<IMetrics>(() => Metrics));
             var metricBuilderFactory = new DefaultMetricsBuilderFactory();
             var filter = new DefaultMetricsFilter();
             var dataManager = new DefaultMetricValuesProvider(filter, registry);
-            var healthStatusProvider = new DefaultHealthProvider(
-                new Lazy<IMetrics>(() => Metrics),
-                _loggerFactory.CreateLogger<DefaultHealthProvider>(),
-                HealthCheckFactory);
             var metricsManagerFactory = new DefaultMeasureMetricsProvider(registry, metricBuilderFactory, Clock);
             var metricsManagerAdvancedFactory = new DefaultMetricsProvider(registry, metricBuilderFactory, Clock);
             var metricsManager = new DefaultMetricsManager(registry, _loggerFactory.CreateLogger<DefaultMetricsManager>());
+
             Metrics = new DefaultMetrics(
                 Clock,
                 filter,
@@ -47,18 +42,13 @@ namespace App.Metrics.Facts.Fixtures
                 metricsManagerAdvancedFactory,
                 dataManager,
                 metricsManager,
-                healthStatusProvider);
+                stubMetricsHealthProvider);
         }
 
         public IClock Clock { get; }
 
         public Func<IMetrics, MetricsDataValueSource> CurrentData =>
             ctx => Metrics.Snapshot.Get();
-
-        public Func<IMetrics, IFilterMetrics, MetricsDataValueSource> CurrentDataWithFilter
-            => (ctx, filter) => Metrics.Snapshot.Get(filter);
-
-        public IHealthCheckFactory HealthCheckFactory { get; }
 
         public IMetrics Metrics { get; }
 

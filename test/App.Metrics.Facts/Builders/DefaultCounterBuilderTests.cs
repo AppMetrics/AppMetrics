@@ -4,6 +4,7 @@
 
 using App.Metrics.Counter;
 using App.Metrics.Facts.Fixtures;
+using App.Metrics.Facts.TestHelpers;
 using FluentAssertions;
 using Xunit;
 

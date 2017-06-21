@@ -4,7 +4,6 @@
 
 using System;
 using System.Linq;
-using App.Metrics.Core;
 using App.Metrics.Core.Gauge;
 using App.Metrics.Core.Infrastructure;
 using App.Metrics.Core.Internal;

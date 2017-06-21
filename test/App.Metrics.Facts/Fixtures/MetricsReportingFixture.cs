@@ -8,13 +8,15 @@ using App.Metrics.Core.Filtering;
 using App.Metrics.Core.Infrastructure;
 using App.Metrics.Core.Internal;
 using App.Metrics.Counter;
+using App.Metrics.Facts.TestHelpers;
 using App.Metrics.Gauge;
-using App.Metrics.Health.Internal;
+using App.Metrics.Health;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
 using App.Metrics.Registry;
 using App.Metrics.Timer;
 using Microsoft.Extensions.Logging;
+using Moq;
 
 namespace App.Metrics.Facts.Fixtures
 {
@@ -24,7 +26,7 @@ namespace App.Metrics.Facts.Fixtures
 
         public MetricsReportingFixture()
         {
-            var healthFactoryLogger = _loggerFactory.CreateLogger<HealthCheckFactory>();
+            var stubMetricsHealthProvider = new Mock<IProvideHealth>().Object;
             var options = new AppMetricsOptions();
             var clock = new TestClock();
 
@@ -36,7 +38,6 @@ namespace App.Metrics.Facts.Fixtures
             Metrics = () =>
             {
                 var registry = new DefaultMetricsRegistry(_loggerFactory, options, clock, NewContextRegistry);
-                var healthCheckFactory = new HealthCheckFactory(healthFactoryLogger, new Lazy<IMetrics>());
                 var metricBuilderFactory = new DefaultMetricsBuilderFactory();
                 var filter = new DefaultMetricsFilter();
                 var dataManager = new DefaultMetricValuesProvider(
@@ -47,11 +48,6 @@ namespace App.Metrics.Facts.Fixtures
                 var metricsManagerAdvancedFactory = new DefaultMetricsProvider(registry, metricBuilderFactory, clock);
                 var metricsManager = new DefaultMetricsManager(registry, _loggerFactory.CreateLogger<DefaultMetricsManager>());
 
-                var healthManager = new DefaultHealthProvider(
-                    new Lazy<IMetrics>(Metrics),
-                    _loggerFactory.CreateLogger<DefaultHealthProvider>(),
-                    healthCheckFactory);
-
                 defaultMetrics = new DefaultMetrics(
                     clock,
                     filter,
@@ -60,7 +56,7 @@ namespace App.Metrics.Facts.Fixtures
                     metricsManagerAdvancedFactory,
                     dataManager,
                     metricsManager,
-                    healthManager);
+                    stubMetricsHealthProvider);
 
                 RecordSomeMetrics(defaultMetrics);
 
