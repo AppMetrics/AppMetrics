@@ -18,17 +18,14 @@
     <PackageReference Include="FluentAssertions" Version="$(FluentAssertionsVersion)" />
     <PackageReference Include="Moq" Version="$(MoqVersion)" />
     <PackageReference Include="xunit" Version="$(XunitVersion)" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="$(XunitVersion)" />
-    <PackageReference Include="Microsoft.DotNet.InternalAbstractions" Version="1.0.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="$(XunitVersion)" />    
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\App.Metrics.Abstractions\App.Metrics.Abstractions.csproj" />
-    <ProjectReference Include="..\..\src\App.Metrics.Core\App.Metrics.Core.csproj" />
+  <ItemGroup>    
     <ProjectReference Include="..\..\src\App.Metrics.Formatters.Ascii\App.Metrics.Formatters.Ascii.csproj" />
     <ProjectReference Include="..\..\src\App.Metrics.Health\App.Metrics.Health.csproj" />
   </ItemGroup>
