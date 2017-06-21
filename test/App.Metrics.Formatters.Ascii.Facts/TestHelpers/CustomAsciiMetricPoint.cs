@@ -5,9 +5,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using App.Metrics.Core.Tagging;
 
-namespace App.Metrics.Facts.Formatting.TestHelpers
+namespace App.Metrics.Formatters.Ascii.Facts.TestHelpers
 {
     public class CustomAsciiMetricPoint
     {
@@ -34,7 +33,7 @@ namespace App.Metrics.Facts.Formatting.TestHelpers
                 throw new ArgumentNullException(nameof(textWriter));
             }
 
-            textWriter.Write((string)Measurement);
+            textWriter.Write(Measurement);
 
             if (Tags.Count > 0)
             {

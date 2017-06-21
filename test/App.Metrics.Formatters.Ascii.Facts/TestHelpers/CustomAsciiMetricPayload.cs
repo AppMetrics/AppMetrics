@@ -4,9 +4,8 @@
 
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
-namespace App.Metrics.Facts.Formatting.TestHelpers
+namespace App.Metrics.Formatters.Ascii.Facts.TestHelpers
 {
     public class CustomAsciiMetricPayload
     {
@@ -29,9 +28,7 @@ namespace App.Metrics.Facts.Formatting.TestHelpers
                 return;
             }
 
-            var points = Enumerable.ToList<CustomAsciiMetricPoint>(_points);
-
-            foreach (var point in points)
+            foreach (var point in _points)
             {
                 point.Format(textWriter);
                 textWriter.Write('\n');

@@ -5,7 +5,7 @@
 using System.IO;
 using App.Metrics.Health;
 
-namespace App.Metrics.Facts.Formatting.TestHelpers
+namespace App.Metrics.Formatters.Ascii.Facts.TestHelpers
 {
     public class CustomAsciiHealthStatusPayloadBuilder : IHealthStatusPayloadBuilder<CustomAsciiHealthStatusPayload>
     {

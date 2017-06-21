@@ -6,10 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using App.Metrics.Core.Reporting;
 using App.Metrics.Reporting;
 
-namespace App.Metrics.Facts.Formatting.TestHelpers
+namespace App.Metrics.Formatters.Ascii.Facts.TestHelpers
 {
     public class CustomAsciiMetricPayloadBuilder : IMetricPayloadBuilder<CustomAsciiMetricPayload>
     {

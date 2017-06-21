@@ -5,14 +5,13 @@
 using System.Threading.Tasks;
 using App.Metrics.Core.Formatting;
 using App.Metrics.Counter;
-using App.Metrics.Facts.Fixtures;
-using App.Metrics.Facts.Formatting.TestHelpers;
+using App.Metrics.Formatters.Ascii.Facts.Fixtures;
+using App.Metrics.Formatters.Ascii.Facts.TestHelpers;
 using App.Metrics.Health;
-using App.Metrics.Middleware.Formatters.Ascii;
 using FluentAssertions;
 using Xunit;
 
-namespace App.Metrics.Facts.Formatting
+namespace App.Metrics.Formatters.Ascii.Facts
 {
     public class CustomAsciiFormatterTests
     {

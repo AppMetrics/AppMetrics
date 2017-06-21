@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("App.Metrics")]
 [assembly: InternalsVisibleTo("App.Metrics.Health")]
+[assembly: InternalsVisibleTo("App.Metrics.Formatters.Ascii.Facts")]
 [assembly: InternalsVisibleTo("App.Metrics.Middleware")]
 [assembly: InternalsVisibleTo("App.Metrics.Mvc")]
 [assembly: InternalsVisibleTo("App.Metrics.Reservoir.Benchmarks")]

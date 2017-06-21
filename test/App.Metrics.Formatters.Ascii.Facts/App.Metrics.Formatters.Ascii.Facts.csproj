@@ -6,18 +6,9 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>    
     <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netcoreapp2.0</TargetFrameworks>
   </PropertyGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Reporting\StringReports\*.txt" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <Content Include="..\..\xunit.runner.json" Link="xunit.runner.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\App.Metrics.Health\App.Metrics.Health.csproj" />
-    <ProjectReference Include="..\..\src\App.Metrics\App.Metrics.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,6 +24,13 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\App.Metrics.Abstractions\App.Metrics.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\App.Metrics.Core\App.Metrics.Core.csproj" />
+    <ProjectReference Include="..\..\src\App.Metrics.Formatters.Ascii\App.Metrics.Formatters.Ascii.csproj" />
+    <ProjectReference Include="..\..\src\App.Metrics.Health\App.Metrics.Health.csproj" />
   </ItemGroup>
 
 </Project>
