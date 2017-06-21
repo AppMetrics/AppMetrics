@@ -1,6 +1,4 @@
-﻿<!--EXTERNAL_PROPERTIES: TargetFramework-->
-<!--EXTERNAL_PROPERTIES: DefineConstants-->
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\build\common.props" />
 
@@ -8,10 +6,10 @@
     <Description>App Metrics Core abstractions and interfaces for metric types, reporting, filtering and more.</Description>    
     <AssemblyTitle>App.Metrics.Abstractions</AssemblyTitle>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>App.Metrics.Abstractions</AssemblyName>
-    <PackageId>App.Metrics.Abstractions</PackageId>
-    <PackageTags>metrics;performance;measurements;instrumentation;apdex;meter;gauge;counter;timer;histogram</PackageTags>
-    <DebugType>full</DebugType>
     <RootNamespace>App.Metrics</RootNamespace>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>appmetrics;metrics;performance;measurements;instrumentation;apdex;meter;gauge;counter;timer;histogram</PackageTags>
+    <!--Required for OpenCover-->
+    <DebugType>full</DebugType>
   </PropertyGroup>  
 </Project>

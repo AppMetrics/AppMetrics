@@ -1,17 +1,15 @@
-﻿<!--EXTERNAL_PROPERTIES: TargetFramework-->
-<!--EXTERNAL_PROPERTIES: DefineConstants-->
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\build\common.props" />
   
   <PropertyGroup>
-    <Description>App Metrics Middleware abstractions and interfaces for routing, HTTP response formatting and more.</Description>
+    <Description>App Metrics ASP.NET Core Middleware abstractions and interfaces for routing, HTTP response formatting and more.</Description>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <AssemblyName>App.Metrics.Middleware.Abstractions</AssemblyName>
-    <PackageId>App.Metrics.Middleware.Abstractions</PackageId>
-    <PackageTags>metrics;middleware;measurements;instrumentation;apdex;meter;gauge;counter;timer;histogram</PackageTags>
-	  <DebugType>full</DebugType>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>appmetrics;aspnetcore;metrics;middleware;measurements;instrumentation;apdex;meter;gauge;counter;timer;histogram</PackageTags>	  
 	  <RootNamespace>App.Metrics.Middleware</RootNamespace>
+    <!--Required for OpenCover-->
+    <DebugType>full</DebugType>
   </PropertyGroup>
 
   <ItemGroup>

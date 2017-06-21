@@ -1,16 +1,14 @@
-﻿<!--EXTERNAL_PROPERTIES: TargetFramework-->
-<!--EXTERNAL_PROPERTIES: DefineConstants-->
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\build\common.props" />
 
   <PropertyGroup>
-    <Description>App Metrics Middleware Formatter, formatting metrics and health data to ascii</Description>
-    <AssemblyTitle>App.Metrics.Middleware.Formatters.Ascii</AssemblyTitle>
+    <Description>App Metrics ASP.NET Core Middleware Formatters for metrics, health and environment HTTP responses to plain text.</Description>    
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <AssemblyName>App.Metrics.Middleware.Formatters.Ascii</AssemblyName>
-    <PackageId>App.Metrics.Middleware.Formatters.Ascii</PackageId>
-    <PackageTags>metrics;formatting</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>appmetrics;aspnetcore;metrics;healthchecks;ascii</PackageTags>
+    <!--Required for OpenCover-->
+    <DebugType>full</DebugType>
   </PropertyGroup>
 
   <ItemGroup>

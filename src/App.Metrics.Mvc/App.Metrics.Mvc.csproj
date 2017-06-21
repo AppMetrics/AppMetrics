@@ -1,15 +1,14 @@
-﻿<!--EXTERNAL_PROPERTIES: TargetFramework-->
-<!--EXTERNAL_PROPERTIES: DefineConstants-->
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\build\common.props" />
   
   <PropertyGroup>
-    <Description>Extends the App.Metrics library providing a set AspNet Core MVC Components including tracking of endpoints with MVC attribute routes</Description>
+    <Description>App Metrics ASP.NET Core MVC features such as metric tracking on MVC controller actions using MVC attribute routes.</Description>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <AssemblyName>App.Metrics.Mvc</AssemblyName>
-    <PackageId>App.Metrics.Mvc</PackageId>
-    <PackageTags>mvc;measurements;instrumentationcharts;timer;histogram;healthchecks;metrics</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>appmetrics;aspnetcore;aspnetcoremvc;metrics;measurements;instrumentation</PackageTags>
+    <!--Required for OpenCover-->
+    <DebugType>full</DebugType>
   </PropertyGroup>
 
   <ItemGroup>

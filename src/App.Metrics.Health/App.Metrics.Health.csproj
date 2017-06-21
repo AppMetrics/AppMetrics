@@ -1,16 +1,14 @@
-﻿<!--EXTERNAL_PROPERTIES: TargetFramework-->
-<!--EXTERNAL_PROPERTIES: DefineConstants-->
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\build\common.props" />
 
   <PropertyGroup>
-    <Description>Adds health checking capablities to App Metrics</Description>    
+    <Description>App Metrics health checking features.</Description>    
     <AssemblyTitle>App.Metrics.Health</AssemblyTitle>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>App.Metrics.Health</AssemblyName>
-    <PackageId>App.Metrics.Health</PackageId>
-    <PackageTags>healthchecks</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>appmetrics;healthchecks</PackageTags>
+    <!--Required for OpenCover-->
     <DebugType>full</DebugType>
   </PropertyGroup>
 

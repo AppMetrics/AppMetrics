@@ -1,16 +1,14 @@
-﻿<!--EXTERNAL_PROPERTIES: TargetFramework-->
-<!--EXTERNAL_PROPERTIES: DefineConstants-->
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\build\common.props" />
   
   <PropertyGroup>
-    <Description>Extends the App.Metrics library providing a set AspNet Core Middleware Components which will record things like error rates per endpoint and an overall rate, request rates per endpoint and an overall rate etc.</Description>
+    <Description>App Metrics ASP.NET Core Middleware to record typical web metrics and expose metrics, health check results and environment data over HTTP.</Description>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <AssemblyName>App.Metrics.Middleware</AssemblyName>
-    <PackageId>App.Metrics.Middleware</PackageId>
-    <PackageTags>metrics;mvc;measurements;instrumentation;apdex;meter;gauge;counter;timer;histogram</PackageTags>
-	  <DebugType>full</DebugType>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>appmetrics;aspnetcore;metrics;mvc;measurements;instrumentation;apdex;meter;gauge;counter;timer;histogram</PackageTags>
+    <!--Required for OpenCover-->
+    <DebugType>full</DebugType>
   </PropertyGroup>
   
   <ItemGroup>

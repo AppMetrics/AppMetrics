@@ -1,6 +1,4 @@
-﻿<!--EXTERNAL_PROPERTIES: TargetFramework-->
-<!--EXTERNAL_PROPERTIES: DefineConstants-->
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\build\common.props" />
 
@@ -8,9 +6,9 @@
     <Description>App Metrics is an open-source and cross-platform .NET library used to record and monitor application metrics and health.</Description>    
     <AssemblyTitle>App.Metrics</AssemblyTitle>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>App.Metrics</AssemblyName>
-    <PackageId>App.Metrics</PackageId>
-    <PackageTags>metrics;performance;measurements;instrumentation;apdex;meter;gauge;counter;timer;histogram</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>appmetrics;metrics;performance;measurements;instrumentation;apdex;meter;gauge;counter;timer;histogram</PackageTags>
+    <!--Required for OpenCover-->
     <DebugType>full</DebugType>
   </PropertyGroup>
 

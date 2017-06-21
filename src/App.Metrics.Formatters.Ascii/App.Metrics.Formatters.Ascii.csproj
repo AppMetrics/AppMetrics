@@ -1,17 +1,15 @@
-﻿<!--EXTERNAL_PROPERTIES: TargetFramework-->
-<!--EXTERNAL_PROPERTIES: DefineConstants-->
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\build\common.props" />
 
   <PropertyGroup>
-    <Description>App Metrics Formatter, formatting metrics and health data to ASCII</Description>
+    <Description>App Metrics Formatters for metrics, health and environment data to ASCII using System.IO.TextWriter.</Description>
     <AssemblyTitle>App.Metrics.Formatters.Ascii</AssemblyTitle>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <AssemblyName>App.Metrics.Formatters.Ascii</AssemblyName>
-    <PackageId>App.Metrics.Formatters.Ascii</PackageId>
-    <PackageTags>metrics;healthcheck;formatting</PackageTags>
-    <VersionPrefix>2.0.0</VersionPrefix>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>appmetrics;metrics;healthcheck;ascii</PackageTags>
+    <!--Required for OpenCover-->
+    <DebugType>full</DebugType>
   </PropertyGroup>
 
   <ItemGroup>

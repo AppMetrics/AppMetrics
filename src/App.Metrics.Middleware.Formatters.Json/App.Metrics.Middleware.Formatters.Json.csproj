@@ -1,16 +1,14 @@
-﻿<!--EXTERNAL_PROPERTIES: TargetFramework-->
-<!--EXTERNAL_PROPERTIES: DefineConstants-->
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\build\common.props" />
 
   <PropertyGroup>
-    <Description>App Metrics Middleware Formatter, formatting metrics data to JSON using Json.NET</Description>
-    <AssemblyTitle>App.Metrics.Middleware.Formatters.Json</AssemblyTitle>
+    <Description>App Metrics Middleware Formatter, formatting metrics data to JSON using Json.NET</Description>    
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <AssemblyName>App.Metrics.Middleware.Formatters.Json</AssemblyName>
-    <PackageId>App.Metrics.Middleware.Formatters.Json</PackageId>
-    <PackageTags>json;metrics;formatting</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>appmetrics;aspnetcore;metrics;healthchecks;json</PackageTags>
+    <!--Required for OpenCover-->
+    <DebugType>full</DebugType>
   </PropertyGroup>  
 
   <ItemGroup>

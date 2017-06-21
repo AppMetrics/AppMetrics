@@ -1,6 +1,4 @@
-﻿<!--EXTERNAL_PROPERTIES: TargetFramework-->
-<!--EXTERNAL_PROPERTIES: DefineConstants-->
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\build\common.props" />
 
@@ -8,9 +6,9 @@
     <Description>App Metrics core components. Contains metric types and default implementations for metric reporting, filtering and more.</Description>
     <AssemblyTitle>App.Metrics.Core</AssemblyTitle>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>App.Metrics.Core</AssemblyName>
-    <PackageId>App.Metrics.Core</PackageId>
-    <PackageTags>metrics;performance;measurements;instrumentation;apdex;meter;gauge;counter;timer;histogram</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>appmetrics;metrics;performance;measurements;instrumentation;apdex;meter;gauge;counter;timer;histogram</PackageTags>
+    <!--Required for OpenCover-->
     <DebugType>full</DebugType>
   </PropertyGroup>
 
