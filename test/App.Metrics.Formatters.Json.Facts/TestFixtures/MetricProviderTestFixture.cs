@@ -14,22 +14,10 @@ using App.Metrics.Infrastructure;
 using App.Metrics.Meter;
 using App.Metrics.Timer;
 
-namespace App.Metrics.Middleware.Formatters.Json.Facts.TestFixtures
+namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 {
     public class MetricProviderTestFixture : IDisposable
     {
-        public string ApdexNameDefault { get; } = "test_apdex";
-
-        public string CounterNameDefault { get; } = "test_counter";
-
-        public string GaugeNameDefault { get; } = "test_gauge";
-
-        public string HistogramNameDefault { get; } = "test_histogram";
-
-        public string MeterNameDefault { get; } = "test_meter";
-
-        public string TimerNameDefault { get; } = "test_timer";
-
         private readonly IClock _clock = new TestClock();
 
         public MetricProviderTestFixture()
@@ -44,7 +32,11 @@ namespace App.Metrics.Middleware.Formatters.Json.Facts.TestFixtures
             DataWithOneContext = SetupMetricsData(new[] { ContextOne });
         }
 
+        public string ApdexNameDefault { get; } = "test_apdex";
+
         public IEnumerable<ApdexValueSource> ApdexScores { get; }
+
+        public string CounterNameDefault { get; } = "test_counter";
 
         public IEnumerable<CounterValueSource> Counters { get; }
 
@@ -61,11 +53,19 @@ namespace App.Metrics.Middleware.Formatters.Json.Facts.TestFixtures
             "process_name",
             "8");
 
+        public string GaugeNameDefault { get; } = "test_gauge";
+
         public IEnumerable<GaugeValueSource> Gauges { get; }
+
+        public string HistogramNameDefault { get; } = "test_histogram";
 
         public IEnumerable<HistogramValueSource> Histograms { get; }
 
+        public string MeterNameDefault { get; } = "test_meter";
+
         public IEnumerable<MeterValueSource> Meters { get; }
+
+        public string TimerNameDefault { get; } = "test_timer";
 
         public IEnumerable<TimerValueSource> Timers { get; }
 

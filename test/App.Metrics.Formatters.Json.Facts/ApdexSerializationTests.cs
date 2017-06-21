@@ -5,16 +5,16 @@
 using System;
 using System.Linq;
 using App.Metrics.Apdex;
+using App.Metrics.Formatters.Json.Facts.Helpers;
+using App.Metrics.Formatters.Json.Facts.TestFixtures;
 using App.Metrics.Formatters.Json.Serialization;
-using App.Metrics.Middleware.Formatters.Json.Facts.Helpers;
-using App.Metrics.Middleware.Formatters.Json.Facts.TestFixtures;
 using FluentAssertions;
 using FluentAssertions.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace App.Metrics.Middleware.Formatters.Json.Facts
+namespace App.Metrics.Formatters.Json.Facts
 {
     public class ApdexSerializationTests : IClassFixture<MetricProviderTestFixture>
     {

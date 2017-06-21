@@ -9,7 +9,7 @@ using App.Metrics.Infrastructure;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace App.Metrics.Middleware.Formatters.Json.Facts.Helpers
+namespace App.Metrics.Formatters.Json.Facts.Helpers
 {
 #pragma warning disable SA1602 // Enumeration items must be documented
     public enum HealthStatusSamples
@@ -81,10 +81,10 @@ namespace App.Metrics.Middleware.Formatters.Json.Facts.Helpers
 
         private static JToken ExtractJsonFromEmbeddedResource(string key)
         {
-            var assemblyName = new AssemblyName("App.Metrics.Middleware.Formatters.Json.Facts");
+            var assemblyName = new AssemblyName("App.Metrics.Formatters.Json.Facts");
             using (
                 var fileStream =
-                    Assembly.Load(assemblyName).GetManifestResourceStream($"App.Metrics.Middleware.Formatters.Json.Facts.JsonFiles.{key}.json"))
+                    Assembly.Load(assemblyName).GetManifestResourceStream($"App.Metrics.Formatters.Json.Facts.JsonFiles.{key}.json"))
             {
                 if (fileStream == null)
                 {
