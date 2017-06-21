@@ -34,16 +34,17 @@ var skipHtmlCoverageReport		= HasArgument("SkipHtmlCoverageReport") ? Argument<b
 //////////////////////////////////////////////////////////////////////
 // DEFINE FILES & DIRECTORIES
 //////////////////////////////////////////////////////////////////////
-var packDirs                    = new [] { 
-											Directory("./src/App.Metrics"), 
-											Directory("./src/App.Metrics.Abstractions"), 
-											Directory("./src/App.Metrics.Core"), 
-											Directory("./src/App.Metrics.Health"),											
-											Directory("./src/App.Metrics.Formatters.Json"), 
-											Directory("./src/App.Metrics.Formatters.Ascii"), 
-											Directory("./src/App.Metrics.Middleware"), 											
-											Directory("./src/App.Metrics.Middleware.Formatters.Ascii"), 
-											Directory("./src/App.Metrics.Middleware.Formatters.Ascii"), 
+var packDirs                    = new [] {
+											Directory("./src/App.Metrics"),
+											Directory("./src/App.Metrics.Abstractions"),
+											Directory("./src/App.Metrics.Core"),
+											Directory("./src/App.Metrics.Health"),
+											Directory("./src/App.Metrics.Reporting"),
+											Directory("./src/App.Metrics.Formatters.Json"),
+											Directory("./src/App.Metrics.Formatters.Ascii"),
+											Directory("./src/App.Metrics.Middleware"),
+											Directory("./src/App.Metrics.Middleware.Formatters.Ascii"),
+											Directory("./src/App.Metrics.Middleware.Formatters.Ascii"),
 											Directory("./src/App.Metrics.Middleware.Abstractions"),
 											Directory("./src/App.Metrics.Mvc")
 										};

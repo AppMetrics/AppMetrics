@@ -3,7 +3,6 @@
 // </copyright>
 
 using App.Metrics.Apdex;
-using App.Metrics.Core.Reporting;
 using App.Metrics.Counter;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;

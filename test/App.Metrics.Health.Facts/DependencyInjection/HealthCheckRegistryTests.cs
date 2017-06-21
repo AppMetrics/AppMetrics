@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Threading.Tasks;
+using App.Metrics.Builder;
 using App.Metrics.Health.Facts.TestHelpers;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;

@@ -6,13 +6,14 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>    
     <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netcoreapp2.0</TargetFrameworks>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <Content Include="..\..\xunit.runner.json" Link="xunit.runner.json" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\App.Metrics\App.Metrics.csproj" />
+  <ItemGroup>    
+    <ProjectReference Include="..\..\src\App.Metrics.Reporting\App.Metrics.Reporting.csproj" />    
+    <ProjectReference Include="..\..\src\App.Metrics\App.Metrics.csproj" />    
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +23,7 @@
     <PackageReference Include="FluentAssertions" Version="$(FluentAssertionsVersion)" />
     <PackageReference Include="Moq" Version="$(MoqVersion)" />
     <PackageReference Include="xunit" Version="$(XunitVersion)" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="$(XunitVersion)" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="$(XunitVersion)" />    
   </ItemGroup>
 
   <ItemGroup>

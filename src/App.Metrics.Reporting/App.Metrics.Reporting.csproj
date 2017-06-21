@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\common.props" />
+
+  <PropertyGroup>
+    <Description>App Metrics reporting features.</Description>    
+    <AssemblyTitle>App.Metrics.Reporting</AssemblyTitle>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>appmetrics;healthchecks</PackageTags>
+    <!--Required for OpenCover-->
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\App.Metrics.Core\App.Metrics.Core.csproj" />
+  </ItemGroup>
+
+</Project>
