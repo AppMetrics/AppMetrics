@@ -44,7 +44,7 @@ var packDirs                    = new [] {
 											Directory("./src/App.Metrics.Formatters.Ascii"),
 											Directory("./src/App.Metrics.Middleware"),
 											Directory("./src/App.Metrics.Middleware.Formatters.Ascii"),
-											Directory("./src/App.Metrics.Middleware.Formatters.Ascii"),
+											Directory("./src/App.Metrics.Middleware.Formatters.Json"),
 											Directory("./src/App.Metrics.Middleware.Abstractions"),
 											Directory("./src/App.Metrics.Mvc")
 										};
