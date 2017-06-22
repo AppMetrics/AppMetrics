@@ -13,7 +13,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\App.Metrics.Core\App.Metrics.Core.csproj" />
+    <ProjectReference Include="..\App.Metrics.Health\App.Metrics.Health.csproj" />
+    <ProjectReference Include="..\App.Metrics.Reporting\App.Metrics.Reporting.csproj" />
+    <ProjectReference Include="..\App.Metrics.Formatters.Ascii\App.Metrics.Formatters.Ascii.csproj" />    
   </ItemGroup> 
 
 </Project>

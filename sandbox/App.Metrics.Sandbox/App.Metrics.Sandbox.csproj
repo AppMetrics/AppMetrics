@@ -20,12 +20,11 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="$(AspNetCoreVersion)" />
   </ItemGroup> 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\App.Metrics\App.Metrics.csproj" />
+    <ProjectReference Include="..\..\src\App.Metrics.Health\App.Metrics.Health.csproj" />
     <ProjectReference Include="..\..\src\App.Metrics.Mvc\App.Metrics.Mvc.csproj" />
     <ProjectReference Include="..\..\src\App.Metrics.Middleware.Formatters.Ascii\App.Metrics.Middleware.Formatters.Ascii.csproj" />
     <ProjectReference Include="..\..\src\App.Metrics.Middleware.Formatters.Json\App.Metrics.Middleware.Formatters.Json.csproj" />
-    <ProjectReference Include="..\..\src\App.Metrics.Health\App.Metrics.Health.csproj" />
-    <ProjectReference Include="..\..\src\App.Metrics.Reporting\App.Metrics.Reporting.csproj" />
-    <ProjectReference Include="..\..\src\App.Metrics\App.Metrics.csproj" />
   </ItemGroup>
   
   <ItemGroup>

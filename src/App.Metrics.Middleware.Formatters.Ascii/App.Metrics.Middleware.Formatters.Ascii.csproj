@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\App.Metrics.Formatters.Ascii\App.Metrics.Formatters.Ascii.csproj" />
+    <ProjectReference Include="..\App.Metrics.Middleware.Abstractions\App.Metrics.Middleware.Abstractions.csproj" />
     <ProjectReference Include="..\App.Metrics.Middleware\App.Metrics.Middleware.csproj" />
   </ItemGroup>
 
