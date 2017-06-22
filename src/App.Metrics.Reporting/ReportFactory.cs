@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using App.Metrics.Core.Internal;
 using App.Metrics.Core.Scheduling;
 using App.Metrics.Reporting.Internal;
 using App.Metrics.Scheduling;
