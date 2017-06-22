@@ -12,12 +12,10 @@ using App.Metrics.Histogram;
 using App.Metrics.Meter;
 using App.Metrics.Timer;
 
-// ReSharper disable CheckNamespace
-namespace App.Metrics.Core.Internal
-    // ReSharper restore CheckNamespace
+namespace App.Metrics.Core.Filtering
 {
     [ExcludeFromCodeCoverage]
-    internal sealed class NoOpMetricsFilter : IFilterMetrics
+    public sealed class NoOpMetricsFilter : IFilterMetrics
     {
         /// <inheritdoc />
         public bool IsApdexMatch(ApdexValueSource apdex) { return true; }

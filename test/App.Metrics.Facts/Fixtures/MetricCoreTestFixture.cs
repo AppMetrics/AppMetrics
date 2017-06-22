@@ -4,6 +4,7 @@
 
 using System;
 using App.Metrics.Core.Configuration;
+using App.Metrics.Core.Filtering;
 using App.Metrics.Core.Infrastructure;
 using App.Metrics.Core.Internal;
 using App.Metrics.Registry;

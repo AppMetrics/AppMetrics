@@ -2,6 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
+using App.Metrics.Core.Filtering;
 using App.Metrics.Core.Infrastructure;
 using App.Metrics.Filters;
 using App.Metrics.Health;
