@@ -39,7 +39,7 @@ namespace App.Metrics.Sandbox
                                             factory =>
                                             {
                                                 factory.AddConsole();
-                                                // factory.AddDebug();
+                                                factory.AddDebug();
                                             }).
                                         UseIISIntegration().
                                         UseKestrel().
@@ -80,22 +80,22 @@ namespace App.Metrics.Sandbox
             services.AddMvc(options => options.AddMetricsResourceFilter());
 
             services.AddMetrics(Configuration.GetSection("AppMetrics")).
-                     AddSandboxHealthChecks().
-                     AddSandboxReporting().
-                     AddHealthChecks(
-                         factory =>
-                         {
-                             factory.RegisterOveralWebRequestsApdexCheck();
-                         }).
-                     AddMetricsMiddleware(
-                         Configuration.GetSection("AspNetMetrics"),
-                         optionsBuilder =>
-                         {
-                             optionsBuilder.AddJsonMetricsSerialization().
-                                            AddAsciiHealthSerialization().
-                                            AddAsciiMetricsTextSerialization().
-                                            AddAsciiEnvironmentInfoSerialization();
-                         });
+                    AddSandboxHealthChecks().
+                    AddSandboxReporting().
+                    AddHealthChecks(
+                        factory =>
+                        {
+                            factory.RegisterOveralWebRequestsApdexCheck();
+                        }).
+                    AddMetricsMiddleware(
+                        Configuration.GetSection("AspNetMetrics"),
+                        optionsBuilder =>
+                        {
+                            optionsBuilder.AddJsonMetricsSerialization().
+                                           AddAsciiHealthSerialization().
+                                           AddAsciiMetricsTextSerialization().
+                                           AddAsciiEnvironmentInfoSerialization();
+                        });
         }
     }
 }
