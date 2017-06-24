@@ -55,7 +55,7 @@ namespace App.Metrics.Reporting.Internal
 
             foreach (var provider in _providers)
             {
-                _metricReporters.Add(provider.Key, provider.Value.CreateMetricReporter(provider.Key.Name));
+                _metricReporters.Add(provider.Key, provider.Value.CreateMetricReporter(provider.Key.Name, loggerFactory));
             }
 
             _successCounter = new CounterOptions

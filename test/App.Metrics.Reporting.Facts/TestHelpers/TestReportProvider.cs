@@ -4,6 +4,7 @@
 
 using System;
 using App.Metrics.Filters;
+using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Reporting.Facts.TestHelpers
 {
@@ -24,6 +25,6 @@ namespace App.Metrics.Reporting.Facts.TestHelpers
         public IFilterMetrics Filter { get; }
         // ReSharper restore UnassignedGetOnlyAutoProperty
 
-        public IMetricReporter CreateMetricReporter(string name) { return new TestMetricReporter(_pass, _reportInterval, _throwEx); }
+        public IMetricReporter CreateMetricReporter(string name, ILoggerFactory loggerFactory) { return new TestMetricReporter(_pass, _reportInterval, _throwEx); }
     }
 }
