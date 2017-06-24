@@ -4,7 +4,7 @@
   
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">neApp.MetriApp.Metrics.Formatters.InfluxDBcs.Formatters.InfluxDB tcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netcoreapp2.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>

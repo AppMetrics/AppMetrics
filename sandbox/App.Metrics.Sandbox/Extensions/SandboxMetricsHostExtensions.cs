@@ -128,7 +128,6 @@ namespace App.Metrics.Sandbox.Extensions
                     InfluxDbSettings = new InfluxDBSettings(InfluxDbDatabase, InfluxDbUri),
                     ReportInterval = TimeSpan.FromSeconds(5)
                 },
-                new LoggerFactory(),
                 reportFilter);
         }
     }
