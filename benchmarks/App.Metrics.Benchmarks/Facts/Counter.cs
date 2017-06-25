@@ -4,7 +4,6 @@
 
 using App.Metrics.Benchmarks.Fixtures;
 using App.Metrics.Benchmarks.Support;
-using App.Metrics.Core.Tagging;
 using Xunit;
 
 namespace App.Metrics.Benchmarks.Facts

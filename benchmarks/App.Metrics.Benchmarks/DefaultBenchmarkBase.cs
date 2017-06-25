@@ -13,7 +13,13 @@ namespace App.Metrics.Benchmarks
     {
         protected MetricsCoreTestFixture Fixture { get; private set; }
 
+        protected MetricsCoreWithHealthTestFixture FixtureWithHealth { get; private set; }
+
         [GlobalSetup]
-        public virtual void Setup() { Fixture = new MetricsCoreTestFixture(); }
+        public virtual void Setup()
+        {
+            Fixture = new MetricsCoreTestFixture();
+            FixtureWithHealth = new MetricsCoreWithHealthTestFixture();
+        }
     }
 }
