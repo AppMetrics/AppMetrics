@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Concurrent;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace App.Metrics.Health
@@ -15,5 +16,7 @@ namespace App.Metrics.Health
         Lazy<IMetrics> Metrics { get; }
 
         void Register(string name, Func<ValueTask<HealthCheckResult>> check);
+
+        void Register(string name, Func<CancellationToken, ValueTask<HealthCheckResult>> check);
     }
 }

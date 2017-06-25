@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Health;
 
@@ -21,5 +22,8 @@ namespace App.Metrics.Core.Internal
         public Lazy<IMetrics> Metrics { get; } = new Lazy<IMetrics>();
 
         public void Register(string name, Func<ValueTask<HealthCheckResult>> check) { }
+
+        /// <inheritdoc />
+        public void Register(string name, Func<CancellationToken, ValueTask<HealthCheckResult>> check) { }
     }
 }

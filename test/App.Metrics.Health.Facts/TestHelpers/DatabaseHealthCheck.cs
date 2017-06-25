@@ -4,7 +4,6 @@
 
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Internal;
 
 namespace App.Metrics.Health.Facts.TestHelpers
 {

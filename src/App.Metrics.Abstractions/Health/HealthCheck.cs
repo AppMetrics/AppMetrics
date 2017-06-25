@@ -26,6 +26,20 @@ namespace App.Metrics.Health
             _check = CheckWithToken;
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="HealthCheck" /> class.
+        /// </summary>
+        /// <param name="name">A descriptive name for the health check.</param>
+        /// <param name="check">A function returning either a healthy or un-healthy result.</param>
+        public HealthCheck(string name, Func<CancellationToken, ValueTask<HealthCheckResult>> check)
+        {
+            Name = name;
+
+            ValueTask<HealthCheckResult> CheckWithToken(CancellationToken token) => check(token);
+
+            _check = CheckWithToken;
+        }
+
         protected HealthCheck(string name)
         {
             Name = name;
@@ -52,13 +66,11 @@ namespace App.Metrics.Health
             try
             {
                 var checkResult = await CheckAsync(cancellationToken);
-                var result = new Result(Name, checkResult);
-                return result;
+                return new Result(Name, checkResult);
             }
             catch (Exception ex)
             {
-                var unhealthyResult = new Result(Name, HealthCheckResult.Unhealthy(ex));
-                return unhealthyResult;
+                return new Result(Name, HealthCheckResult.Unhealthy(ex));
             }
         }
 

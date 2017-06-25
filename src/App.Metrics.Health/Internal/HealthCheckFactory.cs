@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
@@ -42,6 +43,12 @@ namespace App.Metrics.Health.Internal
 
         /// <inheritdoc />
         public void Register(string name, Func<ValueTask<HealthCheckResult>> check)
+        {
+            Register(new HealthCheck(name, check));
+        }
+
+        /// <inheritdoc />
+        public void Register(string name, Func<CancellationToken, ValueTask<HealthCheckResult>> check)
         {
             Register(new HealthCheck(name, check));
         }

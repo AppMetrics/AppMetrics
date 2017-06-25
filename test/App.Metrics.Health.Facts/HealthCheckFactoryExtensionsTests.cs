@@ -4,6 +4,7 @@
 
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Health.Internal;
 using FluentAssertions;
@@ -142,6 +143,31 @@ namespace App.Metrics.Health.Facts
 
             factory.Checks.Should().NotBeEmpty();
             factory.Checks.Single().Value.Name.Should().Be(name);
+        }
+
+        [Fact]
+        public async Task Should_be_unhealthy_when_task_is_cancelled()
+        {
+            var healthChecks = Enumerable.Empty<HealthCheck>();
+            var name = "custom with cancellation token";
+
+            var factory = new HealthCheckFactory(_logger, new Lazy<IMetrics>(), healthChecks);
+
+            factory.Register(
+                name,
+                async cancellationToken =>
+                {
+                    await Task.Delay(2000, cancellationToken);
+                    return HealthCheckResult.Healthy();
+                });
+
+            var token = new CancellationTokenSource();
+            token.CancelAfter(200);
+
+            var check = factory.Checks.FirstOrDefault();
+            var result = await check.Value.ExecuteAsync(token.Token).ConfigureAwait(false);
+
+            result.Check.Status.Should().Be(HealthCheckStatus.Unhealthy);
         }
     }
 }
