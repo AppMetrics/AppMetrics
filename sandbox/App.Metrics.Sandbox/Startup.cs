@@ -82,11 +82,6 @@ namespace App.Metrics.Sandbox
             services.AddMetrics(Configuration.GetSection("AppMetrics")).
                     AddSandboxHealthChecks().
                     AddSandboxReporting().
-                    AddHealthChecks(
-                        factory =>
-                        {
-                            factory.RegisterOveralWebRequestsApdexCheck();
-                        }).
                     AddMetricsMiddleware(
                         Configuration.GetSection("AspNetMetrics"),
                         optionsBuilder =>

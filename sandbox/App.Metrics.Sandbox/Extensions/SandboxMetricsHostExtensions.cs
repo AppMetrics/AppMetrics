@@ -12,7 +12,6 @@ using App.Metrics.Reporting;
 using App.Metrics.Reporting.InfluxDB;
 using App.Metrics.Reporting.InfluxDB.Client;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Sandbox.Extensions
 {
@@ -34,6 +33,7 @@ namespace App.Metrics.Sandbox.Extensions
             host.AddHealthChecks(
                 factory =>
                 {
+                    factory.RegisterOveralWebRequestsApdexCheck();
                     factory.RegisterPingHealthCheck("google ping", "google.com", TimeSpan.FromSeconds(10));
                     factory.RegisterHttpGetHealthCheck("github", new Uri("https://github.com/"), TimeSpan.FromSeconds(10));
                     factory.RegisterMetricCheck(

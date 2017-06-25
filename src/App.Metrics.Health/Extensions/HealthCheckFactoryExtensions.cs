@@ -22,14 +22,13 @@ namespace App.Metrics
             this IHealthCheckFactory factory,
             string name,
             Uri uri,
-            TimeSpan timeout,
-            CancellationToken token = default(CancellationToken))
+            TimeSpan timeout)
         {
             factory.Register(
                 name,
-                async () =>
+                async cancellationToken =>
                 {
-                    using (var tokenWithTimeout = CancellationTokenSource.CreateLinkedTokenSource(token))
+                    using (var tokenWithTimeout = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken))
                     {
                         tokenWithTimeout.CancelAfter(timeout);
 
