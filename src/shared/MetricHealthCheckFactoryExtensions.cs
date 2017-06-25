@@ -13,7 +13,7 @@ namespace App.Metrics
     public static class MetricHealthCheckFactoryExtensions
     {
 #pragma warning disable SA1008, SA1009
-        internal static Task<HealthCheckResult> PerformCheck<T>(
+        internal static ValueTask<HealthCheckResult> PerformCheck<T>(
             this IHealthCheckFactory factory,
             Func<T, (string message, bool result)> passing,
             Func<T, (string message, bool result)> warning,
@@ -22,14 +22,14 @@ namespace App.Metrics
         {
             if (value == null)
             {
-                return Task.FromResult(HealthCheckResult.Ignore("Metric not found"));
+                return new ValueTask<HealthCheckResult>(HealthCheckResult.Ignore("Metric not found"));
             }
 
             var passingResult = passing(value);
 
             if (passingResult.result)
             {
-                return Task.FromResult(HealthCheckResult.Healthy(passingResult.message));
+                return new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy(passingResult.message));
             }
 
             if (warning != null)
@@ -38,7 +38,7 @@ namespace App.Metrics
 
                 if (warningResult.result)
                 {
-                    return Task.FromResult(HealthCheckResult.Degraded(warningResult.message));
+                    return new ValueTask<HealthCheckResult>(HealthCheckResult.Degraded(warningResult.message));
                 }
             }
 
@@ -48,11 +48,11 @@ namespace App.Metrics
 
                 if (failingResult.result)
                 {
-                    return Task.FromResult(HealthCheckResult.Unhealthy(failingResult.message));
+                    return new ValueTask<HealthCheckResult>(HealthCheckResult.Unhealthy(failingResult.message));
                 }
             }
 
-            return Task.FromResult(HealthCheckResult.Unhealthy());
+            return new ValueTask<HealthCheckResult>(HealthCheckResult.Unhealthy());
         }
     }
 #pragma warning restore SA1008, SA1009

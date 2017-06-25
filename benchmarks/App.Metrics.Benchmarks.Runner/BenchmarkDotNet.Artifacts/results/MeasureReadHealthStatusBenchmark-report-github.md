@@ -10,6 +10,6 @@ dotnet cli version=2.0.0-preview1-005977
 Job=Core  Runtime=Core  
 
 ```
- |     Method |     Mean |     Error |   StdDev |  Gen 0 | Allocated |
- |----------- |---------:|----------:|---------:|-------:|----------:|
- | ReadHealth | 40.43 us | 0.8060 us | 1.533 us | 2.4414 |  10.18 KB |
+ |     Method |     Mean |    Error |   StdDev |  Gen 0 | Allocated |
+ |----------- |---------:|---------:|---------:|-------:|----------:|
+ | ReadHealth | 43.33 us | 1.319 us | 3.888 us | 1.5564 |   6.48 KB |

@@ -5,34 +5,23 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Internal;
 
 namespace App.Metrics.Health
 {
     public class HealthCheck
     {
-        private readonly Func<CancellationToken, Task<HealthCheckResult>> _check;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="HealthCheck" /> class.
-        /// </summary>
-        /// <param name="name">A descriptive name for the health check.</param>
-        /// <param name="check">A function returning a message that is a healthy result.</param>
-        public HealthCheck(string name, Func<Task<string>> check)
-            : this(name, async () => HealthCheckResult.Healthy(await check()))
-        {
-        }
+        private readonly Func<CancellationToken, ValueTask<HealthCheckResult>> _check;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="HealthCheck" /> class.
         /// </summary>
         /// <param name="name">A descriptive name for the health check.</param>
         /// <param name="check">A function returning either a healthy or un-healthy result.</param>
-        public HealthCheck(string name, Func<Task<HealthCheckResult>> check)
+        public HealthCheck(string name, Func<ValueTask<HealthCheckResult>> check)
         {
             Name = name;
 
-            Task<HealthCheckResult> CheckWithToken(CancellationToken token) => check();
+            ValueTask<HealthCheckResult> CheckWithToken(CancellationToken token) => check();
 
             _check = CheckWithToken;
         }
@@ -40,7 +29,7 @@ namespace App.Metrics.Health
         protected HealthCheck(string name)
         {
             Name = name;
-            _check = token => TaskCache.HealthCheckResultHealthyCompletedTask;
+            _check = token => new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy());
         }
 
         /// <summary>
@@ -58,19 +47,22 @@ namespace App.Metrics.Health
         /// <returns>
         ///     The <see cref="Result" /> of running the health check
         /// </returns>
-        public async Task<Result> ExecuteAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async ValueTask<Result> ExecuteAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             try
             {
-                return new Result(Name, await CheckAsync(cancellationToken));
+                var checkResult = await CheckAsync(cancellationToken);
+                var result = new Result(Name, checkResult);
+                return result;
             }
             catch (Exception ex)
             {
-                return new Result(Name, HealthCheckResult.Unhealthy(ex));
+                var unhealthyResult = new Result(Name, HealthCheckResult.Unhealthy(ex));
+                return unhealthyResult;
             }
         }
 
-        protected virtual Task<HealthCheckResult> CheckAsync(CancellationToken cancellationToken = default(CancellationToken))
+        protected virtual ValueTask<HealthCheckResult> CheckAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             return _check(cancellationToken);
         }

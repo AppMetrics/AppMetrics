@@ -80,7 +80,7 @@ namespace App.Metrics
                 () =>
                 {
                     var currentSize = Process.GetCurrentProcess().WorkingSet64;
-                    return Task.FromResult(
+                    return new ValueTask<HealthCheckResult>(
                         currentSize <= thresholdBytes
                             ? HealthCheckResult.Healthy($"OK. {thresholdBytes} bytes")
                             : HealthCheckResult.Unhealthy($"FAILED. {currentSize} > {thresholdBytes}"));
@@ -107,7 +107,7 @@ namespace App.Metrics
                 () =>
                 {
                     var currentSize = Process.GetCurrentProcess().PrivateMemorySize64;
-                    return Task.FromResult(
+                    return new ValueTask<HealthCheckResult>(
                         currentSize <= thresholdBytes
                             ? HealthCheckResult.Healthy($"OK. {thresholdBytes} bytes")
                             : HealthCheckResult.Unhealthy($"FAILED. {currentSize} > {thresholdBytes} bytes"));
@@ -134,7 +134,7 @@ namespace App.Metrics
                 () =>
                 {
                     var currentSize = Process.GetCurrentProcess().VirtualMemorySize64;
-                    return Task.FromResult(
+                    return new ValueTask<HealthCheckResult>(
                         currentSize <= thresholdBytes
                             ? HealthCheckResult.Healthy($"OK. {thresholdBytes} bytes")
                             : HealthCheckResult.Unhealthy($"FAILED. {currentSize} > {thresholdBytes} bytes"));

@@ -19,19 +19,19 @@ namespace App.Metrics.Sandbox.HealthChecks
         }
 
         /// <inheritdoc />
-        protected override Task<HealthCheckResult> CheckAsync(CancellationToken cancellationToken = default(CancellationToken))
+        protected override ValueTask<HealthCheckResult> CheckAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             if (DateTime.UtcNow.Second <= 20)
             {
-                return Task.FromResult(HealthCheckResult.Degraded());
+                return new ValueTask<HealthCheckResult>(HealthCheckResult.Degraded());
             }
 
             if (DateTime.UtcNow.Second >= 40)
             {
-                return Task.FromResult(HealthCheckResult.Unhealthy());
+                return new ValueTask<HealthCheckResult>(HealthCheckResult.Unhealthy());
             }
 
-            return Task.FromResult(HealthCheckResult.Healthy());
+            return new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy());
         }
     }
 }

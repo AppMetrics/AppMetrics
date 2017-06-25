@@ -20,7 +20,7 @@ namespace App.Metrics.Health.Facts.DependencyInjection
             services.AddLogging();
             services.AddSingleton<IDatabase, Database>();
             services.AddMetrics().AddHealthChecks(
-                factory => { factory.Register("DatabaseConnected", () => Task.FromResult("Database Connection OK")); });
+                factory => { factory.Register("DatabaseConnected", () => new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy("Database Connection OK"))); });
             var provider = services.BuildServiceProvider();
             var metricsContext = provider.GetRequiredService<IMetrics>();
 
@@ -57,7 +57,7 @@ namespace App.Metrics.Health.Facts.DependencyInjection
                 {
                     factory.Register(
                         "DatabaseConnected",
-                        () => Task.FromResult(HealthCheckResult.Unhealthy("Failed")));
+                        () => new ValueTask<HealthCheckResult>(HealthCheckResult.Unhealthy("Failed")));
                 });
             var provider = services.BuildServiceProvider();
             var metricsContext = provider.GetRequiredService<IMetrics>();

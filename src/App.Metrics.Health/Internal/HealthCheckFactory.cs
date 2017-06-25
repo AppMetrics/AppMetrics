@@ -41,13 +41,7 @@ namespace App.Metrics.Health.Internal
         public Lazy<IMetrics> Metrics { get; }
 
         /// <inheritdoc />
-        public void Register(string name, Func<Task<string>> check)
-        {
-            Register(new HealthCheck(name, check));
-        }
-
-        /// <inheritdoc />
-        public void Register(string name, Func<Task<HealthCheckResult>> check)
+        public void Register(string name, Func<ValueTask<HealthCheckResult>> check)
         {
             Register(new HealthCheck(name, check));
         }

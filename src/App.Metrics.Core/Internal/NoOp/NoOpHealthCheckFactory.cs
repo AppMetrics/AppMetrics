@@ -20,8 +20,6 @@ namespace App.Metrics.Core.Internal
         /// <inheritdoc />
         public Lazy<IMetrics> Metrics { get; } = new Lazy<IMetrics>();
 
-        public void Register(string name, Func<Task<string>> check) { }
-
-        public void Register(string name, Func<Task<HealthCheckResult>> check) { }
+        public void Register(string name, Func<ValueTask<HealthCheckResult>> check) { }
     }
 }

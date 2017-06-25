@@ -71,17 +71,17 @@ namespace App.Metrics.Health.Facts
         [Fact]
         public void Registry_does_not_throw_on_duplicate_registration()
         {
-            _healthCheckFactory.Register("test", () => Task.FromResult(HealthCheckResult.Healthy()));
+            _healthCheckFactory.Register("test", () => new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy()));
 
-            Action action = () => _healthCheckFactory.Register("test", () => Task.FromResult(HealthCheckResult.Healthy()));
+            Action action = () => _healthCheckFactory.Register("test", () => new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy()));
             action.ShouldNotThrow<InvalidOperationException>();
         }
 
         [Fact]
         public async Task Registry_status_is_degraded_if_one_check_is_degraded()
         {
-            _healthCheckFactory.Register("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
-            _healthCheckFactory.Register("degraded", () => Task.FromResult(HealthCheckResult.Degraded()));
+            _healthCheckFactory.Register("ok", () => new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy()));
+            _healthCheckFactory.Register("degraded", () => new ValueTask<HealthCheckResult>(HealthCheckResult.Degraded()));
 
             var metrics = _metircsSetup(_healthCheckFactory);
 
@@ -94,8 +94,8 @@ namespace App.Metrics.Health.Facts
         [Fact]
         public async Task Registry_status_is_failed_if_one_check_fails()
         {
-            _healthCheckFactory.Register("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
-            _healthCheckFactory.Register("bad", () => Task.FromResult(HealthCheckResult.Unhealthy()));
+            _healthCheckFactory.Register("ok", () => new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy()));
+            _healthCheckFactory.Register("bad", () => new ValueTask<HealthCheckResult>(HealthCheckResult.Unhealthy()));
 
             var metrics = _metircsSetup(_healthCheckFactory);
 
@@ -108,8 +108,8 @@ namespace App.Metrics.Health.Facts
         [Fact]
         public async Task Registry_status_is_healthy_if_all_checks_are_healthy()
         {
-            _healthCheckFactory.Register("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
-            _healthCheckFactory.Register("another", () => Task.FromResult(HealthCheckResult.Healthy()));
+            _healthCheckFactory.Register("ok", () => new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy()));
+            _healthCheckFactory.Register("another", () => new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy()));
 
             var metrics = _metircsSetup(_healthCheckFactory);
 
@@ -122,9 +122,9 @@ namespace App.Metrics.Health.Facts
         [Fact]
         public async Task Registry_status_is_unhealthy_if_any_one_check_fails_even_when_degraded()
         {
-            _healthCheckFactory.Register("ok", () => Task.FromResult(HealthCheckResult.Healthy()));
-            _healthCheckFactory.Register("bad", () => Task.FromResult(HealthCheckResult.Unhealthy()));
-            _healthCheckFactory.Register("degraded", () => Task.FromResult(HealthCheckResult.Degraded()));
+            _healthCheckFactory.Register("ok", () => new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy()));
+            _healthCheckFactory.Register("bad", () => new ValueTask<HealthCheckResult>(HealthCheckResult.Unhealthy()));
+            _healthCheckFactory.Register("degraded", () => new ValueTask<HealthCheckResult>(HealthCheckResult.Degraded()));
 
             var metrics = _metircsSetup(_healthCheckFactory);
 

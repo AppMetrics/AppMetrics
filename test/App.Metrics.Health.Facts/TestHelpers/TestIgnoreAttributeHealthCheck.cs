@@ -14,9 +14,9 @@ namespace App.Metrics.Health.Facts.TestHelpers
         public TestIgnoreAttributeHealthCheck()
             : base("Referencing Assembly - Sample Healthy") { }
 
-        protected override Task<HealthCheckResult> CheckAsync(CancellationToken token = default(CancellationToken))
+        protected override ValueTask<HealthCheckResult> CheckAsync(CancellationToken token = default(CancellationToken))
         {
-            return Task.FromResult(HealthCheckResult.Healthy("OK"));
+            return new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy("OK"));
         }
     }
 }

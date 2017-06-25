@@ -4,7 +4,6 @@
 
 using System;
 using System.Linq;
-using App.Metrics.Core;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace App.Metrics.Benchmarks.Fixtures

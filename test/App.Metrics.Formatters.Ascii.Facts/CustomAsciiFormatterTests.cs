@@ -27,7 +27,7 @@ namespace App.Metrics.Formatters.Ascii.Facts
         public async Task Can_apply_custom_ascii_health_formatting()
         {
             // Arrange
-            _fixture.HealthCheckFactory.Register("test", () => Task.FromResult(HealthCheckResult.Healthy()));
+            _fixture.HealthCheckFactory.Register("test", () => new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy()));
             var formatter = new HealthStatusPayloadFormatter();
             var payloadBuilder = new CustomAsciiHealthStatusPayloadBuilder();
 

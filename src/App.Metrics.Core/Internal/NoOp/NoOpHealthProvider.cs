@@ -14,9 +14,9 @@ namespace App.Metrics.Core.Internal
     internal sealed class NoOpHealthProvider : IProvideHealth
     {
         /// <inheritdoc />
-        public Task<HealthStatus> ReadStatusAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public ValueTask<HealthStatus> ReadStatusAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            return Task.FromResult(new HealthStatus(Enumerable.Empty<HealthCheck.Result>()));
+            return new ValueTask<HealthStatus>(new HealthStatus(Enumerable.Empty<HealthCheck.Result>()));
         }
     }
 }

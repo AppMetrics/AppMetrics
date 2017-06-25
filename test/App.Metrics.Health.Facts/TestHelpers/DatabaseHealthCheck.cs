@@ -18,12 +18,12 @@ namespace App.Metrics.Health.Facts.TestHelpers
             _database = database;
         }
 
-        protected override Task<HealthCheckResult> CheckAsync(CancellationToken token = default(CancellationToken))
+        protected override ValueTask<HealthCheckResult> CheckAsync(CancellationToken token = default(CancellationToken))
         {
             // exceptions will be caught and the result will be unhealthy
             _database.Ping();
 
-            return TaskCache.HealthCheckResultHealthyCompletedTask;
+            return new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy());
         }
     }
 }

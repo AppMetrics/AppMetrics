@@ -33,14 +33,14 @@ namespace App.Metrics.Health.Internal
         }
 
         /// <inheritdoc />
-        public async Task<HealthStatus> ReadStatusAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async ValueTask<HealthStatus> ReadStatusAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             var startTimestamp = _logger.IsEnabled(LogLevel.Trace) ? Stopwatch.GetTimestamp() : 0;
 
             _logger.HealthCheckGetStatusExecuting();
 
             var results = await Task.WhenAll(
-                _healthCheckFactory.Checks.Values.OrderBy(v => v.Name).Select(v => v.ExecuteAsync(cancellationToken)));
+                _healthCheckFactory.Checks.Values.OrderBy(v => v.Name).Select(v => v.ExecuteAsync(cancellationToken).AsTask()));
 
             var failed = new List<HealthCheck.Result>();
             var degraded = new List<HealthCheck.Result>();

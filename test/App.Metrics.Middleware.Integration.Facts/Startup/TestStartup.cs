@@ -93,7 +93,7 @@ namespace App.Metrics.Middleware.Integration.Facts.Startup
                         for (var i = 0; i < checks.Count; i++)
                         {
                             var check = checks[i];
-                            factory.Register("Check" + i, () => Task.FromResult(check));
+                            factory.Register("Check" + i, () => new ValueTask<HealthCheckResult>(check));
                         }
                     })
                 .AddMetricsMiddleware(

@@ -14,8 +14,6 @@ namespace App.Metrics.Health
 
         Lazy<IMetrics> Metrics { get; }
 
-        void Register(string name, Func<Task<string>> check);
-
-        void Register(string name, Func<Task<HealthCheckResult>> check);
+        void Register(string name, Func<ValueTask<HealthCheckResult>> check);
     }
 }
