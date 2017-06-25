@@ -21,11 +21,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmarks", "benchmarks", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics", "src\App.Metrics\App.Metrics.csproj", "{8E0E0579-ACB1-4412-BF8E-1FCA4341EFE7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Middleware", "src\App.Metrics.Middleware\App.Metrics.Middleware.csproj", "{4E281FFD-BE0C-4842-827A-4DF45B7AAA04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.AspNetCore.Middleware", "src\App.Metrics.AspNetCore.Middleware\App.Metrics.AspNetCore.Middleware.csproj", "{4E281FFD-BE0C-4842-827A-4DF45B7AAA04}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Mvc", "src\App.Metrics.Mvc\App.Metrics.Mvc.csproj", "{21C3203D-DC15-4435-84D7-E6F2FDD71C2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.AspNetCore.Mvc", "src\App.Metrics.AspNetCore.Mvc\App.Metrics.AspNetCore.Mvc.csproj", "{21C3203D-DC15-4435-84D7-E6F2FDD71C2C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Middleware.Formatters.Json", "src\App.Metrics.Middleware.Formatters.Json\App.Metrics.Middleware.Formatters.Json.csproj", "{E8ED85F4-9A6D-476B-B12F-64BA07F52A18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.AspNetCore.Formatters.Json", "src\App.Metrics.AspNetCore.Formatters.Json\App.Metrics.AspNetCore.Formatters.Json.csproj", "{E8ED85F4-9A6D-476B-B12F-64BA07F52A18}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cake", "Cake", "{99DA9961-5DF1-4EA9-B37A-BE346449F512}"
 	ProjectSection(SolutionItems) = preProject
@@ -57,7 +57,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{07876CE3
 		build\dependencies.props = build\dependencies.props
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Middleware.Formatters.Ascii", "src\App.Metrics.Middleware.Formatters.Ascii\App.Metrics.Middleware.Formatters.Ascii.csproj", "{D7EEFE8B-0B2E-43C3-972E-13B091C5E78B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.AspNetCore.Formatters.Ascii", "src\App.Metrics.AspNetCore.Formatters.Ascii\App.Metrics.AspNetCore.Formatters.Ascii.csproj", "{D7EEFE8B-0B2E-43C3-972E-13B091C5E78B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Sandbox", "sandbox\App.Metrics.Sandbox\App.Metrics.Sandbox.csproj", "{4D8A4CB5-76A5-45F1-AB3D-5C71AD81E42F}"
 EndProject
@@ -67,11 +67,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Benchmarks.Runn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Facts", "test\App.Metrics.Facts\App.Metrics.Facts.csproj", "{ECAF07D0-A5C0-4D73-8FB2-DB870B6321C7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Middleware.Integration.Facts", "test\App.Metrics.Middleware.Integration.Facts\App.Metrics.Middleware.Integration.Facts.csproj", "{92522DDA-8C3D-4084-9719-E01F601F49B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.AspNetCore.Integration.Facts", "test\App.Metrics.AspNetCore.Integration.Facts\App.Metrics.AspNetCore.Integration.Facts.csproj", "{92522DDA-8C3D-4084-9719-E01F601F49B4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Sampling.Facts", "test\App.Metrics.Sampling.Facts\App.Metrics.Sampling.Facts.csproj", "{0F9B20A3-0474-43F4-AF59-54AE764ACA7C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Middleware.Formatters.Json.Facts", "test\App.Metrics.Middleware.Formatters.Json.Facts\App.Metrics.Middleware.Formatters.Json.Facts.csproj", "{137401A6-7B61-4EAE-B71A-709E072DA0BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.AspNetCore.Formatters.Json.Facts", "test\App.Metrics.AspNetCore.Formatters.Json.Facts\App.Metrics.AspNetCore.Formatters.Json.Facts.csproj", "{137401A6-7B61-4EAE-B71A-709E072DA0BD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Health", "src\App.Metrics.Health\App.Metrics.Health.csproj", "{B7BC929B-B801-4367-9E81-394B86A61DFE}"
 EndProject
@@ -79,7 +79,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Core", "src\App
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Abstractions", "src\App.Metrics.Abstractions\App.Metrics.Abstractions.csproj", "{CFC40204-9F4F-4CDA-92C1-1925EAA7AC72}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{F758A1AA-F4B9-4288-9B45-674EEF618E1B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aspnetcore", "aspnetcore", "{F758A1AA-F4B9-4288-9B45-674EEF618E1B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{936C69BF-F19F-433F-A63E-CE028DF7F656}"
 	ProjectSection(SolutionItems) = preProject
@@ -90,7 +90,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{936C69
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Health.Facts", "test\App.Metrics.Health.Facts\App.Metrics.Health.Facts.csproj", "{F9585D75-2714-497B-A490-E6DA981075F5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Middleware.Abstractions", "src\App.Metrics.Middleware.Abstractions\App.Metrics.Middleware.Abstractions.csproj", "{BE1B0701-E2F3-41CF-8683-F74A1B924347}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.AspNetCore.Abstractions", "src\App.Metrics.AspNetCore.Abstractions\App.Metrics.AspNetCore.Abstractions.csproj", "{BE1B0701-E2F3-41CF-8683-F74A1B924347}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Formatters.Ascii", "src\App.Metrics.Formatters.Ascii\App.Metrics.Formatters.Ascii.csproj", "{B91E8DBE-519D-4150-A5DD-B3A7F4C0072B}"
 EndProject
@@ -100,13 +100,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Formatters.Asci
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Formatters.Json.Facts", "test\App.Metrics.Formatters.Json.Facts\App.Metrics.Formatters.Json.Facts.csproj", "{20493337-3B29-4152-B704-F60B3B3DEF63}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{37FDDF9D-EA8A-4192-B0AB-D5F9D98C0D94}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aspnetcore", "aspnetcore", "{37FDDF9D-EA8A-4192-B0AB-D5F9D98C0D94}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Middleware.Formatters.Ascii.Facts", "test\App.Metrics.Middleware.Formatters.Ascii.Facts\App.Metrics.Middleware.Formatters.Ascii.Facts.csproj", "{D0E02475-6F41-450B-BF9C-090E7C647155}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.AspNetCore.Formatters.Ascii.Facts", "test\App.Metrics.AspNetCore.Formatters.Ascii.Facts\App.Metrics.AspNetCore.Formatters.Ascii.Facts.csproj", "{D0E02475-6F41-450B-BF9C-090E7C647155}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Reporting", "src\App.Metrics.Reporting\App.Metrics.Reporting.csproj", "{20798878-9C3D-4543-9E8B-F1FD498BB04B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Reporting.Facts", "test\App.Metrics.Reporting.Facts\App.Metrics.Reporting.Facts.csproj", "{532BBD5D-0AAA-4D2C-94EE-080255AA4B10}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.AspNetCore", "src\App.Metrics.AspNetCore\App.Metrics.AspNetCore.csproj", "{01FAB40B-1C30-48CC-9489-9403DE3EA957}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -210,6 +212,10 @@ Global
 		{532BBD5D-0AAA-4D2C-94EE-080255AA4B10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{532BBD5D-0AAA-4D2C-94EE-080255AA4B10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{532BBD5D-0AAA-4D2C-94EE-080255AA4B10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01FAB40B-1C30-48CC-9489-9403DE3EA957}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01FAB40B-1C30-48CC-9489-9403DE3EA957}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01FAB40B-1C30-48CC-9489-9403DE3EA957}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01FAB40B-1C30-48CC-9489-9403DE3EA957}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -246,5 +252,6 @@ Global
 		{D0E02475-6F41-450B-BF9C-090E7C647155} = {37FDDF9D-EA8A-4192-B0AB-D5F9D98C0D94}
 		{20798878-9C3D-4543-9E8B-F1FD498BB04B} = {2D805782-756E-4C98-B22E-F502BEE95318}
 		{532BBD5D-0AAA-4D2C-94EE-080255AA4B10} = {DD2E4647-7125-4CE3-9BA5-B45A26113A31}
+		{01FAB40B-1C30-48CC-9489-9403DE3EA957} = {F758A1AA-F4B9-4288-9B45-674EEF618E1B}
 	EndGlobalSection
 EndGlobal

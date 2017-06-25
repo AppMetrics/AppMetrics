@@ -7,7 +7,7 @@
     <AssemblyTitle>App.Metrics</AssemblyTitle>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PackageTags>appmetrics;metrics;performance;measurements;instrumentation;apdex;meter;gauge;counter;timer;histogram</PackageTags>
+    <PackageTags>appmetrics;metrics;apdex;meter;gauge;counter;timer;histogram</PackageTags>
     <!--Required for OpenCover-->
     <DebugType>full</DebugType>
   </PropertyGroup>

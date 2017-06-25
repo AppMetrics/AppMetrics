@@ -4,9 +4,10 @@
 
 using System;
 using App.Metrics.Core.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable CheckNamespace
-namespace Microsoft.Extensions.DependencyInjection
+namespace App.Metrics.Builder
     // ReSharper restore CheckNamespace
 {
     internal sealed class MetricsHostBuilder : IMetricsHostBuilder

@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\common.props" />
+
+  <PropertyGroup>
+    <Description>App Metrics Middleware Formatter, formatting metrics data to JSON using Json.NET</Description>    
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>appmetrics;aspnetcore;metrics;healthchecks;json</PackageTags>
+    <!--Required for OpenCover-->
+    <DebugType>full</DebugType>
+  </PropertyGroup>  
+
+  <ItemGroup>
+    <ProjectReference Include="..\App.Metrics.Formatters.Json\App.Metrics.Formatters.Json.csproj" />
+    <ProjectReference Include="..\App.Metrics.AspNetCore.Abstractions\App.Metrics.AspNetCore.Abstractions.csproj" />
+    <ProjectReference Include="..\App.Metrics.Abstractions\App.Metrics.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
+  </ItemGroup>
+
+</Project>

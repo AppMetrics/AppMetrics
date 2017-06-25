@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\common.props" />
+  
+  <PropertyGroup>
+    <Description>App Metrics ASP.NET Core Middleware to record typical web metrics and expose metrics, health check results and environment data over HTTP.</Description>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>appmetrics;aspnetcore;metrics;mvc;measurements;instrumentation;apdex;meter;gauge;counter;timer;histogram</PackageTags>
+    <!--Required for OpenCover-->
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <Compile Include="..\shared\ApdexMetricHealthCheckFactoryExtensions.cs" Link="Health\ApdexMetricHealthCheckFactoryExtensions.cs" />
+    <Compile Include="..\shared\MetricHealthCheckFactoryExtensions.cs" Link="Health\MetricHealthCheckFactoryExtensions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\App.Metrics.Core\App.Metrics.Core.csproj" />
+    <ProjectReference Include="..\App.Metrics.AspNetCore.Abstractions\App.Metrics.AspNetCore.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>    
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="$(AspNetCoreVersion)" />
+    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="$(AspNetCoreVersion)" />
+  </ItemGroup>
+
+</Project>

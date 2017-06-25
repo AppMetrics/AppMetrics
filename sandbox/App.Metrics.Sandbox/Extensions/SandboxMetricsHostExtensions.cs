@@ -11,7 +11,6 @@ using App.Metrics.Filters;
 using App.Metrics.Reporting;
 using App.Metrics.Reporting.InfluxDB;
 using App.Metrics.Reporting.InfluxDB.Client;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace App.Metrics.Sandbox.Extensions
 {

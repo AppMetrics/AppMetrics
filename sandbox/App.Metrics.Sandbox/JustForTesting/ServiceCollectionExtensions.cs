@@ -3,7 +3,7 @@
 // </copyright>
 
 using System;
-using App.Metrics.Middleware.DependencyInjection.Options;
+using App.Metrics.AspNetCore.Middleware.Options;
 using App.Metrics.Sandbox.JustForTesting;
 
 // ReSharper disable CheckNamespace

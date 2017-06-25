@@ -7,7 +7,7 @@
     <AssemblyTitle>App.Metrics.Formatters.Ascii</AssemblyTitle>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PackageTags>appmetrics;metrics;healthcheck;ascii</PackageTags>
+    <PackageTags>appmetrics;metrics;healthchecks;ascii</PackageTags>
     <!--Required for OpenCover-->
     <DebugType>full</DebugType>
   </PropertyGroup>

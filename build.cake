@@ -42,11 +42,11 @@ var packDirs                    = new [] {
 											Directory("./src/App.Metrics.Reporting"),
 											Directory("./src/App.Metrics.Formatters.Json"),
 											Directory("./src/App.Metrics.Formatters.Ascii"),
-											Directory("./src/App.Metrics.Middleware"),
-											Directory("./src/App.Metrics.Middleware.Formatters.Ascii"),
-											Directory("./src/App.Metrics.Middleware.Formatters.Json"),
-											Directory("./src/App.Metrics.Middleware.Abstractions"),
-											Directory("./src/App.Metrics.Mvc")
+											Directory("./src/App.Metrics.AspNetCore"),
+											Directory("./src/App.Metrics.AspNetCore.Formatters.Ascii"),
+											Directory("./src/App.Metrics.AspNetCore.Formatters.Json"),
+											Directory("./src/App.Metrics.AspNetCore.Abstractions"),
+											Directory("./src/App.Metrics.AspNetCore.Mvc")
 										};
 var artifactsDir                = (DirectoryPath) Directory("./artifacts");
 var testResultsDir              = (DirectoryPath) artifactsDir.Combine("test-results");
@@ -78,10 +78,10 @@ if (!string.IsNullOrEmpty(preReleaseSuffix))
 {
 	versionSuffix = preReleaseSuffix + "-" + buildNumber.ToString("D4");
 }
- else if (AppVeyor.IsRunningOnAppVeyor && !AppVeyor.Environment.Repository.Tag.IsTag)
- {
- 	versionSuffix = buildNumber.ToString("D4");
- }
+else if (AppVeyor.IsRunningOnAppVeyor && !AppVeyor.Environment.Repository.Tag.IsTag)
+{
+	versionSuffix = buildNumber.ToString("D4");
+}
 
 
 //////////////////////////////////////////////////////////////////////
