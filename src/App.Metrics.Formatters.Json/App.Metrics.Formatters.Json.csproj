@@ -3,15 +3,12 @@
   <Import Project="..\..\build\common.props" />
 
   <PropertyGroup>
-    <Description>App Metrics ASP.NET Core Middleware Formatters for metrics, health and environment HTTP responses to JSON.</Description>
-    <AssemblyTitle>App.Metrics.Formatters.Json</AssemblyTitle>
+    <Description>App Metrics Formatters for metrics, health and environment data to JSON using Newtonsoft.Json.</Description>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>appmetrics;metrics;healthcheck;json</PackageTags>
-    <!--Required for OpenCover-->
-    <DebugType>full</DebugType>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <ProjectReference Include="..\App.Metrics.Core\App.Metrics.Core.csproj" />
   </ItemGroup>

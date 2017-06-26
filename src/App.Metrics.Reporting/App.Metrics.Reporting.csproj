@@ -4,12 +4,9 @@
 
   <PropertyGroup>
     <Description>App Metrics reporting features.</Description>    
-    <AssemblyTitle>App.Metrics.Reporting</AssemblyTitle>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PackageTags>appmetrics;reporting</PackageTags>
-    <!--Required for OpenCover-->
-    <DebugType>full</DebugType>
+    <PackageTags>appmetrics;reporting</PackageTags>    
   </PropertyGroup>
 
   <ItemGroup>

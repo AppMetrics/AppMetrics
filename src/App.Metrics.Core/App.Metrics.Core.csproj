@@ -3,13 +3,10 @@
   <Import Project="..\..\build\common.props" />
 
   <PropertyGroup>
-    <Description>App Metrics core components. Contains metric types and default implementations for metric reporting, filtering and more.</Description>
-    <AssemblyTitle>App.Metrics.Core</AssemblyTitle>
+    <Description>App Metrics core components. Contains metric types and default implementations for metric reporting, filtering and more.</Description>    
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>appmetrics;metrics</PackageTags>
-    <!--Required for OpenCover-->
-    <DebugType>full</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="App.Metrics.Concurrency" Version="1.2.0" />    
+    <PackageReference Include="App.Metrics.Concurrency" Version="1.2.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(AspNetCoreVersion)" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="$(DependencyModelVersion)" />
   </ItemGroup>

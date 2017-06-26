@@ -3,13 +3,11 @@
   <Import Project="..\..\build\common.props" />
   
   <PropertyGroup>
-    <Description>App Metrics ASP.NET Core Middleware abstractions and interfaces for routing, HTTP response formatting and more.</Description>
+    <Description>App Metrics ASP.NET Core abstractions and interfaces for routing, HTTP response formatting and more.</Description>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>appmetrics;aspnetcore;metrics</PackageTags>	  
-	<RootNamespace>App.Metrics.AspNetCore.Middleware</RootNamespace>
-    <!--Required for OpenCover-->
-    <DebugType>full</DebugType>
+	  <RootNamespace>App.Metrics.AspNetCore.Middleware</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
