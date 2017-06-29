@@ -4,7 +4,7 @@
   
   <PropertyGroup>
     <Description>App Metrics ASP.NET Core is a an open-source web framework allowing you to record typical web metrics and expose metrics, health check results and environment information over HTTP.</Description>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>appmetrics;aspnetcore;metrics</PackageTags>
   </PropertyGroup>

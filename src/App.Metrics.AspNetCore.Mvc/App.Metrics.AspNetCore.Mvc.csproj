@@ -4,7 +4,7 @@
   
   <PropertyGroup>
     <Description>App Metrics ASP.NET Core MVC features such as metric tracking on MVC controller actions using MVC attribute routes.</Description>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>appmetrics;aspnetcore;aspnetcoremvc;metrics</PackageTags>
   </PropertyGroup>

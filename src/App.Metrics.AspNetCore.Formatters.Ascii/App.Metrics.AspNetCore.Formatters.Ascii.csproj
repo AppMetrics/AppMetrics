@@ -3,8 +3,8 @@
   <Import Project="..\..\build\common.props" />
 
   <PropertyGroup>
-	  <Description>App Metrics ASP.NET Core metrics, health and environment information formatters allowing for example HTTP response serialization to plain text.</Description>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+	<Description>App Metrics ASP.NET Core metrics, health and environment information formatters allowing for example HTTP response serialization to plain text.</Description>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>appmetrics;aspnetcore;metrics;healthchecks;ascii</PackageTags>
   </PropertyGroup>

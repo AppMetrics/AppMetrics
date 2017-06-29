@@ -4,10 +4,10 @@
   
   <PropertyGroup>
     <Description>App Metrics ASP.NET Core abstractions and interfaces for routing, HTTP response formatting and more.</Description>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>appmetrics;aspnetcore;metrics</PackageTags>	  
-	  <RootNamespace>App.Metrics.AspNetCore.Middleware</RootNamespace>
+	<RootNamespace>App.Metrics.AspNetCore.Middleware</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

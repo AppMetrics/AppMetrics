@@ -10,7 +10,6 @@ using App.Metrics.Core.Filtering;
 using App.Metrics.Filters;
 using App.Metrics.Reporting;
 using App.Metrics.Reporting.InfluxDB;
-using App.Metrics.Reporting.InfluxDB.Client;
 
 namespace App.Metrics.Sandbox.Extensions
 {
@@ -119,12 +118,12 @@ namespace App.Metrics.Sandbox.Extensions
                 new InfluxDBReporterSettings
                 {
                     HttpPolicy = new HttpPolicy
-                                 {
-                                     FailuresBeforeBackoff = 3,
-                                     BackoffPeriod = TimeSpan.FromSeconds(30),
-                                     Timeout = TimeSpan.FromSeconds(10)
-                                 },
-                    InfluxDbSettings = new InfluxDBSettings(InfluxDbDatabase, InfluxDbUri),
+                    {
+                        FailuresBeforeBackoff = 3,
+                        BackoffPeriod = TimeSpan.FromSeconds(30),
+                        Timeout = TimeSpan.FromSeconds(10)
+                    },
+                    InfluxDbSettings = new Reporting.InfluxDB.Client.InfluxDBSettings(InfluxDbDatabase, InfluxDbUri),
                     ReportInterval = TimeSpan.FromSeconds(5)
                 },
                 reportFilter);

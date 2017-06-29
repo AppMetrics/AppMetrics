@@ -1,17 +1,10 @@
-﻿<!--EXTERNAL_PROPERTIES: TargetFramework-->
-<!--EXTERNAL_PROPERTIES: DefineConstants-->
-
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\build\common.props" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFrameworks>netcoreapp2.0;net461</TargetFrameworks>
     <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netcoreapp2.0</TargetFrameworks>
-    <OutputType>Exe</OutputType>
-    <ServerGarbageCollection>true</ServerGarbageCollection>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,13 +24,5 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(AspNetCoreVersion)" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="$(AspNetCoreVersion)" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
-  </ItemGroup>
-
+  
 </Project>

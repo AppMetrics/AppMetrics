@@ -3,7 +3,7 @@
   <Import Project="..\..\build\common.props" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFrameworks>netcoreapp2.0;net461</TargetFrameworks>
     <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netcoreapp2.0</TargetFrameworks>
   </PropertyGroup>
 
@@ -28,10 +28,6 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="$(XunitVersion)" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="$(AspNetCoreVersion)" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="$(AspNetCoreVersion)" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>
