@@ -44,6 +44,7 @@ namespace App.Metrics.AspNetCore.Middleware
 
         // ReSharper disable UnusedMember.Global
         public async Task Invoke(HttpContext context)
+            // ReSharper restore UnusedMember.Global
         {
             try
             {
@@ -80,7 +81,5 @@ namespace App.Metrics.AspNetCore.Middleware
                 Logger.MiddlewareExecuted(GetType());
             }
         }
-
-        // ReSharper restore UnusedMember.Global
     }
 }

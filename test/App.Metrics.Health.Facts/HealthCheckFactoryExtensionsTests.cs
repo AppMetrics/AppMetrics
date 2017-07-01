@@ -15,9 +15,9 @@ namespace App.Metrics.Health.Facts
 {
     public class HealthCheckFactoryExtensionsTests
     {
-        private readonly ILogger<HealthCheckFactory> _logger;
+        private readonly ILogger<HealthCheckRegistry> _logger;
 
-        public HealthCheckFactoryExtensionsTests() { _logger = new LoggerFactory().CreateLogger<HealthCheckFactory>(); }
+        public HealthCheckFactoryExtensionsTests() { _logger = new LoggerFactory().CreateLogger<HealthCheckRegistry>(); }
 
         [Fact]
         [Trait("Category", "Requires Connectivity")]
@@ -26,11 +26,11 @@ namespace App.Metrics.Health.Facts
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "github home";
 
-            var factory = new HealthCheckFactory(_logger, new Lazy<IMetrics>(), healthChecks);
+            var registry = new HealthCheckRegistry(healthChecks);
 
-            factory.RegisterHttpGetHealthCheck(name, new Uri("https://github.com"), TimeSpan.FromSeconds(10));
+            registry.AddHttpGetCheck(name, new Uri("https://github.com"), TimeSpan.FromSeconds(10));
 
-            var check = factory.Checks.FirstOrDefault();
+            var check = registry.Checks.FirstOrDefault();
             var result = await check.Value.ExecuteAsync().ConfigureAwait(false);
 
             result.Check.Status.Should().Be(HealthCheckStatus.Healthy);
@@ -45,11 +45,11 @@ namespace App.Metrics.Health.Facts
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "github ping";
 
-            var factory = new HealthCheckFactory(_logger, new Lazy<IMetrics>(), healthChecks);
+            var registry = new HealthCheckRegistry(healthChecks);
 
-            factory.RegisterPingHealthCheck(name, "github.com", TimeSpan.FromSeconds(10));
+            registry.AddPingCheck(name, "github.com", TimeSpan.FromSeconds(10));
 
-            var check = factory.Checks.FirstOrDefault();
+            var check = registry.Checks.FirstOrDefault();
             var result = await check.Value.ExecuteAsync().ConfigureAwait(false);
 
             result.Check.Status.Should().Be(HealthCheckStatus.Healthy);
@@ -61,11 +61,11 @@ namespace App.Metrics.Health.Facts
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "physical memory";
 
-            var factory = new HealthCheckFactory(_logger, new Lazy<IMetrics>(), healthChecks);
+            var registry = new HealthCheckRegistry(healthChecks);
 
-            factory.RegisterProcessPhysicalMemoryHealthCheck(name, int.MaxValue);
+            registry.AddProcessPhysicalMemoryCheck(name, int.MaxValue);
 
-            var check = factory.Checks.FirstOrDefault();
+            var check = registry.Checks.FirstOrDefault();
             var result = await check.Value.ExecuteAsync().ConfigureAwait(false);
 
             result.Check.Status.Should().Be(HealthCheckStatus.Healthy);
@@ -77,11 +77,11 @@ namespace App.Metrics.Health.Facts
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "private memory";
 
-            var factory = new HealthCheckFactory(_logger, new Lazy<IMetrics>(), healthChecks);
+            var registry = new HealthCheckRegistry(healthChecks);
 
-            factory.RegisterProcessPrivateMemorySizeHealthCheck(name, int.MaxValue);
+            registry.AddProcessPrivateMemorySizeCheck(name, int.MaxValue);
 
-            var check = factory.Checks.FirstOrDefault();
+            var check = registry.Checks.FirstOrDefault();
             var result = await check.Value.ExecuteAsync().ConfigureAwait(false);
 
             result.Check.Status.Should().Be(HealthCheckStatus.Healthy);
@@ -93,11 +93,11 @@ namespace App.Metrics.Health.Facts
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "virtual memory";
 
-            var factory = new HealthCheckFactory(_logger, new Lazy<IMetrics>(), healthChecks);
+            var registry = new HealthCheckRegistry(healthChecks);
 
-            factory.RegisterProcessVirtualMemorySizeHealthCheck(name, long.MaxValue);
+            registry.AddProcessVirtualMemorySizeCheck(name, long.MaxValue);
 
-            var check = factory.Checks.FirstOrDefault();
+            var check = registry.Checks.FirstOrDefault();
             var result = await check.Value.ExecuteAsync().ConfigureAwait(false);
 
             result.Check.Status.Should().Be(HealthCheckStatus.Healthy);
@@ -109,12 +109,12 @@ namespace App.Metrics.Health.Facts
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "physical memory";
 
-            var factory = new HealthCheckFactory(_logger, new Lazy<IMetrics>(), healthChecks);
+            var registry = new HealthCheckRegistry(healthChecks);
 
-            factory.RegisterProcessPhysicalMemoryHealthCheck(name, 100);
+            registry.AddProcessPhysicalMemoryCheck(name, 100);
 
-            factory.Checks.Should().NotBeEmpty();
-            factory.Checks.Single().Value.Name.Should().Be(name);
+            registry.Checks.Should().NotBeEmpty();
+            registry.Checks.Single().Value.Name.Should().Be(name);
         }
 
         [Fact]
@@ -123,12 +123,12 @@ namespace App.Metrics.Health.Facts
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "private memory";
 
-            var factory = new HealthCheckFactory(_logger, new Lazy<IMetrics>(), healthChecks);
+            var registry = new HealthCheckRegistry(healthChecks);
 
-            factory.RegisterProcessPrivateMemorySizeHealthCheck(name, 100);
+            registry.AddProcessPrivateMemorySizeCheck(name, 100);
 
-            factory.Checks.Should().NotBeEmpty();
-            factory.Checks.Single().Value.Name.Should().Be(name);
+            registry.Checks.Should().NotBeEmpty();
+            registry.Checks.Single().Value.Name.Should().Be(name);
         }
 
         [Fact]
@@ -137,12 +137,12 @@ namespace App.Metrics.Health.Facts
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "virtual memory";
 
-            var factory = new HealthCheckFactory(_logger, new Lazy<IMetrics>(), healthChecks);
+            var registry = new HealthCheckRegistry(healthChecks);
 
-            factory.RegisterProcessVirtualMemorySizeHealthCheck(name, 100);
+            registry.AddProcessVirtualMemorySizeCheck(name, 100);
 
-            factory.Checks.Should().NotBeEmpty();
-            factory.Checks.Single().Value.Name.Should().Be(name);
+            registry.Checks.Should().NotBeEmpty();
+            registry.Checks.Single().Value.Name.Should().Be(name);
         }
 
         [Fact]
@@ -151,9 +151,9 @@ namespace App.Metrics.Health.Facts
             var healthChecks = Enumerable.Empty<HealthCheck>();
             var name = "custom with cancellation token";
 
-            var factory = new HealthCheckFactory(_logger, new Lazy<IMetrics>(), healthChecks);
+            var registry = new HealthCheckRegistry(healthChecks);
 
-            factory.Register(
+            registry.Register(
                 name,
                 async cancellationToken =>
                 {
@@ -164,7 +164,7 @@ namespace App.Metrics.Health.Facts
             var token = new CancellationTokenSource();
             token.CancelAfter(200);
 
-            var check = factory.Checks.FirstOrDefault();
+            var check = registry.Checks.FirstOrDefault();
             var result = await check.Value.ExecuteAsync(token.Token).ConfigureAwait(false);
 
             result.Check.Status.Should().Be(HealthCheckStatus.Unhealthy);

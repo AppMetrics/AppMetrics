@@ -4,6 +4,10 @@
 
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("App.Metrics.Facts")]
+[assembly: InternalsVisibleTo("App.Metrics.HealthMetrics")]
+[assembly: InternalsVisibleTo("App.Metrics.AspNetCore.Health")]
+[assembly: InternalsVisibleTo("App.Metrics.AspNetCore.Health.Integration.Facts")]
+[assembly: InternalsVisibleTo("App.Metrics.Health.Formatters.Ascii.Facts")]
+[assembly: InternalsVisibleTo("App.Metrics.Health.Formatters.Json.Facts")]
 [assembly: InternalsVisibleTo("App.Metrics.Health.Facts")]
-[assembly: InternalsVisibleTo("App.Metrics.Formatters.Ascii.Facts")]
+[assembly: InternalsVisibleTo("App.Metrics.HealthMetrics.Facts")]

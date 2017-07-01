@@ -20,16 +20,16 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">The application services collection.</param>
         /// <returns>The metrics host builder</returns>
         // ReSharper disable MemberCanBePrivate.Global
-        public static IMetricsHostBuilder AddMetrics(this IServiceCollection services)
+        public static IAppMetricsBuilder AddMetrics(this IServiceCollection services)
             // ReSharper restore MemberCanBePrivate.Global
         {
-            var builder = services.AddMetricsHostBuilder();
+            var builder = services.AddMetricsBuilder();
 
             builder.AddRequiredPlatformServices();
 
             builder.AddCoreServices();
 
-            return new MetricsHostBuilder(services);
+            return builder;
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </param>
         /// <returns>The metrics host builder</returns>
         [ExcludeFromCodeCoverage] // DEVNOTE: No need to test Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions
-        public static IMetricsHostBuilder AddMetrics(this IServiceCollection services, IConfiguration configuration)
+        public static IAppMetricsBuilder AddMetrics(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<AppMetricsOptions>(configuration);
             return services.AddMetrics();
@@ -59,7 +59,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </param>
         /// <returns>The metrics host builder</returns>
         [ExcludeFromCodeCoverage] // DEVNOTE: No need to test Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions
-        public static IMetricsHostBuilder AddMetrics(
+        public static IAppMetricsBuilder AddMetrics(
             this IServiceCollection services,
             Action<AppMetricsOptions> setupAction,
             IConfiguration configuration)
@@ -81,7 +81,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// Any shared configuration options with the options IConfiguration will be overriden by the options delegate.
         /// <returns>The metrics host builder</returns>
         [ExcludeFromCodeCoverage] // DEVNOTE: No need to test Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions
-        public static IMetricsHostBuilder AddMetrics(
+        public static IAppMetricsBuilder AddMetrics(
             this IServiceCollection services,
             IConfiguration configuration,
             Action<AppMetricsOptions> setupAction)
@@ -98,7 +98,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="setupAction">The <see cref="AppMetricsOptions">options</see> setup action.</param>
         /// <returns>The metrics host builder</returns>
         [ExcludeFromCodeCoverage] // DEVNOTE: No need to test Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions
-        public static IMetricsHostBuilder AddMetrics(this IServiceCollection services, Action<AppMetricsOptions> setupAction)
+        public static IAppMetricsBuilder AddMetrics(this IServiceCollection services, Action<AppMetricsOptions> setupAction)
         {
             services.Configure(setupAction);
             return services.AddMetrics();
@@ -110,7 +110,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">The application services collection.</param>
         /// <returns>The metrics host builder</returns>
         // ReSharper disable MemberCanBePrivate.Global
-        internal static IMetricsHostBuilder AddMetricsHostBuilder(this IServiceCollection services) { return new MetricsHostBuilder(services); }
+        internal static IAppMetricsBuilder AddMetricsBuilder(this IServiceCollection services) { return new AppMetricsBuilder(services); }
         // ReSharper restore MemberCanBePrivate.Global
     }
 }

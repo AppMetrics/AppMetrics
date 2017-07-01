@@ -1,0 +1,15 @@
+﻿{
+  "degraded": {
+    "test_five_degraded": "degrading service"
+  },
+  "healthy": {
+    "test_one_healthy": "first check was good",
+    "test_two_healthy": "second check was good"
+  },
+  "ignored": {},
+  "status": "Unhealthy",
+  "unhealthy": {
+    "test_three_unhealthy": "something failed",
+    "test_four_unhealthy": "something else failed"
+  }
+}

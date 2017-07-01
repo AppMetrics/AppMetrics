@@ -2,13 +2,15 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace App.Metrics.AspNetCore.Middleware.Internal
 {
+    [ExcludeFromCodeCoverage]
     internal static class MiddlewareConstants
     {
         public static class DefaultRoutePaths
         {
-            public const string HealthEndpoint = "/health";
             public const string MetricsEndpoint = "/metrics";
             public const string MetricsTextEndpoint = "/metrics-text";
             public const string PingEndpoint = "/ping";

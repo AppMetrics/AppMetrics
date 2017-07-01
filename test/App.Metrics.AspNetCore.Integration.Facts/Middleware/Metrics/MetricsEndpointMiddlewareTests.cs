@@ -21,17 +21,6 @@ namespace App.Metrics.AspNetCore.Integration.Facts.Middleware.Metrics
         private HttpClient Client { get; }
 
         [Fact]
-        public async Task Returns_correct_response_headers()
-        {
-            var result = await Client.GetAsync("/health");
-
-            result.Headers.CacheControl.NoCache.Should().Be(true);
-            result.Headers.CacheControl.NoStore.Should().Be(true);
-            result.Headers.CacheControl.MustRevalidate.Should().Be(true);
-            result.Headers.Pragma.ToString().Should().Be("no-cache");
-        }
-
-        [Fact]
         public async Task Uses_correct_mimetype_for_json_version()
         {
             var result = await Client.GetAsync("/metrics");

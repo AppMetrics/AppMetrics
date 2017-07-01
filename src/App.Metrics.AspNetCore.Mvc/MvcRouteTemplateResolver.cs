@@ -16,7 +16,7 @@ namespace Microsoft.AspNetCore.Mvc.Internal
         private readonly IRouteNameResolver _routeNameResolver;
 
         public MvcRouteTemplateResolver()
-            : this(new AspNetCoreRouteTemplateResolver()) { }
+            : this(new AppMetricsDefaultRouteNameResolver()) { }
 
         private MvcRouteTemplateResolver(IRouteNameResolver routeNameResolver)
         {

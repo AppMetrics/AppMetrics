@@ -5,8 +5,6 @@
 using App.Metrics.Core.Filtering;
 using App.Metrics.Core.Infrastructure;
 using App.Metrics.Filters;
-using App.Metrics.Health;
-using App.Metrics.Internal;
 
 namespace App.Metrics.Core.Internal
 {
@@ -31,7 +29,6 @@ namespace App.Metrics.Core.Internal
         /// <param name="metricsProvider">The metrics advanced manager factory.</param>
         /// <param name="dataManager">The data manager.</param>
         /// <param name="metricsManager">The metrics manager.</param>
-        /// <param name="healthProvider">The health status provider.</param>
         public DefaultMetrics(
             IClock clock,
             IFilterMetrics globalFilter,
@@ -39,8 +36,7 @@ namespace App.Metrics.Core.Internal
             IBuildMetrics metricsBuilder,
             IProvideMetrics metricsProvider,
             IProvideMetricValues dataManager,
-            IManageMetrics metricsManager,
-            IProvideHealth healthProvider)
+            IManageMetrics metricsManager)
         {
             Clock = clock ?? new StopwatchClock();
             GlobalFilter = globalFilter ?? new NoOpMetricsFilter();
@@ -49,7 +45,6 @@ namespace App.Metrics.Core.Internal
             Snapshot = dataManager;
             Provider = metricsProvider;
             Manage = metricsManager;
-            Health = healthProvider;
         }
 
         /// <inheritdoc />
@@ -60,9 +55,6 @@ namespace App.Metrics.Core.Internal
 
         /// <inheritdoc />
         public IFilterMetrics GlobalFilter { get; }
-
-        /// <inheritdoc />
-        public IProvideHealth Health { get; }
 
         /// <inheritdoc />
         public IManageMetrics Manage { get; }

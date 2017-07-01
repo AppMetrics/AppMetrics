@@ -11,14 +11,6 @@ using Newtonsoft.Json.Linq;
 
 namespace App.Metrics.Formatters.Json.Facts.Helpers
 {
-#pragma warning disable SA1602 // Enumeration items must be documented
-    public enum HealthStatusSamples
-    {
-        Valid,
-        NullHealthy,
-        NullUnhealthy
-    }
-
     public enum MetricDataSamples
     {
         SingleContext
@@ -27,26 +19,9 @@ namespace App.Metrics.Formatters.Json.Facts.Helpers
     public enum MetricTypeSamples
     {
     }
-#pragma warning restore SA1602 // Enumeration items must be documented
 
     public static class TestHelperExtensions
     {
-        private static readonly Dictionary<HealthStatusSamples, string> HealthStatusFileSampleMapping = new Dictionary<HealthStatusSamples, string>
-                                                                                                        {
-                                                                                                            {
-                                                                                                                HealthStatusSamples.Valid,
-                                                                                                                "healthstatus"
-                                                                                                            },
-                                                                                                            {
-                                                                                                                HealthStatusSamples.NullHealthy,
-                                                                                                                "healthstatus_null_healthy"
-                                                                                                            },
-                                                                                                            {
-                                                                                                                HealthStatusSamples.NullUnhealthy,
-                                                                                                                "healthstatus_null_unhealthy"
-                                                                                                            }
-                                                                                                        };
-
         private static readonly Dictionary<MetricDataSamples, string> MetricDataFileSampleMapping = new Dictionary<MetricDataSamples, string>
                                                                                                     {
                                                                                                         {
@@ -68,16 +43,9 @@ namespace App.Metrics.Formatters.Json.Facts.Helpers
 
         public static JToken SampleJson(this EnvironmentInfo env) { return ExtractJsonFromEmbeddedResource("env"); }
 
-        public static JToken SampleJson(this HealthStatusSamples sample) { return sample.ExtractHealthStatusSampleFromResourceFile(); }
-
         public static JToken SampleJson(this MetricDataSamples sample) { return sample.ExtractMetricDataSampleFromResourceFile(); }
 
         public static JToken SampleJson(this MetricTypeSamples sample) { return sample.ExtractMetricTypeSampleFromResourceFile(); }
-
-        private static JToken ExtractHealthStatusSampleFromResourceFile(this HealthStatusSamples sample)
-        {
-            return ExtractJsonFromEmbeddedResource(HealthStatusFileSampleMapping[sample]);
-        }
 
         private static JToken ExtractJsonFromEmbeddedResource(string key)
         {

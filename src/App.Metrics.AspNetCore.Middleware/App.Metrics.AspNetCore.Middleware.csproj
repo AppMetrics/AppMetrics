@@ -3,15 +3,14 @@
   <Import Project="..\..\build\common.props" />
   
   <PropertyGroup>
-    <Description>App Metrics ASP.NET Core Middleware allows you to record typical web metrics and expose metrics, health check results and environment info over HTTP.</Description>
+    <Description>App Metrics ASP.NET Core Middleware allows you to record typical web metrics and expose metrics and environment information over HTTP.</Description>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PackageTags>appmetrics;aspnetcore;metrics;mvc;measurements;instrumentation;apdex;meter;gauge;counter;timer;histogram</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>    
+    <PackageTags>appmetrics;aspnetcore;middleware;metrics</PackageTags>
   </PropertyGroup>
   
   <ItemGroup>
-    <Compile Include="..\shared\ApdexMetricHealthCheckFactoryExtensions.cs" Link="Health\ApdexMetricHealthCheckFactoryExtensions.cs" />
-    <Compile Include="..\shared\MetricHealthCheckFactoryExtensions.cs" Link="Health\MetricHealthCheckFactoryExtensions.cs" />
+    <Compile Include="..\shared\HttpContextExtensions.cs" Link="Extensions\HttpContextExtensions.cs" />
   </ItemGroup>
 
   <ItemGroup>

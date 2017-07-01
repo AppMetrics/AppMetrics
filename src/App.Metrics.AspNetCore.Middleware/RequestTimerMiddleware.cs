@@ -13,7 +13,6 @@ using Microsoft.Extensions.Logging;
 namespace App.Metrics.AspNetCore.Middleware
 {
     // ReSharper disable ClassNeverInstantiated.Global
-
     public class RequestTimerMiddleware : AppMetricsMiddleware<AppMetricsMiddlewareOptions>
         // ReSharper restore ClassNeverInstantiated.Global
     {

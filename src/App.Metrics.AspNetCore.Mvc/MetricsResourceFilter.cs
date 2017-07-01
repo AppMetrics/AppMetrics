@@ -4,7 +4,6 @@
 
 using System;
 using System.Threading.Tasks;
-using App.Metrics.AspNetCore.DependencyInjection.Internal;
 using App.Metrics.Core.DependencyInjection.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -13,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.AspNetCore.Mvc.Filters
-    // ReSharper restore CheckNamespace
+// ReSharper restore CheckNamespace
 {
     public class MetricsResourceFilter : IAsyncResourceFilter
     {
@@ -28,9 +27,9 @@ namespace Microsoft.AspNetCore.Mvc.Filters
         public async Task OnResourceExecutionAsync(ResourceExecutingContext context, ResourceExecutionDelegate next)
         {
             // Verify if AddMetrics and AddAspNetMetrics was done before calling UseMetrics
-            // We use the MetricsMarkerService and AspNetMetricsMarkerService to make sure if all the services were added.
-            MetricsServicesHelper.ThrowIfMetricsNotRegistered(context.HttpContext.RequestServices);
-            AspNetMetricsServicesHelper.ThrowIfMetricsNotRegistered(context.HttpContext.RequestServices);
+            // We use the MetricsMarkerService and AppMetricsMiddlewareMarkerService to make sure if all the services were added.
+            AppMetricsServicesHelper.ThrowIfMetricsNotRegistered(context.HttpContext.RequestServices);
+            AppMetricsMiddlewareServicesHelper.ThrowIfMetricsNotRegistered(context.HttpContext.RequestServices);
 
             EnsureServices(context.HttpContext);
 

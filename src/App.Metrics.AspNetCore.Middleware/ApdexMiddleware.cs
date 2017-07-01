@@ -31,7 +31,9 @@ namespace App.Metrics.AspNetCore.Middleware
                                     .Instance(HttpRequestMetricsRegistry.ApdexScores.Apdex(appMiddlewareOptions.ApdexTSeconds));
         }
 
+        // ReSharper disable UnusedMember.Global
         public async Task Invoke(HttpContext context)
+            // ReSharper restore UnusedMember.Global
         {
             if (PerformMetric(context) && Options.ApdexTrackingEnabled)
             {

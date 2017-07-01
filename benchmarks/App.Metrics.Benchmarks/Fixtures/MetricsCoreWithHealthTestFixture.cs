@@ -28,23 +28,8 @@ namespace App.Metrics.Benchmarks.Fixtures
         {
             var services = new ServiceCollection();
             services.AddLogging();
-            services.AddMetrics().AddHealthChecks(factory =>
-            {
-                factory.RegisterMetricCheck(
-                    "counter metric check",
-                    MetricOptions.Counter.Options,
-#pragma warning disable SA1008 // Opening parenthesis must be spaced correctly
-                    passing: value => (message:
-                        $"OK. < 5 ({value.Count})",
-                        result: value.Count < 5),
-                    warning: value => (message:
-                        $"WARNING. < 7 ({value.Count})"
-                        , result: value.Count < 10),
-                    failing: value => (message:
-                        $"FAILED. >=7 ({value.Count})"
-                        , result: value.Count >= 10));
-#pragma warning restore SA1008 // Opening parenthesis must be spaced correctly
-            });
+
+            services.AddMetrics();
 
             var provider = services.BuildServiceProvider();
 

@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using App.Metrics.Apdex;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
@@ -12,6 +13,7 @@ using App.Metrics.Timer;
 
 namespace App.Metrics.AspNetCore.Middleware.Internal
 {
+    [ExcludeFromCodeCoverage]
     internal static class HttpRequestMetricsRegistry
     {
 #pragma warning disable SA1401

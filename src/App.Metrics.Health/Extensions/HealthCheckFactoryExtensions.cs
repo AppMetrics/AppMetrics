@@ -8,7 +8,6 @@ using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Health;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics
@@ -18,13 +17,13 @@ namespace App.Metrics
     {
         private static readonly HttpClient HttpClient = new HttpClient { DefaultRequestHeaders = { { "cache-control", "no-cache" } } };
 
-        public static IHealthCheckFactory RegisterHttpGetHealthCheck(
-            this IHealthCheckFactory factory,
+        public static IHealthCheckRegistry AddHttpGetCheck(
+            this IHealthCheckRegistry registry,
             string name,
             Uri uri,
             TimeSpan timeout)
         {
-            factory.Register(
+            registry.Register(
                 name,
                 async cancellationToken =>
                 {
@@ -40,16 +39,16 @@ namespace App.Metrics
                     }
                 });
 
-            return factory;
+            return registry;
         }
 
-        public static IHealthCheckFactory RegisterPingHealthCheck(
-            this IHealthCheckFactory factory,
+        public static IHealthCheckRegistry AddPingCheck(
+            this IHealthCheckRegistry registry,
             string name,
             string host,
             TimeSpan timeout)
         {
-            factory.Register(
+            registry.Register(
                 name,
                 async () =>
                 {
@@ -61,20 +60,20 @@ namespace App.Metrics
                         : HealthCheckResult.Unhealthy($"FAILED. {host} ping result was {result.Status}");
                 });
 
-            return factory;
+            return registry;
         }
 
         /// <summary>
         ///     Registers a health check on the process confirming that the current amount of physical memory is below the
         ///     threshold.
         /// </summary>
-        /// <param name="factory">The health check factory where the health check is registered.</param>
+        /// <param name="registry">The health check registry where the health check is registered.</param>
         /// <param name="name">The name of the health check.</param>
         /// <param name="thresholdBytes">The physical memory threshold in bytes.</param>
-        /// <returns>The health check factory instance</returns>
-        public static IHealthCheckFactory RegisterProcessPhysicalMemoryHealthCheck(this IHealthCheckFactory factory, string name, long thresholdBytes)
+        /// <returns>The health check registry instance</returns>
+        public static IHealthCheckRegistry AddProcessPhysicalMemoryCheck(this IHealthCheckRegistry registry, string name, long thresholdBytes)
         {
-            factory.Register(
+            registry.Register(
                 name,
                 () =>
                 {
@@ -85,23 +84,23 @@ namespace App.Metrics
                             : HealthCheckResult.Unhealthy($"FAILED. {currentSize} > {thresholdBytes}"));
                 });
 
-            return factory;
+            return registry;
         }
 
         /// <summary>
         ///     Registers a health check on the process confirming that the current amount of private memory is below the
         ///     threshold.
         /// </summary>
-        /// <param name="factory">The health check factory where the health check is registered.</param>
+        /// <param name="registry">The health check registry where the health check is registered.</param>
         /// <param name="name">The name of the health check.</param>
         /// <param name="thresholdBytes">The private memory threshold in bytes.</param>
-        /// <returns>The health check factory instance</returns>
-        public static IHealthCheckFactory RegisterProcessPrivateMemorySizeHealthCheck(
-            this IHealthCheckFactory factory,
+        /// <returns>The health check registry instance</returns>
+        public static IHealthCheckRegistry AddProcessPrivateMemorySizeCheck(
+            this IHealthCheckRegistry registry,
             string name,
             long thresholdBytes)
         {
-            factory.Register(
+            registry.Register(
                 name,
                 () =>
                 {
@@ -112,23 +111,23 @@ namespace App.Metrics
                             : HealthCheckResult.Unhealthy($"FAILED. {currentSize} > {thresholdBytes} bytes"));
                 });
 
-            return factory;
+            return registry;
         }
 
         /// <summary>
         ///     Registers a health check on the process confirming that the current amount of virtual memory is below the
         ///     threshold.
         /// </summary>
-        /// <param name="factory">The health check factory where the health check is registered.</param>
+        /// <param name="registry">The health check registry where the health check is registered.</param>
         /// <param name="name">The name of the health check.</param>
         /// <param name="thresholdBytes">The virtual memory threshold in bytes.</param>
-        /// <returns>The health check factory instance</returns>
-        public static IHealthCheckFactory RegisterProcessVirtualMemorySizeHealthCheck(
-            this IHealthCheckFactory factory,
+        /// <returns>The health check registry instance</returns>
+        public static IHealthCheckRegistry AddProcessVirtualMemorySizeCheck(
+            this IHealthCheckRegistry registry,
             string name,
             long thresholdBytes)
         {
-            factory.Register(
+            registry.Register(
                 name,
                 () =>
                 {
@@ -139,7 +138,7 @@ namespace App.Metrics
                             : HealthCheckResult.Unhealthy($"FAILED. {currentSize} > {thresholdBytes} bytes"));
                 });
 
-            return factory;
+            return registry;
         }
     }
 }

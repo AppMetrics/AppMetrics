@@ -12,7 +12,6 @@ namespace App.Metrics.Reporting.Facts.TestHelpers
     {
 #pragma warning disable SA1602 // Enumeration items must be documented
         EnvironmentInfo,
-        HealthChecks,
         Counters,
         CountersWithGroup,
         Gauges,
@@ -31,10 +30,6 @@ namespace App.Metrics.Reporting.Facts.TestHelpers
                                                                                                             {
                                                                                                                 StringReporterSamples.EnvironmentInfo,
                                                                                                                 "environment_info"
-                                                                                                            },
-                                                                                                            {
-                                                                                                                StringReporterSamples.HealthChecks,
-                                                                                                                "health_checks"
                                                                                                             },
                                                                                                             {
                                                                                                                 StringReporterSamples.Counters,

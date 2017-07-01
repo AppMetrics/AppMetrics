@@ -3,7 +3,6 @@
 // </copyright>
 
 using App.Metrics.Filters;
-using App.Metrics.Health;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics
@@ -22,8 +21,6 @@ namespace App.Metrics
         IClock Clock { get; }
 
         IFilterMetrics GlobalFilter { get; }
-
-        IProvideHealth Health { get; }
 
         IManageMetrics Manage { get; }
 

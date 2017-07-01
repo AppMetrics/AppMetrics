@@ -10,6 +10,8 @@ using App.Metrics.Core.Filtering;
 using App.Metrics.Filters;
 using App.Metrics.Reporting;
 using App.Metrics.Reporting.InfluxDB;
+using Microsoft.AspNetCore.Mvc.Internal;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace App.Metrics.Sandbox.Extensions
 {
@@ -26,38 +28,11 @@ namespace App.Metrics.Sandbox.Extensions
         private static readonly List<ReportType> ReportTypes =
             new List<ReportType> { ReportType.InfluxDB, ReportType.ElasticSearch, /*ReportType.Graphite*/ };
 
-        public static IMetricsHostBuilder AddSandboxHealthChecks(this IMetricsHostBuilder host)
-        {
-            host.AddHealthChecks(
-                factory =>
-                {
-                    factory.RegisterOveralWebRequestsApdexCheck();
-                    factory.RegisterPingHealthCheck("google ping", "google.com", TimeSpan.FromSeconds(10));
-                    factory.RegisterHttpGetHealthCheck("github", new Uri("https://github.com/"), TimeSpan.FromSeconds(10));
-                    factory.RegisterMetricCheck(
-                        name: "Database Call Duration",
-                        options: SandboxMetricsRegistry.DatabaseTimer,
-                        tags: new MetricTags("client_id", "client-9"),
-                        passing: value => (message:
-                            $"OK. 98th Percentile < 100ms ({value.Histogram.Percentile98}{SandboxMetricsRegistry.DatabaseTimer.DurationUnit.Unit()})"
-                            , result: value.Histogram.Percentile98 < 100),
-                        warning: value => (message:
-                            $"WARNING. 98th Percentile > 100ms ({value.Histogram.Percentile98}{SandboxMetricsRegistry.DatabaseTimer.DurationUnit.Unit()})"
-                            , result: value.Histogram.Percentile98 < 200),
-                        failing: value => (message:
-                            $"FAILED. 98th Percentile > 200ms ({value.Histogram.Percentile98}{SandboxMetricsRegistry.DatabaseTimer.DurationUnit.Unit()})"
-                            , result: value.Histogram.Percentile98 > 200));
-                }
-            );
-
-            return host;
-        }
-
-        public static IMetricsHostBuilder AddSandboxReporting(this IMetricsHostBuilder host)
+        public static IAppMetricsBuilder AddSandboxReporting(this IAppMetricsBuilder builder)
         {
             var reportFilter = new DefaultMetricsFilter();
 
-            host.AddReporting(
+            builder.AddReporting(
                 factory =>
                 {
                     if (ReportTypes.Any(r => r == ReportType.InfluxDB))
@@ -76,7 +51,7 @@ namespace App.Metrics.Sandbox.Extensions
                     }
                 });
 
-            return host;
+            return builder;
         }
 
         private static void AddElasticSearchReporting(IReportFactory factory, DefaultMetricsFilter reportFilter)

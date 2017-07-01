@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using App.Metrics.AspNetCore.Middleware.Internal;
 using App.Metrics.Internal;
 
@@ -12,11 +13,11 @@ namespace App.Metrics.AspNetCore.Middleware.Options
     // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
     // ReSharper disable CollectionNeverUpdated.Global
     // ReSharper disable MemberCanBePrivate.Global
+    [ExcludeFromCodeCoverage]
     public class AppMetricsMiddlewareOptions
     {
         public AppMetricsMiddlewareOptions()
         {
-            HealthEndpointEnabled = true;
             MetricsEndpointEnabled = true;
             MetricsTextEndpointEnabled = true;
             PingEndpointEnabled = true;
@@ -51,23 +52,6 @@ namespace App.Metrics.AspNetCore.Middleware.Options
         ///     The apdex t seconds.
         /// </value>
         public double ApdexTSeconds { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the health endpoint, defaults to /health.
-        /// </summary>
-        /// <value>
-        ///     The health endpoint.
-        /// </value>
-        public string HealthEndpoint { get; set; } = MiddlewareConstants.DefaultRoutePaths.HealthEndpoint.EnsureLeadingSlash();
-
-        /// <summary>
-        ///     Gets or sets a value indicating whether [health endpoint should be enabled], if disabled endpoint responds with
-        ///     404.
-        /// </summary>
-        /// <value>
-        ///     <c>true</c> if [health endpoint is enabled]; otherwise, <c>false</c>.
-        /// </value>
-        public bool HealthEndpointEnabled { get; set; }
 
         /// <summary>
         ///     Gets or sets the ignored HTTP status codes as a result of a request where metrics should not be measured.

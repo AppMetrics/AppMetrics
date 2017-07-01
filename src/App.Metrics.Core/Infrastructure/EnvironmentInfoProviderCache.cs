@@ -25,8 +25,8 @@ namespace App.Metrics.Core.Infrastructure
 
             var entryAssembly = Assembly.GetEntryAssembly();
 
-            EntryAssemblyName = StringExtensions.GetSafeString(() => entryAssembly.GetName().Name);
-            EntryAssemblyVersion = StringExtensions.GetSafeString(() => entryAssembly.GetName().Version.ToString());
+            EntryAssemblyName = StringExtensions.GetSafeString(() => entryAssembly?.GetName().Name ?? "unknown");
+            EntryAssemblyVersion = StringExtensions.GetSafeString(() => entryAssembly?.GetName().Version.ToString() ?? "unknown");
         }
 
         public static EnvironmentInfoProviderCache Instance { get; } = new EnvironmentInfoProviderCache();

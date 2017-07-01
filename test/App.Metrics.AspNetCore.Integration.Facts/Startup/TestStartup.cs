@@ -5,14 +5,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using App.Metrics.AspNetCore.Middleware.Options;
 using App.Metrics.Builder;
 using App.Metrics.Core.Configuration;
 using App.Metrics.Core.Infrastructure;
 using App.Metrics.Core.ReservoirSampling.Uniform;
 using App.Metrics.Filters;
-using App.Metrics.Health;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -65,8 +63,7 @@ namespace App.Metrics.AspNetCore.Integration.Facts.Startup
             IServiceCollection services,
             AppMetricsOptions appMetricsOptions,
             AppMetricsMiddlewareOptions appMetricsMiddlewareOptions,
-            IFilterMetrics filter = null,
-            IEnumerable<HealthCheckResult> healthChecks = null)
+            IFilterMetrics filter = null)
         {
             services
                 .AddLogging()
@@ -83,29 +80,14 @@ namespace App.Metrics.AspNetCore.Integration.Facts.Startup
                     })
                 .AddDefaultReservoir(() => new DefaultAlgorithmRReservoir(1028))
                 .AddClockType<TestClock>()
-                .AddHealthChecks(
-                    factory =>
-                    {
-                        var checks = healthChecks != null
-                            ? healthChecks.ToList()
-                            : new List<HealthCheckResult>();
-
-                        for (var i = 0; i < checks.Count; i++)
-                        {
-                            var check = checks[i];
-                            factory.Register("Check" + i, () => new ValueTask<HealthCheckResult>(check));
-                        }
-                    })
                 .AddMetricsMiddleware(
                     options =>
                     {
                         options.MetricsTextEndpointEnabled = appMetricsMiddlewareOptions.MetricsTextEndpointEnabled;
-                        options.HealthEndpointEnabled = appMetricsMiddlewareOptions.HealthEndpointEnabled;
                         options.MetricsEndpointEnabled = appMetricsMiddlewareOptions.MetricsEndpointEnabled;
                         options.PingEndpointEnabled = appMetricsMiddlewareOptions.PingEndpointEnabled;
                         options.OAuth2TrackingEnabled = appMetricsMiddlewareOptions.OAuth2TrackingEnabled;
 
-                        options.HealthEndpoint = appMetricsMiddlewareOptions.HealthEndpoint;
                         options.MetricsEndpoint = appMetricsMiddlewareOptions.MetricsEndpoint;
                         options.MetricsTextEndpoint = appMetricsMiddlewareOptions.MetricsTextEndpoint;
                         options.PingEndpoint = appMetricsMiddlewareOptions.PingEndpoint;
@@ -117,7 +99,7 @@ namespace App.Metrics.AspNetCore.Integration.Facts.Startup
                     },
                     optionsBuilder =>
                     {
-                        optionsBuilder.AddJsonMetricsSerialization().AddAsciiMetricsTextSerialization();
+                        optionsBuilder.AddMetricsJsonFormatters().AddMetricsTextAsciiFormatters();
                     });
 
             if (filter != null)

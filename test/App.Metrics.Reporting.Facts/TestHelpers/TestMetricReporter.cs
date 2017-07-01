@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using App.Metrics.Core.Tagging;
-using App.Metrics.Health;
 using App.Metrics.Infrastructure;
 
 namespace App.Metrics.Reporting.Facts.TestHelpers
@@ -40,14 +39,6 @@ namespace App.Metrics.Reporting.Facts.TestHelpers
         }
 
         public void ReportEnvironment(EnvironmentInfo environmentInfo) { }
-
-        public void ReportHealth(
-            GlobalMetricTags globalTags,
-            IEnumerable<HealthCheck.Result> healthyChecks,
-            IEnumerable<HealthCheck.Result> degradedChecks,
-            IEnumerable<HealthCheck.Result> unhealthyChecks)
-        {
-        }
 
         public void ReportMetric<T>(string context, MetricValueSourceBase<T> valueSource) { }
 

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using App.Metrics.Health;
+using App.Metrics;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable RedundantStringInterpolation

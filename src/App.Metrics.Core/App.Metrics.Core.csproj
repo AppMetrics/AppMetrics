@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\shared\AppMetricsEnvironment.cs" Link="Infrastructure\AppMetricsEnvironment.cs" />
     <Compile Include="..\shared\StringExtensions.cs" Link="Internal\Extensions\StringExtensions.cs" />
   </ItemGroup>
 

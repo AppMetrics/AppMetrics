@@ -8,10 +8,11 @@ using System.Diagnostics.CodeAnalysis;
 using App.Metrics.Reporting;
 
 // ReSharper disable CheckNamespace
-// ReSharper disable RedundantStringInterpolation
 namespace Microsoft.Extensions.Logging
     // ReSharper restore CheckNamespace
 {
+    // ReSharper disable RedundantStringInterpolation
+
     [ExcludeFromCodeCoverage]
     internal static class AppMetricsReportingLoggerExtensions
     {
@@ -93,12 +94,6 @@ namespace Microsoft.Extensions.Logging
         internal static class AppMetricsEventIds
         {
             private const int MetricsStart = 1000;
-
-            public static class HealthChecks
-            {
-                public const int Registration = MetricsStart + 3;
-                public const int Status = MetricsStart + 3;
-            }
 
             public static class Metrics
             {

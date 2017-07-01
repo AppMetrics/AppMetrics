@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\common.props" />
+
+  <PropertyGroup>
+    <Description>App Metrics health extensions for providing metrics related to an application health.</Description>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>appmetrics;healthchecks;metrics</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\App.Metrics.Core\App.Metrics.Core.csproj" />
+    <ProjectReference Include="..\App.Metrics.Health\App.Metrics.Health.csproj" />
+  </ItemGroup>
+
+</Project>

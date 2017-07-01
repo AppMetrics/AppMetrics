@@ -22,8 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>    
-    <ProjectReference Include="..\..\src\App.Metrics.Formatters.Ascii\App.Metrics.Formatters.Ascii.csproj" />
-    <ProjectReference Include="..\..\src\App.Metrics.Health\App.Metrics.Health.csproj" />
+    <ProjectReference Include="..\..\src\App.Metrics.Formatters.Ascii\App.Metrics.Formatters.Ascii.csproj" />        
   </ItemGroup>
 
 </Project>

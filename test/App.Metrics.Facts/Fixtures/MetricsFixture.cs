@@ -7,7 +7,6 @@ using App.Metrics.Core.Configuration;
 using App.Metrics.Core.Filtering;
 using App.Metrics.Core.Infrastructure;
 using App.Metrics.Core.Internal;
-using App.Metrics.Health;
 using App.Metrics.Registry;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -20,7 +19,6 @@ namespace App.Metrics.Facts.Fixtures
 
         public MetricsFixture()
         {
-            var stubMetricsHealthProvider = new Mock<IProvideHealth>().Object;
             Clock = new TestClock();
             var options = new AppMetricsOptions();
 
@@ -41,8 +39,7 @@ namespace App.Metrics.Facts.Fixtures
                 metricBuilderFactory,
                 metricsManagerAdvancedFactory,
                 dataManager,
-                metricsManager,
-                stubMetricsHealthProvider);
+                metricsManager);
         }
 
         public IClock Clock { get; }

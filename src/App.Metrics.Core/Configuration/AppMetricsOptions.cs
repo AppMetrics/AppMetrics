@@ -2,6 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
+using System.Diagnostics.CodeAnalysis;
 using App.Metrics.Core.Tagging;
 using App.Metrics.Registry;
 
@@ -11,6 +12,7 @@ namespace App.Metrics.Core.Configuration
     /// <summary>
     ///     Top level container for all configuration settings of AppMetrics
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public sealed class AppMetricsOptions
     {
         private const string DefaultContext = "Application";

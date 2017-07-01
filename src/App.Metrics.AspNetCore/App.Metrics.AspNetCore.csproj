@@ -13,9 +13,13 @@
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="$(AspNetCoreVersion)" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup>    
     <ProjectReference Include="..\App.Metrics.AspNetCore.Middleware\App.Metrics.AspNetCore.Middleware.csproj" />
     <ProjectReference Include="..\App.Metrics\App.Metrics.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DependencyInjection\Internal\" />
   </ItemGroup>
 
 </Project>

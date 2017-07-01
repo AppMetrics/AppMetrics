@@ -2,11 +2,13 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
+using System.Diagnostics.CodeAnalysis;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
 
 namespace App.Metrics.AspNetCore.Middleware.Internal
 {
+    [ExcludeFromCodeCoverage]
     internal static class OAuthRequestMetricsRegistry
     {
 #pragma warning disable SA1401

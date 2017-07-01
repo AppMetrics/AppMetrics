@@ -2,6 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
+using System;
 using App.Metrics.Builder;
 using App.Metrics.Sandbox.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -25,6 +26,7 @@ namespace App.Metrics.Sandbox
             app.UseTestStuff(lifetime, HaveAppRunSampleRequests);
 
             app.UseMetrics();
+            app.UseHealthChecks();
             app.UseMetricsReporting(lifetime);
 
             app.UseMvc();
@@ -36,35 +38,36 @@ namespace App.Metrics.Sandbox
 
             services.AddMvc(options => options.AddMetricsResourceFilter());
 
-            services.AddMetrics().
-                     AddSandboxHealthChecks().
+            services.AddMetrics(Configuration.GetSection("AppMetrics")).
                      AddSandboxReporting().
                      AddMetricsMiddleware(
+                         Configuration.GetSection("AspNetMetrics"),
                          optionsBuilder =>
                          {
-                             optionsBuilder.AddJsonMetricsSerialization().
-                                            AddAsciiHealthSerialization().
-                                            AddAsciiMetricsTextSerialization().
-                                            AddAsciiEnvironmentInfoSerialization();
+                             optionsBuilder.AddMetricsJsonFormatters().
+                                            AddMetricsTextAsciiFormatters().
+                                            AddEnvironmentAsciiFormatters();
                          });
-        }
 
-        // public void ConfigureServices(IServiceCollection services)
-        // {
-        //     services.AddTestStuff();
-        //     services.AddMvc(options => options.AddMetricsResourceFilter());
-        //     services.AddMetrics(Configuration.GetSection("AppMetrics")).
-        //              AddSandboxHealthChecks().
-        //              AddSandboxReporting().
-        //              AddMetricsMiddleware(
-        //                  Configuration.GetSection("AspNetMetrics"),
-        //                  optionsBuilder =>
-        //                  {
-        //                      optionsBuilder.AddJsonMetricsSerialization().
-        //                                     AddAsciiHealthSerialization().
-        //                                     AddAsciiMetricsTextSerialization().
-        //                                     AddAsciiEnvironmentInfoSerialization();
-        //                  });
-        // }
+            services.
+                AddHealthChecks().
+                AddHealthCheckMetrics().
+                AddHealthCheckMiddleware(optionsBuilder => optionsBuilder.AddAsciiFormatters()).
+                AddChecks(
+                    (registry, metrics) =>
+                    {
+                        registry.AddPingCheck("google ping", "google.com", TimeSpan.FromSeconds(10));
+                        registry.AddHttpGetCheck("github", new Uri("https://github.com/"), TimeSpan.FromSeconds(10));
+                        registry.AddOveralWebRequestsApdexCheck(metrics);
+                        registry.AddMetricCheck(
+                            name: "Database Call Duration",
+                            metrics: metrics,
+                            options: SandboxMetricsRegistry.DatabaseTimer,
+                            tags: new MetricTags("client_id", "client-9"),
+                            passing: value => { return (message: $"OK. 98th Percentile < 100ms ({value.Histogram.Percentile98}{SandboxMetricsRegistry.DatabaseTimer.DurationUnit.Unit()})", result: value.Histogram.Percentile98 < 100); },
+                            warning: value => { return (message: $"WARNING. 98th Percentile > 100ms ({value.Histogram.Percentile98}{SandboxMetricsRegistry.DatabaseTimer.DurationUnit.Unit()})", result: value.Histogram.Percentile98 < 200); },
+                            failing: value => { return (message: $"FAILED. 98th Percentile > 200ms ({value.Histogram.Percentile98}{SandboxMetricsRegistry.DatabaseTimer.DurationUnit.Unit()})", result: value.Histogram.Percentile98 > 200); });
+                    });
+        }
     }
 }

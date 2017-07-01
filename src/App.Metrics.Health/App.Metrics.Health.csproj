@@ -10,12 +10,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\shared\ApdexMetricHealthCheckFactoryExtensions.cs" Link="Extensions\ApdexMetricHealthCheckFactoryExtensions.cs" />
-    <Compile Include="..\shared\MetricHealthCheckFactoryExtensions.cs" Link="DependencyInjection\Internal\MetricHealthCheckFactoryExtensions.cs" />
+    <Compile Include="..\shared\AppMetricsEnvironment.cs" Link="Infrastructure\AppMetricsEnvironment.cs" />
+    <Compile Include="..\shared\StringExtensions.cs" Link="Internal\Extensions\StringExtensions.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\App.Metrics.Core\App.Metrics.Core.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(AspNetCoreVersion)" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="$(DependencyModelVersion)" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\App.Metrics.Health.Abstractions\App.Metrics.Health.Abstractions.csproj" />    
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Infrastructure\" />
   </ItemGroup>
 
 </Project>

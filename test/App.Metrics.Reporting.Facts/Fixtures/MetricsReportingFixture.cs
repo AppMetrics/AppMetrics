@@ -9,7 +9,6 @@ using App.Metrics.Core.Infrastructure;
 using App.Metrics.Core.Internal;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
-using App.Metrics.Health;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
 using App.Metrics.Registry;
@@ -27,7 +26,6 @@ namespace App.Metrics.Reporting.Facts.Fixtures
 
         public MetricsReportingFixture()
         {
-            var stubMetricsHealthProvider = new Mock<IProvideHealth>().Object;
             var options = new AppMetricsOptions();
             var clock = new TestClock();
 
@@ -56,8 +54,7 @@ namespace App.Metrics.Reporting.Facts.Fixtures
                     metricBuilderFactory,
                     metricsManagerAdvancedFactory,
                     dataManager,
-                    metricsManager,
-                    stubMetricsHealthProvider);
+                    metricsManager);
 
                 RecordSomeMetrics(defaultMetrics);
 

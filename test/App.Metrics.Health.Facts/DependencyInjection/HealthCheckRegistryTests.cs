@@ -19,12 +19,18 @@ namespace App.Metrics.Health.Facts.DependencyInjection
             var services = new ServiceCollection();
             services.AddLogging();
             services.AddSingleton<IDatabase, Database>();
-            services.AddMetrics().AddHealthChecks(
-                factory => { factory.Register("DatabaseConnected", () => new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy("Database Connection OK"))); });
-            var provider = services.BuildServiceProvider();
-            var metricsContext = provider.GetRequiredService<IMetrics>();
 
-            var result = await metricsContext.Health.ReadStatusAsync();
+            services
+                .AddHealthChecks()
+                .AddChecks(
+                    factory =>
+                    {
+                        factory.Register("DatabaseConnected", () => new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy("Database Connection OK")));
+                    });
+            var provider = services.BuildServiceProvider();
+            var healthProvider = provider.GetRequiredService<IProvideHealth>();
+
+            var result = await healthProvider.ReadStatusAsync();
 
             result.HasRegisteredChecks.Should().BeTrue();
             result.Results.Should().HaveCount(2);
@@ -36,12 +42,12 @@ namespace App.Metrics.Health.Facts.DependencyInjection
             var services = new ServiceCollection();
             services.AddLogging();
             services.AddSingleton<IDatabase, Database>();
-            services.AddMetrics().AddHealthChecks();
+            services.AddHealthChecks();
 
             var provider = services.BuildServiceProvider();
-            var metricsContext = provider.GetRequiredService<IMetrics>();
+            var healthProvider = provider.GetRequiredService<IProvideHealth>();
 
-            var result = await metricsContext.Health.ReadStatusAsync();
+            var result = await healthProvider.ReadStatusAsync();
 
             result.Status.Should().Be(HealthCheckStatus.Healthy);
         }
@@ -52,17 +58,19 @@ namespace App.Metrics.Health.Facts.DependencyInjection
             var services = new ServiceCollection();
             services.AddLogging();
             services.AddSingleton<IDatabase, Database>();
-            services.AddMetrics().AddHealthChecks(
-                factory =>
-                {
-                    factory.Register(
-                        "DatabaseConnected",
-                        () => new ValueTask<HealthCheckResult>(HealthCheckResult.Unhealthy("Failed")));
-                });
+            services
+                .AddHealthChecks()
+                .AddChecks(
+                    registry =>
+                    {
+                        registry.Register(
+                            "DatabaseConnected",
+                            () => new ValueTask<HealthCheckResult>(HealthCheckResult.Unhealthy("Failed")));
+                    });
             var provider = services.BuildServiceProvider();
-            var metricsContext = provider.GetRequiredService<IMetrics>();
+            var healthProvider = provider.GetRequiredService<IProvideHealth>();
 
-            var result = await metricsContext.Health.ReadStatusAsync();
+            var result = await healthProvider.ReadStatusAsync();
 
             result.Status.Should().Be(HealthCheckStatus.Unhealthy);
         }
@@ -73,12 +81,12 @@ namespace App.Metrics.Health.Facts.DependencyInjection
             var services = new ServiceCollection();
             services.AddLogging();
             services.AddSingleton<IDatabase, Database>();
-            services.AddMetrics().AddHealthChecks();
+            services.AddHealthChecks();
 
             var provider = services.BuildServiceProvider();
-            var metricsContext = provider.GetRequiredService<IMetrics>();
+            var healthProvider = provider.GetRequiredService<IProvideHealth>();
 
-            var result = await metricsContext.Health.ReadStatusAsync();
+            var result = await healthProvider.ReadStatusAsync();
 
             result.HasRegisteredChecks.Should().BeTrue();
             result.Results.Should().HaveCount(1);

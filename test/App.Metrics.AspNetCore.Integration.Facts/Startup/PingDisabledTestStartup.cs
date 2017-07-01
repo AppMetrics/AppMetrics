@@ -29,7 +29,6 @@ namespace App.Metrics.AspNetCore.Integration.Facts.Startup
             var appMetricsMiddlewareOptions = new AppMetricsMiddlewareOptions
                                        {
                                            MetricsTextEndpointEnabled = true,
-                                           HealthEndpointEnabled = true,
                                            MetricsEndpointEnabled = true,
                                            PingEndpointEnabled = false
                                        };

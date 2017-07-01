@@ -3,10 +3,10 @@
   <Import Project="..\..\build\common.props" />
 
   <PropertyGroup>
-    <Description>App Metrics Formatters for metrics, health and environment data to plain text.</Description>
+    <Description>App Metrics Formatters for metrics and environment data to plain text.</Description>
 	<TargetFrameworks>netstandard2.0</TargetFrameworks>    
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PackageTags>appmetrics;metrics;healthchecks;ascii</PackageTags>
+    <PackageTags>appmetrics;metrics;ascii</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

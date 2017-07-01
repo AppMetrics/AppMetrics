@@ -32,7 +32,9 @@ namespace App.Metrics.AspNetCore.Middleware
             }
         }
 
+        // ReSharper disable UnusedMember.Global
         public async Task Invoke(HttpContext context)
+            // ReSharper restore UnusedMember.Global
         {
             if (PerformMetric(context))
             {
