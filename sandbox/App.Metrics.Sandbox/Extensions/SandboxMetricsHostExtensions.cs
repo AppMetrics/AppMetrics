@@ -10,8 +10,6 @@ using App.Metrics.Core.Filtering;
 using App.Metrics.Filters;
 using App.Metrics.Reporting;
 using App.Metrics.Reporting.InfluxDB;
-using Microsoft.AspNetCore.Mvc.Internal;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace App.Metrics.Sandbox.Extensions
 {
@@ -21,7 +19,7 @@ namespace App.Metrics.Sandbox.Extensions
         // private static readonly string ElasticSearchIndex = "appmetricssandbox";
         // private static readonly Uri ElasticSearchUri = new Uri("http://127.0.0.1:9200");
         // private static readonly Uri GraphiteUri = new Uri("net.tcp://127.0.0.1:32776");
-        private static readonly string InfluxDbDatabase = "AppMetricsSandbox";
+        private static readonly string InfluxDbDatabase = "appmetricssandbox";
 
         private static readonly Uri InfluxDbUri = new Uri("http://127.0.0.1:8086");
 

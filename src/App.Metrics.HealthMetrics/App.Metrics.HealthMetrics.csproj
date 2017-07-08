@@ -10,8 +10,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="App.Metrics.Health" Version="$(AppMetricsHealthVersion)" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <ProjectReference Include="..\App.Metrics.Core\App.Metrics.Core.csproj" />
-    <ProjectReference Include="..\App.Metrics.Health\App.Metrics.Health.csproj" />
   </ItemGroup>
 
 </Project>

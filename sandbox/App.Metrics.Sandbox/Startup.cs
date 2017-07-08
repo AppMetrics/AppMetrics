@@ -51,22 +51,23 @@ namespace App.Metrics.Sandbox
 
             services.
                 AddHealthChecks().
-                AddHealthCheckMetrics().
+                // AddHealthCheckMetrics().
                 AddHealthCheckMiddleware(optionsBuilder => optionsBuilder.AddAsciiFormatters()).
                 AddChecks(
-                    (registry, metrics) =>
+                    registry =>
                     {
                         registry.AddPingCheck("google ping", "google.com", TimeSpan.FromSeconds(10));
                         registry.AddHttpGetCheck("github", new Uri("https://github.com/"), TimeSpan.FromSeconds(10));
-                        registry.AddOveralWebRequestsApdexCheck(metrics);
-                        registry.AddMetricCheck(
-                            name: "Database Call Duration",
-                            metrics: metrics,
-                            options: SandboxMetricsRegistry.DatabaseTimer,
-                            tags: new MetricTags("client_id", "client-9"),
-                            passing: value => { return (message: $"OK. 98th Percentile < 100ms ({value.Histogram.Percentile98}{SandboxMetricsRegistry.DatabaseTimer.DurationUnit.Unit()})", result: value.Histogram.Percentile98 < 100); },
-                            warning: value => { return (message: $"WARNING. 98th Percentile > 100ms ({value.Histogram.Percentile98}{SandboxMetricsRegistry.DatabaseTimer.DurationUnit.Unit()})", result: value.Histogram.Percentile98 < 200); },
-                            failing: value => { return (message: $"FAILED. 98th Percentile > 200ms ({value.Histogram.Percentile98}{SandboxMetricsRegistry.DatabaseTimer.DurationUnit.Unit()})", result: value.Histogram.Percentile98 > 200); });
+
+                        // registry.AddOveralWebRequestsApdexCheck(metrics);
+                        // registry.AddMetricCheck(
+                        //     name: "Database Call Duration",
+                        //     metrics: metrics,
+                        //     options: SandboxMetricsRegistry.DatabaseTimer,
+                        //     tags: new MetricTags("client_id", "client-9"),
+                        //     passing: value => { return (message: $"OK. 98th Percentile < 100ms ({value.Histogram.Percentile98}{SandboxMetricsRegistry.DatabaseTimer.DurationUnit.Unit()})", result: value.Histogram.Percentile98 < 100); },
+                        //     warning: value => { return (message: $"WARNING. 98th Percentile > 100ms ({value.Histogram.Percentile98}{SandboxMetricsRegistry.DatabaseTimer.DurationUnit.Unit()})", result: value.Histogram.Percentile98 < 200); },
+                        //     failing: value => { return (message: $"FAILED. 98th Percentile > 200ms ({value.Histogram.Percentile98}{SandboxMetricsRegistry.DatabaseTimer.DurationUnit.Unit()})", result: value.Histogram.Percentile98 > 200); });
                     });
         }
     }

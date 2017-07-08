@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="App.Metrics.AspNetCore.Health" Version="$(AppMetricsHealthVersion)" />
+    <PackageReference Include="App.Metrics.AspNetCore.Health.Formatters.Ascii" Version="$(AppMetricsHealthVersion)" />    
     <PackageReference Include="App.Metrics.Reporting.InfluxDB" Version="2.0.0-*" />
     <!--<PackageReference Include="App.Metrics.Formatters.InfluxDB" Version="2.0.0-*" />
     <PackageReference Include="App.Metrics.Extensions.Reporting.ElasticSearch" Version="1.1.0-*" />
@@ -20,10 +22,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="$(AspNetCoreVersion)" />
   </ItemGroup> 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\App.Metrics.HealthMetrics\App.Metrics.HealthMetrics.csproj" />
+    <!--<ProjectReference Include="..\..\src\App.Metrics.HealthMetrics\App.Metrics.HealthMetrics.csproj" />-->
     <ProjectReference Include="..\..\src\App.Metrics.AspNetCore.Formatters.Ascii\App.Metrics.AspNetCore.Formatters.Ascii.csproj" />
-    <ProjectReference Include="..\..\src\App.Metrics.AspNetCore.Health.Formatters.Ascii\App.Metrics.AspNetCore.Health.Formatters.Ascii.csproj" />
-    <ProjectReference Include="..\..\src\App.Metrics.AspNetCore.Health.Formatters.Json\App.Metrics.AspNetCore.Health.Formatters.Json.csproj" />
     <ProjectReference Include="..\..\src\App.Metrics.AspNetCore.Mvc\App.Metrics.AspNetCore.Mvc.csproj" />
     <ProjectReference Include="..\..\src\App.Metrics.AspNetCore.Formatters.Json\App.Metrics.AspNetCore.Formatters.Json.csproj" />
   </ItemGroup>
