@@ -335,8 +335,15 @@ Task("PublishTestResults")
 			{
 				Context.Information("Moving " + filePath.FullPath + " to " + testResultsDir);
 
-				MoveFiles(filePath.FullPath, testResultsDir);
-				MoveFile(testResultsDir + "/" + filePath.GetFilename(), testResultsDir + "/" + folderName + ".trx");
+				try
+				{
+					MoveFiles(filePath.FullPath, testResultsDir);
+					MoveFile(testResultsDir + "/" + filePath.GetFilename(), testResultsDir + "/" + folderName + ".trx");
+				}
+				catch(Exception ex)
+				{
+					Context.Information(ex.ToString());
+				}				
 			}
 		}	
 	}
