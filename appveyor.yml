@@ -25,11 +25,11 @@ artifacts:
 - path: artifacts/coverage/coverage.dcvr
 deploy:
 - provider: NuGet
-  server: https://www.myget.org/F/alhardy/api/v2/package
+  server: https://www.myget.org/F/AppMetrics/api/v2/package
   api_key:
     secure: gIAiACgNj+JzXyLLTe3rLxZyrAB9RpC8Lw81xEjdOLXqotprqEwGiFWRipEqkpps
   skip_symbols: true
-  symbol_server: https://www.myget.org/F/alhardy/symbol
+  symbol_server: https://www.myget.org/F/AppMetrics/symbol
 skip_commits:
   files:    
     - '**/*.md'
