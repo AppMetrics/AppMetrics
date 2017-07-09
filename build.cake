@@ -41,13 +41,7 @@ var packDirs                    = new [] {
 											Directory("./src/App.Metrics.Formatters.Json"),
 											Directory("./src/App.Metrics.Formatters.Ascii"),
 											Directory("./src/App.Metrics.Reporting"),
-											Directory("./src/App.Metrics.HealthMetrics"),
-											Directory("./src/App.Metrics.AspNetCore"),
-											Directory("./src/App.Metrics.AspNetCore.Abstractions"),
-											Directory("./src/App.Metrics.AspNetCore.Formatters.Ascii"),
-											Directory("./src/App.Metrics.AspNetCore.Formatters.Json"),
-											Directory("./src/App.Metrics.AspNetCore.Middleware"),
-											Directory("./src/App.Metrics.AspNetCore.Mvc")
+											Directory("./src/App.Metrics.HealthMetrics")
 										};
 var artifactsDir                = (DirectoryPath) Directory("./artifacts");
 var testResultsDir              = (DirectoryPath) artifactsDir.Combine("test-results");

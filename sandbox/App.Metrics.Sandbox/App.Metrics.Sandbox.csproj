@@ -8,6 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="App.Metrics.AspNetCore.Formatters.Ascii" Version="$(AppMetricsAspNetCoreVersion)" />
+    <PackageReference Include="App.Metrics.AspNetCore.Formatters.Json" Version="$(AppMetricsAspNetCoreVersion)" />
+    <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="$(AppMetricsAspNetCoreVersion)" />
     <PackageReference Include="App.Metrics.AspNetCore.Health" Version="$(AppMetricsHealthVersion)" />
     <PackageReference Include="App.Metrics.AspNetCore.Health.Formatters.Ascii" Version="$(AppMetricsHealthVersion)" />    
     <!--<PackageReference Include="App.Metrics.Reporting.InfluxDB" Version="2.0.0-*" />-->
@@ -20,12 +23,6 @@
     <PackageReference Include="Microsoft.AspNetCore" Version="$(AspNetCoreVersion)" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="$(AspNetCoreVersion)" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="$(AspNetCoreVersion)" />
-  </ItemGroup> 
-  <ItemGroup>
-    <!--<ProjectReference Include="..\..\src\App.Metrics.HealthMetrics\App.Metrics.HealthMetrics.csproj" />-->
-    <ProjectReference Include="..\..\src\App.Metrics.AspNetCore.Formatters.Ascii\App.Metrics.AspNetCore.Formatters.Ascii.csproj" />
-    <ProjectReference Include="..\..\src\App.Metrics.AspNetCore.Mvc\App.Metrics.AspNetCore.Mvc.csproj" />
-    <ProjectReference Include="..\..\src\App.Metrics.AspNetCore.Formatters.Json\App.Metrics.AspNetCore.Formatters.Json.csproj" />
   </ItemGroup>
   
   <ItemGroup>
