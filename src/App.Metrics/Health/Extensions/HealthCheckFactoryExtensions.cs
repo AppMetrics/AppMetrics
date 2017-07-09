@@ -25,21 +25,31 @@ namespace App.Metrics
             string name,
             Uri uri,
             TimeSpan timeout,
-            CancellationToken token = default(CancellationToken))
+            CancellationToken token = default(CancellationToken),
+            bool degradedOnError = false)
         {
             factory.Register(
                 name,
                 async () =>
                 {
-                    using (var tokenWithTimeout = CancellationTokenSource.CreateLinkedTokenSource(token))
+                    try
                     {
-                        tokenWithTimeout.CancelAfter(timeout);
+                        using (var tokenWithTimeout = CancellationTokenSource.CreateLinkedTokenSource(token))
+                        {
+                            tokenWithTimeout.CancelAfter(timeout);
 
-                        var response = await HttpClient.GetAsync(uri, tokenWithTimeout.Token).ConfigureAwait(false);
+                            var response = await HttpClient.GetAsync(uri, tokenWithTimeout.Token).ConfigureAwait(false);
 
-                        return response.IsSuccessStatusCode
-                            ? HealthCheckResult.Healthy($"OK. {uri}")
-                            : HealthCheckResult.Unhealthy($"FAILED. {uri} status code was {response.StatusCode}");
+                            return response.IsSuccessStatusCode
+                                ? HealthCheckResult.Healthy($"OK. {uri}")
+                                : HealthCheckResultOnError($"FAILED. {uri} status code was {response.StatusCode}", degradedOnError);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        return degradedOnError
+                            ? HealthCheckResult.Degraded(ex)
+                            : HealthCheckResult.Unhealthy(ex);
                     }
                 });
 
@@ -50,18 +60,28 @@ namespace App.Metrics
             this IHealthCheckFactory factory,
             string name,
             string host,
-            TimeSpan timeout)
+            TimeSpan timeout,
+            bool degradedOnError = false)
         {
             factory.Register(
                 name,
                 async () =>
                 {
-                    var ping = new Ping();
-                    var result = await ping.SendPingAsync(host, (int)timeout.TotalMilliseconds).ConfigureAwait(false);
+                    try
+                    {
+                        var ping = new Ping();
+                        var result = await ping.SendPingAsync(host, (int)timeout.TotalMilliseconds).ConfigureAwait(false);
 
-                    return result.Status == IPStatus.Success
-                        ? HealthCheckResult.Healthy($"OK. {host}")
-                        : HealthCheckResult.Unhealthy($"FAILED. {host} ping result was {result.Status}");
+                        return result.Status == IPStatus.Success
+                            ? HealthCheckResult.Healthy($"OK. {host}")
+                            : HealthCheckResultOnError($"FAILED. {host} ping result was {result.Status}", degradedOnError);
+                    }
+                    catch (Exception ex)
+                    {
+                        return degradedOnError
+                            ? HealthCheckResult.Degraded(ex)
+                            : HealthCheckResult.Unhealthy(ex);
+                    }
                 });
 
             return factory;
@@ -74,8 +94,16 @@ namespace App.Metrics
         /// <param name="factory">The health check factory where the health check is registered.</param>
         /// <param name="name">The name of the health check.</param>
         /// <param name="thresholdBytes">The physical memory threshold in bytes.</param>
+        /// <param name="degradedOnError">
+        ///     WHen the check fails, if true, create a degraded status response.
+        ///     Otherwise create an unhealthy status response. (default: false)
+        /// </param>
         /// <returns>The health check factory instance</returns>
-        public static IHealthCheckFactory RegisterProcessPhysicalMemoryHealthCheck(this IHealthCheckFactory factory, string name, long thresholdBytes)
+        public static IHealthCheckFactory RegisterProcessPhysicalMemoryHealthCheck(
+            this IHealthCheckFactory factory,
+            string name,
+            long thresholdBytes,
+            bool degradedOnError = false)
         {
             factory.Register(
                 name,
@@ -85,7 +113,7 @@ namespace App.Metrics
                     return Task.FromResult(
                         currentSize <= thresholdBytes
                             ? HealthCheckResult.Healthy($"OK. {thresholdBytes} bytes")
-                            : HealthCheckResult.Unhealthy($"FAILED. {currentSize} > {thresholdBytes}"));
+                            : HealthCheckResultOnError($"FAILED. {currentSize} > {thresholdBytes}", degradedOnError));
                 });
 
             return factory;
@@ -98,11 +126,16 @@ namespace App.Metrics
         /// <param name="factory">The health check factory where the health check is registered.</param>
         /// <param name="name">The name of the health check.</param>
         /// <param name="thresholdBytes">The private memory threshold in bytes.</param>
+        /// <param name="degradedOnError">
+        ///     WHen the check fails, if true, create a degraded status response.
+        ///     Otherwise create an unhealthy status response. (default: false)
+        /// </param>
         /// <returns>The health check factory instance</returns>
         public static IHealthCheckFactory RegisterProcessPrivateMemorySizeHealthCheck(
             this IHealthCheckFactory factory,
             string name,
-            long thresholdBytes)
+            long thresholdBytes,
+            bool degradedOnError = false)
         {
             factory.Register(
                 name,
@@ -112,7 +145,7 @@ namespace App.Metrics
                     return Task.FromResult(
                         currentSize <= thresholdBytes
                             ? HealthCheckResult.Healthy($"OK. {thresholdBytes} bytes")
-                            : HealthCheckResult.Unhealthy($"FAILED. {currentSize} > {thresholdBytes} bytes"));
+                            : HealthCheckResultOnError($"FAILED. {currentSize} > {thresholdBytes} bytes", degradedOnError));
                 });
 
             return factory;
@@ -125,11 +158,16 @@ namespace App.Metrics
         /// <param name="factory">The health check factory where the health check is registered.</param>
         /// <param name="name">The name of the health check.</param>
         /// <param name="thresholdBytes">The virtual memory threshold in bytes.</param>
+        /// <param name="degradedOnError">
+        ///     WHen the check fails, if true, create a degraded status response.
+        ///     Otherwise create an unhealthy status response. (default: false)
+        /// </param>
         /// <returns>The health check factory instance</returns>
         public static IHealthCheckFactory RegisterProcessVirtualMemorySizeHealthCheck(
             this IHealthCheckFactory factory,
             string name,
-            long thresholdBytes)
+            long thresholdBytes,
+            bool degradedOnError = false)
         {
             factory.Register(
                 name,
@@ -139,10 +177,26 @@ namespace App.Metrics
                     return Task.FromResult(
                         currentSize <= thresholdBytes
                             ? HealthCheckResult.Healthy($"OK. {thresholdBytes} bytes")
-                            : HealthCheckResult.Unhealthy($"FAILED. {currentSize} > {thresholdBytes} bytes"));
+                            : HealthCheckResultOnError($"FAILED. {currentSize} > {thresholdBytes} bytes", degradedOnError));
                 });
 
             return factory;
+        }
+
+        /// <summary>
+        ///     Create a failure (degraded or unhealthy) status response.
+        /// </summary>
+        /// <param name="message">Status message.</param>
+        /// <param name="degradedOnError">
+        ///     If true, create a degraded status response.
+        ///     Otherwise create an unhealthy status response. (default: false)
+        /// </param>
+        /// <returns>Failure status response.</returns>
+        private static HealthCheckResult HealthCheckResultOnError(string message, bool degradedOnError)
+        {
+            return degradedOnError
+                ? HealthCheckResult.Degraded(message)
+                : HealthCheckResult.Unhealthy(message);
         }
     }
 }
