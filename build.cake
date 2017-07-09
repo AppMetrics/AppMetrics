@@ -232,9 +232,10 @@ Task("RunTests")
         var settings = new DotNetCoreTestSettings
 		{
 			Configuration = configuration,
-			 ArgumentCustomization = args => args.Append("--logger:trx")
+			// Workaround to fixing pre-release version package references - https://github.com/NuGet/Home/issues/4337
+			 ArgumentCustomization = args=>args.Append("--logger:trx /t:Restore /p:RestoreSources=https://api.nuget.org/v3/index.json;https://www.myget.org/F/appmetrics/api/v3/index.json;")
 		};
-
+		
 		if (!IsRunningOnWindows())
         {
 			settings.Framework = "netcoreapp2.0";
