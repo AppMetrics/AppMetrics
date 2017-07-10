@@ -95,6 +95,7 @@ Run `build.sh` from the repositories root directory. Code Coverage reports are n
 
 **With Arguments**
 
+
 ```
 	.\build.sh --ScriptArgs '-BuildConfiguration=Release -PreReleaseSuffix=beta -BuildNumber=1'
 ```
@@ -136,6 +137,7 @@ See the [contribution guidlines](CONTRIBUTING.md) for details.
 
 ***Thanks for providing free open source licensing***
 
+* [NDepend](http://www.ndepend.com/) 
 * [Jetbrains](https://www.jetbrains.com/dotnet/) 
 * [AppVeyor](https://www.appveyor.com/)
 * [Travis CI](https://travis-ci.org/)
@@ -156,6 +158,9 @@ App Metrics is based on the [Metrics.NET](https://github.com/etishor/Metrics.NET
 
 *Dropwizard Metrics* Licensed under these terms*:
 "Copyright (c) 2010-2013 Coda Hale, Yammer.com Published under Apache Software License 2.0, see [LICENSE](https://github.com/dropwizard/metrics/blob/3.2-development/LICENSE)"
+
+----------
+[![Powered By NDepend](https://github.com/alhardy/AppMetrics.DocFx/blob/master/images/PoweredByNDepend.png)](http://www.ndepend.com/)
 
 ----------
 
