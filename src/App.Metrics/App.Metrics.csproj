@@ -9,8 +9,7 @@
     <PackageTags>appmetrics;metrics;apdex;meter;gauge;counter;timer;histogram</PackageTags>
   </PropertyGroup>
 
-  <ItemGroup>    
-    <ProjectReference Include="..\App.Metrics.Reporting\App.Metrics.Reporting.csproj" />
+  <ItemGroup>
     <ProjectReference Include="..\App.Metrics.Formatters.Ascii\App.Metrics.Formatters.Ascii.csproj" />
   </ItemGroup>
 

@@ -40,7 +40,6 @@ var packDirs                    = new [] {
 											Directory("./src/App.Metrics.Core"),
 											Directory("./src/App.Metrics.Formatters.Json"),
 											Directory("./src/App.Metrics.Formatters.Ascii"),
-											Directory("./src/App.Metrics.Reporting"),
 											Directory("./src/App.Metrics.HealthMetrics")
 										};
 var artifactsDir                = (DirectoryPath) Directory("./artifacts");
