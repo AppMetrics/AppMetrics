@@ -8,7 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace App.Metrics.Core.DependencyInjection.Internal
 {
     [ExcludeFromCodeCoverage]
-    internal static class AppMetricsServicesHelper
+    public static class AppMetricsServicesHelper
     {
         /// <summary>
         ///     Throws InvalidOperationException when MetricsMarkerService is not present

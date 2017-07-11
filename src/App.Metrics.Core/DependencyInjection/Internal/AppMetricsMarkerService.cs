@@ -8,7 +8,7 @@ namespace App.Metrics.Core.DependencyInjection.Internal
     ///     This is a Marker class which is used to determine if all the services were added
     ///     to when App.Metrics is loaded.
     /// </summary>
-    internal sealed class AppMetricsMarkerService
+    public sealed class AppMetricsMarkerService
     {
     }
 }
