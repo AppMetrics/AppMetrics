@@ -6,10 +6,9 @@ using App.Metrics.Apdex;
 using App.Metrics.Counter;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
-using App.Metrics.Reporting;
 using App.Metrics.Timer;
 
-namespace App.Metrics.Core.Formatting
+namespace App.Metrics
 {
     public class MetricDataValueSourceFormatter
     {

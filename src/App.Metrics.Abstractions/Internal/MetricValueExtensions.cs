@@ -6,10 +6,9 @@ using System.Collections.Generic;
 using App.Metrics.Apdex;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
-using App.Metrics.Reporting;
 
 // ReSharper disable CheckNamespace
-namespace App.Metrics.Core.Internal
+namespace App.Metrics.Internal
     // ReSharper restore CheckNamespace
 {
     internal static class MetricValueExtensions

@@ -2,7 +2,6 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Core.Formatting;
 using App.Metrics.Counter;
 using App.Metrics.Formatters.Ascii.Facts.Fixtures;
 using App.Metrics.Formatters.Ascii.Facts.TestHelpers;

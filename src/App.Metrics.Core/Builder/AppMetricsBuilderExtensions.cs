@@ -13,7 +13,6 @@ using App.Metrics.Core.ReservoirSampling;
 using App.Metrics.Core.Tagging;
 using App.Metrics.Filters;
 using App.Metrics.Registry;
-using App.Metrics.Reporting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
@@ -45,7 +44,6 @@ namespace App.Metrics.Builder
                 });
 
             builder.Services.TryAddSingleton(provider => new DefaultSamplingReservoirProvider());
-            builder.Services.TryAddSingleton<IReportFactory, NoOpReportFactory>();
             builder.Services.TryAddSingleton<IClock, StopwatchClock>();
             builder.Services.TryAddSingleton<IFilterMetrics, DefaultMetricsFilter>();
             builder.Services.TryAddSingleton<EnvironmentInfoProvider, EnvironmentInfoProvider>();

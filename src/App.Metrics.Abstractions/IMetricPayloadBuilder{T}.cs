@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 
-namespace App.Metrics.Reporting
+namespace App.Metrics
 {
     public interface IMetricPayloadBuilder<out T>
     {

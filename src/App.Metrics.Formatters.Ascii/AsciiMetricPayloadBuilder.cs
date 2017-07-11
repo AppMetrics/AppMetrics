@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using App.Metrics.Reporting;
 
 namespace App.Metrics.Formatters.Ascii
 {

@@ -5,15 +5,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Apdex;
-using App.Metrics.Core.Internal;
 using App.Metrics.Counter;
 using App.Metrics.Histogram;
+using App.Metrics.Internal;
 using App.Metrics.Meter;
 using App.Metrics.Timer;
 
-// ReSharper disable CheckNamespace
-namespace App.Metrics.Reporting
-    // ReSharper restore CheckNamespace
+namespace App.Metrics
 {
     public static class PackMetricValueSourceExtensions
     {

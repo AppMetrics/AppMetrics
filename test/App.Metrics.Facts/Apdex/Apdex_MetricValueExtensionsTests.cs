@@ -4,8 +4,7 @@
 
 using System.Collections.Generic;
 using App.Metrics.Apdex;
-using App.Metrics.Core.Internal;
-using App.Metrics.Reporting;
+using App.Metrics.Internal;
 using FluentAssertions;
 using Xunit;
 
