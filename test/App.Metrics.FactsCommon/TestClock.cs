@@ -5,7 +5,7 @@
 using System;
 using System.Globalization;
 
-namespace App.Metrics.Core.Infrastructure
+namespace App.Metrics.FactsCommon
 {
     public sealed class TestClock : IClock
     {

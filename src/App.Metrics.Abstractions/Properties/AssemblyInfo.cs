@@ -6,4 +6,3 @@ using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("App.Metrics.Core")]
 [assembly: InternalsVisibleTo("App.Metrics.Facts")]
-[assembly: InternalsVisibleTo("App.Metrics.Health.Facts")]

@@ -3,6 +3,7 @@
 // </copyright>
 
 using App.Metrics.Counter;
+using App.Metrics.FactsCommon.Fixtures;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;

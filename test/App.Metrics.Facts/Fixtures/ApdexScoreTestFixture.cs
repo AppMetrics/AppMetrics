@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Apdex;
 using App.Metrics.Core.Apdex;
-using App.Metrics.Core.Infrastructure;
 using App.Metrics.Core.ReservoirSampling.ExponentialDecay;
 using App.Metrics.Facts.Apdex;
+using App.Metrics.FactsCommon;
 
 namespace App.Metrics.Facts.Fixtures
 {

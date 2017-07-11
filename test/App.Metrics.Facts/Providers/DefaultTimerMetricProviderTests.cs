@@ -7,6 +7,7 @@ using App.Metrics.Core.Filtering;
 using App.Metrics.Core.ReservoirSampling.ExponentialDecay;
 using App.Metrics.Core.ReservoirSampling.Uniform;
 using App.Metrics.Facts.Fixtures;
+using App.Metrics.FactsCommon.Fixtures;
 using App.Metrics.Filters;
 using App.Metrics.Histogram;
 using App.Metrics.ReservoirSampling;

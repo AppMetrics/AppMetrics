@@ -4,12 +4,11 @@
 
 using System;
 using App.Metrics.Core.Histogram;
-using App.Metrics.Core.Infrastructure;
-using App.Metrics.Core.Internal;
 using App.Metrics.Core.Meter;
 using App.Metrics.Core.ReservoirSampling.ExponentialDecay;
 using App.Metrics.Core.Timer;
 using App.Metrics.Facts.TestHelpers;
+using App.Metrics.FactsCommon;
 using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;

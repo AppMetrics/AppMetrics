@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Counter;
-using App.Metrics.Facts.Fixtures;
+using App.Metrics.FactsCommon.Fixtures;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
 using App.Metrics.Tagging;

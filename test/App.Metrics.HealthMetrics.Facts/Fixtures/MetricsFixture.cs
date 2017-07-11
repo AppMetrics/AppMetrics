@@ -5,8 +5,8 @@
 using System;
 using App.Metrics.Core.Configuration;
 using App.Metrics.Core.Filtering;
-using App.Metrics.Core.Infrastructure;
 using App.Metrics.Core.Internal;
+using App.Metrics.FactsCommon;
 using App.Metrics.Filters;
 using App.Metrics.Health.Internal;
 using App.Metrics.Registry;

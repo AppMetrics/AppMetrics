@@ -6,7 +6,7 @@ using System;
 using System.Linq;
 using App.Metrics.Apdex;
 using App.Metrics.Counter;
-using App.Metrics.Facts.Fixtures;
+using App.Metrics.FactsCommon.Fixtures;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;

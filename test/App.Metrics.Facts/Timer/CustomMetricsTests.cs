@@ -4,8 +4,8 @@
 
 using System;
 using System.Linq;
-using App.Metrics.Facts.Fixtures;
 using App.Metrics.Facts.TestHelpers;
+using App.Metrics.FactsCommon.Fixtures;
 using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;

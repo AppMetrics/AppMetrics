@@ -3,7 +3,7 @@
 // </copyright>
 
 using App.Metrics.Counter;
-using App.Metrics.Formatters.Ascii.Facts.Fixtures;
+using App.Metrics.FactsCommon.Fixtures;
 using FluentAssertions;
 using Xunit;
 

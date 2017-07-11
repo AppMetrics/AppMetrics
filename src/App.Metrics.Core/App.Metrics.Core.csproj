@@ -10,11 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\shared\AppMetricsEnvironment.cs" Link="Infrastructure\AppMetricsEnvironment.cs" />
-    <Compile Include="..\shared\StringExtensions.cs" Link="Internal\Extensions\StringExtensions.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="App.Metrics.Concurrency" Version="1.2.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(AspNetCoreVersion)" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="$(DependencyModelVersion)" />

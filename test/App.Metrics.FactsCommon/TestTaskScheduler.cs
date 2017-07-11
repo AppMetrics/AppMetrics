@@ -8,19 +8,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Scheduling;
 
-// ReSharper disable CheckNamespace
-namespace App.Metrics.Core.Internal
-    // ReSharper restore CheckNamespace
+namespace App.Metrics.FactsCommon
 {
-    [ExcludeFromCodeCoverage]
-    internal sealed class TestTaskScheduler : IScheduler
+    public sealed class TestTaskScheduler : IScheduler
     {
         private readonly IClock _clock;
         private Action _action;
         private long _lastRun;
         private TimeSpan _pollInterval;
 
-        internal TestTaskScheduler(IClock clock)
+        public TestTaskScheduler(IClock clock)
         {
             _clock = clock ?? throw new ArgumentNullException(nameof(clock));
             _clock.Advanced += (s, l) => RunIfNeeded();
