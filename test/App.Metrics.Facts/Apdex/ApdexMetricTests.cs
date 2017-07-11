@@ -21,7 +21,7 @@ namespace App.Metrics.Facts.Apdex
 
         public ApdexMetricTests()
         {
-            _apdex = new DefaultApdexMetric(new DefaultForwardDecayingReservoir(), ReservoirSamplingConstants.DefaultApdexTSeconds, _clock, false);
+            _apdex = new DefaultApdexMetric(new DefaultForwardDecayingReservoir(), AppMetricsReservoirSamplingConstants.DefaultApdexTSeconds, _clock, false);
         }
 
         [Fact]
@@ -186,7 +186,7 @@ namespace App.Metrics.Facts.Apdex
             {
                 var unused = new DefaultApdexMetric(
                         new DefaultForwardDecayingReservoir(),
-                        ReservoirSamplingConstants.DefaultApdexTSeconds,
+                        AppMetricsReservoirSamplingConstants.DefaultApdexTSeconds,
                         null,
                         false)
                     ;

@@ -39,7 +39,7 @@ namespace App.Metrics.Core.ReservoirSampling.Uniform
         ///     Initializes a new instance of the <see cref="DefaultAlgorithmRReservoir" /> class.
         /// </summary>
         public DefaultAlgorithmRReservoir()
-            : this(ReservoirSamplingConstants.DefaultSampleSize)
+            : this(AppMetricsReservoirSamplingConstants.DefaultSampleSize)
         {
         }
 

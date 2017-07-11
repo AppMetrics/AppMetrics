@@ -25,7 +25,7 @@ namespace App.Metrics.Core.Apdex
         /// </summary>
         /// <param name="reservoir">The reservoir used to sample values in order to caclulate an apdex score.</param>
         /// <param name="apdexTSeconds">The apdex t seconds used to calculate satisfied, tolerating and frustrating counts.</param>
-        public ApdexProvider(IReservoir reservoir, double apdexTSeconds = ReservoirSamplingConstants.DefaultApdexTSeconds)
+        public ApdexProvider(IReservoir reservoir, double apdexTSeconds = AppMetricsReservoirSamplingConstants.DefaultApdexTSeconds)
         {
             _reservoir = reservoir;
             _apdexTSeconds = apdexTSeconds;

@@ -30,7 +30,7 @@ namespace App.Metrics
         public static IHealthCheckRegistry AddOveralWebRequestsApdexCheck(
             this IHealthCheckRegistry registry,
             IMetrics metrics,
-            double apdexTSeconds = ReservoirSamplingConstants.DefaultApdexTSeconds)
+            double apdexTSeconds = AppMetricsReservoirSamplingConstants.DefaultApdexTSeconds)
         {
             ApdexOptions.ApdexTSeconds = apdexTSeconds;
 

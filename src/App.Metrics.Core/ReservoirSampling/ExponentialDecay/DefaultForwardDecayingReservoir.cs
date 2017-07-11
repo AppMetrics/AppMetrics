@@ -53,8 +53,8 @@ namespace App.Metrics.Core.ReservoirSampling.ExponentialDecay
         /// </remarks>
         public DefaultForwardDecayingReservoir()
             : this(
-                ReservoirSamplingConstants.DefaultSampleSize,
-                ReservoirSamplingConstants.DefaultExponentialDecayFactor,
+                AppMetricsReservoirSamplingConstants.DefaultSampleSize,
+                AppMetricsReservoirSamplingConstants.DefaultExponentialDecayFactor,
                 new StopwatchClock())
         {
         }

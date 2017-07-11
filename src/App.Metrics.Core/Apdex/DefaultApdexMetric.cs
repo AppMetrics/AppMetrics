@@ -51,7 +51,7 @@ namespace App.Metrics.Core.Apdex
         /// </param>
         public DefaultApdexMetric(IReservoir reservoir, IClock clock, bool allowWarmup)
             // ReSharper disable RedundantArgumentDefaultValue
-            : this(new ApdexProvider(reservoir, ReservoirSamplingConstants.DefaultApdexTSeconds), clock, allowWarmup)
+            : this(new ApdexProvider(reservoir, AppMetricsReservoirSamplingConstants.DefaultApdexTSeconds), clock, allowWarmup)
         // ReSharper restore RedundantArgumentDefaultValue
         {
         }

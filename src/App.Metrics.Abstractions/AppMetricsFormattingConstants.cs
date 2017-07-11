@@ -1,10 +1,10 @@
-﻿// <copyright file="FormattingConstants.cs" company="Allan Hardy">
+﻿// <copyright file="AppMetricsFormattingConstants.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-namespace App.Metrics.Internal
+namespace App.Metrics
 {
-    public static class FormattingConstants
+    public static class AppMetricsFormattingConstants
     {
         public static class MetricName
         {

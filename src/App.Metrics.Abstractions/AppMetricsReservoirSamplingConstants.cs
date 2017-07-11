@@ -1,10 +1,10 @@
-﻿// <copyright file="ReservoirSamplingConstants.cs" company="Allan Hardy">
+﻿// <copyright file="AppMetricsReservoirSamplingConstants.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-namespace App.Metrics.Internal
+namespace App.Metrics
 {
-    public static class ReservoirSamplingConstants
+    public static class AppMetricsReservoirSamplingConstants
     {
         public const int ApdexRequiredSamplesBeforeCalculating = 100;
         public const double DefaultApdexTSeconds = 0.5;

@@ -24,7 +24,7 @@ namespace App.Metrics.Apdex
     {
         public ApdexOptions()
         {
-            ApdexTSeconds = ReservoirSamplingConstants.DefaultApdexTSeconds;
+            ApdexTSeconds = AppMetricsReservoirSamplingConstants.DefaultApdexTSeconds;
             AllowWarmup = true;
         }
 

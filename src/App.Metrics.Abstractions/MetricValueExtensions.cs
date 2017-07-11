@@ -7,11 +7,9 @@ using App.Metrics.Apdex;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
 
-// ReSharper disable CheckNamespace
-namespace App.Metrics.Internal
-    // ReSharper restore CheckNamespace
+namespace App.Metrics
 {
-    internal static class MetricValueExtensions
+    public static class MetricValueExtensions
     {
         public static void AddApdexValues(
             this ApdexValue apdex,

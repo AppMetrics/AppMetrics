@@ -20,7 +20,7 @@ namespace App.Metrics.Apdex
             SampleSize = sampleSize;
 
             // DEVNOTE: Allow some warmup time before calculating apdex scores
-            if (allowWarmup && sampleSize <= ReservoirSamplingConstants.ApdexRequiredSamplesBeforeCalculating)
+            if (allowWarmup && sampleSize <= AppMetricsReservoirSamplingConstants.ApdexRequiredSamplesBeforeCalculating)
             {
                 Score = 1;
             }

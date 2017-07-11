@@ -1,4 +1,4 @@
-﻿// <copyright file="CoreConstants.cs" company="Allan Hardy">
+﻿// <copyright file="AppMetricsConstants.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
@@ -10,9 +10,9 @@ using App.Metrics.Histogram;
 using App.Metrics.Meter;
 using App.Metrics.Timer;
 
-namespace App.Metrics.Internal
+namespace App.Metrics
 {
-    internal static class CoreConstants
+    public static class AppMetricsConstants
     {
         public const string InternalMetricsContext = "appmetrics.internal";
 
@@ -23,12 +23,11 @@ namespace App.Metrics.Internal
             public static readonly string GaugeMetricTypeValue = "gauge";
             public static readonly string HistogramMetricTypeValue = "histogram";
             public static readonly string MeterMetricTypeValue = "meter";
+            public static readonly string TimerMetricTypeValue = "timer";
             public static readonly string MetricTagsTypeKey = "mtype";
             public static readonly string MetricTagsUnitKey = "unit";
             public static readonly string MetricTagsUnitRateKey = "unit_rate";
             public static readonly string MetricTagsUnitRateDurationKey = "unit_dur";
-
-            public static readonly string TimerMetricTypeValue = "timer";
 
             public static readonly Dictionary<Type, string> MetricValueSourceTypeMapping = new Dictionary<Type, string>
                                                                                            {

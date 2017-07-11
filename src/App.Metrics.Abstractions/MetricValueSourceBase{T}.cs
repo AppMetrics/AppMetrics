@@ -21,11 +21,11 @@ namespace App.Metrics
             ValueProvider = valueProvider;
             Tags = tags;
 
-            if (name.Contains(FormattingConstants.MetricName.DimensionSeparator))
+            if (name.Contains(AppMetricsFormattingConstants.MetricName.DimensionSeparator))
             {
                 IsMultidimensional = true;
                 MultidimensionalName =
-                    name.Split(new[] { FormattingConstants.MetricName.DimensionSeparator }, StringSplitOptions.RemoveEmptyEntries)[0];
+                    name.Split(new[] { AppMetricsFormattingConstants.MetricName.DimensionSeparator }, StringSplitOptions.RemoveEmptyEntries)[0];
             }
         }
 

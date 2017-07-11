@@ -125,14 +125,14 @@ namespace App.Metrics
 
         private static MetricTags ConcatIntrinsicMetricTags<T>(MetricValueSourceBase<T> valueSource)
         {
-            var intrinsicTags = new MetricTags(CoreConstants.Pack.MetricTagsUnitKey, valueSource.Unit.ToString());
+            var intrinsicTags = new MetricTags(AppMetricsConstants.Pack.MetricTagsUnitKey, valueSource.Unit.ToString());
 
             if (typeof(T) == typeof(TimerValue))
             {
                 var timerValueSource = valueSource as MetricValueSourceBase<TimerValue>;
 
                 var timerIntrinsicTags = new MetricTags(
-                    new[] { CoreConstants.Pack.MetricTagsUnitRateDurationKey, CoreConstants.Pack.MetricTagsUnitRateKey },
+                    new[] { AppMetricsConstants.Pack.MetricTagsUnitRateDurationKey, AppMetricsConstants.Pack.MetricTagsUnitRateKey },
                     new[] { timerValueSource.Value.DurationUnit.Unit(), timerValueSource.Value.Rate.RateUnit.Unit() });
 
                 intrinsicTags = MetricTags.Concat(intrinsicTags, timerIntrinsicTags);
@@ -141,18 +141,18 @@ namespace App.Metrics
             {
                 var meterValueSource = valueSource as MetricValueSourceBase<MeterValue>;
 
-                var meterIntrinsicTags = new MetricTags(CoreConstants.Pack.MetricTagsUnitRateKey, meterValueSource.Value.RateUnit.Unit());
+                var meterIntrinsicTags = new MetricTags(AppMetricsConstants.Pack.MetricTagsUnitRateKey, meterValueSource.Value.RateUnit.Unit());
                 intrinsicTags = MetricTags.Concat(intrinsicTags, meterIntrinsicTags);
             }
 
-            if (CoreConstants.Pack.MetricValueSourceTypeMapping.ContainsKey(typeof(T)))
+            if (AppMetricsConstants.Pack.MetricValueSourceTypeMapping.ContainsKey(typeof(T)))
             {
-                var metricTypeTag = new MetricTags(CoreConstants.Pack.MetricTagsTypeKey, CoreConstants.Pack.MetricValueSourceTypeMapping[typeof(T)]);
+                var metricTypeTag = new MetricTags(AppMetricsConstants.Pack.MetricTagsTypeKey, AppMetricsConstants.Pack.MetricValueSourceTypeMapping[typeof(T)]);
                 intrinsicTags = MetricTags.Concat(metricTypeTag, intrinsicTags);
             }
             else
             {
-                var metricTypeTag = new MetricTags(CoreConstants.Pack.MetricTagsTypeKey, typeof(T).Name.ToLowerInvariant());
+                var metricTypeTag = new MetricTags(AppMetricsConstants.Pack.MetricTagsTypeKey, typeof(T).Name.ToLowerInvariant());
                 intrinsicTags = MetricTags.Concat(metricTypeTag, intrinsicTags);
             }
 

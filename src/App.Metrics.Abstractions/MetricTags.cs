@@ -176,11 +176,11 @@ namespace App.Metrics
                 return Empty;
             }
 
-            var tagPairs = setItem.Split(FormattingConstants.MetricSetItem.ItemSeparator);
+            var tagPairs = setItem.Split(AppMetricsFormattingConstants.MetricSetItem.ItemSeparator);
 
             if (tagPairs.Length <= 1)
             {
-                return new MetricTags(FormattingConstants.MetricSetItem.FallbackKey, setItem);
+                return new MetricTags(AppMetricsFormattingConstants.MetricSetItem.FallbackKey, setItem);
             }
 
             var tags = new string[tagPairs.Length];
@@ -188,10 +188,10 @@ namespace App.Metrics
 
             for (var i = 0; i < tagPairs.Length; i++)
             {
-                var tagKeyValue = tagPairs[i].Split(FormattingConstants.MetricSetItem.KeyValueSeparator);
+                var tagKeyValue = tagPairs[i].Split(AppMetricsFormattingConstants.MetricSetItem.KeyValueSeparator);
                 if (tagKeyValue.Length <= 1)
                 {
-                    tags[i] = FormattingConstants.MetricSetItem.FallbackKey;
+                    tags[i] = AppMetricsFormattingConstants.MetricSetItem.FallbackKey;
                     values[i] = tagPairs[i];
                     continue;
                 }
@@ -250,9 +250,9 @@ namespace App.Metrics
             {
                 return string.Concat(
                     metricName,
-                    FormattingConstants.MetricName.DimensionSeparator,
+                    AppMetricsFormattingConstants.MetricName.DimensionSeparator,
                     _key,
-                    FormattingConstants.MetricTag.KeyValueSeparator,
+                    AppMetricsFormattingConstants.MetricTag.KeyValueSeparator,
                     _value);
             }
 
@@ -263,26 +263,26 @@ namespace App.Metrics
                 case 1:
                     return string.Concat(
                         metricName,
-                        FormattingConstants.MetricName.DimensionSeparator,
+                        AppMetricsFormattingConstants.MetricName.DimensionSeparator,
                         _keys[0],
-                        FormattingConstants.MetricTag.KeyValueSeparator,
+                        AppMetricsFormattingConstants.MetricTag.KeyValueSeparator,
                         _values[0]);
                 default:
                     {
                     var sb = StringBuilderCache.Acquire();
 
                     sb.Append(metricName);
-                    sb.Append(FormattingConstants.MetricName.DimensionSeparator);
+                    sb.Append(AppMetricsFormattingConstants.MetricName.DimensionSeparator);
 
                     for (var i = 0; i < _keys.Length; i++)
                     {
                         sb.Append(_keys[i]);
-                        sb.Append(FormattingConstants.MetricTag.KeyValueSeparator);
+                        sb.Append(AppMetricsFormattingConstants.MetricTag.KeyValueSeparator);
                         sb.Append(_values[i]);
 
                         if (i < _keys.Length - 1)
                         {
-                            sb.Append(FormattingConstants.MetricTag.TagSeparator);
+                            sb.Append(AppMetricsFormattingConstants.MetricTag.TagSeparator);
                         }
                     }
 

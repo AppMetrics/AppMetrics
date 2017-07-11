@@ -28,7 +28,7 @@ namespace App.Metrics.Core.ReservoirSampling.SlidingWindow
         ///     Initializes a new instance of the <see cref="DefaultSlidingWindowReservoir" /> class.
         /// </summary>
         public DefaultSlidingWindowReservoir()
-            : this(ReservoirSamplingConstants.DefaultSampleSize) { }
+            : this(AppMetricsReservoirSamplingConstants.DefaultSampleSize) { }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultSlidingWindowReservoir" /> class.
