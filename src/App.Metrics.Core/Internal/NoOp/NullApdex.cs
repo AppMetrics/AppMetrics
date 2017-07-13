@@ -9,7 +9,7 @@ using App.Metrics.Apdex;
 namespace App.Metrics.Core.Internal.NoOp
 {
     [ExcludeFromCodeCoverage]
-    internal struct NullApdex : IApdex
+    public struct NullApdex : IApdex
     {
         public long CurrentTime() { return 0; }
 

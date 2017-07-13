@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Core.Internal
 {
-    internal sealed class DefaultMetricsManager : IManageMetrics
+    public sealed class DefaultMetricsManager : IManageMetrics
     {
         private readonly ILogger<DefaultMetricsManager> _logger;
         private readonly IMetricsRegistry _registry;

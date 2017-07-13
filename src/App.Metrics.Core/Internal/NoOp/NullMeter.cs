@@ -8,7 +8,7 @@ using App.Metrics.Meter;
 namespace App.Metrics.Core.Internal.NoOp
 {
     [ExcludeFromCodeCoverage]
-    internal struct NullMeter : IMeter
+    public struct NullMeter : IMeter
     {
         public void Mark() { }
 

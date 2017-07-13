@@ -14,7 +14,7 @@ using App.Metrics.Timer;
 
 namespace App.Metrics.Core.Internal
 {
-    internal sealed class DefaultMetricRegistryManager : IMetricRegistryManager
+    public sealed class DefaultMetricRegistryManager : IMetricRegistryManager
     {
         private readonly Func<IEnumerable<ApdexValueSource>> _apdexScores;
         private readonly Func<IEnumerable<CounterValueSource>> _counters;

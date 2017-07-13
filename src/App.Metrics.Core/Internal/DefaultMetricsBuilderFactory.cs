@@ -19,7 +19,7 @@ using App.Metrics.Timer;
 namespace App.Metrics.Core.Internal
 {
     // ReSharper disable ClassNeverInstantiated.Global
-    internal sealed class DefaultMetricsBuilderFactory : IBuildMetrics
+    public sealed class DefaultMetricsBuilderFactory : IBuildMetrics
         // ReSharper restore ClassNeverInstantiated.Global
     {
         public DefaultMetricsBuilderFactory()

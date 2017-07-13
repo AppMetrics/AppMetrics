@@ -8,7 +8,7 @@ using App.Metrics.Counter;
 namespace App.Metrics.Core.Internal.NoOp
 {
     [ExcludeFromCodeCoverage]
-    internal struct NullCounter : ICounter
+    public struct NullCounter : ICounter
     {
         public void Decrement() { }
 

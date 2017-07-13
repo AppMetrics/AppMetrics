@@ -16,7 +16,7 @@ using App.Metrics.Timer;
 namespace App.Metrics.Core.Internal.NoOp
 {
     [ExcludeFromCodeCoverage]
-    internal sealed class NullMetricsRegistry : IMetricsRegistry
+    public sealed class NullMetricsRegistry : IMetricsRegistry
     {
         public static void Reset() { }
 

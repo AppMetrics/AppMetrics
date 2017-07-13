@@ -17,7 +17,7 @@ using App.Metrics.Timer;
 
 namespace App.Metrics.Core.Internal
 {
-    internal sealed class DefaultMetricContextRegistry : IMetricContextRegistry
+    public sealed class DefaultMetricContextRegistry : IMetricContextRegistry
     {
         private readonly MetricMetaCatalog<IApdex, ApdexValueSource, ApdexValue> _apdexScores =
             new MetricMetaCatalog<IApdex, ApdexValueSource, ApdexValue>();

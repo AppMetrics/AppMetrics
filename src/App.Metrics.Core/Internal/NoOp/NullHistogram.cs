@@ -8,7 +8,7 @@ using App.Metrics.Histogram;
 namespace App.Metrics.Core.Internal.NoOp
 {
     [ExcludeFromCodeCoverage]
-    internal struct NullHistogram : IHistogram
+    public struct NullHistogram : IHistogram
     {
         public void Reset() { }
 

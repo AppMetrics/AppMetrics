@@ -19,7 +19,7 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Core.Internal
 {
-    internal sealed class DefaultMetricsRegistry : IMetricsRegistry
+    public sealed class DefaultMetricsRegistry : IMetricsRegistry
     {
         private readonly IClock _clock;
         private readonly ConcurrentDictionary<string, IMetricContextRegistry> _contexts = new ConcurrentDictionary<string, IMetricContextRegistry>();

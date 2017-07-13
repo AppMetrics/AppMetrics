@@ -18,7 +18,7 @@ using App.Metrics.Timer;
 
 namespace App.Metrics.Core.Internal
 {
-    internal sealed class DefaultMetricsProvider : IProvideMetrics
+    public sealed class DefaultMetricsProvider : IProvideMetrics
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultMetricsProvider" /> class.

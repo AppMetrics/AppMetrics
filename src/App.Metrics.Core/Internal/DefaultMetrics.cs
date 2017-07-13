@@ -16,7 +16,7 @@ namespace App.Metrics.Core.Internal
     /// </remarks>
     /// <seealso cref="IMetrics" />
     // ReSharper disable ClassNeverInstantiated.Global
-    internal sealed class DefaultMetrics : IMetrics
+    public sealed class DefaultMetrics : IMetrics
         // ReSharper restore ClassNeverInstantiated.Global
     {
         /// <summary>

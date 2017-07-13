@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using App.Metrics;
 
 namespace App.Metrics.Formatters.Ascii.Facts.TestHelpers
 {
@@ -18,7 +17,7 @@ namespace App.Metrics.Formatters.Ascii.Facts.TestHelpers
         public CustomAsciiMetricPayloadBuilder()
         {
             _payload = new CustomAsciiMetricPayload();
-            _metricNameFormatter = (metricContext, metricName) => metricContext.IsMissing()
+            _metricNameFormatter = (metricContext, metricName) => string.IsNullOrWhiteSpace(metricContext)
                 ? metricName
                 : $"[{metricContext}] {metricName}";
             DataKeys = new MetricValueDataKeys();

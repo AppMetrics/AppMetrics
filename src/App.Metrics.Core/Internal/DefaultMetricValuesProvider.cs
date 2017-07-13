@@ -6,12 +6,11 @@ using System.Linq;
 using App.Metrics.Core.Filtering;
 using App.Metrics.Core.Internal.NoOp;
 using App.Metrics.Filters;
-using App.Metrics.Internal;
 using App.Metrics.Registry;
 
 namespace App.Metrics.Core.Internal
 {
-    internal sealed class DefaultMetricValuesProvider : IProvideMetricValues
+    public sealed class DefaultMetricValuesProvider : IProvideMetricValues
     {
         private readonly IFilterMetrics _globalFilter;
         private readonly IMetricsRegistry _registry;

@@ -8,7 +8,7 @@ using App.Metrics.Gauge;
 namespace App.Metrics.Core.Internal.NoOp
 {
     [ExcludeFromCodeCoverage]
-    internal struct NullGauge : IGauge
+    public struct NullGauge : IGauge
     {
         /// <inheritdoc />
         public void Reset()

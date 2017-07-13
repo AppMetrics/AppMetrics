@@ -9,7 +9,7 @@ using App.Metrics.Timer;
 namespace App.Metrics.Core.Internal.NoOp
 {
     [ExcludeFromCodeCoverage]
-    internal struct NullTimer : ITimer
+    public struct NullTimer : ITimer
     {
         public long CurrentTime() { return 0; }
 
