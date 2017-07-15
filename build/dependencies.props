@@ -5,6 +5,7 @@
     <AspNetCoreVersion>2.0.0-*</AspNetCoreVersion>
     <AppMetricsReportingVersion>2.0.0-*</AppMetricsReportingVersion>
     <AppMetricsInfluxDBVersion>2.0.0-*</AppMetricsInfluxDBVersion>
+    <AppMetricsElasticsearchVersion>2.0.0-*</AppMetricsElasticsearchVersion>
     <BenchmarkDotNetVersion>0.10.8</BenchmarkDotNetVersion>
     <CoreFxVersion>4.4.0-*</CoreFxVersion>
     <DependencyModelVersion>2.0.0-*</DependencyModelVersion>        
