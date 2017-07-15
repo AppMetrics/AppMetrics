@@ -223,7 +223,8 @@ Task("RunTests")
 		var folderName = new System.IO.DirectoryInfo(System.IO.Path.GetDirectoryName(project.ToString())).Name;				
         var settings = new DotNetCoreTestSettings
 		{
-			Configuration = configuration			
+			Configuration = configuration,
+			 ArgumentCustomization = args => args.Append("--logger:trx")
 		};
 		
 		if (!IsRunningOnWindows())
@@ -268,7 +269,8 @@ Task("RunTestsWithOpenCover")
 
 	var settings = new DotNetCoreTestSettings
     {
-        Configuration = configuration		
+        Configuration = configuration,
+		 ArgumentCustomization = args => args.Append("--logger:trx")
     };
 
     foreach (var project in projects)
@@ -345,7 +347,8 @@ Task("RunTestsWithDotCover")
 
 	var settings = new DotNetCoreTestSettings
     {
-        Configuration = configuration		
+        Configuration = configuration,
+		 ArgumentCustomization = args => args.Append("--logger:trx")
     };
 
     foreach (var project in projects)
