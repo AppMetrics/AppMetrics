@@ -9,6 +9,7 @@ using App.Metrics.Builder;
 using App.Metrics.Core.Filtering;
 using App.Metrics.Filters;
 using App.Metrics.Reporting;
+using App.Metrics.Reporting.InfluxDB;
 
 namespace App.Metrics.Sandbox.Extensions
 {
@@ -18,9 +19,8 @@ namespace App.Metrics.Sandbox.Extensions
         // private static readonly string ElasticSearchIndex = "appmetricssandbox";
         // private static readonly Uri ElasticSearchUri = new Uri("http://127.0.0.1:9200");
         // private static readonly Uri GraphiteUri = new Uri("net.tcp://127.0.0.1:32776");
-        // private static readonly string InfluxDbDatabase = "appmetricssandbox";
-
-        // private static readonly Uri InfluxDbUri = new Uri("http://127.0.0.1:8086");
+        private static readonly string InfluxDbDatabase = "appmetricssandbox";
+        private static readonly Uri InfluxDbUri = new Uri("http://127.0.0.1:8086");
 
         private static readonly List<ReportType> ReportTypes =
             new List<ReportType> { ReportType.InfluxDB, ReportType.ElasticSearch, /*ReportType.Graphite*/ };
@@ -86,19 +86,19 @@ namespace App.Metrics.Sandbox.Extensions
 
         private static void AddInfluxReporting(IReportFactory factory, IFilterMetrics reportFilter)
         {
-            // factory.AddInfluxDb(
-            //     new InfluxDBReporterSettings
-            //     {
-            //         HttpPolicy = new HttpPolicy
-            //         {
-            //             FailuresBeforeBackoff = 3,
-            //             BackoffPeriod = TimeSpan.FromSeconds(30),
-            //             Timeout = TimeSpan.FromSeconds(10)
-            //         },
-            //         InfluxDbSettings = new Reporting.InfluxDB.Client.InfluxDBSettings(InfluxDbDatabase, InfluxDbUri),
-            //         ReportInterval = TimeSpan.FromSeconds(5)
-            //     },
-            //     reportFilter);
+            factory.AddInfluxDb(
+                new InfluxDBReporterSettings
+                {
+                    HttpPolicy = new HttpPolicy
+                    {
+                        FailuresBeforeBackoff = 3,
+                        BackoffPeriod = TimeSpan.FromSeconds(30),
+                        Timeout = TimeSpan.FromSeconds(10)
+                    },
+                    InfluxDbSettings = new Reporting.InfluxDB.Client.InfluxDBSettings(InfluxDbDatabase, InfluxDbUri),
+                    ReportInterval = TimeSpan.FromSeconds(5)
+                },
+                reportFilter);
         }
     }
 #pragma warning restore SA1111, SA1009, SA1008

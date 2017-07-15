@@ -14,7 +14,7 @@
     <PackageReference Include="App.Metrics.Reporting" Version="$(AppMetricsReportingVersion)" />
     <PackageReference Include="App.Metrics.AspNetCore.Health" Version="$(AppMetricsHealthVersion)" />
     <PackageReference Include="App.Metrics.AspNetCore.Health.Formatters.Ascii" Version="$(AppMetricsHealthVersion)" />
-    <!--<PackageReference Include="App.Metrics.Reporting.InfluxDB" Version="2.0.0-*" />-->
+    <PackageReference Include="App.Metrics.Reporting.InfluxDB" Version="$(AppMetricsInfluxDBVersion)" />
     <!--<PackageReference Include="App.Metrics.Formatters.InfluxDB" Version="2.0.0-*" />
     <PackageReference Include="App.Metrics.Extensions.Reporting.ElasticSearch" Version="1.1.0-*" />
     <PackageReference Include="App.Metrics.Formatters.ElasticSearch" Version="1.0.0" />
