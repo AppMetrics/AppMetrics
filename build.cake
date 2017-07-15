@@ -39,8 +39,7 @@ var packDirs                    = new [] {
 											Directory("./src/App.Metrics.Abstractions"),
 											Directory("./src/App.Metrics.Core"),
 											Directory("./src/App.Metrics.Formatters.Json"),
-											Directory("./src/App.Metrics.Formatters.Ascii"),
-											Directory("./src/App.Metrics.HealthMetrics")
+											Directory("./src/App.Metrics.Formatters.Ascii")
 										};
 var artifactsDir                = (DirectoryPath) Directory("./artifacts");
 var testResultsDir              = (DirectoryPath) artifactsDir.Combine("test-results");
@@ -64,7 +63,7 @@ var coverallsToken              = Context.EnvironmentVariable("COVERALLS_REPO_TO
 var openCoverFilter				= "+[App.Metrics*]* -[xunit.*]* -[*.Facts]*";
 var openCoverExcludeFile        = "*/*Designer.cs;*/*.g.cs;*/*.g.i.cs";
 var coverIncludeFilter			= "+:App.Metrics*";
-var coverExcludeFilter			= "-:*.Facts";
+var coverExcludeFilter			= "-:*.Facts -:*.FactsCommon";
 var excludeFromCoverage			= "*.ExcludeFromCodeCoverage*";
 string versionSuffix			= null;
 
@@ -191,9 +190,7 @@ Task("Pack")
         Configuration = configuration,
         OutputDirectory = packagesDir,
         VersionSuffix = versionSuffix,
-		NoBuild = true,
-		// Workaround to fixing pre-release version package references - https://github.com/NuGet/Home/issues/4337
-		ArgumentCustomization = args=>args.Append("/p:RestoreSources=https://api.nuget.org/v3/index.json;https://www.myget.org/F/appmetrics/api/v3/index.json;")
+		NoBuild = true		
     };	
     
     foreach(var packDir in packDirs)
@@ -226,9 +223,7 @@ Task("RunTests")
 		var folderName = new System.IO.DirectoryInfo(System.IO.Path.GetDirectoryName(project.ToString())).Name;				
         var settings = new DotNetCoreTestSettings
 		{
-			Configuration = configuration,
-			// Workaround to fixing pre-release version package references - https://github.com/NuGet/Home/issues/4337
-			 ArgumentCustomization = args=>args.Append("--logger:trx /t:Restore /p:RestoreSources=https://api.nuget.org/v3/index.json;https://www.myget.org/F/appmetrics/api/v3/index.json;")
+			Configuration = configuration			
 		};
 		
 		if (!IsRunningOnWindows())
@@ -273,9 +268,7 @@ Task("RunTestsWithOpenCover")
 
 	var settings = new DotNetCoreTestSettings
     {
-        Configuration = configuration,
-		// Workaround to fixing pre-release version package references - https://github.com/NuGet/Home/issues/4337
-		ArgumentCustomization = args=>args.Append("--logger:trx /t:Restore /p:RestoreSources=https://api.nuget.org/v3/index.json;https://www.myget.org/F/appmetrics/api/v3/index.json;")
+        Configuration = configuration		
     };
 
     foreach (var project in projects)
@@ -352,9 +345,7 @@ Task("RunTestsWithDotCover")
 
 	var settings = new DotNetCoreTestSettings
     {
-        Configuration = configuration,
-		// Workaround to fixing pre-release version package references - https://github.com/NuGet/Home/issues/4337
-		ArgumentCustomization = args=>args.Append("--logger:trx /t:Restore /p:RestoreSources=https://api.nuget.org/v3/index.json;https://www.myget.org/F/appmetrics/api/v3/index.json;")
+        Configuration = configuration		
     };
 
     foreach (var project in projects)

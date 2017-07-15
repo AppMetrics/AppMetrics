@@ -3,6 +3,7 @@
     <AppMetricsAspNetCoreVersion>2.0.0-*</AppMetricsAspNetCoreVersion>
     <AppMetricsHealthVersion>2.0.0-*</AppMetricsHealthVersion>
     <AspNetCoreVersion>2.0.0-*</AspNetCoreVersion>
+    <AppMetricsReportingVersion>2.0.0-*</AppMetricsReportingVersion>    
     <BenchmarkDotNetVersion>0.10.8</BenchmarkDotNetVersion>
     <CoreFxVersion>4.4.0-*</CoreFxVersion>
     <DependencyModelVersion>2.0.0-*</DependencyModelVersion>        
