@@ -4,7 +4,6 @@
 
 using System;
 using App.Metrics.Builder;
-using App.Metrics.Sandbox.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -25,9 +24,7 @@ namespace App.Metrics.Sandbox
         {
             app.UseTestStuff(lifetime, HaveAppRunSampleRequests);
 
-            app.UseMetrics();
             app.UseHealthChecks();
-            app.UseMetricsReporting(lifetime);
 
             app.UseMvc();
         }
@@ -37,17 +34,6 @@ namespace App.Metrics.Sandbox
             services.AddTestStuff();
 
             services.AddMvc(options => options.AddMetricsResourceFilter());
-
-            services.AddMetrics(Configuration.GetSection("AppMetrics")).
-                     AddSandboxReporting().
-                     AddMetricsMiddleware(
-                         Configuration.GetSection("AspNetMetrics"),
-                         optionsBuilder =>
-                         {
-                             optionsBuilder.AddMetricsJsonFormatters().
-                                            AddMetricsTextAsciiFormatters().
-                                            AddEnvironmentAsciiFormatters();
-                         });
 
             services.
                 AddHealthChecks().
