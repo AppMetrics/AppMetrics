@@ -18,6 +18,8 @@ namespace MetricsSandbox
 {
     public static class Host
     {
+        private static readonly Random Rnd = new Random();
+
         public static IConfigurationRoot Configuration { get; set; }
 
         // public static async Task Main(string[] args)
@@ -43,14 +45,57 @@ namespace MetricsSandbox
                 {
                     Console.Clear();
 
-                    metrics.Measure.Counter.Increment(CounterRegistry.CounterOne);
+                    metrics.Measure.Counter.Increment(ApplicationsMetricsRegistry.CounterOne);
+                    metrics.Measure.Gauge.SetValue(ApplicationsMetricsRegistry.GaugeOne, Rnd.Next(0, 100));
+                    metrics.Measure.Histogram.Update(ApplicationsMetricsRegistry.HistogramOne, Rnd.Next(0, 100));
+                    metrics.Measure.Meter.Mark(ApplicationsMetricsRegistry.MeterOne, Rnd.Next(0, 100));
+
+                    using (metrics.Measure.Timer.Time(ApplicationsMetricsRegistry.TimerOne))
+                    {
+                        Thread.Sleep(Rnd.Next(0, 100));
+                    }
+
+                    using (metrics.Measure.Apdex.Track(ApplicationsMetricsRegistry.ApdexOne))
+                    {
+                        Thread.Sleep(Rnd.Next(0, 100));
+                    }
 
                     foreach (var contenxt in metricsProvider.Get(metricsFilter).Contexts)
                     {
-                        foreach (var counterValueSource in contenxt.Counters)
+                        foreach (var valueSource in contenxt.Counters)
                         {
                             Console.WriteLine("COUNTERS");
-                            Console.WriteLine($"{counterValueSource.Name} Count: {counterValueSource.Value.Count}");
+                            Console.WriteLine($"{valueSource.Name} Count: {valueSource.Value.Count}");
+                        }
+
+                        foreach (var valueSource in contenxt.Gauges)
+                        {
+                            Console.WriteLine("GAUGES");
+                            Console.WriteLine($"{valueSource.Name} Value: {valueSource.Value}");
+                        }
+
+                        foreach (var valueSource in contenxt.Histograms)
+                        {
+                            Console.WriteLine("HISTOGRAMS");
+                            Console.WriteLine($"{valueSource.Name} 75th Percentile: {valueSource.Value.Percentile75}");
+                        }
+
+                        foreach (var valueSource in contenxt.Meters)
+                        {
+                            Console.WriteLine("METERS");
+                            Console.WriteLine($"{valueSource.Name} 1min Rate: {valueSource.Value.OneMinuteRate}");
+                        }
+
+                        foreach (var valueSource in contenxt.Timers)
+                        {
+                            Console.WriteLine("TIMERS");
+                            Console.WriteLine($"{valueSource.Name} 1min Rate: {valueSource.Value.Rate.OneMinuteRate}");
+                        }
+
+                        foreach (var valueSource in contenxt.ApdexScores)
+                        {
+                            Console.WriteLine("APDEX");
+                            Console.WriteLine($"{valueSource.Name} Score: {valueSource.Value.Score}");
                         }
                     }
                 });
