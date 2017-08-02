@@ -4,7 +4,6 @@
 
 using System;
 using App.Metrics;
-using App.Metrics.Configuration;
 using App.Metrics.Filters;
 using App.Metrics.ReservoirSampling;
 using Microsoft.Extensions.DependencyInjection.Extensions;

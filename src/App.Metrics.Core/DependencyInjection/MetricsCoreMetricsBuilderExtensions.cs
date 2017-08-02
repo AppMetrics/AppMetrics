@@ -3,7 +3,7 @@
 // </copyright>
 
 using System;
-using App.Metrics.Configuration;
+using App.Metrics;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection

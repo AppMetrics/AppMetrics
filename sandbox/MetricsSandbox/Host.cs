@@ -6,7 +6,6 @@ using System;
 using System.IO;
 using System.Threading;
 using App.Metrics;
-using App.Metrics.Configuration;
 using App.Metrics.Filtering;
 using App.Metrics.Filters;
 using App.Metrics.Infrastructure;

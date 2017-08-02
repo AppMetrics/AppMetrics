@@ -3,7 +3,6 @@
 // </copyright>
 
 using System;
-using App.Metrics.Configuration;
 using App.Metrics.FactsCommon;
 using App.Metrics.Filtering;
 using App.Metrics.Internal;

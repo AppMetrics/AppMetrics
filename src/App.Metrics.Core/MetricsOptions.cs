@@ -2,13 +2,11 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Filtering;
-using App.Metrics.Filters;
 using App.Metrics.Registry;
 using App.Metrics.Tagging;
 
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
-namespace App.Metrics.Configuration
+namespace App.Metrics
 {
     /// <summary>
     ///     Top level container for all configuration settings of AppMetrics

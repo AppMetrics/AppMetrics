@@ -5,10 +5,10 @@
 using App.Metrics.Infrastructure;
 using Microsoft.Extensions.Options;
 
-namespace App.Metrics.Configuration
+namespace App.Metrics.Internal
 {
     /// <summary>
-    ///     Sets up default options for <see cref="MetricsOptions"/>.
+    ///     Sets up default options for <see cref="T:App.Metrics.MetricsOptions" />.
     /// </summary>
     public class MetricsCoreMetricsOptionsSetup : IConfigureOptions<MetricsOptions>
     {

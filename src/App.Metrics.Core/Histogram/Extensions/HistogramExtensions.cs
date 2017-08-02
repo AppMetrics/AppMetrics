@@ -2,8 +2,6 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Core;
-
 // ReSharper disable CheckNamespace
 namespace App.Metrics.Histogram
     // ReSharper restore CheckNamespace

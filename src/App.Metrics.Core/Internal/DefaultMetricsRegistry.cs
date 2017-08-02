@@ -6,7 +6,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using App.Metrics.Apdex;
-using App.Metrics.Configuration;
 using App.Metrics.Counter;
 using App.Metrics.Filters;
 using App.Metrics.Gauge;

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using App.Metrics.Infrastructure;
 
 // ReSharper disable CheckNamespace
-namespace App.Metrics.Configuration
+namespace App.Metrics
     // ReSharper restore CheckNamespace
 {
     public static class AppMetricsOptionExtensions
