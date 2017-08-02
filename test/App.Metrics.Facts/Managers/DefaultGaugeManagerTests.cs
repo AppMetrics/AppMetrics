@@ -3,9 +3,8 @@
 // </copyright>
 
 using System.Linq;
-using App.Metrics.Core.Filtering;
-using App.Metrics.Core.Internal;
 using App.Metrics.Facts.Fixtures;
+using App.Metrics.Filtering;
 using App.Metrics.Gauge;
 using FluentAssertions;
 using Xunit;

@@ -6,7 +6,7 @@ using System;
 using App.Metrics.Meter;
 using App.Metrics.Timer;
 
-namespace App.Metrics.Core.Gauge
+namespace App.Metrics.Gauge
 {
     public class HitPercentageGauge : PercentageGauge
     {

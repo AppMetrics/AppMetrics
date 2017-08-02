@@ -2,11 +2,11 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Core.Internal.NoOp;
+using App.Metrics.Internal.NoOp;
 using App.Metrics.Registry;
 using Microsoft.Extensions.Logging;
 
-namespace App.Metrics.Core.Internal
+namespace App.Metrics.Internal
 {
     public sealed class DefaultMetricsManager : IManageMetrics
     {

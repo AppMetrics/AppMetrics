@@ -6,15 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using App.Metrics.Concurrency;
-using App.Metrics.Core.Infrastructure;
-using App.Metrics.Core.Scheduling;
-using App.Metrics.Internal;
-using App.Metrics.ReservoirSampling;
+using App.Metrics.Infrastructure;
 using App.Metrics.Scheduling;
 
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
-namespace App.Metrics.Core.ReservoirSampling.ExponentialDecay
+namespace App.Metrics.ReservoirSampling.ExponentialDecay
 {
     /// <summary>
     ///     A histogram with an exponentially decaying reservoir produces

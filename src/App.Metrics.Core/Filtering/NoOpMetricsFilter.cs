@@ -12,7 +12,7 @@ using App.Metrics.Histogram;
 using App.Metrics.Meter;
 using App.Metrics.Timer;
 
-namespace App.Metrics.Core.Filtering
+namespace App.Metrics.Filtering
 {
     [ExcludeFromCodeCoverage]
     public sealed class NoOpMetricsFilter : IFilterMetrics

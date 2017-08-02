@@ -5,8 +5,7 @@
 using System;
 using System.Threading.Tasks;
 using App.Metrics.Benchmarks.Fixtures;
-using App.Metrics.Core.ReservoirSampling.Uniform;
-using App.Metrics.Core.Scheduling;
+using App.Metrics.ReservoirSampling.Uniform;
 using App.Metrics.Scheduling;
 using BenchmarkDotNet.Attributes;
 

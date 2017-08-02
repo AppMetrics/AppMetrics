@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 
-namespace App.Metrics.Core
+namespace App.Metrics
 {
     public struct UserValueWrapper
     {

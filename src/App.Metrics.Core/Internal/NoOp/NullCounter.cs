@@ -5,7 +5,7 @@
 using System.Diagnostics.CodeAnalysis;
 using App.Metrics.Counter;
 
-namespace App.Metrics.Core.Internal.NoOp
+namespace App.Metrics.Internal.NoOp
 {
     [ExcludeFromCodeCoverage]
     public struct NullCounter : ICounter

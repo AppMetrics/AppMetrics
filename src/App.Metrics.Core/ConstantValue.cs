@@ -4,7 +4,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-namespace App.Metrics.Core
+namespace App.Metrics
 {
     [ExcludeFromCodeCoverage]
     public static class ConstantValue

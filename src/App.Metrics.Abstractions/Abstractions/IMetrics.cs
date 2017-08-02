@@ -20,7 +20,7 @@ namespace App.Metrics
 
         IClock Clock { get; }
 
-        IFilterMetrics GlobalFilter { get; }
+        IFilterMetrics Filter { get; }
 
         IManageMetrics Manage { get; }
 

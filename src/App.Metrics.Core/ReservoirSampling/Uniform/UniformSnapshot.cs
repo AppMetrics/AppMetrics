@@ -5,11 +5,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using App.Metrics.ReservoirSampling;
 
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
-namespace App.Metrics.Core.ReservoirSampling.Uniform
+namespace App.Metrics.ReservoirSampling.Uniform
 {
     /// <summary>
     ///     Represents a statistical snapshot of a sample set when using

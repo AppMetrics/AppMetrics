@@ -3,12 +3,6 @@
 // </copyright>
 
 using App.Metrics.Apdex;
-using App.Metrics.Core.Apdex;
-using App.Metrics.Core.Counter;
-using App.Metrics.Core.Gauge;
-using App.Metrics.Core.Histogram;
-using App.Metrics.Core.Meter;
-using App.Metrics.Core.Timer;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
@@ -16,7 +10,7 @@ using App.Metrics.Meter;
 using App.Metrics.Registry;
 using App.Metrics.Timer;
 
-namespace App.Metrics.Core.Internal
+namespace App.Metrics.Internal
 {
     // ReSharper disable ClassNeverInstantiated.Global
     public sealed class DefaultMeasureMetricsProvider : IMeasureMetrics

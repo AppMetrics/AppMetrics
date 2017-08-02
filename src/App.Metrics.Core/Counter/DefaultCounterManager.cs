@@ -2,10 +2,9 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Counter;
 using App.Metrics.Registry;
 
-namespace App.Metrics.Core.Counter
+namespace App.Metrics.Counter
 {
     internal sealed class DefaultCounterManager : IMeasureCounterMetrics
     {

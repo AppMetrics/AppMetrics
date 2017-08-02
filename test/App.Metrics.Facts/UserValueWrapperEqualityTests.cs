@@ -4,7 +4,6 @@
 
 using System;
 using System.Linq;
-using App.Metrics.Core;
 using FluentAssertions;
 using Xunit;
 

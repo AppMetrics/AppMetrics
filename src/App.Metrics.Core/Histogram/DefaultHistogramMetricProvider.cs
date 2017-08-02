@@ -3,10 +3,9 @@
 // </copyright>
 
 using System;
-using App.Metrics.Histogram;
 using App.Metrics.Registry;
 
-namespace App.Metrics.Core.Histogram
+namespace App.Metrics.Histogram
 {
     public class DefaultHistogramMetricProvider : IProvideHistogramMetrics
     {

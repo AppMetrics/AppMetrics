@@ -3,7 +3,6 @@
 // </copyright>
 
 using System;
-using App.Metrics.Core;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using FluentAssertions;

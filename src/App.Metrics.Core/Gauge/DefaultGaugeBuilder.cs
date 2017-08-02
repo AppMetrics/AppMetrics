@@ -3,9 +3,8 @@
 // </copyright>
 
 using System;
-using App.Metrics.Gauge;
 
-namespace App.Metrics.Core.Gauge
+namespace App.Metrics.Gauge
 {
     public class DefaultGaugeBuilder : IBuildGaugeMetrics
     {

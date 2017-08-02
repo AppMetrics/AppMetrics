@@ -3,11 +3,9 @@
 // </copyright>
 
 using System;
-using App.Metrics.Core.Tagging;
-using App.Metrics.Meter;
 using App.Metrics.Registry;
 
-namespace App.Metrics.Core.Meter
+namespace App.Metrics.Meter
 {
     public class DefaultMeterMetricProvider : IProvideMeterMetrics
     {

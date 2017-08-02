@@ -4,14 +4,13 @@
 
 using App.Metrics.Apdex;
 using App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics;
-using App.Metrics.Core;
-using App.Metrics.Core.ReservoirSampling.ExponentialDecay;
-using App.Metrics.Core.ReservoirSampling.SlidingWindow;
-using App.Metrics.Core.ReservoirSampling.Uniform;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
+using App.Metrics.ReservoirSampling.SlidingWindow;
+using App.Metrics.ReservoirSampling.Uniform;
 using App.Metrics.Timer;
 
 namespace App.Metrics.Benchmarks.Support

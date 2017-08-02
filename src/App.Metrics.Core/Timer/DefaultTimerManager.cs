@@ -4,9 +4,8 @@
 
 using System;
 using App.Metrics.Registry;
-using App.Metrics.Timer;
 
-namespace App.Metrics.Core.Timer
+namespace App.Metrics.Timer
 {
     internal sealed class DefaultTimerManager : IMeasureTimerMetrics
     {

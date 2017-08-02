@@ -6,7 +6,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using App.Metrics.Timer;
 
-namespace App.Metrics.Core.Internal.NoOp
+namespace App.Metrics.Internal.NoOp
 {
     [ExcludeFromCodeCoverage]
     public struct NullTimer : ITimer

@@ -5,6 +5,7 @@
   <PropertyGroup>
     <Description>App Metrics core components. Contains metric types and default implementations for metric reporting, filtering and more.</Description>    
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>App.Metrics</RootNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>appmetrics;metrics</PackageTags>
   </PropertyGroup>

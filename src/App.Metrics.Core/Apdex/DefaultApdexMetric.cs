@@ -4,11 +4,9 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using App.Metrics.Apdex;
-using App.Metrics.Internal;
 using App.Metrics.ReservoirSampling;
 
-namespace App.Metrics.Core.Apdex
+namespace App.Metrics.Apdex
 {
     /// <summary>
     ///     <see href="https://en.wikipedia.org/wiki/Apdex">Apdex</see> Metric allows us to measure an apdex score which is a

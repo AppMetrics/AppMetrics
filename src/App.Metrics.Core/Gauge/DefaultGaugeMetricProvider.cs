@@ -3,10 +3,9 @@
 // </copyright>
 
 using System;
-using App.Metrics.Gauge;
 using App.Metrics.Registry;
 
-namespace App.Metrics.Core.Gauge
+namespace App.Metrics.Gauge
 {
     public class DefaultGaugeMetricProvider : IProvideGaugeMetrics
     {

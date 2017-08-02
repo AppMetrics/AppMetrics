@@ -5,13 +5,11 @@
 using System;
 using System.Linq;
 using App.Metrics.Concurrency;
-using App.Metrics.Core.ReservoirSampling.Uniform;
-using App.Metrics.Internal;
-using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.Uniform;
 
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
-namespace App.Metrics.Core.ReservoirSampling.SlidingWindow
+namespace App.Metrics.ReservoirSampling.SlidingWindow
 {
     /// <summary>
     ///     A Reservoir implementation backed by a sliding window that stores only the measurements made in the last N seconds

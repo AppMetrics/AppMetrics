@@ -4,9 +4,8 @@
 
 using System;
 using System.Globalization;
-using App.Metrics.Infrastructure;
 
-namespace App.Metrics.Core.Infrastructure
+namespace App.Metrics.Infrastructure
 {
     public sealed class EnvironmentInfoProvider
     {

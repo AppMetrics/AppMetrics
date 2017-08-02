@@ -5,7 +5,7 @@
 using System.Diagnostics.CodeAnalysis;
 using App.Metrics.Meter;
 
-namespace App.Metrics.Core.Internal.NoOp
+namespace App.Metrics.Internal.NoOp
 {
     [ExcludeFromCodeCoverage]
     public struct NullMeter : IMeter

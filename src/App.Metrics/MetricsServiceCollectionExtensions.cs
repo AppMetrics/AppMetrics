@@ -3,114 +3,129 @@
 // </copyright>
 
 using System;
-using System.Diagnostics.CodeAnalysis;
-using App.Metrics.Builder;
-using App.Metrics.Core.Configuration;
+using App.Metrics.Configuration;
+using App.Metrics.Filtering;
+using App.Metrics.Infrastructure;
+using App.Metrics.Internal;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
 using Microsoft.Extensions.Configuration;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
-    // ReSharper restore CheckNamespace
+// ReSharper restore CheckNamespace
 {
+    /// <summary>
+    /// Extension methods for setting up App Metrics services in an <see cref="IServiceCollection"/>.
+    /// </summary>
     public static class MetricsServiceCollectionExtensions
     {
         /// <summary>
-        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection">IServiceCollection</see>.
+        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection"/>.
         /// </summary>
-        /// <param name="services">The application services collection.</param>
-        /// <returns>The metrics host builder</returns>
-        // ReSharper disable MemberCanBePrivate.Global
-        public static IAppMetricsBuilder AddMetrics(this IServiceCollection services)
-            // ReSharper restore MemberCanBePrivate.Global
+        /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
+        /// <returns>
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics services.
+        /// </returns>
+        public static IMetricsBuilder AddMetrics(this IServiceCollection services)
         {
-            var builder = services.AddMetricsBuilder();
+            var builder = services.AddMetricsCore();
 
-            builder.AddRequiredPlatformServices();
+            // Add default framework
+            builder.AddGlobalFilter(new NoOpMetricsFilter());
+            builder.AddClockType<StopwatchClock>();
+            builder.AddDefaultReservoir(() => new DefaultForwardDecayingReservoir());
 
-            builder.AddCoreServices();
+            return new MetricsBuilder(services);
+        }
+
+        /// <summary>
+        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection"/>.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
+        /// <param name="configuration">
+        ///     The <see cref="IConfiguration" /> from where to load <see cref="MetricsOptions" />.
+        /// </param>
+        /// <returns>
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics services.
+        /// </returns>
+        public static IMetricsBuilder AddMetrics(this IServiceCollection services, IConfiguration configuration)
+        {
+            var builder = services.AddMetrics();
+
+            services.Configure<MetricsOptions>(configuration);
 
             return builder;
         }
 
         /// <summary>
-        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection">IServiceCollection</see>.
+        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection"/>.
         /// </summary>
-        /// <param name="services">The application services collection.</param>
-        /// <param name="configuration">
-        ///     The <see cref="IConfiguration">IConfiguration</see> from where to load <see cref="AppMetricsOptions">options</see>.
+        /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
+        /// <param name="setupAction">
+        ///     An <see cref="Action{MetricsOptions}" /> to configure the provided <see cref="MetricsOptions" />.
         /// </param>
-        /// <returns>The metrics host builder</returns>
-        [ExcludeFromCodeCoverage] // DEVNOTE: No need to test Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions
-        public static IAppMetricsBuilder AddMetrics(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.Configure<AppMetricsOptions>(configuration);
-            return services.AddMetrics();
-        }
-
-        /// <summary>
-        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection">IServiceCollection</see>.
-        /// </summary>
-        /// <param name="services">The application services collection.</param>
-        /// <param name="setupAction">The <see cref="AppMetricsOptions">options</see> setup action.</param>
         /// <param name="configuration">
-        ///     The <see cref="IConfiguration">IConfiguration</see> from where to load
-        ///     <see cref="AppMetricsOptions">options</see>. Any shared configuration options with the options delegate will be
-        ///     overridden by using this configuration.
+        ///     The <see cref="IConfiguration" /> from where to load <see cref="MetricsOptions" />.
         /// </param>
-        /// <returns>The metrics host builder</returns>
-        [ExcludeFromCodeCoverage] // DEVNOTE: No need to test Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions
-        public static IAppMetricsBuilder AddMetrics(
+        /// <returns>
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics services.
+        /// </returns>
+        public static IMetricsBuilder AddMetrics(
             this IServiceCollection services,
-            Action<AppMetricsOptions> setupAction,
+            Action<MetricsOptions> setupAction,
             IConfiguration configuration)
         {
+            var builder = services.AddMetrics();
+
             services.Configure(setupAction);
-            services.Configure<AppMetricsOptions>(configuration);
-            return services.AddMetrics();
+            services.Configure<MetricsOptions>(configuration);
+
+            return builder;
         }
 
         /// <summary>
-        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection">IServiceCollection</see>.
+        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection"/>.
         /// </summary>
-        /// <param name="services">The application services collection.</param>
+        /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
         /// <param name="configuration">
-        ///     The <see cref="IConfiguration">IConfiguration</see> from where to load
-        ///     <see cref="AppMetricsOptions">options</see>.
+        ///     The <see cref="IConfiguration" /> from where to load <see cref="MetricsOptions" />.
         /// </param>
-        /// <param name="setupAction">The <see cref="AppMetricsOptions">options</see> setup action.</param>
-        /// Any shared configuration options with the options IConfiguration will be overriden by the options delegate.
-        /// <returns>The metrics host builder</returns>
-        [ExcludeFromCodeCoverage] // DEVNOTE: No need to test Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions
-        public static IAppMetricsBuilder AddMetrics(
+        /// <param name="setupAction">
+        ///     An <see cref="Action{MetricsOptions}" /> to configure the provided <see cref="MetricsOptions" />.
+        /// </param>
+        /// <returns>
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics services.
+        /// </returns>
+        public static IMetricsBuilder AddMetrics(
             this IServiceCollection services,
             IConfiguration configuration,
-            Action<AppMetricsOptions> setupAction)
+            Action<MetricsOptions> setupAction)
         {
-            services.Configure<AppMetricsOptions>(configuration);
+            var builder = services.AddMetrics();
+
+            services.Configure<MetricsOptions>(configuration);
             services.Configure(setupAction);
-            return services.AddMetrics();
+
+            return builder;
         }
 
         /// <summary>
-        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection">IServiceCollection</see>.
+        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection"/>.
         /// </summary>
-        /// <param name="services">The application services collection.</param>
-        /// <param name="setupAction">The <see cref="AppMetricsOptions">options</see> setup action.</param>
-        /// <returns>The metrics host builder</returns>
-        [ExcludeFromCodeCoverage] // DEVNOTE: No need to test Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions
-        public static IAppMetricsBuilder AddMetrics(this IServiceCollection services, Action<AppMetricsOptions> setupAction)
+        /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
+        /// <param name="setupAction">
+        ///     An <see cref="Action{MetricsOptions}" /> to configure the provided <see cref="MetricsOptions" />.
+        /// </param>
+        /// <returns>
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics services.
+        /// </returns>
+        public static IMetricsBuilder AddMetrics(this IServiceCollection services, Action<MetricsOptions> setupAction)
         {
-            services.Configure(setupAction);
-            return services.AddMetrics();
-        }
+            var builder = services.AddMetrics();
 
-        /// <summary>
-        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection">IServiceCollection</see>.
-        /// </summary>
-        /// <param name="services">The application services collection.</param>
-        /// <returns>The metrics host builder</returns>
-        // ReSharper disable MemberCanBePrivate.Global
-        internal static IAppMetricsBuilder AddMetricsBuilder(this IServiceCollection services) { return new AppMetricsBuilder(services); }
-        // ReSharper restore MemberCanBePrivate.Global
+            services.Configure(setupAction);
+
+            return builder;
+        }
     }
 }

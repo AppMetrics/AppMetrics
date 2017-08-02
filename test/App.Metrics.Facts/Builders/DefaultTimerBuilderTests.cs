@@ -2,11 +2,11 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Core.ReservoirSampling.Uniform;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
 using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.Uniform;
 using App.Metrics.Timer;
 using FluentAssertions;
 using Moq;

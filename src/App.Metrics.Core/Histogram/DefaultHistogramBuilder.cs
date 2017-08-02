@@ -3,11 +3,9 @@
 // </copyright>
 
 using System;
-using App.Metrics.Core.ReservoirSampling;
-using App.Metrics.Histogram;
 using App.Metrics.ReservoirSampling;
 
-namespace App.Metrics.Core.Histogram
+namespace App.Metrics.Histogram
 {
     public class DefaultHistogramBuilder : IBuildHistogramMetrics
     {

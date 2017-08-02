@@ -2,9 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Meter;
-
-namespace App.Metrics.Core.Meter
+namespace App.Metrics.Meter
 {
     public class DefaultMeterBuilder : IBuildMeterMetrics
     {

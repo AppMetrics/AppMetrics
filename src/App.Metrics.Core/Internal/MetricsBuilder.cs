@@ -1,18 +1,15 @@
-﻿// <copyright file="AppMetricsBuilder.cs" company="Allan Hardy">
+﻿// <copyright file="MetricsBuilder.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
 using System;
-using App.Metrics.Core.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
-// ReSharper disable CheckNamespace
-namespace App.Metrics.Builder
-    // ReSharper restore CheckNamespace
+namespace App.Metrics.Internal
 {
-    internal sealed class AppMetricsBuilder : IAppMetricsBuilder
+    internal sealed class MetricsBuilder : IMetricsBuilder
     {
-        internal AppMetricsBuilder(IServiceCollection services)
+        internal MetricsBuilder(IServiceCollection services)
         {
             Services = services ?? throw new ArgumentNullException(nameof(services));
             Environment = new AppMetricsEnvironment();

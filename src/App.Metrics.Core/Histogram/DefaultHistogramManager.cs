@@ -2,10 +2,9 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Histogram;
 using App.Metrics.Registry;
 
-namespace App.Metrics.Core.Histogram
+namespace App.Metrics.Histogram
 {
     internal sealed class DefaultHistogramManager : IMeasureHistogramMetrics
     {

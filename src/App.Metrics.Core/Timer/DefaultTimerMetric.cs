@@ -4,14 +4,11 @@
 
 using System;
 using App.Metrics.Concurrency;
-using App.Metrics.Core.Histogram;
-using App.Metrics.Core.Meter;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
 using App.Metrics.ReservoirSampling;
-using App.Metrics.Timer;
 
-namespace App.Metrics.Core.Timer
+namespace App.Metrics.Timer
 {
     public sealed class DefaultTimerMetric : ITimerMetric, IDisposable
     {

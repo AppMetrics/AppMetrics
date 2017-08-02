@@ -3,10 +3,9 @@
 // </copyright>
 
 using System;
-using App.Metrics.Core.ReservoirSampling.ExponentialDecay;
-using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
 
-namespace App.Metrics.Core.ReservoirSampling
+namespace App.Metrics.ReservoirSampling
 {
     public class DefaultSamplingReservoirProvider
     {

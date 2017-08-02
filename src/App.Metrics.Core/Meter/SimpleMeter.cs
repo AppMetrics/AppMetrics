@@ -4,9 +4,8 @@
 
 using System;
 using App.Metrics.Concurrency;
-using App.Metrics.Meter;
 
-namespace App.Metrics.Core.Meter
+namespace App.Metrics.Meter
 {
     public class SimpleMeter
     {

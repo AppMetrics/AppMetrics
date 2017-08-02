@@ -3,20 +3,14 @@
 // </copyright>
 
 using App.Metrics.Apdex;
-using App.Metrics.Core.Apdex;
-using App.Metrics.Core.Counter;
-using App.Metrics.Core.Gauge;
-using App.Metrics.Core.Histogram;
-using App.Metrics.Core.Infrastructure;
-using App.Metrics.Core.Internal;
-using App.Metrics.Core.Meter;
-using App.Metrics.Core.ReservoirSampling;
-using App.Metrics.Core.Tagging;
-using App.Metrics.Core.Timer;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
+using App.Metrics.Infrastructure;
+using App.Metrics.Internal;
 using App.Metrics.Meter;
+using App.Metrics.ReservoirSampling;
+using App.Metrics.Tagging;
 using App.Metrics.Timer;
 using BenchmarkDotNet.Attributes;
 

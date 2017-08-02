@@ -7,9 +7,8 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
 using App.Metrics.Concurrency;
-using App.Metrics.Counter;
 
-namespace App.Metrics.Core.Counter
+namespace App.Metrics.Counter
 {
     public sealed class DefaultCounterMetric : ICounterMetric
     {

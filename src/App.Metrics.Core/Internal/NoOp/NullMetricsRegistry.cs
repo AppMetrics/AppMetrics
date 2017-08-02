@@ -13,7 +13,7 @@ using App.Metrics.Meter;
 using App.Metrics.Registry;
 using App.Metrics.Timer;
 
-namespace App.Metrics.Core.Internal.NoOp
+namespace App.Metrics.Internal.NoOp
 {
     [ExcludeFromCodeCoverage]
     public sealed class NullMetricsRegistry : IMetricsRegistry

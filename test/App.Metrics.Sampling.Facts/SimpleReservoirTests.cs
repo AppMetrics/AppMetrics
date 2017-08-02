@@ -4,10 +4,10 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using App.Metrics.Core.ReservoirSampling.ExponentialDecay;
-using App.Metrics.Core.ReservoirSampling.SlidingWindow;
-using App.Metrics.Core.ReservoirSampling.Uniform;
 using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
+using App.Metrics.ReservoirSampling.SlidingWindow;
+using App.Metrics.ReservoirSampling.Uniform;
 using FluentAssertions;
 using Xunit;
 

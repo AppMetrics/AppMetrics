@@ -5,9 +5,8 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Scheduling;
 
-namespace App.Metrics.Core.Scheduling
+namespace App.Metrics.Scheduling
 {
     public sealed class DefaultTaskScheduler : IScheduler
     {

@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 
-namespace App.Metrics.Core.Tagging
+namespace App.Metrics.Tagging
 {
     public class GlobalMetricTags : Dictionary<string, string>
     {

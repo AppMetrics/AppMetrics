@@ -6,10 +6,9 @@ using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using App.Metrics.Core.ReservoirSampling.ExponentialDecay;
-using App.Metrics.Scheduling;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
 
-namespace App.Metrics.Core.Scheduling
+namespace App.Metrics.Scheduling
 {
     public class DefaultForwaredDecayingReservoirRescaleScheduler
     {

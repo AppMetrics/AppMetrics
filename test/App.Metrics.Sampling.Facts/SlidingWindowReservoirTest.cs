@@ -4,9 +4,8 @@
 
 using System.Linq;
 using System.Reflection;
-using App.Metrics.Core;
-using App.Metrics.Core.ReservoirSampling.SlidingWindow;
-using App.Metrics.Core.ReservoirSampling.Uniform;
+using App.Metrics.ReservoirSampling.SlidingWindow;
+using App.Metrics.ReservoirSampling.Uniform;
 using FluentAssertions;
 using Xunit;
 

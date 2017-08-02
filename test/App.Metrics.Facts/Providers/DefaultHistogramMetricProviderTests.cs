@@ -3,12 +3,12 @@
 // </copyright>
 
 using System.Linq;
-using App.Metrics.Core.Filtering;
-using App.Metrics.Core.ReservoirSampling.Uniform;
 using App.Metrics.Facts.Fixtures;
+using App.Metrics.Filtering;
 using App.Metrics.Filters;
 using App.Metrics.Histogram;
 using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.Uniform;
 using FluentAssertions;
 using Moq;
 using Xunit;

@@ -6,11 +6,11 @@ using System;
 using System.Threading.Tasks;
 using App.Metrics.Benchmarks.Fixtures;
 using App.Metrics.Benchmarks.Support;
-using App.Metrics.Core.ReservoirSampling.ExponentialDecay;
-using App.Metrics.Core.ReservoirSampling.SlidingWindow;
-using App.Metrics.Core.ReservoirSampling.Uniform;
-using App.Metrics.Core.Scheduling;
 using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
+using App.Metrics.ReservoirSampling.SlidingWindow;
+using App.Metrics.ReservoirSampling.Uniform;
+using App.Metrics.Scheduling;
 using Xunit;
 
 namespace App.Metrics.Benchmarks.Facts

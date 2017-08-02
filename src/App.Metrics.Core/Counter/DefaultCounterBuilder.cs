@@ -3,9 +3,8 @@
 // </copyright>
 
 using System;
-using App.Metrics.Counter;
 
-namespace App.Metrics.Core.Counter
+namespace App.Metrics.Counter
 {
     public class DefaultCounterBuilder : IBuildCounterMetrics
     {

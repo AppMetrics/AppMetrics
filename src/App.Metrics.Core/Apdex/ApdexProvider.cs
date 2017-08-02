@@ -2,11 +2,9 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Apdex;
-using App.Metrics.Internal;
 using App.Metrics.ReservoirSampling;
 
-namespace App.Metrics.Core.Apdex
+namespace App.Metrics.Apdex
 {
     /// <summary>
     ///     The default <see cref="IApdexProvider">IApdexProvider</see> implementation which uses the specified

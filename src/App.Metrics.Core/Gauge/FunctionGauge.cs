@@ -3,9 +3,8 @@
 // </copyright>
 
 using System;
-using App.Metrics.Gauge;
 
-namespace App.Metrics.Core.Gauge
+namespace App.Metrics.Gauge
 {
     /// <summary>
     ///     A Gauge metric using a function to provide the instantaneous value to record

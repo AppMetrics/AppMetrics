@@ -6,10 +6,9 @@ using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using App.Metrics.Core.Meter;
-using App.Metrics.Scheduling;
+using App.Metrics.Meter;
 
-namespace App.Metrics.Core.Scheduling
+namespace App.Metrics.Scheduling
 {
     public class DefaultMeterTickerScheduler
     {

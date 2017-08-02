@@ -3,12 +3,14 @@
 // </copyright>
 
 using System;
-using App.Metrics.Core.Configuration;
-using App.Metrics.Core.Filtering;
-using App.Metrics.Core.Internal;
+using App.Metrics.Configuration;
 using App.Metrics.FactsCommon;
+using App.Metrics.Filtering;
+using App.Metrics.Internal;
 using App.Metrics.Registry;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Moq;
 
 namespace App.Metrics.Facts.Fixtures
 {
@@ -17,20 +19,23 @@ namespace App.Metrics.Facts.Fixtures
         public MetricCoreTestFixture()
         {
             var loggerFactory = new LoggerFactory();
-            var options = new AppMetricsOptions();
+            var options = new Mock<IOptions<MetricsOptions>>();
+            options
+                .SetupGet(o => o.Value)
+                .Returns(new MetricsOptions());
 
             Clock = new TestClock();
             Builder = new DefaultMetricsBuilderFactory();
 
             IMetricContextRegistry ContextRegistrySetup(string context) => new DefaultMetricContextRegistry(context);
 
-            var registry = new DefaultMetricsRegistry(loggerFactory, options, Clock, ContextRegistrySetup);
+            var registry = new DefaultMetricsRegistry(loggerFactory, options.Object, Clock, ContextRegistrySetup);
 
             Registry = registry;
             Providers = new DefaultMetricsProvider(Registry, Builder, Clock);
             Snapshot = new DefaultMetricValuesProvider(new NoOpMetricsFilter(), Registry);
             Managers = new DefaultMeasureMetricsProvider(Registry, Builder, Clock);
-            Context = options.DefaultContextLabel;
+            Context = options.Object.Value.DefaultContextLabel;
         }
 
         public IBuildMetrics Builder { get; }

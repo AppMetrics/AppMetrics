@@ -5,8 +5,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using App.Metrics.Core.ReservoirSampling.Uniform;
 using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.Uniform;
 
 namespace App.Metrics.Facts.TestHelpers
 {

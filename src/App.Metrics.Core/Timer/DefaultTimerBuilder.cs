@@ -3,13 +3,11 @@
 // </copyright>
 
 using System;
-using App.Metrics.Core.ReservoirSampling;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
 using App.Metrics.ReservoirSampling;
-using App.Metrics.Timer;
 
-namespace App.Metrics.Core.Timer
+namespace App.Metrics.Timer
 {
     public class DefaultTimerBuilder : IBuildTimerMetrics
     {

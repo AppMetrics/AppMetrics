@@ -3,10 +3,9 @@
 // </copyright>
 
 using System;
-using App.Metrics.Apdex;
 using App.Metrics.Registry;
 
-namespace App.Metrics.Core.Apdex
+namespace App.Metrics.Apdex
 {
     internal sealed class DefaultApdexManager : IMeasureApdexMetrics
     {

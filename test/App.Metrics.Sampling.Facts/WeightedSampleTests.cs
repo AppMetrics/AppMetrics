@@ -2,7 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Core.ReservoirSampling.ExponentialDecay;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
 using FluentAssertions;
 using Xunit;
 

@@ -3,8 +3,8 @@
 // </copyright>
 
 using System.Linq;
-using App.Metrics.Core.Filtering;
 using App.Metrics.Facts.Fixtures;
+using App.Metrics.Filtering;
 using App.Metrics.Filters;
 using FluentAssertions;
 using Xunit;

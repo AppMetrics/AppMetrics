@@ -1,21 +1,26 @@
-﻿// <copyright file="ConfigureAppMetricsOptions.cs" company="Allan Hardy">
+﻿// <copyright file="MetricsCoreMetricsOptionsSetup.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Core.Infrastructure;
 using App.Metrics.Infrastructure;
 using Microsoft.Extensions.Options;
 
-namespace App.Metrics.Core.Configuration
+namespace App.Metrics.Configuration
 {
-    public class ConfigureAppMetricsOptions : IConfigureOptions<AppMetricsOptions>
+    /// <summary>
+    ///     Sets up default options for <see cref="MetricsOptions"/>.
+    /// </summary>
+    public class MetricsCoreMetricsOptionsSetup : IConfigureOptions<MetricsOptions>
     {
         private readonly EnvironmentInfo _environmentInfo;
 
-        public ConfigureAppMetricsOptions(EnvironmentInfoProvider environmentInfoProvider) { _environmentInfo = environmentInfoProvider.Build(); }
+        public MetricsCoreMetricsOptionsSetup(EnvironmentInfoProvider environmentInfoProvider)
+        {
+            _environmentInfo = environmentInfoProvider.Build();
+        }
 
         /// <inheritdoc />
-        public void Configure(AppMetricsOptions options)
+        public void Configure(MetricsOptions options)
         {
             if (options.AddDefaultGlobalTags)
             {
@@ -23,7 +28,7 @@ namespace App.Metrics.Core.Configuration
             }
         }
 
-        private void AddDefaultTags(AppMetricsOptions options)
+        private void AddDefaultTags(MetricsOptions options)
         {
             if (!options.GlobalTags.ContainsKey("app"))
             {

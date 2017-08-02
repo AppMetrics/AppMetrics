@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
-namespace App.Metrics.Core.Infrastructure
+namespace App.Metrics.Infrastructure
 {
     [ExcludeFromCodeCoverage]
     public sealed class StopwatchClock : IClock

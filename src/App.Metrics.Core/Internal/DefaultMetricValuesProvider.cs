@@ -3,12 +3,12 @@
 // </copyright>
 
 using System.Linq;
-using App.Metrics.Core.Filtering;
-using App.Metrics.Core.Internal.NoOp;
+using App.Metrics.Filtering;
 using App.Metrics.Filters;
+using App.Metrics.Internal.NoOp;
 using App.Metrics.Registry;
 
-namespace App.Metrics.Core.Internal
+namespace App.Metrics.Internal
 {
     public sealed class DefaultMetricValuesProvider : IProvideMetricValues
     {

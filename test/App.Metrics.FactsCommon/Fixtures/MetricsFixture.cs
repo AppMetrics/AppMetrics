@@ -3,12 +3,14 @@
 // </copyright>
 
 using System;
-using App.Metrics.Core.Configuration;
-using App.Metrics.Core.Filtering;
-using App.Metrics.Core.Internal;
+using App.Metrics.Configuration;
+using App.Metrics.Filtering;
 using App.Metrics.Filters;
+using App.Metrics.Internal;
 using App.Metrics.Registry;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Moq;
 
 namespace App.Metrics.FactsCommon.Fixtures
 {
@@ -19,11 +21,14 @@ namespace App.Metrics.FactsCommon.Fixtures
         public MetricsFixture()
         {
             Clock = new TestClock();
-            var options = new AppMetricsOptions();
+            var options = new Mock<IOptions<MetricsOptions>>();
+            options
+                .SetupGet(o => o.Value)
+                .Returns(new MetricsOptions());
 
             IMetricContextRegistry NewContextRegistry(string name) => new DefaultMetricContextRegistry(name);
 
-            var registry = new DefaultMetricsRegistry(_loggerFactory, options, Clock, NewContextRegistry);
+            var registry = new DefaultMetricsRegistry(_loggerFactory, options.Object, Clock, NewContextRegistry);
             var metricBuilderFactory = new DefaultMetricsBuilderFactory();
             var filter = new DefaultMetricsFilter();
             var dataManager = new DefaultMetricValuesProvider(filter, registry);

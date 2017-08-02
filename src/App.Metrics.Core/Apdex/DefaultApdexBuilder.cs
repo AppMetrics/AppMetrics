@@ -3,11 +3,9 @@
 // </copyright>
 
 using System;
-using App.Metrics.Apdex;
-using App.Metrics.Core.ReservoirSampling;
 using App.Metrics.ReservoirSampling;
 
-namespace App.Metrics.Core.Apdex
+namespace App.Metrics.Apdex
 {
     public class DefaultApdexBuilder : IBuildApdexMetrics
     {

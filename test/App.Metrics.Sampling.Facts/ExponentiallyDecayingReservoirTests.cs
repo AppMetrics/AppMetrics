@@ -3,8 +3,8 @@
 // </copyright>
 
 using System.Linq;
-using App.Metrics.Core.ReservoirSampling.ExponentialDecay;
 using App.Metrics.FactsCommon;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
 using App.Metrics.Scheduling;
 using FluentAssertions;
 using Xunit;

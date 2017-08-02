@@ -3,9 +3,8 @@
 // </copyright>
 
 using App.Metrics.Concurrency;
-using App.Metrics.Gauge;
 
-namespace App.Metrics.Core.Gauge
+namespace App.Metrics.Gauge
 {
     public sealed class ValueGauge : IGaugeMetric
     {

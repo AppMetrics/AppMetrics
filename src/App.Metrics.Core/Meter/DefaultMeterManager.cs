@@ -2,10 +2,9 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Meter;
 using App.Metrics.Registry;
 
-namespace App.Metrics.Core.Meter
+namespace App.Metrics.Meter
 {
     internal sealed class DefaultMeterManager : IMeasureMeterMetrics
     {

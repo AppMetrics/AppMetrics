@@ -2,7 +2,6 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Core.Meter;
 using App.Metrics.Facts.TestHelpers;
 using App.Metrics.FactsCommon;
 using App.Metrics.Meter;

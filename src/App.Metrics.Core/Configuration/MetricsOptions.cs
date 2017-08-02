@@ -1,19 +1,19 @@
-﻿// <copyright file="AppMetricsOptions.cs" company="Allan Hardy">
+﻿// <copyright file="MetricsOptions.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using System.Diagnostics.CodeAnalysis;
-using App.Metrics.Core.Tagging;
+using App.Metrics.Filtering;
+using App.Metrics.Filters;
 using App.Metrics.Registry;
+using App.Metrics.Tagging;
 
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
-namespace App.Metrics.Core.Configuration
+namespace App.Metrics.Configuration
 {
     /// <summary>
     ///     Top level container for all configuration settings of AppMetrics
     /// </summary>
-    [ExcludeFromCodeCoverage]
-    public sealed class AppMetricsOptions
+    public sealed class MetricsOptions
     {
         private const string DefaultContext = "Application";
 

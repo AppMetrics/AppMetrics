@@ -4,9 +4,8 @@
 
 using System.Collections.Generic;
 using App.Metrics.Configuration;
-using App.Metrics.Core.Configuration;
-using App.Metrics.Core.Infrastructure;
-using App.Metrics.Core.Tagging;
+using App.Metrics.Infrastructure;
+using App.Metrics.Tagging;
 using FluentAssertions;
 using Xunit;
 
@@ -27,7 +26,7 @@ namespace App.Metrics.Facts.Extensions
                     { "app_name", environmentInfo.EntryAssemblyName },
                     { "app_version", environmentInfo.EntryAssemblyVersion }
                 });
-            var options = new AppMetricsOptions();
+            var options = new MetricsOptions();
 
             options.WithGlobalTags(
                 (globalTags, envInfo) =>

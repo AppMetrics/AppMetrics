@@ -6,11 +6,9 @@ using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
-using App.Metrics.Core.Scheduling;
-using App.Metrics.Meter;
 using App.Metrics.Scheduling;
 
-namespace App.Metrics.Core.Meter
+namespace App.Metrics.Meter
 {
     public sealed class DefaultMeterMetric : SimpleMeter, IMeterMetric
     {

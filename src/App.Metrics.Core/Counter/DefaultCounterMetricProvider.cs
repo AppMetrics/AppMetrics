@@ -3,10 +3,9 @@
 // </copyright>
 
 using System;
-using App.Metrics.Counter;
 using App.Metrics.Registry;
 
-namespace App.Metrics.Core.Counter
+namespace App.Metrics.Counter
 {
     public class DefaultCounterMetricProvider : IProvideCounterMetrics
     {

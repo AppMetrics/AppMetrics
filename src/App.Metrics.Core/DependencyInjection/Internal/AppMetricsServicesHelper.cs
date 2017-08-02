@@ -5,7 +5,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace App.Metrics.Core.DependencyInjection.Internal
+namespace App.Metrics.DependencyInjection.Internal
 {
     [ExcludeFromCodeCoverage]
     public static class AppMetricsServicesHelper

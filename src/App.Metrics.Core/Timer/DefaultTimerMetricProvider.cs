@@ -5,9 +5,8 @@
 using System;
 using App.Metrics.Histogram;
 using App.Metrics.Registry;
-using App.Metrics.Timer;
 
-namespace App.Metrics.Core.Timer
+namespace App.Metrics.Timer
 {
     public class DefaultTimerMetricProvider : IProvideTimerMetrics
     {

@@ -4,10 +4,9 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using App.Metrics.Histogram;
 using App.Metrics.ReservoirSampling;
 
-namespace App.Metrics.Core.Histogram
+namespace App.Metrics.Histogram
 {
     public sealed class DefaultHistogramMetric : IHistogramMetric
     {

@@ -5,10 +5,9 @@
 using System;
 using System.Linq;
 using App.Metrics.Apdex;
-using App.Metrics.Core.Apdex;
-using App.Metrics.Core.ReservoirSampling.ExponentialDecay;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.FactsCommon;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
 using FluentAssertions;
 using Xunit;
 

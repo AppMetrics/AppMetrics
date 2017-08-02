@@ -4,11 +4,11 @@
 
 using System;
 using System.Linq;
-using App.Metrics.Core.Gauge;
-using App.Metrics.Core.Meter;
-using App.Metrics.Core.ReservoirSampling.Uniform;
-using App.Metrics.Core.Timer;
 using App.Metrics.FactsCommon;
+using App.Metrics.Gauge;
+using App.Metrics.Meter;
+using App.Metrics.ReservoirSampling.Uniform;
+using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;
 

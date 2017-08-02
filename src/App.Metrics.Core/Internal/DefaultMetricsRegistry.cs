@@ -6,18 +6,19 @@ using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using App.Metrics.Apdex;
-using App.Metrics.Core.Configuration;
-using App.Metrics.Core.Internal.NoOp;
+using App.Metrics.Configuration;
 using App.Metrics.Counter;
 using App.Metrics.Filters;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
+using App.Metrics.Internal.NoOp;
 using App.Metrics.Meter;
 using App.Metrics.Registry;
 using App.Metrics.Timer;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
-namespace App.Metrics.Core.Internal
+namespace App.Metrics.Internal
 {
     public sealed class DefaultMetricsRegistry : IMetricsRegistry
     {
@@ -30,14 +31,14 @@ namespace App.Metrics.Core.Internal
 
         public DefaultMetricsRegistry(
             ILoggerFactory loggerFactory,
-            AppMetricsOptions options,
+            IOptions<MetricsOptions> options,
             IClock clock,
             Func<string, IMetricContextRegistry> newContextRegistry)
         {
             _logger = loggerFactory.CreateLogger<DefaultMetricContextRegistry>();
             _clock = clock;
             _newContextRegistry = newContextRegistry;
-            _defaultContextLabel = options.DefaultContextLabel;
+            _defaultContextLabel = options.Value.DefaultContextLabel;
             _contexts.TryAdd(_defaultContextLabel, newContextRegistry(_defaultContextLabel));
         }
 

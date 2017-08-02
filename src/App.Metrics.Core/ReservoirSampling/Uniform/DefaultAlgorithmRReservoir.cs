@@ -5,12 +5,10 @@
 using System;
 using System.Linq;
 using App.Metrics.Concurrency;
-using App.Metrics.Internal;
-using App.Metrics.ReservoirSampling;
 
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
 // Ported/Refactored to .NET Standard Library by Allan Hardy
-namespace App.Metrics.Core.ReservoirSampling.Uniform
+namespace App.Metrics.ReservoirSampling.Uniform
 {
     /// <summary>
     ///     A histogram with a uniform reservoir produces <see href="https://en.wikipedia.org/wiki/Quantile">quantiles</see>

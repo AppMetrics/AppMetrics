@@ -2,11 +2,11 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Core.Filtering;
-using App.Metrics.Core.Infrastructure;
+using App.Metrics.Filtering;
 using App.Metrics.Filters;
+using App.Metrics.Infrastructure;
 
-namespace App.Metrics.Core.Internal
+namespace App.Metrics.Internal
 {
     /// <summary>
     ///     Provides access to record application metrics.
@@ -23,7 +23,7 @@ namespace App.Metrics.Core.Internal
         ///     Initializes a new instance of the <see cref="DefaultMetrics" /> class.
         /// </summary>
         /// <param name="clock">The clock.</param>
-        /// <param name="globalFilter">The global filter.</param>
+        /// <param name="filter">The metrics filter.</param>
         /// <param name="measureMetricsProvider">The factory used to provide access to metric managers.</param>
         /// <param name="metricsBuilder">The factory used to provide access to metric builders.</param>
         /// <param name="metricsProvider">The metrics advanced manager factory.</param>
@@ -31,7 +31,7 @@ namespace App.Metrics.Core.Internal
         /// <param name="metricsManager">The metrics manager.</param>
         public DefaultMetrics(
             IClock clock,
-            IFilterMetrics globalFilter,
+            IFilterMetrics filter,
             IMeasureMetrics measureMetricsProvider,
             IBuildMetrics metricsBuilder,
             IProvideMetrics metricsProvider,
@@ -39,7 +39,7 @@ namespace App.Metrics.Core.Internal
             IManageMetrics metricsManager)
         {
             Clock = clock ?? new StopwatchClock();
-            GlobalFilter = globalFilter ?? new NoOpMetricsFilter();
+            Filter = filter ?? new NoOpMetricsFilter();
             Measure = measureMetricsProvider;
             Build = metricsBuilder;
             Snapshot = dataManager;
@@ -54,7 +54,7 @@ namespace App.Metrics.Core.Internal
         public IClock Clock { get; }
 
         /// <inheritdoc />
-        public IFilterMetrics GlobalFilter { get; }
+        public IFilterMetrics Filter { get; }
 
         /// <inheritdoc />
         public IManageMetrics Manage { get; }

@@ -7,7 +7,7 @@ using App.Metrics.Meter;
 using App.Metrics.Timer;
 
 // ReSharper disable MemberCanBePrivate.Global
-namespace App.Metrics.Core.Gauge
+namespace App.Metrics.Gauge
     // ReSharper restore MemberCanBePrivate.Global
 {
     public sealed class HitRatioGauge : RatioGauge

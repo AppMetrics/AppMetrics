@@ -12,7 +12,7 @@ using App.Metrics.Meter;
 using App.Metrics.Registry;
 using App.Metrics.Timer;
 
-namespace App.Metrics.Core.Internal
+namespace App.Metrics.Internal
 {
     public sealed class DefaultMetricRegistryManager : IMetricRegistryManager
     {

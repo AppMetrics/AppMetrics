@@ -8,7 +8,7 @@ using System.Net;
 using System.Reflection;
 using Microsoft.DotNet.PlatformAbstractions;
 
-namespace App.Metrics.Core.Infrastructure
+namespace App.Metrics.Infrastructure
 {
     internal class EnvironmentInfoProviderCache
     {

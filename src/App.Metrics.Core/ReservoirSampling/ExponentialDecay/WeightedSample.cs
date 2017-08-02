@@ -2,7 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-namespace App.Metrics.Core.ReservoirSampling.ExponentialDecay
+namespace App.Metrics.ReservoirSampling.ExponentialDecay
 {
     // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
     // Ported/Refactored to .NET Standard Library by Allan Hardy

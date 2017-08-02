@@ -7,15 +7,15 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Apdex;
-using App.Metrics.Core.Tagging;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
 using App.Metrics.Registry;
+using App.Metrics.Tagging;
 using App.Metrics.Timer;
 
-namespace App.Metrics.Core.Internal
+namespace App.Metrics.Internal
 {
     public sealed class DefaultMetricContextRegistry : IMetricContextRegistry
     {
