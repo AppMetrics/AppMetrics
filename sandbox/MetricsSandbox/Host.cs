@@ -4,6 +4,7 @@
 
 using System;
 using System.IO;
+using System.Text;
 using System.Threading;
 using App.Metrics;
 using App.Metrics.Filtering;
@@ -12,6 +13,7 @@ using App.Metrics.Infrastructure;
 using App.Metrics.ReservoirSampling.Uniform;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace MetricsSandbox
 {
@@ -34,6 +36,7 @@ namespace MetricsSandbox
             var provider = serviceCollection.BuildServiceProvider();
             var metrics = provider.GetRequiredService<IMetrics>();
             var metricsProvider = provider.GetRequiredService<IProvideMetricValues>();
+            var metricsOptionsAccessor = provider.GetRequiredService<IOptions<MetricsOptions>>();
 
             var cancellationTokenSource = new CancellationTokenSource();
 
@@ -59,44 +62,56 @@ namespace MetricsSandbox
                         Thread.Sleep(Rnd.Next(0, 100));
                     }
 
-                    foreach (var contenxt in metricsProvider.Get(metricsFilter).Contexts)
+                    var metricsData = metricsProvider.Get(metricsFilter);
+
+                    foreach (var formatter in metricsOptionsAccessor.Value.OutputFormatters)
                     {
-                        foreach (var valueSource in contenxt.Counters)
-                        {
-                            Console.WriteLine("COUNTERS");
-                            Console.WriteLine($"{valueSource.Name} Count: {valueSource.Value.Count}");
-                        }
+                        Console.WriteLine($"Formatter: {formatter.GetType().FullName}");
+                        Console.WriteLine("-------------------------------------------");
 
-                        foreach (var valueSource in contenxt.Gauges)
+                        using (var stream = new MemoryStream())
                         {
-                            Console.WriteLine("GAUGES");
-                            Console.WriteLine($"{valueSource.Name} Value: {valueSource.Value}");
-                        }
+                            formatter.WriteAsync(stream, metricsData, Encoding.UTF8, cancellationTokenSource.Token).GetAwaiter().GetResult();
 
-                        foreach (var valueSource in contenxt.Histograms)
-                        {
-                            Console.WriteLine("HISTOGRAMS");
-                            Console.WriteLine($"{valueSource.Name} 75th Percentile: {valueSource.Value.Percentile75}");
-                        }
+                            var result = Encoding.UTF8.GetString(stream.ToArray());
 
-                        foreach (var valueSource in contenxt.Meters)
-                        {
-                            Console.WriteLine("METERS");
-                            Console.WriteLine($"{valueSource.Name} 1min Rate: {valueSource.Value.OneMinuteRate}");
-                        }
-
-                        foreach (var valueSource in contenxt.Timers)
-                        {
-                            Console.WriteLine("TIMERS");
-                            Console.WriteLine($"{valueSource.Name} 1min Rate: {valueSource.Value.Rate.OneMinuteRate}");
-                        }
-
-                        foreach (var valueSource in contenxt.ApdexScores)
-                        {
-                            Console.WriteLine("APDEX");
-                            Console.WriteLine($"{valueSource.Name} Score: {valueSource.Value.Score}");
+                            Console.WriteLine(result);
                         }
                     }
+
+                    // foreach (var contenxt in metricsProvider.Get(metricsFilter).Contexts)
+                    // {
+                    //     foreach (var valueSource in contenxt.Counters)
+                    //     {
+                    //         Console.WriteLine("COUNTERS");
+                    //         Console.WriteLine($"{valueSource.Name} Count: {valueSource.Value.Count}");
+                    //     }
+                    //     foreach (var valueSource in contenxt.Gauges)
+                    //     {
+                    //         Console.WriteLine("GAUGES");
+                    //         Console.WriteLine($"{valueSource.Name} Value: {valueSource.Value}");
+                    //     }
+                    //     foreach (var valueSource in contenxt.Histograms)
+                    //     {
+                    //         Console.WriteLine("HISTOGRAMS");
+                    //         Console.WriteLine($"{valueSource.Name} 75th Percentile: {valueSource.Value.Percentile75}");
+                    //     }
+                    //     foreach (var valueSource in contenxt.Meters)
+                    //     {
+                    //         Console.WriteLine("METERS");
+                    //         Console.WriteLine($"{valueSource.Name} 1min Rate: {valueSource.Value.OneMinuteRate}");
+                    //     }
+                    //     foreach (var valueSource in contenxt.Timers)
+                    //     {
+                    //         Console.WriteLine("TIMERS");
+                    //         Console.WriteLine($"{valueSource.Name} 1min Rate: {valueSource.Value.Rate.OneMinuteRate}");
+                    //     }
+                    //     foreach (var valueSource in contenxt.ApdexScores)
+                    //     {
+                    //         Console.WriteLine("APDEX");
+                    //         Console.WriteLine($"{valueSource.Name} Score: {valueSource.Value.Score}");
+                    //     }
+                    // }
                 });
         }
 
@@ -104,13 +119,13 @@ namespace MetricsSandbox
         {
             services.AddLogging();
 
-            // services.AddMetrics();
+            services.AddMetrics();
 
-            services.
-                AddMetricsCore().
-                AddClockType<SystemClock>().
-                AddGlobalFilter(metricsFilter).
-                AddDefaultReservoir(() => new DefaultAlgorithmRReservoir());
+            // services.
+            //     AddMetricsCore().
+            //     AddClockType<SystemClock>().
+            //     AddGlobalFilter(metricsFilter).
+            //     AddDefaultReservoir(() => new DefaultAlgorithmRReservoir());
         }
 
         private static void Init()

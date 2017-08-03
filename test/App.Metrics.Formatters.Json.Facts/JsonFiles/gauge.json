@@ -1,9 +1,24 @@
 ﻿{
-  "value": 0.5,
-  "name": "test_gauge",
-  "tags": {
-    "host": "server1",
-    "env": "staging"
-  },
-  "unit": "calls"
+  "timestamp": "0001-01-01T00:00:00Z",
+  "contexts": [
+    {
+      "context": "context_one",
+      "apdexScores": [],
+      "counters": [],
+      "gauges": [
+        {
+          "name": "test_gauge",
+          "unit": "calls",
+          "value": 0.5,
+          "tags": {
+            "host": "server1",
+            "env": "staging"
+          }
+        }
+      ],
+      "histograms": [],
+      "meters": [],
+      "timers": []
+    }
+  ]
 }

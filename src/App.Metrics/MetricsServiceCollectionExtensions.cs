@@ -30,10 +30,26 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             var builder = services.AddMetricsCore();
 
-            // Add default framework
-            builder.AddGlobalFilter(new NoOpMetricsFilter());
+            //
+            // Add infrastructure defaults
+            //
             builder.AddClockType<StopwatchClock>();
+
+            //
+            // Add filtering defaults
+            //
+            builder.AddGlobalFilter(new NoOpMetricsFilter());
+
+            //
+            // Add sampling defaults
+            //
             builder.AddDefaultReservoir(() => new DefaultForwardDecayingReservoir());
+
+            //
+            // Add default formatters
+            //
+            builder.AddJsonFormatter();
+            builder.AddAsciiFormatter();
 
             return new MetricsBuilder(services);
         }

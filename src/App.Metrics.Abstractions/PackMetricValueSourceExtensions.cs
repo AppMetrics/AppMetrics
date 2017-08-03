@@ -7,7 +7,6 @@ using System.Linq;
 using App.Metrics.Apdex;
 using App.Metrics.Counter;
 using App.Metrics.Histogram;
-using App.Metrics.Internal;
 using App.Metrics.Meter;
 using App.Metrics.Timer;
 

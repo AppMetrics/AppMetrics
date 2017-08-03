@@ -1,25 +1,54 @@
 ﻿{
-  "count": 5,
-  "fifteenMinuteRate": 4.0,
-  "fiveMinuteRate": 3.0,
-  "items": [
+  "timestamp": "0001-01-01T00:00:00Z",
+  "contexts": [
     {
-      "count": 1,
-      "fifteenMinuteRate": 5.0,
-      "fiveMinuteRate": 4.0,
-      "item": "item",
-      "meanRate": 2.0,
-      "oneMinuteRate": 3.0,
-      "percent": 0.5
+      "context": "context_one",
+      "counters": [],
+      "apdexScores": [],
+      "gauges": [],
+      "histograms": [],
+      "meters": [
+        {
+          "count": 2,
+          "fifteenMinuteRate": 0.0004,
+          "fiveMinuteRate": 0.0004,
+          "items": [
+            {
+              "count": 1,
+              "fifteenMinuteRate": 0.0002,
+              "fiveMinuteRate": 0.0002,
+              "item": "client1",
+              "meanRate": 0.0001624021692174672,
+              "oneMinuteRate": 0.0002,
+              "percent": 50,
+              "tags": {
+                "http_status_code": "401",
+                "client_id": "client1"
+              }
+            },
+            {
+              "count": 1,
+              "fifteenMinuteRate": 0.0002,
+              "fiveMinuteRate": 0.0002,
+              "item": "client2",
+              "meanRate": 0.0001624021692174672,
+              "oneMinuteRate": 0.0002,
+              "percent": 50,
+              "tags": {
+                "http_status_code": "500",
+                "client_id": "client2"
+              }
+            }
+          ],
+          "meanRate": 0.0003248028407942439,
+          "oneMinuteRate": 0.0004,
+          "rateUnit": "ms",
+          "name": "Http Error Requests",
+          "tags": {},
+          "unit": "req"
+        }
+      ],
+      "timers": []
     }
-  ],
-  "meanRate": 1.0,
-  "oneMinuteRate": 2.0,
-  "rateUnit": "s",
-  "name": "test_meter",
-  "tags": {
-    "host": "server1",
-    "env": "staging"
-  },
-  "unit": "calls"
+  ]
 }

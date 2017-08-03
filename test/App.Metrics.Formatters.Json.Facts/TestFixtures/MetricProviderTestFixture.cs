@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using App.Metrics.Apdex;
 using App.Metrics.Counter;
 using App.Metrics.FactsCommon;
@@ -29,6 +30,12 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
             Histograms = SetupHistograms();
             ContextOne = SetupContextOne();
             DataWithOneContext = SetupMetricsData(new[] { ContextOne });
+            ApdexContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), Enumerable.Empty<CounterValueSource>(), Enumerable.Empty<MeterValueSource>(), Enumerable.Empty<HistogramValueSource>(), Enumerable.Empty<TimerValueSource>(), ApdexScores) });
+            CounterContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), Counters, Enumerable.Empty<MeterValueSource>(), Enumerable.Empty<HistogramValueSource>(), Enumerable.Empty<TimerValueSource>(), Enumerable.Empty<ApdexValueSource>()) });
+            GaugeContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Gauges, Enumerable.Empty<CounterValueSource>(), Enumerable.Empty<MeterValueSource>(), Enumerable.Empty<HistogramValueSource>(), Enumerable.Empty<TimerValueSource>(), Enumerable.Empty<ApdexValueSource>()) });
+            MeterContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), Enumerable.Empty<CounterValueSource>(), Meters, Enumerable.Empty<HistogramValueSource>(), Enumerable.Empty<TimerValueSource>(), Enumerable.Empty<ApdexValueSource>()) });
+            TimerContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), Enumerable.Empty<CounterValueSource>(), Enumerable.Empty<MeterValueSource>(), Enumerable.Empty<HistogramValueSource>(), Timers, Enumerable.Empty<ApdexValueSource>()) });
+            HistogramContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), Enumerable.Empty<CounterValueSource>(), Enumerable.Empty<MeterValueSource>(), Histograms, Enumerable.Empty<TimerValueSource>(), Enumerable.Empty<ApdexValueSource>()) });
         }
 
         public string ApdexNameDefault { get; } = "test_apdex";
@@ -40,6 +47,18 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
         public IEnumerable<CounterValueSource> Counters { get; }
 
         public MetricsDataValueSource DataWithOneContext { get; }
+
+        public MetricsDataValueSource CounterContext { get; }
+
+        public MetricsDataValueSource GaugeContext { get; }
+
+        public MetricsDataValueSource MeterContext { get; }
+
+        public MetricsDataValueSource TimerContext { get; }
+
+        public MetricsDataValueSource HistogramContext { get; }
+
+        public MetricsDataValueSource ApdexContext { get; }
 
         public EnvironmentInfo Env => new EnvironmentInfo(
             "assembly_name",

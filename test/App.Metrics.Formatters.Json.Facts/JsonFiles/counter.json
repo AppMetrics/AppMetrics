@@ -1,26 +1,41 @@
 ﻿{
-  "count": 200,
-  "items": [
+  "timestamp": "0001-01-01T00:00:00Z",
+  "contexts": [
     {
-      "count": 20,
-      "item": "item1",
-      "percent": 10.0
-    },
-    {
-      "count": 40,
-      "item": "item2",
-      "percent": 20.0
-    },
-    {
-      "count": 140,
-      "item": "item3",
-      "percent": 70.0
+      "context": "context_one",
+      "apdexScores": [],
+      "counters": [
+        {
+          "name": "test_counter",
+          "unit": "items",
+          "count": 200,
+          "items": [
+            {
+              "count": 20,
+              "item": "item1",
+              "percent": 10.0
+            },
+            {
+              "count": 40,
+              "item": "item2",
+              "percent": 20.0
+            },
+            {
+              "count": 140,
+              "item": "item3",
+              "percent": 70.0
+            }
+          ],
+          "tags": {
+            "host": "server1",
+            "env": "staging"
+          }
+        }
+      ],      
+      "gauges": [],
+      "histograms": [],
+      "meters": [],
+      "timers": []
     }
-  ],
-  "name": "test_counter",
-  "tags": {
-    "host": "server1",
-    "env": "staging"
-  },
-  "unit": "items"
+  ]
 }

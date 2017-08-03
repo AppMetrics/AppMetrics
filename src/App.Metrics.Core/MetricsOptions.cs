@@ -2,6 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
+using App.Metrics.Formatters;
 using App.Metrics.Registry;
 using App.Metrics.Tagging;
 
@@ -15,6 +16,16 @@ namespace App.Metrics
     {
         private const string DefaultContext = "Application";
 
+        public MetricsOptions() { OutputFormatters = new MetricsFormatterCollection(); }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether or not to [add default global tags]. e.g. app, server, env
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if [add default global tags]; otherwise, <c>false</c>.
+        /// </value>
+        public bool AddDefaultGlobalTags { get; set; } = true;
+
         /// <summary>
         ///     Gets or sets the default context label using for grouping metrics in contexts.
         /// </summary>
@@ -23,6 +34,14 @@ namespace App.Metrics
         ///     The default context label used for grouping metrics within the <see cref="IMetricsRegistry" />.
         /// </value>
         public string DefaultContextLabel { get; set; } = DefaultContext;
+
+        /// <summary>
+        ///     Gets or sets the default <see cref="IMetricsOutputFormatter" /> to use when metrics are attempted to be formatted.
+        /// </summary>
+        /// <value>
+        ///     The default <see cref="IMetricsOutputFormatter" />s that is used by this application.
+        /// </value>
+        public IMetricsOutputFormatter DefaultOutputFormatter { get; set; }
 
         /// <summary>
         ///     Gets or sets the global tags to apply on all metrics when reporting.
@@ -43,12 +62,13 @@ namespace App.Metrics
         public bool MetricsEnabled { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not to [add default global tags]. e.g. app, server, env
+        ///     Gets a list of <see cref="IMetricsOutputFormatter" />s that are used by this application to format health check
+        ///     results.
         /// </summary>
         /// <value>
-        /// <c>true</c> if [add default global tags]; otherwise, <c>false</c>.
+        ///     A list of <see cref="IMetricsOutputFormatter" />s that are used by this application.
         /// </value>
-        public bool AddDefaultGlobalTags { get; set; } = true;
+        public MetricsFormatterCollection OutputFormatters { get; }
     }
 
     // ReSharper restore AutoPropertyCanBeMadeGetOnly.Global
