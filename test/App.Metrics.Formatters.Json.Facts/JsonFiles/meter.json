@@ -3,49 +3,35 @@
   "contexts": [
     {
       "context": "context_one",
-      "counters": [],
       "apdexScores": [],
+      "counters": [],
       "gauges": [],
       "histograms": [],
       "meters": [
         {
-          "count": 2,
-          "fifteenMinuteRate": 0.0004,
-          "fiveMinuteRate": 0.0004,
+          "name": "test_meter",
+          "unit": "calls",
+          "count": 5,
+          "fifteenMinuteRate": 4.0,
+          "fiveMinuteRate": 3.0,
           "items": [
             {
               "count": 1,
-              "fifteenMinuteRate": 0.0002,
-              "fiveMinuteRate": 0.0002,
-              "item": "client1",
-              "meanRate": 0.0001624021692174672,
-              "oneMinuteRate": 0.0002,
-              "percent": 50,
-              "tags": {
-                "http_status_code": "401",
-                "client_id": "client1"
-              }
-            },
-            {
-              "count": 1,
-              "fifteenMinuteRate": 0.0002,
-              "fiveMinuteRate": 0.0002,
-              "item": "client2",
-              "meanRate": 0.0001624021692174672,
-              "oneMinuteRate": 0.0002,
-              "percent": 50,
-              "tags": {
-                "http_status_code": "500",
-                "client_id": "client2"
-              }
+              "fifteenMinuteRate": 5.0,
+              "fiveMinuteRate": 4.0,
+              "item": "item",
+              "meanRate": 2.0,
+              "oneMinuteRate": 3.0,
+              "percent": 0.5
             }
           ],
-          "meanRate": 0.0003248028407942439,
-          "oneMinuteRate": 0.0004,
-          "rateUnit": "ms",
-          "name": "Http Error Requests",
-          "tags": {},
-          "unit": "req"
+          "meanRate": 1.0,
+          "oneMinuteRate": 2.0,
+          "rateUnit": "s",
+          "tags": {
+            "host": "server1",
+            "env": "staging"
+          }
         }
       ],
       "timers": []
