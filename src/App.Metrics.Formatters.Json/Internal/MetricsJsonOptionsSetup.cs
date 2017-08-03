@@ -22,13 +22,15 @@ namespace App.Metrics.Formatters.Json.Internal
         public void Configure(MetricsOptions options)
         {
             var formatter = new JsonOutputFormatter(_jsonOptions.SerializerSettings);
+            var envFormatter = new JsonEnvOutputFormatter(_jsonOptions.SerializerSettings);
 
-            if (options.DefaultOutputFormatter == null)
+            if (options.DefaultEnvOutputFormatter == null)
             {
-                options.DefaultOutputFormatter = formatter;
+                options.DefaultEnvOutputFormatter = envFormatter;
             }
 
             options.OutputFormatters.Add(formatter);
+            options.EnvOutputFormatters.Add(envFormatter);
         }
     }
 }

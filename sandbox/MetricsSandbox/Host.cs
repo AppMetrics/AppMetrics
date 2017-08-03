@@ -10,7 +10,6 @@ using App.Metrics;
 using App.Metrics.Filtering;
 using App.Metrics.Filters;
 using App.Metrics.Infrastructure;
-using App.Metrics.ReservoirSampling.Uniform;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -36,9 +35,15 @@ namespace MetricsSandbox
             var provider = serviceCollection.BuildServiceProvider();
             var metrics = provider.GetRequiredService<IMetrics>();
             var metricsProvider = provider.GetRequiredService<IProvideMetricValues>();
+            var envInfoProvider = provider.GetRequiredService<EnvironmentInfoProvider>();
             var metricsOptionsAccessor = provider.GetRequiredService<IOptions<MetricsOptions>>();
 
             var cancellationTokenSource = new CancellationTokenSource();
+
+            WriteEnv(envInfoProvider, metricsOptionsAccessor, cancellationTokenSource);
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
 
             RunUntilEsc(
                 TimeSpan.FromSeconds(10),
@@ -47,72 +52,79 @@ namespace MetricsSandbox
                 {
                     Console.Clear();
 
-                    metrics.Measure.Counter.Increment(ApplicationsMetricsRegistry.CounterOne);
-                    metrics.Measure.Gauge.SetValue(ApplicationsMetricsRegistry.GaugeOne, Rnd.Next(0, 100));
-                    metrics.Measure.Histogram.Update(ApplicationsMetricsRegistry.HistogramOne, Rnd.Next(0, 100));
-                    metrics.Measure.Meter.Mark(ApplicationsMetricsRegistry.MeterOne, Rnd.Next(0, 100));
+                    RecordMetrics(metrics);
 
-                    using (metrics.Measure.Timer.Time(ApplicationsMetricsRegistry.TimerOne))
-                    {
-                        Thread.Sleep(Rnd.Next(0, 100));
-                    }
-
-                    using (metrics.Measure.Apdex.Track(ApplicationsMetricsRegistry.ApdexOne))
-                    {
-                        Thread.Sleep(Rnd.Next(0, 100));
-                    }
-
-                    var metricsData = metricsProvider.Get(metricsFilter);
-
-                    foreach (var formatter in metricsOptionsAccessor.Value.OutputFormatters)
-                    {
-                        Console.WriteLine($"Formatter: {formatter.GetType().FullName}");
-                        Console.WriteLine("-------------------------------------------");
-
-                        using (var stream = new MemoryStream())
-                        {
-                            formatter.WriteAsync(stream, metricsData, Encoding.UTF8, cancellationTokenSource.Token).GetAwaiter().GetResult();
-
-                            var result = Encoding.UTF8.GetString(stream.ToArray());
-
-                            Console.WriteLine(result);
-                        }
-                    }
-
-                    // foreach (var contenxt in metricsProvider.Get(metricsFilter).Contexts)
-                    // {
-                    //     foreach (var valueSource in contenxt.Counters)
-                    //     {
-                    //         Console.WriteLine("COUNTERS");
-                    //         Console.WriteLine($"{valueSource.Name} Count: {valueSource.Value.Count}");
-                    //     }
-                    //     foreach (var valueSource in contenxt.Gauges)
-                    //     {
-                    //         Console.WriteLine("GAUGES");
-                    //         Console.WriteLine($"{valueSource.Name} Value: {valueSource.Value}");
-                    //     }
-                    //     foreach (var valueSource in contenxt.Histograms)
-                    //     {
-                    //         Console.WriteLine("HISTOGRAMS");
-                    //         Console.WriteLine($"{valueSource.Name} 75th Percentile: {valueSource.Value.Percentile75}");
-                    //     }
-                    //     foreach (var valueSource in contenxt.Meters)
-                    //     {
-                    //         Console.WriteLine("METERS");
-                    //         Console.WriteLine($"{valueSource.Name} 1min Rate: {valueSource.Value.OneMinuteRate}");
-                    //     }
-                    //     foreach (var valueSource in contenxt.Timers)
-                    //     {
-                    //         Console.WriteLine("TIMERS");
-                    //         Console.WriteLine($"{valueSource.Name} 1min Rate: {valueSource.Value.Rate.OneMinuteRate}");
-                    //     }
-                    //     foreach (var valueSource in contenxt.ApdexScores)
-                    //     {
-                    //         Console.WriteLine("APDEX");
-                    //         Console.WriteLine($"{valueSource.Name} Score: {valueSource.Value.Score}");
-                    //     }
-                    // }
+                    WriteMetrics(metricsProvider, metricsFilter, metricsOptionsAccessor, cancellationTokenSource);
                 });
+        }
+
+        private static void WriteEnv(
+            EnvironmentInfoProvider envInfoProvider,
+            IOptions<MetricsOptions> metricsOptionsAccessor,
+            CancellationTokenSource cancellationTokenSource)
+        {
+            Console.WriteLine("Environment Information");
+            Console.WriteLine("-------------------------------------------");
+
+            foreach (var formatter in metricsOptionsAccessor.Value.EnvOutputFormatters)
+            {
+                Console.WriteLine($"Formatter: {formatter.GetType().FullName}");
+                Console.WriteLine("-------------------------------------------");
+
+                using (var stream = new MemoryStream())
+                {
+                    formatter.WriteAsync(stream, envInfoProvider.Build(), Encoding.UTF8, cancellationTokenSource.Token).GetAwaiter().GetResult();
+
+                    var result = Encoding.UTF8.GetString(stream.ToArray());
+
+                    Console.WriteLine(result);
+                }
+            }
+        }
+
+        private static void WriteMetrics(
+            IProvideMetricValues metricsProvider,
+            IFilterMetrics metricsFilter,
+            IOptions<MetricsOptions> metricsOptionsAccessor,
+            CancellationTokenSource cancellationTokenSource)
+        {
+            var metricsData = metricsProvider.Get(metricsFilter);
+
+            Console.WriteLine("Metrics");
+            Console.WriteLine("-------------------------------------------");
+
+            foreach (var formatter in metricsOptionsAccessor.Value.OutputFormatters)
+            {
+                Console.WriteLine($"Formatter: {formatter.GetType().FullName}");
+                Console.WriteLine("-------------------------------------------");
+
+                using (var stream = new MemoryStream())
+                {
+                    formatter.WriteAsync(stream, metricsData, Encoding.UTF8, cancellationTokenSource.Token).GetAwaiter().GetResult();
+
+                    var result = Encoding.UTF8.GetString(stream.ToArray());
+
+                    Console.WriteLine(result);
+                }
+            }
+        }
+
+        private static void RecordMetrics(IMetrics metrics)
+        {
+            metrics.Measure.Counter.Increment(ApplicationsMetricsRegistry.CounterOne);
+            metrics.Measure.Gauge.SetValue(ApplicationsMetricsRegistry.GaugeOne, Rnd.Next(0, 100));
+            metrics.Measure.Histogram.Update(ApplicationsMetricsRegistry.HistogramOne, Rnd.Next(0, 100));
+            metrics.Measure.Meter.Mark(ApplicationsMetricsRegistry.MeterOne, Rnd.Next(0, 100));
+
+            using (metrics.Measure.Timer.Time(ApplicationsMetricsRegistry.TimerOne))
+            {
+                Thread.Sleep(Rnd.Next(0, 100));
+            }
+
+            using (metrics.Measure.Apdex.Track(ApplicationsMetricsRegistry.ApdexOne))
+            {
+                Thread.Sleep(Rnd.Next(0, 100));
+            }
         }
 
         private static void ConfigureServices(IServiceCollection services, IFilterMetrics metricsFilter)

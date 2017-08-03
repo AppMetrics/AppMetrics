@@ -16,7 +16,11 @@ namespace App.Metrics
     {
         private const string DefaultContext = "Application";
 
-        public MetricsOptions() { OutputFormatters = new MetricsFormatterCollection(); }
+        public MetricsOptions()
+        {
+            OutputFormatters = new MetricsFormatterCollection();
+            EnvOutputFormatters = new EnvFormatterCollection();
+        }
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not to [add default global tags]. e.g. app, server, env
@@ -44,6 +48,14 @@ namespace App.Metrics
         public IMetricsOutputFormatter DefaultOutputFormatter { get; set; }
 
         /// <summary>
+        ///     Gets or sets the default <see cref="IEnvOutputFormatter" /> to use when the environment's info is attempted to be formatted.
+        /// </summary>
+        /// <value>
+        ///     The default <see cref="IEnvOutputFormatter" />s that is used by this application.
+        /// </value>
+        public IEnvOutputFormatter DefaultEnvOutputFormatter { get; set; }
+
+        /// <summary>
         ///     Gets or sets the global tags to apply on all metrics when reporting.
         /// </summary>
         /// <value>
@@ -62,13 +74,21 @@ namespace App.Metrics
         public bool MetricsEnabled { get; set; } = true;
 
         /// <summary>
-        ///     Gets a list of <see cref="IMetricsOutputFormatter" />s that are used by this application to format health check
+        ///     Gets a list of <see cref="IMetricsOutputFormatter" />s that are used by this application to format metric
         ///     results.
         /// </summary>
         /// <value>
         ///     A list of <see cref="IMetricsOutputFormatter" />s that are used by this application.
         /// </value>
         public MetricsFormatterCollection OutputFormatters { get; }
+
+        /// <summary>
+        ///     Gets a list of <see cref="IEnvOutputFormatter" />s that are used by this application to format environment info.
+        /// </summary>
+        /// <value>
+        ///     A list of <see cref="IEnvOutputFormatter" />s that are used by this application.
+        /// </value>
+        public EnvFormatterCollection EnvOutputFormatters { get; }
     }
 
     // ReSharper restore AutoPropertyCanBeMadeGetOnly.Global

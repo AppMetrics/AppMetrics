@@ -22,13 +22,20 @@ namespace App.Metrics.Formatters.Ascii.Internal
         public void Configure(MetricsOptions options)
         {
             var formatter = new AsciiOutputFormatter(_asciiOptions);
+            var envFormatter = new AsciiEnvOutputFormatter(_asciiOptions);
 
             if (options.DefaultOutputFormatter == null)
             {
                 options.DefaultOutputFormatter = formatter;
             }
 
+            if (options.DefaultEnvOutputFormatter == null)
+            {
+                options.DefaultEnvOutputFormatter = envFormatter;
+            }
+
             options.OutputFormatters.Add(formatter);
+            options.EnvOutputFormatters.Add(envFormatter);
         }
     }
 }

@@ -34,6 +34,7 @@ namespace App.Metrics.Formatters.Json
                            };
 
             settings.Converters.Add(new MetricDataConverter());
+            settings.Converters.Add(new EnvironmentInfoConverter());
 
             return settings;
         }
