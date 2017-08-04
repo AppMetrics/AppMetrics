@@ -15,6 +15,11 @@ namespace App.Metrics.Formatters.Ascii
     {
         private readonly MetricsAsciiOptions _options;
 
+        public AsciiEnvOutputFormatter()
+        {
+            _options = new MetricsAsciiOptions();
+        }
+
         public AsciiEnvOutputFormatter(MetricsAsciiOptions options) { _options = options ?? throw new ArgumentNullException(nameof(options)); }
 
         public MetricsMediaTypeValue MediaType => new MetricsMediaTypeValue("text", "vnd.appmetrics.env", "v1", "plain");

@@ -24,6 +24,11 @@ namespace App.Metrics.Formatters.Json.Internal
             var formatter = new JsonOutputFormatter(_jsonOptions.SerializerSettings);
             var envFormatter = new JsonEnvOutputFormatter(_jsonOptions.SerializerSettings);
 
+            if (options.DefaultOutputFormatter == null)
+            {
+                options.DefaultOutputFormatter = formatter;
+            }
+
             if (options.DefaultEnvOutputFormatter == null)
             {
                 options.DefaultEnvOutputFormatter = envFormatter;
