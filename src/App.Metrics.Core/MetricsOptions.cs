@@ -18,8 +18,9 @@ namespace App.Metrics
 
         public MetricsOptions()
         {
-            OutputFormatters = new MetricsFormatterCollection();
-            EnvOutputFormatters = new EnvFormatterCollection();
+            OutputMetricsFormatters = new MetricsFormatterCollection();
+            OutputMetricsTextFormatters = new MetricsFormatterCollection();
+            OutputEnvFormatters = new EnvFormatterCollection();
         }
 
         /// <summary>
@@ -45,7 +46,15 @@ namespace App.Metrics
         /// <value>
         ///     The default <see cref="IMetricsOutputFormatter" />s that is used by this application.
         /// </value>
-        public IMetricsOutputFormatter DefaultOutputFormatter { get; set; }
+        public IMetricsOutputFormatter DefaultMetricsOutputFormatter { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the default <see cref="IMetricsOutputFormatter" /> to use when metrics are attempted to be formatted as text.
+        /// </summary>
+        /// <value>
+        ///     The default <see cref="IMetricsOutputFormatter" />s that is used by this application.
+        /// </value>
+        public IMetricsOutputFormatter DefaultMetricsTextOutputFormatter { get; set; }
 
         /// <summary>
         ///     Gets or sets the default <see cref="IEnvOutputFormatter" /> to use when the environment's info is attempted to be formatted.
@@ -80,7 +89,16 @@ namespace App.Metrics
         /// <value>
         ///     A list of <see cref="IMetricsOutputFormatter" />s that are used by this application.
         /// </value>
-        public MetricsFormatterCollection OutputFormatters { get; }
+        public MetricsFormatterCollection OutputMetricsFormatters { get; }
+
+        /// <summary>
+        ///     Gets a list of <see cref="IMetricsOutputFormatter" />s that are used by this application to format metric
+        ///     results as text.
+        /// </summary>
+        /// <value>
+        ///     A list of <see cref="IMetricsOutputFormatter" />s that are used by this application.
+        /// </value>
+        public MetricsFormatterCollection OutputMetricsTextFormatters { get; }
 
         /// <summary>
         ///     Gets a list of <see cref="IEnvOutputFormatter" />s that are used by this application to format environment info.
@@ -88,7 +106,7 @@ namespace App.Metrics
         /// <value>
         ///     A list of <see cref="IEnvOutputFormatter" />s that are used by this application.
         /// </value>
-        public EnvFormatterCollection EnvOutputFormatters { get; }
+        public EnvFormatterCollection OutputEnvFormatters { get; }
     }
 
     // ReSharper restore AutoPropertyCanBeMadeGetOnly.Global

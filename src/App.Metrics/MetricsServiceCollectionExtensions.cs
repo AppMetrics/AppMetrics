@@ -5,6 +5,8 @@
 using System;
 using App.Metrics;
 using App.Metrics.Filtering;
+using App.Metrics.Formatters.Ascii;
+using App.Metrics.Formatters.Json;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
@@ -12,15 +14,15 @@ using Microsoft.Extensions.Configuration;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
-// ReSharper restore CheckNamespace
+    // ReSharper restore CheckNamespace
 {
     /// <summary>
-    /// Extension methods for setting up App Metrics services in an <see cref="IServiceCollection"/>.
+    ///     Extension methods for setting up App Metrics services in an <see cref="IServiceCollection" />.
     /// </summary>
     public static class MetricsServiceCollectionExtensions
     {
         /// <summary>
-        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection"/>.
+        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection" />.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
         /// <returns>
@@ -48,14 +50,15 @@ namespace Microsoft.Extensions.DependencyInjection
             //
             // Add default formatters
             //
-            builder.AddJsonFormatter();
-            builder.AddAsciiFormatter();
+            builder.AddJsonFormatters();
+            builder.AddAsciiFormatters();
+            services.Configure<MetricsOptions>(AddDefaultFormatterOptions);
 
             return new MetricsBuilder(services);
         }
 
         /// <summary>
-        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection"/>.
+        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection" />.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
         /// <param name="configuration">
@@ -74,7 +77,7 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         /// <summary>
-        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection"/>.
+        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection" />.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
         /// <param name="setupAction">
@@ -100,7 +103,7 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         /// <summary>
-        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection"/>.
+        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection" />.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
         /// <param name="configuration">
@@ -126,7 +129,7 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         /// <summary>
-        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection"/>.
+        ///     Adds the metrics services and configuration to the <see cref="IServiceCollection" />.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
         /// <param name="setupAction">
@@ -142,6 +145,24 @@ namespace Microsoft.Extensions.DependencyInjection
             services.Configure(setupAction);
 
             return builder;
+        }
+
+        private static void AddDefaultFormatterOptions(MetricsOptions options)
+        {
+            if (options.DefaultMetricsTextOutputFormatter == null)
+            {
+                options.DefaultMetricsTextOutputFormatter = options.OutputMetricsTextFormatters.GetType<AsciiMetricsOutputFormatter>();
+            }
+
+            if (options.DefaultMetricsOutputFormatter == null)
+            {
+                options.DefaultMetricsOutputFormatter = options.OutputMetricsFormatters.GetType<JsonMetricsOutputFormatter>();
+            }
+
+            if (options.DefaultEnvOutputFormatter == null)
+            {
+                options.DefaultEnvOutputFormatter = options.OutputEnvFormatters.GetType<AsciiEnvOutputFormatter>();
+            }
         }
     }
 }

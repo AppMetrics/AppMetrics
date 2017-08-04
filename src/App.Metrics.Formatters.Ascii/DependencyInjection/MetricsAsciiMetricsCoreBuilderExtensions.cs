@@ -14,7 +14,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class MetricsAsciiMetricsCoreBuilderExtensions
     {
-        public static IMetricsCoreBuilder AddAsciiFormatter(this IMetricsCoreBuilder builder)
+        public static IMetricsCoreBuilder AddAsciiFormatters(this IMetricsCoreBuilder builder)
         {
             if (builder == null)
             {

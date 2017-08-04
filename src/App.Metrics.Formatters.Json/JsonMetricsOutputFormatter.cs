@@ -1,4 +1,4 @@
-﻿// <copyright file="JsonOutputFormatter.cs" company="Allan Hardy">
+﻿// <copyright file="JsonMetricsOutputFormatter.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
@@ -11,13 +11,13 @@ using Newtonsoft.Json;
 
 namespace App.Metrics.Formatters.Json
 {
-    public class JsonOutputFormatter : IMetricsOutputFormatter
+    public class JsonMetricsOutputFormatter : IMetricsOutputFormatter
     {
         private readonly JsonSerializerSettings _serializerSettings;
 
-        public JsonOutputFormatter() { _serializerSettings = DefaultJsonSerializerSettings.CreateSerializerSettings(); }
+        public JsonMetricsOutputFormatter() { _serializerSettings = DefaultJsonSerializerSettings.CreateSerializerSettings(); }
 
-        public JsonOutputFormatter(JsonSerializerSettings serializerSettings)
+        public JsonMetricsOutputFormatter(JsonSerializerSettings serializerSettings)
         {
             _serializerSettings = serializerSettings ?? throw new ArgumentNullException(nameof(serializerSettings));
         }

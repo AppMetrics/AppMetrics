@@ -14,7 +14,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class MetricsJsonMetricsCoreBuilderExtensions
     {
-        public static IMetricsCoreBuilder AddJsonFormatter(this IMetricsCoreBuilder builder)
+        public static IMetricsCoreBuilder AddJsonFormatters(this IMetricsCoreBuilder builder)
         {
             if (builder == null)
             {

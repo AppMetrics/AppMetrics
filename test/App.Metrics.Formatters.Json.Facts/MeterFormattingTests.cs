@@ -25,7 +25,7 @@ namespace App.Metrics.Formatters.Json.Facts
         public MeterFormattingTests(ITestOutputHelper output, MetricProviderTestFixture fixture)
         {
             _output = output;
-            _formatter = new JsonOutputFormatter();
+            _formatter = new JsonMetricsOutputFormatter();
             _metrics = fixture.MeterContext;
         }
 

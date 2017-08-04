@@ -1,4 +1,4 @@
-﻿// <copyright file="AsciiOutputFormatter.cs" company="Allan Hardy">
+﻿// <copyright file="AsciiMetricsOutputFormatter.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace App.Metrics.Formatters.Ascii
 {
-    public class AsciiOutputFormatter : IMetricsOutputFormatter
+    public class AsciiMetricsOutputFormatter : IMetricsOutputFormatter
     {
         private readonly MetricsAsciiOptions _options;
 
-        public AsciiOutputFormatter(MetricsAsciiOptions options) { _options = options ?? throw new ArgumentNullException(nameof(options)); }
+        public AsciiMetricsOutputFormatter(MetricsAsciiOptions options) { _options = options ?? throw new ArgumentNullException(nameof(options)); }
 
         public MetricsMediaTypeValue MediaType => new MetricsMediaTypeValue("text", "vnd.appmetrics.metrics", "v1", "plain");
 

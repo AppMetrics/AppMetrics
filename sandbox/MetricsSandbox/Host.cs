@@ -46,7 +46,7 @@ namespace MetricsSandbox
             Console.ReadKey();
 
             RunUntilEsc(
-                TimeSpan.FromSeconds(10),
+                TimeSpan.FromSeconds(20),
                 cancellationTokenSource,
                 () =>
                 {
@@ -66,7 +66,7 @@ namespace MetricsSandbox
             Console.WriteLine("Environment Information");
             Console.WriteLine("-------------------------------------------");
 
-            foreach (var formatter in metricsOptionsAccessor.Value.EnvOutputFormatters)
+            foreach (var formatter in metricsOptionsAccessor.Value.OutputEnvFormatters)
             {
                 Console.WriteLine($"Formatter: {formatter.GetType().FullName}");
                 Console.WriteLine("-------------------------------------------");
@@ -90,10 +90,10 @@ namespace MetricsSandbox
         {
             var metricsData = metricsProvider.Get(metricsFilter);
 
-            Console.WriteLine("Metrics");
+            Console.WriteLine("Metrics Formatters");
             Console.WriteLine("-------------------------------------------");
 
-            foreach (var formatter in metricsOptionsAccessor.Value.OutputFormatters)
+            foreach (var formatter in metricsOptionsAccessor.Value.OutputMetricsFormatters)
             {
                 Console.WriteLine($"Formatter: {formatter.GetType().FullName}");
                 Console.WriteLine("-------------------------------------------");
@@ -106,6 +106,20 @@ namespace MetricsSandbox
 
                     Console.WriteLine(result);
                 }
+            }
+
+            Console.WriteLine("Default Metrics Text Formatter");
+            Console.WriteLine("-------------------------------------------");
+            Console.WriteLine($"Formatter: {metricsOptionsAccessor.Value.DefaultMetricsTextOutputFormatter}");
+            Console.WriteLine("-------------------------------------------");
+
+            using (var stream = new MemoryStream())
+            {
+                metricsOptionsAccessor.Value.DefaultMetricsTextOutputFormatter.WriteAsync(stream, metricsData, Encoding.UTF8, cancellationTokenSource.Token).GetAwaiter().GetResult();
+
+                var result = Encoding.UTF8.GetString(stream.ToArray());
+
+                Console.WriteLine(result);
             }
         }
 
