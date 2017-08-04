@@ -149,19 +149,19 @@ namespace Microsoft.Extensions.DependencyInjection
 
         private static void AddDefaultFormatterOptions(MetricsOptions options)
         {
-            if (options.DefaultMetricsTextOutputFormatter == null)
+            if (options.DefaultOutputMetricsTextFormatter == null)
             {
-                options.DefaultMetricsTextOutputFormatter = options.OutputMetricsTextFormatters.GetType<AsciiMetricsOutputFormatter>();
+                options.DefaultOutputMetricsTextFormatter = options.OutputMetricsTextFormatters.GetType<AsciiMetricsOutputFormatter>();
             }
 
-            if (options.DefaultMetricsOutputFormatter == null)
+            if (options.DefaultOutputMetricsFormatter == null)
             {
-                options.DefaultMetricsOutputFormatter = options.OutputMetricsFormatters.GetType<JsonMetricsOutputFormatter>();
+                options.DefaultOutputMetricsFormatter = options.OutputMetricsFormatters.GetType<JsonMetricsOutputFormatter>();
             }
 
-            if (options.DefaultEnvOutputFormatter == null)
+            if (options.DefaultOutputEnvFormatter == null)
             {
-                options.DefaultEnvOutputFormatter = options.OutputEnvFormatters.GetType<AsciiEnvOutputFormatter>();
+                options.DefaultOutputEnvFormatter = options.OutputEnvFormatters.GetType<AsciiEnvOutputFormatter>();
             }
         }
     }

@@ -110,12 +110,12 @@ namespace MetricsSandbox
 
             Console.WriteLine("Default Metrics Text Formatter");
             Console.WriteLine("-------------------------------------------");
-            Console.WriteLine($"Formatter: {metricsOptionsAccessor.Value.DefaultMetricsTextOutputFormatter}");
+            Console.WriteLine($"Formatter: {metricsOptionsAccessor.Value.DefaultOutputMetricsTextFormatter}");
             Console.WriteLine("-------------------------------------------");
 
             using (var stream = new MemoryStream())
             {
-                metricsOptionsAccessor.Value.DefaultMetricsTextOutputFormatter.WriteAsync(stream, metricsData, Encoding.UTF8, cancellationTokenSource.Token).GetAwaiter().GetResult();
+                metricsOptionsAccessor.Value.DefaultOutputMetricsTextFormatter.WriteAsync(stream, metricsData, Encoding.UTF8, cancellationTokenSource.Token).GetAwaiter().GetResult();
 
                 var result = Encoding.UTF8.GetString(stream.ToArray());
 

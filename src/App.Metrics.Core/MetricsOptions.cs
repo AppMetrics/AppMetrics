@@ -46,7 +46,7 @@ namespace App.Metrics
         /// <value>
         ///     The default <see cref="IMetricsOutputFormatter" />s that is used by this application.
         /// </value>
-        public IMetricsOutputFormatter DefaultMetricsOutputFormatter { get; set; }
+        public IMetricsOutputFormatter DefaultOutputMetricsFormatter { get; set; }
 
         /// <summary>
         ///     Gets or sets the default <see cref="IMetricsOutputFormatter" /> to use when metrics are attempted to be formatted as text.
@@ -54,7 +54,7 @@ namespace App.Metrics
         /// <value>
         ///     The default <see cref="IMetricsOutputFormatter" />s that is used by this application.
         /// </value>
-        public IMetricsOutputFormatter DefaultMetricsTextOutputFormatter { get; set; }
+        public IMetricsOutputFormatter DefaultOutputMetricsTextFormatter { get; set; }
 
         /// <summary>
         ///     Gets or sets the default <see cref="IEnvOutputFormatter" /> to use when the environment's info is attempted to be formatted.
@@ -62,7 +62,7 @@ namespace App.Metrics
         /// <value>
         ///     The default <see cref="IEnvOutputFormatter" />s that is used by this application.
         /// </value>
-        public IEnvOutputFormatter DefaultEnvOutputFormatter { get; set; }
+        public IEnvOutputFormatter DefaultOutputEnvFormatter { get; set; }
 
         /// <summary>
         ///     Gets or sets the global tags to apply on all metrics when reporting.
