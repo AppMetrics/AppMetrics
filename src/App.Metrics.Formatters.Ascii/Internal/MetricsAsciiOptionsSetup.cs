@@ -14,9 +14,9 @@ namespace App.Metrics.Formatters.Ascii.Internal
     {
         private readonly MetricsAsciiOptions _asciiOptions;
 
-        public MetricsAsciiOptionsSetup(IOptions<MetricsAsciiOptions> asciiOptions)
+        public MetricsAsciiOptionsSetup(IOptions<MetricsAsciiOptions> asciiOptionsAccessor)
         {
-            _asciiOptions = asciiOptions.Value ?? throw new ArgumentNullException(nameof(asciiOptions));
+            _asciiOptions = asciiOptionsAccessor.Value ?? throw new ArgumentNullException(nameof(asciiOptionsAccessor));
         }
 
         public void Configure(MetricsOptions options)

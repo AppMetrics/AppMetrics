@@ -14,9 +14,9 @@ namespace App.Metrics.Formatters.Json.Internal
     {
         private readonly MetricsJsonOptions _jsonOptions;
 
-        public MetricsJsonOptionsSetup(IOptions<MetricsJsonOptions> asciiOptions)
+        public MetricsJsonOptionsSetup(IOptions<MetricsJsonOptions> asciiOptionsAccessor)
         {
-            _jsonOptions = asciiOptions.Value ?? throw new ArgumentNullException(nameof(asciiOptions));
+            _jsonOptions = asciiOptionsAccessor.Value ?? throw new ArgumentNullException(nameof(asciiOptionsAccessor));
         }
 
         public void Configure(MetricsOptions options)

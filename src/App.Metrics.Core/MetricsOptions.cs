@@ -12,7 +12,7 @@ namespace App.Metrics
     /// <summary>
     ///     Top level container for all configuration settings of AppMetrics
     /// </summary>
-    public sealed class MetricsOptions
+    public class MetricsOptions
     {
         private const string DefaultContext = "Application";
 
