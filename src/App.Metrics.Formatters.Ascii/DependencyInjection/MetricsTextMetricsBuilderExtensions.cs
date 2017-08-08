@@ -1,4 +1,4 @@
-﻿// <copyright file="MetricsAsciiMetricsBuilderExtensions.cs" company="Allan Hardy">
+﻿// <copyright file="MetricsTextMetricsBuilderExtensions.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
@@ -9,11 +9,11 @@ using App.Metrics.Formatters.Ascii;
 namespace Microsoft.Extensions.DependencyInjection
     // ReSharper restore CheckNamespace
 {
-    public static class MetricsAsciiMetricsBuilderExtensions
+    public static class MetricsTextMetricsBuilderExtensions
     {
         public static IMetricsBuilder AddAsciiOptions(
             this IMetricsBuilder builder,
-            Action<MetricsAsciiOptions> setupAction)
+            Action<MetricsTextOptions> setupAction)
         {
             if (builder == null)
             {

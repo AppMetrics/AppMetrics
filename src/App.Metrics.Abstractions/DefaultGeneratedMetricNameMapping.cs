@@ -1,4 +1,4 @@
-﻿// <copyright file="DataKeyMapping.cs" company="Allan Hardy">
+﻿// <copyright file="DefaultGeneratedMetricNameMapping.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace App.Metrics
 {
-    internal static class DataKeyMapping
+    internal static class DefaultGeneratedMetricNameMapping
     {
         public static IDictionary<ApdexValueDataKeys, string> Apdex => new Dictionary<ApdexValueDataKeys, string>
                                                                        {

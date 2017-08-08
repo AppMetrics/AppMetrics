@@ -21,12 +21,12 @@ namespace App.Metrics.Formatters.Json.Facts
     {
         private readonly EnvironmentInfo _env;
         private readonly ITestOutputHelper _output;
-        private readonly JsonEnvOutputFormatter _formatter;
+        private readonly EnvInfoJsonOutputFormatter _formatter;
 
         public JsonEnvOutputFormatterTests(ITestOutputHelper output, MetricProviderTestFixture fixture)
         {
             _output = output;
-            _formatter = new JsonEnvOutputFormatter();
+            _formatter = new EnvInfoJsonOutputFormatter();
             _env = fixture.Env;
         }
 
@@ -40,7 +40,7 @@ namespace App.Metrics.Formatters.Json.Facts
             // Act
             using (var stream = new MemoryStream())
             {
-                await _formatter.WriteAsync(stream, _env, Encoding.UTF8);
+                await _formatter.WriteAsync(stream, _env);
 
                 result = Encoding.UTF8.GetString(stream.ToArray()).ParseAsJson();
             }
@@ -58,7 +58,7 @@ namespace App.Metrics.Formatters.Json.Facts
             // Act
             using (var stream = new MemoryStream())
             {
-                await _formatter.WriteAsync(stream, _env, Encoding.UTF8);
+                await _formatter.WriteAsync(stream, _env);
 
                 result = Encoding.UTF8.GetString(stream.ToArray());
             }

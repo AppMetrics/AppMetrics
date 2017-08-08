@@ -4,8 +4,10 @@
 
 using System.Collections.Generic;
 using App.Metrics.Apdex;
+using App.Metrics.Formatters;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
+using App.Metrics.Serialization;
 
 namespace App.Metrics
 {

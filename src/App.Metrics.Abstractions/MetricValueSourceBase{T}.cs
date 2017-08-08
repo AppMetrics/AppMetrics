@@ -3,7 +3,7 @@
 // </copyright>
 
 using System;
-using App.Metrics.Internal;
+using App.Metrics.Formatters;
 
 namespace App.Metrics
 {

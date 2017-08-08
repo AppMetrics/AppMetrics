@@ -1,4 +1,4 @@
-﻿// <copyright file="AsciiSyntax.cs" company="Allan Hardy">
+﻿// <copyright file="MetricsTextSyntax.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
@@ -6,12 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace App.Metrics.Formatters.Ascii
+namespace App.Metrics.Formatters.Ascii.Internal
 {
-    public class AsciiSyntax
+    internal static class MetricsTextSyntax
     {
-        private const int Padding = 20;
-
         private static readonly Dictionary<Type, Func<object, string>> Formatters = new Dictionary<Type, Func<object, string>>
                                                                                     {
                                                                                         { typeof(sbyte), FormatInteger },
@@ -29,19 +27,17 @@ namespace App.Metrics.Formatters.Ascii
                                                                                         { typeof(TimeSpan), FormatTimespan }
                                                                                     };
 
-        public static string FormatReadable(string label, string value, string sign = "=")
+        public static string FormatReadable(string label, string value, string separator, int padding)
         {
             var pad = string.Empty;
 
-            if (label.Length + 2 + sign.Length < Padding)
+            if (label.Length + 2 + separator.Length < padding)
             {
-                pad = new string(' ', Padding - label.Length - 1 - sign.Length);
+                pad = new string(' ', padding - label.Length - 1 - separator.Length);
             }
 
-            return $"{pad}{label} {sign} {value}";
+            return $"{pad}{label} {separator} {value}";
         }
-
-        public static string FormatTimestamp(DateTime timestamp) { return timestamp.ToString("yyyyMMddHHmmss"); }
 
         public static string FormatValue(object value)
         {

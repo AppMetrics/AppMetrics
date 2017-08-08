@@ -4,7 +4,9 @@
 
 using System.Collections.Generic;
 using App.Metrics.Apdex;
+using App.Metrics.Formatters;
 using App.Metrics.Internal;
+using App.Metrics.Serialization;
 using FluentAssertions;
 using Xunit;
 
@@ -14,7 +16,7 @@ namespace App.Metrics.Facts.Apdex
     public class Apdex_MetricValueExtensionsTests
         // ReSharper restore InconsistentNaming
     {
-        private static readonly MetricValueDataKeys DataKeys = new MetricValueDataKeys();
+        private static readonly GeneratedMetricNameMapping DataKeys = new GeneratedMetricNameMapping();
 
         [Fact]
         public void Apdex_can_use_custom_data_keys_and_should_provide_corresponding_values()
@@ -22,7 +24,7 @@ namespace App.Metrics.Facts.Apdex
             // Arrange
             var value = new ApdexValue(1, 2, 3, 4, 5);
             var data = new Dictionary<string, object>();
-            var dataKeys = new MetricValueDataKeys(
+            var dataKeys = new GeneratedMetricNameMapping(
                 apdex: new Dictionary<ApdexValueDataKeys, string>
                        {
                            { ApdexValueDataKeys.Samples, "size_of_sample" }

@@ -1,4 +1,4 @@
-﻿// <copyright file="PackMetricValueSourceExtensions.cs" company="Allan Hardy">
+﻿// <copyright file="MetricSnapshotWriterExtensions.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
@@ -10,12 +10,12 @@ using App.Metrics.Histogram;
 using App.Metrics.Meter;
 using App.Metrics.Timer;
 
-namespace App.Metrics
+namespace App.Metrics.Serialization
 {
-    public static class PackMetricValueSourceExtensions
+    public static class MetricSnapshotWriterExtensions
     {
-        public static void PackApdex<T>(
-            this IMetricPayloadBuilder<T> payloadBuilder,
+        public static void WriteApdex(
+            this IMetricSnapshotWriter writer,
             string context,
             MetricValueSourceBase<ApdexValue> valueSource)
         {
@@ -25,12 +25,12 @@ namespace App.Metrics
             }
 
             var data = new Dictionary<string, object>();
-            valueSource.Value.AddApdexValues(data, payloadBuilder.DataKeys.Apdex);
-            PackMetric(payloadBuilder, context, valueSource, data);
+            valueSource.Value.AddApdexValues(data, writer.MetricNameMapping.Apdex);
+            WriteMetric(writer, context, valueSource, data);
         }
 
-        public static void PackCounter<T>(
-            this IMetricPayloadBuilder<T> payloadBuilder,
+        public static void WriteCounter(
+            this IMetricSnapshotWriter writer,
             string context,
             MetricValueSourceBase<CounterValue> valueSource,
             CounterValueSource counterValueSource)
@@ -44,50 +44,50 @@ namespace App.Metrics
             {
                 foreach (var item in counterValueSource.Value.Items.Distinct())
                 {
-                    var itemData = new Dictionary<string, object> { { payloadBuilder.DataKeys.Counter[CounterValueDataKeys.Total], item.Count } };
+                    var itemData = new Dictionary<string, object> { { writer.MetricNameMapping.Counter[CounterValueDataKeys.Total], item.Count } };
 
                     if (counterValueSource.ReportItemPercentages)
                     {
-                        itemData.AddIfNotNanOrInfinity(payloadBuilder.DataKeys.Counter[CounterValueDataKeys.SetItemPercent], item.Percent);
+                        itemData.AddIfNotNanOrInfinity(writer.MetricNameMapping.Counter[CounterValueDataKeys.SetItemPercent], item.Percent);
                     }
 
-                    PackMetricWithSetItems(
-                        payloadBuilder,
+                    WriteMetricWithSetItems(
+                        writer,
                         context,
                         valueSource,
                         item.Tags,
                         itemData,
-                        payloadBuilder.DataKeys.Counter[CounterValueDataKeys.MetricSetItemSuffix]);
+                        writer.MetricNameMapping.Counter[CounterValueDataKeys.MetricSetItemSuffix]);
                 }
             }
 
             var count = valueSource.ValueProvider.GetValue(resetMetric: counterValueSource.ResetOnReporting).Count;
-            PackMetricValue(payloadBuilder, context, valueSource, count);
+            WriteMetricValue(writer, context, valueSource, count);
         }
 
-        public static void PackGauge<T>(
-            this IMetricPayloadBuilder<T> payloadBuilder,
+        public static void WriteGauge(
+            this IMetricSnapshotWriter writer,
             string context,
             MetricValueSourceBase<double> valueSource)
         {
             if (!double.IsNaN(valueSource.Value) && !double.IsInfinity(valueSource.Value))
             {
-                PackMetricValue(payloadBuilder, context, valueSource, valueSource.Value);
+                WriteMetricValue(writer, context, valueSource, valueSource.Value);
             }
         }
 
-        public static void PackHistogram<T>(
-            this IMetricPayloadBuilder<T> payloadBuilder,
+        public static void WriteHistogram(
+            this IMetricSnapshotWriter writer,
             string context,
             MetricValueSourceBase<HistogramValue> valueSource)
         {
             var data = new Dictionary<string, object>();
-            valueSource.Value.AddHistogramValues(data, payloadBuilder.DataKeys.Histogram);
-            PackMetric(payloadBuilder, context, valueSource, data);
+            valueSource.Value.AddHistogramValues(data, writer.MetricNameMapping.Histogram);
+            WriteMetric(writer, context, valueSource, data);
         }
 
-        public static void PackMeter<T>(
-            this IMetricPayloadBuilder<T> payloadBuilder,
+        public static void WriteMeter(
+            this IMetricSnapshotWriter writer,
             string context,
             MetricValueSourceBase<MeterValue> valueSource)
         {
@@ -95,31 +95,31 @@ namespace App.Metrics
             {
                 foreach (var item in valueSource.Value.Items.Distinct())
                 {
-                    item.AddMeterSetItemValues(out IDictionary<string, object> setItemData, payloadBuilder.DataKeys.Meter);
-                    PackMetricWithSetItems(
-                        payloadBuilder,
+                    item.AddMeterSetItemValues(out IDictionary<string, object> setItemData, writer.MetricNameMapping.Meter);
+                    WriteMetricWithSetItems(
+                        writer,
                         context,
                         valueSource,
                         item.Tags,
                         setItemData,
-                        payloadBuilder.DataKeys.Meter[MeterValueDataKeys.MetricSetItemSuffix]);
+                        writer.MetricNameMapping.Meter[MeterValueDataKeys.MetricSetItemSuffix]);
                 }
             }
 
-            valueSource.Value.AddMeterValues(out IDictionary<string, object> data, payloadBuilder.DataKeys.Meter);
+            valueSource.Value.AddMeterValues(out IDictionary<string, object> data, writer.MetricNameMapping.Meter);
 
-            PackMetric(payloadBuilder, context, valueSource, data);
+            WriteMetric(writer, context, valueSource, data);
         }
 
-        public static void PackTimer<T>(
-            this IMetricPayloadBuilder<T> payloadBuilder,
+        public static void WriteTimer(
+            this IMetricSnapshotWriter writer,
             string context,
             MetricValueSourceBase<TimerValue> valueSource)
         {
-            valueSource.Value.Rate.AddMeterValues(out IDictionary<string, object> data, payloadBuilder.DataKeys.Meter);
-            valueSource.Value.Histogram.AddHistogramValues(data, payloadBuilder.DataKeys.Histogram);
+            valueSource.Value.Rate.AddMeterValues(out IDictionary<string, object> data, writer.MetricNameMapping.Meter);
+            valueSource.Value.Histogram.AddHistogramValues(data, writer.MetricNameMapping.Histogram);
 
-            PackMetric(payloadBuilder, context, valueSource, data);
+            WriteMetric(writer, context, valueSource, data);
         }
 
         private static MetricTags ConcatIntrinsicMetricTags<T>(MetricValueSourceBase<T> valueSource)
@@ -132,7 +132,7 @@ namespace App.Metrics
 
                 var timerIntrinsicTags = new MetricTags(
                     new[] { AppMetricsConstants.Pack.MetricTagsUnitRateDurationKey, AppMetricsConstants.Pack.MetricTagsUnitRateKey },
-                    new[] { timerValueSource.Value.DurationUnit.Unit(), timerValueSource.Value.Rate.RateUnit.Unit() });
+                    new[] { timerValueSource?.Value.DurationUnit.Unit(), timerValueSource?.Value.Rate.RateUnit.Unit() });
 
                 intrinsicTags = MetricTags.Concat(intrinsicTags, timerIntrinsicTags);
             }
@@ -173,10 +173,10 @@ namespace App.Metrics
             return MetricTags.Concat(valueSource.Tags, intrinsicTags);
         }
 
-        private static void PackMetric<T1, T2>(
-            IMetricPayloadBuilder<T1> payloadBuilder,
+        private static void WriteMetric<T>(
+            IMetricSnapshotWriter writer,
             string context,
-            MetricValueSourceBase<T2> valueSource,
+            MetricValueSourceBase<T> valueSource,
             IDictionary<string, object> data)
         {
             var keys = data.Keys.ToList();
@@ -185,7 +185,7 @@ namespace App.Metrics
 
             if (valueSource.IsMultidimensional)
             {
-                payloadBuilder.Pack(
+                writer.Write(
                     context,
                     valueSource.MultidimensionalName,
                     keys,
@@ -195,20 +195,20 @@ namespace App.Metrics
                 return;
             }
 
-            payloadBuilder.Pack(context, valueSource.Name, keys, values, tags);
+            writer.Write(context, valueSource.Name, keys, values, tags);
         }
 
-        private static void PackMetricValue<T, TU>(
-            IMetricPayloadBuilder<T> payloadBuilder,
+        private static void WriteMetricValue<T>(
+            IMetricSnapshotWriter writer,
             string context,
-            MetricValueSourceBase<TU> valueSource,
+            MetricValueSourceBase<T> valueSource,
             object value)
         {
             var tags = ConcatMetricTags(valueSource);
 
             if (valueSource.IsMultidimensional)
             {
-                payloadBuilder.Pack(
+                writer.Write(
                     context,
                     valueSource.MultidimensionalName,
                     value,
@@ -217,13 +217,13 @@ namespace App.Metrics
                 return;
             }
 
-            payloadBuilder.Pack(context, valueSource.Name, value, tags);
+            writer.Write(context, valueSource.Name, value, tags);
         }
 
-        private static void PackMetricWithSetItems<T, TU>(
-            IMetricPayloadBuilder<T> payloadBuilder,
+        private static void WriteMetricWithSetItems<T>(
+            IMetricSnapshotWriter writer,
             string context,
-            MetricValueSourceBase<TU> valueSource,
+            MetricValueSourceBase<T> valueSource,
             MetricTags setItemTags,
             IDictionary<string, object> itemData,
             string metricSetItemSuffix)
@@ -234,7 +234,7 @@ namespace App.Metrics
 
             if (valueSource.IsMultidimensional)
             {
-                payloadBuilder.Pack(
+                writer.Write(
                     context,
                     valueSource.MultidimensionalName + metricSetItemSuffix,
                     keys,
@@ -244,7 +244,7 @@ namespace App.Metrics
                 return;
             }
 
-            payloadBuilder.Pack(context, valueSource.Name + metricSetItemSuffix, keys, values, tags);
+            writer.Write(context, valueSource.Name + metricSetItemSuffix, keys, values, tags);
         }
     }
 }

@@ -1,10 +1,9 @@
-﻿// <copyright file="JsonEnvOutputFormatter.cs" company="Allan Hardy">
+﻿// <copyright file="EnvInfoJsonOutputFormatter.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
 using System;
 using System.IO;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Infrastructure;
@@ -12,13 +11,13 @@ using Newtonsoft.Json;
 
 namespace App.Metrics.Formatters.Json
 {
-    public class JsonEnvOutputFormatter : IEnvOutputFormatter
+    public class EnvInfoJsonOutputFormatter : IEnvOutputFormatter
     {
         private readonly JsonSerializerSettings _serializerSettings;
 
-        public JsonEnvOutputFormatter() { _serializerSettings = DefaultJsonSerializerSettings.CreateSerializerSettings(); }
+        public EnvInfoJsonOutputFormatter() { _serializerSettings = DefaultJsonSerializerSettings.CreateSerializerSettings(); }
 
-        public JsonEnvOutputFormatter(JsonSerializerSettings serializerSettings)
+        public EnvInfoJsonOutputFormatter(JsonSerializerSettings serializerSettings)
         {
             _serializerSettings = serializerSettings ?? throw new ArgumentNullException(nameof(serializerSettings));
         }
@@ -28,7 +27,6 @@ namespace App.Metrics.Formatters.Json
         public Task WriteAsync(
             Stream output,
             EnvironmentInfo environmentInfo,
-            Encoding encoding,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (output == null)
@@ -36,16 +34,17 @@ namespace App.Metrics.Formatters.Json
                 throw new ArgumentNullException(nameof(output));
             }
 
-            if (encoding == null)
+            var serilizer = JsonSerializer.Create(_serializerSettings);
+
+            using (var sw = new StreamWriter(output))
             {
-                throw new ArgumentNullException(nameof(encoding));
+                using (var jw = new JsonTextWriter(sw))
+                {
+                    serilizer.Serialize(jw, environmentInfo);
+                }
             }
 
-            var json = JsonConvert.SerializeObject(environmentInfo, _serializerSettings);
-
-            var bytes = encoding.GetBytes(json);
-
-            return output.WriteAsync(bytes, 0, bytes.Length, cancellationToken);
+            return Task.CompletedTask;
         }
     }
 }

@@ -151,17 +151,17 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             if (options.DefaultOutputMetricsTextFormatter == null)
             {
-                options.DefaultOutputMetricsTextFormatter = options.OutputMetricsTextFormatters.GetType<AsciiMetricsOutputFormatter>();
+                options.DefaultOutputMetricsTextFormatter = options.OutputMetricsTextFormatters.GetType<MetricsTextOutputFormatter>();
             }
 
             if (options.DefaultOutputMetricsFormatter == null)
             {
-                options.DefaultOutputMetricsFormatter = options.OutputMetricsFormatters.GetType<JsonMetricsOutputFormatter>();
+                options.DefaultOutputMetricsFormatter = options.OutputMetricsFormatters.GetType<MetricsJsonOutputFormatter>();
             }
 
             if (options.DefaultOutputEnvFormatter == null)
             {
-                options.DefaultOutputEnvFormatter = options.OutputEnvFormatters.GetType<AsciiEnvOutputFormatter>();
+                options.DefaultOutputEnvFormatter = options.OutputEnvFormatters.GetType<EnvInfoTextOutputFormatter>();
             }
         }
     }

@@ -3,8 +3,10 @@
 // </copyright>
 
 using System.Collections.Generic;
+using App.Metrics.Formatters;
 using App.Metrics.Internal;
 using App.Metrics.Meter;
+using App.Metrics.Serialization;
 using FluentAssertions;
 using Xunit;
 
@@ -14,14 +16,14 @@ namespace App.Metrics.Facts.Meter
     public class Meter_MetricValueExtensionsTests
         // ReSharper restore InconsistentNaming
     {
-        private static readonly MetricValueDataKeys DataKeys = new MetricValueDataKeys();
+        private static readonly GeneratedMetricNameMapping DataKeys = new GeneratedMetricNameMapping();
 
         [Fact]
         public void Meter_can_use_custom_data_keys_and_should_provide_corresponding_values()
         {
             // Arrange
             var value = new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds);
-            var dataKeys = new MetricValueDataKeys(
+            var dataKeys = new GeneratedMetricNameMapping(
                 meter: new Dictionary<MeterValueDataKeys, string>
                        {
                            { MeterValueDataKeys.Rate1M, "1_min_rate" },

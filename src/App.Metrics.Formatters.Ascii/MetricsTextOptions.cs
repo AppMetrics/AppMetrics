@@ -1,15 +1,21 @@
-﻿// <copyright file="MetricsAsciiOptions.cs" company="Allan Hardy">
+﻿// <copyright file="MetricsTextOptions.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
+using System;
+using System.Text;
+using App.Metrics.Formatters.Ascii.Internal;
+
 namespace App.Metrics.Formatters.Ascii
 {
-    public class MetricsAsciiOptions
+    public class MetricsTextOptions
     {
-        public MetricsAsciiOptions()
+        public MetricsTextOptions()
         {
-            Padding = 20;
-            Separator = "=";
+            Padding = MetricsTextFormatterConstants.OutputFormatting.Padding;
+            Separator = MetricsTextFormatterConstants.OutputFormatting.Separator;
+            Encoding = Encoding.UTF8;
+            DataKeys = new GeneratedMetricNameMapping();
         }
 
         /// <summary>
@@ -27,5 +33,11 @@ namespace App.Metrics.Formatters.Ascii
         ///     The separator to apply between on health check labels and messages/status
         /// </value>
         public string Separator { get; set; }
+
+        public Encoding Encoding { get; set; }
+
+        public Func<string, string, string> MetricNameFormatter { get; set; }
+
+        public GeneratedMetricNameMapping DataKeys { get; set; }
     }
 }

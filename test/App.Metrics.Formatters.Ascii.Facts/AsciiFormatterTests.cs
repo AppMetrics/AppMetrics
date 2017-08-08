@@ -2,8 +2,10 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
+using System.IO;
 using App.Metrics.Counter;
 using App.Metrics.FactsCommon.Fixtures;
+using App.Metrics.Serialization;
 using FluentAssertions;
 using Xunit;
 
@@ -24,16 +26,21 @@ namespace App.Metrics.Formatters.Ascii.Facts
         {
             // Arrange
             var counter = new CounterOptions { Context = "test", Name = "counter1" };
-            var formatter = new MetricDataValueSourceFormatter();
-            var payloadBuilder = new AsciiMetricPayloadBuilder();
+            var serializer = new DefaultMetricSnapshotSerializer();
 
             // Act
             _fixture.Metrics.Measure.Counter.Increment(counter);
-            formatter.Build(_fixture.Metrics.Snapshot.Get(), payloadBuilder);
+            using (var sw = new StringWriter())
+            {
+                using (var packer = new MetricSnapshotTextWriter(sw))
+                {
+                    serializer.Serialize(packer, _fixture.Metrics.Snapshot.Get());
+                }
 
-            // Assert
-            payloadBuilder.PayloadFormatted().Should().Be(
-                "# MEASUREMENT: [test] counter1\n# TAGS:\n             mtype = counter\n              unit = none\n# FIELDS:\n             value = 1\n--------------------------------------------------------------\n");
+                // Assert
+                sw.ToString().Should().Be(
+                    "# MEASUREMENT: [test] counter1\n# TAGS:\n             mtype = counter\n              unit = none\n# FIELDS:\n             value = 1\n--------------------------------------------------------------\n");
+            }
         }
 
         [Fact]
@@ -41,16 +48,21 @@ namespace App.Metrics.Formatters.Ascii.Facts
         {
             // Arrange
             var counter = new CounterOptions { Context = "test", Name = "counter1" };
-            var formatter = new MetricDataValueSourceFormatter();
-            var payloadBuilder = new AsciiMetricPayloadBuilder((context, name) => $"{context}---{name}");
+            var serializer = new DefaultMetricSnapshotSerializer();
 
             // Act
             _fixture.Metrics.Measure.Counter.Increment(counter);
-            formatter.Build(_fixture.Metrics.Snapshot.Get(), payloadBuilder);
+            using (var sw = new StringWriter())
+            {
+                using (var packer = new MetricSnapshotTextWriter(sw, metricNameFormatter: (context, name) => $"{context}---{name}"))
+                {
+                    serializer.Serialize(packer, _fixture.Metrics.Snapshot.Get());
+                }
 
-            // Assert
-            payloadBuilder.PayloadFormatted().Should().Be(
-                "# MEASUREMENT: test---counter1\n# TAGS:\n             mtype = counter\n              unit = none\n# FIELDS:\n             value = 1\n--------------------------------------------------------------\n");
+                // Assert
+                sw.ToString().Should().Be(
+                    "# MEASUREMENT: test---counter1\n# TAGS:\n             mtype = counter\n              unit = none\n# FIELDS:\n             value = 1\n--------------------------------------------------------------\n");
+            }
         }
     }
 }

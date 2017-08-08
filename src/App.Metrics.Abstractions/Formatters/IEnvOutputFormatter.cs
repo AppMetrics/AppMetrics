@@ -3,7 +3,6 @@
 // </copyright>
 
 using System.IO;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Infrastructure;
@@ -17,7 +16,6 @@ namespace App.Metrics.Formatters
         Task WriteAsync(
             Stream output,
             EnvironmentInfo environmentInfo,
-            Encoding encoding,
             CancellationToken cancellationToken = default(CancellationToken));
     }
 }

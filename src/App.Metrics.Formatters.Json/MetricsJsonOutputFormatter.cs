@@ -1,33 +1,31 @@
-﻿// <copyright file="JsonMetricsOutputFormatter.cs" company="Allan Hardy">
+﻿// <copyright file="MetricsJsonOutputFormatter.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
 using System;
 using System.IO;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace App.Metrics.Formatters.Json
 {
-    public class JsonMetricsOutputFormatter : IMetricsOutputFormatter
+    public class MetricsJsonOutputFormatter : IMetricsOutputFormatter
     {
         private readonly JsonSerializerSettings _serializerSettings;
 
-        public JsonMetricsOutputFormatter() { _serializerSettings = DefaultJsonSerializerSettings.CreateSerializerSettings(); }
-
-        public JsonMetricsOutputFormatter(JsonSerializerSettings serializerSettings)
+        public MetricsJsonOutputFormatter(JsonSerializerSettings serializerSettings)
         {
             _serializerSettings = serializerSettings ?? throw new ArgumentNullException(nameof(serializerSettings));
         }
+
+        public MetricsJsonOutputFormatter() { _serializerSettings = DefaultJsonSerializerSettings.CreateSerializerSettings(); }
 
         public MetricsMediaTypeValue MediaType => new MetricsMediaTypeValue("application", "vnd.appmetrics.metrics", "v1", "json");
 
         public Task WriteAsync(
             Stream output,
             MetricsDataValueSource metricData,
-            Encoding encoding,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (output == null)
@@ -35,16 +33,17 @@ namespace App.Metrics.Formatters.Json
                 throw new ArgumentNullException(nameof(output));
             }
 
-            if (encoding == null)
+            var serilizer = JsonSerializer.Create(_serializerSettings);
+
+            using (var streamWriter = new StreamWriter(output))
             {
-                throw new ArgumentNullException(nameof(encoding));
+                using (var textWriter = new JsonTextWriter(streamWriter))
+                {
+                    serilizer.Serialize(textWriter, metricData);
+                }
             }
 
-            var json = JsonConvert.SerializeObject(metricData, _serializerSettings);
-
-            var bytes = encoding.GetBytes(json);
-
-            return output.WriteAsync(bytes, 0, bytes.Length, cancellationToken);
+            return Task.CompletedTask;
         }
     }
 }

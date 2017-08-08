@@ -1,4 +1,4 @@
-﻿// <copyright file="MetricsAsciiMetricsCoreBuilderExtensions.cs" company="Allan Hardy">
+﻿// <copyright file="MetricsTextMetricsCoreBuilderExtensions.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
@@ -12,7 +12,7 @@ using Microsoft.Extensions.Options;
 namespace Microsoft.Extensions.DependencyInjection
     // ReSharper restore CheckNamespace
 {
-    public static class MetricsAsciiMetricsCoreBuilderExtensions
+    public static class MetricsTextMetricsCoreBuilderExtensions
     {
         public static IMetricsCoreBuilder AddAsciiFormatters(this IMetricsCoreBuilder builder)
         {
@@ -29,7 +29,7 @@ namespace Microsoft.Extensions.DependencyInjection
         internal static void AddAsciiFormatterServices(IServiceCollection services)
         {
             services.TryAddEnumerable(
-                ServiceDescriptor.Transient<IConfigureOptions<MetricsOptions>, MetricsAsciiOptionsSetup>());
+                ServiceDescriptor.Transient<IConfigureOptions<MetricsOptions>, MetricsTextOptionsSetup>());
         }
     }
 }

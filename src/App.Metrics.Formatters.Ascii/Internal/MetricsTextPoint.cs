@@ -1,4 +1,4 @@
-﻿// <copyright file="AsciiMetricPoint.cs" company="Allan Hardy">
+﻿// <copyright file="MetricsTextPoint.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
@@ -7,11 +7,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace App.Metrics.Formatters.Ascii
+namespace App.Metrics.Formatters.Ascii.Internal
 {
-    public class AsciiMetricPoint
+    internal class MetricsTextPoint
     {
-        public AsciiMetricPoint(
+        public MetricsTextPoint(
             string measurement,
             IReadOnlyDictionary<string, object> fields,
             MetricTags tags)
@@ -36,13 +36,13 @@ namespace App.Metrics.Formatters.Ascii
             Tags = tags;
         }
 
-        public IReadOnlyDictionary<string, object> Fields { get; }
+        private IReadOnlyDictionary<string, object> Fields { get; }
 
-        public string Measurement { get; }
+        private string Measurement { get; }
 
-        public MetricTags Tags { get; }
+        private MetricTags Tags { get; }
 
-        public void Format(TextWriter textWriter)
+        public void Write(TextWriter textWriter, string separator, int padding)
         {
             if (textWriter == null)
             {
@@ -59,7 +59,7 @@ namespace App.Metrics.Formatters.Ascii
 
                 for (var i = 0; i < Tags.Count; i++)
                 {
-                    textWriter.Write(AsciiSyntax.FormatReadable(Tags.Keys[i], AsciiSyntax.FormatValue(Tags.Values[i])));
+                    textWriter.Write(MetricsTextSyntax.FormatReadable(Tags.Keys[i], MetricsTextSyntax.FormatValue(Tags.Values[i]), separator, padding));
                     textWriter.Write('\n');
                 }
             }
@@ -68,7 +68,7 @@ namespace App.Metrics.Formatters.Ascii
 
             foreach (var f in Fields)
             {
-                textWriter.Write(AsciiSyntax.FormatReadable(f.Key, AsciiSyntax.FormatValue(f.Value)));
+                textWriter.Write(MetricsTextSyntax.FormatReadable(f.Key, MetricsTextSyntax.FormatValue(f.Value), separator, padding));
                 textWriter.Write('\n');
             }
 

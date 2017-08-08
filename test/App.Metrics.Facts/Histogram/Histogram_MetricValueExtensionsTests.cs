@@ -3,8 +3,10 @@
 // </copyright>
 
 using System.Collections.Generic;
+using App.Metrics.Formatters;
 using App.Metrics.Histogram;
 using App.Metrics.Internal;
+using App.Metrics.Serialization;
 using FluentAssertions;
 using Xunit;
 
@@ -14,7 +16,7 @@ namespace App.Metrics.Facts.Histogram
     public class Histogram_MetricValueExtensionsTests
         // ReSharper restore InconsistentNaming
     {
-        private static readonly MetricValueDataKeys DataKeys = new MetricValueDataKeys();
+        private static readonly GeneratedMetricNameMapping DataKeys = new GeneratedMetricNameMapping();
 
         [Fact]
         public void Histogram_can_use_custom_data_keys_and_should_provide_corresponding_values()
@@ -22,7 +24,7 @@ namespace App.Metrics.Facts.Histogram
             // Arrange
             var value = new HistogramValue(1, 1, 2, "3", 4, "5", 6, 7, "8", 9, 10, 11, 12, 13, 14, 15, 16);
             var data = new Dictionary<string, object>();
-            var dataKeys = new MetricValueDataKeys(
+            var dataKeys = new GeneratedMetricNameMapping(
                 histogram: new Dictionary<HistogramValueDataKeys, string>
                            {
                                { HistogramValueDataKeys.UserLastValue, "userLastValue" },

@@ -25,7 +25,7 @@ namespace App.Metrics.Formatters.Json.Facts
         public ApdexFormattingTests(ITestOutputHelper output, MetricProviderTestFixture fixture)
         {
             _output = output;
-            _formatter = new JsonMetricsOutputFormatter();
+            _formatter = new MetricsJsonOutputFormatter();
             _metrics = fixture.ApdexContext;
         }
 
@@ -39,7 +39,7 @@ namespace App.Metrics.Formatters.Json.Facts
             // Act
             using (var stream = new MemoryStream())
             {
-                await _formatter.WriteAsync(stream, _metrics, Encoding.UTF8);
+                await _formatter.WriteAsync(stream, _metrics);
 
                 result = Encoding.UTF8.GetString(stream.ToArray()).ParseAsJson();
             }
@@ -57,7 +57,7 @@ namespace App.Metrics.Formatters.Json.Facts
             // Act
             using (var stream = new MemoryStream())
             {
-                await _formatter.WriteAsync(stream, _metrics, Encoding.UTF8);
+                await _formatter.WriteAsync(stream, _metrics);
 
                 result = Encoding.UTF8.GetString(stream.ToArray());
             }

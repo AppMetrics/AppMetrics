@@ -9,6 +9,7 @@ using System.Threading;
 using App.Metrics;
 using App.Metrics.Filtering;
 using App.Metrics.Filters;
+using App.Metrics.Formatters.Ascii;
 using App.Metrics.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,7 +47,7 @@ namespace MetricsSandbox
             Console.ReadKey();
 
             RunUntilEsc(
-                TimeSpan.FromSeconds(20),
+                TimeSpan.FromSeconds(5),
                 cancellationTokenSource,
                 () =>
                 {
@@ -73,7 +74,7 @@ namespace MetricsSandbox
 
                 using (var stream = new MemoryStream())
                 {
-                    formatter.WriteAsync(stream, envInfoProvider.Build(), Encoding.UTF8, cancellationTokenSource.Token).GetAwaiter().GetResult();
+                    formatter.WriteAsync(stream, envInfoProvider.Build(), cancellationTokenSource.Token).GetAwaiter().GetResult();
 
                     var result = Encoding.UTF8.GetString(stream.ToArray());
 
@@ -100,7 +101,7 @@ namespace MetricsSandbox
 
                 using (var stream = new MemoryStream())
                 {
-                    formatter.WriteAsync(stream, metricsData, Encoding.UTF8, cancellationTokenSource.Token).GetAwaiter().GetResult();
+                    formatter.WriteAsync(stream, metricsData, cancellationTokenSource.Token).GetAwaiter().GetResult();
 
                     var result = Encoding.UTF8.GetString(stream.ToArray());
 
@@ -115,7 +116,7 @@ namespace MetricsSandbox
 
             using (var stream = new MemoryStream())
             {
-                metricsOptionsAccessor.Value.DefaultOutputMetricsTextFormatter.WriteAsync(stream, metricsData, Encoding.UTF8, cancellationTokenSource.Token).GetAwaiter().GetResult();
+                metricsOptionsAccessor.Value.DefaultOutputMetricsTextFormatter.WriteAsync(stream, metricsData, cancellationTokenSource.Token).GetAwaiter().GetResult();
 
                 var result = Encoding.UTF8.GetString(stream.ToArray());
 

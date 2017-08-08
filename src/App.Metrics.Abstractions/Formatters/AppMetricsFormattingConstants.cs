@@ -2,7 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-namespace App.Metrics
+namespace App.Metrics.Formatters
 {
     public static class AppMetricsFormattingConstants
     {
