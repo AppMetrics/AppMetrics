@@ -1,4 +1,4 @@
-﻿// <copyright file="DefaultMetricSnapshotSerializer.cs" company="Allan Hardy">
+﻿// <copyright file="MetricSnapshotSerializer.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
@@ -13,7 +13,7 @@ namespace App.Metrics.Serialization
     /// <summary>
     ///     Serializes <see cref="MetricsDataValueSource" /> into the different formats.
     /// </summary>
-    public class DefaultMetricSnapshotSerializer
+    public class MetricSnapshotSerializer
     {
         /// <summary>
         ///     Serializes the specified <see cref="MetricsDataValueSource" /> and writes the metrics snapshot using the specified

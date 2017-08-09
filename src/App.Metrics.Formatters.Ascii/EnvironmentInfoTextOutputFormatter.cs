@@ -1,4 +1,4 @@
-﻿// <copyright file="EnvInfoTextOutputFormatter.cs" company="Allan Hardy">
+﻿// <copyright file="EnvironmentInfoTextOutputFormatter.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
@@ -11,16 +11,16 @@ using App.Metrics.Serialization;
 
 namespace App.Metrics.Formatters.Ascii
 {
-    public class EnvInfoTextOutputFormatter : IEnvOutputFormatter
+    public class EnvironmentInfoTextOutputFormatter : IEnvOutputFormatter
     {
         private readonly MetricsTextOptions _options;
 
-        public EnvInfoTextOutputFormatter()
+        public EnvironmentInfoTextOutputFormatter()
         {
             _options = new MetricsTextOptions();
         }
 
-        public EnvInfoTextOutputFormatter(MetricsTextOptions options) { _options = options ?? throw new ArgumentNullException(nameof(options)); }
+        public EnvironmentInfoTextOutputFormatter(MetricsTextOptions options) { _options = options ?? throw new ArgumentNullException(nameof(options)); }
 
         public MetricsMediaTypeValue MediaType => new MetricsMediaTypeValue("text", "vnd.appmetrics.env", "v1", "plain");
 
@@ -34,7 +34,7 @@ namespace App.Metrics.Formatters.Ascii
                 throw new ArgumentNullException(nameof(output));
             }
 
-            var serializer = new DefaultEnvInfoSerializer();
+            var serializer = new EnvironmentInfoSerializer();
 
             using (var stringWriter = new StreamWriter(output, _options.Encoding))
             {

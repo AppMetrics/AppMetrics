@@ -22,7 +22,7 @@ namespace App.Metrics.Formatters.Ascii.Internal
         public void Configure(MetricsOptions options)
         {
             var formatter = new MetricsTextOutputFormatter(_textOptions);
-            var envFormatter = new EnvInfoTextOutputFormatter(_textOptions);
+            var envFormatter = new EnvironmentInfoTextOutputFormatter(_textOptions);
 
             options.OutputMetricsFormatters.Add(formatter);
             options.OutputMetricsTextFormatters.Add(formatter);

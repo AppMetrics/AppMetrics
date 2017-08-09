@@ -1,4 +1,4 @@
-﻿// <copyright file="DefaultEnvInfoSerializer.cs" company="Allan Hardy">
+﻿// <copyright file="EnvironmentInfoSerializer.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
@@ -9,7 +9,7 @@ namespace App.Metrics.Serialization
     /// <summary>
     ///     Serializes <see cref="EnvironmentInfo" /> into the different formats.
     /// </summary>
-    public class DefaultEnvInfoSerializer
+    public class EnvironmentInfoSerializer
     {
         /// <summary>
         ///     Serializes the specified <see cref="EnvironmentInfo" /> and writes the environment information using the specified

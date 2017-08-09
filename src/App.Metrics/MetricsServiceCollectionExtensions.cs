@@ -161,7 +161,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             if (options.DefaultOutputEnvFormatter == null)
             {
-                options.DefaultOutputEnvFormatter = options.OutputEnvFormatters.GetType<EnvInfoTextOutputFormatter>();
+                options.DefaultOutputEnvFormatter = options.OutputEnvFormatters.GetType<EnvironmentInfoTextOutputFormatter>();
             }
         }
     }

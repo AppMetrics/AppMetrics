@@ -33,7 +33,7 @@ namespace App.Metrics.Formatters.Ascii
                 throw new ArgumentNullException(nameof(output));
             }
 
-            var serializer = new DefaultMetricSnapshotSerializer();
+            var serializer = new MetricSnapshotSerializer();
 
             using (var streamWriter = new StreamWriter(output, _options.Encoding))
             {

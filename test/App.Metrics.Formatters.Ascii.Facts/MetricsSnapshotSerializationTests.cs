@@ -1,4 +1,4 @@
-// <copyright file="AsciiFormatterTests.cs" company="Allan Hardy">
+// <copyright file="MetricsSnapshotSerializationTests.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
@@ -11,11 +11,11 @@ using Xunit;
 
 namespace App.Metrics.Formatters.Ascii.Facts
 {
-    public class AsciiFormatterTests
+    public class MetricsSnapshotSerializationTests
     {
         private readonly MetricsFixture _fixture;
 
-        public AsciiFormatterTests()
+        public MetricsSnapshotSerializationTests()
         {
             // DEVNOTE: Don't want Metrics to be shared between tests
             _fixture = new MetricsFixture();
@@ -26,15 +26,15 @@ namespace App.Metrics.Formatters.Ascii.Facts
         {
             // Arrange
             var counter = new CounterOptions { Context = "test", Name = "counter1" };
-            var serializer = new DefaultMetricSnapshotSerializer();
+            var serializer = new MetricSnapshotSerializer();
 
             // Act
             _fixture.Metrics.Measure.Counter.Increment(counter);
             using (var sw = new StringWriter())
             {
-                using (var packer = new MetricSnapshotTextWriter(sw))
+                using (var writer = new MetricSnapshotTextWriter(sw))
                 {
-                    serializer.Serialize(packer, _fixture.Metrics.Snapshot.Get());
+                    serializer.Serialize(writer, _fixture.Metrics.Snapshot.Get());
                 }
 
                 // Assert
@@ -48,7 +48,7 @@ namespace App.Metrics.Formatters.Ascii.Facts
         {
             // Arrange
             var counter = new CounterOptions { Context = "test", Name = "counter1" };
-            var serializer = new DefaultMetricSnapshotSerializer();
+            var serializer = new MetricSnapshotSerializer();
 
             // Act
             _fixture.Metrics.Measure.Counter.Increment(counter);
