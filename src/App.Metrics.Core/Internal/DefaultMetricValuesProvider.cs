@@ -30,7 +30,11 @@ namespace App.Metrics.Internal
         public MetricsDataValueSource Get() { return _registry.GetData(_globalFilter); }
 
         /// <inheritdoc />
-        public MetricsDataValueSource Get(IFilterMetrics overrideGlobalFilter) { return _registry.GetData(overrideGlobalFilter); }
+        public MetricsDataValueSource Get(IFilterMetrics overrideGlobalFilter)
+        {
+            var filter = overrideGlobalFilter ?? _globalFilter;
+            return _registry.GetData(filter);
+        }
 
         /// <inheritdoc />
         public MetricsContextValueSource GetForContext(string context)

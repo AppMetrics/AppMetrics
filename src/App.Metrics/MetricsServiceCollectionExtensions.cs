@@ -51,7 +51,7 @@ namespace Microsoft.Extensions.DependencyInjection
             // Add default formatters
             //
             builder.AddJsonFormatters();
-            builder.AddAsciiFormatters();
+            builder.AddTextFormatters();
             services.Configure<MetricsOptions>(AddDefaultFormatterOptions);
 
             return new MetricsBuilder(services);

@@ -11,7 +11,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class MetricsTextMetricsBuilderExtensions
     {
-        public static IMetricsBuilder AddAsciiOptions(
+        public static IMetricsBuilder AddTextOptions(
             this IMetricsBuilder builder,
             Action<MetricsTextOptions> setupAction)
         {

@@ -14,19 +14,19 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class MetricsTextMetricsCoreBuilderExtensions
     {
-        public static IMetricsCoreBuilder AddAsciiFormatters(this IMetricsCoreBuilder builder)
+        public static IMetricsCoreBuilder AddTextFormatters(this IMetricsCoreBuilder builder)
         {
             if (builder == null)
             {
                 throw new ArgumentNullException(nameof(builder));
             }
 
-            AddAsciiFormatterServices(builder.Services);
+            AddTextFormatterServices(builder.Services);
 
             return builder;
         }
 
-        internal static void AddAsciiFormatterServices(IServiceCollection services)
+        internal static void AddTextFormatterServices(IServiceCollection services)
         {
             services.TryAddEnumerable(
                 ServiceDescriptor.Transient<IConfigureOptions<MetricsOptions>, MetricsTextOptionsSetup>());
