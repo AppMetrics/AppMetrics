@@ -30,7 +30,7 @@ namespace App.Metrics.Serialization
             string name,
             object value,
             MetricTags tags,
-            DateTime? timestamp = null);
+            DateTime timestamp);
 
         /// <summary>
         /// Writes the specific metrics and tags
@@ -47,6 +47,6 @@ namespace App.Metrics.Serialization
             IEnumerable<string> columns,
             IEnumerable<object> values,
             MetricTags tags,
-            DateTime? timestamp = null);
+            DateTime timestamp);
     }
 }

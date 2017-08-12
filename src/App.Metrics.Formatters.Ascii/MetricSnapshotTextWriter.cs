@@ -53,7 +53,7 @@ namespace App.Metrics.Formatters.Ascii
             string name,
             object value,
             MetricTags tags,
-            DateTime? timestamp = null)
+            DateTime timestamp)
         {
             var measurement = _metricNameFormatter(context, name);
 
@@ -67,7 +67,7 @@ namespace App.Metrics.Formatters.Ascii
             IEnumerable<string> columns,
             IEnumerable<object> values,
             MetricTags tags,
-            DateTime? timestamp = null)
+            DateTime timestamp)
         {
             var fields = columns.Zip(values, (column, data) => new { column, data }).ToDictionary(pair => pair.column, pair => pair.data);
 

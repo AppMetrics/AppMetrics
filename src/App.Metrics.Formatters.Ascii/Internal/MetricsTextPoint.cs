@@ -11,13 +11,13 @@ namespace App.Metrics.Formatters.Ascii.Internal
 {
     internal class MetricsTextPoint
     {
-        private readonly DateTime? _timestamp;
+        private readonly DateTime _timestamp;
 
         public MetricsTextPoint(
             string measurement,
             IReadOnlyDictionary<string, object> fields,
             MetricTags tags,
-            DateTime? timestamp = null)
+            DateTime timestamp)
         {
             if (string.IsNullOrEmpty(measurement))
             {
@@ -54,10 +54,8 @@ namespace App.Metrics.Formatters.Ascii.Internal
                 throw new ArgumentNullException(nameof(textWriter));
             }
 
-            if (_timestamp.HasValue)
-            {
-                textWriter.Write($"# TIMESTAMP: {_timestamp.Value}");
-            }
+            textWriter.Write($"# TIMESTAMP: {_timestamp}");
+            textWriter.Write('\n');
 
             textWriter.Write("# MEASUREMENT: ");
             textWriter.Write(Measurement);

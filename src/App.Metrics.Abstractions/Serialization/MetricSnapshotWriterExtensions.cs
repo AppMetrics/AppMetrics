@@ -2,6 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Apdex;
@@ -17,7 +18,8 @@ namespace App.Metrics.Serialization
         public static void WriteApdex(
             this IMetricSnapshotWriter writer,
             string context,
-            MetricValueSourceBase<ApdexValue> valueSource)
+            MetricValueSourceBase<ApdexValue> valueSource,
+            DateTime timestamp)
         {
             if (valueSource == null)
             {
@@ -26,14 +28,15 @@ namespace App.Metrics.Serialization
 
             var data = new Dictionary<string, object>();
             valueSource.Value.AddApdexValues(data, writer.MetricNameMapping.Apdex);
-            WriteMetric(writer, context, valueSource, data);
+            WriteMetric(writer, context, valueSource, data, timestamp);
         }
 
         public static void WriteCounter(
             this IMetricSnapshotWriter writer,
             string context,
             MetricValueSourceBase<CounterValue> valueSource,
-            CounterValueSource counterValueSource)
+            CounterValueSource counterValueSource,
+            DateTime timestamp)
         {
             if (counterValueSource == null)
             {
@@ -57,39 +60,43 @@ namespace App.Metrics.Serialization
                         valueSource,
                         item.Tags,
                         itemData,
-                        writer.MetricNameMapping.Counter[CounterValueDataKeys.MetricSetItemSuffix]);
+                        writer.MetricNameMapping.Counter[CounterValueDataKeys.MetricSetItemSuffix],
+                        timestamp);
                 }
             }
 
             var count = valueSource.ValueProvider.GetValue(resetMetric: counterValueSource.ResetOnReporting).Count;
-            WriteMetricValue(writer, context, valueSource, count);
+            WriteMetricValue(writer, context, valueSource, count, timestamp);
         }
 
         public static void WriteGauge(
             this IMetricSnapshotWriter writer,
             string context,
-            MetricValueSourceBase<double> valueSource)
+            MetricValueSourceBase<double> valueSource,
+            DateTime timestamp)
         {
             if (!double.IsNaN(valueSource.Value) && !double.IsInfinity(valueSource.Value))
             {
-                WriteMetricValue(writer, context, valueSource, valueSource.Value);
+                WriteMetricValue(writer, context, valueSource, valueSource.Value, timestamp);
             }
         }
 
         public static void WriteHistogram(
             this IMetricSnapshotWriter writer,
             string context,
-            MetricValueSourceBase<HistogramValue> valueSource)
+            MetricValueSourceBase<HistogramValue> valueSource,
+            DateTime timestamp)
         {
             var data = new Dictionary<string, object>();
             valueSource.Value.AddHistogramValues(data, writer.MetricNameMapping.Histogram);
-            WriteMetric(writer, context, valueSource, data);
+            WriteMetric(writer, context, valueSource, data, timestamp);
         }
 
         public static void WriteMeter(
             this IMetricSnapshotWriter writer,
             string context,
-            MetricValueSourceBase<MeterValue> valueSource)
+            MetricValueSourceBase<MeterValue> valueSource,
+            DateTime timestamp)
         {
             if (valueSource.Value.Items.Any())
             {
@@ -102,24 +109,26 @@ namespace App.Metrics.Serialization
                         valueSource,
                         item.Tags,
                         setItemData,
-                        writer.MetricNameMapping.Meter[MeterValueDataKeys.MetricSetItemSuffix]);
+                        writer.MetricNameMapping.Meter[MeterValueDataKeys.MetricSetItemSuffix],
+                        timestamp);
                 }
             }
 
             valueSource.Value.AddMeterValues(out IDictionary<string, object> data, writer.MetricNameMapping.Meter);
 
-            WriteMetric(writer, context, valueSource, data);
+            WriteMetric(writer, context, valueSource, data, timestamp);
         }
 
         public static void WriteTimer(
             this IMetricSnapshotWriter writer,
             string context,
-            MetricValueSourceBase<TimerValue> valueSource)
+            MetricValueSourceBase<TimerValue> valueSource,
+            DateTime timestamp)
         {
             valueSource.Value.Rate.AddMeterValues(out IDictionary<string, object> data, writer.MetricNameMapping.Meter);
             valueSource.Value.Histogram.AddHistogramValues(data, writer.MetricNameMapping.Histogram);
 
-            WriteMetric(writer, context, valueSource, data);
+            WriteMetric(writer, context, valueSource, data, timestamp);
         }
 
         private static MetricTags ConcatIntrinsicMetricTags<T>(MetricValueSourceBase<T> valueSource)
@@ -177,7 +186,8 @@ namespace App.Metrics.Serialization
             IMetricSnapshotWriter writer,
             string context,
             MetricValueSourceBase<T> valueSource,
-            IDictionary<string, object> data)
+            IDictionary<string, object> data,
+            DateTime timestamp)
         {
             var keys = data.Keys.ToList();
             var values = keys.Select(k => data[k]);
@@ -190,19 +200,21 @@ namespace App.Metrics.Serialization
                     valueSource.MultidimensionalName,
                     keys,
                     values,
-                    tags);
+                    tags,
+                    timestamp);
 
                 return;
             }
 
-            writer.Write(context, valueSource.Name, keys, values, tags);
+            writer.Write(context, valueSource.Name, keys, values, tags, timestamp);
         }
 
         private static void WriteMetricValue<T>(
             IMetricSnapshotWriter writer,
             string context,
             MetricValueSourceBase<T> valueSource,
-            object value)
+            object value,
+            DateTime timestamp)
         {
             var tags = ConcatMetricTags(valueSource);
 
@@ -212,12 +224,13 @@ namespace App.Metrics.Serialization
                     context,
                     valueSource.MultidimensionalName,
                     value,
-                    tags);
+                    tags,
+                    timestamp);
 
                 return;
             }
 
-            writer.Write(context, valueSource.Name, value, tags);
+            writer.Write(context, valueSource.Name, value, tags, timestamp);
         }
 
         private static void WriteMetricWithSetItems<T>(
@@ -226,7 +239,8 @@ namespace App.Metrics.Serialization
             MetricValueSourceBase<T> valueSource,
             MetricTags setItemTags,
             IDictionary<string, object> itemData,
-            string metricSetItemSuffix)
+            string metricSetItemSuffix,
+            DateTime timestamp)
         {
             var keys = itemData.Keys.ToList();
             var values = keys.Select(k => itemData[k]);
@@ -239,12 +253,13 @@ namespace App.Metrics.Serialization
                     valueSource.MultidimensionalName + metricSetItemSuffix,
                     keys,
                     values,
-                    tags);
+                    tags,
+                    timestamp);
 
                 return;
             }
 
-            writer.Write(context, valueSource.Name + metricSetItemSuffix, keys, values, tags);
+            writer.Write(context, valueSource.Name + metricSetItemSuffix, keys, values, tags, timestamp);
         }
     }
 }
