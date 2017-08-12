@@ -415,12 +415,12 @@ Task("Default")
 
 Task("AppVeyor")		
     .IsDependentOn("Build")
-	.IsDependentOn("PublishTestResults")	
+	 //.IsDependentOn("PublishTestResults")	
     .IsDependentOn("Pack")
-	.IsDependentOn("HtmlCoverageReport")
-	.IsDependentOn("RunInspectCode")	
-    .IsDependentOn("PublishCoverage")
-	.IsDependentOn("ReleaseNotes");
+	 //.IsDependentOn("HtmlCoverageReport")
+	 //.IsDependentOn("RunInspectCode")	
+     //.IsDependentOn("PublishCoverage")
+	 //.IsDependentOn("ReleaseNotes");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
