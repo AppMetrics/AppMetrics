@@ -54,7 +54,7 @@ namespace App.Metrics.Formatters.Ascii.Internal
                 throw new ArgumentNullException(nameof(textWriter));
             }
 
-            textWriter.Write($"# TIMESTAMP: {_timestamp}");
+            textWriter.Write($"# TIMESTAMP: {_timestamp.Ticks}");
             textWriter.Write('\n');
 
             textWriter.Write("# MEASUREMENT: ");

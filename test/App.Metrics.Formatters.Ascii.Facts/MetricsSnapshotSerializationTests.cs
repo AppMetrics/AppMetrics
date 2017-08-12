@@ -39,7 +39,7 @@ namespace App.Metrics.Formatters.Ascii.Facts
 
                 // Assert
                 sw.ToString().Should().Be(
-                    "# TIMESTAMP: 1/01/0001 12:00:00 AM\n# MEASUREMENT: [test] counter1\n# TAGS:\n             mtype = counter\n              unit = none\n# FIELDS:\n             value = 1\n--------------------------------------------------------------\n");
+                    "# TIMESTAMP: 0\n# MEASUREMENT: [test] counter1\n# TAGS:\n             mtype = counter\n              unit = none\n# FIELDS:\n             value = 1\n--------------------------------------------------------------\n");
             }
         }
 
@@ -61,7 +61,7 @@ namespace App.Metrics.Formatters.Ascii.Facts
 
                 // Assert
                 sw.ToString().Should().Be(
-                    "# TIMESTAMP: 1/01/0001 12:00:00 AM\n# MEASUREMENT: test---counter1\n# TAGS:\n             mtype = counter\n              unit = none\n# FIELDS:\n             value = 1\n--------------------------------------------------------------\n");
+                    "# TIMESTAMP: 0\n# MEASUREMENT: test---counter1\n# TAGS:\n             mtype = counter\n              unit = none\n# FIELDS:\n             value = 1\n--------------------------------------------------------------\n");
             }
         }
     }
