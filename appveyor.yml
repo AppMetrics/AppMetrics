@@ -5,7 +5,7 @@ environment:
     secure: /LGVRUGY8A52YwD3XDfKRVNoMh8eaJQ9hNRe+8Yx5i9n57qclPrhrze4VoDqs2uV
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
-  CoverWith: OpenCover
+  CoverWith: None
   PreReleaseSuffix: alpha
   GitUser:
     secure: zAdAOUUof3XGDsdOBRYg7J7wZS44iL4VjI/MVGw+JnU=
