@@ -48,21 +48,32 @@ namespace App.Metrics.Formatters.Ascii
         public GeneratedMetricNameMapping MetricNameMapping { get; }
 
         /// <inheritdoc />
-        public void Write(string context, string name, object value, MetricTags tags)
+        public void Write(
+            string context,
+            string name,
+            object value,
+            MetricTags tags,
+            DateTime? timestamp = null)
         {
             var measurement = _metricNameFormatter(context, name);
 
-            _textPoints.Add(new MetricsTextPoint(measurement, new Dictionary<string, object> { { "value", value } }, tags));
+            _textPoints.Add(new MetricsTextPoint(measurement, new Dictionary<string, object> { { "value", value } }, tags, timestamp));
         }
 
         /// <inheritdoc />
-        public void Write(string context, string name, IEnumerable<string> columns, IEnumerable<object> values, MetricTags tags)
+        public void Write(
+            string context,
+            string name,
+            IEnumerable<string> columns,
+            IEnumerable<object> values,
+            MetricTags tags,
+            DateTime? timestamp = null)
         {
             var fields = columns.Zip(values, (column, data) => new { column, data }).ToDictionary(pair => pair.column, pair => pair.data);
 
             var measurement = _metricNameFormatter(context, name);
 
-            _textPoints.Add(new MetricsTextPoint(measurement, fields, tags));
+            _textPoints.Add(new MetricsTextPoint(measurement, fields, tags, timestamp));
         }
 
         /// <inheritdoc />

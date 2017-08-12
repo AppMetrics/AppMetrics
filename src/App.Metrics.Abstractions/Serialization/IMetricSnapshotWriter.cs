@@ -24,7 +24,13 @@ namespace App.Metrics.Serialization
         /// <param name="name">The name of the metric</param>
         /// <param name="value">The value of the metrics</param>
         /// <param name="tags">The metric's tags</param>
-        void Write(string context, string name, object value, MetricTags tags);
+        /// <param name="timestamp">The timestamp of the metrics snapshot</param>
+        void Write(
+            string context,
+            string name,
+            object value,
+            MetricTags tags,
+            DateTime? timestamp = null);
 
         /// <summary>
         /// Writes the specific metrics and tags
@@ -34,11 +40,13 @@ namespace App.Metrics.Serialization
         /// <param name="columns">The metric names</param>
         /// <param name="values">The corresponding metrics values</param>
         /// <param name="tags">The metric's tags</param>
+        /// <param name="timestamp">The timestamp of the metrics snapshot</param>
         void Write(
             string context,
             string name,
             IEnumerable<string> columns,
             IEnumerable<object> values,
-            MetricTags tags);
+            MetricTags tags,
+            DateTime? timestamp = null);
     }
 }

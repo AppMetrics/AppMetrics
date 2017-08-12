@@ -86,7 +86,7 @@ namespace App.Metrics.Scheduling
                 },
                 _token.Token,
                 taskCreationOptions,
-                TaskScheduler.Default);
+                TaskScheduler.Current);
 
             return _task;
         }
@@ -130,7 +130,7 @@ namespace App.Metrics.Scheduling
                 },
                 token,
                 taskCreationOptions,
-                TaskScheduler.Default);
+                TaskScheduler.Current);
 
             return _task;
         }
