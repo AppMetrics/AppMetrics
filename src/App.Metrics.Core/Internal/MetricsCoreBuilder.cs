@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace App.Metrics.Internal
 {
-    internal sealed class MetricsCoreBuilder : IMetricsCoreBuilder
+    public class MetricsCoreBuilder : IMetricsCoreBuilder
     {
         internal MetricsCoreBuilder(IServiceCollection services)
         {
