@@ -22,8 +22,10 @@ namespace App.Metrics.Formatters.Json
             _serializerSettings = serializerSettings ?? throw new ArgumentNullException(nameof(serializerSettings));
         }
 
+        /// <inheritdoc />
         public MetricsMediaTypeValue MediaType => new MetricsMediaTypeValue("application", "vnd.appmetrics.env", "v1", "json");
 
+        /// <inheritdoc />
         public Task WriteAsync(
             Stream output,
             EnvironmentInfo environmentInfo,

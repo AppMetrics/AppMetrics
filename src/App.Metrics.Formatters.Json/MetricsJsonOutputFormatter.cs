@@ -21,8 +21,10 @@ namespace App.Metrics.Formatters.Json
 
         public MetricsJsonOutputFormatter() { _serializerSettings = DefaultJsonSerializerSettings.CreateSerializerSettings(); }
 
+        /// <inheritdoc />
         public MetricsMediaTypeValue MediaType => new MetricsMediaTypeValue("application", "vnd.appmetrics.metrics", "v1", "json");
 
+        /// <inheritdoc />
         public Task WriteAsync(
             Stream output,
             MetricsDataValueSource metricData,

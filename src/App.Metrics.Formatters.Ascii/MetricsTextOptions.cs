@@ -8,6 +8,9 @@ using App.Metrics.Formatters.Ascii.Internal;
 
 namespace App.Metrics.Formatters.Ascii
 {
+    /// <summary>
+    ///     Provides programmatic configuration for ASCII formatting the App Metrics framework.
+    /// </summary>
     public class MetricsTextOptions
     {
         public MetricsTextOptions()

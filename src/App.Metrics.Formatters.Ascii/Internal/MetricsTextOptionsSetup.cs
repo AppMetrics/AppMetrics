@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 namespace App.Metrics.Formatters.Ascii.Internal
 {
     /// <summary>
-    ///     Sets up default ASCII options for <see cref="MetricsOptions"/>.
+    ///     Sets up default ASCII formatting options for <see cref="MetricsOptions"/>.
     /// </summary>
     public class MetricsTextOptionsSetup : IConfigureOptions<MetricsOptions>
     {

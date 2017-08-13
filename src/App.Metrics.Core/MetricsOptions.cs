@@ -10,7 +10,7 @@ using App.Metrics.Tagging;
 namespace App.Metrics
 {
     /// <summary>
-    ///     Top level container for all configuration settings of AppMetrics
+    ///     Provides programmatic configuration for the App Metrics framework.
     /// </summary>
     public class MetricsOptions
     {

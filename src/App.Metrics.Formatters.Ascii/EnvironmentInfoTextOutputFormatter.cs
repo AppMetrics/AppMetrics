@@ -22,8 +22,10 @@ namespace App.Metrics.Formatters.Ascii
 
         public EnvironmentInfoTextOutputFormatter(MetricsTextOptions options) { _options = options ?? throw new ArgumentNullException(nameof(options)); }
 
+        /// <inheritdoc />
         public MetricsMediaTypeValue MediaType => new MetricsMediaTypeValue("text", "vnd.appmetrics.env", "v1", "plain");
 
+        /// <inheritdoc />
         public Task WriteAsync(
             Stream output,
             EnvironmentInfo environmentInfo,

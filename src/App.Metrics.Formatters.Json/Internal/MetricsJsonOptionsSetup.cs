@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 namespace App.Metrics.Formatters.Json.Internal
 {
     /// <summary>
-    ///     Sets up default ASCII options for <see cref="MetricsOptions"/>.
+    ///     Sets up default JSON formatting options for <see cref="MetricsOptions"/>.
     /// </summary>
     public class MetricsJsonOptionsSetup : IConfigureOptions<MetricsOptions>
     {
@@ -19,6 +19,7 @@ namespace App.Metrics.Formatters.Json.Internal
             _jsonOptions = asciiOptionsAccessor.Value ?? throw new ArgumentNullException(nameof(asciiOptionsAccessor));
         }
 
+        /// <inheritdoc />
         public void Configure(MetricsOptions options)
         {
             var formatter = new MetricsJsonOutputFormatter(_jsonOptions.SerializerSettings);
