@@ -149,11 +149,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
         private static void AddDefaultFormatterOptions(MetricsOptions options)
         {
-            if (options.DefaultOutputMetricsTextFormatter == null)
-            {
-                options.DefaultOutputMetricsTextFormatter = options.OutputMetricsTextFormatters.GetType<MetricsTextOutputFormatter>();
-            }
-
             if (options.DefaultOutputMetricsFormatter == null)
             {
                 options.DefaultOutputMetricsFormatter = options.OutputMetricsFormatters.GetType<MetricsJsonOutputFormatter>();

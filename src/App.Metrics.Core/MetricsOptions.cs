@@ -19,7 +19,6 @@ namespace App.Metrics
         public MetricsOptions()
         {
             OutputMetricsFormatters = new MetricsFormatterCollection();
-            OutputMetricsTextFormatters = new MetricsFormatterCollection();
             OutputEnvFormatters = new EnvFormatterCollection();
         }
 
@@ -47,14 +46,6 @@ namespace App.Metrics
         ///     The default <see cref="IMetricsOutputFormatter" />s that is used by this application.
         /// </value>
         public IMetricsOutputFormatter DefaultOutputMetricsFormatter { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the default <see cref="IMetricsOutputFormatter" /> to use when metrics are attempted to be formatted as text.
-        /// </summary>
-        /// <value>
-        ///     The default <see cref="IMetricsOutputFormatter" />s that is used by this application.
-        /// </value>
-        public IMetricsOutputFormatter DefaultOutputMetricsTextFormatter { get; set; }
 
         /// <summary>
         ///     Gets or sets the default <see cref="IEnvOutputFormatter" /> to use when the environment's info is attempted to be formatted.
@@ -90,15 +81,6 @@ namespace App.Metrics
         ///     A list of <see cref="IMetricsOutputFormatter" />s that are used by this application.
         /// </value>
         public MetricsFormatterCollection OutputMetricsFormatters { get; }
-
-        /// <summary>
-        ///     Gets a list of <see cref="IMetricsOutputFormatter" />s that are used by this application to format metric
-        ///     results as text.
-        /// </summary>
-        /// <value>
-        ///     A list of <see cref="IMetricsOutputFormatter" />s that are used by this application.
-        /// </value>
-        public MetricsFormatterCollection OutputMetricsTextFormatters { get; }
 
         /// <summary>
         ///     Gets a list of <see cref="IEnvOutputFormatter" />s that are used by this application to format environment info.

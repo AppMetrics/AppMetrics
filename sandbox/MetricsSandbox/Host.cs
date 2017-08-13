@@ -108,20 +108,6 @@ namespace MetricsSandbox
                     Console.WriteLine(result);
                 }
             }
-
-            Console.WriteLine("Default Metrics Text Formatter");
-            Console.WriteLine("-------------------------------------------");
-            Console.WriteLine($"Formatter: {metricsOptionsAccessor.Value.DefaultOutputMetricsTextFormatter}");
-            Console.WriteLine("-------------------------------------------");
-
-            using (var stream = new MemoryStream())
-            {
-                metricsOptionsAccessor.Value.DefaultOutputMetricsTextFormatter.WriteAsync(stream, metricsData, cancellationTokenSource.Token).GetAwaiter().GetResult();
-
-                var result = Encoding.UTF8.GetString(stream.ToArray());
-
-                Console.WriteLine(result);
-            }
         }
 
         private static void RecordMetrics(IMetrics metrics)

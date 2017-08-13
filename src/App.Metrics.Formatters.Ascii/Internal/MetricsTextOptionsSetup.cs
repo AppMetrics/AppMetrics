@@ -25,7 +25,6 @@ namespace App.Metrics.Formatters.Ascii.Internal
             var envFormatter = new EnvironmentInfoTextOutputFormatter(_textOptions);
 
             options.OutputMetricsFormatters.Add(formatter);
-            options.OutputMetricsTextFormatters.Add(formatter);
             options.OutputEnvFormatters.Add(envFormatter);
         }
     }

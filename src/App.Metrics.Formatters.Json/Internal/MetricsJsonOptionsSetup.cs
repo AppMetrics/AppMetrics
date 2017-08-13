@@ -25,7 +25,6 @@ namespace App.Metrics.Formatters.Json.Internal
             var envFormatter = new EnvInfoJsonOutputFormatter(_jsonOptions.SerializerSettings);
 
             options.OutputMetricsFormatters.Add(formatter);
-            options.OutputMetricsTextFormatters.Add(formatter);
             options.OutputEnvFormatters.Add(envFormatter);
         }
     }

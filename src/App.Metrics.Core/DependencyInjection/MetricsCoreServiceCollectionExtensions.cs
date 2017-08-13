@@ -195,7 +195,7 @@ namespace Microsoft.Extensions.DependencyInjection
             //
             services.TryAddSingleton<AppMetricsMarkerService, AppMetricsMarkerService>();
             services.TryAddSingleton<EnvironmentInfoProvider, EnvironmentInfoProvider>();
-            services.TryAddSingleton(provider => new StopwatchClock());
+            services.TryAddSingleton<IClock>(provider => new StopwatchClock());
         }
     }
 }
