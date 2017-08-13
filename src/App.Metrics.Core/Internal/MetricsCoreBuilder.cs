@@ -12,17 +12,9 @@ namespace App.Metrics.Internal
         public MetricsCoreBuilder(IServiceCollection services)
         {
             Services = services ?? throw new ArgumentNullException(nameof(services));
-            Environment = new AppMetricsEnvironment();
         }
 
-        public IAppMetricsEnvironment Environment { get; }
-
-        /// <summary>
-        ///     Gets the <see cref="IServiceCollection" /> where essential App Metrics services are configured.
-        /// </summary>
-        /// <value>
-        ///     The <see cref="IServiceCollection" /> where essential App Metrics services are configure.
-        /// </value>
+        /// <inheritdoc/>
         public IServiceCollection Services { get; }
     }
 }

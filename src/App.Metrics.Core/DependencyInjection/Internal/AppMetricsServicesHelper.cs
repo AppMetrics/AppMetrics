@@ -4,12 +4,17 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace App.Metrics.DependencyInjection.Internal
 {
     [ExcludeFromCodeCoverage]
     public static class AppMetricsServicesHelper
     {
+        private static readonly string InvalidOperationExceptionMessage =
+                "Unable to find the App Metrics required services. Please add all required services by calling IServiceCollection.AddMetrics(); or equivalent";
+
         /// <summary>
         ///     Throws InvalidOperationException when MetricsMarkerService is not present
         ///     in the list of services.
@@ -19,10 +24,20 @@ namespace App.Metrics.DependencyInjection.Internal
         {
             if (services.GetService(typeof(AppMetricsMarkerService)) == null)
             {
-                throw new InvalidOperationException(
-                    "IServiceCollection.AddMetrics()\n" +
-                    "IApplicationBuilder.ConfigureServices(...)\n" +
-                    "IApplicationBuilder.UseMetrics(...)\n");
+                throw new InvalidOperationException(InvalidOperationExceptionMessage);
+            }
+        }
+
+        /// <summary>
+        ///     Throws InvalidOperationException when MetricsMarkerService is not present
+        ///     in the list of services.
+        /// </summary>
+        /// <param name="services">The list of services.</param>
+        public static void ThrowIfMetricsNotRegistered(IServiceCollection services)
+        {
+            if (services.All(s => s.ServiceType != typeof(AppMetricsMarkerService)))
+            {
+                throw new InvalidOperationException(InvalidOperationExceptionMessage);
             }
         }
     }
