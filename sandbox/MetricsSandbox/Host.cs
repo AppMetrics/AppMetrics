@@ -9,7 +9,6 @@ using System.Threading;
 using App.Metrics;
 using App.Metrics.Filtering;
 using App.Metrics.Filters;
-using App.Metrics.Formatters.Ascii;
 using App.Metrics.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
