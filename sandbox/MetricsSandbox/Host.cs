@@ -10,9 +10,11 @@ using App.Metrics;
 using App.Metrics.Filtering;
 using App.Metrics.Filters;
 using App.Metrics.Infrastructure;
+using App.Metrics.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Serilog;
 
 namespace MetricsSandbox
 {
@@ -41,9 +43,6 @@ namespace MetricsSandbox
             var cancellationTokenSource = new CancellationTokenSource();
 
             WriteEnv(envInfoProvider, metricsOptionsAccessor, cancellationTokenSource);
-
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
 
             RunUntilEsc(
                 TimeSpan.FromSeconds(5),
@@ -129,7 +128,11 @@ namespace MetricsSandbox
 
         private static void ConfigureServices(IServiceCollection services, IFilterMetrics metricsFilter)
         {
-            services.AddLogging();
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.LiterateConsole()
+                .WriteTo.Seq("http://localhost:5341")
+                .CreateLogger();
 
             services.AddMetrics();
 

@@ -6,12 +6,14 @@ using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using App.Metrics.Logging;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 
 namespace App.Metrics.Scheduling
 {
     public class DefaultForwaredDecayingReservoirRescaleScheduler
     {
+        private static readonly ILog Logger = LogProvider.For<DefaultForwaredDecayingReservoirRescaleScheduler>();
         private static readonly TimeSpan TickInterval = TimeSpan.FromHours(1);
         private readonly ConcurrentBag<DefaultForwardDecayingReservoir> _reservoirs = new ConcurrentBag<DefaultForwardDecayingReservoir>();
         private IScheduler _scheduler;
@@ -28,7 +30,10 @@ namespace App.Metrics.Scheduling
         {
             if (reservoir != null)
             {
-                _reservoirs.TryTake(out reservoir);
+                Logger.Debug(
+                    _reservoirs.TryTake(out reservoir)
+                        ? "Successfully removed reservoir rescale schedule."
+                        : "Failed to remove reservoir rescale schedule.");
             }
         }
 
@@ -53,7 +58,7 @@ namespace App.Metrics.Scheduling
                 reservoir.Rescale();
             }
 
-            Debug.WriteLine($"Reservoirs all rescaled in {sw.ElapsedMilliseconds}ms");
+            Logger.Debug("{ReservoirCount} reservoirs all rescaled in {ElapsedTicks} ticks", _reservoirs.Count, sw.ElapsedTicks);
         }
     }
 }

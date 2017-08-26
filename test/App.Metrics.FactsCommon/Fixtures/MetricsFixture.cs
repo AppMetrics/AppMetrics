@@ -15,8 +15,6 @@ namespace App.Metrics.FactsCommon.Fixtures
 {
     public class MetricsFixture : IDisposable
     {
-        private readonly ILoggerFactory _loggerFactory = new LoggerFactory();
-
         public MetricsFixture()
         {
             Clock = new TestClock();
@@ -27,13 +25,13 @@ namespace App.Metrics.FactsCommon.Fixtures
 
             IMetricContextRegistry NewContextRegistry(string name) => new DefaultMetricContextRegistry(name);
 
-            var registry = new DefaultMetricsRegistry(_loggerFactory, options.Object, Clock, NewContextRegistry);
+            var registry = new DefaultMetricsRegistry(options.Object, Clock, NewContextRegistry);
             var metricBuilderFactory = new DefaultMetricsBuilderFactory();
             var filter = new DefaultMetricsFilter();
             var dataManager = new DefaultMetricValuesProvider(filter, registry);
             var metricsManagerFactory = new DefaultMeasureMetricsProvider(registry, metricBuilderFactory, Clock);
             var metricsManagerAdvancedFactory = new DefaultMetricsProvider(registry, metricBuilderFactory, Clock);
-            var metricsManager = new DefaultMetricsManager(registry, _loggerFactory.CreateLogger<DefaultMetricsManager>());
+            var metricsManager = new DefaultMetricsManager(registry);
             Metrics = new DefaultMetrics(
                 Clock,
                 filter,

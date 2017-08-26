@@ -15,7 +15,6 @@ using App.Metrics.ReservoirSampling;
 using App.Metrics.Tagging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 // ReSharper disable CheckNamespace
@@ -138,6 +137,7 @@ namespace Microsoft.Extensions.DependencyInjection
             //
             // Options
             //
+            services.AddOptions();
             services.TryAddEnumerable(
                 ServiceDescriptor.Transient<IConfigureOptions<MetricsOptions>, MetricsCoreMetricsOptionsSetup>());
 
@@ -163,11 +163,10 @@ namespace Microsoft.Extensions.DependencyInjection
                         return new NullMetricsRegistry();
                     }
 
-                    var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
                     var clock = provider.GetRequiredService<IClock>();
                     var newContextRegistry = provider.GetRequiredService<Func<string, IMetricContextRegistry>>();
 
-                    return new DefaultMetricsRegistry(loggerFactory, optionsAccessor, clock, newContextRegistry);
+                    return new DefaultMetricsRegistry(optionsAccessor, clock, newContextRegistry);
                 });
 
             //

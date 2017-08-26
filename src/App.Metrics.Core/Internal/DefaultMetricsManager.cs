@@ -3,55 +3,53 @@
 // </copyright>
 
 using App.Metrics.Internal.NoOp;
+using App.Metrics.Logging;
 using App.Metrics.Registry;
-using Microsoft.Extensions.Logging;
 
 namespace App.Metrics.Internal
 {
     public sealed class DefaultMetricsManager : IManageMetrics
     {
-        private readonly ILogger<DefaultMetricsManager> _logger;
+        private static readonly ILog Logger = LogProvider.For<DefaultMetricsManager>();
         private readonly IMetricsRegistry _registry;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultMetricsManager" /> class.
         /// </summary>
         /// <param name="registry">The registry.</param>
-        /// <param name="logger">The logger.</param>
-        public DefaultMetricsManager(IMetricsRegistry registry, ILogger<DefaultMetricsManager> logger)
+        public DefaultMetricsManager(IMetricsRegistry registry)
         {
             _registry = registry ?? new NullMetricsRegistry();
-            _logger = logger;
         }
 
         /// <inheritdoc />
         public void Disable()
         {
-            _logger.LogTrace("Disabling metrics");
+            Logger.Trace("Disabling metrics");
 
             _registry.Disable();
 
-            _logger.LogTrace("Metrics disabled");
+            Logger.Trace("Metrics disabled");
         }
 
         /// <inheritdoc />
         public void Reset()
         {
-            _logger.LogTrace("Clearing metrics registry");
+            Logger.Trace("Clearing metrics registry");
 
             _registry.Clear();
 
-            _logger.LogTrace("Metrics registry cleared");
+            Logger.Trace("Metrics registry cleared");
         }
 
         /// <inheritdoc />
         public void ShutdownContext(string context)
         {
-            _logger.LogTrace("Shutting down metrics context");
+            Logger.Trace("Shutting down metrics context");
 
             _registry.RemoveContext(context);
 
-            _logger.LogTrace("Metrics Context shutdown");
+            Logger.Trace("Metrics Context shutdown");
         }
     }
 }

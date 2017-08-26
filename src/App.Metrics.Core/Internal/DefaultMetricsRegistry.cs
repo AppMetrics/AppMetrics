@@ -11,30 +11,28 @@ using App.Metrics.Filters;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
 using App.Metrics.Internal.NoOp;
+using App.Metrics.Logging;
 using App.Metrics.Meter;
 using App.Metrics.Registry;
 using App.Metrics.Timer;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace App.Metrics.Internal
 {
     public sealed class DefaultMetricsRegistry : IMetricsRegistry
     {
+        private static readonly ILog Logger = LogProvider.For<DefaultMetricsRegistry>();
         private readonly IClock _clock;
         private readonly ConcurrentDictionary<string, IMetricContextRegistry> _contexts = new ConcurrentDictionary<string, IMetricContextRegistry>();
         private readonly string _defaultContextLabel;
-        private readonly ILogger _logger;
         private readonly Func<string, IMetricContextRegistry> _newContextRegistry;
         private readonly Lazy<NullMetricsRegistry> _nullMetricsRegistry = new Lazy<NullMetricsRegistry>();
 
         public DefaultMetricsRegistry(
-            ILoggerFactory loggerFactory,
             IOptions<MetricsOptions> options,
             IClock clock,
             Func<string, IMetricContextRegistry> newContextRegistry)
         {
-            _logger = loggerFactory.CreateLogger<DefaultMetricContextRegistry>();
             _clock = clock;
             _newContextRegistry = newContextRegistry;
             _defaultContextLabel = options.Value.DefaultContextLabel;
@@ -174,17 +172,21 @@ namespace App.Metrics.Internal
 
         public MetricsDataValueSource GetData(IFilterMetrics filter)
         {
-            _logger.RetrievedMetricsData();
+            Logger.Trace("Getting metrics snaphot");
 
             if (_nullMetricsRegistry.IsValueCreated)
             {
+                Logger.Trace("Using null metrics registry");
                 _nullMetricsRegistry.Value.GetData(filter);
             }
 
             if (_contexts.Count == 0)
             {
+                Logger.Trace("No metrics recorded");
                 return MetricsDataValueSource.Empty;
             }
+
+            Logger.Trace("Metrics snapshot retrieved containing {ContextCount} contexts", _contexts.Count);
 
             var contexts = _contexts.Values.Select(
                 g => new MetricsContextValueSource(
@@ -197,8 +199,6 @@ namespace App.Metrics.Internal
                     g.DataProvider.ApdexScores.ToArray()));
 
             var data = new MetricsDataValueSource(_clock.UtcDateTime,  contexts);
-
-            _logger.GettingMetricsData();
 
             return data.Filter(filter);
         }
@@ -276,9 +276,7 @@ namespace App.Metrics.Internal
                 throw new ArgumentException("Registry Context cannot be null or empty", nameof(context));
             }
 
-            IMetricContextRegistry contextRegistry;
-
-            if (_contexts.TryRemove(context, out contextRegistry))
+            if (_contexts.TryRemove(context, out IMetricContextRegistry contextRegistry))
             {
                 contextRegistry.ClearAllMetrics();
             }

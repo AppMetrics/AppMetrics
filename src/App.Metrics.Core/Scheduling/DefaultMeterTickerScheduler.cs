@@ -6,12 +6,14 @@ using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using App.Metrics.Logging;
 using App.Metrics.Meter;
 
 namespace App.Metrics.Scheduling
 {
     public class DefaultMeterTickerScheduler
     {
+        private static readonly ILog Logger = LogProvider.For<DefaultMeterTickerScheduler>();
         private static readonly TimeSpan TickInterval = TimeSpan.FromSeconds(5);
         private readonly ConcurrentBag<SimpleMeter> _meters = new ConcurrentBag<SimpleMeter>();
         private IScheduler _scheduler;
@@ -39,7 +41,10 @@ namespace App.Metrics.Scheduling
         {
             if (meter != null)
             {
-                _meters.TryTake(out meter);
+                Logger.Debug(
+                    _meters.TryTake(out meter)
+                        ? "Successfully removed meter tick schedule."
+                        : "Failed to remove meter tick schedule.");
             }
         }
 
@@ -53,7 +58,7 @@ namespace App.Metrics.Scheduling
                 meter.Tick();
             }
 
-            Debug.WriteLine($"Meters all ticked in {sw.ElapsedMilliseconds}ms");
+            Logger.Debug("{MeterCount} meters all ticked in {ElapsedTicks} ticks", _meters.Count, sw.ElapsedTicks);
         }
     }
 }

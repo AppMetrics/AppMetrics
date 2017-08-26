@@ -6,12 +6,14 @@ using System.Linq;
 using App.Metrics.Filtering;
 using App.Metrics.Filters;
 using App.Metrics.Internal.NoOp;
+using App.Metrics.Logging;
 using App.Metrics.Registry;
 
 namespace App.Metrics.Internal
 {
     public sealed class DefaultMetricValuesProvider : IProvideMetricValues
     {
+        private static readonly ILog Logger = LogProvider.For<DefaultMetricValuesProvider>();
         private readonly IFilterMetrics _globalFilter;
         private readonly IMetricsRegistry _registry;
 
@@ -27,23 +29,48 @@ namespace App.Metrics.Internal
         }
 
         /// <inheritdoc />
-        public MetricsDataValueSource Get() { return _registry.GetData(_globalFilter); }
+        public MetricsDataValueSource Get()
+        {
+            Logger.Trace("Getting metrics snaphot");
+
+            var result = _registry.GetData(_globalFilter);
+
+            Logger.Trace("Getting metrics snaphot found {MetricsContextCount}", result.Contexts?.Count());
+
+            return result;
+        }
 
         /// <inheritdoc />
         public MetricsDataValueSource Get(IFilterMetrics overrideGlobalFilter)
         {
-            var filter = overrideGlobalFilter ?? _globalFilter;
+            IFilterMetrics filter;
+
+            if (overrideGlobalFilter == null)
+            {
+                filter = _globalFilter;
+                Logger.Trace("Getting metrics snaphot with custom filter");
+            }
+            else
+            {
+                filter = overrideGlobalFilter;
+                Logger.Trace("Getting metrics snaphot with global filter");
+            }
+
             return _registry.GetData(filter);
         }
 
         /// <inheritdoc />
         public MetricsContextValueSource GetForContext(string context)
         {
+            Logger.Trace("Getting metrics snaphot for {MetricsContext}", context);
+
             var data = Get();
 
             var filter = new DefaultMetricsFilter().WhereContext(context);
 
             var contextData = data.Filter(filter);
+
+            Logger.Trace("Getting metrics snaphot found {MetricsContextCount}", contextData.Contexts?.Count());
 
             return contextData.Contexts.FirstOrDefault() ?? MetricsContextValueSource.Empty;
         }

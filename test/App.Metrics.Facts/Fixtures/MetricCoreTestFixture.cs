@@ -17,7 +17,6 @@ namespace App.Metrics.Facts.Fixtures
     {
         public MetricCoreTestFixture()
         {
-            var loggerFactory = new LoggerFactory();
             var options = new Mock<IOptions<MetricsOptions>>();
             options
                 .SetupGet(o => o.Value)
@@ -28,7 +27,7 @@ namespace App.Metrics.Facts.Fixtures
 
             IMetricContextRegistry ContextRegistrySetup(string context) => new DefaultMetricContextRegistry(context);
 
-            var registry = new DefaultMetricsRegistry(loggerFactory, options.Object, Clock, ContextRegistrySetup);
+            var registry = new DefaultMetricsRegistry(options.Object, Clock, ContextRegistrySetup);
 
             Registry = registry;
             Providers = new DefaultMetricsProvider(Registry, Builder, Clock);

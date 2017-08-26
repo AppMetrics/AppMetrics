@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading;
 using App.Metrics.Concurrency;
 using App.Metrics.Infrastructure;
+using App.Metrics.Logging;
 using App.Metrics.Scheduling;
 
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
@@ -30,6 +31,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
     /// <seealso cref="IReservoir" />
     public sealed class DefaultForwardDecayingReservoir : IReservoir, IDisposable
     {
+        private static readonly ILog Logger = LogProvider.For<DefaultForwaredDecayingReservoirRescaleScheduler>();
         private readonly double _alpha;
         private readonly IClock _clock;
         private readonly int _sampleSize;
@@ -146,9 +148,15 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         public IReservoirSnapshot GetSnapshot(bool resetReservoir)
         {
             var lockTaken = false;
+
+            Logger.Trace("Getting reservoir snapshot");
+
             try
             {
                 _lock.Enter(ref lockTaken);
+
+                Logger.Trace("Lock entered for reservoir snapshot");
+
                 var snapshot = new WeightedSnapshot(_count.GetValue(), _sum.GetValue(), _values.Values);
                 if (resetReservoir)
                 {
@@ -162,7 +170,10 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                 if (lockTaken)
                 {
                     _lock.Exit();
+                    Logger.Trace("Lock exited after getting reservoir snapshot");
                 }
+
+                Logger.Trace("Retrieved reservoir snapshot");
             }
         }
 
@@ -176,9 +187,15 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         public void Reset()
         {
             var lockTaken = false;
+
+            Logger.Trace("Resetting reservoir");
+
             try
             {
                 _lock.Enter(ref lockTaken);
+
+                Logger.Trace("Lock entered for reservoir reset");
+
                 ResetReservoir();
             }
             finally
@@ -186,7 +203,10 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                 if (lockTaken)
                 {
                     _lock.Exit();
+                    Logger.Trace("Lock exited after resetting reservoir");
                 }
+
+                Logger.Trace("Reservoir reset");
             }
         }
 
@@ -224,9 +244,15 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         public void Rescale()
         {
             var lockTaken = false;
+
+            Logger.Trace("Rescaling reservoir");
+
             try
             {
                 _lock.Enter(ref lockTaken);
+
+                Logger.Trace("Lock entered for reservoir rescale");
+
                 var oldStartTime = _startTime.GetValue();
                 _startTime.SetValue(_clock.Seconds);
 
@@ -250,24 +276,32 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                 if (lockTaken)
                 {
                     _lock.Exit();
+                    Logger.Trace("Lock exited after rescaling reservoir");
                 }
+
+                Logger.Trace("Reservoir rescaled");
             }
         }
 
         private void ResetReservoir()
         {
+            Logger.Trace("Resetting reservoir");
             _values.Clear();
             _count.SetValue(0L);
             _sum.SetValue(0.0);
             _startTime.SetValue(_clock.Seconds);
+            Logger.Trace("Reservoir reset");
         }
 
         private void Update(long value, string userValue, long timestamp)
         {
+            Logger.Trace("Updating reservoir");
             var lockTaken = false;
             try
             {
                 _lock.Enter(ref lockTaken);
+
+                Logger.Trace("Lock entered for reservoir update");
 
                 var itemWeight = Math.Exp(_alpha * (timestamp - _startTime.GetValue()));
                 var sample = new WeightedSample(value, userValue, itemWeight);
@@ -306,7 +340,10 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                 if (lockTaken)
                 {
                     _lock.Exit();
+                    Logger.Trace("Lock exited after updating reservoir");
                 }
+
+                Logger.Trace("Reservoir updated");
             }
         }
 
