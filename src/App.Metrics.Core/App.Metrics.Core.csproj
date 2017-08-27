@@ -13,7 +13,7 @@
   <ItemGroup>
     <PackageReference Include="App.Metrics.Concurrency" Version="$(AppMetricsConcurrencyVersion)" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(AspNetCoreVersion)" />
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="$(DependencyModelVersion)" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(AspNetCoreVersion)" />
   </ItemGroup>
 
   <ItemGroup>

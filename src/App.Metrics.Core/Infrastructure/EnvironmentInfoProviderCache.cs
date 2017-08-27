@@ -6,7 +6,7 @@ using System;
 using System.Diagnostics;
 using System.Net;
 using System.Reflection;
-using Microsoft.DotNet.PlatformAbstractions;
+using System.Runtime.InteropServices;
 
 namespace App.Metrics.Infrastructure
 {
@@ -15,13 +15,17 @@ namespace App.Metrics.Infrastructure
         private EnvironmentInfoProviderCache()
         {
             var process = Process.GetCurrentProcess();
+            var platform = GetOSPlatform();
 
             ProcessName = StringExtensions.GetSafeString(() => process.ProcessName);
-            OperatingSystemVersion = RuntimeEnvironment.OperatingSystemVersion;
-            Os = RuntimeEnvironment.OperatingSystem;
-            ProcessorCount = Environment.ProcessorCount.ToString();
+            ProcessArchitecture = StringExtensions.GetSafeString(() => RuntimeInformation.ProcessArchitecture.ToString());
+            OperatingSystemVersion = StringExtensions.GetSafeString(() => RuntimeInformation.OSDescription);
+            OperatingSystemPlatform = StringExtensions.GetSafeString(() => platform.ToString());
+            OperatingSystemArchitecture = StringExtensions.GetSafeString(() => RuntimeInformation.OSArchitecture.ToString());
+            ProcessorCount = StringExtensions.GetSafeString(() => Environment.ProcessorCount.ToString());
             MachineName = StringExtensions.GetSafeString(() => Environment.MachineName);
             HostName = StringExtensions.GetSafeString(Dns.GetHostName);
+            FrameworkDescription = StringExtensions.GetSafeString(() => RuntimeInformation.FrameworkDescription);
 
             var entryAssembly = Assembly.GetEntryAssembly();
 
@@ -41,10 +45,28 @@ namespace App.Metrics.Infrastructure
 
         public string OperatingSystemVersion { get; }
 
-        public string Os { get; }
+        public string OperatingSystemPlatform { get; }
+
+        public string OperatingSystemArchitecture { get; }
 
         public string ProcessName { get; }
 
         public string ProcessorCount { get; }
+
+        public string ProcessArchitecture { get; }
+
+        public string FrameworkDescription { get; }
+
+        private static OSPlatform GetOSPlatform()
+        {
+            var platform = OSPlatform.Create("Other Platform");
+            var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            platform = isWindows ? OSPlatform.Windows : platform;
+            var isOsx = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+            platform = isOsx ? OSPlatform.OSX : platform;
+            var isLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+            platform = isLinux ? OSPlatform.Linux : platform;
+            return platform;
+        }
     }
 }

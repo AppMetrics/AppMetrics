@@ -61,6 +61,7 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
         public MetricsDataValueSource ApdexContext { get; }
 
         public EnvironmentInfo Env => new EnvironmentInfo(
+            "framework",
             "assembly_name",
             "assembly_version",
             "host_name",
@@ -68,6 +69,8 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
             "machine_name",
             "os",
             "os_version",
+            "os_arch",
+            "process_arch",
             "process_name",
             "8");
 

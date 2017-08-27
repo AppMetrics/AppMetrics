@@ -14,13 +14,16 @@ namespace App.Metrics.Infrastructure
             var localTimeString = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.ffffK", CultureInfo.InvariantCulture);
 
             return new EnvironmentInfo(
+                EnvironmentInfoProviderCache.Instance.FrameworkDescription,
                 EnvironmentInfoProviderCache.Instance.EntryAssemblyName,
                 EnvironmentInfoProviderCache.Instance.EntryAssemblyVersion,
                 EnvironmentInfoProviderCache.Instance.HostName,
                 localTimeString,
                 EnvironmentInfoProviderCache.Instance.MachineName,
-                EnvironmentInfoProviderCache.Instance.Os,
+                EnvironmentInfoProviderCache.Instance.OperatingSystemPlatform,
                 EnvironmentInfoProviderCache.Instance.OperatingSystemVersion,
+                EnvironmentInfoProviderCache.Instance.OperatingSystemArchitecture,
+                EnvironmentInfoProviderCache.Instance.ProcessArchitecture,
                 EnvironmentInfoProviderCache.Instance.ProcessName,
                 EnvironmentInfoProviderCache.Instance.ProcessorCount);
         }

@@ -17,7 +17,7 @@ namespace App.Metrics.Formatters.Ascii
         {
             Padding = MetricsTextFormatterConstants.OutputFormatting.Padding;
             Separator = MetricsTextFormatterConstants.OutputFormatting.Separator;
-            Encoding = Encoding.UTF8;
+            Encoding = Encoding.ASCII;
             DataKeys = new GeneratedMetricNameMapping();
         }
 

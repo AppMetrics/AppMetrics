@@ -10,7 +10,6 @@ using App.Metrics;
 using App.Metrics.Filtering;
 using App.Metrics.Filters;
 using App.Metrics.Infrastructure;
-using App.Metrics.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -43,6 +42,8 @@ namespace MetricsSandbox
             var cancellationTokenSource = new CancellationTokenSource();
 
             WriteEnv(envInfoProvider, metricsOptionsAccessor, cancellationTokenSource);
+
+            Console.ReadKey();
 
             RunUntilEsc(
                 TimeSpan.FromSeconds(5),

@@ -37,7 +37,7 @@ namespace System
         {
             try
             {
-                return action();
+                return action().Trim();
             }
             catch (Exception)
             {

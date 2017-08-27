@@ -8,7 +8,7 @@ namespace App.Metrics.Formatters.Ascii.Internal
     {
         public static class OutputFormatting
         {
-            public const int Padding = 20;
+            public const int Padding = 25;
             public const string Separator = "=";
         }
     }
