@@ -3,14 +3,11 @@
 // </copyright>
 
 using System;
-using App.Metrics.ReservoirSampling.ExponentialDecay;
 
 namespace App.Metrics.ReservoirSampling
 {
     public class DefaultSamplingReservoirProvider
     {
-        public DefaultSamplingReservoirProvider() { Instance = () => new DefaultForwardDecayingReservoir(); }
-
         public DefaultSamplingReservoirProvider(Func<IReservoir> instance) { Instance = instance; }
 
         public Func<IReservoir> Instance { get; }

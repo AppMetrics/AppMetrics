@@ -6,13 +6,9 @@ using System;
 using System.IO;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using App.Metrics;
-using App.Metrics.Filtering;
-using App.Metrics.Filters;
-using App.Metrics.Infrastructure;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace MetricsSandbox
@@ -21,59 +17,46 @@ namespace MetricsSandbox
     {
         private static readonly Random Rnd = new Random();
 
-        public static IConfigurationRoot Configuration { get; set; }
+        private static IConfigurationRoot Configuration { get; set; }
 
-        // public static async Task Main(string[] args)
-        public static void Main(string[] args)
+        private static IMetricsRoot Metrics { get; set; }
+
+        public static async Task Main()
         {
             Init();
 
-            IServiceCollection serviceCollection = new ServiceCollection();
-            var metricsFilter = new DefaultMetricsFilter();
-
-            ConfigureServices(serviceCollection, metricsFilter);
-
-            var provider = serviceCollection.BuildServiceProvider();
-            var metrics = provider.GetRequiredService<IMetrics>();
-            var metricsProvider = provider.GetRequiredService<IProvideMetricValues>();
-            var envInfoProvider = provider.GetRequiredService<EnvironmentInfoProvider>();
-            var metricsOptionsAccessor = provider.GetRequiredService<IOptions<MetricsOptions>>();
-
             var cancellationTokenSource = new CancellationTokenSource();
 
-            WriteEnv(envInfoProvider, metricsOptionsAccessor, cancellationTokenSource);
+            await WriteEnvAsync(cancellationTokenSource);
 
             Console.ReadKey();
 
             RunUntilEsc(
                 TimeSpan.FromSeconds(5),
                 cancellationTokenSource,
-                () =>
+                async () =>
                 {
                     Console.Clear();
 
-                    RecordMetrics(metrics);
+                    RecordMetrics();
 
-                    WriteMetrics(metricsProvider, metricsFilter, metricsOptionsAccessor, cancellationTokenSource);
+                    await WriteMetricsAsync(cancellationTokenSource);
                 });
         }
 
-        private static void WriteEnv(
-            EnvironmentInfoProvider envInfoProvider,
-            IOptions<MetricsOptions> metricsOptionsAccessor,
-            CancellationTokenSource cancellationTokenSource)
+        private static async Task WriteEnvAsync(CancellationTokenSource cancellationTokenSource)
         {
             Console.WriteLine("Environment Information");
             Console.WriteLine("-------------------------------------------");
 
-            foreach (var formatter in metricsOptionsAccessor.Value.OutputEnvFormatters)
+            foreach (var formatter in Metrics.OutputEnvFormatters)
             {
                 Console.WriteLine($"Formatter: {formatter.GetType().FullName}");
                 Console.WriteLine("-------------------------------------------");
 
                 using (var stream = new MemoryStream())
                 {
-                    formatter.WriteAsync(stream, envInfoProvider.Build(), cancellationTokenSource.Token).GetAwaiter().GetResult();
+                    await formatter.WriteAsync(stream, Metrics.EnvironmentInfo, cancellationTokenSource.Token);
 
                     var result = Encoding.UTF8.GetString(stream.ToArray());
 
@@ -82,25 +65,21 @@ namespace MetricsSandbox
             }
         }
 
-        private static void WriteMetrics(
-            IProvideMetricValues metricsProvider,
-            IFilterMetrics metricsFilter,
-            IOptions<MetricsOptions> metricsOptionsAccessor,
-            CancellationTokenSource cancellationTokenSource)
+        private static async Task WriteMetricsAsync(CancellationTokenSource cancellationTokenSource)
         {
-            var metricsData = metricsProvider.Get(metricsFilter);
+            var metricsData = Metrics.Snapshot.Get();
 
             Console.WriteLine("Metrics Formatters");
             Console.WriteLine("-------------------------------------------");
 
-            foreach (var formatter in metricsOptionsAccessor.Value.OutputMetricsFormatters)
+            foreach (var formatter in Metrics.OutputMetricsFormatters)
             {
                 Console.WriteLine($"Formatter: {formatter.GetType().FullName}");
                 Console.WriteLine("-------------------------------------------");
 
                 using (var stream = new MemoryStream())
                 {
-                    formatter.WriteAsync(stream, metricsData, cancellationTokenSource.Token).GetAwaiter().GetResult();
+                    await formatter.WriteAsync(stream, metricsData, cancellationTokenSource.Token);
 
                     var result = Encoding.UTF8.GetString(stream.ToArray());
 
@@ -109,46 +88,39 @@ namespace MetricsSandbox
             }
         }
 
-        private static void RecordMetrics(IMetrics metrics)
+        private static void RecordMetrics()
         {
-            metrics.Measure.Counter.Increment(ApplicationsMetricsRegistry.CounterOne);
-            metrics.Measure.Gauge.SetValue(ApplicationsMetricsRegistry.GaugeOne, Rnd.Next(0, 100));
-            metrics.Measure.Histogram.Update(ApplicationsMetricsRegistry.HistogramOne, Rnd.Next(0, 100));
-            metrics.Measure.Meter.Mark(ApplicationsMetricsRegistry.MeterOne, Rnd.Next(0, 100));
+            Metrics.Measure.Counter.Increment(ApplicationsMetricsRegistry.CounterOne);
+            Metrics.Measure.Gauge.SetValue(ApplicationsMetricsRegistry.GaugeOne, Rnd.Next(0, 100));
+            Metrics.Measure.Histogram.Update(ApplicationsMetricsRegistry.HistogramOne, Rnd.Next(0, 100));
+            Metrics.Measure.Meter.Mark(ApplicationsMetricsRegistry.MeterOne, Rnd.Next(0, 100));
 
-            using (metrics.Measure.Timer.Time(ApplicationsMetricsRegistry.TimerOne))
+            using (Metrics.Measure.Timer.Time(ApplicationsMetricsRegistry.TimerOne))
             {
                 Thread.Sleep(Rnd.Next(0, 100));
             }
 
-            using (metrics.Measure.Apdex.Track(ApplicationsMetricsRegistry.ApdexOne))
+            using (Metrics.Measure.Apdex.Track(ApplicationsMetricsRegistry.ApdexOne))
             {
                 Thread.Sleep(Rnd.Next(0, 100));
             }
         }
 
-        private static void ConfigureServices(IServiceCollection services, IFilterMetrics metricsFilter)
+        private static void Init()
         {
+            var configurationBuilder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json");
+
+            Configuration = configurationBuilder.Build();
+
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .WriteTo.LiterateConsole()
                 .WriteTo.Seq("http://localhost:5341")
                 .CreateLogger();
 
-            services.AddMetrics();
-
-            // services.
-            //     AddMetricsCore().
-            //     AddClockType<SystemClock>().
-            //     AddGlobalFilter(metricsFilter).
-            //     AddDefaultReservoir(() => new DefaultAlgorithmRReservoir());
-        }
-
-        private static void Init()
-        {
-            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
-
-            Configuration = builder.Build();
+            Metrics = AppMetrics.CreateDefaultBuilder().Build();
         }
 
         private static void RunUntilEsc(TimeSpan delayBetweenRun, CancellationTokenSource cancellationTokenSource, Action action)
@@ -160,6 +132,7 @@ namespace MetricsSandbox
                 while (!Console.KeyAvailable)
                 {
                     action();
+
                     Thread.Sleep(delayBetweenRun);
                 }
 

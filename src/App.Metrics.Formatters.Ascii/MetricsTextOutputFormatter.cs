@@ -6,6 +6,9 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+#if !NETSTANDARD1_3
+using App.Metrics.Internal;
+#endif
 using App.Metrics.Serialization;
 
 namespace App.Metrics.Formatters.Ascii
@@ -50,7 +53,11 @@ namespace App.Metrics.Formatters.Ascii
                 }
             }
 
+#if NETSTANDARD1_3
             return Task.CompletedTask;
+#else
+            return AppMetricsTaskHelper.CompletedTask();
+#endif
         }
     }
 }

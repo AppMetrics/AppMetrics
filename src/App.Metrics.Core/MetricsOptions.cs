@@ -2,7 +2,6 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Formatters;
 using App.Metrics.Registry;
 using App.Metrics.Tagging;
 
@@ -15,12 +14,6 @@ namespace App.Metrics
     public class MetricsOptions
     {
         private const string DefaultContext = "Application";
-
-        public MetricsOptions()
-        {
-            OutputMetricsFormatters = new MetricsFormatterCollection();
-            OutputEnvFormatters = new EnvFormatterCollection();
-        }
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not to [add default global tags]. e.g. app, server, env
@@ -40,22 +33,6 @@ namespace App.Metrics
         public string DefaultContextLabel { get; set; } = DefaultContext;
 
         /// <summary>
-        ///     Gets or sets the default <see cref="IMetricsOutputFormatter" /> to use when metrics are attempted to be formatted.
-        /// </summary>
-        /// <value>
-        ///     The default <see cref="IMetricsOutputFormatter" />s that is used by this application.
-        /// </value>
-        public IMetricsOutputFormatter DefaultOutputMetricsFormatter { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the default <see cref="IEnvOutputFormatter" /> to use when the environment's info is attempted to be formatted.
-        /// </summary>
-        /// <value>
-        ///     The default <see cref="IEnvOutputFormatter" />s that is used by this application.
-        /// </value>
-        public IEnvOutputFormatter DefaultOutputEnvFormatter { get; set; }
-
-        /// <summary>
         ///     Gets or sets the global tags to apply on all metrics when reporting.
         /// </summary>
         /// <value>
@@ -72,23 +49,6 @@ namespace App.Metrics
         ///     <c>true</c> if [metrics enabled]; otherwise, <c>false</c>.
         /// </value>
         public bool MetricsEnabled { get; set; } = true;
-
-        /// <summary>
-        ///     Gets a list of <see cref="IMetricsOutputFormatter" />s that are used by this application to format metric
-        ///     results.
-        /// </summary>
-        /// <value>
-        ///     A list of <see cref="IMetricsOutputFormatter" />s that are used by this application.
-        /// </value>
-        public MetricsFormatterCollection OutputMetricsFormatters { get; }
-
-        /// <summary>
-        ///     Gets a list of <see cref="IEnvOutputFormatter" />s that are used by this application to format environment info.
-        /// </summary>
-        /// <value>
-        ///     A list of <see cref="IEnvOutputFormatter" />s that are used by this application.
-        /// </value>
-        public EnvFormatterCollection OutputEnvFormatters { get; }
     }
 
     // ReSharper restore AutoPropertyCanBeMadeGetOnly.Global

@@ -7,9 +7,8 @@ using App.Metrics.Filtering;
 using App.Metrics.Filters;
 using App.Metrics.Internal;
 using App.Metrics.Registry;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Moq;
+using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
 
 namespace App.Metrics.FactsCommon.Fixtures
 {
@@ -18,15 +17,12 @@ namespace App.Metrics.FactsCommon.Fixtures
         public MetricsFixture()
         {
             Clock = new TestClock();
-            var options = new Mock<IOptions<MetricsOptions>>();
-            options
-                .SetupGet(o => o.Value)
-                .Returns(new MetricsOptions());
+            var options = new MetricsOptions();
 
             IMetricContextRegistry NewContextRegistry(string name) => new DefaultMetricContextRegistry(name);
 
-            var registry = new DefaultMetricsRegistry(options.Object, Clock, NewContextRegistry);
-            var metricBuilderFactory = new DefaultMetricsBuilderFactory();
+            var registry = new DefaultMetricsRegistry(options.DefaultContextLabel, Clock, NewContextRegistry);
+            var metricBuilderFactory = new DefaultMetricsBuilderFactory(new DefaultSamplingReservoirProvider(() => new DefaultForwardDecayingReservoir()));
             var filter = new DefaultMetricsFilter();
             var dataManager = new DefaultMetricValuesProvider(filter, registry);
             var metricsManagerFactory = new DefaultMeasureMetricsProvider(registry, metricBuilderFactory, Clock);

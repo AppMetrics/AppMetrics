@@ -17,14 +17,12 @@ namespace App.Metrics.Infrastructure
                 EnvironmentInfoProviderCache.Instance.FrameworkDescription,
                 EnvironmentInfoProviderCache.Instance.EntryAssemblyName,
                 EnvironmentInfoProviderCache.Instance.EntryAssemblyVersion,
-                EnvironmentInfoProviderCache.Instance.HostName,
                 localTimeString,
                 EnvironmentInfoProviderCache.Instance.MachineName,
                 EnvironmentInfoProviderCache.Instance.OperatingSystemPlatform,
                 EnvironmentInfoProviderCache.Instance.OperatingSystemVersion,
                 EnvironmentInfoProviderCache.Instance.OperatingSystemArchitecture,
                 EnvironmentInfoProviderCache.Instance.ProcessArchitecture,
-                EnvironmentInfoProviderCache.Instance.ProcessName,
                 EnvironmentInfoProviderCache.Instance.ProcessorCount);
         }
     }

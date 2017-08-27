@@ -7,6 +7,9 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Infrastructure;
+#if !NETSTANDARD1_3
+using App.Metrics.Internal;
+#endif
 using Newtonsoft.Json;
 
 namespace App.Metrics.Formatters.Json
@@ -45,8 +48,11 @@ namespace App.Metrics.Formatters.Json
                     serilizer.Serialize(jw, environmentInfo);
                 }
             }
-
+#if NETSTANDARD1_3
             return Task.CompletedTask;
+#else
+            return AppMetricsTaskHelper.CompletedTask();
+#endif
         }
     }
 }

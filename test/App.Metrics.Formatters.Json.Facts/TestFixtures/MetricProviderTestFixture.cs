@@ -64,14 +64,12 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
             "framework",
             "assembly_name",
             "assembly_version",
-            "host_name",
             "localtime",
             "machine_name",
             "os",
             "os_version",
             "os_arch",
             "process_arch",
-            "process_name",
             "8");
 
         public string GaugeNameDefault { get; } = "test_gauge";

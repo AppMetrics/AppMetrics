@@ -15,7 +15,6 @@ using App.Metrics.Logging;
 using App.Metrics.Meter;
 using App.Metrics.Registry;
 using App.Metrics.Timer;
-using Microsoft.Extensions.Options;
 
 namespace App.Metrics.Internal
 {
@@ -29,13 +28,13 @@ namespace App.Metrics.Internal
         private readonly Lazy<NullMetricsRegistry> _nullMetricsRegistry = new Lazy<NullMetricsRegistry>();
 
         public DefaultMetricsRegistry(
-            IOptions<MetricsOptions> options,
+            string defaultContextLabel,
             IClock clock,
             Func<string, IMetricContextRegistry> newContextRegistry)
         {
             _clock = clock;
             _newContextRegistry = newContextRegistry;
-            _defaultContextLabel = options.Value.DefaultContextLabel;
+            _defaultContextLabel = defaultContextLabel;
             _contexts.TryAdd(_defaultContextLabel, newContextRegistry(_defaultContextLabel));
         }
 

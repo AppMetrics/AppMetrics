@@ -3,8 +3,6 @@
 // </copyright>
 
 using System;
-using System.Diagnostics;
-using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -14,17 +12,14 @@ namespace App.Metrics.Infrastructure
     {
         private EnvironmentInfoProviderCache()
         {
-            var process = Process.GetCurrentProcess();
             var platform = GetOSPlatform();
 
-            ProcessName = StringExtensions.GetSafeString(() => process.ProcessName);
             ProcessArchitecture = StringExtensions.GetSafeString(() => RuntimeInformation.ProcessArchitecture.ToString());
             OperatingSystemVersion = StringExtensions.GetSafeString(() => RuntimeInformation.OSDescription);
             OperatingSystemPlatform = StringExtensions.GetSafeString(() => platform.ToString());
             OperatingSystemArchitecture = StringExtensions.GetSafeString(() => RuntimeInformation.OSArchitecture.ToString());
             ProcessorCount = StringExtensions.GetSafeString(() => Environment.ProcessorCount.ToString());
             MachineName = StringExtensions.GetSafeString(() => Environment.MachineName);
-            HostName = StringExtensions.GetSafeString(Dns.GetHostName);
             FrameworkDescription = StringExtensions.GetSafeString(() => RuntimeInformation.FrameworkDescription);
 
             var entryAssembly = Assembly.GetEntryAssembly();
@@ -39,8 +34,6 @@ namespace App.Metrics.Infrastructure
 
         public string EntryAssemblyVersion { get; }
 
-        public string HostName { get; }
-
         public string MachineName { get; }
 
         public string OperatingSystemVersion { get; }
@@ -48,8 +41,6 @@ namespace App.Metrics.Infrastructure
         public string OperatingSystemPlatform { get; }
 
         public string OperatingSystemArchitecture { get; }
-
-        public string ProcessName { get; }
 
         public string ProcessorCount { get; }
 

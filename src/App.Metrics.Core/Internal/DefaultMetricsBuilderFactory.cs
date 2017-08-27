@@ -12,19 +12,22 @@ using App.Metrics.Timer;
 
 namespace App.Metrics.Internal
 {
-    // ReSharper disable ClassNeverInstantiated.Global
     public sealed class DefaultMetricsBuilderFactory : IBuildMetrics
-        // ReSharper restore ClassNeverInstantiated.Global
     {
-        public DefaultMetricsBuilderFactory()
+        // Internal for testing
+#pragma warning disable SA1401 // Fields must be private
+        internal readonly DefaultSamplingReservoirProvider DefaultSamplingReservoir;
+#pragma warning restore SA1401 // Fields must be private
+
+        public DefaultMetricsBuilderFactory(DefaultSamplingReservoirProvider defaultSamplingReservoir)
         {
-            var defaultReservoir = new DefaultSamplingReservoirProvider();
-            Apdex = new DefaultApdexBuilder(defaultReservoir);
+            DefaultSamplingReservoir = defaultSamplingReservoir;
+            Apdex = new DefaultApdexBuilder(defaultSamplingReservoir);
             Counter = new DefaultCounterBuilder();
             Gauge = new DefaultGaugeBuilder();
-            Histogram = new DefaultHistogramBuilder(defaultReservoir);
+            Histogram = new DefaultHistogramBuilder(defaultSamplingReservoir);
             Meter = new DefaultMeterBuilder();
-            Timer = new DefaultTimerBuilder(defaultReservoir);
+            Timer = new DefaultTimerBuilder(defaultSamplingReservoir);
         }
 
         /// <inheritdoc />

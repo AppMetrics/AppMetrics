@@ -42,8 +42,6 @@ namespace App.Metrics.Formatters.Ascii
             _textWriter.Write('\n');
             _textWriter.Write(PaddedFormat("Framework Description", envInfo.FrameworkDescription));
             _textWriter.Write('\n');
-            _textWriter.Write(PaddedFormat("Host Name", envInfo.HostName));
-            _textWriter.Write('\n');
             _textWriter.Write(PaddedFormat("Local Time", envInfo.LocalTimeString));
             _textWriter.Write('\n');
             _textWriter.Write(PaddedFormat("Machine Name", envInfo.MachineName));
@@ -55,8 +53,6 @@ namespace App.Metrics.Formatters.Ascii
             _textWriter.Write(PaddedFormat("OS Version", envInfo.OperatingSystemVersion));
             _textWriter.Write('\n');
             _textWriter.Write(PaddedFormat("Process Architecture", envInfo.ProcessArchitecture));
-            _textWriter.Write('\n');
-            _textWriter.Write(PaddedFormat("Process Name", envInfo.ProcessName));
             _textWriter.Write('\n');
         }
 
@@ -71,7 +67,6 @@ namespace App.Metrics.Formatters.Ascii
         {
             if (disposing)
             {
-                _textWriter?.Close();
                 _textWriter?.Dispose();
             }
         }

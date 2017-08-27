@@ -10,6 +10,7 @@ using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.Meter;
 using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
 using App.Metrics.Tagging;
 using App.Metrics.Timer;
 using BenchmarkDotNet.Attributes;
@@ -18,7 +19,7 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
 {
     public class DefaultMetricContextRegistryBenchmark : DefaultBenchmarkBase
     {
-        private static readonly IBuildApdexMetrics ApdexBuilder = new DefaultApdexBuilder(new DefaultSamplingReservoirProvider());
+        private static readonly IBuildApdexMetrics ApdexBuilder = new DefaultApdexBuilder(new DefaultSamplingReservoirProvider(() => new DefaultForwardDecayingReservoir()));
         private static readonly ApdexOptions ApdexOptions = new ApdexOptions
                                                             {
                                                                 Name = "apdex"
@@ -40,7 +41,7 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
                                                                 Name = "gauge"
                                                             };
 
-        private static readonly IBuildHistogramMetrics HistogramBuilder = new DefaultHistogramBuilder(new DefaultSamplingReservoirProvider());
+        private static readonly IBuildHistogramMetrics HistogramBuilder = new DefaultHistogramBuilder(new DefaultSamplingReservoirProvider(() => new DefaultForwardDecayingReservoir()));
 
         private static readonly HistogramOptions HistogramOptions = new HistogramOptions
                                                                     {
@@ -54,7 +55,7 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
                                                                 Name = "meter"
                                                             };
 
-        private static readonly IBuildTimerMetrics TimerBuilder = new DefaultTimerBuilder(new DefaultSamplingReservoirProvider());
+        private static readonly IBuildTimerMetrics TimerBuilder = new DefaultTimerBuilder(new DefaultSamplingReservoirProvider(() => new DefaultForwardDecayingReservoir()));
 
         private static readonly TimerOptions TimerOptions = new TimerOptions
                                                             {

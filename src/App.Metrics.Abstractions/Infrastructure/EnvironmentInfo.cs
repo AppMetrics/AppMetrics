@@ -19,7 +19,6 @@ namespace App.Metrics.Infrastructure
                                            Value;
             MachineName = entries.FirstOrDefault(e => string.Equals(e.Key, "MachineName", StringComparison.OrdinalIgnoreCase)).Value;
             ProcessArchitecture = entries.FirstOrDefault(e => string.Equals(e.Key, "ProcessArchitecture", StringComparison.OrdinalIgnoreCase)).Value;
-            ProcessName = entries.FirstOrDefault(e => string.Equals(e.Key, "ProcessName", StringComparison.OrdinalIgnoreCase)).Value;
             OperatingSystemPlatform =
                 entries.FirstOrDefault(e => string.Equals(e.Key, "OperatingSystemPlatform", StringComparison.OrdinalIgnoreCase)).Value;
             OperatingSystemVersion = entries.FirstOrDefault(e => string.Equals(e.Key, "OperatingSystemVersion", StringComparison.OrdinalIgnoreCase)).
@@ -27,7 +26,6 @@ namespace App.Metrics.Infrastructure
             OperatingSystemArchitecture =
                 entries.FirstOrDefault(e => string.Equals(e.Key, "OperatingSystemArchitecture", StringComparison.OrdinalIgnoreCase)).Value;
             ProcessorCount = entries.FirstOrDefault(e => string.Equals(e.Key, "CPUCount", StringComparison.OrdinalIgnoreCase)).Value;
-            HostName = entries.FirstOrDefault(e => string.Equals(e.Key, "HostName", StringComparison.OrdinalIgnoreCase)).Value;
             LocalTimeString = entries.FirstOrDefault(e => string.Equals(e.Key, "LocalTime", StringComparison.OrdinalIgnoreCase)).Value;
             EntryAssemblyName = entries.FirstOrDefault(e => string.Equals(e.Key, "EntryAssemblyName", StringComparison.OrdinalIgnoreCase)).Value;
             EntryAssemblyVersion = entries.FirstOrDefault(e => string.Equals(e.Key, "EntryAssemblyVersion", StringComparison.OrdinalIgnoreCase)).
@@ -37,12 +35,10 @@ namespace App.Metrics.Infrastructure
                        {
                            new EnvironmentInfoEntry("FrameworkDescription", FrameworkDescription),
                            new EnvironmentInfoEntry("MachineName", MachineName),
-                           new EnvironmentInfoEntry("ProcessName", ProcessName),
                            new EnvironmentInfoEntry("OperatingSystemPlatform", OperatingSystemPlatform),
                            new EnvironmentInfoEntry("OperatingSystemVersion", OperatingSystemVersion),
                            new EnvironmentInfoEntry("OperatingSystemArchitecture", OperatingSystemArchitecture),
                            new EnvironmentInfoEntry("CPUCount", ProcessorCount),
-                           new EnvironmentInfoEntry("HostName", HostName),
                            new EnvironmentInfoEntry("LocalTime", LocalTimeString),
                            new EnvironmentInfoEntry("EntryAssemblyName", EntryAssemblyName),
                            new EnvironmentInfoEntry("EntryAssemblyVersion", EntryAssemblyVersion)
@@ -53,27 +49,23 @@ namespace App.Metrics.Infrastructure
             string frameworkDescription,
             string entryAssemblyName,
             string entryAssemblyVersion,
-            string hostName,
             string localTimeString,
             string machineName,
             string operatingSystemPlatform,
             string operatingSystemVersion,
             string operatingSystemArchitecture,
             string processArchitecture,
-            string processName,
             string processorCount)
         {
             FrameworkDescription = frameworkDescription;
             EntryAssemblyName = entryAssemblyName;
             EntryAssemblyVersion = entryAssemblyVersion;
-            HostName = hostName;
             LocalTimeString = localTimeString;
             MachineName = machineName;
             OperatingSystemArchitecture = operatingSystemArchitecture;
             OperatingSystemPlatform = operatingSystemPlatform;
             OperatingSystemVersion = operatingSystemVersion;
             ProcessArchitecture = processArchitecture;
-            ProcessName = processName;
             ProcessorCount = processorCount;
 
             _entries = new[]
@@ -81,12 +73,10 @@ namespace App.Metrics.Infrastructure
                            new EnvironmentInfoEntry("FrameworkDescription", FrameworkDescription),
                            new EnvironmentInfoEntry("MachineName", MachineName),
                            new EnvironmentInfoEntry("ProcessArchitecture", ProcessArchitecture),
-                           new EnvironmentInfoEntry("ProcessName", ProcessName),
                            new EnvironmentInfoEntry("OperatingSystemArchitecture", OperatingSystemArchitecture),
                            new EnvironmentInfoEntry("OperatingSystemPlatform", OperatingSystemPlatform),
                            new EnvironmentInfoEntry("OperatingSystemVersion", OperatingSystemVersion),
                            new EnvironmentInfoEntry("CPUCount", ProcessorCount),
-                           new EnvironmentInfoEntry("HostName", HostName),
                            new EnvironmentInfoEntry("LocalTime", LocalTimeString),
                            new EnvironmentInfoEntry("EntryAssemblyName", EntryAssemblyName),
                            new EnvironmentInfoEntry("EntryAssemblyVersion", EntryAssemblyVersion)
@@ -101,8 +91,6 @@ namespace App.Metrics.Infrastructure
 
         public string FrameworkDescription { get; }
 
-        public string HostName { get; }
-
         public string LocalTimeString { get; }
 
         public string MachineName { get; }
@@ -114,8 +102,6 @@ namespace App.Metrics.Infrastructure
         public string OperatingSystemVersion { get; }
 
         public string ProcessArchitecture { get; }
-
-        public string ProcessName { get; }
 
         public string ProcessorCount { get; }
 
@@ -140,14 +126,12 @@ namespace App.Metrics.Infrastructure
                 var hashCode = FrameworkDescription != null ? FrameworkDescription.GetHashCode() : 0;
                 hashCode = (hashCode * 397) ^ (EntryAssemblyName != null ? EntryAssemblyName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (EntryAssemblyVersion != null ? EntryAssemblyVersion.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (HostName != null ? HostName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (LocalTimeString != null ? LocalTimeString.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (MachineName != null ? MachineName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (OperatingSystemPlatform != null ? OperatingSystemPlatform.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (OperatingSystemArchitecture != null ? OperatingSystemArchitecture.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (OperatingSystemVersion != null ? OperatingSystemVersion.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ProcessArchitecture != null ? ProcessArchitecture.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (ProcessName != null ? ProcessName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ProcessorCount != null ? ProcessorCount.GetHashCode() : 0);
                 return hashCode;
             }
@@ -156,12 +140,12 @@ namespace App.Metrics.Infrastructure
         public bool Equals(EnvironmentInfo other)
         {
             return string.Equals(FrameworkDescription, other.FrameworkDescription) && string.Equals(EntryAssemblyName, other.EntryAssemblyName) &&
-                   string.Equals(EntryAssemblyVersion, other.EntryAssemblyVersion) && string.Equals(HostName, other.HostName) &&
+                   string.Equals(EntryAssemblyVersion, other.EntryAssemblyVersion) &&
                    string.Equals(LocalTimeString, other.LocalTimeString) && string.Equals(MachineName, other.MachineName) &&
                    string.Equals(OperatingSystemPlatform, other.OperatingSystemPlatform) &&
                    string.Equals(OperatingSystemArchitecture, other.OperatingSystemArchitecture) &&
                    string.Equals(OperatingSystemVersion, other.OperatingSystemVersion) &&
-                   string.Equals(ProcessArchitecture, other.ProcessArchitecture) && string.Equals(ProcessName, other.ProcessName) &&
+                   string.Equals(ProcessArchitecture, other.ProcessArchitecture) &&
                    string.Equals(ProcessorCount, other.ProcessorCount);
         }
     }

@@ -84,7 +84,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         ///     value the more biased the reservoir will be towards newer values.
         /// </param>
         /// <param name="clock">The <see cref="IClock">clock</see> type to use for calculating processing time.</param>
-        /// <param name="scheduler">asdfasf</param>
+        /// <param name="scheduler">The scheduler used to re-scaling</param>
         // ReSharper disable MemberCanBePrivate.Global
         public DefaultForwardDecayingReservoir(int sampleSize, double alpha, IClock clock, IScheduler scheduler = null)
             // ReSharper restore MemberCanBePrivate.Global

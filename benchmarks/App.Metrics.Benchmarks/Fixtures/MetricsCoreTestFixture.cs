@@ -4,7 +4,6 @@
 
 using System;
 using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace App.Metrics.Benchmarks.Fixtures
 {
@@ -24,13 +23,20 @@ namespace App.Metrics.Benchmarks.Fixtures
 
         public MetricsCoreTestFixture()
         {
-            var services = new ServiceCollection();
-            services.AddLogging();
-            services.AddMetrics();
-
-            var provider = services.BuildServiceProvider();
-
-            Metrics = provider.GetRequiredService<IMetrics>();
+            Metrics = new MetricsBuilder()
+                .Options.Configure(options =>
+                {
+                    options.DefaultContextLabel = "Testing";
+                    options.MetricsEnabled = true;
+                })
+                .OutputEnvInfo.AsJson()
+                .OutputEnvInfo.AsPlainText()
+                .OutputMetrics.AsPlainText()
+                .OutputMetrics.AsJson()
+                .SampleWith.AlgorithmR()
+                .Filter.ByIncludingOnlyTypes(MetricType.Counter)
+                .TimeWith.StopwatchClock()
+                .Build();
         }
 
         public IMetrics Metrics { get; }

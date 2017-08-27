@@ -12,6 +12,7 @@ using App.Metrics.Internal;
 using App.Metrics.Meter;
 using App.Metrics.Registry;
 using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
 using App.Metrics.Tagging;
 using App.Metrics.Timer;
 
@@ -57,13 +58,15 @@ namespace App.Metrics.Benchmarks.Fixtures
                            { "key2", "value2" }
                        };
 
+            var samplingProvider = new DefaultSamplingReservoirProvider(() => new DefaultForwardDecayingReservoir());
+
             Registry = new DefaultMetricContextRegistry("context_label", tags);
-            ApdexBuilder = new DefaultApdexBuilder(new DefaultSamplingReservoirProvider());
-            HistogramBuilder = new DefaultHistogramBuilder(new DefaultSamplingReservoirProvider());
+            ApdexBuilder = new DefaultApdexBuilder(samplingProvider);
+            HistogramBuilder = new DefaultHistogramBuilder(samplingProvider);
             CounterBuilder = new DefaultCounterBuilder();
             GaugeBuilder = new DefaultGaugeBuilder();
             MeterBuilder = new DefaultMeterBuilder();
-            TimerBuilder = new DefaultTimerBuilder(new DefaultSamplingReservoirProvider());
+            TimerBuilder = new DefaultTimerBuilder(samplingProvider);
             Clock = new StopwatchClock();
         }
 

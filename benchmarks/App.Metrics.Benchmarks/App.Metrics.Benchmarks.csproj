@@ -21,8 +21,6 @@
     <PackageReference Include="xunit" Version="$(XunitVersion)" />
     <PackageReference Include="BenchmarkDotNet" Version="$(BenchmarkDotNetVersion)" />
     <PackageReference Include="BenchmarkDotNet.Core" Version="$(BenchmarkDotNetVersion)" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(AspNetCoreVersion)" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="$(AspNetCoreVersion)" />
   </ItemGroup>
   
 </Project>

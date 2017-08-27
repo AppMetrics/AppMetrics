@@ -20,7 +20,6 @@ namespace App.Metrics.Facts.Extensions
             var expected = new GlobalMetricTags(
                 new Dictionary<string, string>
                 {
-                    { "host", environmentInfo.HostName },
                     { "machine_name", environmentInfo.MachineName },
                     { "app_name", environmentInfo.EntryAssemblyName },
                     { "app_version", environmentInfo.EntryAssemblyVersion }
@@ -30,7 +29,6 @@ namespace App.Metrics.Facts.Extensions
             options.WithGlobalTags(
                 (globalTags, envInfo) =>
                 {
-                    globalTags.Add("host", envInfo.HostName);
                     globalTags.Add("machine_name", envInfo.MachineName);
                     globalTags.Add("app_name", envInfo.EntryAssemblyName);
                     globalTags.Add("app_version", envInfo.EntryAssemblyVersion);

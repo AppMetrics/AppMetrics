@@ -3,6 +3,8 @@
 // </copyright>
 
 using App.Metrics.Internal;
+using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
 using FluentAssertions;
 using Xunit;
 
@@ -12,7 +14,7 @@ namespace App.Metrics.Facts.Builders
     {
         private readonly DefaultMetricsBuilderFactory _factory;
 
-        public DefaultMetricsBuilderFactoryTests() { _factory = new DefaultMetricsBuilderFactory(); }
+        public DefaultMetricsBuilderFactoryTests() { _factory = new DefaultMetricsBuilderFactory(new DefaultSamplingReservoirProvider(() => new DefaultForwardDecayingReservoir())); }
 
         [Fact]
         public void Creates_apdex_builder()

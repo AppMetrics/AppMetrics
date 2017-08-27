@@ -92,7 +92,6 @@ namespace App.Metrics.Formatters.Ascii
             if (disposing)
             {
                 _textPoints.Write(_textWriter, _separator, _padding);
-                _textWriter?.Close();
                 _textWriter?.Dispose();
             }
         }

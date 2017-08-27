@@ -18,6 +18,7 @@
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
 		<GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
 		<GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+	  <LangVersion>latest</LangVersion>
 		<CodeAnalysisRuleSet>..\..\AppMetrics.ruleset</CodeAnalysisRuleSet>
 	  <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Key.snk</AssemblyOriginatorKeyFile>
 	  <SignAssembly>true</SignAssembly>
