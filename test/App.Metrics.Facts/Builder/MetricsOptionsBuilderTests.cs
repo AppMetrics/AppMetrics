@@ -136,7 +136,7 @@ namespace App.Metrics.Facts.Builder
             metrics.Options.GlobalTags.First().Key.Should().Be("tag1");
             metrics.Options.GlobalTags.First().Value.Should().Be("value1");
             metrics.Options.GlobalTags.Skip(1).First().Key.Should().Be("app");
-            metrics.Options.GlobalTags.Skip(1).First().Value.Should().Be("testhost");
+            metrics.Options.GlobalTags.Skip(1).First().Value.Should().NotBeNullOrWhiteSpace();
             metrics.Options.GlobalTags.Skip(2).First().Key.Should().Be("server");
             metrics.Options.GlobalTags.Skip(2).First().Value.Should().NotBeNullOrWhiteSpace();
             metrics.Options.GlobalTags.Skip(3).First().Key.Should().Be("env");
