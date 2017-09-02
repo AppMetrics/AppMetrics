@@ -9,8 +9,6 @@ using App.Metrics.Internal;
 using App.Metrics.Registry;
 using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
-using Microsoft.Extensions.Options;
-using Moq;
 
 namespace App.Metrics.Facts.Fixtures
 {
@@ -18,23 +16,19 @@ namespace App.Metrics.Facts.Fixtures
     {
         public MetricCoreTestFixture()
         {
-            var options = new Mock<IOptions<MetricsOptions>>();
-            options
-                .SetupGet(o => o.Value)
-                .Returns(new MetricsOptions());
-
+            var options = new MetricsOptions();
             Clock = new TestClock();
             Builder = new DefaultMetricsBuilderFactory(new DefaultSamplingReservoirProvider(() => new DefaultForwardDecayingReservoir()));
 
             IMetricContextRegistry ContextRegistrySetup(string context) => new DefaultMetricContextRegistry(context);
 
-            var registry = new DefaultMetricsRegistry(options.Object.Value.DefaultContextLabel, Clock, ContextRegistrySetup);
+            var registry = new DefaultMetricsRegistry(options.DefaultContextLabel, Clock, ContextRegistrySetup);
 
             Registry = registry;
             Providers = new DefaultMetricsProvider(Registry, Builder, Clock);
             Snapshot = new DefaultMetricValuesProvider(new NoOpMetricsFilter(), Registry);
             Managers = new DefaultMeasureMetricsProvider(Registry, Builder, Clock);
-            Context = options.Object.Value.DefaultContextLabel;
+            Context = options.DefaultContextLabel;
         }
 
         public IBuildMetrics Builder { get; }
