@@ -1,18 +1,18 @@
 ``` ini
 
-BenchmarkDotNet=v0.10.1, OS=Windows
-Processor=?, ProcessorCount=8
-Frequency=3312782 Hz, Resolution=301.8611 ns, Timer=TSC
-dotnet cli version=1.0.0-preview2-1-003177
-  [Host] : .NET Core 4.6.24628.01, 64bit RyuJIT
-  Core   : .NET Core 4.6.24628.01, 64bit RyuJIT
+BenchmarkDotNet=v0.10.8, OS=Windows 10 Redstone 2 (10.0.15063)
+Processor=Intel Core i7-2600 CPU 3.40GHz (Sandy Bridge), ProcessorCount=8
+Frequency=3312788 Hz, Resolution=301.8605 ns, Timer=TSC
+dotnet cli version=2.0.0
+  [Host] : .NET Core 4.6.00001.0, 64bit RyuJIT
+  Core   : .NET Core 4.6.00001.0, 64bit RyuJIT
 
 Job=Core  Runtime=Core  
 
 ```
-                         Method |        Mean |    StdDev |  Gen 0 | Allocated |
-------------------------------- |------------ |---------- |------- |---------- |
-                           Mark | 194.3923 ns | 0.7245 ns | 0.0489 |     255 B |
-                 MarkMetricItem | 335.4640 ns | 1.4359 ns | 0.0603 |     303 B |
- MarkMetricItemWithMultipleTags | 743.6069 ns | 3.4109 ns | 0.1336 |     662 B |
-                  MarkUserValue | 299.9856 ns | 1.9863 ns | 0.0490 |     255 B |
+ |                         Method |     Mean |     Error |    StdDev |  Gen 0 | Allocated |
+ |------------------------------- |---------:|----------:|----------:|-------:|----------:|
+ |                           Mark | 207.3 ns |  1.666 ns |  1.391 ns | 0.0608 |     256 B |
+ |                 MarkMetricItem | 355.2 ns |  4.219 ns |  3.946 ns | 0.0725 |     304 B |
+ | MarkMetricItemWithMultipleTags | 758.0 ns | 12.736 ns | 11.913 ns | 0.1575 |     664 B |
+ |                  MarkUserValue | 313.5 ns |  5.697 ns |  4.757 ns | 0.0606 |     256 B |
