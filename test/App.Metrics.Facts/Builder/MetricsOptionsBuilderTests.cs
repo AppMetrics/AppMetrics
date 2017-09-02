@@ -140,7 +140,7 @@ namespace App.Metrics.Facts.Builder
             metrics.Options.GlobalTags.Skip(2).First().Key.Should().Be("server");
             metrics.Options.GlobalTags.Skip(2).First().Value.Should().NotBeNullOrWhiteSpace();
             metrics.Options.GlobalTags.Skip(3).First().Key.Should().Be("env");
-            metrics.Options.GlobalTags.Skip(3).First().Value.Should().Be("debug");
+            metrics.Options.GlobalTags.Skip(3).First().Value.Should().NotBeNullOrWhiteSpace();
         }
     }
 }
