@@ -34,7 +34,7 @@ namespace App.Metrics
         /// </summary>
         /// <param name="context">The context label to filter by.</param>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder ByIncludingOnlyContext(string context)
         {
@@ -50,7 +50,7 @@ namespace App.Metrics
         /// </summary>
         /// <param name="tagKeyValues">The tag key value pair to filter by.</param>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder ByIncludingOnlyTagKeyValues(TagKeyValueFilter tagKeyValues)
         {
@@ -66,7 +66,7 @@ namespace App.Metrics
         /// </summary>
         /// <param name="tagKeys">The tag to filter by.</param>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder ByIncludingOnlyTags(params string[] tagKeys)
         {
@@ -82,7 +82,7 @@ namespace App.Metrics
         /// </summary>
         /// <param name="types">The <see cref="MetricType" />s to include when fetching metrics.</param>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder ByIncludingOnlyTypes(params MetricType[] types)
         {
@@ -104,7 +104,7 @@ namespace App.Metrics
         /// </summary>
         /// <param name="filter">An <see cref="IFilterMetrics" /> instance used for filtering metrics.</param>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder With(IFilterMetrics filter)
         {
@@ -126,7 +126,7 @@ namespace App.Metrics
         /// </summary>
         /// <param name="setupAction">An <see cref="IFilterMetrics" /> instance used for filtering metrics.</param>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder With(Action<IFilterMetrics> setupAction)
         {

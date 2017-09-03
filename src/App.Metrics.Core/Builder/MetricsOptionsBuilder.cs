@@ -36,7 +36,7 @@ namespace App.Metrics
         /// </summary>
         /// <param name="options">An <see cref="MetricsOptions"/> instance used to configure core App Metrics options.</param>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder Configure(MetricsOptions options)
         {
@@ -60,7 +60,7 @@ namespace App.Metrics
         /// </summary>
         /// <param name="optionValues">Key value pairs for configuring App Metrics</param>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder Configure(IEnumerable<KeyValuePair<string, string>> optionValues)
         {
@@ -89,7 +89,7 @@ namespace App.Metrics
         /// <param name="options">An <see cref="MetricsOptions"/> instance used to configure core App Metrics options.</param>
         /// <param name="optionValues">Key value pairs for configuring App Metrics</param>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder Configure(MetricsOptions options, IEnumerable<KeyValuePair<string, string>> optionValues)
         {
@@ -120,7 +120,7 @@ namespace App.Metrics
         /// </summary>
         /// <param name="setupAction">An <see cref="MetricsOptions"/> setup action used to configure core App Metrics options.</param>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder Configure(Action<MetricsOptions> setupAction)
         {

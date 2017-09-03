@@ -19,7 +19,7 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
         }
 
         [Benchmark]
-        public void DecrementMetricItemWithMulitpleTags()
+        public void DecrementMetricItemWithMultipleTags()
         {
             var keys = new[] { "key1", "key2" };
             var values = new[] { "value1", "value2" };
@@ -38,7 +38,7 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
         }
 
         [Benchmark]
-        public void IncrementMetricItemWithMulitpleTags()
+        public void IncrementMetricItemWithMultipleTags()
         {
             var keys = new[] { "key1", "key2" };
             var values = new[] { "value1", "value2" };

@@ -27,7 +27,7 @@ namespace App.Metrics.Benchmarks.Fixtures
                 .Options.Configure(options =>
                 {
                     options.DefaultContextLabel = "Testing";
-                    options.MetricsEnabled = true;
+                    options.Enabled = true;
                 })
                 .OutputEnvInfo.AsJson()
                 .OutputEnvInfo.AsPlainText()

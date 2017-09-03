@@ -35,7 +35,7 @@ namespace App.Metrics
         /// </summary>
         /// <param name="clock">An <see cref="IClock"/> instance used for timing. e.g. <see cref="StopwatchClock"/></param>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder Clock(IClock clock)
         {
@@ -59,7 +59,7 @@ namespace App.Metrics
         /// </summary>
         /// <typeparam name="TClock">An <see cref="IClock"/> type used for timing. e.g. <see cref="StopwatchClock"/></typeparam>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder Clock<TClock>()
             where TClock : class, IClock, new()
@@ -78,7 +78,7 @@ namespace App.Metrics
         ///     </para>
         /// </summary>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder StopwatchClock()
         {
@@ -96,7 +96,7 @@ namespace App.Metrics
         ///     </para>
         /// </summary>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder SystemClock()
         {

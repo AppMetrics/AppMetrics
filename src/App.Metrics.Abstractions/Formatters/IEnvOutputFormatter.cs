@@ -27,6 +27,6 @@ namespace App.Metrics.Formatters
         Task WriteAsync(
             Stream output,
             EnvironmentInfo environmentInfo,
-            CancellationToken cancellationToken = default(CancellationToken));
+            CancellationToken cancellationToken = default);
     }
 }

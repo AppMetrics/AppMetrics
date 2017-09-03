@@ -10,7 +10,7 @@ namespace App.Metrics.Scheduling
 {
     public sealed class DefaultTaskScheduler : IScheduler
     {
-        private readonly bool _allowMulitpleTasks;
+        private readonly bool _allowMultipleTasks;
         private bool _disposed;
         private Task _task;
         private CancellationTokenSource _token;
@@ -18,13 +18,13 @@ namespace App.Metrics.Scheduling
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultTaskScheduler" /> class.
         /// </summary>
-        /// <param name="allowMulitpleTasks">
+        /// <param name="allowMultipleTasks">
         ///     if set to <c>true</c> allows more than one task to be created at a time, otherwise
         ///     ensures the task hasn't yet started.
         /// </param>
-        public DefaultTaskScheduler(bool allowMulitpleTasks = true)
+        public DefaultTaskScheduler(bool allowMultipleTasks = true)
         {
-            _allowMulitpleTasks = allowMulitpleTasks;
+            _allowMultipleTasks = allowMultipleTasks;
             _token = new CancellationTokenSource();
         }
 
@@ -58,7 +58,7 @@ namespace App.Metrics.Scheduling
         {
             ThrowIfInvalid(pollInterval);
 
-            if (HasStarted() && !_allowMulitpleTasks)
+            if (HasStarted() && !_allowMultipleTasks)
             {
                 return _task;
             }
@@ -100,7 +100,7 @@ namespace App.Metrics.Scheduling
         {
             ThrowIfInvalid(pollInterval);
 
-            if (HasStarted() && !_allowMulitpleTasks)
+            if (HasStarted() && !_allowMultipleTasks)
             {
                 return _task;
             }

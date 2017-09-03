@@ -15,9 +15,9 @@ namespace App.Metrics
     public interface IMetricsBuilder
     {
         /// <summary>
-        /// Builder for configuring the default reservoir sampling using an <see cref="IMetricsBuilder" />. Reservoir sampling is used on specific metrics types. By default is set to <see cref="DefaultForwardDecayingReservoir"/>.
+        ///     Builder for configuring the <see cref="IFilterMetrics" /> used to globally filter specific metrics when reporting.
         /// </summary>
-        MetricsReservoirSamplingBuilder SampleWith { get; }
+        MetricsFilterBuilder Filter { get; }
 
         /// <summary>
         ///     Builder for configuring core App Metrics options.
@@ -29,7 +29,8 @@ namespace App.Metrics
         ///         Builder for configuring environment information output formatting for reporting.
         ///     </para>
         ///     <para>
-        ///         Mulitple formatters can be used, in which case the <see cref="IMetricsRoot.DefaultOutputEnvFormatter"/> will be set to the first configured formatter.
+        ///         Multiple formatters can be used, in which case the <see cref="IMetricsRoot.DefaultOutputEnvFormatter" /> will
+        ///         be set to the first configured formatter.
         ///     </para>
         /// </summary>
         EnvOutputFormattingBuilder OutputEnvInfo { get; }
@@ -39,25 +40,27 @@ namespace App.Metrics
         ///         Builder for configuring metrics output formatting for reporting.
         ///     </para>
         ///     <para>
-        ///         Mulitple formatters can be used, in which case the <see cref="IMetricsRoot.DefaultOutputMetricsFormatter"/> will be set to the first configured formatter.
+        ///         Multiple formatters can be used, in which case the <see cref="IMetricsRoot.DefaultOutputMetricsFormatter" />
+        ///         will be set to the first configured formatter.
         ///     </para>
         /// </summary>
         MetricsOutputFormattingBuilder OutputMetrics { get; }
 
         /// <summary>
-        ///     Builder for configuring the <see cref="IClock"/> used for specific metrics types which requiring timing.
+        ///     Builder for configuring the default reservoir sampling using an <see cref="IMetricsBuilder" />. Reservoir sampling
+        ///     is used on specific metrics types. By default is set to <see cref="DefaultForwardDecayingReservoir" />.
+        /// </summary>
+        MetricsReservoirSamplingBuilder SampleWith { get; }
+
+        /// <summary>
+        ///     Builder for configuring the <see cref="IClock" /> used for specific metrics types which requiring timing.
         /// </summary>
         MetricsClockBuilder TimeWith { get; }
 
         /// <summary>
-        ///     Builder for configuring the <see cref="IFilterMetrics"/> used to globally filter specific metrics when reporting.
+        ///     Builds an <see cref="IMetrics" /> with the services configured via an <see cref="IMetricsBuilder" />.
         /// </summary>
-        MetricsFilterBuilder Filter { get; }
-
-        /// <summary>
-        /// Builds an <see cref="IMetrics"/> with the services configured via an <see cref="IMetricsBuilder"/>.
-        /// </summary>
-        /// <returns>An <see cref="IMetricsRoot"/> with services configured via an <see cref="IMetricsBuilder"/>.</returns>
+        /// <returns>An <see cref="IMetricsRoot" /> with services configured via an <see cref="IMetricsBuilder" />.</returns>
         IMetricsRoot Build();
     }
 }

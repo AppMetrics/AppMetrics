@@ -2,7 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-#if !NETSTANDARD1_3
+#if !NETSTANDARD1_6
 
 using System.Threading.Tasks;
 

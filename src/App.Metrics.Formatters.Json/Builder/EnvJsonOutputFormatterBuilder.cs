@@ -19,12 +19,12 @@ namespace App.Metrics
         ///     Add the <see cref="EnvInfoJsonOutputFormatter" /> allowing metric values to optionally be reported as JSON.
         /// </summary>
         /// <param name="envFormattingBuilder">
-        ///     The <see cref="EnvJsonOutputFormatterBuilder" /> used to configuring formatting
+        ///     The <see cref="EnvJsonOutputFormatterBuilder" /> used to configure formatting
         ///     options.
         /// </param>
         /// <param name="setupAction">The JSON formatting options to use.</param>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public static IMetricsBuilder AsJson(
             this EnvOutputFormattingBuilder envFormattingBuilder,

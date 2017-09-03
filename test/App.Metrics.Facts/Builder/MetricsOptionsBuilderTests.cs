@@ -19,17 +19,17 @@ namespace App.Metrics.Facts.Builder
             var options = new MetricsOptions
                           {
                               AddDefaultGlobalTags = true,
-                              MetricsEnabled = true,
+                              Enabled = true,
                               DefaultContextLabel = "initial value",
                               GlobalTags = new GlobalMetricTags(new Dictionary<string, string> { { "initial", "value" } })
                           };
 
             var keyValuePairs = new Dictionary<string, string>
                                 {
-                                    { "AddDefaultGlobalTags", "false" },
-                                    { "DefaultContextLabel", "Testing" },
-                                    { "GlobalTags", "tag1=value1,tag2=value2" },
-                                    { "MetricsEnabled", "false" }
+                                    { "MetricsOptions:AddDefaultGlobalTags", "false" },
+                                    { "MetricsOptions:DefaultContextLabel", "Testing" },
+                                    { "MetricsOptions:GlobalTags", "tag1=value1,tag2=value2" },
+                                    { "MetricsOptions:Enabled", "false" }
                                 };
 
             // Act
@@ -43,7 +43,7 @@ namespace App.Metrics.Facts.Builder
             metrics.Options.GlobalTags.First().Value.Should().Be("value1");
             metrics.Options.GlobalTags.Skip(1).First().Key.Should().Be("tag2");
             metrics.Options.GlobalTags.Skip(1).First().Value.Should().Be("value2");
-            metrics.Options.MetricsEnabled.Should().BeFalse();
+            metrics.Options.Enabled.Should().BeFalse();
         }
 
         [Fact]
@@ -52,10 +52,10 @@ namespace App.Metrics.Facts.Builder
             // Arrange
             var keyValuePairs = new Dictionary<string, string>
                                 {
-                                    { "AddDefaultGlobalTags", "false" },
-                                    { "DefaultContextLabel", "Testing" },
-                                    { "GlobalTags", "tag1=value1,tag2=value2" },
-                                    { "MetricsEnabled", "false" }
+                                    { "MetricsOptions:AddDefaultGlobalTags", "false" },
+                                    { "MetricsOptions:DefaultContextLabel", "Testing" },
+                                    { "MetricsOptions:GlobalTags", "tag1=value1,tag2=value2" },
+                                    { "MetricsOptions:Enabled", "false" }
                                 };
 
             // Act
@@ -69,7 +69,7 @@ namespace App.Metrics.Facts.Builder
             metrics.Options.GlobalTags.First().Value.Should().Be("value1");
             metrics.Options.GlobalTags.Skip(1).First().Key.Should().Be("tag2");
             metrics.Options.GlobalTags.Skip(1).First().Value.Should().Be("value2");
-            metrics.Options.MetricsEnabled.Should().BeFalse();
+            metrics.Options.Enabled.Should().BeFalse();
         }
 
         [Fact]
@@ -78,7 +78,7 @@ namespace App.Metrics.Facts.Builder
             // Arrange
             void SetupAction(MetricsOptions options)
             {
-                options.MetricsEnabled = false;
+                options.Enabled = false;
                 options.GlobalTags.Add("tag1", "value1");
                 options.AddDefaultGlobalTags = false;
                 options.DefaultContextLabel = "test";
@@ -93,7 +93,7 @@ namespace App.Metrics.Facts.Builder
             metrics.Options.GlobalTags.Count.Should().Be(1);
             metrics.Options.GlobalTags.First().Key.Should().Be("tag1");
             metrics.Options.GlobalTags.First().Value.Should().Be("value1");
-            metrics.Options.MetricsEnabled.Should().BeFalse();
+            metrics.Options.Enabled.Should().BeFalse();
         }
 
         [Fact]
@@ -101,7 +101,7 @@ namespace App.Metrics.Facts.Builder
         {
             // Arrange
             var options = new MetricsOptions();
-            options.MetricsEnabled = true;
+            options.Enabled = true;
             options.GlobalTags.Add("tag1", "value1");
             options.AddDefaultGlobalTags = false;
             options.DefaultContextLabel = "test";
@@ -115,7 +115,7 @@ namespace App.Metrics.Facts.Builder
             metrics.Options.GlobalTags.Count.Should().Be(1);
             metrics.Options.GlobalTags.First().Key.Should().Be("tag1");
             metrics.Options.GlobalTags.First().Value.Should().Be("value1");
-            metrics.Options.MetricsEnabled.Should().BeTrue();
+            metrics.Options.Enabled.Should().BeTrue();
         }
 
         [Fact]

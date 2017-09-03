@@ -18,10 +18,10 @@ namespace App.Metrics.Facts.Options
             // Arrange
             var keyValuePairs = new Dictionary<string, string>
                           {
-                              { "AddDefaultGlobalTags", "false" },
-                              { "DefaultContextLabel", "Testing" },
-                              { "GlobalTags", "tag1=value1, tag2=value2" },
-                              { "MetricsEnabled", "false" }
+                              { "MetricsOptions:AddDefaultGlobalTags", "false" },
+                              { "MetricsOptions:DefaultContextLabel", "Testing" },
+                              { "MetricsOptions:GlobalTags", "tag1=value1, tag2=value2" },
+                              { "MetricsOptions:Enabled", "false" }
                           };
 
             // Act
@@ -35,7 +35,7 @@ namespace App.Metrics.Facts.Options
             options.GlobalTags.First().Value.Should().Be("value1");
             options.GlobalTags.Skip(1).First().Key.Should().Be("tag2");
             options.GlobalTags.Skip(1).First().Value.Should().Be("value2");
-            options.MetricsEnabled.Should().BeFalse();
+            options.Enabled.Should().BeFalse();
         }
 
         [Fact]
@@ -61,7 +61,7 @@ namespace App.Metrics.Facts.Options
             {
                 var keyValuePairs = new Dictionary<string, string>
                                     {
-                                        { "AddDefaultGlobalTags", "not_a_bool" }
+                                        { "MetricsOptions:AddDefaultGlobalTags", "not_a_bool" }
                                     };
 
                 // Act
@@ -81,7 +81,7 @@ namespace App.Metrics.Facts.Options
             {
                 var keyValuePairs = new Dictionary<string, string>
                                     {
-                                        { "MetricsEnabled", "not_a_bool" }
+                                        { "MetricsOptions:Enabled", "not_a_bool" }
                                     };
 
                 // Act
@@ -103,7 +103,7 @@ namespace App.Metrics.Facts.Options
             {
                 var keyValuePairs = new Dictionary<string, string>
                                     {
-                                        { "GlobalTags", tags }
+                                        { "MetricsOptions:GlobalTags", tags }
                                     };
 
                 // Act

@@ -11,10 +11,10 @@ namespace App.Metrics
 {
     internal class KeyValuePairMetricsOptions
     {
-        private const string AddDefaultGlobalTagsDirective = nameof(MetricsOptions.AddDefaultGlobalTags);
-        private const string DefaultContextLabelDirective = nameof(MetricsOptions.DefaultContextLabel);
-        private const string GlobalTagsDirective = nameof(MetricsOptions.GlobalTags);
-        private const string MetricsEnabledDirective = nameof(MetricsOptions.MetricsEnabled);
+        private static readonly string AddDefaultGlobalTagsDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.AddDefaultGlobalTags)}";
+        private static readonly string DefaultContextLabelDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.DefaultContextLabel)}";
+        private static readonly string GlobalTagsDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.GlobalTags)}";
+        private static readonly string EnabledDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.Enabled)}";
         private readonly MetricsOptions _options;
 
         private readonly Dictionary<string, string> _optionValues;
@@ -81,14 +81,14 @@ namespace App.Metrics
                         options.GlobalTags.Add(tagKey, tagValue);
                     }
                 }
-                else if (string.Compare(key, MetricsEnabledDirective, StringComparison.CurrentCultureIgnoreCase) == 0)
+                else if (string.Compare(key, EnabledDirective, StringComparison.CurrentCultureIgnoreCase) == 0)
                 {
                     if (!bool.TryParse(_optionValues[key], out var metricsEnabled))
                     {
-                        throw new InvalidCastException($"Attempted to bind {key} to {MetricsEnabledDirective} but it's not a boolean");
+                        throw new InvalidCastException($"Attempted to bind {key} to {EnabledDirective} but it's not a boolean");
                     }
 
-                    options.MetricsEnabled = metricsEnabled;
+                    options.Enabled = metricsEnabled;
                 }
             }
 

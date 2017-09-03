@@ -49,7 +49,7 @@ namespace App.Metrics
         /// </summary>
         /// <param name="sampleSize">The number of samples to keep in the sampling reservoir.</param>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder AlgorithmR(int sampleSize)
         {
@@ -77,7 +77,7 @@ namespace App.Metrics
         ///     </para>
         /// </summary>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder AlgorithmR()
         {
@@ -110,7 +110,7 @@ namespace App.Metrics
         ///     value the more biased the reservoir will be towards newer values.
         /// </param>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder ForwardDecaying(int sampleSize, double alpha)
         {
@@ -144,7 +144,7 @@ namespace App.Metrics
         /// </param>
         /// <param name="clock">The <see cref="IClock" /> used for timing.</param>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder ForwardDecaying(int sampleSize, double alpha, IClock clock)
         {
@@ -179,7 +179,7 @@ namespace App.Metrics
         /// <param name="clock">The <see cref="IClock" /> used for timing.</param>
         /// <param name="rescaleScheduler">The <see cref="IScheduler" /> used to rescale the reservoir.</param>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder ForwardDecaying(int sampleSize, double alpha, IClock clock, IScheduler rescaleScheduler)
         {
@@ -207,7 +207,7 @@ namespace App.Metrics
         ///     </para>
         /// </summary>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder ForwardDecaying()
         {
@@ -223,7 +223,7 @@ namespace App.Metrics
         ///     An <see cref="IReservoir" /> function used to sample metrics.
         /// </param>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder Reservoir(Func<IReservoir> reservoirBuilder)
         {
@@ -237,7 +237,7 @@ namespace App.Metrics
         /// </summary>
         /// <typeparam name="TReservoir">An <see cref="IReservoir" /> type used to sample metrics.</typeparam>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder Reservoir<TReservoir>()
             where TReservoir : class, IReservoir, new()
@@ -254,7 +254,7 @@ namespace App.Metrics
         /// </summary>
         /// <param name="sampleSize">The number of samples to keep in the sampling reservoir.</param>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder SlidingWindow(int sampleSize)
         {
@@ -269,7 +269,7 @@ namespace App.Metrics
         ///     the last N seconds (or other time unit).
         /// </summary>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public IMetricsBuilder SlidingWindow()
         {

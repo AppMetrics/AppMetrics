@@ -114,7 +114,7 @@ namespace App.Metrics
         {
             IMetricsRegistry registry = new NullMetricsRegistry();
 
-            if (_options.MetricsEnabled)
+            if (_options.Enabled)
             {
                 registry = new DefaultMetricsRegistry(_options.DefaultContextLabel, _clock, ContextRegistry);
             }

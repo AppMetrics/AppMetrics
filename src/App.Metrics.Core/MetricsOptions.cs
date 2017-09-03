@@ -48,7 +48,7 @@ namespace App.Metrics
         /// <value>
         ///     <c>true</c> if [metrics enabled]; otherwise, <c>false</c>.
         /// </value>
-        public bool MetricsEnabled { get; set; } = true;
+        public bool Enabled { get; set; } = true;
     }
 
     // ReSharper restore AutoPropertyCanBeMadeGetOnly.Global

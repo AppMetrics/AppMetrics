@@ -7,7 +7,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Infrastructure;
-#if !NETSTANDARD1_3
+#if !NETSTANDARD1_6
 using App.Metrics.Internal;
 #endif
 using App.Metrics.Serialization;
@@ -32,7 +32,7 @@ namespace App.Metrics.Formatters.Ascii
         public Task WriteAsync(
             Stream output,
             EnvironmentInfo environmentInfo,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (output == null)
             {
@@ -49,7 +49,7 @@ namespace App.Metrics.Formatters.Ascii
                 }
             }
 
-#if NETSTANDARD1_3
+#if NETSTANDARD1_6
             return Task.CompletedTask;
 #else
             return AppMetricsTaskHelper.CompletedTask();

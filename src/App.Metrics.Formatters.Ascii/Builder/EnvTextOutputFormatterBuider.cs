@@ -19,12 +19,12 @@ namespace App.Metrics
         ///     Add the <see cref="EnvInfoTextOutputFormatter" /> allowing environment information to optionally be reported as plain text.
         /// </summary>
         /// <param name="envFormattingBuilder">
-        ///     The <see cref="EnvOutputFormattingBuilder" /> used to configuring formatting
+        ///     The <see cref="EnvOutputFormattingBuilder" /> used to configure formatting
         ///     options.
         /// </param>
         /// <param name="setupAction">The plain text formatting options to use.</param>
         /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure the App Metrics.
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public static IMetricsBuilder AsPlainText(
             this EnvOutputFormattingBuilder envFormattingBuilder,
