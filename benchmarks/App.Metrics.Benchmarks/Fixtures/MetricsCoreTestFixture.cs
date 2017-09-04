@@ -24,7 +24,7 @@ namespace App.Metrics.Benchmarks.Fixtures
         public MetricsCoreTestFixture()
         {
             Metrics = new MetricsBuilder()
-                .Options.Configure(options =>
+                .Options.Use(options =>
                 {
                     options.DefaultContextLabel = "Testing";
                     options.Enabled = true;

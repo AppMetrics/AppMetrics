@@ -11,7 +11,7 @@ namespace App.Metrics
     // ReSharper restore CheckNamespace
 {
     /// <summary>
-    ///     Builder for configuring the <see cref="MetricsOptions"/>.
+    ///     Builder for configuring the <see cref="MetricsOptions" />.
     /// </summary>
     public class MetricsOptionsBuilder
     {
@@ -21,24 +21,26 @@ namespace App.Metrics
 
         internal MetricsOptionsBuilder(
             IMetricsBuilder metricsBuilder,
-            Action<MetricsOptions> options,
+            Action<MetricsOptions> setupAction,
             EnvironmentInfoProvider environmentInfoProvider)
         {
             _environmentInfoProvider = environmentInfoProvider ?? throw new ArgumentNullException(nameof(environmentInfoProvider));
             _metricsBuilder = metricsBuilder ?? throw new ArgumentNullException(nameof(metricsBuilder));
-            _setupAction = options ?? throw new ArgumentNullException(nameof(options));
+            _setupAction = setupAction ?? throw new ArgumentNullException(nameof(setupAction));
         }
+
+        public MetricsOptions Options { get; private set; } = new MetricsOptions();
 
         /// <summary>
         ///     <para>
-        ///         Uses the specifed <see cref="MetricsOptions"/> instance for App Metrics core configuration.
+        ///         Uses the specifed <see cref="MetricsOptions" /> instance for App Metrics core configuration.
         ///     </para>
         /// </summary>
-        /// <param name="options">An <see cref="MetricsOptions"/> instance used to configure core App Metrics options.</param>
+        /// <param name="options">An <see cref="MetricsOptions" /> instance used to configure core App Metrics options.</param>
         /// <returns>
         ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
-        public IMetricsBuilder Configure(MetricsOptions options)
+        public IMetricsBuilder Use(MetricsOptions options)
         {
             if (options == null)
             {
@@ -47,51 +49,56 @@ namespace App.Metrics
 
             _setupAction(options);
 
+            RefreshOptions(options);
+
             return _metricsBuilder;
         }
 
         /// <summary>
         ///     <para>
-        ///         Uses the specifed key value pairs to configure an <see cref="MetricsOptions"/> instance for App Metrics core configuration.
+        ///         Uses the specifed key value pairs to configure an <see cref="MetricsOptions" /> instance for App Metrics core
+        ///         configuration.
         ///     </para>
         ///     <para>
-        ///         Keys match the <see cref="MetricsOptions"/>s property names.
+        ///         Keys match the <see cref="MetricsOptions" />s property names.
         ///     </para>
         /// </summary>
         /// <param name="optionValues">Key value pairs for configuring App Metrics</param>
         /// <returns>
         ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
-        public IMetricsBuilder Configure(IEnumerable<KeyValuePair<string, string>> optionValues)
+        public IMetricsBuilder Use(IEnumerable<KeyValuePair<string, string>> optionValues)
         {
             if (optionValues == null)
             {
                 throw new ArgumentNullException(nameof(optionValues));
             }
 
-            var options = new KeyValuePairMetricsOptions(optionValues).AsOptions();
+            var mergedOptions = new KeyValuePairMetricsOptions(Options, optionValues).AsOptions();
 
-            _setupAction(options);
+            _setupAction(mergedOptions);
 
-            AddDefaultTags(options);
+            RefreshOptions(mergedOptions);
 
             return _metricsBuilder;
         }
 
         /// <summary>
         ///     <para>
-        ///         Uses the specifed key value pairs to configure an <see cref="MetricsOptions"/> instance for App Metrics core configuration.
+        ///         Uses the specifed key value pairs to configure an <see cref="MetricsOptions" /> instance for App Metrics core
+        ///         configuration.
         ///     </para>
         ///     <para>
-        ///         Keys match the <see cref="MetricsOptions"/>s property names. Any make key will override the <see cref="MetricsOptions"/> value configured.
+        ///         Keys match the <see cref="MetricsOptions" />s property names. Any make key will override the
+        ///         <see cref="MetricsOptions" /> value configured.
         ///     </para>
         /// </summary>
-        /// <param name="options">An <see cref="MetricsOptions"/> instance used to configure core App Metrics options.</param>
+        /// <param name="options">An <see cref="MetricsOptions" /> instance used to configure core App Metrics options.</param>
         /// <param name="optionValues">Key value pairs for configuring App Metrics</param>
         /// <returns>
         ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
-        public IMetricsBuilder Configure(MetricsOptions options, IEnumerable<KeyValuePair<string, string>> optionValues)
+        public IMetricsBuilder Use(MetricsOptions options, IEnumerable<KeyValuePair<string, string>> optionValues)
         {
             if (options == null)
             {
@@ -105,68 +112,68 @@ namespace App.Metrics
 
             _setupAction(new KeyValuePairMetricsOptions(options, optionValues).AsOptions());
 
-            AddDefaultTags(options);
+            RefreshOptions(options);
 
             return _metricsBuilder;
         }
 
         /// <summary>
         ///     <para>
-        ///         Uses the specifed key value pairs to configure an <see cref="MetricsOptions"/> instance for App Metrics core configuration.
+        ///         Uses the specifed key value pairs to configure an <see cref="MetricsOptions" /> instance for App Metrics core
+        ///         configuration.
         ///     </para>
         ///     <para>
-        ///         Keys match the <see cref="MetricsOptions"/>s property names. Any make key will override the <see cref="MetricsOptions"/> value configured.
+        ///         Keys match the <see cref="MetricsOptions" />s property names. Any make key will override the
+        ///         <see cref="MetricsOptions" /> value configured.
         ///     </para>
         /// </summary>
-        /// <param name="setupAction">An <see cref="MetricsOptions"/> setup action used to configure core App Metrics options.</param>
+        /// <param name="setupAction">An <see cref="MetricsOptions" /> setup action used to configure core App Metrics options.</param>
         /// <returns>
         ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
-        public IMetricsBuilder Configure(Action<MetricsOptions> setupAction)
+        public IMetricsBuilder Use(Action<MetricsOptions> setupAction)
         {
             if (setupAction == null)
             {
                 throw new ArgumentNullException(nameof(setupAction));
             }
 
-            var options = new MetricsOptions();
+            setupAction(Options);
 
-            setupAction(options);
+            _setupAction(Options);
 
-            _setupAction(options);
-
-            AddDefaultTags(options);
+            RefreshOptions(Options);
 
             return _metricsBuilder;
         }
 
-        private void AddDefaultTags(MetricsOptions options)
+        private void RefreshOptions(MetricsOptions options)
         {
-            if (!options.AddDefaultGlobalTags)
+            if (options.AddDefaultGlobalTags)
             {
-                return;
-            }
+                var environmentInfo = _environmentInfoProvider.Build();
 
-            var environmentInfo = _environmentInfoProvider.Build();
+                if (!options.GlobalTags.ContainsKey("app"))
+                {
+                    options.GlobalTags.Add("app", environmentInfo.EntryAssemblyName);
+                }
 
-            if (!options.GlobalTags.ContainsKey("app"))
-            {
-                options.GlobalTags.Add("app", environmentInfo.EntryAssemblyName);
-            }
+                if (!options.GlobalTags.ContainsKey("server"))
+                {
+                    options.GlobalTags.Add("server", environmentInfo.MachineName);
+                }
 
-            if (!options.GlobalTags.ContainsKey("server"))
-            {
-                options.GlobalTags.Add("server", environmentInfo.MachineName);
-            }
-
-            if (!options.GlobalTags.ContainsKey("env"))
-            {
+                if (!options.GlobalTags.ContainsKey("env"))
+                {
 #if DEBUG
-                options.GlobalTags.Add("env", "debug");
+                    options.GlobalTags.Add("env", "debug");
 #else
-                options.GlobalTags.Add("env", "release");
+                    options.GlobalTags.Add("env", "release");
 #endif
+                }
             }
+
+            Options = options;
         }
     }
 }

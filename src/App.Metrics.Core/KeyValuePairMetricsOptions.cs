@@ -26,19 +26,18 @@ namespace App.Metrics
                 throw new ArgumentNullException(nameof(optionValues));
             }
 
-            _options = options ?? throw new ArgumentNullException(nameof(options));
-
+            _options = options;
             _optionValues = optionValues.ToDictionary(o => o.Key, o => o.Value);
         }
 
-        public KeyValuePairMetricsOptions(IEnumerable<KeyValuePair<string, string>> options)
+        public KeyValuePairMetricsOptions(IEnumerable<KeyValuePair<string, string>> optionValues)
         {
-            if (options == null)
+            if (optionValues == null)
             {
-                throw new ArgumentNullException(nameof(options));
+                throw new ArgumentNullException(nameof(optionValues));
             }
 
-            _optionValues = options.ToDictionary(o => o.Key, o => o.Value);
+            _optionValues = optionValues.ToDictionary(o => o.Key, o => o.Value);
         }
 
         public MetricsOptions AsOptions()
