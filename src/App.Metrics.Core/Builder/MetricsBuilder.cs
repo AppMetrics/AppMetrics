@@ -81,11 +81,11 @@ namespace App.Metrics
         });
 
         /// <inheritdoc />
-        public MetricsOptionsBuilder Options
+        public MetricsOptionsConfigurationBuilder Configuration
         {
             get
             {
-                return new MetricsOptionsBuilder(
+                return new MetricsOptionsConfigurationBuilder(
                     this,
                     _options,
                     options =>
@@ -114,6 +114,11 @@ namespace App.Metrics
         public IMetricsRoot Build()
         {
             IMetricsRegistry registry = new NullMetricsRegistry();
+
+            if (_options == null)
+            {
+                _options = new MetricsOptions();
+            }
 
             if (_options.Enabled)
             {

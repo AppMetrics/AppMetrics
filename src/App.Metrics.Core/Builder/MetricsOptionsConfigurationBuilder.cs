@@ -1,4 +1,4 @@
-﻿// <copyright file="MetricsOptionsBuilder.cs" company="Allan Hardy">
+﻿// <copyright file="MetricsOptionsConfigurationBuilder.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
@@ -13,14 +13,14 @@ namespace App.Metrics
     /// <summary>
     ///     Builder for configuring the <see cref="MetricsOptions" />.
     /// </summary>
-    public class MetricsOptionsBuilder
+    public class MetricsOptionsConfigurationBuilder
     {
         private readonly EnvironmentInfoProvider _environmentInfoProvider;
         private readonly IMetricsBuilder _metricsBuilder;
         private readonly Action<MetricsOptions> _setupAction;
         private MetricsOptions _options;
 
-        internal MetricsOptionsBuilder(
+        internal MetricsOptionsConfigurationBuilder(
             IMetricsBuilder metricsBuilder,
             MetricsOptions currentOptions,
             Action<MetricsOptions> setupAction,
@@ -32,10 +32,7 @@ namespace App.Metrics
             _options = currentOptions ?? new MetricsOptions();
         }
 
-        public MetricsOptions Options
-        {
-            get { return _options; }
-        }
+        public MetricsOptions Options => _options;
 
         /// <summary>
         ///     <para>
@@ -46,7 +43,7 @@ namespace App.Metrics
         /// <returns>
         ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
-        public IMetricsBuilder Use(MetricsOptions options)
+        public IMetricsBuilder Configure(MetricsOptions options)
         {
             if (options == null)
             {
@@ -73,7 +70,7 @@ namespace App.Metrics
         /// <returns>
         ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
-        public IMetricsBuilder Use(IEnumerable<KeyValuePair<string, string>> optionValues)
+        public IMetricsBuilder Configure(IEnumerable<KeyValuePair<string, string>> optionValues)
         {
             if (optionValues == null)
             {
@@ -104,7 +101,7 @@ namespace App.Metrics
         /// <returns>
         ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
-        public IMetricsBuilder Use(MetricsOptions options, IEnumerable<KeyValuePair<string, string>> optionValues)
+        public IMetricsBuilder Configure(MetricsOptions options, IEnumerable<KeyValuePair<string, string>> optionValues)
         {
             if (options == null)
             {
@@ -137,7 +134,7 @@ namespace App.Metrics
         /// <returns>
         ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
-        public IMetricsBuilder Use(Action<MetricsOptions> setupAction)
+        public IMetricsBuilder Configure(Action<MetricsOptions> setupAction)
         {
             if (setupAction == null)
             {

@@ -22,7 +22,7 @@ namespace App.Metrics
         /// <summary>
         ///     Builder for configuring core App Metrics options.
         /// </summary>
-        MetricsOptionsBuilder Options { get; }
+        MetricsOptionsConfigurationBuilder Configuration { get; }
 
         /// <summary>
         ///     <para>

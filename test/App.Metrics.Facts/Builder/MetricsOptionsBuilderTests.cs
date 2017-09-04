@@ -33,7 +33,7 @@ namespace App.Metrics.Facts.Builder
                                 };
 
             // Act
-            var metrics = new MetricsBuilder().Options.Use(options, keyValuePairs).Build();
+            var metrics = new MetricsBuilder().Configuration.Configure(options, keyValuePairs).Build();
 
             // Assert
             metrics.Options.AddDefaultGlobalTags.Should().BeFalse();
@@ -59,7 +59,7 @@ namespace App.Metrics.Facts.Builder
                                 };
 
             // Act
-            var metrics = new MetricsBuilder().Options.Use(keyValuePairs).Build();
+            var metrics = new MetricsBuilder().Configuration.Configure(keyValuePairs).Build();
 
             // Assert
             metrics.Options.AddDefaultGlobalTags.Should().BeFalse();
@@ -85,7 +85,7 @@ namespace App.Metrics.Facts.Builder
             }
 
             // Act
-            var metrics = new MetricsBuilder().Options.Use(SetupAction).Build();
+            var metrics = new MetricsBuilder().Configuration.Configure(SetupAction).Build();
 
             // Assert
             metrics.Options.AddDefaultGlobalTags.Should().BeFalse();
@@ -103,10 +103,10 @@ namespace App.Metrics.Facts.Builder
             var builder = AppMetrics.CreateDefaultBuilder();
 
             // Act
-            var buider = builder.Options.Use(options => options.Enabled = false);
+            var buider = builder.Configuration.Configure(options => options.Enabled = false);
 
             // Assert
-            buider.Options.Options.Enabled.Should().BeFalse();
+            buider.Configuration.Options.Enabled.Should().BeFalse();
         }
 
         [Fact]
@@ -120,7 +120,7 @@ namespace App.Metrics.Facts.Builder
             options.DefaultContextLabel = "test";
 
             // Act
-            var metrics = new MetricsBuilder().Options.Use(options).Build();
+            var metrics = new MetricsBuilder().Configuration.Configure(options).Build();
 
             // Assert
             metrics.Options.AddDefaultGlobalTags.Should().BeFalse();
@@ -142,7 +142,7 @@ namespace App.Metrics.Facts.Builder
             }
 
             // Act
-            var metrics = new MetricsBuilder().Options.Use(SetupAction).Build();
+            var metrics = new MetricsBuilder().Configuration.Configure(SetupAction).Build();
 
             // Assert
             metrics.Options.GlobalTags.Count.Should().Be(4);
