@@ -18,18 +18,24 @@ namespace App.Metrics
         private readonly EnvironmentInfoProvider _environmentInfoProvider;
         private readonly IMetricsBuilder _metricsBuilder;
         private readonly Action<MetricsOptions> _setupAction;
+        private MetricsOptions _options;
 
         internal MetricsOptionsBuilder(
             IMetricsBuilder metricsBuilder,
+            MetricsOptions currentOptions,
             Action<MetricsOptions> setupAction,
             EnvironmentInfoProvider environmentInfoProvider)
         {
             _environmentInfoProvider = environmentInfoProvider ?? throw new ArgumentNullException(nameof(environmentInfoProvider));
             _metricsBuilder = metricsBuilder ?? throw new ArgumentNullException(nameof(metricsBuilder));
             _setupAction = setupAction ?? throw new ArgumentNullException(nameof(setupAction));
+            _options = currentOptions ?? new MetricsOptions();
         }
 
-        public MetricsOptions Options { get; private set; } = new MetricsOptions();
+        public MetricsOptions Options
+        {
+            get { return _options; }
+        }
 
         /// <summary>
         ///     <para>
@@ -74,7 +80,7 @@ namespace App.Metrics
                 throw new ArgumentNullException(nameof(optionValues));
             }
 
-            var mergedOptions = new KeyValuePairMetricsOptions(Options, optionValues).AsOptions();
+            var mergedOptions = new KeyValuePairMetricsOptions(_options, optionValues).AsOptions();
 
             _setupAction(mergedOptions);
 
@@ -138,11 +144,11 @@ namespace App.Metrics
                 throw new ArgumentNullException(nameof(setupAction));
             }
 
-            setupAction(Options);
+            setupAction(_options);
 
-            _setupAction(Options);
+            _setupAction(_options);
 
-            RefreshOptions(Options);
+            RefreshOptions(_options);
 
             return _metricsBuilder;
         }
@@ -173,7 +179,7 @@ namespace App.Metrics
                 }
             }
 
-            Options = options;
+            _options = options;
         }
     }
 }

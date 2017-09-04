@@ -28,7 +28,7 @@ namespace App.Metrics
         private DefaultSamplingReservoirProvider _defaultSamplingReservoir = new DefaultSamplingReservoirProvider(() => new DefaultForwardDecayingReservoir());
         private IFilterMetrics _metricsFilter = new NoOpMetricsFilter();
         private IClock _clock = new StopwatchClock();
-        private MetricsOptions _options = new MetricsOptions();
+        private MetricsOptions _options;
 
         /// <inheritdoc />
         public MetricsFilterBuilder Filter
@@ -87,6 +87,7 @@ namespace App.Metrics
             {
                 return new MetricsOptionsBuilder(
                     this,
+                    _options,
                     options =>
                     {
                         _options = options;
