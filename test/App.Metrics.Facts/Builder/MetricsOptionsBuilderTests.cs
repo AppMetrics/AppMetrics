@@ -18,7 +18,6 @@ namespace App.Metrics.Facts.Builder
             // Arrange
             var options = new MetricsOptions
                           {
-                              AddDefaultGlobalTags = true,
                               Enabled = true,
                               DefaultContextLabel = "initial value",
                               GlobalTags = new GlobalMetricTags(new Dictionary<string, string> { { "initial", "value" } })
@@ -26,7 +25,6 @@ namespace App.Metrics.Facts.Builder
 
             var keyValuePairs = new Dictionary<string, string>
                                 {
-                                    { "MetricsOptions:AddDefaultGlobalTags", "false" },
                                     { "MetricsOptions:DefaultContextLabel", "Testing" },
                                     { "MetricsOptions:GlobalTags", "tag1=value1,tag2=value2" },
                                     { "MetricsOptions:Enabled", "false" }
@@ -36,7 +34,6 @@ namespace App.Metrics.Facts.Builder
             var metrics = new MetricsBuilder().Configuration.Configure(options, keyValuePairs).Build();
 
             // Assert
-            metrics.Options.AddDefaultGlobalTags.Should().BeFalse();
             metrics.Options.DefaultContextLabel.Should().Be("Testing");
             metrics.Options.GlobalTags.Count.Should().Be(2);
             metrics.Options.GlobalTags.First().Key.Should().Be("tag1");
@@ -52,7 +49,6 @@ namespace App.Metrics.Facts.Builder
             // Arrange
             var keyValuePairs = new Dictionary<string, string>
                                 {
-                                    { "MetricsOptions:AddDefaultGlobalTags", "false" },
                                     { "MetricsOptions:DefaultContextLabel", "Testing" },
                                     { "MetricsOptions:GlobalTags", "tag1=value1,tag2=value2" },
                                     { "MetricsOptions:Enabled", "false" }
@@ -62,7 +58,6 @@ namespace App.Metrics.Facts.Builder
             var metrics = new MetricsBuilder().Configuration.Configure(keyValuePairs).Build();
 
             // Assert
-            metrics.Options.AddDefaultGlobalTags.Should().BeFalse();
             metrics.Options.DefaultContextLabel.Should().Be("Testing");
             metrics.Options.GlobalTags.Count.Should().Be(2);
             metrics.Options.GlobalTags.First().Key.Should().Be("tag1");
@@ -80,7 +75,6 @@ namespace App.Metrics.Facts.Builder
             {
                 options.Enabled = false;
                 options.GlobalTags.Add("tag1", "value1");
-                options.AddDefaultGlobalTags = false;
                 options.DefaultContextLabel = "test";
             }
 
@@ -88,7 +82,6 @@ namespace App.Metrics.Facts.Builder
             var metrics = new MetricsBuilder().Configuration.Configure(SetupAction).Build();
 
             // Assert
-            metrics.Options.AddDefaultGlobalTags.Should().BeFalse();
             metrics.Options.DefaultContextLabel.Should().Be("test");
             metrics.Options.GlobalTags.Count.Should().Be(1);
             metrics.Options.GlobalTags.First().Key.Should().Be("tag1");
@@ -116,14 +109,12 @@ namespace App.Metrics.Facts.Builder
             var options = new MetricsOptions();
             options.Enabled = true;
             options.GlobalTags.Add("tag1", "value1");
-            options.AddDefaultGlobalTags = false;
             options.DefaultContextLabel = "test";
 
             // Act
             var metrics = new MetricsBuilder().Configuration.Configure(options).Build();
 
             // Assert
-            metrics.Options.AddDefaultGlobalTags.Should().BeFalse();
             metrics.Options.DefaultContextLabel.Should().Be("test");
             metrics.Options.GlobalTags.Count.Should().Be(1);
             metrics.Options.GlobalTags.First().Key.Should().Be("tag1");
@@ -137,8 +128,10 @@ namespace App.Metrics.Facts.Builder
             // Arrange
             void SetupAction(MetricsOptions options)
             {
-                options.AddDefaultGlobalTags = true;
                 options.GlobalTags.Add("tag1", "value1");
+                options.AddAppTag();
+                options.AddServerTag();
+                options.AddEnvTag();
             }
 
             // Act

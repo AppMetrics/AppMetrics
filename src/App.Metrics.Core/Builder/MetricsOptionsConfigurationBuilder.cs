@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using App.Metrics.Infrastructure;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics
@@ -15,7 +14,6 @@ namespace App.Metrics
     /// </summary>
     public class MetricsOptionsConfigurationBuilder
     {
-        private readonly EnvironmentInfoProvider _environmentInfoProvider;
         private readonly IMetricsBuilder _metricsBuilder;
         private readonly Action<MetricsOptions> _setupAction;
         private MetricsOptions _options;
@@ -23,10 +21,8 @@ namespace App.Metrics
         internal MetricsOptionsConfigurationBuilder(
             IMetricsBuilder metricsBuilder,
             MetricsOptions currentOptions,
-            Action<MetricsOptions> setupAction,
-            EnvironmentInfoProvider environmentInfoProvider)
+            Action<MetricsOptions> setupAction)
         {
-            _environmentInfoProvider = environmentInfoProvider ?? throw new ArgumentNullException(nameof(environmentInfoProvider));
             _metricsBuilder = metricsBuilder ?? throw new ArgumentNullException(nameof(metricsBuilder));
             _setupAction = setupAction ?? throw new ArgumentNullException(nameof(setupAction));
             _options = currentOptions ?? new MetricsOptions();
@@ -52,7 +48,7 @@ namespace App.Metrics
 
             _setupAction(options);
 
-            RefreshOptions(options);
+            _options = options;
 
             return _metricsBuilder;
         }
@@ -81,7 +77,7 @@ namespace App.Metrics
 
             _setupAction(mergedOptions);
 
-            RefreshOptions(mergedOptions);
+            _options = mergedOptions;
 
             return _metricsBuilder;
         }
@@ -115,7 +111,7 @@ namespace App.Metrics
 
             _setupAction(new KeyValuePairMetricsOptions(options, optionValues).AsOptions());
 
-            RefreshOptions(options);
+            _options = options;
 
             return _metricsBuilder;
         }
@@ -145,38 +141,7 @@ namespace App.Metrics
 
             _setupAction(_options);
 
-            RefreshOptions(_options);
-
             return _metricsBuilder;
-        }
-
-        private void RefreshOptions(MetricsOptions options)
-        {
-            if (options.AddDefaultGlobalTags)
-            {
-                var environmentInfo = _environmentInfoProvider.Build();
-
-                if (!options.GlobalTags.ContainsKey("app"))
-                {
-                    options.GlobalTags.Add("app", environmentInfo.EntryAssemblyName);
-                }
-
-                if (!options.GlobalTags.ContainsKey("server"))
-                {
-                    options.GlobalTags.Add("server", environmentInfo.MachineName);
-                }
-
-                if (!options.GlobalTags.ContainsKey("env"))
-                {
-#if DEBUG
-                    options.GlobalTags.Add("env", "debug");
-#else
-                    options.GlobalTags.Add("env", "release");
-#endif
-                }
-            }
-
-            _options = options;
         }
     }
 }

@@ -11,7 +11,6 @@ namespace App.Metrics
 {
     internal class KeyValuePairMetricsOptions
     {
-        private static readonly string AddDefaultGlobalTagsDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.AddDefaultGlobalTags)}";
         private static readonly string DefaultContextLabelDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.DefaultContextLabel)}";
         private static readonly string GlobalTagsDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.GlobalTags)}";
         private static readonly string EnabledDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.Enabled)}";
@@ -49,15 +48,6 @@ namespace App.Metrics
                 if (string.Compare(key, DefaultContextLabelDirective, StringComparison.CurrentCultureIgnoreCase) == 0)
                 {
                     options.DefaultContextLabel = _optionValues[key];
-                }
-                else if (string.Compare(key, AddDefaultGlobalTagsDirective, StringComparison.CurrentCultureIgnoreCase) == 0)
-                {
-                    if (!bool.TryParse(_optionValues[key], out var addDefaultGlobalTags))
-                    {
-                        throw new InvalidCastException($"Attempted to bind {key} to {AddDefaultGlobalTagsDirective} but it's not a boolean");
-                    }
-
-                    options.AddDefaultGlobalTags = addDefaultGlobalTags;
                 }
                 else if (string.Compare(key, GlobalTagsDirective, StringComparison.CurrentCultureIgnoreCase) == 0)
                 {

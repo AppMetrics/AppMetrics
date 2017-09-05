@@ -91,8 +91,7 @@ namespace App.Metrics
                     options =>
                     {
                         _options = options;
-                    },
-                    _environmentInfoProvider);
+                    });
             }
         }
 

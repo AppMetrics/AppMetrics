@@ -24,6 +24,13 @@ namespace App.Metrics
         public static IMetricsBuilder CreateDefaultBuilder()
         {
             var builder = new MetricsBuilder()
+                .Configuration.Configure(
+                    options =>
+                    {
+                        options.AddServerTag();
+                        options.AddAppTag();
+                        options.AddEnvTag();
+                    })
                 .OutputEnvInfo.AsPlainText()
                 .OutputEnvInfo.AsJson()
                 .OutputMetrics.AsJson()

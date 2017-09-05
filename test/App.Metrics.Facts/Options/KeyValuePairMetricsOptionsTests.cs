@@ -18,7 +18,6 @@ namespace App.Metrics.Facts.Options
             // Arrange
             var keyValuePairs = new Dictionary<string, string>
                           {
-                              { "MetricsOptions:AddDefaultGlobalTags", "false" },
                               { "MetricsOptions:DefaultContextLabel", "Testing" },
                               { "MetricsOptions:GlobalTags", "tag1=value1, tag2=value2" },
                               { "MetricsOptions:Enabled", "false" }
@@ -28,7 +27,6 @@ namespace App.Metrics.Facts.Options
             var options = new KeyValuePairMetricsOptions(keyValuePairs).AsOptions();
 
             // Assert
-            options.AddDefaultGlobalTags.Should().BeFalse();
             options.DefaultContextLabel.Should().Be("Testing");
             options.GlobalTags.Count.Should().Be(2);
             options.GlobalTags.First().Key.Should().Be("tag1");
@@ -50,26 +48,6 @@ namespace App.Metrics.Facts.Options
 
             // Assert
            action.ShouldThrow<ArgumentNullException>();
-        }
-
-        [Fact]
-        public void Add_default_global_tags_should_be_bool()
-        {
-            // Arrange
-            // Act
-            Action action = () =>
-            {
-                var keyValuePairs = new Dictionary<string, string>
-                                    {
-                                        { "MetricsOptions:AddDefaultGlobalTags", "not_a_bool" }
-                                    };
-
-                // Act
-                var options = new KeyValuePairMetricsOptions(keyValuePairs).AsOptions();
-            };
-
-            // Assert
-            action.ShouldThrow<InvalidCastException>();
         }
 
         [Fact]
