@@ -9,7 +9,6 @@ using App.Metrics.Counter;
 using App.Metrics.FactsCommon.Fixtures;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
-using App.Metrics.Tagging;
 using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;

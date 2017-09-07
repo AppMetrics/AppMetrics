@@ -12,7 +12,7 @@ namespace App.Metrics
     /// <summary>
     ///     Builder for configuring <see cref="IMetricsOutputFormatter"/>s used for formatting <see cref="MetricType"/>s when they are reported.
     /// </summary>
-    public class MetricsOutputFormattingBuilder
+    public class MetricsOutputFormattingBuilder : IMetricsOutputFormattingBuilder
     {
         private readonly IMetricsBuilder _metricsBuilder;
         private readonly Action<IMetricsOutputFormatter> _metricsFormatter;
@@ -25,18 +25,7 @@ namespace App.Metrics
             _metricsFormatter = metricsFormatter ?? throw new ArgumentNullException(nameof(metricsFormatter));
         }
 
-        /// <summary>
-        ///     <para>
-        ///         Uses the specifed <see cref="IMetricsOutputFormatter"/> as one of the available formatters when reporting metric values.
-        ///     </para>
-        ///     <para>
-        ///         Multiple formatters can be used, in which case the <see cref="IMetricsRoot.DefaultOutputMetricsFormatter"/> will be set to the first configured formatter.
-        ///     </para>
-        /// </summary>
-        /// <param name="formatter">An <see cref="IMetricsOutputFormatter"/> instance used to format metric values when reporting.</param>
-        /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
-        /// </returns>
+        /// <inheritdoc />
         public IMetricsBuilder Using(IMetricsOutputFormatter formatter)
         {
             if (formatter == null)
@@ -49,18 +38,7 @@ namespace App.Metrics
             return _metricsBuilder;
         }
 
-        /// <summary>
-        ///     <para>
-        ///         Uses the specifed <see cref="IMetricsOutputFormatter"/> as one of the available formatters when reporting metric values.
-        ///     </para>
-        ///     <para>
-        ///         Multiple formatters can be used, in which case the <see cref="IMetricsRoot.DefaultOutputMetricsFormatter"/> will be set to the first configured formatter.
-        ///     </para>
-        /// </summary>
-        /// <typeparam name="TMetricsOutputFormatter">An <see cref="IMetricsOutputFormatter"/> type used to format metric values when reporting.</typeparam>
-        /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
-        /// </returns>
+        /// <inheritdoc />
         public IMetricsBuilder Using<TMetricsOutputFormatter>()
             where TMetricsOutputFormatter : IMetricsOutputFormatter, new()
         {

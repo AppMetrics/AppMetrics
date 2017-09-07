@@ -12,7 +12,7 @@ namespace App.Metrics
     /// <summary>
     ///     Builder for configuring the <see cref="IClock"/> used for timing when recording specific metrics types e.g. <see cref="MetricType.Timer"/>.
     /// </summary>
-    public class MetricsClockBuilder
+    public class MetricsClockBuilder : IMetricsClockBuilder
     {
         private readonly Action<IClock> _clock;
         private readonly IMetricsBuilder _metricsBuilder;
@@ -25,18 +25,7 @@ namespace App.Metrics
             _clock = clock ?? throw new ArgumentNullException(nameof(clock));
         }
 
-        /// <summary>
-        ///     <para>
-        ///         Uses the specifed <see cref="IClock"/> to time specific <see cref="MetricType"/>s. e.g. <see cref="MetricType.Timer"/>.
-        ///     </para>
-        ///     <para>
-        ///         A single <see cref="IClock"/> should be configured. The last <see cref="IClock"/> configured will be used.
-        ///     </para>
-        /// </summary>
-        /// <param name="clock">An <see cref="IClock"/> instance used for timing. e.g. <see cref="StopwatchClock"/></param>
-        /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
-        /// </returns>
+        /// <inheritdoc />
         public IMetricsBuilder Clock(IClock clock)
         {
             if (clock == null)
@@ -49,18 +38,7 @@ namespace App.Metrics
             return _metricsBuilder;
         }
 
-        /// <summary>
-        ///     <para>
-        ///         Uses the specifed <see cref="IClock"/> to time specific <see cref="MetricType"/>s. e.g. <see cref="MetricType.Timer"/>.
-        ///     </para>
-        ///     <para>
-        ///         A single <see cref="IClock"/> should be configured. The last <see cref="IClock"/> configured will be used.
-        ///     </para>
-        /// </summary>
-        /// <typeparam name="TClock">An <see cref="IClock"/> type used for timing. e.g. <see cref="StopwatchClock"/></typeparam>
-        /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
-        /// </returns>
+        /// <inheritdoc />
         public IMetricsBuilder Clock<TClock>()
             where TClock : class, IClock, new()
         {
@@ -69,17 +47,7 @@ namespace App.Metrics
             return _metricsBuilder;
         }
 
-        /// <summary>
-        ///     <para>
-        ///         Uses the <see cref="StopwatchClock"/> to time specific <see cref="MetricType"/>s. e.g. <see cref="MetricType.Timer"/>.
-        ///     </para>
-        ///     <para>
-        ///         A single <see cref="IClock"/> should be configured. The last <see cref="IClock"/> configured will be used.
-        ///     </para>
-        /// </summary>
-        /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
-        /// </returns>
+        /// <inheritdoc />
         public IMetricsBuilder StopwatchClock()
         {
             Clock<StopwatchClock>();
@@ -87,17 +55,7 @@ namespace App.Metrics
             return _metricsBuilder;
         }
 
-        /// <summary>
-        ///     <para>
-        ///         Uses the <see cref="SystemClock"/> to time specific <see cref="MetricType"/>s. e.g. <see cref="MetricType.Timer"/>.
-        ///     </para>
-        ///     <para>
-        ///         A single <see cref="IClock"/> should be configured. The last <see cref="IClock"/> configured will be used.
-        ///     </para>
-        /// </summary>
-        /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
-        /// </returns>
+        /// <inheritdoc />
         public IMetricsBuilder SystemClock()
         {
             Clock<SystemClock>();

@@ -4,7 +4,6 @@
 
 using System.Collections.Generic;
 using App.Metrics.Infrastructure;
-using App.Metrics.Tagging;
 using FluentAssertions;
 using Xunit;
 

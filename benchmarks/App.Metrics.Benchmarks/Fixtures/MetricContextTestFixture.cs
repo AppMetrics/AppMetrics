@@ -13,7 +13,6 @@ using App.Metrics.Meter;
 using App.Metrics.Registry;
 using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
-using App.Metrics.Tagging;
 using App.Metrics.Timer;
 
 namespace App.Metrics.Benchmarks.Fixtures

@@ -17,10 +17,10 @@ namespace App.Metrics.Formatters
         {
         }
 
-        public IEnvOutputFormatter GetType<T>()
-            where T : IEnvOutputFormatter
+        public IEnvOutputFormatter GetType<TFormatter>()
+            where TFormatter : IEnvOutputFormatter
         {
-            return GetType(typeof(T));
+            return GetType(typeof(TFormatter));
         }
 
         public IEnvOutputFormatter GetType(Type formatterType)
@@ -34,7 +34,7 @@ namespace App.Metrics.Formatters
                 }
             }
 
-            return default(IEnvOutputFormatter);
+            return default;
         }
 
         public IEnvOutputFormatter GetType(MetricsMediaTypeValue mediaTypeValue)
@@ -48,13 +48,13 @@ namespace App.Metrics.Formatters
                 }
             }
 
-            return default(IEnvOutputFormatter);
+            return default;
         }
 
-        public void RemoveType<T>()
-            where T : IEnvOutputFormatter
+        public void RemoveType<TFormatter>()
+            where TFormatter : IEnvOutputFormatter
         {
-            RemoveType(typeof(T));
+            RemoveType(typeof(TFormatter));
         }
 
         public void RemoveType(Type formatterType)
@@ -79,6 +79,19 @@ namespace App.Metrics.Formatters
                     RemoveAt(i);
                 }
             }
+        }
+
+        public void TryAdd<TFormatter>(IEnvOutputFormatter formatter)
+            where TFormatter : IEnvOutputFormatter
+        {
+            RemoveType<TFormatter>();
+            Add(formatter);
+        }
+
+        public void TryAdd(IEnvOutputFormatter formatter)
+        {
+            RemoveType(formatter.GetType());
+            Add(formatter);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace App.Metrics
     public struct UserValueWrapper
     {
         public static readonly IComparer<UserValueWrapper> Comparer = new UserValueComparer();
-        public static readonly UserValueWrapper Empty = default(UserValueWrapper);
+        public static readonly UserValueWrapper Empty = default;
 
         public string UserValue { get; }
 

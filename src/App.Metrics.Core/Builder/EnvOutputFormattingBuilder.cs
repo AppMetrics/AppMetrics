@@ -12,7 +12,7 @@ namespace App.Metrics
     /// <summary>
     ///     Builder for configuring environment information output formatting using an <see cref="IMetricsBuilder" />.
     /// </summary>
-    public class EnvOutputFormattingBuilder
+    public class EnvOutputFormattingBuilder : IEnvOutputFormattingBuilder
     {
         private readonly IMetricsBuilder _metricsBuilder;
         private readonly Action<IEnvOutputFormatter> _formatter;
@@ -25,18 +25,7 @@ namespace App.Metrics
             _formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
         }
 
-        /// <summary>
-        ///     <para>
-        ///         Uses the specifed <see cref="IEnvOutputFormatter"/> as one of the available formatters when reporting environment information.
-        ///     </para>
-        ///     <para>
-        ///         Multiple formatters can be used, in which case the <see cref="IMetricsRoot.DefaultOutputEnvFormatter"/> will be set to the first configured formatter.
-        ///     </para>
-        /// </summary>
-        /// <param name="formatter">An <see cref="IEnvOutputFormatter"/> instance used to format environment information when reporting.</param>
-        /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
-        /// </returns>
+        /// <inheritdoc />
         public IMetricsBuilder Using(IEnvOutputFormatter formatter)
         {
             if (formatter == null)
@@ -49,18 +38,7 @@ namespace App.Metrics
             return _metricsBuilder;
         }
 
-        /// <summary>
-        ///     <para>
-        ///         Uses the specifed <see cref="IEnvOutputFormatter"/> as one of the available formatters when reporting environment information.
-        ///     </para>
-        ///     <para>
-        ///         Multiple formatters can be used, in which case the <see cref="IMetricsRoot.DefaultOutputEnvFormatter"/> will be set to the first configured formatter.
-        ///     </para>
-        /// </summary>
-        /// <typeparam name="TEvnOutputFormatter">An <see cref="IEnvOutputFormatter"/> type used to format environment information when reporting.</typeparam>
-        /// <returns>
-        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
-        /// </returns>
+        /// <inheritdoc />
         public IMetricsBuilder Using<TEvnOutputFormatter>()
             where TEvnOutputFormatter : IEnvOutputFormatter, new()
         {

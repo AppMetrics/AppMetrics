@@ -13,7 +13,6 @@ using App.Metrics.Histogram;
 using App.Metrics.Logging;
 using App.Metrics.Meter;
 using App.Metrics.Registry;
-using App.Metrics.Tagging;
 using App.Metrics.Timer;
 
 namespace App.Metrics.Internal

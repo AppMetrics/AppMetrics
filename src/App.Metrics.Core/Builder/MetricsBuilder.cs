@@ -6,13 +6,13 @@ using System.Linq;
 using App.Metrics.Filtering;
 using App.Metrics.Filters;
 using App.Metrics.Formatters;
+using App.Metrics.Formatters.Ascii;
 using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.Internal.NoOp;
 using App.Metrics.Registry;
 using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
-using App.Metrics.Tagging;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics
@@ -31,7 +31,7 @@ namespace App.Metrics
         private MetricsOptions _options;
 
         /// <inheritdoc />
-        public MetricsFilterBuilder Filter
+        public IMetricsFilterBuilder Filter
         {
             get
             {
@@ -45,7 +45,7 @@ namespace App.Metrics
         }
 
         /// <inheritdoc />
-        public MetricsClockBuilder TimeWith
+        public IMetricsClockBuilder TimeWith
         {
             get
             {
@@ -59,33 +59,33 @@ namespace App.Metrics
         }
 
         /// <inheritdoc />
-        public MetricsOutputFormattingBuilder OutputMetrics => new MetricsOutputFormattingBuilder(this, formatter =>
+        public IMetricsOutputFormattingBuilder OutputMetrics => new MetricsOutputFormattingBuilder(this, formatter =>
         {
             if (_defaultMetricsOutputFormatter == null)
             {
                 _defaultMetricsOutputFormatter = formatter;
             }
 
-            _metricsOutputFormatters.Add(formatter);
+            _metricsOutputFormatters.TryAdd(formatter);
         });
 
         /// <inheritdoc />
-        public EnvOutputFormattingBuilder OutputEnvInfo => new EnvOutputFormattingBuilder(this, formatter =>
+        public IEnvOutputFormattingBuilder OutputEnvInfo => new EnvOutputFormattingBuilder(this, formatter =>
         {
             if (_defauEnvOutputFormatter == null)
             {
                 _defauEnvOutputFormatter = formatter;
             }
 
-            _envFormatters.Add(formatter);
+            _envFormatters.TryAdd(formatter);
         });
 
         /// <inheritdoc />
-        public MetricsOptionsConfigurationBuilder Configuration
+        public IMetricsConfigurationBuilder Configuration
         {
             get
             {
-                return new MetricsOptionsConfigurationBuilder(
+                return new MetricsConfigurationBuilder(
                     this,
                     _options,
                     options =>
@@ -96,7 +96,7 @@ namespace App.Metrics
         }
 
         /// <inheritdoc />
-        public MetricsReservoirSamplingBuilder SampleWith
+        public IMetricsReservoirSamplingBuilder SampleWith
         {
             get
             {
@@ -122,6 +122,16 @@ namespace App.Metrics
             if (_options.Enabled)
             {
                 registry = new DefaultMetricsRegistry(_options.DefaultContextLabel, _clock, ContextRegistry);
+            }
+
+            if (_metricsOutputFormatters.Count == 0)
+            {
+                _metricsOutputFormatters.Add(new MetricsTextOutputFormatter());
+            }
+
+            if (_envFormatters.Count == 0)
+            {
+                _envFormatters.Add(new EnvInfoTextOutputFormatter());
             }
 
             var builderFactory = new DefaultMetricsBuilderFactory(_defaultSamplingReservoir);

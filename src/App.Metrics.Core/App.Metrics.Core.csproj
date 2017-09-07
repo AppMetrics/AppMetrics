@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\App.Metrics.Formatters.Ascii\App.Metrics.Formatters.Ascii.csproj" />
     <ProjectReference Include="..\App.Metrics.Abstractions\App.Metrics.Abstractions.csproj" />
   </ItemGroup>
 
@@ -35,6 +36,10 @@
     <Reference Include="System" />
     <Reference Include="System.Collections" />
     <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Tagging\Extensions\" />
   </ItemGroup>
 
 </Project>

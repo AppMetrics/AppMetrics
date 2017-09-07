@@ -18,9 +18,7 @@ namespace App.Metrics
 
         public T Value => _scalingFunction(ValueProvider.Value);
 
-        // ReSharper disable MemberCanBePrivate.Global
         public IMetricValueProvider<T> ValueProvider { get; }
-        // ReSharper restore MemberCanBePrivate.Global
 
         public T GetValue(bool resetMetric = false) { return _scalingFunction(ValueProvider.GetValue(resetMetric)); }
     }

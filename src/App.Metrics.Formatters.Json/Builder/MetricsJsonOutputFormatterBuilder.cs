@@ -19,7 +19,7 @@ namespace App.Metrics
         ///     Add the <see cref="MetricsJsonOutputFormatter" /> allowing metrics to optionally be reported as JSON.
         /// </summary>
         /// <param name="metricFormattingBuilder">
-        ///     The <see cref="MetricsOutputFormattingBuilder" /> used to configure formatting
+        ///     The <see cref="IMetricsOutputFormattingBuilder" /> used to configure JSON formatting
         ///     options.
         /// </param>
         /// <param name="setupAction">The JSON formatting options to use.</param>
@@ -27,7 +27,7 @@ namespace App.Metrics
         ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public static IMetricsBuilder AsJson(
-            this MetricsOutputFormattingBuilder metricFormattingBuilder,
+            this IMetricsOutputFormattingBuilder metricFormattingBuilder,
             Action<MetricsJsonOptions> setupAction = null)
         {
             if (metricFormattingBuilder == null)
