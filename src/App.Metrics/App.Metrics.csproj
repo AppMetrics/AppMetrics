@@ -11,7 +11,6 @@
   
   <ItemGroup>
     <ProjectReference Include="..\App.Metrics.Core\App.Metrics.Core.csproj" />
-    <ProjectReference Include="..\App.Metrics.Formatters.Ascii\App.Metrics.Formatters.Ascii.csproj" />
     <ProjectReference Include="..\App.Metrics.Formatters.Json\App.Metrics.Formatters.Json.csproj" />
   </ItemGroup>
 
