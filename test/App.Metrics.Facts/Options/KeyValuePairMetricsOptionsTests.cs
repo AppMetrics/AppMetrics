@@ -20,7 +20,8 @@ namespace App.Metrics.Facts.Options
             var keyValuePairs = new Dictionary<string, string>
                           {
                               { "MetricsOptions:DefaultContextLabel", "Testing" },
-                              { "MetricsOptions:GlobalTags", "tag1=value1, tag2=value2" },
+                              { "MetricsOptions:GlobalTags:tag1", "value1" },
+                              { "MetricsOptions:GlobalTags:tag2", "value2" },
                               { "MetricsOptions:Enabled", "false" }
                           };
 
@@ -72,8 +73,8 @@ namespace App.Metrics.Facts.Options
         }
 
         [Theory]
-        [InlineData("invalidseperator|value1, tag2=value2")]
-        [InlineData("no_comma")]
+        [InlineData("  ")]
+        [InlineData(null)]
         public void Global_tags_should_be_formatted_correctly(string tags)
         {
             // Arrange
@@ -82,7 +83,7 @@ namespace App.Metrics.Facts.Options
             {
                 var keyValuePairs = new Dictionary<string, string>
                                     {
-                                        { "MetricsOptions:GlobalTags", tags }
+                                        { "MetricsOptions:GlobalTags:test", tags }
                                     };
 
                 // Act

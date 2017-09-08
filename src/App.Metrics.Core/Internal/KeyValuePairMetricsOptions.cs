@@ -12,7 +12,7 @@ namespace App.Metrics.Internal
     {
         internal static readonly string DefaultContextLabelDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.DefaultContextLabel)}";
         internal static readonly string EnabledDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.Enabled)}";
-        internal static readonly string GlobalTagsDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.GlobalTags)}";
+        internal static readonly string GlobalTagsDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.GlobalTags)}:";
         private readonly MetricsOptions _options;
 
         private readonly Dictionary<string, string> _optionValues;
@@ -42,42 +42,35 @@ namespace App.Metrics.Internal
         {
             var options = _options ?? new MetricsOptions();
 
+            if (!mergeTags)
+            {
+                options.GlobalTags = new GlobalMetricTags();
+            }
+
             foreach (var key in _optionValues.Keys)
             {
                 if (string.Compare(key, DefaultContextLabelDirective, StringComparison.CurrentCultureIgnoreCase) == 0)
                 {
                     options.DefaultContextLabel = _optionValues[key];
                 }
-                else if (string.Compare(key, GlobalTagsDirective, StringComparison.CurrentCultureIgnoreCase) == 0)
+                else if (key.StartsWith(GlobalTagsDirective, StringComparison.CurrentCultureIgnoreCase))
                 {
-                    if (!mergeTags)
+                    var tagKey = key.Split(':')?.LastOrDefault()?.Trim();
+                    var tagValue = _optionValues[key]?.Split(new[] { ",", ", " }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault()?.Trim();
+
+                    if (string.IsNullOrWhiteSpace(tagKey) || string.IsNullOrWhiteSpace(tagValue))
                     {
-                        options.GlobalTags = new GlobalMetricTags();
+                        throw new InvalidOperationException(
+                            $"Attempted to bind {key} to {GlobalTagsDirective} but the value was not property formatted, format as: value='[MetricsOptions:GlobalTags:tagKey, tagValue]");
                     }
 
-                    var globalTags = _optionValues[key].Split(new[] { ",", ", " }, StringSplitOptions.RemoveEmptyEntries);
-
-                    foreach (var tagKeyValue in globalTags)
+                    if (options.GlobalTags.ContainsKey(tagKey))
                     {
-                        var keyValue = tagKeyValue.Split('=');
-
-                        if (keyValue.Length != 2)
-                        {
-                            throw new InvalidOperationException(
-                                $"Attempted to bind {key} to {GlobalTagsDirective} but the value was not property formatted, format as: value='tag1Name=tag1Value,tag2Name=tag2Value");
-                        }
-
-                        var tagKey = keyValue[0].Trim();
-                        var tagValue = keyValue[1].Trim();
-
-                        if (options.GlobalTags.ContainsKey(tagKey))
-                        {
-                            options.GlobalTags[tagKey] = tagValue;
-                        }
-                        else
-                        {
-                            options.GlobalTags.Add(tagKey, tagValue);
-                        }
+                        options.GlobalTags[tagKey] = tagValue;
+                    }
+                    else
+                    {
+                        options.GlobalTags.Add(tagKey, tagValue);
                     }
                 }
                 else if (string.Compare(key, EnabledDirective, StringComparison.CurrentCultureIgnoreCase) == 0)

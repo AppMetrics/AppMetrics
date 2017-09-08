@@ -25,7 +25,8 @@ namespace App.Metrics.Facts.Builders
             var keyValuePairs = new Dictionary<string, string>
                                 {
                                     { "MetricsOptions:DefaultContextLabel", "Testing" },
-                                    { "MetricsOptions:GlobalTags", "tag1=value1,tag2=value2" },
+                                    { "MetricsOptions:GlobalTags:tag1", "value1" },
+                                    { "MetricsOptions:GlobalTags:tag2", "value2" },
                                     { "MetricsOptions:Enabled", "false" }
                                 };
 
@@ -49,7 +50,8 @@ namespace App.Metrics.Facts.Builders
             var keyValuePairs = new Dictionary<string, string>
                                 {
                                     { "MetricsOptions:DefaultContextLabel", "Testing" },
-                                    { "MetricsOptions:GlobalTags", "tag1=value1,tag2=value2" },
+                                    { "MetricsOptions:GlobalTags:tag1", "value1" },
+                                    { "MetricsOptions:GlobalTags:tag2", "value2" },
                                     { "MetricsOptions:Enabled", "false" }
                                 };
 
@@ -142,7 +144,8 @@ namespace App.Metrics.Facts.Builders
             // Arrange
             var keyValuePairs = new Dictionary<string, string>
                                 {
-                                    { "MetricsOptions:GlobalTags", "tag1=replaced, tag2=added" }
+                                    { "MetricsOptions:GlobalTags:tag1", "replaced" },
+                                    { "MetricsOptions:GlobalTags:tag2", "added" }
                                 };
             var options = new MetricsOptions();
             options.GlobalTags.Add("tag1", "value1");

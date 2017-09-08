@@ -3,7 +3,6 @@
 // </copyright>
 
 using System.Collections.Generic;
-using System.Linq;
 
 namespace App.Metrics.Internal.Extensions
 {
@@ -11,12 +10,23 @@ namespace App.Metrics.Internal.Extensions
     {
         public static IEnumerable<KeyValuePair<string, string>> ToKeyValue(this MetricsOptions options)
         {
-            return new Dictionary<string, string>
+            var result = new Dictionary<string, string>
                    {
                        [KeyValuePairMetricsOptions.DefaultContextLabelDirective] = options.DefaultContextLabel,
-                       [KeyValuePairMetricsOptions.EnabledDirective] = options.Enabled.ToString(),
-                       [KeyValuePairMetricsOptions.GlobalTagsDirective] = string.Join(", ", options.GlobalTags.Select(t => $"{t.Key}={t.Value}"))
+                       [KeyValuePairMetricsOptions.EnabledDirective] = options.Enabled.ToString()
                    };
+
+            foreach (var globalTag in options.GlobalTags)
+            {
+                var key = $"{KeyValuePairMetricsOptions.GlobalTagsDirective}:{globalTag.Key}";
+
+                if (!result.ContainsKey(key))
+                {
+                    result.Add(key, globalTag.Value);
+                }
+            }
+
+            return result;
         }
     }
 }
