@@ -109,6 +109,28 @@ namespace App.Metrics.Facts.Builders
         }
 
         [Fact]
+        public void Should_merge_global_tags_when_key_values_provided_that_match_an_existing_tag()
+        {
+            // Arrange
+            var keyValuePairs = new Dictionary<string, string>
+                                {
+                                    { "MetricsOptions:GlobalTags", "tag1=replaced, tag2=added" }
+                                };
+            var options = new MetricsOptions();
+            options.GlobalTags.Add("tag1", "value1");
+
+            // Act
+            var metrics = new MetricsBuilder().Configuration.Configure(options, keyValuePairs).Build();
+
+            // Assert
+            metrics.Options.GlobalTags.Count.Should().Be(2);
+            metrics.Options.GlobalTags.First().Key.Should().Be("tag1");
+            metrics.Options.GlobalTags.First().Value.Should().Be("replaced");
+            metrics.Options.GlobalTags.Skip(1).First().Key.Should().Be("tag2");
+            metrics.Options.GlobalTags.Skip(1).First().Value.Should().Be("added");
+        }
+
+        [Fact]
         public void Should_add_env_tags_when_required()
         {
             // Arrange
