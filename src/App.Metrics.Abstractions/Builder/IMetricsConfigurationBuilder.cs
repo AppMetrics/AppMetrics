@@ -12,9 +12,7 @@ namespace App.Metrics
     public interface IMetricsConfigurationBuilder
     {
         /// <summary>
-        ///     <para>
         ///         Uses the specifed <see cref="MetricsOptions" /> instance for App Metrics core configuration.
-        ///     </para>
         /// </summary>
         /// <param name="options">An <see cref="MetricsOptions" /> instance used to configure core App Metrics options.</param>
         /// <returns>
@@ -69,5 +67,14 @@ namespace App.Metrics
         ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         IMetricsBuilder Configure(Action<MetricsOptions> setupAction);
+
+        /// <summary>
+        ///     Merges the specifed <see cref="MetricsOptions" /> instance with any previously configured options.
+        /// </summary>
+        /// <param name="options">An <see cref="MetricsOptions" /> instance used to configure core App Metrics options.</param>
+        /// <returns>
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
+        /// </returns>
+        IMetricsBuilder Extend(MetricsOptions options);
     }
 }

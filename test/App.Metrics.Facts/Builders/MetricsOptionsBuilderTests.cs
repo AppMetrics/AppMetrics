@@ -109,6 +109,34 @@ namespace App.Metrics.Facts.Builders
         }
 
         [Fact]
+        public void Should_merge_global_tags_when_configured_more_than_once()
+        {
+            // Arrange
+            var options = new MetricsOptions();
+            options.Enabled = true;
+            options.GlobalTags.Add("tag1", "value1");
+            options.DefaultContextLabel = "test";
+
+            var options2 = new MetricsOptions();
+            options2.Enabled = true;
+            options2.GlobalTags.Add("tag2", "value2");
+            options2.DefaultContextLabel = "test";
+
+            // Act
+            var metrics = new MetricsBuilder()
+                .Configuration.Configure(options)
+                .Configuration.Extend(options2)
+                .Build();
+
+            // Assert
+            metrics.Options.GlobalTags.Count.Should().Be(2);
+            metrics.Options.GlobalTags.First().Key.Should().Be("tag1");
+            metrics.Options.GlobalTags.First().Value.Should().Be("value1");
+            metrics.Options.GlobalTags.Skip(1).First().Key.Should().Be("tag2");
+            metrics.Options.GlobalTags.Skip(1).First().Value.Should().Be("value2");
+        }
+
+        [Fact]
         public void Should_merge_global_tags_when_key_values_provided_that_match_an_existing_tag()
         {
             // Arrange

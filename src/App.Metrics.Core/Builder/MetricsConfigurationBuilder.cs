@@ -4,6 +4,8 @@
 
 using System;
 using System.Collections.Generic;
+using App.Metrics.Internal;
+using App.Metrics.Internal.Extensions;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics
@@ -91,6 +93,24 @@ namespace App.Metrics
             setupAction(_options);
 
             _setupAction(_options);
+
+            return _metricsBuilder;
+        }
+
+        /// <inheritdoc />
+        public IMetricsBuilder Extend(MetricsOptions options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            var optionsValuesToExtend = options.ToKeyValue();
+            var extendedOptions = new KeyValuePairMetricsOptions(_options, optionsValuesToExtend).AsOptions(true);
+
+            _setupAction(extendedOptions);
+
+            _options = extendedOptions;
 
             return _metricsBuilder;
         }

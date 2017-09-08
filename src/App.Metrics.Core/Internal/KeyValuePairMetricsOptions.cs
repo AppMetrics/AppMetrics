@@ -6,13 +6,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace App.Metrics
+namespace App.Metrics.Internal
 {
     internal class KeyValuePairMetricsOptions
     {
-        private static readonly string DefaultContextLabelDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.DefaultContextLabel)}";
-        private static readonly string GlobalTagsDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.GlobalTags)}";
-        private static readonly string EnabledDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.Enabled)}";
+        internal static readonly string DefaultContextLabelDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.DefaultContextLabel)}";
+        internal static readonly string EnabledDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.Enabled)}";
+        internal static readonly string GlobalTagsDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.GlobalTags)}";
         private readonly MetricsOptions _options;
 
         private readonly Dictionary<string, string> _optionValues;
@@ -38,7 +38,7 @@ namespace App.Metrics
             _optionValues = optionValues.ToDictionary(o => o.Key, o => o.Value);
         }
 
-        public MetricsOptions AsOptions()
+        public MetricsOptions AsOptions(bool mergeTags = false)
         {
             var options = _options ?? new MetricsOptions();
 
@@ -50,7 +50,10 @@ namespace App.Metrics
                 }
                 else if (string.Compare(key, GlobalTagsDirective, StringComparison.CurrentCultureIgnoreCase) == 0)
                 {
-                    options.GlobalTags = new GlobalMetricTags();
+                    if (!mergeTags)
+                    {
+                        options.GlobalTags = new GlobalMetricTags();
+                    }
 
                     var globalTags = _optionValues[key].Split(new[] { ",", ", " }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -66,7 +69,15 @@ namespace App.Metrics
 
                         var tagKey = keyValue[0].Trim();
                         var tagValue = keyValue[1].Trim();
-                        options.GlobalTags.Add(tagKey, tagValue);
+
+                        if (options.GlobalTags.ContainsKey(tagKey))
+                        {
+                            options.GlobalTags[tagKey] = tagValue;
+                        }
+                        else
+                        {
+                            options.GlobalTags.Add(tagKey, tagValue);
+                        }
                     }
                 }
                 else if (string.Compare(key, EnabledDirective, StringComparison.CurrentCultureIgnoreCase) == 0)
