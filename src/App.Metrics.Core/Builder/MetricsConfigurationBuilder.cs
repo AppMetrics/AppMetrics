@@ -28,8 +28,6 @@ namespace App.Metrics
             _options = currentOptions ?? new MetricsOptions();
         }
 
-        public MetricsOptions Options => _options;
-
         /// <inheritdoc />
         public IMetricsBuilder Configure(MetricsOptions options)
         {

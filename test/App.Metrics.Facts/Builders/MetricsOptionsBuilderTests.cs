@@ -89,19 +89,6 @@ namespace App.Metrics.Facts.Builders
         }
 
         [Fact]
-        public void Can_read_options_before_build()
-        {
-            // Arrange
-            var builder = AppMetrics.CreateDefaultBuilder();
-
-            // Act
-            var buider = builder.Configuration.Configure(options => options.Enabled = false);
-
-            // Assert
-            buider.Configuration.Options.Enabled.Should().BeFalse();
-        }
-
-        [Fact]
         public void Can_set_options_with_instance()
         {
             // Arrange
