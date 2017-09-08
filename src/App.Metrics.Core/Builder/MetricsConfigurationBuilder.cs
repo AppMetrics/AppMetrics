@@ -98,6 +98,23 @@ namespace App.Metrics
         }
 
         /// <inheritdoc />
+        public IMetricsBuilder Extend(IEnumerable<KeyValuePair<string, string>> optionValues)
+        {
+            if (optionValues == null)
+            {
+                throw new ArgumentNullException(nameof(optionValues));
+            }
+
+            var mergedOptions = new KeyValuePairMetricsOptions(_options, optionValues).AsOptions(true);
+
+            _setupAction(mergedOptions);
+
+            _options = mergedOptions;
+
+            return _metricsBuilder;
+        }
+
+        /// <inheritdoc />
         public IMetricsBuilder Extend(MetricsOptions options)
         {
             if (options == null)

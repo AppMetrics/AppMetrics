@@ -76,5 +76,14 @@ namespace App.Metrics
         ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         IMetricsBuilder Extend(MetricsOptions options);
+
+        /// <summary>
+        ///     Merges the specifed <see cref="MetricsOptions" /> instance with any previously configured options.
+        /// </summary>
+        /// <param name="optionValues">An <see cref="KeyValuePair{TKey,TValue}"/> used to configure core App Metrics options.</param>
+        /// <returns>
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
+        /// </returns>
+        IMetricsBuilder Extend(IEnumerable<KeyValuePair<string, string>> optionValues);
     }
 }
