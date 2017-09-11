@@ -14,16 +14,18 @@ namespace App.Metrics
     /// </summary>
     public class MetricsOutputFormattingBuilder : IMetricsOutputFormattingBuilder
     {
-        private readonly IMetricsBuilder _metricsBuilder;
         private readonly Action<IMetricsOutputFormatter> _metricsFormatter;
 
         internal MetricsOutputFormattingBuilder(
             IMetricsBuilder metricsBuilder,
             Action<IMetricsOutputFormatter> metricsFormatter)
         {
-            _metricsBuilder = metricsBuilder ?? throw new ArgumentNullException(nameof(metricsBuilder));
+            Builder = metricsBuilder ?? throw new ArgumentNullException(nameof(metricsBuilder));
             _metricsFormatter = metricsFormatter ?? throw new ArgumentNullException(nameof(metricsFormatter));
         }
+
+        /// <inheritdoc />
+        public IMetricsBuilder Builder { get; }
 
         /// <inheritdoc />
         public IMetricsBuilder Using(IMetricsOutputFormatter formatter)
@@ -35,7 +37,7 @@ namespace App.Metrics
 
             _metricsFormatter(formatter);
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -44,7 +46,7 @@ namespace App.Metrics
         {
             _metricsFormatter(new TMetricsOutputFormatter());
 
-            return _metricsBuilder;
+            return Builder;
         }
     }
 }

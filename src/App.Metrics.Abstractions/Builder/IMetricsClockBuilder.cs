@@ -9,6 +9,11 @@ namespace App.Metrics
     public interface IMetricsClockBuilder
     {
         /// <summary>
+        /// Gets the <see cref="IMetricsBuilder"/> where App Metrics is configured.
+        /// </summary>
+        IMetricsBuilder Builder { get; }
+
+        /// <summary>
         ///     <para>
         ///         Uses the specifed <see cref="IClock"/> to time specific <see cref="MetricType"/>s. e.g. <see cref="MetricType.Timer"/>.
         ///     </para>

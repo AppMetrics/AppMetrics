@@ -12,6 +12,11 @@ namespace App.Metrics
     public interface IMetricsFilterBuilder
     {
         /// <summary>
+        /// Gets the <see cref="IMetricsBuilder"/> where App Metrics is configured.
+        /// </summary>
+        IMetricsBuilder Builder { get; }
+
+        /// <summary>
         ///     Filters metrics the specified context. Metrics can be grouped using a context label. The default context label used
         ///     can be configured on <see cref="MetricsOptions.DefaultContextLabel" />.
         /// </summary>

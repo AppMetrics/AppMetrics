@@ -13,6 +13,11 @@ namespace App.Metrics
     public interface IMetricsReservoirSamplingBuilder
     {
         /// <summary>
+        /// Gets the <see cref="IMetricsBuilder"/> where App Metrics is configured.
+        /// </summary>
+        IMetricsBuilder Builder { get; }
+
+        /// <summary>
         ///     <para>
         ///         Uses the "DefaultAlgorithmRReservoir" reservoir for <see cref="MetricType" />s which require
         ///         sampling.

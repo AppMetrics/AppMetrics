@@ -11,6 +11,11 @@ namespace App.Metrics
     public interface IMetricsOutputFormattingBuilder
     {
         /// <summary>
+        /// Gets the <see cref="IMetricsBuilder"/> where App Metrics is configured.
+        /// </summary>
+        IMetricsBuilder Builder { get; }
+
+        /// <summary>
         ///     <para>
         ///         Uses the specifed <see cref="IMetricsOutputFormatter"/> as one of the available formatters when reporting metric values.
         ///     </para>

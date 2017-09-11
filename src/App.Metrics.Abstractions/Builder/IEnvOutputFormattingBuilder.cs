@@ -11,6 +11,11 @@ namespace App.Metrics
     public interface IEnvOutputFormattingBuilder
     {
         /// <summary>
+        /// Gets the <see cref="IMetricsBuilder"/> where App Metrics is configured.
+        /// </summary>
+        IMetricsBuilder Builder { get; }
+
+        /// <summary>
         ///     <para>
         ///         Uses the specifed <see cref="IEnvOutputFormatter"/> as one of the available formatters when reporting environment information.
         ///     </para>

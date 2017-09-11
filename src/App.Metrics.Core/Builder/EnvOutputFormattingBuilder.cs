@@ -14,16 +14,18 @@ namespace App.Metrics
     /// </summary>
     public class EnvOutputFormattingBuilder : IEnvOutputFormattingBuilder
     {
-        private readonly IMetricsBuilder _metricsBuilder;
         private readonly Action<IEnvOutputFormatter> _formatter;
 
         internal EnvOutputFormattingBuilder(
             IMetricsBuilder metricsBuilder,
             Action<IEnvOutputFormatter> formatter)
         {
-            _metricsBuilder = metricsBuilder ?? throw new ArgumentNullException(nameof(metricsBuilder));
+            Builder = metricsBuilder ?? throw new ArgumentNullException(nameof(metricsBuilder));
             _formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
         }
+
+        /// <inheritdoc />
+        public IMetricsBuilder Builder { get; }
 
         /// <inheritdoc />
         public IMetricsBuilder Using(IEnvOutputFormatter formatter)
@@ -35,7 +37,7 @@ namespace App.Metrics
 
             _formatter(formatter);
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -44,7 +46,7 @@ namespace App.Metrics
         {
             _formatter(new TEvnOutputFormatter());
 
-            return _metricsBuilder;
+            return Builder;
         }
     }
 }

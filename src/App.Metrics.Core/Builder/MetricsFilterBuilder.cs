@@ -16,17 +16,19 @@ namespace App.Metrics
     public class MetricsFilterBuilder : IMetricsFilterBuilder
     {
         private readonly IFilterMetrics _filter;
-        private readonly IMetricsBuilder _metricsBuilder;
         private readonly Action<IFilterMetrics> _metricsFilter;
 
         internal MetricsFilterBuilder(
             IMetricsBuilder metricsBuilder,
             Action<IFilterMetrics> metricsFilter)
         {
-            _metricsBuilder = metricsBuilder ?? throw new ArgumentNullException(nameof(metricsBuilder));
+            Builder = metricsBuilder ?? throw new ArgumentNullException(nameof(metricsBuilder));
             _metricsFilter = metricsFilter ?? throw new ArgumentNullException(nameof(metricsFilter));
             _filter = new DefaultMetricsFilter();
         }
+
+        /// <inheritdoc />
+        public IMetricsBuilder Builder { get; }
 
         /// <inheritdoc />
         public IMetricsBuilder ByIncludingOnlyContext(string context)
@@ -35,7 +37,7 @@ namespace App.Metrics
 
             _metricsFilter(_filter);
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -45,7 +47,7 @@ namespace App.Metrics
 
             _metricsFilter(_filter);
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -55,7 +57,7 @@ namespace App.Metrics
 
             _metricsFilter(_filter);
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -65,7 +67,7 @@ namespace App.Metrics
 
             _metricsFilter(_filter);
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -78,7 +80,7 @@ namespace App.Metrics
 
             _metricsFilter(filter);
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -93,7 +95,7 @@ namespace App.Metrics
 
             _metricsFilter(_filter);
 
-            return _metricsBuilder;
+            return Builder;
         }
     }
 }

@@ -16,7 +16,6 @@ namespace App.Metrics
     /// </summary>
     public class MetricsConfigurationBuilder : IMetricsConfigurationBuilder
     {
-        private readonly IMetricsBuilder _metricsBuilder;
         private readonly Action<MetricsOptions> _setupAction;
         private MetricsOptions _options;
 
@@ -25,10 +24,13 @@ namespace App.Metrics
             MetricsOptions currentOptions,
             Action<MetricsOptions> setupAction)
         {
-            _metricsBuilder = metricsBuilder ?? throw new ArgumentNullException(nameof(metricsBuilder));
+            Builder = metricsBuilder ?? throw new ArgumentNullException(nameof(metricsBuilder));
             _setupAction = setupAction ?? throw new ArgumentNullException(nameof(setupAction));
             _options = currentOptions ?? new MetricsOptions();
         }
+
+        /// <inheritdoc />
+        public IMetricsBuilder Builder { get; }
 
         /// <inheritdoc />
         public IMetricsBuilder Configure(MetricsOptions options)
@@ -42,7 +44,7 @@ namespace App.Metrics
 
             _options = options;
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -59,7 +61,7 @@ namespace App.Metrics
 
             _options = mergedOptions;
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -79,7 +81,7 @@ namespace App.Metrics
 
             _options = options;
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -94,7 +96,7 @@ namespace App.Metrics
 
             _setupAction(_options);
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -111,7 +113,7 @@ namespace App.Metrics
 
             _options = mergedOptions;
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -129,7 +131,7 @@ namespace App.Metrics
 
             _options = extendedOptions;
 
-            return _metricsBuilder;
+            return Builder;
         }
     }
 }

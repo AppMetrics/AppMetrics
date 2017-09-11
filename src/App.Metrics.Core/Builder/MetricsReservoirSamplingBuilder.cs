@@ -19,22 +19,24 @@ namespace App.Metrics
     public class MetricsReservoirSamplingBuilder : IMetricsReservoirSamplingBuilder
     {
         private readonly Action<DefaultSamplingReservoirProvider> _defaultReservoir;
-        private readonly IMetricsBuilder _metricsBuilder;
 
         internal MetricsReservoirSamplingBuilder(
             IMetricsBuilder metricsBuilder,
             Action<DefaultSamplingReservoirProvider> defaultReservoir)
         {
-            _metricsBuilder = metricsBuilder ?? throw new ArgumentNullException(nameof(metricsBuilder));
+            Builder = metricsBuilder ?? throw new ArgumentNullException(nameof(metricsBuilder));
             _defaultReservoir = defaultReservoir ?? throw new ArgumentNullException(nameof(defaultReservoir));
         }
+
+        /// <inheritdoc />
+        public IMetricsBuilder Builder { get; }
 
         /// <inheritdoc />
         public IMetricsBuilder AlgorithmR(int sampleSize)
         {
             Reservoir(() => new DefaultAlgorithmRReservoir(sampleSize));
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -42,7 +44,7 @@ namespace App.Metrics
         {
             Reservoir<DefaultAlgorithmRReservoir>();
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -50,7 +52,7 @@ namespace App.Metrics
         {
             Reservoir(() => new DefaultForwardDecayingReservoir(sampleSize, alpha));
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -58,7 +60,7 @@ namespace App.Metrics
         {
             Reservoir(() => new DefaultForwardDecayingReservoir(sampleSize, alpha, clock));
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -66,7 +68,7 @@ namespace App.Metrics
         {
             Reservoir(() => new DefaultForwardDecayingReservoir(sampleSize, alpha, clock, rescaleScheduler));
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -74,7 +76,7 @@ namespace App.Metrics
         {
             Reservoir<DefaultForwardDecayingReservoir>();
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -82,7 +84,7 @@ namespace App.Metrics
         {
             _defaultReservoir(new DefaultSamplingReservoirProvider(reservoirBuilder));
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -91,7 +93,7 @@ namespace App.Metrics
         {
             _defaultReservoir(new DefaultSamplingReservoirProvider(() => new TReservoir()));
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -99,7 +101,7 @@ namespace App.Metrics
         {
             Reservoir(() => new DefaultSlidingWindowReservoir(sampleSize));
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -107,7 +109,7 @@ namespace App.Metrics
         {
             Reservoir<DefaultSlidingWindowReservoir>();
 
-            return _metricsBuilder;
+            return Builder;
         }
     }
 }

@@ -12,6 +12,11 @@ namespace App.Metrics
     public interface IMetricsConfigurationBuilder
     {
         /// <summary>
+        /// Gets the <see cref="IMetricsBuilder"/> where App Metrics is configured.
+        /// </summary>
+        IMetricsBuilder Builder { get; }
+
+        /// <summary>
         ///         Uses the specifed <see cref="MetricsOptions" /> instance for App Metrics core configuration.
         /// </summary>
         /// <param name="options">An <see cref="MetricsOptions" /> instance used to configure core App Metrics options.</param>

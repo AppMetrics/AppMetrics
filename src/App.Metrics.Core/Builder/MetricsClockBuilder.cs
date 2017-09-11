@@ -15,15 +15,17 @@ namespace App.Metrics
     public class MetricsClockBuilder : IMetricsClockBuilder
     {
         private readonly Action<IClock> _clock;
-        private readonly IMetricsBuilder _metricsBuilder;
 
         internal MetricsClockBuilder(
             IMetricsBuilder metricsBuilder,
             Action<IClock> clock)
         {
-            _metricsBuilder = metricsBuilder ?? throw new ArgumentNullException(nameof(metricsBuilder));
+            Builder = metricsBuilder ?? throw new ArgumentNullException(nameof(metricsBuilder));
             _clock = clock ?? throw new ArgumentNullException(nameof(clock));
         }
+
+        /// <inheritdoc />
+        public IMetricsBuilder Builder { get; }
 
         /// <inheritdoc />
         public IMetricsBuilder Clock(IClock clock)
@@ -35,7 +37,7 @@ namespace App.Metrics
 
             _clock(clock);
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -44,7 +46,7 @@ namespace App.Metrics
         {
             _clock(new TClock());
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -52,7 +54,7 @@ namespace App.Metrics
         {
             Clock<StopwatchClock>();
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />
@@ -60,7 +62,7 @@ namespace App.Metrics
         {
             Clock<SystemClock>();
 
-            return _metricsBuilder;
+            return Builder;
         }
     }
 }
