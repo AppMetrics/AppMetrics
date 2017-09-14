@@ -17,7 +17,7 @@ namespace App.Metrics.Scheduling
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
 #if THREADING_TIMER
-        private readonly Timer _timer;
+        private readonly System.Threading.Timer _timer;
 #endif
 
         private bool _running;
@@ -28,7 +28,7 @@ namespace App.Metrics.Scheduling
             _onTick = onTick ?? throw new ArgumentNullException(nameof(onTick));
 
 #if THREADING_TIMER
-            _timer = new Timer(_ => OnTick(), null, Timeout.Infinite, Timeout.Infinite);
+            _timer = new System.Threading.Timer(_ => OnTick(), null, Timeout.Infinite, Timeout.Infinite);
 #endif
         }
 

@@ -10,9 +10,9 @@ dotnet cli version=2.0.0
 Job=Core  Runtime=Core  
 
 ```
- |                         Method |     Mean |    Error |   StdDev |  Gen 0 | Allocated |
- |------------------------------- |---------:|---------:|---------:|-------:|----------:|
- |                           Mark | 203.2 ns | 1.969 ns | 1.842 ns | 0.0608 |     256 B |
- |                 MarkMetricItem | 347.2 ns | 3.300 ns | 2.925 ns | 0.0725 |     304 B |
- | MarkMetricItemWithMultipleTags | 768.2 ns | 4.344 ns | 4.063 ns | 0.1575 |     664 B |
- |                  MarkUserValue | 309.2 ns | 3.020 ns | 2.825 ns | 0.0606 |     256 B |
+ |                         Method |     Mean |     Error |    StdDev |  Gen 0 | Allocated |
+ |------------------------------- |---------:|----------:|----------:|-------:|----------:|
+ |                           Mark | 201.7 ns | 0.6167 ns | 0.5467 ns | 0.0608 |     256 B |
+ |                 MarkMetricItem | 375.0 ns | 2.6869 ns | 2.2437 ns | 0.0725 |     304 B |
+ | MarkMetricItemWithMultipleTags | 731.5 ns | 3.1664 ns | 2.9618 ns | 0.1575 |     664 B |
+ |                  MarkUserValue | 309.2 ns | 3.9066 ns | 3.4631 ns | 0.0606 |     256 B |

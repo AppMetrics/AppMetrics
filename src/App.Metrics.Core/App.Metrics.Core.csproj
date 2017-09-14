@@ -21,25 +21,21 @@
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>$(DefineConstants);LIBLOG_PORTABLE;LIBLOG_PUBLIC</DefineConstants>
+    <DefineConstants>$(DefineConstants);LIBLOG_PORTABLE;LIBLOG_PUBLIC;THREADING_TIMER</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>$(DefineConstants);LIBLOG_PORTABLE;LIBLOG_PUBLIC</DefineConstants>
+    <DefineConstants>$(DefineConstants);LIBLOG_PORTABLE;LIBLOG_PUBLIC;THREADING_TIMER</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net452' ">
-    <DefineConstants>$(DefineConstants);CLASSIC;LIBLOG_PORTABLE;LIBLOG_PUBLIC</DefineConstants>
+    <DefineConstants>$(DefineConstants);CLASSIC;LIBLOG_PORTABLE;LIBLOG_PUBLIC;THREADING_TIMER</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
     <Reference Include="System" />
     <Reference Include="System.Collections" />
     <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Tagging\Extensions\" />
   </ItemGroup>
 
 </Project>

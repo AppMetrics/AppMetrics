@@ -10,6 +10,6 @@ dotnet cli version=2.0.0
 Job=Core  Runtime=Core  
 
 ```
- | Method |     Mean |    Error |   StdDev |  Gen 0 | Allocated |
- |------- |---------:|---------:|---------:|-------:|----------:|
- | Update | 286.3 ns | 1.741 ns | 1.543 ns | 0.0224 |      96 B |
+ | Method |     Mean |     Error |    StdDev |  Gen 0 | Allocated |
+ |------- |---------:|----------:|----------:|-------:|----------:|
+ | Update | 285.0 ns | 0.7527 ns | 0.6672 ns | 0.0224 |      96 B |
