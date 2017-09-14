@@ -1,36 +1,54 @@
-// <copyright file="DefaultMeterTickerScheduler.cs" company="Allan Hardy">
+﻿// <copyright file="TestMeterTickerScheduler.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
-#if !NETSTANDARD1_6
 using App.Metrics.Internal;
-#endif
 using App.Metrics.Logging;
 using App.Metrics.Meter;
+using App.Metrics.Scheduling;
 
-namespace App.Metrics.Scheduling
+namespace App.Metrics.FactsCommon
 {
-    public class DefaultMeterTickerScheduler : IMeterTickerScheduler
+    public class TestMeterTickerScheduler : IMeterTickerScheduler
     {
         private static readonly ILog Logger = LogProvider.For<DefaultMeterTickerScheduler>();
         private static readonly TimeSpan TickInterval = TimeSpan.FromSeconds(5);
         private readonly object _syncLock = new object();
         private readonly ConcurrentBag<ITickingMeter> _meters = new ConcurrentBag<ITickingMeter>();
-        private readonly IMetricsTaskSchedular _scheduler;
+        private long _lastRun;
         private volatile bool _disposing;
 
-        private DefaultMeterTickerScheduler()
+        public TestMeterTickerScheduler(IClock clock)
         {
-            _scheduler = new DefaultMetricsTaskSchedular(c => Tick());
+            clock.Advanced += (s, l) =>
+            {
+                try
+                {
+                    var clockSeconds = clock.Seconds;
+                    var elapsed = clockSeconds - _lastRun;
+                    var times = elapsed / TickInterval.TotalSeconds;
 
-            SetScheduler();
+                    using (new CancellationTokenSource())
+                    {
+                        while (times-- >= 1)
+                        {
+                            _lastRun = clockSeconds;
+
+                            Tick().GetAwaiter().GetResult();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+            };
         }
-
-        public static DefaultMeterTickerScheduler Instance { get; } = new DefaultMeterTickerScheduler();
 
         public void ScheduleTick(ITickingMeter meter) { _meters.Add(meter); }
 
@@ -60,8 +78,6 @@ namespace App.Metrics.Scheduling
                 _disposing = true;
             }
 
-            _scheduler.Dispose();
-
             Logger.Trace("{MeterTickScheuler} scheduler disposed", this);
 
             Tick().GetAwaiter().GetResult();
@@ -70,7 +86,6 @@ namespace App.Metrics.Scheduling
         private void SetScheduler()
         {
             Logger.Debug("Starting {MeterTickScheuler} scheduler", this);
-            _scheduler.Start(TickInterval);
             Logger.Debug("{MeterTickScheuler} scheduler started", this);
         }
 
@@ -107,11 +122,7 @@ namespace App.Metrics.Scheduling
                 }
             }
 
-#if !NETSTANDARD1_6
             return AppMetricsTaskHelper.CompletedTask();
-#else
-            return Task.CompletedTask;
-#endif
         }
     }
 }

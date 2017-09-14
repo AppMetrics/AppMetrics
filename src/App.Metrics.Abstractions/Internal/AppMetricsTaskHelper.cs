@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 
-namespace App.Metrics.Abstractions.Internal
+namespace App.Metrics.Internal
 {
     public static class AppMetricsTaskHelper
     {

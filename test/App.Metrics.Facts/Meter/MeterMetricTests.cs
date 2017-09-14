@@ -12,13 +12,14 @@ namespace App.Metrics.Facts.Meter
 {
     public class MeterMetricTests
     {
-        private readonly IClock _clock = new TestClock();
+        private readonly IClock _clock;
         private readonly DefaultMeterMetric _meter;
 
         public MeterMetricTests()
         {
-            var scheduler = new TestTaskScheduler(_clock);
-            _meter = new DefaultMeterMetric(_clock, scheduler);
+            _clock = new TestClock();
+            var schedular = new TestMeterTickerScheduler(_clock);
+            _meter = new DefaultMeterMetric(_clock, schedular);
         }
 
         [Fact]
@@ -46,7 +47,7 @@ namespace App.Metrics.Facts.Meter
             value.MeanRate.Should().BeApproximately(0.3, 0.001);
             value.OneMinuteRate.Should().BeApproximately(0.1840, 0.001);
             value.FiveMinuteRate.Should().BeApproximately(0.1966, 0.001);
-            value.FifteenMinuteRate.Should().BeApproximately(0.1988, 0.0001);
+            value.FifteenMinuteRate.Should().BeApproximately(0.1988, 0.001);
         }
 
         [Fact]

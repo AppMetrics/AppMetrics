@@ -145,11 +145,11 @@ namespace App.Metrics
         ///     value the more biased the reservoir will be towards newer values.
         /// </param>
         /// <param name="clock">The <see cref="IClock" /> used for timing.</param>
-        /// <param name="rescaleScheduler">The <see cref="IScheduler" /> used to rescale the reservoir.</param>
+        /// <param name="rescaleScheduler">The <see cref="IReservoirRescaleScheduler" /> used to rescale the reservoir.</param>
         /// <returns>
         ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
-        IMetricsBuilder ForwardDecaying(int sampleSize, double alpha, IClock clock, IScheduler rescaleScheduler);
+        IMetricsBuilder ForwardDecaying(int sampleSize, double alpha, IClock clock, IReservoirRescaleScheduler rescaleScheduler);
 
         /// <summary>
         ///     <para>

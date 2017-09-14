@@ -45,8 +45,6 @@ namespace App.Metrics
 
         IRunMetricsReports Reporter { get; }
 
-        IScheduleMetricsReporting ReportScheduler { get; }
-
         MetricsOptions Options { get; }
 
         EnvironmentInfo EnvironmentInfo { get; }

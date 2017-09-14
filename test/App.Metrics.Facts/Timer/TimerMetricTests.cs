@@ -23,7 +23,7 @@ namespace App.Metrics.Facts.Timer
         {
             _timer = new DefaultTimerMetric(
                 new DefaultHistogramMetric(new DefaultForwardDecayingReservoir()),
-                new DefaultMeterMetric(_clock, new TestTaskScheduler(_clock)),
+                new DefaultMeterMetric(_clock),
                 _clock);
         }
 

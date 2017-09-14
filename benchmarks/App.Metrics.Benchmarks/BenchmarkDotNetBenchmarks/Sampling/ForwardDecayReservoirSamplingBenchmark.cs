@@ -13,9 +13,12 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Sampling
 {
     public class ForwardDecayReservoirSamplingBenchmark : DefaultBenchmarkBase
     {
+        private static readonly TimeSpan TickInterval = TimeSpan.FromMilliseconds(10);
+        private readonly object _syncLock = new object();
         private MetricsCoreTestFixture _fixture;
         private DefaultForwardDecayingReservoir _reservoir;
-        private IScheduler _scheduler;
+        private IMetricsTaskSchedular _scheduler;
+        private volatile bool _disposing;
 
         [GlobalSetup]
         public override void Setup()
@@ -24,22 +27,57 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Sampling
 
             _reservoir = new DefaultForwardDecayingReservoir();
 
-            _scheduler = new DefaultTaskScheduler();
-
-            _scheduler.Interval(
-                TimeSpan.FromMilliseconds(10),
-                TaskCreationOptions.None,
-                () =>
-                {
-                    _reservoir.GetSnapshot();
-                    _reservoir.Reset();
-                });
+            _scheduler = new DefaultMetricsTaskSchedular(c => Tick());
         }
 
         [GlobalCleanup]
-        public void Cleanup() { _scheduler.Dispose(); }
+        public void Cleanup()
+        {
+            lock (_syncLock)
+            {
+                if (_disposing)
+                {
+                    return;
+                }
+
+                _disposing = true;
+            }
+
+            _scheduler.Dispose();
+
+            Tick().GetAwaiter().GetResult();
+        }
 
         [Benchmark]
         public void Update() { _reservoir.Update(_fixture.Rnd.Next(0, 1000), _fixture.RandomUserValue); }
+
+        private Task Tick()
+        {
+            try
+            {
+                _reservoir.GetSnapshot();
+                _reservoir.Reset();
+            }
+            catch (Exception)
+            {
+            }
+            finally
+            {
+                lock (_syncLock)
+                {
+                    if (!_disposing)
+                    {
+                        SetScheduler();
+                    }
+                }
+            }
+
+            return Task.CompletedTask;
+        }
+
+        private void SetScheduler()
+        {
+            _scheduler.Start(TickInterval);
+        }
     }
 }

@@ -7,6 +7,7 @@ using App.Metrics.Concurrency;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
 using App.Metrics.ReservoirSampling;
+using App.Metrics.Scheduling;
 
 namespace App.Metrics.Timer
 {
@@ -64,6 +65,19 @@ namespace App.Metrics.Timer
             _clock = clock;
             _meter = meter;
             _histogram = histogram;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="DefaultTimerMetric" /> class.
+        /// </summary>
+        /// <param name="reservoir">The reservoir implementation to use for sampling values to generate the histogram.</param>
+        /// <param name="clock">The clock to use to measure processing duration.</param>
+        /// <param name="meterTickScheduler">The scheduler used to tick the associated meter.</param>
+        internal DefaultTimerMetric(IReservoir reservoir, IClock clock, IMeterTickerScheduler meterTickScheduler)
+        {
+            _clock = clock;
+            _histogram = new DefaultHistogramMetric(reservoir);
+            _meter = new DefaultMeterMetric(clock, meterTickScheduler);
         }
 
         /// <inheritdoc />

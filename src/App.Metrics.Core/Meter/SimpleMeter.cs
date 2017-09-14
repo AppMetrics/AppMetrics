@@ -7,7 +7,7 @@ using App.Metrics.Concurrency;
 
 namespace App.Metrics.Meter
 {
-    public class SimpleMeter
+    public class SimpleMeter : ITickingMeter
     {
         private const int FifteenMinutes = 15;
         private const int FiveMinutes = 5;
@@ -87,6 +87,7 @@ namespace App.Metrics.Meter
         {
             _total.Add(count);
             var instantRate = count / Interval;
+
             if (_initialized)
             {
                 var rate = _m1Rate.GetValue();

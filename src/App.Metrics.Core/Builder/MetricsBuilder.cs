@@ -30,7 +30,6 @@ namespace App.Metrics
         private IEnvOutputFormatter _defauEnvOutputFormatter;
         private IMetricsOutputFormatter _defaultMetricsOutputFormatter;
         private IRunMetricsReports _metricsReportRunner = new NoOpMetricsReportRunner();
-        private IScheduleMetricsReporting _metricsReportScheduler = new NoOpMetricsReportScheduler();
 
         private DefaultSamplingReservoirProvider _defaultSamplingReservoir =
             new DefaultSamplingReservoirProvider(() => new DefaultForwardDecayingReservoir());
@@ -151,12 +150,9 @@ namespace App.Metrics
             var defaultMetricsOutputFormatter = _defaultMetricsOutputFormatter ?? _metricsOutputFormatters.FirstOrDefault();
             var defaultEnvOutputFormatter = _defauEnvOutputFormatter ?? _envFormatters.FirstOrDefault();
 
-            if (ShouldReport())
+            if (CanReport())
             {
                 _metricsReportRunner = new DefaultMetricsReportRunner(metrics, _reporters);
-
-                var scheduler = new DefaultTaskScheduler(); // TODO: Make this configurable
-                _metricsReportScheduler = new DefaultMetricsReportScheduler(metrics, _reporters, scheduler);
             }
 
             return new MetricsRoot(
@@ -167,13 +163,12 @@ namespace App.Metrics
                 defaultMetricsOutputFormatter,
                 defaultEnvOutputFormatter,
                 _environmentInfoProvider,
-                _metricsReportRunner,
-                _metricsReportScheduler);
+                _metricsReportRunner);
 
             IMetricContextRegistry ContextRegistry(string context) =>
                 new DefaultMetricContextRegistry(context, new GlobalMetricTags(_options.GlobalTags));
         }
 
-        private bool ShouldReport() { return _options.Enabled && _options.ReportingEnabled && _reporters.Any(); }
+        private bool CanReport() { return _options.Enabled && _options.ReportingEnabled && _reporters.Any(); }
     }
 }

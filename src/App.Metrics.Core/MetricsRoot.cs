@@ -23,13 +23,11 @@ namespace App.Metrics
             IMetricsOutputFormatter defaultMetricsOutputFormatter,
             IEnvOutputFormatter defaultEnvOutputFormatter,
             EnvironmentInfoProvider environmentInfoProvider,
-            IRunMetricsReports reporter,
-            IScheduleMetricsReporting reportScheduler)
+            IRunMetricsReports reporter)
         {
             Options = options ?? throw new ArgumentNullException(nameof(options));
             _metrics = metrics ?? throw new ArgumentNullException(nameof(metrics));
             Reporter = reporter ?? throw new ArgumentNullException(nameof(reporter));
-            ReportScheduler = reportScheduler ?? throw new ArgumentNullException(nameof(reportScheduler));
             _environmentInfoProvider = new EnvironmentInfoProvider();
             OutputMetricsFormatters = metricsOutputFormatters ?? new MetricsFormatterCollection();
             OutputEnvFormatters = envOutputFormatters ?? new EnvFormatterCollection();
@@ -73,9 +71,6 @@ namespace App.Metrics
 
         /// <inheritdoc />
         public IRunMetricsReports Reporter { get; }
-
-        /// <inheritdoc />
-        public IScheduleMetricsReporting ReportScheduler { get; }
 
         /// <inheritdoc />
         public MetricsOptions Options { get; }

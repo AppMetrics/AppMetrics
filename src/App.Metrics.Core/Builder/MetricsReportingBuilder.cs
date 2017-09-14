@@ -85,7 +85,7 @@ namespace App.Metrics
 
         private static void EnsureRequiredProperties(IReportMetrics reporter)
         {
-            reporter.FlushInterval = reporter.FlushInterval == default
+            reporter.FlushInterval = reporter.FlushInterval < TimeSpan.Zero
                 ? AppMetricsConstants.Reporting.DefaultFlushInterval
                 : reporter.FlushInterval;
 

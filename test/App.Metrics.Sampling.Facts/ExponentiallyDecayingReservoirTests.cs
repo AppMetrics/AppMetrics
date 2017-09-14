@@ -13,10 +13,14 @@ namespace App.Metrics.Sampling.Facts
 {
     public class ExponentiallyDecayingReservoirTests
     {
-        private readonly IClock _clock = new TestClock();
-        private readonly IScheduler _scheduler;
+        private readonly IClock _clock;
+        private readonly IReservoirRescaleScheduler _scheduler;
 
-        public ExponentiallyDecayingReservoirTests() { _scheduler = new TestTaskScheduler(_clock); }
+        public ExponentiallyDecayingReservoirTests()
+        {
+            _clock = new TestClock();
+            _scheduler = new TestReservoirRescaleScheduler(_clock);
+        }
 
         [Fact]
         public void EDR_HeavilyBiasedReservoirOf100OutOf1000Elements()

@@ -21,22 +21,20 @@ namespace App.Metrics.Meter
         ///     Initializes a new instance of the <see cref="DefaultMeterMetric" /> class.
         /// </summary>
         /// <param name="clock">The clock.</param>
-        /// <param name="scheduler">the sc</param>
         // ReSharper disable MemberCanBePrivate.Global
-        public DefaultMeterMetric(IClock clock, IScheduler scheduler = null)
+        public DefaultMeterMetric(IClock clock)
             // ReSharper restore MemberCanBePrivate.Global
         {
             _clock = clock;
             _startTime = _clock.Nanoseconds;
+            DefaultMeterTickerScheduler.Instance.ScheduleTick(this);
+        }
 
-            if (scheduler == null)
-            {
-                DefaultMeterTickerScheduler.Instance.ScheduleTick(this);
-            }
-            else
-            {
-                DefaultMeterTickerScheduler.Instance.WithScheduler(scheduler).ScheduleTick(this);
-            }
+        public DefaultMeterMetric(IClock clock, IMeterTickerScheduler schedular)
+        {
+            _clock = clock;
+            _startTime = _clock.Nanoseconds;
+            schedular.ScheduleTick(this);
         }
 
         /// <inheritdoc />
@@ -187,20 +185,6 @@ namespace App.Metrics.Meter
             }
 
             return result;
-        }
-
-        private new void Tick()
-        {
-            base.Tick();
-            if (_setMeters == null)
-            {
-                return;
-            }
-
-            foreach (var value in _setMeters.Values)
-            {
-                value.Tick();
-            }
         }
     }
 }

@@ -29,17 +29,18 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
     ///     </p>
     /// </summary>
     /// <seealso cref="IReservoir" />
-    public sealed class DefaultForwardDecayingReservoir : IReservoir, IDisposable
+    public sealed class DefaultForwardDecayingReservoir : IRescalingReservoir, IDisposable
     {
-        private static readonly ILog Logger = LogProvider.For<DefaultForwaredDecayingReservoirRescaleScheduler>();
+        private static readonly ILog Logger = LogProvider.For<DefaultForwardDecayingReservoir>();
         private readonly double _alpha;
         private readonly IClock _clock;
+        private readonly IReservoirRescaleScheduler _rescaleScheduler;
         private readonly int _sampleSize;
         private readonly SortedList<double, WeightedSample> _values;
 
         private AtomicLong _count = new AtomicLong(0);
         private bool _disposed;
-        private SpinLock _lock = default(SpinLock);
+        private SpinLock _lock = default;
         private AtomicLong _startTime;
         private AtomicDouble _sum = new AtomicDouble(0.0);
 
@@ -84,9 +85,8 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         ///     value the more biased the reservoir will be towards newer values.
         /// </param>
         /// <param name="clock">The <see cref="IClock">clock</see> type to use for calculating processing time.</param>
-        /// <param name="scheduler">The scheduler used to re-scaling</param>
         // ReSharper disable MemberCanBePrivate.Global
-        public DefaultForwardDecayingReservoir(int sampleSize, double alpha, IClock clock, IScheduler scheduler = null)
+        public DefaultForwardDecayingReservoir(int sampleSize, double alpha, IClock clock)
             // ReSharper restore MemberCanBePrivate.Global
         {
             _sampleSize = sampleSize;
@@ -95,15 +95,32 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
 
             _values = new SortedList<double, WeightedSample>(sampleSize, ReverseOrderDoubleComparer.Instance);
             _startTime = new AtomicLong(clock.Seconds);
+            _rescaleScheduler = DefaultReservoirRescaleScheduler.Instance;
+            _rescaleScheduler.ScheduleReScaling(this);
+        }
 
-            if (scheduler == null)
-            {
-                DefaultForwaredDecayingReservoirRescaleScheduler.Instance.ScheduleReScaling(this);
-            }
-            else
-            {
-                DefaultForwaredDecayingReservoirRescaleScheduler.Instance.WithScheduler(scheduler).ScheduleReScaling(this);
-            }
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="DefaultForwardDecayingReservoir" /> class.
+        /// </summary>
+        /// <param name="sampleSize">The number of samples to keep in the sampling reservoir</param>
+        /// <param name="alpha">
+        ///     The alpha value, e.g 0.015 will heavily biases the reservoir to the past 5 mins of measurements. The higher the
+        ///     value the more biased the reservoir will be towards newer values.
+        /// </param>
+        /// <param name="clock">The <see cref="IClock">clock</see> type to use for calculating processing time.</param>
+        /// <param name="rescaleScheduler">The schedular used to rescale the reservoir.</param>
+        // ReSharper disable MemberCanBePrivate.Global
+        public DefaultForwardDecayingReservoir(int sampleSize, double alpha, IClock clock, IReservoirRescaleScheduler rescaleScheduler)
+            // ReSharper restore MemberCanBePrivate.Global
+        {
+            _sampleSize = sampleSize;
+            _alpha = alpha;
+            _clock = clock;
+            _rescaleScheduler = rescaleScheduler;
+
+            _values = new SortedList<double, WeightedSample>(sampleSize, ReverseOrderDoubleComparer.Instance);
+            _startTime = new AtomicLong(clock.Seconds);
+            _rescaleScheduler.ScheduleReScaling(this);
         }
 
         /// <summary>
@@ -137,7 +154,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
             {
                 if (disposing)
                 {
-                    DefaultForwaredDecayingReservoirRescaleScheduler.Instance.RemoveSchedule(this);
+                    _rescaleScheduler.RemoveSchedule(this);
                 }
             }
 
@@ -149,13 +166,13 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         {
             var lockTaken = false;
 
-            Logger.Trace("Getting reservoir snapshot");
+            Logger.Trace("Getting {Reservoir} snapshot", this);
 
             try
             {
                 _lock.Enter(ref lockTaken);
 
-                Logger.Trace("Lock entered for reservoir snapshot");
+                Logger.Trace("Lock entered for {Reservoir} snapshot", this);
 
                 var snapshot = new WeightedSnapshot(_count.GetValue(), _sum.GetValue(), _values.Values);
                 if (resetReservoir)
@@ -170,10 +187,10 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                 if (lockTaken)
                 {
                     _lock.Exit();
-                    Logger.Trace("Lock exited after getting reservoir snapshot");
+                    Logger.Trace("Lock exited after getting {Reservoir} snapshot", this);
                 }
 
-                Logger.Trace("Retrieved reservoir snapshot");
+                Logger.Trace("Retrieved {Reservoir} snapshot", this);
             }
         }
 
@@ -188,13 +205,13 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         {
             var lockTaken = false;
 
-            Logger.Trace("Resetting reservoir");
+            Logger.Trace("Resetting {Reservoir}", this);
 
             try
             {
                 _lock.Enter(ref lockTaken);
 
-                Logger.Trace("Lock entered for reservoir reset");
+                Logger.Trace("Lock entered for {Reservoir} reset", this);
 
                 ResetReservoir();
             }
@@ -203,10 +220,10 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                 if (lockTaken)
                 {
                     _lock.Exit();
-                    Logger.Trace("Lock exited after resetting reservoir");
+                    Logger.Trace("Lock exited after resetting {Reservoir}", this);
                 }
 
-                Logger.Trace("Reservoir reset");
+                Logger.Trace("{Reservoir} reset", this);
             }
         }
 
@@ -245,13 +262,13 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         {
             var lockTaken = false;
 
-            Logger.Trace("Rescaling reservoir");
+            Logger.Trace("Rescaling {Reservoir}", this);
 
             try
             {
                 _lock.Enter(ref lockTaken);
 
-                Logger.Trace("Lock entered for reservoir rescale");
+                Logger.Trace("Lock entered for rescaling {Reservoir}", this);
 
                 var oldStartTime = _startTime.GetValue();
                 _startTime.SetValue(_clock.Seconds);
@@ -276,26 +293,26 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                 if (lockTaken)
                 {
                     _lock.Exit();
-                    Logger.Trace("Lock exited after rescaling reservoir");
+                    Logger.Trace("Lock exited after rescaling {Reservoir}", this);
                 }
 
-                Logger.Trace("Reservoir rescaled");
+                Logger.Trace("{Reservoir} rescaled", this);
             }
         }
 
         private void ResetReservoir()
         {
-            Logger.Trace("Resetting reservoir");
+            Logger.Trace("Resetting {Reservoir}", this);
             _values.Clear();
             _count.SetValue(0L);
             _sum.SetValue(0.0);
             _startTime.SetValue(_clock.Seconds);
-            Logger.Trace("Reservoir reset");
+            Logger.Trace("{Reservoir} reset", this);
         }
 
         private void Update(long value, string userValue, long timestamp)
         {
-            Logger.Trace("Updating reservoir");
+            Logger.Trace("Updating {Reservoir}", this);
             var lockTaken = false;
             try
             {
@@ -340,10 +357,10 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                 if (lockTaken)
                 {
                     _lock.Exit();
-                    Logger.Trace("Lock exited after updating reservoir");
+                    Logger.Trace("Lock exited after updating {Reservoir}", this);
                 }
 
-                Logger.Trace("Reservoir updated");
+                Logger.Trace("{Reservoir} updated", this);
             }
         }
 

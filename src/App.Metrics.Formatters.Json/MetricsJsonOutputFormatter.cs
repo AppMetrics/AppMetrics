@@ -7,7 +7,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 #if !NETSTANDARD1_6
-using App.Metrics.Abstractions.Internal;
+using App.Metrics.Internal;
 #endif
 using Newtonsoft.Json;
 

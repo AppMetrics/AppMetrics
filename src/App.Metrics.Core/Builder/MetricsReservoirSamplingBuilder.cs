@@ -64,7 +64,7 @@ namespace App.Metrics
         }
 
         /// <inheritdoc />
-        public IMetricsBuilder ForwardDecaying(int sampleSize, double alpha, IClock clock, IScheduler rescaleScheduler)
+        public IMetricsBuilder ForwardDecaying(int sampleSize, double alpha, IClock clock, IReservoirRescaleScheduler rescaleScheduler)
         {
             Reservoir(() => new DefaultForwardDecayingReservoir(sampleSize, alpha, clock, rescaleScheduler));
 

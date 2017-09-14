@@ -42,7 +42,6 @@ namespace App.Metrics.Facts.Reporting
         {
             Action action = () =>
             {
-                var scheduler = new DefaultTaskScheduler();
                 var unused = new DefaultMetricsReportRunner(null, _reporters);
             };
 

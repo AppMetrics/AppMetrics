@@ -8,6 +8,7 @@ using App.Metrics.FactsCommon;
 using App.Metrics.Gauge;
 using App.Metrics.Meter;
 using App.Metrics.ReservoirSampling.Uniform;
+using App.Metrics.Scheduling;
 using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;
@@ -16,6 +17,15 @@ namespace App.Metrics.Facts.Gauge
 {
     public class GaugeMetricTests
     {
+        private readonly IClock _clock;
+        private readonly IMeterTickerScheduler _schedular;
+
+        public GaugeMetricTests()
+        {
+            _clock = new TestClock();
+            _schedular = new TestMeterTickerScheduler(_clock);
+        }
+
         [Theory]
         [InlineData(2.0, 4.0, 50.0)]
         [InlineData(0.0, 4.0, 0.0)]
@@ -30,17 +40,14 @@ namespace App.Metrics.Facts.Gauge
         [Fact]
         public void Can_calculate_the_hit_ratio_as_a_guage()
         {
-            var clock = new TestClock();
-            var scheduler = new TestTaskScheduler(clock);
-
-            var cacheHitMeter = new DefaultMeterMetric(clock, scheduler);
-            var queryTimer = new DefaultTimerMetric(new DefaultAlgorithmRReservoir(1028), clock);
+            var cacheHitMeter = new DefaultMeterMetric(_clock, _schedular);
+            var queryTimer = new DefaultTimerMetric(new DefaultAlgorithmRReservoir(1028), _clock);
 
             foreach (var index in Enumerable.Range(0, 1000))
             {
                 using (queryTimer.NewContext())
                 {
-                    clock.Advance(TimeUnit.Milliseconds, 100);
+                    _clock.Advance(TimeUnit.Milliseconds, 100);
                 }
 
                 if (index % 2 == 0)
@@ -57,17 +64,14 @@ namespace App.Metrics.Facts.Gauge
         [Fact]
         public void Can_calculate_the_hit_ratio_as_a_guage_with_one_min_rate_as_default()
         {
-            var clock = new TestClock();
-            var scheduler = new TestTaskScheduler(clock);
-
-            var cacheHitMeter = new DefaultMeterMetric(clock, scheduler);
-            var queryTimer = new DefaultTimerMetric(new DefaultAlgorithmRReservoir(1028), clock);
+            var cacheHitMeter = new DefaultMeterMetric(_clock, _schedular);
+            var queryTimer = new DefaultTimerMetric(new DefaultAlgorithmRReservoir(1028), _clock, _schedular);
 
             foreach (var index in Enumerable.Range(0, 1000))
             {
                 using (queryTimer.NewContext())
                 {
-                    clock.Advance(TimeUnit.Milliseconds, 100);
+                    _clock.Advance(TimeUnit.Milliseconds, 100);
                 }
 
                 if (index % 2 == 0)
