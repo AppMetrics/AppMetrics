@@ -139,7 +139,7 @@ namespace MetricsSandbox
             Configuration = configurationBuilder.Build();
 
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
+                .MinimumLevel.Error()
                 .WriteTo.LiterateConsole()
                 .WriteTo.Seq("http://localhost:5341", LogEventLevel.Verbose)
                 .CreateLogger();
