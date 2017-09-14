@@ -3,7 +3,7 @@
 // </copyright>
 
 using System.Linq;
-using App.Metrics.Filtering;
+using App.Metrics.Builder;
 using App.Metrics.Filters;
 using App.Metrics.Formatters;
 using App.Metrics.Formatters.Ascii;
@@ -11,8 +11,10 @@ using App.Metrics.Infrastructure;
 using App.Metrics.Internal;
 using App.Metrics.Internal.NoOp;
 using App.Metrics.Registry;
+using App.Metrics.Reporting;
 using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
+using App.Metrics.Scheduling;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics
@@ -20,15 +22,33 @@ namespace App.Metrics
 {
     public class MetricsBuilder : IMetricsBuilder
     {
-        private readonly MetricsFormatterCollection _metricsOutputFormatters = new MetricsFormatterCollection();
         private readonly EnvFormatterCollection _envFormatters = new EnvFormatterCollection();
         private readonly EnvironmentInfoProvider _environmentInfoProvider = new EnvironmentInfoProvider();
-        private IMetricsOutputFormatter _defaultMetricsOutputFormatter;
-        private IEnvOutputFormatter _defauEnvOutputFormatter;
-        private DefaultSamplingReservoirProvider _defaultSamplingReservoir = new DefaultSamplingReservoirProvider(() => new DefaultForwardDecayingReservoir());
-        private IFilterMetrics _metricsFilter = new NoOpMetricsFilter();
+        private readonly MetricsFormatterCollection _metricsOutputFormatters = new MetricsFormatterCollection();
+        private readonly MetricsReporterCollection _reporters = new MetricsReporterCollection();
         private IClock _clock = new StopwatchClock();
+        private IEnvOutputFormatter _defauEnvOutputFormatter;
+        private IMetricsOutputFormatter _defaultMetricsOutputFormatter;
+        private IRunMetricsReports _metricsReportRunner = new NoOpMetricsReportRunner();
+        private IScheduleMetricsReporting _metricsReportScheduler = new NoOpMetricsReportScheduler();
+
+        private DefaultSamplingReservoirProvider _defaultSamplingReservoir =
+            new DefaultSamplingReservoirProvider(() => new DefaultForwardDecayingReservoir());
+
+        private IFilterMetrics _metricsFilter = new NullMetricsFilter();
         private MetricsOptions _options;
+
+        /// <inheritdoc />
+        public IMetricsConfigurationBuilder Configuration
+        {
+            get
+            {
+                return new MetricsConfigurationBuilder(
+                    this,
+                    _options,
+                    options => { _options = options; });
+            }
+        }
 
         /// <inheritdoc />
         public IMetricsFilterBuilder Filter
@@ -37,10 +57,52 @@ namespace App.Metrics
             {
                 return new MetricsFilterBuilder(
                     this,
-                    metricsFilter =>
-                    {
-                        _metricsFilter = metricsFilter;
-                    });
+                    metricsFilter => { _metricsFilter = metricsFilter; });
+            }
+        }
+
+        /// <inheritdoc />
+        public IEnvOutputFormattingBuilder OutputEnvInfo => new EnvOutputFormattingBuilder(
+            this,
+            formatter =>
+            {
+                if (_defauEnvOutputFormatter == null)
+                {
+                    _defauEnvOutputFormatter = formatter;
+                }
+
+                _envFormatters.TryAdd(formatter);
+            });
+
+        /// <inheritdoc />
+        public IMetricsOutputFormattingBuilder OutputMetrics => new MetricsOutputFormattingBuilder(
+            this,
+            formatter =>
+            {
+                if (_defaultMetricsOutputFormatter == null)
+                {
+                    _defaultMetricsOutputFormatter = formatter;
+                }
+
+                _metricsOutputFormatters.TryAdd(formatter);
+            });
+
+        /// <inheritdoc />
+        public IMetricsReportingBuilder Report => new MetricsReportingBuilder(
+            this,
+            reporter =>
+            {
+                _reporters.TryAdd(reporter);
+            });
+
+        /// <inheritdoc />
+        public IMetricsReservoirSamplingBuilder SampleWith
+        {
+            get
+            {
+                return new MetricsReservoirSamplingBuilder(
+                    this,
+                    reservoir => { _defaultSamplingReservoir = reservoir; });
             }
         }
 
@@ -51,61 +113,7 @@ namespace App.Metrics
             {
                 return new MetricsClockBuilder(
                     this,
-                    clock =>
-                    {
-                        _clock = clock;
-                    });
-            }
-        }
-
-        /// <inheritdoc />
-        public IMetricsOutputFormattingBuilder OutputMetrics => new MetricsOutputFormattingBuilder(this, formatter =>
-        {
-            if (_defaultMetricsOutputFormatter == null)
-            {
-                _defaultMetricsOutputFormatter = formatter;
-            }
-
-            _metricsOutputFormatters.TryAdd(formatter);
-        });
-
-        /// <inheritdoc />
-        public IEnvOutputFormattingBuilder OutputEnvInfo => new EnvOutputFormattingBuilder(this, formatter =>
-        {
-            if (_defauEnvOutputFormatter == null)
-            {
-                _defauEnvOutputFormatter = formatter;
-            }
-
-            _envFormatters.TryAdd(formatter);
-        });
-
-        /// <inheritdoc />
-        public IMetricsConfigurationBuilder Configuration
-        {
-            get
-            {
-                return new MetricsConfigurationBuilder(
-                    this,
-                    _options,
-                    options =>
-                    {
-                        _options = options;
-                    });
-            }
-        }
-
-        /// <inheritdoc />
-        public IMetricsReservoirSamplingBuilder SampleWith
-        {
-            get
-            {
-                return new MetricsReservoirSamplingBuilder(
-                    this,
-                    reservoir =>
-                    {
-                        _defaultSamplingReservoir = reservoir;
-                    });
+                    clock => { _clock = clock; });
             }
         }
 
@@ -143,9 +151,29 @@ namespace App.Metrics
             var defaultMetricsOutputFormatter = _defaultMetricsOutputFormatter ?? _metricsOutputFormatters.FirstOrDefault();
             var defaultEnvOutputFormatter = _defauEnvOutputFormatter ?? _envFormatters.FirstOrDefault();
 
-            return new MetricsRoot(metrics, _options, _metricsOutputFormatters, _envFormatters, defaultMetricsOutputFormatter, defaultEnvOutputFormatter, _environmentInfoProvider);
+            if (ShouldReport())
+            {
+                _metricsReportRunner = new DefaultMetricsReportRunner(metrics, _reporters);
 
-            IMetricContextRegistry ContextRegistry(string context) => new DefaultMetricContextRegistry(context, new GlobalMetricTags(_options.GlobalTags));
+                var scheduler = new DefaultTaskScheduler(); // TODO: Make this configurable
+                _metricsReportScheduler = new DefaultMetricsReportScheduler(metrics, _reporters, scheduler);
+            }
+
+            return new MetricsRoot(
+                metrics,
+                _options,
+                _metricsOutputFormatters,
+                _envFormatters,
+                defaultMetricsOutputFormatter,
+                defaultEnvOutputFormatter,
+                _environmentInfoProvider,
+                _metricsReportRunner,
+                _metricsReportScheduler);
+
+            IMetricContextRegistry ContextRegistry(string context) =>
+                new DefaultMetricContextRegistry(context, new GlobalMetricTags(_options.GlobalTags));
         }
+
+        private bool ShouldReport() { return _options.Enabled && _options.ReportingEnabled && _reporters.Any(); }
     }
 }

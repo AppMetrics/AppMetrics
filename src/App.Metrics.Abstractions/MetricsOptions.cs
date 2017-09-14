@@ -39,5 +39,13 @@ namespace App.Metrics
         ///     <c>true</c> if [metrics enabled]; otherwise, <c>false</c>.
         /// </value>
         public bool Enabled { get; set; } = true;
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether [reporting enabled].
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if [reporting enabled]; otherwise, <c>false</c>.
+        /// </value>
+        public bool ReportingEnabled { get; set; } = true;
     }
 }

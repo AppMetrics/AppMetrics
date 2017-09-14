@@ -4,8 +4,8 @@
 
 using System;
 using App.Metrics.FactsCommon;
-using App.Metrics.Filtering;
 using App.Metrics.Internal;
+using App.Metrics.Internal.NoOp;
 using App.Metrics.Registry;
 using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
@@ -26,7 +26,7 @@ namespace App.Metrics.Facts.Fixtures
 
             Registry = registry;
             Providers = new DefaultMetricsProvider(Registry, Builder, Clock);
-            Snapshot = new DefaultMetricValuesProvider(new NoOpMetricsFilter(), Registry);
+            Snapshot = new DefaultMetricValuesProvider(new NullMetricsFilter(), Registry);
             Managers = new DefaultMeasureMetricsProvider(Registry, Builder, Clock);
             Context = options.DefaultContextLabel;
         }

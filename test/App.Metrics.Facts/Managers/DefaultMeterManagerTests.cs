@@ -4,7 +4,7 @@
 
 using System.Linq;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Filtering;
+using App.Metrics.Internal.NoOp;
 using App.Metrics.Meter;
 using FluentAssertions;
 using Xunit;
@@ -32,7 +32,7 @@ namespace App.Metrics.Facts.Managers
 
             _manager.Mark(options);
 
-            var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
+            var data = _fixture.Registry.GetData(new NullMetricsFilter());
 
             data.Contexts.Single().Meters.Count(x => x.Name == metricName).Should().Be(1);
         }
@@ -45,7 +45,7 @@ namespace App.Metrics.Facts.Managers
 
             _manager.Mark(options, 2L);
 
-            var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
+            var data = _fixture.Registry.GetData(new NullMetricsFilter());
 
             data.Contexts.Single().Meters.Count(x => x.Name == metricName).Should().Be(1);
         }
@@ -59,7 +59,7 @@ namespace App.Metrics.Facts.Managers
             _manager.Mark(options, _fixture.Tags[0]);
             _manager.Mark(options, _fixture.Tags[1]);
 
-            var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
+            var data = _fixture.Registry.GetData(new NullMetricsFilter());
 
             data.Contexts.Single().Meters.Count(x => x.Name == _fixture.Tags[0].AsMetricName(metricName)).Should().Be(1);
             data.Contexts.Single().Meters.Count(x => x.Name == _fixture.Tags[1].AsMetricName(metricName)).Should().Be(1);
@@ -74,7 +74,7 @@ namespace App.Metrics.Facts.Managers
             _manager.Mark(options, _fixture.Tags[0], 2L);
             _manager.Mark(options, _fixture.Tags[1], 5L);
 
-            var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
+            var data = _fixture.Registry.GetData(new NullMetricsFilter());
 
             data.Contexts.Single().Meters.Count(x => x.Name == _fixture.Tags[0].AsMetricName(metricName)).Should().Be(1);
             data.Contexts.Single().Meters.First(x => x.Name == _fixture.Tags[0].AsMetricName(metricName)).Value.Count.Should().Be(2);
@@ -104,7 +104,7 @@ namespace App.Metrics.Facts.Managers
             _manager.Mark(options, _fixture.Tags[0], 5L, "item1");
             _manager.Mark(options, _fixture.Tags[1], 500L, "item1");
 
-            var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
+            var data = _fixture.Registry.GetData(new NullMetricsFilter());
 
             _fixture.Snapshot.GetMeterValue(_context, _fixture.Tags[0].AsMetricName(metricName)).Items.Length.Should().Be(1);
             data.Contexts.Single().Meters.First(x => x.Name == _fixture.Tags[0].AsMetricName(metricName)).Value.Count.Should().Be(5);

@@ -4,6 +4,7 @@
 
 using App.Metrics.Formatters;
 using App.Metrics.Infrastructure;
+using App.Metrics.Reporting;
 
 namespace App.Metrics
 {
@@ -41,6 +42,10 @@ namespace App.Metrics
         ///     A list of <see cref="IEnvOutputFormatter" />s that are used by this application.
         /// </value>
         EnvFormatterCollection OutputEnvFormatters { get; }
+
+        IRunMetricsReports Reporter { get; }
+
+        IScheduleMetricsReporting ReportScheduler { get; }
 
         MetricsOptions Options { get; }
 

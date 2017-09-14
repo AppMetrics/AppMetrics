@@ -2,7 +2,6 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Filtering;
 using App.Metrics.Filters;
 using App.Metrics.Infrastructure;
 using App.Metrics.Registry;
@@ -19,7 +18,7 @@ namespace App.Metrics.Internal.NoOp
 
         public IClock Clock => new StopwatchClock();
 
-        public IFilterMetrics Filter => new NoOpMetricsFilter();
+        public IFilterMetrics Filter => new NullMetricsFilter();
 
         public IManageMetrics Manage => new DefaultMetricsManager(Registry);
 

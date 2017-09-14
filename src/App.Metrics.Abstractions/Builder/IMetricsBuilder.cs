@@ -2,6 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
+using App.Metrics.Builder;
 using App.Metrics.Filters;
 
 // ReSharper disable CheckNamespace
@@ -33,6 +34,8 @@ namespace App.Metrics
         ///     </para>
         /// </summary>
         IEnvOutputFormattingBuilder OutputEnvInfo { get; }
+
+        IMetricsReportingBuilder Report { get; }
 
         /// <summary>
         ///     <para>

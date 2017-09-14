@@ -2,19 +2,13 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Filtering;
 using App.Metrics.Filters;
 using App.Metrics.Infrastructure;
+using App.Metrics.Internal.NoOp;
 
 namespace App.Metrics.Internal
 {
-    /// <summary>
-    ///     Provides access to record application metrics.
-    /// </summary>
-    /// <remarks>
-    ///     This is the entry point to the application's metrics registry
-    /// </remarks>
-    /// <seealso cref="IMetrics" />
+    /// <inheritdoc />
     public sealed class DefaultMetrics : IMetrics
     {
         /// <summary>
@@ -37,7 +31,7 @@ namespace App.Metrics.Internal
             IManageMetrics metricsManager)
         {
             Clock = clock ?? new StopwatchClock();
-            Filter = filter ?? new NoOpMetricsFilter();
+            Filter = filter ?? new NullMetricsFilter();
             Measure = measureMetricsProvider;
             Build = metricsBuilder;
             Snapshot = dataManager;

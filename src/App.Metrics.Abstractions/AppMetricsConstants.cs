@@ -39,5 +39,10 @@ namespace App.Metrics
                                                                                                { typeof(ApdexValue), ApdexMetricTypeValue }
                                                                                            };
         }
+
+        public static class Reporting
+        {
+            public static readonly TimeSpan DefaultFlushInterval = TimeSpan.FromSeconds(5);
+        }
     }
 }

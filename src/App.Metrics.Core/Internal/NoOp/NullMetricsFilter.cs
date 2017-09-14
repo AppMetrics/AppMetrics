@@ -1,4 +1,4 @@
-﻿// <copyright file="NoOpMetricsFilter.cs" company="Allan Hardy">
+﻿// <copyright file="NullMetricsFilter.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
@@ -12,10 +12,10 @@ using App.Metrics.Histogram;
 using App.Metrics.Meter;
 using App.Metrics.Timer;
 
-namespace App.Metrics.Filtering
+namespace App.Metrics.Internal.NoOp
 {
     [ExcludeFromCodeCoverage]
-    public sealed class NoOpMetricsFilter : IFilterMetrics
+    public sealed class NullMetricsFilter : IFilterMetrics
     {
         /// <inheritdoc />
         public bool IsApdexMatch(ApdexValueSource apdex) { return true; }

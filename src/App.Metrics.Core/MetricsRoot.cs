@@ -6,6 +6,7 @@ using System;
 using App.Metrics.Filters;
 using App.Metrics.Formatters;
 using App.Metrics.Infrastructure;
+using App.Metrics.Reporting;
 
 namespace App.Metrics
 {
@@ -21,10 +22,14 @@ namespace App.Metrics
             EnvFormatterCollection envOutputFormatters,
             IMetricsOutputFormatter defaultMetricsOutputFormatter,
             IEnvOutputFormatter defaultEnvOutputFormatter,
-            EnvironmentInfoProvider environmentInfoProvider)
+            EnvironmentInfoProvider environmentInfoProvider,
+            IRunMetricsReports reporter,
+            IScheduleMetricsReporting reportScheduler)
         {
             Options = options ?? throw new ArgumentNullException(nameof(options));
             _metrics = metrics ?? throw new ArgumentNullException(nameof(metrics));
+            Reporter = reporter ?? throw new ArgumentNullException(nameof(reporter));
+            ReportScheduler = reportScheduler ?? throw new ArgumentNullException(nameof(reportScheduler));
             _environmentInfoProvider = new EnvironmentInfoProvider();
             OutputMetricsFormatters = metricsOutputFormatters ?? new MetricsFormatterCollection();
             OutputEnvFormatters = envOutputFormatters ?? new EnvFormatterCollection();
@@ -65,6 +70,12 @@ namespace App.Metrics
 
         /// <inheritdoc />
         public EnvFormatterCollection OutputEnvFormatters { get; }
+
+        /// <inheritdoc />
+        public IRunMetricsReports Reporter { get; }
+
+        /// <inheritdoc />
+        public IScheduleMetricsReporting ReportScheduler { get; }
 
         /// <inheritdoc />
         public MetricsOptions Options { get; }

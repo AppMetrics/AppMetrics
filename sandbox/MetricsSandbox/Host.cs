@@ -4,12 +4,16 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
+using App.Metrics.Reporting;
 using Microsoft.Extensions.Configuration;
 using Serilog;
+using Serilog.Events;
+using static System.Console;
 
 namespace MetricsSandbox
 {
@@ -21,6 +25,8 @@ namespace MetricsSandbox
 
         private static IMetricsRoot Metrics { get; set; }
 
+        private static IRunMetricsReports Reporter { get; set; }
+
         public static async Task Main()
         {
             Init();
@@ -29,30 +35,43 @@ namespace MetricsSandbox
 
             await WriteEnvAsync(cancellationTokenSource);
 
-            Console.ReadKey();
+            PressAnyKeyToContinue();
 
-            RunUntilEsc(
+            await WriteMetricsAsync(cancellationTokenSource);
+
+            PressAnyKeyToContinue();
+
+            await RunUntilEscAsync(
                 TimeSpan.FromSeconds(5),
                 cancellationTokenSource,
                 async () =>
                 {
-                    Console.Clear();
-
+                    Clear();
                     RecordMetrics();
-
-                    await WriteMetricsAsync(cancellationTokenSource);
+                    await Task.WhenAll(Reporter.RunAllAsync(cancellationTokenSource.Token));
                 });
+        }
+
+        private static void PressAnyKeyToContinue()
+        {
+            WriteLine();
+            BackgroundColor = ConsoleColor.White;
+            ForegroundColor = ConsoleColor.Blue;
+            WriteLine("Press any key to continue...");
+            ResetColor();
+            ReadKey();
+            Clear();
         }
 
         private static async Task WriteEnvAsync(CancellationTokenSource cancellationTokenSource)
         {
-            Console.WriteLine("Environment Information");
-            Console.WriteLine("-------------------------------------------");
+            WriteLine("Environment Information");
+            WriteLine("-------------------------------------------");
 
             foreach (var formatter in Metrics.OutputEnvFormatters)
             {
-                Console.WriteLine($"Formatter: {formatter.GetType().FullName}");
-                Console.WriteLine("-------------------------------------------");
+                WriteLine($"Formatter: {formatter.GetType().FullName}");
+                WriteLine("-------------------------------------------");
 
                 using (var stream = new MemoryStream())
                 {
@@ -60,22 +79,27 @@ namespace MetricsSandbox
 
                     var result = Encoding.UTF8.GetString(stream.ToArray());
 
-                    Console.WriteLine(result);
+                    WriteLine(result);
                 }
             }
         }
 
         private static async Task WriteMetricsAsync(CancellationTokenSource cancellationTokenSource)
         {
+            foreach (var unused in Enumerable.Range(0, 10))
+            {
+                RecordMetrics();
+            }
+
             var metricsData = Metrics.Snapshot.Get();
 
-            Console.WriteLine("Metrics Formatters");
-            Console.WriteLine("-------------------------------------------");
+            WriteLine("Metrics Formatters");
+            WriteLine("-------------------------------------------");
 
             foreach (var formatter in Metrics.OutputMetricsFormatters)
             {
-                Console.WriteLine($"Formatter: {formatter.GetType().FullName}");
-                Console.WriteLine("-------------------------------------------");
+                WriteLine($"Formatter: {formatter.GetType().FullName}");
+                WriteLine("-------------------------------------------");
 
                 using (var stream = new MemoryStream())
                 {
@@ -83,7 +107,7 @@ namespace MetricsSandbox
 
                     var result = Encoding.UTF8.GetString(stream.ToArray());
 
-                    Console.WriteLine(result);
+                    WriteLine(result);
                 }
             }
         }
@@ -115,30 +139,37 @@ namespace MetricsSandbox
             Configuration = configurationBuilder.Build();
 
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
+                .MinimumLevel.Error()
                 .WriteTo.LiterateConsole()
-                .WriteTo.Seq("http://localhost:5341")
+                .WriteTo.Seq("http://localhost:5341", LogEventLevel.Verbose)
                 .CreateLogger();
 
-            Metrics = AppMetrics.CreateDefaultBuilder().Build();
+            var metricsConfigSection = Configuration.GetSection(nameof(MetricsOptions));
+
+            Metrics = AppMetrics.CreateDefaultBuilder()
+                .Configuration.Configure(metricsConfigSection.AsEnumerable())
+                .Report.Using<SimpleConsoleMetricsReporter>(TimeSpan.FromSeconds(2))
+                .Build();
+
+            Reporter = Metrics.Reporter;
         }
 
-        private static void RunUntilEsc(TimeSpan delayBetweenRun, CancellationTokenSource cancellationTokenSource, Action action)
+        private static async Task RunUntilEscAsync(TimeSpan delayBetweenRun, CancellationTokenSource cancellationTokenSource, Func<Task> action)
         {
-            Console.WriteLine("Press ESC to stop");
+            WriteLine("Press ESC to stop");
 
             while (true)
             {
-                while (!Console.KeyAvailable)
+                while (!KeyAvailable)
                 {
-                    action();
+                    await action();
 
                     Thread.Sleep(delayBetweenRun);
                 }
 
-                while (Console.KeyAvailable)
+                while (KeyAvailable)
                 {
-                    var key = Console.ReadKey(false).Key;
+                    var key = ReadKey(false).Key;
 
                     if (key == ConsoleKey.Escape)
                     {

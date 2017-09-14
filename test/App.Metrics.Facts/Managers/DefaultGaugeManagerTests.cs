@@ -4,8 +4,8 @@
 
 using System.Linq;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Filtering;
 using App.Metrics.Gauge;
+using App.Metrics.Internal.NoOp;
 using FluentAssertions;
 using Xunit;
 
@@ -30,7 +30,7 @@ namespace App.Metrics.Facts.Managers
 
             _manager.SetValue(options, () => 2.0);
 
-            var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
+            var data = _fixture.Registry.GetData(new NullMetricsFilter());
 
             data.Contexts.Single().Gauges.Single(g => g.Name == metricName).Value.Should().Be(2.0);
         }
@@ -45,7 +45,7 @@ namespace App.Metrics.Facts.Managers
             _manager.SetValue(options, 3.0);
             _manager.SetValue(options, 4.0);
 
-            var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
+            var data = _fixture.Registry.GetData(new NullMetricsFilter());
 
             data.Contexts.Single().Gauges.Single(g => g.Name == metricName).Value.Should().Be(4.0);
         }
@@ -59,7 +59,7 @@ namespace App.Metrics.Facts.Managers
             _manager.SetValue(options, _fixture.Tags[0], 2.0);
             _manager.SetValue(options, _fixture.Tags[1], 4.0);
 
-            var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
+            var data = _fixture.Registry.GetData(new NullMetricsFilter());
 
             data.Contexts.Single().Gauges.Single(g => g.Name == _fixture.Tags[0].AsMetricName(metricName)).Value.Should().Be(2.0);
             data.Contexts.Single().Gauges.Single(g => g.Name == _fixture.Tags[1].AsMetricName(metricName)).Value.Should().Be(4.0);
@@ -74,7 +74,7 @@ namespace App.Metrics.Facts.Managers
             _manager.SetValue(options, _fixture.Tags[0], () => 2.0);
             _manager.SetValue(options, _fixture.Tags[1], () => 4.0);
 
-            var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
+            var data = _fixture.Registry.GetData(new NullMetricsFilter());
 
             data.Contexts.Single().Gauges.Single(g => g.Name == _fixture.Tags[0].AsMetricName(metricName)).Value.Should().Be(2.0);
             data.Contexts.Single().Gauges.Single(g => g.Name == _fixture.Tags[1].AsMetricName(metricName)).Value.Should().Be(4.0);

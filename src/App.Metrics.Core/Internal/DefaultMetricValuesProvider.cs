@@ -24,7 +24,7 @@ namespace App.Metrics.Internal
         /// <param name="registry">The registry.</param>
         public DefaultMetricValuesProvider(IFilterMetrics globalFilter, IMetricsRegistry registry)
         {
-            _globalFilter = globalFilter ?? new NoOpMetricsFilter();
+            _globalFilter = globalFilter ?? new NullMetricsFilter();
             _registry = registry ?? new NullMetricsRegistry();
         }
 
@@ -45,7 +45,7 @@ namespace App.Metrics.Internal
         {
             IFilterMetrics filter;
 
-            if (overrideGlobalFilter == null)
+            if (overrideGlobalFilter == null || overrideGlobalFilter is NullMetricsFilter)
             {
                 filter = _globalFilter;
                 Logger.Trace("Getting metrics snaphot with custom filter");
@@ -72,7 +72,7 @@ namespace App.Metrics.Internal
 
             Logger.Trace("Getting metrics snaphot found {MetricsContextCount}", contextData.Contexts?.Count());
 
-            return contextData.Contexts.FirstOrDefault() ?? MetricsContextValueSource.Empty;
+            return contextData?.Contexts?.FirstOrDefault() ?? MetricsContextValueSource.Empty;
         }
     }
 }

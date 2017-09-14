@@ -12,6 +12,7 @@ namespace App.Metrics.Internal
     {
         internal static readonly string DefaultContextLabelDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.DefaultContextLabel)}";
         internal static readonly string EnabledDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.Enabled)}";
+        internal static readonly string ReportingEnabledDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.ReportingEnabled)}";
         internal static readonly string GlobalTagsDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.GlobalTags)}:";
         private readonly MetricsOptions _options;
 
@@ -81,6 +82,15 @@ namespace App.Metrics.Internal
                     }
 
                     options.Enabled = metricsEnabled;
+                }
+                else if (string.Compare(key, ReportingEnabledDirective, StringComparison.CurrentCultureIgnoreCase) == 0)
+                {
+                    if (!bool.TryParse(_optionValues[key], out var reportingEnabled))
+                    {
+                        throw new InvalidCastException($"Attempted to bind {key} to {ReportingEnabledDirective} but it's not a boolean");
+                    }
+
+                    options.ReportingEnabled = reportingEnabled;
                 }
             }
 

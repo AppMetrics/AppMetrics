@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using App.Metrics.Apdex;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Filtering;
+using App.Metrics.Internal.NoOp;
 using FluentAssertions;
 using Xunit;
 
@@ -33,7 +33,7 @@ namespace App.Metrics.Facts.Managers
             _manager.Track(options, _fixture.Tags[0], async () => { await Task.Delay(10); });
             _manager.Track(options, _fixture.Tags[1], async () => { await Task.Delay(10); });
 
-            var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
+            var data = _fixture.Registry.GetData(new NullMetricsFilter());
 
             data.Contexts.Single().ApdexScores.FirstOrDefault(x => x.Name == _fixture.Tags[0].AsMetricName(metricName)).Should().NotBeNull();
             data.Contexts.Single().ApdexScores.FirstOrDefault(x => x.Name == _fixture.Tags[1].AsMetricName(metricName)).Should().NotBeNull();
@@ -47,7 +47,7 @@ namespace App.Metrics.Facts.Managers
 
             _manager.Track(options, async () => { await Task.Delay(10); });
 
-            var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
+            var data = _fixture.Registry.GetData(new NullMetricsFilter());
 
             data.Contexts.Single().ApdexScores.FirstOrDefault(x => x.Name == metricName).Should().NotBeNull();
         }
@@ -68,7 +68,7 @@ namespace App.Metrics.Facts.Managers
                 await Task.Delay(10);
             }
 
-            var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
+            var data = _fixture.Registry.GetData(new NullMetricsFilter());
 
             data.Contexts.Single().ApdexScores.FirstOrDefault(x => x.Name == _fixture.Tags[0].AsMetricName(metricName)).Should().NotBeNull();
             data.Contexts.Single().ApdexScores.FirstOrDefault(x => x.Name == _fixture.Tags[1].AsMetricName(metricName)).Should().NotBeNull();
@@ -85,7 +85,7 @@ namespace App.Metrics.Facts.Managers
                 await Task.Delay(10);
             }
 
-            var data = _fixture.Registry.GetData(new NoOpMetricsFilter());
+            var data = _fixture.Registry.GetData(new NullMetricsFilter());
 
             data.Contexts.Single().ApdexScores.FirstOrDefault(x => x.Name == metricName).Should().NotBeNull();
         }

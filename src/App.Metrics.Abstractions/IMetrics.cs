@@ -6,12 +6,6 @@ using App.Metrics.Filters;
 
 namespace App.Metrics
 {
-    /// <summary>
-    ///     Gets the record application metrics.
-    /// </summary>
-    /// <remarks>
-    ///     This is the entry point to the application's metrics registry
-    /// </remarks>
     public interface IMetrics
     {
         IBuildMetrics Build { get; }
