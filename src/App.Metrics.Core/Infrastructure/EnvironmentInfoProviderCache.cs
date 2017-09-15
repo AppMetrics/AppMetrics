@@ -22,8 +22,22 @@ namespace App.Metrics.Infrastructure
             MachineName = StringExtensions.GetSafeString(() => Environment.MachineName);
             FrameworkDescription = StringExtensions.GetSafeString(() => RuntimeInformation.FrameworkDescription);
 
-            var entryAssembly = Assembly.GetEntryAssembly();
+            var aspnetCoreEnv = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
+            if (aspnetCoreEnv.IsPresent())
+            {
+                RunningEnvironment = aspnetCoreEnv.ToLowerInvariant();
+            }
+            else
+            {
+#if DEBUG
+                RunningEnvironment = "debug";
+#else
+                RunningEnvironment = "release";
+#endif
+            }
+
+            var entryAssembly = Assembly.GetEntryAssembly();
             EntryAssemblyName = StringExtensions.GetSafeString(() => entryAssembly?.GetName().Name ?? "unknown");
             EntryAssemblyVersion = StringExtensions.GetSafeString(() => entryAssembly?.GetName().Version.ToString() ?? "unknown");
         }
@@ -34,19 +48,21 @@ namespace App.Metrics.Infrastructure
 
         public string EntryAssemblyVersion { get; }
 
+        public string FrameworkDescription { get; }
+
         public string MachineName { get; }
-
-        public string OperatingSystemVersion { get; }
-
-        public string OperatingSystemPlatform { get; }
 
         public string OperatingSystemArchitecture { get; }
 
-        public string ProcessorCount { get; }
+        public string OperatingSystemPlatform { get; }
+
+        public string OperatingSystemVersion { get; }
 
         public string ProcessArchitecture { get; }
 
-        public string FrameworkDescription { get; }
+        public string ProcessorCount { get; }
+
+        public string RunningEnvironment { get; }
 
         private static OSPlatform GetOSPlatform()
         {

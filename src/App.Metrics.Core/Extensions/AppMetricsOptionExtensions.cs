@@ -12,13 +12,13 @@ namespace App.Metrics
 {
     public static class AppMetricsOptionExtensions
     {
-        private static readonly EnvironmentInfo EnvironmentBuilder = new EnvironmentInfoProvider().Build();
+        private static readonly EnvironmentInfo EnvInfo = new EnvironmentInfoProvider().Build();
 
         public static MetricsOptions WithGlobalTags(
             this MetricsOptions options,
             Action<Dictionary<string, string>, EnvironmentInfo> setupAction)
         {
-            setupAction(options.GlobalTags, EnvironmentBuilder);
+            setupAction(options.GlobalTags, EnvInfo);
 
             return options;
         }
@@ -27,11 +27,11 @@ namespace App.Metrics
         {
             if (!options.GlobalTags.ContainsKey("app"))
             {
-                options.GlobalTags.Add("app", appName ?? EnvironmentBuilder.EntryAssemblyName);
+                options.GlobalTags.Add("app", appName ?? EnvInfo.EntryAssemblyName);
             }
             else
             {
-                options.GlobalTags["app"] = appName ?? EnvironmentBuilder.EntryAssemblyName;
+                options.GlobalTags["app"] = appName ?? EnvInfo.EntryAssemblyName;
             }
 
             return options;
@@ -41,11 +41,11 @@ namespace App.Metrics
         {
             if (!options.GlobalTags.ContainsKey("server"))
             {
-                options.GlobalTags.Add("server", serverName ?? EnvironmentBuilder.MachineName);
+                options.GlobalTags.Add("server", serverName ?? EnvInfo.MachineName);
             }
             else
             {
-                options.GlobalTags["server"] = serverName ?? EnvironmentBuilder.MachineName;
+                options.GlobalTags["server"] = serverName ?? EnvInfo.MachineName;
             }
 
             return options;
@@ -55,19 +55,11 @@ namespace App.Metrics
         {
             if (!options.GlobalTags.ContainsKey("env"))
             {
-#if DEBUG
-                options.GlobalTags.Add("env", envName ?? "debug");
-#else
-                options.GlobalTags.Add("env", envName ?? "release");
-#endif
+                options.GlobalTags.Add("env", envName ?? EnvInfo.RunningEnvironment);
             }
             else
             {
-#if DEBUG
-                options.GlobalTags["env"] = envName ?? "debug";
-#else
-                options.GlobalTags["env"] = envName ?? "release";
-#endif
+                options.GlobalTags["env"] = envName ?? EnvInfo.RunningEnvironment;
             }
 
             return options;

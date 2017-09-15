@@ -93,19 +93,15 @@ namespace App.Metrics.FactsCommon
         {
             try
             {
-#if DEBUG
                 var sw = new Stopwatch();
                 sw.Start();
-#endif
 
                 foreach (var meter in _meters)
                 {
                     meter.Tick();
                 }
 
-#if DEBUG
                 Logger.Trace("{MeterCount} meters all ticked in {ElapsedTicks} ticks using {MeterTickScheuler}", _meters.Count, sw.ElapsedTicks, this);
-#endif
             }
             catch (Exception ex)
             {

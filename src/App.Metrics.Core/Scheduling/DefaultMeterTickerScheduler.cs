@@ -18,6 +18,7 @@ namespace App.Metrics.Scheduling
     {
         private static readonly ILog Logger = LogProvider.For<DefaultMeterTickerScheduler>();
         private static readonly TimeSpan TickInterval = TimeSpan.FromSeconds(5);
+        private static readonly Stopwatch TickStopWatch = new Stopwatch();
         private readonly object _syncLock = new object();
         private readonly ConcurrentBag<ITickingMeter> _meters = new ConcurrentBag<ITickingMeter>();
         private readonly IMetricsTaskSchedular _scheduler;
@@ -78,19 +79,22 @@ namespace App.Metrics.Scheduling
         {
             try
             {
-#if DEBUG
-                var sw = new Stopwatch();
-                sw.Start();
-#endif
+                if (Logger.IsDebugEnabled())
+                {
+                    TickStopWatch.Start();
+                }
 
                 foreach (var meter in _meters)
                 {
                     meter.Tick();
                 }
 
-#if DEBUG
-                Logger.Debug("{MeterCount} meters all ticked in {ElapsedTicks} ticks using {MeterTickScheuler}", _meters.Count, sw.ElapsedTicks, this);
-#endif
+                if (Logger.IsDebugEnabled())
+                {
+                    Logger.Debug("{MeterCount} meters all ticked in {ElapsedTicks} ticks using {MeterTickScheuler}", _meters.Count, TickStopWatch.ElapsedTicks, this);
+                    TickStopWatch.Reset();
+                    TickStopWatch.Stop();
+                }
             }
             catch (Exception ex)
             {

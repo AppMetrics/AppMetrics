@@ -15,6 +15,8 @@ namespace App.Metrics.Infrastructure
 
         public EnvironmentInfo(IDictionary<string, string> entries)
         {
+            RunningEnvironment = entries.FirstOrDefault(e => string.Equals(e.Key, "RunningEnvironment", StringComparison.OrdinalIgnoreCase)).
+                                           Value;
             FrameworkDescription = entries.FirstOrDefault(e => string.Equals(e.Key, "FrameworkDescription", StringComparison.OrdinalIgnoreCase)).
                                            Value;
             MachineName = entries.FirstOrDefault(e => string.Equals(e.Key, "MachineName", StringComparison.OrdinalIgnoreCase)).Value;
@@ -33,6 +35,7 @@ namespace App.Metrics.Infrastructure
 
             _entries = new[]
                        {
+                           new EnvironmentInfoEntry("RunningEnvironment", RunningEnvironment),
                            new EnvironmentInfoEntry("FrameworkDescription", FrameworkDescription),
                            new EnvironmentInfoEntry("MachineName", MachineName),
                            new EnvironmentInfoEntry("OperatingSystemPlatform", OperatingSystemPlatform),
@@ -46,6 +49,7 @@ namespace App.Metrics.Infrastructure
         }
 
         public EnvironmentInfo(
+            string runningEnvironment,
             string frameworkDescription,
             string entryAssemblyName,
             string entryAssemblyVersion,
@@ -57,6 +61,7 @@ namespace App.Metrics.Infrastructure
             string processArchitecture,
             string processorCount)
         {
+            RunningEnvironment = runningEnvironment;
             FrameworkDescription = frameworkDescription;
             EntryAssemblyName = entryAssemblyName;
             EntryAssemblyVersion = entryAssemblyVersion;
@@ -70,6 +75,7 @@ namespace App.Metrics.Infrastructure
 
             _entries = new[]
                        {
+                           new EnvironmentInfoEntry("RunningEnvironment", RunningEnvironment),
                            new EnvironmentInfoEntry("FrameworkDescription", FrameworkDescription),
                            new EnvironmentInfoEntry("MachineName", MachineName),
                            new EnvironmentInfoEntry("ProcessArchitecture", ProcessArchitecture),
@@ -84,6 +90,8 @@ namespace App.Metrics.Infrastructure
         }
 
         public IEnumerable<EnvironmentInfoEntry> Entries => _entries ?? Enumerable.Empty<EnvironmentInfoEntry>();
+
+        public string RunningEnvironment { get; }
 
         public string EntryAssemblyName { get; }
 
@@ -124,6 +132,7 @@ namespace App.Metrics.Infrastructure
             unchecked
             {
                 var hashCode = FrameworkDescription != null ? FrameworkDescription.GetHashCode() : 0;
+                hashCode = (hashCode * 397) ^ (RunningEnvironment != null ? RunningEnvironment.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (EntryAssemblyName != null ? EntryAssemblyName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (EntryAssemblyVersion != null ? EntryAssemblyVersion.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (LocalTimeString != null ? LocalTimeString.GetHashCode() : 0);
@@ -140,6 +149,7 @@ namespace App.Metrics.Infrastructure
         public bool Equals(EnvironmentInfo other)
         {
             return string.Equals(FrameworkDescription, other.FrameworkDescription) && string.Equals(EntryAssemblyName, other.EntryAssemblyName) &&
+                   string.Equals(RunningEnvironment, other.RunningEnvironment) &&
                    string.Equals(EntryAssemblyVersion, other.EntryAssemblyVersion) &&
                    string.Equals(LocalTimeString, other.LocalTimeString) && string.Equals(MachineName, other.MachineName) &&
                    string.Equals(OperatingSystemPlatform, other.OperatingSystemPlatform) &&

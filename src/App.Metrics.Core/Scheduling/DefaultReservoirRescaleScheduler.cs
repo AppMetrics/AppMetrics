@@ -18,6 +18,7 @@ namespace App.Metrics.Scheduling
     {
         private static readonly ILog Logger = LogProvider.For<DefaultReservoirRescaleScheduler>();
         private static readonly TimeSpan TickInterval = TimeSpan.FromHours(1);
+        private static readonly Stopwatch TickStopWatch = new Stopwatch();
         private readonly object _syncLock = new object();
         private readonly ConcurrentBag<IRescalingReservoir> _reservoirs = new ConcurrentBag<IRescalingReservoir>();
         private readonly IMetricsTaskSchedular _scheduler;
@@ -81,19 +82,22 @@ namespace App.Metrics.Scheduling
         {
             try
             {
-#if DEBUG
-                var sw = new Stopwatch();
-                sw.Start();
-#endif
+                if (Logger.IsDebugEnabled())
+                {
+                    TickStopWatch.Start();
+                }
 
                 foreach (var reservoir in _reservoirs)
                 {
                     reservoir.Rescale();
                 }
 
-#if DEBUG
-                Logger.Debug("{ReservoirCount} reservoirs all rescaled in {ElapsedTicks} ticks use {ReservoirRescaleScheduler} ", _reservoirs.Count, sw.ElapsedTicks, this);
-#endif
+                if (Logger.IsDebugEnabled())
+                {
+                    Logger.Debug("{ReservoirCount} reservoirs all rescaled in {ElapsedTicks} ticks use {ReservoirRescaleScheduler} ", _reservoirs.Count, TickStopWatch.ElapsedTicks, this);
+                    TickStopWatch.Reset();
+                    TickStopWatch.Stop();
+                }
             }
             catch (Exception e)
             {

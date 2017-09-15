@@ -14,6 +14,7 @@ namespace App.Metrics.Infrastructure
             var localTimeString = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.ffffK", CultureInfo.InvariantCulture);
 
             return new EnvironmentInfo(
+                EnvironmentInfoProviderCache.Instance.RunningEnvironment,
                 EnvironmentInfoProviderCache.Instance.FrameworkDescription,
                 EnvironmentInfoProviderCache.Instance.EntryAssemblyName,
                 EnvironmentInfoProviderCache.Instance.EntryAssemblyVersion,

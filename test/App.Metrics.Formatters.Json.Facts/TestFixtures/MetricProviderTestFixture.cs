@@ -61,6 +61,7 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
         public MetricsDataValueSource ApdexContext { get; }
 
         public EnvironmentInfo Env => new EnvironmentInfo(
+            "development",
             "framework",
             "assembly_name",
             "assembly_version",

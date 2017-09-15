@@ -93,19 +93,15 @@ namespace App.Metrics.FactsCommon
         {
             try
             {
-#if DEBUG
                 var sw = new Stopwatch();
                 sw.Start();
-#endif
 
                 foreach (var reservoir in _reservoirs)
                 {
                     reservoir.Rescale();
                 }
 
-#if DEBUG
                 Logger.Debug("{ReservoirCount} reservoirs all rescaled in {ElapsedTicks} ticks use {ReservoirRescaleScheduler} ", _reservoirs.Count, sw.ElapsedTicks, this);
-#endif
             }
             catch (Exception e)
             {
