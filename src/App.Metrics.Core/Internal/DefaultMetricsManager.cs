@@ -25,31 +25,31 @@ namespace App.Metrics.Internal
         /// <inheritdoc />
         public void Disable()
         {
-            Logger.Trace("Disabling metrics");
+            Logger.Debug("Disabling metrics");
 
             _registry.Disable();
 
-            Logger.Trace("Metrics disabled");
+            Logger.Debug("Metrics disabled");
         }
 
         /// <inheritdoc />
         public void Reset()
         {
-            Logger.Trace("Clearing metrics registry");
+            Logger.Debug("Clearing metrics registry");
 
             _registry.Clear();
 
-            Logger.Trace("Metrics registry cleared");
+            Logger.Debug("Metrics registry cleared");
         }
 
         /// <inheritdoc />
         public void ShutdownContext(string context)
         {
-            Logger.Trace("Shutting down metrics context");
+            Logger.Debug("Shutting down metrics context");
 
             _registry.RemoveContext(context);
 
-            Logger.Trace("Metrics Context shutdown");
+            Logger.Debug("Metrics Context shutdown");
         }
     }
 }

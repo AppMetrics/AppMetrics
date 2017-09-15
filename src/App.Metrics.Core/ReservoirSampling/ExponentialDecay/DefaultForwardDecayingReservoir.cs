@@ -205,7 +205,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         {
             var lockTaken = false;
 
-            Logger.Trace("Resetting {Reservoir}", this);
+            Logger.Debug("Resetting {Reservoir}", this);
 
             try
             {
@@ -223,7 +223,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                     Logger.Trace("Lock exited after resetting {Reservoir}", this);
                 }
 
-                Logger.Trace("{Reservoir} reset", this);
+                Logger.Debug("{Reservoir} reset", this);
             }
         }
 
@@ -262,13 +262,13 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         {
             var lockTaken = false;
 
-            Logger.Trace("Rescaling {Reservoir}", this);
+            Logger.Debug("Rescaling {Reservoir}", this);
 
             try
             {
                 _lock.Enter(ref lockTaken);
 
-                Logger.Trace("Lock entered for rescaling {Reservoir}", this);
+                Logger.Debug("Lock entered for rescaling {Reservoir}", this);
 
                 var oldStartTime = _startTime.GetValue();
                 _startTime.SetValue(_clock.Seconds);
@@ -293,26 +293,26 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                 if (lockTaken)
                 {
                     _lock.Exit();
-                    Logger.Trace("Lock exited after rescaling {Reservoir}", this);
+                    Logger.Debug("Lock exited after rescaling {Reservoir}", this);
                 }
 
-                Logger.Trace("{Reservoir} rescaled", this);
+                Logger.Debug("{Reservoir} rescaled", this);
             }
         }
 
         private void ResetReservoir()
         {
-            Logger.Trace("Resetting {Reservoir}", this);
+            Logger.Debug("Resetting {Reservoir}", this);
             _values.Clear();
             _count.SetValue(0L);
             _sum.SetValue(0.0);
             _startTime.SetValue(_clock.Seconds);
-            Logger.Trace("{Reservoir} reset", this);
+            Logger.Debug("{Reservoir} reset", this);
         }
 
         private void Update(long value, string userValue, long timestamp)
         {
-            Logger.Trace("Updating {Reservoir}", this);
+            Logger.Debug("Updating {Reservoir}", this);
             var lockTaken = false;
             try
             {
@@ -357,10 +357,10 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                 if (lockTaken)
                 {
                     _lock.Exit();
-                    Logger.Trace("Lock exited after updating {Reservoir}", this);
+                    Logger.Debug("Lock exited after updating {Reservoir}", this);
                 }
 
-                Logger.Trace("{Reservoir} updated", this);
+                Logger.Debug("{Reservoir} updated", this);
             }
         }
 

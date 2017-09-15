@@ -48,7 +48,7 @@ namespace App.Metrics.Scheduling
         /// <inheritdoc/>
         public void Dispose()
         {
-            Logger.Trace("Disposing {MeterTickScheuler} scheduler", this);
+            Logger.Debug("Disposing {MeterTickScheuler} scheduler", this);
 
             lock (_syncLock)
             {
@@ -62,7 +62,7 @@ namespace App.Metrics.Scheduling
 
             _scheduler.Dispose();
 
-            Logger.Trace("{MeterTickScheuler} scheduler disposed", this);
+            Logger.Debug("{MeterTickScheuler} scheduler disposed", this);
 
             Tick().GetAwaiter().GetResult();
         }
@@ -89,7 +89,7 @@ namespace App.Metrics.Scheduling
                 }
 
 #if DEBUG
-                Logger.Trace("{MeterCount} meters all ticked in {ElapsedTicks} ticks using {MeterTickScheuler}", _meters.Count, sw.ElapsedTicks, this);
+                Logger.Debug("{MeterCount} meters all ticked in {ElapsedTicks} ticks using {MeterTickScheuler}", _meters.Count, sw.ElapsedTicks, this);
 #endif
             }
             catch (Exception ex)
