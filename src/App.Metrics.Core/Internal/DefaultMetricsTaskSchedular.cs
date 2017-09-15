@@ -7,9 +7,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Logging;
 
-namespace App.Metrics.Scheduling
+namespace App.Metrics.Internal
 {
-    public class DefaultMetricsTaskSchedular : IMetricsTaskSchedular
+    internal class DefaultMetricsTaskSchedular : IMetricsTaskSchedular
     {
         private static readonly ILog Logger = LogProvider.For<DefaultMetricsTaskSchedular>();
         private readonly object _syncLock = new object();

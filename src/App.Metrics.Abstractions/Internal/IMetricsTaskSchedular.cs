@@ -4,9 +4,9 @@
 
 using System;
 
-namespace App.Metrics.Scheduling
+namespace App.Metrics.Internal
 {
-    public interface IMetricsTaskSchedular : IDisposable
+    internal interface IMetricsTaskSchedular : IDisposable
     {
         void Start(TimeSpan interval);
     }

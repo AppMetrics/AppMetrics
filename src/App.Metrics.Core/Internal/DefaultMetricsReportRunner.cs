@@ -51,6 +51,20 @@ namespace App.Metrics.Internal
             return _reporters.Select(reporter => FlushMetrics(_metrics, cancellationToken, reporter));
         }
 
+        /// <inheritdoc />
+        public Task RunAsync<TMetricReporter>(CancellationToken cancellationToken = default)
+            where TMetricReporter : IReportMetrics
+        {
+            var reporter = _reporters.GetType<TMetricReporter>();
+
+            if (reporter == null)
+            {
+                throw new InvalidOperationException($"Metric Reporter of type {typeof(TMetricReporter)} is not available");
+            }
+
+            return FlushMetrics(_metrics, cancellationToken, reporter);
+        }
+
         private async Task FlushMetrics(IMetrics metrics, CancellationToken cancellationToken, IReportMetrics reporter)
         {
             try

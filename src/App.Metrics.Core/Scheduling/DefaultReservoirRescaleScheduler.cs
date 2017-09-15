@@ -6,9 +6,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading.Tasks;
-#if !NETSTANDARD1_6
 using App.Metrics.Internal;
-#endif
 using App.Metrics.Logging;
 using App.Metrics.ReservoirSampling;
 
@@ -99,10 +97,9 @@ namespace App.Metrics.Scheduling
                     TickStopWatch.Stop();
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine(e);
-                throw;
+                Logger.Error("Exception while attempting to rescale all rescalable reservoirs in {0}: {1}", this, ex);
             }
             finally
             {

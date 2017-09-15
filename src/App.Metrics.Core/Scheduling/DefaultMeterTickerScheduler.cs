@@ -6,9 +6,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading.Tasks;
-#if !NETSTANDARD1_6
 using App.Metrics.Internal;
-#endif
 using App.Metrics.Logging;
 using App.Metrics.Meter;
 

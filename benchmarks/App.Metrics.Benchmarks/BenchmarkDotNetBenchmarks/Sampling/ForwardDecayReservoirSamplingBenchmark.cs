@@ -5,8 +5,8 @@
 using System;
 using System.Threading.Tasks;
 using App.Metrics.Benchmarks.Fixtures;
+using App.Metrics.Internal;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
-using App.Metrics.Scheduling;
 using BenchmarkDotNet.Attributes;
 
 namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Sampling

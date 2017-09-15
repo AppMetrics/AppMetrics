@@ -41,6 +41,10 @@ namespace MetricsSandbox
 
             PressAnyKeyToContinue();
 
+            await Reporter.RunAsync<SimpleConsoleMetricsReporter>(cancellationTokenSource.Token);
+
+            Thread.Sleep(10000000);
+
             await RunUntilEscAsync(
                 TimeSpan.FromSeconds(5),
                 cancellationTokenSource,
