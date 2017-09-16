@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using App.Metrics.Filters;
 using App.Metrics.Formatters;
 using App.Metrics.Infrastructure;
@@ -23,12 +24,14 @@ namespace App.Metrics
             IMetricsOutputFormatter defaultMetricsOutputFormatter,
             IEnvOutputFormatter defaultEnvOutputFormatter,
             EnvironmentInfoProvider environmentInfoProvider,
+            MetricsReporterCollection reporterCollection,
             IRunMetricsReports reporter)
         {
             Options = options ?? throw new ArgumentNullException(nameof(options));
             _metrics = metrics ?? throw new ArgumentNullException(nameof(metrics));
-            Reporter = reporter ?? throw new ArgumentNullException(nameof(reporter));
+            ReportRunner = reporter ?? throw new ArgumentNullException(nameof(reporter));
             _environmentInfoProvider = new EnvironmentInfoProvider();
+            Reporters = reporterCollection ?? new MetricsReporterCollection();
             OutputMetricsFormatters = metricsOutputFormatters ?? new MetricsFormatterCollection();
             OutputEnvFormatters = envOutputFormatters ?? new EnvFormatterCollection();
             DefaultOutputMetricsFormatter = defaultMetricsOutputFormatter;
@@ -58,7 +61,7 @@ namespace App.Metrics
         public IProvideMetricValues Snapshot => _metrics.Snapshot;
 
         /// <inheritdoc />
-        public MetricsFormatterCollection OutputMetricsFormatters { get; }
+        public IReadOnlyCollection<IMetricsOutputFormatter> OutputMetricsFormatters { get; }
 
         /// <inheritdoc />
         public IMetricsOutputFormatter DefaultOutputMetricsFormatter { get; }
@@ -67,10 +70,13 @@ namespace App.Metrics
         public IEnvOutputFormatter DefaultOutputEnvFormatter { get; }
 
         /// <inheritdoc />
-        public EnvFormatterCollection OutputEnvFormatters { get; }
+        public IReadOnlyCollection<IEnvOutputFormatter> OutputEnvFormatters { get; }
 
         /// <inheritdoc />
-        public IRunMetricsReports Reporter { get; }
+        public IReadOnlyCollection<IReportMetrics> Reporters { get; }
+
+        /// <inheritdoc />
+        public IRunMetricsReports ReportRunner { get; }
 
         /// <inheritdoc />
         public MetricsOptions Options { get; }

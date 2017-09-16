@@ -14,7 +14,6 @@ using App.Metrics.Registry;
 using App.Metrics.Reporting;
 using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
-using App.Metrics.Scheduling;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics
@@ -163,6 +162,7 @@ namespace App.Metrics
                 defaultMetricsOutputFormatter,
                 defaultEnvOutputFormatter,
                 _environmentInfoProvider,
+                _reporters,
                 _metricsReportRunner);
 
             IMetricContextRegistry ContextRegistry(string context) =>

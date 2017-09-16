@@ -41,10 +41,6 @@ namespace MetricsSandbox
 
             PressAnyKeyToContinue();
 
-            await Reporter.RunAsync<SimpleConsoleMetricsReporter>(cancellationTokenSource.Token);
-
-            Thread.Sleep(10000000);
-
             await RunUntilEscAsync(
                 TimeSpan.FromSeconds(5),
                 cancellationTokenSource,
@@ -155,7 +151,7 @@ namespace MetricsSandbox
                 .Report.Using<SimpleConsoleMetricsReporter>(TimeSpan.FromSeconds(2))
                 .Build();
 
-            Reporter = Metrics.Reporter;
+            Reporter = Metrics.ReportRunner;
         }
 
         private static async Task RunUntilEscAsync(TimeSpan delayBetweenRun, CancellationTokenSource cancellationTokenSource, Func<Task> action)

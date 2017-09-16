@@ -2,6 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
+using System.Collections.Generic;
 using App.Metrics.Formatters;
 using App.Metrics.Infrastructure;
 using App.Metrics.Reporting;
@@ -17,7 +18,7 @@ namespace App.Metrics
         /// <value>
         ///     A list of <see cref="IMetricsOutputFormatter" />s that are used by this application.
         /// </value>
-        MetricsFormatterCollection OutputMetricsFormatters { get; }
+        IReadOnlyCollection<IMetricsOutputFormatter> OutputMetricsFormatters { get; }
 
         /// <summary>
         ///     Gets the default <see cref="IMetricsOutputFormatter" /> to use when metrics are attempted to be formatted.
@@ -41,9 +42,11 @@ namespace App.Metrics
         /// <value>
         ///     A list of <see cref="IEnvOutputFormatter" />s that are used by this application.
         /// </value>
-        EnvFormatterCollection OutputEnvFormatters { get; }
+        IReadOnlyCollection<IEnvOutputFormatter> OutputEnvFormatters { get; }
 
-        IRunMetricsReports Reporter { get; }
+        IReadOnlyCollection<IReportMetrics> Reporters { get; }
+
+        IRunMetricsReports ReportRunner { get; }
 
         MetricsOptions Options { get; }
 
