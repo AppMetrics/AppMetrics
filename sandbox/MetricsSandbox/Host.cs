@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
+using App.Metrics.Formatters.Json;
 using App.Metrics.Reporting;
 using Microsoft.Extensions.Configuration;
 using Serilog;

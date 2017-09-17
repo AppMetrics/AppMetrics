@@ -6,6 +6,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Filters;
+using App.Metrics.Formatters;
 using App.Metrics.Internal.NoOp;
 using App.Metrics.Reporting;
 
@@ -15,6 +16,10 @@ namespace App.Metrics.Facts.TestHelpers
     {
         private readonly bool _pass;
         private readonly Exception _throwEx;
+
+        public TestReporter()
+        {
+        }
 
         public TestReporter(bool pass = true, Exception throwEx = null)
         {
@@ -36,9 +41,16 @@ namespace App.Metrics.Facts.TestHelpers
 
         public TimeSpan FlushInterval { get; set; }
 
+        public IMetricsOutputFormatter Formatter { get; set; }
+
         public Task<bool> FlushAsync(MetricsDataValueSource metricsData, CancellationToken cancellationToken = default)
         {
-            return Task.FromResult(true);
+            if (_throwEx != null)
+            {
+                throw _throwEx;
+            }
+
+            return Task.FromResult(_pass);
         }
     }
 }

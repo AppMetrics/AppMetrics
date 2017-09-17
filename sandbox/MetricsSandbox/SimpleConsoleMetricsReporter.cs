@@ -18,13 +18,19 @@ namespace MetricsSandbox
 {
     public class SimpleConsoleMetricsReporter : IReportMetrics
     {
-        private readonly IMetricsOutputFormatter _defaultMetricsOutputFormatter = new MetricsTextOutputFormatter();
+        public SimpleConsoleMetricsReporter()
+        {
+            Formatter = new MetricsTextOutputFormatter();
+        }
 
         /// <inheritdoc />
         public IFilterMetrics Filter { get; set; }
 
         /// <inheritdoc />
         public TimeSpan FlushInterval { get; set; }
+
+        /// <inheritdoc />
+        public IMetricsOutputFormatter Formatter { get; set; }
 
         /// <inheritdoc />
         public async Task<bool> FlushAsync(MetricsDataValueSource metricsData, CancellationToken cancellationToken = default)
@@ -34,7 +40,7 @@ namespace MetricsSandbox
 
             using (var stream = new MemoryStream())
             {
-                await _defaultMetricsOutputFormatter.WriteAsync(stream, metricsData, cancellationToken);
+                await Formatter.WriteAsync(stream, metricsData, cancellationToken);
 
                 var output = Encoding.UTF8.GetString(stream.ToArray());
 

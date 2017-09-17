@@ -5,6 +5,7 @@
 using System;
 using App.Metrics.Builder;
 using App.Metrics.Filters;
+using App.Metrics.Formatters;
 using App.Metrics.Internal.NoOp;
 using App.Metrics.Reporting;
 
@@ -66,6 +67,24 @@ namespace App.Metrics
         }
 
         /// <inheritdoc />
+        public IMetricsBuilder Using<TReportMetrics>(IMetricsOutputFormatter formatter)
+            where TReportMetrics : IReportMetrics, new()
+        {
+            var reporter = new TReportMetrics { Formatter = formatter };
+
+            return Using(reporter);
+        }
+
+        /// <inheritdoc />
+        public IMetricsBuilder Using<TReportMetrics>(IMetricsOutputFormatter formatter, TimeSpan flushInterval)
+            where TReportMetrics : IReportMetrics, new()
+        {
+            var reporter = new TReportMetrics { Formatter = formatter, FlushInterval = flushInterval };
+
+            return Using(reporter);
+        }
+
+        /// <inheritdoc />
         public IMetricsBuilder Using<TReportMetrics>(TimeSpan flushInterval)
             where TReportMetrics : IReportMetrics, new()
         {
@@ -79,6 +98,15 @@ namespace App.Metrics
             where TReportMetrics : IReportMetrics, new()
         {
             var reporter = new TReportMetrics { Filter = filter, FlushInterval = flushInterval };
+
+            return Using(reporter);
+        }
+
+        /// <inheritdoc />
+        public IMetricsBuilder Using<TReportMetrics>(IMetricsOutputFormatter formatter, IFilterMetrics filter, TimeSpan flushInterval)
+            where TReportMetrics : IReportMetrics, new()
+        {
+            var reporter = new TReportMetrics { Formatter = formatter, Filter = filter, FlushInterval = flushInterval };
 
             return Using(reporter);
         }
