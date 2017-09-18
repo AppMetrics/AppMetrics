@@ -75,14 +75,24 @@ namespace App.Metrics
         /// <inheritdoc />
         public IMetricsOutputFormattingBuilder OutputMetrics => new MetricsOutputFormattingBuilder(
             this,
-            formatter =>
+            (replaceExisting, formatter) =>
             {
                 if (_defaultMetricsOutputFormatter == null)
                 {
                     _defaultMetricsOutputFormatter = formatter;
                 }
 
-                _metricsOutputFormatters.TryAdd(formatter);
+                if (replaceExisting)
+                {
+                    _metricsOutputFormatters.TryAdd(formatter);
+                }
+                else
+                {
+                    if (_metricsOutputFormatters.GetType(formatter.GetType()) == null)
+                    {
+                        _metricsOutputFormatters.Add(formatter);
+                    }
+                }
             });
 
         /// <inheritdoc />

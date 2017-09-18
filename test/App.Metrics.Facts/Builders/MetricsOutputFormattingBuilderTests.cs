@@ -3,6 +3,8 @@
 // </copyright>
 
 using System;
+using System.Linq;
+using System.Text;
 using App.Metrics.Formatters.Ascii;
 using App.Metrics.Formatters.Json;
 using FluentAssertions;
@@ -27,6 +29,23 @@ namespace App.Metrics.Facts.Builders
         }
 
         [Fact]
+        public void Can_keep_existing_formatter_if_registered_more_than_once()
+        {
+            // Arrange
+            var formatter = new MetricsTextOutputFormatter(new MetricsTextOptions { Encoding = Encoding.BigEndianUnicode });
+            var builder = new MetricsBuilder()
+                .OutputMetrics.Using(formatter)
+                .OutputMetrics.Using<MetricsTextOutputFormatter>(false);
+
+            // Act
+            var metrics = builder.Build();
+
+            // Assert
+            metrics.OutputMetricsFormatters.Count.Should().Be(1);
+            metrics.OutputMetricsFormatters.First().Should().BeSameAs(formatter);
+        }
+
+        [Fact]
         public void Cannot_set_null_metrics_output_formatter()
         {
             // Arrange
@@ -44,8 +63,9 @@ namespace App.Metrics.Facts.Builders
         public void Default_metrics_output_formatter_should_be_first_formatter_selected_via_instantiation()
         {
             // Arrange
-            var builder = new MetricsBuilder().OutputMetrics.Using(new MetricsTextOutputFormatter()).OutputMetrics.
-                                               Using(new MetricsJsonOutputFormatter());
+            var builder = new MetricsBuilder()
+                .OutputMetrics.Using(new MetricsTextOutputFormatter())
+                .OutputMetrics.Using(new MetricsJsonOutputFormatter());
 
             // Act
             var metrics = builder.Build();
@@ -58,7 +78,9 @@ namespace App.Metrics.Facts.Builders
         public void Default_metrics_output_formatter_should_be_first_formatter_selected_via_type()
         {
             // Arrange
-            var builder = new MetricsBuilder().OutputMetrics.Using<MetricsJsonOutputFormatter>().OutputMetrics.Using<MetricsTextOutputFormatter>();
+            var builder = new MetricsBuilder()
+                .OutputMetrics.Using<MetricsJsonOutputFormatter>()
+                .OutputMetrics.Using<MetricsTextOutputFormatter>();
 
             // Act
             var metrics = builder.Build();
@@ -68,10 +90,28 @@ namespace App.Metrics.Facts.Builders
         }
 
         [Fact]
+        public void Should_not_replace_formatter_if_types_are_different_and_asked_not_to_replace()
+        {
+            // Arrange
+            var formatter = new MetricsTextOutputFormatter(new MetricsTextOptions { Encoding = Encoding.BigEndianUnicode });
+            var builder = new MetricsBuilder()
+                .OutputMetrics.Using(formatter)
+                .OutputMetrics.Using<MetricsJsonOutputFormatter>(false);
+
+            // Act
+            var metrics = builder.Build();
+
+            // Assert
+            metrics.OutputMetricsFormatters.Count.Should().Be(2);
+        }
+
+        [Fact]
         public void Should_only_add_a_single_formatter_of_the_same_type()
         {
             // Arrange
-            var builder = new MetricsBuilder().OutputMetrics.Using<MetricsTextOutputFormatter>().OutputMetrics.Using<MetricsTextOutputFormatter>();
+            var builder = new MetricsBuilder()
+                .OutputMetrics.Using<MetricsTextOutputFormatter>()
+                .OutputMetrics.Using<MetricsTextOutputFormatter>();
 
             // Act
             var metrics = builder.Build();
@@ -85,8 +125,9 @@ namespace App.Metrics.Facts.Builders
         public void Should_set_metrics_output_formatters_when_selected_via_instantiation()
         {
             // Arrange
-            var builder = new MetricsBuilder().OutputMetrics.Using(new MetricsTextOutputFormatter()).OutputMetrics.
-                                               Using(new MetricsJsonOutputFormatter());
+            var builder = new MetricsBuilder()
+                .OutputMetrics.Using(new MetricsTextOutputFormatter())
+                .OutputMetrics.Using(new MetricsJsonOutputFormatter());
 
             // Act
             var metrics = builder.Build();
@@ -99,7 +140,9 @@ namespace App.Metrics.Facts.Builders
         public void Should_set_metrics_output_formatters_when_selected_via_type()
         {
             // Arrange
-            var builder = new MetricsBuilder().OutputMetrics.Using<MetricsTextOutputFormatter>().OutputMetrics.Using<MetricsJsonOutputFormatter>();
+            var builder = new MetricsBuilder()
+                .OutputMetrics.Using<MetricsTextOutputFormatter>()
+                .OutputMetrics.Using<MetricsJsonOutputFormatter>();
 
             // Act
             var metrics = builder.Build();
