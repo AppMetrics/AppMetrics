@@ -66,7 +66,7 @@ namespace App.Metrics.FactsCommon
         /// <inheritdoc/>
         public void Dispose()
         {
-            Logger.Debug("Disposing {ReservoirRescaleScheduler}", this);
+            Logger.Trace("Disposing {ReservoirRescaleScheduler}", this);
 
             lock (_syncLock)
             {
@@ -78,7 +78,7 @@ namespace App.Metrics.FactsCommon
                 _disposing = true;
             }
 
-            Logger.Debug("{ReservoirRescaleScheduler} Disposed", this);
+            Logger.Trace("{ReservoirRescaleScheduler} Disposed", this);
 
             Rescale().GetAwaiter().GetResult();
         }

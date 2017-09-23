@@ -1,4 +1,4 @@
-﻿// <copyright file="MetricsOptionsBuilderTests.cs" company="Allan Hardy">
+﻿// <copyright file="MetricsConfigurationBuilderTests.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
@@ -10,7 +10,7 @@ using Xunit;
 
 namespace App.Metrics.Facts.Builders
 {
-    public class MetricsOptionsBuilderTests
+    public class MetricsConfigurationBuilderTests
     {
         [Fact]
         public void Can_override_option_instance_values_with_key_value_pair_options()

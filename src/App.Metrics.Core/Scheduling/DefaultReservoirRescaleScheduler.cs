@@ -50,7 +50,7 @@ namespace App.Metrics.Scheduling
         /// <inheritdoc/>
         public void Dispose()
         {
-            Logger.Debug("Disposing {ReservoirRescaleScheduler}", this);
+            Logger.Trace("Disposing {ReservoirRescaleScheduler}", this);
 
             lock (_syncLock)
             {
@@ -64,7 +64,7 @@ namespace App.Metrics.Scheduling
 
             _scheduler?.Dispose();
 
-            Logger.Debug("{ReservoirRescaleScheduler} Disposed", this);
+            Logger.Trace("{ReservoirRescaleScheduler} Disposed", this);
 
             Rescale().GetAwaiter().GetResult();
         }

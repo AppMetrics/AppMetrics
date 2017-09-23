@@ -43,11 +43,6 @@ namespace App.Metrics.Logging
 
         public static void ReportRan(this ILog logger, IReportMetrics reportMetricsReporter, long startTimestamp)
         {
-            if (!logger.IsTraceEnabled())
-            {
-                return;
-            }
-
             if (startTimestamp == 0)
             {
                 return;
@@ -56,7 +51,7 @@ namespace App.Metrics.Logging
             var currentTimestamp = Stopwatch.GetTimestamp();
             var elapsed = new TimeSpan((long)(TimestampToTicks * (currentTimestamp - startTimestamp)));
 
-            logger.Debug("Report {ReportType} ran in {ElapsedMilliseconds}ms", reportMetricsReporter.GetType().FullName, elapsed.Milliseconds);
+            logger.Info("Report {ReportType} ran in {ElapsedMilliseconds}ms", reportMetricsReporter.GetType().FullName, elapsed.Milliseconds);
         }
 
         public static void ReportRunning(this ILog logger, IReportMetrics reportMetrics)

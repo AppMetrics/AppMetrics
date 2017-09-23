@@ -200,7 +200,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
             return GetSnapshot(false);
         }
 
-        /// <inheritdoc cref="IReservoir" />
+        /// <inheritdoc />
         public void Reset()
         {
             var lockTaken = false;
@@ -268,7 +268,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
             {
                 _lock.Enter(ref lockTaken);
 
-                Logger.Debug("Lock entered for rescaling {Reservoir}", this);
+                Logger.Trace("Lock entered for rescaling {Reservoir}", this);
 
                 var oldStartTime = _startTime.GetValue();
                 _startTime.SetValue(_clock.Seconds);
@@ -293,7 +293,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                 if (lockTaken)
                 {
                     _lock.Exit();
-                    Logger.Debug("Lock exited after rescaling {Reservoir}", this);
+                    Logger.Trace("Lock exited after rescaling {Reservoir}", this);
                 }
 
                 Logger.Debug("{Reservoir} rescaled", this);
@@ -357,7 +357,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                 if (lockTaken)
                 {
                     _lock.Exit();
-                    Logger.Debug("Lock exited after updating {Reservoir}", this);
+                    Logger.Trace("Lock exited after updating {Reservoir}", this);
                 }
 
                 Logger.Debug("{Reservoir} updated", this);
