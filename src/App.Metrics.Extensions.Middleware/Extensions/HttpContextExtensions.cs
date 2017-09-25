@@ -22,11 +22,13 @@ namespace Microsoft.AspNetCore.Http
 
         public static string GetMetricsCurrentRouteName(this HttpContext context)
         {
-            var route = context.Items[MetricsCurrentRouteName] as string;
-
-            if (route.IsPresent())
+            if (context.Items.TryGetValue(MetricsCurrentRouteName, out var item))
             {
-                return context.Request.Method + " " + context.Items[MetricsCurrentRouteName];
+                var route = item as string;
+                if (route.IsPresent())
+                {
+                    return $"{context.Request.Method} {route}";
+                }
             }
 
             return context.Request.Method;
