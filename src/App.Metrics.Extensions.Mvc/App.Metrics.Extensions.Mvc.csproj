@@ -9,7 +9,7 @@
     <AssemblyName>App.Metrics.Extensions.Mvc</AssemblyName>
     <PackageId>App.Metrics.Extensions.Mvc</PackageId>
     <PackageTags>mvc;measurements;charts;timer;histogram;graphite;influxdb;health checks;metrics</PackageTags>
-    <VersionPrefix>1.2.0</VersionPrefix>
+    <VersionPrefix>1.2.1</VersionPrefix>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.6|AnyCPU'">
