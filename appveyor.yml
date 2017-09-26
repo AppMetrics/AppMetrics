@@ -1,5 +1,7 @@
 version: 1.0.{build}
-image: Visual Studio 2017 Preview
+image: Visual Studio 2017
+init:
+    - git config --global core.autocrlf input
 environment:
   COVERALLS_REPO_TOKEN:
     secure: /LGVRUGY8A52YwD3XDfKRVNoMh8eaJQ9hNRe+8Yx5i9n57qclPrhrze4VoDqs2uV

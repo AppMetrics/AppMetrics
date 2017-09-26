@@ -18,7 +18,7 @@ var target                      = Argument("target", "Default");
 var configuration               = HasArgument("BuildConfiguration") ? Argument<string>("BuildConfiguration") :
                                   EnvironmentVariable("BuildConfiguration") != null ? EnvironmentVariable("BuildConfiguration") : "Release";
 var coverWith					= HasArgument("CoverWith") ? Argument<string>("CoverWith") :
-                                  EnvironmentVariable("CoverWith") != null ? EnvironmentVariable("CoverWith") : "OpenCover"; // None, DotCover, OpenCover
+                                  EnvironmentVariable("CoverWith") != null ? EnvironmentVariable("CoverWith") : "DotCover"; // None, DotCover, OpenCover
 var skipReSharperCodeInspect    = HasArgument("SkipCodeInspect") ? Argument<bool>("SkipCodeInspect", false) || !IsRunningOnWindows(): true;
 var preReleaseSuffix            = HasArgument("PreReleaseSuffix") ? Argument<string>("PreReleaseSuffix") :
 	                              (AppVeyor.IsRunningOnAppVeyor && EnvironmentVariable("PreReleaseSuffix") == null) || (AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Tag.IsTag) ? null :
@@ -30,6 +30,8 @@ var buildNumber                 = HasArgument("BuildNumber") ? Argument<int>("Bu
 var gitUser						= HasArgument("GitUser") ? Argument<string>("GitUser") : EnvironmentVariable("GitUser");
 var gitPassword					= HasArgument("GitPassword") ? Argument<string>("GitPassword") : EnvironmentVariable("GitPassword");
 var skipHtmlCoverageReport		= HasArgument("SkipHtmlCoverageReport") ? Argument<bool>("SkipHtmlCoverageReport", true) || !IsRunningOnWindows() : true;
+var linkSources					= HasArgument("LinkSources") ? Argument<bool>("LinkSources") :
+                                  EnvironmentVariable("LinkSources") != null ? EnvironmentVariable<bool>("LinkSources") : true;
 
 //////////////////////////////////////////////////////////////////////
 // DEFINE FILES & DIRECTORIES
@@ -139,7 +141,13 @@ Task("Build")
 	Context.Information("Building using versionSuffix: " + versionSuffix);
 
 	// Workaround to fixing pre-release version package references - https://github.com/NuGet/Home/issues/4337
-	settings.ArgumentCustomization = args=>args.Append("/t:Restore /p:RestoreSources=https://api.nuget.org/v3/index.json;https://www.myget.org/F/appmetrics/api/v3/index.json;");
+	settings.ArgumentCustomization = args => {
+			args.Append("/t:Restore /p:RestoreSources=https://api.nuget.org/v3/index.json;https://www.myget.org/F/appmetrics/api/v3/index.json;");
+			if (linkSources) {
+				args.Append("/p:SourceLinkCreate=true");
+			}	
+			return args;
+		};	
 
 
 	if (IsRunningOnWindows())
@@ -366,7 +374,8 @@ Task("RunTestsWithDotCover")
 		var dotCoverSettings = new DotCoverCoverSettings 
 		{
 			ArgumentCustomization = args => args.Append(@"/HideAutoProperties")
-				.Append(@"/AttributeFilters=" + excludeFromCoverage)
+				.Append(@"/AttributeFilters=System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute")
+				.Append(@"/Filters=+:module=App.Metrics*;-:module=*.Facts*;")
 				.Append(@"/ReturnTargetExitCode")								
 		};
 					
