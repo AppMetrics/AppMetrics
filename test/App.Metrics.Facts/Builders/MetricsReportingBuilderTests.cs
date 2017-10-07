@@ -87,7 +87,7 @@ namespace App.Metrics.Facts.Builders
         public void Can_use_reporter_of_type_and_use_specific_metrics_filter()
         {
             // Arrange
-            var filter = new DefaultMetricsFilter().WhereType(MetricType.Apdex);
+            var filter = new MetricsFilter().WhereType(MetricType.Apdex);
             var builder = new MetricsBuilder().Report.Using<TestReporter>(filter: filter);
 
             // Act
@@ -102,7 +102,7 @@ namespace App.Metrics.Facts.Builders
         public void Can_use_reporter_of_type_and_use_specific_metrics_filter_and_flushinterval()
         {
             // Arrange
-            var filter = new DefaultMetricsFilter().WhereType(MetricType.Apdex);
+            var filter = new MetricsFilter().WhereType(MetricType.Apdex);
             var builder = new MetricsBuilder().Report.Using<TestReporter>(filter: filter, flushInterval: TimeSpan.FromDays(1));
 
             // Act
@@ -135,7 +135,7 @@ namespace App.Metrics.Facts.Builders
         {
             // Arrange
             var formatter = new MetricsJsonOutputFormatter();
-            var filter = new DefaultMetricsFilter().WhereType(MetricType.Apdex);
+            var filter = new MetricsFilter().WhereType(MetricType.Apdex);
             var builder = new MetricsBuilder().Report.Using<TestReporter>(formatter: formatter, filter: filter, flushInterval: TimeSpan.FromDays(1));
 
             // Act

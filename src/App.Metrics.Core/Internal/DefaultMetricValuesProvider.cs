@@ -66,7 +66,7 @@ namespace App.Metrics.Internal
 
             var data = Get();
 
-            var filter = new DefaultMetricsFilter().WhereContext(context);
+            var filter = new MetricsFilter().WhereContext(context);
 
             var contextData = data.Filter(filter);
 

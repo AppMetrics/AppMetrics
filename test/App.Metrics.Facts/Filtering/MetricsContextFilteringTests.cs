@@ -19,7 +19,7 @@ namespace App.Metrics.Facts.Filtering
         [Fact]
         public void Can_filter_metrics_by_context()
         {
-            var filter = new DefaultMetricsFilter().WhereContext("test_context1");
+            var filter = new MetricsFilter().WhereContext("test_context1");
             var currentData = _metrics.Snapshot.Get(filter);
             var context = currentData.Contexts.Single();
 

@@ -24,7 +24,7 @@ namespace App.Metrics
         {
             Builder = metricsBuilder ?? throw new ArgumentNullException(nameof(metricsBuilder));
             _metricsFilter = metricsFilter ?? throw new ArgumentNullException(nameof(metricsFilter));
-            _filter = new DefaultMetricsFilter();
+            _filter = new MetricsFilter();
         }
 
         /// <inheritdoc />
@@ -43,7 +43,7 @@ namespace App.Metrics
         /// <inheritdoc />
         public IMetricsBuilder ByIncludingOnlyTagKeyValues(TagKeyValueFilter tagKeyValues)
         {
-            _filter.WhereMetricTaggedWithKeyValue(tagKeyValues);
+            _filter.WhereTaggedWithKeyValue(tagKeyValues);
 
             _metricsFilter(_filter);
 
@@ -53,7 +53,7 @@ namespace App.Metrics
         /// <inheritdoc />
         public IMetricsBuilder ByIncludingOnlyTags(params string[] tagKeys)
         {
-            _filter.WhereMetricTaggedWithKey(tagKeys);
+            _filter.WhereTaggedWithKey(tagKeys);
 
             _metricsFilter(_filter);
 

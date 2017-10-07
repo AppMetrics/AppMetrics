@@ -33,7 +33,7 @@ namespace App.Metrics.Reporting.Facts.Fixtures
             {
                 var registry = new DefaultMetricsRegistry(options.DefaultContextLabel, clock, NewContextRegistry);
                 var metricBuilderFactory = new DefaultMetricsBuilderFactory(new DefaultSamplingReservoirProvider(() => new DefaultForwardDecayingReservoir()));
-                var filter = new DefaultMetricsFilter();
+                var filter = new MetricsFilter();
                 var dataManager = new DefaultMetricValuesProvider(
                     filter,
                     registry);

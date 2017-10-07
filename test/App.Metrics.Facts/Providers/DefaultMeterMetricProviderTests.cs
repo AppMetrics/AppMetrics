@@ -14,7 +14,7 @@ namespace App.Metrics.Facts.Providers
 {
     public class DefaultMeterMetricProviderTests : IClassFixture<MetricCoreTestFixture>
     {
-        private readonly IFilterMetrics _filter = new DefaultMetricsFilter().WhereType(MetricType.Meter);
+        private readonly IFilterMetrics _filter = new MetricsFilter().WhereType(MetricType.Meter);
         private readonly MetricCoreTestFixture _fixture;
         private readonly IProvideMeterMetrics _provide;
 
@@ -37,7 +37,7 @@ namespace App.Metrics.Facts.Providers
 
             _provide.Instance(options, () => meterMetric);
 
-            _filter.WhereMetricName(name => name == metricName);
+            _filter.WhereName(name => name == metricName);
 
             _fixture.Registry.GetData(_filter).Contexts.First().Meters.Count().Should().Be(1);
         }
@@ -55,7 +55,7 @@ namespace App.Metrics.Facts.Providers
 
             _provide.Instance(options, _fixture.Tags[0], () => meterMetric);
 
-            _filter.WhereMetricName(name => name == _fixture.Tags[0].AsMetricName(metricName));
+            _filter.WhereName(name => name == _fixture.Tags[0].AsMetricName(metricName));
 
             _fixture.Registry.GetData(_filter).Contexts.First().Meters.Count().Should().Be(1);
         }
@@ -71,7 +71,7 @@ namespace App.Metrics.Facts.Providers
 
             _provide.Instance(options);
 
-            _filter.WhereMetricName(name => name == metricName);
+            _filter.WhereName(name => name == metricName);
 
             _fixture.Registry.GetData(_filter).Contexts.First().Meters.Count().Should().Be(1);
         }
@@ -87,7 +87,7 @@ namespace App.Metrics.Facts.Providers
 
             _provide.Instance(options, _fixture.Tags[0]);
 
-            _filter.WhereMetricName(name => name == _fixture.Tags[0].AsMetricName(metricName));
+            _filter.WhereName(name => name == _fixture.Tags[0].AsMetricName(metricName));
 
             _fixture.Registry.GetData(_filter).Contexts.First().Meters.Count().Should().Be(1);
         }

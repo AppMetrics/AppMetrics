@@ -17,7 +17,7 @@ namespace App.Metrics.Facts.Providers
 {
     public class DefaultHistogramMetricProviderTests : IClassFixture<MetricCoreTestFixture>
     {
-        private readonly IFilterMetrics _filter = new DefaultMetricsFilter().WhereType(MetricType.Histogram);
+        private readonly IFilterMetrics _filter = new MetricsFilter().WhereType(MetricType.Histogram);
         private readonly MetricCoreTestFixture _fixture;
         private readonly IProvideHistogramMetrics _provider;
 
@@ -40,7 +40,7 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options, () => apdexMetric);
 
-            _filter.WhereMetricName(name => name == metricName);
+            _filter.WhereName(name => name == metricName);
 
             _fixture.Registry.GetData(_filter).Contexts.First().Histograms.Count().Should().Be(1);
         }
@@ -58,7 +58,7 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options, _fixture.Tags[0], () => apdexMetric);
 
-            _filter.WhereMetricName(name => name == _fixture.Tags[0].AsMetricName(metricName));
+            _filter.WhereName(name => name == _fixture.Tags[0].AsMetricName(metricName));
 
             _fixture.Registry.GetData(_filter).Contexts.First().Histograms.Count().Should().Be(1);
         }
@@ -74,7 +74,7 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options);
 
-            _filter.WhereMetricName(name => name == metricName);
+            _filter.WhereName(name => name == metricName);
 
             _fixture.Registry.GetData(_filter).Contexts.First().Histograms.Count().Should().Be(1);
         }
@@ -90,7 +90,7 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options, _fixture.Tags[0]);
 
-            _filter.WhereMetricName(name => name == _fixture.Tags[0].AsMetricName(metricName));
+            _filter.WhereName(name => name == _fixture.Tags[0].AsMetricName(metricName));
 
             _fixture.Registry.GetData(_filter).Contexts.First().Histograms.Count().Should().Be(1);
         }

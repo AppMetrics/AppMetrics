@@ -45,16 +45,19 @@ namespace App.Metrics.Internal.NoOp
         public IFilterMetrics WhereContext(string context) { return this; }
 
         /// <inheritdoc />
-        public IFilterMetrics WhereMetricName(Predicate<string> condition) { return this; }
+        public IFilterMetrics WhereName(string name) { return this; }
 
         /// <inheritdoc />
-        public IFilterMetrics WhereMetricNameStartsWith(string name) { return this; }
+        public IFilterMetrics WhereName(Predicate<string> condition) { return this; }
 
         /// <inheritdoc />
-        public IFilterMetrics WhereMetricTaggedWithKey(params string[] tagKeys) { return this; }
+        public IFilterMetrics WhereNameStartsWith(string name) { return this; }
 
         /// <inheritdoc />
-        public IFilterMetrics WhereMetricTaggedWithKeyValue(TagKeyValueFilter tags) { return this; }
+        public IFilterMetrics WhereTaggedWithKey(params string[] tagKeys) { return this; }
+
+        /// <inheritdoc />
+        public IFilterMetrics WhereTaggedWithKeyValue(TagKeyValueFilter tags) { return this; }
 
         /// <inheritdoc />
         public IFilterMetrics WhereType(params MetricType[] types) { return this; }

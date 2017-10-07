@@ -14,7 +14,7 @@ namespace App.Metrics.Facts.Providers
 {
     public class DefaultGaugeMetricProviderTests : IClassFixture<MetricCoreTestFixture>
     {
-        private readonly IFilterMetrics _filter = new DefaultMetricsFilter().WhereType(MetricType.Gauge);
+        private readonly IFilterMetrics _filter = new MetricsFilter().WhereType(MetricType.Gauge);
         private readonly MetricCoreTestFixture _fixture;
         private readonly IProvideGaugeMetrics _provider;
 
@@ -36,7 +36,7 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options, () => new FunctionGauge(() => 1.0));
 
-            _filter.WhereMetricName(name => name == metricName);
+            _filter.WhereName(name => name == metricName);
 
             _fixture.Registry.GetData(_filter).Contexts.First().Gauges.Count().Should().Be(1);
         }
@@ -53,7 +53,7 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options);
 
-            _filter.WhereMetricName(name => name == metricName);
+            _filter.WhereName(name => name == metricName);
 
             _fixture.Registry.GetData(_filter).Contexts.First().Gauges.Count().Should().Be(1);
         }
@@ -70,7 +70,7 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options, _fixture.Tags[0], () => new FunctionGauge(() => 1.0));
 
-            _filter.WhereMetricName(name => name == _fixture.Tags[0].AsMetricName(metricName));
+            _filter.WhereName(name => name == _fixture.Tags[0].AsMetricName(metricName));
 
             _fixture.Registry.GetData(_filter).Contexts.First().Gauges.Count().Should().Be(1);
         }
@@ -87,7 +87,7 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options, _fixture.Tags[0]);
 
-            _filter.WhereMetricName(name => name == metricName);
+            _filter.WhereName(name => name == metricName);
 
             _fixture.Registry.GetData(_filter).Contexts.First().Gauges.Count().Should().Be(1);
         }
@@ -105,7 +105,7 @@ namespace App.Metrics.Facts.Providers
             _provider.Instance(options, () => new FunctionGauge(() => 1.0));
             _provider.Instance(options, () => new FunctionGauge(() => 2.0));
 
-            _filter.WhereMetricName(name => name == metricName);
+            _filter.WhereName(name => name == metricName);
 
             _fixture.Registry.GetData(_filter).Contexts.First().Gauges.Count().Should().Be(1);
         }
@@ -123,7 +123,7 @@ namespace App.Metrics.Facts.Providers
             _provider.Instance(options, _fixture.Tags[0], () => new FunctionGauge(() => 1.0));
             _provider.Instance(options, _fixture.Tags[0], () => new FunctionGauge(() => 2.0));
 
-            _filter.WhereMetricName(name => name == _fixture.Tags[0].AsMetricName(metricName));
+            _filter.WhereName(name => name == _fixture.Tags[0].AsMetricName(metricName));
 
             _fixture.Registry.GetData(_filter).Contexts.First().Gauges.Count().Should().Be(1);
         }

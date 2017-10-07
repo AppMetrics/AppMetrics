@@ -23,7 +23,7 @@ namespace App.Metrics.FactsCommon.Fixtures
 
             var registry = new DefaultMetricsRegistry(options.DefaultContextLabel, Clock, NewContextRegistry);
             var metricBuilderFactory = new DefaultMetricsBuilderFactory(new DefaultSamplingReservoirProvider(() => new DefaultForwardDecayingReservoir()));
-            var filter = new DefaultMetricsFilter();
+            var filter = new MetricsFilter();
             var dataManager = new DefaultMetricValuesProvider(filter, registry);
             var metricsManagerFactory = new DefaultMeasureMetricsProvider(registry, metricBuilderFactory, Clock);
             var metricsManagerAdvancedFactory = new DefaultMetricsProvider(registry, metricBuilderFactory, Clock);

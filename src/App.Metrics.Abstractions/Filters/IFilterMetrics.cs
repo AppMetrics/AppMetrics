@@ -80,30 +80,37 @@ namespace App.Metrics.Filters
         /// <summary>
         ///     Filters metrics where the specified predicate on the metric name is <c>true</c>
         /// </summary>
+        /// <param name="name">The metric name to filter on.</param>
+        /// <returns>A filter where the metric name should match</returns>
+        IFilterMetrics WhereName(string name);
+
+        /// <summary>
+        ///     Filters metrics where the specified predicate on the metric name is <c>true</c>
+        /// </summary>
         /// <param name="condition">The predicate on the metric name to filter on.</param>
         /// <returns>A filter where the metric name should match</returns>
-        IFilterMetrics WhereMetricName(Predicate<string> condition);
+        IFilterMetrics WhereName(Predicate<string> condition);
 
         /// <summary>
         ///     Filters metrics where the metric name starts with the specified name
         /// </summary>
         /// <param name="name">The metrics name to filter on.</param>
         /// <returns>A filter where the metric name starts with the specified name</returns>
-        IFilterMetrics WhereMetricNameStartsWith(string name);
+        IFilterMetrics WhereNameStartsWith(string name);
 
         /// <summary>
         ///     Filters metrics where the metrics contain the specified tags keys
         /// </summary>
         /// <param name="tagKeys">The metrics tag keys to filter on.</param>
         /// <returns>A filter where the metric tags keys should match</returns>
-        IFilterMetrics WhereMetricTaggedWithKey(params string[] tagKeys);
+        IFilterMetrics WhereTaggedWithKey(params string[] tagKeys);
 
         /// <summary>
         ///     Filters metrics where the metrics contain the specified tags key/value pair
         /// </summary>
         /// <param name="tags">The metrics tag key/values to filter on.</param>
         /// <returns>A filter where the metric tags key and value should match</returns>
-        IFilterMetrics WhereMetricTaggedWithKeyValue(TagKeyValueFilter tags);
+        IFilterMetrics WhereTaggedWithKeyValue(TagKeyValueFilter tags);
 
         /// <summary>
         ///     Filters metrics by matching types

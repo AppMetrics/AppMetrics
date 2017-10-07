@@ -19,7 +19,7 @@ namespace App.Metrics.Facts.Providers
     public class DefaultApdexMetricProviderTests : IClassFixture<MetricCoreTestFixture>
     {
         private readonly Func<IReservoir> _defaultReservoir = () => new DefaultAlgorithmRReservoir(1028);
-        private readonly IFilterMetrics _filter = new DefaultMetricsFilter().WhereType(MetricType.Apdex);
+        private readonly IFilterMetrics _filter = new MetricsFilter().WhereType(MetricType.Apdex);
         private readonly MetricCoreTestFixture _fixture;
         private readonly IProvideApdexMetrics _provider;
 
@@ -42,7 +42,7 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options, () => apdexMetric);
 
-            _filter.WhereMetricName(name => name == metricName);
+            _filter.WhereName(name => name == metricName);
 
             _fixture.Registry.GetData(_filter).Contexts.First().ApdexScores.Count().Should().Be(1);
         }
@@ -60,7 +60,7 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options, _fixture.Tags[0], () => apdexMetric1);
 
-            _filter.WhereMetricName(name => name == _fixture.Tags[0].AsMetricName(metricName));
+            _filter.WhereName(name => name == _fixture.Tags[0].AsMetricName(metricName));
 
             _fixture.Registry.GetData(_filter).Contexts.First().ApdexScores.Count().Should().Be(1);
         }
@@ -76,7 +76,7 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options);
 
-            _filter.WhereMetricName(name => name == metricName);
+            _filter.WhereName(name => name == metricName);
 
             _fixture.Registry.GetData(_filter).Contexts.First().ApdexScores.Count().Should().Be(1);
         }
@@ -92,7 +92,7 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options, _fixture.Tags[0]);
 
-            _filter.WhereMetricName(name => name == _fixture.Tags[0].AsMetricName(metricName));
+            _filter.WhereName(name => name == _fixture.Tags[0].AsMetricName(metricName));
 
             _fixture.Registry.GetData(_filter).Contexts.First().ApdexScores.Count().Should().Be(1);
         }

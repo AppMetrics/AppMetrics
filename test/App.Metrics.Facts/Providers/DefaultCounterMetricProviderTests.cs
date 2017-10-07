@@ -14,7 +14,7 @@ namespace App.Metrics.Facts.Providers
 {
     public class DefaultCounterMetricProviderTests : IClassFixture<MetricCoreTestFixture>
     {
-        private readonly IFilterMetrics _filter = new DefaultMetricsFilter().WhereType(MetricType.Counter);
+        private readonly IFilterMetrics _filter = new MetricsFilter().WhereType(MetricType.Counter);
         private readonly MetricCoreTestFixture _fixture;
         private readonly IProvideCounterMetrics _provider;
 
@@ -37,7 +37,7 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options, () => counterMetric);
 
-            _filter.WhereMetricName(name => name == "counter_metric_provider_test");
+            _filter.WhereName(name => name == "counter_metric_provider_test");
 
             _fixture.Registry.GetData(_filter).Contexts.First().Counters.Count().Should().Be(1);
         }
@@ -55,7 +55,7 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options, _fixture.Tags[0], () => counterMetric);
 
-            _filter.WhereMetricName(name => name == _fixture.Tags[0].AsMetricName(metricName));
+            _filter.WhereName(name => name == _fixture.Tags[0].AsMetricName(metricName));
 
             _fixture.Registry.GetData(_filter).Contexts.First().Counters.Count().Should().Be(1);
         }
@@ -72,7 +72,7 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options);
 
-            _filter.WhereMetricName(name => name == metricName);
+            _filter.WhereName(name => name == metricName);
 
             _fixture.Registry.GetData(_filter).Contexts.First().Counters.Count().Should().Be(1);
         }
@@ -89,7 +89,7 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options, _fixture.Tags[0]);
 
-            _filter.WhereMetricName(name => name == _fixture.Tags[0].AsMetricName(metricName));
+            _filter.WhereName(name => name == _fixture.Tags[0].AsMetricName(metricName));
 
             _fixture.Registry.GetData(_filter).Contexts.First().Counters.Count().Should().Be(1);
         }

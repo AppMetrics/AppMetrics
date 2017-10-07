@@ -1,4 +1,4 @@
-﻿// <copyright file="DefaultMetricsFilter.cs" company="Allan Hardy">
+﻿// <copyright file="MetricsFilter.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
@@ -19,7 +19,7 @@ namespace App.Metrics.Filtering
     ///     Provides the ability to filter metrics by Context, Type, Name etc.
     /// </summary>
     /// <seealso cref="IFilterMetrics" />
-    public sealed class DefaultMetricsFilter : IFilterMetrics
+    public sealed class MetricsFilter : IFilterMetrics
     {
         private Predicate<string> _context;
         private Predicate<string> _name;
@@ -113,27 +113,33 @@ namespace App.Metrics.Filtering
         }
 
         /// <inheritdoc />
-        public IFilterMetrics WhereMetricName(Predicate<string> condition)
+        public IFilterMetrics WhereName(string name)
+        {
+            return WhereName(c => c.Equals(name, StringComparison.OrdinalIgnoreCase));
+        }
+
+        /// <inheritdoc />
+        public IFilterMetrics WhereName(Predicate<string> condition)
         {
             _name = condition;
             return this;
         }
 
         /// <inheritdoc />
-        public IFilterMetrics WhereMetricNameStartsWith(string name)
+        public IFilterMetrics WhereNameStartsWith(string name)
         {
-            return WhereMetricName(n => n.StartsWith(name, StringComparison.OrdinalIgnoreCase));
+            return WhereName(n => n.StartsWith(name, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <inheritdoc />
-        public IFilterMetrics WhereMetricTaggedWithKey(params string[] tagKeys)
+        public IFilterMetrics WhereTaggedWithKey(params string[] tagKeys)
         {
             _tagKeys = new HashSet<string>(tagKeys);
             return this;
         }
 
         /// <inheritdoc />
-        public IFilterMetrics WhereMetricTaggedWithKeyValue(TagKeyValueFilter tags)
+        public IFilterMetrics WhereTaggedWithKeyValue(TagKeyValueFilter tags)
         {
             _tags = tags;
             return this;

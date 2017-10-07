@@ -20,7 +20,7 @@ namespace App.Metrics.Facts.Providers
 {
     public class DefaultTimerMetricProviderTests : IClassFixture<MetricCoreTestFixture>
     {
-        private readonly IFilterMetrics _filter = new DefaultMetricsFilter().WhereType(MetricType.Timer);
+        private readonly IFilterMetrics _filter = new MetricsFilter().WhereType(MetricType.Timer);
         private readonly MetricCoreTestFixture _fixture;
         private readonly IProvideTimerMetrics _provider;
 
@@ -43,7 +43,7 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options, () => timerMetric);
 
-            _filter.WhereMetricName(name => name == metricName);
+            _filter.WhereName(name => name == metricName);
 
             _fixture.Registry.GetData(_filter).Contexts.First().Timers.Count().Should().Be(1);
         }
@@ -61,7 +61,7 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options, _fixture.Tags[0], () => timerMetric);
 
-            _filter.WhereMetricName(name => name == _fixture.Tags[0].AsMetricName(metricName));
+            _filter.WhereName(name => name == _fixture.Tags[0].AsMetricName(metricName));
 
             _fixture.Registry.GetData(_filter).Contexts.First().Timers.Count().Should().Be(1);
         }
@@ -77,7 +77,7 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options);
 
-            _filter.WhereMetricName(name => name == metricName);
+            _filter.WhereName(name => name == metricName);
 
             _fixture.Registry.GetData(_filter).Contexts.First().Timers.Count().Should().Be(1);
         }
@@ -115,7 +115,7 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options, _fixture.Tags[0]);
 
-            _filter.WhereMetricName(name => name == _fixture.Tags[0].AsMetricName(metricName));
+            _filter.WhereName(name => name == _fixture.Tags[0].AsMetricName(metricName));
 
             _fixture.Registry.GetData(_filter).Contexts.First().Timers.Count().Should().Be(1);
         }

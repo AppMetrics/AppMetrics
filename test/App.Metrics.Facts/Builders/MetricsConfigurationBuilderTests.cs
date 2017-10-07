@@ -53,7 +53,8 @@ namespace App.Metrics.Facts.Builders
                                     { "MetricsOptions:DefaultContextLabel", "Testing" },
                                     { "MetricsOptions:GlobalTags:tag1", "value1" },
                                     { "MetricsOptions:GlobalTags:tag2", "value2" },
-                                    { "MetricsOptions:Enabled", "false" }
+                                    { "MetricsOptions:Enabled", "false" },
+                                    { "MetricsOptions:ReportingEnabled", "false" }
                                 };
 
             // Act
@@ -67,6 +68,7 @@ namespace App.Metrics.Facts.Builders
             metrics.Options.GlobalTags.Skip(1).First().Key.Should().Be("tag2");
             metrics.Options.GlobalTags.Skip(1).First().Value.Should().Be("value2");
             metrics.Options.Enabled.Should().BeFalse();
+            metrics.Options.ReportingEnabled.Should().BeFalse();
         }
 
         [Fact]
