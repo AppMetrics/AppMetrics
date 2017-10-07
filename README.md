@@ -129,12 +129,13 @@ See the [contribution guidlines](CONTRIBUTING.md) for details.
 
 * [ASP.NET Core](https://github.com/aspnet)
 * [Grafana](https://grafana.com/)
-* [DocFX](https://dotnet.github.io/docfx/)
 * [Fluent Assertions](http://www.fluentassertions.com/)
 * [xUnit.net](https://xunit.github.io/)
 * [StyleCopAnalyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers)
 * [Cake](https://github.com/cake-build/cake)
 * [OpenCover](https://github.com/OpenCover/opencover)
+* [Hugo](https://gohugo.io/)
+* [Netlify](https://www.netlify.com/)
 
 ***Thanks for providing free open source licensing***
 
