@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MetricContextRegistry.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Benchmarks.Fixtures;
 using App.Metrics.Benchmarks.Support;
@@ -14,14 +15,12 @@ namespace App.Metrics.Benchmarks.Facts
         public MetricContextRegistry(MetricContextTestFixture fixture) { _fixture = fixture; }
 
         [Fact]
-        public void resolve_apdex_from_registry()
+        public void Resolve_apdex_from_registry()
         {
             SimpleBenchmarkRunner.Run(
                 () =>
                 {
-                    // ReSharper disable UnusedVariable
-                    var metric = _fixture.Registry.Apdex(
-                        // ReSharper restore UnusedVariable
+                    _fixture.Registry.Apdex(
                         _fixture.ApdexOptions,
                         () =>
                             _fixture.ApdexBuilder.Build(
@@ -32,21 +31,19 @@ namespace App.Metrics.Benchmarks.Facts
         }
 
         [Fact]
-        public void resolve_counter_from_registry()
+        public void Resolve_counter_from_registry()
         {
             SimpleBenchmarkRunner.Run(
                 () =>
                 {
-                    // ReSharper disable UnusedVariable
-                    var metric = _fixture.Registry.Counter(
-                        // ReSharper restore UnusedVariable
+                    _fixture.Registry.Counter(
                         _fixture.CounterOptions,
                         () => _fixture.CounterBuilder.Build());
                 });
         }
 
         [Fact]
-        public void resolve_gauge_from_registry()
+        public void Resolve_gauge_from_registry()
         {
             SimpleBenchmarkRunner.Run(
                 () =>
@@ -58,14 +55,12 @@ namespace App.Metrics.Benchmarks.Facts
         }
 
         [Fact]
-        public void resolve_histogram_from_registry()
+        public void Resolve_histogram_from_registry()
         {
             SimpleBenchmarkRunner.Run(
                 () =>
                 {
-                    // ReSharper disable UnusedVariable
-                    var metric = _fixture.Registry.Histogram(
-                        // ReSharper restore UnusedVariable
+                    _fixture.Registry.Histogram(
                         _fixture.HistogramOptions,
                         () =>
                             _fixture.HistogramBuilder.Build(_fixture.HistogramOptions.Reservoir));
@@ -73,14 +68,12 @@ namespace App.Metrics.Benchmarks.Facts
         }
 
         [Fact]
-        public void resolve_meter_from_registry()
+        public void Resolve_meter_from_registry()
         {
             SimpleBenchmarkRunner.Run(
                 () =>
                 {
-                    // ReSharper disable UnusedVariable
-                    var metric = _fixture.Registry.Meter(
-                        // ReSharper restore UnusedVariable
+                    _fixture.Registry.Meter(
                         _fixture.MeterOptions,
                         () =>
                             _fixture.MeterBuilder.Build(_fixture.Clock));
@@ -88,14 +81,12 @@ namespace App.Metrics.Benchmarks.Facts
         }
 
         [Fact]
-        public void resolve_timer_from_registry()
+        public void Resolve_timer_from_registry()
         {
             SimpleBenchmarkRunner.Run(
                 () =>
                 {
-                    // ReSharper disable UnusedVariable
-                    var metric = _fixture.Registry.Timer(
-                        // ReSharper restore UnusedVariable
+                    _fixture.Registry.Timer(
                         _fixture.TimerOptions,
                         () =>
                             _fixture.TimerBuilder.Build(

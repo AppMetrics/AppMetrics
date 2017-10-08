@@ -1,14 +1,14 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultApdexMetricProviderTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Linq;
-using App.Metrics.Abstractions.Filtering;
-using App.Metrics.Abstractions.ReservoirSampling;
-using App.Metrics.Apdex.Abstractions;
-using App.Metrics.Core.Options;
+using App.Metrics.Apdex;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Filtering;
+using App.Metrics.Filters;
+using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.Uniform;
 using FluentAssertions;
 using Moq;
@@ -19,7 +19,7 @@ namespace App.Metrics.Facts.Providers
     public class DefaultApdexMetricProviderTests : IClassFixture<MetricCoreTestFixture>
     {
         private readonly Func<IReservoir> _defaultReservoir = () => new DefaultAlgorithmRReservoir(1028);
-        private readonly IFilterMetrics _filter = new DefaultMetricsFilter().WhereType(MetricType.Apdex);
+        private readonly IFilterMetrics _filter = new MetricsFilter().WhereType(MetricType.Apdex);
         private readonly MetricCoreTestFixture _fixture;
         private readonly IProvideApdexMetrics _provider;
 
@@ -30,7 +30,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_add_new_instance_to_registry()
+        public void Can_add_add_new_instance_to_registry()
         {
             var metricName = "apdex_metric_test";
             var options = new ApdexOptions
@@ -42,13 +42,13 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options, () => apdexMetric);
 
-            _filter.WhereMetricName(name => name == metricName);
+            _filter.WhereName(name => name == metricName);
 
             _fixture.Registry.GetData(_filter).Contexts.First().ApdexScores.Count().Should().Be(1);
         }
 
         [Fact]
-        public void can_add_add_new_multidimensional_to_registry()
+        public void Can_add_add_new_multidimensional_to_registry()
         {
             var metricName = "apdex_metric_test_multi";
             var options = new ApdexOptions
@@ -60,13 +60,13 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options, _fixture.Tags[0], () => apdexMetric1);
 
-            _filter.WhereMetricName(name => name == _fixture.Tags[0].AsMetricName(metricName));
+            _filter.WhereName(name => name == _fixture.Tags[0].AsMetricName(metricName));
 
             _fixture.Registry.GetData(_filter).Contexts.First().ApdexScores.Count().Should().Be(1);
         }
 
         [Fact]
-        public void can_add_instance_to_registry()
+        public void Can_add_instance_to_registry()
         {
             var metricName = "apdex_test";
             var options = new ApdexOptions
@@ -76,13 +76,13 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options);
 
-            _filter.WhereMetricName(name => name == metricName);
+            _filter.WhereName(name => name == metricName);
 
             _fixture.Registry.GetData(_filter).Contexts.First().ApdexScores.Count().Should().Be(1);
         }
 
         [Fact]
-        public void can_add_multidimensional_to_registry()
+        public void Can_add_multidimensional_to_registry()
         {
             var metricName = "apdex_test_multi";
             var options = new ApdexOptions
@@ -92,13 +92,13 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options, _fixture.Tags[0]);
 
-            _filter.WhereMetricName(name => name == _fixture.Tags[0].AsMetricName(metricName));
+            _filter.WhereName(name => name == _fixture.Tags[0].AsMetricName(metricName));
 
             _fixture.Registry.GetData(_filter).Contexts.First().ApdexScores.Count().Should().Be(1);
         }
 
         [Fact]
-        public void can_use_custom_reservoir()
+        public void Can_use_custom_reservoir()
         {
             var reservoirMock = new Mock<IReservoir>();
             reservoirMock.Setup(r => r.Update(It.IsAny<long>()));
@@ -119,7 +119,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_use_custom_reservoir_when_multidimensional()
+        public void Can_use_custom_reservoir_when_multidimensional()
         {
             var reservoirMock = new Mock<IReservoir>();
             reservoirMock.Setup(r => r.Update(It.IsAny<long>()));

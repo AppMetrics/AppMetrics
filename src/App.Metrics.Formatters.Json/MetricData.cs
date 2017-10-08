@@ -10,12 +10,8 @@ namespace App.Metrics.Formatters.Json
 {
     public sealed class MetricData
     {
-        [JsonProperty(Order = 3)]
-        public IEnumerable<MetricsContext> Contexts { get; set; } = new MetricsContext[0];
-
         [JsonProperty(Order = 2)]
-
-        public IDictionary<string, string> Environment { get; set; }
+        public IEnumerable<MetricsContext> Contexts { get; set; } = new MetricsContext[0];
 
         [JsonProperty(Order = 1)]
         public DateTime Timestamp { get; set; }

@@ -1,11 +1,11 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="ExponentiallyDecayingReservoirTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Linq;
-using App.Metrics.Core.Internal;
-using App.Metrics.Infrastructure;
+using App.Metrics.FactsCommon;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
-using App.Metrics.Scheduling.Abstractions;
+using App.Metrics.Scheduling;
 using FluentAssertions;
 using Xunit;
 
@@ -13,10 +13,14 @@ namespace App.Metrics.Sampling.Facts
 {
     public class ExponentiallyDecayingReservoirTests
     {
-        private readonly IClock _clock = new TestClock();
-        private readonly IScheduler _scheduler;
+        private readonly IClock _clock;
+        private readonly IReservoirRescaleScheduler _scheduler;
 
-        public ExponentiallyDecayingReservoirTests() { _scheduler = new TestTaskScheduler(_clock); }
+        public ExponentiallyDecayingReservoirTests()
+        {
+            _clock = new TestClock();
+            _scheduler = new TestReservoirRescaleScheduler(_clock);
+        }
 
         [Fact]
         public void EDR_HeavilyBiasedReservoirOf100OutOf1000Elements()
@@ -30,7 +34,7 @@ namespace App.Metrics.Sampling.Facts
             reservoir.Size.Should().Be(100);
             var snapshot = reservoir.GetSnapshot();
             snapshot.Size.Should().Be(100);
-            snapshot.Values.Should().OnlyContain(v => 0 <= v && v < 100);
+            snapshot.Values.Should().OnlyContain(v => v >= 0 && v < 100);
         }
 
         [Fact]
@@ -46,7 +50,7 @@ namespace App.Metrics.Sampling.Facts
             }
 
             reservoir.GetSnapshot().Size.Should().Be(10);
-            reservoir.GetSnapshot().Values.Should().OnlyContain(v => 1000 <= v && v < 2000);
+            reservoir.GetSnapshot().Values.Should().OnlyContain(v => v >= 1000 && v < 2000);
 
             // wait for 15 hours and add another value.
             // this should trigger a rescale. Note that the number of samples will be reduced to 2
@@ -56,7 +60,7 @@ namespace App.Metrics.Sampling.Facts
             reservoir.Update(2000);
             var snapshot = reservoir.GetSnapshot();
             snapshot.Size.Should().Be(2);
-            snapshot.Values.Should().OnlyContain(v => 1000 <= v && v < 3000);
+            snapshot.Values.Should().OnlyContain(v => v >= 1000 && v < 3000);
 
             // add 1000 values at a rate of 10 values/second
             for (var i = 0; i < 1000; i++)
@@ -68,7 +72,7 @@ namespace App.Metrics.Sampling.Facts
             var finalSnapshot = reservoir.GetSnapshot();
 
             finalSnapshot.Size.Should().Be(10);
-            finalSnapshot.Values.Skip(1).Should().OnlyContain(v => 3000 <= v && v < 4000);
+            finalSnapshot.Values.Skip(1).Should().OnlyContain(v => v >= 3000 && v < 4000);
         }
 
         [Fact]
@@ -94,8 +98,8 @@ namespace App.Metrics.Sampling.Facts
 
             reservoir.GetSnapshot().Size.Should().Be(50);
 
-            // the first added 40 items (177) have weights 1 
-            // the next added 10 items (9999) have weights ~6 
+            // the first added 40 items (177) have weights 1
+            // the next added 10 items (9999) have weights ~6
             // so, it's 40 vs 60 distribution, not 40 vs 10
             reservoir.GetSnapshot().Median.Should().Be(9999);
             reservoir.GetSnapshot().Percentile75.Should().Be(9999);
@@ -129,7 +133,7 @@ namespace App.Metrics.Sampling.Facts
             reservoir.Size.Should().Be(100);
             var snapshot = reservoir.GetSnapshot();
             snapshot.Size.Should().Be(100);
-            snapshot.Values.Should().OnlyContain(v => 0 <= v && v < 1000);
+            snapshot.Values.Should().OnlyContain(v => v >= 0 && v < 1000);
         }
 
         [Fact]
@@ -144,7 +148,7 @@ namespace App.Metrics.Sampling.Facts
             reservoir.Size.Should().Be(10);
             var snapshot = reservoir.GetSnapshot();
             snapshot.Size.Should().Be(10);
-            snapshot.Values.Should().OnlyContain(v => 0 <= v && v < 10);
+            snapshot.Values.Should().OnlyContain(v => v >= 0 && v < 10);
         }
 
         [Fact]

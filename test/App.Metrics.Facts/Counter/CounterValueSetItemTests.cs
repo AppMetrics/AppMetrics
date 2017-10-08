@@ -1,3 +1,7 @@
+// <copyright file="CounterValueSetItemTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
 using App.Metrics.Counter;
 using FluentAssertions;
 using Xunit;
@@ -7,7 +11,7 @@ namespace App.Metrics.Facts.Counter
     public class CounterValueSetItemTests
     {
         [Fact]
-        public void can_determine_if_are_same()
+        public void Can_determine_if_are_same()
         {
             var first = new CounterValue.SetItem("first", 10L, 100.0);
             var second = new CounterValue.SetItem("first", 10L, 100.0);
@@ -16,7 +20,7 @@ namespace App.Metrics.Facts.Counter
         }
 
         [Fact]
-        public void can_determine_if_diff()
+        public void Can_determine_if_diff()
         {
             var first = new CounterValue.SetItem("first", 10L, 100.0);
             var second = new CounterValue.SetItem("second", 10L, 100.0);
@@ -25,7 +29,7 @@ namespace App.Metrics.Facts.Counter
         }
 
         [Fact]
-        public void can_determine_if_diff_using_operator()
+        public void Can_determine_if_diff_using_operator()
         {
             var first = new CounterValue.SetItem("first", 10L, 100.0);
             var second = new CounterValue.SetItem("second", 10L, 100.0);
@@ -34,7 +38,7 @@ namespace App.Metrics.Facts.Counter
         }
 
         [Fact]
-        public void can_determine_if_same_using_operator()
+        public void Can_determine_if_same_using_operator()
         {
             var first = new CounterValue.SetItem("first", 10L, 100.0);
             var second = new CounterValue.SetItem("first", 10L, 100.0);
@@ -43,7 +47,7 @@ namespace App.Metrics.Facts.Counter
         }
 
         [Fact]
-        public void hash_codes_differ_between_instances()
+        public void Hash_codes_differ_between_instances()
         {
             var first = new CounterValue.SetItem("first", 10L, 100.0).GetHashCode();
             var second = new CounterValue.SetItem("second", 10L, 100.0).GetHashCode();
@@ -52,7 +56,7 @@ namespace App.Metrics.Facts.Counter
         }
 
         [Fact]
-        public void hash_codes_same_for_same_instance()
+        public void Hash_codes_same_for_same_instance()
         {
             var first = new CounterValue.SetItem("first", 10L, 100.0);
 
@@ -62,7 +66,7 @@ namespace App.Metrics.Facts.Counter
         }
 
         [Fact]
-        public void if_counts_diff_not_the_same()
+        public void If_counts_diff_not_the_same()
         {
             var first = new CounterValue.SetItem("first", 10L, 100.0).GetHashCode();
             var second = new CounterValue.SetItem("first", 5L, 100.0).GetHashCode();
@@ -71,7 +75,7 @@ namespace App.Metrics.Facts.Counter
         }
 
         [Fact]
-        public void if_percentage_diff_not_the_same()
+        public void If_percentage_diff_not_the_same()
         {
             var first = new CounterValue.SetItem("first", 10L, 100.0).GetHashCode();
             var second = new CounterValue.SetItem("first", 10L, 80.0).GetHashCode();
@@ -80,7 +84,7 @@ namespace App.Metrics.Facts.Counter
         }
 
         [Fact]
-        public void reference_equality_should_be_correct()
+        public void Reference_equality_should_be_correct()
         {
             var first = new CounterValue.SetItem("first", 10L, 100.0);
             var second = new CounterValue.SetItem("second", 10L, 100.0);

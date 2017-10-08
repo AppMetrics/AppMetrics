@@ -1,8 +1,9 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MeasureCounterWithMetricItemBenchmark.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
+using App.Metrics.Benchmarks.Fixtures;
 using App.Metrics.Benchmarks.Support;
-using App.Metrics.Tagging;
 using BenchmarkDotNet.Attributes;
 
 namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
@@ -18,7 +19,7 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
         }
 
         [Benchmark]
-        public void DecrementMetricItemWithMulitpleTags()
+        public void DecrementMetricItemWithMultipleTags()
         {
             var keys = new[] { "key1", "key2" };
             var values = new[] { "value1", "value2" };
@@ -37,7 +38,7 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
         }
 
         [Benchmark]
-        public void IncrementMetricItemWithMulitpleTags()
+        public void IncrementMetricItemWithMultipleTags()
         {
             var keys = new[] { "key1", "key2" };
             var values = new[] { "value1", "value2" };

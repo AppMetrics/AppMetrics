@@ -1,20 +1,20 @@
 ``` ini
 
-BenchmarkDotNet=v0.10.1, OS=Windows
-Processor=?, ProcessorCount=8
-Frequency=3312782 Hz, Resolution=301.8611 ns, Timer=TSC
-dotnet cli version=1.0.0-preview2-1-003177
-  [Host] : .NET Core 4.6.24628.01, 64bit RyuJIT
-  Core   : .NET Core 4.6.24628.01, 64bit RyuJIT
+BenchmarkDotNet=v0.10.8, OS=Windows 10 Redstone 2 (10.0.15063)
+Processor=Intel Core i7-2600 CPU 3.40GHz (Sandy Bridge), ProcessorCount=8
+Frequency=3312788 Hz, Resolution=301.8605 ns, Timer=TSC
+dotnet cli version=2.0.0
+  [Host] : .NET Core 4.6.00001.0, 64bit RyuJIT
+  Core   : .NET Core 4.6.00001.0, 64bit RyuJIT
 
-Job=Core  Runtime=Core  Allocated=191 B  
+Job=Core  Runtime=Core  
 
 ```
-                       Method |       Mean |    StdDev |  Gen 0 |
------------------------------ |----------- |---------- |------- |
-     ResolveApdexFromRegistry | 77.6779 ns | 0.6714 ns | 0.0423 |
-   ResolveCounterFromRegistry | 78.5300 ns | 0.4172 ns | 0.0423 |
-     ResolveGaugeFromRegistry | 76.2272 ns | 1.6039 ns | 0.0425 |
- ResolveHistogramFromRegistry | 79.3706 ns | 0.5326 ns | 0.0426 |
-     ResolveMeterFromRegistry | 76.2006 ns | 0.4413 ns | 0.0422 |
-     ResolveTimerFromRegistry | 77.0501 ns | 0.9058 ns | 0.0424 |
+ |                       Method |     Mean |     Error |    StdDev |  Gen 0 | Allocated |
+ |----------------------------- |---------:|----------:|----------:|-------:|----------:|
+ |     ResolveApdexFromRegistry | 85.60 ns | 1.0084 ns | 0.9433 ns | 0.0457 |     192 B |
+ |   ResolveCounterFromRegistry | 87.40 ns | 0.9301 ns | 0.8700 ns | 0.0457 |     192 B |
+ |     ResolveGaugeFromRegistry | 86.03 ns | 1.7418 ns | 1.6293 ns | 0.0457 |     192 B |
+ | ResolveHistogramFromRegistry | 87.99 ns | 0.9447 ns | 0.8836 ns | 0.0457 |     192 B |
+ |     ResolveMeterFromRegistry | 86.79 ns | 1.5577 ns | 1.4571 ns | 0.0457 |     192 B |
+ |     ResolveTimerFromRegistry | 87.77 ns | 0.6855 ns | 0.6077 ns | 0.0457 |     192 B |

@@ -1,14 +1,13 @@
+// <copyright file="ApdexScoreTestFixture.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+// </copyright>
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using App.Metrics.Abstractions.Metrics;
-using App.Metrics.Abstractions.ReservoirSampling;
 using App.Metrics.Apdex;
 using App.Metrics.Facts.Apdex;
-using App.Metrics.Infrastructure;
+using App.Metrics.FactsCommon;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 
 namespace App.Metrics.Facts.Fixtures
@@ -35,8 +34,8 @@ namespace App.Metrics.Facts.Fixtures
             var toleratingRequestsDurations =
                 Enumerable.Range(1, toleratingRequests).Select(x => random.Next(minToleratedDurationMilliseconds, maxToleratedDurationMilliseconds));
             var frustratingRequestsDurations =
-                Enumerable.Range(1, frustratingRequest)
-                          .Select(x => random.Next(minFrustratedDurationMilliseconds, minFrustratedDurationMilliseconds * 2));
+                Enumerable.Range(1, frustratingRequest).Select(
+                    x => random.Next(minFrustratedDurationMilliseconds, minFrustratedDurationMilliseconds * 2));
 
             var apdexMetric = new DefaultApdexMetric(new DefaultForwardDecayingReservoir(), apdexTSeconds, clock, false);
 

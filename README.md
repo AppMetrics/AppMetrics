@@ -1,13 +1,15 @@
 # App Metrics <img src="http://app-metrics.io/logo.png" alt="App Metrics" width="50px"/> 
-[![Official Site](https://img.shields.io/badge/site-appmetrics-blue.svg?style=flat-square)](http://app-metrics.io/getting-started/intro.html) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
+[![Official Site](https://img.shields.io/badge/site-appmetrics-blue.svg?style=flat-square)](http://app-metrics.io/getting-started/intro.html) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/app-metrics/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## What is App Metrics?
 
-App Metrics is an open-source and cross-platform .NET library used to record metrics within an application. App Metrics can run on .NET Core or on the full .NET framework also supporting .NET 4.5.2. App Metrics abstracts away the underlaying repository of your Metrics for example InfluxDB, Graphite, Elasticsearch etc, by sampling and aggregating in memory and providing extensibility points to flush metrics to a repository at a specified interval. For pre .NET Core web applications see [AppMetrics.Owin](https://github.com/alhardy/AppMetrics.Owin)
+App Metrics is an open-source and cross-platform .NET library used to record metrics within an application. App Metrics can run on .NET Core or on the full .NET framework also supporting .NET 4.5.2. App Metrics abstracts away the underlaying repository of your Metrics for example InfluxDB, Graphite, Elasticsearch etc, by sampling and aggregating in memory and providing extensibility points to flush metrics to a repository at a specified interval.
 
 App Metrics provides various metric types to measure things such as the rate of requests, counting the number of user logins over time, measure the time taken to execute a database query, measure the amount of free memory and so on. Metrics types supported are Gauges, Counters, Meters, Histograms and Timers and Application Performance Indexes [Apdex](http://apdex.org/overview.html).
 
-For metric reporting capabilities see:
+`App.Metrics` includes an Exponentially Forward Decaying, Sliding Window and Algorithm R reservoir implementations. For more details on reservoir sampling see the [docs](http://app-metrics.io/getting-started/sampling/index.html).
+
+### Reporting Features
 
 - [Console & Text File Reporters](https://github.com/alhardy/AppMetrics.Reporters)
 - [InfluxDB Extensions](https://github.com/alhardy/AppMetrics.Extensions.InfluxDB)
@@ -15,9 +17,9 @@ For metric reporting capabilities see:
 - [Prometheus Extensions](https://github.com/alhardy/AppMetrics.Extensions.Prometheus)
 - [Graphite Extensions](https://github.com/alhardy/AppMetrics.Extensions.Graphite)
 
-`App.Metrics` includes an Exponentially Forward Decaying, Sliding Window and Algorithm R reservoir implementations, for additional reservoir sampling see the [reservoir repo](https://github.com/alhardy/AppMetrics.Reservoirs). For more details on reservoir sampling see the [docs](http://app-metrics.io/getting-started/sampling/index.html).
+### Application Health
 
-App Metrics also provides a health checking system allowing you to monitor the health of your application through user defined checks.
+App Metrics also provides a [health checking](https://github.com/AppMetrics/Health) system allowing you to monitor the health of your application through user defined checks.
 
 - [Getting Started](http://app-metrics.io/getting-started/intro.html)
 - [Sample Applications & Grafana Dashbaords](https://github.com/alhardy/AppMetrics.Samples)
@@ -32,10 +34,11 @@ App Metrics also provides a health checking system allowing you to monitor the h
 
 |Package|Dev Release|Pre-Release|Release|
 |------|:--------:|:--------:|:--------:|
-|App.Metrics|[![MyGet Status](https://img.shields.io/myget/alhardy/v/App.Metrics.svg?style=flat-square)](https://www.myget.org/feed/alhardy/package/nuget/App.Metrics)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics/)
-|App.Metrics.Extensions.Mvc|[![MyGet Status](https://img.shields.io/myget/alhardy/v/App.Metrics.Extensions.Mvc.svg?style=flat-square0)](https://www.myget.org/feed/alhardy/package/nuget/App.Metrics.Extensions.Mvc)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Extensions.Mvc.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Extensions.Mvc/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Extensions.Mvc.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Extensions.Mvc/)
-|App.Metrics.Extensions.Middleware|[![MyGet Status](https://img.shields.io/myget/alhardy/v/App.Metrics.Extensions.Middleware.svg?style=flat-square&maxAge=7200)](https://www.myget.org/feed/alhardy/package/nuget/App.Metrics.Extensions.Middleware)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Extensions.Middleware.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Extensions.Middleware/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Extensions.Middleware.svg)](https://www.nuget.org/packages/App.Metrics.Extensions.Middleware/)
-|App.Metrics.Formatters.Json|[![MyGet Status](https://img.shields.io/myget/alhardy/v/App.Metrics.Formatters.Json.svg?style=flat-square)](https://www.myget.org/feed/alhardy/package/nuget/App.Metrics.Formatters.Json)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Formatters.Json.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Json/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Formatters.Json.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Json/)|
+|App.Metrics|[![MyGet Status](https://img.shields.io/myget/appmetrics/v/App.Metrics.svg?style=flat-square)](https://www.myget.org/feed/appmetrics/package/nuget/App.Metrics)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics/)
+|App.Metrics.Abstractions|[![MyGet Status](https://img.shields.io/myget/appmetrics/v/App.Metrics.Abstractions.svg?style=flat-square)](https://www.myget.org/feed/appmetrics/package/nuget/App.Metrics.Abstractions)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Abstractions.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Abstractions/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Abstractions.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Abstractions/)
+|App.Metrics.Core|[![MyGet Status](https://img.shields.io/myget/appmetrics/v/App.Metrics.Core.svg?style=flat-square)](https://www.myget.org/feed/appmetrics/package/nuget/App.Metrics.Core)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Core.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Core/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Core.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Core/)
+|App.Metrics.Formatters.Ascii|[![MyGet Status](https://img.shields.io/myget/appmetrics/v/App.Metrics.Formatters.Ascii.svg?style=flat-square)](https://www.myget.org/feed/appmetrics/package/nuget/App.Metrics.Formatters.Ascii)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Formatters.Ascii.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Ascii/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Formatters.Ascii.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Ascii/)
+|App.Metrics.Formatters.Json|[![MyGet Status](https://img.shields.io/myget/appmetrics/v/App.Metrics.Formatters.Json.svg?style=flat-square)](https://www.myget.org/feed/appmetrics/package/nuget/App.Metrics.Formatters.Json)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Formatters.Json.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Json/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Formatters.Json.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Json/)
 
 [![GitHub issues](https://img.shields.io/github/issues/alhardy/AppMetrics.svg?style=flat-square&maxAge=7200)](https://github.com/alhardy/AppMetrics/issues?q=is%3Aopen+is%3Aissue) [![GitHub closed issues](https://img.shields.io/github/issues-closed/alhardy/AppMetrics.svg?style=flat-square&maxAge=7200)](https://github.com/alhardy/AppMetrics/issues?q=is%3Aissue+is%3Aclosed) [![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/alhardy/AppMetrics.svg?style=flat-square&maxAge=7200)](https://github.com/alhardy/AppMetrics/pulls?q=is%3Apr+is%3Aclosed) [![Issue Stats](https://img.shields.io/issuestats/p/long/github/alhardy/AppMetrics.svg?style=flat-square&maxAge=7200)](http://www.issuestats.com/github/alhardy/AppMetrics) [![Issue Stats](https://img.shields.io/issuestats/i/github/alhardy/AppMetrics.svg?style=flat-square&maxAge=7200)](http://www.issuestats.com/github/alhardy/AppMetrics)
 ----------
@@ -111,7 +114,7 @@ To run, fron the solution's root:
 
 ```
 	cd .\benchmarks\App.Metrics.Benchmarks.Runner\
-	dotnet run -c "Release"
+	dotnet run -c "Release" --framework netcoreapp2.0
 ```
 
 You'll then be prompted to choose a benchmark to run which will output a markdown file with the result in directory `.\benchmarks\App.Metrics.Benchmarks.Runner\BenchmarkDotNet.Artifacts\results`.
@@ -126,12 +129,13 @@ See the [contribution guidlines](CONTRIBUTING.md) for details.
 
 * [ASP.NET Core](https://github.com/aspnet)
 * [Grafana](https://grafana.com/)
-* [DocFX](https://dotnet.github.io/docfx/)
 * [Fluent Assertions](http://www.fluentassertions.com/)
 * [xUnit.net](https://xunit.github.io/)
 * [StyleCopAnalyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers)
 * [Cake](https://github.com/cake-build/cake)
 * [OpenCover](https://github.com/OpenCover/opencover)
+* [Hugo](https://gohugo.io/)
+* [Netlify](https://www.netlify.com/)
 
 ***Thanks for providing free open source licensing***
 

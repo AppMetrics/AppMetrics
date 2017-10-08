@@ -1,40 +1,40 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  
+  <Import Project="..\..\build\common.props" />
+  
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-    <AssemblyName>App.Metrics.Formatters.Json.Facts</AssemblyName>
-    <PackageId>App.Metrics.Formatters.Json.Facts</PackageId>
-    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netcoreapp1.1' ">$(PackageTargetFallback);dnxcore50;portable-net45+win8</PackageTargetFallback>
-    <RuntimeFrameworkVersion Condition=" '$(TargetFramework)' == 'netcoreapp1.1' ">1.1.1</RuntimeFrameworkVersion>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <TargetFrameworks>netcoreapp2.0;net461</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netcoreapp2.0</TargetFrameworks>
   </PropertyGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="JsonFiles\*.json" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <Content Include="..\..\xunit.runner.json" Link="xunit.runner.json" />
   </ItemGroup>
-
+  
   <ItemGroup>
-    <ProjectReference Include="..\..\src\App.Metrics.Formatters.Json\App.Metrics.Formatters.Json.csproj" />
+    <EmbeddedResource Include="JsonFiles\apdex.json" />
+    <EmbeddedResource Include="JsonFiles\counter.json" />
+    <EmbeddedResource Include="JsonFiles\env.json" />
+    <EmbeddedResource Include="JsonFiles\gauge.json" />
+    <EmbeddedResource Include="JsonFiles\histogram.json" />
+    <EmbeddedResource Include="JsonFiles\meter.json" />
+    <EmbeddedResource Include="JsonFiles\meter_with_items.json" />
+    <EmbeddedResource Include="JsonFiles\metricdata_single_context.json" />
+    <EmbeddedResource Include="JsonFiles\timer.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
-    <PackageReference Include="FluentAssertions" Version="4.19.2" />
-    <PackageReference Include="FluentAssertions.Json" Version="4.19.0" />
-    <PackageReference Include="xunit" Version="2.2.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
-    <PackageReference Include="Microsoft.DotNet.InternalAbstractions" Version="1.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(TestSdkVersion)" />
+    <PackageReference Include="FluentAssertions" Version="$(FluentAssertionsVersion)" />
+    <PackageReference Include="FluentAssertions.Json" Version="$(FluentAssertionsJsonVersion)" />
+    <PackageReference Include="Moq" Version="$(MoqVersion)" />
+    <PackageReference Include="xunit" Version="$(XunitVersion)" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="$(XunitVersion)" />    
   </ItemGroup>
 
-  <ItemGroup>
-    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  <ItemGroup>    
+    <ProjectReference Include="..\..\src\App.Metrics.Formatters.Json\App.Metrics.Formatters.Json.csproj" />    
+    <ProjectReference Include="..\App.Metrics.FactsCommon\App.Metrics.FactsCommon.csproj" />    
   </ItemGroup>
 
 </Project>

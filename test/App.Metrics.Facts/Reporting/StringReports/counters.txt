@@ -1,7 +1,0 @@
-﻿
-***** [test] Counters *****
-
-	counter_name
-
-             Count = 0
-

@@ -2,7 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using App.Metrics.Abstractions.ReservoirSampling;
+using App.Metrics.ReservoirSampling;
 
 namespace App.Metrics.Formatters.Json
 {

@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using App.Metrics.Infrastructure;
 using Newtonsoft.Json;
 
@@ -26,7 +25,7 @@ namespace App.Metrics.Formatters.Json.Converters
         {
             var source = (EnvironmentInfo)value;
 
-            var target = source.Entries.ToDictionary(entry => entry.Name, entry => entry.Value);
+            var target = source.Entries;
 
             serializer.Serialize(writer, target);
         }

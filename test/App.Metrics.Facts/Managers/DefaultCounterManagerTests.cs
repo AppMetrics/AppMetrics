@@ -1,11 +1,9 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultCounterManagerTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
-using App.Metrics.Core.Options;
 using App.Metrics.Counter;
-using App.Metrics.Counter.Abstractions;
 using App.Metrics.Facts.Fixtures;
-using App.Metrics.Tagging;
 using FluentAssertions;
 using Xunit;
 
@@ -25,7 +23,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_decrement_counter()
+        public void Can_decrement_counter()
         {
             var metricName = "test_decrement_counter";
             var options = new CounterOptions { Name = metricName };
@@ -36,7 +34,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_decrement_counter_by_amount()
+        public void Can_decrement_counter_by_amount()
         {
             var metricName = "test_decrement_counter_by_amount";
             var options = new CounterOptions { Name = metricName };
@@ -47,7 +45,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_decrement_counter_item()
+        public void Can_decrement_counter_item()
         {
             var metricName = "test_decrement_counter_item";
             var options = new CounterOptions() { Name = metricName };
@@ -58,7 +56,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_decrement_counter_item_by_amount()
+        public void Can_decrement_counter_item_by_amount()
         {
             var metricName = "test_decrement_counter_item_by_amount";
             var options = new CounterOptions { Name = metricName };
@@ -69,7 +67,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_decrement_counter_metric_item()
+        public void Can_decrement_counter_metric_item()
         {
             var metricName = "test_decrement_counter_metric_item";
             var options = new CounterOptions { Name = metricName };
@@ -82,7 +80,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_decrement_counter_metric_item_by_amount()
+        public void Can_decrement_counter_metric_item_by_amount()
         {
             var metricName = "test_decrement_counter_metric_item_by_amount";
             var options = new CounterOptions() { Name = metricName };
@@ -96,7 +94,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_decrement_multidimensional_counter()
+        public void Can_decrement_multidimensional_counter()
         {
             var metricName = "test_decrement_counter_multi";
             var options = new CounterOptions { Name = metricName };
@@ -109,7 +107,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_decrement_multidimensional_counter_by_amount()
+        public void Can_decrement_multidimensional_counter_by_amount()
         {
             var metricName = "test_decrement_counter_by_amount_multi";
             var options = new CounterOptions { Name = metricName };
@@ -122,7 +120,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_decrement_multidimensional_counter_item()
+        public void Can_decrement_multidimensional_counter_item()
         {
             var metricName = "test_decrement_counter_item_multi";
             var options = new CounterOptions { Name = metricName };
@@ -139,7 +137,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_decrement_multidimensional_counter_item_by_amount()
+        public void Can_decrement_multidimensional_counter_item_by_amount()
         {
             var metricName = "test_decrement_counter_item_by_amount_multi";
             var options = new CounterOptions { Name = metricName };
@@ -152,7 +150,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_increment_counter()
+        public void Can_increment_counter()
         {
             var metricName = "test_increment_counter";
             var options = new CounterOptions() { Name = metricName };
@@ -163,7 +161,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_increment_counter_by_amount()
+        public void Can_increment_counter_by_amount()
         {
             var metricName = "test_increment_counter_by_amount";
             var options = new CounterOptions() { Name = metricName };
@@ -174,7 +172,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_increment_counter_item()
+        public void Can_increment_counter_item()
         {
             var metricName = "test_increment_counter_item";
             var options = new CounterOptions { Name = metricName };
@@ -185,7 +183,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_increment_counter_item_by_amount()
+        public void Can_increment_counter_item_by_amount()
         {
             var metricName = "test_increment_counter_item_by_amount";
             var options = new CounterOptions { Name = metricName };
@@ -196,7 +194,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_increment_counter_metric_item()
+        public void Can_increment_counter_metric_item()
         {
             var metricName = "test_increment_counter_metric_item";
             var options = new CounterOptions() { Name = metricName };
@@ -209,7 +207,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_increment_counter_metric_item_by_amount()
+        public void Can_increment_counter_metric_item_by_amount()
         {
             var metricName = "test_increment_counter_metric_item_by_amount";
             var options = new CounterOptions() { Name = metricName };
@@ -223,7 +221,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_increment_multidimensional_counter()
+        public void Can_increment_multidimensional_counter()
         {
             var metricName = "test_increment_counter_multi";
             var options = new CounterOptions() { Name = metricName };
@@ -236,7 +234,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_increment_multidimensional_counter_by_amount()
+        public void Can_increment_multidimensional_counter_by_amount()
         {
             var metricName = "test_increment_counter_by_amount_multi";
             var options = new CounterOptions { Name = metricName };
@@ -249,7 +247,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_increment_multidimensional_counter_item()
+        public void Can_increment_multidimensional_counter_item()
         {
             var metricName = "test_increment_counter_item_multi";
             var options = new CounterOptions { Name = metricName };
@@ -266,7 +264,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_increment_multidimensional_counter_item_by_amount()
+        public void Can_increment_multidimensional_counter_item_by_amount()
         {
             var metricName = "test_increment_counter_item_by_amount_multi";
             var options = new CounterOptions { Name = metricName };

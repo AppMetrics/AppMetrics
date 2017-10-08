@@ -1,13 +1,10 @@
-﻿#region copyright
-
+﻿// <copyright file="SimpleReservoirTests.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-#endregion
+// </copyright>
 
 using System.Collections.Generic;
 using System.Linq;
-using App.Metrics.Abstractions.ReservoirSampling;
+using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 using App.Metrics.ReservoirSampling.SlidingWindow;
 using App.Metrics.ReservoirSampling.Uniform;

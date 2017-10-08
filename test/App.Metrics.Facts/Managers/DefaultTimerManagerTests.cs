@@ -1,10 +1,9 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultTimerManagerTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
-using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Timer;
-using App.Metrics.Timer.Abstractions;
 using FluentAssertions;
 using Xunit;
 
@@ -22,7 +21,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_time_action()
+        public void Can_time_action()
         {
             var metricName = "test_manager_timer_action";
             var options = new TimerOptions { Name = metricName };
@@ -35,7 +34,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_time_action_when_multidimensional()
+        public void Can_time_action_when_multidimensional()
         {
             var metricName = "test_manager_timer_action_multi";
             var options = new TimerOptions { Name = metricName };
@@ -48,7 +47,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_time_action_when_multidimensional_with_user_value()
+        public void Can_time_action_when_multidimensional_with_user_value()
         {
             var metricName = "test_manager_timer_action_with_user_value_multi";
             var options = new TimerOptions { Name = metricName };
@@ -68,7 +67,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_time_action_with_user_value()
+        public void Can_time_action_with_user_value()
         {
             var metricName = "test_manager_timer_action_with_user_value";
             var options = new TimerOptions { Name = metricName };
@@ -84,7 +83,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_time_in_using()
+        public void Can_time_in_using()
         {
             var metricName = "test_manager_timer_using";
             var options = new TimerOptions { Name = metricName };
@@ -100,7 +99,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_time_in_using_when_multidimensional()
+        public void Can_time_in_using_when_multidimensional()
         {
             var metricName = "test_manager_timer_using_multi";
             var options = new TimerOptions { Name = metricName };
@@ -120,7 +119,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_time_in_using_when_multidimensional_with_user_value()
+        public void Can_time_in_using_when_multidimensional_with_user_value()
         {
             var metricName = "test_manager_timer_using_with_user_value_multi";
             var options = new TimerOptions { Name = metricName };
@@ -155,7 +154,7 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
-        public void can_time_in_using_with_user_value()
+        public void Can_time_in_using_with_user_value()
         {
             var metricName = "test_manager_timer_using_with_user_value_multi";
             var options = new TimerOptions { Name = metricName };

@@ -1,47 +1,30 @@
-﻿<!--EXTERNAL_PROPERTIES: TargetFramework-->
-<!--EXTERNAL_PROPERTIES: DefineConstants-->
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\build\common.props" />
 
   <PropertyGroup>
-    <Description>App Metrics Formattor, formatting metrics data to JSON using Json.NET</Description>
-    <AssemblyTitle>App.Metrics.Formatters.Json</AssemblyTitle>
-    <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
-    <AssemblyName>App.Metrics.Formatters.Json</AssemblyName>
-    <PackageId>App.Metrics.Formatters.Json</PackageId>
-    <PackageTags>Metrics;Monitoring;Instrumentation;JSON</PackageTags>
-    <VersionPrefix>1.2.0</VersionPrefix>
+    <Description>App Metrics Formatters for metrics  and environment data to JSON using Newtonsoft.Json.</Description>
+    <TargetFrameworks>netstandard1.6;net452</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>appmetrics;metrics;json</PackageTags>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.6|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard1.6\App.Metrics.Formatters.Json.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.6|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard1.6\App.Metrics.Formatters.Json.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net461|AnyCPU'">
-    <DocumentationFile>bin\Release\net461\App.Metrics.Formatters.Json.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net461|AnyCPU'">
-    <DocumentationFile>bin\Debug\net461\App.Metrics.Formatters.Json.xml</DocumentationFile>
-  </PropertyGroup>
-
+  
   <ItemGroup>
-    <ProjectReference Include="..\App.Metrics.Extensions.Middleware\App.Metrics.Extensions.Middleware.csproj" Version="1.2.0-*" />
-    <ProjectReference Include="..\App.Metrics\App.Metrics.csproj" Version="1.2.0-*" />
+    <ProjectReference Include="..\App.Metrics.Abstractions\App.Metrics.Abstractions.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />	 
-  </ItemGroup>    
+    <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftVersion)" />
+  </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net452' ">
+    <DefineConstants>$(DefineConstants);CLASSIC</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
     <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />	
+    <Reference Include="System.Collections" />
+    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
 </Project>

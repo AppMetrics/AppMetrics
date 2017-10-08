@@ -4,7 +4,7 @@ notifications:
       - al_hardy@live.com.au
 
 language: csharp
-dotnet: 1.0.4
+dotnet: 2.0.0-preview1-005977
 os:
 #  - osx
   - linux
@@ -16,6 +16,10 @@ script:
 # .NET CLI require Ubuntu 14.04
 sudo: required
 dist: trusty
+env:
+  global:
+    - DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+    - DOTNET_CLI_TELEMETRY_OPTOUT: 1
 addons:
   apt:
     packages: 

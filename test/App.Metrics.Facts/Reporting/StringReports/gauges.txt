@@ -1,7 +1,0 @@
-﻿
-***** [test] Gauges *****
-
-	gauge_name
-
-             value = 2.00
-

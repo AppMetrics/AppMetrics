@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="TestConfigs.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Engines;
@@ -8,6 +9,7 @@ using BenchmarkDotNet.Jobs;
 // ReSharper disable UnusedMember.Global
 namespace App.Metrics.Benchmarks.Support
 {
+#pragma warning disable SA1649, SA1402
     public class SingleRunFastConfig : ManualConfig
     {
         public SingleRunFastConfig() { Add(Job.Dry); }
@@ -31,6 +33,6 @@ namespace App.Metrics.Benchmarks.Support
             Add(new Job { Run = { LaunchCount = 1, WarmupCount = 1, TargetCount = 50 } });
         }
     }
-
+#pragma warning restore SA1649, SA1402
     // ReSharper restore UnusedMember.Global
 }

@@ -1,21 +1,25 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="UniformSnapshotTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Linq;
-using App.Metrics.Abstractions.ReservoirSampling;
+using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.Uniform;
 using FluentAssertions;
 using Xunit;
 
 namespace App.Metrics.Sampling.Facts
 {
-    public class UniformSnapshotTest
+    public class UniformSnapshotTests
     {
         private readonly UniformSnapshot _snapshot = new UniformSnapshot(5, 5.0, new[] { 5L, 1, 2, 3, 4 });
 
         [Fact]
-        public void UniformSnapshot_BigQuantilesAreTheLastValue() { _snapshot.GetValue(1.0).Should().BeApproximately(5, 0.1); }
+        public void UniformSnapshot_BigQuantilesAreTheLastValue()
+        {
+            _snapshot.GetValue(1.0).Should().BeApproximately(5, 0.1);
+        }
 
         [Fact]
         public void UniformSnapshot_CalculatesAMaxOfZeroForAnEmptySnapshot()
@@ -53,43 +57,82 @@ namespace App.Metrics.Sampling.Facts
         }
 
         [Fact]
-        public void UniformSnapshot_CalculatesTheMaximumValue() { _snapshot.Max.Should().Be(5); }
+        public void UniformSnapshot_CalculatesTheMaximumValue()
+        {
+            _snapshot.Max.Should().Be(5);
+        }
 
         [Fact]
-        public void UniformSnapshot_CalculatesTheMeanValue() { _snapshot.Mean.Should().Be(3.0); }
+        public void UniformSnapshot_CalculatesTheMeanValue()
+        {
+            _snapshot.Mean.Should().Be(3.0);
+        }
 
         [Fact]
-        public void UniformSnapshot_CalculatesTheMinimumValue() { _snapshot.Min.Should().Be(1); }
+        public void UniformSnapshot_CalculatesTheMinimumValue()
+        {
+            _snapshot.Min.Should().Be(1);
+        }
 
         [Fact]
-        public void UniformSnapshot_CalculatesTheStdDev() { _snapshot.StdDev.Should().BeApproximately(1.5811, 0.0001); }
+        public void UniformSnapshot_CalculatesTheStdDev()
+        {
+            _snapshot.StdDev.Should().BeApproximately(1.5811, 0.0001);
+        }
 
         [Fact]
-        public void UniformSnapshot_HasAMedian() { _snapshot.Median.Should().BeApproximately(3, 0.1); }
+        public void UniformSnapshot_HasAMedian()
+        {
+            _snapshot.Median.Should().BeApproximately(3, 0.1);
+        }
 
         [Fact]
-        public void UniformSnapshot_HasAp75() { _snapshot.Percentile75.Should().BeApproximately(4.5, 0.1); }
+        public void UniformSnapshot_HasAp75()
+        {
+            _snapshot.Percentile75.Should().BeApproximately(4.5, 0.1);
+        }
 
         [Fact]
-        public void UniformSnapshot_HasAp95() { _snapshot.Percentile95.Should().BeApproximately(5.0, 0.1); }
+        public void UniformSnapshot_HasAp95()
+        {
+            _snapshot.Percentile95.Should().BeApproximately(5.0, 0.1);
+        }
 
         [Fact]
-        public void UniformSnapshot_HasAp98() { _snapshot.Percentile98.Should().BeApproximately(5.0, 0.1); }
+        public void UniformSnapshot_HasAp98()
+        {
+            _snapshot.Percentile98.Should().BeApproximately(5.0, 0.1);
+        }
 
         [Fact]
-        public void UniformSnapshot_HasAp99() { _snapshot.Percentile99.Should().BeApproximately(5.0, 0.1); }
+        public void UniformSnapshot_HasAp99()
+        {
+            _snapshot.Percentile99.Should().BeApproximately(5.0, 0.1);
+        }
 
         [Fact]
-        public void UniformSnapshot_HasAp999() { _snapshot.Percentile999.Should().BeApproximately(5.0, 0.1); }
+        public void UniformSnapshot_HasAp999()
+        {
+            _snapshot.Percentile999.Should().BeApproximately(5.0, 0.1);
+        }
 
         [Fact]
-        public void UniformSnapshot_HasASize() { _snapshot.Size.Should().Be(5); }
+        public void UniformSnapshot_HasASize()
+        {
+            _snapshot.Size.Should().Be(5);
+        }
 
         [Fact]
-        public void UniformSnapshot_HasValues() { _snapshot.Values.Should().ContainInOrder(1L, 2L, 3L, 4L, 5L); }
+        public void UniformSnapshot_HasValues()
+        {
+            _snapshot.Values.Should().ContainInOrder(1L, 2L, 3L, 4L, 5L);
+        }
 
         [Fact]
-        public void UniformSnapshot_SmallQuantilesAreTheFirstValue() { _snapshot.GetValue(0.0).Should().BeApproximately(1, 0.1); }
+        public void UniformSnapshot_SmallQuantilesAreTheFirstValue()
+        {
+            _snapshot.GetValue(0.0).Should().BeApproximately(1, 0.1);
+        }
 
         [Fact]
         public void UniformSnapshot_ThrowsOnBadQuantileValue()

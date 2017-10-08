@@ -4,9 +4,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using App.Metrics.Core;
 using App.Metrics.Formatters.Json;
-using App.Metrics.Tagging;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics.Histogram

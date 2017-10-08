@@ -1,17 +1,14 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MetricCoreTestFixture.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
-using App.Metrics.Configuration;
-using App.Metrics.Core.Abstractions;
-using App.Metrics.Core.Interfaces;
-using App.Metrics.Core.Internal;
-using App.Metrics.Infrastructure;
+using App.Metrics.FactsCommon;
 using App.Metrics.Internal;
-using App.Metrics.Registry.Abstractions;
-using App.Metrics.Registry.Internal;
-using App.Metrics.Tagging;
-using Microsoft.Extensions.Logging;
+using App.Metrics.Internal.NoOp;
+using App.Metrics.Registry;
+using App.Metrics.ReservoirSampling;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
 
 namespace App.Metrics.Facts.Fixtures
 {
@@ -19,19 +16,17 @@ namespace App.Metrics.Facts.Fixtures
     {
         public MetricCoreTestFixture()
         {
-            var loggerFactory = new LoggerFactory();
-            var options = new AppMetricsOptions();
-
+            var options = new MetricsOptions();
             Clock = new TestClock();
-            Builder = new DefaultMetricsBuilderFactory();
+            Builder = new DefaultMetricsBuilderFactory(new DefaultSamplingReservoirProvider(() => new DefaultForwardDecayingReservoir()));
 
             IMetricContextRegistry ContextRegistrySetup(string context) => new DefaultMetricContextRegistry(context);
 
-            var registry = new DefaultMetricsRegistry(loggerFactory, options, Clock, new EnvironmentInfoProvider(), ContextRegistrySetup);
+            var registry = new DefaultMetricsRegistry(options.DefaultContextLabel, Clock, ContextRegistrySetup);
 
             Registry = registry;
             Providers = new DefaultMetricsProvider(Registry, Builder, Clock);
-            Snapshot = new DefaultMetricValuesProvider(new NoOpMetricsFilter(), Registry);
+            Snapshot = new DefaultMetricValuesProvider(new NullMetricsFilter(), Registry);
             Managers = new DefaultMeasureMetricsProvider(Registry, Builder, Clock);
             Context = options.DefaultContextLabel;
         }
