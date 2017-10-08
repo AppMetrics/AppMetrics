@@ -72,7 +72,14 @@ string versionSuffix			= null;
 
 if (!string.IsNullOrEmpty(preReleaseSuffix))
 {
-	versionSuffix = preReleaseSuffix + "-" + buildNumber.ToString("D4");
+	if (packageRelease)
+	{
+		versionSuffix = preReleaseSuffix;
+	}
+	else
+	{
+		versionSuffix = preReleaseSuffix + "-" + buildNumber.ToString("D4");
+	}
 }
 else if (AppVeyor.IsRunningOnAppVeyor && !AppVeyor.Environment.Repository.Tag.IsTag && !packageRelease)
 {
