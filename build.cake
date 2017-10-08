@@ -14,6 +14,7 @@
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
+var packageRelease				= HasArgument("packageRelease") ? Argument<bool>("packageRelease", false): true;
 var target                      = Argument("target", "Default");
 var configuration               = HasArgument("BuildConfiguration") ? Argument<string>("BuildConfiguration") :
                                   EnvironmentVariable("BuildConfiguration") != null ? EnvironmentVariable("BuildConfiguration") : "Release";
@@ -73,7 +74,7 @@ if (!string.IsNullOrEmpty(preReleaseSuffix))
 {
 	versionSuffix = preReleaseSuffix + "-" + buildNumber.ToString("D4");
 }
-else if (AppVeyor.IsRunningOnAppVeyor && !AppVeyor.Environment.Repository.Tag.IsTag)
+else if (AppVeyor.IsRunningOnAppVeyor && !AppVeyor.Environment.Repository.Tag.IsTag && !packageRelease)
 {
 	versionSuffix = buildNumber.ToString("D4");
 }
