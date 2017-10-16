@@ -1,6 +1,5 @@
 #addin Cake.Coveralls
 #addin Cake.ReSharperReports
-#addin Cake.Incubator
 
 #tool "nuget:?package=xunit.runner.console"
 #tool "nuget:?package=JetBrains.dotCover.CommandLineTools"
@@ -33,7 +32,7 @@ var gitUser						= HasArgument("GitUser") ? Argument<string>("GitUser") : Enviro
 var gitPassword					= HasArgument("GitPassword") ? Argument<string>("GitPassword") : EnvironmentVariable("GitPassword");
 var skipHtmlCoverageReport		= HasArgument("SkipHtmlCoverageReport") ? Argument<bool>("SkipHtmlCoverageReport", true) || !IsRunningOnWindows() : true;
 var linkSources					= HasArgument("LinkSources") ? Argument<bool>("LinkSources") :
-                                  EnvironmentVariable("LinkSources") != null ? EnvironmentVariable<bool>("LinkSources") : true;
+                                  EnvironmentVariable("LinkSources") != null ? bool.Parse(EnvironmentVariable("LinkSources")) : true;
 
 //////////////////////////////////////////////////////////////////////
 // DEFINE FILES & DIRECTORIES
@@ -165,26 +164,26 @@ Task("Build")
 	}
 	else
 	{
-		var projects = solution.GetProjects();
-
-		foreach(var project in projects)
-        {
-			var parsedProject = ParseProject(new FilePath(project.Path.ToString()), configuration);
-
-			if (parsedProject.IsLibrary() && !project.Path.ToString().Contains(".Sandbox")&& !project.Path.ToString().Contains(".Facts") && !project.Path.ToString().Contains(".Benchmarks"))
-			{				
-				settings.Framework = "netstandard2.0";
-
-			}
-			else
-			{
-				settings.Framework = "netcoreapp2.0";
-			}
-
-			Context.Information("Building as " + settings.Framework + ": " +  project.Path.ToString());
-
-			DotNetCoreBuild(project.Path.ToString(), settings);
-		}
+		// var projects = solution.GetProjects();
+		// 
+		// foreach(var project in projects)
+        // {
+		// 	var parsedProject = ParseProject(new FilePath(project.Path.ToString()), configuration);
+		// 
+		// 	if (parsedProject.IsLibrary() && !project.Path.ToString().Contains(".Sandbox")&& !project.Path.ToString().Contains(".Facts") && !project.Path.ToString().Contains(".Benchmarks"))
+		// 	{				
+		// 		settings.Framework = "netstandard2.0";
+		// 
+		// 	}
+		// 	else
+		// 	{
+		// 		settings.Framework = "netcoreapp2.0";
+		// 	}
+		// 
+		// 	Context.Information("Building as " + settings.Framework + ": " +  project.Path.ToString());
+		// 
+		// 	DotNetCoreBuild(project.Path.ToString(), settings);
+		// }
 
 	}
 });
