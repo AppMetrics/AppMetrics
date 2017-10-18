@@ -24,11 +24,7 @@
 	  <SignAssembly>true</SignAssembly>
 	  <PublicSign Condition="'$(OS)' != 'Windows_NT'">true</PublicSign>
 	  <DebugType>embedded</DebugType>    
-	</PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFrameworkIdentifier)'=='.NETFramework'">
-    <PackageReference Include="NETStandard.Library.NETFramework" Version="$(NETStandardLibraryNETFrameworkVersion)" />
-  </ItemGroup>
+	</PropertyGroup>  
 
 	<ItemGroup>
 		<AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />		
