@@ -70,7 +70,7 @@ See the following for build arguments and running locally.
 |BuildConfiguration|The configuration to run the build, **Debug** or **Release** |*Release*|All|Optional|
 |PreReleaseSuffix|The pre-release suffix for versioning nuget package artifacts e.g. `beta`|*ci*|All|Optional|
 |CoverWith|**DotCover** or **OpenCover** to calculate and report code coverage, **None** to skip. When not **None**, a coverage file and html report will be generated at `./artifacts/coverage`|*OpenCover*|Windows Only|Optional|
-|SkipCodeInspect|**false** to run ReSharper code inspect and report results, **true** to skip. When **true**, the code inspection html report and xml output will be generated at `./artifacts/resharper-reports`|*false*|Windows Only|Optional|
+|SkipCodeInspect|**false** to run ReSharper code inspect and report results, **true** to skip. When **false**, the code inspection html report and xml output will be generated at `./artifacts/resharper-reports`|*false*|Windows Only|Optional|
 |BuildNumber|The build number to use for pre-release versions|*0*|All|Optional|
 |LinkSources|[Source link](https://github.com/ctaggart/SourceLink) support allows source code to be downloaded on demand while debugging|*true*|All|Optional|
 
