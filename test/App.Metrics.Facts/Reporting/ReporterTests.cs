@@ -8,7 +8,6 @@ using App.Metrics.Facts.TestHelpers;
 using App.Metrics.Formatters;
 using App.Metrics.Internal;
 using App.Metrics.Reporting.Facts.Fixtures;
-using App.Metrics.Scheduling;
 using FluentAssertions;
 using Xunit;
 

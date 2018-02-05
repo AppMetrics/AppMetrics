@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Linq;
 using App.Metrics.Builder;
 using App.Metrics.Filters;
 using App.Metrics.Formatters;
@@ -19,14 +20,17 @@ namespace App.Metrics
     public class MetricsReportingBuilder : IMetricsReportingBuilder
     {
         private static readonly IFilterMetrics NullMetricsFilter = new NullMetricsFilter();
+        private readonly MetricsFormatterCollection _formatters;
         private readonly IMetricsBuilder _metricsBuilder;
         private readonly Action<IReportMetrics> _reporters;
 
         internal MetricsReportingBuilder(
             IMetricsBuilder metricsBuilder,
+            MetricsFormatterCollection formatters,
             Action<IReportMetrics> reporters)
         {
             _metricsBuilder = metricsBuilder ?? throw new ArgumentNullException(nameof(metricsBuilder));
+            _formatters = formatters ?? throw new ArgumentNullException(nameof(formatters));
             _reporters = reporters ?? throw new ArgumentNullException(nameof(reporters));
         }
 
@@ -54,6 +58,8 @@ namespace App.Metrics
         {
             var reporter = new TReportMetrics();
 
+            UseUserConfiguredFormatter(reporter);
+
             return Using(reporter);
         }
 
@@ -62,6 +68,8 @@ namespace App.Metrics
             where TReportMetrics : IReportMetrics, new()
         {
             var reporter = new TReportMetrics { Filter = filter ?? new NullMetricsFilter() };
+
+            UseUserConfiguredFormatter(reporter);
 
             return Using(reporter);
         }
@@ -90,6 +98,8 @@ namespace App.Metrics
         {
             var reporter = new TReportMetrics { FlushInterval = flushInterval };
 
+            UseUserConfiguredFormatter(reporter);
+
             return Using(reporter);
         }
 
@@ -98,6 +108,8 @@ namespace App.Metrics
             where TReportMetrics : IReportMetrics, new()
         {
             var reporter = new TReportMetrics { Filter = filter, FlushInterval = flushInterval };
+
+            UseUserConfiguredFormatter(reporter);
 
             return Using(reporter);
         }
@@ -120,6 +132,20 @@ namespace App.Metrics
             reporter.Filter = reporter.Filter == default(IFilterMetrics)
                 ? NullMetricsFilter
                 : reporter.Filter;
+        }
+
+        /// <summary>
+        /// If the user as explictity set a formatter us this as the default formatter to output metrics.
+        /// </summary>
+        /// <param name="reporter">The reporter to set the user configured formatter</param>
+        private void UseUserConfiguredFormatter(IReportMetrics reporter)
+        {
+            var formatter = _formatters.FirstOrDefault();
+
+            if (formatter != null)
+            {
+                reporter.Formatter = formatter;
+            }
         }
     }
 }

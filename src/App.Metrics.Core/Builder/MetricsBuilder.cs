@@ -98,6 +98,7 @@ namespace App.Metrics
         /// <inheritdoc />
         public IMetricsReportingBuilder Report => new MetricsReportingBuilder(
             this,
+            _metricsOutputFormatters,
             reporter =>
             {
                 _reporters.TryAdd(reporter);

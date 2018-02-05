@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Filters;
 using App.Metrics.Formatters;
+using App.Metrics.Formatters.Ascii;
 using App.Metrics.Internal.NoOp;
 using App.Metrics.Reporting;
 
@@ -16,9 +17,11 @@ namespace App.Metrics.Facts.TestHelpers
     {
         private readonly bool _pass;
         private readonly Exception _throwEx;
+        private readonly IMetricsOutputFormatter _defaultMetricsOutputFormatter = new MetricsTextOutputFormatter();
 
         public TestReporter()
         {
+            Formatter = _defaultMetricsOutputFormatter;
         }
 
         public TestReporter(bool pass = true, Exception throwEx = null)

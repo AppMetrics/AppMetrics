@@ -3,9 +3,11 @@
 // </copyright>
 
 using System;
+using System.Linq;
 using App.Metrics.Facts.TestHelpers;
 using App.Metrics.Filtering;
 using App.Metrics.Formatters;
+using App.Metrics.Formatters.Ascii;
 using App.Metrics.Formatters.Json;
 using FluentAssertions;
 using Xunit;
@@ -53,6 +55,34 @@ namespace App.Metrics.Facts.Builders
 
             // Assert
             metrics.Reporters.Should().Contain(reportMetrics => reportMetrics is TestReporter);
+        }
+
+        [Fact]
+        public void Formatter_set_to_reporter_default_when_not_specified()
+        {
+            // Arrange
+            var builder = new MetricsBuilder().Report.Using<TestReporter>();
+
+            // Act
+            var metrics = builder.Build();
+
+            // Assert
+            metrics.Reporters.Should().Contain(reportMetrics => reportMetrics is TestReporter);
+            metrics.Reporters.First(r => r.GetType() == typeof(TestReporter)).Formatter.Should().BeOfType<MetricsTextOutputFormatter>();
+        }
+
+        [Fact]
+        public void Formatter_set_to_user_specified_when_specified()
+        {
+            // Arrange
+            var builder = new MetricsBuilder().OutputMetrics.AsJson().Report.Using<TestReporter>();
+
+            // Act
+            var metrics = builder.Build();
+
+            // Assert
+            metrics.Reporters.Should().Contain(reportMetrics => reportMetrics is TestReporter);
+            metrics.Reporters.First(r => r.GetType() == typeof(TestReporter)).Formatter.Should().BeOfType<MetricsJsonOutputFormatter>();
         }
 
         [Fact]
