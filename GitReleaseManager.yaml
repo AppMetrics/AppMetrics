@@ -21,3 +21,4 @@ issue-labels-include:
 issue-labels-exclude:
 - wontfix
 - duplicate
+- question
