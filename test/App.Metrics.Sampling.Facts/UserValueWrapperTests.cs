@@ -1,4 +1,7 @@
-﻿using App.Metrics.Core;
+﻿// <copyright file="UserValueWrapperTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
 using FluentAssertions;
 using Xunit;
 
@@ -7,7 +10,7 @@ namespace App.Metrics.Sampling.Facts
     public class UserValueWrapperTests
     {
         [Fact]
-        public void can_determine_if_user_values_are_diff()
+        public void Can_determine_if_user_values_are_diff()
         {
             var first = new UserValueWrapper(1L);
             var second = new UserValueWrapper(1L, "value");
@@ -16,7 +19,7 @@ namespace App.Metrics.Sampling.Facts
         }
 
         [Fact]
-        public void can_determine_if_user_values_are_diff_using_operator()
+        public void Can_determine_if_user_values_are_diff_using_operator()
         {
             var first = new UserValueWrapper(1L);
             var second = new UserValueWrapper(1L, "value");
@@ -25,7 +28,7 @@ namespace App.Metrics.Sampling.Facts
         }
 
         [Fact]
-        public void can_determine_if_user_values_are_same()
+        public void Can_determine_if_user_values_are_same()
         {
             var first = new UserValueWrapper(1L);
             var second = new UserValueWrapper(1L);
@@ -34,7 +37,7 @@ namespace App.Metrics.Sampling.Facts
         }
 
         [Fact]
-        public void can_determine_if_user_values_are_same_using_operator()
+        public void Can_determine_if_user_values_are_same_using_operator()
         {
             var first = new UserValueWrapper(1L);
             var second = new UserValueWrapper(1L);

@@ -1,5 +1,6 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultBenchmarkBase.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Benchmarks.Configs;
 using App.Metrics.Benchmarks.Fixtures;
@@ -12,7 +13,10 @@ namespace App.Metrics.Benchmarks
     {
         protected MetricsCoreTestFixture Fixture { get; private set; }
 
-        [Setup]
-        public virtual void Setup() { Fixture = new MetricsCoreTestFixture(); }
+        [GlobalSetup]
+        public virtual void Setup()
+        {
+            Fixture = new MetricsCoreTestFixture();
+        }
     }
 }

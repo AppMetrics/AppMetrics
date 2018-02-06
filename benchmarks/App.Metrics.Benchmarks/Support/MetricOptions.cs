@@ -1,13 +1,17 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="MetricOptions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
-using System;
-using App.Metrics.Abstractions.ReservoirSampling;
+using App.Metrics.Apdex;
 using App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics;
-using App.Metrics.Core.Options;
+using App.Metrics.Counter;
+using App.Metrics.Gauge;
+using App.Metrics.Histogram;
+using App.Metrics.Meter;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 using App.Metrics.ReservoirSampling.SlidingWindow;
 using App.Metrics.ReservoirSampling.Uniform;
+using App.Metrics.Timer;
 
 namespace App.Metrics.Benchmarks.Support
 {

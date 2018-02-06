@@ -1,9 +1,10 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="WeightedSnapshotTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System;
 using System.Linq;
-using App.Metrics.Abstractions.ReservoirSampling;
+using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 using FluentAssertions;
 using Xunit;
@@ -15,10 +16,13 @@ namespace App.Metrics.Sampling.Facts
         private readonly WeightedSnapshot _snapshot = MakeSanpshot(new long[] { 5, 1, 2, 3, 4 }, new double[] { 1, 2, 3, 2, 2 });
 
         [Fact]
-        public void weight_snapshot_big_quantiles_are_the_last_value() { _snapshot.GetValue(1.0).Should().Be(5.0); }
+        public void Weight_snapshot_big_quantiles_are_the_last_value()
+        {
+            _snapshot.GetValue(1.0).Should().Be(5.0);
+        }
 
         [Fact]
-        public void weight_snapshot_calculates_the_max_of_zero_for_an_empty_snapshot()
+        public void Weight_snapshot_calculates_the_max_of_zero_for_an_empty_snapshot()
         {
             IReservoirSnapshot snapshot = MakeSanpshot(new long[0], new double[0]);
 
@@ -26,75 +30,113 @@ namespace App.Metrics.Sampling.Facts
         }
 
         [Fact]
-        public void weight_snapshot_calculates_the_max_value() { _snapshot.Max.Should().Be(5); }
+        public void Weight_snapshot_calculates_the_max_value()
+        {
+            _snapshot.Max.Should().Be(5);
+        }
 
         [Fact]
-        public void weight_snapshot_calculates_the_mean_of_zero_for_an_empty_snapshot()
+        public void Weight_snapshot_calculates_the_mean_of_zero_for_an_empty_snapshot()
         {
             IReservoirSnapshot snapshot = MakeSanpshot(new long[0], new double[0]);
             snapshot.Mean.Should().Be(0);
         }
 
         [Fact]
-        public void weight_snapshot_calculates_the_mean_value() { _snapshot.Mean.Should().Be(2.7); }
+        public void Weight_snapshot_calculates_the_mean_value()
+        {
+            _snapshot.Mean.Should().Be(2.7);
+        }
 
         [Fact]
-        public void weight_snapshot_calculates_the_min_of_zero_for_an_empty_snapshot()
+        public void Weight_snapshot_calculates_the_min_of_zero_for_an_empty_snapshot()
         {
             IReservoirSnapshot snapshot = MakeSanpshot(new long[0], new double[0]);
             snapshot.Min.Should().Be(0);
         }
 
         [Fact]
-        public void weight_snapshot_calculates_the_min_value() { _snapshot.Min.Should().Be(1); }
+        public void Weight_snapshot_calculates_the_min_value()
+        {
+            _snapshot.Min.Should().Be(1);
+        }
 
         [Fact]
-        public void weight_snapshot_calculates_the_standard_deviation() { _snapshot.StdDev.Should().BeApproximately(1.2688, 0.0001); }
+        public void Weight_snapshot_calculates_the_standard_deviation()
+        {
+            _snapshot.StdDev.Should().BeApproximately(1.2688, 0.0001);
+        }
 
         [Fact]
-        public void weight_snapshot_calculates_the_standard_deviation_of_zero_for_a_single_snapshot()
+        public void Weight_snapshot_calculates_the_standard_deviation_of_zero_for_a_single_snapshot()
         {
             IReservoirSnapshot snapshot = MakeSanpshot(new long[0], new double[0]);
             snapshot.StdDev.Should().Be(0);
         }
 
         [Fact]
-        public void weight_snapshot_calculates_the_standard_deviation_of_zero_for_an_empty_snapshot()
+        public void Weight_snapshot_calculates_the_standard_deviation_of_zero_for_an_empty_snapshot()
         {
             IReservoirSnapshot snapshot = MakeSanpshot(new long[0], new double[0]);
             snapshot.StdDev.Should().Be(0);
         }
 
         [Fact]
-        public void weight_snapshot_has_a_75_percentile() { _snapshot.Percentile75.Should().Be(4.0); }
+        public void Weight_snapshot_has_a_75_percentile()
+        {
+            _snapshot.Percentile75.Should().Be(4.0);
+        }
 
         [Fact]
-        public void weight_snapshot_has_a_95_percentile() { _snapshot.Percentile95.Should().Be(5.0); }
+        public void Weight_snapshot_has_a_95_percentile()
+        {
+            _snapshot.Percentile95.Should().Be(5.0);
+        }
 
         [Fact]
-        public void weight_snapshot_has_a_98_percentile() { _snapshot.Percentile98.Should().Be(5.0); }
+        public void Weight_snapshot_has_a_98_percentile()
+        {
+            _snapshot.Percentile98.Should().Be(5.0);
+        }
 
         [Fact]
-        public void weight_snapshot_has_a_99_percentile() { _snapshot.Percentile99.Should().Be(5.0); }
+        public void Weight_snapshot_has_a_99_percentile()
+        {
+            _snapshot.Percentile99.Should().Be(5.0);
+        }
 
         [Fact]
-        public void weight_snapshot_has_a_999_percentile() { _snapshot.Percentile999.Should().Be(5.0); }
+        public void Weight_snapshot_has_a_999_percentile()
+        {
+            _snapshot.Percentile999.Should().Be(5.0);
+        }
 
         [Fact]
-        public void weight_snapshot_has_a_median_percentile() { _snapshot.Median.Should().Be(3.0); }
+        public void Weight_snapshot_has_a_median_percentile()
+        {
+            _snapshot.Median.Should().Be(3.0);
+        }
 
         [Fact]
-        public void weight_snapshot_has_size() { _snapshot.Size.Should().Be(5); }
+        public void Weight_snapshot_has_size()
+        {
+            _snapshot.Size.Should().Be(5);
+        }
 
         [Fact]
-        public void weight_snapshot_has_values() { _snapshot.Values.Should().Equal(1, 2, 3, 4, 5); }
-
+        public void Weight_snapshot_has_values()
+        {
+            _snapshot.Values.Should().Equal(1, 2, 3, 4, 5);
+        }
 
         [Fact]
-        public void weight_snapshot_small_quantiles_are_the_first_value() { _snapshot.GetValue(0.0).Should().Be(1.0); }
+        public void Weight_snapshot_small_quantiles_are_the_first_value()
+        {
+            _snapshot.GetValue(0.0).Should().Be(1.0);
+        }
 
         [Fact]
-        public void weighted_snapshot_throws_on_bad_quantile_value()
+        public void Weighted_snapshot_throws_on_bad_quantile_value()
         {
             ((Action)(() => _snapshot.GetValue(-0.5))).ShouldThrow<ArgumentException>();
             ((Action)(() => _snapshot.GetValue(1.5))).ShouldThrow<ArgumentException>();

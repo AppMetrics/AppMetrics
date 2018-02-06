@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Apdex;
-using App.Metrics.Core;
 using App.Metrics.Counter;
 using App.Metrics.Formatters.Json.Converters;
 using App.Metrics.Gauge;

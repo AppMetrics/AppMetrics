@@ -1,13 +1,12 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultGaugeMetricProviderTests.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using System.Linq;
-using App.Metrics.Abstractions.Filtering;
-using App.Metrics.Core.Options;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Filtering;
+using App.Metrics.Filters;
 using App.Metrics.Gauge;
-using App.Metrics.Gauge.Abstractions;
 using FluentAssertions;
 using Xunit;
 
@@ -15,7 +14,7 @@ namespace App.Metrics.Facts.Providers
 {
     public class DefaultGaugeMetricProviderTests : IClassFixture<MetricCoreTestFixture>
     {
-        private readonly IFilterMetrics _filter = new DefaultMetricsFilter().WhereType(MetricType.Gauge);
+        private readonly IFilterMetrics _filter = new MetricsFilter().WhereType(MetricType.Gauge);
         private readonly MetricCoreTestFixture _fixture;
         private readonly IProvideGaugeMetrics _provider;
 
@@ -26,7 +25,7 @@ namespace App.Metrics.Facts.Providers
         }
 
         [Fact]
-        public void can_add_instance_to_registry()
+        public void Can_add_instance_to_registry()
         {
             var metricName = "gauge_provider_test";
 
@@ -37,13 +36,13 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options, () => new FunctionGauge(() => 1.0));
 
-            _filter.WhereMetricName(name => name == metricName);
+            _filter.WhereName(name => name == metricName);
 
             _fixture.Registry.GetData(_filter).Contexts.First().Gauges.Count().Should().Be(1);
         }
 
         [Fact]
-        public void can_add_instance_to_registry_with_default_builder()
+        public void Can_add_instance_to_registry_with_default_builder()
         {
             var metricName = "gauge_provider_test_default_builder";
 
@@ -54,13 +53,13 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options);
 
-            _filter.WhereMetricName(name => name == metricName);
+            _filter.WhereName(name => name == metricName);
 
             _fixture.Registry.GetData(_filter).Contexts.First().Gauges.Count().Should().Be(1);
         }
 
         [Fact]
-        public void can_add_multidimensional_to_registry()
+        public void Can_add_multidimensional_to_registry()
         {
             var metricName = "gauge_provider_test_multi";
 
@@ -71,13 +70,13 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options, _fixture.Tags[0], () => new FunctionGauge(() => 1.0));
 
-            _filter.WhereMetricName(name => name == _fixture.Tags[0].AsMetricName(metricName));
+            _filter.WhereName(name => name == _fixture.Tags[0].AsMetricName(metricName));
 
             _fixture.Registry.GetData(_filter).Contexts.First().Gauges.Count().Should().Be(1);
         }
 
         [Fact]
-        public void can_add_multidimensional_to_registry_with_default_builder()
+        public void Can_add_multidimensional_to_registry_with_default_builder()
         {
             var metricName = "gauge_provider_test_default_builder";
 
@@ -88,13 +87,13 @@ namespace App.Metrics.Facts.Providers
 
             _provider.Instance(options, _fixture.Tags[0]);
 
-            _filter.WhereMetricName(name => name == metricName);
+            _filter.WhereName(name => name == metricName);
 
             _fixture.Registry.GetData(_filter).Contexts.First().Gauges.Count().Should().Be(1);
         }
 
         [Fact]
-        public void same_metric_only_added_once()
+        public void Same_metric_only_added_once()
         {
             var metricName = "gauge_provider_test";
 
@@ -106,13 +105,13 @@ namespace App.Metrics.Facts.Providers
             _provider.Instance(options, () => new FunctionGauge(() => 1.0));
             _provider.Instance(options, () => new FunctionGauge(() => 2.0));
 
-            _filter.WhereMetricName(name => name == metricName);
+            _filter.WhereName(name => name == metricName);
 
             _fixture.Registry.GetData(_filter).Contexts.First().Gauges.Count().Should().Be(1);
         }
 
         [Fact]
-        public void same_metric_only_added_once_when_multidimensional()
+        public void Same_metric_only_added_once_when_multidimensional()
         {
             var metricName = "gauge_provider_test_multi";
 
@@ -124,7 +123,7 @@ namespace App.Metrics.Facts.Providers
             _provider.Instance(options, _fixture.Tags[0], () => new FunctionGauge(() => 1.0));
             _provider.Instance(options, _fixture.Tags[0], () => new FunctionGauge(() => 2.0));
 
-            _filter.WhereMetricName(name => name == _fixture.Tags[0].AsMetricName(metricName));
+            _filter.WhereName(name => name == _fixture.Tags[0].AsMetricName(metricName));
 
             _fixture.Registry.GetData(_filter).Contexts.First().Gauges.Count().Should().Be(1);
         }

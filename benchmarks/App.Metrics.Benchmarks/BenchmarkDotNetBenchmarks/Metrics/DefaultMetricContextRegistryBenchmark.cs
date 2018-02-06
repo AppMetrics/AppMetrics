@@ -1,32 +1,24 @@
-﻿// Copyright (c) Allan Hardy. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿// <copyright file="DefaultMetricContextRegistryBenchmark.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
 
 using App.Metrics.Apdex;
-using App.Metrics.Apdex.Abstractions;
-using App.Metrics.Core.Options;
 using App.Metrics.Counter;
-using App.Metrics.Counter.Abstractions;
 using App.Metrics.Gauge;
-using App.Metrics.Gauge.Abstractions;
 using App.Metrics.Histogram;
-using App.Metrics.Histogram.Abstractions;
 using App.Metrics.Infrastructure;
+using App.Metrics.Internal;
 using App.Metrics.Meter;
-using App.Metrics.Meter.Abstractions;
-using App.Metrics.Registry.Internal;
 using App.Metrics.ReservoirSampling;
-using App.Metrics.Tagging;
+using App.Metrics.ReservoirSampling.ExponentialDecay;
 using App.Metrics.Timer;
-using App.Metrics.Timer.Abstractions;
 using BenchmarkDotNet.Attributes;
 
 namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
 {
     public class DefaultMetricContextRegistryBenchmark : DefaultBenchmarkBase
     {
-        private static readonly IBuildApdexMetrics ApdexBuilder = new DefaultApdexBuilder(new DefaultSamplingReservoirProvider());
-
-
+        private static readonly IBuildApdexMetrics ApdexBuilder = new DefaultApdexBuilder(new DefaultSamplingReservoirProvider(() => new DefaultForwardDecayingReservoir()));
         private static readonly ApdexOptions ApdexOptions = new ApdexOptions
                                                             {
                                                                 Name = "apdex"
@@ -48,7 +40,7 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
                                                                 Name = "gauge"
                                                             };
 
-        private static readonly IBuildHistogramMetrics HistogramBuilder = new DefaultHistogramBuilder(new DefaultSamplingReservoirProvider());
+        private static readonly IBuildHistogramMetrics HistogramBuilder = new DefaultHistogramBuilder(new DefaultSamplingReservoirProvider(() => new DefaultForwardDecayingReservoir()));
 
         private static readonly HistogramOptions HistogramOptions = new HistogramOptions
                                                                     {
@@ -62,7 +54,7 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
                                                                 Name = "meter"
                                                             };
 
-        private static readonly IBuildTimerMetrics TimerBuilder = new DefaultTimerBuilder(new DefaultSamplingReservoirProvider());
+        private static readonly IBuildTimerMetrics TimerBuilder = new DefaultTimerBuilder(new DefaultSamplingReservoirProvider(() => new DefaultForwardDecayingReservoir()));
 
         private static readonly TimerOptions TimerOptions = new TimerOptions
                                                             {
@@ -71,7 +63,7 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
 
         private DefaultMetricContextRegistry _registry;
 
-        [Setup]
+        [GlobalSetup]
         public override void Setup()
         {
             var tags = new GlobalMetricTags
@@ -86,9 +78,7 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
         [Benchmark]
         public void ResolveApdexFromRegistry()
         {
-            // ReSharper disable UnusedVariable
-            var metric = _registry.Apdex(
-                // ReSharper restore UnusedVariable
+            _registry.Apdex(
                 ApdexOptions,
                 () => ApdexBuilder.Build(ApdexOptions.ApdexTSeconds, ApdexOptions.AllowWarmup, Clock));
         }
@@ -96,9 +86,7 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
         [Benchmark]
         public void ResolveCounterFromRegistry()
         {
-            // ReSharper disable UnusedVariable
-            var metric = _registry.Counter(
-                // ReSharper restore UnusedVariable
+            _registry.Counter(
                 CounterOptions,
                 () => CounterBuilder.Build());
         }
@@ -114,9 +102,7 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
         [Benchmark]
         public void ResolveHistogramFromRegistry()
         {
-            // ReSharper disable UnusedVariable
-            var metric = _registry.Histogram(
-                // ReSharper restore UnusedVariable
+            _registry.Histogram(
                 HistogramOptions,
                 () => HistogramBuilder.Build(HistogramOptions.Reservoir));
         }
@@ -124,9 +110,7 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
         [Benchmark]
         public void ResolveMeterFromRegistry()
         {
-            // ReSharper disable UnusedVariable
-            var metric = _registry.Meter(
-                // ReSharper restore UnusedVariable
+            _registry.Meter(
                 MeterOptions,
                 () => MeterBuilder.Build(Clock));
         }
@@ -134,9 +118,7 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
         [Benchmark]
         public void ResolveTimerFromRegistry()
         {
-            // ReSharper disable UnusedVariable
-            var metric = _registry.Timer(
-                // ReSharper restore UnusedVariable
+            _registry.Timer(
                 TimerOptions,
                 () => TimerBuilder.Build(TimerOptions.Reservoir, Clock));
         }

@@ -1,25 +1,40 @@
 ﻿{
-  "count": 5,
-  "fifteenMinuteRate": 4.0,
-  "fiveMinuteRate": 3.0,
-  "items": [
+  "timestamp": "0001-01-01T00:00:00Z",
+  "contexts": [
     {
-      "count": 1,
-      "fifteenMinuteRate": 5.0,
-      "fiveMinuteRate": 4.0,
-      "item": "item",
-      "meanRate": 2.0,
-      "oneMinuteRate": 3.0,
-      "percent": 0.5
+      "context": "context_one",
+      "apdexScores": [],
+      "counters": [],
+      "gauges": [],
+      "histograms": [],
+      "meters": [
+        {
+          "name": "test_meter",
+          "unit": "calls",
+          "count": 5,
+          "fifteenMinuteRate": 4.0,
+          "fiveMinuteRate": 3.0,
+          "items": [
+            {
+              "count": 1,
+              "fifteenMinuteRate": 5.0,
+              "fiveMinuteRate": 4.0,
+              "item": "item",
+              "meanRate": 2.0,
+              "oneMinuteRate": 3.0,
+              "percent": 0.5
+            }
+          ],
+          "meanRate": 1.0,
+          "oneMinuteRate": 2.0,
+          "rateUnit": "s",
+          "tags": {
+            "host": "server1",
+            "env": "staging"
+          }
+        }
+      ],
+      "timers": []
     }
-  ],
-  "meanRate": 1.0,
-  "oneMinuteRate": 2.0,
-  "rateUnit": "s",
-  "name": "test_meter",
-  "tags": {
-    "host": "server1",
-    "env": "staging"
-  },
-  "unit": "calls"
+  ]
 }

@@ -1,12 +1,27 @@
 ﻿{
-  "frustrating": 10,
-  "sampleSize": 200,
-  "satisfied": 170,
-  "score": 0.9,
-  "tolerating": 20,
-  "name": "test_apdex",
-  "tags": {
-    "host": "server1",
-    "env": "staging"
-  }
+  "timestamp": "0001-01-01T00:00:00Z",
+  "contexts": [
+    {
+      "context": "context_one",
+      "apdexScores": [
+        {
+          "name": "test_apdex",
+          "frustrating": 10,
+          "sampleSize": 200,
+          "satisfied": 170,
+          "score": 0.9,
+          "tolerating": 20,
+          "tags": {
+            "host": "server1",
+            "env": "staging"
+          }
+        }
+      ],
+      "counters": [],
+      "gauges": [],
+      "histograms": [],
+      "meters": [],
+      "timers": []
+    }
+  ]
 }
