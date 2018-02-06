@@ -22,8 +22,8 @@ var coverWith					= HasArgument("CoverWith") ? Argument<string>("CoverWith") :
                                   EnvironmentVariable("CoverWith") != null ? EnvironmentVariable("CoverWith") : "DotCover"; // None, DotCover, OpenCover
 var skipReSharperCodeInspect    = HasArgument("SkipCodeInspect") ? Argument<bool>("SkipCodeInspect", false) || !IsRunningOnWindows(): true;
 var preReleaseSuffix            = HasArgument("PreReleaseSuffix") ? Argument<string>("PreReleaseSuffix") :
-	                              (AppVeyor.IsRunningOnAppVeyor && EnvironmentVariable("PreReleaseSuffix") == null) || (AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Tag.IsTag) ? null :
-                                  EnvironmentVariable("PreReleaseSuffix") != null ? EnvironmentVariable("PreReleaseSuffix") : "ci";
+	                              (AppVeyor.IsRunningOnAppVeyor && EnvironmentVariable("PreReleaseSuffix") == null) || (AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Tag.IsTag && !packageRelease) 
+								  ? null : EnvironmentVariable("PreReleaseSuffix") != null ? EnvironmentVariable("PreReleaseSuffix") : "ci";
 var buildNumber                 = HasArgument("BuildNumber") ? Argument<int>("BuildNumber") :
                                   AppVeyor.IsRunningOnAppVeyor ? AppVeyor.Environment.Build.Number :
                                   TravisCI.IsRunningOnTravisCI ? TravisCI.Environment.Build.BuildNumber :
