@@ -1,13 +1,13 @@
 <Project>
   <PropertyGroup>
-    <AppMetricsConcurrencyVersion>2.0.0-*</AppMetricsConcurrencyVersion>
+    <AppMetricsConcurrencyVersion>2.0.0</AppMetricsConcurrencyVersion>
     <AppMetricsAspNetCoreVersion>2.0.0-*</AppMetricsAspNetCoreVersion>
     <AspNetCoreVersion>2.0.1</AspNetCoreVersion>
     <MicrosoftExtensionsVersion>2.0.0</MicrosoftExtensionsVersion>
     <AppMetricsReportingVersion>2.0.0-*</AppMetricsReportingVersion>
     <AppMetricsInfluxDBVersion>2.0.0-*</AppMetricsInfluxDBVersion>
     <AppMetricsElasticsearchVersion>2.0.0-*</AppMetricsElasticsearchVersion>
-    <BenchmarkDotNetVersion>0.10.8</BenchmarkDotNetVersion>
+    <BenchmarkDotNetVersion>0.10.12</BenchmarkDotNetVersion>
     <CoreFxVersion>4.4.0-*</CoreFxVersion>
     <DependencyModelVersion>2.0.0-*</DependencyModelVersion>
     <LibLogVersion>4.2.6</LibLogVersion>
