@@ -13,9 +13,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="$(AspNetCoreVersion)" />
+	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="$(MicrosoftExtensionsVersion)" />
 		<PackageReference Include="Serilog.Sinks.Literate" Version="3.0.0" />
-		<PackageReference Include="Serilog.Sinks.Seq" Version="3.3.3" />
+		<PackageReference Include="Serilog.Sinks.Seq" Version="4.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

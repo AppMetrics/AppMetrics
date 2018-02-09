@@ -138,9 +138,9 @@ namespace App.Metrics.Sampling.Facts
         [Fact]
         public void Weighted_snapshot_throws_on_bad_quantile_value()
         {
-            ((Action)(() => _snapshot.GetValue(-0.5))).ShouldThrow<ArgumentException>();
-            ((Action)(() => _snapshot.GetValue(1.5))).ShouldThrow<ArgumentException>();
-            ((Action)(() => _snapshot.GetValue(double.NaN))).ShouldThrow<ArgumentException>();
+            ((Action)(() => _snapshot.GetValue(-0.5))).Should().Throw<ArgumentException>();
+            ((Action)(() => _snapshot.GetValue(1.5))).Should().Throw<ArgumentException>();
+            ((Action)(() => _snapshot.GetValue(double.NaN))).Should().Throw<ArgumentException>();
         }
 
         private static WeightedSnapshot MakeSanpshot(long[] values, double[] weights)

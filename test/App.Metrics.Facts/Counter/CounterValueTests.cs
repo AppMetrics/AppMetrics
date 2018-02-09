@@ -74,7 +74,7 @@ namespace App.Metrics.Facts.Counter
                 var unused = new CounterValue(10L, null);
             };
 
-            setupAction.ShouldThrow<ArgumentNullException>();
+            setupAction.Should().Throw<ArgumentNullException>();
         }
 
         [Fact]

@@ -149,7 +149,7 @@ namespace App.Metrics.Facts.Apdex
         {
             Action action = () => _apdex.Track(() => throw new InvalidOperationException());
 
-            action.ShouldThrow<InvalidOperationException>();
+            action.Should().Throw<InvalidOperationException>();
 
             _apdex.Value.Score.Should().BeGreaterThan(0);
         }
@@ -174,7 +174,7 @@ namespace App.Metrics.Facts.Apdex
                 var unused = new DefaultApdexMetric((IApdexProvider)null, _clock, true);
             };
 
-            createApdex.ShouldThrow<ArgumentNullException>();
+            createApdex.Should().Throw<ArgumentNullException>();
         }
 
         [Fact]
@@ -190,7 +190,7 @@ namespace App.Metrics.Facts.Apdex
                     ;
             };
 
-            createApdex.ShouldThrow<ArgumentNullException>();
+            createApdex.Should().Throw<ArgumentNullException>();
         }
     }
 }

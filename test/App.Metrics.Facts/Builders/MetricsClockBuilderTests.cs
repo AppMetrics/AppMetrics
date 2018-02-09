@@ -76,7 +76,7 @@ namespace App.Metrics.Facts.Builders
             };
 
             // Assert
-            action.ShouldThrow<ArgumentNullException>();
+            action.Should().Throw<ArgumentNullException>();
         }
     }
 }

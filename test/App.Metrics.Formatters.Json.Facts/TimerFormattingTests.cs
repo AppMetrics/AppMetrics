@@ -45,7 +45,7 @@ namespace App.Metrics.Formatters.Json.Facts
             }
 
             // Assert
-            result.Should().Be(expected);
+            result.Should().BeEquivalentTo(expected);
         }
 
         [Fact]
@@ -66,7 +66,7 @@ namespace App.Metrics.Formatters.Json.Facts
 
             // Assert
             Action action = () => JToken.Parse(result);
-            action.ShouldNotThrow<Exception>();
+            action.Should().NotThrow<Exception>();
         }
     }
 }

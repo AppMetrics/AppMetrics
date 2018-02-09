@@ -163,10 +163,10 @@ namespace App.Metrics.Facts.Tagging
             var data = _fixture.CurrentData(_fixture.Metrics);
             var context = data.Contexts.Single();
 
-            context.Counters.Single().Tags.ShouldBeEquivalentTo(tags);
-            context.Meters.Single().Tags.ShouldBeEquivalentTo(tags);
-            context.Histograms.Single().Tags.ShouldBeEquivalentTo(tags);
-            context.Timers.Single().Tags.ShouldBeEquivalentTo(tags);
+            context.Counters.Single().Tags.Should().BeEquivalentTo(tags);
+            context.Meters.Single().Tags.Should().BeEquivalentTo(tags);
+            context.Histograms.Single().Tags.Should().BeEquivalentTo(tags);
+            context.Timers.Single().Tags.Should().BeEquivalentTo(tags);
         }
 
         [Fact]
@@ -205,7 +205,7 @@ namespace App.Metrics.Facts.Tagging
                 var unused = new MetricTags(keys, values);
             };
 
-            setup.ShouldThrow<InvalidOperationException>();
+            setup.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -218,7 +218,7 @@ namespace App.Metrics.Facts.Tagging
                 var unused = new MetricTags(null, values);
             };
 
-            setup.ShouldThrow<ArgumentNullException>();
+            setup.Should().Throw<ArgumentNullException>();
         }
 
         [Theory]
@@ -234,7 +234,7 @@ namespace App.Metrics.Facts.Tagging
                 var unused = new MetricTags(keys, values);
             };
 
-            setup.ShouldThrow<InvalidOperationException>();
+            setup.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -248,7 +248,7 @@ namespace App.Metrics.Facts.Tagging
                 var unused = new MetricTags(keys, values);
             };
 
-            setup.ShouldThrow<InvalidOperationException>();
+            setup.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]

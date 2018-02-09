@@ -40,7 +40,7 @@ namespace App.Metrics.Facts.Extensions
         {
             Action action = () => StringExtensions.GetSafeString(() => throw new ArgumentNullException());
 
-            action.ShouldNotThrow();
+            action.Should().NotThrow();
         }
     }
 }
