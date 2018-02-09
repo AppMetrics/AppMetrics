@@ -37,7 +37,7 @@ namespace App.Metrics.Scheduling
         {
             if (meter != null)
             {
-                Logger.Debug(
+                Logger.Trace(
                     _meters.TryTake(out meter)
                         ? "Successfully removed meter from {MeterTickScheuler} schedule."
                         : "Failed to remove meter from {MeterTickScheuler} schedule.", this);
@@ -68,9 +68,9 @@ namespace App.Metrics.Scheduling
 
         private void SetScheduler()
         {
-            Logger.Debug("Starting {MeterTickScheuler} scheduler", this);
+            Logger.Trace("Starting {MeterTickScheuler} scheduler", this);
             _scheduler.Start(TickInterval);
-            Logger.Debug("{MeterTickScheuler} scheduler started", this);
+            Logger.Trace("{MeterTickScheuler} scheduler started", this);
         }
 
         private Task Tick()
@@ -89,7 +89,7 @@ namespace App.Metrics.Scheduling
 
                 if (Logger.IsDebugEnabled())
                 {
-                    Logger.Debug("{MeterCount} meters all ticked in {ElapsedTicks} ticks using {MeterTickScheuler}", _meters.Count, TickStopWatch.ElapsedTicks, this);
+                    Logger.Trace("{MeterCount} meters all ticked in {ElapsedTicks} ticks using {MeterTickScheuler}", _meters.Count, TickStopWatch.ElapsedTicks, this);
                     TickStopWatch.Reset();
                     TickStopWatch.Stop();
                 }

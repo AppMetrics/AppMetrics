@@ -56,7 +56,7 @@ namespace App.Metrics.FactsCommon
         {
             if (meter != null)
             {
-                Logger.Debug(
+                Logger.Trace(
                     _meters.TryTake(out meter)
                         ? "Successfully removed meter from {MeterTickScheuler} schedule."
                         : "Failed to remove meter from {MeterTickScheuler} schedule.", this);
@@ -85,8 +85,8 @@ namespace App.Metrics.FactsCommon
 
         private void SetScheduler()
         {
-            Logger.Debug("Starting {MeterTickScheuler} scheduler", this);
-            Logger.Debug("{MeterTickScheuler} scheduler started", this);
+            Logger.Trace("Starting {MeterTickScheuler} scheduler", this);
+            Logger.Trace("{MeterTickScheuler} scheduler started", this);
         }
 
         private Task Tick()
