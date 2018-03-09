@@ -260,7 +260,7 @@ namespace App.Metrics
             switch (Count)
             {
                 case 0:
-                    return null;
+                    return metricName;
                 case 1:
                     return string.Concat(
                         metricName,

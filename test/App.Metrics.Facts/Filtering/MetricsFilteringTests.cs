@@ -59,7 +59,7 @@ namespace App.Metrics.Facts.Filtering
             var context = currentData.Contexts.Single();
 
             var counterValue = context.Counters.Single();
-            counterValue.Name.Should().Be("test_counter");
+            counterValue.Name.Should().Be("test_counter|tag1:value1");
             counterValue.Value.Count.Should().Be(1);
 
             Assert.Null(context.Meters.FirstOrDefault());
@@ -110,7 +110,7 @@ namespace App.Metrics.Facts.Filtering
             var context = currentData.Contexts.Single();
 
             var meterValue = context.Meters.Single();
-            meterValue.Name.Should().Be("test_meter");
+            meterValue.Name.Should().Be("test_meter|tag2:value2");
             meterValue.Value.Count.Should().Be(1);
 
             Assert.Null(context.Counters.FirstOrDefault());

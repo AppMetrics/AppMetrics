@@ -24,7 +24,7 @@ namespace App.Metrics.Facts.Filtering
             var context = currentData.Contexts.Single();
 
             var counterValue = context.Counters.Single();
-            counterValue.Name.Should().Be("test_counter");
+            counterValue.Name.Should().Be("test_counter|tag1:value");
             counterValue.Value.Count.Should().Be(1);
 
             Assert.Null(context.Meters.FirstOrDefault());
@@ -39,7 +39,7 @@ namespace App.Metrics.Facts.Filtering
             var currentData = _metrics.Snapshot.GetForContext("test_context1");
 
             var counterValue = currentData.Counters.Single();
-            counterValue.Name.Should().Be("test_counter");
+            counterValue.Name.Should().Be("test_counter|tag1:value");
             counterValue.Value.Count.Should().Be(1);
 
             Assert.Null(currentData.Meters.FirstOrDefault());
