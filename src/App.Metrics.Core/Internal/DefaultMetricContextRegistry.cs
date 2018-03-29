@@ -73,17 +73,18 @@ namespace App.Metrics.Internal
         public IApdex Apdex<T>(ApdexOptions options, Func<T> builder)
             where T : IApdexMetric
         {
+            var allTags = AllTags(options.Tags);
+            var metricName = allTags.AsMetricName(options.Name);
+
             return _apdexScores.GetOrAdd(
-                options.Name,
+                metricName,
                 () =>
                 {
-                    var allTags = AllTags(options.Tags);
-
-                    Logger.Debug("Adding Apdex {Name} - {@Options} {MesurementUnit} {@Tags}", options.Name, options, options.MeasurementUnit.ToString(), allTags.ToDictionary());
+                    Logger.Trace("Adding Apdex {Name} - {@Options} {MesurementUnit} {@Tags}", metricName, options, options.MeasurementUnit.ToString(), allTags.ToDictionary());
 
                     var apdex = builder();
                     var valueSource = new ApdexValueSource(
-                        options.Name,
+                        metricName,
                         apdex,
                         allTags,
                         options.ResetOnReporting);
@@ -95,15 +96,14 @@ namespace App.Metrics.Internal
         public IApdex Apdex<T>(ApdexOptions options, MetricTags tags, Func<T> builder)
             where T : IApdexMetric
         {
-            var metricName = tags.AsMetricName(options.Name);
+            var allTags = AllTags(MetricTags.Concat(options.Tags, tags));
+            var metricName = allTags.AsMetricName(options.Name);
 
             return _apdexScores.GetOrAdd(
                 metricName,
                 () =>
                 {
-                    var allTags = AllTags(MetricTags.Concat(options.Tags, tags));
-
-                    Logger.Debug("Adding Apdex {Name} - {@Options} {MesurementUnit} {@Tags}", metricName, options, options.MeasurementUnit.ToString(), allTags.ToDictionary());
+                    Logger.Trace("Adding Apdex {Name} - {@Options} {MesurementUnit} {@Tags}", metricName, options, options.MeasurementUnit.ToString(), allTags.ToDictionary());
 
                     var apdex = builder();
                     var valueSource = new ApdexValueSource(
@@ -117,7 +117,7 @@ namespace App.Metrics.Internal
 
         public void ClearAllMetrics()
         {
-            Logger.Debug("Clearing all metrics");
+            Logger.Trace("Clearing all metrics");
 
             _gauges.Clear();
             _counters.Clear();
@@ -125,23 +125,24 @@ namespace App.Metrics.Internal
             _histograms.Clear();
             _timers.Clear();
 
-            Logger.Debug("Cleared all metrics");
+            Logger.Trace("Cleared all metrics");
         }
 
         public ICounter Counter<T>(CounterOptions options, Func<T> builder)
             where T : ICounterMetric
         {
+            var allTags = AllTags(options.Tags);
+            var metricName = allTags.AsMetricName(options.Name);
+
             return _counters.GetOrAdd(
-                options.Name,
+                metricName,
                 () =>
                 {
-                    var allTags = AllTags(options.Tags);
-
-                    Logger.Debug("Adding Counter {Name} - {@Options} {MesurementUnit} {@Tags}", options.Name, options, options.MeasurementUnit.ToString(), allTags.ToDictionary());
+                    Logger.Trace("Adding Counter {Name} - {@Options} {MesurementUnit} {@Tags}", metricName, options, options.MeasurementUnit.ToString(), allTags.ToDictionary());
 
                     var counter = builder();
                     var valueSource = new CounterValueSource(
-                        options.Name,
+                        metricName,
                         counter,
                         options.MeasurementUnit,
                         allTags,
@@ -156,15 +157,14 @@ namespace App.Metrics.Internal
         public ICounter Counter<T>(CounterOptions options, MetricTags tags, Func<T> builder)
             where T : ICounterMetric
         {
-            var metricName = tags.AsMetricName(options.Name);
+            var allTags = AllTags(MetricTags.Concat(options.Tags, tags));
+            var metricName = allTags.AsMetricName(options.Name);
 
             return _counters.GetOrAdd(
                 metricName,
                 () =>
                 {
-                    var allTags = AllTags(MetricTags.Concat(options.Tags, tags));
-
-                    Logger.Debug("Adding Counter {Name} - {@Options} {MesurementUnit} {@Tags}", metricName, options, options.MeasurementUnit.ToString(), allTags.ToDictionary());
+                    Logger.Trace("Adding Counter {Name} - {@Options} {MesurementUnit} {@Tags}", metricName, options, options.MeasurementUnit.ToString(), allTags.ToDictionary());
 
                     var counter = builder();
                     var valueSource = new CounterValueSource(
@@ -182,17 +182,18 @@ namespace App.Metrics.Internal
         public IGauge Gauge<T>(GaugeOptions options, Func<T> builder)
             where T : IGaugeMetric
         {
+            var allTags = AllTags(options.Tags);
+            var metricName = allTags.AsMetricName(options.Name);
+
             return _gauges.GetOrAdd(
-                options.Name,
+                metricName,
                 () =>
                 {
-                    var allTags = AllTags(options.Tags);
-
-                    Logger.Debug("Adding Gauge {Name} - {@Options} {MesurementUnit} {@Tags}", options.Name, options, options.MeasurementUnit.ToString(), allTags.ToDictionary());
+                    Logger.Trace("Adding Gauge {Name} - {@Options} {MesurementUnit} {@Tags}", metricName, options, options.MeasurementUnit.ToString(), allTags.ToDictionary());
 
                     var gauge = builder();
                     var valueSource = new GaugeValueSource(
-                        options.Name,
+                        metricName,
                         gauge,
                         options.MeasurementUnit,
                         allTags);
@@ -204,15 +205,14 @@ namespace App.Metrics.Internal
         public IGauge Gauge<T>(GaugeOptions options, MetricTags tags, Func<T> builder)
             where T : IGaugeMetric
         {
-            var metricName = tags.AsMetricName(options.Name);
+            var allTags = AllTags(MetricTags.Concat(options.Tags, tags));
+            var metricName = allTags.AsMetricName(options.Name);
 
             return _gauges.GetOrAdd(
                 metricName,
                 () =>
                 {
-                    var allTags = AllTags(MetricTags.Concat(options.Tags, tags));
-
-                    Logger.Debug("Adding Gauge {Name} - {@Options} {MesurementUnit} {@Tags}", metricName, options, options.MeasurementUnit.ToString(), allTags);
+                    Logger.Trace("Adding Gauge {Name} - {@Options} {MesurementUnit} {@Tags}", metricName, options, options.MeasurementUnit.ToString(), allTags);
 
                     var gauge = builder();
                     var valueSource = new GaugeValueSource(
@@ -228,17 +228,18 @@ namespace App.Metrics.Internal
         public IHistogram Histogram<T>(HistogramOptions options, Func<T> builder)
             where T : IHistogramMetric
         {
+            var allTags = AllTags(options.Tags);
+            var metricName = allTags.AsMetricName(options.Name);
+
             return _histograms.GetOrAdd(
-                options.Name,
+                metricName,
                 () =>
                 {
-                    var allTags = AllTags(options.Tags);
-
-                    Logger.Debug("Adding Histogram {Name} - {@Options} {MesurementUnit} {@Tags}", options.Name, options, options.MeasurementUnit.ToString(), allTags.ToDictionary());
+                    Logger.Trace("Adding Histogram {Name} - {@Options} {MesurementUnit} {@Tags}", metricName, options, options.MeasurementUnit.ToString(), allTags.ToDictionary());
 
                     var histogram = builder();
                     var valueSource = new HistogramValueSource(
-                        options.Name,
+                        metricName,
                         histogram,
                         options.MeasurementUnit,
                         allTags);
@@ -250,15 +251,14 @@ namespace App.Metrics.Internal
         public IHistogram Histogram<T>(HistogramOptions options, MetricTags tags, Func<T> builder)
             where T : IHistogramMetric
         {
-            var metricName = tags.AsMetricName(options.Name);
+            var allTags = AllTags(MetricTags.Concat(options.Tags, tags));
+            var metricName = allTags.AsMetricName(options.Name);
 
             return _histograms.GetOrAdd(
                 metricName,
                 () =>
                 {
-                    var allTags = AllTags(MetricTags.Concat(options.Tags, tags));
-
-                    Logger.Debug("Adding Histogram {Name} - {@Options} {MesurementUnit} {@Tags}", metricName, options, options.MeasurementUnit.ToString(), allTags.ToDictionary());
+                    Logger.Trace("Adding Histogram {Name} - {@Options} {MesurementUnit} {@Tags}", metricName, options, options.MeasurementUnit.ToString(), allTags.ToDictionary());
 
                     var histogram = builder();
                     var valueSource = new HistogramValueSource(
@@ -273,17 +273,18 @@ namespace App.Metrics.Internal
         public IMeter Meter<T>(MeterOptions options, Func<T> builder)
             where T : IMeterMetric
         {
+            var allTags = AllTags(options.Tags);
+            var metricName = allTags.AsMetricName(options.Name);
+
             return _meters.GetOrAdd(
-                options.Name,
+                metricName,
                 () =>
                 {
-                    var allTags = AllTags(options.Tags);
-
-                    Logger.Debug("Adding Meter {Name} - {@Options} {MesurementUnit} {@Tags}", options.Name, options, options.MeasurementUnit.ToString(), allTags.ToDictionary());
+                    Logger.Trace("Adding Meter {Name} - {@Options} {MesurementUnit} {@Tags}", metricName, options, options.MeasurementUnit.ToString(), allTags.ToDictionary());
 
                     var meter = builder();
                     var valueSource = new MeterValueSource(
-                        options.Name,
+                        metricName,
                         meter,
                         options.MeasurementUnit,
                         options.RateUnit,
@@ -296,15 +297,14 @@ namespace App.Metrics.Internal
         public IMeter Meter<T>(MeterOptions options, MetricTags tags, Func<T> builder)
             where T : IMeterMetric
         {
-            var metricName = tags.AsMetricName(options.Name);
+            var allTags = AllTags(MetricTags.Concat(options.Tags, tags));
+            var metricName = allTags.AsMetricName(options.Name);
 
             return _meters.GetOrAdd(
                 metricName,
                 () =>
                 {
-                    var allTags = AllTags(MetricTags.Concat(options.Tags, tags));
-
-                    Logger.Debug("Adding Meter {Name} - {@Options} {MesurementUnit} {@Tags}", metricName, options, options.MeasurementUnit.ToString(), allTags.ToDictionary());
+                    Logger.Trace("Adding Meter {Name} - {@Options} {MesurementUnit} {@Tags}", metricName, options, options.MeasurementUnit.ToString(), allTags.ToDictionary());
 
                     var meter = builder();
                     var valueSource = new MeterValueSource(
@@ -320,17 +320,18 @@ namespace App.Metrics.Internal
         public ITimer Timer<T>(TimerOptions options, Func<T> builder)
             where T : ITimerMetric
         {
+            var allTags = AllTags(options.Tags);
+            var metricName = allTags.AsMetricName(options.Name);
+
             return _timers.GetOrAdd(
-                options.Name,
+                metricName,
                 () =>
                 {
-                    var allTags = AllTags(options.Tags);
-
-                    Logger.Debug("Adding Timer {Name} - {@Options} {MesurementUnit} {DurationUnit} {RateUnit} {@Tags}", options.Name, options, options.MeasurementUnit.ToString(), options.DurationUnit, options.RateUnit, allTags.ToDictionary());
+                    Logger.Trace("Adding Timer {Name} - {@Options} {MesurementUnit} {DurationUnit} {RateUnit} {@Tags}", metricName, options, options.MeasurementUnit.ToString(), options.DurationUnit, options.RateUnit, allTags.ToDictionary());
 
                     var timer = builder();
                     var valueSource = new TimerValueSource(
-                        options.Name,
+                    metricName,
                         timer,
                         options.MeasurementUnit,
                         options.RateUnit,
@@ -344,15 +345,14 @@ namespace App.Metrics.Internal
         public ITimer Timer<T>(TimerOptions options, MetricTags tags, Func<T> builder)
             where T : ITimerMetric
         {
-            var metricName = tags.AsMetricName(options.Name);
+            var allTags = AllTags(MetricTags.Concat(options.Tags, tags));
+            var metricName = allTags.AsMetricName(options.Name);
 
             return _timers.GetOrAdd(
                 metricName,
                 () =>
                 {
-                    var allTags = AllTags(MetricTags.Concat(options.Tags, tags));
-
-                    Logger.Debug("Adding Timer {Name} - {@Options} {MesurementUnit} {DurationUnit} {RateUnit} {@Tags}", metricName, options, options.MeasurementUnit.ToString(), options.DurationUnit, options.RateUnit, allTags.ToDictionary());
+                    Logger.Trace("Adding Timer {Name} - {@Options} {MesurementUnit} {DurationUnit} {RateUnit} {@Tags}", metricName, options, options.MeasurementUnit.ToString(), options.DurationUnit, options.RateUnit, allTags.ToDictionary());
 
                     var timer = builder();
                     var valueSource = new TimerValueSource(

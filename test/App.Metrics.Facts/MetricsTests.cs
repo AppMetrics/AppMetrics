@@ -198,7 +198,7 @@ namespace App.Metrics.Facts
                 _fixture.Metrics.Measure.Meter.Mark(meterOptions);
                 _fixture.Metrics.Measure.Histogram.Update(histogramOptions, 1L);
                 _fixture.Metrics.Measure.Timer.Time(timerOptions);
-            })).ShouldNotThrow();
+            })).Should().NotThrow();
         }
 
         [Fact]

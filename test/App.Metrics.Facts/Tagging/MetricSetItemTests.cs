@@ -93,7 +93,7 @@ namespace App.Metrics.Facts.Tagging
                 var unused = new MetricSetItem(keys, values);
             };
 
-            setup.ShouldThrow<InvalidOperationException>();
+            setup.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -106,7 +106,7 @@ namespace App.Metrics.Facts.Tagging
                 var unused = new MetricSetItem(null, values);
             };
 
-            setup.ShouldThrow<ArgumentNullException>();
+            setup.Should().Throw<ArgumentNullException>();
         }
 
         [Theory]
@@ -122,7 +122,7 @@ namespace App.Metrics.Facts.Tagging
                 var unused = new MetricSetItem(keys, values);
             };
 
-            setup.ShouldThrow<InvalidOperationException>();
+            setup.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -136,7 +136,7 @@ namespace App.Metrics.Facts.Tagging
                 var unused = new MetricSetItem(keys, values);
             };
 
-            setup.ShouldThrow<InvalidOperationException>();
+            setup.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -226,7 +226,7 @@ namespace App.Metrics.Facts.Tagging
                 var unused = new MetricSetItem(keys, null);
             };
 
-            setup.ShouldThrow<ArgumentNullException>();
+            setup.Should().Throw<ArgumentNullException>();
         }
 
         [Theory]
@@ -242,7 +242,7 @@ namespace App.Metrics.Facts.Tagging
                 var unused = new MetricSetItem(keys, values);
             };
 
-            setup.ShouldThrow<InvalidOperationException>();
+            setup.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -256,7 +256,7 @@ namespace App.Metrics.Facts.Tagging
                 var unused = new MetricSetItem(keys, values);
             };
 
-            setup.ShouldThrow<InvalidOperationException>();
+            setup.Should().Throw<InvalidOperationException>();
         }
     }
 }

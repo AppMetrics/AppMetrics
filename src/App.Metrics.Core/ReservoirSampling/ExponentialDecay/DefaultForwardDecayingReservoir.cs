@@ -205,7 +205,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         {
             var lockTaken = false;
 
-            Logger.Debug("Resetting {Reservoir}", this);
+            Logger.Trace("Resetting {Reservoir}", this);
 
             try
             {
@@ -223,7 +223,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                     Logger.Trace("Lock exited after resetting {Reservoir}", this);
                 }
 
-                Logger.Debug("{Reservoir} reset", this);
+                Logger.Trace("{Reservoir} reset", this);
             }
         }
 
@@ -262,7 +262,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         {
             var lockTaken = false;
 
-            Logger.Debug("Rescaling {Reservoir}", this);
+            Logger.Trace("Rescaling {Reservoir}", this);
 
             try
             {
@@ -296,23 +296,23 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                     Logger.Trace("Lock exited after rescaling {Reservoir}", this);
                 }
 
-                Logger.Debug("{Reservoir} rescaled", this);
+                Logger.Trace("{Reservoir} rescaled", this);
             }
         }
 
         private void ResetReservoir()
         {
-            Logger.Debug("Resetting {Reservoir}", this);
+            Logger.Trace("Resetting {Reservoir}", this);
             _values.Clear();
             _count.SetValue(0L);
             _sum.SetValue(0.0);
             _startTime.SetValue(_clock.Seconds);
-            Logger.Debug("{Reservoir} reset", this);
+            Logger.Trace("{Reservoir} reset", this);
         }
 
         private void Update(long value, string userValue, long timestamp)
         {
-            Logger.Debug("Updating {Reservoir}", this);
+            Logger.Trace("Updating {Reservoir}", this);
             var lockTaken = false;
             try
             {
@@ -360,7 +360,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                     Logger.Trace("Lock exited after updating {Reservoir}", this);
                 }
 
-                Logger.Debug("{Reservoir} updated", this);
+                Logger.Trace("{Reservoir} updated", this);
             }
         }
 

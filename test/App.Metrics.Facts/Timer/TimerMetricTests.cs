@@ -113,7 +113,7 @@ namespace App.Metrics.Facts.Timer
         {
             Action action = () => _timer.Time(() => throw new InvalidOperationException());
 
-            action.ShouldThrow<InvalidOperationException>();
+            action.Should().Throw<InvalidOperationException>();
 
             _timer.Value.Rate.Count.Should().Be(1);
         }

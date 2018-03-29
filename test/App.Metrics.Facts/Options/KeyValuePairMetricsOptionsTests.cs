@@ -49,7 +49,7 @@ namespace App.Metrics.Facts.Options
             };
 
             // Assert
-           action.ShouldThrow<ArgumentNullException>();
+           action.Should().Throw<ArgumentNullException>();
         }
 
         [Fact]
@@ -69,7 +69,7 @@ namespace App.Metrics.Facts.Options
             };
 
             // Assert
-            action.ShouldThrow<InvalidCastException>();
+            action.Should().Throw<InvalidCastException>();
         }
 
         [Theory]
@@ -91,7 +91,7 @@ namespace App.Metrics.Facts.Options
             };
 
             // Assert
-            action.ShouldThrow<InvalidOperationException>();
+            action.Should().Throw<InvalidOperationException>();
         }
     }
 }

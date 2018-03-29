@@ -1,24 +1,25 @@
 <Project>
   <PropertyGroup>
-    <AppMetricsConcurrencyVersion>2.0.0-*</AppMetricsConcurrencyVersion>
+    <AppMetricsConcurrencyVersion>2.0.0</AppMetricsConcurrencyVersion>
     <AppMetricsAspNetCoreVersion>2.0.0-*</AppMetricsAspNetCoreVersion>
-    <AspNetCoreVersion>2.0.0-*</AspNetCoreVersion>
+    <AspNetCoreVersion>2.0.1</AspNetCoreVersion>
+    <MicrosoftExtensionsVersion>2.0.0</MicrosoftExtensionsVersion>
     <AppMetricsReportingVersion>2.0.0-*</AppMetricsReportingVersion>
     <AppMetricsInfluxDBVersion>2.0.0-*</AppMetricsInfluxDBVersion>
     <AppMetricsElasticsearchVersion>2.0.0-*</AppMetricsElasticsearchVersion>
-    <BenchmarkDotNetVersion>0.10.8</BenchmarkDotNetVersion>
+    <BenchmarkDotNetVersion>0.10.12</BenchmarkDotNetVersion>
     <CoreFxVersion>4.4.0-*</CoreFxVersion>
     <DependencyModelVersion>2.0.0-*</DependencyModelVersion>
     <LibLogVersion>4.2.6</LibLogVersion>
-    <MicrosoftCSharpVersion>4.4.0</MicrosoftCSharpVersion>
-    <MoqVersion>4.7.49</MoqVersion>
-    <NewtonsoftVersion>10.0.2</NewtonsoftVersion>
+    <MicrosoftCSharpVersion>4.4.1</MicrosoftCSharpVersion>
+    <MoqVersion>4.8.1</MoqVersion>
+    <NewtonsoftVersion>10.0.3</NewtonsoftVersion>
     <NETStandardLibraryNETFrameworkVersion>2.0.0-*</NETStandardLibraryNETFrameworkVersion>
     <RuntimeFrameworkVersion Condition="'$(TargetFramework)'=='netcoreapp2.0'">2.0.0-*</RuntimeFrameworkVersion>
-    <TestSdkVersion>15.3.0-*</TestSdkVersion>
-    <XunitVersion>2.3.0-beta2-*</XunitVersion>
-    <FluentAssertionsVersion>4.19.2</FluentAssertionsVersion>
-    <FluentAssertionsJsonVersion>4.19.0</FluentAssertionsJsonVersion>
+    <TestSdkVersion>15.5.0</TestSdkVersion>
+    <XunitVersion>2.3.1</XunitVersion>
+    <FluentAssertionsVersion>5.0.0</FluentAssertionsVersion>
+    <FluentAssertionsJsonVersion>5.0.0</FluentAssertionsJsonVersion>
     <StyleCopAnalyzersVersion>1.0.0</StyleCopAnalyzersVersion>
   </PropertyGroup>
 </Project>

@@ -54,7 +54,7 @@ namespace App.Metrics.FactsCommon
         {
             if (reservoir != null)
             {
-                Logger.Debug(
+                Logger.Trace(
                     _reservoirs.TryTake(out reservoir)
                         ? "Successfully removed reservoir from {ReservoirRescaleScheduler} schedule."
                         : "Failed to remove reservoir from {ReservoirRescaleScheduler} schedule.", this);
@@ -85,8 +85,8 @@ namespace App.Metrics.FactsCommon
 
         private void SetScheduler()
         {
-            Logger.Debug("Starting {ReservoirRescaleScheduler} Schedule", this);
-            Logger.Debug("{ReservoirRescaleScheduler} Schedule Started", this);
+            Logger.Trace("Starting {ReservoirRescaleScheduler} Schedule", this);
+            Logger.Trace("{ReservoirRescaleScheduler} Schedule Started", this);
         }
 
         private Task Rescale()
@@ -101,7 +101,7 @@ namespace App.Metrics.FactsCommon
                     reservoir.Rescale();
                 }
 
-                Logger.Debug("{ReservoirCount} reservoirs all rescaled in {ElapsedTicks} ticks use {ReservoirRescaleScheduler} ", _reservoirs.Count, sw.ElapsedTicks, this);
+                Logger.Trace("{ReservoirCount} reservoirs all rescaled in {ElapsedTicks} ticks use {ReservoirRescaleScheduler} ", _reservoirs.Count, sw.ElapsedTicks, this);
             }
             catch (Exception e)
             {

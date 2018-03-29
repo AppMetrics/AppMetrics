@@ -33,7 +33,7 @@ namespace App.Metrics.Facts.Reporting
 
             Action action = () => { reporter.RunAllAsync(token.Token); };
 
-            action.ShouldNotThrow();
+            action.Should().NotThrow();
         }
 
         [Fact]
@@ -44,7 +44,7 @@ namespace App.Metrics.Facts.Reporting
                 var unused = new DefaultMetricsReportRunner(null, _reporters);
             };
 
-            action.ShouldThrow<ArgumentNullException>();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [Fact]
@@ -55,7 +55,7 @@ namespace App.Metrics.Facts.Reporting
                 var unused = new DefaultMetricsReportRunner(_fixture.Metrics(), null);
             };
 
-            action.ShouldThrow<ArgumentNullException>();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [Fact]
@@ -71,7 +71,7 @@ namespace App.Metrics.Facts.Reporting
 
             Action action = () => { reportRunner.RunAllAsync(token.Token); };
 
-            action.ShouldNotThrow();
+            action.Should().NotThrow();
         }
 
         [Fact]
@@ -86,7 +86,7 @@ namespace App.Metrics.Facts.Reporting
 
             Action action = () => { reporter.RunAllAsync(token.Token); };
 
-            action.ShouldNotThrow();
+            action.Should().NotThrow();
         }
 
         [Fact]
