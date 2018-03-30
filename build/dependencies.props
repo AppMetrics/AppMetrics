@@ -6,7 +6,7 @@
     <MicrosoftExtensionsVersion>2.1.0-preview1-final</MicrosoftExtensionsVersion>
     <AppMetricsReportingVersion>2.1.0-*</AppMetricsReportingVersion>
     <AppMetricsInfluxDBVersion>2.1.0-*</AppMetricsInfluxDBVersion>
-    <BenchmarkDotNetVersion>0.10.12</BenchmarkDotNetVersion>
+    <BenchmarkDotNetVersion>0.10.13</BenchmarkDotNetVersion>
     <CoreFxVersion>4.4.0-*</CoreFxVersion>
     <DependencyModelVersion>2.1.0-*</DependencyModelVersion>
     <LibLogVersion>4.2.6</LibLogVersion>
