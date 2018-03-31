@@ -1,4 +1,4 @@
-﻿// <copyright file="Host.cs" company="Allan Hardy">
+﻿// <copyright file="Program.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
@@ -11,25 +11,49 @@ using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Reporting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 using static System.Console;
 
 namespace MetricsSandbox
 {
-    public static class Host
+    public static class Program
     {
         private static readonly Random Rnd = new Random();
-
-        private static IConfigurationRoot Configuration { get; set; }
 
         private static IMetricsRoot Metrics { get; set; }
 
         private static IRunMetricsReports Reporter { get; set; }
 
-        public static async Task Main()
+        public static async Task Main(string[] args)
         {
-            Init();
+            Log.Logger = new LoggerConfiguration()
+                         .MinimumLevel.Verbose()
+                         .WriteTo.LiterateConsole(LogEventLevel.Information)
+                         .WriteTo.Seq("http://localhost:5341", LogEventLevel.Verbose)
+                         .CreateLogger();
+
+            var host = new HostBuilder()
+               .ConfigureAppConfiguration(
+                    (hostContext, config) =>
+                    {
+                        config.SetBasePath(Directory.GetCurrentDirectory());
+                        config.AddEnvironmentVariables();
+                        config.AddJsonFile("appsettings.json", optional: true);
+                        config.AddCommandLine(args);
+                    })
+                .ConfigureServices(
+                           (hostContext, services) =>
+                           {
+                               var metricsConfigSection = hostContext.Configuration.GetSection(nameof(MetricsOptions));
+                               Metrics = AppMetrics.CreateDefaultBuilder()
+                                                   .Configuration.Configure(metricsConfigSection.AsEnumerable())
+                                                   .Report.Using<SimpleConsoleMetricsReporter>(TimeSpan.FromSeconds(2))
+                                                   .Build();
+                               Reporter = Metrics.ReportRunner;
+                           })
+                .Build();
 
             var cancellationTokenSource = new CancellationTokenSource();
 
@@ -50,6 +74,8 @@ namespace MetricsSandbox
                     RecordMetrics();
                     await Task.WhenAll(Reporter.RunAllAsync(cancellationTokenSource.Token));
                 });
+
+            await host.RunAsync(token: cancellationTokenSource.Token);
         }
 
         private static void PressAnyKeyToContinue()
@@ -128,30 +154,6 @@ namespace MetricsSandbox
             {
                 Thread.Sleep(Rnd.Next(0, 100));
             }
-        }
-
-        private static void Init()
-        {
-            var configurationBuilder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json");
-
-            Configuration = configurationBuilder.Build();
-
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .WriteTo.LiterateConsole(LogEventLevel.Information)
-                .WriteTo.Seq("http://localhost:5341", LogEventLevel.Verbose)
-                .CreateLogger();
-
-            var metricsConfigSection = Configuration.GetSection(nameof(MetricsOptions));
-
-            Metrics = AppMetrics.CreateDefaultBuilder()
-                .Configuration.Configure(metricsConfigSection.AsEnumerable())
-                .Report.Using<SimpleConsoleMetricsReporter>(TimeSpan.FromSeconds(2))
-                .Build();
-
-            Reporter = Metrics.ReportRunner;
         }
 
         private static async Task RunUntilEscAsync(TimeSpan delayBetweenRun, CancellationTokenSource cancellationTokenSource, Func<Task> action)

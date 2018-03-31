@@ -28,12 +28,12 @@ namespace App.Metrics
         private IClock _clock = new StopwatchClock();
         private IEnvOutputFormatter _defauEnvOutputFormatter;
         private IMetricsOutputFormatter _defaultMetricsOutputFormatter;
-        private IRunMetricsReports _metricsReportRunner = new NoOpMetricsReportRunner();
 
         private DefaultSamplingReservoirProvider _defaultSamplingReservoir =
             new DefaultSamplingReservoirProvider(() => new DefaultForwardDecayingReservoir());
 
         private IFilterMetrics _metricsFilter = new NullMetricsFilter();
+        private IRunMetricsReports _metricsReportRunner = new NoOpMetricsReportRunner();
         private MetricsOptions _options;
 
         /// <inheritdoc />
@@ -47,6 +47,8 @@ namespace App.Metrics
                     options => { _options = options; });
             }
         }
+
+        public bool CanReport() { return _options.Enabled && _options.ReportingEnabled && _reporters.Any(); }
 
         /// <inheritdoc />
         public IMetricsFilterBuilder Filter
@@ -99,10 +101,7 @@ namespace App.Metrics
         public IMetricsReportingBuilder Report => new MetricsReportingBuilder(
             this,
             _metricsOutputFormatters,
-            reporter =>
-            {
-                _reporters.TryAdd(reporter);
-            });
+            reporter => { _reporters.TryAdd(reporter); });
 
         /// <inheritdoc />
         public IMetricsReservoirSamplingBuilder SampleWith
@@ -179,7 +178,5 @@ namespace App.Metrics
             IMetricContextRegistry ContextRegistry(string context) =>
                 new DefaultMetricContextRegistry(context, new GlobalMetricTags(_options.GlobalTags));
         }
-
-        private bool CanReport() { return _options.Enabled && _options.ReportingEnabled && _reporters.Any(); }
     }
 }
