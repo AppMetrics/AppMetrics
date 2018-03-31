@@ -24,6 +24,8 @@ namespace App.Metrics
         /// </summary>
         IMetricsConfigurationBuilder Configuration { get; }
 
+        bool CanReport();
+
         /// <summary>
         ///     <para>
         ///         Builder for configuring environment information output formatting for reporting.
