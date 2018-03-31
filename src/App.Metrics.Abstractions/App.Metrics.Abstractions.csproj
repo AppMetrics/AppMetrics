@@ -1,7 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\build\common.props" />
-
   <PropertyGroup>
     <Description>App Metrics Core abstractions and interfaces for metric types, reporting, filtering and more.</Description>
     <TargetFrameworks>netstandard1.1</TargetFrameworks>

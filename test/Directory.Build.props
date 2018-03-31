@@ -1,0 +1,23 @@
+<Project>
+  <Import Project="..\build\common.props" />
+
+  <PropertyGroup>
+    <DeveloperBuildTest>netcoreapp2.1</DeveloperBuildTest>
+    <StandardTest>$(DeveloperBuildTest)</StandardTest>
+    <StandardTest Condition=" '$(DeveloperBuild)' != 'true' ">$(StandardTest);netcoreapp2.0</StandardTest>
+    <StandardTest Condition=" '$(DeveloperBuild)' != 'true' AND '$(OS)' == 'Windows_NT' ">$(StandardTest);net461</StandardTest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="..\xunit.runner.json" Link="xunit.runner.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(TestSdkVersion)" />
+    <PackageReference Include="Moq" Version="$(MoqVersion)" />
+    <PackageReference Include="FluentAssertions" Version="$(FluentAssertionsVersion)" />
+    <PackageReference Include="FluentAssertions.Json" Version="$(FluentAssertionsJsonVersion)" />
+    <PackageReference Include="xunit" Version="$(XunitVersion)" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="$(XunitVersion)" />
+  </ItemGroup>
+</Project>

@@ -1,7 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\build\common.props" />
-
   <PropertyGroup>
     <Description>App Metrics Formatters for metrics  and environment data to JSON using Newtonsoft.Json.</Description>
     <TargetFrameworks>netstandard1.6;net452</TargetFrameworks>
