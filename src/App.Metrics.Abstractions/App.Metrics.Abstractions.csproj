@@ -8,8 +8,4 @@
     <PackageTags>appmetrics;metrics</PackageTags>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1'">
-    <PackageReference Include="Microsoft.CSharp" Version="$(MicrosoftCSharpVersion)" />
-  </ItemGroup>
-  
 </Project>
