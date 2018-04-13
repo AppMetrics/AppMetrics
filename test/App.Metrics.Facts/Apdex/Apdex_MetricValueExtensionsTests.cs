@@ -39,6 +39,23 @@ namespace App.Metrics.Facts.Apdex
         }
 
         [Fact]
+        public void Apdex_should_ignore_values_where_specified()
+        {
+            // Arrange
+            var value = new ApdexValue(1, 2, 3, 4, 5);
+            var data = new Dictionary<string, object>();
+            var dataKeys = new GeneratedMetricNameMapping();
+            dataKeys.Apdex.Remove(ApdexValueDataKeys.Samples);
+
+            // Act
+            value.AddApdexValues(data, dataKeys.Apdex);
+
+            // Assert
+            data.ContainsKey(DataKeys.Apdex[ApdexValueDataKeys.Satisfied]).Should().BeTrue();
+            data.ContainsKey(DataKeys.Apdex[ApdexValueDataKeys.Samples]).Should().BeFalse();
+        }
+
+        [Fact]
         public void Apdex_default_data_keys_should_provide_corresponding_values()
         {
             // Arrange

@@ -3,10 +3,7 @@
 // </copyright>
 
 using System.Collections.Generic;
-using App.Metrics.Formatters;
-using App.Metrics.Internal;
 using App.Metrics.Meter;
-using App.Metrics.Serialization;
 using FluentAssertions;
 using Xunit;
 
@@ -55,6 +52,22 @@ namespace App.Metrics.Facts.Meter
             data[DataKeys.Meter[MeterValueDataKeys.Rate1M]].Should().Be(3.0);
             data[DataKeys.Meter[MeterValueDataKeys.Rate5M]].Should().Be(4.0);
             data[DataKeys.Meter[MeterValueDataKeys.Rate15M]].Should().Be(5.0);
+        }
+
+        [Fact]
+        public void Meter_should_ignore_values_where_specified()
+        {
+            // Arrange
+            var value = new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds);
+            var dataKeys = new GeneratedMetricNameMapping();
+            dataKeys.Meter.Remove(MeterValueDataKeys.Count);
+
+            // Act
+            value.AddMeterValues(out IDictionary<string, object> data, dataKeys.Meter);
+
+            // Assert
+            data.ContainsKey(DataKeys.Meter[MeterValueDataKeys.Rate15M]).Should().BeTrue();
+            data.ContainsKey(DataKeys.Meter[MeterValueDataKeys.Count]).Should().BeFalse();
         }
     }
 }
