@@ -16,11 +16,11 @@ namespace App.Metrics
             IDictionary<string, object> values,
             IDictionary<ApdexValueDataKeys, string> dataKeys)
         {
-            values.Add(dataKeys[ApdexValueDataKeys.Samples], apdex.SampleSize);
-            values.AddIfNotNanOrInfinity(dataKeys[ApdexValueDataKeys.Score], apdex.Score);
-            values.Add(dataKeys[ApdexValueDataKeys.Satisfied], apdex.Satisfied);
-            values.Add(dataKeys[ApdexValueDataKeys.Tolerating], apdex.Tolerating);
-            values.Add(dataKeys[ApdexValueDataKeys.Frustrating], apdex.Frustrating);
+            dataKeys.TryAddValuesForKey(values, ApdexValueDataKeys.Samples, apdex.SampleSize);
+            dataKeys.TryAddValuesForKeyIfNotNanOrInfinity(values, ApdexValueDataKeys.Score, apdex.Score);
+            dataKeys.TryAddValuesForKey(values, ApdexValueDataKeys.Satisfied, apdex.Satisfied);
+            dataKeys.TryAddValuesForKey(values, ApdexValueDataKeys.Tolerating, apdex.Tolerating);
+            dataKeys.TryAddValuesForKey(values, ApdexValueDataKeys.Frustrating, apdex.Frustrating);
         }
 
         public static void AddHistogramValues(
@@ -28,23 +28,23 @@ namespace App.Metrics
             IDictionary<string, object> values,
             IDictionary<HistogramValueDataKeys, string> dataKeys)
         {
-            values.Add(dataKeys[HistogramValueDataKeys.Samples], histogram.SampleSize);
-            values.AddIfNotNanOrInfinity(dataKeys[HistogramValueDataKeys.LastValue], histogram.LastValue);
-            values.Add(dataKeys[HistogramValueDataKeys.Count], histogram.Count);
-            values.Add(dataKeys[HistogramValueDataKeys.Sum], histogram.Sum);
-            values.AddIfNotNanOrInfinity(dataKeys[HistogramValueDataKeys.Min], histogram.Min);
-            values.AddIfNotNanOrInfinity(dataKeys[HistogramValueDataKeys.Max], histogram.Max);
-            values.AddIfNotNanOrInfinity(dataKeys[HistogramValueDataKeys.Mean], histogram.Mean);
-            values.AddIfNotNanOrInfinity(dataKeys[HistogramValueDataKeys.Median], histogram.Median);
-            values.AddIfNotNanOrInfinity(dataKeys[HistogramValueDataKeys.StdDev], histogram.StdDev);
-            values.AddIfNotNanOrInfinity(dataKeys[HistogramValueDataKeys.P999], histogram.Percentile999);
-            values.AddIfNotNanOrInfinity(dataKeys[HistogramValueDataKeys.P99], histogram.Percentile99);
-            values.AddIfNotNanOrInfinity(dataKeys[HistogramValueDataKeys.P98], histogram.Percentile98);
-            values.AddIfNotNanOrInfinity(dataKeys[HistogramValueDataKeys.P95], histogram.Percentile95);
-            values.AddIfNotNanOrInfinity(dataKeys[HistogramValueDataKeys.P75], histogram.Percentile75);
-            values.AddIfPresent(dataKeys[HistogramValueDataKeys.UserLastValue], histogram.LastUserValue);
-            values.AddIfPresent(dataKeys[HistogramValueDataKeys.UserMinValue], histogram.MinUserValue);
-            values.AddIfPresent(dataKeys[HistogramValueDataKeys.UserMaxValue], histogram.MaxUserValue);
+            dataKeys.TryAddValuesForKey(values, HistogramValueDataKeys.Samples, histogram.SampleSize);
+            dataKeys.TryAddValuesForKeyIfNotNanOrInfinity(values, HistogramValueDataKeys.LastValue, histogram.LastValue);
+            dataKeys.TryAddValuesForKey(values, HistogramValueDataKeys.Count, histogram.Count);
+            dataKeys.TryAddValuesForKey(values, HistogramValueDataKeys.Sum, histogram.Sum);
+            dataKeys.TryAddValuesForKeyIfNotNanOrInfinity(values, HistogramValueDataKeys.Min, histogram.Min);
+            dataKeys.TryAddValuesForKeyIfNotNanOrInfinity(values, HistogramValueDataKeys.Max, histogram.Max);
+            dataKeys.TryAddValuesForKeyIfNotNanOrInfinity(values, HistogramValueDataKeys.Mean, histogram.Mean);
+            dataKeys.TryAddValuesForKeyIfNotNanOrInfinity(values, HistogramValueDataKeys.Median, histogram.Median);
+            dataKeys.TryAddValuesForKeyIfNotNanOrInfinity(values, HistogramValueDataKeys.StdDev, histogram.StdDev);
+            dataKeys.TryAddValuesForKeyIfNotNanOrInfinity(values, HistogramValueDataKeys.P999, histogram.Percentile999);
+            dataKeys.TryAddValuesForKeyIfNotNanOrInfinity(values, HistogramValueDataKeys.P99, histogram.Percentile99);
+            dataKeys.TryAddValuesForKeyIfNotNanOrInfinity(values, HistogramValueDataKeys.P98, histogram.Percentile98);
+            dataKeys.TryAddValuesForKeyIfNotNanOrInfinity(values, HistogramValueDataKeys.P95, histogram.Percentile95);
+            dataKeys.TryAddValuesForKeyIfNotNanOrInfinity(values, HistogramValueDataKeys.P75, histogram.Percentile75);
+            dataKeys.TryAddValuesForKeyIfPresent(values, HistogramValueDataKeys.UserLastValue, histogram.LastUserValue);
+            dataKeys.TryAddValuesForKeyIfPresent(values, HistogramValueDataKeys.UserMinValue, histogram.MinUserValue);
+            dataKeys.TryAddValuesForKeyIfPresent(values, HistogramValueDataKeys.UserMaxValue, histogram.MaxUserValue);
         }
 
         public static void AddMeterSetItemValues(
@@ -53,7 +53,7 @@ namespace App.Metrics
             IDictionary<MeterValueDataKeys, string> dataKeys)
         {
             AddMeterKeyValues(meterItem.Value, out values, dataKeys);
-            values.AddIfNotNanOrInfinity(dataKeys[MeterValueDataKeys.SetItemPercent], meterItem.Percent);
+            dataKeys.TryAddValuesForKeyIfNotNanOrInfinity(values, MeterValueDataKeys.SetItemPercent, meterItem.Percent);
         }
 
         public static void AddMeterValues(
@@ -73,11 +73,11 @@ namespace App.Metrics
             values = new Dictionary<string, object>();
             // ReSharper restore UseObjectOrCollectionInitializer
 
-            values.Add(dataKeys[MeterValueDataKeys.Count], meter.Count);
-            values.AddIfNotNanOrInfinity(dataKeys[MeterValueDataKeys.Rate1M], meter.OneMinuteRate);
-            values.AddIfNotNanOrInfinity(dataKeys[MeterValueDataKeys.Rate5M], meter.FiveMinuteRate);
-            values.AddIfNotNanOrInfinity(dataKeys[MeterValueDataKeys.Rate15M], meter.FifteenMinuteRate);
-            values.AddIfNotNanOrInfinity(dataKeys[MeterValueDataKeys.RateMean], meter.MeanRate);
+            dataKeys.TryAddValuesForKey(values, MeterValueDataKeys.Count, meter.Count);
+            dataKeys.TryAddValuesForKeyIfNotNanOrInfinity(values, MeterValueDataKeys.Rate1M, meter.OneMinuteRate);
+            dataKeys.TryAddValuesForKeyIfNotNanOrInfinity(values, MeterValueDataKeys.Rate5M, meter.FiveMinuteRate);
+            dataKeys.TryAddValuesForKeyIfNotNanOrInfinity(values, MeterValueDataKeys.Rate15M, meter.FifteenMinuteRate);
+            dataKeys.TryAddValuesForKeyIfNotNanOrInfinity(values, MeterValueDataKeys.RateMean, meter.MeanRate);
         }
     }
 }

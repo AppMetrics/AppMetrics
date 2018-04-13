@@ -9,4 +9,8 @@
     <PackageTags>appmetrics;metrics</PackageTags>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Apdex\Extensions\" />
+  </ItemGroup>
+
 </Project>

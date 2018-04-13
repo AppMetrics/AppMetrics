@@ -3,10 +3,7 @@
 // </copyright>
 
 using System.Collections.Generic;
-using App.Metrics.Formatters;
 using App.Metrics.Histogram;
-using App.Metrics.Internal;
-using App.Metrics.Serialization;
 using FluentAssertions;
 using Xunit;
 
@@ -75,6 +72,23 @@ namespace App.Metrics.Facts.Histogram
             data[DataKeys.Histogram[HistogramValueDataKeys.P99]].Should().Be(14.0);
             data[DataKeys.Histogram[HistogramValueDataKeys.P999]].Should().Be(15.0);
             data[DataKeys.Histogram[HistogramValueDataKeys.Samples]].Should().Be(16);
+        }
+
+        [Fact]
+        public void Histogram_should_ignore_values_where_specified()
+        {
+            // Arrange
+            var value = new HistogramValue(1, 1, 2, "3", 4, "5", 6, 7, "8", 9, 10, 11, 12, 13, 14, 15, 16);
+            var data = new Dictionary<string, object>();
+            var dataKeys = new GeneratedMetricNameMapping();
+            dataKeys.Histogram.Remove(HistogramValueDataKeys.Count);
+
+            // Act
+            value.AddHistogramValues(data, dataKeys.Histogram);
+
+            // Assert
+            data.ContainsKey(DataKeys.Histogram[HistogramValueDataKeys.Sum]).Should().BeTrue();
+            data.ContainsKey(DataKeys.Histogram[HistogramValueDataKeys.Count]).Should().BeFalse();
         }
     }
 }
