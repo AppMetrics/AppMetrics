@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <Description>App Metrics is an open-source .NET Standard library used to record application metrics.</Description>
-    <TargetFrameworks>netstandard1.6;net452</TargetFrameworks>
+    <TargetFrameworks>netstandard1.6</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);net452</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>appmetrics;metrics;apdex;meter;gauge;counter;timer;histogram</PackageTags>
   </PropertyGroup>
