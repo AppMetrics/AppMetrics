@@ -45,11 +45,20 @@ namespace App.Metrics.Serialization
 
             if (counterValueSource.Value.Items.Any() && counterValueSource.ReportSetItems)
             {
+                var itemSuffix = writer.MetricNameMapping.Counter.ContainsKey(CounterValueDataKeys.MetricSetItemSuffix)
+                    ? writer.MetricNameMapping.Counter[CounterValueDataKeys.MetricSetItemSuffix]
+                    : DefaultGeneratedMetricNameMapping.DefaultMetricsSetItemSuffix;
+
                 foreach (var item in counterValueSource.Value.Items.Distinct())
                 {
-                    var itemData = new Dictionary<string, object> { { writer.MetricNameMapping.Counter[CounterValueDataKeys.Total], item.Count } };
+                    var itemData = new Dictionary<string, object>();
 
-                    if (counterValueSource.ReportItemPercentages)
+                    if (writer.MetricNameMapping.Counter.ContainsKey(CounterValueDataKeys.Total))
+                    {
+                        itemData.Add(writer.MetricNameMapping.Counter[CounterValueDataKeys.Total], item.Count);
+                    }
+
+                    if (counterValueSource.ReportItemPercentages && writer.MetricNameMapping.Counter.ContainsKey(CounterValueDataKeys.SetItemPercent))
                     {
                         itemData.AddIfNotNanOrInfinity(writer.MetricNameMapping.Counter[CounterValueDataKeys.SetItemPercent], item.Percent);
                     }
@@ -60,7 +69,7 @@ namespace App.Metrics.Serialization
                         valueSource,
                         item.Tags,
                         itemData,
-                        writer.MetricNameMapping.Counter[CounterValueDataKeys.MetricSetItemSuffix],
+                        itemSuffix,
                         timestamp);
                 }
             }
@@ -100,16 +109,21 @@ namespace App.Metrics.Serialization
         {
             if (valueSource.Value.Items.Any())
             {
+                var itemSuffix = writer.MetricNameMapping.Meter.ContainsKey(MeterValueDataKeys.MetricSetItemSuffix)
+                    ? writer.MetricNameMapping.Meter[MeterValueDataKeys.MetricSetItemSuffix]
+                    : DefaultGeneratedMetricNameMapping.DefaultMetricsSetItemSuffix;
+
                 foreach (var item in valueSource.Value.Items.Distinct())
                 {
                     item.AddMeterSetItemValues(out IDictionary<string, object> setItemData, writer.MetricNameMapping.Meter);
+
                     WriteMetricWithSetItems(
                         writer,
                         context,
                         valueSource,
                         item.Tags,
                         setItemData,
-                        writer.MetricNameMapping.Meter[MeterValueDataKeys.MetricSetItemSuffix],
+                        itemSuffix,
                         timestamp);
                 }
             }
