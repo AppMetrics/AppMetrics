@@ -23,6 +23,11 @@ namespace MetricsSandbox
                                                        Name = "counter_one"
                                                    };
 
+        public static CounterOptions CounterWithSetItems => new CounterOptions
+                                                   {
+                                                       Name = "counter_withitems"
+                                                   };
+
         public static GaugeOptions GaugeOne => new GaugeOptions
                                                {
                                                    Name = "gauge_one"
@@ -37,6 +42,11 @@ namespace MetricsSandbox
                                                {
                                                    Name = "meter_one"
                                                };
+
+        public static MeterOptions MeterWithSetItems => new MeterOptions
+                                                            {
+                                                                Name = "meter_withitems"
+                                                            };
 
         public static TimerOptions TimerOne => new TimerOptions
                                                {

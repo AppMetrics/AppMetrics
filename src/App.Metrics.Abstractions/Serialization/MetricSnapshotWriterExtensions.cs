@@ -104,10 +104,10 @@ namespace App.Metrics.Serialization
         public static void WriteMeter(
             this IMetricSnapshotWriter writer,
             string context,
-            MetricValueSourceBase<MeterValue> valueSource,
+            MeterValueSource valueSource,
             DateTime timestamp)
         {
-            if (valueSource.Value.Items.Any())
+            if (valueSource.Value.Items.Any() && valueSource.ReportSetItems)
             {
                 var itemSuffix = writer.MetricNameMapping.Meter.ContainsKey(MeterValueDataKeys.MetricSetItemSuffix)
                     ? writer.MetricNameMapping.Meter[MeterValueDataKeys.MetricSetItemSuffix]

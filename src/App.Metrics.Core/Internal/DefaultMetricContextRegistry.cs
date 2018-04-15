@@ -288,7 +288,8 @@ namespace App.Metrics.Internal
                         meter,
                         options.MeasurementUnit,
                         options.RateUnit,
-                        allTags);
+                        allTags,
+                        options.ReportSetItems);
                     return Tuple.Create((IMeter)meter, valueSource);
                 });
         }
@@ -312,7 +313,8 @@ namespace App.Metrics.Internal
                         meter,
                         options.MeasurementUnit,
                         options.RateUnit,
-                        allTags);
+                        allTags,
+                        options.ReportSetItems);
                     return Tuple.Create((IMeter)meter, valueSource);
                 });
         }
