@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using App.Metrics.Formatters;
 using App.Metrics.Formatters.Ascii;
 
 // ReSharper disable CheckNamespace
@@ -39,7 +40,7 @@ namespace App.Metrics
 
             setupAction?.Invoke(options);
 
-            var formatter = new MetricsTextOutputFormatter();
+            var formatter = new MetricsTextOutputFormatter(options);
 
             return metricFormattingBuilder.Using(formatter);
         }
