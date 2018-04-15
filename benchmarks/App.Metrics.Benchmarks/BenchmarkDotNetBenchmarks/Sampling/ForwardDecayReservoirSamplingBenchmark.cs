@@ -20,7 +20,6 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Sampling
         private IMetricsTaskSchedular _scheduler;
         private volatile bool _disposing;
 
-        [GlobalSetup]
         public override void Setup()
         {
             _fixture = new MetricsCoreTestFixture();
