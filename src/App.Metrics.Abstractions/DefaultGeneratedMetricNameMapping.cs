@@ -6,8 +6,10 @@ using System.Collections.Generic;
 
 namespace App.Metrics
 {
-    internal static class DefaultGeneratedMetricNameMapping
+    public static class DefaultGeneratedMetricNameMapping
     {
+        public static readonly string DefaultMetricsSetItemSuffix = "  items";
+
         public static IDictionary<ApdexValueDataKeys, string> Apdex => new Dictionary<ApdexValueDataKeys, string>
                                                                        {
                                                                            { ApdexValueDataKeys.Samples, "samples" },
@@ -49,14 +51,14 @@ namespace App.Metrics
                                                                            { MeterValueDataKeys.Rate15M, "rate15m" },
                                                                            { MeterValueDataKeys.RateMean, "rate.mean" },
                                                                            { MeterValueDataKeys.SetItemPercent, "percent" },
-                                                                           { MeterValueDataKeys.MetricSetItemSuffix, "  items" }
+                                                                           { MeterValueDataKeys.MetricSetItemSuffix, DefaultMetricsSetItemSuffix }
                                                                        };
 
         public static IDictionary<CounterValueDataKeys, string> Counter => new Dictionary<CounterValueDataKeys, string>
                                                                            {
                                                                                { CounterValueDataKeys.Total, "total" },
                                                                                { CounterValueDataKeys.SetItemPercent, "percent" },
-                                                                               { CounterValueDataKeys.MetricSetItemSuffix, "  items" }
+                                                                               { CounterValueDataKeys.MetricSetItemSuffix, DefaultMetricsSetItemSuffix }
                                                                            };
     }
 }
