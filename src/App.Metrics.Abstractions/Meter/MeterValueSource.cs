@@ -14,12 +14,16 @@ namespace App.Metrics.Meter
             IMetricValueProvider<MeterValue> value,
             Unit unit,
             TimeUnit rateUnit,
-            MetricTags tags)
+            MetricTags tags,
+            bool reportSetItems = true)
             : base(name, new ScaledValueProvider<MeterValue>(value, v => v.Scale(rateUnit)), unit, tags)
         {
             RateUnit = rateUnit;
+            ReportSetItems = reportSetItems;
         }
 
         public TimeUnit RateUnit { get; }
+
+        public bool ReportSetItems { get; }
     }
 }

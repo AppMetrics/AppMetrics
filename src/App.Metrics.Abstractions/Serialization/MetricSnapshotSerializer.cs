@@ -97,7 +97,7 @@ namespace App.Metrics.Serialization
             IMetricSnapshotWriter writer,
             DateTime timestamp)
         {
-            writer.WriteMeter(context, valueSource, timestamp);
+            writer.WriteMeter(context, valueSource as MeterValueSource, timestamp);
         }
 
         private static void BuildMetricPayload<TMetric>(

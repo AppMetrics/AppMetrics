@@ -141,9 +141,11 @@ namespace MetricsSandbox
         private static void RecordMetrics()
         {
             Metrics.Measure.Counter.Increment(ApplicationsMetricsRegistry.CounterOne);
+            Metrics.Measure.Counter.Increment(ApplicationsMetricsRegistry.CounterWithSetItems, "item1");
             Metrics.Measure.Gauge.SetValue(ApplicationsMetricsRegistry.GaugeOne, Rnd.Next(0, 100));
             Metrics.Measure.Histogram.Update(ApplicationsMetricsRegistry.HistogramOne, Rnd.Next(0, 100));
             Metrics.Measure.Meter.Mark(ApplicationsMetricsRegistry.MeterOne, Rnd.Next(0, 100));
+            Metrics.Measure.Meter.Mark(ApplicationsMetricsRegistry.MeterWithSetItems, Rnd.Next(0, 100), "item1");
 
             using (Metrics.Measure.Timer.Time(ApplicationsMetricsRegistry.TimerOne))
             {
