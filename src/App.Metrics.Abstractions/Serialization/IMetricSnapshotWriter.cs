@@ -22,12 +22,14 @@ namespace App.Metrics.Serialization
         /// </summary>
         /// <param name="context">The metric's context</param>
         /// <param name="name">The name of the metric</param>
+        /// <param name="field">The label for the metric value</param>
         /// <param name="value">The value of the metrics</param>
         /// <param name="tags">The metric's tags</param>
         /// <param name="timestamp">The timestamp of the metrics snapshot</param>
         void Write(
             string context,
             string name,
+            string field,
             object value,
             MetricTags tags,
             DateTime timestamp);

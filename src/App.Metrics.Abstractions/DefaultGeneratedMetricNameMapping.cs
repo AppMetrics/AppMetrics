@@ -58,7 +58,13 @@ namespace App.Metrics
                                                                            {
                                                                                { CounterValueDataKeys.Total, "total" },
                                                                                { CounterValueDataKeys.SetItemPercent, "percent" },
-                                                                               { CounterValueDataKeys.MetricSetItemSuffix, DefaultMetricsSetItemSuffix }
+                                                                               { CounterValueDataKeys.MetricSetItemSuffix, DefaultMetricsSetItemSuffix },
+                                                                               { CounterValueDataKeys.Value, "value" }
+                                                                           };
+
+        public static IDictionary<GaugeValueDataKeys, string> Gauge => new Dictionary<GaugeValueDataKeys, string>
+                                                                           {
+                                                                               { GaugeValueDataKeys.Value, "value" }
                                                                            };
     }
 }
