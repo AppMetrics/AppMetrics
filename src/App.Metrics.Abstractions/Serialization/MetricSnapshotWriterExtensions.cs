@@ -63,19 +63,25 @@ namespace App.Metrics.Serialization
                         itemData.AddIfNotNanOrInfinity(writer.MetricNameMapping.Counter[CounterValueDataKeys.SetItemPercent], item.Percent);
                     }
 
-                    WriteMetricWithSetItems(
-                        writer,
-                        context,
-                        valueSource,
-                        item.Tags,
-                        itemData,
-                        itemSuffix,
-                        timestamp);
+                    if (itemData.Any())
+                    {
+                        WriteMetricWithSetItems(
+                            writer,
+                            context,
+                            valueSource,
+                            item.Tags,
+                            itemData,
+                            itemSuffix,
+                            timestamp);
+                    }
                 }
             }
 
-            var count = valueSource.ValueProvider.GetValue(resetMetric: counterValueSource.ResetOnReporting).Count;
-            WriteMetricValue(writer, context, valueSource, count, timestamp);
+            if (writer.MetricNameMapping.Counter.ContainsKey(CounterValueDataKeys.Value))
+            {
+                var count = valueSource.ValueProvider.GetValue(resetMetric: counterValueSource.ResetOnReporting).Count;
+                WriteMetricValue(writer, context, valueSource, writer.MetricNameMapping.Counter[CounterValueDataKeys.Value], count, timestamp);
+            }
         }
 
         public static void WriteGauge(
@@ -84,9 +90,9 @@ namespace App.Metrics.Serialization
             MetricValueSourceBase<double> valueSource,
             DateTime timestamp)
         {
-            if (!double.IsNaN(valueSource.Value) && !double.IsInfinity(valueSource.Value))
+            if (!double.IsNaN(valueSource.Value) && !double.IsInfinity(valueSource.Value) && writer.MetricNameMapping.Gauge.ContainsKey(GaugeValueDataKeys.Value))
             {
-                WriteMetricValue(writer, context, valueSource, valueSource.Value, timestamp);
+                WriteMetricValue(writer, context, valueSource, writer.MetricNameMapping.Gauge[GaugeValueDataKeys.Value], valueSource.Value, timestamp);
             }
         }
 
@@ -117,14 +123,17 @@ namespace App.Metrics.Serialization
                 {
                     item.AddMeterSetItemValues(out IDictionary<string, object> setItemData, writer.MetricNameMapping.Meter);
 
-                    WriteMetricWithSetItems(
-                        writer,
-                        context,
-                        valueSource,
-                        item.Tags,
-                        setItemData,
-                        itemSuffix,
-                        timestamp);
+                    if (setItemData.Any())
+                    {
+                        WriteMetricWithSetItems(
+                            writer,
+                            context,
+                            valueSource,
+                            item.Tags,
+                            setItemData,
+                            itemSuffix,
+                            timestamp);
+                    }
                 }
             }
 
@@ -227,6 +236,7 @@ namespace App.Metrics.Serialization
             IMetricSnapshotWriter writer,
             string context,
             MetricValueSourceBase<T> valueSource,
+            string field,
             object value,
             DateTime timestamp)
         {
@@ -237,6 +247,7 @@ namespace App.Metrics.Serialization
                 writer.Write(
                     context,
                     valueSource.MultidimensionalName,
+                    field,
                     value,
                     tags,
                     timestamp);
@@ -244,7 +255,7 @@ namespace App.Metrics.Serialization
                 return;
             }
 
-            writer.Write(context, valueSource.Name, value, tags, timestamp);
+            writer.Write(context, valueSource.Name, field, value, tags, timestamp);
         }
 
         private static void WriteMetricWithSetItems<T>(

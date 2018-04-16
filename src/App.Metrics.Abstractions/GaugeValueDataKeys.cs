@@ -1,15 +1,12 @@
-﻿// <copyright file="CounterValueDataKeys.cs" company="Allan Hardy">
+﻿// <copyright file="GaugeValueDataKeys.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
 namespace App.Metrics
 {
-    public enum CounterValueDataKeys
+    public enum GaugeValueDataKeys
     {
 #pragma warning disable SA1602
-        Total,
-        SetItemPercent,
-        MetricSetItemSuffix,
         Value
 #pragma warning restore SA1602
     }

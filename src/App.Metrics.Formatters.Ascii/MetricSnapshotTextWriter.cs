@@ -51,13 +51,19 @@ namespace App.Metrics.Formatters.Ascii
         public void Write(
             string context,
             string name,
+            string field,
             object value,
             MetricTags tags,
             DateTime timestamp)
         {
+            if (value == null)
+            {
+                return;
+            }
+
             var measurement = _metricNameFormatter(context, name);
 
-            _textPoints.Add(new MetricsTextPoint(measurement, new Dictionary<string, object> { { "value", value } }, tags, timestamp));
+            _textPoints.Add(new MetricsTextPoint(measurement, new Dictionary<string, object> { { field, value } }, tags, timestamp));
         }
 
         /// <inheritdoc />
@@ -70,6 +76,11 @@ namespace App.Metrics.Formatters.Ascii
             DateTime timestamp)
         {
             var fields = columns.Zip(values, (column, data) => new { column, data }).ToDictionary(pair => pair.column, pair => pair.data);
+
+            if (!fields.Any())
+            {
+                return;
+            }
 
             var measurement = _metricNameFormatter(context, name);
 

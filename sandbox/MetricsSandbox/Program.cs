@@ -20,7 +20,7 @@ namespace MetricsSandbox
 {
     public static class Program
     {
-        private static readonly bool FilterMetricValueTypes = false;
+        private static readonly bool FilterMetricValueTypes = true;
 
         private static readonly Random Rnd = new Random();
 
