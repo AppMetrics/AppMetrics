@@ -118,5 +118,22 @@ namespace App.Metrics.Facts.Histogram
                 data.ContainsKey(DataKeys.Histogram[key]).Should().BeFalse();
             }
         }
+
+        [Fact]
+        public void Histogram_removing_all_keys_shouldnt_throw_or_provide_data()
+        {
+            // Arrange
+            var value = _histogramValue();
+            var data = new Dictionary<string, object>();
+            var dataKeys = new GeneratedMetricNameMapping();
+            dataKeys.ExcludeHistogramValues();
+
+            // Act
+            Action sut = () => value.AddHistogramValues(data, dataKeys.Histogram);
+
+            // Assert
+            sut.Should().NotThrow();
+            data.Count.Should().Be(0);
+        }
     }
 }

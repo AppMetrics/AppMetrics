@@ -23,6 +23,7 @@ namespace App.Metrics.Facts.Meter
         public void Meter_can_use_custom_data_keys_and_should_provide_corresponding_values()
         {
             // Arrange
+            var data = new Dictionary<string, object>();
             var value = _meterValue();
             var dataKeys = new GeneratedMetricNameMapping(
                 meter: new Dictionary<MeterValueDataKeys, string>
@@ -32,7 +33,7 @@ namespace App.Metrics.Facts.Meter
                        });
 
             // Act
-            value.AddMeterValues(out var data, dataKeys.Meter);
+            value.AddMeterValues(data, dataKeys.Meter);
 
             // Assert
             data.ContainsKey(DataKeys.Meter[MeterValueDataKeys.RateMean]).Should().BeFalse();
@@ -57,10 +58,11 @@ namespace App.Metrics.Facts.Meter
                     continue;
                 }
 
+                var data = new Dictionary<string, object>();
                 var value = _meterValue();
                 var dataKeys = new GeneratedMetricNameMapping();
                 dataKeys.Meter[key] = customKey;
-                value.AddMeterValues(out var data, dataKeys.Meter);
+                value.AddMeterValues(data, dataKeys.Meter);
 
                 // Assert
                 data.ContainsKey(DataKeys.Meter[key]).Should().BeFalse($"{key} has been removed");
@@ -72,6 +74,7 @@ namespace App.Metrics.Facts.Meter
         public void Meter_set_item_can_use_custom_data_keys()
         {
             // Arrange
+            var data = new Dictionary<string, object>();
             var keys = Enum.GetValues(typeof(MeterValueDataKeys));
             const string customKey = "custom";
 
@@ -87,7 +90,7 @@ namespace App.Metrics.Facts.Meter
                 var value = _meterSetItemsValue();
                 var dataKeys = new GeneratedMetricNameMapping();
                 dataKeys.Meter[key] = customKey;
-                value.AddMeterSetItemValues(out var data, dataKeys.Meter);
+                value.AddMeterSetItemValues(data, dataKeys.Meter);
 
                 // Assert
                 data.ContainsKey(DataKeys.Meter[key]).Should().BeFalse($"{key} has been removed");
@@ -99,10 +102,11 @@ namespace App.Metrics.Facts.Meter
         public void Meter_default_data_keys_should_provide_corresponding_values()
         {
             // Arrange
+            var data = new Dictionary<string, object>();
             var value = _meterValue();
 
             // Act
-            value.AddMeterValues(out var data, DataKeys.Meter);
+            value.AddMeterValues(data, DataKeys.Meter);
 
             // Assert
             data[DataKeys.Meter[MeterValueDataKeys.Count]].Should().Be(1L);
@@ -116,6 +120,7 @@ namespace App.Metrics.Facts.Meter
         public void Meter_should_ignore_values_where_specified()
         {
             // Arrange
+            var data = new Dictionary<string, object>();
             var keys = Enum.GetValues(typeof(MeterValueDataKeys));
             var meterKeys = new List<MeterValueDataKeys>();
             foreach (MeterValueDataKeys key in keys)
@@ -135,7 +140,7 @@ namespace App.Metrics.Facts.Meter
                 var value = _meterValue();
                 var dataKeys = new GeneratedMetricNameMapping();
                 dataKeys.Meter.Remove(key);
-                value.AddMeterValues(out var data, dataKeys.Meter);
+                value.AddMeterValues(data, dataKeys.Meter);
 
                 // Assert
                 data.Count.Should().Be(meterKeys.Count - 1);
@@ -152,16 +157,34 @@ namespace App.Metrics.Facts.Meter
             // Act
             foreach (var key in setItemKeys)
             {
+                var data = new Dictionary<string, object>();
                 var value = _meterSetItemsValue();
                 var dataKeys = new GeneratedMetricNameMapping();
                 dataKeys.Meter.Remove(key);
-                value.AddMeterSetItemValues(out var data, dataKeys.Meter);
+                value.AddMeterSetItemValues(data, dataKeys.Meter);
 
                 // Assert
                 // TODO: Refactoring AppMetrics/AppMetrics/#251, between 5 and 6 because of set items
                 data.Count.Should().BeInRange(5, 6);
                 data.ContainsKey(DataKeys.Meter[key]).Should().BeFalse();
             }
+        }
+
+        [Fact]
+        public void Meter_removing_all_keys_shouldnt_throw_or_provide_data()
+        {
+            // Arrange
+            var value = _meterValue();
+            var data = new Dictionary<string, object>();
+            var dataKeys = new GeneratedMetricNameMapping();
+            dataKeys.ExcludeMeterValues();
+
+            // Act
+            Action sut = () => value.AddMeterValues(data, dataKeys.Meter);
+
+            // Assert
+            sut.Should().NotThrow();
+            data.Count.Should().Be(0);
         }
     }
 }

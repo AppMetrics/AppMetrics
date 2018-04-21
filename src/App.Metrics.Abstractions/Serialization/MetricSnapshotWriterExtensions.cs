@@ -21,7 +21,7 @@ namespace App.Metrics.Serialization
             MetricValueSourceBase<ApdexValue> valueSource,
             DateTime timestamp)
         {
-            if (valueSource == null)
+            if (valueSource == null || writer.MetricNameMapping.Apdex.Count == 0)
             {
                 return;
             }
@@ -38,7 +38,7 @@ namespace App.Metrics.Serialization
             CounterValueSource counterValueSource,
             DateTime timestamp)
         {
-            if (counterValueSource == null)
+            if (counterValueSource == null || writer.MetricNameMapping.Counter.Count == 0)
             {
                 return;
             }
@@ -90,6 +90,11 @@ namespace App.Metrics.Serialization
             MetricValueSourceBase<double> valueSource,
             DateTime timestamp)
         {
+            if (valueSource == null || writer.MetricNameMapping.Gauge.Count == 0)
+            {
+                return;
+            }
+
             if (!double.IsNaN(valueSource.Value) && !double.IsInfinity(valueSource.Value) && writer.MetricNameMapping.Gauge.ContainsKey(GaugeValueDataKeys.Value))
             {
                 WriteMetricValue(writer, context, valueSource, writer.MetricNameMapping.Gauge[GaugeValueDataKeys.Value], valueSource.Value, timestamp);
@@ -102,6 +107,11 @@ namespace App.Metrics.Serialization
             MetricValueSourceBase<HistogramValue> valueSource,
             DateTime timestamp)
         {
+            if (valueSource == null || writer.MetricNameMapping.Histogram.Count == 0)
+            {
+                return;
+            }
+
             var data = new Dictionary<string, object>();
             valueSource.Value.AddHistogramValues(data, writer.MetricNameMapping.Histogram);
             WriteMetric(writer, context, valueSource, data, timestamp);
@@ -113,6 +123,13 @@ namespace App.Metrics.Serialization
             MeterValueSource valueSource,
             DateTime timestamp)
         {
+            if (valueSource == null || writer.MetricNameMapping.Meter.Count == 0)
+            {
+                return;
+            }
+
+            var data = new Dictionary<string, object>();
+
             if (valueSource.Value.Items.Any() && valueSource.ReportSetItems)
             {
                 var itemSuffix = writer.MetricNameMapping.Meter.ContainsKey(MeterValueDataKeys.MetricSetItemSuffix)
@@ -121,7 +138,9 @@ namespace App.Metrics.Serialization
 
                 foreach (var item in valueSource.Value.Items.Distinct())
                 {
-                    item.AddMeterSetItemValues(out var setItemData, writer.MetricNameMapping.Meter);
+                    var setItemData = new Dictionary<string, object>();
+
+                    item.AddMeterSetItemValues(setItemData, writer.MetricNameMapping.Meter);
 
                     if (setItemData.Any())
                     {
@@ -137,7 +156,7 @@ namespace App.Metrics.Serialization
                 }
             }
 
-            valueSource.Value.AddMeterValues(out var data, writer.MetricNameMapping.Meter);
+            valueSource.Value.AddMeterValues(data, writer.MetricNameMapping.Meter);
 
             WriteMetric(writer, context, valueSource, data, timestamp);
         }
@@ -148,10 +167,27 @@ namespace App.Metrics.Serialization
             MetricValueSourceBase<TimerValue> valueSource,
             DateTime timestamp)
         {
-            valueSource.Value.Rate.AddMeterValues(out var data, writer.MetricNameMapping.Meter);
-            valueSource.Value.Histogram.AddHistogramValues(data, writer.MetricNameMapping.Histogram);
+            if (valueSource == null)
+            {
+                return;
+            }
 
-            WriteMetric(writer, context, valueSource, data, timestamp);
+            var data = new Dictionary<string, object>();
+
+            if (writer.MetricNameMapping.Meter.Count > 0)
+            {
+                valueSource.Value.Rate.AddMeterValues(data, writer.MetricNameMapping.Meter);
+            }
+
+            if (writer.MetricNameMapping.Histogram.Count > 0)
+            {
+                valueSource.Value.Histogram.AddHistogramValues(data, writer.MetricNameMapping.Histogram);
+            }
+
+            if (data.Count > 0)
+            {
+                WriteMetric(writer, context, valueSource, data, timestamp);
+            }
         }
 
         private static MetricTags ConcatIntrinsicMetricTags<T>(MetricValueSourceBase<T> valueSource)

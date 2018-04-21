@@ -77,5 +77,22 @@ namespace App.Metrics.Facts.Apdex
             data[DataKeys.Apdex[ApdexValueDataKeys.Frustrating]].Should().Be(4);
             data[DataKeys.Apdex[ApdexValueDataKeys.Samples]].Should().Be(5);
         }
+
+        [Fact]
+        public void Apdex_removing_all_keys_shouldnt_throw_or_provide_data()
+        {
+            // Arrange
+            var value = _apdexValue();
+            var data = new Dictionary<string, object>();
+            var dataKeys = new GeneratedMetricNameMapping();
+            dataKeys.ExcludeApdexValues();
+
+            // Act
+            Action sut = () => value.AddApdexValues(data, dataKeys.Apdex);
+
+            // Assert
+            sut.Should().NotThrow();
+            data.Count.Should().Be(0);
+        }
     }
 }
