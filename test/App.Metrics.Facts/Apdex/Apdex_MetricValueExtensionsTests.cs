@@ -2,11 +2,9 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using App.Metrics.Apdex;
-using App.Metrics.Formatters;
-using App.Metrics.Internal;
-using App.Metrics.Serialization;
 using FluentAssertions;
 using Xunit;
 
@@ -17,49 +15,56 @@ namespace App.Metrics.Facts.Apdex
         // ReSharper restore InconsistentNaming
     {
         private static readonly GeneratedMetricNameMapping DataKeys = new GeneratedMetricNameMapping();
+        private readonly Func<ApdexValue> _apdexValue = () => new ApdexValue(1, 2, 3, 4, 5);
 
         [Fact]
         public void Apdex_can_use_custom_data_keys_and_should_provide_corresponding_values()
         {
             // Arrange
-            var value = new ApdexValue(1, 2, 3, 4, 5);
-            var data = new Dictionary<string, object>();
-            var dataKeys = new GeneratedMetricNameMapping(
-                apdex: new Dictionary<ApdexValueDataKeys, string>
-                       {
-                           { ApdexValueDataKeys.Samples, "size_of_sample" }
-                       });
+            var keys = Enum.GetValues(typeof(ApdexValueDataKeys));
+            const string customKey = "custom";
 
             // Act
-            value.AddApdexValues(data, dataKeys.Apdex);
+            foreach (ApdexValueDataKeys key in keys)
+            {
+                var value = _apdexValue();
+                var data = new Dictionary<string, object>();
+                var dataKeys = new GeneratedMetricNameMapping();
+                dataKeys.Apdex[key] = customKey;
+                value.AddApdexValues(data, dataKeys.Apdex);
 
-            // Assert
-            data.ContainsKey(DataKeys.Apdex[ApdexValueDataKeys.Samples]).Should().BeFalse();
-            data["size_of_sample"].Should().Be(5);
+                // Assert
+                data.ContainsKey(DataKeys.Apdex[key]).Should().BeFalse();
+                data.ContainsKey(customKey).Should().BeTrue();
+            }
         }
 
         [Fact]
         public void Apdex_should_ignore_values_where_specified()
         {
             // Arrange
-            var value = new ApdexValue(1, 2, 3, 4, 5);
-            var data = new Dictionary<string, object>();
-            var dataKeys = new GeneratedMetricNameMapping();
-            dataKeys.Apdex.Remove(ApdexValueDataKeys.Samples);
+            var keys = Enum.GetValues(typeof(ApdexValueDataKeys));
 
             // Act
-            value.AddApdexValues(data, dataKeys.Apdex);
+            foreach (ApdexValueDataKeys key in keys)
+            {
+                var value = _apdexValue();
+                var data = new Dictionary<string, object>();
+                var dataKeys = new GeneratedMetricNameMapping();
+                dataKeys.Apdex.Remove(key);
+                value.AddApdexValues(data, dataKeys.Apdex);
 
-            // Assert
-            data.ContainsKey(DataKeys.Apdex[ApdexValueDataKeys.Satisfied]).Should().BeTrue();
-            data.ContainsKey(DataKeys.Apdex[ApdexValueDataKeys.Samples]).Should().BeFalse();
+                // Assert
+                data.Count.Should().Be(keys.Length - 1);
+                data.ContainsKey(DataKeys.Apdex[key]).Should().BeFalse();
+            }
         }
 
         [Fact]
         public void Apdex_default_data_keys_should_provide_corresponding_values()
         {
             // Arrange
-            var value = new ApdexValue(1, 2, 3, 4, 5);
+            var value = _apdexValue();
             var data = new Dictionary<string, object>();
 
             // Act

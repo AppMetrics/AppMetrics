@@ -34,7 +34,7 @@ namespace MetricsSandbox
                                   }
                               })
                       .SampleWith.ForwardDecaying()
-                      .TimeWith.StopwatchClock()
+                      .TimeWith.Clock(new TestClock())
                       .Report.Using<SimpleConsoleMetricsReporter>(TimeSpan.FromSeconds(2))
                       .Build();
 

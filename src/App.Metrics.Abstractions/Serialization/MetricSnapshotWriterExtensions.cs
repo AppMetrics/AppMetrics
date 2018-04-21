@@ -121,7 +121,7 @@ namespace App.Metrics.Serialization
 
                 foreach (var item in valueSource.Value.Items.Distinct())
                 {
-                    item.AddMeterSetItemValues(out IDictionary<string, object> setItemData, writer.MetricNameMapping.Meter);
+                    item.AddMeterSetItemValues(out var setItemData, writer.MetricNameMapping.Meter);
 
                     if (setItemData.Any())
                     {
@@ -137,7 +137,7 @@ namespace App.Metrics.Serialization
                 }
             }
 
-            valueSource.Value.AddMeterValues(out IDictionary<string, object> data, writer.MetricNameMapping.Meter);
+            valueSource.Value.AddMeterValues(out var data, writer.MetricNameMapping.Meter);
 
             WriteMetric(writer, context, valueSource, data, timestamp);
         }
@@ -148,7 +148,7 @@ namespace App.Metrics.Serialization
             MetricValueSourceBase<TimerValue> valueSource,
             DateTime timestamp)
         {
-            valueSource.Value.Rate.AddMeterValues(out IDictionary<string, object> data, writer.MetricNameMapping.Meter);
+            valueSource.Value.Rate.AddMeterValues(out var data, writer.MetricNameMapping.Meter);
             valueSource.Value.Histogram.AddHistogramValues(data, writer.MetricNameMapping.Histogram);
 
             WriteMetric(writer, context, valueSource, data, timestamp);
@@ -172,7 +172,7 @@ namespace App.Metrics.Serialization
             {
                 var meterValueSource = valueSource as MetricValueSourceBase<MeterValue>;
 
-                var meterIntrinsicTags = new MetricTags(AppMetricsConstants.Pack.MetricTagsUnitRateKey, meterValueSource.Value.RateUnit.Unit());
+                var meterIntrinsicTags = new MetricTags(AppMetricsConstants.Pack.MetricTagsUnitRateKey, meterValueSource?.Value.RateUnit.Unit());
                 intrinsicTags = MetricTags.Concat(intrinsicTags, meterIntrinsicTags);
             }
 

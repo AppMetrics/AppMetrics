@@ -2,6 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using App.Metrics.Histogram;
 using FluentAssertions;
@@ -14,12 +15,13 @@ namespace App.Metrics.Facts.Histogram
         // ReSharper restore InconsistentNaming
     {
         private static readonly GeneratedMetricNameMapping DataKeys = new GeneratedMetricNameMapping();
+        private readonly Func<HistogramValue> _histogramValue = () => new HistogramValue(1, 1, 2, "3", 4, "5", 6, 7, "8", 9, 10, 11, 12, 13, 14, 15, 16);
 
         [Fact]
         public void Histogram_can_use_custom_data_keys_and_should_provide_corresponding_values()
         {
             // Arrange
-            var value = new HistogramValue(1, 1, 2, "3", 4, "5", 6, 7, "8", 9, 10, 11, 12, 13, 14, 15, 16);
+            var value = _histogramValue();
             var data = new Dictionary<string, object>();
             var dataKeys = new GeneratedMetricNameMapping(
                 histogram: new Dictionary<HistogramValueDataKeys, string>
@@ -45,10 +47,32 @@ namespace App.Metrics.Facts.Histogram
         }
 
         [Fact]
+        public void Histogram_can_use_custom_data_keys()
+        {
+            // Arrange
+            var keys = Enum.GetValues(typeof(HistogramValueDataKeys));
+            const string customKey = "custom";
+
+            // Act
+            foreach (HistogramValueDataKeys key in keys)
+            {
+                var value = _histogramValue();
+                var data = new Dictionary<string, object>();
+                var dataKeys = new GeneratedMetricNameMapping();
+                dataKeys.Histogram[key] = customKey;
+                value.AddHistogramValues(data, dataKeys.Histogram);
+
+                // Assert
+                data.ContainsKey(DataKeys.Histogram[key]).Should().BeFalse();
+                data.ContainsKey(customKey).Should().BeTrue();
+            }
+        }
+
+        [Fact]
         public void Histogram_default_data_keys_should_provide_corresponding_values()
         {
             // Arrange
-            var value = new HistogramValue(1, 1, 2, "3", 4, "5", 6, 7, "8", 9, 10, 11, 12, 13, 14, 15, 16);
+            var value = _histogramValue();
             var data = new Dictionary<string, object>();
 
             // Act
@@ -78,17 +102,21 @@ namespace App.Metrics.Facts.Histogram
         public void Histogram_should_ignore_values_where_specified()
         {
             // Arrange
-            var value = new HistogramValue(1, 1, 2, "3", 4, "5", 6, 7, "8", 9, 10, 11, 12, 13, 14, 15, 16);
-            var data = new Dictionary<string, object>();
-            var dataKeys = new GeneratedMetricNameMapping();
-            dataKeys.Histogram.Remove(HistogramValueDataKeys.Count);
+            var keys = Enum.GetValues(typeof(HistogramValueDataKeys));
 
             // Act
-            value.AddHistogramValues(data, dataKeys.Histogram);
+            foreach (HistogramValueDataKeys key in keys)
+            {
+                var value = _histogramValue();
+                var data = new Dictionary<string, object>();
+                var dataKeys = new GeneratedMetricNameMapping();
+                dataKeys.Histogram.Remove(key);
+                value.AddHistogramValues(data, dataKeys.Histogram);
 
-            // Assert
-            data.ContainsKey(DataKeys.Histogram[HistogramValueDataKeys.Sum]).Should().BeTrue();
-            data.ContainsKey(DataKeys.Histogram[HistogramValueDataKeys.Count]).Should().BeFalse();
+                // Assert
+                data.Count.Should().Be(keys.Length - 1);
+                data.ContainsKey(DataKeys.Histogram[key]).Should().BeFalse();
+            }
         }
     }
 }
