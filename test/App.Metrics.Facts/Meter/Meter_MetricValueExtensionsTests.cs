@@ -2,6 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using App.Metrics.Meter;
 using FluentAssertions;
@@ -15,11 +16,14 @@ namespace App.Metrics.Facts.Meter
     {
         private static readonly GeneratedMetricNameMapping DataKeys = new GeneratedMetricNameMapping();
 
+        private readonly Func<MeterValue.SetItem> _meterSetItemsValue = () => new MeterValue.SetItem("item1", 1.0, new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds));
+        private readonly Func<MeterValue> _meterValue = () => new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds);
+
         [Fact]
         public void Meter_can_use_custom_data_keys_and_should_provide_corresponding_values()
         {
             // Arrange
-            var value = new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds);
+            var value = _meterValue();
             var dataKeys = new GeneratedMetricNameMapping(
                 meter: new Dictionary<MeterValueDataKeys, string>
                        {
@@ -28,7 +32,7 @@ namespace App.Metrics.Facts.Meter
                        });
 
             // Act
-            value.AddMeterValues(out IDictionary<string, object> data, dataKeys.Meter);
+            value.AddMeterValues(out var data, dataKeys.Meter);
 
             // Assert
             data.ContainsKey(DataKeys.Meter[MeterValueDataKeys.RateMean]).Should().BeFalse();
@@ -38,13 +42,67 @@ namespace App.Metrics.Facts.Meter
         }
 
         [Fact]
+        public void Meter_can_use_custom_data_keys()
+        {
+            // Arrange
+            var keys = Enum.GetValues(typeof(MeterValueDataKeys));
+            const string customKey = "custom";
+
+            // Act
+            foreach (MeterValueDataKeys key in keys)
+            {
+                // TODO: Refactoring AppMetrics/AppMetrics/#251
+                if (key == MeterValueDataKeys.MetricSetItemSuffix || key == MeterValueDataKeys.SetItemPercent)
+                {
+                    continue;
+                }
+
+                var value = _meterValue();
+                var dataKeys = new GeneratedMetricNameMapping();
+                dataKeys.Meter[key] = customKey;
+                value.AddMeterValues(out var data, dataKeys.Meter);
+
+                // Assert
+                data.ContainsKey(DataKeys.Meter[key]).Should().BeFalse($"{key} has been removed");
+                data.ContainsKey(customKey).Should().BeTrue($"{key} has been replaced with {customKey}");
+            }
+        }
+
+        [Fact]
+        public void Meter_set_item_can_use_custom_data_keys()
+        {
+            // Arrange
+            var keys = Enum.GetValues(typeof(MeterValueDataKeys));
+            const string customKey = "custom";
+
+            // Act
+            foreach (MeterValueDataKeys key in keys)
+            {
+                // TODO: Refactoring AppMetrics/AppMetrics/#251
+                if (key != MeterValueDataKeys.MetricSetItemSuffix || key != MeterValueDataKeys.SetItemPercent)
+                {
+                    continue;
+                }
+
+                var value = _meterSetItemsValue();
+                var dataKeys = new GeneratedMetricNameMapping();
+                dataKeys.Meter[key] = customKey;
+                value.AddMeterSetItemValues(out var data, dataKeys.Meter);
+
+                // Assert
+                data.ContainsKey(DataKeys.Meter[key]).Should().BeFalse($"{key} has been removed");
+                data.ContainsKey(customKey).Should().BeTrue($"{key} has been replaced with {customKey}");
+            }
+        }
+
+        [Fact]
         public void Meter_default_data_keys_should_provide_corresponding_values()
         {
             // Arrange
-            var value = new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds);
+            var value = _meterValue();
 
             // Act
-            value.AddMeterValues(out IDictionary<string, object> data, DataKeys.Meter);
+            value.AddMeterValues(out var data, DataKeys.Meter);
 
             // Assert
             data[DataKeys.Meter[MeterValueDataKeys.Count]].Should().Be(1L);
@@ -58,16 +116,52 @@ namespace App.Metrics.Facts.Meter
         public void Meter_should_ignore_values_where_specified()
         {
             // Arrange
-            var value = new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds);
-            var dataKeys = new GeneratedMetricNameMapping();
-            dataKeys.Meter.Remove(MeterValueDataKeys.Count);
+            var keys = Enum.GetValues(typeof(MeterValueDataKeys));
+            var meterKeys = new List<MeterValueDataKeys>();
+            foreach (MeterValueDataKeys key in keys)
+            {
+                // TODO: Refactoring AppMetrics/AppMetrics/#251
+                if (key != MeterValueDataKeys.MetricSetItemSuffix || key != MeterValueDataKeys.SetItemPercent)
+                {
+                    continue;
+                }
+
+                meterKeys.Add(key);
+            }
 
             // Act
-            value.AddMeterValues(out IDictionary<string, object> data, dataKeys.Meter);
+            foreach (var key in meterKeys)
+            {
+                var value = _meterValue();
+                var dataKeys = new GeneratedMetricNameMapping();
+                dataKeys.Meter.Remove(key);
+                value.AddMeterValues(out var data, dataKeys.Meter);
 
-            // Assert
-            data.ContainsKey(DataKeys.Meter[MeterValueDataKeys.Rate15M]).Should().BeTrue();
-            data.ContainsKey(DataKeys.Meter[MeterValueDataKeys.Count]).Should().BeFalse();
+                // Assert
+                data.Count.Should().Be(meterKeys.Count - 1);
+                data.ContainsKey(DataKeys.Meter[key]).Should().BeFalse();
+            }
+        }
+
+        [Fact]
+        public void Meter_set_items_should_ignore_values_where_specified()
+        {
+            // Arrange
+            var setItemKeys = new List<MeterValueDataKeys> { MeterValueDataKeys.MetricSetItemSuffix, MeterValueDataKeys.SetItemPercent };
+
+            // Act
+            foreach (var key in setItemKeys)
+            {
+                var value = _meterSetItemsValue();
+                var dataKeys = new GeneratedMetricNameMapping();
+                dataKeys.Meter.Remove(key);
+                value.AddMeterSetItemValues(out var data, dataKeys.Meter);
+
+                // Assert
+                // TODO: Refactoring AppMetrics/AppMetrics/#251, between 5 and 6 because of set items
+                data.Count.Should().BeInRange(5, 6);
+                data.ContainsKey(DataKeys.Meter[key]).Should().BeFalse();
+            }
         }
     }
 }

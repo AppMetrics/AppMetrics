@@ -7,6 +7,7 @@ using System.Linq;
 
 namespace App.Metrics
 {
+    // TODO: Refactoring AppMetrics/AppMetrics/#251
     public class GeneratedMetricNameMapping
     {
         public GeneratedMetricNameMapping()

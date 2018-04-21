@@ -102,6 +102,7 @@ namespace MetricsSandbox
         {
             foreach (var unused in Enumerable.Range(0, 10))
             {
+                Metrics.Measure.Apdex.Track(ApplicationsMetricsRegistry.ApdexOne, () => Metrics.Clock.Advance(TimeUnit.Milliseconds, Rnd.Next(5000)));
                 Metrics.Measure.Counter.Increment(ApplicationsMetricsRegistry.CounterOne);
                 Metrics.Measure.Counter.Increment(ApplicationsMetricsRegistry.CounterWithSetItems, "item1");
                 Metrics.Measure.Gauge.SetValue(ApplicationsMetricsRegistry.GaugeOne, Rnd.Next(0, 100));

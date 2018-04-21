@@ -7,6 +7,8 @@ using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
+using App.Metrics.ReservoirSampling.SlidingWindow;
+using App.Metrics.ReservoirSampling.Uniform;
 using App.Metrics.Timer;
 
 namespace MetricsSandbox
@@ -15,7 +17,10 @@ namespace MetricsSandbox
     {
         public static ApdexOptions ApdexOne => new ApdexOptions
                                                {
-                                                   Name = "apdex_one"
+                                                   Name = "apdex_one",
+                                                   AllowWarmup = false,
+                                                   ApdexTSeconds = 0.1,
+                                                   Reservoir = () => new DefaultAlgorithmRReservoir()
                                                };
 
         public static CounterOptions CounterOne => new CounterOptions

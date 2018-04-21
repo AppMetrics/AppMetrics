@@ -10,7 +10,7 @@ namespace MetricsSandbox
     {
         public static void IncludeBasic(this GeneratedMetricNameMapping dataKeys)
         {
-            dataKeys.OnlyIncludeApdexValues(ApdexValueDataKeys.Score);
+            dataKeys.Counter[CounterValueDataKeys.Value] = "val";
             dataKeys.ExcludeCounterValues(CounterValueDataKeys.Total, CounterValueDataKeys.MetricSetItemSuffix, CounterValueDataKeys.SetItemPercent);
             dataKeys.OnlyIncludeMeterValues(MeterValueDataKeys.Rate1M);
             dataKeys.OnlyIncludeHistogramValues(HistogramValueDataKeys.P95, HistogramValueDataKeys.P99);
