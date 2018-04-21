@@ -16,6 +16,11 @@ namespace App.Metrics
             IDictionary<string, object> values,
             IDictionary<ApdexValueDataKeys, string> dataKeys)
         {
+            if (values == null)
+            {
+                return;
+            }
+
             dataKeys.TryAddValuesForKey(values, ApdexValueDataKeys.Samples, apdex.SampleSize);
             dataKeys.TryAddValuesForKeyIfNotNanOrInfinity(values, ApdexValueDataKeys.Score, apdex.Score);
             dataKeys.TryAddValuesForKey(values, ApdexValueDataKeys.Satisfied, apdex.Satisfied);
@@ -28,6 +33,11 @@ namespace App.Metrics
             IDictionary<string, object> values,
             IDictionary<HistogramValueDataKeys, string> dataKeys)
         {
+            if (values == null)
+            {
+                return;
+            }
+
             dataKeys.TryAddValuesForKey(values, HistogramValueDataKeys.Samples, histogram.SampleSize);
             dataKeys.TryAddValuesForKeyIfNotNanOrInfinity(values, HistogramValueDataKeys.LastValue, histogram.LastValue);
             dataKeys.TryAddValuesForKey(values, HistogramValueDataKeys.Count, histogram.Count);
@@ -49,29 +59,40 @@ namespace App.Metrics
 
         public static void AddMeterSetItemValues(
             this MeterValue.SetItem meterItem,
-            out IDictionary<string, object> values,
+            IDictionary<string, object> values,
             IDictionary<MeterValueDataKeys, string> dataKeys)
         {
-            AddMeterKeyValues(meterItem.Value, out values, dataKeys);
+            if (values == null)
+            {
+                return;
+            }
+
+            AddMeterKeyValues(meterItem.Value, values, dataKeys);
             dataKeys.TryAddValuesForKeyIfNotNanOrInfinity(values, MeterValueDataKeys.SetItemPercent, meterItem.Percent);
         }
 
         public static void AddMeterValues(
             this MeterValue meter,
-            out IDictionary<string, object> values,
+            IDictionary<string, object> values,
             IDictionary<MeterValueDataKeys, string> dataKeys)
         {
-            AddMeterKeyValues(meter, out values, dataKeys);
+            if (values == null)
+            {
+                return;
+            }
+
+            AddMeterKeyValues(meter, values, dataKeys);
         }
 
         private static void AddMeterKeyValues(
             MeterValue meter,
-            out IDictionary<string, object> values,
+            IDictionary<string, object> values,
             IDictionary<MeterValueDataKeys, string> dataKeys)
         {
-            // ReSharper disable UseObjectOrCollectionInitializer
-            values = new Dictionary<string, object>();
-            // ReSharper restore UseObjectOrCollectionInitializer
+            if (values == null)
+            {
+                return;
+            }
 
             dataKeys.TryAddValuesForKey(values, MeterValueDataKeys.Count, meter.Count);
             dataKeys.TryAddValuesForKeyIfNotNanOrInfinity(values, MeterValueDataKeys.Rate1M, meter.OneMinuteRate);
