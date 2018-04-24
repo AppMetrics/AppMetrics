@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using App.Metrics.Concurrency;
 using App.Metrics.Infrastructure;
@@ -280,13 +281,14 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                 {
                     var sample = _values[key];
                     _values.Remove(key);
-                    var newKey = key * Math.Exp(-_alpha * (_startTime.GetValue() - oldStartTime));
+                    var newKey = key * scalingFactor;
                     var newSample = new WeightedSample(sample.Value, sample.UserValue, sample.Weight * scalingFactor);
                     _values[newKey] = newSample;
                 }
 
                 // make sure the counter is in sync with the number of stored samples.
                 _count.SetValue(_values.Count);
+                _sum.SetValue(_values.Values.Aggregate(0L, (current, sample) => current + sample.Value));
             }
             finally
             {
@@ -316,10 +318,6 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
             var lockTaken = false;
             try
             {
-                _lock.Enter(ref lockTaken);
-
-                Logger.Trace("Lock entered for reservoir update");
-
                 var itemWeight = Math.Exp(_alpha * (timestamp - _startTime.GetValue()));
                 var sample = new WeightedSample(value, userValue, itemWeight);
 
@@ -332,6 +330,10 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                 }
 
                 var priority = itemWeight / random;
+
+                _lock.Enter(ref lockTaken);
+
+                Logger.Trace("Lock entered for reservoir update");
 
                 var newCount = _count.GetValue();
                 newCount++;
