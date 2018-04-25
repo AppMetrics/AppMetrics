@@ -288,7 +288,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
 
                 // make sure the counter is in sync with the number of stored samples.
                 _count.SetValue(_values.Count);
-                _sum.SetValue(_values.Values.Aggregate(0L, (current, sample) => current + sample.Value));
+                _sum.SetValue(_values.Values.Sum(sample => sample.Value));
             }
             finally
             {
