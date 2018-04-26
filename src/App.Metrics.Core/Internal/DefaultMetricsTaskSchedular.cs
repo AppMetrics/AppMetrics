@@ -13,23 +13,37 @@ namespace App.Metrics.Internal
     {
         private static readonly ILog Logger = LogProvider.For<DefaultMetricsTaskSchedular>();
         private readonly object _syncLock = new object();
-        private readonly Func<CancellationToken, Task> _onTick;
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
 #if THREADING_TIMER
         private readonly System.Threading.Timer _timer;
 #endif
 
+        private Func<CancellationToken, Task> _onTick;
         private bool _running;
         private bool _disposed;
 
-        public DefaultMetricsTaskSchedular(Func<CancellationToken, Task> onTick)
+        public DefaultMetricsTaskSchedular()
         {
-            _onTick = onTick ?? throw new ArgumentNullException(nameof(onTick));
-
 #if THREADING_TIMER
             _timer = new System.Threading.Timer(_ => OnTick(), null, Timeout.Infinite, Timeout.Infinite);
 #endif
+        }
+
+        public DefaultMetricsTaskSchedular(Func<CancellationToken, Task> onTick)
+            : this()
+        {
+            _onTick = onTick ?? throw new ArgumentNullException(nameof(onTick));
+        }
+
+        public void SetTaskSource(Func<CancellationToken, Task> onTick)
+        {
+            if (onTick == null)
+            {
+                throw new ArgumentNullException(nameof(onTick));
+            }
+
+            _onTick = onTick;
         }
 
         public void Start(TimeSpan interval)
@@ -37,6 +51,11 @@ namespace App.Metrics.Internal
             if (interval < TimeSpan.Zero)
             {
                 throw new ArgumentOutOfRangeException(nameof(interval));
+            }
+
+            if (_onTick == null)
+            {
+                throw new InvalidOperationException("Scheduler cannot be started because the task source has not been set");
             }
 
             lock (_syncLock)
