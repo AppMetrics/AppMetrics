@@ -61,6 +61,7 @@ namespace App.Metrics.Sampling.Facts
             var snapshot = reservoir.GetSnapshot();
             snapshot.Size.Should().Be(2);
             snapshot.Values.Should().OnlyContain(v => v >= 1000 && v < 3000);
+            snapshot.Sum.Should().Be(snapshot.Values.Sum());
 
             // add 1000 values at a rate of 10 values/second
             for (var i = 0; i < 1000; i++)
@@ -72,6 +73,7 @@ namespace App.Metrics.Sampling.Facts
             var finalSnapshot = reservoir.GetSnapshot();
 
             finalSnapshot.Size.Should().Be(10);
+            snapshot.Sum.Should().Be(snapshot.Values.Sum());
             finalSnapshot.Values.Skip(1).Should().OnlyContain(v => v >= 3000 && v < 4000);
         }
 
