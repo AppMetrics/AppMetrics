@@ -12,25 +12,71 @@ using App.Metrics.ReservoirSampling;
 
 namespace App.Metrics.Scheduling
 {
+    /// <summary>
+    /// A scheduler for an <see cref="IRescalingReservoir"/> that uses a fixed time period schedule for rescaling.
+    /// </summary>
     public class DefaultReservoirRescaleScheduler : IReservoirRescaleScheduler
     {
+        /// <summary>
+        /// Default rescaling period for the <see cref="DefaultReservoirRescaleScheduler"/> (one hour).
+        /// </summary>
+        public static readonly TimeSpan DefaultRescalePeriod = TimeSpan.FromHours(1);
+
         private static readonly ILog Logger = LogProvider.For<DefaultReservoirRescaleScheduler>();
-        private static readonly TimeSpan TickInterval = TimeSpan.FromHours(1);
         private static readonly Stopwatch TickStopWatch = new Stopwatch();
         private readonly object _syncLock = new object();
         private readonly ConcurrentBag<IRescalingReservoir> _reservoirs = new ConcurrentBag<IRescalingReservoir>();
         private readonly IMetricsTaskSchedular _scheduler;
+        private readonly TimeSpan _rescalePeriod;
         private volatile bool _disposing;
 
-        private DefaultReservoirRescaleScheduler()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultReservoirRescaleScheduler"/> class.
+        /// <see cref="DefaultRescalePeriod"/> is used as the rescaling period.
+        /// </summary>
+        public DefaultReservoirRescaleScheduler()
+            : this(DefaultRescalePeriod)
         {
-            _scheduler = new DefaultMetricsTaskSchedular(c => Rescale());
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultReservoirRescaleScheduler"/> class.
+        /// </summary>
+        /// <param name="rescalePeriod">Rescaling period.</param>
+        public DefaultReservoirRescaleScheduler(TimeSpan rescalePeriod)
+            : this(rescalePeriod, null)
+        {
+        }
+
+        internal DefaultReservoirRescaleScheduler(TimeSpan rescalePeriod, IMetricsTaskSchedular scheduler)
+        {
+            if (rescalePeriod < TimeSpan.Zero)
+            {
+                throw new ArgumentOutOfRangeException(nameof(rescalePeriod));
+            }
+
+            _scheduler = scheduler ?? new DefaultMetricsTaskSchedular();
+            _scheduler.SetTaskSource(cToken => Rescale());
+            _rescalePeriod = rescalePeriod;
 
             SetScheduler();
         }
 
+        /// <summary>
+        /// Default instance of the <see cref="DefaultReservoirRescaleScheduler"/>, using <see cref="DefaultRescalePeriod"/> as rescaling period.
+        /// </summary>
         public static DefaultReservoirRescaleScheduler Instance { get; } = new DefaultReservoirRescaleScheduler();
 
+        /// <summary>
+        /// Returns the rescaling period used by the <see cref="DefaultReservoirRescaleScheduler"/>.
+        /// </summary>
+        public TimeSpan RescalePeriod { get => _rescalePeriod; }
+
+        /// <summary>
+        /// Removes given reservoir from the <see cref="DefaultReservoirRescaleScheduler"/>.
+        /// </summary>
+        /// <param name="reservoir"><see cref="IRescalingReservoir"/> to remove from the scheduler.</param>
+        /// <remarks>Removing a reservoir from the scheduler means the scheduler will not initiate any rescaling operations on that reservoir anymore.</remarks>
         public void RemoveSchedule(IRescalingReservoir reservoir)
         {
             if (reservoir != null)
@@ -42,6 +88,11 @@ namespace App.Metrics.Scheduling
             }
         }
 
+        /// <summary>
+        /// Adds given reservoir to the <see cref="DefaultReservoirRescaleScheduler"/>.
+        /// </summary>
+        /// <param name="reservoir">Reservoir to add.</param>
+        /// <remarks>Adding a reservoir to the scheduler causes the scheduler to periodically initiate a rescaling operation on that reservoir.</remarks>
         public void ScheduleReScaling(IRescalingReservoir reservoir)
         {
             _reservoirs.Add(reservoir);
@@ -71,8 +122,8 @@ namespace App.Metrics.Scheduling
 
         private void SetScheduler()
         {
-            Logger.Trace("Starting {ReservoirRescaleScheduler} Schedule", this);
-            _scheduler?.Start(TickInterval);
+            Logger.Trace("Starting {ReservoirRescaleScheduler} Schedule with period {RescalePeriod}", this, _rescalePeriod);
+            _scheduler?.Start(_rescalePeriod);
             Logger.Trace("{ReservoirRescaleScheduler} Schedule Started", this);
         }
 
