@@ -4,6 +4,8 @@
 
 using System;
 using App.Metrics;
+using App.Metrics.Infrastructure;
+using App.Metrics.Scheduling;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -33,7 +35,7 @@ namespace MetricsSandbox
                                       options.DataKeys.IncludeBasic();
                                   }
                               })
-                      .SampleWith.ForwardDecaying()
+                      .SampleWith.ForwardDecaying(TimeSpan.FromMinutes(30))
                       .TimeWith.Clock(new TestClock())
                       .Report.Using<SimpleConsoleMetricsReporter>(TimeSpan.FromSeconds(2))
                       .Build();
