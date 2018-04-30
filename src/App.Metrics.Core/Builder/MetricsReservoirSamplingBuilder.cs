@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using App.Metrics.Infrastructure;
 using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 using App.Metrics.ReservoirSampling.SlidingWindow;
@@ -67,6 +68,26 @@ namespace App.Metrics
         public IMetricsBuilder ForwardDecaying(int sampleSize, double alpha, IClock clock, IReservoirRescaleScheduler rescaleScheduler)
         {
             Reservoir(() => new DefaultForwardDecayingReservoir(sampleSize, alpha, clock, rescaleScheduler));
+
+            return Builder;
+        }
+
+        /// <inheritdoc />
+        public IMetricsBuilder ForwardDecaying(TimeSpan rescalePeriod)
+        {
+            ForwardDecaying(AppMetricsReservoirSamplingConstants.DefaultExponentialDecayFactor, rescalePeriod);
+
+            return Builder;
+        }
+
+        /// <inheritdoc />
+        public IMetricsBuilder ForwardDecaying(double alpha, TimeSpan rescalePeriod)
+        {
+            Reservoir(() => new DefaultForwardDecayingReservoir(
+                AppMetricsReservoirSamplingConstants.DefaultSampleSize,
+                AppMetricsReservoirSamplingConstants.DefaultExponentialDecayFactor,
+                new StopwatchClock(),
+                new DefaultReservoirRescaleScheduler(rescalePeriod)));
 
             return Builder;
         }

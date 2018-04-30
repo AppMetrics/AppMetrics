@@ -169,6 +169,58 @@ namespace App.Metrics
         ///         rather than a median on the lifetime of the histgram.
         ///     </para>
         /// </summary>
+        /// <param name="alpha">
+        ///     The alpha value, e.g 0.015 will heavily biases the reservoir to the past 5 mins of measurements. The higher the
+        ///     value the more biased the reservoir will be towards newer values.
+        /// </param>
+        /// <param name="rescalePeriod">The interval at which the reservoir will be rescaled.</param>
+        /// <returns>
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
+        /// </returns>
+        IMetricsBuilder ForwardDecaying(double alpha, TimeSpan rescalePeriod);
+
+        /// <summary>
+        ///     <para>
+        ///         Uses the "DefaultForwardDecayingReservoir" reservoir for <see cref="MetricType" />s which
+        ///         require sampling.
+        ///         A histogram with an exponentially decaying reservoir produces
+        ///         <see href="https://en.wikipedia.org/wiki/Quantile">quantiles</see> which are representative of (roughly) the
+        ///         last five minutes of data.
+        ///     </para>
+        ///     <para>
+        ///         The reservoir is produced by using a
+        ///         <see href="http://dimacs.rutgers.edu/~graham/pubs/papers/fwddecay.pdf">forward-decaying reservoir</see> with an
+        ///         exponential weighty towards recent data unlike a Uniform Reservoir which does not provide a sense of recency.
+        ///     </para>
+        ///     <para>
+        ///         This samling reservoir can be used when you are interested in recent changes to the distribution of data
+        ///         rather than a median on the lifetime of the histgram.
+        ///     </para>
+        /// </summary>
+        /// <param name="rescalePeriod">The interval at which the reservoir will be rescaled.</param>
+        /// <returns>
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
+        /// </returns>
+        IMetricsBuilder ForwardDecaying(TimeSpan rescalePeriod);
+
+        /// <summary>
+        ///     <para>
+        ///         Uses the "DefaultForwardDecayingReservoir" reservoir for <see cref="MetricType" />s which
+        ///         require sampling.
+        ///         A histogram with an exponentially decaying reservoir produces
+        ///         <see href="https://en.wikipedia.org/wiki/Quantile">quantiles</see> which are representative of (roughly) the
+        ///         last five minutes of data.
+        ///     </para>
+        ///     <para>
+        ///         The reservoir is produced by using a
+        ///         <see href="http://dimacs.rutgers.edu/~graham/pubs/papers/fwddecay.pdf">forward-decaying reservoir</see> with an
+        ///         exponential weighty towards recent data unlike a Uniform Reservoir which does not provide a sense of recency.
+        ///     </para>
+        ///     <para>
+        ///         This samling reservoir can be used when you are interested in recent changes to the distribution of data
+        ///         rather than a median on the lifetime of the histgram.
+        ///     </para>
+        /// </summary>
         /// <returns>
         ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
