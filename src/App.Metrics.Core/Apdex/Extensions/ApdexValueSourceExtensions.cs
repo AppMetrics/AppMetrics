@@ -1,5 +1,5 @@
-﻿// <copyright file="ApdexValueSourceExtensions.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="ApdexValueSourceExtensions.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 // ReSharper disable CheckNamespace

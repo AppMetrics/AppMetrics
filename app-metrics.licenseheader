@@ -1,16 +1,16 @@
 extensions: designer.cs generated.cs
 extensions: .cs .cpp .h
-// Copyright (c) Allan hardy. All rights reserved.
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 extensions: .cshtml
 @*
-// Copyright (c) Allan hardy. All rights reserved.
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 *@
 
 extensions:  .xml .config .xsd
 <!--
-// Copyright (c) Allan hardy. All rights reserved.
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 -->

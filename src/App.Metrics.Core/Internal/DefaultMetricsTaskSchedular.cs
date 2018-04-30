@@ -1,5 +1,5 @@
-﻿// <copyright file="DefaultMetricsTaskSchedular.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="DefaultMetricsTaskSchedular.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System;
@@ -38,12 +38,7 @@ namespace App.Metrics.Internal
 
         public void SetTaskSource(Func<CancellationToken, Task> onTick)
         {
-            if (onTick == null)
-            {
-                throw new ArgumentNullException(nameof(onTick));
-            }
-
-            _onTick = onTick;
+            _onTick = onTick ?? throw new ArgumentNullException(nameof(onTick));
         }
 
         public void Start(TimeSpan interval)

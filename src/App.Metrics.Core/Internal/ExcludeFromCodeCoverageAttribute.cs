@@ -1,5 +1,5 @@
-﻿// <copyright file="ExcludeFromCodeCoverageAttribute.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="ExcludeFromCodeCoverageAttribute.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 #if NETSTANDARD1_1 || NETSTANDARD1_3 || NETSTANDARD1_6

@@ -1,5 +1,5 @@
-﻿// <copyright file="IHistogram.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="IHistogram.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 namespace App.Metrics.Histogram

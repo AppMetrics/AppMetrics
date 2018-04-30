@@ -8,7 +8,7 @@
     "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
   "settings": {
     "documentationRules": {
-      "companyName": "Allan Hardy",
+      "companyName": "App Metrics Contributors",
       "copyrightText": "Copyright (c) {companyName}. All rights reserved.",
       "xmlHeader": true
     }
