@@ -1,5 +1,5 @@
-﻿// <copyright file="DefaultMeterBuilderTests.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="DefaultMeterBuilderTests.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using App.Metrics.Facts.Fixtures;

@@ -1,5 +1,5 @@
-// <copyright file="MetricsWithSamplesFixture.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+// <copyright file="MetricsWithSamplesFixture.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using App.Metrics.Counter;
