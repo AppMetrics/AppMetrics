@@ -322,7 +322,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
 
                     var newKey = keyValuePair.Key * scalingFactor;
                     var newSample = new WeightedSample(sample.Value, sample.UserValue, newWeight);
-                    newSamples.Add(newKey, newSample);
+                    newSamples[newKey] = newSample;
                 }
 
                 _values = new SortedList<double, WeightedSample>(newSamples, ReverseOrderDoubleComparer.Instance);

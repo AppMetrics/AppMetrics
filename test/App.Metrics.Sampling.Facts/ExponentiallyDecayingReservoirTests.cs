@@ -2,6 +2,7 @@
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
+using System;
 using System.Linq;
 using App.Metrics.FactsCommon;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
@@ -213,6 +214,41 @@ namespace App.Metrics.Sampling.Facts
 
             // expect that quantiles should be more about mode 2 after 10 minutes
             reservoir.GetSnapshot().Median.Should().Be(9999);
+        }
+
+        [Fact]
+        public void EDR_NonzeroMinimumSampleWeightEvictsSamplesDuringRescale()
+        {
+            var reservoir = new DefaultForwardDecayingReservoir(
+                10,
+                AppMetricsReservoirSamplingConstants.DefaultExponentialDecayFactor,
+                0.1,
+                _clock,
+                new TestReservoirRescaleScheduler(_clock, TimeSpan.FromSeconds(200)));
+
+            // First set of values will have the weight equal to 1
+            for (var i = 0; i < 5; i++)
+            {
+                reservoir.Update(100);
+            }
+
+            _clock.Advance(TimeUnit.Seconds, 120);
+
+            // The second set of values will have weights equal to about 6
+            for (var i = 0; i < 5; i++)
+            {
+                reservoir.Update(1000);
+            }
+
+            reservoir.GetSnapshot().Size.Should().Be(10);
+
+            // Trigger rescale
+            _clock.Advance(TimeUnit.Seconds, 120);
+
+            // New weights for the two value sets will be about 0.03 and 0.16 respectively,
+            // so a minimum weight of 0.1 should have eliminated the first set.
+            reservoir.GetSnapshot().Size.Should().Be(5);
+            reservoir.GetSnapshot().Values.Should().OnlyContain(v => v == 1000);
         }
     }
 }
