@@ -34,11 +34,12 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
     {
         private static readonly ILog Logger = LogProvider.For<DefaultForwardDecayingReservoir>();
         private readonly double _alpha;
+        private readonly double _minimumSampleWeight;
         private readonly IClock _clock;
         private readonly IReservoirRescaleScheduler _rescaleScheduler;
         private readonly int _sampleSize;
-        private readonly SortedList<double, WeightedSample> _values;
 
+        private SortedList<double, WeightedSample> _values;
         private AtomicLong _count = new AtomicLong(0);
         private bool _disposed;
         private SpinLock _lock = default;
@@ -56,6 +57,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
             : this(
                 AppMetricsReservoirSamplingConstants.DefaultSampleSize,
                 AppMetricsReservoirSamplingConstants.DefaultExponentialDecayFactor,
+                AppMetricsReservoirSamplingConstants.DefaultMinimumSampleWeight,
                 new StopwatchClock())
         {
         }
@@ -73,7 +75,28 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         ///     value the more biased the reservoir will be towards newer values.
         /// </param>
         public DefaultForwardDecayingReservoir(int sampleSize, double alpha)
-            : this(sampleSize, alpha, new StopwatchClock())
+            : this(sampleSize, alpha, AppMetricsReservoirSamplingConstants.DefaultMinimumSampleWeight, new StopwatchClock())
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="DefaultForwardDecayingReservoir" /> class.
+        /// </summary>
+        /// <remarks>
+        ///     The default size and alpha values offer a 99.9% confidence level with a 5% margin of error assuming a normal
+        ///     distribution and heavily biases the reservoir to the past 5 minutes of measurements.
+        /// </remarks>
+        /// <param name="sampleSize">The number of samples to keep in the sampling reservoir.</param>
+        /// <param name="alpha">
+        ///     The alpha value, e.g 0.015 will heavily biases the reservoir to the past 5 mins of measurements. The higher the
+        ///     value the more biased the reservoir will be towards newer values.
+        /// </param>
+        /// <param name="minimumSampleWeight">
+        ///     Minimum weight required for a sample to be retained during reservoir rescaling. Samples with weights less than this value will be discarded.
+        ///     This behavior is useful if there are longer periods of very low or no activity. Default value is zero, which preserves all samples during rescaling.
+        /// </param>
+        public DefaultForwardDecayingReservoir(int sampleSize, double alpha, double minimumSampleWeight)
+            : this(sampleSize, alpha, minimumSampleWeight, new StopwatchClock())
         {
         }
 
@@ -85,13 +108,18 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         ///     The alpha value, e.g 0.015 will heavily biases the reservoir to the past 5 mins of measurements. The higher the
         ///     value the more biased the reservoir will be towards newer values.
         /// </param>
+        /// <param name="minimumSampleWeight">
+        ///     Minimum weight required for a sample to be retained during reservoir rescaling. Samples with weights less than this value will be discarded.
+        ///     This behavior is useful if there are longer periods of very low or no activity. Default value is zero, which preserves all samples during rescaling.
+        /// </param>
         /// <param name="clock">The <see cref="IClock">clock</see> type to use for calculating processing time.</param>
         // ReSharper disable MemberCanBePrivate.Global
-        public DefaultForwardDecayingReservoir(int sampleSize, double alpha, IClock clock)
+        public DefaultForwardDecayingReservoir(int sampleSize, double alpha, double minimumSampleWeight, IClock clock)
             // ReSharper restore MemberCanBePrivate.Global
         {
             _sampleSize = sampleSize;
             _alpha = alpha;
+            _minimumSampleWeight = minimumSampleWeight;
             _clock = clock;
 
             _values = new SortedList<double, WeightedSample>(sampleSize, ReverseOrderDoubleComparer.Instance);
@@ -108,14 +136,19 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         ///     The alpha value, e.g 0.015 will heavily biases the reservoir to the past 5 mins of measurements. The higher the
         ///     value the more biased the reservoir will be towards newer values.
         /// </param>
+        /// <param name="minimumSampleWeight">
+        ///     Minimum weight required for a sample to be retained during reservoir rescaling. Samples with weights less than this value will be discarded.
+        ///     This behavior is useful if there are longer periods of very low or no activity. Default value is zero, which preserves all samples during rescaling.
+        /// </param>
         /// <param name="clock">The <see cref="IClock">clock</see> type to use for calculating processing time.</param>
         /// <param name="rescaleScheduler">The schedular used to rescale the reservoir.</param>
         // ReSharper disable MemberCanBePrivate.Global
-        public DefaultForwardDecayingReservoir(int sampleSize, double alpha, IClock clock, IReservoirRescaleScheduler rescaleScheduler)
+        public DefaultForwardDecayingReservoir(int sampleSize, double alpha, double minimumSampleWeight, IClock clock, IReservoirRescaleScheduler rescaleScheduler)
             // ReSharper restore MemberCanBePrivate.Global
         {
             _sampleSize = sampleSize;
             _alpha = alpha;
+            _minimumSampleWeight = minimumSampleWeight;
             _clock = clock;
             _rescaleScheduler = rescaleScheduler;
 
@@ -275,16 +308,25 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                 _startTime.SetValue(_clock.Seconds);
 
                 var scalingFactor = Math.Exp(-_alpha * (_startTime.GetValue() - oldStartTime));
+                var newSamples = new Dictionary<double, WeightedSample>(_values.Count);
 
-                var keys = new List<double>(_values.Keys);
-                foreach (var key in keys)
+                foreach (var keyValuePair in _values)
                 {
-                    var sample = _values[key];
-                    _values.Remove(key);
-                    var newKey = key * scalingFactor;
-                    var newSample = new WeightedSample(sample.Value, sample.UserValue, sample.Weight * scalingFactor);
-                    _values[newKey] = newSample;
+                    var sample = keyValuePair.Value;
+
+                    var newWeight = sample.Weight * scalingFactor;
+                    if (newWeight < _minimumSampleWeight)
+                    {
+                        continue;
+                    }
+
+                    var newKey = keyValuePair.Key * scalingFactor;
+                    var newSample = new WeightedSample(sample.Value, sample.UserValue, newWeight);
+                    newSamples.Add(newKey, newSample);
                 }
+
+                _values = new SortedList<double, WeightedSample>(newSamples, ReverseOrderDoubleComparer.Instance);
+                _values.Capacity = _sampleSize;
 
                 // make sure the counter is in sync with the number of stored samples.
                 _count.SetValue(_values.Count);

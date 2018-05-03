@@ -57,17 +57,25 @@ namespace App.Metrics
         }
 
         /// <inheritdoc />
-        public IMetricsBuilder ForwardDecaying(int sampleSize, double alpha, IClock clock)
+        public IMetricsBuilder ForwardDecaying(int sampleSize, double alpha, double minimumSampleWeight)
         {
-            Reservoir(() => new DefaultForwardDecayingReservoir(sampleSize, alpha, clock));
+            Reservoir(() => new DefaultForwardDecayingReservoir(sampleSize, alpha, minimumSampleWeight));
 
             return Builder;
         }
 
         /// <inheritdoc />
-        public IMetricsBuilder ForwardDecaying(int sampleSize, double alpha, IClock clock, IReservoirRescaleScheduler rescaleScheduler)
+        public IMetricsBuilder ForwardDecaying(int sampleSize, double alpha, double minimumSampleWeight, IClock clock)
         {
-            Reservoir(() => new DefaultForwardDecayingReservoir(sampleSize, alpha, clock, rescaleScheduler));
+            Reservoir(() => new DefaultForwardDecayingReservoir(sampleSize, alpha, minimumSampleWeight, clock));
+
+            return Builder;
+        }
+
+        /// <inheritdoc />
+        public IMetricsBuilder ForwardDecaying(int sampleSize, double alpha, double minimumSampleWeight, IClock clock, IReservoirRescaleScheduler rescaleScheduler)
+        {
+            Reservoir(() => new DefaultForwardDecayingReservoir(sampleSize, alpha, minimumSampleWeight, clock, rescaleScheduler));
 
             return Builder;
         }
@@ -86,6 +94,7 @@ namespace App.Metrics
             Reservoir(() => new DefaultForwardDecayingReservoir(
                 AppMetricsReservoirSamplingConstants.DefaultSampleSize,
                 AppMetricsReservoirSamplingConstants.DefaultExponentialDecayFactor,
+                AppMetricsReservoirSamplingConstants.DefaultMinimumSampleWeight,
                 new StopwatchClock(),
                 new DefaultReservoirRescaleScheduler(rescalePeriod)));
 
