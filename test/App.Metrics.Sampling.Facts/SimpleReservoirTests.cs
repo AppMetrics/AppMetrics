@@ -23,8 +23,8 @@ namespace App.Metrics.Sampling.Facts
         public void ExponentialDecayingReservoir()
         {
             var reservoir = new DefaultForwardDecayingReservoir(
-                Constants.ReservoirSampling.DefaultSampleSize,
-                Constants.ReservoirSampling.DefaultExponentialDecayFactor);
+                AppMetricsReservoirSamplingConstants.DefaultSampleSize,
+                AppMetricsReservoirSamplingConstants.DefaultExponentialDecayFactor);
 
             foreach (var sample in _samples)
             {
@@ -39,7 +39,7 @@ namespace App.Metrics.Sampling.Facts
         [Fact]
         public void SlidingWindowReservoir()
         {
-            var reservoir = new DefaultSlidingWindowReservoir(Constants.ReservoirSampling.DefaultSampleSize);
+            var reservoir = new DefaultSlidingWindowReservoir(AppMetricsReservoirSamplingConstants.DefaultSampleSize);
 
             foreach (var sample in _samples)
             {
@@ -54,7 +54,7 @@ namespace App.Metrics.Sampling.Facts
         [Fact]
         public void UniformReservoir()
         {
-            var reservoir = new DefaultAlgorithmRReservoir(Constants.ReservoirSampling.DefaultSampleSize);
+            var reservoir = new DefaultAlgorithmRReservoir(AppMetricsReservoirSamplingConstants.DefaultSampleSize);
 
             foreach (var sample in _samples)
             {
