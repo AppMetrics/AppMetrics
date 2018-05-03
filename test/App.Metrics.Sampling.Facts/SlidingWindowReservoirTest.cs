@@ -80,7 +80,7 @@ namespace App.Metrics.Sampling.Facts
 
             var field = fields.FirstOrDefault(feildInfo => feildInfo.Name == "_values");
 
-            ((UserValueWrapper[])field.GetValue(reservoir)).Length.Should().Be(Constants.ReservoirSampling.DefaultSampleSize);
+            ((UserValueWrapper[])field.GetValue(reservoir)).Length.Should().Be(AppMetricsReservoirSamplingConstants.DefaultSampleSize);
         }
 
         [Fact]

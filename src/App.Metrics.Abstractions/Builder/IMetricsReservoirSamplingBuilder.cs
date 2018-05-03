@@ -115,11 +115,14 @@ namespace App.Metrics
         ///     The alpha value, e.g 0.015 will heavily biases the reservoir to the past 5 mins of measurements. The higher the
         ///     value the more biased the reservoir will be towards newer values.
         /// </param>
-        /// <param name="clock">The <see cref="IClock" /> used for timing.</param>
+        /// <param name="minimumSampleWeight">
+        ///     Minimum weight required for a sample to be retained during reservoir rescaling. Samples with weights less than this value will be discarded.
+        ///     This behavior is useful if there are longer periods of very low or no activity. Default value is zero, which preserves all samples during rescaling.
+        /// </param>
         /// <returns>
         ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
-        IMetricsBuilder ForwardDecaying(int sampleSize, double alpha, IClock clock);
+        IMetricsBuilder ForwardDecaying(int sampleSize, double alpha, double minimumSampleWeight);
 
         /// <summary>
         ///     <para>
@@ -144,12 +147,49 @@ namespace App.Metrics
         ///     The alpha value, e.g 0.015 will heavily biases the reservoir to the past 5 mins of measurements. The higher the
         ///     value the more biased the reservoir will be towards newer values.
         /// </param>
+        /// <param name="minimumSampleWeight">
+        ///     Minimum weight required for a sample to be retained during reservoir rescaling. Samples with weights less than this value will be discarded.
+        ///     This behavior is useful if there are longer periods of very low or no activity. Default value is zero, which preserves all samples during rescaling.
+        /// </param>
+        /// <param name="clock">The <see cref="IClock" /> used for timing.</param>
+        /// <returns>
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
+        /// </returns>
+        IMetricsBuilder ForwardDecaying(int sampleSize, double alpha, double minimumSampleWeight, IClock clock);
+
+        /// <summary>
+        ///     <para>
+        ///         Uses the "DefaultForwardDecayingReservoir" reservoir for <see cref="MetricType" />s which
+        ///         require sampling.
+        ///         A histogram with an exponentially decaying reservoir produces
+        ///         <see href="https://en.wikipedia.org/wiki/Quantile">quantiles</see> which are representative of (roughly) the
+        ///         last five minutes of data.
+        ///     </para>
+        ///     <para>
+        ///         The reservoir is produced by using a
+        ///         <see href="http://dimacs.rutgers.edu/~graham/pubs/papers/fwddecay.pdf">forward-decaying reservoir</see> with an
+        ///         exponential weighty towards recent data unlike a Uniform Reservoir which does not provide a sense of recency.
+        ///     </para>
+        ///     <para>
+        ///         This sampling reservoir can be used when you are interested in recent changes to the distribution of data
+        ///         rather than a median on the lifetime of the histgram.
+        ///     </para>
+        /// </summary>
+        /// <param name="sampleSize">The number of samples to keep in the sampling reservoir.</param>
+        /// <param name="alpha">
+        ///     The alpha value, e.g 0.015 will heavily biases the reservoir to the past 5 mins of measurements. The higher the
+        ///     value the more biased the reservoir will be towards newer values.
+        /// </param>
+        /// <param name="minimumSampleWeight">
+        ///     Minimum weight required for a sample to be retained during reservoir rescaling. Samples with weights less than this value will be discarded.
+        ///     This behavior is useful if there are longer periods of very low or no activity. Default value is zero, which preserves all samples during rescaling.
+        /// </param>
         /// <param name="clock">The <see cref="IClock" /> used for timing.</param>
         /// <param name="rescaleScheduler">The <see cref="IReservoirRescaleScheduler" /> used to rescale the reservoir.</param>
         /// <returns>
         ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
-        IMetricsBuilder ForwardDecaying(int sampleSize, double alpha, IClock clock, IReservoirRescaleScheduler rescaleScheduler);
+        IMetricsBuilder ForwardDecaying(int sampleSize, double alpha, double minimumSampleWeight, IClock clock, IReservoirRescaleScheduler rescaleScheduler);
 
         /// <summary>
         ///     <para>
