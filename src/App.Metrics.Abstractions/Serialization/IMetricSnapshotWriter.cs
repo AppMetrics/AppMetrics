@@ -10,12 +10,12 @@ namespace App.Metrics.Serialization
     public interface IMetricSnapshotWriter : IDisposable
     {
         /// <summary>
-        /// Gets the <see cref="GeneratedMetricNameMapping"/> allowing customization of the metric names used for auto-generated metrics e.g. historgram percentailes
+        /// Gets the <see cref="MetricFields"/> allowing customization of the metric names used for auto-generated metrics e.g. historgram percentailes
         /// </summary>
         /// <value>
         /// The generated metric name mappings
         /// </value>
-        GeneratedMetricNameMapping MetricNameMapping { get; }
+        MetricFields MetricFields { get; }
 
         /// <summary>
         /// Writes the specific metrics and tags

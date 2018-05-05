@@ -47,7 +47,7 @@ namespace App.Metrics.Formatters.Ascii
                     _options.Separator,
                     _options.Padding,
                     _options.MetricNameFormatter,
-                    _options.DataKeys))
+                    _options.FieldMapping))
                 {
                     serializer.Serialize(textWriter, metricsData);
                 }

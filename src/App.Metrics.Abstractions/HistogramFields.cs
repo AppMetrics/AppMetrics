@@ -1,10 +1,10 @@
-﻿// <copyright file="HistogramValueDataKeys.cs" company="App Metrics Contributors">
+﻿// <copyright file="HistogramFields.cs" company="App Metrics Contributors">
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 namespace App.Metrics
 {
-    public enum HistogramValueDataKeys
+    public enum HistogramFields
     {
 #pragma warning disable SA1602
         Samples,

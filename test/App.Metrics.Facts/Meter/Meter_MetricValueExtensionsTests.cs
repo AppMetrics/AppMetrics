@@ -14,106 +14,106 @@ namespace App.Metrics.Facts.Meter
     public class Meter_MetricValueExtensionsTests
         // ReSharper restore InconsistentNaming
     {
-        private static readonly GeneratedMetricNameMapping DataKeys = new GeneratedMetricNameMapping();
+        private static readonly MetricFields Fields = new MetricFields();
 
         private readonly Func<MeterValue.SetItem> _meterSetItemsValue = () => new MeterValue.SetItem("item1", 1.0, new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds));
         private readonly Func<MeterValue> _meterValue = () => new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds);
 
         [Fact]
-        public void Meter_can_use_custom_data_keys_and_should_provide_corresponding_values()
+        public void Meter_can_use_custom_field_names_and_should_provide_corresponding_values()
         {
             // Arrange
             var data = new Dictionary<string, object>();
             var value = _meterValue();
-            var dataKeys = new GeneratedMetricNameMapping(
-                meter: new Dictionary<MeterValueDataKeys, string>
+            var fields = new MetricFields(
+                meter: new Dictionary<MeterFields, string>
                        {
-                           { MeterValueDataKeys.Rate1M, "1_min_rate" },
-                           { MeterValueDataKeys.RateMean, "mean_rate" }
+                           { MeterFields.Rate1M, "1_min_rate" },
+                           { MeterFields.RateMean, "mean_rate" }
                        });
 
             // Act
-            value.AddMeterValues(data, dataKeys.Meter);
+            value.AddMeterValues(data, fields.Meter);
 
             // Assert
-            data.ContainsKey(DataKeys.Meter[MeterValueDataKeys.RateMean]).Should().BeFalse();
+            data.ContainsKey(Fields.Meter[MeterFields.RateMean]).Should().BeFalse();
             data["mean_rate"].Should().Be(2.0);
-            data.ContainsKey(DataKeys.Meter[MeterValueDataKeys.Rate1M]).Should().BeFalse();
+            data.ContainsKey(Fields.Meter[MeterFields.Rate1M]).Should().BeFalse();
             data["1_min_rate"].Should().Be(3.0);
         }
 
         [Fact]
-        public void Meter_can_use_custom_data_keys()
+        public void Meter_can_use_custom_field_names()
         {
             // Arrange
-            var keys = Enum.GetValues(typeof(MeterValueDataKeys));
+            var keys = Enum.GetValues(typeof(MeterFields));
             const string customKey = "custom";
 
             // Act
-            foreach (MeterValueDataKeys key in keys)
+            foreach (MeterFields key in keys)
             {
                 // TODO: Refactoring AppMetrics/AppMetrics/#251
-                if (key == MeterValueDataKeys.MetricSetItemSuffix || key == MeterValueDataKeys.SetItemPercent)
+                if (key == MeterFields.MetricSetItemSuffix || key == MeterFields.SetItemPercent)
                 {
                     continue;
                 }
 
                 var data = new Dictionary<string, object>();
                 var value = _meterValue();
-                var dataKeys = new GeneratedMetricNameMapping();
-                dataKeys.Meter[key] = customKey;
-                value.AddMeterValues(data, dataKeys.Meter);
+                var fields = new MetricFields();
+                fields.Meter[key] = customKey;
+                value.AddMeterValues(data, fields.Meter);
 
                 // Assert
-                data.ContainsKey(DataKeys.Meter[key]).Should().BeFalse($"{key} has been removed");
+                data.ContainsKey(Fields.Meter[key]).Should().BeFalse($"{key} has been removed");
                 data.ContainsKey(customKey).Should().BeTrue($"{key} has been replaced with {customKey}");
             }
         }
 
         [Fact]
-        public void Meter_set_item_can_use_custom_data_keys()
+        public void Meter_set_item_can_use_custom_field_names()
         {
             // Arrange
             var data = new Dictionary<string, object>();
-            var keys = Enum.GetValues(typeof(MeterValueDataKeys));
+            var fieldValues = Enum.GetValues(typeof(MeterFields));
             const string customKey = "custom";
 
             // Act
-            foreach (MeterValueDataKeys key in keys)
+            foreach (MeterFields field in fieldValues)
             {
                 // TODO: Refactoring AppMetrics/AppMetrics/#251
-                if (key != MeterValueDataKeys.MetricSetItemSuffix || key != MeterValueDataKeys.SetItemPercent)
+                if (field != MeterFields.MetricSetItemSuffix || field != MeterFields.SetItemPercent)
                 {
                     continue;
                 }
 
                 var value = _meterSetItemsValue();
-                var dataKeys = new GeneratedMetricNameMapping();
-                dataKeys.Meter[key] = customKey;
-                value.AddMeterSetItemValues(data, dataKeys.Meter);
+                var fields = new MetricFields();
+                fields.Meter[field] = customKey;
+                value.AddMeterSetItemValues(data, fields.Meter);
 
                 // Assert
-                data.ContainsKey(DataKeys.Meter[key]).Should().BeFalse($"{key} has been removed");
-                data.ContainsKey(customKey).Should().BeTrue($"{key} has been replaced with {customKey}");
+                data.ContainsKey(Fields.Meter[field]).Should().BeFalse($"{field} has been removed");
+                data.ContainsKey(customKey).Should().BeTrue($"{field} has been replaced with {customKey}");
             }
         }
 
         [Fact]
-        public void Meter_default_data_keys_should_provide_corresponding_values()
+        public void Meter_default_field_names_should_provide_corresponding_values()
         {
             // Arrange
             var data = new Dictionary<string, object>();
             var value = _meterValue();
 
             // Act
-            value.AddMeterValues(data, DataKeys.Meter);
+            value.AddMeterValues(data, Fields.Meter);
 
             // Assert
-            data[DataKeys.Meter[MeterValueDataKeys.Count]].Should().Be(1L);
-            data[DataKeys.Meter[MeterValueDataKeys.RateMean]].Should().Be(2.0);
-            data[DataKeys.Meter[MeterValueDataKeys.Rate1M]].Should().Be(3.0);
-            data[DataKeys.Meter[MeterValueDataKeys.Rate5M]].Should().Be(4.0);
-            data[DataKeys.Meter[MeterValueDataKeys.Rate15M]].Should().Be(5.0);
+            data[Fields.Meter[MeterFields.Count]].Should().Be(1L);
+            data[Fields.Meter[MeterFields.RateMean]].Should().Be(2.0);
+            data[Fields.Meter[MeterFields.Rate1M]].Should().Be(3.0);
+            data[Fields.Meter[MeterFields.Rate5M]].Should().Be(4.0);
+            data[Fields.Meter[MeterFields.Rate15M]].Should().Be(5.0);
         }
 
         [Fact]
@@ -121,12 +121,12 @@ namespace App.Metrics.Facts.Meter
         {
             // Arrange
             var data = new Dictionary<string, object>();
-            var keys = Enum.GetValues(typeof(MeterValueDataKeys));
-            var meterKeys = new List<MeterValueDataKeys>();
-            foreach (MeterValueDataKeys key in keys)
+            var keys = Enum.GetValues(typeof(MeterFields));
+            var meterKeys = new List<MeterFields>();
+            foreach (MeterFields key in keys)
             {
                 // TODO: Refactoring AppMetrics/AppMetrics/#251
-                if (key != MeterValueDataKeys.MetricSetItemSuffix || key != MeterValueDataKeys.SetItemPercent)
+                if (key != MeterFields.MetricSetItemSuffix || key != MeterFields.SetItemPercent)
                 {
                     continue;
                 }
@@ -138,13 +138,13 @@ namespace App.Metrics.Facts.Meter
             foreach (var key in meterKeys)
             {
                 var value = _meterValue();
-                var dataKeys = new GeneratedMetricNameMapping();
-                dataKeys.Meter.Remove(key);
-                value.AddMeterValues(data, dataKeys.Meter);
+                var fields = new MetricFields();
+                fields.Meter.Remove(key);
+                value.AddMeterValues(data, fields.Meter);
 
                 // Assert
                 data.Count.Should().Be(meterKeys.Count - 1);
-                data.ContainsKey(DataKeys.Meter[key]).Should().BeFalse();
+                data.ContainsKey(Fields.Meter[key]).Should().BeFalse();
             }
         }
 
@@ -152,35 +152,35 @@ namespace App.Metrics.Facts.Meter
         public void Meter_set_items_should_ignore_values_where_specified()
         {
             // Arrange
-            var setItemKeys = new List<MeterValueDataKeys> { MeterValueDataKeys.MetricSetItemSuffix, MeterValueDataKeys.SetItemPercent };
+            var setItemKeys = new List<MeterFields> { MeterFields.MetricSetItemSuffix, MeterFields.SetItemPercent };
 
             // Act
             foreach (var key in setItemKeys)
             {
                 var data = new Dictionary<string, object>();
                 var value = _meterSetItemsValue();
-                var dataKeys = new GeneratedMetricNameMapping();
-                dataKeys.Meter.Remove(key);
-                value.AddMeterSetItemValues(data, dataKeys.Meter);
+                var fields = new MetricFields();
+                fields.Meter.Remove(key);
+                value.AddMeterSetItemValues(data, fields.Meter);
 
                 // Assert
                 // TODO: Refactoring AppMetrics/AppMetrics/#251, between 5 and 6 because of set items
                 data.Count.Should().BeInRange(5, 6);
-                data.ContainsKey(DataKeys.Meter[key]).Should().BeFalse();
+                data.ContainsKey(Fields.Meter[key]).Should().BeFalse();
             }
         }
 
         [Fact]
-        public void Meter_removing_all_keys_shouldnt_throw_or_provide_data()
+        public void Meter_removing_all_fields_shouldnt_throw_or_provide_data()
         {
             // Arrange
             var value = _meterValue();
             var data = new Dictionary<string, object>();
-            var dataKeys = new GeneratedMetricNameMapping();
-            dataKeys.ExcludeMeterValues();
+            var fields = new MetricFields();
+            fields.ExcludeMeterValues();
 
             // Act
-            Action sut = () => value.AddMeterValues(data, dataKeys.Meter);
+            Action sut = () => value.AddMeterValues(data, fields.Meter);
 
             // Assert
             sut.Should().NotThrow();

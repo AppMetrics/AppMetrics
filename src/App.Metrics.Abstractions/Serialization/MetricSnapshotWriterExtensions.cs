@@ -21,13 +21,13 @@ namespace App.Metrics.Serialization
             MetricValueSourceBase<ApdexValue> valueSource,
             DateTime timestamp)
         {
-            if (valueSource == null || writer.MetricNameMapping.Apdex.Count == 0)
+            if (valueSource == null || writer.MetricFields.Apdex.Count == 0)
             {
                 return;
             }
 
             var data = new Dictionary<string, object>();
-            valueSource.Value.AddApdexValues(data, writer.MetricNameMapping.Apdex);
+            valueSource.Value.AddApdexValues(data, writer.MetricFields.Apdex);
             WriteMetric(writer, context, valueSource, data, timestamp);
         }
 
@@ -38,29 +38,29 @@ namespace App.Metrics.Serialization
             CounterValueSource counterValueSource,
             DateTime timestamp)
         {
-            if (counterValueSource == null || writer.MetricNameMapping.Counter.Count == 0)
+            if (counterValueSource == null || writer.MetricFields.Counter.Count == 0)
             {
                 return;
             }
 
             if (counterValueSource.Value.Items.Any() && counterValueSource.ReportSetItems)
             {
-                var itemSuffix = writer.MetricNameMapping.Counter.ContainsKey(CounterValueDataKeys.MetricSetItemSuffix)
-                    ? writer.MetricNameMapping.Counter[CounterValueDataKeys.MetricSetItemSuffix]
-                    : DefaultGeneratedMetricNameMapping.DefaultMetricsSetItemSuffix;
+                var itemSuffix = writer.MetricFields.Counter.ContainsKey(CounterFields.MetricSetItemSuffix)
+                    ? writer.MetricFields.Counter[CounterFields.MetricSetItemSuffix]
+                    : DefaultMetricFieldNames.DefaultMetricsSetItemSuffix;
 
                 foreach (var item in counterValueSource.Value.Items.Distinct())
                 {
                     var itemData = new Dictionary<string, object>();
 
-                    if (writer.MetricNameMapping.Counter.ContainsKey(CounterValueDataKeys.Total))
+                    if (writer.MetricFields.Counter.ContainsKey(CounterFields.Total))
                     {
-                        itemData.Add(writer.MetricNameMapping.Counter[CounterValueDataKeys.Total], item.Count);
+                        itemData.Add(writer.MetricFields.Counter[CounterFields.Total], item.Count);
                     }
 
-                    if (counterValueSource.ReportItemPercentages && writer.MetricNameMapping.Counter.ContainsKey(CounterValueDataKeys.SetItemPercent))
+                    if (counterValueSource.ReportItemPercentages && writer.MetricFields.Counter.ContainsKey(CounterFields.SetItemPercent))
                     {
-                        itemData.AddIfNotNanOrInfinity(writer.MetricNameMapping.Counter[CounterValueDataKeys.SetItemPercent], item.Percent);
+                        itemData.AddIfNotNanOrInfinity(writer.MetricFields.Counter[CounterFields.SetItemPercent], item.Percent);
                     }
 
                     if (itemData.Any())
@@ -77,10 +77,10 @@ namespace App.Metrics.Serialization
                 }
             }
 
-            if (writer.MetricNameMapping.Counter.ContainsKey(CounterValueDataKeys.Value))
+            if (writer.MetricFields.Counter.ContainsKey(CounterFields.Value))
             {
                 var count = valueSource.ValueProvider.GetValue(resetMetric: counterValueSource.ResetOnReporting).Count;
-                WriteMetricValue(writer, context, valueSource, writer.MetricNameMapping.Counter[CounterValueDataKeys.Value], count, timestamp);
+                WriteMetricValue(writer, context, valueSource, writer.MetricFields.Counter[CounterFields.Value], count, timestamp);
             }
         }
 
@@ -90,14 +90,14 @@ namespace App.Metrics.Serialization
             MetricValueSourceBase<double> valueSource,
             DateTime timestamp)
         {
-            if (valueSource == null || writer.MetricNameMapping.Gauge.Count == 0)
+            if (valueSource == null || writer.MetricFields.Gauge.Count == 0)
             {
                 return;
             }
 
-            if (!double.IsNaN(valueSource.Value) && !double.IsInfinity(valueSource.Value) && writer.MetricNameMapping.Gauge.ContainsKey(GaugeValueDataKeys.Value))
+            if (!double.IsNaN(valueSource.Value) && !double.IsInfinity(valueSource.Value) && writer.MetricFields.Gauge.ContainsKey(GaugeFields.Value))
             {
-                WriteMetricValue(writer, context, valueSource, writer.MetricNameMapping.Gauge[GaugeValueDataKeys.Value], valueSource.Value, timestamp);
+                WriteMetricValue(writer, context, valueSource, writer.MetricFields.Gauge[GaugeFields.Value], valueSource.Value, timestamp);
             }
         }
 
@@ -107,13 +107,13 @@ namespace App.Metrics.Serialization
             MetricValueSourceBase<HistogramValue> valueSource,
             DateTime timestamp)
         {
-            if (valueSource == null || writer.MetricNameMapping.Histogram.Count == 0)
+            if (valueSource == null || writer.MetricFields.Histogram.Count == 0)
             {
                 return;
             }
 
             var data = new Dictionary<string, object>();
-            valueSource.Value.AddHistogramValues(data, writer.MetricNameMapping.Histogram);
+            valueSource.Value.AddHistogramValues(data, writer.MetricFields.Histogram);
             WriteMetric(writer, context, valueSource, data, timestamp);
         }
 
@@ -123,7 +123,7 @@ namespace App.Metrics.Serialization
             MeterValueSource valueSource,
             DateTime timestamp)
         {
-            if (valueSource == null || writer.MetricNameMapping.Meter.Count == 0)
+            if (valueSource == null || writer.MetricFields.Meter.Count == 0)
             {
                 return;
             }
@@ -132,15 +132,15 @@ namespace App.Metrics.Serialization
 
             if (valueSource.Value.Items.Any() && valueSource.ReportSetItems)
             {
-                var itemSuffix = writer.MetricNameMapping.Meter.ContainsKey(MeterValueDataKeys.MetricSetItemSuffix)
-                    ? writer.MetricNameMapping.Meter[MeterValueDataKeys.MetricSetItemSuffix]
-                    : DefaultGeneratedMetricNameMapping.DefaultMetricsSetItemSuffix;
+                var itemSuffix = writer.MetricFields.Meter.ContainsKey(MeterFields.MetricSetItemSuffix)
+                    ? writer.MetricFields.Meter[MeterFields.MetricSetItemSuffix]
+                    : DefaultMetricFieldNames.DefaultMetricsSetItemSuffix;
 
                 foreach (var item in valueSource.Value.Items.Distinct())
                 {
                     var setItemData = new Dictionary<string, object>();
 
-                    item.AddMeterSetItemValues(setItemData, writer.MetricNameMapping.Meter);
+                    item.AddMeterSetItemValues(setItemData, writer.MetricFields.Meter);
 
                     if (setItemData.Any())
                     {
@@ -156,7 +156,7 @@ namespace App.Metrics.Serialization
                 }
             }
 
-            valueSource.Value.AddMeterValues(data, writer.MetricNameMapping.Meter);
+            valueSource.Value.AddMeterValues(data, writer.MetricFields.Meter);
 
             WriteMetric(writer, context, valueSource, data, timestamp);
         }
@@ -174,14 +174,14 @@ namespace App.Metrics.Serialization
 
             var data = new Dictionary<string, object>();
 
-            if (writer.MetricNameMapping.Meter.Count > 0)
+            if (writer.MetricFields.Meter.Count > 0)
             {
-                valueSource.Value.Rate.AddMeterValues(data, writer.MetricNameMapping.Meter);
+                valueSource.Value.Rate.AddMeterValues(data, writer.MetricFields.Meter);
             }
 
-            if (writer.MetricNameMapping.Histogram.Count > 0)
+            if (writer.MetricFields.Histogram.Count > 0)
             {
-                valueSource.Value.Histogram.AddHistogramValues(data, writer.MetricNameMapping.Histogram);
+                valueSource.Value.Histogram.AddHistogramValues(data, writer.MetricFields.Histogram);
             }
 
             if (data.Count > 0)

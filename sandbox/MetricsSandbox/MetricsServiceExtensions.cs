@@ -4,8 +4,6 @@
 
 using System;
 using App.Metrics;
-using App.Metrics.Infrastructure;
-using App.Metrics.Scheduling;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,7 +30,7 @@ namespace MetricsSandbox
                               {
                                   if (filterMetricValueTypes)
                                   {
-                                      options.DataKeys.IncludeBasic();
+                                      options.FieldMapping.IncludeBasic();
                                   }
                               })
                       .SampleWith.ForwardDecaying(TimeSpan.FromMinutes(30))
