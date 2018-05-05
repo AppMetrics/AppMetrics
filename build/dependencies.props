@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <AppMetricsConcurrencyVersion>2.0.0</AppMetricsConcurrencyVersion>
+    <AppMetricsConcurrencyVersion>2.0.1</AppMetricsConcurrencyVersion>
     <AppMetricsAspNetCoreVersion>2.0.0-*</AppMetricsAspNetCoreVersion>
     <AspNetCoreVersion>2.0.1</AspNetCoreVersion>
     <MicrosoftExtensionsVersion>2.0.0</MicrosoftExtensionsVersion>
