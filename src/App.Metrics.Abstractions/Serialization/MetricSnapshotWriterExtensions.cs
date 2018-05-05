@@ -80,7 +80,7 @@ namespace App.Metrics.Serialization
             if (writer.MetricNameMapping.Counter.ContainsKey(CounterValueDataKeys.Value))
             {
                 var count = valueSource.ValueProvider.GetValue(resetMetric: counterValueSource.ResetOnReporting).Count;
-                WriteMetricValue(writer, context, valueSource, writer.MetricNameMapping.Counter[CounterValueDataKeys.Value], count, timestamp);
+                WriteMetricValue(writer, context, valueSource, count, timestamp);
             }
         }
 
@@ -97,7 +97,7 @@ namespace App.Metrics.Serialization
 
             if (!double.IsNaN(valueSource.Value) && !double.IsInfinity(valueSource.Value) && writer.MetricNameMapping.Gauge.ContainsKey(GaugeValueDataKeys.Value))
             {
-                WriteMetricValue(writer, context, valueSource, writer.MetricNameMapping.Gauge[GaugeValueDataKeys.Value], valueSource.Value, timestamp);
+                WriteMetricValue(writer, context, valueSource, valueSource.Value, timestamp);
             }
         }
 
@@ -272,7 +272,6 @@ namespace App.Metrics.Serialization
             IMetricSnapshotWriter writer,
             string context,
             MetricValueSourceBase<T> valueSource,
-            string field,
             object value,
             DateTime timestamp)
         {
@@ -283,7 +282,6 @@ namespace App.Metrics.Serialization
                 writer.Write(
                     context,
                     valueSource.MultidimensionalName,
-                    field,
                     value,
                     tags,
                     timestamp);
@@ -291,7 +289,7 @@ namespace App.Metrics.Serialization
                 return;
             }
 
-            writer.Write(context, valueSource.Name, field, value, tags, timestamp);
+            writer.Write(context, valueSource.Name, value, tags, timestamp);
         }
 
         private static void WriteMetricWithSetItems<T>(

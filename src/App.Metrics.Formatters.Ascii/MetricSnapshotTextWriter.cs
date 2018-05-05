@@ -51,7 +51,6 @@ namespace App.Metrics.Formatters.Ascii
         public void Write(
             string context,
             string name,
-            string field,
             object value,
             MetricTags tags,
             DateTime timestamp)
@@ -63,7 +62,7 @@ namespace App.Metrics.Formatters.Ascii
 
             var measurement = _metricNameFormatter(context, name);
 
-            _textPoints.Add(new MetricsTextPoint(measurement, new Dictionary<string, object> { { field, value } }, tags, timestamp));
+            _textPoints.Add(new MetricsTextPoint(measurement, new Dictionary<string, object> { { "field", value } }, tags, timestamp));
         }
 
         /// <inheritdoc />
