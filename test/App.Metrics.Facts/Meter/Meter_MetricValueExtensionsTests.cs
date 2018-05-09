@@ -17,7 +17,7 @@ namespace App.Metrics.Facts.Meter
         private static readonly MetricFields Fields = new MetricFields();
 
         private readonly Func<MeterValue.SetItem> _meterSetItemsValue = () => new MeterValue.SetItem("item1", 1.0, new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds));
-        private readonly Func<MeterValue> _meterValue = () => new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds);
+        private readonly Func<MeterValue> _meterValue = () => new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds, new[] { new MeterValue.SetItem("item1", 1.0, new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds)) });
 
         [Fact]
         public void Meter_can_use_custom_field_names_and_should_provide_corresponding_values()
@@ -46,14 +46,14 @@ namespace App.Metrics.Facts.Meter
         public void Meter_can_use_custom_field_names()
         {
             // Arrange
-            var keys = Enum.GetValues(typeof(MeterFields));
-            const string customKey = "custom";
+            var fieldValues = Enum.GetValues(typeof(MeterFields));
+            const string customField = "custom";
 
             // Act
-            foreach (MeterFields key in keys)
+            foreach (MeterFields field in fieldValues)
             {
-                // TODO: Refactoring AppMetrics/AppMetrics/#251
-                if (key == MeterFields.MetricSetItemSuffix || key == MeterFields.SetItemPercent)
+                // ignore set item fields
+                if (field == MeterFields.SetItem || field == MeterFields.SetItemPercent)
                 {
                     continue;
                 }
@@ -61,41 +61,47 @@ namespace App.Metrics.Facts.Meter
                 var data = new Dictionary<string, object>();
                 var value = _meterValue();
                 var fields = new MetricFields();
-                fields.Meter[key] = customKey;
+                fields.Meter[field] = customField;
                 value.AddMeterValues(data, fields.Meter);
 
                 // Assert
-                data.ContainsKey(Fields.Meter[key]).Should().BeFalse($"{key} has been removed");
-                data.ContainsKey(customKey).Should().BeTrue($"{key} has been replaced with {customKey}");
+                data.ContainsKey(Fields.Meter[field]).Should().BeFalse($"{field} has been removed");
+                data.ContainsKey(customField).Should().BeTrue($"{field} has been replaced with {customField}");
             }
         }
 
         [Fact]
-        public void Meter_set_item_can_use_custom_field_names()
+        public void Meter_set_item_percent_can_use_custom_field_name()
         {
             // Arrange
             var data = new Dictionary<string, object>();
-            var fieldValues = Enum.GetValues(typeof(MeterFields));
-            const string customKey = "custom";
+            const string customField = "custom";
 
             // Act
-            foreach (MeterFields field in fieldValues)
-            {
-                // TODO: Refactoring AppMetrics/AppMetrics/#251
-                if (field != MeterFields.MetricSetItemSuffix || field != MeterFields.SetItemPercent)
-                {
-                    continue;
-                }
+            var value = _meterSetItemsValue();
+            var fields = new MetricFields();
+            fields.Meter[MeterFields.SetItemPercent] = customField;
+            value.AddMeterSetItemValues(data, fields.Meter);
 
-                var value = _meterSetItemsValue();
-                var fields = new MetricFields();
-                fields.Meter[field] = customKey;
-                value.AddMeterSetItemValues(data, fields.Meter);
+            // Assert
+            data.ContainsKey(Fields.Meter[MeterFields.SetItemPercent]).Should().BeFalse($"{MeterFields.SetItemPercent} has been removed");
+            data.ContainsKey(customField).Should().BeTrue($"{MeterFields.SetItemPercent} has been replaced with {customField}");
+        }
 
-                // Assert
-                data.ContainsKey(Fields.Meter[field]).Should().BeFalse($"{field} has been removed");
-                data.ContainsKey(customKey).Should().BeTrue($"{field} has been replaced with {customKey}");
-            }
+        [Fact]
+        public void Can_exclude_meter_set_items()
+        {
+            // Arrange
+            var data = new Dictionary<string, object>();
+
+            // Act
+            var value = _meterSetItemsValue();
+            var fields = new MetricFields();
+            fields.ExcludeMeterFields(MeterFields.SetItem);
+            value.AddMeterSetItemValues(data, fields.Meter);
+
+            // Assert
+            data.Count.Should().Be(0, "SetItem field was ignored");
         }
 
         [Fact]
@@ -121,30 +127,19 @@ namespace App.Metrics.Facts.Meter
         {
             // Arrange
             var data = new Dictionary<string, object>();
-            var keys = Enum.GetValues(typeof(MeterFields));
-            var meterKeys = new List<MeterFields>();
-            foreach (MeterFields key in keys)
-            {
-                // TODO: Refactoring AppMetrics/AppMetrics/#251
-                if (key != MeterFields.MetricSetItemSuffix || key != MeterFields.SetItemPercent)
-                {
-                    continue;
-                }
-
-                meterKeys.Add(key);
-            }
+            var meterFields = new List<MeterFields>();
 
             // Act
-            foreach (var key in meterKeys)
+            foreach (var field in meterFields)
             {
                 var value = _meterValue();
                 var fields = new MetricFields();
-                fields.Meter.Remove(key);
+                fields.Meter.Remove(field);
                 value.AddMeterValues(data, fields.Meter);
 
                 // Assert
-                data.Count.Should().Be(meterKeys.Count - 1);
-                data.ContainsKey(Fields.Meter[key]).Should().BeFalse();
+                data.Count.Should().Be(meterFields.Count - 1);
+                data.ContainsKey(Fields.Meter[field]).Should().BeFalse();
             }
         }
 
@@ -152,22 +147,45 @@ namespace App.Metrics.Facts.Meter
         public void Meter_set_items_should_ignore_values_where_specified()
         {
             // Arrange
-            var setItemKeys = new List<MeterFields> { MeterFields.MetricSetItemSuffix, MeterFields.SetItemPercent };
+            var setItemFields = new[] { MeterFields.SetItem, MeterFields.SetItemPercent };
+            var fieldValues = Enum.GetValues(typeof(MeterFields));
 
             // Act
-            foreach (var key in setItemKeys)
+            foreach (MeterFields field in fieldValues)
             {
                 var data = new Dictionary<string, object>();
                 var value = _meterSetItemsValue();
                 var fields = new MetricFields();
-                fields.Meter.Remove(key);
+                fields.Meter.Remove(field);
                 value.AddMeterSetItemValues(data, fields.Meter);
 
                 // Assert
-                // TODO: Refactoring AppMetrics/AppMetrics/#251, between 5 and 6 because of set items
-                data.Count.Should().BeInRange(5, 6);
-                data.ContainsKey(Fields.Meter[key]).Should().BeFalse();
+                if (field == MeterFields.SetItem)
+                {
+                    data.Count.Should().Be(0, "SetItems field was removed");
+                }
+                else
+                {
+                    data.Count.Should().Be(fieldValues.Length - setItemFields.Length);
+                    data.ContainsKey(Fields.Meter[field]).Should().BeFalse();
+                }
             }
+        }
+
+        [Fact]
+        public void Meter_set_item_percent_can_be_ignored()
+        {
+            // Arrange
+            var data = new Dictionary<string, object>();
+
+            // Act
+            var value = _meterSetItemsValue();
+            var fields = new MetricFields();
+            fields.ExcludeMeterFields(MeterFields.SetItemPercent);
+            value.AddMeterSetItemValues(data, fields.Meter);
+
+            // Assert
+            data.ContainsKey(Fields.Meter[MeterFields.SetItemPercent]).Should().BeFalse($"{MeterFields.SetItemPercent} has been removed");
         }
 
         [Fact]
@@ -177,7 +195,7 @@ namespace App.Metrics.Facts.Meter
             var value = _meterValue();
             var data = new Dictionary<string, object>();
             var fields = new MetricFields();
-            fields.ExcludeMeterValues();
+            fields.ExcludeMeterFields();
 
             // Act
             Action sut = () => value.AddMeterValues(data, fields.Meter);

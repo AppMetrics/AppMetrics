@@ -50,16 +50,16 @@ namespace App.Metrics
                                                                            { MeterFields.Rate5M, "rate5m" },
                                                                            { MeterFields.Rate15M, "rate15m" },
                                                                            { MeterFields.RateMean, "rate.mean" },
-                                                                           { MeterFields.SetItemPercent, "percent" },
-                                                                           { MeterFields.MetricSetItemSuffix, DefaultMetricsSetItemSuffix }
+                                                                           { MeterFields.SetItem, DefaultMetricsSetItemSuffix },
+                                                                           { MeterFields.SetItemPercent, "percent" }
                                                                        };
 
         public static IDictionary<CounterFields, string> Counter => new Dictionary<CounterFields, string>
                                                                            {
                                                                                { CounterFields.Total, "total" },
-                                                                               { CounterFields.SetItemPercent, "percent" },
-                                                                               { CounterFields.MetricSetItemSuffix, DefaultMetricsSetItemSuffix },
-                                                                               { CounterFields.Value, "value" }
+                                                                               { CounterFields.Value, "value" },
+                                                                               { CounterFields.SetItem, DefaultMetricsSetItemSuffix },
+                                                                               { CounterFields.SetItemPercent, "percent" }
                                                                            };
 
         public static IDictionary<GaugeFields, string> Gauge => new Dictionary<GaugeFields, string>

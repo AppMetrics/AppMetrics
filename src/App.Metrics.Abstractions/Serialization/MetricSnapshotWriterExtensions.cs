@@ -43,11 +43,9 @@ namespace App.Metrics.Serialization
                 return;
             }
 
-            if (counterValueSource.Value.Items.Any() && counterValueSource.ReportSetItems)
+            if (counterValueSource.Value.Items.Any() && counterValueSource.ReportSetItems && writer.MetricFields.Counter.ContainsKey(CounterFields.SetItem))
             {
-                var itemSuffix = writer.MetricFields.Counter.ContainsKey(CounterFields.MetricSetItemSuffix)
-                    ? writer.MetricFields.Counter[CounterFields.MetricSetItemSuffix]
-                    : DefaultMetricFieldNames.DefaultMetricsSetItemSuffix;
+                var itemSuffix = writer.MetricFields.Counter[CounterFields.SetItem];
 
                 foreach (var item in counterValueSource.Value.Items.Distinct())
                 {
@@ -130,11 +128,9 @@ namespace App.Metrics.Serialization
 
             var data = new Dictionary<string, object>();
 
-            if (valueSource.Value.Items.Any() && valueSource.ReportSetItems)
+            if (valueSource.Value.Items.Any() && valueSource.ReportSetItems && writer.MetricFields.Meter.ContainsKey(MeterFields.SetItem))
             {
-                var itemSuffix = writer.MetricFields.Meter.ContainsKey(MeterFields.MetricSetItemSuffix)
-                    ? writer.MetricFields.Meter[MeterFields.MetricSetItemSuffix]
-                    : DefaultMetricFieldNames.DefaultMetricsSetItemSuffix;
+                var itemSuffix = writer.MetricFields.Meter[MeterFields.SetItem];
 
                 foreach (var item in valueSource.Value.Items.Distinct())
                 {

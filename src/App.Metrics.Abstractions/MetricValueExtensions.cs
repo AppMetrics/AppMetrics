@@ -58,34 +58,21 @@ namespace App.Metrics
         }
 
         public static void AddMeterSetItemValues(
-            this MeterValue.SetItem meterItem,
+            this MeterValue.SetItem meterSetItem,
             IDictionary<string, object> values,
-            IDictionary<MeterFields, string> fieldMapping)
+            IDictionary<MeterFields, string> meterFieldMapping)
         {
-            if (values == null)
+            if (values == null || !meterFieldMapping.ContainsKey(MeterFields.SetItem))
             {
                 return;
             }
 
-            AddMeterKeyValues(meterItem.Value, values, fieldMapping);
-            fieldMapping.TryAddValuesForKeyIfNotNanOrInfinity(values, MeterFields.SetItemPercent, meterItem.Percent);
+            AddMeterValues(meterSetItem.Value, values, meterFieldMapping);
+            meterFieldMapping.TryAddValuesForKeyIfNotNanOrInfinity(values, MeterFields.SetItemPercent, meterSetItem.Percent);
         }
 
         public static void AddMeterValues(
             this MeterValue meter,
-            IDictionary<string, object> values,
-            IDictionary<MeterFields, string> fieldMapping)
-        {
-            if (values == null)
-            {
-                return;
-            }
-
-            AddMeterKeyValues(meter, values, fieldMapping);
-        }
-
-        private static void AddMeterKeyValues(
-            MeterValue meter,
             IDictionary<string, object> values,
             IDictionary<MeterFields, string> fieldMapping)
         {

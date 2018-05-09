@@ -126,7 +126,7 @@ namespace App.Metrics.Facts.Histogram
             var value = _histogramValue();
             var data = new Dictionary<string, object>();
             var fields = new MetricFields();
-            fields.ExcludeHistogramValues();
+            fields.ExcludeHistogramFields();
 
             // Act
             Action sut = () => value.AddHistogramValues(data, fields.Histogram);

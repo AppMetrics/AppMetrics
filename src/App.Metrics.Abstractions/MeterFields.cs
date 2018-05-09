@@ -12,8 +12,8 @@ namespace App.Metrics
         Rate5M,
         Rate15M,
         RateMean,
-        SetItemPercent,
-        MetricSetItemSuffix
+        SetItem,
+        SetItemPercent
 #pragma warning restore SA1602
     }
 }

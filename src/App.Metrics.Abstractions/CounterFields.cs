@@ -9,7 +9,7 @@ namespace App.Metrics
 #pragma warning disable SA1602
         Total,
         SetItemPercent,
-        MetricSetItemSuffix,
+        SetItem,
         Value
 #pragma warning restore SA1602
     }

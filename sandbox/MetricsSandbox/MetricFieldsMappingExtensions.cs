@@ -11,15 +11,15 @@ namespace MetricsSandbox
         public static void IncludeBasic(this MetricFields fields)
         {
             fields.Counter[CounterFields.Value] = "val";
-            fields.ExcludeCounterValues(CounterFields.Total, CounterFields.MetricSetItemSuffix, CounterFields.SetItemPercent);
-            fields.OnlyIncludeMeterValues(MeterFields.Rate1M);
-            fields.OnlyIncludeHistogramValues(HistogramFields.P95, HistogramFields.P99);
+            fields.ExcludeCounterFields(CounterFields.Total, CounterFields.SetItem, CounterFields.SetItemPercent);
+            fields.OnlyIncludeMeterFields(MeterFields.Rate1M);
+            fields.OnlyIncludeHistogramFields(HistogramFields.P95, HistogramFields.P99);
 
-            // fields.ExcludeHistogramValues();
-            // fields.ExcludeCounterValues();
-            // fields.ExcludeMeterValues();
-            // fields.ExcludeApdexValues();
-            // fields.ExcludeGaugeValues();
+            // fields.ExcludeHistogramFields();
+            // fields.ExcludeCounterFields();
+            // fields.ExcludeMeterFields();
+            // fields.ExcludeApdexFields();
+            // fields.ExcludeGaugeFields();
         }
     }
 }
