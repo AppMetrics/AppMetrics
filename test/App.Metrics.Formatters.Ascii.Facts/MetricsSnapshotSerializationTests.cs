@@ -27,6 +27,7 @@ namespace App.Metrics.Formatters.Ascii.Facts
             // Arrange
             var counter = new CounterOptions { Context = "test", Name = "counter1" };
             var serializer = new MetricSnapshotSerializer();
+            var fields = new MetricFields();
 
             // Act
             _fixture.Metrics.Measure.Counter.Increment(counter);
@@ -34,7 +35,7 @@ namespace App.Metrics.Formatters.Ascii.Facts
             {
                 using (var writer = new MetricSnapshotTextWriter(sw))
                 {
-                    serializer.Serialize(writer, _fixture.Metrics.Snapshot.Get());
+                    serializer.Serialize(writer, _fixture.Metrics.Snapshot.Get(), fields);
                 }
 
                 // Assert
@@ -49,6 +50,7 @@ namespace App.Metrics.Formatters.Ascii.Facts
             // Arrange
             var counter = new CounterOptions { Context = "test", Name = "counter1" };
             var serializer = new MetricSnapshotSerializer();
+            var fields = new MetricFields();
 
             // Act
             _fixture.Metrics.Measure.Counter.Increment(counter);
@@ -56,7 +58,7 @@ namespace App.Metrics.Formatters.Ascii.Facts
             {
                 using (var packer = new MetricSnapshotTextWriter(sw, metricNameFormatter: (context, name) => $"{context}---{name}"))
                 {
-                    serializer.Serialize(packer, _fixture.Metrics.Snapshot.Get());
+                    serializer.Serialize(packer, _fixture.Metrics.Snapshot.Get(), fields);
                 }
 
                 // Assert

@@ -85,7 +85,7 @@ namespace App.Metrics.Facts.Apdex
             var value = _apdexValue();
             var data = new Dictionary<string, object>();
             var fields = new MetricFields();
-            fields.ExcludeApdexFields();
+            fields.Apdex.Exclude();
 
             // Act
             Action sut = () => value.AddApdexValues(data, fields.Apdex);

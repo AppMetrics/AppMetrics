@@ -18,7 +18,6 @@ namespace App.Metrics.Formatters.Ascii
             Padding = MetricsTextFormatterConstants.OutputFormatting.Padding;
             Separator = MetricsTextFormatterConstants.OutputFormatting.Separator;
             Encoding = Encoding.ASCII;
-            FieldMapping = new MetricFields();
         }
 
         /// <summary>
@@ -40,7 +39,5 @@ namespace App.Metrics.Formatters.Ascii
         public Encoding Encoding { get; set; }
 
         public Func<string, string, string> MetricNameFormatter { get; set; }
-
-        public MetricFields FieldMapping { get; set; }
     }
 }

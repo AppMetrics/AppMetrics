@@ -15,6 +15,8 @@ namespace App.Metrics.Formatters
         /// </summary>
         MetricsMediaTypeValue MediaType { get; }
 
+        MetricFields MetricFields { get; set; }
+
         /// <summary>
         ///     Writes the specified <see cref="MetricsDataValueSource" /> to the given stream.
         /// </summary>

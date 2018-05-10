@@ -12,31 +12,39 @@ namespace MetricsSandbox
 {
     public static class MetricsServiceExtensions
     {
-        public static IServiceCollection ConfigureMetrics(this IServiceCollection services, HostBuilderContext hostContext, bool filterMetricValueTypes)
+        public static IServiceCollection ConfigureMetrics(
+            this IServiceCollection services,
+            HostBuilderContext hostContext,
+            bool filterMetricValueTypes)
         {
             var metricsConfigSection = hostContext.Configuration.GetSection(nameof(MetricsOptions));
             // Metrics = AppMetrics.CreateDefaultBuilder() to use the default configuration
+
             var metrics = new MetricsBuilder()
-                      .Configuration.Configure(options =>
-                      {
-                          options.AddServerTag();
-                          options.AddAppTag();
-                          options.AddEnvTag();
-                      })
-                      .Configuration.Configure(metricsConfigSection.AsEnumerable())
-                      .OutputEnvInfo.AsPlainText()
-                      .OutputMetrics.AsPlainText(
-                              options =>
+                          .Configuration.Configure(options =>
+                                                   {
+                                                       options.AddServerTag();
+                                                       options.AddAppTag();
+                                                       options.AddEnvTag();
+                                                   })
+                          .Configuration.Configure(metricsConfigSection.AsEnumerable())
+                          .MetricFields.Configure(
+                              fields =>
                               {
                                   if (filterMetricValueTypes)
                                   {
-                                      options.FieldMapping.IncludeBasic();
+                                      fields.Counter.Set(CounterFields.Value, "val");
+                                      fields.Gauge.Set(GaugeFields.Value, "val");
+                                      fields.Counter.Exclude(CounterFields.Total, CounterFields.SetItem, CounterFields.SetItemPercent);
+                                      fields.Meter.OnlyInclude(MeterFields.Rate1M);
+                                      fields.Histogram.OnlyInclude(HistogramFields.P95, HistogramFields.P99);
                                   }
                               })
-                      .SampleWith.ForwardDecaying(TimeSpan.FromMinutes(30))
-                      .TimeWith.Clock(new TestClock())
-                      .Report.Using<SimpleConsoleMetricsReporter>(TimeSpan.FromSeconds(2))
-                      .Build();
+                          .OutputEnvInfo.AsPlainText()
+                          .OutputMetrics.AsPlainText()
+                          .SampleWith.ForwardDecaying(TimeSpan.FromMinutes(30)).TimeWith.Clock(new TestClock())
+                          .Report.Using<SimpleConsoleMetricsReporter>(TimeSpan.FromSeconds(2))
+                          .Build();
 
             services.AddSingleton(metrics);
 

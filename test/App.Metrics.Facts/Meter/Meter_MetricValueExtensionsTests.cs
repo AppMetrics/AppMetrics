@@ -25,12 +25,9 @@ namespace App.Metrics.Facts.Meter
             // Arrange
             var data = new Dictionary<string, object>();
             var value = _meterValue();
-            var fields = new MetricFields(
-                meter: new Dictionary<MeterFields, string>
-                       {
-                           { MeterFields.Rate1M, "1_min_rate" },
-                           { MeterFields.RateMean, "mean_rate" }
-                       });
+            var fields = new MetricFields();
+            fields.Meter.Set(MeterFields.Rate1M, "1_min_rate");
+            fields.Meter.Set(MeterFields.RateMean, "mean_rate");
 
             // Act
             value.AddMeterValues(data, fields.Meter);
@@ -97,7 +94,7 @@ namespace App.Metrics.Facts.Meter
             // Act
             var value = _meterSetItemsValue();
             var fields = new MetricFields();
-            fields.ExcludeMeterFields(MeterFields.SetItem);
+            fields.Meter.Exclude(MeterFields.SetItem);
             value.AddMeterSetItemValues(data, fields.Meter);
 
             // Assert
@@ -181,7 +178,7 @@ namespace App.Metrics.Facts.Meter
             // Act
             var value = _meterSetItemsValue();
             var fields = new MetricFields();
-            fields.ExcludeMeterFields(MeterFields.SetItemPercent);
+            fields.Meter.Exclude(MeterFields.SetItemPercent);
             value.AddMeterSetItemValues(data, fields.Meter);
 
             // Assert
@@ -195,7 +192,7 @@ namespace App.Metrics.Facts.Meter
             var value = _meterValue();
             var data = new Dictionary<string, object>();
             var fields = new MetricFields();
-            fields.ExcludeMeterFields();
+            fields.Meter.Exclude();
 
             // Act
             Action sut = () => value.AddMeterValues(data, fields.Meter);

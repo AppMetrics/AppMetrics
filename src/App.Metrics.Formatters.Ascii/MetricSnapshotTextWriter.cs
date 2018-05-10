@@ -23,8 +23,7 @@ namespace App.Metrics.Formatters.Ascii
             TextWriter textWriter,
             string separator = MetricsTextFormatterConstants.OutputFormatting.Separator,
             int padding = MetricsTextFormatterConstants.OutputFormatting.Padding,
-            Func<string, string, string> metricNameFormatter = null,
-            MetricFields fieldMapping = null)
+            Func<string, string, string> metricNameFormatter = null)
         {
             _textWriter = textWriter ?? throw new ArgumentNullException(nameof(textWriter));
             _separator = separator;
@@ -40,12 +39,7 @@ namespace App.Metrics.Formatters.Ascii
             {
                 _metricNameFormatter = metricNameFormatter;
             }
-
-            MetricFields = fieldMapping ?? new MetricFields();
         }
-
-        /// <inheritdoc />
-        public MetricFields MetricFields { get; }
 
         /// <inheritdoc />
         public void Write(

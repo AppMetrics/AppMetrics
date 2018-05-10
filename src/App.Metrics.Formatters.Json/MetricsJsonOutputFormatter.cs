@@ -28,6 +28,9 @@ namespace App.Metrics.Formatters.Json
         public MetricsMediaTypeValue MediaType => new MetricsMediaTypeValue("application", "vnd.appmetrics.metrics", "v1", "json");
 
         /// <inheritdoc />
+        public MetricFields MetricFields { get; set; }
+
+        /// <inheritdoc />
         public Task WriteAsync(
             Stream output,
             MetricsDataValueSource metricData,
@@ -42,6 +45,7 @@ namespace App.Metrics.Formatters.Json
 
             using (var streamWriter = new StreamWriter(output))
             {
+                // TODO: #251 should apply metric field names
                 using (var textWriter = new JsonTextWriter(streamWriter))
                 {
                     serilizer.Serialize(textWriter, metricData);

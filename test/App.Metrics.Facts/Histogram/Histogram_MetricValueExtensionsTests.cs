@@ -23,14 +23,11 @@ namespace App.Metrics.Facts.Histogram
             // Arrange
             var value = _histogramValue();
             var data = new Dictionary<string, object>();
-            var fields = new MetricFields(
-                histogram: new Dictionary<HistogramFields, string>
-                           {
-                               { HistogramFields.UserLastValue, "userLastValue" },
-                               { HistogramFields.UserMinValue, "userMinValue" },
-                               { HistogramFields.UserMaxValue, "userMaxValue" },
-                               { HistogramFields.P75, "75th_percentile" }
-                           });
+            var fields = new MetricFields();
+            fields.Histogram.Set(HistogramFields.UserLastValue, "userLastValue");
+            fields.Histogram.Set(HistogramFields.UserMinValue, "userMinValue");
+            fields.Histogram.Set(HistogramFields.UserMaxValue, "userMaxValue");
+            fields.Histogram.Set(HistogramFields.P75, "75th_percentile");
 
             // Act
             value.AddHistogramValues(data, fields.Histogram);
@@ -126,7 +123,7 @@ namespace App.Metrics.Facts.Histogram
             var value = _histogramValue();
             var data = new Dictionary<string, object>();
             var fields = new MetricFields();
-            fields.ExcludeHistogramFields();
+            fields.Histogram.Exclude();
 
             // Act
             Action sut = () => value.AddHistogramValues(data, fields.Histogram);

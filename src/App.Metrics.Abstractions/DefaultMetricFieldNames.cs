@@ -6,11 +6,11 @@ using System.Collections.Generic;
 
 namespace App.Metrics
 {
-    public static class DefaultMetricFieldNames
+    internal static class DefaultMetricFieldNames
     {
         public static readonly string DefaultMetricsSetItemSuffix = "  items";
 
-        public static IDictionary<ApdexFields, string> Apdex => new Dictionary<ApdexFields, string>
+        public static IReadOnlyDictionary<ApdexFields, string> Apdex => new Dictionary<ApdexFields, string>
                                                                        {
                                                                            { ApdexFields.Samples, "samples" },
                                                                            { ApdexFields.Score, "score" },
@@ -19,7 +19,7 @@ namespace App.Metrics
                                                                            { ApdexFields.Frustrating, "frustrating" }
                                                                        };
 
-        public static IDictionary<HistogramFields, string> Histogram => new Dictionary<HistogramFields, string>
+        public static IReadOnlyDictionary<HistogramFields, string> Histogram => new Dictionary<HistogramFields, string>
                                                                                {
                                                                                    { HistogramFields.Samples, "samples" },
                                                                                    { HistogramFields.LastValue, "last" },
@@ -43,7 +43,7 @@ namespace App.Metrics
                                                                                    { HistogramFields.UserMaxValue, "user.max" }
                                                                                };
 
-        public static IDictionary<MeterFields, string> Meter => new Dictionary<MeterFields, string>
+        public static IReadOnlyDictionary<MeterFields, string> Meter => new Dictionary<MeterFields, string>
                                                                        {
                                                                            { MeterFields.Count, "count.meter" },
                                                                            { MeterFields.Rate1M, "rate1m" },
@@ -54,7 +54,7 @@ namespace App.Metrics
                                                                            { MeterFields.SetItemPercent, "percent" }
                                                                        };
 
-        public static IDictionary<CounterFields, string> Counter => new Dictionary<CounterFields, string>
+        public static IReadOnlyDictionary<CounterFields, string> Counter => new Dictionary<CounterFields, string>
                                                                            {
                                                                                { CounterFields.Total, "total" },
                                                                                { CounterFields.Value, "value" },
@@ -62,7 +62,7 @@ namespace App.Metrics
                                                                                { CounterFields.SetItemPercent, "percent" }
                                                                            };
 
-        public static IDictionary<GaugeFields, string> Gauge => new Dictionary<GaugeFields, string>
+        public static IReadOnlyDictionary<GaugeFields, string> Gauge => new Dictionary<GaugeFields, string>
                                                                            {
                                                                                { GaugeFields.Value, "value" }
                                                                            };
