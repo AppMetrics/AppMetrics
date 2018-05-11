@@ -23,8 +23,7 @@ namespace App.Metrics.Formatters.Ascii
             TextWriter textWriter,
             string separator = MetricsTextFormatterConstants.OutputFormatting.Separator,
             int padding = MetricsTextFormatterConstants.OutputFormatting.Padding,
-            Func<string, string, string> metricNameFormatter = null,
-            GeneratedMetricNameMapping dataKeys = null)
+            Func<string, string, string> metricNameFormatter = null)
         {
             _textWriter = textWriter ?? throw new ArgumentNullException(nameof(textWriter));
             _separator = separator;
@@ -40,12 +39,7 @@ namespace App.Metrics.Formatters.Ascii
             {
                 _metricNameFormatter = metricNameFormatter;
             }
-
-            MetricNameMapping = dataKeys ?? new GeneratedMetricNameMapping();
         }
-
-        /// <inheritdoc />
-        public GeneratedMetricNameMapping MetricNameMapping { get; }
 
         /// <inheritdoc />
         public void Write(
@@ -91,7 +85,6 @@ namespace App.Metrics.Formatters.Ascii
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         /// <summary>

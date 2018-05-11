@@ -42,10 +42,12 @@ namespace App.Metrics
         }
 
         /// <inheritdoc />
-        public IMetricsBuilder Using<TMetricsOutputFormatter>()
+        public IMetricsBuilder Using<TMetricsOutputFormatter>(MetricFields fields = null)
             where TMetricsOutputFormatter : IMetricsOutputFormatter, new()
         {
-            _metricsFormatter(true, new TMetricsOutputFormatter());
+            var formatter = new TMetricsOutputFormatter { MetricFields = fields };
+
+            _metricsFormatter(true, formatter);
 
             return Builder;
         }
@@ -64,10 +66,12 @@ namespace App.Metrics
         }
 
         /// <inheritdoc />
-        public IMetricsBuilder Using<TMetricsOutputFormatter>(bool replaceExisting)
+        public IMetricsBuilder Using<TMetricsOutputFormatter>(bool replaceExisting, MetricFields fields = null)
             where TMetricsOutputFormatter : IMetricsOutputFormatter, new()
         {
-            _metricsFormatter(replaceExisting, new TMetricsOutputFormatter());
+            var formatter = new TMetricsOutputFormatter { MetricFields = fields };
+
+            _metricsFormatter(replaceExisting, formatter);
 
             return Builder;
         }

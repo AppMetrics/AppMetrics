@@ -26,6 +26,8 @@ namespace App.Metrics
 
         bool CanReport();
 
+        IMetricFieldsBuilder MetricFields { get; }
+
         /// <summary>
         ///     <para>
         ///         Builder for configuring environment information output formatting for reporting.

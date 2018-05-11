@@ -35,6 +35,7 @@ namespace App.Metrics
         private IFilterMetrics _metricsFilter = new NullMetricsFilter();
         private IRunMetricsReports _metricsReportRunner = new NoOpMetricsReportRunner();
         private MetricsOptions _options;
+        private MetricFields _metricFields;
 
         /// <inheritdoc />
         public IMetricsConfigurationBuilder Configuration
@@ -48,7 +49,17 @@ namespace App.Metrics
             }
         }
 
-        public bool CanReport() { return _options.Enabled && _options.ReportingEnabled && _reporters.Any(); }
+        /// <inheritdoc />
+        public IMetricFieldsBuilder MetricFields
+        {
+            get
+            {
+                return new MetricFieldsBuilder(
+                    this,
+                    _metricFields,
+                    metricFields => { _metricFields = metricFields; });
+            }
+        }
 
         /// <inheritdoc />
         public IMetricsFilterBuilder Filter
@@ -135,6 +146,11 @@ namespace App.Metrics
                 _options = new MetricsOptions();
             }
 
+            if (_metricFields == null)
+            {
+                _metricFields = new MetricFields();
+            }
+
             if (_options.Enabled)
             {
                 registry = new DefaultMetricsRegistry(_options.DefaultContextLabel, _clock, ContextRegistry);
@@ -142,7 +158,17 @@ namespace App.Metrics
 
             if (_metricsOutputFormatters.Count == 0)
             {
-                _metricsOutputFormatters.Add(new MetricsTextOutputFormatter());
+                _metricsOutputFormatters.Add(new MetricsTextOutputFormatter(_metricFields));
+            }
+            else
+            {
+                foreach (var metricsOutputFormatter in _metricsOutputFormatters)
+                {
+                    if (metricsOutputFormatter.MetricFields == null)
+                    {
+                        metricsOutputFormatter.MetricFields = _metricFields;
+                    }
+                }
             }
 
             if (_envFormatters.Count == 0)
@@ -178,5 +204,7 @@ namespace App.Metrics
             IMetricContextRegistry ContextRegistry(string context) =>
                 new DefaultMetricContextRegistry(context, new GlobalMetricTags(_options.GlobalTags));
         }
+
+        public bool CanReport() { return _options.Enabled && _options.ReportingEnabled && _reporters.Any(); }
     }
 }

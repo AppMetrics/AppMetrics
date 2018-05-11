@@ -10,5 +10,6 @@ namespace App.Metrics
         public const double DefaultApdexTSeconds = 0.5;
         public const double DefaultExponentialDecayFactor = 0.015;
         public const int DefaultSampleSize = 1028;
+        public const double DefaultMinimumSampleWeight = 0.0;
     }
 }
