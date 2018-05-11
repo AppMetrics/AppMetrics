@@ -171,6 +171,17 @@ namespace App.Metrics
                 }
             }
 
+            if (_reporters != null && _reporters.Any())
+            {
+                foreach (var reporter in _reporters)
+                {
+                    if (reporter.Formatter != null && reporter.Formatter.MetricFields == null)
+                    {
+                        reporter.Formatter.MetricFields = _metricFields;
+                    }
+                }
+            }
+
             if (_envFormatters.Count == 0)
             {
                 _envFormatters.Add(new EnvInfoTextOutputFormatter());
