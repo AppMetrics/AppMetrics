@@ -72,7 +72,7 @@ namespace App.Metrics.Internal
 
             Logger.Trace("Getting metrics snaphot found {MetricsContextCount}", contextData.Contexts?.Count());
 
-            return contextData?.Contexts?.FirstOrDefault() ?? MetricsContextValueSource.Empty;
+            return contextData.Contexts?.FirstOrDefault() ?? MetricsContextValueSource.Empty;
         }
     }
 }

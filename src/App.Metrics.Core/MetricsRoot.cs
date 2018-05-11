@@ -11,7 +11,7 @@ using App.Metrics.Reporting;
 
 namespace App.Metrics
 {
-    internal class MetricsRoot : IMetricsRoot, IMetrics
+    internal class MetricsRoot : IMetricsRoot
     {
         private readonly EnvironmentInfoProvider _environmentInfoProvider;
         private readonly IMetrics _metrics;

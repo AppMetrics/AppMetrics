@@ -205,7 +205,7 @@ namespace App.Metrics.Facts.Providers
             using (var metricsFixture = new MetricsFixture())
             {
                 var timer1 = metricsFixture.Metrics.Provider.Timer.Instance(timerDef, new MetricTags("test", "1"));
-                var timer2 = metricsFixture.Metrics.Provider.Timer.Instance(timerDef, new MetricTags("test", "2"));
+                var unused = metricsFixture.Metrics.Provider.Timer.Instance(timerDef, new MetricTags("test", "2"));
 
                 timer1.Record(100, TimeUnit.Seconds);
                 timer1.Record(100, TimeUnit.Seconds);

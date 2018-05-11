@@ -128,7 +128,7 @@ namespace App.Metrics
 
             if (count1 == 0)
             {
-                return new MetricTags(tags2.Select(t => t.Key).ToArray(), tags2.Select(t => t.Value).ToArray());
+                return new MetricTags(tags2?.Select(t => t.Key).ToArray(), tags2?.Select(t => t.Value).ToArray());
             }
 
             if (count2 == 0)
@@ -140,10 +140,10 @@ namespace App.Metrics
             var combinedValues = new string[count1 + count2];
 
             tags1.Keys.CopyTo(combinedKeys, 0);
-            tags2.Select(t => t.Key).ToArray().CopyTo(combinedKeys, count1);
+            tags2?.Select(t => t.Key).ToArray().CopyTo(combinedKeys, count1);
 
             tags1.Values.CopyTo(combinedValues, 0);
-            tags2.Select(t => t.Value).ToArray().CopyTo(combinedValues, count1);
+            tags2?.Select(t => t.Value).ToArray().CopyTo(combinedValues, count1);
 
             return new MetricTags(combinedKeys, combinedValues);
         }

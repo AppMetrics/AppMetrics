@@ -31,7 +31,7 @@ namespace MetricsSandbox
             Log.Logger = new LoggerConfiguration()
                          .MinimumLevel.Verbose()
                          .WriteTo.LiterateConsole(LogEventLevel.Information)
-                         .WriteTo.Seq("http://localhost:5341", LogEventLevel.Verbose)
+                         .WriteTo.Seq("http://localhost:5341")
                          .CreateLogger();
 
             var host = new HostBuilder()

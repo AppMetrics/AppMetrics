@@ -16,7 +16,7 @@ using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 using App.Metrics.Timer;
 
-namespace App.Metrics.Reporting.Facts.Fixtures
+namespace App.Metrics.Facts.Fixtures
 {
     public class MetricsReportingFixture : IDisposable
     {

@@ -72,7 +72,7 @@ namespace App.Metrics.Facts.Builders
             Action action = () =>
             {
                 // Act
-                var builder = new MetricsBuilder().TimeWith.Clock(null);
+                var unused = new MetricsBuilder().TimeWith.Clock(null);
             };
 
             // Assert

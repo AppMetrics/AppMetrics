@@ -2,7 +2,6 @@
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
-using System;
 using App.Metrics.Counter;
 using App.Metrics.Facts.Fixtures;
 using App.Metrics.Facts.TestHelpers;
