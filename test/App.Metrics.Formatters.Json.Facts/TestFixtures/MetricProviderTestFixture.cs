@@ -65,6 +65,7 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
             "framework",
             "assembly_name",
             "assembly_version",
+            "product_version",
             "localtime",
             "machine_name",
             "os",

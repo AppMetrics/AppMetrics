@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -40,6 +41,7 @@ namespace App.Metrics.Infrastructure
             var entryAssembly = Assembly.GetEntryAssembly();
             EntryAssemblyName = StringExtensions.GetSafeString(() => entryAssembly?.GetName().Name ?? "unknown");
             EntryAssemblyVersion = StringExtensions.GetSafeString(() => entryAssembly?.GetName().Version.ToString() ?? "unknown");
+            EntryProductVersion = StringExtensions.GetSafeString(() => FileVersionInfo.GetVersionInfo(entryAssembly?.Location).ProductVersion ?? "unknown");
         }
 
         public static EnvironmentInfoProviderCache Instance { get; } = new EnvironmentInfoProviderCache();
@@ -47,6 +49,8 @@ namespace App.Metrics.Infrastructure
         public string EntryAssemblyName { get; }
 
         public string EntryAssemblyVersion { get; }
+
+        public string EntryProductVersion { get; }
 
         public string FrameworkDescription { get; }
 

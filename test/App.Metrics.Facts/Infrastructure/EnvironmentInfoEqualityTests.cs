@@ -13,8 +13,8 @@ namespace App.Metrics.Facts.Infrastructure
         [Fact]
         public void Different_hashcodes_when_values_differ()
         {
-            var env = new EnvironmentInfo("development", "framework", "assembly", "entry", "time", "machine", "OS", "OS version", "x64", "x64", "4");
-            var env2 = new EnvironmentInfo("development","framework", "assembly", "entry", "time", "machine", "OS2", "OS version2", "x64", "x64", "4");
+            var env = new EnvironmentInfo("development", "framework", "assembly", "entry", "product", "time", "machine", "OS", "OS version", "x64", "x64", "4");
+            var env2 = new EnvironmentInfo("development", "framework", "assembly", "entry", "product", "time", "machine", "OS2", "OS version2", "x64", "x64", "4");
 
             (env.GetHashCode() == env2.GetHashCode()).Should().BeFalse();
         }
@@ -22,8 +22,8 @@ namespace App.Metrics.Facts.Infrastructure
         [Fact]
         public void Equality_with_equals()
         {
-            var env = new EnvironmentInfo("development","framework", "assembly", "entry", "time", "machine", "OS", "OS version", "x64", "x64", "4");
-            var other = new EnvironmentInfo("development","framework", "assembly", "entry", "time", "machine", "OS", "OS version", "x64", "x64", "4");
+            var env = new EnvironmentInfo("development", "framework", "assembly", "entry", "product", "time", "machine", "OS", "OS version", "x64", "x64", "4");
+            var other = new EnvironmentInfo("development", "framework", "assembly", "entry", "product", "time", "machine", "OS", "OS version", "x64", "x64", "4");
 
             env.Equals(other).Should().Be(true);
         }
@@ -31,7 +31,7 @@ namespace App.Metrics.Facts.Infrastructure
         [Fact]
         public void Equality_with_equals_false_when_same_object()
         {
-            var env = new EnvironmentInfo("development","framework", "assembly", "entry", "time", "machine", "OS", "OS version", "x64", "x64", "4");
+            var env = new EnvironmentInfo("development", "framework", "assembly", "entry", "product", "time", "machine", "OS", "OS version", "x64", "x64", "4");
 
             object other = env;
 
@@ -41,8 +41,8 @@ namespace App.Metrics.Facts.Infrastructure
         [Fact]
         public void Equality_with_equals_operator()
         {
-            var env = new EnvironmentInfo("development","framework", "assembly", "entry", "time", "machine", "OS", "OS version", "x64", "x64", "4");
-            var other = new EnvironmentInfo("development","framework", "assembly", "entry", "time", "machine", "OS", "OS version", "x64", "x64", "4");
+            var env = new EnvironmentInfo("development", "framework", "assembly", "entry", "product", "time", "machine", "OS", "OS version", "x64", "x64", "4");
+            var other = new EnvironmentInfo("development", "framework", "assembly", "entry", "product", "time", "machine", "OS", "OS version", "x64", "x64", "4");
 
             (env == other).Should().Be(true);
         }
@@ -50,8 +50,8 @@ namespace App.Metrics.Facts.Infrastructure
         [Fact]
         public void Equality_with_not_equals_operator()
         {
-            var env = new EnvironmentInfo("development","framework", "assembly", "entry", "time", "machine", "OS", "OS version", "x64", "x64", "4");
-            var other = new EnvironmentInfo("development","framework", "assembly2", "entry", "time", "machine", "OS", "OS version", "x64", "x64", "4");
+            var env = new EnvironmentInfo("development", "framework", "assembly", "entry", "product", "time", "machine", "OS", "OS version", "x64", "x64", "4");
+            var other = new EnvironmentInfo("development", "framework", "assembly2", "entry", "product", "time", "machine", "OS", "OS version", "x64", "x64", "4");
 
             (env != other).Should().Be(true);
         }
@@ -59,8 +59,8 @@ namespace App.Metrics.Facts.Infrastructure
         [Fact]
         public void Same_hashcodes_when_values_match()
         {
-            var env = new EnvironmentInfo("development","framework", "assembly", "entry", "time", "machine", "OS", "OS version", "x64", "x64", "4");
-            var env2 = new EnvironmentInfo("development","framework", "assembly", "entry", "time", "machine", "OS", "OS version", "x64", "x64", "4");
+            var env = new EnvironmentInfo("development", "framework", "assembly", "entry", "product", "time", "machine", "OS", "OS version", "x64", "x64", "4");
+            var env2 = new EnvironmentInfo("development", "framework", "assembly", "entry", "product", "time", "machine", "OS", "OS version", "x64", "x64", "4");
 
             (env.GetHashCode() == env2.GetHashCode()).Should().BeTrue();
         }
