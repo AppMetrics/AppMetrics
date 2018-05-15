@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\xunit.runner.json" Link="xunit.runner.json" />
+    <Content Include="..\..\xunit.runner.json" Link="xunit.runner.json" />
   </ItemGroup>
 
   <ItemGroup>

@@ -7,7 +7,6 @@ using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
-using App.Metrics.ReservoirSampling.SlidingWindow;
 using App.Metrics.ReservoirSampling.Uniform;
 using App.Metrics.Timer;
 

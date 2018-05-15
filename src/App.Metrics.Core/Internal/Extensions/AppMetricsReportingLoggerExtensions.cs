@@ -51,7 +51,7 @@ namespace App.Metrics.Logging
             var currentTimestamp = Stopwatch.GetTimestamp();
             var elapsed = new TimeSpan((long)(TimestampToTicks * (currentTimestamp - startTimestamp)));
 
-            logger.Info("Report {ReportType} ran in {ElapsedMilliseconds}ms", reportMetricsReporter.GetType().FullName, elapsed.Milliseconds);
+            logger.Debug("Report {ReportType} ran in {ElapsedMilliseconds}ms", reportMetricsReporter.GetType().FullName, elapsed.Milliseconds);
         }
 
         public static void ReportRunning(this ILog logger, IReportMetrics reportMetrics)

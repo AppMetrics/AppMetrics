@@ -45,7 +45,7 @@ namespace App.Metrics.Facts.Options
             // Act
             Action action = () =>
             {
-                var options = new KeyValuePairMetricsOptions(null);
+                var unused = new KeyValuePairMetricsOptions(null);
             };
 
             // Assert
@@ -65,7 +65,7 @@ namespace App.Metrics.Facts.Options
                                     };
 
                 // Act
-                var options = new KeyValuePairMetricsOptions(keyValuePairs).AsOptions();
+                var unused = new KeyValuePairMetricsOptions(keyValuePairs).AsOptions();
             };
 
             // Assert
@@ -87,7 +87,7 @@ namespace App.Metrics.Facts.Options
                                     };
 
                 // Act
-                var options = new KeyValuePairMetricsOptions(keyValuePairs).AsOptions();
+                var unused = new KeyValuePairMetricsOptions(keyValuePairs).AsOptions();
             };
 
             // Assert

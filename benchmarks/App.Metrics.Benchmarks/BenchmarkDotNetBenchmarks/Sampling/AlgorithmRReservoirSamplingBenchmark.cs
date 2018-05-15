@@ -64,6 +64,7 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Sampling
             }
             catch (Exception)
             {
+                // ignored
             }
             finally
             {

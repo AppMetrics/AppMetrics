@@ -123,19 +123,25 @@ namespace App.Metrics.Facts.Meter
         public void Meter_should_ignore_values_where_specified()
         {
             // Arrange
-            var data = new Dictionary<string, object>();
-            var meterFields = new List<MeterFields>();
+            var setItemFields = new[] { MeterFields.SetItem, MeterFields.SetItemPercent };
+            var meterFields = Enum.GetValues(typeof(MeterFields));
 
             // Act
-            foreach (var field in meterFields)
+            foreach (MeterFields field in meterFields)
             {
+                if (field == MeterFields.SetItem || field == MeterFields.SetItemPercent)
+                {
+                    continue;
+                }
+
+                var data = new Dictionary<string, object>();
                 var value = _meterValue();
                 var fields = new MetricFields();
                 fields.Meter.Remove(field);
                 value.AddMeterValues(data, fields.Meter);
 
                 // Assert
-                data.Count.Should().Be(meterFields.Count - 1);
+                data.Count.Should().Be(meterFields.Length - setItemFields.Length - 1);
                 data.ContainsKey(Fields.Meter[field]).Should().BeFalse();
             }
         }
@@ -144,29 +150,16 @@ namespace App.Metrics.Facts.Meter
         public void Meter_set_items_should_ignore_values_where_specified()
         {
             // Arrange
-            var setItemFields = new[] { MeterFields.SetItem, MeterFields.SetItemPercent };
-            var fieldValues = Enum.GetValues(typeof(MeterFields));
+            var data = new Dictionary<string, object>();
+            var value = _meterSetItemsValue();
+            var fields = new MetricFields();
+            fields.Meter.Remove(MeterFields.SetItem);
 
             // Act
-            foreach (MeterFields field in fieldValues)
-            {
-                var data = new Dictionary<string, object>();
-                var value = _meterSetItemsValue();
-                var fields = new MetricFields();
-                fields.Meter.Remove(field);
-                value.AddMeterSetItemValues(data, fields.Meter);
+            value.AddMeterSetItemValues(data, fields.Meter);
 
-                // Assert
-                if (field == MeterFields.SetItem)
-                {
-                    data.Count.Should().Be(0, "SetItems field was removed");
-                }
-                else
-                {
-                    data.Count.Should().Be(fieldValues.Length - setItemFields.Length);
-                    data.ContainsKey(Fields.Meter[field]).Should().BeFalse();
-                }
-            }
+            // Assert
+            data.Count.Should().Be(0, "SetItems field was removed");
         }
 
         [Fact]

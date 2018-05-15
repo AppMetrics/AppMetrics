@@ -23,7 +23,7 @@ namespace App.Metrics.Facts.Builders
             Action action = () =>
             {
                 // Act
-                var builder = new MetricsBuilder().Report.Using(reporter: null);
+                var unused = new MetricsBuilder().Report.Using(reporter: null);
             };
 
             // Assert

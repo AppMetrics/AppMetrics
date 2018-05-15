@@ -5,7 +5,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.FactsCommon;
 using App.Metrics.Internal;
 using App.Metrics.ReservoirSampling;
 using App.Metrics.Scheduling;
@@ -30,7 +29,7 @@ namespace App.Metrics.Facts.Scheduling
         public void Applies_rescale_period_to_inner_scheduler()
         {
             var metricsScheduler = new Mock<IMetricsTaskSchedular>();
-            using (var rescaleScheduler = new DefaultReservoirRescaleScheduler(TimeSpan.FromSeconds(10), metricsScheduler.Object))
+            using (var unused = new DefaultReservoirRescaleScheduler(TimeSpan.FromSeconds(10), metricsScheduler.Object))
             {
                 metricsScheduler.Verify(s => s.Start(It.Is<TimeSpan>(ts => ts.Equals(TimeSpan.FromSeconds(10)))));
             }

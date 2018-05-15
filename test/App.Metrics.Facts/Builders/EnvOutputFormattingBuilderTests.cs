@@ -33,7 +33,7 @@ namespace App.Metrics.Facts.Builders
             Action action = () =>
             {
                 // Act
-                var builder = new MetricsBuilder().OutputEnvInfo.Using(null);
+                var unused = new MetricsBuilder().OutputEnvInfo.Using(null);
             };
 
             // Assert

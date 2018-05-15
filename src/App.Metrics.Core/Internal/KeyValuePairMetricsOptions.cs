@@ -56,7 +56,7 @@ namespace App.Metrics.Internal
                 }
                 else if (key.StartsWith(GlobalTagsDirective, StringComparison.CurrentCultureIgnoreCase))
                 {
-                    var tagKey = key.Split(':')?.LastOrDefault()?.Trim();
+                    var tagKey = key.Split(':').LastOrDefault()?.Trim();
                     var tagValue = _optionValues[key]?.Split(new[] { ",", ", " }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault()?.Trim();
 
                     if (string.IsNullOrWhiteSpace(tagKey) || string.IsNullOrWhiteSpace(tagValue))

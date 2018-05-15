@@ -40,7 +40,6 @@ namespace App.Metrics.Meter
         /// <inheritdoc />
         public MeterValue Value => GetValue();
 
-        /// <inheritdoc />
         public override void Reset()
         {
             _startTime = _clock.Nanoseconds;

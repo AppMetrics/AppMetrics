@@ -3,7 +3,6 @@
 // </copyright>
 
 using System;
-using App.Metrics.Internal;
 
 namespace App.Metrics.Apdex
 {

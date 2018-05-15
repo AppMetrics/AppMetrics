@@ -2,7 +2,6 @@
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
-using App.Metrics.Internal;
 using App.Metrics.ReservoirSampling;
 
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global

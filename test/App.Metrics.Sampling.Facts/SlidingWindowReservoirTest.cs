@@ -80,7 +80,9 @@ namespace App.Metrics.Sampling.Facts
 
             var field = fields.FirstOrDefault(feildInfo => feildInfo.Name == "_values");
 
+            // ReSharper disable PossibleNullReferenceException
             ((UserValueWrapper[])field.GetValue(reservoir)).Length.Should().Be(AppMetricsReservoirSamplingConstants.DefaultSampleSize);
+            // ReSharper restore PossibleNullReferenceException
         }
 
         [Fact]

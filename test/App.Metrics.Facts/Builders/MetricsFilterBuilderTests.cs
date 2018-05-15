@@ -17,7 +17,7 @@ namespace App.Metrics.Facts.Builders
             Action action = () =>
             {
                 // Act
-                var builder = new MetricsBuilder().Filter.With(filter: null);
+                var unused = new MetricsBuilder().Filter.With(filter: null);
             };
 
             // Assert
