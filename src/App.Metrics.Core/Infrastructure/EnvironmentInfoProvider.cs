@@ -18,6 +18,7 @@ namespace App.Metrics.Infrastructure
                 EnvironmentInfoProviderCache.Instance.FrameworkDescription,
                 EnvironmentInfoProviderCache.Instance.EntryAssemblyName,
                 EnvironmentInfoProviderCache.Instance.EntryAssemblyVersion,
+                EnvironmentInfoProviderCache.Instance.EntryProductVersion,
                 localTimeString,
                 EnvironmentInfoProviderCache.Instance.MachineName,
                 EnvironmentInfoProviderCache.Instance.OperatingSystemPlatform,

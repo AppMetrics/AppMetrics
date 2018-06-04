@@ -32,6 +32,8 @@ namespace App.Metrics.Infrastructure
             EntryAssemblyName = entries.FirstOrDefault(e => string.Equals(e.Key, "EntryAssemblyName", StringComparison.OrdinalIgnoreCase)).Value;
             EntryAssemblyVersion = entries.FirstOrDefault(e => string.Equals(e.Key, "EntryAssemblyVersion", StringComparison.OrdinalIgnoreCase)).
                                            Value;
+            EntryProductVersion = entries.FirstOrDefault(e => string.Equals(e.Key, "EntryProductVersion", StringComparison.OrdinalIgnoreCase)).
+                                           Value;
 
             _entries = new[]
                        {
@@ -44,7 +46,8 @@ namespace App.Metrics.Infrastructure
                            new EnvironmentInfoEntry("CPUCount", ProcessorCount),
                            new EnvironmentInfoEntry("LocalTime", LocalTimeString),
                            new EnvironmentInfoEntry("EntryAssemblyName", EntryAssemblyName),
-                           new EnvironmentInfoEntry("EntryAssemblyVersion", EntryAssemblyVersion)
+                           new EnvironmentInfoEntry("EntryAssemblyVersion", EntryAssemblyVersion),
+                           new EnvironmentInfoEntry("EntryProductVersion", EntryProductVersion)
                        };
         }
 
@@ -53,6 +56,7 @@ namespace App.Metrics.Infrastructure
             string frameworkDescription,
             string entryAssemblyName,
             string entryAssemblyVersion,
+            string entryProductVersion,
             string localTimeString,
             string machineName,
             string operatingSystemPlatform,
@@ -65,6 +69,7 @@ namespace App.Metrics.Infrastructure
             FrameworkDescription = frameworkDescription;
             EntryAssemblyName = entryAssemblyName;
             EntryAssemblyVersion = entryAssemblyVersion;
+            EntryProductVersion = entryProductVersion;
             LocalTimeString = localTimeString;
             MachineName = machineName;
             OperatingSystemArchitecture = operatingSystemArchitecture;
@@ -85,7 +90,8 @@ namespace App.Metrics.Infrastructure
                            new EnvironmentInfoEntry("CPUCount", ProcessorCount),
                            new EnvironmentInfoEntry("LocalTime", LocalTimeString),
                            new EnvironmentInfoEntry("EntryAssemblyName", EntryAssemblyName),
-                           new EnvironmentInfoEntry("EntryAssemblyVersion", EntryAssemblyVersion)
+                           new EnvironmentInfoEntry("EntryAssemblyVersion", EntryAssemblyVersion),
+                           new EnvironmentInfoEntry("EntryProductVersion", EntryProductVersion)
                        };
         }
 
@@ -96,6 +102,8 @@ namespace App.Metrics.Infrastructure
         public string EntryAssemblyName { get; }
 
         public string EntryAssemblyVersion { get; }
+
+        public string EntryProductVersion { get; }
 
         public string FrameworkDescription { get; }
 
@@ -135,6 +143,7 @@ namespace App.Metrics.Infrastructure
                 hashCode = (hashCode * 397) ^ (RunningEnvironment != null ? RunningEnvironment.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (EntryAssemblyName != null ? EntryAssemblyName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (EntryAssemblyVersion != null ? EntryAssemblyVersion.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (EntryProductVersion != null ? EntryProductVersion.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (LocalTimeString != null ? LocalTimeString.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (MachineName != null ? MachineName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (OperatingSystemPlatform != null ? OperatingSystemPlatform.GetHashCode() : 0);
@@ -151,6 +160,7 @@ namespace App.Metrics.Infrastructure
             return string.Equals(FrameworkDescription, other.FrameworkDescription) && string.Equals(EntryAssemblyName, other.EntryAssemblyName) &&
                    string.Equals(RunningEnvironment, other.RunningEnvironment) &&
                    string.Equals(EntryAssemblyVersion, other.EntryAssemblyVersion) &&
+                   string.Equals(EntryProductVersion, other.EntryProductVersion) &&
                    string.Equals(LocalTimeString, other.LocalTimeString) && string.Equals(MachineName, other.MachineName) &&
                    string.Equals(OperatingSystemPlatform, other.OperatingSystemPlatform) &&
                    string.Equals(OperatingSystemArchitecture, other.OperatingSystemArchitecture) &&

@@ -40,6 +40,8 @@ namespace App.Metrics.Formatters.Ascii
             _textWriter.Write('\n');
             _textWriter.Write(PaddedFormat("Assembly Version", envInfo.EntryAssemblyVersion));
             _textWriter.Write('\n');
+            _textWriter.Write(PaddedFormat("Product Version", envInfo.EntryProductVersion));
+            _textWriter.Write('\n');
             _textWriter.Write(PaddedFormat("Framework Description", envInfo.FrameworkDescription));
             _textWriter.Write('\n');
             _textWriter.Write(PaddedFormat("Local Time", envInfo.LocalTimeString));
