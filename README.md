@@ -26,7 +26,7 @@ App Metrics also provides a [health checking](https://github.com/AppMetrics/Heal
 - [Getting Started](https://www.app-metrics.io/getting-started/)
 - [ASP.NET Core 2.0](https://www.app-metrics.io/web-monitoring/aspnet-core/)
 - [Reporting](https://www.app-metrics.io/reporting/reporters/)
-- [Sample Applications & Grafana Dashbaords](https://www.app-metrics.io/samples/)
+- [Sample Applications & Grafana Dashboards](https://www.app-metrics.io/samples/)
 
 ## Latest Builds, Packages & Repo Stats
 
