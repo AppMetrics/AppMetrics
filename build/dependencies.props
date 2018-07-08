@@ -1,20 +1,17 @@
 <Project>
   <PropertyGroup>
     <AppMetricsConcurrencyVersion>2.0.1</AppMetricsConcurrencyVersion>
-    <AppMetricsAspNetCoreVersion>2.0.0-*</AppMetricsAspNetCoreVersion>
-    <MicrosoftExtensionsVersion>2.1.0</MicrosoftExtensionsVersion>
-    <AppMetricsReportingVersion>2.1.0-*</AppMetricsReportingVersion>
-    <AppMetricsInfluxDBVersion>2.1.0-*</AppMetricsInfluxDBVersion>
+    <MicrosoftExtensionsVersion>2.1.1</MicrosoftExtensionsVersion>
     <BenchmarkDotNetVersion>0.10.14</BenchmarkDotNetVersion>
     <CoreFxVersion>4.4.0</CoreFxVersion>
-    <DependencyModelVersion>2.1.0-*</DependencyModelVersion>
+    <DependencyModelVersion>2.1.1</DependencyModelVersion>
     <LibLogVersion>5.0.0</LibLogVersion>
     <MicrosoftCSharpVersion>4.5.0</MicrosoftCSharpVersion>
-    <MoqVersion>4.8.2</MoqVersion>
+    <MoqVersion>4.8.3</MoqVersion>
     <NewtonsoftVersion>11.0.2</NewtonsoftVersion>
-    <TestSdkVersion>15.8.0-preview-20180510-03</TestSdkVersion>
-    <XunitVersion>2.4.0-beta.2.build4010</XunitVersion>
-    <FluentAssertionsVersion>5.3.2</FluentAssertionsVersion>
+    <TestSdkVersion>15.8.0-preview-20180610-02</TestSdkVersion>
+    <XunitVersion>2.4.0-rc.1.build4038</XunitVersion>
+    <FluentAssertionsVersion>5.4.1</FluentAssertionsVersion>
     <FluentAssertionsJsonVersion>5.0.0</FluentAssertionsJsonVersion>
     <StyleCopAnalyzersVersion>1.0.0</StyleCopAnalyzersVersion>
   </PropertyGroup>
