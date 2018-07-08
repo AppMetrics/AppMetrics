@@ -41,7 +41,12 @@ namespace App.Metrics.Sampling.Facts
         [Fact]
         public void EDR_longPeriodsOfInactivityShouldNotCorruptSamplingState()
         {
-            var reservoir = new DefaultForwardDecayingReservoir(10, 0.015, AppMetricsReservoirSamplingConstants.DefaultMinimumSampleWeight, _clock, _scheduler);
+            var reservoir = new DefaultForwardDecayingReservoir(
+                10,
+                0.015,
+                0.0,
+                _clock,
+                _scheduler);
 
             // add 1000 values at a rate of 10 values/second
             for (var i = 0; i < 1000; i++)
