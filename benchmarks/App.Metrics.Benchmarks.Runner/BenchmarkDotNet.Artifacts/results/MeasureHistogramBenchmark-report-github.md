@@ -1,17 +1,16 @@
 ``` ini
 
-BenchmarkDotNet=v0.10.8, OS=Windows 10 Redstone 2 (10.0.15063)
-Processor=Intel Core i7-2600 CPU 3.40GHz (Sandy Bridge), ProcessorCount=8
-Frequency=3312788 Hz, Resolution=301.8605 ns, Timer=TSC
-dotnet cli version=2.0.0
-  [Host] : .NET Core 4.6.00001.0, 64bit RyuJIT
-  Core   : .NET Core 4.6.00001.0, 64bit RyuJIT
+BenchmarkDotNet=v0.10.14, OS=Windows 10.0.17134
+Intel Core i7-2600 CPU 3.40GHz (Sandy Bridge), 1 CPU, 8 logical and 4 physical cores
+.NET Core SDK=2.1.301
+  [Host] : .NET Core 2.1.1 (CoreCLR 4.6.26606.02, CoreFX 4.6.26606.05), 64bit RyuJIT
+  Core   : .NET Core 2.1.1 (CoreCLR 4.6.26606.02, CoreFX 4.6.26606.05), 64bit RyuJIT
 
 Job=Core  Runtime=Core  
 
 ```
- |                Method |     Mean |     Error |   StdDev |  Gen 0 | Allocated |
- |---------------------- |---------:|----------:|---------:|-------:|----------:|
- |      UpdateAlgorithmR | 384.0 ns |  5.313 ns | 4.970 ns | 0.0682 |     288 B |
- | UpdateForwardDecaying | 557.2 ns | 10.141 ns | 9.486 ns | 0.0677 |     288 B |
- |   UpdateSlidingWindow | 300.3 ns |  2.888 ns | 2.702 ns | 0.0682 |     288 B |
+|                Method |       Mean |     Error |    StdDev |  Gen 0 | Allocated |
+|---------------------- |-----------:|----------:|----------:|-------:|----------:|
+|      UpdateAlgorithmR | 1,095.1 ns | 29.146 ns | 50.275 ns | 0.1583 |     672 B |
+| UpdateForwardDecaying | 1,253.6 ns |  7.863 ns |  6.566 ns | 0.1812 |     768 B |
+|   UpdateSlidingWindow |   929.2 ns |  9.036 ns |  8.010 ns | 0.1593 |     672 B |

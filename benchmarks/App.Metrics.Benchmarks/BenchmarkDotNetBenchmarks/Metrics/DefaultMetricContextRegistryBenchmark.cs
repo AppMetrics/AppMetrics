@@ -3,6 +3,7 @@
 // </copyright>
 
 using App.Metrics.Apdex;
+using App.Metrics.Benchmarks.Configs;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
@@ -16,7 +17,9 @@ using BenchmarkDotNet.Attributes;
 
 namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
 {
-    public class DefaultMetricContextRegistryBenchmark : DefaultBenchmarkBase
+    [Config(typeof(DefaultConfig))]
+
+    public class DefaultMetricContextRegistryBenchmark
     {
         private static readonly IBuildApdexMetrics ApdexBuilder = new DefaultApdexBuilder(new DefaultSamplingReservoirProvider(() => new DefaultForwardDecayingReservoir()));
         private static readonly ApdexOptions ApdexOptions = new ApdexOptions
@@ -64,7 +67,7 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
         private DefaultMetricContextRegistry _registry;
 
         [GlobalSetup]
-        public override void Setup()
+        public void Setup()
         {
             var tags = new GlobalMetricTags
                        {
