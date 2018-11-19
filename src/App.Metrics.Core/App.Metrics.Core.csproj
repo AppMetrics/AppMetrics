@@ -28,7 +28,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net452' ">
-    <DefineConstants>$(DefineConstants);CLASSIC;LIBLOG_PORTABLE;LIBLOG_PUBLIC;THREADING_TIMER</DefineConstants>
+    <DefineConstants>$(DefineConstants);CLASSIC;LIBLOG_PUBLIC;THREADING_TIMER</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
