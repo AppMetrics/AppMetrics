@@ -5,7 +5,6 @@
     <BenchmarkDotNetVersion>0.10.14</BenchmarkDotNetVersion>
     <CoreFxVersion>4.4.0</CoreFxVersion>
     <DependencyModelVersion>2.1.1</DependencyModelVersion>
-    <LibLogVersion>5.0.0</LibLogVersion>
     <MicrosoftCSharpVersion>4.5.0</MicrosoftCSharpVersion>
     <MoqVersion>4.8.3</MoqVersion>
     <NewtonsoftVersion>11.0.2</NewtonsoftVersion>
