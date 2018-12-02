@@ -1,5 +1,5 @@
-﻿// <copyright file="MetricsReportingFixture.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="MetricsReportingFixture.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System;
@@ -16,7 +16,7 @@ using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 using App.Metrics.Timer;
 
-namespace App.Metrics.Reporting.Facts.Fixtures
+namespace App.Metrics.Facts.Fixtures
 {
     public class MetricsReportingFixture : IDisposable
     {

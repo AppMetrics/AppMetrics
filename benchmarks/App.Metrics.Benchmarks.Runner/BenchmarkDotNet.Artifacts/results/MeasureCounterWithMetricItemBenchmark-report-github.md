@@ -1,18 +1,17 @@
 ``` ini
 
-BenchmarkDotNet=v0.10.8, OS=Windows 10 Redstone 2 (10.0.15063)
-Processor=Intel Core i7-2600 CPU 3.40GHz (Sandy Bridge), ProcessorCount=8
-Frequency=3312788 Hz, Resolution=301.8605 ns, Timer=TSC
-dotnet cli version=2.0.0
-  [Host] : .NET Core 4.6.00001.0, 64bit RyuJIT
-  Core   : .NET Core 4.6.00001.0, 64bit RyuJIT
+BenchmarkDotNet=v0.10.14, OS=Windows 10.0.17134
+Intel Core i7-2600 CPU 3.40GHz (Sandy Bridge), 1 CPU, 8 logical and 4 physical cores
+.NET Core SDK=2.1.301
+  [Host] : .NET Core 2.1.1 (CoreCLR 4.6.26606.02, CoreFX 4.6.26606.05), 64bit RyuJIT
+  Core   : .NET Core 2.1.1 (CoreCLR 4.6.26606.02, CoreFX 4.6.26606.05), 64bit RyuJIT
 
 Job=Core  Runtime=Core  
 
 ```
- |                              Method |     Mean |    Error |   StdDev |  Gen 0 | Allocated |
- |------------------------------------ |---------:|---------:|---------:|-------:|----------:|
- |                 DecrementMetricItem | 367.3 ns | 4.053 ns | 3.791 ns | 0.0725 |     304 B |
- | DecrementMetricItemWithMulitpleTags | 825.0 ns | 7.675 ns | 7.179 ns | 0.1574 |     664 B |
- |                 IncrementMetricItem | 372.1 ns | 3.974 ns | 3.717 ns | 0.0725 |     304 B |
- | IncrementMetricItemWithMulitpleTags | 837.4 ns | 8.324 ns | 7.379 ns | 0.1574 |     664 B |
+|                              Method |     Mean |     Error |    StdDev |  Gen 0 | Allocated |
+|------------------------------------ |---------:|----------:|----------:|-------:|----------:|
+|                 DecrementMetricItem | 1.091 us | 0.0315 us | 0.0922 us | 0.1621 |     688 B |
+| DecrementMetricItemWithMultipleTags | 1.697 us | 0.0571 us | 0.1675 us | 0.2480 |    1048 B |
+|                 IncrementMetricItem | 1.172 us | 0.0404 us | 0.1192 us | 0.1621 |     688 B |
+| IncrementMetricItemWithMultipleTags | 2.031 us | 0.0865 us | 0.2550 us | 0.2480 |    1048 B |

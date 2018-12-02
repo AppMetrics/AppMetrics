@@ -1,5 +1,5 @@
-﻿// <copyright file="MetricsTextOutputFormatter.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="MetricsTextOutputFormatter.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System;
@@ -20,12 +20,31 @@ namespace App.Metrics.Formatters.Ascii
         public MetricsTextOutputFormatter()
         {
             _options = new MetricsTextOptions();
+            MetricFields = new MetricFields();
         }
 
-        public MetricsTextOutputFormatter(MetricsTextOptions options) { _options = options ?? throw new ArgumentNullException(nameof(options)); }
+        public MetricsTextOutputFormatter(MetricFields metricFields)
+        {
+            _options = new MetricsTextOptions();
+            MetricFields = metricFields ?? new MetricFields();
+        }
+
+        public MetricsTextOutputFormatter(MetricsTextOptions options)
+        {
+            _options = options ?? throw new ArgumentNullException(nameof(options));
+        }
+
+        public MetricsTextOutputFormatter(MetricsTextOptions options, MetricFields metricFields)
+        {
+            _options = options ?? throw new ArgumentNullException(nameof(options));
+            MetricFields = metricFields ?? new MetricFields();
+        }
 
         /// <inheritdoc />
         public MetricsMediaTypeValue MediaType => new MetricsMediaTypeValue("text", "vnd.appmetrics.metrics", "v1", "plain");
+
+        /// <inheritdoc />
+        public MetricFields MetricFields { get; set; }
 
         /// <inheritdoc />
         public Task WriteAsync(
@@ -46,10 +65,9 @@ namespace App.Metrics.Formatters.Ascii
                     streamWriter,
                     _options.Separator,
                     _options.Padding,
-                    _options.MetricNameFormatter,
-                    _options.DataKeys))
+                    _options.MetricNameFormatter))
                 {
-                    serializer.Serialize(textWriter, metricsData);
+                    serializer.Serialize(textWriter, metricsData, MetricFields);
                 }
             }
 

@@ -1,5 +1,5 @@
-﻿// <copyright file="SimpleReservoirTests.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="SimpleReservoirTests.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System.Collections.Generic;
@@ -23,8 +23,8 @@ namespace App.Metrics.Sampling.Facts
         public void ExponentialDecayingReservoir()
         {
             var reservoir = new DefaultForwardDecayingReservoir(
-                Constants.ReservoirSampling.DefaultSampleSize,
-                Constants.ReservoirSampling.DefaultExponentialDecayFactor);
+                AppMetricsReservoirSamplingConstants.DefaultSampleSize,
+                AppMetricsReservoirSamplingConstants.DefaultExponentialDecayFactor);
 
             foreach (var sample in _samples)
             {
@@ -39,7 +39,7 @@ namespace App.Metrics.Sampling.Facts
         [Fact]
         public void SlidingWindowReservoir()
         {
-            var reservoir = new DefaultSlidingWindowReservoir(Constants.ReservoirSampling.DefaultSampleSize);
+            var reservoir = new DefaultSlidingWindowReservoir(AppMetricsReservoirSamplingConstants.DefaultSampleSize);
 
             foreach (var sample in _samples)
             {
@@ -54,7 +54,7 @@ namespace App.Metrics.Sampling.Facts
         [Fact]
         public void UniformReservoir()
         {
-            var reservoir = new DefaultAlgorithmRReservoir(Constants.ReservoirSampling.DefaultSampleSize);
+            var reservoir = new DefaultAlgorithmRReservoir(AppMetricsReservoirSamplingConstants.DefaultSampleSize);
 
             foreach (var sample in _samples)
             {

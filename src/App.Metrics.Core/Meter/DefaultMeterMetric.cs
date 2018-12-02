@@ -1,5 +1,5 @@
-﻿// <copyright file="DefaultMeterMetric.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="DefaultMeterMetric.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System;
@@ -40,7 +40,6 @@ namespace App.Metrics.Meter
         /// <inheritdoc />
         public MeterValue Value => GetValue();
 
-        /// <inheritdoc />
         public override void Reset()
         {
             _startTime = _clock.Nanoseconds;

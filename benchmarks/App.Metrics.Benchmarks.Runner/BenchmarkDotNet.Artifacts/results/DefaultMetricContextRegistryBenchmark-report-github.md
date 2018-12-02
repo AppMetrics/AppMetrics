@@ -1,20 +1,19 @@
 ``` ini
 
-BenchmarkDotNet=v0.10.8, OS=Windows 10 Redstone 2 (10.0.15063)
-Processor=Intel Core i7-2600 CPU 3.40GHz (Sandy Bridge), ProcessorCount=8
-Frequency=3312788 Hz, Resolution=301.8605 ns, Timer=TSC
-dotnet cli version=2.0.0
-  [Host] : .NET Core 4.6.00001.0, 64bit RyuJIT
-  Core   : .NET Core 4.6.00001.0, 64bit RyuJIT
+BenchmarkDotNet=v0.10.14, OS=Windows 10.0.17134
+Intel Core i7-2600 CPU 3.40GHz (Sandy Bridge), 1 CPU, 8 logical and 4 physical cores
+.NET Core SDK=2.1.301
+  [Host] : .NET Core 2.1.1 (CoreCLR 4.6.26606.02, CoreFX 4.6.26606.05), 64bit RyuJIT
+  Core   : .NET Core 2.1.1 (CoreCLR 4.6.26606.02, CoreFX 4.6.26606.05), 64bit RyuJIT
 
 Job=Core  Runtime=Core  
 
 ```
- |                       Method |     Mean |     Error |    StdDev |  Gen 0 | Allocated |
- |----------------------------- |---------:|----------:|----------:|-------:|----------:|
- |     ResolveApdexFromRegistry | 85.60 ns | 1.0084 ns | 0.9433 ns | 0.0457 |     192 B |
- |   ResolveCounterFromRegistry | 87.40 ns | 0.9301 ns | 0.8700 ns | 0.0457 |     192 B |
- |     ResolveGaugeFromRegistry | 86.03 ns | 1.7418 ns | 1.6293 ns | 0.0457 |     192 B |
- | ResolveHistogramFromRegistry | 87.99 ns | 0.9447 ns | 0.8836 ns | 0.0457 |     192 B |
- |     ResolveMeterFromRegistry | 86.79 ns | 1.5577 ns | 1.4571 ns | 0.0457 |     192 B |
- |     ResolveTimerFromRegistry | 87.77 ns | 0.6855 ns | 0.6077 ns | 0.0457 |     192 B |
+|                       Method |     Mean |     Error |    StdDev |  Gen 0 | Allocated |
+|----------------------------- |---------:|----------:|----------:|-------:|----------:|
+|     ResolveApdexFromRegistry | 1.952 us | 0.0284 us | 0.0237 us | 0.2327 |     984 B |
+|   ResolveCounterFromRegistry | 1.947 us | 0.0181 us | 0.0160 us | 0.2327 |     984 B |
+|     ResolveGaugeFromRegistry | 1.588 us | 0.0124 us | 0.0104 us | 0.2327 |     984 B |
+| ResolveHistogramFromRegistry | 1.935 us | 0.0165 us | 0.0154 us | 0.2327 |     992 B |
+|     ResolveMeterFromRegistry | 1.620 us | 0.0163 us | 0.0145 us | 0.2327 |     984 B |
+|     ResolveTimerFromRegistry | 1.615 us | 0.0137 us | 0.0115 us | 0.2327 |     984 B |

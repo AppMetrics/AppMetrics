@@ -1,5 +1,5 @@
-﻿// <copyright file="MetricsReportingBuilder.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="MetricsReportingBuilder.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System;
@@ -21,7 +21,6 @@ namespace App.Metrics
     {
         private static readonly IFilterMetrics NullMetricsFilter = new NullMetricsFilter();
         private readonly MetricsFormatterCollection _formatters;
-        private readonly IMetricsBuilder _metricsBuilder;
         private readonly Action<IReportMetrics> _reporters;
 
         internal MetricsReportingBuilder(
@@ -29,7 +28,7 @@ namespace App.Metrics
             MetricsFormatterCollection formatters,
             Action<IReportMetrics> reporters)
         {
-            _metricsBuilder = metricsBuilder ?? throw new ArgumentNullException(nameof(metricsBuilder));
+            Builder = metricsBuilder ?? throw new ArgumentNullException(nameof(metricsBuilder));
             _formatters = formatters ?? throw new ArgumentNullException(nameof(formatters));
             _reporters = reporters ?? throw new ArgumentNullException(nameof(reporters));
         }
@@ -49,7 +48,7 @@ namespace App.Metrics
 
             _reporters(reporter);
 
-            return _metricsBuilder;
+            return Builder;
         }
 
         /// <inheritdoc />

@@ -1,5 +1,5 @@
-﻿// <copyright file="BenchmarkTestExecutor.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="BenchmarkTestExecutor.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System;
@@ -81,7 +81,7 @@ namespace App.Metrics.Benchmarks.Support
 
             Assert.True(
                 summary.Reports.All(r => r.BuildResult.IsBuildSuccess),
-                "The following benchmarks are failed to build: " + string.Join(", ", summary.Reports.Where(r => !r.BuildResult.IsBuildSuccess).Select(r => r.Benchmark.DisplayInfo)));
+                "The following benchmarks are failed to build: " + string.Join(", ", summary.Reports.Where(r => !r.BuildResult.IsBuildSuccess).Select(r => r.BenchmarkCase.DisplayInfo)));
 
             Assert.True(
                 summary.Reports.All(r => r.ExecuteResults.Any(er => er.FoundExecutable && er.Data.Any())),

@@ -1,5 +1,5 @@
-﻿// <copyright file="IMetricsBuilder.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="IMetricsBuilder.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using App.Metrics.Builder;
@@ -23,6 +23,10 @@ namespace App.Metrics
         ///     Builder for configuring core App Metrics options.
         /// </summary>
         IMetricsConfigurationBuilder Configuration { get; }
+
+        bool CanReport();
+
+        IMetricFieldsBuilder MetricFields { get; }
 
         /// <summary>
         ///     <para>

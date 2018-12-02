@@ -1,5 +1,5 @@
-﻿// <copyright file="IGaugeMetric.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="IGaugeMetric.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 namespace App.Metrics.Gauge

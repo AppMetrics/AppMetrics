@@ -1,5 +1,5 @@
-﻿// <copyright file="TestReservoirRescaleScheduler.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="TestReservoirRescaleScheduler.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System;
@@ -17,13 +17,17 @@ namespace App.Metrics.FactsCommon
     public class TestReservoirRescaleScheduler : IReservoirRescaleScheduler
     {
         private static readonly ILog Logger = LogProvider.For<DefaultReservoirRescaleScheduler>();
-        private static readonly TimeSpan TickInterval = TimeSpan.FromHours(1);
+        private static readonly TimeSpan DefaultTickInterval = TimeSpan.FromHours(1);
         private readonly object _syncLock = new object();
         private readonly ConcurrentBag<IRescalingReservoir> _reservoirs = new ConcurrentBag<IRescalingReservoir>();
         private long _lastRun;
         private volatile bool _disposing;
 
         public TestReservoirRescaleScheduler(IClock clock)
+            : this(clock, DefaultTickInterval)
+        { }
+
+        public TestReservoirRescaleScheduler(IClock clock, TimeSpan tickInterval)
         {
             clock.Advanced += (s, l) =>
             {
@@ -31,7 +35,7 @@ namespace App.Metrics.FactsCommon
                 {
                     var clockSeconds = clock.Seconds;
                     var elapsed = clockSeconds - _lastRun;
-                    var times = elapsed / TickInterval.TotalSeconds;
+                    var times = elapsed / tickInterval.TotalSeconds;
 
                     using (new CancellationTokenSource())
                     {

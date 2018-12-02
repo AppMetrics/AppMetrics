@@ -1,24 +1,17 @@
 <Project>
   <PropertyGroup>
-    <AppMetricsConcurrencyVersion>2.0.0</AppMetricsConcurrencyVersion>
-    <AppMetricsAspNetCoreVersion>2.0.0-*</AppMetricsAspNetCoreVersion>
-    <AspNetCoreVersion>2.0.1</AspNetCoreVersion>
-    <MicrosoftExtensionsVersion>2.0.0</MicrosoftExtensionsVersion>
-    <AppMetricsReportingVersion>2.0.0-*</AppMetricsReportingVersion>
-    <AppMetricsInfluxDBVersion>2.0.0-*</AppMetricsInfluxDBVersion>
-    <AppMetricsElasticsearchVersion>2.0.0-*</AppMetricsElasticsearchVersion>
-    <BenchmarkDotNetVersion>0.10.12</BenchmarkDotNetVersion>
-    <CoreFxVersion>4.4.0-*</CoreFxVersion>
-    <DependencyModelVersion>2.0.0-*</DependencyModelVersion>
-    <LibLogVersion>4.2.6</LibLogVersion>
-    <MicrosoftCSharpVersion>4.4.1</MicrosoftCSharpVersion>
-    <MoqVersion>4.8.1</MoqVersion>
-    <NewtonsoftVersion>10.0.3</NewtonsoftVersion>
-    <NETStandardLibraryNETFrameworkVersion>2.0.0-*</NETStandardLibraryNETFrameworkVersion>
-    <RuntimeFrameworkVersion Condition="'$(TargetFramework)'=='netcoreapp2.0'">2.0.0-*</RuntimeFrameworkVersion>
-    <TestSdkVersion>15.5.0</TestSdkVersion>
-    <XunitVersion>2.3.1</XunitVersion>
-    <FluentAssertionsVersion>5.0.0</FluentAssertionsVersion>
+    <AppMetricsConcurrencyVersion>2.0.1</AppMetricsConcurrencyVersion>
+    <MicrosoftExtensionsVersion>2.1.1</MicrosoftExtensionsVersion>
+    <BenchmarkDotNetVersion>0.11.3</BenchmarkDotNetVersion>
+    <BenchmarkDotNetCoreVersion>0.10.14</BenchmarkDotNetCoreVersion>
+    <CoreFxVersion>4.4.0</CoreFxVersion>
+    <DependencyModelVersion>2.1.1</DependencyModelVersion>
+    <MicrosoftCSharpVersion>4.5.0</MicrosoftCSharpVersion>
+    <MoqVersion>4.10.0</MoqVersion>
+    <NewtonsoftVersion>12.0.1</NewtonsoftVersion>
+    <TestSdkVersion>15.9.0</TestSdkVersion>
+    <XunitVersion>2.4.1</XunitVersion>
+    <FluentAssertionsVersion>5.5.3</FluentAssertionsVersion>
     <FluentAssertionsJsonVersion>5.0.0</FluentAssertionsJsonVersion>
     <StyleCopAnalyzersVersion>1.0.0</StyleCopAnalyzersVersion>
   </PropertyGroup>

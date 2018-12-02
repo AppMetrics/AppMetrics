@@ -1,5 +1,5 @@
-﻿// <copyright file="NoOpMetricsReportRunner.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="NoOpMetricsReportRunner.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System.Collections.Generic;
@@ -7,9 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-#if !NETSTANDARD1_6
-using App.Metrics.Internal;
-#endif
+
 using App.Metrics.Reporting;
 
 namespace App.Metrics.Internal.NoOp

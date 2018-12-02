@@ -1,5 +1,5 @@
-﻿// <copyright file="KeyValuePairMetricsOptions.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="KeyValuePairMetricsOptions.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System;
@@ -56,7 +56,7 @@ namespace App.Metrics.Internal
                 }
                 else if (key.StartsWith(GlobalTagsDirective, StringComparison.CurrentCultureIgnoreCase))
                 {
-                    var tagKey = key.Split(':')?.LastOrDefault()?.Trim();
+                    var tagKey = key.Split(':').LastOrDefault()?.Trim();
                     var tagValue = _optionValues[key]?.Split(new[] { ",", ", " }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault()?.Trim();
 
                     if (string.IsNullOrWhiteSpace(tagKey) || string.IsNullOrWhiteSpace(tagValue))

@@ -1,5 +1,5 @@
-﻿// <copyright file="MeterOptions.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="MeterOptions.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 namespace App.Metrics.Meter
@@ -25,5 +25,13 @@ namespace App.Metrics.Meter
         ///     The rate unit.
         /// </value>
         public TimeUnit RateUnit { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether or not to report the counter's set items. Defaults to <c>true</c>.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if [report set items]; otherwise, <c>false</c>.
+        /// </value>
+        public bool ReportSetItems { get; set; }
     }
 }

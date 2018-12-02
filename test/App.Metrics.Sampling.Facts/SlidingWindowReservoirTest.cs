@@ -1,5 +1,5 @@
-﻿// <copyright file="SlidingWindowReservoirTest.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="SlidingWindowReservoirTest.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System.Linq;
@@ -80,7 +80,9 @@ namespace App.Metrics.Sampling.Facts
 
             var field = fields.FirstOrDefault(feildInfo => feildInfo.Name == "_values");
 
-            ((UserValueWrapper[])field.GetValue(reservoir)).Length.Should().Be(Constants.ReservoirSampling.DefaultSampleSize);
+            // ReSharper disable PossibleNullReferenceException
+            ((UserValueWrapper[])field.GetValue(reservoir)).Length.Should().Be(AppMetricsReservoirSamplingConstants.DefaultSampleSize);
+            // ReSharper restore PossibleNullReferenceException
         }
 
         [Fact]

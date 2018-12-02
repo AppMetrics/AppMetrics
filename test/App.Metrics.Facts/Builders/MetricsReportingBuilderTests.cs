@@ -1,5 +1,5 @@
-﻿// <copyright file="MetricsReportingBuilderTests.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="MetricsReportingBuilderTests.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System;
@@ -23,7 +23,7 @@ namespace App.Metrics.Facts.Builders
             Action action = () =>
             {
                 // Act
-                var builder = new MetricsBuilder().Report.Using(reporter: null);
+                var unused = new MetricsBuilder().Report.Using(reporter: null);
             };
 
             // Assert

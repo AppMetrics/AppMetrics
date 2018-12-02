@@ -26,7 +26,7 @@ App Metrics also provides a [health checking](https://github.com/AppMetrics/Heal
 - [Getting Started](https://www.app-metrics.io/getting-started/)
 - [ASP.NET Core 2.0](https://www.app-metrics.io/web-monitoring/aspnet-core/)
 - [Reporting](https://www.app-metrics.io/reporting/reporters/)
-- [Sample Applications & Grafana Dashbaords](https://www.app-metrics.io/samples/)
+- [Sample Applications & Grafana Dashboards](https://www.app-metrics.io/samples/)
 
 ## Latest Builds, Packages & Repo Stats
 
@@ -112,7 +112,7 @@ To run, fron the solution's root:
 
 ```
 	cd .\benchmarks\App.Metrics.Benchmarks.Runner\
-	dotnet run -c "Release" --framework netcoreapp2.0
+	dotnet run -c "Release" --framework netcoreapp2.1
 ```
 
 You'll then be prompted to choose a benchmark to run which will output a markdown file with the result in directory `.\benchmarks\App.Metrics.Benchmarks.Runner\BenchmarkDotNet.Artifacts\results`.

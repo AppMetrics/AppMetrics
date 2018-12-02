@@ -1,5 +1,5 @@
-﻿// <copyright file="TestConfigs.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="TestConfigs.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using BenchmarkDotNet.Configs;
@@ -17,12 +17,12 @@ namespace App.Metrics.Benchmarks.Support
 
     public class SingleRunMediumConfig : ManualConfig
     {
-        public SingleRunMediumConfig() { Add(new Job(Job.Dry) { Run = { TargetCount = 5 } }); }
+        public SingleRunMediumConfig() { Add(new Job(Job.Dry) { Run = { IterationCount = 5 } }); }
     }
 
     public class ThroughputFastConfig : ManualConfig
     {
-        public ThroughputFastConfig() { Add(new Job(Job.Dry) { Run = { RunStrategy = RunStrategy.Throughput, TargetCount = 1 } }); }
+        public ThroughputFastConfig() { Add(new Job(Job.Dry) { Run = { RunStrategy = RunStrategy.Throughput, IterationCount = 1 } }); }
     }
 
     public class DiagnoserConfig : ManualConfig
@@ -30,7 +30,7 @@ namespace App.Metrics.Benchmarks.Support
         public DiagnoserConfig()
         {
             // Diagnosers need enough runs to collects the statistics!
-            Add(new Job { Run = { LaunchCount = 1, WarmupCount = 1, TargetCount = 50 } });
+            Add(new Job { Run = { LaunchCount = 1, WarmupCount = 1, IterationCount = 50 } });
         }
     }
 #pragma warning restore SA1649, SA1402

@@ -1,10 +1,10 @@
-﻿// <copyright file="ApdexValueDataKeys.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="ApdexFields.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 namespace App.Metrics
 {
-    public enum ApdexValueDataKeys
+    public enum ApdexFields
     {
 #pragma warning disable SA1602
         Samples,

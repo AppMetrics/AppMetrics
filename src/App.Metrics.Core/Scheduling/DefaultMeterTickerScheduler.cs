@@ -1,5 +1,5 @@
-// <copyright file="DefaultMeterTickerScheduler.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+// <copyright file="DefaultMeterTickerScheduler.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System;
@@ -39,15 +39,15 @@ namespace App.Metrics.Scheduling
             {
                 Logger.Trace(
                     _meters.TryTake(out meter)
-                        ? "Successfully removed meter from {MeterTickScheuler} schedule."
-                        : "Failed to remove meter from {MeterTickScheuler} schedule.", this);
+                        ? "Successfully removed meter from {MeterTickScheduler} schedule."
+                        : "Failed to remove meter from {MeterTickScheduler} schedule.", this);
             }
         }
 
         /// <inheritdoc/>
         public void Dispose()
         {
-            Logger.Trace("Disposing {MeterTickScheuler} scheduler", this);
+            Logger.Trace("Disposing {MeterTickScheduler} scheduler", this);
 
             lock (_syncLock)
             {
@@ -61,16 +61,16 @@ namespace App.Metrics.Scheduling
 
             _scheduler.Dispose();
 
-            Logger.Trace("{MeterTickScheuler} scheduler disposed", this);
+            Logger.Trace("{MeterTickScheduler} scheduler disposed", this);
 
             Tick().GetAwaiter().GetResult();
         }
 
         private void SetScheduler()
         {
-            Logger.Trace("Starting {MeterTickScheuler} scheduler", this);
+            Logger.Trace("Starting {MeterTickScheduler} scheduler", this);
             _scheduler.Start(TickInterval);
-            Logger.Trace("{MeterTickScheuler} scheduler started", this);
+            Logger.Trace("{MeterTickScheduler} scheduler started", this);
         }
 
         private Task Tick()
@@ -89,7 +89,7 @@ namespace App.Metrics.Scheduling
 
                 if (Logger.IsDebugEnabled())
                 {
-                    Logger.Trace("{MeterCount} meters all ticked in {ElapsedTicks} ticks using {MeterTickScheuler}", _meters.Count, TickStopWatch.ElapsedTicks, this);
+                    Logger.Trace("{MeterCount} meters all ticked in {ElapsedTicks} ticks using {MeterTickScheduler}", _meters.Count, TickStopWatch.ElapsedTicks, this);
                     TickStopWatch.Reset();
                     TickStopWatch.Stop();
                 }

@@ -1,5 +1,5 @@
-﻿// <copyright file="MeterValueSetItemEqualityTests.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="MeterValueSetItemEqualityTests.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using App.Metrics.Meter;

@@ -1,5 +1,5 @@
-﻿// <copyright file="MetricsRoot.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="MetricsRoot.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System;
@@ -11,7 +11,7 @@ using App.Metrics.Reporting;
 
 namespace App.Metrics
 {
-    internal class MetricsRoot : IMetricsRoot, IMetrics
+    internal class MetricsRoot : IMetricsRoot
     {
         private readonly EnvironmentInfoProvider _environmentInfoProvider;
         private readonly IMetrics _metrics;

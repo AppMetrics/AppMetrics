@@ -1,5 +1,5 @@
-﻿// <copyright file="MetricSnapshotTextWriter.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="MetricSnapshotTextWriter.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System;
@@ -23,8 +23,7 @@ namespace App.Metrics.Formatters.Ascii
             TextWriter textWriter,
             string separator = MetricsTextFormatterConstants.OutputFormatting.Separator,
             int padding = MetricsTextFormatterConstants.OutputFormatting.Padding,
-            Func<string, string, string> metricNameFormatter = null,
-            GeneratedMetricNameMapping dataKeys = null)
+            Func<string, string, string> metricNameFormatter = null)
         {
             _textWriter = textWriter ?? throw new ArgumentNullException(nameof(textWriter));
             _separator = separator;
@@ -40,24 +39,25 @@ namespace App.Metrics.Formatters.Ascii
             {
                 _metricNameFormatter = metricNameFormatter;
             }
-
-            MetricNameMapping = dataKeys ?? new GeneratedMetricNameMapping();
         }
-
-        /// <inheritdoc />
-        public GeneratedMetricNameMapping MetricNameMapping { get; }
 
         /// <inheritdoc />
         public void Write(
             string context,
             string name,
+            string field,
             object value,
             MetricTags tags,
             DateTime timestamp)
         {
+            if (value == null)
+            {
+                return;
+            }
+
             var measurement = _metricNameFormatter(context, name);
 
-            _textPoints.Add(new MetricsTextPoint(measurement, new Dictionary<string, object> { { "value", value } }, tags, timestamp));
+            _textPoints.Add(new MetricsTextPoint(measurement, new Dictionary<string, object> { { field, value } }, tags, timestamp));
         }
 
         /// <inheritdoc />
@@ -71,6 +71,11 @@ namespace App.Metrics.Formatters.Ascii
         {
             var fields = columns.Zip(values, (column, data) => new { column, data }).ToDictionary(pair => pair.column, pair => pair.data);
 
+            if (!fields.Any())
+            {
+                return;
+            }
+
             var measurement = _metricNameFormatter(context, name);
 
             _textPoints.Add(new MetricsTextPoint(measurement, fields, tags, timestamp));
@@ -80,7 +85,6 @@ namespace App.Metrics.Formatters.Ascii
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         /// <summary>

@@ -1,10 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\build\common.props" />
-
   <PropertyGroup>
     <Description>App Metrics core components. Contains metric types and default implementations for metric reporting, filtering and more.</Description>
-    <TargetFrameworks>netstandard1.6;net452</TargetFrameworks>
+    <TargetFrameworks>netstandard1.6</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);net452</TargetFrameworks>
     <RootNamespace>App.Metrics</RootNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>appmetrics;metrics</PackageTags>
@@ -12,7 +11,6 @@
 
   <ItemGroup>
     <PackageReference Include="App.Metrics.Concurrency" Version="$(AppMetricsConcurrencyVersion)" />
-    <PackageReference Include="LibLog" Version="$(LibLogVersion)" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,13 +27,17 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net452' ">
-    <DefineConstants>$(DefineConstants);CLASSIC;LIBLOG_PORTABLE;LIBLOG_PUBLIC;THREADING_TIMER</DefineConstants>
+    <DefineConstants>$(DefineConstants);CLASSIC;LIBLOG_PUBLIC;THREADING_TIMER</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
     <Reference Include="System" />
     <Reference Include="System.Collections" />
     <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
+    <PackageReference Include="Microsoft.CSharp" Version="$(MicrosoftCSharpVersion)" />
   </ItemGroup>
 
 </Project>

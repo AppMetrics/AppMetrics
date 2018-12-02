@@ -1,5 +1,5 @@
-// <copyright file="MeterValueSource.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+// <copyright file="MeterValueSource.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 namespace App.Metrics.Meter
@@ -14,12 +14,16 @@ namespace App.Metrics.Meter
             IMetricValueProvider<MeterValue> value,
             Unit unit,
             TimeUnit rateUnit,
-            MetricTags tags)
+            MetricTags tags,
+            bool reportSetItems = true)
             : base(name, new ScaledValueProvider<MeterValue>(value, v => v.Scale(rateUnit)), unit, tags)
         {
             RateUnit = rateUnit;
+            ReportSetItems = reportSetItems;
         }
 
         public TimeUnit RateUnit { get; }
+
+        public bool ReportSetItems { get; }
     }
 }

@@ -1,8 +1,7 @@
-﻿// <copyright file="MeasureTimerBenchmark.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="MeasureTimerBenchmark.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
-using App.Metrics.Benchmarks.Fixtures;
 using App.Metrics.Benchmarks.Support;
 using BenchmarkDotNet.Attributes;
 

@@ -1,5 +1,5 @@
-﻿// <copyright file="IMetricsOutputFormattingBuilder.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="IMetricsOutputFormattingBuilder.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using App.Metrics.Formatters;
@@ -41,6 +41,7 @@ namespace App.Metrics
         ///         will be set to the first configured formatter.
         ///     </para>
         /// </summary>
+        /// <param name="fields">The metric fields to write as well as thier names.</param>
         /// <typeparam name="TMetricsOutputFormatter">
         ///     An <see cref="IMetricsOutputFormatter" /> type used to format metric values
         ///     when reporting.
@@ -48,7 +49,7 @@ namespace App.Metrics
         /// <returns>
         ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
-        IMetricsBuilder Using<TMetricsOutputFormatter>()
+        IMetricsBuilder Using<TMetricsOutputFormatter>(MetricFields fields = null)
             where TMetricsOutputFormatter : IMetricsOutputFormatter, new();
 
         /// <summary>
@@ -89,10 +90,11 @@ namespace App.Metrics
         ///     If [true] replaces matching formatter type with the formatter instance, otherwise the
         ///     existing formatter instance of matching type.
         /// </param>
+        /// <param name="fields">The metric fields to write as well as thier names.</param>
         /// <returns>
         ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
-        IMetricsBuilder Using<TMetricsOutputFormatter>(bool replaceExisting)
+        IMetricsBuilder Using<TMetricsOutputFormatter>(bool replaceExisting, MetricFields fields = null)
             where TMetricsOutputFormatter : IMetricsOutputFormatter, new();
     }
 }

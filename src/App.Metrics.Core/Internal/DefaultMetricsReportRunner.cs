@@ -1,5 +1,5 @@
-﻿// <copyright file="DefaultMetricsReportRunner.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="DefaultMetricsReportRunner.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System;
@@ -20,7 +20,6 @@ namespace App.Metrics.Internal
         private readonly IMetrics _metrics;
         private readonly CounterOptions _failedCounter;
         private readonly MetricsReporterCollection _reporters;
-
         private readonly CounterOptions _successCounter;
 
         public DefaultMetricsReportRunner(IMetrics metrics, MetricsReporterCollection reporters)
@@ -33,6 +32,8 @@ namespace App.Metrics.Internal
                                   Context = AppMetricsConstants.InternalMetricsContext,
                                   MeasurementUnit = Unit.Items,
                                   ResetOnReporting = true,
+                                  ReportItemPercentages = false,
+                                  ReportSetItems = false,
                                   Name = "report_success"
                               };
 
@@ -41,6 +42,8 @@ namespace App.Metrics.Internal
                                  Context = AppMetricsConstants.InternalMetricsContext,
                                  MeasurementUnit = Unit.Items,
                                  ResetOnReporting = true,
+                                 ReportItemPercentages = false,
+                                 ReportSetItems = false,
                                  Name = "report_failed"
                              };
         }

@@ -1,5 +1,5 @@
-﻿// <copyright file="MetricsBuilder.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="MetricsBuilder.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System.Linq;
@@ -28,13 +28,14 @@ namespace App.Metrics
         private IClock _clock = new StopwatchClock();
         private IEnvOutputFormatter _defauEnvOutputFormatter;
         private IMetricsOutputFormatter _defaultMetricsOutputFormatter;
-        private IRunMetricsReports _metricsReportRunner = new NoOpMetricsReportRunner();
 
         private DefaultSamplingReservoirProvider _defaultSamplingReservoir =
             new DefaultSamplingReservoirProvider(() => new DefaultForwardDecayingReservoir());
 
         private IFilterMetrics _metricsFilter = new NullMetricsFilter();
+        private IRunMetricsReports _metricsReportRunner = new NoOpMetricsReportRunner();
         private MetricsOptions _options;
+        private MetricFields _metricFields;
 
         /// <inheritdoc />
         public IMetricsConfigurationBuilder Configuration
@@ -45,6 +46,18 @@ namespace App.Metrics
                     this,
                     _options,
                     options => { _options = options; });
+            }
+        }
+
+        /// <inheritdoc />
+        public IMetricFieldsBuilder MetricFields
+        {
+            get
+            {
+                return new MetricFieldsBuilder(
+                    this,
+                    _metricFields,
+                    metricFields => { _metricFields = metricFields; });
             }
         }
 
@@ -99,10 +112,7 @@ namespace App.Metrics
         public IMetricsReportingBuilder Report => new MetricsReportingBuilder(
             this,
             _metricsOutputFormatters,
-            reporter =>
-            {
-                _reporters.TryAdd(reporter);
-            });
+            reporter => { _reporters.TryAdd(reporter); });
 
         /// <inheritdoc />
         public IMetricsReservoirSamplingBuilder SampleWith
@@ -136,6 +146,11 @@ namespace App.Metrics
                 _options = new MetricsOptions();
             }
 
+            if (_metricFields == null)
+            {
+                _metricFields = new MetricFields();
+            }
+
             if (_options.Enabled)
             {
                 registry = new DefaultMetricsRegistry(_options.DefaultContextLabel, _clock, ContextRegistry);
@@ -143,7 +158,28 @@ namespace App.Metrics
 
             if (_metricsOutputFormatters.Count == 0)
             {
-                _metricsOutputFormatters.Add(new MetricsTextOutputFormatter());
+                _metricsOutputFormatters.Add(new MetricsTextOutputFormatter(_metricFields));
+            }
+            else
+            {
+                foreach (var metricsOutputFormatter in _metricsOutputFormatters)
+                {
+                    if (metricsOutputFormatter.MetricFields == null)
+                    {
+                        metricsOutputFormatter.MetricFields = _metricFields;
+                    }
+                }
+            }
+
+            if (_reporters != null && _reporters.Any())
+            {
+                foreach (var reporter in _reporters)
+                {
+                    if (reporter.Formatter != null && reporter.Formatter.MetricFields == null)
+                    {
+                        reporter.Formatter.MetricFields = _metricFields;
+                    }
+                }
             }
 
             if (_envFormatters.Count == 0)
@@ -180,6 +216,6 @@ namespace App.Metrics
                 new DefaultMetricContextRegistry(context, new GlobalMetricTags(_options.GlobalTags));
         }
 
-        private bool CanReport() { return _options.Enabled && _options.ReportingEnabled && _reporters.Any(); }
+        public bool CanReport() { return _options.Enabled && _options.ReportingEnabled && _reporters.Any(); }
     }
 }

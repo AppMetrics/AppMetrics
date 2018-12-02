@@ -70,22 +70,35 @@ var coverExcludeFilter			= "-:*.Facts -:*.FactsCommon";
 var excludeFromCoverage			= "*.ExcludeFromCodeCoverage*";
 string versionSuffix			= null;
 
-if (!string.IsNullOrEmpty(preReleaseSuffix))
+if (AppVeyor.IsRunningOnAppVeyor)
 {
-	if (packageRelease && AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Tag.IsTag)
+	if (AppVeyor.Environment.Repository.Tag.IsTag)
 	{
-		versionSuffix = preReleaseSuffix;
+		// Stable release package, pushed to nuget
+	}
+	else if (string.IsNullOrEmpty(preReleaseSuffix))
+	{
+		// Next stable release development package, not pushed to nuget
+		versionSuffix = buildNumber.ToString("D4");
 	}
 	else
 	{
-		versionSuffix = preReleaseSuffix + "-" + buildNumber.ToString("D4");
+		if (packageRelease)
+		{
+			// Pre-release package, set version suffix without build number, not tagged until stable release but pushed to nuget
+			versionSuffix = preReleaseSuffix;
+		}
+		else
+		{
+			// Pre-release development package, set version suffix with build number, not pushed to nuget
+			versionSuffix = preReleaseSuffix + "-" + buildNumber.ToString("D4");
+		}
 	}
 }
-else if (AppVeyor.IsRunningOnAppVeyor && !AppVeyor.Environment.Repository.Tag.IsTag && !packageRelease)
+else
 {
-	versionSuffix = buildNumber.ToString("D4");
+	versionSuffix = preReleaseSuffix + "-" + buildNumber.ToString("D4");
 }
-
 
 //////////////////////////////////////////////////////////////////////
 // TASKS

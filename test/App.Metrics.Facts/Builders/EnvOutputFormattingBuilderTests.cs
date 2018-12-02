@@ -1,5 +1,5 @@
-﻿// <copyright file="EnvOutputFormattingBuilderTests.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="EnvOutputFormattingBuilderTests.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System;
@@ -33,7 +33,7 @@ namespace App.Metrics.Facts.Builders
             Action action = () =>
             {
                 // Act
-                var builder = new MetricsBuilder().OutputEnvInfo.Using(null);
+                var unused = new MetricsBuilder().OutputEnvInfo.Using(null);
             };
 
             // Assert

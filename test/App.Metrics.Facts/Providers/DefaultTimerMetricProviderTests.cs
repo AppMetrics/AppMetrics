@@ -1,5 +1,5 @@
-﻿// <copyright file="DefaultTimerMetricProviderTests.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="DefaultTimerMetricProviderTests.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System.Linq;
@@ -205,7 +205,7 @@ namespace App.Metrics.Facts.Providers
             using (var metricsFixture = new MetricsFixture())
             {
                 var timer1 = metricsFixture.Metrics.Provider.Timer.Instance(timerDef, new MetricTags("test", "1"));
-                var timer2 = metricsFixture.Metrics.Provider.Timer.Instance(timerDef, new MetricTags("test", "2"));
+                var unused = metricsFixture.Metrics.Provider.Timer.Instance(timerDef, new MetricTags("test", "2"));
 
                 timer1.Record(100, TimeUnit.Seconds);
                 timer1.Record(100, TimeUnit.Seconds);

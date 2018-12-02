@@ -1,12 +1,11 @@
-﻿// <copyright file="AppMetricsConstants.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="AppMetricsConstants.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System;
 using System.Collections.Generic;
 using App.Metrics.Apdex;
 using App.Metrics.Counter;
-using App.Metrics.Formatters;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
 using App.Metrics.Timer;

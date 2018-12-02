@@ -1,5 +1,5 @@
-﻿// <copyright file="WeightedSnapshot.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="WeightedSnapshot.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System;
@@ -38,7 +38,8 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
             for (var i = 0; i < sample.Length; i++)
             {
                 _values[i] = sample[i].Value;
-                _normWeights[i] = sample[i].Weight / sumWeight;
+                _normWeights[i] = Math.Abs(sumWeight) < 0.0001 ? 0.0d : sample[i].Weight / sumWeight;
+
                 if (i > 0)
                 {
                     _quantiles[i] = _quantiles[i - 1] + _normWeights[i - 1];

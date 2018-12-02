@@ -30,4 +30,4 @@ If you're unable to find an open issue related to the bug you've found go ahead 
 
 ### **Contributing to the documentation**
 
-App Metrics documentation is built using [docfx](https://dotnet.github.io/docfx/), you can find the github repo [here](https://github.com/alhardy/AppMetrics.DocFx) and create a new pull request on the `master` branch.
+App Metrics documentation is built using [Hugo](https://gohugo.io/documentation/), you can find the github repo [here](https://github.com/AppMetrics/Docs.V2.Hugo) and create a new pull request on the `master` branch.

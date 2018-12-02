@@ -1,8 +1,9 @@
-﻿// <copyright file="MetricsReservoirSamplingBuilder.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="MetricsReservoirSamplingBuilder.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System;
+using App.Metrics.Infrastructure;
 using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 using App.Metrics.ReservoirSampling.SlidingWindow;
@@ -56,17 +57,46 @@ namespace App.Metrics
         }
 
         /// <inheritdoc />
-        public IMetricsBuilder ForwardDecaying(int sampleSize, double alpha, IClock clock)
+        public IMetricsBuilder ForwardDecaying(int sampleSize, double alpha, double minimumSampleWeight)
         {
-            Reservoir(() => new DefaultForwardDecayingReservoir(sampleSize, alpha, clock));
+            Reservoir(() => new DefaultForwardDecayingReservoir(sampleSize, alpha, minimumSampleWeight));
 
             return Builder;
         }
 
         /// <inheritdoc />
-        public IMetricsBuilder ForwardDecaying(int sampleSize, double alpha, IClock clock, IReservoirRescaleScheduler rescaleScheduler)
+        public IMetricsBuilder ForwardDecaying(int sampleSize, double alpha, double minimumSampleWeight, IClock clock)
         {
-            Reservoir(() => new DefaultForwardDecayingReservoir(sampleSize, alpha, clock, rescaleScheduler));
+            Reservoir(() => new DefaultForwardDecayingReservoir(sampleSize, alpha, minimumSampleWeight, clock));
+
+            return Builder;
+        }
+
+        /// <inheritdoc />
+        public IMetricsBuilder ForwardDecaying(int sampleSize, double alpha, double minimumSampleWeight, IClock clock, IReservoirRescaleScheduler rescaleScheduler)
+        {
+            Reservoir(() => new DefaultForwardDecayingReservoir(sampleSize, alpha, minimumSampleWeight, clock, rescaleScheduler));
+
+            return Builder;
+        }
+
+        /// <inheritdoc />
+        public IMetricsBuilder ForwardDecaying(TimeSpan rescalePeriod)
+        {
+            ForwardDecaying(AppMetricsReservoirSamplingConstants.DefaultExponentialDecayFactor, rescalePeriod);
+
+            return Builder;
+        }
+
+        /// <inheritdoc />
+        public IMetricsBuilder ForwardDecaying(double alpha, TimeSpan rescalePeriod)
+        {
+            Reservoir(() => new DefaultForwardDecayingReservoir(
+                AppMetricsReservoirSamplingConstants.DefaultSampleSize,
+                AppMetricsReservoirSamplingConstants.DefaultExponentialDecayFactor,
+                AppMetricsReservoirSamplingConstants.DefaultMinimumSampleWeight,
+                new StopwatchClock(),
+                new DefaultReservoirRescaleScheduler(rescalePeriod)));
 
             return Builder;
         }

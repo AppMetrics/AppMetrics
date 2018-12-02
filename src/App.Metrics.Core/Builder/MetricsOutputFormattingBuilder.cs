@@ -1,5 +1,5 @@
-﻿// <copyright file="MetricsOutputFormattingBuilder.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="MetricsOutputFormattingBuilder.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System;
@@ -42,10 +42,12 @@ namespace App.Metrics
         }
 
         /// <inheritdoc />
-        public IMetricsBuilder Using<TMetricsOutputFormatter>()
+        public IMetricsBuilder Using<TMetricsOutputFormatter>(MetricFields fields = null)
             where TMetricsOutputFormatter : IMetricsOutputFormatter, new()
         {
-            _metricsFormatter(true, new TMetricsOutputFormatter());
+            var formatter = new TMetricsOutputFormatter { MetricFields = fields };
+
+            _metricsFormatter(true, formatter);
 
             return Builder;
         }
@@ -64,10 +66,12 @@ namespace App.Metrics
         }
 
         /// <inheritdoc />
-        public IMetricsBuilder Using<TMetricsOutputFormatter>(bool replaceExisting)
+        public IMetricsBuilder Using<TMetricsOutputFormatter>(bool replaceExisting, MetricFields fields = null)
             where TMetricsOutputFormatter : IMetricsOutputFormatter, new()
         {
-            _metricsFormatter(replaceExisting, new TMetricsOutputFormatter());
+            var formatter = new TMetricsOutputFormatter { MetricFields = fields };
+
+            _metricsFormatter(replaceExisting, formatter);
 
             return Builder;
         }
