@@ -112,7 +112,7 @@ To run, fron the solution's root:
 
 ```
 	cd .\benchmarks\App.Metrics.Benchmarks.Runner\
-	dotnet run -c "Release" --framework netcoreapp2.0
+	dotnet run -c "Release" --framework netcoreapp2.1
 ```
 
 You'll then be prompted to choose a benchmark to run which will output a markdown file with the result in directory `.\benchmarks\App.Metrics.Benchmarks.Runner\BenchmarkDotNet.Artifacts\results`.

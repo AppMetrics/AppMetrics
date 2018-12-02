@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="$(BenchmarkDotNetVersion)" />
-    <PackageReference Include="BenchmarkDotNet.Core" Version="$(BenchmarkDotNetVersion)" />
+    <PackageReference Include="BenchmarkDotNet.Core" Version="$(BenchmarkDotNetCoreVersion)" />
   </ItemGroup>
 
 </Project>
