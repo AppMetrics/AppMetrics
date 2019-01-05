@@ -4,7 +4,7 @@ Before submitting a pull request, please have a quick read through the [contribu
 
 ### The issue or feature being addressed
 
-- link to the issue/feature using it's github issue number #number (if an issue/feature does not exist, please create it first)
+- link to the issue/feature using its github issue number #number (if an issue/feature does not exist, please create it first)
 
 ### Details on the issue fix or feature implementation
 
