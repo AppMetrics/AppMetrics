@@ -1,10 +1,10 @@
 Thanks for helping out :+1:
 
-Before submitting a pull request, please have a quick read through the [contribution guidlines](https://github.com/alhardy/AppMetrics/blob/master/CONTRIBUTING.md) and provide the following information, where appropriate replace the `[ ]` with a `[X]`
+Before submitting a pull request, please have a quick read through the [contribution guidelines](https://github.com/alhardy/AppMetrics/blob/master/CONTRIBUTING.md) and provide the following information, where appropriate replace the `[ ]` with a `[X]`
 
 ### The issue or feature being addressed
 
-- link to the issue/feature using it's github issue number #number (if an issue/feature does not exist, please create it first)
+- link to the issue/feature using its github issue number #number (if an issue/feature does not exist, please create it first)
 
 ### Details on the issue fix or feature implementation
 
