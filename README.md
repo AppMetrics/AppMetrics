@@ -108,7 +108,7 @@ Run `build.sh` from the repositories root directory. Code Coverage reports are n
 
 App.Metrics includes benchmarking using [BenchmarkDotNet](https://github.com/dotnet/BenchmarkDotNet). You can find the benchmark results [here](https://github.com/alhardy/AppMetrics/tree/master/benchmarks/App.Metrics.Benchmarks.Runner/BenchmarkDotNet.Artifacts/results).
 
-To run, fron the solution's root:
+To run, from the solution's root:
 
 ```
 	cd .\benchmarks\App.Metrics.Benchmarks.Runner\
