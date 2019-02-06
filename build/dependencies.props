@@ -8,7 +8,7 @@
     <DependencyModelVersion>2.1.1</DependencyModelVersion>
     <MicrosoftCSharpVersion>4.5.0</MicrosoftCSharpVersion>
     <MoqVersion>4.10.0</MoqVersion>
-    <NewtonsoftVersion>12.0.1</NewtonsoftVersion>
+    <NewtonsoftVersion>11.0.2</NewtonsoftVersion>
     <TestSdkVersion>15.9.0</TestSdkVersion>
     <XunitVersion>2.4.1</XunitVersion>
     <FluentAssertionsVersion>5.5.3</FluentAssertionsVersion>
