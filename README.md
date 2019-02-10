@@ -1,5 +1,6 @@
 # App Metrics <img src="https://www.app-metrics.io/images/logo.png" alt="App Metrics" width="50px"/> 
 [![Official Site](https://img.shields.io/badge/site-appmetrics-blue.svg?style=flat-square)](https://www.app-metrics.io/getting-started/) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
+[![Donate](https://img.shields.io/badge/donorbox-donate-blue.svg)](https://donorbox.org/help-support-appmetrics?recurring=true) 
 
 ## What is App Metrics?
 
