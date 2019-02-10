@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <Description>App Metrics Formatters for metrics  and environment data to JSON using Newtonsoft.Json.</Description>
-    <TargetFrameworks>netstandard1.6</TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);net452</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);net461</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>appmetrics;metrics;json</PackageTags>
   </PropertyGroup>
@@ -14,16 +14,6 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftVersion)" />
-  </ItemGroup>
-
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net452' ">
-    <DefineConstants>$(DefineConstants);CLASSIC</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
-    <Reference Include="System" />
-    <Reference Include="System.Collections" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
 </Project>

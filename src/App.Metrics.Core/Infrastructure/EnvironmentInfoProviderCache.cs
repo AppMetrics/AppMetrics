@@ -66,7 +66,7 @@ namespace App.Metrics.Infrastructure
 
         public string RunningEnvironment { get; }
 
-        #if !NET452
+        #if NETSTANDARD2_0
         // ReSharper disable InconsistentNaming
         private static string GetOSPlatform()
             // ReSharper restore InconsistentNaming
@@ -80,14 +80,14 @@ namespace App.Metrics.Infrastructure
             platform = isLinux ? OSPlatform.Linux : platform;
             return platform.ToString();
         }
-        #else
+#else
         // ReSharper disable InconsistentNaming
         private static string GetOSPlatform() { return Environment.OSVersion.Platform.ToString(); }
         // ReSharper restore InconsistentNaming
 #endif
 
-#if !NET452
-// ReSharper disable InconsistentNaming
+#if NETSTANDARD2_0
+        // ReSharper disable InconsistentNaming
         private static string GetProcessArchitecture()
             // ReSharper restore InconsistentNaming
         {
@@ -99,7 +99,7 @@ namespace App.Metrics.Infrastructure
         // ReSharper restore InconsistentNaming
 #endif
 
-#if !NET452
+#if NETSTANDARD2_0
         // ReSharper disable InconsistentNaming
         private static string GetOSArchitecture()
             // ReSharper restore InconsistentNaming
@@ -112,7 +112,7 @@ namespace App.Metrics.Infrastructure
         // ReSharper restore InconsistentNaming
 #endif
 
-#if !NET452
+#if NETSTANDARD2_0
         // ReSharper disable InconsistentNaming
         private static string GetOSVersion()
             // ReSharper restore InconsistentNaming
@@ -130,7 +130,7 @@ namespace App.Metrics.Infrastructure
         // ReSharper restore InconsistentNaming
 #endif
 
-#if !NET452
+#if NETSTANDARD2_0
         // ReSharper disable InconsistentNaming
         private static string GetFrameworkDescription()
             // ReSharper restore InconsistentNaming
