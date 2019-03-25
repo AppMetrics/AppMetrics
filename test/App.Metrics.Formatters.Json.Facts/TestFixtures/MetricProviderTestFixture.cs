@@ -22,7 +22,8 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 
         public MetricProviderTestFixture()
         {
-            Counters = SetupCounters();
+            Counters = SetupCounters(false);
+            ResetCounters = SetupCounters(true);
             Meters = SetupMeters();
             Gauges = SetupGauges();
             Timers = SetupTimers();
@@ -32,6 +33,7 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
             DataWithOneContext = SetupMetricsData(new[] { ContextOne });
             ApdexContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), Enumerable.Empty<CounterValueSource>(), Enumerable.Empty<MeterValueSource>(), Enumerable.Empty<HistogramValueSource>(), Enumerable.Empty<TimerValueSource>(), ApdexScores) });
             CounterContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), Counters, Enumerable.Empty<MeterValueSource>(), Enumerable.Empty<HistogramValueSource>(), Enumerable.Empty<TimerValueSource>(), Enumerable.Empty<ApdexValueSource>()) });
+            ResetCounterContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), ResetCounters, Enumerable.Empty<MeterValueSource>(), Enumerable.Empty<HistogramValueSource>(), Enumerable.Empty<TimerValueSource>(), Enumerable.Empty<ApdexValueSource>()) });
             GaugeContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Gauges, Enumerable.Empty<CounterValueSource>(), Enumerable.Empty<MeterValueSource>(), Enumerable.Empty<HistogramValueSource>(), Enumerable.Empty<TimerValueSource>(), Enumerable.Empty<ApdexValueSource>()) });
             MeterContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), Enumerable.Empty<CounterValueSource>(), Meters, Enumerable.Empty<HistogramValueSource>(), Enumerable.Empty<TimerValueSource>(), Enumerable.Empty<ApdexValueSource>()) });
             TimerContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), Enumerable.Empty<CounterValueSource>(), Enumerable.Empty<MeterValueSource>(), Enumerable.Empty<HistogramValueSource>(), Timers, Enumerable.Empty<ApdexValueSource>()) });
@@ -46,9 +48,13 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 
         public IEnumerable<CounterValueSource> Counters { get; }
 
+        public IEnumerable<CounterValueSource> ResetCounters { get; }
+
         public MetricsDataValueSource DataWithOneContext { get; }
 
         public MetricsDataValueSource CounterContext { get; }
+
+        public MetricsDataValueSource ResetCounterContext { get; }
 
         public MetricsDataValueSource GaugeContext { get; }
 
@@ -108,13 +114,13 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
             return new MetricsContextValueSource("context_one", Gauges, Counters, Meters, Histograms, Timers, ApdexScores);
         }
 
-        private IEnumerable<CounterValueSource> SetupCounters()
+        private IEnumerable<CounterValueSource> SetupCounters(bool resetOnReporting)
         {
             var counterValue = new DefaultCounterMetric();
             counterValue.Increment("item1", 20);
             counterValue.Increment("item2", 40);
             counterValue.Increment("item3", 140);
-            var counter = new CounterValueSource(CounterNameDefault, counterValue, Unit.Items, Tags, true);
+            var counter = new CounterValueSource(CounterNameDefault, counterValue, Unit.Items, Tags, resetOnReporting);
 
             return new[] { counter };
         }

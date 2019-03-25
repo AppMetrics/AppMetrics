@@ -5,11 +5,17 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using App.Metrics.Apdex;
 using App.Metrics.Counter;
 using App.Metrics.Formatters.Json.Facts.Helpers;
 using App.Metrics.Formatters.Json.Facts.TestFixtures;
+using App.Metrics.Gauge;
+using App.Metrics.Histogram;
+using App.Metrics.Meter;
+using App.Metrics.Timer;
 using FluentAssertions;
 using FluentAssertions.Json;
 using Newtonsoft.Json.Linq;
@@ -82,7 +88,7 @@ namespace App.Metrics.Formatters.Json.Facts
 
             using (var stream = new MemoryStream())
             {
-              await _formatter.WriteAsync(stream, metricProviderTestFixture.CounterContext);
+              await _formatter.WriteAsync(stream, metricProviderTestFixture.ResetCounterContext);
 
               result = Encoding.UTF8.GetString(stream.ToArray()).ParseAsJson();
             }
@@ -93,7 +99,7 @@ namespace App.Metrics.Formatters.Json.Facts
 
             using (var stream = new MemoryStream())
             {
-              await _formatter.WriteAsync(stream, metricProviderTestFixture.CounterContext);
+              await _formatter.WriteAsync(stream, metricProviderTestFixture.ResetCounterContext);
 
               result = Encoding.UTF8.GetString(stream.ToArray()).ParseAsJson();
             }
