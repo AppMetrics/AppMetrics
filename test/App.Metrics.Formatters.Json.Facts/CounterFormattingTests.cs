@@ -3,9 +3,11 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using App.Metrics.Counter;
 using App.Metrics.Formatters.Json.Facts.Helpers;
 using App.Metrics.Formatters.Json.Facts.TestFixtures;
 using FluentAssertions;
@@ -67,6 +69,36 @@ namespace App.Metrics.Formatters.Json.Facts
             // Assert
             Action action = () => JToken.Parse(result);
             action.Should().NotThrow<Exception>();
+        }
+
+        [Fact]
+        public async Task Counter_is_reset()
+        {
+            MetricProviderTestFixture metricProviderTestFixture = new MetricProviderTestFixture();
+
+            JToken result;
+
+            var expected = MetricType.Counter.SampleJson();
+
+            using (var stream = new MemoryStream())
+            {
+              await _formatter.WriteAsync(stream, metricProviderTestFixture.CounterContext);
+
+              result = Encoding.UTF8.GetString(stream.ToArray()).ParseAsJson();
+            }
+
+            result.Should().BeEquivalentTo(expected);
+
+            expected = TestHelperExtensions.SampleJson("counter_reset");
+
+            using (var stream = new MemoryStream())
+            {
+              await _formatter.WriteAsync(stream, metricProviderTestFixture.CounterContext);
+
+              result = Encoding.UTF8.GetString(stream.ToArray()).ParseAsJson();
+            }
+
+            result.Should().BeEquivalentTo(expected);
         }
     }
 }

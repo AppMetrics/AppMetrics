@@ -16,12 +16,13 @@ namespace App.Metrics.Counter
 
         public static CounterMetric ToSerializableMetric(this CounterValueSource source)
         {
+            var counterValue = source.ValueProvider.GetValue(source.ResetOnReporting);
             return new CounterMetric
                    {
                        Name = source.Name,
-                       Count = source.Value.Count,
+                       Count = counterValue.Count,
                        Unit = source.Unit.Name,
-                       Items = source.Value.Items.Select(
+                       Items = counterValue.Items.Select(
                                           item => new CounterMetric.SetItem
                                                   {
                                                       Count = item.Count,

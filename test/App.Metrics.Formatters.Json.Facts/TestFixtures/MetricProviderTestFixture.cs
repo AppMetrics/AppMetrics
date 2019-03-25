@@ -110,15 +110,11 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 
         private IEnumerable<CounterValueSource> SetupCounters()
         {
-            var items = new[]
-                        {
-                            new CounterValue.SetItem("item1", 20, 10),
-                            new CounterValue.SetItem("item2", 40, 20),
-                            new CounterValue.SetItem("item3", 140, 70)
-                        };
-
-            var counterValue = new CounterValue(200, items);
-            var counter = new CounterValueSource(CounterNameDefault, ConstantValue.Provider(counterValue), Unit.Items, Tags);
+            var counterValue = new DefaultCounterMetric();
+            counterValue.Increment("item1", 20);
+            counterValue.Increment("item2", 40);
+            counterValue.Increment("item3", 140);
+            var counter = new CounterValueSource(CounterNameDefault, counterValue, Unit.Items, Tags, true);
 
             return new[] { counter };
         }
