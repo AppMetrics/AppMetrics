@@ -3,19 +3,13 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using App.Metrics.Apdex;
 using App.Metrics.Counter;
 using App.Metrics.Formatters.Json.Facts.Helpers;
 using App.Metrics.Formatters.Json.Facts.TestFixtures;
-using App.Metrics.Gauge;
-using App.Metrics.Histogram;
-using App.Metrics.Meter;
-using App.Metrics.Timer;
 using FluentAssertions;
 using FluentAssertions.Json;
 using Newtonsoft.Json.Linq;
@@ -106,5 +100,37 @@ namespace App.Metrics.Formatters.Json.Facts
 
             result.Should().BeEquivalentTo(expected);
         }
+
+      [Fact]
+      public void Counter_report_set_iterms()
+      {
+        var tags = new MetricTags("x", "y");
+
+        var counter = new DefaultCounterMetric();
+        counter.Increment(new MetricSetItem("key", "value"));
+        counter.Increment(new MetricSetItem("key1", "value"));
+
+        // Test reportSetItems = true & reportItemPercentages = true
+        CounterValueSource counterValueSource = new CounterValueSource("test", counter, Unit.Items, tags);
+        var serilized = counterValueSource.ToSerializableMetric();
+        serilized.Count.Should().Be(2);
+        serilized.Items.Should().NotBeEmpty();
+        serilized.Items.First().Item.Should().Be("key:value");
+        serilized.Items.First().Percent.Should().Be(50);
+
+        // Test reportSetItems = true & reportItemPercentages = false
+        counterValueSource = new CounterValueSource("test", counter, Unit.Items, tags, false, false);
+        serilized = counterValueSource.ToSerializableMetric();
+        serilized.Count.Should().Be(2);
+        serilized.Items.Should().NotBeEmpty();
+        serilized.Items.First().Item.Should().Be("key:value");
+        serilized.Items.First().Percent.Should().Be(default);
+
+        // Test reportSetItems = false
+        counterValueSource = new CounterValueSource("test", counter, Unit.Items, tags, false, true, false);
+        serilized = counterValueSource.ToSerializableMetric();
+        serilized.Count.Should().Be(2);
+        serilized.Items.Should().BeEmpty();
+      }
     }
 }

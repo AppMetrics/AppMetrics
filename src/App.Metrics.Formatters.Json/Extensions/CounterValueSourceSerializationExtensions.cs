@@ -17,21 +17,32 @@ namespace App.Metrics.Counter
         public static CounterMetric ToSerializableMetric(this CounterValueSource source)
         {
             var counterValue = source.ValueProvider.GetValue(source.ResetOnReporting);
+            IEnumerable<CounterMetric.SetItem> items;
+
+            if (source.ReportSetItems && counterValue.Items.Any())
+            {
+                items = counterValue.Items.Select(
+                                       item => new CounterMetric.SetItem
+                                                 {
+                                                   Count = item.Count,
+                                                   Percent = source.ReportItemPercentages ? item.Percent : default,
+                                                   Item = item.Item
+                                                 }).
+                                     ToArray();
+            }
+            else
+            {
+                items = Enumerable.Empty<CounterMetric.SetItem>();
+            }
+
             return new CounterMetric
-                   {
+                     {
                        Name = source.Name,
                        Count = counterValue.Count,
                        Unit = source.Unit.Name,
-                       Items = counterValue.Items.Select(
-                                          item => new CounterMetric.SetItem
-                                                  {
-                                                      Count = item.Count,
-                                                      Percent = item.Percent,
-                                                      Item = item.Item
-                                                  }).
-                                      ToArray(),
+                       Items = items,
                        Tags = source.Tags.ToDictionary()
-                   };
+                     };
         }
 
         public static CounterValueSource FromSerializableMetric(this CounterMetric source)
