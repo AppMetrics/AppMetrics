@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>App Metrics Formatters for health check results to JSON using Newtonsoft.Json.</Description>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <PackageTags>appmetrics;healthcheck;json</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\App.Metrics.Health.Abstractions\App.Metrics.Health.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

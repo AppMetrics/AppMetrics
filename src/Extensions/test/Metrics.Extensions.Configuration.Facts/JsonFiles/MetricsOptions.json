@@ -1,0 +1,7 @@
+﻿{
+  "MetricsOptions": {
+    "DefaultContextLabel": "Testing",
+    "Enabled": false,
+    "GlobalTags": { "env": "stage", "tagkey":  "tagValue"  }
+  }
+}

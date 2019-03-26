@@ -1,0 +1,8 @@
+mode: ContinuousDelivery
+branches:
+  master:
+    increment: none
+  develop:
+    tag: 'dev'
+ignore:
+  sha: []

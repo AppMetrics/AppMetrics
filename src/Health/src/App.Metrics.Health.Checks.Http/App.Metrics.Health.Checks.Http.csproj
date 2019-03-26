@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>App Metrics HTTP health checks.</Description>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <PackageTags>appmetrics;healthchecks;http</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\App.Metrics.Health.Abstractions\App.Metrics.Health.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

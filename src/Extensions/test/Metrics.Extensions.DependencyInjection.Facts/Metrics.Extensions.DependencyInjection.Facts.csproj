@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <None Remove="xunit.runner.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\xunit.runner.json" Link="xunit.runner.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\App.Metrics.Extensions.DependencyInjection\App.Metrics.Extensions.DependencyInjection.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <EmbeddedResource Include="JsonFiles\healthstatus.json" />
+    <EmbeddedResource Include="JsonFiles\healthstatus_null_healthy.json" />
+    <EmbeddedResource Include="JsonFiles\healthstatus_null_unhealthy.json" />
+  </ItemGroup>
+
+  <ItemGroup>    
+    <ProjectReference Include="..\..\src\App.Metrics.Health.Formatters.Json\App.Metrics.Health.Formatters.Json.csproj" />
+    <ProjectReference Include="..\..\src\App.Metrics.Health\App.Metrics.Health.csproj" />
+  </ItemGroup>
+
+</Project>

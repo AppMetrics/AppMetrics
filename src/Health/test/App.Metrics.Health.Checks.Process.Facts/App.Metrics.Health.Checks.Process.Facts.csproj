@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>    
+    <ProjectReference Include="..\..\src\App.Metrics.Health.Checks.Process\App.Metrics.Health.Checks.Process.csproj" />    
+    <ProjectReference Include="..\..\src\App.Metrics.Health\App.Metrics.Health.csproj" />    
+  </ItemGroup>
+
+</Project>

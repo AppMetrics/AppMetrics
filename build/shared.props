@@ -1,0 +1,37 @@
+<Project>
+
+  <PropertyGroup>
+		<Product>App Metrics</Product>
+		<Copyright>Allan Hardy 2016</Copyright>
+		<Authors>Allan Hardy and Contributors</Authors>
+		<NoWarn>$(NoWarn);1701;1702;1705;CS1591;CS1570</NoWarn>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<PackageIconUrl>https://app-metrics.io/images/logo.png</PackageIconUrl>
+		<PackageProjectUrl>https://app-metrics.io/</PackageProjectUrl>
+		<RepositoryUrl>git://github.com/AppMetrics/AppMetrics</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+
+ 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+    	<EmbedUntrackedSources>true</EmbedUntrackedSources>
+
+		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+		<GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
+		<GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+		<LangVersion>latest</LangVersion>
+		<CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)..\AppMetrics.ruleset</CodeAnalysisRuleSet>
+
+		<AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)..\Key.snk</AssemblyOriginatorKeyFile>
+		<SignAssembly>true</SignAssembly>
+		<PublicSign Condition="'$(OS)' != 'Windows_NT'">true</PublicSign>
+
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<AdditionalFiles Include="$(MSBuildThisFileDirectory)..\stylecop.json" Link="stylecop.json" />
+	</ItemGroup>
+
+</Project>

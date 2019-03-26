@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Report App Metrics Health Checks as metrics allowing results to be flush for example to the configured metrics reporter.</Description>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <PackageTags>appmetrics;healthchecks;metrics;reporting</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="App.Metrics.Core" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\App.Metrics.Health.Abstractions\App.Metrics.Health.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>
