@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>App Metrics Azure Service Bus health checks.</Description>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <PackageTags>appmetrics;healthchecks;azure;servicebus;topic;queue</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="App.Metrics.Health.Abstractions" />
+    <PackageReference Include="Microsoft.Azure.ServiceBus" Version="3.2.0" />
+  </ItemGroup>
+
+</Project>

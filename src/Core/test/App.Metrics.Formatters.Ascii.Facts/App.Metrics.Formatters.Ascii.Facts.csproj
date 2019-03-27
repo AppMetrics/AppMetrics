@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>    
+    <ProjectReference Include="..\..\src\App.Metrics.Formatters.Ascii\App.Metrics.Formatters.Ascii.csproj" />    
+    <ProjectReference Include="..\App.Metrics.FactsCommon\App.Metrics.FactsCommon.csproj" />        
+  </ItemGroup>
+
+</Project>

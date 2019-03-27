@@ -1,0 +1,13 @@
+﻿{
+  "profiles": {
+    "HealthSandboxMvc": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "health",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:1111"
+    }
+  }
+}

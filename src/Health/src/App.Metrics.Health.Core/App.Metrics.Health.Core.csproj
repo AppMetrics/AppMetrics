@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>App Metrics health core components.</Description>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <RootNamespace>App.Metrics.Health</RootNamespace>
+    <PackageTags>appmetrics;healthchecks</PackageTags>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\App.Metrics.Health.Abstractions\App.Metrics.Health.Abstractions.csproj" />
+    <ProjectReference Include="..\App.Metrics.Health.Formatters.Ascii\App.Metrics.Health.Formatters.Ascii.csproj" />
+  </ItemGroup>
+
+</Project>

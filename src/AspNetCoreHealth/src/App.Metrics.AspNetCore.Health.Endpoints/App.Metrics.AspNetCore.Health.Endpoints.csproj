@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>App Metrics Health ASP.NET Core Endpoints provides the ability to expose health checks as web endpoints.</Description>
+    <TargetFramework>netstandard2.0</TargetFramework>    
+    <PackageTags>appmetrics;aspnetcore;healthchecks</PackageTags>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\App.Metrics.AspNetCore.Health.Hosting\App.Metrics.AspNetCore.Health.Hosting.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,7 @@
+﻿{
+  "healthy": {
+    "test_one_healthy": "first check was good",
+    "test_two_healthy": "second check was good"
+  },
+  "status": "Healthy"
+}
