@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <EmbeddedResource Include="JsonFiles\apdex.json" />
+    <EmbeddedResource Include="JsonFiles\counter_reset.json" />
+    <EmbeddedResource Include="JsonFiles\counter.json" />
+    <EmbeddedResource Include="JsonFiles\env.json" />
+    <EmbeddedResource Include="JsonFiles\gauge.json" />
+    <EmbeddedResource Include="JsonFiles\histogram.json" />
+    <EmbeddedResource Include="JsonFiles\meter.json" />
+    <EmbeddedResource Include="JsonFiles\meter_with_items.json" />
+    <EmbeddedResource Include="JsonFiles\metricdata_single_context.json" />
+    <EmbeddedResource Include="JsonFiles\timer.json" />
+  </ItemGroup>
+
+  <ItemGroup>    
+    <ProjectReference Include="..\..\src\App.Metrics.Formatters.Json\App.Metrics.Formatters.Json.csproj" />    
+    <ProjectReference Include="..\App.Metrics.FactsCommon\App.Metrics.FactsCommon.csproj" />    
+  </ItemGroup>
+
+</Project>

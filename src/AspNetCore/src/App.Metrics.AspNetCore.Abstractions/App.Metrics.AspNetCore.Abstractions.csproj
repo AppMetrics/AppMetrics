@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Description>App Metrics ASP.NET Core abstractions and interfaces for routing, HTTP response formatting and more.</Description>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<PackageTags>appmetrics;aspnetcore;metrics</PackageTags>	  
+		<RootNamespace>App.Metrics.AspNetCore</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="App.Metrics.Abstractions" />
+		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" />
+		<PackageReference Include="Microsoft.AspNetCore.Routing.Abstractions" />
+	</ItemGroup>
+
+</Project>

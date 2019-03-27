@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>App Metrics Health is an open-source .NET Standard library used to define and report results on user defined health checks.</Description>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <PackageTags>appmetrics;healthchecks</PackageTags>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\App.Metrics.Health.Core\App.Metrics.Health.Core.csproj" />
+    <ProjectReference Include="..\App.Metrics.Health.Formatters.Ascii\App.Metrics.Health.Formatters.Ascii.csproj" />
+    <ProjectReference Include="..\App.Metrics.Health.Formatters.Json\App.Metrics.Health.Formatters.Json.csproj" />
+  </ItemGroup>
+
+</Project>

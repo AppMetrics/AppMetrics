@@ -1,8 +1,0 @@
-<Project>
-
-  <Import Project="..\build\common.props" />
-
-  <ItemGroup>
-    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" /> 
-  </ItemGroup>
-</Project>

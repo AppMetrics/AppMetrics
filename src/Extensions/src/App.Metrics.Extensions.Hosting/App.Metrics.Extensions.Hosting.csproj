@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <Description>Microsoft.Extensions.Hosting (IHostBuilder) support for App Metrics.</Description>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <RootNamespace>App.Metrics.Extensions.Hosting</RootNamespace>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PackageTags>appmetrics;metrics;hosting</PackageTags>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="App.Metrics.Core" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+    </ItemGroup>
+</Project>

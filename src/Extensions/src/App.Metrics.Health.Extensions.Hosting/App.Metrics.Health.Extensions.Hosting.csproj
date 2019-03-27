@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Microsoft.Extensions.Hosting (IHostBuilder) support for App Metrics Health e.g. provide the ability to continuously report health via a Microsoft.Extensions.Hosting.BackgroundService</Description>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageTags>appmetrics;health;hosting;reporting</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="App.Metrics.Health.Core" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+  </ItemGroup>
+</Project>

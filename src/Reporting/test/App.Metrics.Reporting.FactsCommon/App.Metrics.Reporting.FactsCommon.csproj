@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="App.Metrics.Core" Version="$(AppMetricsCoreVersion)" />
+  </ItemGroup>
+
+</Project>

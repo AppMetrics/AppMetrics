@@ -1,0 +1,8 @@
+<Project>
+
+  <Import Project="..\build\common.props" />
+
+  <ItemGroup>
+      <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
+  </ItemGroup>
+</Project>

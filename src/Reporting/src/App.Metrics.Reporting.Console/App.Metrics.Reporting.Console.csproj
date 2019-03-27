@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\common.props" />
+
+  <PropertyGroup>
+    <Description>Provides console reporting capability to App Metrics</Description>
+    <AssemblyTitle>App.Metrics.Reporting.Console</AssemblyTitle>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <PackageTags>appmetrics;reporting;console</PackageTags>    
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="App.Metrics.Core" />
+    <PackageReference Include="App.Metrics.Formatters.Ascii" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>App Metrics Azure EventHubs health checks.</Description>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <PackageTags>appmetrics;healthchecks;azure;eventhubs</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="App.Metrics.Health.Abstractions" />
+    <PackageReference Include="Microsoft.Azure.EventHubs" Version="2.2.1" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <OutputType>exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\App.Metrics.AspNetCore.Mvc.Core\App.Metrics.AspNetCore.Mvc.Core.csproj" />
+    <ProjectReference Include="..\..\src\App.Metrics.AspNetCore.Reporting\App.Metrics.AspNetCore.Reporting.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="..\..\build\common.props" />
+
+	<PropertyGroup>
+    	<IsPackable>false</IsPackable>
+		<OutputType>exe</OutputType>
+		<LangVersion>Latest</LangVersion>
+  	</PropertyGroup>
+
+  <PropertyGroup Condition=" '$(OS)' != 'Windows_NT' ">
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
+    <TargetFrameworks>netcoreapp2.2;net461</TargetFrameworks>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<Content Include="appsettings.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\App.Metrics.Health.Checks.Http\App.Metrics.Health.Checks.Http.csproj" />
+		<ProjectReference Include="..\..\src\App.Metrics.Health.Checks.Network\App.Metrics.Health.Checks.Network.csproj" />
+		<ProjectReference Include="..\..\src\App.Metrics.Health.Checks.Process\App.Metrics.Health.Checks.Process.csproj" />
+		<ProjectReference Include="..\..\src\App.Metrics.Health.Checks.Sql\App.Metrics.Health.Checks.Sql.csproj" />
+		<ProjectReference Include="..\..\src\App.Metrics.Health.Reporting.Metrics\App.Metrics.Health.Reporting.Metrics.csproj" />
+		<ProjectReference Include="..\..\src\App.Metrics.Health.Reporting.Slack\App.Metrics.Health.Reporting.Slack.csproj" />
+		<ProjectReference Include="..\..\src\App.Metrics.Health\App.Metrics.Health.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="App.Metrics"/>
+		<PackageReference Include="Microsoft.Data.Sqlite.Core" Version="2.1.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+		<PackageReference Include="Serilog.Sinks.Literate" Version="3.0.1-dev-00044" />
+		<PackageReference Include="Serilog.Sinks.Seq" Version="4.0.1-dev-00155" />
+		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.11" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<Content Update="appsettings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+	</ItemGroup>  
+
+</Project>

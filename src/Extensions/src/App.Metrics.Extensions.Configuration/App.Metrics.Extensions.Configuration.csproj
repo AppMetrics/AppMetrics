@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Microsoft.Extensions.Configuration support for App Metrics e.g. appsettings.json</Description>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>appmetrics;configuration</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="App.Metrics" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.2.0" />
+  </ItemGroup>
+</Project>
