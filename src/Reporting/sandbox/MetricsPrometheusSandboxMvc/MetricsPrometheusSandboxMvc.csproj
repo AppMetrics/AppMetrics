@@ -4,7 +4,6 @@
 
   <PropertyGroup>
     <IsPackable>false</IsPackable>
-    <OutputType>exe</OutputType>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(OS)' != 'Windows_NT' ">

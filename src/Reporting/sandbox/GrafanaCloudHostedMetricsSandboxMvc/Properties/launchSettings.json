@@ -1,25 +1,9 @@
 ﻿{
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:2222/",
-      "sslPort": 0
-    }
-  },
   "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "metrics",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
     "GrafanaCloudHostedMetricsSandboxMvc": {
       "commandName": "Project",
-      "launchBrowser": false,
-      "launchUrl": "metrics",
+      "launchBrowser": true,
+      "launchUrl": "metrics-text",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
