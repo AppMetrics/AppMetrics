@@ -29,7 +29,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal
         public static async Task Write(Stream destination, IEnumerable<MetricFamily> metrics, NewLineFormat newLine)
         {
             var metricFamilies = metrics.ToArray();
-            using (var streamWriter = new StreamWriter(destination, Encoding) { NewLine = GetNewLineChar(newLine) })
+            using (var streamWriter = new StreamWriter(destination, Encoding, bufferSize: 1024, leaveOpen: true) { NewLine = GetNewLineChar(newLine) })
             {
                 foreach (var metricFamily in metricFamilies)
                 {

@@ -4,6 +4,7 @@
 
 using System;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Serialization;
@@ -13,6 +14,7 @@ namespace App.Metrics.Formatters.InfluxDB
     public class MetricsInfluxDbLineProtocolOutputFormatter : IMetricsOutputFormatter
     {
         private readonly MetricsInfluxDbLineProtocolOptions _options;
+        private static readonly Encoding Encoding = new UTF8Encoding(false);
 
         public MetricsInfluxDbLineProtocolOutputFormatter()
         {
@@ -55,7 +57,7 @@ namespace App.Metrics.Formatters.InfluxDB
 
             var serializer = new MetricSnapshotSerializer();
 
-            using (var streamWriter = new StreamWriter(output))
+            using (var streamWriter = new StreamWriter(output, Encoding, bufferSize: 1024, leaveOpen: true))
             {
                 using (var textWriter = new MetricSnapshotInfluxDbLineProtocolWriter(
                     streamWriter,

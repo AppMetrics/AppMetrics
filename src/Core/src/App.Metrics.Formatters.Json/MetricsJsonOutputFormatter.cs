@@ -41,14 +41,14 @@ namespace App.Metrics.Formatters.Json
                 throw new ArgumentNullException(nameof(output));
             }
 
-            var serilizer = JsonSerializer.Create(_serializerSettings);
+            var serializer = JsonSerializer.Create(_serializerSettings);
 
             using (var streamWriter = new StreamWriter(output))
             {
                 // TODO: #251 should apply metric field names
                 using (var textWriter = new JsonTextWriter(streamWriter))
                 {
-                    serilizer.Serialize(textWriter, metricData);
+                    serializer.Serialize(textWriter, metricData);
                 }
             }
 

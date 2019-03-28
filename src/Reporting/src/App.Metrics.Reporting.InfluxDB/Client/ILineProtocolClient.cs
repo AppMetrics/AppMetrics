@@ -13,6 +13,6 @@ namespace App.Metrics.Reporting.InfluxDB.Client
     {
         Task<LineProtocolWriteResult> WriteAsync(
             Stream payload,
-            CancellationToken cancellationToken = default(CancellationToken));
+            CancellationToken cancellationToken = default);
     }
 }

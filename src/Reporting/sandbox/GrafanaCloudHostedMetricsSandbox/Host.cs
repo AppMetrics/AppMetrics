@@ -79,7 +79,6 @@ namespace GrafanaCloudHostedMetricsSandbox
                 using (var stream = new MemoryStream())
                 {
                     await formatter.WriteAsync(stream, metricsData, cancellationTokenSource.Token);
-
                     var result = Encoding.UTF8.GetString(stream.ToArray());
 
                     Console.WriteLine(result);
