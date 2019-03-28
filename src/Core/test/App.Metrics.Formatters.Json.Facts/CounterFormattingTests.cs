@@ -4,8 +4,10 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using App.Metrics.Counter;
 using App.Metrics.Formatters.Json.Facts.Helpers;
 using App.Metrics.Formatters.Json.Facts.TestFixtures;
 using FluentAssertions;
@@ -68,5 +70,67 @@ namespace App.Metrics.Formatters.Json.Facts
             Action action = () => JToken.Parse(result);
             action.Should().NotThrow<Exception>();
         }
+
+        [Fact]
+        public async Task Counter_is_reset()
+        {
+            MetricProviderTestFixture metricProviderTestFixture = new MetricProviderTestFixture();
+
+            JToken result;
+
+            var expected = MetricType.Counter.SampleJson();
+
+            using (var stream = new MemoryStream())
+            {
+              await _formatter.WriteAsync(stream, metricProviderTestFixture.ResetCounterContext);
+
+              result = Encoding.UTF8.GetString(stream.ToArray()).ParseAsJson();
+            }
+
+            result.Should().BeEquivalentTo(expected);
+
+            expected = TestHelperExtensions.SampleJson("counter_reset");
+
+            using (var stream = new MemoryStream())
+            {
+              await _formatter.WriteAsync(stream, metricProviderTestFixture.ResetCounterContext);
+
+              result = Encoding.UTF8.GetString(stream.ToArray()).ParseAsJson();
+            }
+
+            result.Should().BeEquivalentTo(expected);
+        }
+
+      [Fact]
+      public void Counter_report_set_iterms()
+      {
+        var tags = new MetricTags("x", "y");
+
+        var counter = new DefaultCounterMetric();
+        counter.Increment(new MetricSetItem("key", "value"));
+        counter.Increment(new MetricSetItem("key1", "value"));
+
+        // Test reportSetItems = true & reportItemPercentages = true
+        CounterValueSource counterValueSource = new CounterValueSource("test", counter, Unit.Items, tags);
+        var serilized = counterValueSource.ToSerializableMetric();
+        serilized.Count.Should().Be(2);
+        serilized.Items.Should().NotBeEmpty();
+        serilized.Items.First().Item.Should().Be("key:value");
+        serilized.Items.First().Percent.Should().Be(50);
+
+        // Test reportSetItems = true & reportItemPercentages = false
+        counterValueSource = new CounterValueSource("test", counter, Unit.Items, tags, false, false);
+        serilized = counterValueSource.ToSerializableMetric();
+        serilized.Count.Should().Be(2);
+        serilized.Items.Should().NotBeEmpty();
+        serilized.Items.First().Item.Should().Be("key:value");
+        serilized.Items.First().Percent.Should().Be(default);
+
+        // Test reportSetItems = false
+        counterValueSource = new CounterValueSource("test", counter, Unit.Items, tags, false, true, false);
+        serilized = counterValueSource.ToSerializableMetric();
+        serilized.Count.Should().Be(2);
+        serilized.Items.Should().BeEmpty();
+      }
     }
 }
