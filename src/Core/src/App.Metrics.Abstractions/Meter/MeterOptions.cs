@@ -16,6 +16,7 @@ namespace App.Metrics.Meter
         public MeterOptions()
         {
             RateUnit = TimeUnit.Minutes;
+            ReportSetItems = true;
         }
 
         /// <summary>
