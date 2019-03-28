@@ -1,7 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\build\common.props" />
-
   <ItemGroup>
     <ProjectReference Include="..\..\src\App.Metrics.Reporting.Graphite\App.Metrics.Reporting.Graphite.csproj" />
   </ItemGroup>

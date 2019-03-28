@@ -7,10 +7,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Serialization;
-
-#if !NETSTANDARD1_6
 using App.Metrics.Internal;
-#endif
 
 namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics
 {
@@ -78,11 +75,7 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics
                 }
             }
 
-#if !NETSTANDARD1_6
-            return AppMetricsTaskHelper.CompletedTask();
-#else
             return Task.CompletedTask;
-#endif
         }
     }
 }

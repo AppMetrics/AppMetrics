@@ -6,9 +6,6 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-#if !NETSTANDARD1_6
-using App.Metrics.Internal;
-#endif
 using App.Metrics.Serialization;
 
 namespace App.Metrics.Formatters.Graphite
@@ -72,11 +69,7 @@ namespace App.Metrics.Formatters.Graphite
                 }
             }
 
-#if !NETSTANDARD1_6
-            return AppMetricsTaskHelper.CompletedTask();
-#else
             return Task.CompletedTask;
-#endif
         }
     }
 }

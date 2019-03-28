@@ -102,9 +102,7 @@ namespace App.Metrics.Formatters.InfluxDB
             if (disposing)
             {
                 _points.Write(_textWriter);
-#if !NETSTANDARD1_6
                 _textWriter?.Close();
-#endif
                 _textWriter?.Dispose();
             }
         }

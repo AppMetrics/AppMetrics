@@ -6,9 +6,6 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-#if !NETSTANDARD1_6
-using App.Metrics.Internal;
-#endif
 using App.Metrics.Formatters.Prometheus.Internal;
 using App.Metrics.Formatters.Prometheus.Internal.Extensions;
 
