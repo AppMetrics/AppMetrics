@@ -2,6 +2,7 @@
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -46,6 +47,8 @@ namespace App.Metrics.Formatters.Json.Facts.Helpers
         public static JToken SampleJson(this MetricDataSamples sample) { return sample.ExtractMetricDataSampleFromResourceFile(); }
 
         public static JToken SampleJson(this MetricTypeSamples sample) { return sample.ExtractMetricTypeSampleFromResourceFile(); }
+
+        public static JToken SampleJson(string key) { return ExtractJsonFromEmbeddedResource(key); }
 
         private static JToken ExtractJsonFromEmbeddedResource(string key)
         {
