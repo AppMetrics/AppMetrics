@@ -31,19 +31,10 @@ App Metrics also provides a [health checking](https://github.com/AppMetrics/Heal
 
 ## Latest Builds, Packages & Repo Stats
 
-|Branch|AppVeyor|Travis|Coverage|
-|------|:--------:|:--------:|:--------:|
-|dev|[![AppVeyor](https://img.shields.io/appveyor/ci/alhardy/AppMetrics/dev.svg?style=flat-square&label=appveyor%20build)](https://ci.appveyor.com/project/alhardy/appmetrics/branch/dev)|[![Travis](https://img.shields.io/travis/alhardy/AppMetrics/dev.svg?style=flat-square&label=travis%20build)](https://travis-ci.org/alhardy/AppMetrics)|[![Coveralls](https://img.shields.io/coveralls/alhardy/AppMetrics/dev.svg?style=flat-square)](https://coveralls.io/github/alhardy/AppMetrics?branch=dev)
-|master|[![AppVeyor](https://img.shields.io/appveyor/ci/alhardy/AppMetrics/master.svg?style=flat-square&label=appveyor%20build)](https://ci.appveyor.com/project/alhardy/appmetrics/branch/master)| [![Travis](https://img.shields.io/travis/alhardy/AppMetrics/master.svg?style=flat-square&label=travis%20build)](https://travis-ci.org/alhardy/AppMetrics)| [![Coveralls](https://img.shields.io/coveralls/alhardy/AppMetrics/master.svg?style=flat-square)](https://coveralls.io/github/alhardy/AppMetrics?branch=master)|
-
-|Package|Dev Release|Pre-Release|Release|
-|------|:--------:|:--------:|:--------:|
-|App.Metrics|[![MyGet Status](https://img.shields.io/myget/appmetrics/v/App.Metrics.svg?style=flat-square)](https://www.myget.org/feed/appmetrics/package/nuget/App.Metrics)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics/)
-|App.Metrics.Abstractions|[![MyGet Status](https://img.shields.io/myget/appmetrics/v/App.Metrics.Abstractions.svg?style=flat-square)](https://www.myget.org/feed/appmetrics/package/nuget/App.Metrics.Abstractions)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Abstractions.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Abstractions/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Abstractions.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Abstractions/)
-|App.Metrics.Core|[![MyGet Status](https://img.shields.io/myget/appmetrics/v/App.Metrics.Core.svg?style=flat-square)](https://www.myget.org/feed/appmetrics/package/nuget/App.Metrics.Core)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Core.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Core/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Core.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Core/)
-|App.Metrics.Formatters.Ascii|[![MyGet Status](https://img.shields.io/myget/appmetrics/v/App.Metrics.Formatters.Ascii.svg?style=flat-square)](https://www.myget.org/feed/appmetrics/package/nuget/App.Metrics.Formatters.Ascii)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Formatters.Ascii.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Ascii/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Formatters.Ascii.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Ascii/)
-|App.Metrics.Formatters.Json|[![MyGet Status](https://img.shields.io/myget/appmetrics/v/App.Metrics.Formatters.Json.svg?style=flat-square)](https://www.myget.org/feed/appmetrics/package/nuget/App.Metrics.Formatters.Json)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Formatters.Json.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Json/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Formatters.Json.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Json/)
-
+|Branch|Azure Devops|
+|------|:--------:|
+|dev|[![Azure Devops](https://img.shields.io/azure-devops/build/AppMetrics/AppMetrics/3/dev.svg?style=flat-square&label=build)](https://dev.azure.com/appmetrics/AppMetrics/_build?definitionId=3)
+|master|[![AppVeyor](https://img.shields.io/azure-devops/build/AppMetrics/AppMetrics/3/master.svg?style=flat-square&label=build)](https://dev.azure.com/appmetrics/AppMetrics/_build?definitionId=3)
 ----------
 
 ## Visualization
