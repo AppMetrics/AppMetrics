@@ -27,17 +27,17 @@ App Metrics provides various metric types to measure things such as the rate of 
 
 ## Visualization
 
+Dashboards can be imported from [Grafana](https://grafana.com/dashboards?search=app%20metrics)
+
 #### Grafana Web Monitoring
 
 ![Grafana/InfluxDB Generic Web Dashboard Demo](https://github.com/AppMetrics/AppMetrics.DocFx/blob/master/images/generic_grafana_dashboard_demo.gif)
 
-> Grab the [InfluxDB](https://grafana.com/dashboards/2125) or [Elasticsearch](https://grafana.com/dashboards/2140) dashboard.
 
 #### Grafana OAuth2 Client Web Monitoring
 
 ![Grafana/InfluxDB Generic OAuth2 Web Dashboard Demo](https://github.com/AppMetrics/AppMetrics.DocFx/blob/master/images/generic_grafana_oauth2_dashboard_demo.gif)
 
-> Grab the [InfluxDB](https://grafana.com/dashboards/2137) or [Elasticsearch](https://grafana.com/dashboards/2143) dashboard
 
 ## How to build
 
