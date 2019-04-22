@@ -10,18 +10,6 @@ App Metrics provides various metric types to measure things such as the rate of 
 
 `App.Metrics` includes an Exponentially Forward Decaying, Sliding Window and Algorithm R reservoir implementations. For more details on reservoir sampling see the [docs](https://www.app-metrics.io/getting-started/reservoir-sampling/).
 
-### Reporting Features
-
-- [Console & Text File Reporters](https://github.com/AppMetrics/AppMetrics.Reporters)
-- [InfluxDB Extensions](https://github.com/AppMetrics/InfluxDB)
-- [Elasticsearch Extensions](https://github.com/AppMetrics/Elasticsearch)
-- [Prometheus Extensions](https://github.com/AppMetrics/Prometheus)
-- [Graphite Extensions](https://github.com/AppMetrics/Graphite)
-
-### Application Health
-
-App Metrics also provides a [health checking](https://github.com/AppMetrics/Health) library allowing you to monitor the health of your application through user defined checks.
-
 ### Documentation
 
 - [Getting Started](https://www.app-metrics.io/getting-started/)
@@ -53,48 +41,10 @@ App Metrics also provides a [health checking](https://github.com/AppMetrics/Heal
 
 ## How to build
 
-[AppVeyor](https://ci.appveyor.com/project/alhardy/appmetrics/branch/master) and [Travis CI](https://travis-ci.org/alhardy/AppMetrics) builds are triggered on commits and PRs to `dev` and `master` branches.
+[Azure Devops](https://dev.azure.com/appmetrics/AppMetrics/_build?definitionId=3) builds are triggered on commits and PRs to the `dev` branch
 
-See the following for build arguments and running locally.
-
-|Configuration|Description|Default|Environment|Required|
-|------|--------|:--------:|:--------:|:--------:|
-|BuildConfiguration|The configuration to run the build, **Debug** or **Release** |*Release*|All|Optional|
-|PreReleaseSuffix|The pre-release suffix for versioning nuget package artifacts e.g. `beta`|*ci*|All|Optional|
-|CoverWith|**DotCover** or **OpenCover** to calculate and report code coverage, **None** to skip. When not **None**, a coverage file and html report will be generated at `./artifacts/coverage`|*OpenCover*|Windows Only|Optional|
-|SkipCodeInspect|**false** to run ReSharper code inspect and report results, **true** to skip. When **false**, the code inspection html report and xml output will be generated at `./artifacts/resharper-reports`|*false*|Windows Only|Optional|
-|BuildNumber|The build number to use for pre-release versions|*0*|All|Optional|
-|LinkSources|[Source link](https://github.com/ctaggart/SourceLink) support allows source code to be downloaded on demand while debugging|*true*|All|Optional|
-
-
-### Windows
-
-Run `build.ps1` from the repositories root directory.
-
-```
-	.\build.ps1
-```
-
-**With Arguments**
-
-```
-	.\build.ps1 --ScriptArgs '-BuildConfiguration=Release -PreReleaseSuffix=beta -CoverWith=OpenCover -SkipCodeInspect=false -BuildNumber=1'
-```
-
-### Linux & OSX
-
-Run `build.sh` from the repositories root directory. Code Coverage reports are now supported on Linux and OSX, it will be skipped running in these environments.
-
-```
-	.\build.sh
-```
-
-**With Arguments**
-
-
-```
-	.\build.sh --ScriptArgs '-BuildConfiguration=Release -PreReleaseSuffix=beta -BuildNumber=1'
-```
+- Install the latest [.NET Core 2.x SDK](https://dotnet.microsoft.com/download#/current)
+- Run `build.ps1` or `build.sh` in the root of the repository
 
 ## How to run benchmarks
 
@@ -104,7 +54,7 @@ To run, from the solution's root:
 
 ```
 	cd .\benchmarks\App.Metrics.Benchmarks.Runner\
-	dotnet run -c "Release" --framework netcoreapp2.1
+	dotnet run -c "Release" --framework netcoreapp2.2
 ```
 
 You'll then be prompted to choose a benchmark to run which will output a markdown file with the result in directory `.\benchmarks\App.Metrics.Benchmarks.Runner\BenchmarkDotNet.Artifacts\results`.
