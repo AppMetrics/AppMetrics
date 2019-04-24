@@ -1,0 +1,11 @@
+{
+  "ReportingSandbox": {
+    "launchBrowser": true,
+    "launchUrl": "metrics",
+    "commandName": "Project",
+    "environmentVariables": {
+      "ASPNETCORE_ENVIRONMENT": "Development"
+    },
+    "applicationUrl": "http://localhost:50001/"
+  }
+}

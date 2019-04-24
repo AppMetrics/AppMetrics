@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\App.Metrics.Reporting.Http\App.Metrics.Reporting.Http.csproj" />
+    <ProjectReference Include="..\App.Metrics.Reporting.FactsCommon\App.Metrics.Reporting.FactsCommon.csproj" />
+  </ItemGroup>
+
+</Project>

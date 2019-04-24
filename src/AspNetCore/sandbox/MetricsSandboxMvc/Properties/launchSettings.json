@@ -1,0 +1,13 @@
+﻿{
+  "profiles": {
+    "MetricsSandboxMvc": {
+      "commandName": "Project",
+      "launchBrowser": false,      
+      "launchUrl": "metrics",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:1111"
+    }
+  }
+}

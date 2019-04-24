@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Provides HTTP reporting capability to App Metrics</Description>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <PackageTags>appmetrics;reporting;http</PackageTags>    
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="App.Metrics.Core" />
+    <PackageReference Include="App.Metrics.Formatters.Json" />
+  </ItemGroup>
+
+</Project>

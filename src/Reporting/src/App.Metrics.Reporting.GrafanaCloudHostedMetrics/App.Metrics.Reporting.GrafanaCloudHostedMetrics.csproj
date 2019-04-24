@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Provides GrafanaCloud Hosted Metrics reporting capability to App Metrics</Description>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <PackageTags>appmetrics;grafana cloud;hosted metrics;graphite;metrics 2.0</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="App.Metrics.Abstractions"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\App.Metrics.Formatters.GrafanaCloudHostedMetrics\App.Metrics.Formatters.GrafanaCloudHostedMetrics.csproj" />
+  </ItemGroup>
+
+</Project>

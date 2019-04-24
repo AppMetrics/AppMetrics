@@ -1,5 +1,6 @@
 # App Metrics <img src="https://www.app-metrics.io/images/logo.png" alt="App Metrics" width="50px"/> 
 [![Official Site](https://img.shields.io/badge/site-appmetrics-blue.svg?style=flat-square)](https://www.app-metrics.io/getting-started/) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
+[![Donate](https://img.shields.io/badge/donorbox-donate-blue.svg)](https://donorbox.org/help-support-appmetrics?recurring=true) 
 
 ## What is App Metrics?
 
@@ -8,18 +9,6 @@ App Metrics is an open-source and cross-platform .NET library used to record met
 App Metrics provides various metric types to measure things such as the rate of requests, counting the number of user logins over time, measure the time taken to execute a database query, measure the amount of free memory and so on. Metrics types supported are Gauges, Counters, Meters, Histograms and Timers and Application Performance Indexes [Apdex](http://apdex.org/overview.html).
 
 `App.Metrics` includes an Exponentially Forward Decaying, Sliding Window and Algorithm R reservoir implementations. For more details on reservoir sampling see the [docs](https://www.app-metrics.io/getting-started/reservoir-sampling/).
-
-### Reporting Features
-
-- [Console & Text File Reporters](https://github.com/AppMetrics/AppMetrics.Reporters)
-- [InfluxDB Extensions](https://github.com/AppMetrics/InfluxDB)
-- [Elasticsearch Extensions](https://github.com/AppMetrics/Elasticsearch)
-- [Prometheus Extensions](https://github.com/AppMetrics/Prometheus)
-- [Graphite Extensions](https://github.com/AppMetrics/Graphite)
-
-### Application Health
-
-App Metrics also provides a [health checking](https://github.com/AppMetrics/Health) library allowing you to monitor the health of your application through user defined checks.
 
 ### Documentation
 
@@ -30,79 +19,32 @@ App Metrics also provides a [health checking](https://github.com/AppMetrics/Heal
 
 ## Latest Builds, Packages & Repo Stats
 
-|Branch|AppVeyor|Travis|Coverage|
-|------|:--------:|:--------:|:--------:|
-|dev|[![AppVeyor](https://img.shields.io/appveyor/ci/alhardy/AppMetrics/dev.svg?style=flat-square&label=appveyor%20build)](https://ci.appveyor.com/project/alhardy/appmetrics/branch/dev)|[![Travis](https://img.shields.io/travis/alhardy/AppMetrics/dev.svg?style=flat-square&label=travis%20build)](https://travis-ci.org/alhardy/AppMetrics)|[![Coveralls](https://img.shields.io/coveralls/alhardy/AppMetrics/dev.svg?style=flat-square)](https://coveralls.io/github/alhardy/AppMetrics?branch=dev)
-|master|[![AppVeyor](https://img.shields.io/appveyor/ci/alhardy/AppMetrics/master.svg?style=flat-square&label=appveyor%20build)](https://ci.appveyor.com/project/alhardy/appmetrics/branch/master)| [![Travis](https://img.shields.io/travis/alhardy/AppMetrics/master.svg?style=flat-square&label=travis%20build)](https://travis-ci.org/alhardy/AppMetrics)| [![Coveralls](https://img.shields.io/coveralls/alhardy/AppMetrics/master.svg?style=flat-square)](https://coveralls.io/github/alhardy/AppMetrics?branch=master)|
-
-|Package|Dev Release|Pre-Release|Release|
-|------|:--------:|:--------:|:--------:|
-|App.Metrics|[![MyGet Status](https://img.shields.io/myget/appmetrics/v/App.Metrics.svg?style=flat-square)](https://www.myget.org/feed/appmetrics/package/nuget/App.Metrics)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics/)
-|App.Metrics.Abstractions|[![MyGet Status](https://img.shields.io/myget/appmetrics/v/App.Metrics.Abstractions.svg?style=flat-square)](https://www.myget.org/feed/appmetrics/package/nuget/App.Metrics.Abstractions)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Abstractions.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Abstractions/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Abstractions.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Abstractions/)
-|App.Metrics.Core|[![MyGet Status](https://img.shields.io/myget/appmetrics/v/App.Metrics.Core.svg?style=flat-square)](https://www.myget.org/feed/appmetrics/package/nuget/App.Metrics.Core)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Core.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Core/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Core.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Core/)
-|App.Metrics.Formatters.Ascii|[![MyGet Status](https://img.shields.io/myget/appmetrics/v/App.Metrics.Formatters.Ascii.svg?style=flat-square)](https://www.myget.org/feed/appmetrics/package/nuget/App.Metrics.Formatters.Ascii)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Formatters.Ascii.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Ascii/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Formatters.Ascii.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Ascii/)
-|App.Metrics.Formatters.Json|[![MyGet Status](https://img.shields.io/myget/appmetrics/v/App.Metrics.Formatters.Json.svg?style=flat-square)](https://www.myget.org/feed/appmetrics/package/nuget/App.Metrics.Formatters.Json)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Formatters.Json.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Json/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Formatters.Json.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Json/)
-
+|Branch|Azure Devops|
+|------|:--------:|
+|dev|[![Azure Devops](https://img.shields.io/azure-devops/build/AppMetrics/AppMetrics/3/dev.svg?style=flat-square&label=build)](https://dev.azure.com/appmetrics/AppMetrics/_build?definitionId=3)
+|master|[![AppVeyor](https://img.shields.io/azure-devops/build/AppMetrics/AppMetrics/3/master.svg?style=flat-square&label=build)](https://dev.azure.com/appmetrics/AppMetrics/_build?definitionId=3)
 ----------
 
 ## Visualization
+
+Dashboards can be imported from [Grafana](https://grafana.com/dashboards?search=app%20metrics)
 
 #### Grafana Web Monitoring
 
 ![Grafana/InfluxDB Generic Web Dashboard Demo](https://github.com/AppMetrics/AppMetrics.DocFx/blob/master/images/generic_grafana_dashboard_demo.gif)
 
-> Grab the [InfluxDB](https://grafana.com/dashboards/2125) or [Elasticsearch](https://grafana.com/dashboards/2140) dashboard.
 
 #### Grafana OAuth2 Client Web Monitoring
 
 ![Grafana/InfluxDB Generic OAuth2 Web Dashboard Demo](https://github.com/AppMetrics/AppMetrics.DocFx/blob/master/images/generic_grafana_oauth2_dashboard_demo.gif)
 
-> Grab the [InfluxDB](https://grafana.com/dashboards/2137) or [Elasticsearch](https://grafana.com/dashboards/2143) dashboard
 
 ## How to build
 
-[AppVeyor](https://ci.appveyor.com/project/alhardy/appmetrics/branch/master) and [Travis CI](https://travis-ci.org/alhardy/AppMetrics) builds are triggered on commits and PRs to `dev` and `master` branches.
+[Azure Devops](https://dev.azure.com/appmetrics/AppMetrics/_build?definitionId=3) builds are triggered on commits and PRs to the `dev` branch
 
-See the following for build arguments and running locally.
-
-|Configuration|Description|Default|Environment|Required|
-|------|--------|:--------:|:--------:|:--------:|
-|BuildConfiguration|The configuration to run the build, **Debug** or **Release** |*Release*|All|Optional|
-|PreReleaseSuffix|The pre-release suffix for versioning nuget package artifacts e.g. `beta`|*ci*|All|Optional|
-|CoverWith|**DotCover** or **OpenCover** to calculate and report code coverage, **None** to skip. When not **None**, a coverage file and html report will be generated at `./artifacts/coverage`|*OpenCover*|Windows Only|Optional|
-|SkipCodeInspect|**false** to run ReSharper code inspect and report results, **true** to skip. When **false**, the code inspection html report and xml output will be generated at `./artifacts/resharper-reports`|*false*|Windows Only|Optional|
-|BuildNumber|The build number to use for pre-release versions|*0*|All|Optional|
-|LinkSources|[Source link](https://github.com/ctaggart/SourceLink) support allows source code to be downloaded on demand while debugging|*true*|All|Optional|
-
-
-### Windows
-
-Run `build.ps1` from the repositories root directory.
-
-```
-	.\build.ps1
-```
-
-**With Arguments**
-
-```
-	.\build.ps1 --ScriptArgs '-BuildConfiguration=Release -PreReleaseSuffix=beta -CoverWith=OpenCover -SkipCodeInspect=false -BuildNumber=1'
-```
-
-### Linux & OSX
-
-Run `build.sh` from the repositories root directory. Code Coverage reports are now supported on Linux and OSX, it will be skipped running in these environments.
-
-```
-	.\build.sh
-```
-
-**With Arguments**
-
-
-```
-	.\build.sh --ScriptArgs '-BuildConfiguration=Release -PreReleaseSuffix=beta -BuildNumber=1'
-```
+- Install the latest [.NET Core 2.x SDK](https://dotnet.microsoft.com/download#/current)
+- Run `build.ps1` or `build.sh` in the root of the repository
 
 ## How to run benchmarks
 
@@ -112,7 +54,7 @@ To run, from the solution's root:
 
 ```
 	cd .\benchmarks\App.Metrics.Benchmarks.Runner\
-	dotnet run -c "Release" --framework netcoreapp2.1
+	dotnet run -c "Release" --framework netcoreapp2.2
 ```
 
 You'll then be prompted to choose a benchmark to run which will output a markdown file with the result in directory `.\benchmarks\App.Metrics.Benchmarks.Runner\BenchmarkDotNet.Artifacts\results`.

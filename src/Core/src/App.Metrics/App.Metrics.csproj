@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>App Metrics is an open-source .NET Standard library used to record application metrics.</Description>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);net461</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>appmetrics;metrics;apdex;meter;gauge;counter;timer;histogram</PackageTags>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\App.Metrics.Core\App.Metrics.Core.csproj" />
+    <ProjectReference Include="..\App.Metrics.Formatters.Json\App.Metrics.Formatters.Json.csproj" />
+  </ItemGroup>
+
+</Project>

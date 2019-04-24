@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>App Metrics ASP.NET Core Endpoints provides the ability to expose metrics and environment information as web endpoints.</Description>
+    <TargetFramework>netstandard2.0</TargetFramework>    
+    <PackageTags>appmetrics;aspnetcore;metrics</PackageTags>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\App.Metrics.AspNetCore.Hosting\App.Metrics.AspNetCore.Hosting.csproj" />
+  </ItemGroup>
+
+</Project>

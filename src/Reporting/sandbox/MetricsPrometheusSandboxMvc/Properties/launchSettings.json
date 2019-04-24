@@ -1,0 +1,13 @@
+﻿{
+  "profiles": {
+    "MetricsPrometheusSandboxMvc": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "metrics-text",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:1111"
+    }
+  }
+}

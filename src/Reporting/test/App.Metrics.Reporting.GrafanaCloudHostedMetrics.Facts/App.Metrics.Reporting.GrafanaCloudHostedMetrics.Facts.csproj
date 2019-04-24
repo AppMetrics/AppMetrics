@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\App.Metrics.Reporting.GrafanaCloudHostedMetrics\App.Metrics.Reporting.GrafanaCloudHostedMetrics.csproj" />
+  </ItemGroup>
+
+</Project>

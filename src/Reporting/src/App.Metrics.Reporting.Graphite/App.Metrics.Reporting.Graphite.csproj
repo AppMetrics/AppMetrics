@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Description>Provides Graphite reporting capability to App Metrics</Description>        
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
+		<PackageTags>appmetrics;reporting;graphite</PackageTags>    
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\App.Metrics.Formatters.Graphite\App.Metrics.Formatters.Graphite.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="App.Metrics.Abstractions" />
+	</ItemGroup>
+
+</Project>

@@ -57,10 +57,14 @@ BuildOutput
 BuildOutput/*
 WebPublish
 WebPublish/*
+nuget
+nuget/*
 
 #Cake
 tools/*
 !tools/packages.config
+**/tools/*
+!**/tools/packages.config
 
 .vs
 
