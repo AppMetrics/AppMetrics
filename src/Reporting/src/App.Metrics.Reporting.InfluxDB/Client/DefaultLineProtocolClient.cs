@@ -1,4 +1,4 @@
-﻿// <copyright file="DefaultLineProtocolClient.cs" company="App Metrics Contributors">
+// <copyright file="DefaultLineProtocolClient.cs" company="App Metrics Contributors">
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
@@ -73,6 +73,8 @@ namespace App.Metrics.Reporting.InfluxDB.Client
 
                     return new LineProtocolWriteResult(false, errorMessage);
                 }
+
+                Interlocked.Exchange(ref _failureAttempts, 0);
 
                 Logger.Trace("Successful write to InfluxDB");
 
