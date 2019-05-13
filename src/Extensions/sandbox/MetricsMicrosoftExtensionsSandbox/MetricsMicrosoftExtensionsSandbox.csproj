@@ -11,6 +11,7 @@
   <ItemGroup>
 	<PackageReference Include="App.Metrics" />
 	<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
 	<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
 	<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
   </ItemGroup>
