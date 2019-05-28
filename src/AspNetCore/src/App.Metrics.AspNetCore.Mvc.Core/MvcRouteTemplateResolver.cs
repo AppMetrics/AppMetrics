@@ -1,8 +1,9 @@
-﻿// <copyright file="MvcRouteTemplateResolver.cs" company="App Metrics Contributors">
+// <copyright file="MvcRouteTemplateResolver.cs" company="App Metrics Contributors">
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using App.Metrics.AspNetCore;
@@ -37,22 +38,21 @@ namespace Microsoft.AspNetCore.Mvc.Internal
                 return templateRoute;
             }
 
-            var attributeRouteHandler = routeData.Routers.FirstOrDefault(r => r.GetType().Name == nameof(MvcAttributeRouteHandler))
-                as MvcAttributeRouteHandler;
+            var actions = GetActionDescriptors(routeData.Routers);
 
-            if (attributeRouteHandler == null || !attributeRouteHandler.Actions.Any())
+            if (actions == null || !actions.Any())
             {
                 return string.Empty;
             }
 
-            if (attributeRouteHandler.Actions.Length == 1)
+            if (actions.Length == 1)
             {
-                var singleDescriptor = attributeRouteHandler.Actions.Single();
+                var singleDescriptor = actions.Single();
 
                 return ExtractRouteTemplate(routeData, singleDescriptor);
             }
 
-            foreach (var actionDescriptor in attributeRouteHandler.Actions)
+            foreach (var actionDescriptor in actions)
             {
                 if (actionDescriptor.Properties != null && actionDescriptor.Properties.ContainsKey(MsVersionpolicyIsAppliedToken))
                 {
@@ -60,9 +60,30 @@ namespace Microsoft.AspNetCore.Mvc.Internal
                 }
             }
 
-            var firstDescriptor = attributeRouteHandler.Actions.First();
+            var firstDescriptor = actions.First();
 
             return ExtractRouteTemplate(routeData, firstDescriptor);
+        }
+
+        private ActionDescriptor[] GetActionDescriptors(IList<IRouter> routers)
+        {
+            try
+            {
+                // It's hack to catch TypeLoadException
+                Func<IList<IRouter>, ActionDescriptor[]> func = routersList =>
+                {
+                    var attributeRouteHandler = routersList.FirstOrDefault(r => r.GetType().Name == nameof(MvcAttributeRouteHandler))
+                        as MvcAttributeRouteHandler;
+                
+                    return attributeRouteHandler?.Actions;
+                };
+                
+                return func(routers);
+            }
+            catch (TypeLoadException)
+            {
+                return null;
+            }
         }
 
         private static string ExtractRouteTemplate(RouteData routeData, ActionDescriptor actionDescriptor)
