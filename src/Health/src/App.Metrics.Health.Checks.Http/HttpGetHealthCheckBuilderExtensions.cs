@@ -1,4 +1,4 @@
-﻿// <copyright file="HttpHealthCheckBuilderExtensions.cs" company="App Metrics Contributors">
+﻿// <copyright file="HttpGetHealthCheckBuilderExtensions.cs" company="App Metrics Contributors">
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
