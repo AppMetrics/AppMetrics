@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>netcoreapp3.0</TargetFrameworks>
+
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+        <PackageReference Include="xunit" Version="2.4.0" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.0.0-preview5-19227-01" />
+        <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="3.2.0-dev0002" />
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\App.Metrics.Formatters.Prometheus\App.Metrics.Formatters.Prometheus.csproj" />
+    </ItemGroup>
+    
+</Project>

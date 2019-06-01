@@ -104,6 +104,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsPrometheusSandbox", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsPrometheusSandboxMvc", "sandbox\MetricsPrometheusSandboxMvc\MetricsPrometheusSandboxMvc.csproj", "{70F9BB97-02A0-42CC-9C84-BF1FB588A7DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Metrics.AspNetCore.AsynchronousReporting.Facts", "test\App.Metrics.AspNetCore.AsynchronousReporting.Facts\App.Metrics.AspNetCore.AsynchronousReporting.Facts.csproj", "{C9816A50-FF5C-445B-A2D2-27DB095A2601}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -226,6 +228,10 @@ Global
 		{70F9BB97-02A0-42CC-9C84-BF1FB588A7DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70F9BB97-02A0-42CC-9C84-BF1FB588A7DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70F9BB97-02A0-42CC-9C84-BF1FB588A7DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9816A50-FF5C-445B-A2D2-27DB095A2601}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9816A50-FF5C-445B-A2D2-27DB095A2601}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9816A50-FF5C-445B-A2D2-27DB095A2601}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9816A50-FF5C-445B-A2D2-27DB095A2601}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -273,6 +279,7 @@ Global
 		{E7D3272E-D834-4675-B4E5-9DE322864042} = {9D00C681-A88C-450E-B83E-E3BFF942F82A}
 		{B5A96731-39FB-4747-9A84-311D2CDFAA8E} = {276CABDF-9E9B-49D6-A3DD-99C9478C59C4}
 		{70F9BB97-02A0-42CC-9C84-BF1FB588A7DE} = {276CABDF-9E9B-49D6-A3DD-99C9478C59C4}
+		{C9816A50-FF5C-445B-A2D2-27DB095A2601} = {DD2E4647-7125-4CE3-9BA5-B45A26113A31}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {492C97B1-706A-4357-B3F7-EFB6AFB1F6C6}
