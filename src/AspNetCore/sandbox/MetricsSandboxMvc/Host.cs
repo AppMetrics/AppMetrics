@@ -28,7 +28,7 @@ namespace MetricsSandboxMvc
             //     .OutputMetrics.AsPlainText()
             //     .Build();
 
-            return WebHost.CreateDefaultBuilder(args)
+            return new WebHostBuilder()
 
                           #region App Metrics configuration options
 

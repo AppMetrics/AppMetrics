@@ -19,7 +19,7 @@ namespace MetricsReportingSandboxMvc
         {
             ConfigureLogging();
 
-            return WebHost.CreateDefaultBuilder(args)
+            return new WebHostBuilder()
                           .ConfigureMetricsWithDefaults(
                                builder =>
                                {
