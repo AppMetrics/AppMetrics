@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AppMetricsConcurrencyVersion>2.0.1</AppMetricsConcurrencyVersion>
     <AppMetricsVersion>3.1.0-*</AppMetricsVersion>
-    <FrameworkVersion>2.2.0</FrameworkVersion>
+    <FrameworkVersion>2.1.0</FrameworkVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -87,9 +87,11 @@
     <PackageReference Update="Microsoft.AspNetCore.Routing.Abstractions" Version="$(FrameworkVersion)" />
     <PackageReference Update="Microsoft.AspNetCore.Routing" Version="$(FrameworkVersion)" />
     <PackageReference Update="Microsoft.AspNetCore.Http.Extensions" Version="$(FrameworkVersion)" />
+    <PackageReference Update="Microsoft.Extensions.DependencyModel" Version="$(FrameworkVersion)" />
     <PackageReference Update="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(FrameworkVersion)" />
     <PackageReference Update="Microsoft.Extensions.Hosting.Abstractions" Version="$(FrameworkVersion)" />
     <PackageReference Update="Microsoft.Extensions.Logging.Abstractions" Version="$(FrameworkVersion)" />
+    <PackageReference Update="Microsoft.Extensions.Configuration.Binder" Version="$(FrameworkVersion)" />
     <PackageReference Update="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(FrameworkVersion)" />
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-18618-05" PrivateAssets="All" />
 
