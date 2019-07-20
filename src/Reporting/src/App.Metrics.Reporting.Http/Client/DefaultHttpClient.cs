@@ -106,7 +106,7 @@ namespace App.Metrics.Reporting.Http.Client
             {
                 client.BaseAddress = httpSettings.RequestUri;
                 client.Timeout = httpPolicy.Timeout;
-                client.DefaultRequestHeaders.Add("Authorization", httpSettings.AuthorizationToken);
+                client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse(httpSettings.AuthorizationToken);
                 return client;
             }
 
