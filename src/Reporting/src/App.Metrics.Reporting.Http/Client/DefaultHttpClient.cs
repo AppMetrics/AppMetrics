@@ -92,15 +92,23 @@ namespace App.Metrics.Reporting.Http.Client
             client.BaseAddress = httpSettings.RequestUri;
             client.Timeout = httpPolicy.Timeout;
 
-            if (string.IsNullOrWhiteSpace(httpSettings.UserName) || string.IsNullOrWhiteSpace(httpSettings.Password))
+            if (!string.IsNullOrWhiteSpace(httpSettings.UserName) && !string.IsNullOrWhiteSpace(httpSettings.Password))
             {
+
+                var byteArray = Encoding.ASCII.GetBytes($"{httpSettings.UserName}:{httpSettings.Password}");
+                client.BaseAddress = httpSettings.RequestUri;
+                client.Timeout = httpPolicy.Timeout;
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
                 return client;
             }
 
-            var byteArray = Encoding.ASCII.GetBytes($"{httpSettings.UserName}:{httpSettings.Password}");
-            client.BaseAddress = httpSettings.RequestUri;
-            client.Timeout = httpPolicy.Timeout;
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+            if (!string.IsNullOrWhiteSpace(httpSettings.AuthorizationToken))
+            {
+                client.BaseAddress = httpSettings.RequestUri;
+                client.Timeout = httpPolicy.Timeout;
+                client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse(httpSettings.AuthorizationToken);
+                return client;
+            }
 
             return client;
         }
