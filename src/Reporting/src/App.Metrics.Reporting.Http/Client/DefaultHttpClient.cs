@@ -85,10 +85,28 @@ namespace App.Metrics.Reporting.Http.Client
             HttpPolicy httpPolicy,
             HttpMessageHandler httpMessageHandler = null)
         {
-            var client = httpMessageHandler == null
-                ? new HttpClient()
-                : new HttpClient(httpMessageHandler);
+            HttpClientHandler allowInsecureHandler = null;
+            if (httpSettings.AllowInsecureSsl)
+            {
+                allowInsecureHandler = new HttpClientHandler
+                {
+                    ClientCertificateOptions = ClientCertificateOption.Manual,
+                    ServerCertificateCustomValidationCallback =
+                        (httpRequestMessage, cert, cetChain, policyErrors) => { return true; }
+                };
+            }
 
+            HttpClient client = null;
+            if (httpSettings.AllowInsecureSsl)
+            {
+                client = new HttpClient(allowInsecureHandler);
+            }
+            else
+            {
+                client = httpMessageHandler == null ? new HttpClient() : new HttpClient(httpMessageHandler);
+            }
+
+            
             client.BaseAddress = httpSettings.RequestUri;
             client.Timeout = httpPolicy.Timeout;
 
