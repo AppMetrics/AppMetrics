@@ -7,6 +7,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
@@ -35,6 +36,9 @@ namespace App.Metrics.Internal
         private readonly MetricMetaCatalog<IHistogram, HistogramValueSource, HistogramValue> _histograms =
             new MetricMetaCatalog<IHistogram, HistogramValueSource, HistogramValue>();
 
+        private readonly MetricMetaCatalog<IBucketHistogram, BucketHistogramValueSource, BucketHistogramValue> _bucketHistograms =
+            new MetricMetaCatalog<IBucketHistogram, BucketHistogramValueSource, BucketHistogramValue>();
+
         private readonly MetricMetaCatalog<IMeter, MeterValueSource, MeterValue> _meters =
             new MetricMetaCatalog<IMeter, MeterValueSource, MeterValue>();
 
@@ -62,6 +66,7 @@ namespace App.Metrics.Internal
                 () => _counters.All,
                 () => _meters.All,
                 () => _histograms.All,
+                () => _bucketHistograms.All,
                 () => _timers.All,
                 () => _apdexScores.All);
         }
@@ -267,6 +272,51 @@ namespace App.Metrics.Internal
                         options.MeasurementUnit,
                         allTags);
                     return Tuple.Create((IHistogram)histogram, valueSource);
+                });
+        }
+
+        public IBucketHistogram BucketHistogram<T>(BucketHistogramOptions options, Func<T> builder)
+            where T : IBucketHistogramMetric
+        {
+            var allTags = AllTags(options.Tags);
+            var metricName = allTags.AsMetricName(options.Name);
+
+            return _bucketHistograms.GetOrAdd(
+                metricName,
+                () =>
+                {
+                    Logger.Trace("Adding Bucket Histogram {Name} - {@Options} {MesurementUnit} {@Tags}", metricName, options, options.MeasurementUnit.ToString(), allTags.ToDictionary());
+
+                    var histogram = builder();
+                    var valueSource = new BucketHistogramValueSource(
+                        metricName,
+                        histogram,
+                        options.MeasurementUnit,
+                        allTags);
+                    return Tuple.Create((IBucketHistogram)histogram, valueSource);
+                });
+        }
+
+        /// <inheritdoc />
+        public IBucketHistogram BucketHistogram<T>(BucketHistogramOptions options, MetricTags tags, Func<T> builder)
+            where T : IBucketHistogramMetric
+        {
+            var allTags = AllTags(MetricTags.Concat(options.Tags, tags));
+            var metricName = allTags.AsMetricName(options.Name);
+
+            return _bucketHistograms.GetOrAdd(
+                metricName,
+                () =>
+                {
+                    Logger.Trace("Adding Bucket Histogram {Name} - {@Options} {MesurementUnit} {@Tags}", metricName, options, options.MeasurementUnit.ToString(), allTags.ToDictionary());
+
+                    var histogram = builder();
+                    var valueSource = new BucketHistogramValueSource(
+                        metricName,
+                        histogram,
+                        options.MeasurementUnit,
+                        allTags);
+                    return Tuple.Create((IBucketHistogram)histogram, valueSource);
                 });
         }
 

@@ -25,6 +25,8 @@ namespace App.Metrics.Formatters.Json
 
         public IEnumerable<HistogramMetric> Histograms { get; set; } = Enumerable.Empty<HistogramMetric>();
 
+        public IEnumerable<BucketHistogramMetric> BucketHistograms { get; set; } = Enumerable.Empty<BucketHistogramMetric>();
+
         public IEnumerable<MeterMetric> Meters { get; set; } = Enumerable.Empty<MeterMetric>();
 
         public IEnumerable<TimerMetric> Timers { get; set; } = Enumerable.Empty<TimerMetric>();

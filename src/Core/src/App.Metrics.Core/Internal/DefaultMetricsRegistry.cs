@@ -6,6 +6,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
 using App.Metrics.Counter;
 using App.Metrics.Filters;
 using App.Metrics.Gauge;
@@ -194,6 +195,7 @@ namespace App.Metrics.Internal
                     g.DataProvider.Counters.ToArray(),
                     g.DataProvider.Meters.ToArray(),
                     g.DataProvider.Histograms.ToArray(),
+                    g.DataProvider.BucketHistograms.ToArray(),
                     g.DataProvider.Timers.ToArray(),
                     g.DataProvider.ApdexScores.ToArray()));
 
@@ -231,6 +233,37 @@ namespace App.Metrics.Internal
             var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
 
             return contextRegistry.Histogram(options, tags, builder);
+        }
+
+        public IBucketHistogram BucketHistogram<T>(BucketHistogramOptions options, Func<T> builder)
+            where T : IBucketHistogramMetric
+        {
+            if (_nullMetricsRegistry.IsValueCreated)
+            {
+                return _nullMetricsRegistry.Value.BucketHistogram(options, builder);
+            }
+
+            EnsureContextLabel(options);
+
+            var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
+
+            return contextRegistry.BucketHistogram(options, builder);
+        }
+
+        /// <inheritdoc />
+        public IBucketHistogram BucketHistogram<T>(BucketHistogramOptions options, MetricTags tags, Func<T> builder)
+            where T : IBucketHistogramMetric
+        {
+            if (_nullMetricsRegistry.IsValueCreated)
+            {
+                return _nullMetricsRegistry.Value.BucketHistogram(options, tags, builder);
+            }
+
+            EnsureContextLabel(options);
+
+            var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
+
+            return contextRegistry.BucketHistogram(options, tags, builder);
         }
 
         public IMeter Meter<T>(MeterOptions options, Func<T> builder)

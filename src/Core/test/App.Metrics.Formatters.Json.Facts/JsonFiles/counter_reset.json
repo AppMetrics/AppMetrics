@@ -31,9 +31,10 @@
             "env": "staging"
           }
         }
-      ],      
+      ],
       "gauges": [],
       "histograms": [],
+      "bucketHistograms": [],
       "meters": [],
       "timers": []
     }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
 using App.Metrics.Counter;
 using App.Metrics.Filters;
 using App.Metrics.Gauge;
@@ -62,6 +63,17 @@ namespace App.Metrics.Filtering
 
         /// <inheritdoc />
         public bool IsHistogramMatch(HistogramValueSource histogram)
+        {
+            if (_types != null && !_types.Contains(MetricType.Histogram))
+            {
+                return false;
+            }
+
+            return IsMetricNameMatch(histogram.Name) && IsTagMatch(histogram.Tags);
+        }
+
+        /// <inheritdoc />
+        public bool IsBucketHistogramMatch(BucketHistogramValueSource histogram)
         {
             if (_types != null && !_types.Contains(MetricType.Histogram))
             {

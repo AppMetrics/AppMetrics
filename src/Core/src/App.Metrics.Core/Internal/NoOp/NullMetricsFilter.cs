@@ -5,6 +5,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
 using App.Metrics.Counter;
 using App.Metrics.Filters;
 using App.Metrics.Gauge;
@@ -28,6 +29,9 @@ namespace App.Metrics.Internal.NoOp
 
         /// <inheritdoc />
         public bool IsHistogramMatch(HistogramValueSource histogram) { return true; }
+
+        /// <inheritdoc />
+        public bool IsBucketHistogramMatch(BucketHistogramValueSource histogram) { return true; }
 
         /// <inheritdoc />
         public bool IsContextMatch(string context) { return true; }

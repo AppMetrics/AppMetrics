@@ -32,6 +32,7 @@
           }
         }
       ],
+      "bucketHistograms": [],
       "gauges": [],
       "meters": [],
       "timers": []

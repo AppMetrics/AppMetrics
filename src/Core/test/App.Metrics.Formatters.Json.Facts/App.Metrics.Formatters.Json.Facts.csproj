@@ -1,11 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <None Remove="JsonFiles\buckethistogram.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Include="JsonFiles\apdex.json" />
     <EmbeddedResource Include="JsonFiles\counter_reset.json" />
     <EmbeddedResource Include="JsonFiles\counter.json" />
     <EmbeddedResource Include="JsonFiles\env.json" />
     <EmbeddedResource Include="JsonFiles\gauge.json" />
+    <EmbeddedResource Include="JsonFiles\buckethistogram.json" />
     <EmbeddedResource Include="JsonFiles\histogram.json" />
     <EmbeddedResource Include="JsonFiles\meter.json" />
     <EmbeddedResource Include="JsonFiles\meter_with_items.json" />

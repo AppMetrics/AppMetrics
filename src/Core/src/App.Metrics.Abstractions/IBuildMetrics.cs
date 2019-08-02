@@ -3,6 +3,7 @@
 // </copyright>
 
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
@@ -49,6 +50,14 @@ namespace App.Metrics
         ///     The Histogram API for building <see cref="IHistogramMetric" />s
         /// </value>
         IBuildHistogramMetrics Histogram { get; }
+
+        /// <summary>
+        ///     Gets the Bucket Histogram API to build <see cref="IBucketHistogramMetric" />s
+        /// </summary>
+        /// <value>
+        ///     The Bucket Histogram API for building <see cref="IBucketHistogramMetric" />s
+        /// </value>
+        IBuildBucketHistogramMetrics BucketHistogram { get; }
 
         /// <summary>
         ///     Gets the Meter API to build <see cref="IMeterMetric" />s

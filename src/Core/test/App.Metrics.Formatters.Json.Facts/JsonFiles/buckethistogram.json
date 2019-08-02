@@ -5,19 +5,23 @@
       "context": "context_one",
       "apdexScores": [],
       "counters": [],
-      "gauges": [
+      "histograms": [],
+      "bucketHistograms": [
         {
-          "name": "test_gauge",
-          "unit": "calls",
-          "value": 0.5,
+          "name": "test_bucket_histogram",
+          "unit": "items",
+          "count": 1,
+          "sum": 1.0,
+          "buckets": {
+            "1": 1
+          },
           "tags": {
             "host": "server1",
             "env": "staging"
           }
         }
       ],
-      "histograms": [],
-      "bucketHistograms": [],
+      "gauges": [],
       "meters": [],
       "timers": []
     }

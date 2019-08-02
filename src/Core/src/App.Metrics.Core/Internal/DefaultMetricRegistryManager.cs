@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
@@ -20,6 +21,7 @@ namespace App.Metrics.Internal
         private readonly Func<IEnumerable<CounterValueSource>> _counters;
         private readonly Func<IEnumerable<GaugeValueSource>> _gauges;
         private readonly Func<IEnumerable<HistogramValueSource>> _histograms;
+        private readonly Func<IEnumerable<BucketHistogramValueSource>> _bucketHistograms;
         private readonly Func<IEnumerable<MeterValueSource>> _meters;
         private readonly Func<IEnumerable<TimerValueSource>> _timers;
 
@@ -28,6 +30,7 @@ namespace App.Metrics.Internal
             Func<IEnumerable<CounterValueSource>> counters,
             Func<IEnumerable<MeterValueSource>> meters,
             Func<IEnumerable<HistogramValueSource>> histograms,
+            Func<IEnumerable<BucketHistogramValueSource>> bucketHistograms,
             Func<IEnumerable<TimerValueSource>> timers,
             Func<IEnumerable<ApdexValueSource>> apdexScores)
         {
@@ -37,6 +40,7 @@ namespace App.Metrics.Internal
             _histograms = histograms;
             _timers = timers;
             _apdexScores = apdexScores;
+            _bucketHistograms = bucketHistograms;
         }
 
         /// <inheritdoc />
@@ -50,6 +54,9 @@ namespace App.Metrics.Internal
 
         /// <inheritdoc />
         public IEnumerable<HistogramValueSource> Histograms => _histograms();
+
+        /// <inheritdoc />
+        public IEnumerable<BucketHistogramValueSource> BucketHistograms => _bucketHistograms();
 
         /// <inheritdoc />
         public IEnumerable<MeterValueSource> Meters => _meters();

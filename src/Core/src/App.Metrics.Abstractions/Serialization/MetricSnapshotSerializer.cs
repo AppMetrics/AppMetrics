@@ -4,7 +4,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
 using App.Metrics.Counter;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
@@ -57,6 +59,11 @@ namespace App.Metrics.Serialization
                 {
                     BuildMetricPayload(contextValueSource.Context, valueSource, writer, fields, metricsData.Timestamp);
                 }
+
+                foreach (var valueSource in contextValueSource.BucketHistograms)
+                {
+                    BuildMetricPayload(contextValueSource.Context, valueSource, writer, fields, metricsData.Timestamp);
+                }
             }
         }
 
@@ -99,6 +106,16 @@ namespace App.Metrics.Serialization
             DateTime timestamp)
         {
             writer.WriteHistogram(context, valueSource, fields, timestamp);
+        }
+
+        private static void BuildBucketHistogramPayload(
+            string context,
+            MetricValueSourceBase<BucketHistogramValue> valueSource,
+            IMetricSnapshotWriter writer,
+            IDictionary<string, string> fields,
+            DateTime timestamp)
+        {
+            writer.WriteBucketHistogram(context, valueSource, fields, timestamp);
         }
 
         private static void BuildMeterPayload(
@@ -145,6 +162,12 @@ namespace App.Metrics.Serialization
             if (typeof(TMetric) == typeof(HistogramValue))
             {
                 BuildHistogramPayload(context, valueSource as MetricValueSourceBase<HistogramValue>, writer, fields.Histogram, timestamp);
+                return;
+            }
+
+            if (typeof(TMetric) == typeof(BucketHistogramValue))
+            {
+                BuildBucketHistogramPayload(context, valueSource as MetricValueSourceBase<BucketHistogramValue>, writer, fields.BucketHistogram.ToDictionary(x => x.Key.ToString(), x => x.Value), timestamp);
                 return;
             }
 

@@ -33,10 +33,11 @@ namespace App.Metrics.Formatters.Json
             var jsonMeters = source.Meters.FromSerializableMetric();
             var jsonGauges = source.Gauges.FromSerializableMetric();
             var jsonHistograms = source.Histograms.FromSerializableMetric();
+            var jsonBucketHistograms = source.BucketHistograms.FromSerializableMetric();
             var jsonTimers = source.Timers.FromSerializableMetric();
             var jsonApdexScores = source.ApdexScores.FromSerializableMetric();
 
-            return new MetricsContextValueSource(source.Context, jsonGauges, jsonCounters, jsonMeters, jsonHistograms, jsonTimers, jsonApdexScores);
+            return new MetricsContextValueSource(source.Context, jsonGauges, jsonCounters, jsonMeters, jsonHistograms, jsonBucketHistograms, jsonTimers, jsonApdexScores);
         }
 
         private static MetricsContext ToSerializableMetric(this MetricsContextValueSource source)
@@ -45,6 +46,7 @@ namespace App.Metrics.Formatters.Json
             var jsonMeters = source.Meters.ToSerializableMetric();
             var jsonGauges = source.Gauges.ToSerializableMetric();
             var jsonHistograms = source.Histograms.ToSerializableMetric();
+            var jsonBucketHistograms = source.BucketHistograms.ToSerializableMetric();
             var jsonTimers = source.Timers.ToSerializableMetric();
             var jsonApdexScores = source.ApdexScores.ToSerializableMetric();
 
@@ -54,6 +56,7 @@ namespace App.Metrics.Formatters.Json
                        Meters = jsonMeters,
                        Gauges = jsonGauges,
                        Histograms = jsonHistograms,
+                       BucketHistograms = jsonBucketHistograms,
                        Timers = jsonTimers,
                        Context = source.Context,
                        ApdexScores = jsonApdexScores

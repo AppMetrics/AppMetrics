@@ -35,6 +35,13 @@ namespace App.Metrics
         Histogram,
 
         /// <summary>
+        ///     A
+        ///     <see href="http://app-metrics.io/getting-started/metric-types/histograms.html">BucketHistogram</see>
+        ///     Metric
+        /// </summary>
+        BucketHistogram,
+
+        /// <summary>
         ///     A <see href="http://app-metrics.io/getting-started/metric-types/histograms.html">Timer</see>
         ///     Metric
         /// </summary>

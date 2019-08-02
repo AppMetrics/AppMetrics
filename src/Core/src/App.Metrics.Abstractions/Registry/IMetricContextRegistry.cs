@@ -4,6 +4,7 @@
 
 using System;
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
@@ -43,6 +44,12 @@ namespace App.Metrics.Registry
 
         IHistogram Histogram<T>(HistogramOptions options, MetricTags tags, Func<T> builder)
             where T : IHistogramMetric;
+
+        IBucketHistogram BucketHistogram<T>(BucketHistogramOptions options, Func<T> builder)
+            where T : IBucketHistogramMetric;
+
+        IBucketHistogram BucketHistogram<T>(BucketHistogramOptions options, MetricTags tags, Func<T> builder)
+            where T : IBucketHistogramMetric;
 
         IMeter Meter<T>(MeterOptions options, Func<T> builder)
             where T : IMeterMetric;

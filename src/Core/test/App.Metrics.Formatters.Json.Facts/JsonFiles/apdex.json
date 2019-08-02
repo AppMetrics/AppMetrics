@@ -20,6 +20,7 @@
       "counters": [],
       "gauges": [],
       "histograms": [],
+      "bucketHistograms": [],
       "meters": [],
       "timers": []
     }

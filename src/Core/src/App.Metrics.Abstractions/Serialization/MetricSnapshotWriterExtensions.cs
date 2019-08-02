@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
 using App.Metrics.Counter;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
@@ -116,6 +117,23 @@ namespace App.Metrics.Serialization
 
             var data = new Dictionary<string, object>();
             valueSource.Value.AddHistogramValues(data, fields);
+            WriteMetric(writer, context, valueSource, data, timestamp);
+        }
+
+        public static void WriteBucketHistogram(
+            this IMetricSnapshotWriter writer,
+            string context,
+            MetricValueSourceBase<BucketHistogramValue> valueSource,
+            IDictionary<string, string> fields,
+            DateTime timestamp)
+        {
+            if (valueSource == null || fields.Count == 0)
+            {
+                return;
+            }
+
+            var data = new Dictionary<string, object>();
+            valueSource.Value.AddBucketHistogramValues(data, fields);
             WriteMetric(writer, context, valueSource, data, timestamp);
         }
 

@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
@@ -21,6 +22,8 @@ namespace App.Metrics.Registry
         IEnumerable<GaugeValueSource> Gauges { get; }
 
         IEnumerable<HistogramValueSource> Histograms { get; }
+
+        IEnumerable<BucketHistogramValueSource> BucketHistograms { get; }
 
         IEnumerable<MeterValueSource> Meters { get; }
 

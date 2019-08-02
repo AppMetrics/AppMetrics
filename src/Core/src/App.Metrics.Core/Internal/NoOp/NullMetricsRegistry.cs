@@ -5,6 +5,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
 using App.Metrics.Counter;
 using App.Metrics.Filters;
 using App.Metrics.Gauge;
@@ -82,6 +83,19 @@ namespace App.Metrics.Internal.NoOp
             return _histogramInstance;
         }
 
+        public IBucketHistogram BucketHistogram<T>(BucketHistogramOptions options, Func<T> builder)
+            where T : IBucketHistogramMetric
+        {
+            return _bucketHistogramInstance;
+        }
+
+        /// <inheritdoc />
+        public IBucketHistogram BucketHistogram<T>(BucketHistogramOptions options, MetricTags tags, Func<T> builder)
+            where T : IBucketHistogramMetric
+        {
+            return _bucketHistogramInstance;
+        }
+
         public IMeter Meter<T>(MeterOptions options, Func<T> builder)
             where T : IMeterMetric
         {
@@ -115,6 +129,7 @@ namespace App.Metrics.Internal.NoOp
         private readonly ICounter _counterInstance = new NullCounter();
         private readonly IGauge _gaugeInstance = new NullGauge();
         private readonly IHistogram _histogramInstance = new NullHistogram();
+        private readonly IBucketHistogram _bucketHistogramInstance = new NullBucketHistogram();
         private readonly IMeter _meterInstance = new NullMeter();
         private readonly ITimer _timerInstance = new NullTimer();
 #pragma warning restore SA1129

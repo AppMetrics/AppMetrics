@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using App.Metrics.BucketHistogram;
 using App.Metrics.Formatters.Json;
 
 // ReSharper disable CheckNamespace
@@ -40,12 +41,36 @@ namespace App.Metrics.Histogram
                 source.Tags.FromDictionary());
         }
 
+        public static BucketHistogramValueSource FromSerializableMetric(this BucketHistogramMetric source)
+        {
+            var histogramValue = new BucketHistogramValue(
+                source.Count,
+                source.Sum,
+                source.Buckets);
+
+            return new BucketHistogramValueSource(
+                source.Name,
+                ConstantValue.Provider(histogramValue),
+                source.Unit,
+                source.Tags.FromDictionary());
+        }
+
         public static IEnumerable<HistogramValueSource> FromSerializableMetric(this IEnumerable<HistogramMetric> source)
         {
             return source.Select(x => x.FromSerializableMetric());
         }
 
+        public static IEnumerable<BucketHistogramValueSource> FromSerializableMetric(this IEnumerable<BucketHistogramMetric> source)
+        {
+            return source.Select(x => x.FromSerializableMetric());
+        }
+
         public static IEnumerable<HistogramMetric> ToSerializableMetric(this IEnumerable<HistogramValueSource> source)
+        {
+            return source.Select(ToSerializableMetric);
+        }
+
+        public static IEnumerable<BucketHistogramMetric> ToSerializableMetric(this IEnumerable<BucketHistogramValueSource> source)
         {
             return source.Select(ToSerializableMetric);
         }
@@ -75,6 +100,19 @@ namespace App.Metrics.Histogram
                        StdDev = source.Value.StdDev,
                        Tags = source.Tags.ToDictionary()
                    };
+        }
+
+        public static BucketHistogramMetric ToSerializableMetric(this BucketHistogramValueSource source)
+        {
+            return new BucketHistogramMetric
+            {
+                Name = source.Name,
+                Count = source.Value.Count,
+                Sum = source.Value.Sum,
+                Unit = source.Unit.Name,
+                Buckets = source.Value.Buckets,
+                Tags = source.Tags.ToDictionary()
+            };
         }
     }
 }

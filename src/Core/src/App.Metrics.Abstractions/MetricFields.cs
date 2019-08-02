@@ -12,6 +12,7 @@ namespace App.Metrics
         public MetricFields()
         {
             Histogram = DefaultMetricFieldNames.Histogram.ToDictionary(pair => pair.Key, pair => pair.Value);
+            BucketHistogram = DefaultMetricFieldNames.BucketHistogram.ToDictionary(pair => pair.Key, pair => pair.Value);
             Meter = DefaultMetricFieldNames.Meter.ToDictionary(pair => pair.Key, pair => pair.Value);
             Apdex = DefaultMetricFieldNames.Apdex.ToDictionary(pair => pair.Key, pair => pair.Value);
             Counter = DefaultMetricFieldNames.Counter.ToDictionary(pair => pair.Key, pair => pair.Value);
@@ -25,6 +26,7 @@ namespace App.Metrics
         public IDictionary<GaugeFields, string> Gauge { get; }
 
         public IDictionary<HistogramFields, string> Histogram { get; }
+        public IDictionary<BucketHistogramFields, string> BucketHistogram { get; }
 
         public IDictionary<MeterFields, string> Meter { get; }
     }

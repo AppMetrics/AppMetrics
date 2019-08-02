@@ -4,6 +4,7 @@
 
 using System;
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
@@ -41,6 +42,13 @@ namespace App.Metrics.Filters
         /// <param name="histogram">The histogram.</param>
         /// <returns>True if the metric type is a histogram, the name matches and tags match</returns>
         bool IsHistogramMatch(HistogramValueSource histogram);
+
+        /// <summary>
+        ///     Determines whether the specified bucket histogram is match.
+        /// </summary>
+        /// <param name="histogram">The bucket histogram.</param>
+        /// <returns>True if the metric type is a bucket histogram, the name matches and tags match</returns>
+        bool IsBucketHistogramMatch(BucketHistogramValueSource histogram);
 
         /// <summary>
         ///     Determines whether the specified context is match.
