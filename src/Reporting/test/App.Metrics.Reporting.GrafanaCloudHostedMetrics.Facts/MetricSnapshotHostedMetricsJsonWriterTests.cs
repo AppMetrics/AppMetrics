@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Linq;
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
 using App.Metrics.Counter;
 using App.Metrics.Formatters.GrafanaCloudHostedMetrics;
 using App.Metrics.Gauge;
@@ -482,6 +483,7 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Facts
             CounterValueSource counters = null,
             MeterValueSource meters = null,
             HistogramValueSource histograms = null,
+            BucketHistogramValueSource bucketHistograms = null,
             TimerValueSource timers = null,
             ApdexValueSource apdexScores = null)
         {
@@ -489,10 +491,11 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Facts
             var counterValues = counters != null ? new[] { counters } : Enumerable.Empty<CounterValueSource>();
             var meterValues = meters != null ? new[] { meters } : Enumerable.Empty<MeterValueSource>();
             var histogramValues = histograms != null ? new[] { histograms } : Enumerable.Empty<HistogramValueSource>();
+            var bucketHistogramValues = bucketHistograms != null ? new[] { bucketHistograms } : Enumerable.Empty<BucketHistogramValueSource>();
             var timerValues = timers != null ? new[] { timers } : Enumerable.Empty<TimerValueSource>();
             var apdexScoreValues = apdexScores != null ? new[] { apdexScores } : Enumerable.Empty<ApdexValueSource>();
 
-            return new MetricsContextValueSource(context, gaugeValues, counterValues, meterValues, histogramValues, timerValues, apdexScoreValues);
+            return new MetricsContextValueSource(context, gaugeValues, counterValues, meterValues, histogramValues, bucketHistogramValues, timerValues, apdexScoreValues);
         }
     }
 }
