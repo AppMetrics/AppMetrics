@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
@@ -116,6 +117,35 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                                  label = metric.Tags.ToLabelPairs()
                              }
                          };
+
+            return result;
+        }
+
+        public static IEnumerable<Metric> ToPrometheusMetrics(this BucketHistogramValueSource metric)
+        {
+            var histogram = new Histogram
+            {
+                sample_count = (ulong) metric.Value.Count,
+                sample_sum = metric.Value.Sum
+            };
+
+            foreach (var keyValuePair in metric.Value.Buckets)
+            {
+                histogram.bucket.Add(new Bucket
+                {
+                    cumulative_count = (ulong)keyValuePair.Value,
+                    upper_bound = keyValuePair.Key
+                });
+            }
+
+            var result = new List<Metric>
+            {
+                new Metric
+                {
+                    histogram = histogram,
+                    label = metric.Tags.ToLabelPairs()
+                }
+            };
 
             return result;
         }
