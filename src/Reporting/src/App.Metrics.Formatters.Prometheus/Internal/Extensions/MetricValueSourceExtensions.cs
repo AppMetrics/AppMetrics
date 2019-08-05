@@ -2,6 +2,7 @@
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Apdex;
@@ -163,7 +164,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
             {
                 histogram.bucket.Add(new Bucket
                 {
-                    cumulative_count = (ulong)keyValuePair.Value,
+                    cumulative_count = Convert.ToUInt64(keyValuePair.Value),
                     upper_bound = keyValuePair.Key
                 });
             }

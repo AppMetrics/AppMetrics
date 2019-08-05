@@ -16,9 +16,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="App.Metrics" />
-    <PackageReference Include="App.Metrics.Extensions.DependencyInjection" />
-    <PackageReference Include="App.Metrics.Extensions.Hosting" />
+    <PackageReference Include="App.Metrics" Version="3.2.0-bucket-histograms0028" />
+    <PackageReference Include="App.Metrics.Extensions.DependencyInjection" Version="3.2.0-bucket-histograms0029" />
+    <PackageReference Include="App.Metrics.Extensions.Hosting" Version="3.2.0-bucket-histograms0029" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Serilog.Sinks.Literate" Version="3.0.1-dev-00044" />

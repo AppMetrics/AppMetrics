@@ -67,6 +67,11 @@ namespace MetricsSandbox
                 Thread.Sleep(Rnd.Next(0, 100));
             }
 
+            using (_metrics.Measure.BucketTimer.Time(ApplicationsMetricsRegistry.BucketTimerOne))
+            {
+                Thread.Sleep(Rnd.Next(0, 100));
+            }
+
             using (_metrics.Measure.Apdex.Track(ApplicationsMetricsRegistry.ApdexOne))
             {
                 Thread.Sleep(Rnd.Next(0, 100));

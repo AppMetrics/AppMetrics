@@ -31,7 +31,7 @@ namespace App.Metrics.BucketTimer
         public BucketTimerValue Scale(TimeUnit rate, TimeUnit duration)
         {
             var durationFactor = DurationUnit.ScalingFactorFor(duration);
-            return new BucketTimerValue(Rate.Scale(rate), Histogram.Scale(durationFactor), ActiveSessions, duration);
+            return new BucketTimerValue(Rate.Scale(rate), Histogram, ActiveSessions, duration);
         }
     }
 }

@@ -14,7 +14,7 @@
     <TargetFrameworks>netcoreapp2.2;net461</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>        
-    <PackageReference Include="App.Metrics.AspNetCore.Mvc" />
+    <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="3.2.0-bucket-histograms0029" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />

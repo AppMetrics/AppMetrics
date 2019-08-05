@@ -60,7 +60,7 @@ namespace App.Metrics.BucketHistogram
         /// <inheritdoc />
         public BucketHistogramValue GetValue(bool resetMetric = false)
         {
-            var value = new BucketHistogramValue(_counter.GetValue(), _sum.GetValue(), _buckets.ToDictionary(x => x.Key, x => (double)x.Value.GetValue()));
+            var value = new BucketHistogramValue(_counter.GetValue(), _sum.GetValue(), _buckets.ToDictionary(x => x.Key, x => Convert.ToDouble(x.Value.GetValue())));
 
             if (resetMetric)
             {

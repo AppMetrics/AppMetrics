@@ -15,9 +15,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="App.Metrics.AspNetCore.Health" />
-    <PackageReference Include="App.Metrics.AspNetCore.Mvc" />
-    <PackageReference Include="App.Metrics.Health.Reporting.Metrics" />
+    <PackageReference Include="App.Metrics.AspNetCore.Health" Version="3.2.0-bucket-histograms0029" />
+    <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="3.2.0-bucket-histograms0029" />
+    <PackageReference Include="App.Metrics.Health.Reporting.Metrics" Version="3.2.0-bucket-histograms0028" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />

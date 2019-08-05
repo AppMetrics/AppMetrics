@@ -85,6 +85,11 @@ namespace MetricsPrometheusSandbox
                 Thread.Sleep(Rnd.Next(0, 100));
             }
 
+            using (Metrics.Measure.BucketTimer.Time(ApplicationsMetricsRegistry.BucketTimerOne))
+            {
+                Thread.Sleep(Rnd.Next(0, 100));
+            }
+
             using (Metrics.Measure.Apdex.Track(ApplicationsMetricsRegistry.ApdexOne))
             {
                 Thread.Sleep(Rnd.Next(0, 100));

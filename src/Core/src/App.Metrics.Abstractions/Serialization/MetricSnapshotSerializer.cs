@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Apdex;
 using App.Metrics.BucketHistogram;
+using App.Metrics.BucketTimer;
 using App.Metrics.Counter;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
@@ -51,6 +52,11 @@ namespace App.Metrics.Serialization
                 }
 
                 foreach (var valueSource in contextValueSource.Timers)
+                {
+                    BuildMetricPayload(contextValueSource.Context, valueSource, writer, fields, metricsData.Timestamp);
+                }
+
+                foreach (var valueSource in contextValueSource.BucketTimers)
                 {
                     BuildMetricPayload(contextValueSource.Context, valueSource, writer, fields, metricsData.Timestamp);
                 }
@@ -118,6 +124,16 @@ namespace App.Metrics.Serialization
             writer.WriteBucketHistogram(context, valueSource, fields, timestamp);
         }
 
+        private static void BuildBucketTimerPayload(
+            string context,
+            MetricValueSourceBase<BucketTimerValue> valueSource,
+            IMetricSnapshotWriter writer,
+            IDictionary<string, string> fields,
+            DateTime timestamp)
+        {
+            writer.WriteBucketTimer(context, valueSource, fields, timestamp);
+        }
+
         private static void BuildMeterPayload(
             string context,
             MetricValueSourceBase<MeterValue> valueSource,
@@ -156,6 +172,12 @@ namespace App.Metrics.Serialization
             if (typeof(TMetric) == typeof(TimerValue))
             {
                 BuildTimerPayload(context, valueSource as MetricValueSourceBase<TimerValue>, writer, fields.Meter, fields.Histogram, timestamp);
+                return;
+            }
+
+            if (typeof(TMetric) == typeof(BucketTimerValue))
+            {
+                BuildBucketTimerPayload(context, valueSource as MetricValueSourceBase<BucketTimerValue>, writer, fields.Histogram.ToDictionary(x => x.Key.ToString(), x => x.Value), timestamp);
                 return;
             }
 

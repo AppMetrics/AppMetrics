@@ -172,9 +172,9 @@
           "durationUnit": "ms",
           "histogram": {
             "buckets": {
-              "1": 1E-06
+              "1": 1.0
             },
-            "sum": 1E-06
+            "sum": 1.0
           },
           "rate": {
             "fifteenMinuteRate": 4.0,

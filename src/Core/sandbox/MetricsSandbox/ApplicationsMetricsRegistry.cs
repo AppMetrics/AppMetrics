@@ -4,6 +4,7 @@
 
 using App.Metrics.Apdex;
 using App.Metrics.BucketHistogram;
+using App.Metrics.BucketTimer;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
@@ -65,5 +66,10 @@ namespace MetricsSandbox
                                                {
                                                    Name = "timer_one"
                                                };
+
+        public static BucketTimerOptions BucketTimerOne => new BucketTimerOptions
+        {
+            Name = "timer_one"
+        };
     }
 }
