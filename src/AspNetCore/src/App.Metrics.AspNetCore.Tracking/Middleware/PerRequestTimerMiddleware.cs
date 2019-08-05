@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Metrics.AspNetCore.Internal;
+using App.Metrics.BucketTimer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -21,6 +23,8 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
         private readonly ILogger<PerRequestTimerMiddleware> _logger;
         private readonly IMetrics _metrics;
         private readonly IList<int> _ignoredHttpStatusCodes;
+        private readonly bool _useBucketTimer;
+        private readonly BucketTimerOptions _bucketTimerOptions;
 
         public PerRequestTimerMiddleware(
             RequestDelegate next,
@@ -32,6 +36,11 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
             _logger = logger;
             _metrics = metrics;
             _ignoredHttpStatusCodes = trackingMiddlwareOptionsAccessor.Value.IgnoredHttpStatusCodes;
+            if (trackingMiddlwareOptionsAccessor.Value.UseBucketHistograms)
+            {
+                _useBucketTimer = true;
+                _bucketTimerOptions = HttpRequestMetricsRegistry.BucketTimers.EndpointRequestTransactionDuration(trackingMiddlwareOptionsAccessor.Value.RequestTimeHistogramBuckets);
+            }
         }
 
         // ReSharper disable UnusedMember.Global
@@ -49,10 +58,20 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
                 var startTime = (long)context.Items[TimerItemsKey];
                 var elapsed = _metrics.Clock.Nanoseconds - startTime;
 
-                _metrics.RecordEndpointsRequestTime(
-                    context.GetOAuthClientIdIfRequired(),
-                    context.GetMetricsCurrentRouteName(),
-                    elapsed);
+                if (_useBucketTimer)
+                {
+                    _metrics.RecordEndpointsRequestTime(_bucketTimerOptions,
+                        context.GetOAuthClientIdIfRequired(),
+                        context.GetMetricsCurrentRouteName(),
+                        elapsed);
+                }
+                else
+                {
+                    _metrics.RecordEndpointsRequestTime(
+                        context.GetOAuthClientIdIfRequired(),
+                        context.GetMetricsCurrentRouteName(),
+                        elapsed);
+                }
             }
 
             _logger.MiddlewareExecuted<PerRequestTimerMiddleware>();

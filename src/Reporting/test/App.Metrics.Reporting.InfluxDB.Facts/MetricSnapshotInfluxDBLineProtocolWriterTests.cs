@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using App.Metrics.Apdex;
 using App.Metrics.BucketHistogram;
+using App.Metrics.BucketTimer;
 using App.Metrics.Counter;
 using App.Metrics.Formatters.InfluxDB;
 using App.Metrics.Gauge;
@@ -484,6 +485,7 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             HistogramValueSource histograms = null,
             BucketHistogramValueSource bucketHistograms = null,
             TimerValueSource timers = null,
+            BucketTimerValueSource bucketTimers = null,
             ApdexValueSource apdexScores = null)
         {
             var gaugeValues = gauges != null ? new[] { gauges } : Enumerable.Empty<GaugeValueSource>();
@@ -492,9 +494,10 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var histogramValues = histograms != null ? new[] { histograms } : Enumerable.Empty<HistogramValueSource>();
             var bucketHistogramValues = bucketHistograms != null ? new[] { bucketHistograms } : Enumerable.Empty<BucketHistogramValueSource>();
             var timerValues = timers != null ? new[] { timers } : Enumerable.Empty<TimerValueSource>();
+            var bucketTimerValues = bucketTimers != null ? new[] { bucketTimers } : Enumerable.Empty<BucketTimerValueSource>();
             var apdexScoreValues = apdexScores != null ? new[] { apdexScores } : Enumerable.Empty<ApdexValueSource>();
 
-            return new MetricsContextValueSource(context, gaugeValues, counterValues, meterValues, histogramValues, bucketHistogramValues, timerValues, apdexScoreValues);
+            return new MetricsContextValueSource(context, gaugeValues, counterValues, meterValues, histogramValues, bucketHistogramValues, timerValues, bucketTimerValues, apdexScoreValues);
         }
     }
 }

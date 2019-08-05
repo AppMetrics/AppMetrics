@@ -5,6 +5,7 @@
 using System;
 using App.Metrics.AspNetCore.Internal;
 using App.Metrics.BucketHistogram;
+using App.Metrics.BucketTimer;
 using App.Metrics.Gauge;
 using App.Metrics.Timer;
 
@@ -75,7 +76,25 @@ namespace App.Metrics
         /// <param name="elapsed">The time elapsed in executing the endpoints request.</param>
         public static void RecordEndpointsRequestTime(this IMetrics metrics, string clientId, string routeTemplate, long elapsed)
         {
-            metrics.EndpointRequestTimer(routeTemplate).
+            metrics.EndpointRequestTimer(routeTemplate, null).
+                    Record(
+                        elapsed,
+                        TimeUnit.Nanoseconds,
+                        clientId.IsPresent() ? clientId : null);
+        }
+
+        /// <summary>
+        ///     Records the time taken to execute an API's endpoint in nanoseconds. Tags metrics by OAuth2 client id (if it exists)
+        ///     and the endpoints route template.
+        /// </summary>
+        /// <param name="metrics">The metrics.</param>
+        /// <param name="bucketTimerOptions">The bucket timer options.</param>
+        /// <param name="clientId">The OAuth2 client identifier, with track min/max durations by clientid.</param>
+        /// <param name="routeTemplate">The route template of the endpoint.</param>
+        /// <param name="elapsed">The time elapsed in executing the endpoints request.</param>
+        public static void RecordEndpointsRequestTime(this IMetrics metrics, BucketTimerOptions bucketTimerOptions, string clientId, string routeTemplate, long elapsed)
+        {
+            metrics.EndpointRequestTimer(routeTemplate, bucketTimerOptions).
                     Record(
                         elapsed,
                         TimeUnit.Nanoseconds,
@@ -223,9 +242,13 @@ namespace App.Metrics
             metrics.Measure.Counter.Increment(HttpRequestMetricsRegistry.Counters.TotalErrorRequestCount, errorCounterTags);
         }
 
-        private static ITimer EndpointRequestTimer(this IMetrics metrics, string routeTemplate)
+        private static ITimer EndpointRequestTimer(this IMetrics metrics, string routeTemplate, BucketTimerOptions bucketTimerOptions)
         {
             var tags = new MetricTags(MiddlewareConstants.DefaultTagKeys.Route, routeTemplate);
+            if (bucketTimerOptions != null)
+            {
+                return metrics.Provider.BucketTimer.Instance(bucketTimerOptions, tags);
+            }
             return metrics.Provider.Timer.Instance(HttpRequestMetricsRegistry.Timers.EndpointRequestTransactionDuration, tags);
         }
 
@@ -248,7 +271,7 @@ namespace App.Metrics
             var tags = new MetricTags(MiddlewareConstants.DefaultTagKeys.Route, routeTemplate);
 
             var endpointsErrorRate = metrics.Provider.Meter.Instance(HttpRequestMetricsRegistry.Meters.EndpointErrorRequestRate, tags);
-            var endpointsRequestTransactionTime = metrics.EndpointRequestTimer(routeTemplate);
+            var endpointsRequestTransactionTime = metrics.EndpointRequestTimer(routeTemplate, null);
 
             metrics.Measure.Gauge.SetValue(
                 HttpRequestMetricsRegistry.Gauges.EndpointOneMinuteErrorPercentageRate,

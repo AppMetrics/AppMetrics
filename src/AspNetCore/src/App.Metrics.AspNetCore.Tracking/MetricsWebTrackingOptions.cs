@@ -89,12 +89,22 @@ namespace App.Metrics.AspNetCore.Tracking
 
 
         /// <summary>
-        ///     Gets or sets the buckets to use from bucket histograms
+        ///     Gets or sets the buckets to use for request size bucket histograms
         /// </summary>
         /// <remarks>Only valid if UseBucketHistograms is true.</remarks>
         /// <value>
         ///     Array of buckets
         /// </value>
         public double[] RequestSizeHistogramBuckets { get; set; }
+
+
+        /// <summary>
+        ///     Gets or sets the buckets to use for request time bucket timer
+        /// </summary>
+        /// <remarks>Only valid if UseBucketHistograms is true.</remarks>
+        /// <value>
+        ///     Array of buckets
+        /// </value>
+        public double[] RequestTimeHistogramBuckets { get; set; }
     }
 }
