@@ -4,6 +4,7 @@
 
 using System;
 using App.Metrics.AspNetCore.Internal;
+using App.Metrics.BucketHistogram;
 using App.Metrics.Gauge;
 using App.Metrics.Timer;
 
@@ -164,6 +165,56 @@ namespace App.Metrics
         public static void UpdatePutRequestSize(this IMetrics metrics, long value)
         {
             metrics.Measure.Histogram.Update(HttpRequestMetricsRegistry.Histograms.PutRequestSizeHistogram, value);
+        }
+
+        /// <summary>
+        ///     Records a metric for the size of a HTTP POST requests.
+        /// </summary>
+        /// <param name="metrics">The metrics.</param>
+        /// <param name="bucketHistogramOptions">The bucket histogram options</param>
+        /// <param name="value">The value.</param>
+        /// <param name="clientId">The OAuth2 client identifier.</param>
+        /// <param name="routeTemplate">The route template of the endpoint.</param>
+        public static void UpdateClientPostRequestSize(this IMetrics metrics, BucketHistogramOptions bucketHistogramOptions, long value, string clientId, string routeTemplate)
+        {
+            var tags = new MetricTags(new[] { MiddlewareConstants.DefaultTagKeys.ClientId, MiddlewareConstants.DefaultTagKeys.Route }, new[] { clientId, routeTemplate });
+            metrics.Measure.BucketHistogram.Update(bucketHistogramOptions, tags, value);
+        }
+
+        /// <summary>
+        ///     Records a metric for the size of a HTTP PUT requests.
+        /// </summary>
+        /// <param name="metrics">The metrics.</param>
+        /// <param name="bucketHistogramOptions">The bucket histogram options</param>
+        /// <param name="value">The value.</param>
+        /// <param name="clientId">The OAuth2 client identifier to tag the histogram values.</param>
+        /// <param name="routeTemplate">The route template of the endpoint.</param>
+        public static void UpdateClientPutRequestSize(this IMetrics metrics, BucketHistogramOptions bucketHistogramOptions, long value, string clientId, string routeTemplate)
+        {
+            var tags = new MetricTags(new[] { MiddlewareConstants.DefaultTagKeys.ClientId, MiddlewareConstants.DefaultTagKeys.Route }, new[] { clientId, routeTemplate });
+            metrics.Measure.BucketHistogram.Update(bucketHistogramOptions, tags, value);
+        }
+
+        /// <summary>
+        ///     Records a metric for the size of a HTTP POST requests.
+        /// </summary>
+        /// <param name="metrics">The metrics.</param>
+        /// <param name="bucketHistogramOptions">The bucket histogram options</param>
+        /// <param name="value">The value.</param>
+        public static void UpdatePostRequestSize(this IMetrics metrics, BucketHistogramOptions bucketHistogramOptions, long value)
+        {
+            metrics.Measure.BucketHistogram.Update(bucketHistogramOptions, value);
+        }
+
+        /// <summary>
+        ///     Records a metric for the size of a HTTP PUT requests.
+        /// </summary>
+        /// <param name="metrics">The metrics.</param>
+        /// <param name="bucketHistogramOptions">The bucket histogram options</param>
+        /// <param name="value">The value.</param>
+        public static void UpdatePutRequestSize(this IMetrics metrics, BucketHistogramOptions bucketHistogramOptions, long value)
+        {
+            metrics.Measure.BucketHistogram.Update(bucketHistogramOptions, value);
         }
 
         private static void CountOverallErrorRequestsByHttpStatusCode(IMetrics metrics, int httpStatusCode)

@@ -78,5 +78,23 @@ namespace App.Metrics.AspNetCore.Tracking
         ///     <c>true</c> if [o auth2 tracking enabled]; otherwise, <c>false</c>.
         /// </value>
         public bool OAuth2TrackingEnabled { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether [bucket histograms should be used], if disabled histograms will be used.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if [bucket histograms should be used]; otherwise, <c>false</c>.
+        /// </value>
+        public bool UseBucketHistograms { get; set; }
+
+
+        /// <summary>
+        ///     Gets or sets the buckets to use from bucket histograms
+        /// </summary>
+        /// <remarks>Only valid if UseBucketHistograms is true.</remarks>
+        /// <value>
+        ///     Array of buckets
+        /// </value>
+        public double[] RequestSizeHistogramBuckets { get; set; }
     }
 }

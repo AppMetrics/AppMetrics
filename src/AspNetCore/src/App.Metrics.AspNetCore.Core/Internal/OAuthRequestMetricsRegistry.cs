@@ -2,7 +2,9 @@
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
+using System;
 using System.Diagnostics.CodeAnalysis;
+using App.Metrics.BucketHistogram;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
 
@@ -45,6 +47,25 @@ namespace App.Metrics.AspNetCore.Internal
                                                                                    Context = ContextName,
                                                                                    Name = "POST Size",
                                                                                    MeasurementUnit = Unit.Bytes
+                                                                               };
+        }
+
+        public static class BucketHistograms
+        {
+            public static readonly Func<double[], BucketHistogramOptions> PutRequestSizeHistogram = buckets => new BucketHistogramOptions
+            {
+                                                                                  Context = ContextName,
+                                                                                  Name = "PUT Size",
+                                                                                  MeasurementUnit = Unit.Bytes,
+                                                                                  Buckets = buckets
+                                                                              };
+
+            public static readonly Func<double[], BucketHistogramOptions> PostRequestSizeHistogram = buckets => new BucketHistogramOptions
+            {
+                                                                                   Context = ContextName,
+                                                                                   Name = "POST Size",
+                                                                                   MeasurementUnit = Unit.Bytes,
+                                                                                   Buckets = buckets
                                                                                };
         }
     }

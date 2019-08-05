@@ -5,8 +5,11 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Metrics.AspNetCore.Internal;
+using App.Metrics.BucketHistogram;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace App.Metrics.AspNetCore.Tracking.Middleware
 {
@@ -17,15 +20,25 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
         private readonly RequestDelegate _next;
         private readonly ILogger<PostAndPutRequestSizeHistogramMiddleware> _logger;
         private readonly IMetrics _metrics;
+        private readonly bool _useBucketHistograms;
+        private readonly BucketHistogramOptions _postSizeBucketHistogramOptions;
+        private readonly BucketHistogramOptions _putSizeBucketHistogramOptions;
 
         public PostAndPutRequestSizeHistogramMiddleware(
             RequestDelegate next,
+            IOptions<MetricsWebTrackingOptions> trackingMiddlwareOptionsAccessor,
             ILogger<PostAndPutRequestSizeHistogramMiddleware> logger,
             IMetrics metrics)
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
             _logger = logger;
             _metrics = metrics;
+            if (trackingMiddlwareOptionsAccessor.Value.UseBucketHistograms)
+            {
+                _useBucketHistograms = true;
+                _postSizeBucketHistogramOptions = HttpRequestMetricsRegistry.BucketHistograms.PostRequestSizeHistogram(trackingMiddlwareOptionsAccessor.Value.RequestSizeHistogramBuckets);
+                _putSizeBucketHistogramOptions = HttpRequestMetricsRegistry.BucketHistograms.PutRequestSizeHistogram(trackingMiddlwareOptionsAccessor.Value.RequestSizeHistogramBuckets);
+            }
         }
 
         // ReSharper disable UnusedMember.Global
@@ -40,14 +53,28 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
             {
                 if (context.Request.Headers != null && context.Request.Headers.ContainsKey("Content-Length"))
                 {
-                    _metrics.UpdatePostRequestSize(long.Parse(context.Request.Headers["Content-Length"].First()));
+                    if (_useBucketHistograms)
+                    {
+                        _metrics.UpdatePostRequestSize(_postSizeBucketHistogramOptions, long.Parse(context.Request.Headers["Content-Length"].First()));
+                    }
+                    else
+                    {
+                        _metrics.UpdatePostRequestSize(long.Parse(context.Request.Headers["Content-Length"].First()));
+                    }
                 }
             }
             else if (httpMethod == "PUT")
             {
                 if (context.Request.Headers != null && context.Request.Headers.ContainsKey("Content-Length"))
                 {
-                    _metrics.UpdatePutRequestSize(long.Parse(context.Request.Headers["Content-Length"].First()));
+                    if (_useBucketHistograms)
+                    {
+                        _metrics.UpdatePutRequestSize(_putSizeBucketHistogramOptions, long.Parse(context.Request.Headers["Content-Length"].First()));
+                    }
+                    else
+                    {
+                        _metrics.UpdatePutRequestSize(long.Parse(context.Request.Headers["Content-Length"].First()));
+                    }
                 }
             }
 
