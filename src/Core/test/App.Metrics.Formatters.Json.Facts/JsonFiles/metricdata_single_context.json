@@ -90,7 +90,7 @@
           "count": 1,
           "sum": 1.0,
           "buckets": {
-            "1": 1
+            "1": 1.0
           },
           "tags": {
             "host": "server1",
@@ -149,6 +149,32 @@
             "percentile999": 1.4999999999999999E-05,
             "sampleSize": 16,
             "stdDev": 9E-06
+          },
+          "rate": {
+            "fifteenMinuteRate": 4.0,
+            "fiveMinuteRate": 3.0,
+            "meanRate": 1.0,
+            "oneMinuteRate": 2.0
+          },
+          "rateUnit": "s",
+          "tags": {
+            "host": "server1",
+            "env": "staging"
+          }
+        }
+      ],
+      "bucketTimers": [
+        {
+          "name": "test_bucket_timer",
+          "unit": "req",
+          "activeSessions": 0,
+          "count": 5,
+          "durationUnit": "ms",
+          "histogram": {
+            "buckets": {
+              "1": 1E-06
+            },
+            "sum": 1E-06
           },
           "rate": {
             "fifteenMinuteRate": 4.0,

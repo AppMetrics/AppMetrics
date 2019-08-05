@@ -13,7 +13,7 @@ namespace App.Metrics.Histogram
 {
     public static class BucketHistogramExtensions
     {
-        private static readonly BucketHistogramValue EmptyHistogram = new BucketHistogramValue(0,0, new ReadOnlyDictionary<double, long>(new Dictionary<double, long>()));
+        private static readonly BucketHistogramValue EmptyHistogram = new BucketHistogramValue(0,0, new ReadOnlyDictionary<double, double>(new Dictionary<double, double>()));
 
         public static BucketHistogramValue GetBucketHistogramValue(this IProvideMetricValues valueService, string context, string metricName)
         {

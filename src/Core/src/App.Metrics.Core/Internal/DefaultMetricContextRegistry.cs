@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Apdex;
 using App.Metrics.BucketHistogram;
+using App.Metrics.BucketTimer;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
@@ -45,6 +46,9 @@ namespace App.Metrics.Internal
         private readonly MetricMetaCatalog<ITimer, TimerValueSource, TimerValue> _timers =
             new MetricMetaCatalog<ITimer, TimerValueSource, TimerValue>();
 
+        private readonly MetricMetaCatalog<ITimer, BucketTimerValueSource, BucketTimerValue> _bucketTimers =
+            new MetricMetaCatalog<ITimer, BucketTimerValueSource, BucketTimerValue>();
+
         public DefaultMetricContextRegistry(string context)
             : this(context, new GlobalMetricTags())
         {
@@ -68,6 +72,7 @@ namespace App.Metrics.Internal
                 () => _histograms.All,
                 () => _bucketHistograms.All,
                 () => _timers.All,
+                () => _bucketTimers.All,
                 () => _apdexScores.All);
         }
 
@@ -408,6 +413,55 @@ namespace App.Metrics.Internal
 
                     var timer = builder();
                     var valueSource = new TimerValueSource(
+                        metricName,
+                        timer,
+                        options.MeasurementUnit,
+                        options.RateUnit,
+                        options.DurationUnit,
+                        allTags);
+                    return Tuple.Create((ITimer)timer, valueSource);
+                });
+        }
+
+        public ITimer BucketTimer<T>(BucketTimerOptions options, Func<T> builder)
+            where T : IBucketTimerMetric
+        {
+            var allTags = AllTags(options.Tags);
+            var metricName = allTags.AsMetricName(options.Name);
+
+            return _bucketTimers.GetOrAdd(
+                metricName,
+                () =>
+                {
+                    Logger.Trace("Adding Timer {Name} - {@Options} {MesurementUnit} {DurationUnit} {RateUnit} {@Tags}", metricName, options, options.MeasurementUnit.ToString(), options.DurationUnit, options.RateUnit, allTags.ToDictionary());
+
+                    var timer = builder();
+                    var valueSource = new BucketTimerValueSource(
+                    metricName,
+                        timer,
+                        options.MeasurementUnit,
+                        options.RateUnit,
+                        options.DurationUnit,
+                        allTags);
+                    return Tuple.Create((ITimer)timer, valueSource);
+                });
+        }
+
+        /// <inheritdoc />
+        public ITimer BucketTimer<T>(BucketTimerOptions options, MetricTags tags, Func<T> builder)
+            where T : IBucketTimerMetric
+        {
+            var allTags = AllTags(MetricTags.Concat(options.Tags, tags));
+            var metricName = allTags.AsMetricName(options.Name);
+
+            return _bucketTimers.GetOrAdd(
+                metricName,
+                () =>
+                {
+                    Logger.Trace("Adding Timer {Name} - {@Options} {MesurementUnit} {DurationUnit} {RateUnit} {@Tags}", metricName, options, options.MeasurementUnit.ToString(), options.DurationUnit, options.RateUnit, allTags.ToDictionary());
+
+                    var timer = builder();
+                    var valueSource = new BucketTimerValueSource(
                         metricName,
                         timer,
                         options.MeasurementUnit,

@@ -60,7 +60,7 @@ namespace App.Metrics.BucketHistogram
         /// <inheritdoc />
         public BucketHistogramValue GetValue(bool resetMetric = false)
         {
-            var value = new BucketHistogramValue(_counter.GetValue(), _sum.GetValue(), _buckets.ToDictionary(x => x.Key, x => x.Value.GetValue()));
+            var value = new BucketHistogramValue(_counter.GetValue(), _sum.GetValue(), _buckets.ToDictionary(x => x.Key, x => (double)x.Value.GetValue()));
 
             if (resetMetric)
             {
@@ -81,6 +81,11 @@ namespace App.Metrics.BucketHistogram
             _counter.Reset();
         }
 
+        public void Update(long value, string userValue)
+        {
+            Update(value);
+        }
+
         /// <inheritdoc />
         public void Update(long value)
         {
@@ -94,7 +99,7 @@ namespace App.Metrics.BucketHistogram
             }
 
 
-            bucketCounter.Add(value);
+            bucketCounter.Increment();
             _sum.Add(value);
             _counter.Increment();
         }

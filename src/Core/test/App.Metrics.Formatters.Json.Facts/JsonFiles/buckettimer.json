@@ -9,29 +9,18 @@
       "histograms": [],
       "bucketHistograms": [],
       "meters": [],
-      "timers": [
+      "timers": [],
+      "bucketTimers": [
         {
-          "name": "test_timer",
+          "name": "test_bucket_timer",
           "unit": "req",
           "activeSessions": 0,
           "count": 5,
           "durationUnit": "ms",
           "histogram": {
-            "lastUserValue": "3",
-            "lastValue": 2E-06,
-            "max": 4E-06,
-            "maxUserValue": "5",
-            "mean": 6E-06,
-            "median": 9.9999999999999991E-06,
-            "min": 7E-06,
-            "minUserValue": "8",
-            "percentile75": 1.1E-05,
-            "percentile95": 1.2E-05,
-            "percentile98": 1.3E-05,
-            "percentile99": 1.4E-05,
-            "percentile999": 1.4999999999999999E-05,
-            "sampleSize": 16,
-            "stdDev": 9E-06,
+            "buckets": {
+              "1": 1E-06
+            },
             "sum": 1E-06
           },
           "rate": {
@@ -46,8 +35,7 @@
             "env": "staging"
           }
         }
-      ],
-      "bucketTimers": []
+      ]
     }
   ]
 }

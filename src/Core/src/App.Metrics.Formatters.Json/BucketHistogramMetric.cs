@@ -18,6 +18,6 @@ namespace App.Metrics.Formatters.Json
 
         public double Sum { get; set; }
 
-        public IReadOnlyDictionary<double, long> Buckets { get; set; }
+        public IReadOnlyDictionary<double, double> Buckets { get; set; }
     }
 }

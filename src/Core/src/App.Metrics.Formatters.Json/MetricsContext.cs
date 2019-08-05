@@ -30,5 +30,7 @@ namespace App.Metrics.Formatters.Json
         public IEnumerable<MeterMetric> Meters { get; set; } = Enumerable.Empty<MeterMetric>();
 
         public IEnumerable<TimerMetric> Timers { get; set; } = Enumerable.Empty<TimerMetric>();
+
+        public IEnumerable<BucketTimerMetric> BucketTimers { get; set; } = Enumerable.Empty<BucketTimerMetric>();
     }
 }

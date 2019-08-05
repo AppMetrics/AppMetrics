@@ -3,7 +3,10 @@
 // </copyright>
 
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using App.Metrics.BucketHistogram;
+using App.Metrics.BucketTimer;
 using App.Metrics.Formatters.Json;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
@@ -56,13 +59,51 @@ namespace App.Metrics.Timer
                 durationUnit,
                 source.Tags.FromDictionary());
         }
+        public static BucketTimerValueSource FromSerializableMetric(this BucketTimerMetric source)
+        {
+            var rateUnit = source.RateUnit.FromUnit();
+            var durationUnit = source.DurationUnit.FromUnit();
+
+            var rateValue = new MeterValue(
+                source.Count,
+                source.Rate.MeanRate,
+                source.Rate.OneMinuteRate,
+                source.Rate.FiveMinuteRate,
+                source.Rate.FifteenMinuteRate,
+                rateUnit);
+
+            var histogramValue = new BucketHistogramValue(
+                source.Count,
+                source.Histogram.Sum,
+                new ReadOnlyDictionary<double, double>(source.Histogram.Buckets));
+
+            var timerValue = new BucketTimerValue(rateValue, histogramValue, source.ActiveSessions, durationUnit);
+
+            return new BucketTimerValueSource(
+                source.Name,
+                ConstantValue.Provider(timerValue),
+                source.Unit,
+                rateUnit,
+                durationUnit,
+                source.Tags.FromDictionary());
+        }
 
         public static IEnumerable<TimerValueSource> FromSerializableMetric(this IEnumerable<TimerMetric> source)
         {
             return source.Select(x => x.FromSerializableMetric());
         }
 
+        public static IEnumerable<BucketTimerValueSource> FromSerializableMetric(this IEnumerable<BucketTimerMetric> source)
+        {
+            return source.Select(x => x.FromSerializableMetric());
+        }
+
         public static IEnumerable<TimerMetric> ToSerializableMetric(this IEnumerable<TimerValueSource> source)
+        {
+            return source.Select(ToSerializableMetric);
+        }
+
+        public static IEnumerable<BucketTimerMetric> ToSerializableMetric(this IEnumerable<BucketTimerValueSource> source)
         {
             return source.Select(ToSerializableMetric);
         }
@@ -109,6 +150,36 @@ namespace App.Metrics.Timer
                        DurationUnit = source.DurationUnit.Unit(),
                        Tags = source.Tags.ToDictionary()
                    };
+        }
+
+        public static BucketTimerMetric ToSerializableMetric(this BucketTimerValueSource source)
+        {
+            var histogramData = new BucketTimerMetric.BucketHistogramData
+            {
+                Sum = source.Value.Histogram.Sum,
+                Buckets = source.Value.Histogram.Buckets.ToDictionary(x=>x.Key, x=>x.Value)
+            };
+
+            var rateData = new BucketTimerMetric.RateData
+            {
+                MeanRate = source.Value.Rate.MeanRate,
+                OneMinuteRate = source.Value.Rate.OneMinuteRate,
+                FiveMinuteRate = source.Value.Rate.FiveMinuteRate,
+                FifteenMinuteRate = source.Value.Rate.FifteenMinuteRate
+            };
+
+            return new BucketTimerMetric
+            {
+                Name = source.Name,
+                Count = source.Value.Rate.Count,
+                ActiveSessions = source.Value.ActiveSessions,
+                Rate = rateData,
+                Histogram = histogramData,
+                Unit = source.Unit.Name,
+                RateUnit = source.RateUnit.Unit(),
+                DurationUnit = source.DurationUnit.Unit(),
+                Tags = source.Tags.ToDictionary()
+            };
         }
     }
 }

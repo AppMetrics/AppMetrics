@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Apdex;
 using App.Metrics.BucketHistogram;
+using App.Metrics.BucketTimer;
 using App.Metrics.Counter;
 using App.Metrics.Filters;
 using App.Metrics.Gauge;
@@ -25,6 +26,7 @@ namespace App.Metrics
             Enumerable.Empty<HistogramValueSource>(),
             Enumerable.Empty<BucketHistogramValueSource>(),
             Enumerable.Empty<TimerValueSource>(),
+            Enumerable.Empty<BucketTimerValueSource>(),
             Enumerable.Empty<ApdexValueSource>());
 
         public MetricsContextValueSource(
@@ -35,6 +37,7 @@ namespace App.Metrics
             IEnumerable<HistogramValueSource> histograms,
             IEnumerable<BucketHistogramValueSource> bucketHistograms,
             IEnumerable<TimerValueSource> timers,
+            IEnumerable<BucketTimerValueSource> bucketTimers,
             IEnumerable<ApdexValueSource> apdexScores)
         {
             Context = context;
@@ -44,6 +47,7 @@ namespace App.Metrics
             Histograms = histograms;
             BucketHistograms = bucketHistograms;
             Timers = timers;
+            BucketTimers = bucketTimers;
             ApdexScores = apdexScores;
         }
 
@@ -62,6 +66,8 @@ namespace App.Metrics
 
         public IEnumerable<TimerValueSource> Timers { get; }
 
+        public IEnumerable<BucketTimerValueSource> BucketTimers { get; }
+
         public MetricsContextValueSource Filter(IFilterMetrics filter)
         {
             if (!filter.IsContextMatch(Context))
@@ -77,6 +83,7 @@ namespace App.Metrics
                 Histograms.Where(filter.IsHistogramMatch),
                 BucketHistograms.Where(filter.IsBucketHistogramMatch),
                 Timers.Where(filter.IsTimerMatch),
+                BucketTimers.Where(filter.IsBucketTimerMatch),
                 ApdexScores.Where(filter.IsApdexMatch));
         }
 

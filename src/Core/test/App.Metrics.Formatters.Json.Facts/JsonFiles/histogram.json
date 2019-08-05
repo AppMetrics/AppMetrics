@@ -35,7 +35,8 @@
       "bucketHistograms": [],
       "gauges": [],
       "meters": [],
-      "timers": []
+      "timers": [],
+      "bucketTimers": []
     }
   ]
 }

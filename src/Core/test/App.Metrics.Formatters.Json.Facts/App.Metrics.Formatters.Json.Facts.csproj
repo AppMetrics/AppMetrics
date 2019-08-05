@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <None Remove="JsonFiles\buckethistogram.json" />
+    <None Remove="JsonFiles\buckettimer.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -15,6 +16,7 @@
     <EmbeddedResource Include="JsonFiles\meter.json" />
     <EmbeddedResource Include="JsonFiles\meter_with_items.json" />
     <EmbeddedResource Include="JsonFiles\metricdata_single_context.json" />
+    <EmbeddedResource Include="JsonFiles\buckettimer.json" />
     <EmbeddedResource Include="JsonFiles\timer.json" />
   </ItemGroup>
 

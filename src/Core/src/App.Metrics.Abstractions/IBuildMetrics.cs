@@ -4,6 +4,7 @@
 
 using App.Metrics.Apdex;
 using App.Metrics.BucketHistogram;
+using App.Metrics.BucketTimer;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
@@ -74,5 +75,13 @@ namespace App.Metrics
         ///     The Timer API for building <see cref="ITimerMetric" />s
         /// </value>
         IBuildTimerMetrics Timer { get; }
+
+        /// <summary>
+        ///     Gets the Bucket Timer API to build <see cref="IBucketTimerMetric" />s
+        /// </summary>
+        /// <value>
+        ///     The Bucket Timer API for building <see cref="IBucketTimerMetric" />s
+        /// </value>
+        IBuildBucketTimerMetrics BucketTimer { get; }
     }
 }

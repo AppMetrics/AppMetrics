@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Apdex;
 using App.Metrics.BucketHistogram;
+using App.Metrics.BucketTimer;
 using App.Metrics.Counter;
 using App.Metrics.Filters;
 using App.Metrics.Gauge;
@@ -102,6 +103,17 @@ namespace App.Metrics.Filtering
 
         /// <inheritdoc />
         public bool IsTimerMatch(TimerValueSource timer)
+        {
+            if (_types != null && !_types.Contains(MetricType.Timer))
+            {
+                return false;
+            }
+
+            return IsMetricNameMatch(timer.Name) && IsTagMatch(timer.Tags);
+        }
+
+        /// <inheritdoc />
+        public bool IsBucketTimerMatch(BucketTimerValueSource timer)
         {
             if (_types != null && !_types.Contains(MetricType.Timer))
             {

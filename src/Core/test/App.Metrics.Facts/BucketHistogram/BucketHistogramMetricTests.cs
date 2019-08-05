@@ -91,10 +91,10 @@ namespace App.Metrics.Facts.BucketHistogram
                 options,
                 i => _histogram.Update(i));
 
-            _histogram.Value.Buckets[10].Should().Be(Enumerable.Range(1, 10).Sum());
-            _histogram.Value.Buckets[100].Should().Be(Enumerable.Range(11, 90).Sum());
-            _histogram.Value.Buckets[1000].Should().Be(Enumerable.Range(101, 900).Sum());
-            _histogram.Value.Buckets[double.PositiveInfinity].Should().Be(Enumerable.Range(1001, 9000).Sum());
+            _histogram.Value.Buckets[10].Should().Be(Enumerable.Range(1, 10).Count());
+            _histogram.Value.Buckets[100].Should().Be(Enumerable.Range(11, 90).Count());
+            _histogram.Value.Buckets[1000].Should().Be(Enumerable.Range(101, 900).Count());
+            _histogram.Value.Buckets[double.PositiveInfinity].Should().Be(Enumerable.Range(1001, 9000).Count());
         }
 
         [Fact]

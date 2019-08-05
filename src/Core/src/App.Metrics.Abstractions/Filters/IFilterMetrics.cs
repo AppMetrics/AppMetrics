@@ -5,6 +5,7 @@
 using System;
 using App.Metrics.Apdex;
 using App.Metrics.BucketHistogram;
+using App.Metrics.BucketTimer;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
@@ -70,6 +71,13 @@ namespace App.Metrics.Filters
         /// <param name="timer">The timer.</param>
         /// <returns>True if the metric type is a timer, the name matches and tags match</returns>
         bool IsTimerMatch(TimerValueSource timer);
+
+        /// <summary>
+        ///     Determines whether the specified timer is match.
+        /// </summary>
+        /// <param name="timer">The timer.</param>
+        /// <returns>True if the metric type is a timer, the name matches and tags match</returns>
+        bool IsBucketTimerMatch(BucketTimerValueSource timer);
 
         /// <summary>
         ///     Filters metrics where the specified predicate on the metrics context is <c>true</c>
