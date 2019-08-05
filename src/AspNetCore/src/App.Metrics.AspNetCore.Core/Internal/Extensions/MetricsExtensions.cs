@@ -126,10 +126,12 @@ namespace App.Metrics
         /// <param name="metrics">The metrics.</param>
         /// <param name="routeTemplate">The route template of the endpoint.</param>
         /// <param name="httpStatusCode">The HTTP status code.</param>
+        /// <param name="bucketTimerOptions">The Bucket Timer options.</param>
         public static void RecordHttpRequestError(
             this IMetrics metrics,
             string routeTemplate,
-            int httpStatusCode)
+            int httpStatusCode, 
+            BucketTimerOptions bucketTimerOptions)
         {
             CountOverallErrorRequestsByHttpStatusCode(metrics, httpStatusCode);
 
@@ -137,7 +139,7 @@ namespace App.Metrics
 
             RecordEndpointsHttpRequestErrors(metrics, routeTemplate, httpStatusCode);
             RecordOverallPercentageOfErrorRequests(metrics);
-            RecordEndpointsPercentageOfErrorRequests(metrics, routeTemplate);
+            RecordEndpointsPercentageOfErrorRequests(metrics, routeTemplate, bucketTimerOptions);
         }
 
         /// <summary>
@@ -266,12 +268,12 @@ namespace App.Metrics
                 endpointErrorRequestPerStatusCodeTags);
         }
 
-        private static void RecordEndpointsPercentageOfErrorRequests(IMetrics metrics, string routeTemplate)
+        private static void RecordEndpointsPercentageOfErrorRequests(IMetrics metrics, string routeTemplate, BucketTimerOptions bucketTimerOptions)
         {
             var tags = new MetricTags(MiddlewareConstants.DefaultTagKeys.Route, routeTemplate);
 
             var endpointsErrorRate = metrics.Provider.Meter.Instance(HttpRequestMetricsRegistry.Meters.EndpointErrorRequestRate, tags);
-            var endpointsRequestTransactionTime = metrics.EndpointRequestTimer(routeTemplate, null);
+            var endpointsRequestTransactionTime = metrics.EndpointRequestTimer(routeTemplate, bucketTimerOptions);
 
             metrics.Measure.Gauge.SetValue(
                 HttpRequestMetricsRegistry.Gauges.EndpointOneMinuteErrorPercentageRate,

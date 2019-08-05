@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Metrics.AspNetCore.Internal;
+using App.Metrics.BucketTimer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -24,6 +26,7 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
         private readonly ILogger<ErrorRequestMeterMiddleware> _logger;
         private readonly IMetrics _metrics;
         private readonly IList<int> _ignoredHttpStatusCodes;
+        private readonly BucketTimerOptions _bucketTimerOptions;
 
         public ErrorRequestMeterMiddleware(
             RequestDelegate next,
@@ -35,6 +38,12 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
             _logger = logger;
             _metrics = metrics;
             _ignoredHttpStatusCodes = trackingMiddlwareOptionsAccessor.Value.IgnoredHttpStatusCodes;
+            if (trackingMiddlwareOptionsAccessor.Value.UseBucketHistograms)
+            {
+                _bucketTimerOptions =
+                    HttpRequestMetricsRegistry.BucketTimers.EndpointRequestTransactionDuration(
+                        trackingMiddlwareOptionsAccessor.Value.RequestTimeHistogramBuckets);
+            }
         }
 
         // ReSharper disable UnusedMember.Global
@@ -51,7 +60,7 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
 
                 if (!context.Response.IsSuccessfulResponse() && _ignoredHttpStatusCodes.All(i => i != context.Response.StatusCode))
                 {
-                    _metrics.RecordHttpRequestError(routeTemplate, context.Response.StatusCode);
+                    _metrics.RecordHttpRequestError(routeTemplate, context.Response.StatusCode, _bucketTimerOptions);
                 }
             }
             catch (Exception exception)
@@ -60,7 +69,7 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
 
                 if (_ignoredHttpStatusCodes.All(i => i != StatusCodes.Status500InternalServerError))
                 {
-                    _metrics.RecordHttpRequestError(routeTemplate, StatusCodes.Status500InternalServerError);
+                    _metrics.RecordHttpRequestError(routeTemplate, StatusCodes.Status500InternalServerError, _bucketTimerOptions);
                 }
 
                 _metrics.RecordException(routeTemplate, exception.GetType().FullName);
