@@ -10,7 +10,7 @@ namespace App.Metrics.BucketHistogram
     public class DefaultBucketHistogramBuilder : IBuildBucketHistogramMetrics
     {
         /// <inheritdoc />
-        public IBucketHistogramMetric Build(IEnumerable<long> buckets)
+        public IBucketHistogramMetric Build(IEnumerable<double> buckets)
         {
             return new DefaultBucketHistogramMetric(buckets);
         }

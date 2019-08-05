@@ -14,7 +14,7 @@ namespace App.Metrics.BucketHistogram
         public BucketHistogramValue(
             long count,
             double sum,
-            IReadOnlyDictionary<long, long> buckets)
+            IReadOnlyDictionary<double, long> buckets)
         {
             Count = count;
             Sum = sum;
@@ -25,6 +25,6 @@ namespace App.Metrics.BucketHistogram
 
         public double Sum { get; }
 
-        public IReadOnlyDictionary<long, long> Buckets { get; }
+        public IReadOnlyDictionary<double, long> Buckets { get; }
     }
 }

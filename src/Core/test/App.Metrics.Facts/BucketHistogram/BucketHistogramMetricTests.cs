@@ -18,7 +18,7 @@ namespace App.Metrics.Facts.BucketHistogram
     {
         private readonly DefaultBucketHistogramMetric _histogram;
 
-        public BucketHistogramMetricTests() { _histogram = new DefaultBucketHistogramMetric(new[] { 10L, 100L, 1000L }); }
+        public BucketHistogramMetricTests() { _histogram = new DefaultBucketHistogramMetric(new[] { 10d, 100d, 1000d }); }
 
         [Fact]
         public void Can_count()
@@ -42,7 +42,7 @@ namespace App.Metrics.Facts.BucketHistogram
             _histogram.Value.Buckets[10].Should().NotBe(0);
             _histogram.Value.Buckets[100].Should().NotBe(0);
             _histogram.Value.Buckets[1000].Should().NotBe(0);
-            _histogram.Value.Buckets[long.MaxValue].Should().NotBe(0);
+            _histogram.Value.Buckets[double.PositiveInfinity].Should().NotBe(0);
 
             _histogram.Reset();
 
@@ -51,7 +51,7 @@ namespace App.Metrics.Facts.BucketHistogram
             _histogram.Value.Buckets[10].Should().Be(0);
             _histogram.Value.Buckets[100].Should().Be(0);
             _histogram.Value.Buckets[1000].Should().Be(0);
-            _histogram.Value.Buckets[long.MaxValue].Should().Be(0);
+            _histogram.Value.Buckets[double.PositiveInfinity].Should().Be(0);
         }
 
         [Fact]
@@ -94,7 +94,7 @@ namespace App.Metrics.Facts.BucketHistogram
             _histogram.Value.Buckets[10].Should().Be(Enumerable.Range(1, 10).Sum());
             _histogram.Value.Buckets[100].Should().Be(Enumerable.Range(11, 90).Sum());
             _histogram.Value.Buckets[1000].Should().Be(Enumerable.Range(101, 900).Sum());
-            _histogram.Value.Buckets[long.MaxValue].Should().Be(Enumerable.Range(1001, 9000).Sum());
+            _histogram.Value.Buckets[double.PositiveInfinity].Should().Be(Enumerable.Range(1001, 9000).Sum());
         }
 
         [Fact]

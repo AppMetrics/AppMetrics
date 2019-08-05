@@ -47,7 +47,7 @@ namespace MetricsSandbox
         public static BucketHistogramOptions BucketHistogramOne => new BucketHistogramOptions
                                                                     {
                                                                         Name = "bucket_histogram_one",
-                                                                        Buckets = new []{10L,50L,100L}
+                                                                        Buckets = new []{10d,50d,100d}
                                                                     };
 
         public static MeterOptions MeterOne => new MeterOptions

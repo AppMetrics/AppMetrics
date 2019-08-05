@@ -15,12 +15,12 @@ namespace App.Metrics.BucketHistogram
         private bool _disposed;
         private readonly StripedLongAdder _counter = new StripedLongAdder();
         private readonly StripedLongAdder _sum = new StripedLongAdder();
-        private readonly SortedDictionary<long, StripedLongAdder> _buckets = new SortedDictionary<long, StripedLongAdder>(new LongReverseCompare());
+        private readonly SortedDictionary<double, StripedLongAdder> _buckets = new SortedDictionary<double, StripedLongAdder>(new DoubleReverseCompare());
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultBucketHistogramMetric" /> class.
         /// </summary>
-        public DefaultBucketHistogramMetric(IEnumerable<long> buckets)
+        public DefaultBucketHistogramMetric(IEnumerable<double> buckets)
         {
             if (buckets != null)
             {
@@ -30,7 +30,7 @@ namespace App.Metrics.BucketHistogram
                 }
             }
 
-            _buckets.Add(long.MaxValue, new StripedLongAdder());
+            _buckets.Add(double.PositiveInfinity, new StripedLongAdder());
         }
 
         public BucketHistogramValue Value => GetValue();
@@ -99,9 +99,9 @@ namespace App.Metrics.BucketHistogram
             _counter.Increment();
         }
 
-        private class LongReverseCompare : IComparer<long>
+        private class DoubleReverseCompare : IComparer<double>
         {
-            public int Compare(long x, long y)
+            public int Compare(double x, double y)
             {
                 if (x < y)
                     return 1;

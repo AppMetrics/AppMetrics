@@ -151,7 +151,7 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 
         private IEnumerable<BucketHistogramValueSource> SetupBucketHistograms()
         {
-            var histogramValue = new BucketHistogramValue(1, 1, new Dictionary<long, long> { { 1, 1 } });
+            var histogramValue = new BucketHistogramValue(1, 1, new Dictionary<double, long> { { 1, 1 } });
             var histogram = new BucketHistogramValueSource(BucketHistogramNameDefault, ConstantValue.Provider(histogramValue), Unit.Items, Tags);
 
             return new[] { histogram };

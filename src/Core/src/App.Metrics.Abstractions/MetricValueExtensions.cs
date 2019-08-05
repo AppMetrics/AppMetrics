@@ -72,7 +72,7 @@ namespace App.Metrics
             fields.TryAddValuesForKey(values, BucketHistogramFields.Sum.ToString(), histogram.Sum);
             foreach (var bucket in histogram.Buckets)
             {
-                if (bucket.Key == long.MaxValue)
+                if (double.IsPositiveInfinity(bucket.Key))
                 {
                     values[$"{BucketHistogramFields.Bucket}Inf"] = bucket.Value;
                 }

@@ -12,6 +12,6 @@ namespace App.Metrics.BucketHistogram
     /// <seealso cref="MetricValueOptionsBase" />
     public class BucketHistogramOptions : MetricValueOptionsBase
     {
-        public IEnumerable<long> Buckets { get; set; }
+        public IEnumerable<double> Buckets { get; set; }
     }
 }

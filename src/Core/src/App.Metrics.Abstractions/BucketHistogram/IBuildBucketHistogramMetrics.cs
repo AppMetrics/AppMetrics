@@ -9,6 +9,6 @@ namespace App.Metrics.BucketHistogram
 {
     public interface IBuildBucketHistogramMetrics
     {
-        IBucketHistogramMetric Build(IEnumerable<long> buckets);
+        IBucketHistogramMetric Build(IEnumerable<double> buckets);
     }
 }
