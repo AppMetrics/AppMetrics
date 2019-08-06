@@ -125,17 +125,23 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
 
         public static IEnumerable<Metric> ToPrometheusMetrics(this BucketHistogramValueSource metric)
         {
+            return BucketHistogramValueToHistogram(metric.Value, metric.Tags);
+        }
+
+        private static IEnumerable<Metric> BucketHistogramValueToHistogram(BucketHistogramValue value, MetricTags tags)
+        {
             var histogram = new Histogram
             {
-                sample_count = (ulong) metric.Value.Count,
-                sample_sum = metric.Value.Sum
+                sample_count = (ulong)value.Count,
+                sample_sum = value.Sum
             };
 
-            foreach (var keyValuePair in metric.Value.Buckets)
+            var cumulativeCount = 0ul;
+            foreach (var keyValuePair in value.Buckets.OrderBy(x => x.Key))
             {
                 histogram.bucket.Add(new Bucket
                 {
-                    cumulative_count = (ulong)keyValuePair.Value,
+                    cumulative_count = cumulativeCount += Convert.ToUInt64(keyValuePair.Value),
                     upper_bound = keyValuePair.Key
                 });
             }
@@ -145,7 +151,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                 new Metric
                 {
                     histogram = histogram,
-                    label = metric.Tags.ToLabelPairs()
+                    label = tags.ToLabelPairs()
                 }
             };
 
@@ -154,31 +160,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
 
         public static IEnumerable<Metric> ToPrometheusMetrics(this BucketTimerValueSource metric)
         {
-            var histogram = new Histogram
-            {
-                sample_count = (ulong)metric.Value.Histogram.Count,
-                sample_sum = metric.Value.Histogram.Sum
-            };
-
-            foreach (var keyValuePair in metric.Value.Histogram.Buckets)
-            {
-                histogram.bucket.Add(new Bucket
-                {
-                    cumulative_count = Convert.ToUInt64(keyValuePair.Value),
-                    upper_bound = keyValuePair.Key
-                });
-            }
-
-            var result = new List<Metric>
-            {
-                new Metric
-                {
-                    histogram = histogram,
-                    label = metric.Tags.ToLabelPairs()
-                }
-            };
-
-            return result;
+            return BucketHistogramValueToHistogram(metric.Value.Histogram, metric.Tags);
         }
 
         public static IEnumerable<Metric> ToPrometheusMetrics(this TimerValueSource metric)

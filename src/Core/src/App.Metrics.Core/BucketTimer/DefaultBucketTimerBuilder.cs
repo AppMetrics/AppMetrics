@@ -15,27 +15,27 @@ namespace App.Metrics.BucketTimer
         }
 
         /// <inheritdoc />
-        public IBucketTimerMetric Build(IBucketHistogramMetric histogram, IClock clock)
+        public IBucketTimerMetric Build(IBucketHistogramMetric histogram, IClock clock, TimeUnit timeUnit)
         {
-            return new DefaultBucketTimerMetric(histogram, clock);
+            return new DefaultBucketTimerMetric(histogram, clock, timeUnit);
         }
 
         /// <inheritdoc />
-        public IBucketTimerMetric Build(IEnumerable<double> buckets, IClock clock)
+        public IBucketTimerMetric Build(IEnumerable<double> buckets, IClock clock, TimeUnit timeUnit)
         {
-            return new DefaultBucketTimerMetric(new DefaultBucketHistogramMetric(buckets), clock);
+            return new DefaultBucketTimerMetric(new DefaultBucketHistogramMetric(buckets), clock, timeUnit);
         }
 
         /// <inheritdoc />
-        public IBucketTimerMetric Build(IBucketHistogramMetric histogram, IMeterMetric meter, IClock clock)
+        public IBucketTimerMetric Build(IBucketHistogramMetric histogram, IMeterMetric meter, IClock clock, TimeUnit timeUnit)
         {
-            return new DefaultBucketTimerMetric(histogram, meter, clock);
+            return new DefaultBucketTimerMetric(histogram, meter, clock, timeUnit);
         }
 
         /// <inheritdoc />
-        public IBucketTimerMetric Build(IEnumerable<double> buckets, IMeterMetric meter, IClock clock)
+        public IBucketTimerMetric Build(IEnumerable<double> buckets, IMeterMetric meter, IClock clock, TimeUnit timeUnit)
         {
-            return new DefaultBucketTimerMetric(new DefaultBucketHistogramMetric(buckets), meter, clock);
+            return new DefaultBucketTimerMetric(new DefaultBucketHistogramMetric(buckets), meter, clock, timeUnit);
         }
     }
 }

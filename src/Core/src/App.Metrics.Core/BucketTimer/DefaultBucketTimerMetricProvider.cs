@@ -33,7 +33,7 @@ namespace App.Metrics.BucketTimer
         {
             return Instance(
                 options,
-                () => _timerBuilder.Build(options.Buckets, _clock));
+                () => _timerBuilder.Build(options.Buckets, _clock, options.DurationUnit));
         }
 
         /// <inheritdoc />
@@ -42,7 +42,7 @@ namespace App.Metrics.BucketTimer
             return Instance(
                 options,
                 tags,
-                () => _timerBuilder.Build(options.Buckets, _clock));
+                () => _timerBuilder.Build(options.Buckets, _clock, options.DurationUnit));
         }
 
         /// <inheritdoc />
@@ -64,7 +64,7 @@ namespace App.Metrics.BucketTimer
         {
             return Instance(
                 options,
-                () => _timerBuilder.Build(histogramMetricBuilder(), _clock));
+                () => _timerBuilder.Build(histogramMetricBuilder(), _clock, options.DurationUnit));
         }
 
         /// <inheritdoc />
@@ -74,7 +74,7 @@ namespace App.Metrics.BucketTimer
             return Instance(
                 options,
                 tags,
-                () => _timerBuilder.Build(histogramMetricBuilder(), _clock));
+                () => _timerBuilder.Build(histogramMetricBuilder(), _clock, options.DurationUnit));
         }
     }
 }

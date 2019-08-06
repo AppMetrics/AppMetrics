@@ -17,6 +17,7 @@ namespace App.Metrics.BucketTimer
     {
         private readonly StripedLongAdder _activeSessionsCounter = new StripedLongAdder();
         private readonly IClock _clock;
+        private readonly TimeUnit _timeUnit;
         private readonly IBucketHistogramMetric _histogram;
         private readonly IMeterMetric _meter;
         private bool _disposed;
@@ -26,9 +27,11 @@ namespace App.Metrics.BucketTimer
         /// </summary>
         /// <param name="histogram">The histogram implementation to use.</param>
         /// <param name="clock">The clock to use to measure processing duration.</param>
-        public DefaultBucketTimerMetric(IBucketHistogramMetric histogram, IClock clock)
+        /// <param name="timeUnit">The time unit for this timer.</param>
+        public DefaultBucketTimerMetric(IBucketHistogramMetric histogram, IClock clock, TimeUnit timeUnit)
         {
             _clock = clock;
+            _timeUnit = timeUnit;
             _histogram = histogram;
             _meter = new DefaultMeterMetric(clock);
         }
@@ -39,9 +42,11 @@ namespace App.Metrics.BucketTimer
         /// <param name="histogram">The histogram implementation to use.</param>
         /// <param name="meter">The meter implementation to use to genreate the rate of events over time.</param>
         /// <param name="clock">The clock to use to measure processing duration.</param>
-        public DefaultBucketTimerMetric(IBucketHistogramMetric histogram, IMeterMetric meter, IClock clock)
+        /// <param name="timeUnit">The time unit for this timer.</param>
+        public DefaultBucketTimerMetric(IBucketHistogramMetric histogram, IMeterMetric meter, IClock clock, TimeUnit timeUnit)
         {
             _clock = clock;
+            _timeUnit = timeUnit;
             _meter = meter;
             _histogram = histogram;
         }
@@ -92,7 +97,7 @@ namespace App.Metrics.BucketTimer
                 _meter.GetValue(resetMetric),
                 _histogram.GetValue(resetMetric),
                 _activeSessionsCounter.GetValue(),
-                TimeUnit.Nanoseconds);
+                _timeUnit);
         }
 
         /// <inheritdoc />
@@ -110,13 +115,13 @@ namespace App.Metrics.BucketTimer
         /// <inheritdoc />
         public void Record(long duration, TimeUnit unit, string userValue)
         {
-            var nanos = unit.ToNanoseconds(duration);
-            if (nanos < 0)
+            var time = unit.Convert(_timeUnit, duration);
+            if (time < 0)
             {
                 return;
             }
 
-            _histogram.Update(nanos, userValue);
+            _histogram.Update(time, userValue);
             _meter.Mark();
         }
 

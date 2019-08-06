@@ -33,7 +33,7 @@ namespace App.Metrics.BucketTimer
             using (
                 _registry.BucketTimer(
                               options,
-                              () => _timerBuilder.Build(options.Buckets, _clock)).
+                              () => _timerBuilder.Build(options.Buckets, _clock, options.DurationUnit)).
                           NewContext())
             {
                 action();
@@ -47,7 +47,7 @@ namespace App.Metrics.BucketTimer
                 _registry.BucketTimer(
                               options,
                               tags,
-                              () => _timerBuilder.Build(options.Buckets, _clock)).
+                              () => _timerBuilder.Build(options.Buckets, _clock, options.DurationUnit)).
                           NewContext())
             {
                 action();
@@ -60,7 +60,7 @@ namespace App.Metrics.BucketTimer
             using (
                 _registry.BucketTimer(
                               options,
-                              () => _timerBuilder.Build(options.Buckets, _clock)).
+                              () => _timerBuilder.Build(options.Buckets, _clock, options.DurationUnit)).
                           NewContext(userValue))
             {
                 action();
@@ -74,7 +74,7 @@ namespace App.Metrics.BucketTimer
                 _registry.BucketTimer(
                               options,
                               tags,
-                              () => _timerBuilder.Build(options.Buckets, _clock)).
+                              () => _timerBuilder.Build(options.Buckets, _clock, options.DurationUnit)).
                           NewContext(userValue))
             {
                 action();
@@ -87,9 +87,7 @@ namespace App.Metrics.BucketTimer
             return _registry.BucketTimer(
                                  options,
                                  tags,
-                                 () => _timerBuilder.Build(
-                                     options.Buckets,
-                                     _clock)).
+                                 () => _timerBuilder.Build(options.Buckets, _clock, options.DurationUnit)).
                              NewContext(userValue);
         }
 
@@ -100,7 +98,7 @@ namespace App.Metrics.BucketTimer
                 _registry.BucketTimer(
                               options,
                               tags,
-                              () => _timerBuilder.Build(options.Buckets, _clock)).
+                              () => _timerBuilder.Build(options.Buckets, _clock, options.DurationUnit)).
                           NewContext();
         }
 
@@ -110,7 +108,7 @@ namespace App.Metrics.BucketTimer
             return
                 _registry.BucketTimer(
                               options,
-                              () => _timerBuilder.Build(options.Buckets, _clock)).
+                              () => _timerBuilder.Build(options.Buckets, _clock, options.DurationUnit)).
                           NewContext();
         }
 
@@ -119,9 +117,7 @@ namespace App.Metrics.BucketTimer
         {
             return _registry.BucketTimer(
                                  options,
-                                 () => _timerBuilder.Build(
-                                     options.Buckets,
-                                     _clock)).
+                                 () => _timerBuilder.Build(options.Buckets, _clock, options.DurationUnit)).
                              NewContext(userValue);
         }
     }

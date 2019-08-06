@@ -30,7 +30,8 @@ namespace App.Metrics.Facts.BucketTimer
             var timerOptions = new BucketTimerOptions
                                {
                                    Name = "custom",
-                                   MeasurementUnit = Unit.Calls
+                                   MeasurementUnit = Unit.Calls,
+                                   DurationUnit = TimeUnit.Nanoseconds
                                };
 
             var timer = _fixture.Metrics.Provider.BucketTimer.WithHistogram(timerOptions, () => histogram);

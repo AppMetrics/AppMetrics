@@ -10,12 +10,12 @@ namespace App.Metrics.BucketTimer
 {
     public interface IBuildBucketTimerMetrics
     {
-        IBucketTimerMetric Build(IBucketHistogramMetric histogram, IClock clock);
+        IBucketTimerMetric Build(IBucketHistogramMetric histogram, IClock clock, TimeUnit timeUnit);
 
-        IBucketTimerMetric Build(IEnumerable<double> buckets, IClock clock);
+        IBucketTimerMetric Build(IEnumerable<double> buckets, IClock clock, TimeUnit timeUnit);
 
-        IBucketTimerMetric Build(IBucketHistogramMetric histogram, IMeterMetric meter, IClock clock);
+        IBucketTimerMetric Build(IBucketHistogramMetric histogram, IMeterMetric meter, IClock clock, TimeUnit timeUnit);
 
-        IBucketTimerMetric Build(IEnumerable<double> buckets, IMeterMetric meter, IClock clock);
+        IBucketTimerMetric Build(IEnumerable<double> buckets, IMeterMetric meter, IClock clock, TimeUnit timeUnit);
     }
 }

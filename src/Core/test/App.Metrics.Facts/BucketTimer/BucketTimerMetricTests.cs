@@ -26,7 +26,8 @@ namespace App.Metrics.Facts.BucketTimer
             _timer = new DefaultBucketTimerMetric(
                 new DefaultBucketHistogramMetric(new[] { 100000000d, 300000000 }),
                 new DefaultMeterMetric(_clock),
-                _clock);
+                _clock,
+                TimeUnit.Nanoseconds);
         }
 
         [Fact]
