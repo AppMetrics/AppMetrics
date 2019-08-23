@@ -11,6 +11,7 @@ using App.Metrics.AspNetCore.Tracking;
 using App.Metrics.AspNetCore.Tracking.Middleware;
 using App.Metrics.Extensions.DependencyInjection.Internal;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -183,6 +184,19 @@ namespace Microsoft.AspNetCore.Builder
             return false;
         }
 
+        private static bool IsNotAnIgnoredPort(IReadOnlyList<int> ignoredPorts, int? currentPort)
+        {
+            if (!currentPort.HasValue)
+                return false;
+
+            if (ignoredPorts.Any())
+            {
+                return ignoredPorts.Contains(currentPort.Value);
+            }
+
+            return false;
+        }
+
         private static void UseMetricsMiddleware<TMiddleware>(
             IApplicationBuilder app,
             MetricsOptions metricsOptions,
@@ -190,7 +204,7 @@ namespace Microsoft.AspNetCore.Builder
         {
             app.UseWhen(
                 context => metricsOptions.Enabled &&
-                           !IsNotAnIgnoredRoute(trackingMiddlewareOptionsAccessor.Value.IgnoredRoutesRegex, context.Request.Path),
+                           !IsNotAnIgnoredRoute(trackingMiddlewareOptionsAccessor.Value.IgnoredRoutesRegex, context.Request.Path) && !IsNotAnIgnoredPort(trackingMiddlewareOptionsAccessor.Value.IgnoredPorts, context.Features.Get<IHttpConnectionFeature>()?.LocalPort),
                 appBuilder =>
                 {
                     if (metricsOptions.Enabled)

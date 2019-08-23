@@ -59,6 +59,14 @@ namespace App.Metrics.AspNetCore.Tracking
         public IReadOnlyList<Regex> IgnoredRoutesRegex => _ignoredRoutesConfiguration.RegexPatterns;
 
         /// <summary>
+        ///     Gets the ignored request ports where metrics should not be measured.
+        /// </summary>
+        /// <value>
+        ///     The ignored ports.
+        /// </value>
+        public IReadOnlyList<int> IgnoredPorts { get; set; } = new List<int>();
+
+        /// <summary>
         ///     Gets or sets the ignored request routes where metrics should not be measured.
         /// </summary>
         /// <value>
