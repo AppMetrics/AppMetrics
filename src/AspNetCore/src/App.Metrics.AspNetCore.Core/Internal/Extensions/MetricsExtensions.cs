@@ -138,7 +138,7 @@ namespace App.Metrics
             metrics.Measure.Meter.Mark(HttpRequestMetricsRegistry.Meters.ErrorRequestRate);
 
             RecordEndpointsHttpRequestErrors(metrics, routeTemplate, httpStatusCode);
-            RecordOverallPercentageOfErrorRequests(metrics);
+            RecordOverallPercentageOfErrorRequests(metrics, bucketTimerOptions);
             RecordEndpointsPercentageOfErrorRequests(metrics, routeTemplate, bucketTimerOptions);
         }
 
@@ -254,6 +254,15 @@ namespace App.Metrics
             return metrics.Provider.Timer.Instance(HttpRequestMetricsRegistry.Timers.EndpointRequestTransactionDuration, tags);
         }
 
+        private static ITimer RequestTimer(this IMetrics metrics, BucketTimerOptions bucketTimerOptions)
+        {
+            if (bucketTimerOptions != null)
+            {
+                return metrics.Provider.BucketTimer.Instance(bucketTimerOptions);
+            }
+            return metrics.Provider.Timer.Instance(HttpRequestMetricsRegistry.Timers.RequestTransactionDuration);
+        }
+
         private static void RecordEndpointsHttpRequestErrors(IMetrics metrics, string routeTemplate, int httpStatusCode)
         {
             var endpointErrorRequestTags = new MetricTags(MiddlewareConstants.DefaultTagKeys.Route, routeTemplate);
@@ -281,10 +290,10 @@ namespace App.Metrics
                 () => new HitPercentageGauge(endpointsErrorRate, endpointsRequestTransactionTime, m => m.OneMinuteRate));
         }
 
-        private static void RecordOverallPercentageOfErrorRequests(IMetrics metrics)
+        private static void RecordOverallPercentageOfErrorRequests(IMetrics metrics, BucketTimerOptions bucketTimerOptions)
         {
             var totalErrorRate = metrics.Provider.Meter.Instance(HttpRequestMetricsRegistry.Meters.ErrorRequestRate);
-            var overallRequestTransactionTime = metrics.Provider.Timer.Instance(HttpRequestMetricsRegistry.Timers.RequestTransactionDuration);
+            var overallRequestTransactionTime = metrics.RequestTimer(bucketTimerOptions);
 
             metrics.Measure.Gauge.SetValue(
                 HttpRequestMetricsRegistry.Gauges.OneMinErrorPercentageRate,
