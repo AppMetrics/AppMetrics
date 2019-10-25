@@ -216,5 +216,27 @@ namespace App.Metrics.Reporting.Http.Facts
             // Assert
             action.Should().Throw<ArgumentNullException>();
         }
+
+        [Fact]
+        public void Can_use_http_reporter_with_authorization_token()
+        {
+            // Arrange
+            var builder = new MetricsBuilder().Report.OverHttp(
+                options =>
+                {
+                    options.HttpSettings.AuthorizationToken = "test";
+                    options.HttpSettings.RequestUri = new Uri("http://localhost");
+                    options.MetricsOutputFormatter = new MetricsJsonOutputFormatter();
+                });
+
+            // Act
+            var metrics = builder.Build();
+
+            // Assert
+            metrics.Reporters.Should().Contain(reportMetrics => reportMetrics is HttpMetricsReporter);
+            metrics.Reporters.First().FlushInterval.Should().Be(AppMetricsConstants.Reporting.DefaultFlushInterval);
+            metrics.Reporters.First().Filter.Should().BeOfType<NullMetricsFilter>();
+            metrics.Reporters.First().Formatter.Should().BeOfType<MetricsJsonOutputFormatter>();
+        }
     }
 }

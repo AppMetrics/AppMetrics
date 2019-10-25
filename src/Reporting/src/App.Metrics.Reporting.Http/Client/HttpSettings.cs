@@ -35,5 +35,15 @@ namespace App.Metrics.Reporting.Http.Client
         ///     The basic auth username.
         /// </value>
         public string UserName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the authorization to use for the request
+        /// </summary>
+        public string AuthorizationToken { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the value to allow unsecure ssl calls; usually used when using a self-signed cert
+        /// </summary>
+        public bool AllowInsecureSsl { get; set; }
     }
 }

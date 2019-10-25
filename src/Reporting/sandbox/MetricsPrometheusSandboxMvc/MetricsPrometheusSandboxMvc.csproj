@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="App.Metrics.AspNetCore.Mvc" />
-    <PackageReference Include="Microsoft.AspNetCore" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Serilog.AspNetCore " Version="2.1.2-*" />
   </ItemGroup>
   <ItemGroup>
