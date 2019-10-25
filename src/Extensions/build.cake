@@ -17,10 +17,6 @@ var packPaths        = new [] {
 									Directory("./src/App.Metrics.Extensions.Configuration"),
 									Directory("./src/App.Metrics.Extensions.DependencyInjection"),
 									Directory("./src/App.Metrics.Extensions.Hosting"),
-									Directory("./src/App.Metrics.Health.AppNetCore"),
-									Directory("./src/App.Metrics.Health.Extensions.Configuration"),
-									Directory("./src/App.Metrics.Health.Extensions.DependencyInjection"),
-									Directory("./src/App.Metrics.Health.Extensions.Hosting"),
 									Directory("./src/App.Metrics.Extensions.HealthChecks")
 						};
 var buildArtifacts      = Directory("./artifacts");
