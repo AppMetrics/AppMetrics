@@ -1,5 +1,5 @@
 mode: ContinuousDelivery
-next-version: 3.1.1
+next-version: 3.2.0
 branches:
   master:
     increment: none
