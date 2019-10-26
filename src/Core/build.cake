@@ -132,8 +132,8 @@ Task("Build")
     // building tests
     if (!isWindows)
     {
-        Information("Not running on Windows - building tests for netcoreapp2.1");
-        settings.Framework = "netcoreapp2.1";
+        Information("Not running on Windows - building tests for netcoreapp3.0");
+        settings.Framework = "netcoreapp3.0";
     }
 
     var tests = GetFiles("./test/**/*.csproj");
@@ -170,7 +170,7 @@ Task("Test")
     if (!isWindows)
     {
         Information("Not running on Windows - skipping tests for .NET Framework");
-        settings.Framework = "netcoreapp2.1";
+        settings.Framework = "netcoreapp3.0";
     }
 
     var projects = GetFiles("./test/**/*.csproj");

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Define variables
 CAKE_VERSION=0.30.0
-DOTNET_VERSION=2.2.104
+DOTNET_VERSION=3.0.100
 
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 TOOLS_DIR=$SCRIPT_DIR/tools

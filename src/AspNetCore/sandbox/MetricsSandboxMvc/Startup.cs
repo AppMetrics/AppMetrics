@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace MetricsSandboxMvc
 {
@@ -21,11 +22,16 @@ namespace MetricsSandboxMvc
 
         public IConfiguration Configuration { get; }
 
-        public void Configure(IApplicationBuilder app, IApplicationLifetime lifetime)
+        public void Configure(IApplicationBuilder app, IHostApplicationLifetime lifetime)
         {
             app.UseTestStuff(lifetime, HaveAppRunSampleRequests);
 
-            app.UseMvc();
+            app.UseRouting();
+            
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -40,13 +46,14 @@ namespace MetricsSandboxMvc
                     options.ReportApiVersions = true;
                 });
 
+            services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'V");
+
             services.AddMvcCore(options =>
                     {
                         options.EnableEndpointRouting = true;
                     })
                     .SetCompatibilityVersion(CompatibilityVersion.Latest)
                     .AddApiExplorer()
-                    .AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'V")
                     .AddMetricsCore();
         }
     }

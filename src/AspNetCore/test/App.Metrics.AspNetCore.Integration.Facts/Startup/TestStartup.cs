@@ -17,11 +17,16 @@ namespace App.Metrics.AspNetCore.Integration.Facts.Startup
     {
         protected IMetrics Metrics { get; private set; }
 
-        protected void SetupAppBuilder(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        protected void SetupAppBuilder(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             Metrics = app.ApplicationServices.GetRequiredService<IMetrics>();
 
-            app.UseMvc();
+            app.UseRouting();
+            
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
 
         protected void SetupServices(

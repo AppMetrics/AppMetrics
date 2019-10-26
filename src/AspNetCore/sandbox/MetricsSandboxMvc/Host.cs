@@ -81,6 +81,7 @@ namespace MetricsSandboxMvc
                           .UseMetrics(/*Configure()*/)
                           .UseSerilog()
                           .UseStartup<Startup>()
+                          .ConfigureKestrel((context, options) => options.AllowSynchronousIO = true)
                           .Build();
         }
 

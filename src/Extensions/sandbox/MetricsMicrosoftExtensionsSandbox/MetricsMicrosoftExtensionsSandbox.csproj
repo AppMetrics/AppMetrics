@@ -10,10 +10,10 @@
   </ItemGroup>
   <ItemGroup>
 	<PackageReference Include="App.Metrics" />
-	<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
-	<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
-	<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
+	<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
+	<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.0.0" />
+	<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\App.Metrics.Extensions.Configuration\App.Metrics.Extensions.Configuration.csproj" />

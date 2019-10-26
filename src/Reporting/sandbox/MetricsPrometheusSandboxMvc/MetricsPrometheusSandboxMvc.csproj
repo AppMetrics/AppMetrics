@@ -17,7 +17,7 @@
   <ItemGroup>
     <PackageReference Include="App.Metrics.AspNetCore.Mvc" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
-    <PackageReference Include="Serilog.AspNetCore " Version="2.1.2-*" />
+    <PackageReference Include="Serilog.AspNetCore " Version="3.1.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\App.Metrics.Formatters.Prometheus\App.Metrics.Formatters.Prometheus.csproj" />
