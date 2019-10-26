@@ -8,18 +8,18 @@ using App.Metrics.AspNetCore;
 using App.Metrics.Formatters;
 using App.Metrics.Formatters.Ascii;
 using App.Metrics.Formatters.Json;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 
 namespace MetricsSandboxMvc
 {
-    public static class Host
+    public static class Program
     {
         public static IMetricsRoot Metrics { get; set; }
 
-        public static IWebHost BuildWebHost(string[] args)
+        public static IHost BuildWebHost(string[] args)
         {
             ConfigureLogging();
 
@@ -28,7 +28,7 @@ namespace MetricsSandboxMvc
             //     .OutputMetrics.AsPlainText()
             //     .Build();
 
-            return WebHost.CreateDefaultBuilder(args)
+            return Host.CreateDefaultBuilder(args)
 
                           #region App Metrics configuration options
 
@@ -80,8 +80,13 @@ namespace MetricsSandboxMvc
 
                           .UseMetrics(/*Configure()*/)
                           .UseSerilog()
-                          .UseStartup<Startup>()
-                          .ConfigureKestrel((context, options) => options.AllowSynchronousIO = true)
+                          .ConfigureWebHostDefaults(
+                              webBuilder =>
+                              {
+                                  webBuilder.UseStartup<Startup>();
+                                  webBuilder.ConfigureKestrel((context, options) => options.AllowSynchronousIO = true);
+
+                              })
                           .Build();
         }
 

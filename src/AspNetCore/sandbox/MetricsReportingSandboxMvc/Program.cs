@@ -6,20 +6,20 @@ using System;
 using System.Diagnostics;
 using App.Metrics.AspNetCore;
 using MetricsReportingSandboxMvc.JustForTesting;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 
 namespace MetricsReportingSandboxMvc
 {
-    public static class Host
+    public static class Program
     {
-        public static IWebHost BuildWebHost(string[] args)
+        public static IHost BuildWebHost(string[] args)
         {
             ConfigureLogging();
 
-            return WebHost.CreateDefaultBuilder(args)
+            return Host.CreateDefaultBuilder(args)
                           .ConfigureMetricsWithDefaults(
                                builder =>
                                {
@@ -28,8 +28,13 @@ namespace MetricsReportingSandboxMvc
                                })
                             .UseMetrics()
                             .UseSerilog()
-                            .UseStartup<Startup>()
-                            .ConfigureKestrel((context, options) => options.AllowSynchronousIO = true)
+                            .ConfigureWebHostDefaults(
+                                  webBuilder =>
+                                  {
+                                      webBuilder.UseStartup<Startup>();
+                                      webBuilder.ConfigureKestrel((context, options) => options.AllowSynchronousIO = true);
+
+                                  })
                             .Build();
         }
 
