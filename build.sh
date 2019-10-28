@@ -10,13 +10,13 @@ pushd ./src/Core
 popd
 
 pushd ./src/Extensions
-./build.ps1 "$@"
+./build.sh "$@"
 popd
 
 pushd ./src/Reporting
-./build.ps1 $args
+./build.sh $args
 popd
 
 pushd ./src/AspNetCore
-./build.ps1 $args
+./build.sh $args
 popd
