@@ -8,18 +8,11 @@ pushd ./src/Core
 ./build.ps1 $args
 popd
 
-# # extensions
-# "######### Extensions #########"
-# set-location ./src/Extensions
-# & ./build.ps1 $args
-# Set-Location $cd
-
-# if ($LASTEXITCODE -ne 0)
-# {
-#     exit $LASTEXITCODE
-# }
-
-# Copy-Item -path .\src\Extensions\artifacts\packages\*.nupkg -Destination .\nuget
+# extensions
+"######### Extensions #########"
+pushd ./src/Extensions
+./build.ps1 $args
+popd
 
 # # reporting
 # "######### Reporting #########"
