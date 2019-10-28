@@ -1,18 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\..\build\common.props" />
   <PropertyGroup>
-    <PropertyGroup>
-        <TargetFramework>netcoreapp3.0</TargetFramework>
-    </PropertyGroup>
-    <OutputType>exe</OutputType>
+      <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
+  <OutputType>exe</OutputType>
   <ItemGroup>
     <Content Include="appsettings.json" />
   </ItemGroup>
   <ItemGroup>
 	<PackageReference Include="App.Metrics" />
 	<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
+  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
 	<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.0.0" />
 	<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
   </ItemGroup>
