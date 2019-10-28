@@ -5,6 +5,14 @@ mkdir nuget -p
 
 dotnet tool restore
 
-pushd ./src/AppMetrics
+pushd ./src/Core
 ./build.sh "$@"
+popd
+
+pushd ./src/Extensions
+./build.ps1 "$@"
+popd
+
+pushd ./src/Reporting
+./build.ps1 $args
 popd

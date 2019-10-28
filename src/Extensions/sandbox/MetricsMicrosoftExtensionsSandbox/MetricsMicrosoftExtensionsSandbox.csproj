@@ -1,9 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <Import Project="..\..\build\common.props" />
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <LangVersion>Latest</LangVersion>
+    <OutputType>exe</OutputType>
+  </PropertyGroup>
+
   <PropertyGroup>
       <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
-  <OutputType>exe</OutputType>
+  
   <ItemGroup>
     <Content Include="appsettings.json" />
   </ItemGroup>
