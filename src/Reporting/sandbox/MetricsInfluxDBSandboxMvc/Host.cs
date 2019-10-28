@@ -3,13 +3,10 @@
 // </copyright>
 
 using System.IO;
-using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.AspNetCore;
-using App.Metrics.AspNetCore.Health;
 using App.Metrics.Extensions.Configuration;
 using App.Metrics.Formatters.InfluxDB;
-using App.Metrics.Health;
 using App.Metrics.Reporting.InfluxDB;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -41,17 +38,6 @@ namespace MetricsInfluxDBSandboxMvc
 
             return WebHost.CreateDefaultBuilder(args)
                           .ConfigureMetrics(metrics)
-                          .ConfigureHealthWithDefaults(
-                              (context, builder) =>
-                              {
-                                  builder.OutputHealth.AsPlainText()
-                                         .OutputHealth.AsJson()
-                                         .HealthChecks.AddCheck("check 1", () => new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy()))
-                                         .HealthChecks.AddCheck("check 2", () => new ValueTask<HealthCheckResult>(HealthCheckResult.Degraded()))
-                                         .HealthChecks.AddCheck("check 3", () => new ValueTask<HealthCheckResult>(HealthCheckResult.Unhealthy()))
-                                         .Report.ToMetrics(metrics);
-                              })
-                          .UseHealth()
                           .UseMetrics()
                           .UseSerilog()
                           .UseStartup<Startup>()

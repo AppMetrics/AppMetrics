@@ -1,19 +1,22 @@
-cd ./src/AppMetrics
-./build.sh
+#!/usr/bin/env bash
+set -euo pipefail
 
-if [ $? -ne 0 ]; then
-    echo "An error occured."
-    exit 1
-fi
+mkdir nuget -p
 
-cd ../..
+dotnet tool restore
 
-cd ./src/AspNetCore.Storage
-./build.sh
+pushd ./src/Core
+./build.sh "$@"
+popd
 
-if [ $? -ne 0 ]; then
-    echo "An error occured."
-    exit 1
-fi
+pushd ./src/Extensions
+./build.sh "$@"
+popd
 
-cd ../..
+pushd ./src/Reporting
+./build.sh "$@"
+popd
+
+pushd ./src/AspNetCore
+./build.sh "$@"
+popd

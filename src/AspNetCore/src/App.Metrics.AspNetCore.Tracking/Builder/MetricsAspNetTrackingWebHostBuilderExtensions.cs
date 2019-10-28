@@ -6,6 +6,7 @@ using System;
 using App.Metrics.AspNetCore.Tracking;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.AspNetCore.Hosting
@@ -22,7 +23,7 @@ namespace Microsoft.AspNetCore.Hosting
         /// <exception cref="ArgumentNullException">
         ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" /> cannot be null
         /// </exception>
-        public static IWebHostBuilder UseMetricsWebTracking(this IWebHostBuilder hostBuilder)
+        public static IHostBuilder UseMetricsWebTracking(this IHostBuilder hostBuilder)
         {
             hostBuilder.ConfigureMetrics();
 
@@ -46,8 +47,8 @@ namespace Microsoft.AspNetCore.Hosting
         /// <exception cref="ArgumentNullException">
         ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" /> cannot be null
         /// </exception>
-        public static IWebHostBuilder UseMetricsWebTracking(
-            this IWebHostBuilder hostBuilder,
+        public static IHostBuilder UseMetricsWebTracking(
+            this IHostBuilder hostBuilder,
             Action<MetricsWebTrackingOptions> optionsDelegate)
         {
             hostBuilder.ConfigureMetrics();
@@ -72,9 +73,9 @@ namespace Microsoft.AspNetCore.Hosting
         /// <exception cref="ArgumentNullException">
         ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" /> cannot be null
         /// </exception>
-        public static IWebHostBuilder UseMetricsWebTracking(
-            this IWebHostBuilder hostBuilder,
-            Action<WebHostBuilderContext, MetricsWebTrackingOptions> setupDelegate)
+        public static IHostBuilder UseMetricsWebTracking(
+            this IHostBuilder hostBuilder,
+            Action<HostBuilderContext, MetricsWebTrackingOptions> setupDelegate)
         {
             hostBuilder.ConfigureMetrics();
 
@@ -102,15 +103,15 @@ namespace Microsoft.AspNetCore.Hosting
         /// <exception cref="ArgumentNullException">
         ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" /> cannot be null
         /// </exception>
-        public static IWebHostBuilder UseMetricsWebTracking(
-            this IWebHostBuilder hostBuilder,
+        public static IHostBuilder UseMetricsWebTracking(
+            this IHostBuilder hostBuilder,
             IConfiguration configuration,
             Action<MetricsWebTrackingOptions> optionsDelegate)
         {
             hostBuilder.ConfigureMetrics();
 
             hostBuilder.ConfigureServices(
-                services =>
+                (context, services) =>
                 {
                     services.AddMetricsTrackingMiddleware(optionsDelegate, configuration);
                     services.AddSingleton<IStartupFilter>(new DefaultMetricsTrackingStartupFilter());

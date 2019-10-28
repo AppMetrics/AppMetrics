@@ -6,6 +6,11 @@
     <FrameworkVersion>3.0.0</FrameworkVersion>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <MinVerMinimumMajorMinor>4.0</MinVerMinimumMajorMinor>
+    <MinVerDefaultPreReleasePhase>preview</MinVerDefaultPreReleasePhase>
+  </PropertyGroup>
+
   <ItemGroup>
     <!-- Core -->
     <PackageReference Update="App.Metrics.Concurrency" Version="$(AppMetricsConcurrencyVersion)" />
@@ -75,6 +80,19 @@
 
     <!-- Third Party -->
     <PackageReference Update="NewtonSoft.Json" Version="12.0.3-beta2" />
+
+    <!-- Build -->
+    <PackageReference Include="MinVer" Version="2.0.0" PrivateAssets="All" />
+    <PackageReference Update="SimpleExec" Version="6.1.0" />
+    <PackageReference Update="Bullseye" Version="3.0.0" />
+    <PackageReference Update="McMaster.Extensions.CommandLineUtils" Version="2.4.0" />
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-19367-01" PrivateAssets="All" />
     <PackageReference Update="StyleCop.Analyzers" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
+
+  <Target Name="SetAssemblyVersion" AfterTargets="MinVer">
+    <PropertyGroup>
+      <AssemblyVersion>$(MinVerMajor).$(MinVerMinor).$(MinVerPatch).0</AssemblyVersion>
+    </PropertyGroup>
+  </Target>
 </Project>

@@ -7,7 +7,7 @@
 		<NoWarn>$(NoWarn);1701;1702;1705;CS1591;CS1570</NoWarn>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<PackageIconUrl>https://app-metrics.io/images/logo.png</PackageIconUrl>
+		<PackageIcon>logo.png</PackageIcon>
 		<PackageProjectUrl>https://app-metrics.io/</PackageProjectUrl>
 		<RepositoryUrl>git://github.com/AppMetrics/AppMetrics</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
@@ -29,6 +29,10 @@
 
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="$(MSBuildThisFileDirectory)..\logo.png" Pack="true" Visible="false" PackagePath="" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<AdditionalFiles Include="$(MSBuildThisFileDirectory)..\stylecop.json" Link="stylecop.json" />

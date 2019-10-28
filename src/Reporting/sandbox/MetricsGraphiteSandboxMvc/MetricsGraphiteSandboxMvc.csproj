@@ -3,20 +3,11 @@
   <Import Project="..\..\build\common.props" />
 
   <PropertyGroup>
-    <IsPackable>false</IsPackable>
+      <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(OS)' != 'Windows_NT' ">
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
-    <TargetFrameworks>netcoreapp2.2;net461</TargetFrameworks>
-  </PropertyGroup>
+  
   <ItemGroup>        
     <PackageReference Include="App.Metrics.AspNetCore.Mvc" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Serilog.Sinks.Literate" Version="3.0.1-dev-00044" />
     <PackageReference Include="Serilog.Sinks.Seq" Version="4.0.1-dev-00155" />
