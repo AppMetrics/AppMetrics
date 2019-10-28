@@ -6,6 +6,11 @@
     <FrameworkVersion>3.0.0</FrameworkVersion>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <MinVerMinimumMajorMinor>4.0</MinVerMinimumMajorMinor>
+    <MinVerDefaultPreReleasePhase>preview</MinVerDefaultPreReleasePhase>
+  </PropertyGroup>
+
   <ItemGroup>
     <!-- Core -->
     <PackageReference Update="App.Metrics.Concurrency" Version="$(AppMetricsConcurrencyVersion)" />
