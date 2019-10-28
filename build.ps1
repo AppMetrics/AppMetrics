@@ -1,56 +1,48 @@
-New-Item -ItemType Directory -Force -Path ./nuget
-Remove-Item -Path ./nuget/*.*
+$ErrorActionPreference = "Stop";
 
-$cd = Get-Location
+New-Item -ItemType Directory -Force -Path ./nuget
 
 # core
 "######### AppMetrics #########"
-set-location ./src/Core
-& ./build.ps1 $args
-Set-Location $cd
+pushd ./src/Core
+./build.ps1 $args
+popd
 
-if ($LASTEXITCODE -ne 0)
-{
-    exit $LASTEXITCODE
-}
+# # extensions
+# "######### Extensions #########"
+# set-location ./src/Extensions
+# & ./build.ps1 $args
+# Set-Location $cd
 
-Copy-Item -path .\src\Core\artifacts\packages\*.nupkg -Destination .\nuget
+# if ($LASTEXITCODE -ne 0)
+# {
+#     exit $LASTEXITCODE
+# }
 
-# extensions
-"######### Extensions #########"
-set-location ./src/Extensions
-& ./build.ps1 $args
-Set-Location $cd
+# Copy-Item -path .\src\Extensions\artifacts\packages\*.nupkg -Destination .\nuget
 
-if ($LASTEXITCODE -ne 0)
-{
-    exit $LASTEXITCODE
-}
+# # reporting
+# "######### Reporting #########"
+# set-location ./src/Reporting
+# & ./build.ps1 $args
+# Set-Location $cd
 
-Copy-Item -path .\src\Extensions\artifacts\packages\*.nupkg -Destination .\nuget
+# if ($LASTEXITCODE -ne 0)
+# {
+#     exit $LASTEXITCODE
+# }
 
-# reporting
-"######### Reporting #########"
-set-location ./src/Reporting
-& ./build.ps1 $args
-Set-Location $cd
+# Copy-Item -path .\src\Reporting\artifacts\packages\*.nupkg -Destination .\nuget
 
-if ($LASTEXITCODE -ne 0)
-{
-    exit $LASTEXITCODE
-}
+# # aspnetcore
+# "######### AspNetCore #########"
+# set-location ./src/AspNetCore
+# & ./build.ps1 $args
+# Set-Location $cd
 
-Copy-Item -path .\src\Reporting\artifacts\packages\*.nupkg -Destination .\nuget
+# if ($LASTEXITCODE -ne 0)
+# {
+#     exit $LASTEXITCODE
+# }
 
-# aspnetcore
-"######### AspNetCore #########"
-set-location ./src/AspNetCore
-& ./build.ps1 $args
-Set-Location $cd
-
-if ($LASTEXITCODE -ne 0)
-{
-    exit $LASTEXITCODE
-}
-
-Copy-Item -path .\src\AspNetCore\artifacts\packages\*.nupkg -Destination .\nuget
+# Copy-Item -path .\src\AspNetCore\artifacts\packages\*.nupkg -Destination .\nuget
