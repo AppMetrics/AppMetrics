@@ -59,11 +59,6 @@ namespace build
                     {
                         Run("dotnet", $"pack {project} -c Release -o ./{ArtifactsDir} --no-build", echoPrefix: Prefix);
                         
-                        if (sign.HasValue())
-                        {
-                            Sign("*.nupkg", $"./{ArtifactsDir}");
-                        }
-
                         CopyArtifacts();
                     }
                 });
