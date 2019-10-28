@@ -6,7 +6,6 @@ using System.IO;
 using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ReportingSandbox
@@ -35,7 +34,7 @@ namespace ReportingSandbox
                     if (context.Request.Method == "POST" && context.Request.Path == "/metrics-receive")
                     {
                         var req = context.Request;
-                        req.EnableRewind();
+                        req.EnableBuffering();
 
                         using (var sr = new StreamReader(req.Body, Encoding.UTF8, true, 1024, true))
                         {

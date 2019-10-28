@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using App.Metrics.Scheduling;
 using MetricsPrometheusSandboxMvc.JustForTesting;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.AspNetCore.Builder
@@ -24,7 +25,7 @@ namespace Microsoft.AspNetCore.Builder
 
         public static IApplicationBuilder UseTestStuff(
             this IApplicationBuilder app,
-            IApplicationLifetime lifetime,
+            IHostApplicationLifetime lifetime,
             bool runSampleRequestsFromApp)
         {
             app.Use(
