@@ -14,9 +14,9 @@ pushd ./src/Extensions
 popd
 
 pushd ./src/Reporting
-./build.sh $args
+./build.sh "$@"
 popd
 
 pushd ./src/AspNetCore
-./build.sh $args
+./build.sh "$@"
 popd
