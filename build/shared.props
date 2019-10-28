@@ -31,6 +31,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<None Include="$(MSBuildThisFileDirectory)..\logo.png" Pack="true" Visible="false" PackagePath="" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<AdditionalFiles Include="$(MSBuildThisFileDirectory)..\stylecop.json" Link="stylecop.json" />
 	</ItemGroup>
 
