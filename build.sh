@@ -16,3 +16,7 @@ popd
 pushd ./src/Reporting
 ./build.ps1 $args
 popd
+
+pushd ./src/AspNetCore
+./build.ps1 $args
+popd
