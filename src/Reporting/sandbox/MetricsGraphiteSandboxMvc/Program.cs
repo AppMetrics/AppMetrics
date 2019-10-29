@@ -9,14 +9,15 @@ using App.Metrics.Reporting.Graphite;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 
 namespace MetricsGraphiteSandboxMvc
 {
-    public static class Host
+    public static class Program
     {
-        public static IWebHost BuildWebHost(string[] args)
+        public static IHost BuildWebHost(string[] args)
         {
             ConfigureLogging();
 
@@ -28,7 +29,7 @@ namespace MetricsGraphiteSandboxMvc
             var graphiteOptions = new MetricsReportingGraphiteOptions();
             configuration.GetSection(nameof(MetricsReportingGraphiteOptions)).Bind(graphiteOptions);
 
-            return WebHost.CreateDefaultBuilder(args)
+            return Host.CreateDefaultBuilder(args)
                           .ConfigureMetricsWithDefaults(
                               builder =>
                               {
@@ -36,7 +37,13 @@ namespace MetricsGraphiteSandboxMvc
                               })
                           .UseMetrics()
                           .UseSerilog()
-                          .UseStartup<Startup>()
+                          .ConfigureWebHostDefaults(
+                              webBuilder =>
+                              {
+                                  webBuilder.UseStartup<Startup>();
+                                  webBuilder.ConfigureKestrel((context, options) => options.AllowSynchronousIO = true);
+
+                              })
                           .Build();
         }
 

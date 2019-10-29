@@ -7,24 +7,24 @@ using App.Metrics;
 using App.Metrics.AspNetCore;
 using App.Metrics.Extensions.Configuration;
 using App.Metrics.Reporting.GrafanaCloudHostedMetrics;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 
 namespace GrafanaCloudHostedMetricsSandboxMvc
 {
-    public static class Host
+    public static class Program
     {
-        public static IWebHost BuildWebHost(string[] args)
+        public static IHost BuildWebHost(string[] args)
         {
             ConfigureLogging();
 
             var configuration = new ConfigurationBuilder()
                                 .SetBasePath(Directory.GetCurrentDirectory())
                                 .AddJsonFile(path: "appsettings.json", optional: false, reloadOnChange: true)
-                                .AddUserSecrets(typeof(Host).Assembly)
+                                .AddUserSecrets(typeof(Program).Assembly)
                                 .Build();
 
             var grafanaCloudHostedMetricsOptions = new MetricsReportingHostedMetricsOptions();
@@ -42,11 +42,17 @@ namespace GrafanaCloudHostedMetricsSandboxMvc
                                     .Report.ToHostedMetrics(grafanaCloudHostedMetricsOptions)
                                     .Build();
 
-            return WebHost.CreateDefaultBuilder(args)
+            return Host.CreateDefaultBuilder(args)
                           .ConfigureMetrics(metrics)
                           .UseMetrics()
                           .UseSerilog()
-                          .UseStartup<Startup>()
+                          .ConfigureWebHostDefaults(
+                              webBuilder =>
+                              {
+                                  webBuilder.UseStartup<Startup>();
+                                  webBuilder.ConfigureKestrel((context, options) => options.AllowSynchronousIO = true);
+
+                              })
                           .Build();
         }
 

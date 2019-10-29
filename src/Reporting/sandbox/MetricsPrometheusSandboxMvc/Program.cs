@@ -8,16 +8,17 @@ using App.Metrics.Formatters;
 using App.Metrics.Formatters.Prometheus;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 
 namespace MetricsPrometheusSandboxMvc
 {
-    public static class Host
+    public static class Program
     {
         public static IMetricsRoot Metrics { get; set; }
 
-        public static IWebHost BuildWebHost(string[] args)
+        public static IHost BuildWebHost(string[] args)
         {
             ConfigureLogging();
 
@@ -26,7 +27,7 @@ namespace MetricsPrometheusSandboxMvc
                 .OutputMetrics.AsPrometheusProtobuf()
                 .Build();
 
-            return WebHost.CreateDefaultBuilder(args)
+            return Host.CreateDefaultBuilder(args)
                           .ConfigureMetrics(Metrics)
                           .UseMetrics(
                               options =>
@@ -38,8 +39,14 @@ namespace MetricsPrometheusSandboxMvc
                                   };
                               })
                           .UseSerilog()
-                          .UseStartup<Startup>()
-                          .UseUrls("http://localhost:1111")
+                          .ConfigureWebHostDefaults(
+                              webBuilder =>
+                              {
+                                  webBuilder.UseStartup<Startup>();
+                                  webBuilder.ConfigureKestrel((context, options) => options.AllowSynchronousIO = true);
+
+                              })
+                          // TODO: How to do this in 3.0 .UseUrls("http://localhost:1111")
                           .Build();
         }
 

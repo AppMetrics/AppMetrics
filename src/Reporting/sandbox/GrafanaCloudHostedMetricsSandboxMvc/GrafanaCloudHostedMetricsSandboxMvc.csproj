@@ -3,6 +3,7 @@
   <PropertyGroup>
       <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
+  
   <ItemGroup>
     <PackageReference Include="App.Metrics.AspNetCore.Mvc" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />

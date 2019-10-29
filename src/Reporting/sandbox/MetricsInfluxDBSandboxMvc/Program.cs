@@ -11,14 +11,15 @@ using App.Metrics.Reporting.InfluxDB;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 
 namespace MetricsInfluxDBSandboxMvc
 {
-    public static class Host
+    public static class Program
     {
-        public static IWebHost BuildWebHost(string[] args)
+        public static IHost BuildWebHost(string[] args)
         {
             ConfigureLogging();
 
@@ -36,11 +37,17 @@ namespace MetricsInfluxDBSandboxMvc
                                     .Report.ToInfluxDb(influxOptions)
                                     .Build();
 
-            return WebHost.CreateDefaultBuilder(args)
+            return Host.CreateDefaultBuilder(args)
                           .ConfigureMetrics(metrics)
                           .UseMetrics()
                           .UseSerilog()
-                          .UseStartup<Startup>()
+                          .ConfigureWebHostDefaults(
+                              webBuilder =>
+                              {
+                                  webBuilder.UseStartup<Startup>();
+                                  webBuilder.ConfigureKestrel((context, options) => options.AllowSynchronousIO = true);
+
+                              })
                           .Build();
         }
 

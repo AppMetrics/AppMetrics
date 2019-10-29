@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <AppMetricsConcurrencyVersion>2.0.1</AppMetricsConcurrencyVersion>
-    <AppMetricsVersion>3.2.0-*</AppMetricsVersion>
+    <AppMetricsVersion>4.0.0-*</AppMetricsVersion>
     <FrameworkVersion>3.0.0</FrameworkVersion>
   </PropertyGroup>
 
