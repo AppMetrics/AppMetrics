@@ -4,6 +4,7 @@
     <AppMetricsConcurrencyVersion>2.0.1</AppMetricsConcurrencyVersion>
     <AppMetricsVersion>4.0.0-*</AppMetricsVersion>
     <FrameworkVersion>3.0.0</FrameworkVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>

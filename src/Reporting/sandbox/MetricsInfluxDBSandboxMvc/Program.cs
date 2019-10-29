@@ -45,7 +45,7 @@ namespace MetricsInfluxDBSandboxMvc
                               webBuilder =>
                               {
                                   webBuilder.UseStartup<Startup>();
-                                  webBuilder.ConfigureKestrel((context, options) => options.AllowSynchronousIO = true);
+                                  webBuilder.ConfigureKestrel((context, options) => options.AllowSynchronousIO = false);
 
                               })
                           .Build();

@@ -46,10 +46,8 @@ namespace App.Metrics.Formatters.Json
             using (var streamWriter = new StreamWriter(output))
             {
                 // TODO: #251 should apply metric field names
-                using (var textWriter = new JsonTextWriter(streamWriter))
-                {
-                    serializer.Serialize(textWriter, metricData);
-                }
+                using var textWriter = new JsonTextWriter(streamWriter);
+                serializer.Serialize(textWriter, metricData);
             }
 
 #if NETSTANDARD1_6

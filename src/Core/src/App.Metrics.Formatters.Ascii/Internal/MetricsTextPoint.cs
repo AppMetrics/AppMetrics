@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace App.Metrics.Formatters.Ascii.Internal
 {
@@ -47,40 +48,40 @@ namespace App.Metrics.Formatters.Ascii.Internal
 
         private MetricTags Tags { get; }
 
-        public void Write(TextWriter textWriter, string separator, int padding)
+        public async ValueTask WriteAsync(TextWriter textWriter, string separator, int padding)
         {
             if (textWriter == null)
             {
                 throw new ArgumentNullException(nameof(textWriter));
             }
 
-            textWriter.Write($"# TIMESTAMP: {_timestamp.Ticks}");
-            textWriter.Write('\n');
+            await textWriter.WriteAsync($"# TIMESTAMP: {_timestamp.Ticks}");
+            await textWriter.WriteAsync('\n');
 
-            textWriter.Write("# MEASUREMENT: ");
-            textWriter.Write(Measurement);
-            textWriter.Write('\n');
+            await textWriter.WriteAsync("# MEASUREMENT: ");
+            await textWriter.WriteAsync(Measurement);
+            await textWriter.WriteAsync('\n');
 
             if (Tags.Count > 0)
             {
-                textWriter.Write("# TAGS:\n");
+                await textWriter.WriteAsync("# TAGS:\n");
 
                 for (var i = 0; i < Tags.Count; i++)
                 {
-                    textWriter.Write(MetricsTextSyntax.FormatReadable(Tags.Keys[i], MetricsTextSyntax.FormatValue(Tags.Values[i]), separator, padding));
-                    textWriter.Write('\n');
+                    await textWriter.WriteAsync(MetricsTextSyntax.FormatReadable(Tags.Keys[i], MetricsTextSyntax.FormatValue(Tags.Values[i]), separator, padding));
+                    await textWriter.WriteAsync('\n');
                 }
             }
 
-            textWriter.Write("# FIELDS:\n");
+            await textWriter.WriteAsync("# FIELDS:\n");
 
             foreach (var f in Fields)
             {
-                textWriter.Write(MetricsTextSyntax.FormatReadable(f.Key, MetricsTextSyntax.FormatValue(f.Value), separator, padding));
-                textWriter.Write('\n');
+                await textWriter.WriteAsync(MetricsTextSyntax.FormatReadable(f.Key, MetricsTextSyntax.FormatValue(f.Value), separator, padding));
+                await textWriter.WriteAsync('\n');
             }
 
-            textWriter.Write("--------------------------------------------------------------");
+            await textWriter.WriteAsync("--------------------------------------------------------------");
         }
     }
 }

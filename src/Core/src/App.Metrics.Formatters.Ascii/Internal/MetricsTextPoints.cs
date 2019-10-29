@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace App.Metrics.Formatters.Ascii.Internal
 {
@@ -22,7 +23,7 @@ namespace App.Metrics.Formatters.Ascii.Internal
             _points.Add(textPoint);
         }
 
-        public void Write(TextWriter textWriter, string separator, int padding)
+        public async ValueTask WriteAsync(TextWriter textWriter, string separator, int padding)
         {
             if (textWriter == null)
             {
@@ -33,8 +34,8 @@ namespace App.Metrics.Formatters.Ascii.Internal
 
             foreach (var point in points)
             {
-                point.Write(textWriter, separator, padding);
-                textWriter.Write('\n');
+                await point.WriteAsync(textWriter, separator, padding);
+                await textWriter.WriteAsync('\n');
             }
         }
     }
