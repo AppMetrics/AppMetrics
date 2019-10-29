@@ -19,7 +19,7 @@ namespace MetricsReceiveSanboxApi
             Init();
 
             var host = new WebHostBuilder()
-                       .UseKestrel()
+                       .UseKestrel(options => options.AllowSynchronousIO = true)
                        .UseStartup<Startup>()
                        .UseUrls("http://localhost:50002")
                        .Build();

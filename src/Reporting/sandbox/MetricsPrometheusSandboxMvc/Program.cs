@@ -44,9 +44,9 @@ namespace MetricsPrometheusSandboxMvc
                               {
                                   webBuilder.UseStartup<Startup>();
                                   webBuilder.ConfigureKestrel((context, options) => options.AllowSynchronousIO = true);
+                                  webBuilder.UseUrls("http://localhost:1111");
 
                               })
-                          // TODO: How to do this in 3.0 .UseUrls("http://localhost:1111")
                           .Build();
         }
 
