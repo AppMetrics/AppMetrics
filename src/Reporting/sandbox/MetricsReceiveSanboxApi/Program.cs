@@ -5,6 +5,7 @@
 using System.Threading.Tasks;
 using App.Metrics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 
@@ -18,11 +19,14 @@ namespace MetricsReceiveSanboxApi
         {
             Init();
 
-            var host = new WebHostBuilder()
-                       .UseKestrel(options => options.AllowSynchronousIO = true)
-                       .UseStartup<Startup>()
-                       .UseUrls("http://localhost:50002")
-                       .Build();
+            var host = new HostBuilder()
+                .ConfigureWebHostDefaults(
+                    webBuilder =>
+                    {
+                        webBuilder.UseStartup<Startup>();
+                        webBuilder.UseUrls("http://localhost:50002");
+                    })
+                .Build();
 
             host.Run();
 
