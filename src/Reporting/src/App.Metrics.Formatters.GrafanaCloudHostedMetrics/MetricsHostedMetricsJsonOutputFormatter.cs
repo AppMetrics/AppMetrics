@@ -52,7 +52,7 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics
         public MetricFields MetricFields { get; set; }
 
         /// <inheritdoc />
-        public Task WriteAsync(
+        public async Task WriteAsync(
             Stream output,
             MetricsDataValueSource metricsData,
             CancellationToken cancellationToken = default)
@@ -64,18 +64,13 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics
 
             var serializer = new MetricSnapshotSerializer();
 
-            using (var streamWriter = new StreamWriter(output))
-            {
-                using (var textWriter = new MetricSnapshotHostedMetricsJsonWriter(
-                    streamWriter,
-                    _flushInterval,
-                    _options.MetricNameFormatter))
-                {
-                    serializer.Serialize(textWriter, metricsData, MetricFields);
-                }
-            }
-
-            return Task.CompletedTask;
+            using var streamWriter = new StreamWriter(output);
+            await using var textWriter = new MetricSnapshotHostedMetricsJsonWriter(
+                streamWriter,
+                _flushInterval,
+                _options.MetricNameFormatter);
+                
+            serializer.Serialize(textWriter, metricsData, MetricFields);
         }
     }
 }

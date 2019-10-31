@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using App.Metrics.Formatters.GrafanaCloudHostedMetrics.Internal;
 using Newtonsoft.Json;
 
@@ -16,7 +17,7 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics
         private static readonly HashSet<string> ExcludeTags = new HashSet<string> { "app", "env", "server", "mtype", "unit", "unit_rate", "unit_dur" };
 
         /// <inheritdoc />
-        public void Write(JsonWriter textWriter, HostedMetricsPoint point, bool writeTimestamp = true)
+        public async Task Write(JsonWriter textWriter, HostedMetricsPoint point, bool writeTimestamp = true)
         {
             if (textWriter == null)
             {
@@ -30,8 +31,8 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics
 
             if (tagsDictionary.TryGetValue("app", out var appValue))
             {
-                measurementWriter.Write("app.");
-                measurementWriter.Write(appValue);
+                await measurementWriter.WriteAsync("app.");
+                await measurementWriter.WriteAsync(appValue);
                 hasPrevious = true;
             }
 
@@ -39,11 +40,11 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics
             {
                 if (hasPrevious)
                 {
-                    measurementWriter.Write(".");
+                    await measurementWriter.WriteAsync(".");
                 }
 
-                measurementWriter.Write("env.");
-                measurementWriter.Write(envValue);
+                await measurementWriter.WriteAsync("env.");
+                await measurementWriter.WriteAsync(envValue);
                 hasPrevious = true;
             }
 
@@ -51,11 +52,11 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics
             {
                 if (hasPrevious)
                 {
-                    measurementWriter.Write(".");
+                    await measurementWriter.WriteAsync(".");
                 }
 
-                measurementWriter.Write("server.");
-                measurementWriter.Write(serverValue);
+                await measurementWriter.WriteAsync("server.");
+                await measurementWriter.WriteAsync(serverValue);
                 hasPrevious = true;
             }
 
@@ -63,10 +64,10 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics
             {
                 if (hasPrevious)
                 {
-                    measurementWriter.Write(".");
+                    await measurementWriter.WriteAsync(".");
                 }
 
-                measurementWriter.Write(metricType);
+                await measurementWriter.WriteAsync(metricType);
                 hasPrevious = true;
             }
 
@@ -74,31 +75,31 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics
             {
                 if (hasPrevious)
                 {
-                    measurementWriter.Write(".");
+                    await measurementWriter.WriteAsync(".");
                 }
 
-                measurementWriter.Write(GraphiteSyntax.EscapeName(point.Context, true));
+                await measurementWriter.WriteAsync(GraphiteSyntax.EscapeName(point.Context, true));
                 hasPrevious = true;
             }
 
             if (hasPrevious)
             {
-                measurementWriter.Write(".");
+                await measurementWriter.WriteAsync(".");
             }
 
-            measurementWriter.Write(GraphiteSyntax.EscapeName(point.Measurement, true));
+            await measurementWriter.WriteAsync(GraphiteSyntax.EscapeName(point.Measurement, true));
 
             var tags = tagsDictionary.Where(tag => !ExcludeTags.Contains(tag.Key));
 
             foreach (var tag in tags)
             {
-                measurementWriter.Write('.');
-                measurementWriter.Write(GraphiteSyntax.EscapeName(tag.Key));
-                measurementWriter.Write('.');
-                measurementWriter.Write(tag.Value);
+                await measurementWriter.WriteAsync('.');
+                await measurementWriter.WriteAsync(GraphiteSyntax.EscapeName(tag.Key));
+                await measurementWriter.WriteAsync('.');
+                await measurementWriter.WriteAsync(tag.Value);
             }
 
-            measurementWriter.Write('.');
+            await measurementWriter.WriteAsync('.');
 
             var prefix = measurementWriter.ToString();
 
@@ -110,39 +111,39 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics
 
                 var metric = $"{prefix}{GraphiteSyntax.EscapeName(f.Key)}";
 
-                textWriter.WritePropertyName("name");
+                await textWriter.WritePropertyNameAsync("name");
                 // in graphite style format. should be same as Metric field below (used for partitioning, schema matching, indexing)
-                textWriter.WriteValue(metric);
+                await textWriter.WriteValueAsync(metric);
 
-                textWriter.WritePropertyName("metric");
+                await textWriter.WritePropertyNameAsync("metric");
                 // in graphite style format. should be same as Name field above (used to generate Id)
-                textWriter.WriteValue(metric);
+                await textWriter.WriteValueAsync(metric);
 
-                textWriter.WritePropertyName("value");
-                textWriter.WriteValue(HostedMetricsSyntax.FormatValue(f.Value, metric));
+                await textWriter.WritePropertyNameAsync("value");
+                await textWriter.WriteValueAsync(HostedMetricsSyntax.FormatValue(f.Value, metric));
 
-                textWriter.WritePropertyName("interval");
-                textWriter.WriteValue(point.FlushInterval.Seconds);
+                await textWriter.WritePropertyNameAsync("interval");
+                await textWriter.WriteValueAsync(point.FlushInterval.Seconds);
 
-                textWriter.WritePropertyName("mtype");
+                await textWriter.WritePropertyNameAsync("mtype");
                 // not used yet. but should be one of gauge rate count counter timestamp
-                textWriter.WriteValue("gauge");
+                await textWriter.WriteValueAsync("gauge");
 
-                textWriter.WritePropertyName("unit");
+                await textWriter.WritePropertyNameAsync("unit");
                 // not needed or used yet
-                textWriter.WriteValue(string.Empty);
+                await textWriter.WriteValueAsync(string.Empty);
 
-                textWriter.WritePropertyName("time");
+                await textWriter.WritePropertyNameAsync("time");
                 // unix timestamp in seconds
-                textWriter.WriteValue(HostedMetricsSyntax.FormatTimestamp(utcTimestamp));
+                await textWriter.WriteValueAsync(HostedMetricsSyntax.FormatTimestamp(utcTimestamp));
 
-                textWriter.WritePropertyName("tags");
-                textWriter.WriteStartArray();
+                await textWriter.WritePropertyNameAsync("tags");
+                await textWriter.WriteStartArrayAsync();
 
                 // TODO: Hosted Metrics requests take tags but not yet used, provided in metric tag for now.
 
-                textWriter.WriteEndArray();
-                textWriter.WriteEndObject();
+                await textWriter.WriteEndArrayAsync();
+                await textWriter.WriteEndObjectAsync();
             }
         }
     }

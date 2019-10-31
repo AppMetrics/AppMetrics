@@ -45,7 +45,7 @@ namespace App.Metrics.Formatters.InfluxDB
         public MetricFields MetricFields { get; set; }
 
         /// <inheritdoc/>
-        public Task WriteAsync(
+        public async Task WriteAsync(
             Stream output,
             MetricsDataValueSource metricsData,
             CancellationToken cancellationToken = default)
@@ -57,17 +57,11 @@ namespace App.Metrics.Formatters.InfluxDB
 
             var serializer = new MetricSnapshotSerializer();
 
-            using (var streamWriter = new StreamWriter(output, Encoding, bufferSize: 1024, leaveOpen: true))
-            {
-                using (var textWriter = new MetricSnapshotInfluxDbLineProtocolWriter(
-                    streamWriter,
-                    _options.MetricNameFormatter))
-                {
-                    serializer.Serialize(textWriter, metricsData, MetricFields);
-                }
-            }
-
-            return Task.CompletedTask;
+            using var streamWriter = new StreamWriter(output, Encoding, bufferSize: 1024, leaveOpen: true);
+            await using var textWriter = new MetricSnapshotInfluxDbLineProtocolWriter(
+                streamWriter,
+                _options.MetricNameFormatter);
+            serializer.Serialize(textWriter, metricsData, MetricFields);
         }
     }
 }

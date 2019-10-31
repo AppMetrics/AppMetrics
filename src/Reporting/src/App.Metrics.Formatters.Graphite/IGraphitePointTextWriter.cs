@@ -3,12 +3,13 @@
 // </copyright>
 
 using System.IO;
+using System.Threading.Tasks;
 using App.Metrics.Formatters.Graphite.Internal;
 
 namespace App.Metrics.Formatters.Graphite
 {
     public interface IGraphitePointTextWriter
     {
-        void Write(TextWriter textWriter, GraphitePoint point, bool writeTimestamp = true);
+        ValueTask WriteAsync(TextWriter textWriter, GraphitePoint point, bool writeTimestamp = true);
     }
 }

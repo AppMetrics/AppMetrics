@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace App.Metrics.Formatters.Graphite.Internal
 {
@@ -60,14 +61,14 @@ namespace App.Metrics.Formatters.Graphite.Internal
 
         public DateTime? UtcTimestamp { get; }
 
-        public void Write(TextWriter textWriter, bool writeTimestamp = true)
+        public ValueTask WriteAsync(TextWriter textWriter, bool writeTimestamp = true)
         {
             if (textWriter == null)
             {
                 throw new ArgumentNullException(nameof(textWriter));
             }
 
-            _pointTextWriter.Write(textWriter, this, writeTimestamp);
+            return _pointTextWriter.WriteAsync(textWriter, this, writeTimestamp);
         }
     }
 }

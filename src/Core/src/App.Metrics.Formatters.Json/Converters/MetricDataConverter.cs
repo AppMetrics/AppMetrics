@@ -3,28 +3,28 @@
 // </copyright>
 
 using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using App.Metrics.Formatters.Json.Extensions;
-using Newtonsoft.Json;
 
 namespace App.Metrics.Formatters.Json.Converters
 {
-    public class MetricDataConverter : JsonConverter
+    public class MetricDataConverter : JsonConverter<MetricsDataValueSource>
     {
         public override bool CanConvert(Type objectType) { return typeof(MetricsDataValueSource) == objectType; }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        
+        public override MetricsDataValueSource Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            var source = serializer.Deserialize<MetricData>(reader);
+            var source = JsonSerializer.Deserialize<MetricData>(reader.GetString());
+            
             return source.ToMetricValueSource();
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, MetricsDataValueSource value, JsonSerializerOptions  serializer)
         {
-            var source = (MetricsDataValueSource)value;
+            var target = value.ToMetric();
 
-            var target = source.ToMetric();
-
-            serializer.Serialize(writer, target);
+            JsonSerializer.Serialize(writer, target);
         }
     }
 }

@@ -4,25 +4,22 @@
 
 using System;
 using System.IO;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-#if !NETSTANDARD1_6
-using App.Metrics.Internal;
-#endif
-using Newtonsoft.Json;
 
 namespace App.Metrics.Formatters.Json
 {
     public class MetricsJsonOutputFormatter : IMetricsOutputFormatter
     {
-        private readonly JsonSerializerSettings _serializerSettings;
+        private readonly JsonSerializerOptions _serializerSettings;
 
-        public MetricsJsonOutputFormatter(JsonSerializerSettings serializerSettings)
+        public MetricsJsonOutputFormatter(JsonSerializerOptions serializerSettings)
         {
             _serializerSettings = serializerSettings ?? throw new ArgumentNullException(nameof(serializerSettings));
         }
 
-        public MetricsJsonOutputFormatter() { _serializerSettings = DefaultJsonSerializerSettings.CreateSerializerSettings(); }
+        public MetricsJsonOutputFormatter() { _serializerSettings = DefaultJsonSerializerSettings.CreateSerializerOptions(); }
 
         /// <inheritdoc />
         public MetricsMediaTypeValue MediaType => new MetricsMediaTypeValue("application", "vnd.appmetrics.metrics", "v1", "json");
@@ -41,20 +38,10 @@ namespace App.Metrics.Formatters.Json
                 throw new ArgumentNullException(nameof(output));
             }
 
-            var serializer = JsonSerializer.Create(_serializerSettings);
+            // TODO: #251 should apply metric field names
+            JsonSerializer.SerializeAsync(output, metricData, _serializerSettings, cancellationToken: cancellationToken);
 
-            using (var streamWriter = new StreamWriter(output))
-            {
-                // TODO: #251 should apply metric field names
-                using var textWriter = new JsonTextWriter(streamWriter);
-                serializer.Serialize(textWriter, metricData);
-            }
-
-#if NETSTANDARD1_6
             return Task.CompletedTask;
-#else
-            return AppMetricsTaskHelper.CompletedTask();
-#endif
         }
     }
 }

@@ -4,7 +4,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
 
 namespace App.Metrics.Formatters.Json
 {
@@ -16,7 +15,6 @@ namespace App.Metrics.Formatters.Json
     {
         public IEnumerable<ApdexMetric> ApdexScores { get; set; } = Enumerable.Empty<ApdexMetric>();
 
-        [JsonProperty(Order = -2)]
         public string Context { get; set; }
 
         public IEnumerable<CounterMetric> Counters { get; set; } = Enumerable.Empty<CounterMetric>();

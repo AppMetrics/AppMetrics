@@ -47,7 +47,7 @@ namespace App.Metrics.Formatters.Graphite
         public MetricFields MetricFields { get; set; }
 
         /// <inheritdoc />
-        public Task WriteAsync(
+        public async Task WriteAsync(
             Stream output,
             MetricsDataValueSource metricsData,
             CancellationToken cancellationToken = default)
@@ -61,15 +61,11 @@ namespace App.Metrics.Formatters.Graphite
 
             using (var streamWriter = new StreamWriter(output))
             {
-                using (var textWriter = new MetricSnapshotGraphitePlainTextProtocolWriter(
-                    streamWriter,
-                    _options.MetricPointTextWriter))
-                {
-                    serializer.Serialize(textWriter, metricsData, MetricFields);
-                }
+                await using var textWriter = new MetricSnapshotGraphitePlainTextProtocolWriter(streamWriter, _options.MetricPointTextWriter);
+                serializer.Serialize(textWriter, metricsData, MetricFields);
             }
 
-            return Task.CompletedTask;
+            return;
         }
     }
 }

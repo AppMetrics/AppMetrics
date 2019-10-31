@@ -4,23 +4,21 @@
 
 using System;
 using System.IO;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Infrastructure;
-#if !NETSTANDARD1_6
 using App.Metrics.Internal;
-#endif
-using Newtonsoft.Json;
 
 namespace App.Metrics.Formatters.Json
 {
     public class EnvInfoJsonOutputFormatter : IEnvOutputFormatter
     {
-        private readonly JsonSerializerSettings _serializerSettings;
+        private readonly JsonSerializerOptions _serializerSettings;
 
-        public EnvInfoJsonOutputFormatter() { _serializerSettings = DefaultJsonSerializerSettings.CreateSerializerSettings(); }
+        public EnvInfoJsonOutputFormatter() { _serializerSettings = DefaultJsonSerializerSettings.CreateSerializerOptions(); }
 
-        public EnvInfoJsonOutputFormatter(JsonSerializerSettings serializerSettings)
+        public EnvInfoJsonOutputFormatter(JsonSerializerOptions serializerSettings)
         {
             _serializerSettings = serializerSettings ?? throw new ArgumentNullException(nameof(serializerSettings));
         }
@@ -39,20 +37,7 @@ namespace App.Metrics.Formatters.Json
                 throw new ArgumentNullException(nameof(output));
             }
 
-            var serilizer = JsonSerializer.Create(_serializerSettings);
-
-            using (var sw = new StreamWriter(output))
-            {
-                using (var jw = new JsonTextWriter(sw))
-                {
-                    serilizer.Serialize(jw, environmentInfo);
-                }
-            }
-#if NETSTANDARD1_6
-            return Task.CompletedTask;
-#else
-            return AppMetricsTaskHelper.CompletedTask();
-#endif
+            return JsonSerializer.SerializeAsync(output, environmentInfo, _serializerSettings, cancellationToken: cancellationToken);
         }
     }
 }

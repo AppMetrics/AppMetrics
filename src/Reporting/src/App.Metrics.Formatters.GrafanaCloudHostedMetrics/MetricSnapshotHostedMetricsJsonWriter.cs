@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using App.Metrics.Formatters.GrafanaCloudHostedMetrics.Internal;
 using App.Metrics.Serialization;
 
@@ -44,12 +45,6 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics
             _points.Add(new HostedMetricsPoint(context, name, fields, tags, _metricPointTextWriter, _flushInterval, timestamp));
         }
 
-        /// <inheritdoc />
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
         /// <summary>
         ///     Releases unmanaged and - optionally - managed resources.
         /// </summary>
@@ -57,14 +52,19 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics
         ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
         ///     unmanaged resources.
         /// </param>
-        protected virtual void Dispose(bool disposing)
+        protected virtual async ValueTask DisposeAsync(bool disposing)
         {
             if (disposing)
             {
-                _points.Write(_textWriter);
+                await _points.WriteAsync(_textWriter);
                 _textWriter?.Close();
                 _textWriter?.Dispose();
             }
+        }
+
+        public ValueTask DisposeAsync()
+        {
+            return DisposeAsync(true);
         }
     }
 }
