@@ -39,9 +39,7 @@ namespace App.Metrics.Formatters.Json
             }
 
             // TODO: #251 should apply metric field names
-            JsonSerializer.SerializeAsync(output, metricData, _serializerSettings, cancellationToken: cancellationToken);
-
-            return Task.CompletedTask;
+            return JsonSerializer.SerializeAsync(output, metricData, _serializerSettings, cancellationToken: cancellationToken);
         }
     }
 }
