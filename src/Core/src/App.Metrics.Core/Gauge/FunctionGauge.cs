@@ -27,7 +27,9 @@ namespace App.Metrics.Gauge
                 }
                 catch (Exception)
                 {
-                    return double.NaN;
+                    // TODO: https://github.com/AppMetrics/AppMetrics/issues/502
+                    // return double.NaN;
+                    return 0;
                 }
             }
         }
