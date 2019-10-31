@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace App.Metrics.Serialization
 {
-    public interface IMetricSnapshotWriter : IDisposable
+    public interface IMetricSnapshotWriter : IAsyncDisposable
     {
         /// <summary>
         /// Writes the specific metrics and tags

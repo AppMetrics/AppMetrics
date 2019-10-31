@@ -3,29 +3,30 @@
 // </copyright>
 
 using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using App.Metrics.Histogram;
-using Newtonsoft.Json;
 
 namespace App.Metrics.Formatters.Json.Converters
 {
-    public class HistogramConverter : JsonConverter
+    public class HistogramConverter : JsonConverter<HistogramValueSource>
     {
         public override bool CanConvert(Type objectType) { return typeof(HistogramValueSource) == objectType; }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        
+        public override HistogramValueSource Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            var source = serializer.Deserialize<HistogramMetric>(reader);
+            var source = JsonSerializer.Deserialize<HistogramMetric>(reader.GetString());
 
             return source.FromSerializableMetric();
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, HistogramValueSource value, JsonSerializerOptions options)
         {
             var source = (HistogramValueSource)value;
 
             var target = source.ToSerializableMetric();
 
-            serializer.Serialize(writer, target);
+            JsonSerializer.Serialize(writer, target);
         }
     }
 }

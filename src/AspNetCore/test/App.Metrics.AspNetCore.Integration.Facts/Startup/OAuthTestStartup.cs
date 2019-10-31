@@ -16,7 +16,7 @@ namespace App.Metrics.AspNetCore.Integration.Facts.Startup
 {
     public class OAuthTestStartup : TestStartup
     {
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             SetFakeClaimsPrincipal(app);
 

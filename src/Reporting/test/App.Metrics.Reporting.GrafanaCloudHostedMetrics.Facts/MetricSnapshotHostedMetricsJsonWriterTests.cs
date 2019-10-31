@@ -5,6 +5,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using App.Metrics.Apdex;
 using App.Metrics.Counter;
 using App.Metrics.Formatters.GrafanaCloudHostedMetrics;
@@ -29,7 +30,7 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Facts
         private readonly DateTime _timestamp = new DateTime(2017, 1, 1, 1, 1, 1, DateTimeKind.Utc);
 
         [Fact]
-        public void Can_report_apdex()
+        public async Task Can_report_apdex()
         {
             // Arrange
             var expected =
@@ -45,11 +46,11 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Facts
             var valueSource = CreateValueSource("test", apdexScores: apdexValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
         }
 
         [Fact]
-        public void Can_report_apdex__when_multidimensional()
+        public async Task Can_report_apdex__when_multidimensional()
         {
             // Arrange
             var expected =
@@ -65,11 +66,11 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Facts
             var valueSource = CreateValueSource("test", apdexScores: apdexValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
         }
 
         [Fact]
-        public void Can_report_apdex_with_tags()
+        public async Task Can_report_apdex_with_tags()
         {
             // Arrange
             var expected =
@@ -85,11 +86,11 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Facts
             var valueSource = CreateValueSource("test", apdexScores: apdexValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
         }
 
         [Fact]
-        public void Can_report_apdex_with_tags_when_multidimensional()
+        public async Task Can_report_apdex_with_tags_when_multidimensional()
         {
             // Arrange
             var expected =
@@ -105,11 +106,11 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Facts
             var valueSource = CreateValueSource("test", apdexScores: apdexValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
         }
 
         [Fact]
-        public void Can_report_counter_with_items()
+        public async Task Can_report_counter_with_items()
         {
             // Arrange
             var expected =
@@ -127,11 +128,11 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Facts
             var valueSource = CreateValueSource("test", counters: counterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
         }
 
         [Fact]
-        public void Can_report_counter_with_items_and_tags()
+        public async Task Can_report_counter_with_items_and_tags()
         {
             // Arrange
             var expected =
@@ -149,11 +150,11 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Facts
             var valueSource = CreateValueSource("test", counters: counterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
         }
 
         [Fact]
-        public void Can_report_counter_with_items_tags_when_multidimensional()
+        public async Task Can_report_counter_with_items_tags_when_multidimensional()
         {
             // Arrange
             var expected =
@@ -172,11 +173,11 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Facts
             var valueSource = CreateValueSource("test", counters: counterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
         }
 
         [Fact]
-        public void Can_report_counter_with_items_with_option_not_to_report_percentage()
+        public async Task Can_report_counter_with_items_with_option_not_to_report_percentage()
         {
             // Arrange
             var expected =
@@ -195,11 +196,11 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Facts
             var valueSource = CreateValueSource("test", counters: counterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
         }
 
         [Fact]
-        public void Can_report_counters()
+        public async Task  Can_report_counters()
         {
             // Arrange
             var expected = "[{\"name\":\"counter.test.test_counter.value\",\"metric\":\"counter.test.test_counter.value\",\"value\":1.0,\"interval\":10,\"mtype\":\"gauge\",\"unit\":\"\",\"time\":1483232461,\"tags\":[]}]";
@@ -215,11 +216,11 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Facts
             var valueSource = CreateValueSource("test", counters: counterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
         }
 
         [Fact]
-        public void Can_report_counters__when_multidimensional()
+        public async Task Can_report_counters__when_multidimensional()
         {
             // Arrange
             var expected = "[{\"name\":\"env.staging.counter.test.test_counter.host.server1.value\",\"metric\":\"env.staging.counter.test.test_counter.host.server1.value\",\"value\":1.0,\"interval\":10,\"mtype\":\"gauge\",\"unit\":\"\",\"time\":1483232461,\"tags\":[]}]";
@@ -235,11 +236,11 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Facts
             var valueSource = CreateValueSource("test", counters: counterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
         }
 
         [Fact]
-        public void Can_report_gauges()
+        public async Task Can_report_gauges()
         {
             // Arrange
             var expected = "[{\"name\":\"gauge.test.test_gauge.value\",\"metric\":\"gauge.test.test_gauge.value\",\"value\":1.0,\"interval\":10,\"mtype\":\"gauge\",\"unit\":\"\",\"time\":1483232461,\"tags\":[]}]";
@@ -254,11 +255,11 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Facts
             var valueSource = CreateValueSource("test", gauges: gaugeValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
         }
 
         [Fact]
-        public void Can_report_gauges__when_multidimensional()
+        public async Task Can_report_gauges__when_multidimensional()
         {
             // Arrange
             var expected = "[{\"name\":\"env.staging.gauge.test.gauge-group.host.server1.value\",\"metric\":\"env.staging.gauge.test.gauge-group.host.server1.value\",\"value\":1.0,\"interval\":10,\"mtype\":\"gauge\",\"unit\":\"\",\"time\":1483232461,\"tags\":[]}]";
@@ -273,11 +274,11 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Facts
             var valueSource = CreateValueSource("test", gauges: gaugeValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
         }
 
         [Fact]
-        public void Can_report_histograms()
+        public async Task Can_report_histograms()
         {
             // Arrange
             var expected =
@@ -294,11 +295,11 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Facts
             var valueSource = CreateValueSource("test", histograms: histogramValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
         }
 
         [Fact]
-        public void Can_report_histograms_when_multidimensional()
+        public async Task Can_report_histograms_when_multidimensional()
         {
             // Arrange
             var expected =
@@ -315,11 +316,11 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Facts
             var valueSource = CreateValueSource("test", histograms: histogramValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
         }
 
         [Fact]
-        public void Can_report_meters()
+        public async Task Can_report_meters()
         {
             // Arrange
             var expected = "[{\"name\":\"meter.test.test_meter.count_meter\",\"metric\":\"meter.test.test_meter.count_meter\",\"value\":1.0,\"interval\":10,\"mtype\":\"gauge\",\"unit\":\"\",\"time\":1483232461,\"tags\":[]},{\"name\":\"meter.test.test_meter.rate1m\",\"metric\":\"meter.test.test_meter.rate1m\",\"value\":0.0,\"interval\":10,\"mtype\":\"gauge\",\"unit\":\"\",\"time\":1483232461,\"tags\":[]},{\"name\":\"meter.test.test_meter.rate5m\",\"metric\":\"meter.test.test_meter.rate5m\",\"value\":0.0,\"interval\":10,\"mtype\":\"gauge\",\"unit\":\"\",\"time\":1483232461,\"tags\":[]},{\"name\":\"meter.test.test_meter.rate15m\",\"metric\":\"meter.test.test_meter.rate15m\",\"value\":0.0,\"interval\":10,\"mtype\":\"gauge\",\"unit\":\"\",\"time\":1483232461,\"tags\":[]}]";
@@ -337,11 +338,11 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Facts
             var valueSource = CreateValueSource("test", meters: meterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
         }
 
         [Fact]
-        public void Can_report_meters_when_multidimensional()
+        public async Task Can_report_meters_when_multidimensional()
         {
             // Arrange
             var expected =
@@ -360,11 +361,11 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Facts
             var valueSource = CreateValueSource("test", meters: meterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
         }
 
         [Fact]
-        public void Can_report_meters_with_items()
+        public async Task Can_report_meters_with_items()
         {
             // Arrange
             var expected =
@@ -384,11 +385,11 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Facts
             var valueSource = CreateValueSource("test", meters: meterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
         }
 
         [Fact]
-        public void Can_report_meters_with_items_tags_when_multidimensional()
+        public async Task Can_report_meters_with_items_tags_when_multidimensional()
         {
             // Arrange
             var expected =
@@ -408,11 +409,11 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Facts
             var valueSource = CreateValueSource("test", meters: meterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
         }
 
         [Fact]
-        public void Can_report_timers()
+        public async Task Can_report_timers()
         {
             // Arrange
             var expected =
@@ -432,11 +433,11 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Facts
             var valueSource = CreateValueSource("test", timers: timerValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
         }
 
         [Fact]
-        public void Can_report_timers__when_multidimensional()
+        public async Task Can_report_timers__when_multidimensional()
         {
             // Arrange
             var expected =
@@ -456,24 +457,22 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Facts
             var valueSource = CreateValueSource("test", timers: timerValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), FlushInterval, expected);
         }
 
-        private void AssertExpectedLineProtocolString(MetricsDataValueSource dataValueSource, TimeSpan flushInterval, string expected)
+        private async Task AssertExpectedLineProtocolString(MetricsDataValueSource dataValueSource, TimeSpan flushInterval, string expected)
         {
             var settings = new MetricsHostedMetricsOptions();
             var serializer = new MetricSnapshotSerializer();
             var fields = new MetricFields();
 
-            using (var sw = new StringWriter())
+            await using var sw = new StringWriter();
+            await using (var packer = new MetricSnapshotHostedMetricsJsonWriter(sw, flushInterval, settings.MetricNameFormatter))
             {
-                using (var packer = new MetricSnapshotHostedMetricsJsonWriter(sw, flushInterval, settings.MetricNameFormatter))
-                {
-                    serializer.Serialize(packer, dataValueSource, fields);
-                }
-
-                sw.ToString().Should().Be(expected);
+                serializer.Serialize(packer, dataValueSource, fields);
             }
+
+            sw.ToString().Should().Be(expected);
         }
 
         private MetricsContextValueSource CreateValueSource(

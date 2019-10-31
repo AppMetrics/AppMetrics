@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace App.Metrics.Formatters.InfluxDB.Internal
 {
@@ -55,23 +56,23 @@ namespace App.Metrics.Formatters.InfluxDB.Internal
 
         public DateTime? UtcTimestamp { get; }
 
-        public void Write(TextWriter textWriter, bool writeTimestamp = true)
+        public async ValueTask WriteAync(TextWriter textWriter, bool writeTimestamp = true)
         {
             if (textWriter == null)
             {
                 throw new ArgumentNullException(nameof(textWriter));
             }
 
-            textWriter.Write(LineProtocolSyntax.EscapeName(Measurement));
+            await textWriter.WriteAsync(LineProtocolSyntax.EscapeName(Measurement));
 
             if (Tags.Count > 0)
             {
                 for (var i = 0; i < Tags.Count; i++)
                 {
-                    textWriter.Write(',');
-                    textWriter.Write(LineProtocolSyntax.EscapeName(Tags.Keys[i]));
-                    textWriter.Write('=');
-                    textWriter.Write(LineProtocolSyntax.EscapeName(Tags.Values[i]));
+                    await textWriter.WriteAsync(',');
+                    await textWriter.WriteAsync(LineProtocolSyntax.EscapeName(Tags.Keys[i]));
+                    await textWriter.WriteAsync('=');
+                    await textWriter.WriteAsync(LineProtocolSyntax.EscapeName(Tags.Values[i]));
                 }
             }
 
@@ -79,11 +80,11 @@ namespace App.Metrics.Formatters.InfluxDB.Internal
 
             foreach (var f in Fields)
             {
-                textWriter.Write(fieldDelim);
+                await textWriter.WriteAsync(fieldDelim);
                 fieldDelim = ',';
-                textWriter.Write(LineProtocolSyntax.EscapeName(f.Key));
-                textWriter.Write('=');
-                textWriter.Write(LineProtocolSyntax.FormatValue(f.Value));
+                await textWriter.WriteAsync(LineProtocolSyntax.EscapeName(f.Key));
+                await textWriter.WriteAsync('=');
+                await textWriter.WriteAsync(LineProtocolSyntax.FormatValue(f.Value));
             }
 
             if (!writeTimestamp)
@@ -91,15 +92,15 @@ namespace App.Metrics.Formatters.InfluxDB.Internal
                 return;
             }
 
-            textWriter.Write(' ');
+            await textWriter.WriteAsync(' ');
 
             if (UtcTimestamp == null)
             {
-                textWriter.Write(LineProtocolSyntax.FormatTimestamp(DateTime.UtcNow));
+                await textWriter.WriteAsync(LineProtocolSyntax.FormatTimestamp(DateTime.UtcNow));
                 return;
             }
 
-            textWriter.Write(LineProtocolSyntax.FormatTimestamp(UtcTimestamp.Value));
+            await textWriter.WriteAsync(LineProtocolSyntax.FormatTimestamp(UtcTimestamp.Value));
         }
     }
 }

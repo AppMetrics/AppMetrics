@@ -29,7 +29,7 @@ namespace App.Metrics.Formatters.Json.Facts
             _metrics = fixture.GaugeContext;
         }
 
-        [Fact]
+        [Fact(Skip = "https://github.com/AppMetrics/AppMetrics/issues/501")]
         public async Task Produces_expected_json()
         {
             // Arrange

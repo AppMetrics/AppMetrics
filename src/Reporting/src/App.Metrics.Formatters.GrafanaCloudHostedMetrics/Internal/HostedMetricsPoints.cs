@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics.Internal
@@ -23,7 +24,7 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics.Internal
             _points.Add(point);
         }
 
-        public void Write(TextWriter textWriter, bool writeTimestamp = true)
+        public async Task WriteAsync(TextWriter textWriter, bool writeTimestamp = true)
         {
             if (textWriter == null)
             {
@@ -34,14 +35,14 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics.Internal
 
             using (JsonWriter writer = new JsonTextWriter(textWriter))
             {
-                writer.WriteStartArray();
+                await writer.WriteStartArrayAsync();
 
                 foreach (var point in points)
                 {
                     point.Write(writer, writeTimestamp);
                 }
 
-                writer.WriteEndArray();
+                await writer.WriteEndArrayAsync();
             }
         }
     }

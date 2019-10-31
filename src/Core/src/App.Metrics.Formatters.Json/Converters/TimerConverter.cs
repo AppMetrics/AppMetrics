@@ -3,29 +3,28 @@
 // </copyright>
 
 using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using App.Metrics.Timer;
-using Newtonsoft.Json;
 
 namespace App.Metrics.Formatters.Json.Converters
 {
-    public class TimerConverter : JsonConverter
+    public class TimerConverter : JsonConverter<TimerValueSource>
     {
         public override bool CanConvert(Type objectType) { return typeof(TimerValueSource) == objectType; }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        
+        public override TimerValueSource Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            var source = serializer.Deserialize<TimerMetric>(reader);
+            var source = JsonSerializer.Deserialize<TimerMetric>(reader.GetString());
 
             return source.FromSerializableMetric();
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, TimerValueSource value, JsonSerializerOptions options)
         {
-            var source = (TimerValueSource)value;
+            var target = value.ToSerializableMetric();
 
-            var target = source.ToSerializableMetric();
-
-            serializer.Serialize(writer, target);
+            JsonSerializer.Serialize(writer, target);
         }
     }
 }

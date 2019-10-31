@@ -38,7 +38,7 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var point = new GraphitePoint(null, "measurement", fields, MetricTags.Empty, new DefaultGraphitePointTextWriter(), timestamp);
 
             // Act
-            point.Write(textWriter);
+            point.WriteAsync(textWriter);
 
             // Assert
             textWriter.ToString().Should().Be("measurement.key value 1483232461\n");
@@ -59,7 +59,7 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var point = new GraphitePoint(null, "measurement", fields, MetricTags.Empty, new DefaultGraphitePointTextWriter(), timestamp);
 
             // Act
-            point.Write(textWriter);
+            point.WriteAsync(textWriter);
 
             // Assert
             textWriter.ToString().Should()
@@ -77,7 +77,7 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var point = new GraphitePoint(null, "measurement", fields, tags, new DefaultGraphitePointTextWriter(), timestamp);
 
             // Act
-            point.Write(textWriter);
+            point.WriteAsync(textWriter);
 
             // Assert
             textWriter.ToString().Should().Be("measurement.tagkey.tagvalue.key value 1483232461\n");
@@ -94,7 +94,7 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var point = new GraphitePoint("context", "measurement", fields, tags, new DefaultGraphitePointTextWriter(), timestamp);
 
             // Act
-            point.Write(textWriter);
+            point.WriteAsync(textWriter);
 
             // Assert
             textWriter.ToString().Should().Be("context.measurement.tagkey.tagvalue.key value 1483232461\n");

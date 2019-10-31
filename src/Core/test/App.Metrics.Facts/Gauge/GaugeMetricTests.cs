@@ -110,7 +110,7 @@ namespace App.Metrics.Facts.Gauge
             valueGauge.Value.Should().Be(0.0);
         }
 
-        [Fact]
+        [Fact(Skip = "TODO: https://github.com/AppMetrics/AppMetrics/issues/502")]
         public void Should_report_nan_on_exception()
         {
             new FunctionGauge(() => throw new InvalidOperationException("test")).Value.Should().Be(double.NaN);
@@ -118,7 +118,7 @@ namespace App.Metrics.Facts.Gauge
             new DerivedGauge(new FunctionGauge(() => 5.0), (d) => throw new InvalidOperationException("test")).Value.Should().Be(double.NaN);
         }
 
-        [Fact]
+        [Fact(Skip = "TODO: https://github.com/AppMetrics/AppMetrics/issues/502")]
         public void When_denomitator_is_zero_returns_NaN()
         {
             var hitPercentage = new PercentageGauge(() => 1, () => 0);

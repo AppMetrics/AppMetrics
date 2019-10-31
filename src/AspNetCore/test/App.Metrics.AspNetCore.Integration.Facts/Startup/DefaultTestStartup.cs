@@ -16,7 +16,7 @@ namespace App.Metrics.AspNetCore.Integration.Facts.Startup
         // ReSharper restore ClassNeverInstantiated.Global
     {
         // ReSharper disable UnusedMember.Global
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
             // ReSharper restore UnusedMember.Global
         {
             app.UseMetricsEndpoint();

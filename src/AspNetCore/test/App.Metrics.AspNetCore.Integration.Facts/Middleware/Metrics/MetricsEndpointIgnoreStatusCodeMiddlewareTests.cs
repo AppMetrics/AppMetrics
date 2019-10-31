@@ -20,7 +20,7 @@ namespace App.Metrics.AspNetCore.Integration.Facts.Middleware.Metrics
 
         private HttpClient Client { get; }
 
-        [Fact]
+        [Fact(Skip = "TODO: https://github.com/AppMetrics/AppMetrics/issues/502")]
         public async Task Can_ignore_specified_status_codes()
         {
             var unauthorizedResponse = await Client.GetAsync("/api/test/401");

@@ -4,6 +4,7 @@
 
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace App.Metrics.Formatters.InfluxDB.Internal
 {
@@ -39,18 +40,18 @@ namespace App.Metrics.Formatters.InfluxDB.Internal
         /// Writes the common properties of the line procol points, which includes writing the measurement name and the different tags.
         /// </summary>
         /// <param name="textWriter">Writer to write the values to.</param>
-        protected void WriteCommon(TextWriter textWriter)
+        protected async ValueTask WriteCommonAsync(TextWriter textWriter)
         {
-            textWriter.Write(LineProtocolSyntax.EscapeName(Measurement));
+            await textWriter.WriteAsync(LineProtocolSyntax.EscapeName(Measurement));
 
             if (Tags.Count > 0)
             {
                 for (var i = 0; i < Tags.Count; i++)
                 {
-                    textWriter.Write(',');
-                    textWriter.Write(LineProtocolSyntax.EscapeName(Tags.Keys[i]));
-                    textWriter.Write('=');
-                    textWriter.Write(LineProtocolSyntax.EscapeName(Tags.Values[i]));
+                    await textWriter.WriteAsync(',');
+                    await textWriter.WriteAsync(LineProtocolSyntax.EscapeName(Tags.Keys[i]));
+                    await textWriter.WriteAsync('=');
+                    await textWriter.WriteAsync(LineProtocolSyntax.EscapeName(Tags.Values[i]));
                 }
             }
         }
@@ -59,17 +60,17 @@ namespace App.Metrics.Formatters.InfluxDB.Internal
         /// Writes the timestamp using the most precise unit.
         /// </summary>
         /// <param name="textWriter">Writer to write the values to.</param>
-        protected void WriteTimestamp(TextWriter textWriter)
+        protected async ValueTask WriteTimestampAsync(TextWriter textWriter)
         {
             textWriter.Write(' ');
 
             if (UtcTimestamp == null)
             {
-                textWriter.Write(LineProtocolSyntax.FormatTimestamp(DateTime.UtcNow));
+                await textWriter.WriteAsync(LineProtocolSyntax.FormatTimestamp(DateTime.UtcNow));
                 return;
             }
 
-            textWriter.Write(LineProtocolSyntax.FormatTimestamp(UtcTimestamp.Value));
+            await textWriter.WriteAsync(LineProtocolSyntax.FormatTimestamp(UtcTimestamp.Value));
         }
     }
 }

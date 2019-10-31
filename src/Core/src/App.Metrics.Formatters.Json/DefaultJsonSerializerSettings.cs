@@ -2,9 +2,8 @@
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
+using System.Text.Json;
 using App.Metrics.Formatters.Json.Converters;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace App.Metrics.Formatters.Json
 {
@@ -12,25 +11,19 @@ namespace App.Metrics.Formatters.Json
     {
         private const int DefaultMaxDepth = 32;
 
-        private static readonly DefaultContractResolver SharedContractResolver = new DefaultContractResolver
-                                                                                 {
-                                                                                     NamingStrategy = new CamelCaseNamingStrategy()
-                                                                                 };
-
         /// <summary>
-        ///     Creates default <see cref="JsonSerializerSettings" />.
+        ///     Creates default <see cref="JsonSerializerOptions" />.
         /// </summary>
-        /// <returns>Default <see cref="JsonSerializerSettings" />.</returns>
-        public static JsonSerializerSettings CreateSerializerSettings()
+        /// <returns>Default <see cref="JsonSerializerOptions" />.</returns>
+        public static JsonSerializerOptions CreateSerializerOptions()
         {
-            var settings = new JsonSerializerSettings
+            var settings = new JsonSerializerOptions
                            {
-                               ContractResolver = SharedContractResolver,
-                               NullValueHandling = NullValueHandling.Ignore,
-                               MissingMemberHandling = MissingMemberHandling.Ignore,
-                               Formatting = Formatting.Indented,
+                               IgnoreNullValues = true,
+                               WriteIndented = true,
                                MaxDepth = DefaultMaxDepth,
-                               TypeNameHandling = TypeNameHandling.None
+                               PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                               DictionaryKeyPolicy = JsonNamingPolicy.CamelCase
                            };
 
             settings.Converters.Add(new MetricDataConverter());

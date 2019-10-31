@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace App.Metrics.Formatters.Graphite.Internal
 {
@@ -22,7 +23,7 @@ namespace App.Metrics.Formatters.Graphite.Internal
             _points.Add(point);
         }
 
-        public void Write(TextWriter textWriter, bool writeTimestamp = true)
+        public async ValueTask WriteAsync(TextWriter textWriter, bool writeTimestamp = true)
         {
             if (textWriter == null)
             {
@@ -33,7 +34,7 @@ namespace App.Metrics.Formatters.Graphite.Internal
 
             foreach (var point in points)
             {
-                point.Write(textWriter, writeTimestamp);
+                await point.WriteAsync(textWriter, writeTimestamp);
             }
         }
     }

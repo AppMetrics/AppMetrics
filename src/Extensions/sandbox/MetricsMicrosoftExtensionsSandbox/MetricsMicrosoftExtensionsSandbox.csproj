@@ -1,19 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <Import Project="..\..\build\common.props" />
+
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.2</TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);net461</TargetFrameworks>
+    <IsPackable>false</IsPackable>
+    <LangVersion>Latest</LangVersion>
     <OutputType>exe</OutputType>
   </PropertyGroup>
+
+  <PropertyGroup>
+      <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+  
   <ItemGroup>
     <Content Include="appsettings.json" />
   </ItemGroup>
   <ItemGroup>
 	<PackageReference Include="App.Metrics" />
-	<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
-	<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
-	<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
+	<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0" />
+  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
+	<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.0.0" />
+	<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\App.Metrics.Extensions.Configuration\App.Metrics.Extensions.Configuration.csproj" />

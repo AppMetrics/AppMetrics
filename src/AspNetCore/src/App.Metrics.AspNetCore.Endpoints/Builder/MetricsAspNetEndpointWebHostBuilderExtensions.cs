@@ -8,6 +8,7 @@ using System.Linq;
 using App.Metrics.AspNetCore.Endpoints;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.AspNetCore.Hosting
@@ -24,7 +25,7 @@ namespace Microsoft.AspNetCore.Hosting
         /// <exception cref="ArgumentNullException">
         ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" /> cannot be null
         /// </exception>
-        public static IWebHostBuilder UseMetricsEndpoints(this IWebHostBuilder hostBuilder)
+        public static IHostBuilder UseMetricsEndpoints(this IHostBuilder hostBuilder)
         {
             hostBuilder.ConfigureMetrics();
 
@@ -48,8 +49,8 @@ namespace Microsoft.AspNetCore.Hosting
         /// <exception cref="ArgumentNullException">
         ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" /> cannot be null
         /// </exception>
-        public static IWebHostBuilder UseMetricsEndpoints(
-            this IWebHostBuilder hostBuilder,
+        public static IHostBuilder UseMetricsEndpoints(
+            this IHostBuilder hostBuilder,
             Action<MetricEndpointsOptions> optionsDelegate)
         {
             hostBuilder.ConfigureMetrics();
@@ -74,9 +75,9 @@ namespace Microsoft.AspNetCore.Hosting
         /// <exception cref="ArgumentNullException">
         ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" /> cannot be null
         /// </exception>
-        public static IWebHostBuilder UseMetricsEndpoints(
-            this IWebHostBuilder hostBuilder,
-            Action<WebHostBuilderContext, MetricEndpointsOptions> setupDelegate)
+        public static IHostBuilder UseMetricsEndpoints(
+            this IHostBuilder hostBuilder,
+            Action<HostBuilderContext, MetricEndpointsOptions> setupDelegate)
         {
             hostBuilder.ConfigureMetrics();
 
@@ -104,15 +105,15 @@ namespace Microsoft.AspNetCore.Hosting
         /// <exception cref="ArgumentNullException">
         ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" /> cannot be null
         /// </exception>
-        public static IWebHostBuilder UseMetricsEndpoints(
-            this IWebHostBuilder hostBuilder,
+        public static IHostBuilder UseMetricsEndpoints(
+            this IHostBuilder hostBuilder,
             IConfiguration configuration,
             Action<MetricEndpointsOptions> optionsDelegate)
         {
             hostBuilder.ConfigureMetrics();
 
             hostBuilder.ConfigureServices(
-                services =>
+                (context, services) =>
                 {
                     services.AddMetricsEndpoints(optionsDelegate, configuration);
                     services.AddSingleton<IStartupFilter>(new DefaultMetricsEndpointsStartupFilter());
@@ -121,8 +122,8 @@ namespace Microsoft.AspNetCore.Hosting
             return hostBuilder;
         }
 
-        public static IWebHostBuilder ConfigureAppMetricsHostingConfiguration(
-            this IWebHostBuilder hostBuilder,
+        public static IHostBuilder ConfigureAppMetricsHostingConfiguration(
+            this IHostBuilder hostBuilder,
             Action<MetricsEndpointsHostingOptions> setupHostingConfiguration)
         {
             var metricsEndpointHostingOptions = new MetricsEndpointsHostingOptions();
@@ -161,12 +162,13 @@ namespace Microsoft.AspNetCore.Hosting
 
             if (ports.Any())
             {
-                var existingUrl = hostBuilder.GetSetting(WebHostDefaults.ServerUrlsKey);
-                var additionalUrls = string.Join(";", ports.Distinct().Select(p => $"http://*:{p}/"));
-                hostBuilder.UseSetting(WebHostDefaults.ServerUrlsKey, $"{existingUrl};{additionalUrls}");
+                throw new NotImplementedException("To implement setting custom ports for netcore3.0, removed for now in App.Metrics 4.0.0");
+                // var existingUrl = hostBuilder.GetSetting(WebHostDefaults.ServerUrlsKey);
+                // var additionalUrls = string.Join(";", ports.Distinct().Select(p => $"http://*:{p}/"));
+                // hostBuilder.UseSetting(WebHostDefaults.ServerUrlsKey, $"{existingUrl};{additionalUrls}");
             }
 
-            hostBuilder.ConfigureServices(services => services.Configure(setupHostingConfiguration));
+            hostBuilder.ConfigureServices((context, services) => services.Configure(setupHostingConfiguration));
 
             return hostBuilder;
         }
