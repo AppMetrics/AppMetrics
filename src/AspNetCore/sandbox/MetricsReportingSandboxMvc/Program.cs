@@ -32,8 +32,6 @@ namespace MetricsReportingSandboxMvc
                                   webBuilder =>
                                   {
                                       webBuilder.UseStartup<Startup>();
-                                      webBuilder.ConfigureKestrel((context, options) => options.AllowSynchronousIO = true);
-
                                   })
                             .Build();
         }
