@@ -15,8 +15,9 @@ namespace App.Metrics.Timer
             Unit unit,
             TimeUnit rateUnit,
             TimeUnit durationUnit,
-            MetricTags tags)
-            : base(name, new ScaledValueProvider<TimerValue>(value, v => v.Scale(rateUnit, durationUnit)), unit, tags)
+            MetricTags tags,
+            bool restOnReporting = false)
+            : base(name, new ScaledValueProvider<TimerValue>(value, v => v.Scale(rateUnit, durationUnit)), unit, tags, restOnReporting)
         {
             RateUnit = rateUnit;
             DurationUnit = durationUnit;

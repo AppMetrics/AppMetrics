@@ -1,4 +1,4 @@
-﻿// <copyright file="MetricValueSourceBase{T}.cs" company="App Metrics Contributors">
+// <copyright file="MetricValueSourceBase{T}.cs" company="App Metrics Contributors">
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
@@ -14,12 +14,13 @@ namespace App.Metrics
     /// <typeparam name="T">Type of the metric value</typeparam>
     public abstract class MetricValueSourceBase<T>
     {
-        protected MetricValueSourceBase(string name, IMetricValueProvider<T> valueProvider, Unit unit, MetricTags tags)
+        protected MetricValueSourceBase(string name, IMetricValueProvider<T> valueProvider, Unit unit, MetricTags tags, bool resetOnReporting = false)
         {
             Name = name;
             Unit = unit;
             ValueProvider = valueProvider;
             Tags = tags;
+            ResetOnReporting = resetOnReporting;
 
             if (name.Contains(AppMetricsFormattingConstants.MetricName.DimensionSeparator))
             {
@@ -69,6 +70,11 @@ namespace App.Metrics
         ///     The unit.
         /// </value>
         public Unit Unit { get; }
+
+        /// <summary>
+        ///     Gets whether or not the Metric will be reset when reported on
+        /// </summary>
+        public bool ResetOnReporting { get; }
 
         /// <summary>
         ///     Gets the current value of the metric.

@@ -1,4 +1,4 @@
-﻿// <copyright file="MeterValueSourceSerializationExtensions.cs" company="App Metrics Contributors">
+// <copyright file="MeterValueSourceSerializationExtensions.cs" company="App Metrics Contributors">
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
@@ -62,7 +62,8 @@ namespace App.Metrics.Meter
 
         public static MeterMetric ToSerializableMetric(this MeterValueSource source)
         {
-            var items = source.Value.Items.Select(
+            var meterValue = source.ValueProvider.GetValue(source.ResetOnReporting);
+            var items = meterValue.Items.Select(
                                    i =>
                                        new MeterMetric.SetItem
                                        {
@@ -78,15 +79,15 @@ namespace App.Metrics.Meter
 
             return new MeterMetric
                    {
-                       RateUnit = source.Value.RateUnit.Unit(),
+                       RateUnit = meterValue.RateUnit.Unit(),
                        Items = items,
-                       Count = source.Value.Count,
+                       Count = meterValue.Count,
                        Name = source.Name,
                        Unit = source.Unit.Name,
-                       OneMinuteRate = source.Value.OneMinuteRate,
-                       FiveMinuteRate = source.Value.FiveMinuteRate,
-                       FifteenMinuteRate = source.Value.FifteenMinuteRate,
-                       MeanRate = source.Value.MeanRate,
+                       OneMinuteRate = meterValue.OneMinuteRate,
+                       FiveMinuteRate = meterValue.FiveMinuteRate,
+                       FifteenMinuteRate = meterValue.FifteenMinuteRate,
+                       MeanRate = meterValue.MeanRate,
                        Tags = source.Tags.ToDictionary()
                    };
         }

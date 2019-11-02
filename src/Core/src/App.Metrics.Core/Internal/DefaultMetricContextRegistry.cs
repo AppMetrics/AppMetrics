@@ -196,7 +196,8 @@ namespace App.Metrics.Internal
                         metricName,
                         gauge,
                         options.MeasurementUnit,
-                        allTags);
+                        allTags,
+                        options.ResetOnReporting);
                     return Tuple.Create((IGauge)gauge, valueSource);
                 });
         }
@@ -219,7 +220,8 @@ namespace App.Metrics.Internal
                         metricName,
                         gauge,
                         options.MeasurementUnit,
-                        allTags);
+                        allTags,
+                        options.ResetOnReporting);
 
                     return Tuple.Create((IGauge)gauge, valueSource);
                 });
@@ -242,7 +244,8 @@ namespace App.Metrics.Internal
                         metricName,
                         histogram,
                         options.MeasurementUnit,
-                        allTags);
+                        allTags,
+                        options.ResetOnReporting);
                     return Tuple.Create((IHistogram)histogram, valueSource);
                 });
         }
@@ -265,7 +268,8 @@ namespace App.Metrics.Internal
                         metricName,
                         histogram,
                         options.MeasurementUnit,
-                        allTags);
+                        allTags,
+                        options.ResetOnReporting);
                     return Tuple.Create((IHistogram)histogram, valueSource);
                 });
         }
@@ -289,6 +293,7 @@ namespace App.Metrics.Internal
                         options.MeasurementUnit,
                         options.RateUnit,
                         allTags,
+                        options.ResetOnReporting,
                         options.ReportSetItems);
                     return Tuple.Create((IMeter)meter, valueSource);
                 });
@@ -314,6 +319,7 @@ namespace App.Metrics.Internal
                         options.MeasurementUnit,
                         options.RateUnit,
                         allTags,
+                        options.ResetOnReporting,
                         options.ReportSetItems);
                     return Tuple.Create((IMeter)meter, valueSource);
                 });
@@ -338,7 +344,8 @@ namespace App.Metrics.Internal
                         options.MeasurementUnit,
                         options.RateUnit,
                         options.DurationUnit,
-                        allTags);
+                        allTags,
+                        options.ResetOnReporting);
                     return Tuple.Create((ITimer)timer, valueSource);
                 });
         }
@@ -363,7 +370,8 @@ namespace App.Metrics.Internal
                         options.MeasurementUnit,
                         options.RateUnit,
                         options.DurationUnit,
-                        allTags);
+                        allTags,
+                        options.ResetOnReporting);
                     return Tuple.Create((ITimer)timer, valueSource);
                 });
         }

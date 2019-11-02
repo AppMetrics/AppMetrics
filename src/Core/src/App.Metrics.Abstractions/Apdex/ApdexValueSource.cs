@@ -11,13 +11,7 @@ namespace App.Metrics.Apdex
             IMetricValueProvider<ApdexValue> value,
             MetricTags tags,
             bool resetOnReporting = false)
-            : base(name, value, Unit.Results, tags)
-        {
-            ResetOnReporting = resetOnReporting;
-        }
-
-        // ReSharper disable UnusedAutoPropertyAccessor.Local
-        private bool ResetOnReporting { get; }
-        // ReSharper restore UnusedAutoPropertyAccessor.Local
+            : base(name, value, Unit.Results, tags, resetOnReporting)
+        {}
     }
 }
