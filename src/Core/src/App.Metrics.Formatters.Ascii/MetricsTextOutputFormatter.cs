@@ -47,7 +47,7 @@ namespace App.Metrics.Formatters.Ascii
         public MetricFields MetricFields { get; set; }
 
         /// <inheritdoc />
-        public Task WriteAsync(
+        public async Task WriteAsync(
             Stream output,
             MetricsDataValueSource metricsData,
             CancellationToken cancellationToken = default)
@@ -59,23 +59,15 @@ namespace App.Metrics.Formatters.Ascii
 
             var serializer = new MetricSnapshotSerializer();
 
-            using (var streamWriter = new StreamWriter(output, _options.Encoding, bufferSize: 1024, leaveOpen: true))
-            {
-                using (var textWriter = new MetricSnapshotTextWriter(
-                    streamWriter,
-                    _options.Separator,
-                    _options.Padding,
-                    _options.MetricNameFormatter))
-                {
-                    serializer.Serialize(textWriter, metricsData, MetricFields);
-                }
-            }
-
-#if NETSTANDARD1_6
-            return Task.CompletedTask;
-#else
-            return AppMetricsTaskHelper.CompletedTask();
-#endif
+            using var streamWriter = new StreamWriter(output, _options.Encoding, bufferSize: 1024, leaveOpen: true);
+            
+            await using var textWriter = new MetricSnapshotTextWriter(
+                streamWriter,
+                _options.Separator,
+                _options.Padding,
+                _options.MetricNameFormatter);
+                
+            serializer.Serialize(textWriter, metricsData, MetricFields);
         }
     }
 }

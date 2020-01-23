@@ -21,6 +21,7 @@ namespace App.Metrics.AspNetCore.Integration.Facts
         {
             var builder = new WebHostBuilder().UseStartup<TStartup>();
             _server = new TestServer(builder);
+            _server.AllowSynchronousIO = true;
 
             Client = _server.CreateClient();
             Context = _server.Host.Services.GetRequiredService<IMetrics>();

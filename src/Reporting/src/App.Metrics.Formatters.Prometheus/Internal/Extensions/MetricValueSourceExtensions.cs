@@ -54,21 +54,22 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
 
         public static IEnumerable<Metric> ToPrometheusMetrics(this CounterValueSource metric)
         {
+            var tags = metric.Tags.ToLabelPairs();
             var result = new List<Metric>
                          {
                              new Metric
                              {
                                  gauge = new Gauge
                                          {
-                                             value = metric.Value.Count
+                                             value = metric.ValueProvider.GetValue(metric.ResetOnReporting).Count
                                          },
-                                 label = metric.Tags.ToLabelPairs()
+                                 label = tags
                              }
                          };
 
             if (metric.Value.Items?.Length > 0)
             {
-                result.AddRange(metric.Value.Items.Select(i => i.ToPrometheusMetric()));
+                result.AddRange(metric.Value.Items.Select(i => i.ToPrometheusMetric(tags)));
             }
 
             return result;

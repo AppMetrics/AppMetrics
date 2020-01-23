@@ -5,6 +5,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using App.Metrics.Apdex;
 using App.Metrics.BucketHistogram;
 using App.Metrics.BucketTimer;
@@ -30,7 +31,7 @@ namespace App.Metrics.Reporting.Graphite.Facts
         private readonly DateTime _timestamp = new DateTime(2017, 1, 1, 1, 1, 1, DateTimeKind.Utc);
 
         [Fact]
-        public void Can_report_apdex()
+        public async Task Can_report_apdex()
         {
             // Arrange
             var expected =
@@ -46,11 +47,11 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var valueSource = CreateValueSource("test", apdexScores: apdexValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_apdex__when_multidimensional()
+        public async Task Can_report_apdex__when_multidimensional()
         {
             // Arrange
             var expected =
@@ -66,11 +67,11 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var valueSource = CreateValueSource("test", apdexScores: apdexValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_apdex_with_tags()
+        public async Task Can_report_apdex_with_tags()
         {
             // Arrange
             var expected =
@@ -86,11 +87,11 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var valueSource = CreateValueSource("test", apdexScores: apdexValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_apdex_with_tags_when_multidimensional()
+        public async Task Can_report_apdex_with_tags_when_multidimensional()
         {
             // Arrange
             var expected =
@@ -106,11 +107,11 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var valueSource = CreateValueSource("test", apdexScores: apdexValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_counter_with_items()
+        public async Task Can_report_counter_with_items()
         {
             // Arrange
             var expected =
@@ -128,11 +129,11 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var valueSource = CreateValueSource("test", counters: counterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_counter_with_items_and_tags()
+        public async Task Can_report_counter_with_items_and_tags()
         {
             // Arrange
             var expected =
@@ -150,11 +151,11 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var valueSource = CreateValueSource("test", counters: counterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+           await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_counter_with_items_tags_when_multidimensional()
+        public async Task Can_report_counter_with_items_tags_when_multidimensional()
         {
             // Arrange
             var expected =
@@ -173,11 +174,11 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var valueSource = CreateValueSource("test", counters: counterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_counter_with_items_with_option_not_to_report_percentage()
+        public async Task Can_report_counter_with_items_with_option_not_to_report_percentage()
         {
             // Arrange
             var expected =
@@ -196,11 +197,11 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var valueSource = CreateValueSource("test", counters: counterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_counters()
+        public async Task Can_report_counters()
         {
             // Arrange
             var expected = "counter.test.test_counter.Value 1 1483232461\n";
@@ -216,11 +217,11 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var valueSource = CreateValueSource("test", counters: counterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_counters__when_multidimensional()
+        public async Task Can_report_counters__when_multidimensional()
         {
             // Arrange
             var expected = "env.staging.counter.test.test_counter.host.server1.Value 1 1483232461\n";
@@ -236,11 +237,11 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var valueSource = CreateValueSource("test", counters: counterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_gauges()
+        public async Task Can_report_gauges()
         {
             // Arrange
             var expected = "gauge.test.test_gauge.Value 1.00 1483232461\n";
@@ -255,11 +256,11 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var valueSource = CreateValueSource("test", gauges: gaugeValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_gauges__when_multidimensional()
+        public async Task Can_report_gauges__when_multidimensional()
         {
             // Arrange
             var expected = "env.staging.gauge.test.gauge-group.host.server1.Value 1.00 1483232461\n";
@@ -274,11 +275,11 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var valueSource = CreateValueSource("test", gauges: gaugeValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_histograms()
+        public async Task Can_report_histograms()
         {
             // Arrange
             var expected =
@@ -295,11 +296,11 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var valueSource = CreateValueSource("test", histograms: histogramValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_histograms_when_multidimensional()
+        public async Task Can_report_histograms_when_multidimensional()
         {
             // Arrange
             var expected =
@@ -316,11 +317,11 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var valueSource = CreateValueSource("test", histograms: histogramValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_meters()
+        public async Task Can_report_meters()
         {
             // Arrange
             var expected = "meter.test.test_meter.Total 1 1483232461\nmeter.test.test_meter.Rate-1-Min 0.00 1483232461\nmeter.test.test_meter.Rate-5-Min 0.00 1483232461\nmeter.test.test_meter.Rate-15-Min 0.00 1483232461\n";
@@ -338,11 +339,11 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var valueSource = CreateValueSource("test", meters: meterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_meters_when_multidimensional()
+        public async Task Can_report_meters_when_multidimensional()
         {
             // Arrange
             var expected =
@@ -361,11 +362,11 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var valueSource = CreateValueSource("test", meters: meterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_meters_with_items()
+        public async Task Can_report_meters_with_items()
         {
             // Arrange
             var expected =
@@ -385,11 +386,11 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var valueSource = CreateValueSource("test", meters: meterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_meters_with_items_tags_when_multidimensional()
+        public async Task Can_report_meters_with_items_tags_when_multidimensional()
         {
             // Arrange
             var expected =
@@ -409,11 +410,11 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var valueSource = CreateValueSource("test", meters: meterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_timers()
+        public async Task Can_report_timers()
         {
             // Arrange
             var expected =
@@ -433,11 +434,11 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var valueSource = CreateValueSource("test", timers: timerValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_timers__when_multidimensional()
+        public async Task Can_report_timers__when_multidimensional()
         {
             // Arrange
             var expected =
@@ -457,25 +458,23 @@ namespace App.Metrics.Reporting.Graphite.Facts
             var valueSource = CreateValueSource("test", timers: timerValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
-        private void AssertExpectedLineProtocolString(MetricsDataValueSource dataValueSource, string expected)
+        private async Task AssertExpectedLineProtocolString(MetricsDataValueSource dataValueSource, string expected)
         {
             var settings = new MetricsGraphitePlainTextProtocolOptions();
             var serializer = new MetricSnapshotSerializer();
             var fields = new MetricFields();
             fields.DefaultGraphiteMetricFieldNames();
 
-            using (var sw = new StringWriter())
+            await using var sw = new StringWriter();
+            await using (var packer = new MetricSnapshotGraphitePlainTextProtocolWriter(sw, settings.MetricPointTextWriter))
             {
-                using (var packer = new MetricSnapshotGraphitePlainTextProtocolWriter(sw, settings.MetricPointTextWriter))
-                {
-                    serializer.Serialize(packer, dataValueSource, fields);
-                }
-
-                sw.ToString().Should().Be(expected);
+                serializer.Serialize(packer, dataValueSource, fields);
             }
+
+            sw.ToString().Should().Be(expected);
         }
 
         private MetricsContextValueSource CreateValueSource(

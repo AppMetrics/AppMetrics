@@ -13,7 +13,7 @@ namespace App.Metrics.AspNetCore.Integration.Facts.Startup
 {
     public class DisabledMetricsTestStartup : TestStartup
     {
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             app.UseMetricsEndpoint();
             app.UseMetricsAllMiddleware();

@@ -26,7 +26,9 @@ namespace App.Metrics.Gauge
 
                 if (double.IsNaN(ratio) || double.IsInfinity(ratio))
                 {
-                    return double.NaN;
+                    // TODO: https://github.com/AppMetrics/AppMetrics/issues/502
+                    // return double.NaN;
+                    return 0;
                 }
 
                 if (Math.Abs(ratio) < 0.0001)
