@@ -15,16 +15,16 @@ namespace App.Metrics.Formatters.Json.Converters
         
         public override MetricsDataValueSource Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            var source = JsonSerializer.Deserialize<MetricData>(reader.GetString());
+            var source = JsonSerializer.Deserialize<MetricData>(reader.GetString(), options);
             
             return source.ToMetricValueSource();
         }
 
-        public override void Write(Utf8JsonWriter writer, MetricsDataValueSource value, JsonSerializerOptions  serializer)
+        public override void Write(Utf8JsonWriter writer, MetricsDataValueSource value, JsonSerializerOptions options)
         {
             var target = value.ToMetric();
 
-            JsonSerializer.Serialize(writer, target);
+            JsonSerializer.Serialize(writer, target, options);
         }
     }
 }
