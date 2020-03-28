@@ -2,12 +2,12 @@
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using App.Metrics.Formatters.Ascii.Internal;
 using App.Metrics.Infrastructure;
 using App.Metrics.Serialization;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace App.Metrics.Formatters.Ascii
 {
@@ -62,6 +62,11 @@ namespace App.Metrics.Formatters.Ascii
             return default;
         }
 #endif
+
+        public void Dispose()
+        {
+            _textWriter?.Dispose();
+        }
 
         private string PaddedFormat(string label, string value)
         {

@@ -39,10 +39,17 @@ namespace App.Metrics.Formatters.Ascii
             }
 
             var serializer = new EnvironmentInfoSerializer();
-
+#if NETSTANDARD2_1
+            await using (var stringWriter = new StreamWriter(output, _options.Encoding))
+#else
             using (var stringWriter = new StreamWriter(output, _options.Encoding))
+#endif
             {
+#if NETSTANDARD2_1
                 await using (var textWriter = new EnvInfoTextWriter(stringWriter, _options.Separator, _options.Padding))
+#else
+                using (var textWriter = new EnvInfoTextWriter(stringWriter, _options.Separator, _options.Padding))
+#endif
                 {
                     await serializer.Serialize(textWriter, environmentInfo);
                 }
