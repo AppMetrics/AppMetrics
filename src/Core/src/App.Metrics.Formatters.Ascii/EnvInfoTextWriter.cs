@@ -4,6 +4,7 @@
 
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using App.Metrics.Formatters.Ascii.Internal;
 using App.Metrics.Infrastructure;
 using App.Metrics.Serialization;
@@ -27,49 +28,40 @@ namespace App.Metrics.Formatters.Ascii
         }
 
         /// <inheritdoc />
-        public void Dispose()
+        public async ValueTask Write(EnvironmentInfo envInfo)
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            await _textWriter.WriteAsync(PaddedFormat("Assembly Name", envInfo.EntryAssemblyName));
+            await _textWriter.WriteAsync('\n');
+            await _textWriter.WriteAsync(PaddedFormat("Assembly Version", envInfo.EntryAssemblyVersion));
+            await _textWriter.WriteAsync('\n');
+            await _textWriter.WriteAsync(PaddedFormat("Framework Description", envInfo.FrameworkDescription));
+            await _textWriter.WriteAsync('\n');
+            await _textWriter.WriteAsync(PaddedFormat("Local Time", envInfo.LocalTimeString));
+            await _textWriter.WriteAsync('\n');
+            await _textWriter.WriteAsync(PaddedFormat("Machine Name", envInfo.MachineName));
+            await _textWriter.WriteAsync('\n');
+            await _textWriter.WriteAsync(PaddedFormat("OS Architecture", envInfo.OperatingSystemArchitecture));
+            await _textWriter.WriteAsync('\n');
+            await _textWriter.WriteAsync(PaddedFormat("OS Platform", envInfo.OperatingSystemPlatform));
+            await _textWriter.WriteAsync('\n');
+            await _textWriter.WriteAsync(PaddedFormat("OS Version", envInfo.OperatingSystemVersion));
+            await _textWriter.WriteAsync('\n');
+            await _textWriter.WriteAsync(PaddedFormat("Process Architecture", envInfo.ProcessArchitecture));
+            await _textWriter.WriteAsync('\n');
         }
 
-        /// <inheritdoc />
-        public void Write(EnvironmentInfo envInfo)
+#if NETSTANDARD2_1
+        public async ValueTask DisposeAsync()
         {
-            _textWriter.Write(PaddedFormat("Assembly Name", envInfo.EntryAssemblyName));
-            _textWriter.Write('\n');
-            _textWriter.Write(PaddedFormat("Assembly Version", envInfo.EntryAssemblyVersion));
-            _textWriter.Write('\n');
-            _textWriter.Write(PaddedFormat("Framework Description", envInfo.FrameworkDescription));
-            _textWriter.Write('\n');
-            _textWriter.Write(PaddedFormat("Local Time", envInfo.LocalTimeString));
-            _textWriter.Write('\n');
-            _textWriter.Write(PaddedFormat("Machine Name", envInfo.MachineName));
-            _textWriter.Write('\n');
-            _textWriter.Write(PaddedFormat("OS Architecture", envInfo.OperatingSystemArchitecture));
-            _textWriter.Write('\n');
-            _textWriter.Write(PaddedFormat("OS Platform", envInfo.OperatingSystemPlatform));
-            _textWriter.Write('\n');
-            _textWriter.Write(PaddedFormat("OS Version", envInfo.OperatingSystemVersion));
-            _textWriter.Write('\n');
-            _textWriter.Write(PaddedFormat("Process Architecture", envInfo.ProcessArchitecture));
-            _textWriter.Write('\n');
+            await (_textWriter?.DisposeAsync() ?? default);
         }
-
-        /// <summary>
-        ///     Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposing">
-        ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
-        ///     unmanaged resources.
-        /// </param>
-        protected virtual void Dispose(bool disposing)
+#else
+        public ValueTask DisposeAsync() 
         {
-            if (disposing)
-            {
-                _textWriter?.Dispose();
-            }
+            _textWriter?.Dispose();
+            return default;
         }
+#endif
 
         private string PaddedFormat(string label, string value)
         {
