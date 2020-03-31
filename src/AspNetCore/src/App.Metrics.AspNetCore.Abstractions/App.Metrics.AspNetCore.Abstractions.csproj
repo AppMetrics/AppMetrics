@@ -2,15 +2,22 @@
 
 	<PropertyGroup>
 		<Description>App Metrics ASP.NET Core abstractions and interfaces for routing, HTTP response formatting and more.</Description>
-		<TargetFramework>netstandard2.0</TargetFramework>
+		<TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
 		<PackageTags>appmetrics;aspnetcore;metrics</PackageTags>	  
 		<RootNamespace>App.Metrics.AspNetCore</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="App.Metrics.Abstractions" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup  Condition="'$(TargetFramework)' == 'netstandard2.0'">
 		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" />
 		<PackageReference Include="Microsoft.AspNetCore.Routing.Abstractions" />
 	</ItemGroup>
-
+	
 </Project>

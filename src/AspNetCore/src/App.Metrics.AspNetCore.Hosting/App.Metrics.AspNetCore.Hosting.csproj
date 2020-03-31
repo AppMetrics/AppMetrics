@@ -2,13 +2,17 @@
 
   <PropertyGroup>
     <Description>App Metrics ASP.NET Core Hosting provides extensions to configure App Metrics in an ASP.NET Core application.</Description>	
-    <TargetFramework>netstandard2.0</TargetFramework>    
+    <TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>    
     <PackageTags>appmetrics;aspnetcore;metrics</PackageTags>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup  Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" />
-  </ItemGroup>
+	</ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\App.Metrics.AspNetCore.Core\App.Metrics.AspNetCore.Core.csproj" />
