@@ -31,7 +31,7 @@ namespace App.Metrics.Formatters.Json.Facts
             _metrics = fixture.CounterContext;
         }
 
-        [Fact(Skip = "https://github.com/AppMetrics/AppMetrics/issues/501")]
+        [Fact]
         public async Task Produces_expected_json()
         {
             // Arrange
@@ -71,7 +71,7 @@ namespace App.Metrics.Formatters.Json.Facts
             action.Should().NotThrow<Exception>();
         }
 
-        [Fact(Skip = "https://github.com/AppMetrics/AppMetrics/issues/501")]
+        [Fact]
         public async Task Counter_is_reset()
         {
             MetricProviderTestFixture metricProviderTestFixture = new MetricProviderTestFixture();

@@ -12,21 +12,21 @@
           "name": "test_meter",
           "unit": "calls",
           "count": 5,
-          "fifteenMinuteRate": 4.0,
-          "fiveMinuteRate": 3.0,
+          "fifteenMinuteRate": 4,
+          "fiveMinuteRate": 3,
           "items": [
             {
               "count": 1,
-              "fifteenMinuteRate": 5.0,
-              "fiveMinuteRate": 4.0,
+              "fifteenMinuteRate": 5,
+              "fiveMinuteRate": 4,
               "item": "item",
-              "meanRate": 2.0,
-              "oneMinuteRate": 3.0,
+              "meanRate": 2,
+              "oneMinuteRate": 3,
               "percent": 0.5
             }
           ],
-          "meanRate": 1.0,
-          "oneMinuteRate": 2.0,
+          "meanRate": 1,
+          "oneMinuteRate": 2,
           "rateUnit": "s",
           "tags": {
             "host": "server1",
