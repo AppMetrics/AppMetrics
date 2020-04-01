@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>App Metrics ASP.NET Core Endpoints provides the ability to expose metrics and environment information as web endpoints.</Description>
-    <TargetFramework>netstandard2.0</TargetFramework>    
+    <TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <PackageTags>appmetrics;aspnetcore;metrics</PackageTags>
   </PropertyGroup>
   

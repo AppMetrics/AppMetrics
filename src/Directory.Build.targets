@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AppMetricsConcurrencyVersion>2.0.1</AppMetricsConcurrencyVersion>
     <AppMetricsVersion>4.0.0-*</AppMetricsVersion>
-    <FrameworkVersion>3.0.0</FrameworkVersion>
+    <FrameworkVersion>3.1.0</FrameworkVersion>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
@@ -53,16 +53,6 @@
     <PackageReference Update="App.Metrics.AspNetCore.Tracking" Version="$(AppMetricsVersion)" />
     
     <!-- Microsoft -->
-    <PackageReference Update="Microsoft.AspNetCore" Version="2.2.0" />
-    <PackageReference Update="Microsoft.AspNetCore.Mvc." Version="2.2.0" />
-    <PackageReference Update="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Update="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-    <PackageReference Update="Microsoft.AspNetCore.Http.Extensions" Version="$(FrameworkVersion)" />
-    <PackageReference Update="Microsoft.AspNetCore.Http.Extensions" Version="$(FrameworkVersion)" />
-    <PackageReference Update="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
-    <PackageReference Update="Microsoft.AspNetCore.Routing.Abstractions" Version="2.2.0" />
-    <PackageReference Update="Microsoft.AspNetCore.Routing" Version="2.2.0" />
-    <PackageReference Update="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
     <PackageReference Update="Microsoft.Extensions.DependencyModel" Version="$(FrameworkVersion)" />
     <PackageReference Update="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(FrameworkVersion)" />
     <PackageReference Update="Microsoft.Extensions.Hosting.Abstractions" Version="$(FrameworkVersion)" />
@@ -86,6 +76,19 @@
     <PackageReference Update="McMaster.Extensions.CommandLineUtils" Version="2.4.0" />
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-19367-01" PrivateAssets="All" />
     <PackageReference Update="StyleCop.Analyzers" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Update="Microsoft.AspNetCore" Version="2.2.0" />
+    <PackageReference Update="Microsoft.AspNetCore.Mvc." Version="2.2.0" />
+    <PackageReference Update="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Update="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Update="Microsoft.AspNetCore.Http.Extensions" Version="$(FrameworkVersion)" />
+    <PackageReference Update="Microsoft.AspNetCore.Http.Extensions" Version="$(FrameworkVersion)" />
+    <PackageReference Update="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
+    <PackageReference Update="Microsoft.AspNetCore.Routing.Abstractions" Version="2.2.0" />
+    <PackageReference Update="Microsoft.AspNetCore.Routing" Version="2.2.0" />
+    <PackageReference Update="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
   </ItemGroup>
 
   <Target Name="SetAssemblyVersion" AfterTargets="MinVer">

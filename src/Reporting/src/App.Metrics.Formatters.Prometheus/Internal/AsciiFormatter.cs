@@ -44,7 +44,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal
             }
         }
 
-        private static async ValueTask WriteFamily(StreamWriter streamWriter, MetricFamily metricFamily)
+        private static async Task WriteFamily(StreamWriter streamWriter, MetricFamily metricFamily)
         {
             await streamWriter.WriteAsync("# HELP ");
             await streamWriter.WriteAsync(metricFamily.name);
@@ -63,7 +63,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal
             }
         }
 
-        private static async ValueTask WriteMetric(StreamWriter streamWriter, MetricFamily family, Metric metric)
+        private static async Task WriteMetric(StreamWriter streamWriter, MetricFamily family, Metric metric)
         {
             var familyName = family.name;
 
@@ -113,7 +113,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal
             }
         }
 
-        private static async ValueTask WriteSimpleValue(StreamWriter writer, string family, double value, IEnumerable<LabelPair> labels, string namePostfix = null)
+        private static async Task WriteSimpleValue(StreamWriter writer, string family, double value, IEnumerable<LabelPair> labels, string namePostfix = null)
         {
             await writer.WriteAsync(family);
             if (namePostfix != null)
