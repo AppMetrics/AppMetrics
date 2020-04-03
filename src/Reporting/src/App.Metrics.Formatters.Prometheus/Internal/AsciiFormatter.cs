@@ -18,30 +18,22 @@ namespace App.Metrics.Formatters.Prometheus.Internal
 
         public static async Task<string> Format(IEnumerable<MetricFamily> metrics, NewLineFormat newLine)
         {
-            using (var memoryStream = new MemoryStream())
-            {
-                await Write(memoryStream, metrics, newLine);
+            await using var memoryStream = new MemoryStream();
+            await Write(memoryStream, metrics, newLine);
 
-                return Encoding.GetString(memoryStream.ToArray());
-            }
+            return Encoding.GetString(memoryStream.ToArray());
         }
 
         public static async Task Write(Stream destination, IEnumerable<MetricFamily> metrics, NewLineFormat newLine)
         {
             var metricFamilies = metrics.ToArray();
-#if NETSTANDARD2_1
-            await using (var streamWriter = new StreamWriter(destination, Encoding, bufferSize: 1024, leaveOpen: true) { NewLine = GetNewLineChar(newLine) })
-#else
-            using (var streamWriter = new StreamWriter(destination, Encoding, bufferSize: 1024, leaveOpen: true) { NewLine = GetNewLineChar(newLine) })
-#endif
+            await using var streamWriter = new StreamWriter(destination, Encoding, bufferSize: 1024, leaveOpen: true) { NewLine = GetNewLineChar(newLine) };
+            foreach (var metricFamily in metricFamilies)
             {
-                foreach (var metricFamily in metricFamilies)
-                {
-                    await WriteFamily(streamWriter, metricFamily);
-                }
-
-                await streamWriter.FlushAsync();
+                await WriteFamily(streamWriter, metricFamily);
             }
+
+            await streamWriter.FlushAsync();
         }
 
         private static async Task WriteFamily(StreamWriter streamWriter, MetricFamily metricFamily)

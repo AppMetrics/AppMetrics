@@ -41,7 +41,7 @@ namespace App.Metrics.Formatters.InfluxDB.Internal
 
         public IEnumerable<object> FieldsValues { get; }
 
-        public async ValueTask WriteAync(TextWriter textWriter, bool writeTimestamp = true)
+        public async ValueTask WriteAsync(TextWriter textWriter, bool writeTimestamp = true)
         {
             if (textWriter == null)
             {
@@ -53,8 +53,8 @@ namespace App.Metrics.Formatters.InfluxDB.Internal
             var fieldDelim = ' ';
 
             using (var nameEnumerator = FieldsNames.GetEnumerator())
-            using (var valueEnumerator = FieldsValues.GetEnumerator())
             {
+                using var valueEnumerator = FieldsValues.GetEnumerator();
                 while (nameEnumerator.MoveNext() && valueEnumerator.MoveNext())
                 {
                     var name = nameEnumerator.Current;

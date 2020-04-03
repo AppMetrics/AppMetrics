@@ -42,7 +42,7 @@ namespace App.Metrics.Formatters.InfluxDB
         public MetricsMediaTypeValue MediaType => new MetricsMediaTypeValue("text", "vnd.appmetrics.metrics.influxdb", "v1", "plain");
 
         /// <inheritdoc />
-        public MetricFields MetricFields { get; set; }
+        public MetricFields MetricFields { get; set; } = new MetricFields();
 
         /// <inheritdoc/>
         public async Task WriteAsync(
@@ -57,7 +57,7 @@ namespace App.Metrics.Formatters.InfluxDB
 
             var serializer = new MetricSnapshotSerializer();
 
-            using var streamWriter = new StreamWriter(output, Encoding, bufferSize: 1024, leaveOpen: true);
+            await using var streamWriter = new StreamWriter(output, Encoding, bufferSize: 1024, leaveOpen: true);
             await using var textWriter = new MetricSnapshotInfluxDbLineProtocolWriter(
                 streamWriter,
                 _options.MetricNameFormatter);

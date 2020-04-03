@@ -62,7 +62,7 @@ namespace App.Metrics.Formatters.InfluxDB.Internal
         /// <param name="textWriter">Writer to write the values to.</param>
         protected async ValueTask WriteTimestampAsync(TextWriter textWriter)
         {
-            textWriter.Write(' ');
+            await textWriter.WriteAsync(' ');
 
             if (UtcTimestamp == null)
             {

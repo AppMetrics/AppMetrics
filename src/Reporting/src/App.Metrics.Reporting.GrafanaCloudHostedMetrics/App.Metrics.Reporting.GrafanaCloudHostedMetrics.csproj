@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>Provides GrafanaCloud Hosted Metrics reporting capability to App Metrics</Description>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <PackageTags>appmetrics;grafana cloud;hosted metrics;graphite;metrics 2.0</PackageTags>
   </PropertyGroup>
 

@@ -49,7 +49,7 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics
         public MetricsMediaTypeValue MediaType => new MetricsMediaTypeValue("text", "vnd.appmetrics.metrics.hostedmetrics", "v1", "plain");
 
         /// <inheritdoc />
-        public MetricFields MetricFields { get; set; }
+        public MetricFields MetricFields { get; set; } = new MetricFields();
 
         /// <inheritdoc />
         public async Task WriteAsync(
@@ -64,13 +64,12 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics
 
             var serializer = new MetricSnapshotSerializer();
 
-            using var streamWriter = new StreamWriter(output);
-            await using var textWriter = new MetricSnapshotHostedMetricsJsonWriter(
-                streamWriter,
+            await using var jsonWriter = new MetricSnapshotHostedMetricsJsonWriter(
+                output,
                 _flushInterval,
                 _options.MetricNameFormatter);
                 
-            serializer.Serialize(textWriter, metricsData, MetricFields);
+            serializer.Serialize(jsonWriter, metricsData, MetricFields);
         }
     }
 }

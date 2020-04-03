@@ -34,7 +34,7 @@ namespace App.Metrics.Formatters.InfluxDB.Internal
 
             foreach (var point in points)
             {
-                await point.WriteAync(textWriter, writeTimestamp);
+                await point.WriteAsync(textWriter, writeTimestamp);
                 await textWriter.WriteAsync('\n');
             }
         }

@@ -34,7 +34,7 @@ namespace MetricsDatadogSandboxMvc.Controllers
             Console.WriteLine("Metrics Report");
             Console.WriteLine("-------------------------------------------");
 
-            using (var stream = new MemoryStream())
+            await using (var stream = new MemoryStream())
             {
                 await _defaultMetricsOutputFormatter.WriteAsync(stream, metricsData, cancellationToken);
 

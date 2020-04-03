@@ -59,7 +59,7 @@ namespace App.Metrics.Formatters.Graphite
 
             var serializer = new MetricSnapshotSerializer();
 
-            using (var streamWriter = new StreamWriter(output))
+            await using (var streamWriter = new StreamWriter(output))
             {
                 await using var textWriter = new MetricSnapshotGraphitePlainTextProtocolWriter(streamWriter, _options.MetricPointTextWriter);
                 serializer.Serialize(textWriter, metricsData, MetricFields);

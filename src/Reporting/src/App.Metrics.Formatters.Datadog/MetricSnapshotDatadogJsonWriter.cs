@@ -20,11 +20,11 @@ namespace App.Metrics.Formatters.Datadog
         private readonly DatadogSeries _series;
 
         public MetricSnapshotDatadogJsonWriter(
-            Stream textWriter,
+            Stream stream,
             TimeSpan flushInterval,
             Func<IDatadogMetricJsonWriter> metricPointTextWriter = null)
         {
-            _stream = textWriter ?? throw new ArgumentNullException(nameof(textWriter));
+            _stream = stream ?? throw new ArgumentNullException(nameof(stream));
             _flushInterval = flushInterval;
             _series = new DatadogSeries();
 
@@ -57,7 +57,7 @@ namespace App.Metrics.Formatters.Datadog
             if (disposing)
             {
                 await _series.WriteAsync(_stream);
-                _stream?.Dispose();
+                _stream?.DisposeAsync();
             }
         }
 
