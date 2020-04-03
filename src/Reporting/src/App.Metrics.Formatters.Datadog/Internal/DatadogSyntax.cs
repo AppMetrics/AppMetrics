@@ -73,6 +73,11 @@ namespace App.Metrics.Formatters.Datadog.Internal
         /// </summary>
         public static string FormatMetricType(string metricType)
         {
+            if (string.IsNullOrWhiteSpace(metricType))
+            {
+                return Gauge;
+            }
+            
             return MetricTypes.TryGetValue(metricType, out var type) ? type : Gauge;
         }
 

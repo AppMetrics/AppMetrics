@@ -227,7 +227,7 @@ namespace App.Metrics
             return builder;
         }
 
-        internal static IDatadogClient CreateClient(
+        public static IDatadogClient CreateClient(
             MetricsReportingDatadogOptions options,
             HttpPolicy httpPolicy,
             HttpMessageHandler httpMessageHandler = null)

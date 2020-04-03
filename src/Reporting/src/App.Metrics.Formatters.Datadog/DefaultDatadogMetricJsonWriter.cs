@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace App.Metrics.Formatters.Datadog
         private static readonly HashSet<string> ExcludeTags = new HashSet<string> { "mtype" };
 
         /// <inheritdoc />
-        public Task Write(Utf8JsonWriter jsonWriter, DatadogPoint point, bool writeTimestamp = true)
+        public async Task Write(Utf8JsonWriter jsonWriter, DatadogPoint point, bool writeTimestamp = true)
         {
             if (jsonWriter == null)
             {
@@ -35,7 +36,32 @@ namespace App.Metrics.Formatters.Datadog
             {
                 jsonWriter.WriteStartObject();
 
-                var metric = $"{point.Context}.{point.Measurement.Replace(' ', '_')}.{metricType}.{f.Key}";
+                var hasPrevious = false;
+                var metricWriter = new StringWriter();
+
+                if (!string.IsNullOrWhiteSpace(point.Context))
+                {
+                    await metricWriter.WriteAsync(point.Context);
+                    hasPrevious = true;
+                }
+
+                if (hasPrevious)
+                {
+                    await metricWriter.WriteAsync(".");
+                }
+
+                await metricWriter.WriteAsync(point.Measurement.Replace(' ', '_'));
+
+                if (!string.IsNullOrWhiteSpace(metricType))
+                {
+                    await metricWriter.WriteAsync(".");
+                    await metricWriter.WriteAsync(metricType);
+                }
+                
+                await metricWriter.WriteAsync(".");
+                await metricWriter.WriteAsync(f.Key);
+
+                var metric = metricWriter.ToString();
 
                 jsonWriter.WriteString("metric", metric);
                 
@@ -67,8 +93,6 @@ namespace App.Metrics.Formatters.Datadog
                 jsonWriter.WriteEndArray();
                 jsonWriter.WriteEndObject();
             }
-
-            return Task.CompletedTask;
         }
     }
 }
