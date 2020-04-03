@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>App Metrics Formatters for metrics and environment data to plain text.</Description>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;netstandard2.0</TargetFrameworks>
     <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);net461</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>appmetrics;metrics;ascii</PackageTags>
