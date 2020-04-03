@@ -4,7 +4,7 @@
 
 using System;
 
-namespace App.Metrics.Formatters.Datadog.Internal
+namespace App.Metrics.Formatting.Datadog.Internal
 {
     public static class DatadogFormatterConstants
     {

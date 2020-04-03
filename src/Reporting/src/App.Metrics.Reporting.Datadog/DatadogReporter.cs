@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Filters;
 using App.Metrics.Formatters;
-using App.Metrics.Formatters.Datadog;
+using App.Metrics.Formatting.Datadog;
 using App.Metrics.Logging;
 using App.Metrics.Reporting.Datadog.Client;
 

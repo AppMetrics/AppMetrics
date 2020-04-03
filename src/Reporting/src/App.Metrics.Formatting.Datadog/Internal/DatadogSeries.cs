@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace App.Metrics.Formatters.Datadog.Internal
+namespace App.Metrics.Formatting.Datadog.Internal
 {
     internal class DatadogSeries
     {

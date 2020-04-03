@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using App.Metrics.Builder;
 using App.Metrics.Formatters;
-using App.Metrics.Formatters.Datadog;
+using App.Metrics.Formatting.Datadog;
 using App.Metrics.Reporting.Datadog;
 using App.Metrics.Reporting.Datadog.Client;
 

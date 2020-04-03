@@ -4,12 +4,12 @@
 
 using System;
 using System.IO;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using App.Metrics.Formatters;
 using App.Metrics.Serialization;
 
-namespace App.Metrics.Formatters.Datadog
+namespace App.Metrics.Formatting.Datadog
 {
     public class MetricsDatadogJsonOutputFormatter : IMetricsOutputFormatter
     {

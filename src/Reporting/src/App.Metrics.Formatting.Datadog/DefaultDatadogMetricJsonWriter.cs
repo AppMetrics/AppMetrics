@@ -8,9 +8,9 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using App.Metrics.Formatters.Datadog.Internal;
+using App.Metrics.Formatting.Datadog.Internal;
 
-namespace App.Metrics.Formatters.Datadog
+namespace App.Metrics.Formatting.Datadog
 {
     public class DefaultDatadogMetricJsonWriter : IDatadogMetricJsonWriter
     {

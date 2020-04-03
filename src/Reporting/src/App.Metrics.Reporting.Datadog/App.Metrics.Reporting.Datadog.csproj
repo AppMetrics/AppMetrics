@@ -11,11 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\App.Metrics.Formatters.Datadog\App.Metrics.Formatters.Datadog.csproj" />
+    <Folder Include="Properties" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Properties" />
+    <ProjectReference Include="..\App.Metrics.Formatting.Datadog\App.Metrics.Formatting.Datadog.csproj" />
   </ItemGroup>
 
 </Project>

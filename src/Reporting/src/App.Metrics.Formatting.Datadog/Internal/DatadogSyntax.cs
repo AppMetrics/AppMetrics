@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using App.Metrics.Logging;
 
-namespace App.Metrics.Formatters.Datadog.Internal
+namespace App.Metrics.Formatting.Datadog.Internal
 {
     /// <summary>
     /// https://docs.datadoghq.com/api/?lang=bash#post-timeseries-points

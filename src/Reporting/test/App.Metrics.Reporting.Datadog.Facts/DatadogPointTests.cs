@@ -8,8 +8,8 @@ using System.IO;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using App.Metrics.Formatters.Datadog;
-using App.Metrics.Formatters.Datadog.Internal;
+using App.Metrics.Formatting.Datadog;
+using App.Metrics.Formatting.Datadog.Internal;
 using FluentAssertions;
 using Xunit;
 

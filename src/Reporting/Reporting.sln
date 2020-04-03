@@ -106,7 +106,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsPrometheusSandboxMvc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Datadog", "Datadog", "{23445169-0670-42D5-A4D4-335C8DF387EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Metrics.Formatters.Datadog", "src\App.Metrics.Formatters.Datadog\App.Metrics.Formatters.Datadog.csproj", "{50F61ECE-DD43-41FF-95A7-5C162343DA2B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Metrics.Formatting.Datadog", "src\App.Metrics.Formatting.Datadog\App.Metrics.Formatting.Datadog.csproj", "{50F61ECE-DD43-41FF-95A7-5C162343DA2B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Datadog", "Datadog", "{051A3EFF-9AA1-499F-9888-CD2ADB543889}"
 EndProject

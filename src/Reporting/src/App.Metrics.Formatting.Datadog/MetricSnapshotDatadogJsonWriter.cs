@@ -7,10 +7,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using App.Metrics.Formatters.Datadog.Internal;
+using App.Metrics.Formatting.Datadog.Internal;
 using App.Metrics.Serialization;
 
-namespace App.Metrics.Formatters.Datadog
+namespace App.Metrics.Formatting.Datadog
 {
     public class MetricSnapshotDatadogJsonWriter : IMetricSnapshotWriter
     {

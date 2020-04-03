@@ -3,9 +3,9 @@
 // </copyright>
 
 using System;
-using App.Metrics.Formatters.Datadog.Internal;
+using App.Metrics.Formatting.Datadog.Internal;
 
-namespace App.Metrics.Formatters.Datadog
+namespace App.Metrics.Formatting.Datadog
 {
     /// <summary>
     ///     Provides programmatic configuration for GrafanfaCloud Hosted Metrics format in the App Metrics framework.

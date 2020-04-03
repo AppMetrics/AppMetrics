@@ -7,7 +7,6 @@ using System.IO;
 using App.Metrics;
 using App.Metrics.AspNetCore;
 using App.Metrics.Extensions.Configuration;
-using App.Metrics.Formatters.Datadog;
 using App.Metrics.Reporting.Datadog;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

@@ -3,7 +3,7 @@
 // </copyright>
 
 using System;
-using App.Metrics.Formatters.Datadog;
+using App.Metrics.Formatting.Datadog;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics

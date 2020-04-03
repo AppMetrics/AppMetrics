@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using App.Metrics.Apdex;
 using App.Metrics.Counter;
-using App.Metrics.Formatters.Datadog;
+using App.Metrics.Formatting.Datadog;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
