@@ -1,0 +1,13 @@
+﻿{
+  "profiles": {
+    "MetricsInfluxDBSandboxMvc": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "metrics",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:1111"
+    }
+  }
+}

@@ -65,8 +65,7 @@ namespace App.Metrics.Formatters.InfluxDB
             if (disposing)
             {
                 await _points.WriteAsync(_textWriter);
-                _textWriter?.Close();
-                _textWriter?.Dispose();
+                _textWriter?.DisposeAsync();
             }
         }
 

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>App Metrics Formatting, formatting metrics data to Graphite formats.</Description>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <PackageTags>appmetrics;graphite</PackageTags>
   </PropertyGroup>
 
