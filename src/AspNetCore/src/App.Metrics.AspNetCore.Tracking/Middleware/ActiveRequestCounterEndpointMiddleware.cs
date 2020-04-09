@@ -38,15 +38,10 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
             try
             {
                 await _next(context);
-                _metrics.DecrementActiveRequests();
-            }
-            catch (Exception)
-            {
-                _metrics.DecrementActiveRequests();
-                throw;
             }
             finally
             {
+                _metrics.DecrementActiveRequests();
                 _logger.MiddlewareExecuted<ActiveRequestCounterEndpointMiddleware>();
             }
         }
