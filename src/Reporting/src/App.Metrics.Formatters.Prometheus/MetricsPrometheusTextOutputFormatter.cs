@@ -44,7 +44,7 @@ namespace App.Metrics.Formatters.Prometheus
 
             var prometheusMetricsSnapshot = metricsData.GetPrometheusMetricsSnapshot(_options.MetricNameFormatter);
 
-            await AsciiFormatter.WriteAsync(output, prometheusMetricsSnapshot, _options.NewLineFormat);
+            await AsciiFormatter.Write(output, prometheusMetricsSnapshot, _options.NewLineFormat);
         }
     }
 }
