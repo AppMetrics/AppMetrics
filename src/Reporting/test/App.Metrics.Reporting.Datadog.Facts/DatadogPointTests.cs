@@ -45,12 +45,12 @@ namespace App.Metrics.Reporting.Datadog.Facts
             var point = new DatadogPoint(null, "measurement", fields, MetricTags.Empty, new DefaultDatadogMetricJsonWriter(), FlushInterval, timestamp);
 
             // Act
-            await point.Write(jsonWriter);
+            await point.WriteAsync(jsonWriter);
             await  jsonWriter.FlushAsync();
             var result = Encoding.UTF8.GetString(ms.ToArray());
                 
             // Assert
-            result.Should().Be("{\"metric\":\"measurement.key\",\"points\":[[1483232461,0]],\"type\":\"gauge\",\"tags\":[]}");
+            result.Should().Be(@"{""metric"":""measurement.key"",""points"":[[1483232461,0]],""type"":""gauge"",""tags"":[]}");
         }
 
         [Fact]
@@ -70,13 +70,13 @@ namespace App.Metrics.Reporting.Datadog.Facts
 
             // Act
             jsonWriter.WriteStartArray();
-            await point.Write(jsonWriter);
+            await point.WriteAsync(jsonWriter);
             jsonWriter.WriteEndArray();
             await  jsonWriter.FlushAsync();
             var result = Encoding.UTF8.GetString(ms.ToArray());
 
             // Assert
-            result.Should().Be("[{\"metric\":\"measurement.field1key\",\"points\":[[1483232461,0]],\"type\":\"gauge\",\"tags\":[]},{\"metric\":\"measurement.field2key\",\"points\":[[1483232461,2]],\"type\":\"gauge\",\"tags\":[]},{\"metric\":\"measurement.field3key\",\"points\":[[1483232461,0]],\"type\":\"gauge\",\"tags\":[]}]");
+            result.Should().Be(@"[{""metric"":""measurement.field1key"",""points"":[[1483232461,0]],""type"":""gauge"",""tags"":[]},{""metric"":""measurement.field2key"",""points"":[[1483232461,2]],""type"":""gauge"",""tags"":[]},{""metric"":""measurement.field3key"",""points"":[[1483232461,0]],""type"":""gauge"",""tags"":[]}]");
         }
 
         [Fact]
@@ -91,13 +91,13 @@ namespace App.Metrics.Reporting.Datadog.Facts
             var point = new DatadogPoint(null, "measurement", fields, tags, new DefaultDatadogMetricJsonWriter(), FlushInterval, timestamp);
 
             // Act
-            await point.Write(jsonWriter);
+            await point.WriteAsync(jsonWriter);
             await  jsonWriter.FlushAsync();
             var result = Encoding.UTF8.GetString(ms.ToArray());
 
             // Assert
             result.Should()
-                  .Be("{\"metric\":\"measurement.key\",\"points\":[[1483232461,0]],\"type\":\"gauge\",\"tags\":[\"tagkey:tagvalue\"]}", "Hosted Metrics request at the moment allow tags array but its not yet used.");
+                  .Be(@"{""metric"":""measurement.key"",""points"":[[1483232461,0]],""type"":""gauge"",""tags"":[""tagkey:tagvalue""]}", "Hosted Metrics request at the moment allow tags array but its not yet used.");
         }
 
         [Fact]
@@ -112,13 +112,13 @@ namespace App.Metrics.Reporting.Datadog.Facts
             var point = new DatadogPoint("context", "measurement", fields, tags, new DefaultDatadogMetricJsonWriter(), FlushInterval, timestamp);
 
             // Act
-            await point.Write(jsonWriter);
+            await point.WriteAsync(jsonWriter);
             await  jsonWriter.FlushAsync();
             
             var result = Encoding.UTF8.GetString(ms.ToArray());
 
             // Assert
-            result.Should().Be("{\"metric\":\"context.measurement.key\",\"points\":[[1483232461,0]],\"type\":\"gauge\",\"tags\":[\"tagkey:tagvalue\"]}", "Hosted Metrics request at the moment allow tags array but its not yet used.");
+            result.Should().Be(@"{""metric"":""context.measurement.key"",""points"":[[1483232461,0]],""type"":""gauge"",""tags"":[""tagkey:tagvalue""]}", "Hosted Metrics request at the moment allow tags array but its not yet used.");
         }
 
         [Fact]

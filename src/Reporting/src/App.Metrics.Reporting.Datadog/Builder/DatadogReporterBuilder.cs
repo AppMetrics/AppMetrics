@@ -1,10 +1,9 @@
-﻿// <copyright file="DatadogReporterBuilder.cs" company="App Metrics Contributors">
+// <copyright file="DatadogReporterBuilder.cs" company="App Metrics Contributors">
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using App.Metrics.Builder;
 using App.Metrics.Formatters;
 using App.Metrics.Formatters.Datadog;
@@ -13,7 +12,7 @@ using App.Metrics.Reporting.Datadog.Client;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics
-    // ReSharper restore CheckNamespace
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     ///     Builder for configuring Datadog reporting using an

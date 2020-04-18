@@ -47,7 +47,7 @@ namespace App.Metrics.Formatters.Datadog.Internal
 
         public static long FormatTimestamp(DateTime utcTimestamp)
         {
-            return (long) utcTimestamp.Subtract(Origin).TotalSeconds;
+            return (long)utcTimestamp.Subtract(Origin).TotalSeconds;
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace App.Metrics.Formatters.Datadog.Internal
             {
                 return Gauge;
             }
-            
+
             return MetricTypes.TryGetValue(metricType, out var type) ? type : Gauge;
         }
 

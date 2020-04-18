@@ -16,7 +16,7 @@ namespace App.Metrics.Formatters.Datadog.Internal
 
         public void Add(DatadogPoint point)
         {
-            if (point == null)
+            if (point is null)
             {
                 return;
             }
@@ -26,7 +26,7 @@ namespace App.Metrics.Formatters.Datadog.Internal
 
         public async Task WriteAsync(Stream stream, bool writeTimestamp = true)
         {
-            if (stream == null)
+            if (stream is null)
             {
                 return;
             }
@@ -34,14 +34,14 @@ namespace App.Metrics.Formatters.Datadog.Internal
             var points = _points.ToList();
 
             await using var writer = new Utf8JsonWriter(stream);
-            
+
             writer.WriteStartObject();
             writer.WritePropertyName("series");
             writer.WriteStartArray();
 
             foreach (var point in points)
             {
-                await point.Write(writer, writeTimestamp);
+                await point.WriteAsync(writer, writeTimestamp);
             }
 
             writer.WriteEndArray();

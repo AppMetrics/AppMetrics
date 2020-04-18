@@ -10,6 +10,6 @@ namespace App.Metrics.Formatters.Datadog
 {
     public interface IDatadogMetricJsonWriter
     {
-        Task Write(Utf8JsonWriter jsonWriter, DatadogPoint point, bool writeTimestamp = true);
+        Task WriteAsync(Utf8JsonWriter jsonWriter, DatadogPoint point, bool writeTimestamp = true);
     }
 }

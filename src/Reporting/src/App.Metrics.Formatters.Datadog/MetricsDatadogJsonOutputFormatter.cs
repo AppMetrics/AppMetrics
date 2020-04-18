@@ -68,7 +68,7 @@ namespace App.Metrics.Formatters.Datadog
                 output,
                 _flushInterval,
                 _options.MetricNameFormatter);
-                
+
             serializer.Serialize(jsonWriter, metricsData, MetricFields);
         }
     }

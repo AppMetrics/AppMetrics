@@ -66,14 +66,14 @@ namespace App.Metrics.Formatters.Datadog.Internal
 
         public DateTime? UtcTimestamp { get; }
 
-        public Task Write(Utf8JsonWriter jsonWrite, bool writeTimestamp = true)
+        public Task WriteAsync(Utf8JsonWriter jsonWrite, bool writeTimestamp = true)
         {
             if (jsonWrite == null)
             {
                 throw new ArgumentNullException(nameof(jsonWrite));
             }
 
-            return _metricJsonWriter.Write(jsonWrite, this, writeTimestamp);
+            return _metricJsonWriter.WriteAsync(jsonWrite, this, writeTimestamp);
         }
     }
 }

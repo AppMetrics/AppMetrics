@@ -76,6 +76,7 @@ namespace App.Metrics.Reporting.Datadog.Client
             {
                 Interlocked.Increment(ref _failureAttempts);
                 Logger.Error(ex, "Failed to write to Datadog");
+
                 return new DatadogWriteResult(false, ex.ToString());
             }
         }

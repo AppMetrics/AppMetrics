@@ -72,6 +72,7 @@ namespace App.Metrics.Reporting.Datadog
             if (result.Success)
             {
                 Logger.Trace("Flushed metrics snapshot");
+
                 return true;
             }
 
