@@ -38,19 +38,17 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
         {
             _logger.MiddlewareExecuting<RequestTimerMiddleware>();
 
-            context.Items[TimerItemsKey] = _requestTimer.NewContext();
-
-            await _next(context);
-
-            var timer = context.Items[TimerItemsKey];
-
-            using (timer as IDisposable)
+            try
             {
+                using (_requestTimer.NewContext())
+                {
+                    await _next(context);
+                }
             }
-
-            context.Items.Remove(TimerItemsKey);
-
-            _logger.MiddlewareExecuted<RequestTimerMiddleware>();
+            finally
+            {
+                _logger.MiddlewareExecuted<RequestTimerMiddleware>();
+            }
         }
     }
 }

@@ -36,39 +36,44 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
         public async Task Invoke(HttpContext context)
             // ReSharper restore UnusedMember.Global
         {
-            await _next(context);
-
-            var clientid = context.GetOAuthClientIdIfRequired();
-
-            _logger.MiddlewareExecuting<OAuthTrackingMiddleware>();
-
-            var routeTemplate = context.GetMetricsCurrentRouteName();
-
-            _metrics.RecordClientRequestRate(routeTemplate, clientid);
-
-            if (!context.Response.IsSuccessfulResponse() && _ignoredHttpStatusCodes.All(i => i != context.Response.StatusCode))
+            try
             {
-                _metrics.RecordClientHttpRequestError(routeTemplate, context.Response.StatusCode, clientid);
+                await _next(context);
             }
-
-            var httpMethod = context.Request.Method.ToUpperInvariant();
-
-            if (httpMethod == "POST")
+            finally
             {
-                if (context.Request.Headers != null && context.Request.Headers.ContainsKey("Content-Length"))
+                _logger.MiddlewareExecuting<OAuthTrackingMiddleware>();
+
+                var clientid = context.GetOAuthClientIdIfRequired();
+
+                var routeTemplate = context.GetMetricsCurrentRouteName();
+
+                _metrics.RecordClientRequestRate(routeTemplate, clientid);
+
+                if (!context.Response.IsSuccessfulResponse() && _ignoredHttpStatusCodes.All(i => i != context.Response.StatusCode))
                 {
-                    _metrics.UpdateClientPostRequestSize(long.Parse(context.Request.Headers["Content-Length"].First()), clientid, routeTemplate);
+                    _metrics.RecordClientHttpRequestError(routeTemplate, context.Response.StatusCode, clientid);
                 }
-            }
-            else if (httpMethod == "PUT")
-            {
-                if (context.Request.Headers != null && context.Request.Headers.ContainsKey("Content-Length"))
-                {
-                    _metrics.UpdateClientPutRequestSize(long.Parse(context.Request.Headers["Content-Length"].First()), clientid, routeTemplate);
-                }
-            }
 
-            _logger.MiddlewareExecuted<OAuthTrackingMiddleware>();
+                var httpMethod = context.Request.Method.ToUpperInvariant();
+
+                if (httpMethod == "POST")
+                {
+                    if (context.Request.Headers != null && context.Request.Headers.ContainsKey("Content-Length"))
+                    {
+                        _metrics.UpdateClientPostRequestSize(long.Parse(context.Request.Headers["Content-Length"].First()), clientid, routeTemplate);
+                    }
+                }
+                else if (httpMethod == "PUT")
+                {
+                    if (context.Request.Headers != null && context.Request.Headers.ContainsKey("Content-Length"))
+                    {
+                        _metrics.UpdateClientPutRequestSize(long.Parse(context.Request.Headers["Content-Length"].First()), clientid, routeTemplate);
+                    }
+                }
+
+                _logger.MiddlewareExecuted<OAuthTrackingMiddleware>();
+            }
         }
     }
 }
