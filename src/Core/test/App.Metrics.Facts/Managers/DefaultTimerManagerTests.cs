@@ -99,6 +99,19 @@ namespace App.Metrics.Facts.Managers
         }
 
         [Fact]
+        public void Can_time_with_specified_value()
+        {
+            var metricName = "test_manager_timer_specified_value";
+            var options = new TimerOptions { Name = metricName };
+
+            _manager.Time(options, 250);
+
+            var timerValue = _fixture.Snapshot.GetTimerValue(_fixture.Context, metricName);
+
+            timerValue.Histogram.Sum.Should().Be(250.0);
+        }
+
+        [Fact]
         public void Can_time_in_using_when_multidimensional()
         {
             var metricName = "test_manager_timer_using_multi";
