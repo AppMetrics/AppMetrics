@@ -26,6 +26,16 @@ namespace App.Metrics.Internal.Extensions
                 }
             }
 
+            foreach (var contextualTag in options.ContextualTags)
+            {
+                var key = $"{KeyValuePairMetricsOptions.ContextualTagsDirective}:{contextualTag.Key}";
+
+                if (!result.ContainsKey(key))
+                {
+                    result.Add(key, "<computed>");
+                }
+            }
+
             return result;
         }
     }

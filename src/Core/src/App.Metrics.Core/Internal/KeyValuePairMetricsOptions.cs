@@ -14,6 +14,7 @@ namespace App.Metrics.Internal
         internal static readonly string EnabledDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.Enabled)}";
         internal static readonly string ReportingEnabledDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.ReportingEnabled)}";
         internal static readonly string GlobalTagsDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.GlobalTags)}:";
+        internal static readonly string ContextualTagsDirective = $"{nameof(MetricsOptions)}:{nameof(MetricsOptions.ContextualTags)}:";
         private readonly MetricsOptions _options;
 
         private readonly Dictionary<string, string> _optionValues;
