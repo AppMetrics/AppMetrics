@@ -29,6 +29,7 @@ namespace App.Metrics.Formatters.Json.Facts
             _metrics = fixture.HistogramContext;
         }
 
+       
         [Fact]
         public async Task Produces_expected_json()
         {

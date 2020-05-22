@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace App.Metrics.Formatters.Graphite.Internal
 {
@@ -14,7 +15,7 @@ namespace App.Metrics.Formatters.Graphite.Internal
         private static readonly HashSet<string> ExcludeTags = new HashSet<string> { "app", "env", "server", "mtype", "unit", "unit_rate", "unit_dur" };
 
         /// <inheritdoc />
-        public void Write(TextWriter textWriter, GraphitePoint point, bool writeTimestamp = true)
+        public async ValueTask WriteAsync(TextWriter textWriter, GraphitePoint point, bool writeTimestamp = true)
         {
             if (textWriter == null)
             {
@@ -28,8 +29,8 @@ namespace App.Metrics.Formatters.Graphite.Internal
 
             if (tagsDictionary.TryGetValue("app", out var appValue))
             {
-                measurementWriter.Write("app.");
-                measurementWriter.Write(appValue);
+                await measurementWriter.WriteAsync("app.");
+                await measurementWriter.WriteAsync(appValue);
                 hasPrevious = true;
             }
 
@@ -37,11 +38,11 @@ namespace App.Metrics.Formatters.Graphite.Internal
             {
                 if (hasPrevious)
                 {
-                    measurementWriter.Write(".");
+                    await measurementWriter.WriteAsync(".");
                 }
 
-                measurementWriter.Write("env.");
-                measurementWriter.Write(envValue);
+                await measurementWriter.WriteAsync("env.");
+                await measurementWriter.WriteAsync(envValue);
                 hasPrevious = true;
             }
 
@@ -49,11 +50,11 @@ namespace App.Metrics.Formatters.Graphite.Internal
             {
                 if (hasPrevious)
                 {
-                    measurementWriter.Write(".");
+                    await measurementWriter.WriteAsync(".");
                 }
 
-                measurementWriter.Write("server.");
-                measurementWriter.Write(serverValue);
+                await measurementWriter.WriteAsync("server.");
+                await measurementWriter.WriteAsync(serverValue);
                 hasPrevious = true;
             }
 
@@ -61,10 +62,10 @@ namespace App.Metrics.Formatters.Graphite.Internal
             {
                 if (hasPrevious)
                 {
-                    measurementWriter.Write(".");
+                    await measurementWriter.WriteAsync(".");
                 }
 
-                measurementWriter.Write(metricType);
+                await measurementWriter.WriteAsync(metricType);
                 hasPrevious = true;
             }
 
@@ -72,31 +73,31 @@ namespace App.Metrics.Formatters.Graphite.Internal
             {
                 if (hasPrevious)
                 {
-                    measurementWriter.Write(".");
+                    await measurementWriter.WriteAsync(".");
                 }
 
-                measurementWriter.Write(GraphiteSyntax.EscapeName(point.Context, true));
+                await measurementWriter.WriteAsync(GraphiteSyntax.EscapeName(point.Context, true));
                 hasPrevious = true;
             }
 
             if (hasPrevious)
             {
-                measurementWriter.Write(".");
+                await measurementWriter.WriteAsync(".");
             }
 
-            measurementWriter.Write(GraphiteSyntax.EscapeName(point.Measurement, true));
+            await measurementWriter.WriteAsync(GraphiteSyntax.EscapeName(point.Measurement, true));
 
             var tags = tagsDictionary.Where(tag => !ExcludeTags.Contains(tag.Key));
 
             foreach (var tag in tags)
             {
-                measurementWriter.Write('.');
-                measurementWriter.Write(GraphiteSyntax.EscapeName(tag.Key));
-                measurementWriter.Write('.');
-                measurementWriter.Write(tag.Value);
+                await measurementWriter.WriteAsync('.');
+                await measurementWriter.WriteAsync(GraphiteSyntax.EscapeName(tag.Key));
+                await measurementWriter.WriteAsync('.');
+                await measurementWriter.WriteAsync(tag.Value);
             }
 
-            measurementWriter.Write('.');
+            await measurementWriter.WriteAsync('.');
 
             var prefix = measurementWriter.ToString();
 
@@ -104,16 +105,16 @@ namespace App.Metrics.Formatters.Graphite.Internal
 
             foreach (var f in point.Fields)
             {
-                textWriter.Write(prefix);
-                textWriter.Write(GraphiteSyntax.EscapeName(f.Key));
+                await textWriter.WriteAsync(prefix);
+                await textWriter.WriteAsync(GraphiteSyntax.EscapeName(f.Key));
 
-                textWriter.Write(' ');
-                textWriter.Write(GraphiteSyntax.FormatValue(f.Value));
+                await textWriter.WriteAsync(' ');
+                await textWriter.WriteAsync(GraphiteSyntax.FormatValue(f.Value));
 
-                textWriter.Write(' ');
-                textWriter.Write(GraphiteSyntax.FormatTimestamp(utcTimestamp));
+                await textWriter.WriteAsync(' ');
+                await textWriter.WriteAsync(GraphiteSyntax.FormatTimestamp(utcTimestamp));
 
-                textWriter.Write('\n');
+                await textWriter.WriteAsync('\n');
             }
         }
     }

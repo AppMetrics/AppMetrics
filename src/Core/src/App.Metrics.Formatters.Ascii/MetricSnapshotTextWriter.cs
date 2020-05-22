@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using App.Metrics.Formatters.Ascii.Internal;
 using App.Metrics.Serialization;
 
@@ -82,20 +83,20 @@ namespace App.Metrics.Formatters.Ascii
         }
 
         /// <inheritdoc />
-        public void Dispose()
+        public ValueTask DisposeAsync()
         {
-            Dispose(true);
+            return DisposeAsync(true);
         }
 
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
+        protected virtual async ValueTask DisposeAsync(bool disposing)
         {
             if (disposing)
             {
-                _textPoints.Write(_textWriter, _separator, _padding);
+                await _textPoints.WriteAsync(_textWriter, _separator, _padding);
                 _textWriter?.Dispose();
             }
         }

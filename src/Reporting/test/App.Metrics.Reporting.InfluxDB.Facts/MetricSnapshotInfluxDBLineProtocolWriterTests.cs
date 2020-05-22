@@ -5,6 +5,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using App.Metrics.Apdex;
 using App.Metrics.Counter;
 using App.Metrics.Formatters.InfluxDB;
@@ -28,7 +29,7 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
         private readonly DateTime _timestamp = new DateTime(2017, 1, 1, 1, 1, 1, DateTimeKind.Utc);
 
         [Fact]
-        public void Can_report_apdex()
+        public async Task Can_report_apdex()
         {
             // Arrange
             var expected =
@@ -44,11 +45,11 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var valueSource = CreateValueSource("test", apdexScores: apdexValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_apdex__when_multidimensional()
+        public async Task Can_report_apdex__when_multidimensional()
         {
             // Arrange
             var expected =
@@ -64,11 +65,11 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var valueSource = CreateValueSource("test", apdexScores: apdexValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_apdex_with_tags()
+        public async Task Can_report_apdex_with_tags()
         {
             // Arrange
             var expected =
@@ -84,11 +85,11 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var valueSource = CreateValueSource("test", apdexScores: apdexValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_apdex_with_tags_when_multidimensional()
+        public async Task Can_report_apdex_with_tags_when_multidimensional()
         {
             // Arrange
             var expected =
@@ -104,11 +105,11 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var valueSource = CreateValueSource("test", apdexScores: apdexValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_counter_with_items()
+        public async Task Can_report_counter_with_items()
         {
             // Arrange
             var expected =
@@ -126,11 +127,11 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var valueSource = CreateValueSource("test", counters: counterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_counter_with_items_and_tags()
+        public async Task Can_report_counter_with_items_and_tags()
         {
             // Arrange
             var expected =
@@ -148,11 +149,11 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var valueSource = CreateValueSource("test", counters: counterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_counter_with_items_tags_when_multidimensional()
+        public async Task Can_report_counter_with_items_tags_when_multidimensional()
         {
             // Arrange
             var expected =
@@ -171,11 +172,11 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var valueSource = CreateValueSource("test", counters: counterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_counter_with_items_with_option_not_to_report_percentage()
+        public async Task Can_report_counter_with_items_with_option_not_to_report_percentage()
         {
             // Arrange
             var expected =
@@ -194,11 +195,11 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var valueSource = CreateValueSource("test", counters: counterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_counters()
+        public async Task Can_report_counters()
         {
             // Arrange
             var expected = "test__test_counter,mtype=counter,unit=none value=1i 1483232461000000000\n";
@@ -214,11 +215,11 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var valueSource = CreateValueSource("test", counters: counterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_counters__when_multidimensional()
+        public async Task Can_report_counters__when_multidimensional()
         {
             // Arrange
             var expected = "test__test_counter,host=server1,env=staging,mtype=counter,unit=none value=1i 1483232461000000000\n";
@@ -234,11 +235,11 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var valueSource = CreateValueSource("test", counters: counterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_gauges()
+        public async Task Can_report_gauges()
         {
             // Arrange
             var expected = "test__test_gauge,mtype=gauge,unit=none value=1 1483232461000000000\n";
@@ -253,11 +254,11 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var valueSource = CreateValueSource("test", gauges: gaugeValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_gauges__when_multidimensional()
+        public async Task Can_report_gauges__when_multidimensional()
         {
             // Arrange
             var expected = "test__gauge-group,host=server1,env=staging,mtype=gauge,unit=none value=1 1483232461000000000\n";
@@ -272,11 +273,11 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var valueSource = CreateValueSource("test", gauges: gaugeValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_histograms()
+        public async Task Can_report_histograms()
         {
             // Arrange
             var expected =
@@ -293,11 +294,11 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var valueSource = CreateValueSource("test", histograms: histogramValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_histograms_when_multidimensional()
+        public async Task Can_report_histograms_when_multidimensional()
         {
             // Arrange
             var expected =
@@ -314,11 +315,11 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var valueSource = CreateValueSource("test", histograms: histogramValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_meters()
+        public async Task Can_report_meters()
         {
             // Arrange
             var expected = "test__test_meter,mtype=meter,unit=none,unit_rate=ms count.meter=1i,rate1m=0,rate5m=0,rate15m=0 1483232461000000000\n";
@@ -336,11 +337,11 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var valueSource = CreateValueSource("test", meters: meterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_meters_when_multidimensional()
+        public async Task Can_report_meters_when_multidimensional()
         {
             // Arrange
             var expected =
@@ -359,11 +360,11 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var valueSource = CreateValueSource("test", meters: meterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_meters_with_items()
+        public async Task Can_report_meters_with_items()
         {
             // Arrange
             var expected =
@@ -383,11 +384,11 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var valueSource = CreateValueSource("test", meters: meterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_meters_with_items_tags_when_multidimensional()
+        public async Task Can_report_meters_with_items_tags_when_multidimensional()
         {
             // Arrange
             var expected =
@@ -407,11 +408,11 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var valueSource = CreateValueSource("test", meters: meterValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_timers()
+        public async Task Can_report_timers()
         {
             // Arrange
             var expected =
@@ -431,11 +432,11 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var valueSource = CreateValueSource("test", timers: timerValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
         [Fact]
-        public void Can_report_timers__when_multidimensional()
+        public async Task Can_report_timers__when_multidimensional()
         {
             // Arrange
             var expected =
@@ -455,24 +456,22 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var valueSource = CreateValueSource("test", timers: timerValueSource);
 
             // Assert
-            AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
-        private void AssertExpectedLineProtocolString(MetricsDataValueSource dataValueSource, string expected)
+        private async Task AssertExpectedLineProtocolString(MetricsDataValueSource dataValueSource, string expected)
         {
             var settings = new MetricsInfluxDbLineProtocolOptions();
             var serializer = new MetricSnapshotSerializer();
             var fields = new MetricFields();
 
-            using (var sw = new StringWriter())
+            await using var sw = new StringWriter();
+            await using (var packer = new MetricSnapshotInfluxDbLineProtocolWriter(sw, settings.MetricNameFormatter))
             {
-                using (var packer = new MetricSnapshotInfluxDbLineProtocolWriter(sw, settings.MetricNameFormatter))
-                {
-                    serializer.Serialize(packer, dataValueSource, fields);
-                }
-
-                sw.ToString().Should().Be(expected);
+                serializer.Serialize(packer, dataValueSource, fields);
             }
+
+            sw.ToString().Should().Be(expected);
         }
 
         private MetricsContextValueSource CreateValueSource(

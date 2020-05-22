@@ -30,7 +30,7 @@ namespace App.Metrics.AspNetCore.Integration.Facts.Middleware.Metrics
 
             var result = await response.Content.ReadAsStringAsync();
 
-            var metrics = JsonConvert.DeserializeObject<MetricsDataValueSource>(result, DefaultJsonSerializerSettings.CreateSerializerSettings());
+            var metrics = JsonConvert.DeserializeObject<MetricsDataValueSource>(result);
 
             metrics.Contexts.Any(c => c.Counters.Any()).Should().BeTrue();
             metrics.Contexts.All(c => !c.Gauges.Any()).Should().BeTrue();

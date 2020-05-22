@@ -2,12 +2,13 @@
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
+using System;
 using System.IO;
 using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
 namespace ReportingSandbox
 {
@@ -15,6 +16,8 @@ namespace ReportingSandbox
     public class Startup
         // ReSharper restore ClassNeverInstantiated.Global
     {
+        private static readonly ILogger Logger = Log.ForContext<Startup>();
+        
         // ReSharper disable UnusedMember.Global
         public void ConfigureServices(IServiceCollection services)
             // ReSharper restore UnusedMember.Global
@@ -35,15 +38,18 @@ namespace ReportingSandbox
                     if (context.Request.Method == "POST" && context.Request.Path == "/metrics-receive")
                     {
                         var req = context.Request;
-                        req.EnableRewind();
+                        req.EnableBuffering();
 
-                        using (var sr = new StreamReader(req.Body, Encoding.UTF8, true, 1024, true))
+                        try
                         {
-#if NET461
-                            File.WriteAllText(fileName, sr.ReadToEnd());
-#else
-                            await File.WriteAllTextAsync(fileName, sr.ReadToEnd());
-#endif
+                            using (var sr = new StreamReader(req.Body, Encoding.UTF8, true, 1024, true))
+                            {
+                                await File.WriteAllTextAsync(fileName, await sr.ReadToEndAsync());
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.Error(e, "metrics write failed");
                         }
 
                         req.Body.Position = 0;
@@ -57,8 +63,18 @@ namespace ReportingSandbox
         private static string EnsureMetricsDumpFile()
         {
             const string fileName = @"C:\metrics\http_received.txt";
-            var file = new FileInfo(fileName);
-            file.Directory?.Create();
+            var fileInfo = new FileInfo(fileName);
+
+            if (fileInfo.Directory != null && !fileInfo.Directory.Exists)
+            {
+                Directory.CreateDirectory(fileInfo.Directory.FullName);
+            }
+
+            if (!fileInfo.Exists)
+            {
+                File.Create(fileName);
+            }
+            
             return fileName;
         }
     }

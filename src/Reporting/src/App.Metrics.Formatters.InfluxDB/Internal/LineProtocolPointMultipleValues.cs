@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace App.Metrics.Formatters.InfluxDB.Internal
 {
@@ -40,30 +41,30 @@ namespace App.Metrics.Formatters.InfluxDB.Internal
 
         public IEnumerable<object> FieldsValues { get; }
 
-        public void Write(TextWriter textWriter, bool writeTimestamp = true)
+        public async ValueTask WriteAsync(TextWriter textWriter, bool writeTimestamp = true)
         {
             if (textWriter == null)
             {
                 throw new ArgumentNullException(nameof(textWriter));
             }
 
-            WriteCommon(textWriter);
+            await WriteCommonAsync(textWriter);
 
             var fieldDelim = ' ';
 
             using (var nameEnumerator = FieldsNames.GetEnumerator())
-            using (var valueEnumerator = FieldsValues.GetEnumerator())
             {
+                using var valueEnumerator = FieldsValues.GetEnumerator();
                 while (nameEnumerator.MoveNext() && valueEnumerator.MoveNext())
                 {
                     var name = nameEnumerator.Current;
                     var value = valueEnumerator.Current;
 
-                    textWriter.Write(fieldDelim);
+                    await textWriter.WriteAsync(fieldDelim);
                     fieldDelim = ',';
-                    textWriter.Write(LineProtocolSyntax.EscapeName(name));
-                    textWriter.Write('=');
-                    textWriter.Write(LineProtocolSyntax.FormatValue(value));
+                    await textWriter.WriteAsync(LineProtocolSyntax.EscapeName(name));
+                    await textWriter.WriteAsync('=');
+                    await textWriter.WriteAsync(LineProtocolSyntax.FormatValue(value));
                 }
             }
 
@@ -72,7 +73,7 @@ namespace App.Metrics.Formatters.InfluxDB.Internal
                 return;
             }
 
-            WriteTimestamp(textWriter);
+            await WriteTimestampAsync(textWriter);
         }
     }
 }

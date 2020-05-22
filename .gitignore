@@ -67,6 +67,7 @@ tools/*
 !**/tools/packages.config
 
 .vs
+.vscode/
 
 # visual studio database projects
 *.dbmdl

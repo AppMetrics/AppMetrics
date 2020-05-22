@@ -26,17 +26,17 @@
             {
               "count": 20,
               "item": "item1",
-              "percent": 10.0
+              "percent": 10
             },
             {
               "count": 40,
               "item": "item2",
-              "percent": 20.0
+              "percent": 20
             },
             {
               "count": 140,
               "item": "item3",
-              "percent": 70.0
+              "percent": 70
             }
           ],
           "tags": {
@@ -61,22 +61,22 @@
           "name": "test_histogram",
           "unit": "items",
           "count": 1,
-          "sum": 1.0,
+          "sum": 1,
           "lastUserValue": "3",
-          "lastValue": 2.0,
-          "max": 4.0,
+          "lastValue": 2,
+          "max": 4,
           "maxUserValue": "5",
-          "mean": 6.0,
-          "median": 10.0,
-          "min": 7.0,
+          "mean": 6,
+          "median": 10,
+          "min": 7,
           "minUserValue": "8",
-          "percentile75": 11.0,
-          "percentile95": 12.0,
-          "percentile98": 13.0,
-          "percentile99": 14.0,
-          "percentile999": 15.0,
+          "percentile75": 11,
+          "percentile95": 12,
+          "percentile98": 13,
+          "percentile99": 14,
+          "percentile999": 15,
           "sampleSize": 16,
-          "stdDev": 9.0,
+          "stdDev": 9,
           "tags": {
             "host": "server1",
             "env": "staging"
@@ -88,21 +88,21 @@
           "name": "test_meter",
           "unit": "calls",
           "count": 5,
-          "fifteenMinuteRate": 4.0,
-          "fiveMinuteRate": 3.0,
+          "fifteenMinuteRate": 4,
+          "fiveMinuteRate": 3,
           "items": [
             {
               "count": 1,
-              "fifteenMinuteRate": 5.0,
-              "fiveMinuteRate": 4.0,
+              "fifteenMinuteRate": 5,
+              "fiveMinuteRate": 4,
               "item": "item",
-              "meanRate": 2.0,
-              "oneMinuteRate": 3.0,
+              "meanRate": 2,
+              "oneMinuteRate": 3,
               "percent": 0.5
             }
           ],
-          "meanRate": 1.0,
-          "oneMinuteRate": 2.0,
+          "meanRate": 1,
+          "oneMinuteRate": 2,
           "rateUnit": "s",
           "tags": {
             "host": "server1",
@@ -136,10 +136,10 @@
             "stdDev": 9E-06
           },
           "rate": {
-            "fifteenMinuteRate": 4.0,
-            "fiveMinuteRate": 3.0,
-            "meanRate": 1.0,
-            "oneMinuteRate": 2.0
+            "fifteenMinuteRate": 4,
+            "fiveMinuteRate": 3,
+            "meanRate": 1,
+            "oneMinuteRate": 2
           },
           "rateUnit": "s",
           "tags": {

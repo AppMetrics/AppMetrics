@@ -2,7 +2,7 @@
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace App.Metrics.Formatters.Json
 {
@@ -11,7 +11,7 @@ namespace App.Metrics.Formatters.Json
     /// </summary>
     public class MetricsJsonOptions
     {
-        public JsonSerializerSettings SerializerSettings { get; } =
-            DefaultJsonSerializerSettings.CreateSerializerSettings();
+        public JsonSerializerOptions SerializerSettings { get; } =
+            DefaultJsonSerializerSettings.CreateSerializerOptions();
     }
 }

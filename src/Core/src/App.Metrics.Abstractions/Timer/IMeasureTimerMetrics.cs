@@ -90,5 +90,22 @@ namespace App.Metrics.Timer
         /// <param name="options">The details of the timer that is being measured</param>
         /// <returns>A disposable context, when disposed records the time token to process the using block</returns>
         TimerContext Time(TimerOptions options);
+
+        /// <summary>
+        /// Records a <see cref="ITimerMetric" /> which records the user generated time taken. This can be useful
+        /// for an external service that you want to capture its observed duration.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <param name="tags"></param>
+        /// <param name="time"></param>
+        void Time(TimerOptions options, MetricTags tags, long time);
+
+        /// <summary>
+        /// Records a <see cref="ITimerMetric" /> which records the user generated time taken. This can be useful
+        /// for an external service that you want to capture its observed duration.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <param name="time"></param>
+        void Time(TimerOptions options, long time);
     }
 }

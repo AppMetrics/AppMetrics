@@ -4,6 +4,7 @@
 
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace App.Metrics.Formatters.InfluxDB.Internal
 {
@@ -33,26 +34,26 @@ namespace App.Metrics.Formatters.InfluxDB.Internal
 
         public object FieldValue { get; }
 
-        public void Write(TextWriter textWriter, bool writeTimestamp = true)
+        public async ValueTask WriteAsync(TextWriter textWriter, bool writeTimestamp = true)
         {
             if (textWriter == null)
             {
                 throw new ArgumentNullException(nameof(textWriter));
             }
 
-            WriteCommon(textWriter);
+            await WriteCommonAsync(textWriter);
 
-            textWriter.Write(' ');
-            textWriter.Write(LineProtocolSyntax.EscapeName(FieldName));
-            textWriter.Write('=');
-            textWriter.Write(LineProtocolSyntax.FormatValue(FieldValue));
+            await textWriter.WriteAsync(' ');
+            await textWriter.WriteAsync(LineProtocolSyntax.EscapeName(FieldName));
+            await textWriter.WriteAsync('=');
+            await textWriter.WriteAsync(LineProtocolSyntax.FormatValue(FieldValue));
 
             if (!writeTimestamp)
             {
                 return;
             }
 
-            WriteTimestamp(textWriter);
+            await WriteTimestampAsync(textWriter);
         }
     }
 }

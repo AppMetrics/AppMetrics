@@ -7,12 +7,8 @@
     <OutputType>exe</OutputType>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(OS)' != 'Windows_NT' ">
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
-    <TargetFrameworks>netcoreapp2.2;net461</TargetFrameworks>
+  <PropertyGroup>
+      <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
 	<ItemGroup>

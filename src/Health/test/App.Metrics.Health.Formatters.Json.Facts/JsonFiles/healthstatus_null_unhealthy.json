@@ -1,7 +1,0 @@
-﻿{
-  "status": "Unhealthy",  
-  "unhealthy": {
-    "test_three_unhealthy": "something failed",
-    "test_four_unhealthy": "something else failed"
-  }
-}

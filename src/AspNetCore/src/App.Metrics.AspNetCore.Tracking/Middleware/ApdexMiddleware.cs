@@ -16,7 +16,6 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
     public class ApdexMiddleware
         // ReSharper restore ClassNeverInstantiated.Global
     {
-        private const string ApdexItemsKey = "__App.Metrics.Apdex__";
         private readonly RequestDelegate _next;
         private readonly ILogger<ApdexMiddleware> _logger;
         private readonly IApdex _apdexTracking;
@@ -40,19 +39,18 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
         {
             _logger.MiddlewareExecuting<ApdexMiddleware>();
 
-            context.Items[ApdexItemsKey] = _apdexTracking.NewContext();
-
-            await _next(context);
-
-            var apdex = context.Items[ApdexItemsKey];
-
-            using (apdex as IDisposable)
+            try
             {
+                using (_apdexTracking.NewContext())
+                {
+                    await _next(context);
+                }
             }
+            finally
+            {
 
-            context.Items.Remove(ApdexItemsKey);
-
-            _logger.MiddlewareExecuted<ApdexMiddleware>();
+                _logger.MiddlewareExecuted<ApdexMiddleware>();
+            }
         }
     }
 }

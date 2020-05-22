@@ -40,22 +40,26 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
         {
             _logger.MiddlewareExecuting<PerRequestTimerMiddleware>();
 
-            context.Items[TimerItemsKey] = _metrics.Clock.Nanoseconds;
+            var startTime = _metrics.Clock.Nanoseconds;
 
-            await _next(context);
-
-            if (context.HasMetricsCurrentRouteName() && _ignoredHttpStatusCodes.All(i => i != context.Response.StatusCode))
+            try
             {
-                var startTime = (long)context.Items[TimerItemsKey];
+                await _next(context);
+            }
+            finally
+            {
                 var elapsed = _metrics.Clock.Nanoseconds - startTime;
 
-                _metrics.RecordEndpointsRequestTime(
-                    context.GetOAuthClientIdIfRequired(),
-                    context.GetMetricsCurrentRouteName(),
-                    elapsed);
-            }
+                if (context.HasMetricsCurrentRouteName() && _ignoredHttpStatusCodes.All(i => i != context.Response.StatusCode))
+                {
+                    _metrics.RecordEndpointsRequestTime(
+                        context.GetOAuthClientIdIfRequired(),
+                        context.GetMetricsCurrentRouteName(),
+                        elapsed);
+                }
 
-            _logger.MiddlewareExecuted<PerRequestTimerMiddleware>();
+                _logger.MiddlewareExecuted<PerRequestTimerMiddleware>();
+            }
         }
     }
 }

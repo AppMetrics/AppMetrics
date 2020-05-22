@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using App.Metrics.Formatters.GrafanaCloudHostedMetrics.Internal;
 using App.Metrics.Serialization;
 
@@ -13,17 +14,17 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics
 {
     public class MetricSnapshotHostedMetricsJsonWriter : IMetricSnapshotWriter
     {
-        private readonly TextWriter _textWriter;
+        private readonly Stream _stream;
         private readonly TimeSpan _flushInterval;
         private readonly IHostedMetricsPointTextWriter _metricPointTextWriter;
         private readonly HostedMetricsPoints _points;
 
         public MetricSnapshotHostedMetricsJsonWriter(
-            TextWriter textWriter,
+            Stream stream,
             TimeSpan flushInterval,
             Func<IHostedMetricsPointTextWriter> metricPointTextWriter = null)
         {
-            _textWriter = textWriter ?? throw new ArgumentNullException(nameof(textWriter));
+            _stream = stream ?? throw new ArgumentNullException(nameof(stream));
             _flushInterval = flushInterval;
             _points = new HostedMetricsPoints();
 
@@ -44,12 +45,6 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics
             _points.Add(new HostedMetricsPoint(context, name, fields, tags, _metricPointTextWriter, _flushInterval, timestamp));
         }
 
-        /// <inheritdoc />
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
         /// <summary>
         ///     Releases unmanaged and - optionally - managed resources.
         /// </summary>
@@ -57,14 +52,18 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics
         ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
         ///     unmanaged resources.
         /// </param>
-        protected virtual void Dispose(bool disposing)
+        protected virtual async ValueTask DisposeAsync(bool disposing)
         {
             if (disposing)
             {
-                _points.Write(_textWriter);
-                _textWriter?.Close();
-                _textWriter?.Dispose();
+                await _points.WriteAsync(_stream);
+                _stream?.DisposeAsync();
             }
+        }
+
+        public ValueTask DisposeAsync()
+        {
+            return DisposeAsync(true);
         }
     }
 }

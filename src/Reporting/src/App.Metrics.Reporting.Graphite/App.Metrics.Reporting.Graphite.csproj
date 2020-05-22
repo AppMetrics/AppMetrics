@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<Description>Provides Graphite reporting capability to App Metrics</Description>        
-		<TargetFrameworks>netstandard2.0</TargetFrameworks>
+		<TargetFramework>netstandard2.1</TargetFramework>
 		<PackageTags>appmetrics;reporting;graphite</PackageTags>    
 	</PropertyGroup>
 

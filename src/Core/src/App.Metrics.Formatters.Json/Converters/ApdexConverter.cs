@@ -3,28 +3,27 @@
 // </copyright>
 
 using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using App.Metrics.Apdex;
-using Newtonsoft.Json;
 
 namespace App.Metrics.Formatters.Json.Converters
 {
-    public class ApdexConverter : JsonConverter
+    public class ApdexConverter : JsonConverter<ApdexValueSource>
     {
         public override bool CanConvert(Type objectType) { return typeof(ApdexValueSource) == objectType; }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        
+        public override ApdexValueSource Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            var source = serializer.Deserialize<ApdexMetric>(reader);
+            var source = JsonSerializer.Deserialize<ApdexMetric>(reader.GetString());
             return source.FromSerializableMetric();
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, ApdexValueSource value, JsonSerializerOptions options)
         {
-            var source = (ApdexValueSource)value;
+            var target = value.ToSerializableMetric();
 
-            var target = source.ToSerializableMetric();
-
-            serializer.Serialize(writer, target);
+            JsonSerializer.Serialize(writer, target);
         }
     }
 }

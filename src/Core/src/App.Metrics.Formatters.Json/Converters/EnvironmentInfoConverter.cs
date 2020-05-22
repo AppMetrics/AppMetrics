@@ -4,30 +4,28 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using App.Metrics.Infrastructure;
-using Newtonsoft.Json;
 
 namespace App.Metrics.Formatters.Json.Converters
 {
-    public class EnvironmentInfoConverter : JsonConverter
+    public class EnvironmentInfoConverter : JsonConverter<EnvironmentInfo>
     {
         public override bool CanConvert(Type objectType) { return typeof(EnvironmentInfo) == objectType; }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        
+        public override EnvironmentInfo Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            var source = serializer.Deserialize<Dictionary<string, string>>(reader);
+            var source = JsonSerializer.Deserialize<Dictionary<string, string>>(reader.GetString(), options);
 
-            var target = new EnvironmentInfo(source);
-            return target;
+            return new EnvironmentInfo(source);
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, EnvironmentInfo value, JsonSerializerOptions options)
         {
-            var source = (EnvironmentInfo)value;
+            var target = value.Entries;
 
-            var target = source.Entries;
-
-            serializer.Serialize(writer, target);
+            JsonSerializer.Serialize(writer, target, options);
         }
     }
 }

@@ -18,69 +18,65 @@ namespace App.Metrics.Formatters.Prometheus.Internal
 
         public static async Task<string> Format(IEnumerable<MetricFamily> metrics, NewLineFormat newLine)
         {
-            using (var memoryStream = new MemoryStream())
-            {
-                await Write(memoryStream, metrics, newLine);
+            await using var memoryStream = new MemoryStream();
+            await Write(memoryStream, metrics, newLine);
 
-                return Encoding.GetString(memoryStream.ToArray());
-            }
+            return Encoding.GetString(memoryStream.ToArray());
         }
 
         public static async Task Write(Stream destination, IEnumerable<MetricFamily> metrics, NewLineFormat newLine)
         {
             var metricFamilies = metrics.ToArray();
-            using (var streamWriter = new StreamWriter(destination, Encoding, bufferSize: 1024, leaveOpen: true) { NewLine = GetNewLineChar(newLine) })
+            await using var streamWriter = new StreamWriter(destination, Encoding, bufferSize: 1024, leaveOpen: true) { NewLine = GetNewLineChar(newLine) };
+            foreach (var metricFamily in metricFamilies)
             {
-                foreach (var metricFamily in metricFamilies)
-                {
-                    WriteFamily(streamWriter, metricFamily);
-                }
-
-                await streamWriter.FlushAsync();
+                await WriteFamily(streamWriter, metricFamily);
             }
+
+            await streamWriter.FlushAsync();
         }
 
-        private static void WriteFamily(StreamWriter streamWriter, MetricFamily metricFamily)
+        private static async Task WriteFamily(StreamWriter streamWriter, MetricFamily metricFamily)
         {
-            streamWriter.Write("# HELP ");
-            streamWriter.Write(metricFamily.name);
-            streamWriter.Write(' ');
-            streamWriter.WriteLine(metricFamily.help);
+            await streamWriter.WriteAsync("# HELP ");
+            await streamWriter.WriteAsync(metricFamily.name);
+            await streamWriter.WriteAsync(' ');
+            await streamWriter.WriteLineAsync(metricFamily.help);
 
-            streamWriter.Write("# TYPE ");
-            streamWriter.Write(metricFamily.name);
-            streamWriter.Write(' ');
-            streamWriter.WriteLine(ToString(metricFamily.type));
+            await streamWriter.WriteAsync("# TYPE ");
+            await streamWriter.WriteAsync(metricFamily.name);
+            await streamWriter.WriteAsync(' ');
+            await streamWriter.WriteLineAsync(ToString(metricFamily.type));
 
             foreach (var metric in metricFamily.metric)
             {
-                WriteMetric(streamWriter, metricFamily, metric);
-                streamWriter.WriteLine();
+                await WriteMetric(streamWriter, metricFamily, metric);
+                await streamWriter.WriteLineAsync();
             }
         }
 
-        private static void WriteMetric(StreamWriter streamWriter, MetricFamily family, Metric metric)
+        private static async Task WriteMetric(StreamWriter streamWriter, MetricFamily family, Metric metric)
         {
             var familyName = family.name;
 
             if (metric.gauge != null)
             {
-                WriteSimpleValue(streamWriter, familyName, metric.gauge.value, metric.label);
+                await WriteSimpleValue(streamWriter, familyName, metric.gauge.value, metric.label);
             }
             else if (metric.counter != null)
             {
-                WriteSimpleValue(streamWriter, familyName, metric.counter.value, metric.label);
+                await WriteSimpleValue(streamWriter, familyName, metric.counter.value, metric.label);
             }
             else if (metric.summary != null)
             {
-                WriteSimpleValue(streamWriter, familyName, metric.summary.sample_sum, metric.label, "_sum");
-                WriteSimpleValue(streamWriter, familyName, metric.summary.sample_count, metric.label, "_count");
+                await WriteSimpleValue(streamWriter, familyName, metric.summary.sample_sum, metric.label, "_sum");
+                await WriteSimpleValue(streamWriter, familyName, metric.summary.sample_count, metric.label, "_count");
 
                 foreach (var quantileValuePair in metric.summary.quantile)
                 {
                     var quantile = double.IsPositiveInfinity(quantileValuePair.quantile) ? "+Inf" : quantileValuePair.quantile.ToString(CultureInfo.InvariantCulture);
 
-                    WriteSimpleValue(
+                    await WriteSimpleValue(
                         streamWriter,
                         familyName,
                         quantileValuePair.value,
@@ -89,13 +85,13 @@ namespace App.Metrics.Formatters.Prometheus.Internal
             }
             else if (metric.histogram != null)
             {
-                WriteSimpleValue(streamWriter, familyName, metric.histogram.sample_sum, metric.label, "_sum");
-                WriteSimpleValue(streamWriter, familyName, metric.histogram.sample_count, metric.label, "_count");
+                await WriteSimpleValue(streamWriter, familyName, metric.histogram.sample_sum, metric.label, "_sum");
+                await WriteSimpleValue(streamWriter, familyName, metric.histogram.sample_count, metric.label, "_count");
                 foreach (var bucket in metric.histogram.bucket)
                 {
                     var value = double.IsPositiveInfinity(bucket.upper_bound) ? "+Inf" : bucket.upper_bound.ToString(CultureInfo.InvariantCulture);
 
-                    WriteSimpleValue(
+                    await WriteSimpleValue(
                         streamWriter,
                         familyName,
                         bucket.cumulative_count,
@@ -109,34 +105,34 @@ namespace App.Metrics.Formatters.Prometheus.Internal
             }
         }
 
-        private static void WriteSimpleValue(StreamWriter writer, string family, double value, IEnumerable<LabelPair> labels, string namePostfix = null)
+        private static async Task WriteSimpleValue(StreamWriter writer, string family, double value, IEnumerable<LabelPair> labels, string namePostfix = null)
         {
-            writer.Write(family);
+            await writer.WriteAsync(family);
             if (namePostfix != null)
             {
-                writer.Write(namePostfix);
+                await writer.WriteAsync(namePostfix);
             }
 
             bool any = false;
             foreach (var l in labels)
             {
-                writer.Write(any ? ',' : '{');
+                await writer.WriteAsync(any ? ',' : '{');
 
-                writer.Write(l.name);
-                writer.Write("=\"");
-                writer.Write(l.value);
-                writer.Write('"');
+                await writer.WriteAsync(l.name);
+                await writer.WriteAsync("=\"");
+                await writer.WriteAsync(l.value);
+                await writer.WriteAsync('"');
 
                 any = true;
             }
 
             if (any)
             {
-                writer.Write('}');
+                await writer.WriteAsync('}');
             }
 
-            writer.Write(' ');
-            writer.WriteLine(value.ToString(CultureInfo.InvariantCulture));
+            await writer.WriteAsync(' ');
+            await writer.WriteLineAsync(value.ToString(CultureInfo.InvariantCulture));
         }
 
         private static string GetNewLineChar(NewLineFormat newLine)
