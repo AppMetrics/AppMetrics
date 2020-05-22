@@ -31,6 +31,14 @@ namespace App.Metrics
         public GlobalMetricTags GlobalTags { get; set; } = new GlobalMetricTags();
 
         /// <summary>
+        ///     Gets or sets the contextual tags to apply on all metrics when reporting.
+        /// </summary>
+        /// <value>
+        ///     The contextual tags applied to on all metrics when reporting.
+        /// </value>
+        public ContextualMetricTagProviders ContextualTags { get; set; } = new ContextualMetricTagProviders();
+
+        /// <summary>
         ///     Gets or sets a value indicating whether [metrics tracking enabled]. This will also avoid registering all metric
         ///     tracking middleware if using App.Metrics.Middleware.
         /// </summary>

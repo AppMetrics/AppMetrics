@@ -14,6 +14,7 @@ using App.Metrics.ReservoirSampling;
 using App.Metrics.ReservoirSampling.ExponentialDecay;
 using App.Metrics.Timer;
 using BenchmarkDotNet.Attributes;
+using System;
 
 namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
 {
@@ -75,7 +76,13 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
                            { "key2", "value2" }
                        };
 
-            _registry = new DefaultMetricContextRegistry("context_label", tags);
+            var contextualTags = new ContextualMetricTagProviders
+                       {
+                           { "key1", () => new Guid().ToString() },
+                           { "key2", () => new Guid().ToString() }
+                       };
+
+            _registry = new DefaultMetricContextRegistry("context_label", tags, contextualTags);
         }
 
         [Benchmark]

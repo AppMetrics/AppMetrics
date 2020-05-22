@@ -213,7 +213,10 @@ namespace App.Metrics
                 _metricsReportRunner);
 
             IMetricContextRegistry ContextRegistry(string context) =>
-                new DefaultMetricContextRegistry(context, new GlobalMetricTags(_options.GlobalTags));
+                new DefaultMetricContextRegistry(
+                    context,
+                    new GlobalMetricTags(_options.GlobalTags),
+                    new ContextualMetricTagProviders(_options.ContextualTags));
         }
 
         public bool CanReport() { return _options.Enabled && _options.ReportingEnabled && _reporters.Any(); }

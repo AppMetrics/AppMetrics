@@ -57,9 +57,15 @@ namespace App.Metrics.Benchmarks.Fixtures
                            { "key2", "value2" }
                        };
 
+            var contextualTags = new ContextualMetricTagProviders
+                       {
+                           { "key1", () => new Guid().ToString() },
+                           { "key2", () => new Guid().ToString() }
+                       };
+
             var samplingProvider = new DefaultSamplingReservoirProvider(() => new DefaultForwardDecayingReservoir());
 
-            Registry = new DefaultMetricContextRegistry("context_label", tags);
+            Registry = new DefaultMetricContextRegistry("context_label", tags, contextualTags);
             ApdexBuilder = new DefaultApdexBuilder(samplingProvider);
             HistogramBuilder = new DefaultHistogramBuilder(samplingProvider);
             CounterBuilder = new DefaultCounterBuilder();
