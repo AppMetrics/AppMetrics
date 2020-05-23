@@ -34,8 +34,18 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
         }
 
         // ReSharper disable UnusedMember.Global
-        public async Task Invoke(HttpContext context)
+        public Task Invoke(HttpContext context)
             // ReSharper restore UnusedMember.Global
+        {
+            if (!context.WebSockets.IsWebSocketRequest)
+            {
+                return _next(context);
+            }
+
+            return MeasureTransaction(context);
+        }
+
+        private async Task MeasureTransaction(HttpContext context)
         {
             _logger.MiddlewareExecuting<ApdexMiddleware>();
 
@@ -48,7 +58,6 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
             }
             finally
             {
-
                 _logger.MiddlewareExecuted<ApdexMiddleware>();
             }
         }
