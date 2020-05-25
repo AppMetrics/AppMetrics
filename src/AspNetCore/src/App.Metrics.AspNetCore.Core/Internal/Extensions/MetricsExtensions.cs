@@ -35,6 +35,24 @@ namespace App.Metrics
         }
 
         /// <summary>
+        ///     Increments the number of active active web socket requests.
+        /// </summary>
+        /// <param name="metrics">The metrics.</param>
+        public static void IncrementActiveWSRequests(this IMetrics metrics)
+        {
+            metrics.Measure.Counter.Increment(HttpRequestMetricsRegistry.Counters.ActiveWebSocketRequestCount);
+        }
+
+        /// <summary>
+        ///     Decrements the number of active web socket requests.
+        /// </summary>
+        /// <param name="metrics">The metrics.</param>
+        public static void DecrementActiveWSRequests(this IMetrics metrics)
+        {
+            metrics.Measure.Counter.Decrement(HttpRequestMetricsRegistry.Counters.ActiveWebSocketRequestCount);
+        }
+
+        /// <summary>
         ///     Records metrics about a Clients HTTP request error, counts the total number of errors for each status code,
         ///     measures the
         ///     rate and percentage of HTTP error requests tagging by client id (if it exists) the endpoints route template and
