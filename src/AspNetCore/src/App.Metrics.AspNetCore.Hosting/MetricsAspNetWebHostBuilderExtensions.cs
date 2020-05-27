@@ -19,8 +19,8 @@ namespace Microsoft.AspNetCore.Hosting
     {
         private static bool _metricsBuilt;
 
-        public static IHostBuilder ConfigureMetricsWithDefaults(
-            this IHostBuilder hostBuilder,
+        public static IWebHostBuilder ConfigureMetricsWithDefaults(
+            this IWebHostBuilder hostBuilder,
             Action<HostBuilderContext, IMetricsBuilder> configureMetrics)
         {
             if (_metricsBuilt)
@@ -39,7 +39,7 @@ namespace Microsoft.AspNetCore.Hosting
                 });
         }
 
-        public static IHostBuilder ConfigureMetricsWithDefaults(this IHostBuilder hostBuilder, Action<IMetricsBuilder> configureMetrics)
+        public static IWebHostBuilder ConfigureMetricsWithDefaults(this IWebHostBuilder hostBuilder, Action<IMetricsBuilder> configureMetrics)
         {
             if (_metricsBuilt)
             {
@@ -55,7 +55,7 @@ namespace Microsoft.AspNetCore.Hosting
             return hostBuilder;
         }
 
-        public static IHostBuilder ConfigureMetrics(this IHostBuilder hostBuilder, IMetricsRoot metrics)
+        public static IWebHostBuilder ConfigureMetrics(this IWebHostBuilder hostBuilder, IMetricsRoot metrics)
         {
             if (_metricsBuilt)
             {
@@ -70,8 +70,8 @@ namespace Microsoft.AspNetCore.Hosting
                 });
         }
 
-        public static IHostBuilder ConfigureMetrics(
-            this IHostBuilder hostBuilder,
+        public static IWebHostBuilder ConfigureMetrics(
+            this IWebHostBuilder hostBuilder,
             Action<HostBuilderContext, IMetricsBuilder> configureMetrics)
         {
             if (_metricsBuilt)
@@ -92,7 +92,7 @@ namespace Microsoft.AspNetCore.Hosting
                 });
         }
 
-        public static IHostBuilder ConfigureMetrics(this IHostBuilder hostBuilder, Action<IMetricsBuilder> configureMetrics)
+        public static IWebHostBuilder ConfigureMetrics(this IWebHostBuilder hostBuilder, Action<IMetricsBuilder> configureMetrics)
         {
             if (_metricsBuilt)
             {
@@ -108,7 +108,7 @@ namespace Microsoft.AspNetCore.Hosting
             return hostBuilder;
         }
 
-        public static IHostBuilder ConfigureMetrics(this IHostBuilder hostBuilder)
+        public static IWebHostBuilder ConfigureMetrics(this IWebHostBuilder hostBuilder)
         {
             if (_metricsBuilt)
             {
