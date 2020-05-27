@@ -6,21 +6,22 @@ using System;
 using App.Metrics;
 using App.Metrics.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.AspNetCore.Hosting
 // ReSharper restore CheckNamespace
 {
     /// <summary>
-    ///     Extension methods for setting up App Metrics AspNet Core services in an <see cref="IWebHostBuilder" />.
+    ///     Extension methods for setting up App Metrics AspNet Core services in an <see cref="IHostBuilder" />.
     /// </summary>
-    public static class MetricsAspNetWebHostBuilderExtensions
+    public static class MetricsAspNetHostBuilderExtensions
     {
         private static bool _metricsBuilt;
 
-        public static IWebHostBuilder ConfigureMetricsWithDefaults(
-            this IWebHostBuilder hostBuilder,
-            Action<WebHostBuilderContext, IMetricsBuilder> configureMetrics)
+        public static IHostBuilder ConfigureMetricsWithDefaults(
+            this IHostBuilder hostBuilder,
+            Action<HostBuilderContext, IMetricsBuilder> configureMetrics)
         {
             if (_metricsBuilt)
             {
@@ -38,7 +39,7 @@ namespace Microsoft.AspNetCore.Hosting
                 });
         }
 
-        public static IWebHostBuilder ConfigureMetricsWithDefaults(this IWebHostBuilder hostBuilder, Action<IMetricsBuilder> configureMetrics)
+        public static IHostBuilder ConfigureMetricsWithDefaults(this IHostBuilder hostBuilder, Action<IMetricsBuilder> configureMetrics)
         {
             if (_metricsBuilt)
             {
@@ -54,7 +55,7 @@ namespace Microsoft.AspNetCore.Hosting
             return hostBuilder;
         }
 
-        public static IWebHostBuilder ConfigureMetrics(this IWebHostBuilder hostBuilder, IMetricsRoot metrics)
+        public static IHostBuilder ConfigureMetrics(this IHostBuilder hostBuilder, IMetricsRoot metrics)
         {
             if (_metricsBuilt)
             {
@@ -69,9 +70,9 @@ namespace Microsoft.AspNetCore.Hosting
                 });
         }
 
-        public static IWebHostBuilder ConfigureMetrics(
-            this IWebHostBuilder hostBuilder,
-            Action<WebHostBuilderContext, IMetricsBuilder> configureMetrics)
+        public static IHostBuilder ConfigureMetrics(
+            this IHostBuilder hostBuilder,
+            Action<HostBuilderContext, IMetricsBuilder> configureMetrics)
         {
             if (_metricsBuilt)
             {
@@ -91,7 +92,7 @@ namespace Microsoft.AspNetCore.Hosting
                 });
         }
 
-        public static IWebHostBuilder ConfigureMetrics(this IWebHostBuilder hostBuilder, Action<IMetricsBuilder> configureMetrics)
+        public static IHostBuilder ConfigureMetrics(this IHostBuilder hostBuilder, Action<IMetricsBuilder> configureMetrics)
         {
             if (_metricsBuilt)
             {
@@ -107,7 +108,7 @@ namespace Microsoft.AspNetCore.Hosting
             return hostBuilder;
         }
 
-        public static IWebHostBuilder ConfigureMetrics(this IWebHostBuilder hostBuilder)
+        public static IHostBuilder ConfigureMetrics(this IHostBuilder hostBuilder)
         {
             if (_metricsBuilt)
             {
