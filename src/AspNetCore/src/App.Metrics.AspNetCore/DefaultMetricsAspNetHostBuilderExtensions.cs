@@ -6,21 +6,22 @@ using System;
 using App.Metrics.AspNetCore.Tracking;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace App.Metrics.AspNetCore
 {
-    public static class DefaultMetricsAspNetWebHostBuilderExtensions
+    public static class DefaultMetricsAspNetHostBuilderExtensions
     {
         /// <summary>
         ///     Adds App Metrics services, configuration and middleware to the
-        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" />.
+        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" />.
         /// </summary>
-        /// <param name="hostBuilder">The <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" />.</param>
+        /// <param name="hostBuilder">The <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" />.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         /// <exception cref="ArgumentNullException">
-        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" /> cannot be null
+        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" /> cannot be null
         /// </exception>
-        public static IWebHostBuilder UseMetrics(this IWebHostBuilder hostBuilder)
+        public static IHostBuilder UseMetrics(this IHostBuilder hostBuilder)
         {
             hostBuilder.ConfigureServices(
                 (context, services) =>
@@ -38,16 +39,16 @@ namespace App.Metrics.AspNetCore
 
         /// <summary>
         ///     Adds App Metrics services, configuration and middleware to the
-        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" />.
+        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" />.
         /// </summary>
-        /// <param name="hostBuilder">The <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" />.</param>
+        /// <param name="hostBuilder">The <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" />.</param>
         /// <param name="optionsDelegate">A callback to configure <see cref="MetricsWebTrackingOptions" />.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         /// <exception cref="ArgumentNullException">
-        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" /> cannot be null
+        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" /> cannot be null
         /// </exception>
-        public static IWebHostBuilder UseMetrics(
-            this IWebHostBuilder hostBuilder,
+        public static IHostBuilder UseMetrics(
+            this IHostBuilder hostBuilder,
             Action<MetricsWebHostOptions> optionsDelegate)
         {
             var options = new MetricsWebHostOptions();
@@ -70,17 +71,17 @@ namespace App.Metrics.AspNetCore
 
         /// <summary>
         ///     Adds App Metrics services, configuration and middleware to the
-        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" />.
+        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" />.
         /// </summary>
-        /// <param name="hostBuilder">The <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" />.</param>
+        /// <param name="hostBuilder">The <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" />.</param>
         /// <param name="optionsDelegate">A callback to configure <see cref="MetricsWebTrackingOptions" />.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         /// <exception cref="ArgumentNullException">
-        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" /> cannot be null
+        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" /> cannot be null
         /// </exception>
-        public static IWebHostBuilder UseMetrics(
-            this IWebHostBuilder hostBuilder,
-            Action<WebHostBuilderContext, MetricsWebHostOptions> optionsDelegate)
+        public static IHostBuilder UseMetrics(
+            this IHostBuilder hostBuilder,
+            Action<HostBuilderContext, MetricsWebHostOptions> optionsDelegate)
         {
             var options = new MetricsWebHostOptions();
 
@@ -102,14 +103,14 @@ namespace App.Metrics.AspNetCore
 
         /// <summary>
         ///     Adds App Metrics services, configuration and middleware to the
-        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" />.
+        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" />.
         /// </summary>
         /// <typeparam name="TStartup">The type of the <see cref="IStartupFilter" /> used to configure metrics middleware.</typeparam>
-        /// <param name="hostBuilder">The <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" />.</param>
+        /// <param name="hostBuilder">The <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" />.</param>
         /// <param name="optionsDelegate">A callback to configure <see cref="MetricsWebTrackingOptions" />.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IWebHostBuilder UseMetrics<TStartup>(
-            this IWebHostBuilder hostBuilder,
+        public static IHostBuilder UseMetrics<TStartup>(
+            this IHostBuilder hostBuilder,
             Action<MetricsWebHostOptions> optionsDelegate)
             where TStartup : IStartupFilter, new()
         {
@@ -133,13 +134,13 @@ namespace App.Metrics.AspNetCore
 
         /// <summary>
         ///     Adds App Metrics services, configuration and middleware to the
-        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" />.
+        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" />.
         /// </summary>
         /// <typeparam name="TStartup">The type of the <see cref="IStartupFilter" /> used to configure metrics middleware.</typeparam>
-        /// <param name="hostBuilder">The <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" />.</param>
+        /// <param name="hostBuilder">The <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" />.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IWebHostBuilder UseMetrics<TStartup>(
-            this IWebHostBuilder hostBuilder)
+        public static IHostBuilder UseMetrics<TStartup>(
+            this IHostBuilder hostBuilder)
             where TStartup : IStartupFilter, new()
         {
             hostBuilder.ConfigureMetrics();
