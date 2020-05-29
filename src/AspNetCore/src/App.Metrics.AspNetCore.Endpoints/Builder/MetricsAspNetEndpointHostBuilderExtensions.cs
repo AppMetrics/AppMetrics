@@ -8,23 +8,24 @@ using System.Linq;
 using App.Metrics.AspNetCore.Endpoints;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.AspNetCore.Hosting
 // ReSharper restore CheckNamespace
 {
-    public static class MetricsAspNetEndpointWebHostBuilderExtensions
+    public static class MetricsAspNetEndpointHostBuilderExtensions
     {
         /// <summary>
         ///     Adds App Metrics services, configuration and middleware to the
-        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" />.
+        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" />.
         /// </summary>
-        /// <param name="hostBuilder">The <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" />.</param>
+        /// <param name="hostBuilder">The <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" />.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         /// <exception cref="ArgumentNullException">
-        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" /> cannot be null
+        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" /> cannot be null
         /// </exception>
-        public static IWebHostBuilder UseMetricsEndpoints(this IWebHostBuilder hostBuilder)
+        public static IHostBuilder UseMetricsEndpoints(this IHostBuilder hostBuilder)
         {
             hostBuilder.ConfigureMetrics();
 
@@ -40,16 +41,16 @@ namespace Microsoft.AspNetCore.Hosting
 
         /// <summary>
         ///     Adds App Metrics services, configuration and middleware to the
-        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" />.
+        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" />.
         /// </summary>
-        /// <param name="hostBuilder">The <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" />.</param>
+        /// <param name="hostBuilder">The <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" />.</param>
         /// <param name="optionsDelegate">A callback to configure <see cref="MetricEndpointsOptions" />.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         /// <exception cref="ArgumentNullException">
-        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" /> cannot be null
+        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" /> cannot be null
         /// </exception>
-        public static IWebHostBuilder UseMetricsEndpoints(
-            this IWebHostBuilder hostBuilder,
+        public static IHostBuilder UseMetricsEndpoints(
+            this IHostBuilder hostBuilder,
             Action<MetricEndpointsOptions> optionsDelegate)
         {
             hostBuilder.ConfigureMetrics();
@@ -66,17 +67,17 @@ namespace Microsoft.AspNetCore.Hosting
 
         /// <summary>
         ///     Adds App Metrics services, configuration and middleware to the
-        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" />.
+        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" />.
         /// </summary>
-        /// <param name="hostBuilder">The <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" />.</param>
+        /// <param name="hostBuilder">The <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" />.</param>
         /// <param name="setupDelegate">A callback to configure <see cref="MetricEndpointsOptions" />.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         /// <exception cref="ArgumentNullException">
-        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" /> cannot be null
+        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" /> cannot be null
         /// </exception>
-        public static IWebHostBuilder UseMetricsEndpoints(
-            this IWebHostBuilder hostBuilder,
-            Action<WebHostBuilderContext, MetricEndpointsOptions> setupDelegate)
+        public static IHostBuilder UseMetricsEndpoints(
+            this IHostBuilder hostBuilder,
+            Action<HostBuilderContext, MetricEndpointsOptions> setupDelegate)
         {
             hostBuilder.ConfigureMetrics();
 
@@ -95,17 +96,17 @@ namespace Microsoft.AspNetCore.Hosting
 
         /// <summary>
         ///     Adds App Metrics services, configuration and middleware to the
-        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" />.
+        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" />.
         /// </summary>
-        /// <param name="hostBuilder">The <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" />.</param>
+        /// <param name="hostBuilder">The <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" />.</param>
         /// <param name="configuration">The <see cref="IConfiguration" /> containing <see cref="MetricEndpointsOptions" /></param>
         /// <param name="optionsDelegate">A callback to configure <see cref="MetricEndpointsOptions" />.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         /// <exception cref="ArgumentNullException">
-        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" /> cannot be null
+        ///     <see cref="T:Microsoft.AspNetCore.Hosting.IHostBuilder" /> cannot be null
         /// </exception>
-        public static IWebHostBuilder UseMetricsEndpoints(
-            this IWebHostBuilder hostBuilder,
+        public static IHostBuilder UseMetricsEndpoints(
+            this IHostBuilder hostBuilder,
             IConfiguration configuration,
             Action<MetricEndpointsOptions> optionsDelegate)
         {
@@ -121,8 +122,8 @@ namespace Microsoft.AspNetCore.Hosting
             return hostBuilder;
         }
 
-        public static IWebHostBuilder ConfigureAppMetricsHostingConfiguration(
-            this IWebHostBuilder hostBuilder,
+        public static IHostBuilder ConfigureAppMetricsHostingConfiguration(
+            this IHostBuilder hostBuilder,
             Action<MetricsEndpointsHostingOptions> setupHostingConfiguration)
         {
             var metricsEndpointHostingOptions = new MetricsEndpointsHostingOptions();
