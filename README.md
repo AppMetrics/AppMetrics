@@ -59,7 +59,7 @@ To run, from the solution's root:
 
 You'll then be prompted to choose a benchmark to run which will output a markdown file with the result in directory `.\src\Core\benchmarks\App.Metrics.Benchmarks.Runner`.
 
-Alternatively, you can run the same benchmarks from visual studio using xUnit.net in the [benchmark project](https://github.com/AppMetrics/AppMetrics/tree/master/src/Core/benchmarks/App.Metrics.Benchmarks.Runner).
+Alternatively, you can run the same benchmarks from visual studio using xUnit.net in the [benchmark project](https://github.com/AppMetrics/AppMetrics/tree/master/src/Core/benchmarks/App.Metrics.Benchmarks).
 
 ## Contributing
 
