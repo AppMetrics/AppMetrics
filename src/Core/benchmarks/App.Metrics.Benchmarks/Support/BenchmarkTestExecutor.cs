@@ -59,12 +59,12 @@ namespace App.Metrics.Benchmarks.Support
 
             if (!config.GetLoggers().OfType<OutputLogger>().Any())
             {
-                config = config.With(_output != null ? new OutputLogger(_output) : ConsoleLogger.Default);
+                config = config.AddLogger(_output != null ? new OutputLogger(_output) : ConsoleLogger.Default);
             }
 
             if (!config.GetColumnProviders().Any())
             {
-                config = config.With(DefaultColumnProviders.Instance);
+                config = config.AddColumnProvider(DefaultColumnProviders.Instance);
             }
 
             // Make sure we ALWAYS combine the Config (default or passed in) with any Config applied to the Type/Class
@@ -97,8 +97,8 @@ namespace App.Metrics.Benchmarks.Support
         private IConfig CreateSimpleConfig(OutputLogger logger = null)
         {
             return new SingleRunFastConfig()
-                .With(logger ?? (_output != null ? new OutputLogger(_output) : ConsoleLogger.Default))
-                .With(DefaultColumnProviders.Instance);
+                .AddLogger(logger ?? (_output != null ? new OutputLogger(_output) : ConsoleLogger.Default))
+                .AddColumnProvider(DefaultColumnProviders.Instance);
         }
     }
 }
