@@ -27,9 +27,9 @@ namespace App.Metrics.Benchmarks.Support
         {
             internal SingleRunFastConfig(ITestOutputHelper output)
             {
-                Add(Job.Dry);
-                Add(ConsoleLogger.Default);
-                Add(new OutputLogger(output));
+                AddJob(Job.Dry);
+                AddLogger(ConsoleLogger.Default);
+                AddLogger(new OutputLogger(output));
             }
         }
     }
