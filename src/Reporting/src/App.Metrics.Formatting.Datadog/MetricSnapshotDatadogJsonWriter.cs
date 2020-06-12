@@ -57,7 +57,7 @@ namespace App.Metrics.Formatting.Datadog
             if (disposing)
             {
                 await _series.WriteAsync(_stream);
-                _stream?.DisposeAsync();
+                _stream?.Dispose();
             }
         }
 
