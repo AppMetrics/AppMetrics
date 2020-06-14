@@ -57,7 +57,11 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics
             if (disposing)
             {
                 await _points.WriteAsync(_stream);
+#if NETSTANDARD2_1
+                _stream?.DisposeAsync();
+#else
                 _stream?.Dispose();
+#endif
             }
         }
 

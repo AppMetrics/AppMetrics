@@ -18,7 +18,11 @@ namespace App.Metrics.Formatters.Prometheus.Internal
 
         public static async Task<string> Format(IEnumerable<MetricFamily> metrics, NewLineFormat newLine)
         {
+#if NETSTANDARD2_1
+            await using var memoryStream = new MemoryStream();
+#else
             using var memoryStream = new MemoryStream();
+#endif
             await Write(memoryStream, metrics, newLine);
 
             return Encoding.GetString(memoryStream.ToArray());
@@ -27,7 +31,11 @@ namespace App.Metrics.Formatters.Prometheus.Internal
         public static async Task Write(Stream destination, IEnumerable<MetricFamily> metrics, NewLineFormat newLine)
         {
             var metricFamilies = metrics.ToArray();
+#if NETSTANDARD2_1
+            await using var streamWriter = new StreamWriter(destination, Encoding, bufferSize: 1024, leaveOpen: true) { NewLine = GetNewLineChar(newLine) };
+#else
             using var streamWriter = new StreamWriter(destination, Encoding, bufferSize: 1024, leaveOpen: true) { NewLine = GetNewLineChar(newLine) };
+#endif
             foreach (var metricFamily in metricFamilies)
             {
                 await WriteFamily(streamWriter, metricFamily);

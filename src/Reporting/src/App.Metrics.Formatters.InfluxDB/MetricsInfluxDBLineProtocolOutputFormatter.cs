@@ -57,7 +57,11 @@ namespace App.Metrics.Formatters.InfluxDB
 
             var serializer = new MetricSnapshotSerializer();
 
+#if NETSTANDARD2_1
+            await using var streamWriter = new StreamWriter(output, Encoding, bufferSize: 1024, leaveOpen: true);
+#else
             using var streamWriter = new StreamWriter(output, Encoding, bufferSize: 1024, leaveOpen: true);
+#endif
             await using var textWriter = new MetricSnapshotInfluxDbLineProtocolWriter(
                 streamWriter,
                 _options.MetricNameFormatter);
