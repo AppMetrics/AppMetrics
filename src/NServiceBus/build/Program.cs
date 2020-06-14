@@ -31,25 +31,25 @@ namespace build
                     Run("dotnet", $"build {solution} -c Release", echoPrefix: Prefix);
                 });
 
-                Target(Test, DependsOn(Build), () => 
-                {
-                    try
-                    {
-                        var tests = Directory.GetFiles("./test", "*.csproj", SearchOption.AllDirectories);
+                // Target(Test, DependsOn(Build), () => 
+                // {
+                    // try
+                    // {
+                        // var tests = Directory.GetFiles("./test", "*.csproj", SearchOption.AllDirectories);
 
-                        foreach (var test in tests)
-                        {
-                            Run("dotnet", $"test {test} -c Release --no-build", echoPrefix: Prefix);
-                        }    
-                    }
-                    catch (System.IO.DirectoryNotFoundException ex)
-                    {
-                        if (RequireTests)
-                        {
-                            throw new Exception($"No tests found: {ex.Message}");
-                        };
-                    }
-                });
+                        // foreach (var test in tests)
+                        // {
+                            // Run("dotnet", $"test {test} -c Release --no-build", echoPrefix: Prefix);
+                        // }    
+                    // }
+                    // catch (System.IO.DirectoryNotFoundException ex)
+                    // {
+                        // if (RequireTests)
+                        // {
+                            // throw new Exception($"No tests found: {ex.Message}");
+                        // };
+                    // }
+                // });
                 
                 Target(Pack, DependsOn(Build), () => 
                 {
