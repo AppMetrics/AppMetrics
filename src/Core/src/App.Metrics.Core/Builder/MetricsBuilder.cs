@@ -201,7 +201,7 @@ namespace App.Metrics
                 _metricsReportRunner = new DefaultMetricsReportRunner(metrics, _reporters);
             }
 
-            return new MetricsRoot(
+            var metricsRoot = new MetricsRoot(
                 metrics,
                 _options,
                 _metricsOutputFormatters,
@@ -211,6 +211,10 @@ namespace App.Metrics
                 _environmentInfoProvider,
                 _reporters,
                 _metricsReportRunner);
+            
+            Metrics.SetInstance(metricsRoot);
+
+            return Metrics.Instance;
 
             IMetricContextRegistry ContextRegistry(string context) =>
                 new DefaultMetricContextRegistry(

@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2D805782-756E-4C98-B22E-F502BEE95318}"
+	ProjectSection(SolutionItems) = preProject
+		src\Directory.Build.props = src\Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{31A4DDB1-952E-4EED-96EF-29C669279A86}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{DD2E4647-7125-4CE3-9BA5-B45A26113A31}"
+	ProjectSection(SolutionItems) = preProject
+		test\Directory.Build.props = test\Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{07876CE3-350D-45E9-8BAD-89D35A3E1C58}"
+	ProjectSection(SolutionItems) = preProject
+		build\common.props = build\common.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sandbox", "sandbox", "{5618ADC9-5499-4F34-9BCE-D0106373D3F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Metrics.Extensions.NServiceBus", "src\App.Metrics.Extensions.NServiceBus\App.Metrics.Extensions.NServiceBus.csproj", "{69D017C0-607C-4FAE-9564-1F7017DC18B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndpointOne", "sandbox\EndpointOne\EndpointOne.csproj", "{93E64F2D-D9F2-42FE-A016-FA40D6FE5A4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndpointTwo", "sandbox\EndpointTwo\EndpointTwo.csproj", "{B3B85E0D-825E-4FB1-B8D3-A7852B72D20B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "grafana_dashboards", "grafana_dashboards", "{0AE94773-4102-43B2-8F8F-1A469F22E2A6}"
+ProjectSection(SolutionItems) = preProject
+	grafana_dashboards\nservicebus_grafana.json = grafana_dashboards\nservicebus_grafana.json
+EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{07876CE3-350D-45E9-8BAD-89D35A3E1C58} = {31A4DDB1-952E-4EED-96EF-29C669279A86}
+		{69D017C0-607C-4FAE-9564-1F7017DC18B9} = {2D805782-756E-4C98-B22E-F502BEE95318}
+		{93E64F2D-D9F2-42FE-A016-FA40D6FE5A4E} = {5618ADC9-5499-4F34-9BCE-D0106373D3F3}
+		{B3B85E0D-825E-4FB1-B8D3-A7852B72D20B} = {5618ADC9-5499-4F34-9BCE-D0106373D3F3}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A8699A1D-0BA1-403C-86E9-C789CD2645EB}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{69D017C0-607C-4FAE-9564-1F7017DC18B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69D017C0-607C-4FAE-9564-1F7017DC18B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69D017C0-607C-4FAE-9564-1F7017DC18B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69D017C0-607C-4FAE-9564-1F7017DC18B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93E64F2D-D9F2-42FE-A016-FA40D6FE5A4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93E64F2D-D9F2-42FE-A016-FA40D6FE5A4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93E64F2D-D9F2-42FE-A016-FA40D6FE5A4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93E64F2D-D9F2-42FE-A016-FA40D6FE5A4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3B85E0D-825E-4FB1-B8D3-A7852B72D20B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3B85E0D-825E-4FB1-B8D3-A7852B72D20B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3B85E0D-825E-4FB1-B8D3-A7852B72D20B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3B85E0D-825E-4FB1-B8D3-A7852B72D20B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
