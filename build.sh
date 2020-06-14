@@ -20,3 +20,7 @@ popd
 pushd ./src/AspNetCore
 ./build.sh "$@"
 popd
+
+pushd ./src/NServiceBus
+./build.sh "$@"
+popd

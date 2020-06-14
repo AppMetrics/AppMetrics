@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup Label="App Metrics Packages">
+        <PackageReference Include="App.Metrics.Reporting.Console" />
+        <PackageReference Include="App.Metrics.Reporting.InfluxDB" />
+    </ItemGroup>
+    
+    <ItemGroup Label="Microsoft Package References">
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.4" />
+    </ItemGroup>
+    
+    <ItemGroup Label="Third Party Package References">
+        <PackageReference Include="NServiceBus" Version="7.*" />
+        <PackageReference Include="NServiceBus.Metrics" Version="3.*" />
+        <PackageReference Include="NServiceBus.MSDependencyInjection" Version="0.1.4" />
+    </ItemGroup>
+
+    <ItemGroup Label="Project References">
+      <ProjectReference Include="..\..\src\App.Metrics.Extensions.NServiceBus\App.Metrics.Extensions.NServiceBus.csproj" />
+    </ItemGroup>
+    
+</Project>
