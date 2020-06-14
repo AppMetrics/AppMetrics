@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>App.Metrics.Extensions.NServiceBus extension for capture NSB metrics.</Description>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>App.Metrics.Extensions.NServiceBus</RootNamespace>
+    <PackageTags>appmetrics;metrics;nservicebus</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup Label="App Metrics Package References">
+    <PackageReference Include="App.Metrics.AppNetCore" />
+  </ItemGroup>
+  
+  <ItemGroup Label="Third Party Package References">
+    <PackageReference Include="NServiceBus" Version="7.*" />
+    <PackageReference Include="NServiceBus.Metrics" Version="3.*" />
+    <PackageReference Include="NServiceBus.Extensions.Hosting" Version="1.*" />
+  </ItemGroup>
+</Project>

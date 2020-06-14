@@ -17,3 +17,7 @@ popd
 pushd ./src/AspNetCore
 ./build.ps1 $args
 popd
+
+pushd ./src/NServiceBus
+./build.ps1 $args
+popd
