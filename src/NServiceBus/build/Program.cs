@@ -64,7 +64,7 @@ namespace build
                 });
 
 
-                Target("default", DependsOn(Test, Pack));
+                Target("default", DependsOn(Build, Pack));
                 RunTargetsAndExit(app.RemainingArguments, logPrefix: Prefix);
             });
 
