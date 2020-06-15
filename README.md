@@ -6,7 +6,7 @@
 
 App Metrics is an open-source and cross-platform .NET library used to record metrics within an application. App Metrics can run on .NET Core or on the full .NET framework also supporting .NET 4.5.2. App Metrics abstracts away the underlaying repository of your Metrics for example InfluxDB, Graphite, Elasticsearch etc, by sampling and aggregating in memory and providing extensibility points to flush metrics to a repository at a specified interval.
 
-App Metrics provides various metric types to measure things such as the rate of requests, counting the number of user logins over time, measure the time taken to execute a database query, measure the amount of free memory and so on. Metrics types supported are Gauges, Counters, Meters, Histograms and Timers and Application Performance Indexes [Apdex](http://apdex.org/overview.html).
+App Metrics provides various metric types to measure things such as the rate of requests, counting the number of user logins over time, measure the time taken to execute a database query, measure the amount of free memory and so on. Metrics types supported are Gauges, Counters, Meters, Histograms and Timers and Application Performance Indexes [Apdex](https://www.apdex.org/overview).
 
 `App.Metrics` includes an Exponentially Forward Decaying, Sliding Window and Algorithm R reservoir implementations. For more details on reservoir sampling see the [docs](https://www.app-metrics.io/getting-started/reservoir-sampling/).
 
@@ -53,13 +53,13 @@ App.Metrics includes benchmarking using [BenchmarkDotNet](https://github.com/dot
 To run, from the solution's root:
 
 ```
-	cd .\benchmarks\App.Metrics.Benchmarks.Runner\
-	dotnet run -c "Release" --framework netcoreapp3.0
+	cd .\src\Core\benchmarks\App.Metrics.Benchmarks.Runner
+	dotnet run -c "Release" --framework netcoreapp3.1
 ```
 
-You'll then be prompted to choose a benchmark to run which will output a markdown file with the result in directory `.\benchmarks\App.Metrics.Benchmarks.Runner\BenchmarkDotNet.Artifacts\results`.
+You'll then be prompted to choose a benchmark to run which will output a markdown file with the result in directory `.\src\Core\benchmarks\App.Metrics.Benchmarks.Runner`.
 
-Alternatively, you can run the same benchmarks from visual studio using xUnit.net in the [benchmark project](https://github.com/AppMetrics/AppMetrics/tree/master/benchmarks/App.Metrics.Benchmarks).
+Alternatively, you can run the same benchmarks from visual studio using xUnit.net in the [benchmark project](https://github.com/AppMetrics/AppMetrics/tree/master/src/Core/benchmarks/App.Metrics.Benchmarks).
 
 ## Contributing
 

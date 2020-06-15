@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics.Internal
 {
@@ -65,14 +65,14 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics.Internal
 
         public DateTime? UtcTimestamp { get; }
 
-        public void Write(JsonWriter textWriter, bool writeTimestamp = true)
+        public void Write(Utf8JsonWriter jsonWriter, bool writeTimestamp = true)
         {
-            if (textWriter == null)
+            if (jsonWriter == null)
             {
-                throw new ArgumentNullException(nameof(textWriter));
+                throw new ArgumentNullException(nameof(jsonWriter));
             }
 
-            _pointTextWriter.Write(textWriter, this, writeTimestamp);
+            _pointTextWriter.Write(jsonWriter, this, writeTimestamp);
         }
     }
 }

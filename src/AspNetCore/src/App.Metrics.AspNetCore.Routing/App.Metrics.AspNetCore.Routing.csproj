@@ -2,13 +2,17 @@
 
   <PropertyGroup>
     <Description>App Metrics ASP.NET Core Routing features such as exposing route templates to App Metrics for tagging request based metrics.</Description>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <PackageTags>appmetrics;aspnetcore;aspnetcoremvc;metrics</PackageTags>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup  Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="Microsoft.AspNetCore.Routing" />
-  </ItemGroup>
+	</ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\App.Metrics.AspNetCore.Abstractions\App.Metrics.AspNetCore.Abstractions.csproj" />

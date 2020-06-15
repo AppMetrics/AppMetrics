@@ -13,17 +13,17 @@
             {
               "count": 20,
               "item": "item1",
-              "percent": 10.0
+              "percent": 10
             },
             {
               "count": 40,
               "item": "item2",
-              "percent": 20.0
+              "percent": 20
             },
             {
               "count": 140,
               "item": "item3",
-              "percent": 70.0
+              "percent": 70
             }
           ],
           "tags": {
@@ -31,7 +31,7 @@
             "env": "staging"
           }
         }
-      ],      
+      ],
       "gauges": [],
       "histograms": [],
       "meters": [],

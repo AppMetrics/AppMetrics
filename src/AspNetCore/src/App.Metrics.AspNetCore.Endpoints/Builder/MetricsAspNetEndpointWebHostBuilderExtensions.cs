@@ -8,11 +8,10 @@ using System.Linq;
 using App.Metrics.AspNetCore.Endpoints;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.AspNetCore.Hosting
-    // ReSharper restore CheckNamespace
+// ReSharper restore CheckNamespace
 {
     public static class MetricsAspNetEndpointWebHostBuilderExtensions
     {
@@ -25,7 +24,7 @@ namespace Microsoft.AspNetCore.Hosting
         /// <exception cref="ArgumentNullException">
         ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" /> cannot be null
         /// </exception>
-        public static IHostBuilder UseMetricsEndpoints(this IHostBuilder hostBuilder)
+        public static IWebHostBuilder UseMetricsEndpoints(this IWebHostBuilder hostBuilder)
         {
             hostBuilder.ConfigureMetrics();
 
@@ -49,8 +48,8 @@ namespace Microsoft.AspNetCore.Hosting
         /// <exception cref="ArgumentNullException">
         ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" /> cannot be null
         /// </exception>
-        public static IHostBuilder UseMetricsEndpoints(
-            this IHostBuilder hostBuilder,
+        public static IWebHostBuilder UseMetricsEndpoints(
+            this IWebHostBuilder hostBuilder,
             Action<MetricEndpointsOptions> optionsDelegate)
         {
             hostBuilder.ConfigureMetrics();
@@ -75,9 +74,9 @@ namespace Microsoft.AspNetCore.Hosting
         /// <exception cref="ArgumentNullException">
         ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" /> cannot be null
         /// </exception>
-        public static IHostBuilder UseMetricsEndpoints(
-            this IHostBuilder hostBuilder,
-            Action<HostBuilderContext, MetricEndpointsOptions> setupDelegate)
+        public static IWebHostBuilder UseMetricsEndpoints(
+            this IWebHostBuilder hostBuilder,
+            Action<WebHostBuilderContext, MetricEndpointsOptions> setupDelegate)
         {
             hostBuilder.ConfigureMetrics();
 
@@ -105,8 +104,8 @@ namespace Microsoft.AspNetCore.Hosting
         /// <exception cref="ArgumentNullException">
         ///     <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder" /> cannot be null
         /// </exception>
-        public static IHostBuilder UseMetricsEndpoints(
-            this IHostBuilder hostBuilder,
+        public static IWebHostBuilder UseMetricsEndpoints(
+            this IWebHostBuilder hostBuilder,
             IConfiguration configuration,
             Action<MetricEndpointsOptions> optionsDelegate)
         {
@@ -122,8 +121,8 @@ namespace Microsoft.AspNetCore.Hosting
             return hostBuilder;
         }
 
-        public static IHostBuilder ConfigureAppMetricsHostingConfiguration(
-            this IHostBuilder hostBuilder,
+        public static IWebHostBuilder ConfigureAppMetricsHostingConfiguration(
+            this IWebHostBuilder hostBuilder,
             Action<MetricsEndpointsHostingOptions> setupHostingConfiguration)
         {
             var metricsEndpointHostingOptions = new MetricsEndpointsHostingOptions();

@@ -13,6 +13,7 @@
 		<RepositoryType>git</RepositoryType>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 
+		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
  		<PublishRepositoryUrl>true</PublishRepositoryUrl>
     	<EmbedUntrackedSources>true</EmbedUntrackedSources>
 

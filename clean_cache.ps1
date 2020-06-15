@@ -28,3 +28,4 @@ Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.reporting.http\ -Recurs
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.reporting.influxdb\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.reporting.socket\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.reporting.textfile\ -Recurse -ErrorAction SilentlyContinue
+Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.extensions.nservicebus\ -Recurse -ErrorAction SilentlyContinue

@@ -15,7 +15,6 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
     public class RequestTimerMiddleware
         // ReSharper restore ClassNeverInstantiated.Global
     {
-        private const string TimerItemsKey = "__App.Metrics.RequestTimer__";
         private readonly ILogger<RequestTimerMiddleware> _logger;
         private readonly RequestDelegate _next;
         private readonly ITimer _requestTimer;
@@ -33,24 +32,32 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
         }
 
         // ReSharper disable UnusedMember.Global
-        public async Task Invoke(HttpContext context)
+        public Task Invoke(HttpContext context)
             // ReSharper restore UnusedMember.Global
+        {
+            if (context.WebSockets.IsWebSocketRequest)
+            {
+                return _next(context);
+            }
+
+            return TimeTransaction(context);
+        }
+
+        private async Task TimeTransaction(HttpContext context)
         {
             _logger.MiddlewareExecuting<RequestTimerMiddleware>();
 
-            context.Items[TimerItemsKey] = _requestTimer.NewContext();
-
-            await _next(context);
-
-            var timer = context.Items[TimerItemsKey];
-
-            using (timer as IDisposable)
+            try
             {
+                using (_requestTimer.NewContext())
+                {
+                    await _next(context);
+                }
             }
-
-            context.Items.Remove(TimerItemsKey);
-
-            _logger.MiddlewareExecuted<RequestTimerMiddleware>();
+            finally
+            {
+                _logger.MiddlewareExecuted<RequestTimerMiddleware>();
+            }
         }
     }
 }

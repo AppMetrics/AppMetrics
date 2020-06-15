@@ -4,6 +4,7 @@
 
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Diagnosers;
+using BenchmarkDotNet.Environments;
 using BenchmarkDotNet.Exporters;
 using BenchmarkDotNet.Jobs;
 
@@ -13,9 +14,9 @@ namespace App.Metrics.Benchmarks.Configs
     {
         public DefaultConfig()
         {
-            Add(Job.Core);
-            Add(MarkdownExporter.GitHub);
-            Add(new MemoryDiagnoser());
+            AddJob(Job.Default.WithRuntime(CoreRuntime.Core31));
+            AddExporter(MarkdownExporter.GitHub);
+            AddDiagnoser(MemoryDiagnoser.Default);
         }
     }
 }

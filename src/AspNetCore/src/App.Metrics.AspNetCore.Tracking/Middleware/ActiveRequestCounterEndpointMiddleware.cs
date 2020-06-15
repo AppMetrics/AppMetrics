@@ -33,20 +33,31 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
         {
             _logger.MiddlewareExecuting<ActiveRequestCounterEndpointMiddleware>();
 
-            _metrics.IncrementActiveRequests();
+            var isWebSocketRequest = context.WebSockets.IsWebSocketRequest;
+            if (isWebSocketRequest)
+            {
+                _metrics.IncrementActiveWSRequests();
+            }
+            else
+            {
+                _metrics.IncrementActiveRequests();
+            }
 
             try
             {
                 await _next(context);
-                _metrics.DecrementActiveRequests();
-            }
-            catch (Exception)
-            {
-                _metrics.DecrementActiveRequests();
-                throw;
             }
             finally
             {
+                if (isWebSocketRequest)
+                {
+                    _metrics.DecrementActiveWSRequests();
+                }
+                else
+                {
+                    _metrics.DecrementActiveRequests();
+                }
+
                 _logger.MiddlewareExecuted<ActiveRequestCounterEndpointMiddleware>();
             }
         }

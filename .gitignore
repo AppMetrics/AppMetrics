@@ -67,6 +67,7 @@ tools/*
 !**/tools/packages.config
 
 .vs
+.vscode/
 
 # visual studio database projects
 *.dbmdl
@@ -104,3 +105,6 @@ NDependOut/*
 #DotCover
 Session/*
 Session.html
+
+#NServiceBus
+src/NServiceBus/.learningtransport/*

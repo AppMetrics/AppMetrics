@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29920.165
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2D805782-756E-4C98-B22E-F502BEE95318}"
 	ProjectSection(SolutionItems) = preProject
@@ -54,6 +54,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.AspNetCore.Mvc.Core", "src\App.Metrics.AspNetCore.Mvc.Core\App.Metrics.AspNetCore.Mvc.Core.csproj", "{8FC832BB-1EDB-43E6-9844-05CB949ADCA7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.AspNetCore.Tracking.Facts", "test\App.Metrics.AspNetCore.Tracking.Facts\App.Metrics.AspNetCore.Tracking.Facts.csproj", "{32DD796A-48CD-4622-B0A1-B889A4661D88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricsSandboxCore31", "sandbox\MetricsSandboxCore31\MetricsSandboxCore31.csproj", "{47750B83-A5ED-4FE5-AFFF-C901E8E7ED5C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -121,6 +123,10 @@ Global
 		{32DD796A-48CD-4622-B0A1-B889A4661D88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32DD796A-48CD-4622-B0A1-B889A4661D88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32DD796A-48CD-4622-B0A1-B889A4661D88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47750B83-A5ED-4FE5-AFFF-C901E8E7ED5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47750B83-A5ED-4FE5-AFFF-C901E8E7ED5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47750B83-A5ED-4FE5-AFFF-C901E8E7ED5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47750B83-A5ED-4FE5-AFFF-C901E8E7ED5C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -142,6 +148,7 @@ Global
 		{6B54766A-C439-47AB-B44A-887396E203E5} = {C0BC96C5-46E1-4323-9C5D-58D9A96549CD}
 		{8FC832BB-1EDB-43E6-9844-05CB949ADCA7} = {2D805782-756E-4C98-B22E-F502BEE95318}
 		{32DD796A-48CD-4622-B0A1-B889A4661D88} = {DD2E4647-7125-4CE3-9BA5-B45A26113A31}
+		{47750B83-A5ED-4FE5-AFFF-C901E8E7ED5C} = {C0BC96C5-46E1-4323-9C5D-58D9A96549CD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A8699A1D-0BA1-403C-86E9-C789CD2645EB}
