@@ -57,7 +57,11 @@ namespace App.Metrics.Formatting.Datadog
             if (disposing)
             {
                 await _series.WriteAsync(_stream);
+#if NETSTANDARD2_1
                 _stream?.DisposeAsync();
+#else
+                _stream?.Dispose();
+#endif
             }
         }
 

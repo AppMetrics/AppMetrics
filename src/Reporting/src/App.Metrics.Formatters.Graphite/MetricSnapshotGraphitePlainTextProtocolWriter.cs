@@ -55,7 +55,11 @@ namespace App.Metrics.Formatters.Graphite
             if (disposing)
             {
                 await _points.WriteAsync(_textWriter);
+#if NETSTANDARD2_1
                 _textWriter?.DisposeAsync();
+#else
+                _textWriter?.Dispose();
+#endif
             }
         }
 
