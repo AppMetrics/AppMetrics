@@ -1,4 +1,4 @@
-﻿// <copyright file="TimerMetricTests.cs" company="App Metrics Contributors">
+// <copyright file="TimerMetricTests.cs" company="App Metrics Contributors">
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
@@ -59,6 +59,40 @@ namespace App.Metrics.Facts.Timer
             _timer.Value.Histogram.Count.Should().NotBe(0);
 
             _timer.Reset();
+
+            _timer.Value.Rate.Count.Should().Be(0);
+            _timer.Value.Histogram.Count.Should().Be(0);
+        }
+
+        [Fact]
+        public void Can_get_value()
+        {
+            using (_timer.NewContext())
+            {
+                _clock.Advance(TimeUnit.Milliseconds, 100);
+            }
+
+            var value = _timer.GetValue();
+
+            value.Rate.Count.Should().NotBe(0);
+            value.Histogram.Count.Should().NotBe(0);
+
+            _timer.Value.Rate.Count.Should().NotBe(0);
+            _timer.Value.Histogram.Count.Should().NotBe(0);
+        }
+
+        [Fact]
+        public void Can_get_value_and_reset()
+        {
+            using (_timer.NewContext())
+            {
+                _clock.Advance(TimeUnit.Milliseconds, 100);
+            }
+
+            var value = _timer.GetValue(true);
+
+            value.Rate.Count.Should().NotBe(0);
+            value.Histogram.Count.Should().NotBe(0);
 
             _timer.Value.Rate.Count.Should().Be(0);
             _timer.Value.Histogram.Count.Should().Be(0);

@@ -1,4 +1,4 @@
-﻿// <copyright file="MeterMetricTests.cs" company="App Metrics Contributors">
+// <copyright file="MeterMetricTests.cs" company="App Metrics Contributors">
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
@@ -129,6 +129,24 @@ namespace App.Metrics.Facts.Meter
             _meter.Value.Items[0].Value.Count.Should().Be(1);
             _meter.Reset();
             _meter.Value.Items[0].Value.Count.Should().Be(0L);
+        }
+
+        [Fact]
+        public void Can_get_value()
+        {
+            _meter.Mark();
+            var value = _meter.GetValue();
+            value.Count.Should().Be(1);
+            _meter.Value.Count.Should().Be(1);
+        }
+
+        [Fact]
+        public void Can_get_value_and_reset()
+        {
+            _meter.Mark();
+            var value = _meter.GetValue(true);
+            value.Count.Should().Be(1);
+            _meter.Value.Count.Should().Be(0L);
         }
 
         [Fact]

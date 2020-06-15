@@ -13,8 +13,9 @@ namespace App.Metrics.Histogram
             string name,
             IMetricValueProvider<HistogramValue> valueProvider,
             Unit unit,
-            MetricTags tags)
-            : base(name, valueProvider, unit, tags)
+            MetricTags tags,
+            bool restOnReporting = false)
+            : base(name, valueProvider, unit, tags, restOnReporting)
         {
         }
     }

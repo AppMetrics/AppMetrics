@@ -1,4 +1,4 @@
-﻿// <copyright file="HistogramValueSourceSerializationExtensions.cs" company="App Metrics Contributors">
+// <copyright file="HistogramValueSourceSerializationExtensions.cs" company="App Metrics Contributors">
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
@@ -52,27 +52,28 @@ namespace App.Metrics.Histogram
 
         public static HistogramMetric ToSerializableMetric(this HistogramValueSource source)
         {
+            var histogramValue = source.ValueProvider.GetValue(source.ResetOnReporting);
             return new HistogramMetric
                    {
                        Name = source.Name,
-                       Count = source.Value.Count,
-                       Sum = source.Value.Sum,
+                       Count = histogramValue.Count,
+                       Sum = histogramValue.Sum,
                        Unit = source.Unit.Name,
-                       LastUserValue = source.Value.LastUserValue,
-                       LastValue = source.Value.LastValue,
-                       Max = source.Value.Max,
-                       MaxUserValue = source.Value.MaxUserValue,
-                       Mean = source.Value.Mean,
-                       Median = source.Value.Median,
-                       Min = source.Value.Min,
-                       MinUserValue = source.Value.MinUserValue,
-                       Percentile75 = source.Value.Percentile75,
-                       Percentile95 = source.Value.Percentile95,
-                       Percentile98 = source.Value.Percentile98,
-                       Percentile99 = source.Value.Percentile99,
-                       Percentile999 = source.Value.Percentile999,
-                       SampleSize = source.Value.SampleSize,
-                       StdDev = source.Value.StdDev,
+                       LastUserValue = histogramValue.LastUserValue,
+                       LastValue = histogramValue.LastValue,
+                       Max = histogramValue.Max,
+                       MaxUserValue = histogramValue.MaxUserValue,
+                       Mean = histogramValue.Mean,
+                       Median = histogramValue.Median,
+                       Min = histogramValue.Min,
+                       MinUserValue = histogramValue.MinUserValue,
+                       Percentile75 = histogramValue.Percentile75,
+                       Percentile95 = histogramValue.Percentile95,
+                       Percentile98 = histogramValue.Percentile98,
+                       Percentile99 = histogramValue.Percentile99,
+                       Percentile999 = histogramValue.Percentile999,
+                       SampleSize = histogramValue.SampleSize,
+                       StdDev = histogramValue.StdDev,
                        Tags = source.Tags.ToDictionary()
                    };
         }

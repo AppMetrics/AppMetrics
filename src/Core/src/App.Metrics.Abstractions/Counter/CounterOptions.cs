@@ -1,4 +1,4 @@
-﻿// <copyright file="CounterOptions.cs" company="App Metrics Contributors">
+// <copyright file="CounterOptions.cs" company="App Metrics Contributors">
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
@@ -31,15 +31,5 @@ namespace App.Metrics.Counter
         ///     <c>true</c> if [report set items]; otherwise, <c>false</c>.
         /// </value>
         public bool ReportSetItems { get; set; }
-
-        /// <summary>
-        ///     Gets or sets a value indicating whether the counter should be reset when it is reported, otherwise counts are
-        ///     cummulative. Note: If using more than one reporter, the count will be reset for the first reporter which sends
-        ///     the value. Defaults to <c>false</c>.
-        /// </summary>
-        /// <value>
-        ///     <c>true</c> if [reset on reporting]; otherwise, <c>false</c>.
-        /// </value>
-        public bool ResetOnReporting { get; set; }
     }
 }

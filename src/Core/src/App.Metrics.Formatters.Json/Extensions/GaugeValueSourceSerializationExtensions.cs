@@ -1,4 +1,4 @@
-﻿// <copyright file="GaugeValueSourceSerializationExtensions.cs" company="App Metrics Contributors">
+// <copyright file="GaugeValueSourceSerializationExtensions.cs" company="App Metrics Contributors">
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
@@ -32,10 +32,11 @@ namespace App.Metrics.Gauge
 
         public static GaugeMetric ToSerializableMetric(this GaugeValueSource source)
         {
+            var gaugeValue = source.ValueProvider.GetValue(source.ResetOnReporting);
             return new GaugeMetric
                    {
                        Name = source.Name,
-                       Value = source.Value,
+                       Value = gaugeValue,
                        Unit = source.Unit.Name,
                        Tags = source.Tags.ToDictionary()
                    };

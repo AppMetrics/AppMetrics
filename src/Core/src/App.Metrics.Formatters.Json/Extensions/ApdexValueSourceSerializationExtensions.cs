@@ -1,4 +1,4 @@
-﻿// <copyright file="ApdexValueSourceSerializationExtensions.cs" company="App Metrics Contributors">
+// <copyright file="ApdexValueSourceSerializationExtensions.cs" company="App Metrics Contributors">
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
@@ -30,14 +30,15 @@ namespace App.Metrics.Apdex
 
         public static ApdexMetric ToSerializableMetric(this ApdexValueSource source)
         {
+            var apdexValue = source.ValueProvider.GetValue(source.ResetOnReporting);
             return new ApdexMetric
                    {
                        Name = source.Name,
-                       Score = source.Value.Score,
-                       SampleSize = source.Value.SampleSize,
-                       Satisfied = source.Value.Satisfied,
-                       Tolerating = source.Value.Tolerating,
-                       Frustrating = source.Value.Frustrating,
+                       Score = apdexValue.Score,
+                       SampleSize = apdexValue.SampleSize,
+                       Satisfied = apdexValue.Satisfied,
+                       Tolerating = apdexValue.Tolerating,
+                       Frustrating = apdexValue.Frustrating,
                        Tags = source.Tags.ToDictionary()
                    };
         }

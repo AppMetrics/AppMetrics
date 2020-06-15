@@ -27,9 +27,8 @@ namespace App.Metrics.Counter
             bool resetOnReporting = false,
             bool reportItemPercentages = true,
             bool reportSetItems = true)
-            : base(name, value, unit, tags)
+            : base(name, value, unit, tags, resetOnReporting)
         {
-            ResetOnReporting = resetOnReporting;
             ReportItemPercentages = reportItemPercentages;
             ReportSetItems = reportSetItems;
         }
@@ -37,7 +36,5 @@ namespace App.Metrics.Counter
         public bool ReportItemPercentages { get; }
 
         public bool ReportSetItems { get; }
-
-        public bool ResetOnReporting { get; }
     }
 }

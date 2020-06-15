@@ -25,7 +25,17 @@ namespace App.Metrics.Facts.TestHelpers
             _disposed = true;
         }
 
-        public HistogramValue GetValue(bool resetMetric = false) { return Value; }
+        public HistogramValue GetValue(bool resetMetric = false)
+        {
+            var value = Value;
+
+            if (resetMetric)
+            {
+                Reset();
+            }
+
+            return value;
+        }
 
         public void Reset() { Reservoir.Reset(); }
 

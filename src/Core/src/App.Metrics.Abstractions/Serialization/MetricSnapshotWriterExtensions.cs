@@ -1,4 +1,4 @@
-﻿// <copyright file="MetricSnapshotWriterExtensions.cs" company="App Metrics Contributors">
+// <copyright file="MetricSnapshotWriterExtensions.cs" company="App Metrics Contributors">
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
@@ -28,7 +28,8 @@ namespace App.Metrics.Serialization
             }
 
             var data = new Dictionary<string, object>();
-            valueSource.Value.AddApdexValues(data, fields);
+            var value = valueSource.ValueProvider.GetValue(valueSource.ResetOnReporting);
+            value.AddApdexValues(data, fields);
             WriteMetric(writer, context, valueSource, data, timestamp);
         }
 
@@ -45,11 +46,13 @@ namespace App.Metrics.Serialization
                 return;
             }
 
-            if (counterValueSource.Value.Items.Any() && counterValueSource.ReportSetItems && fields.ContainsKey(CounterFields.SetItem))
+            var value = counterValueSource.ValueProvider.GetValue(counterValueSource.ResetOnReporting);
+
+            if (value.Items.Any() && counterValueSource.ReportSetItems && fields.ContainsKey(CounterFields.SetItem))
             {
                 var itemSuffix = fields[CounterFields.SetItem];
 
-                foreach (var item in counterValueSource.Value.Items.Distinct())
+                foreach (var item in value.Items.Distinct())
                 {
                     var itemData = new Dictionary<string, object>();
 
@@ -79,7 +82,7 @@ namespace App.Metrics.Serialization
 
             if (fields.ContainsKey(CounterFields.Value))
             {
-                var count = valueSource.ValueProvider.GetValue(resetMetric: counterValueSource.ResetOnReporting).Count;
+                var count = value.Count;
                 WriteMetricValue(writer, context, valueSource, fields[CounterFields.Value], count, timestamp);
             }
         }
@@ -96,9 +99,11 @@ namespace App.Metrics.Serialization
                 return;
             }
 
-            if (!double.IsNaN(valueSource.Value) && !double.IsInfinity(valueSource.Value) && fields.ContainsKey(GaugeFields.Value))
+            var value = valueSource.ValueProvider.GetValue(valueSource.ResetOnReporting);
+
+            if (!double.IsNaN(value) && !double.IsInfinity(value) && fields.ContainsKey(GaugeFields.Value))
             {
-                WriteMetricValue(writer, context, valueSource, fields[GaugeFields.Value], valueSource.Value, timestamp);
+                WriteMetricValue(writer, context, valueSource, fields[GaugeFields.Value], value, timestamp);
             }
         }
 
@@ -115,7 +120,8 @@ namespace App.Metrics.Serialization
             }
 
             var data = new Dictionary<string, object>();
-            valueSource.Value.AddHistogramValues(data, fields);
+            var value = valueSource.ValueProvider.GetValue(valueSource.ResetOnReporting);
+            value.AddHistogramValues(data, fields);
             WriteMetric(writer, context, valueSource, data, timestamp);
         }
 
@@ -132,12 +138,13 @@ namespace App.Metrics.Serialization
             }
 
             var data = new Dictionary<string, object>();
+            var value = valueSource.ValueProvider.GetValue(valueSource.ResetOnReporting);
 
-            if (valueSource.Value.Items.Any() && valueSource.ReportSetItems && fields.ContainsKey(MeterFields.SetItem))
+            if (value.Items.Any() && valueSource.ReportSetItems && fields.ContainsKey(MeterFields.SetItem))
             {
                 var itemSuffix = fields[MeterFields.SetItem];
 
-                foreach (var item in valueSource.Value.Items.Distinct())
+                foreach (var item in value.Items.Distinct())
                 {
                     var setItemData = new Dictionary<string, object>();
 
@@ -157,7 +164,7 @@ namespace App.Metrics.Serialization
                 }
             }
 
-            valueSource.Value.AddMeterValues(data, fields);
+            value.AddMeterValues(data, fields);
 
             WriteMetric(writer, context, valueSource, data, timestamp);
         }
@@ -176,15 +183,16 @@ namespace App.Metrics.Serialization
             }
 
             var data = new Dictionary<string, object>();
+            var value = valueSource.ValueProvider.GetValue(valueSource.ResetOnReporting);
 
             if (meterFields.Count > 0)
             {
-                valueSource.Value.Rate.AddMeterValues(data, meterFields);
+                value.Rate.AddMeterValues(data, meterFields);
             }
 
             if (histogramFields.Count > 0)
             {
-                valueSource.Value.Histogram.AddHistogramValues(data, histogramFields);
+                value.Histogram.AddHistogramValues(data, histogramFields);
             }
 
             if (data.Count > 0)
