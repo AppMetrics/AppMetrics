@@ -78,8 +78,8 @@ namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
 
             var contextualTags = new ContextualMetricTagProviders
                        {
-                           { "key1", () => new Guid().ToString() },
-                           { "key2", () => new Guid().ToString() }
+                           { "key3", () => new Guid().ToString() },
+                           { "key4", () => new Guid().ToString() }
                        };
 
             _registry = new DefaultMetricContextRegistry("context_label", tags, contextualTags);
