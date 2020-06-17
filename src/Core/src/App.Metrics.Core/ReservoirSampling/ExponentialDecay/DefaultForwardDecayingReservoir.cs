@@ -361,6 +361,13 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
             try
             {
                 var itemWeight = Math.Exp(_alpha * (timestamp - _startTime.GetValue()));
+                
+                if (double.IsInfinity(itemWeight))
+                {
+                    ResetReservoir();
+                    itemWeight = Math.Exp(_alpha * (timestamp - _startTime.GetValue()));
+                }
+                
                 var sample = new WeightedSample(value, userValue, itemWeight);
 
                 var random = 0.0;
