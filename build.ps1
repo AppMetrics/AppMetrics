@@ -10,14 +10,18 @@ pushd ./src/Extensions
 ./build.ps1 $args
 popd
 
-pushd ./src/Reporting
-./build.ps1 $args
-popd
-
 pushd ./src/AspNetCore
 ./build.ps1 $args
 popd
 
+pushd ./src/Reporting
+./build.ps1 $args
+popd
+
 pushd ./src/NServiceBus
+./build.ps1 $args
+popd
+
+pushd ./src/MetaPackages
 ./build.ps1 $args
 popd

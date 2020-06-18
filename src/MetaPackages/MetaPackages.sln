@@ -1,0 +1,83 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2D805782-756E-4C98-B22E-F502BEE95318}"
+	ProjectSection(SolutionItems) = preProject
+		src\Directory.Build.props = src\Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{31A4DDB1-952E-4EED-96EF-29C669279A86}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{07876CE3-350D-45E9-8BAD-89D35A3E1C58}"
+	ProjectSection(SolutionItems) = preProject
+		build\common.props = build\common.props
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Metrics.App.All", "src\App.Metrics.App.All\App.Metrics.App.All.csproj", "{0EC97620-626C-406D-9C44-83162B722E21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Metrics.AspNetCore.All", "src\App.Metrics.AspNetCore.All\App.Metrics.AspNetCore.All.csproj", "{AE069355-3A29-43D0-BFC5-1D54DD413E4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Metrics.Datadog", "src\App.Metrics.Datadog\App.Metrics.Datadog.csproj", "{0451C0BE-DF1F-4AD1-9B29-DCB9D767A91F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Metrics.GrafanaCloudHostedMetrics", "src\App.Metrics.GrafanaCloudHostedMetrics\App.Metrics.GrafanaCloudHostedMetrics.csproj", "{627090D2-4F5E-40A9-A16E-2DE2775EC16F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Metrics.Graphite", "src\App.Metrics.Graphite\App.Metrics.Graphite.csproj", "{94F9F73B-6BCC-4A6C-91BD-CBBF7B321A17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Metrics.InfluxDB", "src\App.Metrics.InfluxDB\App.Metrics.InfluxDB.csproj", "{4D6E9C54-253A-44C2-9CAC-3EDB3E76567A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Metrics.Prometheus", "src\App.Metrics.Prometheus\App.Metrics.Prometheus.csproj", "{AE2392F6-9B08-4E0C-A0BB-9E7BF9EE2148}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{07876CE3-350D-45E9-8BAD-89D35A3E1C58} = {31A4DDB1-952E-4EED-96EF-29C669279A86}
+		{0EC97620-626C-406D-9C44-83162B722E21} = {2D805782-756E-4C98-B22E-F502BEE95318}
+		{AE069355-3A29-43D0-BFC5-1D54DD413E4B} = {2D805782-756E-4C98-B22E-F502BEE95318}
+		{0451C0BE-DF1F-4AD1-9B29-DCB9D767A91F} = {2D805782-756E-4C98-B22E-F502BEE95318}
+		{627090D2-4F5E-40A9-A16E-2DE2775EC16F} = {2D805782-756E-4C98-B22E-F502BEE95318}
+		{94F9F73B-6BCC-4A6C-91BD-CBBF7B321A17} = {2D805782-756E-4C98-B22E-F502BEE95318}
+		{4D6E9C54-253A-44C2-9CAC-3EDB3E76567A} = {2D805782-756E-4C98-B22E-F502BEE95318}
+		{AE2392F6-9B08-4E0C-A0BB-9E7BF9EE2148} = {2D805782-756E-4C98-B22E-F502BEE95318}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A8699A1D-0BA1-403C-86E9-C789CD2645EB}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0EC97620-626C-406D-9C44-83162B722E21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EC97620-626C-406D-9C44-83162B722E21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EC97620-626C-406D-9C44-83162B722E21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EC97620-626C-406D-9C44-83162B722E21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE069355-3A29-43D0-BFC5-1D54DD413E4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE069355-3A29-43D0-BFC5-1D54DD413E4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE069355-3A29-43D0-BFC5-1D54DD413E4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE069355-3A29-43D0-BFC5-1D54DD413E4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0451C0BE-DF1F-4AD1-9B29-DCB9D767A91F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0451C0BE-DF1F-4AD1-9B29-DCB9D767A91F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0451C0BE-DF1F-4AD1-9B29-DCB9D767A91F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0451C0BE-DF1F-4AD1-9B29-DCB9D767A91F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{627090D2-4F5E-40A9-A16E-2DE2775EC16F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{627090D2-4F5E-40A9-A16E-2DE2775EC16F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{627090D2-4F5E-40A9-A16E-2DE2775EC16F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{627090D2-4F5E-40A9-A16E-2DE2775EC16F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94F9F73B-6BCC-4A6C-91BD-CBBF7B321A17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94F9F73B-6BCC-4A6C-91BD-CBBF7B321A17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94F9F73B-6BCC-4A6C-91BD-CBBF7B321A17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94F9F73B-6BCC-4A6C-91BD-CBBF7B321A17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D6E9C54-253A-44C2-9CAC-3EDB3E76567A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D6E9C54-253A-44C2-9CAC-3EDB3E76567A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D6E9C54-253A-44C2-9CAC-3EDB3E76567A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D6E9C54-253A-44C2-9CAC-3EDB3E76567A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE2392F6-9B08-4E0C-A0BB-9E7BF9EE2148}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE2392F6-9B08-4E0C-A0BB-9E7BF9EE2148}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE2392F6-9B08-4E0C-A0BB-9E7BF9EE2148}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE2392F6-9B08-4E0C-A0BB-9E7BF9EE2148}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

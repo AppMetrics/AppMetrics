@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>App Metrics App Metapackage - Contains all features for an AspNetCore application.</Description>
+    <AssemblyTitle>App.Metrics.AspNetCore.All</AssemblyTitle>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
+    <PackageTags>appmetrics;aspnetcore;metrics</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="App.Metrics.AppNetCore" />
+    <PackageReference Include="App.Metrics.AspNetCore" />
+    <PackageReference Include="App.Metrics.AspNetCore.Endpoints" />
+    <PackageReference Include="App.Metrics.AspNetCore.Hosting" />
+    <PackageReference Include="App.Metrics.AspNetCore.Mvc" />
+    <PackageReference Include="App.Metrics.AspNetCore.Routing" />
+    <PackageReference Include="App.Metrics.AspNetCore.Tracking" />
+    <PackageReference Include="App.Metrics.Extensions.HealthChecks" />
+    <PackageReference Include="App.Metrics.Formatters.Json" />
+  </ItemGroup>
+
+</Project>
