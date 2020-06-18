@@ -8,7 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="App.Metrics.AppNetCore" />
+    <PackageReference Include="App.Metrics.Extensions.Configuration" />
+    <PackageReference Include="App.Metrics.Extensions.DependencyInjection" />
+    <PackageReference Include="App.Metrics.Extensions.Hosting" />
     <PackageReference Include="App.Metrics.AspNetCore" />
     <PackageReference Include="App.Metrics.AspNetCore.Endpoints" />
     <PackageReference Include="App.Metrics.AspNetCore.Hosting" />
