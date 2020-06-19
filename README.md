@@ -31,12 +31,12 @@ Dashboards can be imported from [Grafana](https://grafana.com/dashboards?search=
 
 #### Grafana Web Monitoring
 
-![Grafana/InfluxDB Generic Web Dashboard Demo](https://github.com/AppMetrics/AppMetrics.DocFx/blob/main/images/generic_grafana_dashboard_demo.gif)
+![Grafana/InfluxDB Generic Web Dashboard Demo](https://raw.githubusercontent.com/AppMetrics/Docs.V2.Hugo/main/static/images/generic_grafana_dashboard_demo.gif)
 
 
 #### Grafana OAuth2 Client Web Monitoring
 
-![Grafana/InfluxDB Generic OAuth2 Web Dashboard Demo](https://github.com/AppMetrics/AppMetrics.DocFx/blob/main/images/generic_grafana_oauth2_dashboard_demo.gif)
+![Grafana/InfluxDB Generic OAuth2 Web Dashboard Demo](https://raw.githubusercontent.com/AppMetrics/Docs.V2.Hugo/main/static/images/generic_grafana_oauth2_dashboard_demo.gif)
 
 
 ## How to build
