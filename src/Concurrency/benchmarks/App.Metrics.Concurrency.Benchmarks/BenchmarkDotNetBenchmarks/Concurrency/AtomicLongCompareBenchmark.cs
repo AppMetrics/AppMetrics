@@ -2,76 +2,67 @@
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using App.Metrics.Concurrency.Internal;
 using BenchmarkDotNet.Attributes;
 
 namespace App.Metrics.Concurrency.Benchmarks.BenchmarkDotNetBenchmarks.Concurrency
 {
     public class AtomicLongCompareBenchmark : DefaultBenchmarkBase
     {
-        private const int NumberOfRuns = 50;
-        private int _threadCount;
+        private AtomicLong _atomicLong;
+        private PaddedAtomicLong _paddedAtomicLong;
+        private StripedLongAdder _stripedLongAdder;
+        private ThreadLocalLongAdder _threadLocalLongAdder;
 
         public override void Setup()
         {
-            _threadCount = Environment.ProcessorCount;
+            _atomicLong = new AtomicLong();
+            _paddedAtomicLong = new PaddedAtomicLong();
+            _stripedLongAdder = new StripedLongAdder();
+            _threadLocalLongAdder = new ThreadLocalLongAdder();
         }
 
         [Benchmark(Baseline = true)]
         public void AtomicLong()
         {
-            Run<AtomicLong>();
+            _atomicLong.Increment();
+            _atomicLong.Decrement();
+            _atomicLong.GetAndReset();
+            _atomicLong.NonVolatileGetValue();
+            _atomicLong.Increment();
+            _atomicLong.Decrement();
         }
 
         [Benchmark]
         public void PaddedAtomicLong()
         {
-            Run<PaddedAtomicLong>();
+            _paddedAtomicLong.Increment();
+            _paddedAtomicLong.Decrement();
+            _paddedAtomicLong.GetAndReset();
+            _paddedAtomicLong.NonVolatileGetValue();
+            _paddedAtomicLong.Increment();
+            _paddedAtomicLong.Decrement();
         }
 
         [Benchmark]
         public void StripedLongAdder()
         {
-            Run<StripedLongAdder>();
+            _stripedLongAdder.Increment();
+            _stripedLongAdder.Decrement();
+            _stripedLongAdder.GetAndReset();
+            _stripedLongAdder.NonVolatileGetValue();
+            _stripedLongAdder.Increment();
+            _stripedLongAdder.Decrement();
         }
 
         [Benchmark]
         public void ThreadLocalLongAdder()
         {
-            Run<ThreadLocalLongAdder>();
-        }
-
-        private void Run<T>()
-            where T : IValueAdder<long>, new()
-        {
-            var value = new T();
-            var thread = new List<Thread>();
-
-            for (var i = 0; i < _threadCount; i++)
-            {
-                thread.Add(new Thread(() =>
-                {
-                    for (long j = 0; j < NumberOfRuns; j++)
-                    {
-                        value.Increment();
-                        value.Decrement();
-                        value.GetAndReset();
-                        value.NonVolatileGetValue();
-                        value.Increment();
-                        value.Decrement();
-                    }
-                }));
-            }
-
-            thread.ForEach(t => t.Start());
-            thread.ForEach(t => t.Join());
-
-            // ReSharper disable UnusedVariable
-            var result = value.GetValue();
-            // ReSharper restore UnusedVariable
+            _threadLocalLongAdder.Increment();
+            _threadLocalLongAdder.Decrement();
+            _threadLocalLongAdder.GetAndReset();
+            _threadLocalLongAdder.NonVolatileGetValue();
+            _threadLocalLongAdder.Increment();
+            _threadLocalLongAdder.Decrement();
         }
     }
 }
