@@ -48,18 +48,21 @@ Dashboards can be imported from [Grafana](https://grafana.com/dashboards?search=
 
 ## How to run benchmarks
 
-App.Metrics includes benchmarking using [BenchmarkDotNet](https://github.com/dotnet/BenchmarkDotNet). You can find the benchmark results [here](https://github.com/alhardy/AppMetrics/tree/dev/src/Core/benchmarks/App.Metrics.Benchmarks.Runner/BenchmarkDotNet.Artifacts/results).
+App.Metrics includes benchmarking using [BenchmarkDotNet](https://github.com/dotnet/BenchmarkDotNet).
 
-To run, from the solution's root:
+Two benchmark projects exist targeting App.Metrics.Core and App.Metrics.Concurrency
 
 ```
 	cd .\src\Core\benchmarks\App.Metrics.Benchmarks.Runner
 	dotnet run -c "Release" --framework netcoreapp3.1
+
+	cd .\src\Concurrency\benchmarks\App.Metrics.Concurrency.Benchmarks.Runner
+	dotnet run -c "Release" --framework netcoreapp3.1
 ```
 
-You'll then be prompted to choose a benchmark to run which will output a markdown file with the result in directory `.\src\Core\benchmarks\App.Metrics.Benchmarks.Runner`.
+You'll then be prompted to choose a benchmark to run which will output a markdown file with the result in directory.
 
-Alternatively, you can run the same benchmarks from visual studio using xUnit.net in the [benchmark project](https://github.com/AppMetrics/AppMetrics/tree/main/src/Core/benchmarks/App.Metrics.Benchmarks).
+You can find the benchmark results [here](https://github.com/alhardy/AppMetrics/tree/dev/src/Core/benchmarks/App.Metrics.Benchmarks.Runner/BenchmarkDotNet.Artifacts/results) and [here](https://github.com/alhardy/AppMetrics/tree/dev/src/Concurrency/benchmarks/App.Metrics.Concurrency.Benchmarks.Runner/BenchmarkDotNet.Artifacts/results).
 
 ## Contributing
 
@@ -71,9 +74,6 @@ See the [contribution guidlines](CONTRIBUTING.md) for details.
 * [Grafana](https://grafana.com/)
 * [Fluent Assertions](http://www.fluentassertions.com/)
 * [xUnit.net](https://xunit.github.io/)
-* [StyleCopAnalyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers)
-* [Cake](https://github.com/cake-build/cake)
-* [OpenCover](https://github.com/OpenCover/opencover)
 * [Hugo](https://gohugo.io/)
 * [Netlify](https://www.netlify.com/)
 
@@ -81,9 +81,6 @@ See the [contribution guidlines](CONTRIBUTING.md) for details.
 
 * [NDepend](http://www.ndepend.com/) 
 * [Jetbrains](https://www.jetbrains.com/dotnet/) 
-* [AppVeyor](https://www.appveyor.com/)
-* [Travis CI](https://travis-ci.org/)
-* [Coveralls](https://coveralls.io/)
 
 ## License
 

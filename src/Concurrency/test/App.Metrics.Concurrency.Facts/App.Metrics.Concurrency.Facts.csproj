@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <Content Include="..\..\xunit.runner.json" Link="xunit.runner.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\App.Metrics.Concurrency\App.Metrics.Concurrency.csproj" />
+  </ItemGroup>
+
+</Project>

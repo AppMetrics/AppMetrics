@@ -5,6 +5,10 @@ mkdir nuget -p
 
 dotnet tool restore
 
+pushd ./src/Concurrency
+./build.sh "$@"
+popd
+
 pushd ./src/Core
 ./build.sh "$@"
 popd

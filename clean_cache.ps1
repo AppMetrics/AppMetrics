@@ -10,6 +10,7 @@ Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.aspnetcore.mvc.core\ -R
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.aspnetcore.reporting\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.aspnetcore.routing\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.aspnetcore.tracking\ -Recurse -ErrorAction SilentlyContinue
+Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.concurrency\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.core\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.extensions.configuration\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.extensions.dependencyinjection\ -Recurse -ErrorAction SilentlyContinue

@@ -2,6 +2,10 @@ $ErrorActionPreference = "Stop";
 
 New-Item -ItemType Directory -Force -Path ./nuget
 
+pushd ./src/Concurrency
+Invoke-Expression "./build.ps1 $args"
+popd
+
 pushd ./src/Core
 Invoke-Expression "./build.ps1 $args"
 popd
