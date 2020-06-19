@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <AppMetricsConcurrencyVersion>2.0.1</AppMetricsConcurrencyVersion>
-    <AppMetricsVersion>4.1.0</AppMetricsVersion>
+    <AppMetricsVersion>4.1.0-*</AppMetricsVersion>
     <FrameworkVersion>3.1.0</FrameworkVersion>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>
     <MinVerMinimumMajorMinor>4.1</MinVerMinimumMajorMinor>
-    <MinVerDefaultPreReleasePhase></MinVerDefaultPreReleasePhase>
+    <MinVerDefaultPreReleasePhase>preview2</MinVerDefaultPreReleasePhase>
   </PropertyGroup>
 
   <ItemGroup>
