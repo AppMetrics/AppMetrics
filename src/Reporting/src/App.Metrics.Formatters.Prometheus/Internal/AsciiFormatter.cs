@@ -20,7 +20,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal
         {
 #if NETSTANDARD2_1
             await using var memoryStream = new MemoryStream();
-#else
+            {
             using var memoryStream = new MemoryStream();
 #endif
             await Write(memoryStream, metrics, newLine);

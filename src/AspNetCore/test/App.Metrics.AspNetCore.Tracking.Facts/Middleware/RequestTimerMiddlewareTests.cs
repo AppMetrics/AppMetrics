@@ -30,6 +30,7 @@ namespace App.Metrics.AspNetCore.Tracking.Facts.Middleware
             _mockTimer = new Mock<ITimer>();
             _mockTimerMetrics = new Mock<IProvideTimerMetrics>();
 
+
             _mockMetrics.Setup(_ => _.Provider).Returns(mockProvider.Object);
             mockProvider.Setup(_ => _.Timer).Returns(_mockTimerMetrics.Object);
             _mockTimerMetrics.Setup(_ => _.Instance(It.IsAny<TimerOptions>())).Returns(_mockTimer.Object).Verifiable("Timer was not created.");
