@@ -1,6 +1,6 @@
 Thanks for helping out :+1:
 
-Before submitting a pull request, please have a quick read through the [contribution guidelines](https://github.com/AppMetrics/AppMetrics/blob/master/.github/CONTRIBUTING.md) and provide the following information, where appropriate replace the `[ ]` with a `[X]`
+Before submitting a pull request, please have a quick read through the [contribution guidelines](https://github.com/AppMetrics/AppMetrics/blob/main/.github/CONTRIBUTING.md) and provide the following information, where appropriate replace the `[ ]` with a `[X]`
 
 ### The issue or feature being addressed
 

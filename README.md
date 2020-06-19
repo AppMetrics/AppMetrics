@@ -22,7 +22,7 @@ App Metrics provides various metric types to measure things such as the rate of 
 |Branch|Azure Devops|
 |------|:--------:|
 |dev|[![Azure Devops](https://img.shields.io/azure-devops/build/AppMetrics/AppMetrics/3/dev.svg?style=flat-square&label=build)](https://dev.azure.com/appmetrics/AppMetrics/_build?definitionId=3)
-|master|[![AppVeyor](https://img.shields.io/azure-devops/build/AppMetrics/AppMetrics/3/master.svg?style=flat-square&label=build)](https://dev.azure.com/appmetrics/AppMetrics/_build?definitionId=3)
+|main|[![AppVeyor](https://img.shields.io/azure-devops/build/AppMetrics/AppMetrics/3/main.svg?style=flat-square&label=build)](https://dev.azure.com/appmetrics/AppMetrics/_build?definitionId=3)
 ----------
 
 ## Visualization
@@ -31,12 +31,12 @@ Dashboards can be imported from [Grafana](https://grafana.com/dashboards?search=
 
 #### Grafana Web Monitoring
 
-![Grafana/InfluxDB Generic Web Dashboard Demo](https://github.com/AppMetrics/AppMetrics.DocFx/blob/master/images/generic_grafana_dashboard_demo.gif)
+![Grafana/InfluxDB Generic Web Dashboard Demo](https://github.com/AppMetrics/AppMetrics.DocFx/blob/main/images/generic_grafana_dashboard_demo.gif)
 
 
 #### Grafana OAuth2 Client Web Monitoring
 
-![Grafana/InfluxDB Generic OAuth2 Web Dashboard Demo](https://github.com/AppMetrics/AppMetrics.DocFx/blob/master/images/generic_grafana_oauth2_dashboard_demo.gif)
+![Grafana/InfluxDB Generic OAuth2 Web Dashboard Demo](https://github.com/AppMetrics/AppMetrics.DocFx/blob/main/images/generic_grafana_oauth2_dashboard_demo.gif)
 
 
 ## How to build
@@ -59,7 +59,7 @@ To run, from the solution's root:
 
 You'll then be prompted to choose a benchmark to run which will output a markdown file with the result in directory `.\src\Core\benchmarks\App.Metrics.Benchmarks.Runner`.
 
-Alternatively, you can run the same benchmarks from visual studio using xUnit.net in the [benchmark project](https://github.com/AppMetrics/AppMetrics/tree/master/src/Core/benchmarks/App.Metrics.Benchmarks).
+Alternatively, you can run the same benchmarks from visual studio using xUnit.net in the [benchmark project](https://github.com/AppMetrics/AppMetrics/tree/main/src/Core/benchmarks/App.Metrics.Benchmarks).
 
 ## Contributing
 
@@ -96,10 +96,10 @@ See [LICENSE](https://github.com/AppMetrics/AppMetrics/blob/dev/LICENSE)
 App Metrics is based on the [Metrics.NET](https://github.com/etishor/Metrics.NET) library, and at the moment uses the same reservoir sampling code from the original library which is a port of the Java [Dropwizard Metrics](https://github.com/dropwizard/metrics) library. 
 
 *Metrics.NET Licensed under these terms*:
-"Metrics.NET is release under Apache 2.0 License Copyright (c) 2014 Iulian Margarintescu" see [LICENSE](https://github.com/etishor/Metrics.NET/blob/master/LICENSE)
+"Metrics.NET is release under Apache 2.0 License Copyright (c) 2014 Iulian Margarintescu" see [LICENSE](https://github.com/etishor/Metrics.NET/blob/main/LICENSE)
 
 *Dropwizard Metrics* Licensed under these terms*:
 "Copyright (c) 2010-2013 Coda Hale, Yammer.com Published under Apache Software License 2.0, see [LICENSE](https://github.com/dropwizard/metrics/blob/3.2-development/LICENSE)"
 
 ----------
-[![Powered By NDepend](https://github.com/alhardy/AppMetrics.DocFx/blob/master/images/PoweredByNDepend.png)](http://www.ndepend.com/)
+[![Powered By NDepend](https://github.com/alhardy/AppMetrics.DocFx/blob/main/images/PoweredByNDepend.png)](http://www.ndepend.com/)
