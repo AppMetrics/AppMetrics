@@ -28,8 +28,6 @@ namespace App.Metrics.Extensions.HealthChecks
 
             _metrics.Measure.Gauge.SetValue(ApplicationHealthMetricRegistry.HealthGauge, ((float)report.Status) / 2);
 
-            cancellationToken.ThrowIfCancellationRequested();
-
             return Task.CompletedTask;
         }
     }
