@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\App.Metrics.AspNetCore\App.Metrics.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\src\App.Metrics.AspNetCore.Mvc\App.Metrics.AspNetCore.Mvc.csproj" />
+  </ItemGroup>
+
+
+</Project>
