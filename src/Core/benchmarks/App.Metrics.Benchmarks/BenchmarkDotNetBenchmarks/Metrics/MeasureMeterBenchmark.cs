@@ -3,12 +3,35 @@
 // </copyright>
 
 using App.Metrics.Benchmarks.Support;
+using App.Metrics.Meter;
 using BenchmarkDotNet.Attributes;
 
 namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
 {
     public class MeasureMeterBenchmark : DefaultBenchmarkBase
     {
+        private const int NumberOfMetrics = 1000;
+        private static readonly MeterOptions[] Metrics;
+
+        static MeasureMeterBenchmark()
+        {
+            Metrics = new MeterOptions[NumberOfMetrics];
+
+            for (var i = 0; i < NumberOfMetrics; i++)
+            {
+                Metrics[i] = new MeterOptions {Name = $"metric_{i:D4}"};
+            }
+        }
+        
+        [Benchmark]
+        public void Many()
+        {
+            for (var i = 0; i < NumberOfMetrics; i++)
+            {
+                Fixture.Metrics.Measure.Meter.Mark(Metrics[i]);
+            }
+        }
+        
         [Benchmark]
         public void Mark() { Fixture.Metrics.Measure.Meter.Mark(MetricOptions.Meter.Options); }
 
