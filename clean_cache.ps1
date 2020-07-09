@@ -1,5 +1,6 @@
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.abstractions\ -Recurse -ErrorAction SilentlyContinue
+Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.appnetcore\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.aspnetcore\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.aspnetcore.abstractions\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.aspnetcore.core\ -Recurse -ErrorAction SilentlyContinue
@@ -13,6 +14,7 @@ Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.aspnetcore.tracking\ -R
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.concurrency\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.core\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.extensions.configuration\ -Recurse -ErrorAction SilentlyContinue
+Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.extensions.collectors\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.extensions.dependencyinjection\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.extensions.healthchecks\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.extensions.hosting\ -Recurse -ErrorAction SilentlyContinue
@@ -22,7 +24,9 @@ Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.formatters.graphite\ -R
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.formatters.influxdb\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.formatters.json\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.formatters.prometheus\ -Recurse -ErrorAction SilentlyContinue
+Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.formatting.datadog\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.reporting.console\ -Recurse -ErrorAction SilentlyContinue
+Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.reporting.datadog\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.reporting.grafanacloudhostedmetrics\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.reporting.graphite\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.reporting.http\ -Recurse -ErrorAction SilentlyContinue

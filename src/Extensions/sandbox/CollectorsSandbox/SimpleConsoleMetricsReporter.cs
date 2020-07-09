@@ -13,7 +13,7 @@ using App.Metrics.Formatters;
 using App.Metrics.Formatters.Ascii;
 using App.Metrics.Reporting;
 
-namespace HealthHostingMicrosoftExtensionsSandbox
+namespace MetricsMicrosoftExtensionsSandbox
 {
     public class SimpleConsoleMetricsReporter : IReportMetrics
     {

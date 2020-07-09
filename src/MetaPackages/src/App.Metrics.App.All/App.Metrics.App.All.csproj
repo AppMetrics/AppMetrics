@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="App.Metrics.AppNetCore" />
+    <PackageReference Include="App.Metrics.Extensions.Collectors" />
     <PackageReference Include="App.Metrics.Extensions.HealthChecks" />
     <PackageReference Include="App.Metrics.Formatters.Json" />
   </ItemGroup>
