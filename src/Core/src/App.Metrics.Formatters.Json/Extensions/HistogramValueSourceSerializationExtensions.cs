@@ -3,13 +3,14 @@
 // </copyright>
 
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using App.Metrics.BucketHistogram;
 using App.Metrics.Formatters.Json;
 
 // ReSharper disable CheckNamespace
 namespace App.Metrics.Histogram
-    // ReSharper restore CheckNamespace
+// ReSharper restore CheckNamespace
 {
     public static class HistogramValueSourceSerializationExtensions
     {
@@ -46,7 +47,7 @@ namespace App.Metrics.Histogram
             var histogramValue = new BucketHistogramValue(
                 source.Count,
                 source.Sum,
-                source.Buckets);
+                new ReadOnlyDictionary<double, double>(source.Buckets));
 
             return new BucketHistogramValueSource(
                 source.Name,
@@ -79,28 +80,28 @@ namespace App.Metrics.Histogram
         {
             var histogramValue = source.ValueProvider.GetValue(source.ResetOnReporting);
             return new HistogramMetric
-                   {
-                       Name = source.Name,
-                       Count = histogramValue.Count,
-                       Sum = histogramValue.Sum,
-                       Unit = source.Unit.Name,
-                       LastUserValue = histogramValue.LastUserValue,
-                       LastValue = histogramValue.LastValue,
-                       Max = histogramValue.Max,
-                       MaxUserValue = histogramValue.MaxUserValue,
-                       Mean = histogramValue.Mean,
-                       Median = histogramValue.Median,
-                       Min = histogramValue.Min,
-                       MinUserValue = histogramValue.MinUserValue,
-                       Percentile75 = histogramValue.Percentile75,
-                       Percentile95 = histogramValue.Percentile95,
-                       Percentile98 = histogramValue.Percentile98,
-                       Percentile99 = histogramValue.Percentile99,
-                       Percentile999 = histogramValue.Percentile999,
-                       SampleSize = histogramValue.SampleSize,
-                       StdDev = histogramValue.StdDev,
-                       Tags = source.Tags.ToDictionary()
-                   };
+            {
+                Name = source.Name,
+                Count = histogramValue.Count,
+                Sum = histogramValue.Sum,
+                Unit = source.Unit.Name,
+                LastUserValue = histogramValue.LastUserValue,
+                LastValue = histogramValue.LastValue,
+                Max = histogramValue.Max,
+                MaxUserValue = histogramValue.MaxUserValue,
+                Mean = histogramValue.Mean,
+                Median = histogramValue.Median,
+                Min = histogramValue.Min,
+                MinUserValue = histogramValue.MinUserValue,
+                Percentile75 = histogramValue.Percentile75,
+                Percentile95 = histogramValue.Percentile95,
+                Percentile98 = histogramValue.Percentile98,
+                Percentile99 = histogramValue.Percentile99,
+                Percentile999 = histogramValue.Percentile999,
+                SampleSize = histogramValue.SampleSize,
+                StdDev = histogramValue.StdDev,
+                Tags = source.Tags.ToDictionary()
+            };
         }
 
         public static BucketHistogramMetric ToSerializableMetric(this BucketHistogramValueSource source)
@@ -111,7 +112,7 @@ namespace App.Metrics.Histogram
                 Count = source.Value.Count,
                 Sum = source.Value.Sum,
                 Unit = source.Unit.Name,
-                Buckets = source.Value.Buckets,
+                Buckets = source.Value.Buckets.ToDictionary(x => x.Key, x => x.Value),
                 Tags = source.Tags.ToDictionary()
             };
         }

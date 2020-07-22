@@ -19,15 +19,15 @@
           "durationUnit": "ms",
           "histogram": {
             "buckets": {
-              "1": 1.0
+              "1": 1
             },
-            "sum": 1.0
+            "sum": 1
           },
           "rate": {
-            "fifteenMinuteRate": 4.0,
-            "fiveMinuteRate": 3.0,
-            "meanRate": 1.0,
-            "oneMinuteRate": 2.0
+            "fifteenMinuteRate": 4,
+            "fiveMinuteRate": 3,
+            "meanRate": 1,
+            "oneMinuteRate": 2
           },
           "rateUnit": "s",
           "tags": {
