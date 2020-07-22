@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="..\..\build\common.props" />
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <IsPackable>false</IsPackable>
+        <LangVersion>Latest</LangVersion>
+        <OutputType>exe</OutputType>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.5" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.5" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\App.Metrics.AppNetCore\App.Metrics.AppNetCore.csproj" />
+    </ItemGroup>
+</Project>

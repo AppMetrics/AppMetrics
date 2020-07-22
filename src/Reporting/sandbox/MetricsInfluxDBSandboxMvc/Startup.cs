@@ -2,6 +2,7 @@
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
+using App.Metrics.Extensions.Collectors.HostedServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,7 @@ namespace MetricsInfluxDBSandboxMvc
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAppMetricsCollectors();
             services.AddTestStuff();
 
             services.AddMvc().AddMetrics();

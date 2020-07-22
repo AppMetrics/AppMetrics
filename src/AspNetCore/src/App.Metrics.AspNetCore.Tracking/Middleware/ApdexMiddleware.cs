@@ -37,12 +37,9 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
         public Task Invoke(HttpContext context)
             // ReSharper restore UnusedMember.Global
         {
-            if (!context.WebSockets.IsWebSocketRequest)
-            {
-                return _next(context);
-            }
-
-            return MeasureTransaction(context);
+            return context.WebSockets.IsWebSocketRequest 
+                ? _next(context)
+                : MeasureTransaction(context);
         }
 
         private async Task MeasureTransaction(HttpContext context)

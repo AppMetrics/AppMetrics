@@ -3,12 +3,35 @@
 // </copyright>
 
 using App.Metrics.Benchmarks.Support;
+using App.Metrics.Histogram;
 using BenchmarkDotNet.Attributes;
 
 namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
 {
     public class MeasureHistogramBenchmark : DefaultBenchmarkBase
     {
+        private const int NumberOfMetrics = 1000;
+        private static readonly HistogramOptions[] Metrics;
+
+        static MeasureHistogramBenchmark()
+        {
+            Metrics = new HistogramOptions[NumberOfMetrics];
+
+            for (var i = 0; i < NumberOfMetrics; i++)
+            {
+                Metrics[i] = new HistogramOptions {Name = $"metric_{i:D4}"};
+            }
+        }
+        
+        [Benchmark]
+        public void Many()
+        {
+            for (var i = 0; i < NumberOfMetrics; i++)
+            {
+                Fixture.Metrics.Measure.Histogram.Update(Metrics[i], 1);
+            }
+        }
+        
         [Benchmark]
         public void UpdateAlgorithmR()
         {

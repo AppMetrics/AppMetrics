@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="App.Metrics.Extensions.Collectors" />
     <PackageReference Include="App.Metrics.Extensions.Configuration" />
     <PackageReference Include="App.Metrics.Extensions.DependencyInjection" />
     <PackageReference Include="App.Metrics.Extensions.Hosting" />

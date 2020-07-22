@@ -1,20 +1,19 @@
 <Project>
 
   <PropertyGroup>
-    <AppMetricsConcurrencyVersion>2.0.1</AppMetricsConcurrencyVersion>
-    <AppMetricsVersion>4.1.0-*</AppMetricsVersion>
+    <AppMetricsVersion>4.2.0-*</AppMetricsVersion>
     <FrameworkVersion>3.1.0</FrameworkVersion>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>
-    <MinVerMinimumMajorMinor>4.1</MinVerMinimumMajorMinor>
-    <MinVerDefaultPreReleasePhase>preview2</MinVerDefaultPreReleasePhase>
+    <MinVerMinimumMajorMinor>4.2</MinVerMinimumMajorMinor>
+    <MinVerDefaultPreReleasePhase>preview</MinVerDefaultPreReleasePhase>
   </PropertyGroup>
 
   <ItemGroup>
     <!-- Core -->
-    <PackageReference Update="App.Metrics.Concurrency" Version="$(AppMetricsConcurrencyVersion)" />
+    <PackageReference Update="App.Metrics.Concurrency" Version="$(AppMetricsVersion)" />
     <PackageReference Update="App.Metrics" Version="$(AppMetricsVersion)" />
     <PackageReference Update="App.Metrics.Core" Version="$(AppMetricsVersion)" />
     <PackageReference Update="App.Metrics.Abstractions" Version="$(AppMetricsVersion)" />
@@ -23,6 +22,7 @@
 
     <!-- Extensions -->
     <PackageReference Update="App.Metrics.AppNetCore" Version="$(AppMetricsVersion)" />
+	<PackageReference Update="App.Metrics.Extensions.Collectors" Version="$(AppMetricsVersion)" />
     <PackageReference Update="App.Metrics.Extensions.Configuration" Version="$(AppMetricsVersion)" />
 	<PackageReference Update="App.Metrics.Extensions.HealthChecks" Version="$(AppMetricsVersion)" />
     <PackageReference Update="App.Metrics.Extensions.DependencyInjection" Version="$(AppMetricsVersion)" />
@@ -54,6 +54,7 @@
     <PackageReference Update="App.Metrics.AspNetCore.Reporting" Version="$(AppMetricsVersion)" />
     <PackageReference Update="App.Metrics.AspNetCore.Routing" Version="$(AppMetricsVersion)" />
     <PackageReference Update="App.Metrics.AspNetCore.Tracking" Version="$(AppMetricsVersion)" />
+
     <!-- Microsoft -->
     <PackageReference Update="Microsoft.Extensions.DependencyModel" Version="$(FrameworkVersion)" />
     <PackageReference Update="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(FrameworkVersion)" />
@@ -64,6 +65,15 @@
 
     <!-- NServiceBus -->
     <PackageReference Update="App.Metrics.Extensions.NServiceBus" Version="$(FrameworkVersion)" />
+	
+	<!-- Meta Packages -->
+    <PackageReference Update="App.Metrics.App.All" Version="$(AppMetricsVersion)" />
+	<PackageReference Update="App.Metrics.AspNetCore.All" Version="$(AppMetricsVersion)" />
+	<PackageReference Update="App.Metrics.Datadog" Version="$(AppMetricsVersion)" />
+	<PackageReference Update="App.Metrics.GrafanaCloudHostedMetrics" Version="$(AppMetricsVersion)" />
+	<PackageReference Update="App.Metrics.Graphite" Version="$(AppMetricsVersion)" />
+	<PackageReference Update="App.Metrics.InfluxDB" Version="$(AppMetricsVersion)" />
+	<PackageReference Update="App.Metrics.Prometheus" Version="$(AppMetricsVersion)" />
 
     <!-- Tests -->
     <PackageReference Update="Microsoft.NET.Test.Sdk" Version="16.3.0" />

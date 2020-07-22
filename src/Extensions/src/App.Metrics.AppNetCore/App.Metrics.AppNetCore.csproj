@@ -13,8 +13,10 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\App.Metrics.Extensions.Collectors\App.Metrics.Extensions.Collectors.csproj" />
         <ProjectReference Include="..\App.Metrics.Extensions.Configuration\App.Metrics.Extensions.Configuration.csproj" />
         <ProjectReference Include="..\App.Metrics.Extensions.DependencyInjection\App.Metrics.Extensions.DependencyInjection.csproj" />
+        <ProjectReference Include="..\App.Metrics.Extensions.HealthChecks\App.Metrics.Extensions.HealthChecks.csproj" />
         <ProjectReference Include="..\App.Metrics.Extensions.Hosting\App.Metrics.Extensions.Hosting.csproj" />
     </ItemGroup>
 </Project>

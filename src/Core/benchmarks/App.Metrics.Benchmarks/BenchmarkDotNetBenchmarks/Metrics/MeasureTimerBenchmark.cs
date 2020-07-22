@@ -3,12 +3,37 @@
 // </copyright>
 
 using App.Metrics.Benchmarks.Support;
+using App.Metrics.Timer;
 using BenchmarkDotNet.Attributes;
 
 namespace App.Metrics.Benchmarks.BenchmarkDotNetBenchmarks.Metrics
 {
     public class MeasureTimerBenchmark : DefaultBenchmarkBase
     {
+        private const int NumberOfMetrics = 1000;
+        private static readonly TimerOptions[] Metrics;
+
+        static MeasureTimerBenchmark()
+        {
+            Metrics = new TimerOptions[NumberOfMetrics];
+
+            for (var i = 0; i < NumberOfMetrics; i++)
+            {
+                Metrics[i] = new TimerOptions {Name = $"metric_{i:D4}"};
+            }
+        }
+        
+        [Benchmark]
+        public void Many()
+        {
+            for (var i = 0; i < NumberOfMetrics; i++)
+            {
+                using (Fixture.Metrics.Measure.Timer.Time(Metrics[i]))
+                {
+                }
+            }
+        }
+        
         [Benchmark(Baseline = true)]
         public void TimeAlgorithmR()
         {
