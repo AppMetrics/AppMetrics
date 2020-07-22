@@ -14,17 +14,17 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics
 {
     public class MetricSnapshotHostedMetricsJsonWriter : IMetricSnapshotWriter
     {
-        private readonly TextWriter _textWriter;
+        private readonly Stream _stream;
         private readonly TimeSpan _flushInterval;
         private readonly IHostedMetricsPointTextWriter _metricPointTextWriter;
         private readonly HostedMetricsPoints _points;
 
         public MetricSnapshotHostedMetricsJsonWriter(
-            TextWriter textWriter,
+            Stream stream,
             TimeSpan flushInterval,
             Func<IHostedMetricsPointTextWriter> metricPointTextWriter = null)
         {
-            _textWriter = textWriter ?? throw new ArgumentNullException(nameof(textWriter));
+            _stream = stream ?? throw new ArgumentNullException(nameof(stream));
             _flushInterval = flushInterval;
             _points = new HostedMetricsPoints();
 
@@ -56,9 +56,12 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics
         {
             if (disposing)
             {
-                await _points.WriteAsync(_textWriter);
-                _textWriter?.Close();
-                _textWriter?.Dispose();
+                await _points.WriteAsync(_stream);
+#if NETSTANDARD2_1
+                _stream?.DisposeAsync();
+#else
+                _stream?.Dispose();
+#endif
             }
         }
 

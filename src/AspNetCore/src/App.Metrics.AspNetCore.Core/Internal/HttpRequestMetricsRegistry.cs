@@ -42,6 +42,13 @@ namespace App.Metrics.AspNetCore.Internal
                                                                            MeasurementUnit = Unit.Custom("Active Requests")
                                                                        };
 
+            public static readonly CounterOptions ActiveWebSocketRequestCount = new CounterOptions
+                                                                                {
+                                                                                    Context = ContextName,
+                                                                                    Name = "Active Web Sockets",
+                                                                                    MeasurementUnit = Unit.Custom("Active Requests")
+                                                                                };
+
             public static readonly CounterOptions TotalErrorRequestCount = new CounterOptions
                                                                            {
                                                                                Context = ContextName,

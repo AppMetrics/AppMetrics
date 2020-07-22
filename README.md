@@ -4,9 +4,9 @@
 
 ## What is App Metrics?
 
-App Metrics is an open-source and cross-platform .NET library used to record metrics within an application. App Metrics can run on .NET Core or on the full .NET framework also supporting .NET 4.5.2. App Metrics abstracts away the underlaying repository of your Metrics for example InfluxDB, Graphite, Elasticsearch etc, by sampling and aggregating in memory and providing extensibility points to flush metrics to a repository at a specified interval.
+App Metrics is an open-source and cross-platform .NET library used to record metrics within an application. App Metrics can run on .NET Core or on the full .NET framework. App Metrics abstracts away the underlaying repository of your Metrics for example InfluxDB, Graphite, Prometheus etc, by sampling and aggregating in memory and providing extensibility points to flush metrics to a repository at a specified interval.
 
-App Metrics provides various metric types to measure things such as the rate of requests, counting the number of user logins over time, measure the time taken to execute a database query, measure the amount of free memory and so on. Metrics types supported are Gauges, Counters, Meters, Histograms and Timers and Application Performance Indexes [Apdex](http://apdex.org/overview.html).
+App Metrics provides various metric types to measure things such as the rate of requests, counting the number of user logins over time, measure the time taken to execute a database query, measure the amount of free memory and so on. Metrics types supported are Gauges, Counters, Meters, Histograms and Timers and Application Performance Indexes [Apdex](https://www.apdex.org/overview).
 
 `App.Metrics` includes an Exponentially Forward Decaying, Sliding Window and Algorithm R reservoir implementations. For more details on reservoir sampling see the [docs](https://www.app-metrics.io/getting-started/reservoir-sampling/).
 
@@ -22,7 +22,7 @@ App Metrics provides various metric types to measure things such as the rate of 
 |Branch|Azure Devops|
 |------|:--------:|
 |dev|[![Azure Devops](https://img.shields.io/azure-devops/build/AppMetrics/AppMetrics/3/dev.svg?style=flat-square&label=build)](https://dev.azure.com/appmetrics/AppMetrics/_build?definitionId=3)
-|master|[![AppVeyor](https://img.shields.io/azure-devops/build/AppMetrics/AppMetrics/3/master.svg?style=flat-square&label=build)](https://dev.azure.com/appmetrics/AppMetrics/_build?definitionId=3)
+|main|[![AppVeyor](https://img.shields.io/azure-devops/build/AppMetrics/AppMetrics/3/main.svg?style=flat-square&label=build)](https://dev.azure.com/appmetrics/AppMetrics/_build?definitionId=3)
 ----------
 
 ## Visualization
@@ -31,12 +31,12 @@ Dashboards can be imported from [Grafana](https://grafana.com/dashboards?search=
 
 #### Grafana Web Monitoring
 
-![Grafana/InfluxDB Generic Web Dashboard Demo](https://github.com/AppMetrics/AppMetrics.DocFx/blob/master/images/generic_grafana_dashboard_demo.gif)
+![Grafana/InfluxDB Generic Web Dashboard Demo](https://github.com/AppMetrics/AppMetrics.DocFx/blob/main/images/generic_grafana_dashboard_demo.gif)
 
 
 #### Grafana OAuth2 Client Web Monitoring
 
-![Grafana/InfluxDB Generic OAuth2 Web Dashboard Demo](https://github.com/AppMetrics/AppMetrics.DocFx/blob/master/images/generic_grafana_oauth2_dashboard_demo.gif)
+![Grafana/InfluxDB Generic OAuth2 Web Dashboard Demo](https://github.com/AppMetrics/AppMetrics.DocFx/blob/main/images/generic_grafana_oauth2_dashboard_demo.gif)
 
 
 ## How to build
@@ -48,18 +48,18 @@ Dashboards can be imported from [Grafana](https://grafana.com/dashboards?search=
 
 ## How to run benchmarks
 
-App.Metrics includes benchmarking using [BenchmarkDotNet](https://github.com/dotnet/BenchmarkDotNet). You can find the benchmark results [here](https://github.com/alhardy/AppMetrics/tree/master/benchmarks/App.Metrics.Benchmarks.Runner/BenchmarkDotNet.Artifacts/results).
+App.Metrics includes benchmarking using [BenchmarkDotNet](https://github.com/dotnet/BenchmarkDotNet). You can find the benchmark results [here](https://github.com/alhardy/AppMetrics/tree/dev/src/Core/benchmarks/App.Metrics.Benchmarks.Runner/BenchmarkDotNet.Artifacts/results).
 
 To run, from the solution's root:
 
 ```
-	cd .\benchmarks\App.Metrics.Benchmarks.Runner\
-	dotnet run -c "Release" --framework netcoreapp3.0
+	cd .\src\Core\benchmarks\App.Metrics.Benchmarks.Runner
+	dotnet run -c "Release" --framework netcoreapp3.1
 ```
 
-You'll then be prompted to choose a benchmark to run which will output a markdown file with the result in directory `.\benchmarks\App.Metrics.Benchmarks.Runner\BenchmarkDotNet.Artifacts\results`.
+You'll then be prompted to choose a benchmark to run which will output a markdown file with the result in directory `.\src\Core\benchmarks\App.Metrics.Benchmarks.Runner`.
 
-Alternatively, you can run the same benchmarks from visual studio using xUnit.net in the [benchmark project](https://github.com/AppMetrics/AppMetrics/tree/master/benchmarks/App.Metrics.Benchmarks).
+Alternatively, you can run the same benchmarks from visual studio using xUnit.net in the [benchmark project](https://github.com/AppMetrics/AppMetrics/tree/main/src/Core/benchmarks/App.Metrics.Benchmarks).
 
 ## Contributing
 
@@ -96,10 +96,10 @@ See [LICENSE](https://github.com/AppMetrics/AppMetrics/blob/dev/LICENSE)
 App Metrics is based on the [Metrics.NET](https://github.com/etishor/Metrics.NET) library, and at the moment uses the same reservoir sampling code from the original library which is a port of the Java [Dropwizard Metrics](https://github.com/dropwizard/metrics) library. 
 
 *Metrics.NET Licensed under these terms*:
-"Metrics.NET is release under Apache 2.0 License Copyright (c) 2014 Iulian Margarintescu" see [LICENSE](https://github.com/etishor/Metrics.NET/blob/master/LICENSE)
+"Metrics.NET is release under Apache 2.0 License Copyright (c) 2014 Iulian Margarintescu" see [LICENSE](https://github.com/etishor/Metrics.NET/blob/main/LICENSE)
 
 *Dropwizard Metrics* Licensed under these terms*:
 "Copyright (c) 2010-2013 Coda Hale, Yammer.com Published under Apache Software License 2.0, see [LICENSE](https://github.com/dropwizard/metrics/blob/3.2-development/LICENSE)"
 
 ----------
-[![Powered By NDepend](https://github.com/alhardy/AppMetrics.DocFx/blob/master/images/PoweredByNDepend.png)](http://www.ndepend.com/)
+[![Powered By NDepend](https://github.com/alhardy/AppMetrics.DocFx/blob/main/images/PoweredByNDepend.png)](http://www.ndepend.com/)

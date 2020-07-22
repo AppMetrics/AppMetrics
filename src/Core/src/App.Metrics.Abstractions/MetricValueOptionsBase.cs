@@ -44,5 +44,15 @@ namespace App.Metrics
         ///     The tags.
         /// </value>
         public MetricTags Tags { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the Metric should be reset when it is reported, otherwise values
+        ///     are cumulative. Note: If using more than one reporter, the count will be reset for the first reporter which sends
+        ///     the value. Defaults to <c>false</c>.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if [reset on reporting]; otherwise, <c>false</c>.
+        /// </value>
+        public bool ResetOnReporting { get; set; }
     }
 }

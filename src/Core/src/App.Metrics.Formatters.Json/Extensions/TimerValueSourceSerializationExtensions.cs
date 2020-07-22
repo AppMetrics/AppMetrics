@@ -1,4 +1,4 @@
-﻿// <copyright file="TimerValueSourceSerializationExtensions.cs" company="App Metrics Contributors">
+// <copyright file="TimerValueSourceSerializationExtensions.cs" company="App Metrics Contributors">
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
@@ -110,39 +110,40 @@ namespace App.Metrics.Timer
 
         public static TimerMetric ToSerializableMetric(this TimerValueSource source)
         {
+            var timerValue = source.ValueProvider.GetValue(source.ResetOnReporting);
             var histogramData = new TimerMetric.HistogramData
                                 {
-                                    Sum = source.Value.Histogram.Sum,
-                                    LastValue = source.Value.Histogram.LastValue,
-                                    LastUserValue = source.Value.Histogram.LastUserValue,
-                                    Max = source.Value.Histogram.Max,
-                                    MaxUserValue = source.Value.Histogram.MaxUserValue,
-                                    Mean = source.Value.Histogram.Mean,
-                                    Min = source.Value.Histogram.Min,
-                                    MinUserValue = source.Value.Histogram.MinUserValue,
-                                    StdDev = source.Value.Histogram.StdDev,
-                                    Median = source.Value.Histogram.Median,
-                                    Percentile75 = source.Value.Histogram.Percentile75,
-                                    Percentile95 = source.Value.Histogram.Percentile95,
-                                    Percentile98 = source.Value.Histogram.Percentile98,
-                                    Percentile99 = source.Value.Histogram.Percentile99,
-                                    Percentile999 = source.Value.Histogram.Percentile999,
-                                    SampleSize = source.Value.Histogram.SampleSize,
+                                    Sum = timerValue.Histogram.Sum,
+                                    LastValue = timerValue.Histogram.LastValue,
+                                    LastUserValue = timerValue.Histogram.LastUserValue,
+                                    Max = timerValue.Histogram.Max,
+                                    MaxUserValue = timerValue.Histogram.MaxUserValue,
+                                    Mean = timerValue.Histogram.Mean,
+                                    Min = timerValue.Histogram.Min,
+                                    MinUserValue = timerValue.Histogram.MinUserValue,
+                                    StdDev = timerValue.Histogram.StdDev,
+                                    Median = timerValue.Histogram.Median,
+                                    Percentile75 = timerValue.Histogram.Percentile75,
+                                    Percentile95 = timerValue.Histogram.Percentile95,
+                                    Percentile98 = timerValue.Histogram.Percentile98,
+                                    Percentile99 = timerValue.Histogram.Percentile99,
+                                    Percentile999 = timerValue.Histogram.Percentile999,
+                                    SampleSize = timerValue.Histogram.SampleSize,
                                 };
 
             var rateData = new TimerMetric.RateData
                            {
-                               MeanRate = source.Value.Rate.MeanRate,
-                               OneMinuteRate = source.Value.Rate.OneMinuteRate,
-                               FiveMinuteRate = source.Value.Rate.FiveMinuteRate,
-                               FifteenMinuteRate = source.Value.Rate.FifteenMinuteRate
+                               MeanRate = timerValue.Rate.MeanRate,
+                               OneMinuteRate = timerValue.Rate.OneMinuteRate,
+                               FiveMinuteRate = timerValue.Rate.FiveMinuteRate,
+                               FifteenMinuteRate = timerValue.Rate.FifteenMinuteRate
                            };
 
             return new TimerMetric
                    {
                        Name = source.Name,
-                       Count = source.Value.Rate.Count,
-                       ActiveSessions = source.Value.ActiveSessions,
+                       Count = timerValue.Rate.Count,
+                       ActiveSessions = timerValue.ActiveSessions,
                        Rate = rateData,
                        Histogram = histogramData,
                        Unit = source.Unit.Name,

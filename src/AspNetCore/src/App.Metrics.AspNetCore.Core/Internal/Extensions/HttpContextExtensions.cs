@@ -10,7 +10,7 @@ namespace Microsoft.AspNetCore.Http
     {
         public static bool IsSuccessfulResponse(this HttpResponse httpResponse)
         {
-           return httpResponse.StatusCode >= StatusCodes.Status200OK && httpResponse.StatusCode < StatusCodes.Status300MultipleChoices;
+            return httpResponse.StatusCode < StatusCodes.Status400BadRequest;
         }
 
         public static void SetNoCacheHeaders(this HttpContext context)

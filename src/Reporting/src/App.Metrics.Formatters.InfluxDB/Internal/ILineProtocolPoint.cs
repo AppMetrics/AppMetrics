@@ -20,6 +20,6 @@ namespace App.Metrics.Formatters.InfluxDB.Internal
         /// <c>true</c> to let the point write the timestamp by itself, <c>false</c> to not write the timestamp at the end of the row.
         /// You will have to write the timestamp by yourself of let the server receive the line and use its own timer as a timestamp.
         /// </param>
-        ValueTask WriteAync(TextWriter textWriter, bool writeTimestamp = true);
+        ValueTask WriteAsync(TextWriter textWriter, bool writeTimestamp = true);
     }
 }

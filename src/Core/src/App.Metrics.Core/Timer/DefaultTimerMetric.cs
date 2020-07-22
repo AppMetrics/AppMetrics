@@ -1,4 +1,4 @@
-﻿// <copyright file="DefaultTimerMetric.cs" company="App Metrics Contributors">
+// <copyright file="DefaultTimerMetric.cs" company="App Metrics Contributors">
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
@@ -122,10 +122,14 @@ namespace App.Metrics.Timer
         /// <inheritdoc />
         public TimerValue GetValue(bool resetMetric = false)
         {
+            var activeSessions = resetMetric
+                ? _activeSessionsCounter.GetAndReset()
+                : _activeSessionsCounter.GetValue();
+
             return new TimerValue(
                 _meter.GetValue(resetMetric),
                 _histogram.GetValue(resetMetric),
-                _activeSessionsCounter.GetValue(),
+                activeSessions,
                 TimeUnit.Nanoseconds);
         }
 

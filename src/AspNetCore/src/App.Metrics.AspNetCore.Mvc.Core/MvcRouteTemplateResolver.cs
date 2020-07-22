@@ -29,6 +29,12 @@ namespace Microsoft.AspNetCore.Mvc.Internal
             _routeNameResolver = routeNameResolver ?? throw new ArgumentNullException(nameof(routeNameResolver));
         }
 
+#if NETCOREAPP
+        public Task<string> ResolveMatchingTemplateRouteAsync(RouteData routeData)
+        {
+            return Task.FromResult(string.Empty);
+        }
+#else
         public async Task<string> ResolveMatchingTemplateRouteAsync(RouteData routeData)
         {
             var templateRoute = await _routeNameResolver.ResolveMatchingTemplateRouteAsync(routeData).ConfigureAwait(false);
@@ -98,5 +104,6 @@ namespace Microsoft.AspNetCore.Mvc.Internal
 
             return routeTemplate;
         }
+#endif
     }
 }

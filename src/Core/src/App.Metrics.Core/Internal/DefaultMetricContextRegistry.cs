@@ -34,6 +34,8 @@ namespace App.Metrics.Internal
 
         private readonly GlobalMetricTags _globalTags;
 
+        private readonly ContextualMetricTagProviders _contextualTags;
+
         private readonly MetricMetaCatalog<IHistogram, HistogramValueSource, HistogramValue> _histograms =
             new MetricMetaCatalog<IHistogram, HistogramValueSource, HistogramValue>();
 
@@ -50,13 +52,14 @@ namespace App.Metrics.Internal
             new MetricMetaCatalog<ITimer, BucketTimerValueSource, BucketTimerValue>();
 
         public DefaultMetricContextRegistry(string context)
-            : this(context, new GlobalMetricTags())
+            : this(context, new GlobalMetricTags(), new ContextualMetricTagProviders())
         {
         }
 
-        public DefaultMetricContextRegistry(string context, GlobalMetricTags globalTags)
+        public DefaultMetricContextRegistry(string context, GlobalMetricTags globalTags, ContextualMetricTagProviders contextualTags)
         {
             _globalTags = globalTags ?? throw new ArgumentNullException(nameof(globalTags));
+            _contextualTags = contextualTags ?? throw new ArgumentNullException(nameof(contextualTags));
 
             if (context.IsMissing())
             {
@@ -206,7 +209,8 @@ namespace App.Metrics.Internal
                         metricName,
                         gauge,
                         options.MeasurementUnit,
-                        allTags);
+                        allTags,
+                        options.ResetOnReporting);
                     return Tuple.Create((IGauge)gauge, valueSource);
                 });
         }
@@ -229,7 +233,8 @@ namespace App.Metrics.Internal
                         metricName,
                         gauge,
                         options.MeasurementUnit,
-                        allTags);
+                        allTags,
+                        options.ResetOnReporting);
 
                     return Tuple.Create((IGauge)gauge, valueSource);
                 });
@@ -252,7 +257,8 @@ namespace App.Metrics.Internal
                         metricName,
                         histogram,
                         options.MeasurementUnit,
-                        allTags);
+                        allTags,
+                        options.ResetOnReporting);
                     return Tuple.Create((IHistogram)histogram, valueSource);
                 });
         }
@@ -275,7 +281,8 @@ namespace App.Metrics.Internal
                         metricName,
                         histogram,
                         options.MeasurementUnit,
-                        allTags);
+                        allTags,
+                        options.ResetOnReporting);
                     return Tuple.Create((IHistogram)histogram, valueSource);
                 });
         }
@@ -344,6 +351,7 @@ namespace App.Metrics.Internal
                         options.MeasurementUnit,
                         options.RateUnit,
                         allTags,
+                        options.ResetOnReporting,
                         options.ReportSetItems);
                     return Tuple.Create((IMeter)meter, valueSource);
                 });
@@ -369,6 +377,7 @@ namespace App.Metrics.Internal
                         options.MeasurementUnit,
                         options.RateUnit,
                         allTags,
+                        options.ResetOnReporting,
                         options.ReportSetItems);
                     return Tuple.Create((IMeter)meter, valueSource);
                 });
@@ -393,7 +402,8 @@ namespace App.Metrics.Internal
                         options.MeasurementUnit,
                         options.RateUnit,
                         options.DurationUnit,
-                        allTags);
+                        allTags,
+                        options.ResetOnReporting);
                     return Tuple.Create((ITimer)timer, valueSource);
                 });
         }
@@ -418,7 +428,8 @@ namespace App.Metrics.Internal
                         options.MeasurementUnit,
                         options.RateUnit,
                         options.DurationUnit,
-                        allTags);
+                        allTags,
+                        options.ResetOnReporting);
                     return Tuple.Create((ITimer)timer, valueSource);
                 });
         }
@@ -472,7 +483,12 @@ namespace App.Metrics.Internal
                 });
         }
 
-        private MetricTags AllTags(MetricTags metricTags) { return MetricTags.Concat(metricTags, _globalTags); }
+        private MetricTags AllTags(MetricTags metricTags)
+        {
+            return MetricTags.Concat(
+                MetricTags.Concat(metricTags, _globalTags),
+                _contextualTags.ComputeTagValues());
+        }
 
         private sealed class MetricMetaCatalog<TMetric, TValue, TMetricValue>
             where TValue : MetricValueSourceBase<TMetricValue>

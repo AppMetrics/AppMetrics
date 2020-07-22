@@ -2,8 +2,14 @@
 
   <PropertyGroup>
     <AppMetricsConcurrencyVersion>2.0.1</AppMetricsConcurrencyVersion>
-    <AppMetricsVersion>3.2.0-*</AppMetricsVersion>
-    <FrameworkVersion>2.1.0</FrameworkVersion>
+    <AppMetricsVersion>4.1.0-*</AppMetricsVersion>
+    <FrameworkVersion>3.1.0</FrameworkVersion>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <MinVerMinimumMajorMinor>4.1</MinVerMinimumMajorMinor>
+    <MinVerDefaultPreReleasePhase>preview2</MinVerDefaultPreReleasePhase>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,14 +24,13 @@
     <!-- Extensions -->
     <PackageReference Update="App.Metrics.AppNetCore" Version="$(AppMetricsVersion)" />
     <PackageReference Update="App.Metrics.Extensions.Configuration" Version="$(AppMetricsVersion)" />
+	<PackageReference Update="App.Metrics.Extensions.HealthChecks" Version="$(AppMetricsVersion)" />
     <PackageReference Update="App.Metrics.Extensions.DependencyInjection" Version="$(AppMetricsVersion)" />
     <PackageReference Update="App.Metrics.Extensions.Hosting" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Health.AppNetCore" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Health.Extensions.Configuration" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Health.Extensions.DependencyInjection" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Health.Extensions.Hosting" Version="$(AppMetricsVersion)" />
 
     <!-- Reporting -->
+	<PackageReference Update="App.Metrics.Formatting.DataDog" Version="$(AppMetricsVersion)" />
+	<PackageReference Update="App.Metrics.Reporting.DataDog" Version="$(AppMetricsVersion)" />
     <PackageReference Update="App.Metrics.Reporting.Console" Version="$(AppMetricsVersion)" />
     <PackageReference Update="App.Metrics.Reporting.Http" Version="$(AppMetricsVersion)" />
     <PackageReference Update="App.Metrics.Reporting.Socket" Version="$(AppMetricsVersion)" />
@@ -49,62 +54,50 @@
     <PackageReference Update="App.Metrics.AspNetCore.Reporting" Version="$(AppMetricsVersion)" />
     <PackageReference Update="App.Metrics.AspNetCore.Routing" Version="$(AppMetricsVersion)" />
     <PackageReference Update="App.Metrics.AspNetCore.Tracking" Version="$(AppMetricsVersion)" />
-
-    <!-- Health -->
-    <PackageReference Update="App.Metrics.Health" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Health.Abstractions" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.AspNetCore.Core" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Health.Checks.Http" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Health.Checks.Network" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Health.Checks.Process" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Health.Checks.Sql" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Health.Core" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Health.Formatters.Ascii" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Health.Formatters.Json" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Health.Reporting.Metrics" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Health.Reporting.Slack" Version="$(AppMetricsVersion)" />
-
-    <!-- AspNetCore Health -->
-    <PackageReference Update="App.Metrics.AspNetCore.Health" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.AspNetCore.Health.Core" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.AspNetCore.Health.Endpoints" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.AspNetCore.Health.Hosting" Version="$(AppMetricsVersion)" />
-
-    <!-- Azure -->
-    <PackageReference Update="App.Metrics.Health.Checks.AzureDocumentDB" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Health.Checks.AzureEventHubs" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Health.Checks.AzureServiceBus" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Health.Checks.AzureStorage" Version="$(AppMetricsVersion)" />
-    
     <!-- Microsoft -->
-    <PackageReference Update="Microsoft.AspNetCore" Version="$(FrameworkVersion)" />
-    <PackageReference Update="Microsoft.AspNetCore.Mvc." Version="$(FrameworkVersion)" />
-    <PackageReference Update="Microsoft.AspNetCore.Mvc.Core" Version="$(FrameworkVersion)" />
-    <PackageReference Update="Microsoft.AspNetCore.Http.Abstractions" Version="$(FrameworkVersion)" />
-    <PackageReference Update="Microsoft.AspNetCore.Http.Extensions" Version="$(FrameworkVersion)" />
-    <PackageReference Update="Microsoft.AspNetCore.Http.Extensions" Version="$(FrameworkVersion)" />
-    <PackageReference Update="Microsoft.AspNetCore.Hosting.Abstractions" Version="$(FrameworkVersion)" />
-    <PackageReference Update="Microsoft.AspNetCore.Routing.Abstractions" Version="$(FrameworkVersion)" />
-    <PackageReference Update="Microsoft.AspNetCore.Routing" Version="$(FrameworkVersion)" />
-    <PackageReference Update="Microsoft.AspNetCore.Http.Extensions" Version="$(FrameworkVersion)" />
     <PackageReference Update="Microsoft.Extensions.DependencyModel" Version="$(FrameworkVersion)" />
     <PackageReference Update="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(FrameworkVersion)" />
     <PackageReference Update="Microsoft.Extensions.Hosting.Abstractions" Version="$(FrameworkVersion)" />
     <PackageReference Update="Microsoft.Extensions.Logging.Abstractions" Version="$(FrameworkVersion)" />
     <PackageReference Update="Microsoft.Extensions.Configuration.Binder" Version="$(FrameworkVersion)" />
     <PackageReference Update="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(FrameworkVersion)" />
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-18618-05" PrivateAssets="All" />
+
+    <!-- NServiceBus -->
+    <PackageReference Update="App.Metrics.Extensions.NServiceBus" Version="$(FrameworkVersion)" />
 
     <!-- Tests -->
-    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="16.3.0" />
     <PackageReference Update="xunit" Version="2.4.1" />
     <PackageReference Update="xunit.runner.visualstudio" Version="2.4.1" />
-    <PackageReference Update="Moq" Version="4.8.2" />
-    <PackageReference Update="FluentAssertions" Version="5.0.0" />
-    <PackageReference Update="FluentAssertions.Json" Version="5.0.0" />
+    <PackageReference Update="Moq" Version="4.13.1" />
+    <PackageReference Update="FluentAssertions" Version="5.9.0" />
+    <PackageReference Update="FluentAssertions.Json" Version="5.3.0" />
 
-    <!-- Third Party -->
-    <PackageReference Update="NewtonSoft.Json" Version="11.0.2" />
+    <!-- Build -->
+    <PackageReference Include="MinVer" Version="2.0.0" PrivateAssets="All" />
+    <PackageReference Update="SimpleExec" Version="6.1.0" />
+    <PackageReference Update="Bullseye" Version="3.0.0" />
+    <PackageReference Update="McMaster.Extensions.CommandLineUtils" Version="2.4.0" />
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
     <PackageReference Update="StyleCop.Analyzers" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Update="Microsoft.AspNetCore" Version="2.2.0" />
+    <PackageReference Update="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Update="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Update="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Update="Microsoft.AspNetCore.Http.Extensions" Version="$(FrameworkVersion)" />
+    <PackageReference Update="Microsoft.AspNetCore.Http.Extensions" Version="$(FrameworkVersion)" />
+    <PackageReference Update="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
+    <PackageReference Update="Microsoft.AspNetCore.Routing.Abstractions" Version="2.2.0" />
+    <PackageReference Update="Microsoft.AspNetCore.Routing" Version="2.2.0" />
+    <PackageReference Update="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
+  </ItemGroup>
+
+  <Target Name="SetAssemblyVersion" AfterTargets="MinVer">
+    <PropertyGroup>
+      <AssemblyVersion>$(MinVerMajor).$(MinVerMinor).$(MinVerPatch).0</AssemblyVersion>
+    </PropertyGroup>
+  </Target>
 </Project>

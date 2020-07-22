@@ -76,13 +76,11 @@ namespace GrafanaCloudHostedMetricsSandbox
                 Console.WriteLine($"Formatter: {formatter.GetType().FullName}");
                 Console.WriteLine("-------------------------------------------");
 
-                using (var stream = new MemoryStream())
-                {
-                    await formatter.WriteAsync(stream, metricsData, cancellationTokenSource.Token);
-                    var result = Encoding.UTF8.GetString(stream.ToArray());
+                await using var stream = new MemoryStream();
+                await formatter.WriteAsync(stream, metricsData, cancellationTokenSource.Token);
+                var result = Encoding.UTF8.GetString(stream.ToArray());
 
-                    Console.WriteLine(result);
-                }
+                Console.WriteLine(result);
             }
         }
 

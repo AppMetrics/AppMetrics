@@ -8,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Infrastructure;
 #if !NETSTANDARD1_6
-using App.Metrics.Internal;
 #endif
 using App.Metrics.Serialization;
 
@@ -29,7 +28,7 @@ namespace App.Metrics.Formatters.Ascii
         public MetricsMediaTypeValue MediaType => new MetricsMediaTypeValue("text", "vnd.appmetrics.env", "v1", "plain");
 
         /// <inheritdoc />
-        public Task WriteAsync(
+        public async Task WriteAsync(
             Stream output,
             EnvironmentInfo environmentInfo,
             CancellationToken cancellationToken = default)
@@ -40,20 +39,21 @@ namespace App.Metrics.Formatters.Ascii
             }
 
             var serializer = new EnvironmentInfoSerializer();
-
+#if NETSTANDARD2_1
+            await using (var stringWriter = new StreamWriter(output, _options.Encoding))
+#else
             using (var stringWriter = new StreamWriter(output, _options.Encoding))
+#endif
             {
+#if NETSTANDARD2_1
+                await using (var textWriter = new EnvInfoTextWriter(stringWriter, _options.Separator, _options.Padding))
+#else
                 using (var textWriter = new EnvInfoTextWriter(stringWriter, _options.Separator, _options.Padding))
+#endif
                 {
-                    serializer.Serialize(textWriter, environmentInfo);
+                    await serializer.Serialize(textWriter, environmentInfo);
                 }
             }
-
-#if NETSTANDARD1_6
-            return Task.CompletedTask;
-#else
-            return AppMetricsTaskHelper.CompletedTask();
-#endif
         }
     }
 }

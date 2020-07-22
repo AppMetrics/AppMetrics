@@ -28,3 +28,11 @@ Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.reporting.http\ -Recurs
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.reporting.influxdb\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.reporting.socket\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.reporting.textfile\ -Recurse -ErrorAction SilentlyContinue
+Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.extensions.nservicebus\ -Recurse -ErrorAction SilentlyContinue
+Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.app.all\ -Recurse -ErrorAction SilentlyContinue
+Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.aspnetcore.all\ -Recurse -ErrorAction SilentlyContinue
+Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.datadog\ -Recurse -ErrorAction SilentlyContinue
+Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.grafanacloudhostedmetrics\ -Recurse -ErrorAction SilentlyContinue
+Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.graphite\ -Recurse -ErrorAction SilentlyContinue
+Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.influxdb\ -Recurse -ErrorAction SilentlyContinue
+Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.prometheus\ -Recurse -ErrorAction SilentlyContinue

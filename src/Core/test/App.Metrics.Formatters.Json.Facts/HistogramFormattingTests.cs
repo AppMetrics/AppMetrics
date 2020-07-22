@@ -30,7 +30,7 @@ namespace App.Metrics.Formatters.Json.Facts
         }
 
        
-        [Fact(Skip = "https://github.com/AppMetrics/AppMetrics/issues/501")]
+        [Fact]
         public async Task Produces_expected_json()
         {
             // Arrange

@@ -120,7 +120,7 @@ namespace App.Metrics.Counter
         ///     Increments a <see cref="ICounterMetric" />
         /// </summary>
         /// <param name="options">The details of the counter that is being incremented</param>
-        /// <param name="amount">The amount to decrement the counter.</param>
+        /// <param name="amount">The amount to increment the counter.</param>
         void Increment(CounterOptions options, long amount);
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace App.Metrics.Counter
         /// <param name="tags">
         ///     The runtime tags to set in addition to those defined on the options, this will create a separate metric per unique <see cref="MetricTags"/>
         /// </param>
-        /// <param name="amount">The amount to decrement the counter.</param>
+        /// <param name="amount">The amount to increment the counter.</param>
         void Increment(CounterOptions options, MetricTags tags, long amount);
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace App.Metrics.Counter
         ///     Increment a <see cref="ICounterMetric" /> by the specified amount as well as the specified item within the
         ///     counter's set
         /// </summary>
-        /// <param name="options">The details of the counter that is being decremented</param>
+        /// <param name="options">The details of the counter that is being incremented</param>
         /// <param name="amount">The amount to increment the counter.</param>
         /// <param name="setItem">The item within the set to increment.</param>
         /// <remarks>

@@ -15,7 +15,7 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
 {
     // ReSharper disable ClassNeverInstantiated.Global
     public class OAuthTrackingMiddleware
-        // ReSharper restore ClassNeverInstantiated.Global
+    // ReSharper restore ClassNeverInstantiated.Global
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<OAuthTrackingMiddleware> _logger;
@@ -45,55 +45,62 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
 
         // ReSharper disable UnusedMember.Global
         public async Task Invoke(HttpContext context)
-            // ReSharper restore UnusedMember.Global
+        // ReSharper restore UnusedMember.Global
         {
-            await _next(context);
-
-            var clientid = context.GetOAuthClientIdIfRequired();
-
-            _logger.MiddlewareExecuting<OAuthTrackingMiddleware>();
-
-            var routeTemplate = context.GetMetricsCurrentRouteName();
-
-            _metrics.RecordClientRequestRate(routeTemplate, clientid);
-
-            if (!context.Response.IsSuccessfulResponse() && _ignoredHttpStatusCodes.All(i => i != context.Response.StatusCode))
+            try
             {
-                _metrics.RecordClientHttpRequestError(routeTemplate, context.Response.StatusCode, clientid);
+                await _next(context);
             }
-
-            var httpMethod = context.Request.Method.ToUpperInvariant();
-
-            if (httpMethod == "POST")
+            finally
             {
-                if (context.Request.Headers != null && context.Request.Headers.ContainsKey("Content-Length"))
+                _logger.MiddlewareExecuting<OAuthTrackingMiddleware>();
+
+                var clientid = context.GetOAuthClientIdIfRequired();
+
+                var routeTemplate = context.GetMetricsCurrentRouteName();
+
+                _metrics.RecordClientRequestRate(routeTemplate, clientid);
+
+                if (!context.Response.IsSuccessfulResponse() && _ignoredHttpStatusCodes.All(i => i != context.Response.StatusCode))
                 {
-                    if (_useBucketHistograms)
+                    _metrics.RecordClientHttpRequestError(routeTemplate, context.Response.StatusCode, clientid);
+                }
+
+                var httpMethod = context.Request.Method.ToUpperInvariant();
+
+                if (httpMethod == "POST")
+                {
+
+                    if (context.Request.Headers != null && context.Request.Headers.ContainsKey("Content-Length"))
                     {
-                        _metrics.UpdateClientPostRequestSize(_postSizeBucketHistogramOptions, long.Parse(context.Request.Headers["Content-Length"].First()), clientid, routeTemplate);
-                    }
-                    else
-                    {
-                        _metrics.UpdateClientPostRequestSize(long.Parse(context.Request.Headers["Content-Length"].First()), clientid, routeTemplate);
+                        if (_useBucketHistograms)
+                        {
+                            _metrics.UpdateClientPostRequestSize(_postSizeBucketHistogramOptions, long.Parse(context.Request.Headers["Content-Length"].First()), clientid, routeTemplate);
+                        }
+                        else
+                        {
+                            _metrics.UpdateClientPostRequestSize(long.Parse(context.Request.Headers["Content-Length"].First()), clientid, routeTemplate);
+                        }
                     }
                 }
-            }
-            else if (httpMethod == "PUT")
-            {
-                if (context.Request.Headers != null && context.Request.Headers.ContainsKey("Content-Length"))
+                else if (httpMethod == "PUT")
                 {
-                    if (_useBucketHistograms)
+
+                    if (context.Request.Headers != null && context.Request.Headers.ContainsKey("Content-Length"))
                     {
-                        _metrics.UpdateClientPutRequestSize(_putSizeBucketHistogramOptions, long.Parse(context.Request.Headers["Content-Length"].First()), clientid, routeTemplate);
-                    }
-                    else
-                    {
-                        _metrics.UpdateClientPutRequestSize(long.Parse(context.Request.Headers["Content-Length"].First()), clientid, routeTemplate);
+                        if (_useBucketHistograms)
+                        {
+                            _metrics.UpdateClientPutRequestSize(_putSizeBucketHistogramOptions, long.Parse(context.Request.Headers["Content-Length"].First()), clientid, routeTemplate);
+                        }
+                        else
+                        {
+                            _metrics.UpdateClientPutRequestSize(long.Parse(context.Request.Headers["Content-Length"].First()), clientid, routeTemplate);
+                        }
                     }
                 }
-            }
 
-            _logger.MiddlewareExecuted<OAuthTrackingMiddleware>();
+                _logger.MiddlewareExecuted<OAuthTrackingMiddleware>();
+            }
         }
     }
 }

@@ -48,7 +48,7 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var timestamp = new DateTime(2017, 1, 1, 1, 1, 1, DateTimeKind.Utc);
             var point = new LineProtocolPointSingleValue("measurement", fieldName, fieldValue, MetricTags.Empty, timestamp);
 
-            point.WriteAync(textWriter);
+            point.WriteAsync(textWriter);
 
             textWriter.ToString().Should().Be("measurement key=\"value\" 1483232461000000000");
         }
@@ -61,7 +61,7 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var fieldValue = "value";
             var point = new LineProtocolPointSingleValue("measurement", fieldName, fieldValue, MetricTags.Empty);
 
-            point.WriteAync(textWriter, false);
+            point.WriteAsync(textWriter, false);
 
             textWriter.ToString().Should().Be("measurement key=\"value\"");
         }
@@ -75,7 +75,7 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var timestamp = new DateTime(2017, 1, 1, 1, 1, 1, DateTimeKind.Utc);
             var point = new LineProtocolPointMultipleValues("measurement", fieldsNames, fieldsValues, MetricTags.Empty, timestamp);
 
-            point.WriteAync(textWriter);
+            point.WriteAsync(textWriter);
 
             textWriter.ToString().Should().Be("measurement field1key=\"field1value\",field2key=2i,field3key=f 1483232461000000000");
         }
@@ -90,7 +90,7 @@ namespace App.Metrics.Reporting.InfluxDB.Facts
             var timestamp = new DateTime(2017, 1, 1, 1, 1, 1, DateTimeKind.Utc);
             var point = new LineProtocolPointSingleValue("measurement", fieldName, fieldValue, tags, timestamp);
 
-            point.WriteAync(textWriter);
+            point.WriteAsync(textWriter);
 
             textWriter.ToString().Should().Be("measurement,tagkey=tagvalue key=\"value\" 1483232461000000000");
         }

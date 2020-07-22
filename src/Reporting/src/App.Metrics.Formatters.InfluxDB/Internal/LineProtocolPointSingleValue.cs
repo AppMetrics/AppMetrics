@@ -34,7 +34,7 @@ namespace App.Metrics.Formatters.InfluxDB.Internal
 
         public object FieldValue { get; }
 
-        public async ValueTask WriteAync(TextWriter textWriter, bool writeTimestamp = true)
+        public async ValueTask WriteAsync(TextWriter textWriter, bool writeTimestamp = true)
         {
             if (textWriter == null)
             {

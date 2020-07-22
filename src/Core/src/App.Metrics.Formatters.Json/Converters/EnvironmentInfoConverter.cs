@@ -16,7 +16,7 @@ namespace App.Metrics.Formatters.Json.Converters
         
         public override EnvironmentInfo Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            var source = JsonSerializer.Deserialize<Dictionary<string, string>>(reader.GetString());
+            var source = JsonSerializer.Deserialize<Dictionary<string, string>>(reader.GetString(), options);
 
             return new EnvironmentInfo(source);
         }
@@ -25,7 +25,7 @@ namespace App.Metrics.Formatters.Json.Converters
         {
             var target = value.Entries;
 
-            JsonSerializer.Serialize(writer, target);
+            JsonSerializer.Serialize(writer, target, options);
         }
     }
 }

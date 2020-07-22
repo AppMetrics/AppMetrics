@@ -13,10 +13,18 @@ pushd ./src/Extensions
 ./build.sh "$@"
 popd
 
+pushd ./src/AspNetCore
+./build.sh "$@"
+popd
+
 pushd ./src/Reporting
 ./build.sh "$@"
 popd
 
-pushd ./src/AspNetCore
+pushd ./src/NServiceBus
+./build.sh "$@"
+popd
+
+pushd ./src/MetaPackages
 ./build.sh "$@"
 popd

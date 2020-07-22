@@ -123,5 +123,23 @@ namespace App.Metrics.Timer
                                      _clock)).
                              NewContext(userValue);
         }
+
+        public void Time(TimerOptions options, long time)
+        {
+            var context = _registry.Timer(options,
+                                () => _timerBuilder.Build(
+                                     options.Reservoir,
+                                     _clock));
+            context.Record(time, options.DurationUnit);
+        }
+
+        public void Time(TimerOptions options, MetricTags tags, long time)
+        {
+            var context = _registry.Timer(options, tags, 
+                                () => _timerBuilder.Build(
+                                     options.Reservoir,
+                                     _clock));
+            context.Record(time, options.DurationUnit);
+        }
     }
 }
