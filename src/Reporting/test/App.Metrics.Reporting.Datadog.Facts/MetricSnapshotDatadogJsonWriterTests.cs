@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
+using App.Metrics.BucketTimer;
 using App.Metrics.Counter;
 using App.Metrics.Formatting.Datadog;
 using App.Metrics.Gauge;
@@ -482,17 +484,21 @@ namespace App.Metrics.Reporting.Datadog.Facts
             CounterValueSource counters = null,
             MeterValueSource meters = null,
             HistogramValueSource histograms = null,
+            BucketHistogramValueSource bucketHistograms = null,
             TimerValueSource timers = null,
+            BucketTimerValueSource bucketTimers = null,
             ApdexValueSource apdexScores = null)
         {
             var gaugeValues = gauges != null ? new[] { gauges } : Enumerable.Empty<GaugeValueSource>();
             var counterValues = counters != null ? new[] { counters } : Enumerable.Empty<CounterValueSource>();
             var meterValues = meters != null ? new[] { meters } : Enumerable.Empty<MeterValueSource>();
             var histogramValues = histograms != null ? new[] { histograms } : Enumerable.Empty<HistogramValueSource>();
+            var bucketHistogramValues = bucketHistograms != null ? new[] { bucketHistograms } : Enumerable.Empty<BucketHistogramValueSource>();
             var timerValues = timers != null ? new[] { timers } : Enumerable.Empty<TimerValueSource>();
+            var bucketTimerValues = bucketTimers != null ? new[] { bucketTimers } : Enumerable.Empty<BucketTimerValueSource>();
             var apdexScoreValues = apdexScores != null ? new[] { apdexScores } : Enumerable.Empty<ApdexValueSource>();
 
-            return new MetricsContextValueSource(context, gaugeValues, counterValues, meterValues, histogramValues, timerValues, apdexScoreValues);
+            return new MetricsContextValueSource(context, gaugeValues, counterValues, meterValues, histogramValues, bucketHistogramValues, timerValues, bucketTimerValues, apdexScoreValues);
         }
     }
 }
