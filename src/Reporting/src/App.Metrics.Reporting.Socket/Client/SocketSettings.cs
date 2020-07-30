@@ -104,7 +104,7 @@ namespace App.Metrics.Reporting.Socket.Client
                     $"Port must be in ({IPEndPoint.MinPort}; {IPEndPoint.MaxPort}) range.");
             }
 
-            string endpoint = $"{address}:{port}";
+            string endpoint = $"{protocolType.ToString().ToLower()}://{address}:{port}";
             if (!Uri.TryCreate(endpoint, UriKind.Absolute, out var uri))
             {
                 throw new InvalidOperationException($"{endpoint} must be a valid absolute URI.");
