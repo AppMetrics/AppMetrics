@@ -76,6 +76,15 @@ namespace App.Metrics.Formatters.Json.Converters
             foreach (var entry in value)
             {
                 writer.WritePropertyName(JsonSerializer.Serialize(entry.Key, options));
+                if (entry.Value is double)
+                {
+                    var d = Convert.ToDouble(entry.Value);
+                    if (double.IsInfinity(d) || double.IsNaN(d) || double.IsNegativeInfinity(d) || double.IsPositiveInfinity(d))
+                    {
+                        JsonSerializer.Serialize(writer, entry.Value.ToString(), options);
+                        continue;
+                    }
+                }
                 JsonSerializer.Serialize(writer, entry.Value, options);
             }
 

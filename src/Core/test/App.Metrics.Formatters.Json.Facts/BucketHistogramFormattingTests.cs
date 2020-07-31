@@ -37,7 +37,7 @@ namespace App.Metrics.Formatters.Json.Facts
             var expected = MetricType.BucketHistogram.SampleJson();
 
             // Act
-            using (var stream = new MemoryStream())
+            await using (var stream = new MemoryStream())
             {
                 await _formatter.WriteAsync(stream, _metrics);
 
@@ -55,7 +55,7 @@ namespace App.Metrics.Formatters.Json.Facts
             string result;
 
             // Act
-            using (var stream = new MemoryStream())
+            await using (var stream = new MemoryStream())
             {
                 await _formatter.WriteAsync(stream, _metrics);
 
