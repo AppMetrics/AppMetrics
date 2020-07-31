@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace App.Metrics.Formatters.Json.Converters
 {
     /// <summary>
-    /// Enables reading/writing a dictionary as JSON.
-    /// Implemented to support reading/writing non-standard keys.
+    ///     Enables reading/writing a dictionary as JSON.
+    ///     Implemented to support reading/writing non-standard keys.
     /// </summary>
     public class DictionaryConverter : JsonConverterFactory
     {
@@ -30,7 +29,6 @@ namespace App.Metrics.Formatters.Json.Converters
         /// <inheritdoc />
         public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
         {
-
             if (!CanConvert(typeToConvert))
             {
                 throw new InvalidOperationException($"{typeToConvert} is not a valid type for converter {typeof(DictionaryConverter<,>)}");
@@ -42,8 +40,8 @@ namespace App.Metrics.Formatters.Json.Converters
     }
 
     /// <summary>
-    /// Enables reading/writing a dictionary as JSON.
-    /// Implemented to support reading/writing non-standard keys.
+    ///     Enables reading/writing a dictionary as JSON.
+    ///     Implemented to support reading/writing non-standard keys.
     /// </summary>
     /// <typeparam name="TKey">The type of the key.</typeparam>
     /// <typeparam name="TValue">The value type.</typeparam>
@@ -75,20 +73,42 @@ namespace App.Metrics.Formatters.Json.Converters
             writer.WriteStartObject();
             foreach (var entry in value)
             {
-                writer.WritePropertyName(JsonSerializer.Serialize(entry.Key, options));
+                if (!(entry.Key is double))
+                {
+                    writer.WritePropertyName(JsonSerializer.Serialize(entry.Key, options));
+                }
+                else
+                {
+                    var d = Convert.ToDouble(entry.Key);
+                    if (IsInvalidJsonDouble(d))
+                    {
+                        writer.WritePropertyName(JsonSerializer.Serialize(ToJsonDoubleString(d), options));
+                    }
+                    else
+                    {
+                        writer.WritePropertyName(JsonSerializer.Serialize(entry.Key, options));
+                    }
+                }
+
                 if (entry.Value is double)
                 {
                     var d = Convert.ToDouble(entry.Value);
-                    if (double.IsInfinity(d) || double.IsNaN(d) || double.IsNegativeInfinity(d) || double.IsPositiveInfinity(d))
+                    if (IsInvalidJsonDouble(d))
                     {
-                        JsonSerializer.Serialize(writer, entry.Value.ToString(), options);
+                        JsonSerializer.Serialize(writer, ToJsonDoubleString(d), options);
                         continue;
                     }
                 }
+
                 JsonSerializer.Serialize(writer, entry.Value, options);
             }
 
             writer.WriteEndObject();
+        }
+
+        private static bool IsInvalidJsonDouble(double value)
+        {
+            return double.IsInfinity(value) || double.IsNaN(value) || double.IsNegativeInfinity(value) || double.IsPositiveInfinity(value);
         }
 
         private (TKey Key, TValue Value) ReadEntry(ref Utf8JsonReader reader, JsonSerializerOptions options)
@@ -107,6 +127,26 @@ namespace App.Metrics.Formatters.Json.Converters
             reader.Read();
 
             return (key, value);
+        }
+
+        private static string ToJsonDoubleString(double value)
+        {
+            if (double.IsInfinity(value))
+            {
+                return "Infinity";
+            }
+
+            if (double.IsNegativeInfinity(value))
+            {
+                return "NegativeInfinity";
+            }
+
+            if (double.IsPositiveInfinity(value))
+            {
+                return "PositiveInfinity";
+            }
+
+            return "NaN";
         }
     }
 }
