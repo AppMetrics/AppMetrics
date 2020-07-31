@@ -4,6 +4,8 @@
 
 using System.Collections.Generic;
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
+using App.Metrics.BucketTimer;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
 
@@ -55,6 +57,56 @@ namespace App.Metrics
             fields.TryAddValuesForKeyIfPresent(values, HistogramFields.UserLastValue, histogram.LastUserValue);
             fields.TryAddValuesForKeyIfPresent(values, HistogramFields.UserMinValue, histogram.MinUserValue);
             fields.TryAddValuesForKeyIfPresent(values, HistogramFields.UserMaxValue, histogram.MaxUserValue);
+        }
+
+        public static void AddBucketHistogramValues(
+            this BucketHistogramValue histogram,
+            IDictionary<string, object> values,
+            IDictionary<string, string> fields)
+        {
+            if (values == null)
+            {
+                return;
+            }
+
+            fields.TryAddValuesForKey(values, BucketHistogramFields.Count.ToString(), histogram.Count);
+            fields.TryAddValuesForKey(values, BucketHistogramFields.Sum.ToString(), histogram.Sum);
+            foreach (var bucket in histogram.Buckets)
+            {
+                if (double.IsPositiveInfinity(bucket.Key))
+                {
+                    values[$"{BucketHistogramFields.Bucket}Inf"] = bucket.Value;
+                }
+                else
+                {
+                    values[$"{BucketHistogramFields.Bucket}{bucket.Key}"] = bucket.Value;
+                }
+            }
+        }
+
+        public static void AddBucketTimerValues(
+            this BucketTimerValue timer,
+            IDictionary<string, object> values,
+            IDictionary<string, string> fields)
+        {
+            if (values == null)
+            {
+                return;
+            }
+
+            fields.TryAddValuesForKey(values, BucketHistogramFields.Count.ToString(), timer.Histogram.Count);
+            fields.TryAddValuesForKey(values, BucketHistogramFields.Sum.ToString(), timer.Histogram.Sum);
+            foreach (var bucket in timer.Histogram.Buckets)
+            {
+                if (double.IsPositiveInfinity(bucket.Key))
+                {
+                    values[$"{BucketHistogramFields.Bucket}Inf"] = bucket.Value;
+                }
+                else
+                {
+                    values[$"{BucketHistogramFields.Bucket}{bucket.Key}"] = bucket.Value;
+                }
+            }
         }
 
         public static void AddMeterSetItemValues(

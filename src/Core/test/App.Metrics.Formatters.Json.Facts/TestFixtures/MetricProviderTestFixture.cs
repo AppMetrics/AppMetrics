@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
+using App.Metrics.BucketTimer;
 using App.Metrics.Counter;
 using App.Metrics.FactsCommon;
 using App.Metrics.Gauge;
@@ -27,17 +29,21 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
             Meters = SetupMeters();
             Gauges = SetupGauges();
             Timers = SetupTimers();
+            BucketTimers = SetupBucketTimers();
             ApdexScores = SetupApdexScores();
             Histograms = SetupHistograms();
+            BucketHistograms = SetupBucketHistograms();
             ContextOne = SetupContextOne();
             DataWithOneContext = SetupMetricsData(new[] { ContextOne });
-            ApdexContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), Enumerable.Empty<CounterValueSource>(), Enumerable.Empty<MeterValueSource>(), Enumerable.Empty<HistogramValueSource>(), Enumerable.Empty<TimerValueSource>(), ApdexScores) });
-            CounterContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), Counters, Enumerable.Empty<MeterValueSource>(), Enumerable.Empty<HistogramValueSource>(), Enumerable.Empty<TimerValueSource>(), Enumerable.Empty<ApdexValueSource>()) });
-            ResetCounterContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), ResetCounters, Enumerable.Empty<MeterValueSource>(), Enumerable.Empty<HistogramValueSource>(), Enumerable.Empty<TimerValueSource>(), Enumerable.Empty<ApdexValueSource>()) });
-            GaugeContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Gauges, Enumerable.Empty<CounterValueSource>(), Enumerable.Empty<MeterValueSource>(), Enumerable.Empty<HistogramValueSource>(), Enumerable.Empty<TimerValueSource>(), Enumerable.Empty<ApdexValueSource>()) });
-            MeterContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), Enumerable.Empty<CounterValueSource>(), Meters, Enumerable.Empty<HistogramValueSource>(), Enumerable.Empty<TimerValueSource>(), Enumerable.Empty<ApdexValueSource>()) });
-            TimerContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), Enumerable.Empty<CounterValueSource>(), Enumerable.Empty<MeterValueSource>(), Enumerable.Empty<HistogramValueSource>(), Timers, Enumerable.Empty<ApdexValueSource>()) });
-            HistogramContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), Enumerable.Empty<CounterValueSource>(), Enumerable.Empty<MeterValueSource>(), Histograms, Enumerable.Empty<TimerValueSource>(), Enumerable.Empty<ApdexValueSource>()) });
+            ApdexContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), Enumerable.Empty<CounterValueSource>(), Enumerable.Empty<MeterValueSource>(), Enumerable.Empty<HistogramValueSource>(), Enumerable.Empty<BucketHistogramValueSource>(), Enumerable.Empty<TimerValueSource>(), Enumerable.Empty<BucketTimerValueSource>(), ApdexScores) });
+            CounterContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), Counters, Enumerable.Empty<MeterValueSource>(), Enumerable.Empty<HistogramValueSource>(), Enumerable.Empty<BucketHistogramValueSource>(), Enumerable.Empty<TimerValueSource>(), Enumerable.Empty<BucketTimerValueSource>(), Enumerable.Empty<ApdexValueSource>()) });
+            ResetCounterContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), ResetCounters, Enumerable.Empty<MeterValueSource>(), Enumerable.Empty<HistogramValueSource>(), Enumerable.Empty<BucketHistogramValueSource>(), Enumerable.Empty<TimerValueSource>(), Enumerable.Empty<BucketTimerValueSource>(), Enumerable.Empty<ApdexValueSource>()) });
+            GaugeContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Gauges, Enumerable.Empty<CounterValueSource>(), Enumerable.Empty<MeterValueSource>(), Enumerable.Empty<HistogramValueSource>(), Enumerable.Empty<BucketHistogramValueSource>(), Enumerable.Empty<TimerValueSource>(), Enumerable.Empty<BucketTimerValueSource>(), Enumerable.Empty<ApdexValueSource>()) });
+            MeterContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), Enumerable.Empty<CounterValueSource>(), Meters, Enumerable.Empty<HistogramValueSource>(), Enumerable.Empty<BucketHistogramValueSource>(), Enumerable.Empty<TimerValueSource>(), Enumerable.Empty<BucketTimerValueSource>(), Enumerable.Empty<ApdexValueSource>()) });
+            TimerContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), Enumerable.Empty<CounterValueSource>(), Enumerable.Empty<MeterValueSource>(), Enumerable.Empty<HistogramValueSource>(), Enumerable.Empty<BucketHistogramValueSource>(), Timers, Enumerable.Empty<BucketTimerValueSource>(), Enumerable.Empty<ApdexValueSource>()) });
+            BucketTimerContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), Enumerable.Empty<CounterValueSource>(), Enumerable.Empty<MeterValueSource>(), Enumerable.Empty<HistogramValueSource>(), Enumerable.Empty<BucketHistogramValueSource>(), Enumerable.Empty<TimerValueSource>(), BucketTimers, Enumerable.Empty<ApdexValueSource>()) });
+            HistogramContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), Enumerable.Empty<CounterValueSource>(), Enumerable.Empty<MeterValueSource>(), Histograms, Enumerable.Empty<BucketHistogramValueSource>(), Enumerable.Empty<TimerValueSource>(), Enumerable.Empty<BucketTimerValueSource>(), Enumerable.Empty<ApdexValueSource>()) });
+            BucketHistogramContext = SetupMetricsData(new[] { new MetricsContextValueSource("context_one", Enumerable.Empty<GaugeValueSource>(), Enumerable.Empty<CounterValueSource>(), Enumerable.Empty<MeterValueSource>(), Enumerable.Empty<HistogramValueSource>(), BucketHistograms, Enumerable.Empty<TimerValueSource>(), Enumerable.Empty<BucketTimerValueSource>(), Enumerable.Empty<ApdexValueSource>()) });
         }
 
         public string ApdexNameDefault { get; } = "test_apdex";
@@ -62,7 +68,11 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 
         public MetricsDataValueSource TimerContext { get; }
 
+        public MetricsDataValueSource BucketTimerContext { get; }
+
         public MetricsDataValueSource HistogramContext { get; }
+
+        public MetricsDataValueSource BucketHistogramContext { get; }
 
         public MetricsDataValueSource ApdexContext { get; }
 
@@ -85,7 +95,11 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 
         public string HistogramNameDefault { get; } = "test_histogram";
 
+        public string BucketHistogramNameDefault { get; } = "test_bucket_histogram";
+
         public IEnumerable<HistogramValueSource> Histograms { get; }
+
+        public IEnumerable<BucketHistogramValueSource> BucketHistograms { get; }
 
         public string MeterNameDefault { get; } = "test_meter";
 
@@ -94,6 +108,10 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
         public string TimerNameDefault { get; } = "test_timer";
 
         public IEnumerable<TimerValueSource> Timers { get; }
+
+        public string BucketTimerNameDefault { get; } = "test_bucket_timer";
+
+        public IEnumerable<BucketTimerValueSource> BucketTimers { get; }
 
         private MetricsContextValueSource ContextOne { get; }
 
@@ -111,7 +129,7 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 
         private MetricsContextValueSource SetupContextOne()
         {
-            return new MetricsContextValueSource("context_one", Gauges, Counters, Meters, Histograms, Timers, ApdexScores);
+            return new MetricsContextValueSource("context_one", Gauges, Counters, Meters, Histograms, BucketHistograms, Timers, BucketTimers, ApdexScores);
         }
 
         private IEnumerable<CounterValueSource> SetupCounters(bool resetOnReporting)
@@ -139,6 +157,15 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
 
             return new[] { histogram };
         }
+
+        private IEnumerable<BucketHistogramValueSource> SetupBucketHistograms()
+        {
+            var histogramValue = new BucketHistogramValue(1, 1, new Dictionary<double, double> { { 1, 1 } });
+            var histogram = new BucketHistogramValueSource(BucketHistogramNameDefault, ConstantValue.Provider(histogramValue), Unit.Items, Tags);
+
+            return new[] { histogram };
+        }
+
 
 #pragma warning disable SA1118 // Parameter must not span multiple lines
 
@@ -197,6 +224,35 @@ namespace App.Metrics.Formatters.Json.Facts.TestFixtures
             var timerValue = new TimerValue(meterValue, histogramValue, 0, TimeUnit.Nanoseconds);
             var timer = new TimerValueSource(
                 TimerNameDefault,
+                ConstantValue.Provider(timerValue),
+                Unit.Requests,
+                TimeUnit.Seconds,
+                TimeUnit.Milliseconds,
+                Tags);
+
+            return new[] { timer };
+        }
+
+        private IEnumerable<BucketTimerValueSource> SetupBucketTimers()
+        {
+            const int count = 5;
+
+            var meterValue = new MeterValue(
+                count,
+                1,
+                2,
+                3,
+                4,
+                TimeUnit.Seconds,
+                new[]
+                {
+                    new MeterValue.SetItem("item", 0.5, new MeterValue(1, 2, 3, 4, 5, TimeUnit.Seconds, new MeterValue.SetItem[0]))
+                });
+            var histogramValue = new BucketHistogramValue(count, 1, new Dictionary<double, double> { { 1, 1 } });
+
+            var timerValue = new BucketTimerValue(meterValue, histogramValue, 0, TimeUnit.Nanoseconds);
+            var timer = new BucketTimerValueSource(
+                BucketTimerNameDefault,
                 ConstantValue.Provider(timerValue),
                 Unit.Requests,
                 TimeUnit.Seconds,

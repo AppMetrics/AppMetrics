@@ -100,6 +100,23 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                     result.Add(promMetricFamily);
                 }
 
+                foreach (var metricGroup in group.BucketHistograms.GroupBy(
+                    source => source.IsMultidimensional ? source.MultidimensionalName : source.Name))
+                {
+                    var promMetricFamily = new MetricFamily
+                    {
+                        name = metricNameFormatter(group.Context, metricGroup.Key),
+                        type = MetricType.SUMMARY
+                    };
+
+                    foreach (var timer in metricGroup)
+                    {
+                        promMetricFamily.metric.AddRange(timer.ToPrometheusMetrics());
+                    }
+
+                    result.Add(promMetricFamily);
+                }
+
                 foreach (var metricGroup in group.Timers.GroupBy(
                     source => source.IsMultidimensional ? source.MultidimensionalName : source.Name))
                 {
@@ -108,6 +125,23 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                                                name = metricNameFormatter(group.Context, metricGroup.Key),
                                                type = MetricType.SUMMARY
                                            };
+
+                    foreach (var timer in metricGroup)
+                    {
+                        promMetricFamily.metric.AddRange(timer.ToPrometheusMetrics());
+                    }
+
+                    result.Add(promMetricFamily);
+                }
+
+                foreach (var metricGroup in group.BucketTimers.GroupBy(
+                    source => source.IsMultidimensional ? source.MultidimensionalName : source.Name))
+                {
+                    var promMetricFamily = new MetricFamily
+                    {
+                        name = metricNameFormatter(group.Context, metricGroup.Key),
+                        type = MetricType.SUMMARY
+                    };
 
                     foreach (var timer in metricGroup)
                     {

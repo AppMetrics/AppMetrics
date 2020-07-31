@@ -4,6 +4,8 @@
 
 using System;
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
+using App.Metrics.BucketTimer;
 using App.Metrics.Counter;
 using App.Metrics.Filters;
 using App.Metrics.Gauge;
@@ -45,6 +47,12 @@ namespace App.Metrics.Registry
         IHistogram Histogram<T>(HistogramOptions options, MetricTags tags, Func<T> builder)
             where T : IHistogramMetric;
 
+        IBucketHistogram BucketHistogram<T>(BucketHistogramOptions options, Func<T> builder)
+            where T : IBucketHistogramMetric;
+
+        IBucketHistogram BucketHistogram<T>(BucketHistogramOptions options, MetricTags tags, Func<T> builder)
+            where T : IBucketHistogramMetric;
+
         IMeter Meter<T>(MeterOptions options, Func<T> builder)
             where T : IMeterMetric;
 
@@ -58,5 +66,11 @@ namespace App.Metrics.Registry
 
         ITimer Timer<T>(TimerOptions options, MetricTags tags, Func<T> builder)
             where T : ITimerMetric;
+
+        ITimer BucketTimer<T>(BucketTimerOptions options, Func<T> builder)
+            where T : IBucketTimerMetric;
+
+        ITimer BucketTimer<T>(BucketTimerOptions options, MetricTags tags, Func<T> builder)
+            where T : IBucketTimerMetric;
     }
 }

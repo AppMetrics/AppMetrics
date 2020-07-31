@@ -33,10 +33,12 @@ namespace App.Metrics.Formatters.Json
             var jsonMeters = source.Meters.FromSerializableMetric();
             var jsonGauges = source.Gauges.FromSerializableMetric();
             var jsonHistograms = source.Histograms.FromSerializableMetric();
+            var jsonBucketHistograms = source.BucketHistograms.FromSerializableMetric();
             var jsonTimers = source.Timers.FromSerializableMetric();
+            var jsonBucketTimers = source.BucketTimers.FromSerializableMetric();
             var jsonApdexScores = source.ApdexScores.FromSerializableMetric();
 
-            return new MetricsContextValueSource(source.Context, jsonGauges, jsonCounters, jsonMeters, jsonHistograms, jsonTimers, jsonApdexScores);
+            return new MetricsContextValueSource(source.Context, jsonGauges, jsonCounters, jsonMeters, jsonHistograms, jsonBucketHistograms, jsonTimers, jsonBucketTimers, jsonApdexScores);
         }
 
         private static MetricsContext ToSerializableMetric(this MetricsContextValueSource source)
@@ -45,7 +47,9 @@ namespace App.Metrics.Formatters.Json
             var jsonMeters = source.Meters.ToSerializableMetric();
             var jsonGauges = source.Gauges.ToSerializableMetric();
             var jsonHistograms = source.Histograms.ToSerializableMetric();
+            var jsonBucketHistograms = source.BucketHistograms.ToSerializableMetric();
             var jsonTimers = source.Timers.ToSerializableMetric();
+            var jsonBucketTimers = source.BucketTimers.ToSerializableMetric();
             var jsonApdexScores = source.ApdexScores.ToSerializableMetric();
 
             return new MetricsContext
@@ -54,7 +58,9 @@ namespace App.Metrics.Formatters.Json
                        Meters = jsonMeters,
                        Gauges = jsonGauges,
                        Histograms = jsonHistograms,
+                       BucketHistograms = jsonBucketHistograms,
                        Timers = jsonTimers,
+                       BucketTimers = jsonBucketTimers,
                        Context = source.Context,
                        ApdexScores = jsonApdexScores
                    };

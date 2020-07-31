@@ -5,6 +5,8 @@
 using System;
 using System.Collections.Generic;
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
+using App.Metrics.BucketTimer;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
@@ -20,15 +22,19 @@ namespace App.Metrics.Internal
         private readonly Func<IEnumerable<CounterValueSource>> _counters;
         private readonly Func<IEnumerable<GaugeValueSource>> _gauges;
         private readonly Func<IEnumerable<HistogramValueSource>> _histograms;
+        private readonly Func<IEnumerable<BucketHistogramValueSource>> _bucketHistograms;
         private readonly Func<IEnumerable<MeterValueSource>> _meters;
         private readonly Func<IEnumerable<TimerValueSource>> _timers;
+        private readonly Func<IEnumerable<BucketTimerValueSource>> _bucketTimers;
 
         public DefaultMetricRegistryManager(
             Func<IEnumerable<GaugeValueSource>> gauges,
             Func<IEnumerable<CounterValueSource>> counters,
             Func<IEnumerable<MeterValueSource>> meters,
             Func<IEnumerable<HistogramValueSource>> histograms,
+            Func<IEnumerable<BucketHistogramValueSource>> bucketHistograms,
             Func<IEnumerable<TimerValueSource>> timers,
+            Func<IEnumerable<BucketTimerValueSource>> bucketTimers,
             Func<IEnumerable<ApdexValueSource>> apdexScores)
         {
             _gauges = gauges;
@@ -36,7 +42,9 @@ namespace App.Metrics.Internal
             _meters = meters;
             _histograms = histograms;
             _timers = timers;
+            _bucketTimers = bucketTimers;
             _apdexScores = apdexScores;
+            _bucketHistograms = bucketHistograms;
         }
 
         /// <inheritdoc />
@@ -52,9 +60,15 @@ namespace App.Metrics.Internal
         public IEnumerable<HistogramValueSource> Histograms => _histograms();
 
         /// <inheritdoc />
+        public IEnumerable<BucketHistogramValueSource> BucketHistograms => _bucketHistograms();
+
+        /// <inheritdoc />
         public IEnumerable<MeterValueSource> Meters => _meters();
 
         /// <inheritdoc />
         public IEnumerable<TimerValueSource> Timers => _timers();
+
+        /// <inheritdoc />
+        public IEnumerable<BucketTimerValueSource> BucketTimers => _bucketTimers();
     }
 }

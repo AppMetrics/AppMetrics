@@ -6,6 +6,8 @@ using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
+using App.Metrics.BucketTimer;
 using App.Metrics.Counter;
 using App.Metrics.Filters;
 using App.Metrics.Gauge;
@@ -194,7 +196,9 @@ namespace App.Metrics.Internal
                     g.DataProvider.Counters.ToArray(),
                     g.DataProvider.Meters.ToArray(),
                     g.DataProvider.Histograms.ToArray(),
+                    g.DataProvider.BucketHistograms.ToArray(),
                     g.DataProvider.Timers.ToArray(),
+                    g.DataProvider.BucketTimers.ToArray(),
                     g.DataProvider.ApdexScores.ToArray()));
 
             var data = new MetricsDataValueSource(_clock.UtcDateTime,  contexts);
@@ -231,6 +235,37 @@ namespace App.Metrics.Internal
             var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
 
             return contextRegistry.Histogram(options, tags, builder);
+        }
+
+        public IBucketHistogram BucketHistogram<T>(BucketHistogramOptions options, Func<T> builder)
+            where T : IBucketHistogramMetric
+        {
+            if (_nullMetricsRegistry.IsValueCreated)
+            {
+                return _nullMetricsRegistry.Value.BucketHistogram(options, builder);
+            }
+
+            EnsureContextLabel(options);
+
+            var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
+
+            return contextRegistry.BucketHistogram(options, builder);
+        }
+
+        /// <inheritdoc />
+        public IBucketHistogram BucketHistogram<T>(BucketHistogramOptions options, MetricTags tags, Func<T> builder)
+            where T : IBucketHistogramMetric
+        {
+            if (_nullMetricsRegistry.IsValueCreated)
+            {
+                return _nullMetricsRegistry.Value.BucketHistogram(options, tags, builder);
+            }
+
+            EnsureContextLabel(options);
+
+            var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
+
+            return contextRegistry.BucketHistogram(options, tags, builder);
         }
 
         public IMeter Meter<T>(MeterOptions options, Func<T> builder)
@@ -310,6 +345,37 @@ namespace App.Metrics.Internal
             var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
 
             return contextRegistry.Timer(options, tags, builder);
+        }
+
+        public ITimer BucketTimer<T>(BucketTimerOptions options, Func<T> builder)
+            where T : IBucketTimerMetric
+        {
+            if (_nullMetricsRegistry.IsValueCreated)
+            {
+                _nullMetricsRegistry.Value.BucketTimer(options, builder);
+            }
+
+            EnsureContextLabel(options);
+
+            var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
+
+            return contextRegistry.BucketTimer(options, builder);
+        }
+
+        /// <inheritdoc />
+        public ITimer BucketTimer<T>(BucketTimerOptions options, MetricTags tags, Func<T> builder)
+            where T : IBucketTimerMetric
+        {
+            if (_nullMetricsRegistry.IsValueCreated)
+            {
+                _nullMetricsRegistry.Value.BucketTimer(options, tags, builder);
+            }
+
+            EnsureContextLabel(options);
+
+            var contextRegistry = _contexts.GetOrAdd(options.Context, _newContextRegistry);
+
+            return contextRegistry.BucketTimer(options, tags, builder);
         }
 
         private void ForAllContexts(Action<IMetricContextRegistry> action)

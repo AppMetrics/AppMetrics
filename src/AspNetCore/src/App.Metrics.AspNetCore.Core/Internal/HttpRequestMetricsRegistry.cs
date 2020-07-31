@@ -5,6 +5,8 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
+using App.Metrics.BucketTimer;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
@@ -100,6 +102,25 @@ namespace App.Metrics.AspNetCore.Internal
                                                                               };
         }
 
+        public static class BucketHistograms
+        {
+            public static readonly Func<double[], BucketHistogramOptions> PostRequestSizeHistogram = buckets => new BucketHistogramOptions
+            {
+                                                                                   Context = ContextName,
+                                                                                   Name = "POST Size",
+                                                                                   MeasurementUnit = Unit.Bytes,
+                                                                                   Buckets = buckets
+                                                                               };
+
+            public static readonly Func<double[], BucketHistogramOptions> PutRequestSizeHistogram = buckets => new BucketHistogramOptions
+            {
+                                                                                  Context = ContextName,
+                                                                                  Name = "PUT Size",
+                                                                                  MeasurementUnit = Unit.Bytes,
+                                                                                  Buckets = buckets
+                                                                              };
+        }
+
         public static class Meters
         {
             public static readonly MeterOptions EndpointErrorRequestPerStatusCodeRate = new MeterOptions
@@ -138,6 +159,25 @@ namespace App.Metrics.AspNetCore.Internal
                                                                                  Context = ContextName,
                                                                                  Name = "Transactions",
                                                                                  MeasurementUnit = Unit.Requests
+                                                                             };
+        }
+
+        public static class BucketTimers
+        {
+            public static readonly Func<double[], BucketTimerOptions> EndpointRequestTransactionDuration = buckets => new BucketTimerOptions
+                                                                                     {
+                                                                                         Context = ContextName,
+                                                                                         Name = "Transactions Per Endpoint",
+                                                                                         MeasurementUnit = Unit.Requests,
+                                                                                         Buckets = buckets
+                                                                                     };
+
+            public static readonly Func<double[], BucketTimerOptions> RequestTransactionDuration = buckets => new BucketTimerOptions
+                                                                             {
+                                                                                 Context = ContextName,
+                                                                                 Name = "Transactions",
+                                                                                 MeasurementUnit = Unit.Requests,
+                                                                                 Buckets = buckets
                                                                              };
         }
     }

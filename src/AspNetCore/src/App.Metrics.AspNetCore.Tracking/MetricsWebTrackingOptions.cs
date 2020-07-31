@@ -59,6 +59,14 @@ namespace App.Metrics.AspNetCore.Tracking
         public IReadOnlyList<Regex> IgnoredRoutesRegex => _ignoredRoutesConfiguration.RegexPatterns;
 
         /// <summary>
+        ///     Gets the ignored request ports where metrics should not be measured.
+        /// </summary>
+        /// <value>
+        ///     The ignored ports.
+        /// </value>
+        public IReadOnlyList<int> IgnoredPorts { get; set; } = new List<int>();
+
+        /// <summary>
         ///     Gets or sets the ignored request routes where metrics should not be measured.
         /// </summary>
         /// <value>
@@ -78,5 +86,33 @@ namespace App.Metrics.AspNetCore.Tracking
         ///     <c>true</c> if [o auth2 tracking enabled]; otherwise, <c>false</c>.
         /// </value>
         public bool OAuth2TrackingEnabled { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether [bucket histograms should be used], if disabled histograms will be used.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if [bucket histograms should be used]; otherwise, <c>false</c>.
+        /// </value>
+        public bool UseBucketHistograms { get; set; }
+
+
+        /// <summary>
+        ///     Gets or sets the buckets to use for request size bucket histograms
+        /// </summary>
+        /// <remarks>Only valid if UseBucketHistograms is true.</remarks>
+        /// <value>
+        ///     Array of buckets
+        /// </value>
+        public double[] RequestSizeHistogramBuckets { get; set; }
+
+
+        /// <summary>
+        ///     Gets or sets the buckets to use for request time bucket timer
+        /// </summary>
+        /// <remarks>Only valid if UseBucketHistograms is true.</remarks>
+        /// <value>
+        ///     Array of buckets
+        /// </value>
+        public double[] RequestTimeHistogramBuckets { get; set; }
     }
 }

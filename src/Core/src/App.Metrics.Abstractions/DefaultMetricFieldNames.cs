@@ -43,6 +43,13 @@ namespace App.Metrics
                                                                                    { HistogramFields.UserMaxValue, "user.max" }
                                                                                };
 
+        public static IReadOnlyDictionary<BucketHistogramFields, string> BucketHistogram => new Dictionary<BucketHistogramFields, string>
+                                                                               {
+                                                                                   { BucketHistogramFields.Sum, "sum" },
+                                                                                   { BucketHistogramFields.Count, "count.hist" },
+                                                                                   { BucketHistogramFields.Bucket, "bucket" },
+                                                                               };
+
         public static IReadOnlyDictionary<MeterFields, string> Meter => new Dictionary<MeterFields, string>
                                                                        {
                                                                            { MeterFields.Count, "count.meter" },

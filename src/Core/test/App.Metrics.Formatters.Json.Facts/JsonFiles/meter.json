@@ -7,6 +7,7 @@
       "counters": [],
       "gauges": [],
       "histograms": [],
+      "bucketHistograms": [],
       "meters": [
         {
           "name": "test_meter",
@@ -34,7 +35,8 @@
           }
         }
       ],
-      "timers": []
+      "timers": [],
+      "bucketTimers": []
     }
   ]
 }

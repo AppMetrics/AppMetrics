@@ -11,6 +11,7 @@ using FluentAssertions.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using Xunit;
 using ITimer = App.Metrics.Timer.ITimer;
@@ -103,7 +104,7 @@ namespace App.Metrics.AspNetCore.Tracking.Facts.Middleware
 
         private RequestTimerMiddleware CreateMiddleware(RequestDelegate next)
         {
-            return new RequestTimerMiddleware(next, new Mock<ILogger<RequestTimerMiddleware>>().Object, _mockMetrics.Object);
+            return new RequestTimerMiddleware(next, new OptionsWrapper<MetricsWebTrackingOptions>(new MetricsWebTrackingOptions()), new Mock<ILogger<RequestTimerMiddleware>>().Object, _mockMetrics.Object);
         }
 
         public void Dispose()

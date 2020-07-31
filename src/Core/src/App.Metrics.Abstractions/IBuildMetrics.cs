@@ -3,6 +3,8 @@
 // </copyright>
 
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
+using App.Metrics.BucketTimer;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
@@ -51,6 +53,14 @@ namespace App.Metrics
         IBuildHistogramMetrics Histogram { get; }
 
         /// <summary>
+        ///     Gets the Bucket Histogram API to build <see cref="IBucketHistogramMetric" />s
+        /// </summary>
+        /// <value>
+        ///     The Bucket Histogram API for building <see cref="IBucketHistogramMetric" />s
+        /// </value>
+        IBuildBucketHistogramMetrics BucketHistogram { get; }
+
+        /// <summary>
         ///     Gets the Meter API to build <see cref="IMeterMetric" />s
         /// </summary>
         /// <value>
@@ -65,5 +75,13 @@ namespace App.Metrics
         ///     The Timer API for building <see cref="ITimerMetric" />s
         /// </value>
         IBuildTimerMetrics Timer { get; }
+
+        /// <summary>
+        ///     Gets the Bucket Timer API to build <see cref="IBucketTimerMetric" />s
+        /// </summary>
+        /// <value>
+        ///     The Bucket Timer API for building <see cref="IBucketTimerMetric" />s
+        /// </value>
+        IBuildBucketTimerMetrics BucketTimer { get; }
     }
 }

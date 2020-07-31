@@ -3,6 +3,8 @@
 // </copyright>
 
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
+using App.Metrics.BucketTimer;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
@@ -26,8 +28,10 @@ namespace App.Metrics.Internal
             Counter = new DefaultCounterBuilder();
             Gauge = new DefaultGaugeBuilder();
             Histogram = new DefaultHistogramBuilder(defaultSamplingReservoir);
+            BucketHistogram = new DefaultBucketHistogramBuilder();
             Meter = new DefaultMeterBuilder();
             Timer = new DefaultTimerBuilder(defaultSamplingReservoir);
+            BucketTimer = new DefaultBucketTimerBuilder();
         }
 
         /// <inheritdoc />
@@ -43,9 +47,15 @@ namespace App.Metrics.Internal
         public IBuildHistogramMetrics Histogram { get; }
 
         /// <inheritdoc />
+        public IBuildBucketHistogramMetrics BucketHistogram { get; }
+
+        /// <inheritdoc />
         public IBuildMeterMetrics Meter { get; }
 
         /// <inheritdoc />
         public IBuildTimerMetrics Timer { get; }
+
+        /// <inheritdoc />
+        public IBuildBucketTimerMetrics BucketTimer { get; }
     }
 }

@@ -3,6 +3,7 @@
 // </copyright>
 
 using App.Metrics.Apdex;
+using App.Metrics.BucketTimer;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
@@ -64,5 +65,13 @@ namespace App.Metrics
         ///     The Timer API for registering and retrieving <see cref="ITimerMetric" />s to be measured
         /// </value>
         IProvideTimerMetrics Timer { get; }
+
+        /// <summary>
+        ///     Gets the Bucket Timer API to register and retrieve <see cref="IBucketTimerMetric" />s to be measured.
+        /// </summary>
+        /// <value>
+        ///     The Bucket Timer API for registering and retrieving <see cref="IBucketTimerMetric" />s to be measured
+        /// </value>
+        IProvideBucketTimerMetrics BucketTimer { get; }
     }
 }

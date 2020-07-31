@@ -1,0 +1,41 @@
+﻿{
+  "timestamp": "0001-01-01T00:00:00Z",
+  "contexts": [
+    {
+      "context": "context_one",
+      "apdexScores": [],
+      "counters": [],
+      "gauges": [],
+      "histograms": [],
+      "bucketHistograms": [],
+      "meters": [],
+      "timers": [],
+      "bucketTimers": [
+        {
+          "name": "test_bucket_timer",
+          "unit": "req",
+          "activeSessions": 0,
+          "count": 5,
+          "durationUnit": "ms",
+          "histogram": {
+            "buckets": {
+              "1": 1
+            },
+            "sum": 1
+          },
+          "rate": {
+            "fifteenMinuteRate": 4,
+            "fiveMinuteRate": 3,
+            "meanRate": 1,
+            "oneMinuteRate": 2
+          },
+          "rateUnit": "s",
+          "tags": {
+            "host": "server1",
+            "env": "staging"
+          }
+        }
+      ]
+    }
+  ]
+}

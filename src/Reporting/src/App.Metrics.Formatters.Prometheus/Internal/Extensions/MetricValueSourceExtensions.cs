@@ -2,9 +2,12 @@
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
+using App.Metrics.BucketTimer;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
@@ -119,6 +122,46 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                          };
 
             return result;
+        }
+
+        public static IEnumerable<Metric> ToPrometheusMetrics(this BucketHistogramValueSource metric)
+        {
+            return BucketHistogramValueToHistogram(metric.Value, metric.Tags);
+        }
+
+        private static IEnumerable<Metric> BucketHistogramValueToHistogram(BucketHistogramValue value, MetricTags tags)
+        {
+            var histogram = new Histogram
+            {
+                sample_count = (ulong)value.Count,
+                sample_sum = value.Sum
+            };
+
+            var cumulativeCount = 0ul;
+            foreach (var keyValuePair in value.Buckets.OrderBy(x => x.Key))
+            {
+                histogram.bucket.Add(new Bucket
+                {
+                    cumulative_count = cumulativeCount += Convert.ToUInt64(keyValuePair.Value),
+                    upper_bound = keyValuePair.Key
+                });
+            }
+
+            var result = new List<Metric>
+            {
+                new Metric
+                {
+                    histogram = histogram,
+                    label = tags.ToLabelPairs()
+                }
+            };
+
+            return result;
+        }
+
+        public static IEnumerable<Metric> ToPrometheusMetrics(this BucketTimerValueSource metric)
+        {
+            return BucketHistogramValueToHistogram(metric.Value.Histogram, metric.Tags);
         }
 
         public static IEnumerable<Metric> ToPrometheusMetrics(this TimerValueSource metric)

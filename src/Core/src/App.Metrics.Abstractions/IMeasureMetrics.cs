@@ -3,6 +3,8 @@
 // </copyright>
 
 using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
+using App.Metrics.BucketTimer;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
@@ -49,6 +51,14 @@ namespace App.Metrics
         IMeasureHistogramMetrics Histogram { get; }
 
         /// <summary>
+        ///     Gets the available Bucket Histogram API allowing Bucket Histogram metrics to be measured
+        /// </summary>
+        /// <value>
+        ///     The Bucket Histogram API for measuring Bucket Histogram metrics
+        /// </value>
+        IMeasureBucketHistogramMetrics BucketHistogram { get; }
+
+        /// <summary>
         ///     Gets the available Meter API allowing Meter metrics to be measured
         /// </summary>
         /// <value>
@@ -63,5 +73,13 @@ namespace App.Metrics
         ///     The Timer API for measuring Timer metrics
         /// </value>
         IMeasureTimerMetrics Timer { get; }
+
+        /// <summary>
+        ///     Gets the available Timer API allowing Timer metrics to be measured
+        /// </summary>
+        /// <value>
+        ///     The Timer API for measuring Timer metrics
+        /// </value>
+        IMeasureBucketTimerMetrics BucketTimer { get; }
     }
 }

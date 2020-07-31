@@ -58,10 +58,16 @@ namespace MetricsSandbox
             _metrics.Measure.Counter.Increment(ApplicationsMetricsRegistry.CounterWithSetItems, "item1");
             _metrics.Measure.Gauge.SetValue(ApplicationsMetricsRegistry.GaugeOne, Rnd.Next(0, 100));
             _metrics.Measure.Histogram.Update(ApplicationsMetricsRegistry.HistogramOne, Rnd.Next(0, 100));
+            _metrics.Measure.BucketHistogram.Update(ApplicationsMetricsRegistry.BucketHistogramOne, Rnd.Next(0, 100));
             _metrics.Measure.Meter.Mark(ApplicationsMetricsRegistry.MeterOne, Rnd.Next(0, 100));
             _metrics.Measure.Meter.Mark(ApplicationsMetricsRegistry.MeterWithSetItems, Rnd.Next(0, 100), "item1");
 
             using (_metrics.Measure.Timer.Time(ApplicationsMetricsRegistry.TimerOne))
+            {
+                Thread.Sleep(Rnd.Next(0, 100));
+            }
+
+            using (_metrics.Measure.BucketTimer.Time(ApplicationsMetricsRegistry.BucketTimerOne))
             {
                 Thread.Sleep(Rnd.Next(0, 100));
             }

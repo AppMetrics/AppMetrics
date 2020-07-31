@@ -8,6 +8,7 @@ using App.Metrics.AspNetCore.Internal;
 using App.Metrics.Timer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace App.Metrics.AspNetCore.Tracking.Middleware
 {
@@ -21,14 +22,20 @@ namespace App.Metrics.AspNetCore.Tracking.Middleware
 
         public RequestTimerMiddleware(
             RequestDelegate next,
+            IOptions<MetricsWebTrackingOptions> trackingMiddlwareOptionsAccessor,
             ILogger<RequestTimerMiddleware> logger,
             IMetrics metrics)
         {
             _logger = logger;
             _next = next ?? throw new ArgumentNullException(nameof(next));
-            _requestTimer = metrics.Provider
-                                   .Timer
-                                   .Instance(HttpRequestMetricsRegistry.Timers.RequestTransactionDuration);
+            if (trackingMiddlwareOptionsAccessor.Value.UseBucketHistograms)
+            {
+                _requestTimer = metrics.Provider.BucketTimer.Instance(HttpRequestMetricsRegistry.BucketTimers.RequestTransactionDuration(trackingMiddlwareOptionsAccessor.Value.RequestTimeHistogramBuckets));
+            }
+            else
+            {
+                _requestTimer = metrics.Provider.Timer.Instance(HttpRequestMetricsRegistry.Timers.RequestTransactionDuration);
+            }
         }
 
         // ReSharper disable UnusedMember.Global

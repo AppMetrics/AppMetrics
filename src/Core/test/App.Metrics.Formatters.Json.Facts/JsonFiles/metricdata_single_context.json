@@ -83,6 +83,21 @@
           }
         }
       ],
+      "bucketHistograms": [
+        {
+          "name": "test_bucket_histogram",
+          "unit": "items",
+          "count": 1,
+          "sum": 1.0,
+          "buckets": {
+            "1": 1.0
+          },
+          "tags": {
+            "host": "server1",
+            "env": "staging"
+          }
+        }
+      ],
       "meters": [
         {
           "name": "test_meter",
@@ -140,6 +155,32 @@
             "fiveMinuteRate": 3,
             "meanRate": 1,
             "oneMinuteRate": 2
+          },
+          "rateUnit": "s",
+          "tags": {
+            "host": "server1",
+            "env": "staging"
+          }
+        }
+      ],
+      "bucketTimers": [
+        {
+          "name": "test_bucket_timer",
+          "unit": "req",
+          "activeSessions": 0,
+          "count": 5,
+          "durationUnit": "ms",
+          "histogram": {
+            "buckets": {
+              "1": 1.0
+            },
+            "sum": 1.0
+          },
+          "rate": {
+            "fifteenMinuteRate": 4.0,
+            "fiveMinuteRate": 3.0,
+            "meanRate": 1.0,
+            "oneMinuteRate": 2.0
           },
           "rateUnit": "s",
           "tags": {

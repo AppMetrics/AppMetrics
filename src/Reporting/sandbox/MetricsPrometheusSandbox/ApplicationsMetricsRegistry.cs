@@ -8,6 +8,7 @@ using App.Metrics.Gauge;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
 using App.Metrics.Timer;
+using App.Metrics.BucketTimer;
 
 namespace MetricsPrometheusSandbox
 {
@@ -42,5 +43,10 @@ namespace MetricsPrometheusSandbox
                                                {
                                                    Name = "timer_one"
                                                };
+
+        public static BucketTimerOptions BucketTimerOne => new BucketTimerOptions
+        {
+            Name = "bucket_timer_one"
+        };
     }
 }
