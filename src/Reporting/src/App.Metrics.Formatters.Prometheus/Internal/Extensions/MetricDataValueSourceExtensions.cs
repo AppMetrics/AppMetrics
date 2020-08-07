@@ -106,7 +106,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                     var promMetricFamily = new MetricFamily
                     {
                         name = metricNameFormatter(group.Context, metricGroup.Key),
-                        type = MetricType.SUMMARY
+                        type = MetricType.HISTOGRAM
                     };
 
                     foreach (var timer in metricGroup)
@@ -140,7 +140,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                     var promMetricFamily = new MetricFamily
                     {
                         name = metricNameFormatter(group.Context, metricGroup.Key),
-                        type = MetricType.SUMMARY
+                        type = MetricType.HISTOGRAM
                     };
 
                     foreach (var timer in metricGroup)
