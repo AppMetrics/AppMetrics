@@ -39,7 +39,8 @@ namespace App.Metrics.Formatters.Prometheus
                 throw new ArgumentNullException(nameof(output));
             }
 
-            var bodyData = ProtoFormatter.Format(metricsData.GetPrometheusMetricsSnapshot(_options.MetricNameFormatter));
+            var bodyData = ProtoFormatter.Format(metricsData.GetPrometheusMetricsSnapshot(_options.MetricNameFormatter,
+                _options.LabelNameFormatter));
             return output.WriteAsync(bodyData, 0, bodyData.Length, cancellationToken);
         }
     }

@@ -14,6 +14,9 @@ namespace App.Metrics.Formatters.Prometheus.Internal
                 ? MetricNameRegex.Replace(metricName, "_").ToLowerInvariant()
                 : MetricNameRegex.Replace($"{metricContext}_{metricName}", "_").ToLowerInvariant();
 
+        public static readonly Func<string, string> LabelNameFormatter =
+            labelName => MetricNameRegex.Replace(labelName, "_").ToLowerInvariant();
+
         private static readonly Regex MetricNameRegex = new Regex("[^a-z0-9A-Z:_]");
     }
 }

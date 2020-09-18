@@ -12,7 +12,8 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
     {
         public static IEnumerable<MetricFamily> GetPrometheusMetricsSnapshot(
             this MetricsDataValueSource snapshot,
-            Func<string, string, string> metricNameFormatter)
+            Func<string, string, string> metricNameFormatter,
+            Func<string, string> labelNameFormatter)
         {
             var result = new List<MetricFamily>();
             foreach (var group in snapshot.Contexts)
@@ -27,7 +28,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                                            };
                     foreach (var metric in metricGroup)
                     {
-                        promMetricFamily.metric.AddRange(metric.ToPrometheusMetrics());
+                        promMetricFamily.metric.AddRange(metric.ToPrometheusMetrics(labelNameFormatter));
                     }
 
                     result.Add(promMetricFamily);
@@ -43,7 +44,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                                            };
                     foreach (var metric in metricGroup)
                     {
-                        promMetricFamily.metric.AddRange(metric.ToPrometheusMetrics());
+                        promMetricFamily.metric.AddRange(metric.ToPrometheusMetrics(labelNameFormatter));
                     }
 
                     result.Add(promMetricFamily);
@@ -60,7 +61,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
 
                     foreach (var metric in metricGroup)
                     {
-                        promMetricFamily.metric.AddRange(metric.ToPrometheusMetrics());
+                        promMetricFamily.metric.AddRange(metric.ToPrometheusMetrics(labelNameFormatter));
                     }
 
                     result.Add(promMetricFamily);
@@ -77,7 +78,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
 
                     foreach (var metric in metricGroup)
                     {
-                        promMetricFamily.metric.AddRange(metric.ToPrometheusMetrics());
+                        promMetricFamily.metric.AddRange(metric.ToPrometheusMetrics(labelNameFormatter));
                     }
 
                     result.Add(promMetricFamily);
@@ -94,7 +95,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
 
                     foreach (var timer in metricGroup)
                     {
-                        promMetricFamily.metric.AddRange(timer.ToPrometheusMetrics());
+                        promMetricFamily.metric.AddRange(timer.ToPrometheusMetrics(labelNameFormatter));
                     }
 
                     result.Add(promMetricFamily);
@@ -111,7 +112,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
 
                     foreach (var timer in metricGroup)
                     {
-                        promMetricFamily.metric.AddRange(timer.ToPrometheusMetrics());
+                        promMetricFamily.metric.AddRange(timer.ToPrometheusMetrics(labelNameFormatter));
                     }
 
                     result.Add(promMetricFamily);
@@ -128,7 +129,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
 
                     foreach (var timer in metricGroup)
                     {
-                        promMetricFamily.metric.AddRange(timer.ToPrometheusMetrics());
+                        promMetricFamily.metric.AddRange(timer.ToPrometheusMetrics(labelNameFormatter));
                     }
 
                     result.Add(promMetricFamily);
@@ -145,7 +146,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
 
                     foreach (var timer in metricGroup)
                     {
-                        promMetricFamily.metric.AddRange(timer.ToPrometheusMetrics());
+                        promMetricFamily.metric.AddRange(timer.ToPrometheusMetrics(labelNameFormatter));
                     }
 
                     result.Add(promMetricFamily);

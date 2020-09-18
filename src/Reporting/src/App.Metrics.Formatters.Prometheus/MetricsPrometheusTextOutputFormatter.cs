@@ -42,7 +42,8 @@ namespace App.Metrics.Formatters.Prometheus
                 throw new ArgumentNullException(nameof(output));
             }
 
-            var prometheusMetricsSnapshot = metricsData.GetPrometheusMetricsSnapshot(_options.MetricNameFormatter);
+            var prometheusMetricsSnapshot = metricsData.GetPrometheusMetricsSnapshot(_options.MetricNameFormatter,
+                _options.LabelNameFormatter);
 
             await AsciiFormatter.Write(output, prometheusMetricsSnapshot, _options.NewLineFormat);
         }
