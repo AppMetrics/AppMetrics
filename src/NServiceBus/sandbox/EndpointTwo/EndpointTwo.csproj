@@ -10,10 +10,6 @@
         <PackageReference Include="App.Metrics.Reporting.InfluxDB" />
     </ItemGroup>
     
-    <ItemGroup Label="Microsoft Package References">
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.4" />
-    </ItemGroup>
-    
     <ItemGroup Label="Third Party Package References">
         <PackageReference Include="NServiceBus" Version="7.*" />
         <PackageReference Include="NServiceBus.Metrics" Version="3.*" />

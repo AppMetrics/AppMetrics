@@ -12,12 +12,10 @@ namespace App.Metrics.Formatters.Prometheus
     /// </summary>
     public class MetricsPrometheusOptions
     {
-        public MetricsPrometheusOptions()
-        {
-            MetricNameFormatter = PrometheusFormatterConstants.MetricNameFormatter;
-        }
+        public Func<string, string, string> MetricNameFormatter { get; set; } =
+            PrometheusFormatterConstants.MetricNameFormatter;
 
-        public Func<string, string, string> MetricNameFormatter { get; set; }
+        public Func<string, string> LabelNameFormatter { get; set; } = PrometheusFormatterConstants.LabelNameFormatter;
 
         public NewLineFormat NewLineFormat { get; set; } = NewLineFormat.Default;
     }

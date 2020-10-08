@@ -18,7 +18,9 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
 {
     public static class MetricValueSourceExtensions
     {
-        public static IEnumerable<Metric> ToPrometheusMetrics(this ApdexValueSource metric)
+        public static IEnumerable<Metric> ToPrometheusMetrics(
+            this ApdexValueSource metric,
+            Func<string, string> labelNameFormatter)
         {
             var result = new List<Metric>
                          {
@@ -28,14 +30,16 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                                          {
                                              value = metric.Value.Score
                                          },
-                                 label = metric.Tags.ToLabelPairs()
+                                 label = metric.Tags.ToLabelPairs(labelNameFormatter)
                              }
                          };
 
             return result;
         }
 
-        public static IEnumerable<Metric> ToPrometheusMetrics(this GaugeValueSource metric)
+        public static IEnumerable<Metric> ToPrometheusMetrics(
+            this GaugeValueSource metric,
+            Func<string, string> labelNameFormatter)
         {
             var result = new List<Metric>
                          {
@@ -45,16 +49,18 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                                          {
                                              value = metric.Value
                                          },
-                                 label = metric.Tags.ToLabelPairs()
+                                 label = metric.Tags.ToLabelPairs(labelNameFormatter)
                              }
                          };
 
             return result;
         }
 
-        public static IEnumerable<Metric> ToPrometheusMetrics(this CounterValueSource metric)
+        public static IEnumerable<Metric> ToPrometheusMetrics(
+            this CounterValueSource metric,
+            Func<string, string> labelNameFormatter)
         {
-            var tags = metric.Tags.ToLabelPairs();
+            var tags = metric.Tags.ToLabelPairs(labelNameFormatter);
             var result = new List<Metric>
                          {
                              new Metric
@@ -69,13 +75,15 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
 
             if (metric.Value.Items?.Length > 0)
             {
-                result.AddRange(metric.Value.Items.Select(i => i.ToPrometheusMetric(tags)));
+                result.AddRange(metric.Value.Items.Select(i => i.ToPrometheusMetric(tags, labelNameFormatter)));
             }
 
             return result;
         }
 
-        public static IEnumerable<Metric> ToPrometheusMetrics(this MeterValueSource metric)
+        public static IEnumerable<Metric> ToPrometheusMetrics(
+            this MeterValueSource metric,
+            Func<string, string> labelNameFormatter)
         {
             var result = new List<Metric>
                          {
@@ -85,19 +93,21 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                                            {
                                                value = metric.Value.Count
                                            },
-                                 label = metric.Tags.ToLabelPairs()
+                                 label = metric.Tags.ToLabelPairs(labelNameFormatter)
                              }
                          };
 
             if (metric.Value.Items?.Length > 0)
             {
-                result.AddRange(metric.Value.Items.Select(x => x.ToPrometheusMetric()));
+                result.AddRange(metric.Value.Items.Select(x => x.ToPrometheusMetric(labelNameFormatter)));
             }
 
             return result;
         }
 
-        public static IEnumerable<Metric> ToPrometheusMetrics(this HistogramValueSource metric)
+        public static IEnumerable<Metric> ToPrometheusMetrics(
+            this HistogramValueSource metric,
+            Func<string, string> labelNameFormatter)
         {
             var result = new List<Metric>
                          {
@@ -117,19 +127,24 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                                                    // new Quantile(){quantile = 0.999, value = metric.Value.Percentile999}
                                                }
                                            },
-                                 label = metric.Tags.ToLabelPairs()
+                                 label = metric.Tags.ToLabelPairs(labelNameFormatter)
                              }
                          };
 
             return result;
         }
 
-        public static IEnumerable<Metric> ToPrometheusMetrics(this BucketHistogramValueSource metric)
+        public static IEnumerable<Metric> ToPrometheusMetrics(
+            this BucketHistogramValueSource metric,
+            Func<string, string> labelNameFormatter)
         {
-            return BucketHistogramValueToHistogram(metric.Value, metric.Tags);
+            return BucketHistogramValueToHistogram(metric.Value, metric.Tags, labelNameFormatter);
         }
 
-        private static IEnumerable<Metric> BucketHistogramValueToHistogram(BucketHistogramValue value, MetricTags tags)
+        private static IEnumerable<Metric> BucketHistogramValueToHistogram(
+            BucketHistogramValue value,
+            MetricTags tags,
+            Func<string, string> labelNameFormatter)
         {
             var histogram = new Histogram
             {
@@ -152,19 +167,23 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                 new Metric
                 {
                     histogram = histogram,
-                    label = tags.ToLabelPairs()
+                    label = tags.ToLabelPairs(labelNameFormatter)
                 }
             };
 
             return result;
         }
 
-        public static IEnumerable<Metric> ToPrometheusMetrics(this BucketTimerValueSource metric)
+        public static IEnumerable<Metric> ToPrometheusMetrics(
+            this BucketTimerValueSource metric,
+            Func<string, string> labelNameFormatter)
         {
-            return BucketHistogramValueToHistogram(metric.Value.Histogram, metric.Tags);
+            return BucketHistogramValueToHistogram(metric.Value.Histogram, metric.Tags, labelNameFormatter);
         }
 
-        public static IEnumerable<Metric> ToPrometheusMetrics(this TimerValueSource metric)
+        public static IEnumerable<Metric> ToPrometheusMetrics(
+            this TimerValueSource metric,
+            Func<string, string> labelNameFormatter)
         {
             // Prometheus advocates always using seconds as a base unit for time
             var rescaledVal = metric.Value.Scale(TimeUnit.Seconds, TimeUnit.Seconds);
@@ -186,7 +205,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                                                    // new Quantile(){quantile = 0.999, value = metric.Value.Histogram.Percentile999}
                                                }
                                            },
-                                 label = metric.Tags.ToLabelPairs()
+                                 label = metric.Tags.ToLabelPairs(labelNameFormatter)
                              }
                          };
 

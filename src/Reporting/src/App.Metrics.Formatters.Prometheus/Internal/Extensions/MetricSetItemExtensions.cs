@@ -2,6 +2,7 @@
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using App.Metrics.Counter;
 using App.Metrics.Meter;
@@ -10,9 +11,12 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
 {
     public static class MetricSetItemExtensions
     {
-        public static Metric ToPrometheusMetric(this CounterValue.SetItem item, List<LabelPair> parentTags)
+        public static Metric ToPrometheusMetric(
+            this CounterValue.SetItem item,
+            List<LabelPair> parentTags,
+            Func<string, string> labelNameFormatter)
         {
-            var tags = item.Tags.ToLabelPairs();
+            var tags = item.Tags.ToLabelPairs(labelNameFormatter);
             tags.AddRange(parentTags);
             var result = new Metric
                          {
@@ -26,7 +30,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
             return result;
         }
 
-        public static Metric ToPrometheusMetric(this MeterValue.SetItem item)
+        public static Metric ToPrometheusMetric(this MeterValue.SetItem item, Func<string, string> labelNameFormatter)
         {
             var result = new Metric
                          {
@@ -34,7 +38,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                                        {
                                            value = item.Value.Count
                                        },
-                             label = item.Tags.ToLabelPairs()
+                             label = item.Tags.ToLabelPairs(labelNameFormatter)
                          };
 
             return result;
