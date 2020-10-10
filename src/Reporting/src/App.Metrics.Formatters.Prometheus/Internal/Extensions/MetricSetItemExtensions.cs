@@ -30,15 +30,20 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
             return result;
         }
 
-        public static Metric ToPrometheusMetric(this MeterValue.SetItem item, Func<string, string> labelNameFormatter)
+        public static Metric ToPrometheusMetric(
+            this MeterValue.SetItem item,
+            List<LabelPair> parentTags,
+            Func<string, string> labelNameFormatter)
         {
+            var tags = item.Tags.ToLabelPairs(labelNameFormatter);
+            tags.AddRange(parentTags);
             var result = new Metric
                          {
                              counter = new Counter
                                        {
                                            value = item.Value.Count
                                        },
-                             label = item.Tags.ToLabelPairs(labelNameFormatter)
+                             label = tags
                          };
 
             return result;
