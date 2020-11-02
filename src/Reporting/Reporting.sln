@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{DD2E4647-7
 		test\Directory.Build.props = test\Directory.Build.props
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Reporting.Base", "src\App.Metrics.Reporting.Base\App.Metrics.Reporting.Base.csproj", "{2F927F85-B184-47AD-9EA3-D723B0F9D0C3}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Reporting.Console", "src\App.Metrics.Reporting.Console\App.Metrics.Reporting.Console.csproj", "{2017C0A4-7CBE-4834-A5EA-D8D9C7E37698}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Reporting.TextFile", "src\App.Metrics.Reporting.TextFile\App.Metrics.Reporting.TextFile.csproj", "{2B01FDF8-8E73-4904-9B2C-5BFA505BFF5F}"
@@ -256,6 +258,10 @@ Global
 		{EDF820D0-2FED-49F2-A10D-DA5382233EF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDF820D0-2FED-49F2-A10D-DA5382233EF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDF820D0-2FED-49F2-A10D-DA5382233EF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F927F85-B184-47AD-9EA3-D723B0F9D0C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F927F85-B184-47AD-9EA3-D723B0F9D0C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F927F85-B184-47AD-9EA3-D723B0F9D0C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F927F85-B184-47AD-9EA3-D723B0F9D0C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -310,6 +316,7 @@ Global
 		{EC755048-F6E9-471E-B80D-D3FC89D317A9} = {23445169-0670-42D5-A4D4-335C8DF387EC}
 		{91F23066-FE25-4F46-8EA8-3AD2A834CD36} = {DD2E4647-7125-4CE3-9BA5-B45A26113A31}
 		{EDF820D0-2FED-49F2-A10D-DA5382233EF0} = {91F23066-FE25-4F46-8EA8-3AD2A834CD36}
+		{2F927F85-B184-47AD-9EA3-D723B0F9D0C3} = {2D805782-756E-4C98-B22E-F502BEE95318}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {492C97B1-706A-4357-B3F7-EFB6AFB1F6C6}
