@@ -11,73 +11,36 @@ using App.Metrics.Filters;
 using App.Metrics.Formatters;
 using App.Metrics.Formatters.Ascii;
 using App.Metrics.Logging;
+using App.Metrics.Reporting.Base;
+
 using static System.Console;
 
 namespace App.Metrics.Reporting.Console
 {
-    public class ConsoleMetricsReporter : IReportMetrics
+    public class ConsoleMetricsReporter : BaseMetricsReporter
     {
         private static readonly ILog Logger = LogProvider.For<ConsoleMetricsReporter>();
-        private readonly IMetricsOutputFormatter _defaultMetricsOutputFormatter = new MetricsTextOutputFormatter();
 
         // ReSharper disable UnusedMember.Global
         public ConsoleMetricsReporter()
-            // ReSharper restore UnusedMember.Global
+            : base()
+        // ReSharper restore UnusedMember.Global
         {
-            FlushInterval = AppMetricsConstants.Reporting.DefaultFlushInterval;
-            Formatter = _defaultMetricsOutputFormatter;
-
-            Logger.Info($"Using Metrics Reporter {this}. FlushInterval: {FlushInterval}");
+            Logger.Info($"Using Console Metrics Reporter: {this}");
         }
 
         public ConsoleMetricsReporter(MetricsReportingConsoleOptions options)
+            : base(options)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            if (options.FlushInterval < TimeSpan.Zero)
-            {
-                throw new InvalidOperationException($"{nameof(MetricsReportingConsoleOptions.FlushInterval)} must not be less than zero");
-            }
-
-            Formatter = options.MetricsOutputFormatter ?? _defaultMetricsOutputFormatter;
-
-            FlushInterval = options.FlushInterval > TimeSpan.Zero
-                ? options.FlushInterval
-                : AppMetricsConstants.Reporting.DefaultFlushInterval;
-
-            Filter = options.Filter;
-
-            Logger.Info($"Using Metrics Reporter {this}. FlushInterval: {FlushInterval}");
+            Logger.Info($"Using Console Metrics Reporter: {this}");
         }
 
-        /// <inheritdoc />
-        public IFilterMetrics Filter { get; set; }
-
-        /// <inheritdoc />
-        public TimeSpan FlushInterval { get; set; }
-
-        /// <inheritdoc />
-        public IMetricsOutputFormatter Formatter { get; set; }
-
-        /// <inheritdoc />
-        public async Task<bool> FlushAsync(MetricsDataValueSource metricsData, CancellationToken cancellationToken = default)
+        public override async Task<bool> FlushImplAsync(MemoryStream stream, CancellationToken cancellationToken)
         {
-            Logger.Trace("Flushing metrics snapshot");
-
-            using (var stream = new MemoryStream())
-            {
-                await Formatter.WriteAsync(stream, metricsData, cancellationToken);
-
-                var output = Encoding.UTF8.GetString(stream.ToArray());
-
-                WriteLine(output);
-            }
-
-            Logger.Trace("Flushed metrics snapshot");
-
+            await Task.CompletedTask;
+            var array = stream.ToArray();
+            var output = Encoding.UTF8.GetString(array);
+            WriteLine(output);
             return true;
         }
     }

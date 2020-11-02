@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="App.Metrics.Core" />
     <PackageReference Include="App.Metrics.Formatters.Ascii" />
+    <PackageReference Include="App.Metrics.Reporting.Base" />
   </ItemGroup>
 
 </Project>
