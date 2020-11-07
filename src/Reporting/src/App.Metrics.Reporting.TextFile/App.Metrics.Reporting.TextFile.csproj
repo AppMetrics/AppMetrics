@@ -4,12 +4,13 @@
     <Description>Provides text file reporting capability to App Metrics</Description>
     <AssemblyTitle>App.Metrics.Reporting.TextFile</AssemblyTitle>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <PackageTags>appmetrics;reporting;influxdb</PackageTags>    
+    <PackageTags>appmetrics;reporting;textfile</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="App.Metrics.Core" />
     <PackageReference Include="App.Metrics.Formatters.Ascii" />
+    <PackageReference Include="App.Metrics.Reporting.Base" />
   </ItemGroup>
 
 </Project>
