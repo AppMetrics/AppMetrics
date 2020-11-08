@@ -25,6 +25,7 @@ Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.formatters.influxdb\ -R
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.formatters.json\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.formatters.prometheus\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.formatting.datadog\ -Recurse -ErrorAction SilentlyContinue
+Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.reporting.base\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.reporting.console\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.reporting.datadog\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.reporting.grafanacloudhostedmetrics\ -Recurse -ErrorAction SilentlyContinue

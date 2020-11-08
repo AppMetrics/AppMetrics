@@ -6,9 +6,6 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Filters;
-using App.Metrics.Formatters;
-using App.Metrics.Formatters.Ascii;
 using App.Metrics.Logging;
 using App.Metrics.Reporting.Base;
 

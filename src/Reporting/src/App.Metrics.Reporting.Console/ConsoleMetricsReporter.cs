@@ -2,14 +2,10 @@
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
-using System;
 using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Filters;
-using App.Metrics.Formatters;
-using App.Metrics.Formatters.Ascii;
 using App.Metrics.Logging;
 using App.Metrics.Reporting.Base;
 
@@ -24,7 +20,7 @@ namespace App.Metrics.Reporting.Console
         // ReSharper disable UnusedMember.Global
         public ConsoleMetricsReporter()
             : base()
-        // ReSharper restore UnusedMember.Global
+            // ReSharper restore UnusedMember.Global
         {
             Logger.Info($"Using Console Metrics Reporter: {this}");
         }

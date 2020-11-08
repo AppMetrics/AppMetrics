@@ -2,7 +2,6 @@
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
-using System;
 using App.Metrics.Reporting.Base;
 
 namespace App.Metrics.Reporting.TextFile

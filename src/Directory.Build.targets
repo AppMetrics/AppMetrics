@@ -28,20 +28,23 @@
     <PackageReference Update="App.Metrics.Extensions.DependencyInjection" Version="$(AppMetricsVersion)" />
     <PackageReference Update="App.Metrics.Extensions.Hosting" Version="$(AppMetricsVersion)" />
 
+    <!-- Formatters -->
+    <PackageReference Update="App.Metrics.Formatters.GrafanaCloudHostedMetrics" Version="$(AppMetricsVersion)" />
+    <PackageReference Update="App.Metrics.Formatters.Graphite" Version="$(AppMetricsVersion)" />
+    <PackageReference Update="App.Metrics.Formatters.InfluxDB" Version="$(AppMetricsVersion)" />
+    <PackageReference Update="App.Metrics.Formatters.Prometheus" Version="$(AppMetricsVersion)" />
+    <PackageReference Update="App.Metrics.Formatting.DataDog" Version="$(AppMetricsVersion)" />
+
     <!-- Reporting -->
-	<PackageReference Update="App.Metrics.Formatting.DataDog" Version="$(AppMetricsVersion)" />
-	<PackageReference Update="App.Metrics.Reporting.DataDog" Version="$(AppMetricsVersion)" />
+    <PackageReference Update="App.Metrics.Reporting.Base" Version="$(AppMetricsVersion)" />
     <PackageReference Update="App.Metrics.Reporting.Console" Version="$(AppMetricsVersion)" />
+    <PackageReference Update="App.Metrics.Reporting.DataDog" Version="$(AppMetricsVersion)" />
+    <PackageReference Update="App.Metrics.Reporting.GrafanaCloudHostedMetrics" Version="$(AppMetricsVersion)" />
+    <PackageReference Update="App.Metrics.Reporting.Graphite" Version="$(AppMetricsVersion)" />
     <PackageReference Update="App.Metrics.Reporting.Http" Version="$(AppMetricsVersion)" />
+    <PackageReference Update="App.Metrics.Reporting.InfluxDB" Version="$(AppMetricsVersion)" />
     <PackageReference Update="App.Metrics.Reporting.Socket" Version="$(AppMetricsVersion)" />
     <PackageReference Update="App.Metrics.Reporting.TextFile" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Formatters.GrafanaCloudHostedMetrics" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Reporting.GrafanaCloudHostedMetrics" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Formatters.InfluxDB" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Reporting.InfluxDB" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Formatters.Prometheus" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Formatters.Graphite" Version="$(AppMetricsVersion)" />
-    <PackageReference Update="App.Metrics.Reporting.Graphite" Version="$(AppMetricsVersion)" />
 
     <!-- AspNetCore -->
     <PackageReference Update="App.Metrics.AspNetCore" Version="$(AppMetricsVersion)" />
