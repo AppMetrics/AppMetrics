@@ -126,32 +126,6 @@ namespace App.Metrics.Reporting.StatsD.Facts
         }
 
         [Fact]
-        public async Task Can_report_counter_with_items()
-        {
-            // Arrange
-            var expected =
-                "test.test_counter__items.counter.item1:value1.total:1|c|#unit:none,timestamp:1483232461\n" +
-                "test.test_counter__items.counter.item1:value1.percent:50|c|#unit:none,timestamp:1483232461\n" +
-                "test.test_counter__items.counter.item2:value2.total:1|c|#unit:none,timestamp:1483232461\n" +
-                "test.test_counter__items.counter.item2:value2.percent:50|c|#unit:none,timestamp:1483232461\n" +
-                "test.test_counter.counter.value:2|c|#unit:none,timestamp:1483232461";
-            var counter = new DefaultCounterMetric();
-            counter.Increment(new MetricSetItem("item1", "value1"), 1);
-            counter.Increment(new MetricSetItem("item2", "value2"), 1);
-            var counterValueSource = new CounterValueSource(
-                "test counter",
-                ConstantValue.Provider(counter.Value),
-                Unit.None,
-                MetricTags.Empty);
-
-            // Act
-            var valueSource = CreateValueSource("test", counters: counterValueSource);
-
-            // Assert
-            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
-        }
-
-        [Fact]
         public async Task Can_report_counter_with_custom_sample_rate()
         {
             // Arrange
@@ -178,78 +152,6 @@ namespace App.Metrics.Reporting.StatsD.Facts
         }
 
         [Fact]
-        public async Task Counter_with_custom_sample_rate_with_multiple_data_point_should_sample_correctly()
-        {
-            // Arrange
-            var expected =
-                "test.test_counter__items.counter.item1:value1.total:4|c|@0.5|#unit:none,timestamp:1483232461\n" +
-                "test.test_counter__items.counter.item1:value1.percent:100|c|@0.5|#unit:none,timestamp:1483232461\n" +
-                "test.test_counter.counter.value:4|c|@0.5|#unit:none,timestamp:1483232461";
-            var counter = new DefaultCounterMetric();
-            counter.Increment(new MetricSetItem("item1", "value1"), 1);
-            counter.Increment(new MetricSetItem("item1", "value1"), 1);
-            counter.Increment(new MetricSetItem("item1", "value1"), 1);
-            counter.Increment(new MetricSetItem("item1", "value1"), 1);
-            var counterValueSource = new CounterValueSource(
-                "test counter",
-                ConstantValue.Provider(counter.Value),
-                Unit.None,
-                MetricTags.Empty);
-
-            // Act
-            var valueSource = CreateValueSource("test", counters: counterValueSource);
-
-            // Assert
-            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected, 0.5);
-
-        }
-
-        [Fact]
-        public async Task Counter_with_custom_sample_rate_with_multiple_MetricsDataValueSource_should_sample_correctly()
-        {
-            // Arrange
-            var expected =
-                "test.test_counter__items.counter.item1:value1.total:1|c|@0.5|#unit:none,timestamp:1483232461\n" +
-                "test.test_counter__items.counter.item1:value1.percent:100|c|@0.5|#unit:none,timestamp:1483232461\n" +
-                "test.test_counter.counter.value:1|c|@0.5|#unit:none,timestamp:1483232461\n" +
-                "test.test_counter__items.counter.item1:value1.total:1|c|@0.5|#unit:none,timestamp:1483232463\n" +
-                "test.test_counter__items.counter.item1:value1.percent:100|c|@0.5|#unit:none,timestamp:1483232463\n" +
-                "test.test_counter.counter.value:1|c|@0.5|#unit:none,timestamp:1483232463\n" +
-                "test.test_counter__items.counter.item1:value1.total:1|c|@0.5|#unit:none,timestamp:1483232465\n" +
-                "test.test_counter__items.counter.item1:value1.percent:100|c|@0.5|#unit:none,timestamp:1483232465\n" +
-                "test.test_counter.counter.value:1|c|@0.5|#unit:none,timestamp:1483232465";
-
-            var sources = new List<MetricsDataValueSource>();
-            var timeStamp = _timestamp;
-
-            // Act
-            sources.Add(CreateMetricsDataValueSource(ref timeStamp));
-            sources.Add(CreateMetricsDataValueSource(ref timeStamp));
-            sources.Add(CreateMetricsDataValueSource(ref timeStamp));
-            sources.Add(CreateMetricsDataValueSource(ref timeStamp));
-            sources.Add(CreateMetricsDataValueSource(ref timeStamp));
-            sources.Add(CreateMetricsDataValueSource(ref timeStamp));
-
-            // Assert
-            await AssertExpectedLineProtocolString(sources, expected, 0.5);
-
-            MetricsDataValueSource CreateMetricsDataValueSource(ref DateTime timestamp)
-            {
-                var counter = new DefaultCounterMetric();
-                counter.Increment(new MetricSetItem("item1", "value1"), 1);
-                var counterValueSource = new CounterValueSource(
-                    "test counter",
-                    ConstantValue.Provider(counter.Value),
-                    Unit.None,
-                    MetricTags.Empty);
-                var valueSource = CreateValueSource("test", counters: counterValueSource);
-                var result = new MetricsDataValueSource(timestamp, new[] { valueSource });
-                timestamp += TimeSpan.FromSeconds(1);
-                return result;
-            }
-        }
-
-        [Fact]
         public async Task Can_report_counter_with_custom_sample_rate_through_tag()
         {
             // Arrange
@@ -267,6 +169,32 @@ namespace App.Metrics.Reporting.StatsD.Facts
                 ConstantValue.Provider(counter.Value),
                 Unit.None,
                 new MetricTags(new[] { "sampleRate" }, new[] { "0.5" }));
+
+            // Act
+            var valueSource = CreateValueSource("test", counters: counterValueSource);
+
+            // Assert
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
+        }
+
+        [Fact]
+        public async Task Can_report_counter_with_items()
+        {
+            // Arrange
+            var expected =
+                "test.test_counter__items.counter.item1:value1.total:1|c|#unit:none,timestamp:1483232461\n" +
+                "test.test_counter__items.counter.item1:value1.percent:50|c|#unit:none,timestamp:1483232461\n" +
+                "test.test_counter__items.counter.item2:value2.total:1|c|#unit:none,timestamp:1483232461\n" +
+                "test.test_counter__items.counter.item2:value2.percent:50|c|#unit:none,timestamp:1483232461\n" +
+                "test.test_counter.counter.value:2|c|#unit:none,timestamp:1483232461";
+            var counter = new DefaultCounterMetric();
+            counter.Increment(new MetricSetItem("item1", "value1"), 1);
+            counter.Increment(new MetricSetItem("item2", "value2"), 1);
+            var counterValueSource = new CounterValueSource(
+                "test counter",
+                ConstantValue.Provider(counter.Value),
+                Unit.None,
+                MetricTags.Empty);
 
             // Act
             var valueSource = CreateValueSource("test", counters: counterValueSource);
@@ -509,7 +437,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
         public async Task Can_report_meters()
         {
             // Arrange
-            var expected = 
+            var expected =
                 "test.test_meter.meter.count.meter:1|m|#unit:none,unit_rate:ms,timestamp:1483232461\n" +
                 "test.test_meter.meter.rate1m:0|m|#unit:none,unit_rate:ms,timestamp:1483232461\n" +
                 "test.test_meter.meter.rate5m:0|m|#unit:none,unit_rate:ms,timestamp:1483232461\n" +
@@ -719,25 +647,99 @@ namespace App.Metrics.Reporting.StatsD.Facts
             await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected);
         }
 
-        private async Task AssertExpectedLineProtocolString(MetricsDataValueSource dataValueSource, string expected, double sampleRate = 1.0)
-            => await AssertExpectedLineProtocolString(new[] {dataValueSource}, expected, sampleRate);
+        [Fact]
+        public async Task Counter_with_custom_sample_rate_with_multiple_data_point_should_sample_correctly()
+        {
+            // Arrange
+            var expected =
+                "test.test_counter__items.counter.item1:value1.total:4|c|@0.5|#unit:none,timestamp:1483232461\n" +
+                "test.test_counter__items.counter.item1:value1.percent:100|c|@0.5|#unit:none,timestamp:1483232461\n" +
+                "test.test_counter.counter.value:4|c|@0.5|#unit:none,timestamp:1483232461";
+            var counter = new DefaultCounterMetric();
+            counter.Increment(new MetricSetItem("item1", "value1"), 1);
+            counter.Increment(new MetricSetItem("item1", "value1"), 1);
+            counter.Increment(new MetricSetItem("item1", "value1"), 1);
+            counter.Increment(new MetricSetItem("item1", "value1"), 1);
+            var counterValueSource = new CounterValueSource(
+                "test counter",
+                ConstantValue.Provider(counter.Value),
+                Unit.None,
+                MetricTags.Empty);
 
-        private async Task AssertExpectedLineProtocolString(IEnumerable<MetricsDataValueSource> dataValueSource, string expected, double sampleRate = 1.0)
+            // Act
+            var valueSource = CreateValueSource("test", counters: counterValueSource);
+
+            // Assert
+            await AssertExpectedLineProtocolString(new MetricsDataValueSource(_timestamp, new[] { valueSource }), expected, 0.5);
+        }
+
+        [Fact]
+        public async Task Counter_with_custom_sample_rate_with_multiple_MetricsDataValueSource_should_sample_correctly()
+        {
+            // Arrange
+            var expected =
+                "test.test_counter__items.counter.item1:value1.total:1|c|@0.5|#unit:none,timestamp:1483232461\n" +
+                "test.test_counter__items.counter.item1:value1.percent:100|c|@0.5|#unit:none,timestamp:1483232461\n" +
+                "test.test_counter.counter.value:1|c|@0.5|#unit:none,timestamp:1483232461\n" +
+                "test.test_counter__items.counter.item1:value1.total:1|c|@0.5|#unit:none,timestamp:1483232463\n" +
+                "test.test_counter__items.counter.item1:value1.percent:100|c|@0.5|#unit:none,timestamp:1483232463\n" +
+                "test.test_counter.counter.value:1|c|@0.5|#unit:none,timestamp:1483232463\n" +
+                "test.test_counter__items.counter.item1:value1.total:1|c|@0.5|#unit:none,timestamp:1483232465\n" +
+                "test.test_counter__items.counter.item1:value1.percent:100|c|@0.5|#unit:none,timestamp:1483232465\n" +
+                "test.test_counter.counter.value:1|c|@0.5|#unit:none,timestamp:1483232465";
+
+            var sources = new List<MetricsDataValueSource>();
+            var timeStamp = _timestamp;
+
+            // Act
+            sources.Add(CreateMetricsDataValueSource(ref timeStamp));
+            sources.Add(CreateMetricsDataValueSource(ref timeStamp));
+            sources.Add(CreateMetricsDataValueSource(ref timeStamp));
+            sources.Add(CreateMetricsDataValueSource(ref timeStamp));
+            sources.Add(CreateMetricsDataValueSource(ref timeStamp));
+            sources.Add(CreateMetricsDataValueSource(ref timeStamp));
+
+            // Assert
+            await AssertExpectedLineProtocolString(sources, expected, 0.5);
+
+            MetricsDataValueSource CreateMetricsDataValueSource(ref DateTime timestamp)
+            {
+                var counter = new DefaultCounterMetric();
+                counter.Increment(new MetricSetItem("item1", "value1"), 1);
+                var counterValueSource = new CounterValueSource(
+                    "test counter",
+                    ConstantValue.Provider(counter.Value),
+                    Unit.None,
+                    MetricTags.Empty);
+                var valueSource = CreateValueSource("test", counters: counterValueSource);
+                var result = new MetricsDataValueSource(timestamp, new[] { valueSource });
+                timestamp += TimeSpan.FromSeconds(1);
+                return result;
+            }
+        }
+
+        private async Task AssertExpectedLineProtocolString(MetricsDataValueSource dataValueSource, string expected, double sampleRate = 1.0)
+            => await AssertExpectedLineProtocolString(new[] { dataValueSource }, expected, sampleRate);
+
+        private async Task AssertExpectedLineProtocolString(
+            IEnumerable<MetricsDataValueSource> dataValueSource,
+            string expected,
+            double sampleRate = 1.0)
         {
             var settings = new MetricsStatsDOptions
-            {
-                WriteTags = true,
-                WriteTimestamp = true,
-                DefaultSampleRate = sampleRate
-            };
+                           {
+                               WriteTags = true,
+                               WriteTimestamp = true,
+                               DefaultSampleRate = sampleRate
+                           };
             var serializer = new MetricSnapshotSerializer();
             var fields = new MetricFields();
 
             await using var ms = new MemoryStream();
-            await using (var packer = 
+            await using (var packer =
                 new MetricSnapshotStatsDStringWriter(
-                    ms, 
-                    new StatsDPointSampler(settings), 
+                    ms,
+                    new StatsDPointSampler(settings),
                     settings))
             {
                 foreach (var source in dataValueSource)
@@ -769,7 +771,16 @@ namespace App.Metrics.Reporting.StatsD.Facts
             var bucketTimerValues = bucketTimers != null ? new[] { bucketTimers } : Enumerable.Empty<BucketTimerValueSource>();
             var apdexScoreValues = apdexScores != null ? new[] { apdexScores } : Enumerable.Empty<ApdexValueSource>();
 
-            return new MetricsContextValueSource(context, gaugeValues, counterValues, meterValues, histogramValues, bucketHistogramValues, timerValues, bucketTimerValues, apdexScoreValues);
+            return new MetricsContextValueSource(
+                context,
+                gaugeValues,
+                counterValues,
+                meterValues,
+                histogramValues,
+                bucketHistogramValues,
+                timerValues,
+                bucketTimerValues,
+                apdexScoreValues);
         }
     }
 }

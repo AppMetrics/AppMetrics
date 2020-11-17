@@ -13,25 +13,27 @@ namespace App.Metrics.Formatting.StatsD
 {
     internal class MetricSnapshotStatsDStringWriter : IMetricSnapshotWriter
     {
-        private readonly Stream _stream;
-        private readonly StatsDPointSampler _sampler;
-        private readonly MetricsStatsDOptions _options;
         private readonly IStatsDMetricStringSerializer _metricMetricStringSerializer;
+        private readonly MetricsStatsDOptions _options;
+        private readonly StatsDPointSampler _sampler;
+        private readonly Stream _stream;
 
         public MetricSnapshotStatsDStringWriter(Stream stream, StatsDPointSampler sampler, MetricsStatsDOptions options)
         {
             _stream = stream ?? throw new ArgumentNullException(nameof(stream));
             _sampler = sampler;
             _options = options;
-            _metricMetricStringSerializer = options.MetricNameFormatter != null 
-                ? options.MetricNameFormatter() 
+            _metricMetricStringSerializer = options.MetricNameFormatter != null
+                ? options.MetricNameFormatter()
                 : StatsDFormatterConstants.GraphiteDefaults.MetricPointTextWriter();
         }
+
+        public ValueTask DisposeAsync() { return DisposeAsync(true); }
 
         /// <inheritdoc />
         public void Write(string context, string name, string field, object value, MetricTags tags, DateTime timestamp)
         {
-            _sampler.Add(context, name, field, value , tags, _metricMetricStringSerializer, timestamp);
+            _sampler.Add(context, name, field, value, tags, _metricMetricStringSerializer, timestamp);
         }
 
         /// <inheritdoc />
@@ -58,11 +60,6 @@ namespace App.Metrics.Formatting.StatsD
                 _stream?.Dispose();
 #endif
             }
-        }
-
-        public ValueTask DisposeAsync()
-        {
-            return DisposeAsync(true);
         }
     }
 }

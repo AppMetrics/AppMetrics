@@ -45,17 +45,17 @@ namespace App.Metrics.Formatting.StatsD.Internal
             UtcTimestamp = utcTimestamp ?? DateTime.UtcNow;
         }
 
-        public string Name { get; }
-
-        public object Value { get; }
-
         public string MetricType { get; }
+
+        public string Name { get; }
 
         public double? SampleRate { get; }
 
         public Dictionary<string, string> Tags { get; }
 
         public DateTime UtcTimestamp { get; }
+
+        public object Value { get; }
 
         public string Write(MetricsStatsDOptions options)
             => _metricStringSerializer.Serialize(this, options);

@@ -23,20 +23,26 @@ namespace App.Metrics.Formatting.StatsD
             TagMarker = '#';
         }
 
-        public Func<IStatsDMetricStringSerializer> MetricNameFormatter { get; set; }
-
         public double DefaultSampleRate
         {
             get => _defaultSampleRate;
-            set {
-                if(value < 0.0 || value > 1.0)
+            set
+            {
+                if (value < 0.0 || value > 1.0)
+                {
                     throw new IndexOutOfRangeException("SampleRate must be in the range of 0.0 and 1.0 inclusive.");
+                }
+
                 _defaultSampleRate = value;
             }
         }
 
-        public bool WriteTags { get; set; }
-        public bool WriteTimestamp { get; set; }
+        public Func<IStatsDMetricStringSerializer> MetricNameFormatter { get; set; }
+
         public char TagMarker { get; set; }
+
+        public bool WriteTags { get; set; }
+
+        public bool WriteTimestamp { get; set; }
     }
 }

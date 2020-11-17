@@ -18,6 +18,14 @@ namespace App.Metrics.Reporting.StatsD
         }
 
         /// <summary>
+        ///     Gets or sets the <see cref="IFilterMetrics" /> to use for just this reporter.
+        /// </summary>
+        /// <value>
+        ///     The <see cref="IFilterMetrics" /> to use for this reporter.
+        /// </value>
+        public IFilterMetrics Filter { get; set; }
+
+        /// <summary>
         ///     Gets or sets the Socket policy settings which allows circuit breaker configuration to be adjusted
         /// </summary>
         /// <value>
@@ -32,14 +40,6 @@ namespace App.Metrics.Reporting.StatsD
         ///     The Socket client settings.
         /// </value>
         public SocketSettings SocketSettings { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the <see cref="IFilterMetrics" /> to use for just this reporter.
-        /// </summary>
-        /// <value>
-        ///     The <see cref="IFilterMetrics" /> to use for this reporter.
-        /// </value>
-        public IFilterMetrics Filter { get; set; }
 
         public MetricsStatsDOptions StatsDOptions { get; set; }
     }

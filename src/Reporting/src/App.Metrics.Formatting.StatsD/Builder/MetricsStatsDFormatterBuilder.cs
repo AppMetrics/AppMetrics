@@ -11,7 +11,7 @@ namespace App.Metrics.Formatting.StatsD.Builder
         /// <summary>
         ///     Add the <see cref="MetricsStatsDStringOutputFormatter" /> allowing metrics to optionally be reported to Datadog
         /// </summary>
-        /// <param name="metricFormattingBuilder">s
+        /// <param name="metricFormattingBuilder">
         ///     The <see cref="IMetricsOutputFormattingBuilder" /> used to configure StatsD formatting
         ///     options.
         /// </param>
@@ -47,7 +47,7 @@ namespace App.Metrics.Formatting.StatsD.Builder
         /// <summary>
         ///     Add the <see cref="MetricsStatsDStringOutputFormatter" /> allowing metrics to optionally be reported to Datadog
         /// </summary>
-        /// <param name="metricFormattingBuilder">s
+        /// <param name="metricFormattingBuilder">
         ///     The <see cref="IMetricsOutputFormattingBuilder" /> used to configure Datadog formatting
         ///     options.
         /// </param>
@@ -74,7 +74,7 @@ namespace App.Metrics.Formatting.StatsD.Builder
         /// <summary>
         ///     Add the <see cref="MetricsStatsDStringOutputFormatter" /> allowing metrics to optionally be reported to Datadog
         /// </summary>
-        /// <param name="metricFormattingBuilder">s
+        /// <param name="metricFormattingBuilder">
         ///     The <see cref="IMetricsOutputFormattingBuilder" /> used to configure Datadog formatting
         ///     options.
         /// </param>

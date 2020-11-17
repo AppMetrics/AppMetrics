@@ -47,6 +47,26 @@ namespace MetricsStatsDSandbox
                 });
         }
 
+        private static void Init()
+        {
+            var configurationBuilder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
+
+            Configuration = configurationBuilder.Build();
+
+            Log.Logger = new LoggerConfiguration().MinimumLevel.Verbose().WriteTo.LiterateConsole().CreateLogger();
+
+            var metricsConfigSection = Configuration.GetSection(nameof(MetricsOptions));
+
+            Metrics = new MetricsBuilder().Configuration.Configure(metricsConfigSection.AsEnumerable()).Report.ToStatsDUdp(
+                opt =>
+                {
+                    opt.SocketSettings.Address = "localhost";
+                    opt.SocketSettings.Port = 8125;
+                }).Build();
+
+            Reporter = Metrics.ReportRunner;
+        }
+
         private static void PressAnyKeyToContinue()
         {
             Console.WriteLine();
@@ -56,6 +76,50 @@ namespace MetricsStatsDSandbox
             Console.ResetColor();
             Console.ReadKey();
             Console.Clear();
+        }
+
+        private static void RecordMetrics()
+        {
+            Metrics.Measure.Counter.Increment(ApplicationsMetricsRegistry.CounterOne);
+            Metrics.Measure.Gauge.SetValue(ApplicationsMetricsRegistry.GaugeOne, Rnd.Next(0, 100));
+            Metrics.Measure.Histogram.Update(ApplicationsMetricsRegistry.HistogramOne, Rnd.Next(0, 100));
+            Metrics.Measure.Meter.Mark(ApplicationsMetricsRegistry.MeterOne, Rnd.Next(0, 100));
+
+            using (Metrics.Measure.Timer.Time(ApplicationsMetricsRegistry.TimerOne))
+            {
+                Thread.Sleep(Rnd.Next(0, 100));
+            }
+
+            using (Metrics.Measure.Apdex.Track(ApplicationsMetricsRegistry.ApdexOne))
+            {
+                Thread.Sleep(Rnd.Next(0, 100));
+            }
+        }
+
+        private static async Task RunUntilEscAsync(TimeSpan delayBetweenRun, CancellationTokenSource cancellationTokenSource, Func<Task> action)
+        {
+            Console.WriteLine("Press ESC to stop");
+
+            while (true)
+            {
+                while (!Console.KeyAvailable)
+                {
+                    await action();
+
+                    Thread.Sleep(delayBetweenRun);
+                }
+
+                while (Console.KeyAvailable)
+                {
+                    var key = Console.ReadKey(false).Key;
+
+                    if (key == ConsoleKey.Escape)
+                    {
+                        cancellationTokenSource.Cancel();
+                        return;
+                    }
+                }
+            }
         }
 
         private static async Task WriteMetricsAsync(CancellationTokenSource cancellationTokenSource)
@@ -82,77 +146,6 @@ namespace MetricsStatsDSandbox
                     var result = Encoding.UTF8.GetString(stream.ToArray());
 
                     Console.WriteLine(result);
-                }
-            }
-        }
-
-        private static void RecordMetrics()
-        {
-            Metrics.Measure.Counter.Increment(ApplicationsMetricsRegistry.CounterOne);
-            Metrics.Measure.Gauge.SetValue(ApplicationsMetricsRegistry.GaugeOne, Rnd.Next(0, 100));
-            Metrics.Measure.Histogram.Update(ApplicationsMetricsRegistry.HistogramOne, Rnd.Next(0, 100));
-            Metrics.Measure.Meter.Mark(ApplicationsMetricsRegistry.MeterOne, Rnd.Next(0, 100));
-
-            using (Metrics.Measure.Timer.Time(ApplicationsMetricsRegistry.TimerOne))
-            {
-                Thread.Sleep(Rnd.Next(0, 100));
-            }
-
-            using (Metrics.Measure.Apdex.Track(ApplicationsMetricsRegistry.ApdexOne))
-            {
-                Thread.Sleep(Rnd.Next(0, 100));
-            }
-        }
-
-        private static void Init()
-        {
-            var configurationBuilder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json");
-
-            Configuration = configurationBuilder.Build();
-
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .WriteTo.LiterateConsole()
-                .CreateLogger();
-
-            var metricsConfigSection = Configuration.GetSection(nameof(MetricsOptions));
-
-            Metrics = new MetricsBuilder()
-                .Configuration.Configure(metricsConfigSection.AsEnumerable())
-                .Report.ToStatsDUdp(opt =>
-                {
-                    opt.SocketSettings.Address = "localhost";
-                    opt.SocketSettings.Port = 8125;
-                })
-                .Build();
-
-            Reporter = Metrics.ReportRunner;
-        }
-
-        private static async Task RunUntilEscAsync(TimeSpan delayBetweenRun, CancellationTokenSource cancellationTokenSource, Func<Task> action)
-        {
-            Console.WriteLine("Press ESC to stop");
-
-            while (true)
-            {
-                while (!Console.KeyAvailable)
-                {
-                    await action();
-
-                    Thread.Sleep(delayBetweenRun);
-                }
-
-                while (Console.KeyAvailable)
-                {
-                    var key = Console.ReadKey(false).Key;
-
-                    if (key == ConsoleKey.Escape)
-                    {
-                        cancellationTokenSource.Cancel();
-                        return;
-                    }
                 }
             }
         }

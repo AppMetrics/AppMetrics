@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using App.Metrics.Formatting.StatsD;
 using App.Metrics.Formatting.StatsD.Internal;
@@ -14,11 +13,11 @@ namespace App.Metrics.Reporting.StatsD.Facts
     public class StatsDPointTest
     {
         private readonly MetricsStatsDOptions _options = new MetricsStatsDOptions
-        {
-            WriteTags = true,
-            WriteTimestamp = true,
-            DefaultSampleRate = 1.0
-        };
+                                                         {
+                                                             WriteTags = true,
+                                                             WriteTimestamp = true,
+                                                             DefaultSampleRate = 1.0
+                                                         };
 
         [Theory]
         [InlineData(null, 1, "c", DateTimeKind.Utc, "Name must be non-null")]
@@ -73,8 +72,8 @@ namespace App.Metrics.Reporting.StatsD.Facts
             var timestamp = new DateTime(2017, 1, 1, 1, 1, 1, DateTimeKind.Utc);
 
             var statsDWriter = new MetricSnapshotStatsDStringWriter(
-                ms, 
-                new StatsDPointSampler(_options), 
+                ms,
+                new StatsDPointSampler(_options),
                 new MetricsStatsDOptions
                 {
                     WriteTags = true,
@@ -87,10 +86,10 @@ namespace App.Metrics.Reporting.StatsD.Facts
             var result = Encoding.UTF8.GetString(ms.ToArray());
 
             // Assert
-            result.Should()
-                .Be("measurement.field1key:0|g|#timestamp:1483232461\n" +
-                    "measurement.field2key:2|g|#timestamp:1483232461\n" +
-                    "measurement.field3key:0|g|#timestamp:1483232461");
+            result.Should().Be(
+                "measurement.field1key:0|g|#timestamp:1483232461\n" +
+                "measurement.field2key:2|g|#timestamp:1483232461\n" +
+                "measurement.field3key:0|g|#timestamp:1483232461");
         }
 
         [Fact]
@@ -117,10 +116,9 @@ namespace App.Metrics.Reporting.StatsD.Facts
             var result = Encoding.UTF8.GetString(ms.ToArray());
 
             // Assert
-            result.Should()
-                .Be(
-                    "measurement.key:0|g|#tagkey:tagvalue,timestamp:1483232461", 
-                    "Hosted Metrics request at the moment allow tags array but its not yet used.");
+            result.Should().Be(
+                "measurement.key:0|g|#tagkey:tagvalue,timestamp:1483232461",
+                "Hosted Metrics request at the moment allow tags array but its not yet used.");
         }
 
         [Fact]
@@ -149,10 +147,9 @@ namespace App.Metrics.Reporting.StatsD.Facts
             var result = Encoding.UTF8.GetString(ms.ToArray());
 
             // Assert
-            result.Should()
-                .Be(
-                    "context.measurement.key:0|g|#tagkey:tagvalue,timestamp:1483232461", 
-                    "Hosted Metrics request at the moment allow tags array but its not yet used.");
+            result.Should().Be(
+                "context.measurement.key:0|g|#tagkey:tagvalue,timestamp:1483232461",
+                "Hosted Metrics request at the moment allow tags array but its not yet used.");
         }
     }
 }

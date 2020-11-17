@@ -8,9 +8,9 @@ namespace App.Metrics.Formatting.StatsD.Internal
 {
     internal class StatsDSampler
     {
-        private double _sampleRate;
         private double _accumulator;
         private long _lastTimestamp;
+        private double _sampleRate;
 
         public StatsDSampler(double sampleRate)
         {
@@ -25,7 +25,10 @@ namespace App.Metrics.Formatting.StatsD.Internal
             set
             {
                 if (value < 0.0 || value > 1.0)
+                {
                     throw new IndexOutOfRangeException("SampleRate must be in the range of 0.0 and 1.0 inclusive.");
+                }
+
                 _sampleRate = value;
             }
         }
@@ -36,14 +39,19 @@ namespace App.Metrics.Formatting.StatsD.Internal
         public bool Sample(long timeStamp)
         {
             if (_lastTimestamp == timeStamp)
+            {
                 return true;
+            }
+
             _lastTimestamp = timeStamp;
 
             var epsilon = 1.0 - double.Epsilon;
             var result = _accumulator >= epsilon;
 
             if (result)
+            {
                 _accumulator--;
+            }
 
             _accumulator += SampleRate;
 

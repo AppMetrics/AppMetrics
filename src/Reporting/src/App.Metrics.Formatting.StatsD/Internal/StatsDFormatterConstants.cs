@@ -8,9 +8,9 @@ namespace App.Metrics.Formatting.StatsD.Internal
 {
     public class StatsDFormatterConstants
     {
-        public static string TimestampTagName = "timestamp";
-        public static string SampleRateTagName = "sampleRate";
         public static string ItemTagName = "item";
+        public static string SampleRateTagName = "sampleRate";
+        public static string TimestampTagName = "timestamp";
 
         public static class GraphiteDefaults
         {
