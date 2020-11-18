@@ -48,40 +48,14 @@ namespace App.Metrics.Formatting.StatsD.Internal
             }
 
             var tagsDictionary = metricTags.ToDictionary();
+            tagsDictionary.TryGetValue(AppMetricsConstants.Pack.MetricTagsTypeKey, out var metricType);
+            tagsDictionary.TryGetValue(StatsDFormatterConstants.ItemTagName, out var itemTag);
+
+            var key = BuildKeyName(context, name, metricType, itemTag, field);
 
             var tags = tagsDictionary.Where(tag => !ExcludeTags.Contains(tag.Key)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
-            tagsDictionary.TryGetValue(AppMetricsConstants.Pack.MetricTagsTypeKey, out var metricType);
-
-            var builder = new StringBuilder();
-
-            if (!string.IsNullOrWhiteSpace(context))
-            {
-                builder.Append(context);
-                builder.Append('.');
-            }
-
-            builder.Append(name.Replace(' ', '_'));
-
-            if (!string.IsNullOrWhiteSpace(metricType))
-            {
-                builder.Append('.');
-                builder.Append(metricType);
-            }
-
-            tagsDictionary.TryGetValue(StatsDFormatterConstants.ItemTagName, out var itemTag);
-            if (!string.IsNullOrWhiteSpace(itemTag))
-            {
-                builder.Append('.');
-                builder.Append(itemTag);
-            }
-
-            builder.Append('.');
-            builder.Append(field);
-
-            var key = builder.ToString();
             var statsDMetricType = StatsDSyntax.FormatMetricType(metricType);
-
             if (!StatsDSyntax.CanBeSampled(statsDMetricType))
             {
                 Points.Enqueue(new StatsDPoint(key, value, statsDMetricType, null, tags, serializer, timestamp));
@@ -102,6 +76,36 @@ namespace App.Metrics.Formatting.StatsD.Internal
             {
                 Points.Enqueue(new StatsDPoint(key, value, statsDMetricType, sampler.SampleRate, tags, serializer, timestamp));
             }
+        }
+
+        private string BuildKeyName(string context, string name, string metricType, string itemTag, string field)
+        {
+            var builder = new StringBuilder();
+
+            if (!string.IsNullOrWhiteSpace(context))
+            {
+                builder.Append(context);
+                builder.Append('.');
+            }
+
+            builder.Append(name.Replace(' ', '_'));
+
+            if (!string.IsNullOrWhiteSpace(metricType))
+            {
+                builder.Append('.');
+                builder.Append(metricType);
+            }
+
+            if (!string.IsNullOrWhiteSpace(itemTag))
+            {
+                builder.Append('.');
+                builder.Append(itemTag);
+            }
+
+            builder.Append('.');
+            builder.Append(field);
+
+            return builder.ToString();
         }
 
         public void Add(
