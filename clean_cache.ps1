@@ -41,3 +41,5 @@ Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.grafanacloudhostedmetri
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.graphite\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.influxdb\ -Recurse -ErrorAction SilentlyContinue
 Remove-Item $env:USERPROFILE\.nuget\packages\app.metrics.prometheus\ -Recurse -ErrorAction SilentlyContinue
+
+Remove-Item .\nuget\ -Recurse -ErrorAction SilentlyContinue
