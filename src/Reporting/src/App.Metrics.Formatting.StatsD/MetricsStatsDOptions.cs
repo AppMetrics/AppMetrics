@@ -16,7 +16,7 @@ namespace App.Metrics.Formatting.StatsD
 
         public MetricsStatsDOptions()
         {
-            MetricNameFormatter = StatsDFormatterConstants.GraphiteDefaults.MetricPointTextWriter;
+            MetricNameFormatter = StatsDFormatterConstants.Defaults.MetricPointTextWriter;
             DefaultSampleRate = 1.0;
             WriteTags = false;
             WriteTimestamp = false;

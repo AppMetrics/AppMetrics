@@ -25,7 +25,7 @@ namespace App.Metrics.Formatting.StatsD
             _options = options;
             _metricMetricStringSerializer = options.MetricNameFormatter != null
                 ? options.MetricNameFormatter()
-                : StatsDFormatterConstants.GraphiteDefaults.MetricPointTextWriter();
+                : StatsDFormatterConstants.Defaults.MetricPointTextWriter();
         }
 
         public ValueTask DisposeAsync() { return DisposeAsync(true); }

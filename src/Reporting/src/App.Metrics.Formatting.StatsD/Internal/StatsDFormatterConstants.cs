@@ -12,7 +12,7 @@ namespace App.Metrics.Formatting.StatsD.Internal
         public static string SampleRateTagName = "sampleRate";
         public static string TimestampTagName = "timestamp";
 
-        public static class GraphiteDefaults
+        public static class Defaults
         {
             public static readonly Func<IStatsDMetricStringSerializer> MetricPointTextWriter = () => new DefaultStatsDMetricStringSerializer();
         }
