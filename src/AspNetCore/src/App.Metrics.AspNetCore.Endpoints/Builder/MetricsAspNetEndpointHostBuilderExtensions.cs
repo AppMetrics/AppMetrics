@@ -129,43 +129,28 @@ namespace Microsoft.AspNetCore.Hosting
             var metricsEndpointHostingOptions = new MetricsEndpointsHostingOptions();
             setupHostingConfiguration(metricsEndpointHostingOptions);
 
-            var ports = new List<int>();
-
             if (metricsEndpointHostingOptions.AllEndpointsPort.HasValue)
             {
                 Console.WriteLine($"Hosting {metricsEndpointHostingOptions.MetricsEndpoint} on port {metricsEndpointHostingOptions.AllEndpointsPort.Value}");
                 Console.WriteLine($"Hosting {metricsEndpointHostingOptions.MetricsTextEndpoint} endpoint on port {metricsEndpointHostingOptions.AllEndpointsPort.Value}");
                 Console.WriteLine($"Hosting {metricsEndpointHostingOptions.EnvironmentInfoEndpoint} endpoint on port {metricsEndpointHostingOptions.AllEndpointsPort.Value}");
-
-                ports.Add(metricsEndpointHostingOptions.AllEndpointsPort.Value);
             }
             else
             {
                 if (metricsEndpointHostingOptions.MetricsEndpointPort.HasValue)
                 {
                     Console.WriteLine($"Hosting {metricsEndpointHostingOptions.MetricsEndpoint} on port {metricsEndpointHostingOptions.MetricsEndpointPort.Value}");
-                    ports.Add(metricsEndpointHostingOptions.MetricsEndpointPort.Value);
                 }
 
                 if (metricsEndpointHostingOptions.MetricsTextEndpointPort.HasValue)
                 {
                     Console.WriteLine($"Hosting {metricsEndpointHostingOptions.MetricsTextEndpoint} endpoint on port {metricsEndpointHostingOptions.MetricsTextEndpointPort.Value}");
-                    ports.Add(metricsEndpointHostingOptions.MetricsTextEndpointPort.Value);
                 }
 
                 if (metricsEndpointHostingOptions.EnvironmentInfoEndpointPort.HasValue)
                 {
                     Console.WriteLine($"Hosting {metricsEndpointHostingOptions.EnvironmentInfoEndpoint} endpoint on port {metricsEndpointHostingOptions.EnvironmentInfoEndpointPort.Value}");
-                    ports.Add(metricsEndpointHostingOptions.EnvironmentInfoEndpointPort.Value);
                 }
-            }
-
-            if (ports.Any())
-            {
-                throw new NotImplementedException("To implement setting custom ports for netcore3.0, removed for now in App.Metrics 4.0.0");
-                // var existingUrl = hostBuilder.GetSetting(WebHostDefaults.ServerUrlsKey);
-                // var additionalUrls = string.Join(";", ports.Distinct().Select(p => $"http://*:{p}/"));
-                // hostBuilder.UseSetting(WebHostDefaults.ServerUrlsKey, $"{existingUrl};{additionalUrls}");
             }
 
             hostBuilder.ConfigureServices((context, services) => services.Configure(setupHostingConfiguration));
