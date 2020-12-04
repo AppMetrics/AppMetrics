@@ -1,14 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Description>Microsoft.Extensions.Hosting (IHostBuilder) support for App Metrics.</Description>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
         <RootNamespace>App.Metrics.Extensions.Hosting</RootNamespace>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageTags>appmetrics;metrics;hosting</PackageTags>
     </PropertyGroup>
+   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+    <ItemGroup  Condition="'$(TargetFramework)' == 'netstandard2.0'">
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="App.Metrics.Core" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
     </ItemGroup>
 </Project>

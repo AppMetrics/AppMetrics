@@ -85,6 +85,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
             this MeterValueSource metric,
             Func<string, string> labelNameFormatter)
         {
+            var tags = metric.Tags.ToLabelPairs(labelNameFormatter);
             var result = new List<Metric>
                          {
                              new Metric
@@ -93,13 +94,13 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                                            {
                                                value = metric.Value.Count
                                            },
-                                 label = metric.Tags.ToLabelPairs(labelNameFormatter)
+                                 label = tags
                              }
                          };
 
             if (metric.Value.Items?.Length > 0)
             {
-                result.AddRange(metric.Value.Items.Select(x => x.ToPrometheusMetric(labelNameFormatter)));
+                result.AddRange(metric.Value.Items.Select(x => x.ToPrometheusMetric(tags, labelNameFormatter)));
             }
 
             return result;

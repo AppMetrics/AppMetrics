@@ -1,15 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Description>App Metrics is an open-source .NET Standard library used to record application metrics.</Description>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
         <RootNamespace>App.Metrics.AppNetCore</RootNamespace>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageTags>appmetrics;metrics</PackageTags>
     </PropertyGroup>
 
+    <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+    <ItemGroup  Condition="'$(TargetFramework)' == 'netstandard2.0'">
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+    </ItemGroup>
     <ItemGroup>
         <PackageReference Include="App.Metrics" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
     </ItemGroup>
 
     <ItemGroup>
