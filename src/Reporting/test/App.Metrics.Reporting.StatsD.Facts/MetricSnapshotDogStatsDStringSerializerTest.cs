@@ -22,7 +22,7 @@ using Xunit;
 
 namespace App.Metrics.Reporting.StatsD.Facts
 {
-    public class MetricSnapshotStatsDStringSerializerTest
+    public class MetricSnapshotDogStatsDStringSerializerTest
     {
         private const string MultidimensionalMetricNameSuffix = "|host:server1,env:staging";
         private readonly IReservoir _defaultReservoir = new DefaultForwardDecayingReservoir();
@@ -34,11 +34,11 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_apdex.apdex.samples:0|c\n" +
-                "test.test_apdex.apdex.score:0|g\n" +
-                "test.test_apdex.apdex.satisfied:0|c\n" +
-                "test.test_apdex.apdex.tolerating:0|c\n" +
-                "test.test_apdex.apdex.frustrating:0|c";
+                "test.test_apdex.apdex.samples:0|c|#unit:result,timestamp:1483232461\n" +
+                "test.test_apdex.apdex.score:0|g|#unit:result,timestamp:1483232461\n" +
+                "test.test_apdex.apdex.satisfied:0|c|#unit:result,timestamp:1483232461\n" +
+                "test.test_apdex.apdex.tolerating:0|c|#unit:result,timestamp:1483232461\n" +
+                "test.test_apdex.apdex.frustrating:0|c|#unit:result,timestamp:1483232461";
             var clock = new TestClock();
             var apdex = new DefaultApdexMetric(_defaultReservoir, clock, false);
             var apdexValueSource = new ApdexValueSource(
@@ -58,11 +58,11 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_apdex.apdex.samples:0|c\n" +
-                "test.test_apdex.apdex.score:0|g\n" +
-                "test.test_apdex.apdex.satisfied:0|c\n" +
-                "test.test_apdex.apdex.tolerating:0|c\n" +
-                "test.test_apdex.apdex.frustrating:0|c";
+                "test.test_apdex.apdex.samples:0|c|#host:server1,env:staging,unit:result,timestamp:1483232461\n" +
+                "test.test_apdex.apdex.score:0|g|#host:server1,env:staging,unit:result,timestamp:1483232461\n" +
+                "test.test_apdex.apdex.satisfied:0|c|#host:server1,env:staging,unit:result,timestamp:1483232461\n" +
+                "test.test_apdex.apdex.tolerating:0|c|#host:server1,env:staging,unit:result,timestamp:1483232461\n" +
+                "test.test_apdex.apdex.frustrating:0|c|#host:server1,env:staging,unit:result,timestamp:1483232461";
             var clock = new TestClock();
             var apdex = new DefaultApdexMetric(_defaultReservoir, clock, false);
             var apdexValueSource = new ApdexValueSource(
@@ -82,11 +82,11 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_apdex.apdex.samples:0|c\n" +
-                "test.test_apdex.apdex.score:0|g\n" +
-                "test.test_apdex.apdex.satisfied:0|c\n" +
-                "test.test_apdex.apdex.tolerating:0|c\n" +
-                "test.test_apdex.apdex.frustrating:0|c";
+                "test.test_apdex.apdex.samples:0|c|#key1:value1,key2:value2,unit:result,timestamp:1483232461\n" +
+                "test.test_apdex.apdex.score:0|g|#key1:value1,key2:value2,unit:result,timestamp:1483232461\n" +
+                "test.test_apdex.apdex.satisfied:0|c|#key1:value1,key2:value2,unit:result,timestamp:1483232461\n" +
+                "test.test_apdex.apdex.tolerating:0|c|#key1:value1,key2:value2,unit:result,timestamp:1483232461\n" +
+                "test.test_apdex.apdex.frustrating:0|c|#key1:value1,key2:value2,unit:result,timestamp:1483232461";
             var clock = new TestClock();
             var apdex = new DefaultApdexMetric(_defaultReservoir, clock, false);
             var apdexValueSource = new ApdexValueSource(
@@ -106,11 +106,11 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_apdex.apdex.samples:0|c\n" +
-                "test.test_apdex.apdex.score:0|g\n" +
-                "test.test_apdex.apdex.satisfied:0|c\n" +
-                "test.test_apdex.apdex.tolerating:0|c\n" +
-                "test.test_apdex.apdex.frustrating:0|c";
+                "test.test_apdex.apdex.samples:0|c|#host:server1,env:staging,anothertag:thevalue,unit:result,timestamp:1483232461\n" +
+                "test.test_apdex.apdex.score:0|g|#host:server1,env:staging,anothertag:thevalue,unit:result,timestamp:1483232461\n" +
+                "test.test_apdex.apdex.satisfied:0|c|#host:server1,env:staging,anothertag:thevalue,unit:result,timestamp:1483232461\n" +
+                "test.test_apdex.apdex.tolerating:0|c|#host:server1,env:staging,anothertag:thevalue,unit:result,timestamp:1483232461\n" +
+                "test.test_apdex.apdex.frustrating:0|c|#host:server1,env:staging,anothertag:thevalue,unit:result,timestamp:1483232461";
             var clock = new TestClock();
             var apdex = new DefaultApdexMetric(_defaultReservoir, clock, false);
             var apdexValueSource = new ApdexValueSource(
@@ -130,11 +130,11 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_counter__items.counter.item1:value1.total:1|c\n" +
-                "test.test_counter__items.counter.item1:value1.percent:50|c\n" +
-                "test.test_counter__items.counter.item2:value2.total:1|c\n" +
-                "test.test_counter__items.counter.item2:value2.percent:50|c\n" +
-                "test.test_counter.counter.value:2|c";
+                "test.test_counter__items.counter.item1:value1.total:1|c|#unit:none,timestamp:1483232461\n" +
+                "test.test_counter__items.counter.item1:value1.percent:50|c|#unit:none,timestamp:1483232461\n" +
+                "test.test_counter__items.counter.item2:value2.total:1|c|#unit:none,timestamp:1483232461\n" +
+                "test.test_counter__items.counter.item2:value2.percent:50|c|#unit:none,timestamp:1483232461\n" +
+                "test.test_counter.counter.value:2|c|#unit:none,timestamp:1483232461";
             var counter = new DefaultCounterMetric();
             counter.Increment(new MetricSetItem("item1", "value1"), 1);
             counter.Increment(new MetricSetItem("item2", "value2"), 1);
@@ -156,11 +156,11 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_counter__items.counter.item1:value1.total:1|c\n" +
-                "test.test_counter__items.counter.item1:value1.percent:50|c\n" +
-                "test.test_counter__items.counter.item2:value2.total:1|c\n" +
-                "test.test_counter__items.counter.item2:value2.percent:50|c\n" +
-                "test.test_counter.counter.value:2|c";
+                "test.test_counter__items.counter.item1:value1.total:1|c|#unit:none,timestamp:1483232461\n" +
+                "test.test_counter__items.counter.item1:value1.percent:50|c|#unit:none,timestamp:1483232461\n" +
+                "test.test_counter__items.counter.item2:value2.total:1|c|#unit:none,timestamp:1483232461\n" +
+                "test.test_counter__items.counter.item2:value2.percent:50|c|#unit:none,timestamp:1483232461\n" +
+                "test.test_counter.counter.value:2|c|#unit:none,timestamp:1483232461";
             var counter = new DefaultCounterMetric();
             counter.Increment(new MetricSetItem("item1", "value1"), 1);
             counter.Increment(new MetricSetItem("item2", "value2"), 1);
@@ -182,11 +182,11 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_counter__items.counter.item1:value1.total:1|c\n" +
-                "test.test_counter__items.counter.item1:value1.percent:50|c\n" +
-                "test.test_counter__items.counter.item2:value2.total:1|c\n" +
-                "test.test_counter__items.counter.item2:value2.percent:50|c\n" +
-                "test.test_counter.counter.value:2|c";
+                "test.test_counter__items.counter.item1:value1.total:1|c|#key1:value1,key2:value2,unit:none,timestamp:1483232461\n" +
+                "test.test_counter__items.counter.item1:value1.percent:50|c|#key1:value1,key2:value2,unit:none,timestamp:1483232461\n" +
+                "test.test_counter__items.counter.item2:value2.total:1|c|#key1:value1,key2:value2,unit:none,timestamp:1483232461\n" +
+                "test.test_counter__items.counter.item2:value2.percent:50|c|#key1:value1,key2:value2,unit:none,timestamp:1483232461\n" +
+                "test.test_counter.counter.value:2|c|#key1:value1,key2:value2,unit:none,timestamp:1483232461";
             var counter = new DefaultCounterMetric();
             counter.Increment(new MetricSetItem("item1", "value1"), 1);
             counter.Increment(new MetricSetItem("item2", "value2"), 1);
@@ -208,11 +208,11 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_counter__items.counter.item1:value1.total:1|c\n" +
-                "test.test_counter__items.counter.item1:value1.percent:50|c\n" +
-                "test.test_counter__items.counter.item2:value2.total:1|c\n" +
-                "test.test_counter__items.counter.item2:value2.percent:50|c\n" +
-                "test.test_counter.counter.value:2|c";
+                "test.test_counter__items.counter.item1:value1.total:1|c|#host:server1,env:staging,key1:value1,key2:value2,unit:none,timestamp:1483232461\n" +
+                "test.test_counter__items.counter.item1:value1.percent:50|c|#host:server1,env:staging,key1:value1,key2:value2,unit:none,timestamp:1483232461\n" +
+                "test.test_counter__items.counter.item2:value2.total:1|c|#host:server1,env:staging,key1:value1,key2:value2,unit:none,timestamp:1483232461\n" +
+                "test.test_counter__items.counter.item2:value2.percent:50|c|#host:server1,env:staging,key1:value1,key2:value2,unit:none,timestamp:1483232461\n" +
+                "test.test_counter.counter.value:2|c|#host:server1,env:staging,key1:value1,key2:value2,unit:none,timestamp:1483232461";
             var counterTags = new MetricTags(new[] { "key1", "key2" }, new[] { "value1", "value2" });
             var counter = new DefaultCounterMetric();
             counter.Increment(new MetricSetItem("item1", "value1"), 1);
@@ -235,9 +235,9 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_counter__items.counter.item1:value1.total:1|c\n" +
-                "test.test_counter__items.counter.item2:value2.total:1|c\n" +
-                "test.test_counter.counter.value:2|c";
+                "test.test_counter__items.counter.item1:value1.total:1|c|#unit:none,timestamp:1483232461\n" +
+                "test.test_counter__items.counter.item2:value2.total:1|c|#unit:none,timestamp:1483232461\n" +
+                "test.test_counter.counter.value:2|c|#unit:none,timestamp:1483232461";
             var counter = new DefaultCounterMetric();
             counter.Increment(new MetricSetItem("item1", "value1"), 1);
             counter.Increment(new MetricSetItem("item2", "value2"), 1);
@@ -259,7 +259,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
         public async Task Can_report_counters()
         {
             // Arrange
-            var expected = "test.test_counter.counter.value:1|c";
+            var expected = "test.test_counter.counter.value:1|c|#unit:none,timestamp:1483232461";
             var counter = new DefaultCounterMetric();
             counter.Increment(1);
             var counterValueSource = new CounterValueSource(
@@ -279,7 +279,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
         public async Task Can_report_counters__when_multidimensional()
         {
             // Arrange
-            var expected = "test.test_counter.counter.value:1|c";
+            var expected = "test.test_counter.counter.value:1|c|#host:server1,env:staging,unit:none,timestamp:1483232461";
             var counter = new DefaultCounterMetric();
             counter.Increment(1);
             var counterValueSource = new CounterValueSource(
@@ -299,7 +299,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
         public async Task Can_report_gauges()
         {
             // Arrange
-            var expected = "test.test_gauge.gauge.value:1|g";
+            var expected = "test.test_gauge.gauge.value:1|g|#unit:none,timestamp:1483232461";
             var gauge = new FunctionGauge(() => 1);
             var gaugeValueSource = new GaugeValueSource(
                 "test gauge",
@@ -318,7 +318,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
         public async Task Can_report_gauges__when_multidimensional()
         {
             // Arrange
-            var expected = "test.gauge-group.gauge.value:1|g";
+            var expected = "test.gauge-group.gauge.value:1|g|#host:server1,env:staging,unit:none,timestamp:1483232461";
             var gauge = new FunctionGauge(() => 1);
             var gaugeValueSource = new GaugeValueSource(
                 "gauge-group" + MultidimensionalMetricNameSuffix,
@@ -337,7 +337,8 @@ namespace App.Metrics.Reporting.StatsD.Facts
         public async Task Can_report_histograms()
         {
             // Arrange
-            var expected = "test.test_histogram.histogram.value:1000|h";
+            var expected =
+                "test.test_histogram.histogram.value:1000|h|#unit:none,timestamp:1483232461";
             var histogram = new DefaultHistogramMetric(_defaultReservoir);
             histogram.Update(1000, "client1");
             var histogramValueSource = new HistogramValueSource(
@@ -357,7 +358,8 @@ namespace App.Metrics.Reporting.StatsD.Facts
         public async Task Can_report_histograms_when_multidimensional()
         {
             // Arrange
-            var expected = "test.test_histogram.histogram.value:1000|h";
+            var expected =
+                "test.test_histogram.histogram.value:1000|h|#host:server1,env:staging,unit:none,timestamp:1483232461";
             var histogram = new DefaultHistogramMetric(_defaultReservoir);
             histogram.Update(1000, "client1");
             var histogramValueSource = new HistogramValueSource(
@@ -378,7 +380,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_meter.meter.value:1|m";
+                "test.test_meter.meter.value:1|m|#unit:none,unit_rate:ms,timestamp:1483232461";
             var clock = new TestClock();
             var meter = new DefaultMeterMetric(clock);
             meter.Mark(1);
@@ -400,7 +402,8 @@ namespace App.Metrics.Reporting.StatsD.Facts
         public async Task Can_report_meters_when_multidimensional()
         {
             // Arrange
-            var expected = "test.test_meter.meter.value:1|m";
+            var expected =
+                "test.test_meter.meter.value:1|m|#host:server1,env:staging,unit:none,unit_rate:ms,timestamp:1483232461";
             var clock = new TestClock();
             var meter = new DefaultMeterMetric(clock);
             meter.Mark(1);
@@ -423,9 +426,9 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_meter__items.meter.item1:value1.value:1|m\n" +
-                "test.test_meter__items.meter.item2:value2.value:1|m\n" +
-                "test.test_meter.meter.value:2|m";
+                "test.test_meter__items.meter.item1:value1.value:1|m|#unit:none,unit_rate:ms,timestamp:1483232461\n" +
+                "test.test_meter__items.meter.item2:value2.value:1|m|#unit:none,unit_rate:ms,timestamp:1483232461\n" +
+                "test.test_meter.meter.value:2|m|#unit:none,unit_rate:ms,timestamp:1483232461";
             var clock = new TestClock();
             var meter = new DefaultMeterMetric(clock);
             meter.Mark(new MetricSetItem("item1", "value1"), 1);
@@ -449,9 +452,9 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_meter__items.meter.item1:value1.value:1|m\n" +
-                "test.test_meter__items.meter.item2:value2.value:1|m\n" +
-                "test.test_meter.meter.value:2|m";
+                "test.test_meter__items.meter.item1:value1.value:1|m|#host:server1,env:staging,unit:none,unit_rate:ms,timestamp:1483232461\n" +
+                "test.test_meter__items.meter.item2:value2.value:1|m|#host:server1,env:staging,unit:none,unit_rate:ms,timestamp:1483232461\n" +
+                "test.test_meter.meter.value:2|m|#host:server1,env:staging,unit:none,unit_rate:ms,timestamp:1483232461";
             var clock = new TestClock();
             var meter = new DefaultMeterMetric(clock);
             meter.Mark(new MetricSetItem("item1", "value1"), 1);
@@ -475,7 +478,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_timer.timer.value:1000|ms";
+                "test.test_timer.timer.value:1000|ms|#unit:none,unit_dur:ms,unit_rate:ms,timestamp:1483232461";
             var clock = new TestClock();
             var timer = new DefaultTimerMetric(_defaultReservoir, clock);
             timer.Record(1000, TimeUnit.Milliseconds, "client1");
@@ -498,7 +501,8 @@ namespace App.Metrics.Reporting.StatsD.Facts
         public async Task Can_report_timers__when_multidimensional()
         {
             // Arrange
-            var expected = "test.test_timer.timer.value:1000|ms";
+            var expected =
+                "test.test_timer.timer.value:1000|ms|#host:server1,env:staging,unit:none,unit_dur:ms,unit_rate:ms,timestamp:1483232461";
             var clock = new TestClock();
             var timer = new DefaultTimerMetric(_defaultReservoir, clock);
             timer.Record(1000, TimeUnit.Milliseconds, "client1");
@@ -525,7 +529,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
             var timeStamp = _timestamp;
 
             var expected =
-                "test.test_counter.counter.value:4|c|@0.5";
+                "test.test_counter.counter.value:4|c|@0.5|#unit:none,timestamp:";
 
             // Act
             for (var i = 0; i < 10000; ++i)
@@ -536,7 +540,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
 
             // Assert
             (emittedData.Length > 4500 && emittedData.Length < 5500).Should().BeTrue();
-            emittedData[0].Should().Be(expected);
+            emittedData[0].Should().StartWith(expected);
 
             MetricsDataValueSource CreateMetricsDataValueSource(ref DateTime timestamp)
             {
@@ -597,7 +601,8 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             var settings = new MetricsStatsDOptions
             {
-                DefaultSampleRate = sampleRate
+                DefaultSampleRate = sampleRate,
+                MetricNameFormatter = new DefaultDogStatsDMetricStringSerializer()
             };
             var serializer = new MetricSnapshotSerializer();
             var fields = new MetricFields();

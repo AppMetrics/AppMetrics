@@ -12,12 +12,12 @@ namespace App.Metrics.Reporting.StatsD.Facts
 {
     public class StatsDPointTest
     {
-        private readonly MetricsStatsDOptions _options = new MetricsStatsDOptions
-                                                         {
-                                                             WriteTags = true,
-                                                             WriteTimestamp = true,
-                                                             DefaultSampleRate = 1.0
-                                                         };
+        private readonly MetricsStatsDOptions _options = 
+            new MetricsStatsDOptions
+            {
+                DefaultSampleRate = 1.0,
+                MetricNameFormatter = new DefaultDogStatsDMetricStringSerializer()
+            };
 
         [Theory]
         [InlineData(null, 1, "c", DateTimeKind.Utc, "Name must be non-null")]
@@ -49,7 +49,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var timestamp = new DateTime(2017, 1, 1, 1, 1, 1, DateTimeKind.Utc);
-            var point = new StatsDPoint("name.key", "value", "c", 0.1, null, new DefaultStatsDMetricStringSerializer(), timestamp);
+            var point = new StatsDPoint("name.key", "value", "c", 0.1, null, new DefaultDogStatsDMetricStringSerializer(), timestamp);
 
             // Act
             var result = point.Write(_options);
@@ -76,8 +76,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
                 new StatsDPointSampler(_options),
                 new MetricsStatsDOptions
                 {
-                    WriteTags = true,
-                    WriteTimestamp = true
+                    MetricNameFormatter = new DefaultDogStatsDMetricStringSerializer()
                 });
 
             // Act
@@ -106,8 +105,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
                 new StatsDPointSampler(_options),
                 new MetricsStatsDOptions
                 {
-                    WriteTags = true,
-                    WriteTimestamp = true
+                    MetricNameFormatter = new DefaultDogStatsDMetricStringSerializer()
                 });
 
             // Act
@@ -136,8 +134,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
                 new StatsDPointSampler(_options),
                 new MetricsStatsDOptions
                 {
-                    WriteTags = true,
-                    WriteTimestamp = true
+                    MetricNameFormatter = new DefaultDogStatsDMetricStringSerializer()
                 });
 
             // Act

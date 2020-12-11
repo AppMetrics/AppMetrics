@@ -9,7 +9,7 @@ using App.Metrics.Formatting.StatsD.Internal;
 
 namespace App.Metrics.Formatting.StatsD
 {
-    public class DefaultStatsDMetricStringSerializer : IStatsDMetricStringSerializer
+    public class DefaultDogStatsDMetricStringSerializer : IStatsDMetricStringSerializer
     {
         /// <inheritdoc />
         public string Serialize(StatsDPoint point, MetricsStatsDOptions options)
@@ -26,6 +26,20 @@ namespace App.Metrics.Formatting.StatsD
                 builder.Append("|@");
                 builder.Append(point.SampleRate.Value.ToString("0.###############"));
             }
+
+            var tags = new List<string>();
+
+            if (point.Tags != null && point.Tags.Count > 0)
+            {
+                tags.AddRange(point.Tags.Select(tag => $"{tag.Key}:{tag.Value}"));
+            }
+
+            tags.Add($"{StatsDFormatterConstants.TimestampTagName}:{StatsDSyntax.FormatTimestamp(point.UtcTimestamp)}");
+
+            builder.Append('|');
+            builder.Append(options.TagMarker);
+            builder.Append(string.Join(",", tags));
+
             return builder.ToString();
         }
     }
