@@ -56,6 +56,8 @@ namespace App.Metrics.Formatting.StatsD.Internal
             var tags = tagsDictionary.Where(tag => !ExcludeTags.Contains(tag.Key)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
             var statsDMetricType = StatsDSyntax.FormatMetricType(metricType);
+            if (metricType == AppMetricsConstants.Pack.ApdexMetricTypeValue && field != "score")
+                statsDMetricType = StatsDSyntax.Count;
             if (!StatsDSyntax.CanBeSampled(statsDMetricType))
             {
                 Points.Enqueue(new StatsDPoint(key, value, statsDMetricType, null, tags, serializer, timestamp));
@@ -63,18 +65,16 @@ namespace App.Metrics.Formatting.StatsD.Internal
             }
 
             tagsDictionary.TryGetValue(StatsDFormatterConstants.SampleRateTagName, out var tagSampleRateStr);
-            var hasTagSampleRate = double.TryParse(tagSampleRateStr, out var tagSampleRate);
-
-            var sampler = _samplers.GetOrAdd(key, _ => new StatsDSampler(_options.DefaultSampleRate));
-
-            if (hasTagSampleRate)
+            if (!double.TryParse(tagSampleRateStr, out var tagSampleRate))
             {
-                sampler.SampleRate = tagSampleRate;
+                tagSampleRate = _options.DefaultSampleRate;
             }
 
-            if (sampler.Sample(StatsDSyntax.FormatTimestamp(timestamp)))
+            var sampler = _samplers.GetOrAdd(key, _ => new StatsDSampler());
+
+            if (sampler.ShouldSend(tagSampleRate))
             {
-                Points.Enqueue(new StatsDPoint(key, value, statsDMetricType, sampler.SampleRate, tags, serializer, timestamp));
+                Points.Enqueue(new StatsDPoint(key, value, statsDMetricType, tagSampleRate, tags, serializer, timestamp));
             }
         }
 
@@ -119,9 +119,37 @@ namespace App.Metrics.Formatting.StatsD.Internal
         {
             var fields = columns.Zip(values, (column, data) => new { column, data }).ToDictionary(pair => pair.column, pair => pair.data);
 
-            foreach (var kvp in fields)
+            var tagsDictionary = tags.ToDictionary();
+            tagsDictionary.TryGetValue(AppMetricsConstants.Pack.MetricTagsTypeKey, out var metricType);
+
+            switch (metricType)
             {
-                Add(context, name, kvp.Key, kvp.Value, tags, serializer, timestamp);
+                case "histogram":
+                    Add(context, name, "value", fields["median"], tags, serializer, timestamp);
+                    break;
+
+                case "meter":
+                    Add(context, name, "value", fields["count.meter"], tags, serializer, timestamp);
+                    break;
+
+                case "timer":
+                    var value = fields["median"] switch
+                    {
+                        double d => Convert.ToInt64(d),
+                        float f => Convert.ToInt64(f),
+                        _ => (long) fields["median"]
+                    };
+                    var unit = tagsDictionary[AppMetricsConstants.Pack.MetricTagsUnitRateDurationKey].FromUnit();
+                    value = unit.Convert(TimeUnit.Milliseconds, value);
+                    Add(context, name, "value", value, tags, serializer, timestamp);
+                    break;
+
+                default:
+                    foreach (var kvp in fields)
+                    {
+                        Add(context, name, kvp.Key, kvp.Value, tags, serializer, timestamp);
+                    }
+                    break;
             }
         }
 
