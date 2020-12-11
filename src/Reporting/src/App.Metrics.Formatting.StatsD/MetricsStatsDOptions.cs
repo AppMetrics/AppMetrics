@@ -18,8 +18,6 @@ namespace App.Metrics.Formatting.StatsD
         {
             MetricNameFormatter = StatsDFormatterConstants.Defaults.MetricPointTextWriter;
             DefaultSampleRate = 1.0;
-            WriteTags = false;
-            WriteTimestamp = false;
             TagMarker = '#';
         }
 
@@ -37,12 +35,8 @@ namespace App.Metrics.Formatting.StatsD
             }
         }
 
-        public Func<IStatsDMetricStringSerializer> MetricNameFormatter { get; set; }
+        public IStatsDMetricStringSerializer MetricNameFormatter { get; set; }
 
         public char TagMarker { get; set; }
-
-        public bool WriteTags { get; set; }
-
-        public bool WriteTimestamp { get; set; }
     }
 }

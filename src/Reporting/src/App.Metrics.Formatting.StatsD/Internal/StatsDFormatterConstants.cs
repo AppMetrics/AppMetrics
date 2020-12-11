@@ -14,7 +14,7 @@ namespace App.Metrics.Formatting.StatsD.Internal
 
         public static class Defaults
         {
-            public static readonly Func<IStatsDMetricStringSerializer> MetricPointTextWriter = () => new DefaultStatsDMetricStringSerializer();
+            public static readonly IStatsDMetricStringSerializer MetricPointTextWriter = new DefaultStatsDMetricStringSerializer();
         }
     }
 }

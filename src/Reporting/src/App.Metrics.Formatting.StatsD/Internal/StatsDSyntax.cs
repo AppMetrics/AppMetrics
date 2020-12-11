@@ -89,9 +89,9 @@ namespace App.Metrics.Formatting.StatsD.Internal
             return "0";
         }
 
-        // Limit the floating point precision to 6
+        // Limit the floating point precision to 15
         private static string FormatFloat(object f)
-            => Convert.ToDouble(f).ToString("0.######");
+            => Convert.ToDouble(f).ToString("0.###############");
 
         private static string FormatInt(object f)
             => Convert.ToInt64(f).ToString();

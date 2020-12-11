@@ -23,9 +23,7 @@ namespace App.Metrics.Formatting.StatsD
             _stream = stream ?? throw new ArgumentNullException(nameof(stream));
             _sampler = sampler;
             _options = options;
-            _metricMetricStringSerializer = options.MetricNameFormatter != null
-                ? options.MetricNameFormatter()
-                : StatsDFormatterConstants.Defaults.MetricPointTextWriter();
+            _metricMetricStringSerializer = options.MetricNameFormatter ?? StatsDFormatterConstants.Defaults.MetricPointTextWriter;
         }
 
         public ValueTask DisposeAsync() { return DisposeAsync(true); }
