@@ -7,11 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="App.Metrics.Reporting.Socket" />
+    <PackageReference Include="App.Metrics.Abstractions" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\App.Metrics.Formatting.StatsD\App.Metrics.Formatting.StatsD.csproj" />
+    <ProjectReference Include="..\App.Metrics.Reporting.Socket\App.Metrics.Reporting.Socket.csproj" />
   </ItemGroup>
 
 </Project>
