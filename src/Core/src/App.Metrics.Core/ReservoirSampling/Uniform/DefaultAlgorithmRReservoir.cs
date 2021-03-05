@@ -2,19 +2,22 @@
 // Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
+
+// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
+// Ported/Refactored to .NET Standard Library by Allan Hardy
+
 using System;
 using System.Linq;
 using App.Metrics.Concurrency;
 
-// Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
-// Ported/Refactored to .NET Standard Library by Allan Hardy
 namespace App.Metrics.ReservoirSampling.Uniform
 {
     /// <summary>
     ///     A histogram with a uniform reservoir produces <see href="https://en.wikipedia.org/wiki/Quantile">quantiles</see>
     ///     which are valid for the entirely of the histogram’s lifetime.
     ///     <p>
-    ///         This sampling reservoir can be used when you are interested in long-term measurements, it does not offer a sence
+    ///         This sampling reservoir can be used when you are interested in long-term measurements, it does not offer a
+    ///         sence
     ///         of recency.
     ///     </p>
     ///     <p>
@@ -57,7 +60,18 @@ namespace App.Metrics.ReservoirSampling.Uniform
         ///     The size.
         /// </value>
         // ReSharper disable MemberCanBePrivate.Global
-        public int Size => Math.Min((int)_count.GetValue(), _values.Length);
+        public int Size
+        {
+            get
+            {
+                var totalCount = _count.GetValue();
+                var bufferCount = _values.Length;
+                if (totalCount <= bufferCount)
+                    // total count will be always lower than int.MaxValue, casting is safe 
+                    return (int) totalCount;
+                return bufferCount;
+            }
+        }
         // ReSharper restore MemberCanBePrivate.Global
 
         /// <inheritdoc cref="IReservoir" />
@@ -65,10 +79,7 @@ namespace App.Metrics.ReservoirSampling.Uniform
         {
             var size = Size;
 
-            if (size == 0)
-            {
-                return new UniformSnapshot(0, 0.0, Enumerable.Empty<long>());
-            }
+            if (size == 0) return new UniformSnapshot(0, 0.0, Enumerable.Empty<long>());
 
             var snapshotValues = new UserValueWrapper[size];
 
@@ -89,9 +100,9 @@ namespace App.Metrics.ReservoirSampling.Uniform
                 _count.GetValue(),
                 _sum.GetValue(),
                 snapshotValues.Select(v => v.Value),
-                valuesAreSorted: true,
-                minUserValue: minValue,
-                maxUserValue: maxValue);
+                true,
+                minValue,
+                maxValue);
         }
 
         /// <inheritdoc />
@@ -138,16 +149,13 @@ namespace App.Metrics.ReservoirSampling.Uniform
 
             if (c <= _values.Length)
             {
-                _values[(int)c - 1] = new UserValueWrapper(value, userValue);
+                _values[(int) c - 1] = new UserValueWrapper(value, userValue);
             }
             else
             {
                 var r = ThreadLocalRandom.NextLong(c);
 
-                if (r < _values.Length)
-                {
-                    _values[(int)r] = new UserValueWrapper(value, userValue);
-                }
+                if (r < _values.Length) _values[(int) r] = new UserValueWrapper(value, userValue);
             }
         }
 
