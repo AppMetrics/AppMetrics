@@ -6,7 +6,7 @@ using System;
 using App.Metrics.Builder;
 using App.Metrics.Formatting.StatsD;
 
-namespace App.Metrics.Reporting.StatsD.Builder
+namespace App.Metrics.Reporting.StatsD
 {
     public static class StatsDReporterBuilder
     {
