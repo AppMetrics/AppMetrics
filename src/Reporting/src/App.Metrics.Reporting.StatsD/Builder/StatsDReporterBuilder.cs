@@ -35,7 +35,7 @@ namespace App.Metrics.Reporting.StatsD.Builder
                 opt =>
                 {
                     opt.MetricsOutputFormatter = formatter;
-                    opt.FlushInterval = TimeSpan.Zero;
+                    opt.FlushInterval = options.FlushInterval;
                     opt.SocketSettings = options.SocketSettings;
                     opt.SocketPolicy = options.SocketPolicy;
                     opt.Filter = options.Filter;
@@ -70,7 +70,7 @@ namespace App.Metrics.Reporting.StatsD.Builder
                 opt =>
                 {
                     opt.MetricsOutputFormatter = formatter;
-                    opt.FlushInterval = TimeSpan.Zero;
+                    opt.FlushInterval = options.FlushInterval;
                     opt.SocketSettings = options.SocketSettings;
                     opt.SocketPolicy = options.SocketPolicy;
                     opt.Filter = options.Filter;
@@ -102,7 +102,7 @@ namespace App.Metrics.Reporting.StatsD.Builder
                 opt =>
                 {
                     opt.MetricsOutputFormatter = formatter;
-                    opt.FlushInterval = TimeSpan.Zero;
+                    opt.FlushInterval = options.FlushInterval;
                     opt.SocketSettings = options.SocketSettings;
                     opt.SocketPolicy = options.SocketPolicy;
                     opt.Filter = options.Filter;
@@ -137,7 +137,7 @@ namespace App.Metrics.Reporting.StatsD.Builder
                 opt =>
                 {
                     opt.MetricsOutputFormatter = formatter;
-                    opt.FlushInterval = TimeSpan.Zero;
+                    opt.FlushInterval = options.FlushInterval;
                     opt.SocketSettings = options.SocketSettings;
                     opt.SocketPolicy = options.SocketPolicy;
                     opt.Filter = options.Filter;
