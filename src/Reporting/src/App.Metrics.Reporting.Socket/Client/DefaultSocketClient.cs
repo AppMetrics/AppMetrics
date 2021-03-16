@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Logging;
@@ -17,6 +18,7 @@ namespace App.Metrics.Reporting.Socket.Client
         private static long _failureAttempts;
         private readonly SocketClient _socketClient;
         private readonly SocketPolicy _socketPolicy;
+        private readonly MetricsReportingSocketOptions _options;
 
         public string Endpoint
         {
@@ -25,9 +27,11 @@ namespace App.Metrics.Reporting.Socket.Client
                 return _socketClient.Endpoint;
             }
         }
+        public bool PreferChunkedOutput => _options.SocketSettings.ProtocolType == ProtocolType.Udp;
 
         public DefaultSocketClient(MetricsReportingSocketOptions options)
         {
+            _options = options;
             _socketClient = CreateSocketClient(options.SocketSettings);
             _socketPolicy = options.SocketPolicy;
             _failureAttempts = 0;

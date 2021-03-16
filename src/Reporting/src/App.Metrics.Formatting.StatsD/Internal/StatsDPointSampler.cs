@@ -21,12 +21,12 @@ namespace App.Metrics.Formatting.StatsD.Internal
                                                                   StatsDFormatterConstants.ItemTagName
                                                               };
 
-        private readonly MetricsStatsDOptions _options;
         private readonly ConcurrentDictionary<string, StatsDSampler> _samplers = new ConcurrentDictionary<string, StatsDSampler>();
 
-        public StatsDPointSampler(MetricsStatsDOptions options) { _options = options; }
+        public StatsDPointSampler(MetricsStatsDOptions options) { Options = options; }
 
         public ConcurrentQueue<StatsDPoint> Points { get; } = new ConcurrentQueue<StatsDPoint>();
+        public MetricsStatsDOptions Options { get; }
 
         public void Add(
             string context,
@@ -67,7 +67,7 @@ namespace App.Metrics.Formatting.StatsD.Internal
             tagsDictionary.TryGetValue(StatsDFormatterConstants.SampleRateTagName, out var tagSampleRateStr);
             if (!double.TryParse(tagSampleRateStr, out var tagSampleRate))
             {
-                tagSampleRate = _options.DefaultSampleRate;
+                tagSampleRate = Options.DefaultSampleRate;
             }
 
             var sampler = _samplers.GetOrAdd(key, _ => new StatsDSampler());
@@ -163,7 +163,7 @@ namespace App.Metrics.Formatting.StatsD.Internal
             var result = new List<string>();
             while (Points.TryDequeue(out var point))
             {
-                result.Add(point.Write(_options));
+                result.Add(point.Write(Options));
             }
 
 #if NETSTANDARD2_0

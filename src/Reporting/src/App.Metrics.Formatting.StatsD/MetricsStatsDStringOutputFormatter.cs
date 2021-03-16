@@ -3,7 +3,9 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Formatters;
@@ -12,7 +14,7 @@ using App.Metrics.Serialization;
 
 namespace App.Metrics.Formatting.StatsD
 {
-    public class MetricsStatsDStringOutputFormatter : IMetricsOutputFormatter
+    public class MetricsStatsDStringOutputFormatter : IMetricsChunkedOutputFormatter
     {
         private readonly MetricsStatsDOptions _options;
         private readonly StatsDPointSampler _samplers;
@@ -62,6 +64,19 @@ namespace App.Metrics.Formatting.StatsD
 
             await using var writer = new MetricSnapshotStatsDStringWriter(output, _samplers, _options);
             serializer.Serialize(writer, metricsData, MetricFields);
+        }
+
+        public Task<List<string>> WriteAsync(MetricsDataValueSource metricsData, CancellationToken cancellationToken = default)
+        {
+            var writer = new MetricSnapshotStatsDStringWriter(null, _samplers, _options);
+            var serializer = new MetricSnapshotSerializer();
+            serializer.Serialize(writer, metricsData, MetricFields);
+
+            var result = writer.Sampler.Points
+                .Select(point => point.Write(writer.Sampler.Options))
+                .ToList();
+
+            return Task.FromResult(result);
         }
     }
 }
