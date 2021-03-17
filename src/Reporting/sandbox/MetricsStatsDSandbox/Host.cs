@@ -10,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Reporting;
-using App.Metrics.Reporting.StatsD.Builder;
+using App.Metrics.Reporting.StatsD;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 
