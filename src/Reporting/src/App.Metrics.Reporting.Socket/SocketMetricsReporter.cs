@@ -75,7 +75,11 @@ namespace App.Metrics.Reporting.Socket
         {
             Logger.Trace("Flushing chunked metrics snapshot");
 
-            var chunks = await formatter.WriteAsync(metricsData, cancellationToken);
+            var chunks = await formatter.WriteAsync(
+                metricsData, 
+                _options.SocketSettings.MaxUdpDatagramSize,
+                cancellationToken);
+
             foreach (var chunk in chunks)
             {
                 var result = await _socketClient.WriteAsync(chunk, cancellationToken);

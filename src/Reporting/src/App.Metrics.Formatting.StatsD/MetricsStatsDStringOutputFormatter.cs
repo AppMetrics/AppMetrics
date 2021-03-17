@@ -18,6 +18,8 @@ namespace App.Metrics.Formatting.StatsD
     {
         private readonly MetricsStatsDOptions _options;
         private readonly StatsDPointSampler _samplers;
+        private readonly MetricSnapshotStatsDStringWriter _nullWriter;
+        private readonly MetricSnapshotSerializer _serializer;
 
         public MetricsStatsDStringOutputFormatter() 
             : this(new MetricsStatsDOptions(), null)
@@ -41,6 +43,8 @@ namespace App.Metrics.Formatting.StatsD
             _options = options ?? throw new ArgumentNullException(nameof(options));
             MetricFields = metricFields ?? new MetricFields();
             _samplers = new StatsDPointSampler(_options);
+            _nullWriter = new MetricSnapshotStatsDStringWriter(null, _samplers, _options);
+            _serializer = new MetricSnapshotSerializer();
         }
 
         /// <inheritdoc />
@@ -60,21 +64,46 @@ namespace App.Metrics.Formatting.StatsD
                 throw new ArgumentNullException(nameof(output));
             }
 
-            var serializer = new MetricSnapshotSerializer();
-
             await using var writer = new MetricSnapshotStatsDStringWriter(output, _samplers, _options);
-            serializer.Serialize(writer, metricsData, MetricFields);
+            _serializer.Serialize(writer, metricsData, MetricFields);
         }
 
-        public Task<List<string>> WriteAsync(MetricsDataValueSource metricsData, CancellationToken cancellationToken = default)
+        public Task<List<string>> WriteAsync(
+            MetricsDataValueSource metricsData, 
+            int maxChunkSize,
+            CancellationToken cancellationToken = default)
         {
-            var writer = new MetricSnapshotStatsDStringWriter(null, _samplers, _options);
-            var serializer = new MetricSnapshotSerializer();
-            serializer.Serialize(writer, metricsData, MetricFields);
+            _serializer.Serialize(_nullWriter, metricsData, MetricFields);
 
-            var result = writer.Sampler.Points
-                .Select(point => point.Write(writer.Sampler.Options))
-                .ToList();
+            var chunks = new List<string>();
+            while (_samplers.Points.TryDequeue(out var point))
+            {
+                chunks.Add(point.Write(_samplers.Options));
+            }
+
+            // Shortcut, no need to calculate batch for empty or single result.
+            if (chunks.Count < 2)
+            {
+                return Task.FromResult(chunks);
+            }
+
+            var result = new List<string>();
+            var a = chunks[0];
+            for (var i = 1; i < chunks.Count; i++)
+            {
+                var b = chunks[i];
+                var joined = $"{a}\n{b}";
+                if (joined.Length > maxChunkSize)
+                {
+                    result.Add(a);
+                    a = b;
+                }
+                else
+                {
+                    a = joined;
+                }
+            }
+            result.Add(a);
 
             return Task.FromResult(result);
         }
