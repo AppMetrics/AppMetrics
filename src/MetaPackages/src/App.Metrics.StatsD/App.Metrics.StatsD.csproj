@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>App Metrics StatsD Metapackage</Description>
+    <AssemblyTitle>App.Metrics.StatsD</AssemblyTitle>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <PackageTags>appmetrics;statsd</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="App.Metrics.Formatting.StatsD" />
+    <PackageReference Include="App.Metrics.Reporting.StatsD" />
+  </ItemGroup>
+
+</Project>

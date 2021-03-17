@@ -42,6 +42,8 @@
     <PackageReference Update="App.Metrics.Formatters.Prometheus" Version="$(AppMetricsVersion)" />
     <PackageReference Update="App.Metrics.Formatters.Graphite" Version="$(AppMetricsVersion)" />
     <PackageReference Update="App.Metrics.Reporting.Graphite" Version="$(AppMetricsVersion)" />
+    <PackageReference Update="App.Metrics.Formatting.StatsD" Version="$(AppMetricsVersion)" />
+    <PackageReference Update="App.Metrics.Reporting.StatsD" Version="$(AppMetricsVersion)" />
 
     <!-- AspNetCore -->
     <PackageReference Update="App.Metrics.AspNetCore" Version="$(AppMetricsVersion)" />
@@ -74,6 +76,7 @@
 	<PackageReference Update="App.Metrics.Graphite" Version="$(AppMetricsVersion)" />
 	<PackageReference Update="App.Metrics.InfluxDB" Version="$(AppMetricsVersion)" />
 	<PackageReference Update="App.Metrics.Prometheus" Version="$(AppMetricsVersion)" />
+    <PackageReference Update="App.Metrics.StatsD" Version="$(AppMetricsVersion)" />
 
     <!-- Tests -->
     <PackageReference Update="Microsoft.NET.Test.Sdk" Version="16.3.0" />
