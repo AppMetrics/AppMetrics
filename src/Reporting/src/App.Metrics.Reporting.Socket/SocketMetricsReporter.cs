@@ -80,18 +80,21 @@ namespace App.Metrics.Reporting.Socket
                 _options.SocketSettings.MaxUdpDatagramSize,
                 cancellationToken);
 
+            var success = true;
             foreach (var chunk in chunks)
             {
                 var result = await _socketClient.WriteAsync(chunk, cancellationToken);
                 if (!result.Success)
                 {
                     Logger.Error(result.ErrorMessage);
-                    return false;
+                    success = false;
                 }
             }
 
-            Logger.Trace("Successfully flushed chunked metrics snapshot");
-            return true;
+            Logger.Trace(success 
+                ? "Successfully flushed chunked metrics snapshot"
+                : "Flushed chunked metrics snapshot with error(s)");
+            return success;
         }
 
         private async Task<bool> WriteOutput(MetricsDataValueSource metricsData, CancellationToken cancellationToken = default)
