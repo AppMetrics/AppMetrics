@@ -15,29 +15,30 @@ namespace App.Metrics.Formatting.StatsD
     {
         private readonly IStatsDMetricStringSerializer _metricMetricStringSerializer;
         private readonly MetricsStatsDOptions _options;
-        private readonly StatsDPointSampler _sampler;
         private readonly Stream _stream;
 
         public MetricSnapshotStatsDStringWriter(Stream stream, StatsDPointSampler sampler, MetricsStatsDOptions options)
         {
-            _stream = stream ?? throw new ArgumentNullException(nameof(stream));
-            _sampler = sampler;
+            _stream = stream;
+            Sampler = sampler;
             _options = options;
             _metricMetricStringSerializer = options.MetricNameFormatter ?? StatsDFormatterConstants.Defaults.MetricPointTextWriter;
         }
+
+        public StatsDPointSampler Sampler { get; }
 
         public ValueTask DisposeAsync() { return DisposeAsync(true); }
 
         /// <inheritdoc />
         public void Write(string context, string name, string field, object value, MetricTags tags, DateTime timestamp)
         {
-            _sampler.Add(context, name, field, value, tags, _metricMetricStringSerializer, timestamp);
+            Sampler.Add(context, name, field, value, tags, _metricMetricStringSerializer, timestamp);
         }
 
         /// <inheritdoc />
         public void Write(string context, string name, IEnumerable<string> columns, IEnumerable<object> values, MetricTags tags, DateTime timestamp)
         {
-            _sampler.Add(context, name, columns, values, tags, _metricMetricStringSerializer, timestamp);
+            Sampler.Add(context, name, columns, values, tags, _metricMetricStringSerializer, timestamp);
         }
 
         /// <summary>
@@ -51,12 +52,15 @@ namespace App.Metrics.Formatting.StatsD
         {
             if (disposing)
             {
-                await _sampler.WriteAsync(_stream);
+                if (_stream != null)
+                {
+                    await Sampler.WriteAsync(_stream);
 #if NETSTANDARD2_1
-                _stream?.DisposeAsync();
+                    await _stream.DisposeAsync();
 #else
-                _stream?.Dispose();
+                    _stream.Dispose();
 #endif
+                }
             }
         }
     }

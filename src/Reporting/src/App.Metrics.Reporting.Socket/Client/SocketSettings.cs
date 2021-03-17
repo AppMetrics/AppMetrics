@@ -44,6 +44,14 @@ namespace App.Metrics.Reporting.Socket.Client
         /// </value>
         public int Port { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the maximum packet size for UDP datagrams
+        /// </summary>
+        /// <value>
+        ///     Packet size, in bytes
+        /// </value>
+        public int MaxUdpDatagramSize { get; set; } = 4 * 1024; // Defaults to 4 Kib
+
         public string Endpoint
         {
             get
