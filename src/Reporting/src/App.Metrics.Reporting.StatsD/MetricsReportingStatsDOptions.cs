@@ -5,6 +5,7 @@
 using App.Metrics.Filters;
 using App.Metrics.Formatting.StatsD;
 using App.Metrics.Reporting.Socket.Client;
+using System;
 
 namespace App.Metrics.Reporting.StatsD
 {
@@ -32,6 +33,11 @@ namespace App.Metrics.Reporting.StatsD
         ///     The Socket policy.
         /// </value>
         public SocketPolicy SocketPolicy { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the interval between flushing metrics.
+        /// </summary>
+        public TimeSpan FlushInterval { get; set; }
 
         /// <summary>
         ///     Gets or sets the Socket client related settings.
