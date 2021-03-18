@@ -1,10 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using App.Metrics.Apdex;
+using App.Metrics.BucketHistogram;
+using App.Metrics.BucketTimer;
+using App.Metrics.Counter;
 using App.Metrics.Formatting.StatsD;
 using App.Metrics.Formatting.StatsD.Internal;
+using App.Metrics.Gauge;
+using App.Metrics.Histogram;
+using App.Metrics.Meter;
+using App.Metrics.Timer;
 using FluentAssertions;
 using Xunit;
 
@@ -147,6 +157,70 @@ namespace App.Metrics.Reporting.StatsD.Facts
             result.Should().Be(
                 "context.measurement.key:0|g|#tagkey:tagvalue,timestamp:1483232461",
                 "Hosted Metrics request at the moment allow tags array but its not yet used.");
+        }
+
+        MetricsDataValueSource CreateSource(DateTime timestamp, int gaugeCount)
+        {
+            GaugeValueSource CreateGauge(int id)
+            {
+                var gauge1 = new ValueGauge();
+                gauge1.SetValue(id);
+                return new GaugeValueSource($"measurement.{id}", gauge1, Unit.Events, MetricTags.Empty);
+            }
+
+
+            return new MetricsDataValueSource(timestamp, new[]
+            {
+                new MetricsContextValueSource("",
+                    Enumerable.Range(0, gaugeCount).Select(CreateGauge).ToArray()
+                    , new CounterValueSource[0], new MeterValueSource[0], new HistogramValueSource[0],
+                    new BucketHistogramValueSource[0], new TimerValueSource[0], new BucketTimerValueSource[0],
+                    new ApdexValueSource[0])
+            });
+        }
+
+        [Fact]
+        public async Task Can_format_CHUNKED_StatsD_payload_with_multiple_fields_correctly()
+        {
+            // Arrange
+            var timestamp = new DateTime(2017, 1, 1, 1, 1, 1, DateTimeKind.Utc);
+            var metricsData = CreateSource(timestamp, 4);
+
+            var options = new MetricsStatsDOptions
+            {
+                MetricNameFormatter = new DefaultStatsDMetricStringSerializer()
+            };
+            var formatter = new MetricsStatsDStringOutputFormatter(options);
+
+            // Act
+            var chunks = await formatter.WriteAsync(metricsData, 30, CancellationToken.None);
+
+            // Assert
+            chunks.Count.Should().Be(4);
+            chunks.All(x => !x.EndsWith("\n")).Should()
+                .BeTrue("All metrics in this sample should be transmitted in their own packet.");
+        }
+
+        [Fact]
+        public async Task Can_format_CHUNKED_DogStatsD_payload_with_multiple_fields_correctly()
+        {
+            // Arrange
+            var timestamp = new DateTime(2017, 1, 1, 1, 1, 1, DateTimeKind.Utc);
+            var metricsData = CreateSource(timestamp, 4);
+
+            var options = new MetricsStatsDOptions
+            {
+                MetricNameFormatter = new DefaultDogStatsDMetricStringSerializer()
+            };
+            var formatter = new MetricsStatsDStringOutputFormatter(options);
+
+            // Act
+            var chunks = await formatter.WriteAsync(metricsData, 30, CancellationToken.None);
+
+            // Assert
+            chunks.Count.Should().Be(4);
+            chunks.All(x => !x.EndsWith("\n")).Should()
+                .BeTrue("All metrics in this sample should be transmitted in their own packet.");
         }
     }
 }
