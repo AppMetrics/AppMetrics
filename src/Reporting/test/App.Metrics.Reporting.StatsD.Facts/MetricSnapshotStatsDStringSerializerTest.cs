@@ -378,7 +378,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_meter.meter.value:1|m";
+                "test.test_meter.meter.value:1|c";
             var clock = new TestClock();
             var meter = new DefaultMeterMetric(clock);
             meter.Mark(1);
@@ -400,7 +400,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
         public async Task Can_report_meters_when_multidimensional()
         {
             // Arrange
-            var expected = "test.test_meter.meter.value:1|m";
+            var expected = "test.test_meter.meter.value:1|c";
             var clock = new TestClock();
             var meter = new DefaultMeterMetric(clock);
             meter.Mark(1);
@@ -423,9 +423,9 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_meter__items.meter.item1:value1.value:1|m\n" +
-                "test.test_meter__items.meter.item2:value2.value:1|m\n" +
-                "test.test_meter.meter.value:2|m";
+                "test.test_meter__items.meter.item1:value1.value:1|c\n" +
+                "test.test_meter__items.meter.item2:value2.value:1|c\n" +
+                "test.test_meter.meter.value:2|c";
             var clock = new TestClock();
             var meter = new DefaultMeterMetric(clock);
             meter.Mark(new MetricSetItem("item1", "value1"), 1);
@@ -449,9 +449,9 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_meter__items.meter.item1:value1.value:1|m\n" +
-                "test.test_meter__items.meter.item2:value2.value:1|m\n" +
-                "test.test_meter.meter.value:2|m";
+                "test.test_meter__items.meter.item1:value1.value:1|c\n" +
+                "test.test_meter__items.meter.item2:value2.value:1|c\n" +
+                "test.test_meter.meter.value:2|c";
             var clock = new TestClock();
             var meter = new DefaultMeterMetric(clock);
             meter.Mark(new MetricSetItem("item1", "value1"), 1);

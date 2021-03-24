@@ -380,7 +380,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_meter.meter.value:1|m|#unit:none,unit_rate:ms,timestamp:1483232461";
+                "test.test_meter.meter.value:1|c|#unit:none,unit_rate:ms,timestamp:1483232461";
             var clock = new TestClock();
             var meter = new DefaultMeterMetric(clock);
             meter.Mark(1);
@@ -403,7 +403,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_meter.meter.value:1|m|#host:server1,env:staging,unit:none,unit_rate:ms,timestamp:1483232461";
+                "test.test_meter.meter.value:1|c|#host:server1,env:staging,unit:none,unit_rate:ms,timestamp:1483232461";
             var clock = new TestClock();
             var meter = new DefaultMeterMetric(clock);
             meter.Mark(1);
@@ -426,9 +426,9 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_meter__items.meter.item1:value1.value:1|m|#unit:none,unit_rate:ms,timestamp:1483232461\n" +
-                "test.test_meter__items.meter.item2:value2.value:1|m|#unit:none,unit_rate:ms,timestamp:1483232461\n" +
-                "test.test_meter.meter.value:2|m|#unit:none,unit_rate:ms,timestamp:1483232461";
+                "test.test_meter__items.meter.item1:value1.value:1|c|#unit:none,unit_rate:ms,timestamp:1483232461\n" +
+                "test.test_meter__items.meter.item2:value2.value:1|c|#unit:none,unit_rate:ms,timestamp:1483232461\n" +
+                "test.test_meter.meter.value:2|c|#unit:none,unit_rate:ms,timestamp:1483232461";
             var clock = new TestClock();
             var meter = new DefaultMeterMetric(clock);
             meter.Mark(new MetricSetItem("item1", "value1"), 1);
@@ -452,9 +452,9 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_meter__items.meter.item1:value1.value:1|m|#host:server1,env:staging,unit:none,unit_rate:ms,timestamp:1483232461\n" +
-                "test.test_meter__items.meter.item2:value2.value:1|m|#host:server1,env:staging,unit:none,unit_rate:ms,timestamp:1483232461\n" +
-                "test.test_meter.meter.value:2|m|#host:server1,env:staging,unit:none,unit_rate:ms,timestamp:1483232461";
+                "test.test_meter__items.meter.item1:value1.value:1|c|#host:server1,env:staging,unit:none,unit_rate:ms,timestamp:1483232461\n" +
+                "test.test_meter__items.meter.item2:value2.value:1|c|#host:server1,env:staging,unit:none,unit_rate:ms,timestamp:1483232461\n" +
+                "test.test_meter.meter.value:2|c|#host:server1,env:staging,unit:none,unit_rate:ms,timestamp:1483232461";
             var clock = new TestClock();
             var meter = new DefaultMeterMetric(clock);
             meter.Mark(new MetricSetItem("item1", "value1"), 1);
