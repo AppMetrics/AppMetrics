@@ -58,7 +58,8 @@ namespace App.Metrics.Formatting.StatsD.Internal
             var statsDMetricType = StatsDSyntax.FormatMetricType(metricType);
             if (metricType == AppMetricsConstants.Pack.ApdexMetricTypeValue && field != "score")
                 statsDMetricType = StatsDSyntax.Count;
-            if (!StatsDSyntax.CanBeSampled(statsDMetricType))
+
+            if (!StatsDSyntax.CanBeSampled(statsDMetricType) || metricType == AppMetricsConstants.Pack.MeterMetricTypeValue)
             {
                 Points.Enqueue(new StatsDPoint(key, value, statsDMetricType, null, tags, serializer, timestamp));
                 return;
