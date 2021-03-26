@@ -66,7 +66,7 @@ You can find the benchmark results [here](https://github.com/alhardy/AppMetrics/
 
 ## Contributing
 
-See the [contribution guidlines](CONTRIBUTING.md) for details.
+See the [contribution guidlines](.github/CONTRIBUTING.md) for details.
 
 ## Acknowledgements
 
