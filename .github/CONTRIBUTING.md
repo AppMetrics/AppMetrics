@@ -1,4 +1,4 @@
-## How to contribute to App Metrics
+##  How to contribute to App Metrics
 
 Thanks for taking the time to contribute to App Metrics :+1:
 
