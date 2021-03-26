@@ -13,8 +13,11 @@ namespace App.Metrics.Formatting.StatsD.Internal
         public static readonly string Count = "c";
         public static readonly string Gauge = "g";
         public static readonly string Histogram = "h";
-        public static readonly string Meter = "m";
         public static readonly string Timer = "ms";
+        // Bug: DogStatsD does not understand meter metrics
+        // Bug: StatsD removed meter metrics from their supported metrics type
+        // Fix: Convert meter metrics to count
+        // public static readonly string Meter = "m";
 
         private static readonly ILog Logger = LogProvider.GetLogger(typeof(StatsDSyntax));
         private static readonly DateTime Origin = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -42,7 +45,7 @@ namespace App.Metrics.Formatting.StatsD.Internal
                 { AppMetricsConstants.Pack.GaugeMetricTypeValue, Gauge },
                 { AppMetricsConstants.Pack.CounterMetricTypeValue, Count },
                 { AppMetricsConstants.Pack.HistogramMetricTypeValue, Histogram },
-                { AppMetricsConstants.Pack.MeterMetricTypeValue, Meter },
+                { AppMetricsConstants.Pack.MeterMetricTypeValue, Count },
                 { AppMetricsConstants.Pack.TimerMetricTypeValue, Timer }
             };
 

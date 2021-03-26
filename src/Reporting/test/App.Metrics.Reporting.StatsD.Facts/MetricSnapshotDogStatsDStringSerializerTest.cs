@@ -380,7 +380,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_meter.meter.value:1|m|#unit:none,unit_rate:ms,timestamp:1483232461";
+                "test.test_meter.meter.value:1|c|#unit:none,unit_rate:ms,timestamp:1483232461";
             var clock = new TestClock();
             var meter = new DefaultMeterMetric(clock);
             meter.Mark(1);
@@ -403,7 +403,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_meter.meter.value:1|m|#host:server1,env:staging,unit:none,unit_rate:ms,timestamp:1483232461";
+                "test.test_meter.meter.value:1|c|#host:server1,env:staging,unit:none,unit_rate:ms,timestamp:1483232461";
             var clock = new TestClock();
             var meter = new DefaultMeterMetric(clock);
             meter.Mark(1);
@@ -426,9 +426,9 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_meter__items.meter.item1:value1.value:1|m|#unit:none,unit_rate:ms,timestamp:1483232461\n" +
-                "test.test_meter__items.meter.item2:value2.value:1|m|#unit:none,unit_rate:ms,timestamp:1483232461\n" +
-                "test.test_meter.meter.value:2|m|#unit:none,unit_rate:ms,timestamp:1483232461";
+                "test.test_meter__items.meter.item1:value1.value:1|c|#unit:none,unit_rate:ms,timestamp:1483232461\n" +
+                "test.test_meter__items.meter.item2:value2.value:1|c|#unit:none,unit_rate:ms,timestamp:1483232461\n" +
+                "test.test_meter.meter.value:2|c|#unit:none,unit_rate:ms,timestamp:1483232461";
             var clock = new TestClock();
             var meter = new DefaultMeterMetric(clock);
             meter.Mark(new MetricSetItem("item1", "value1"), 1);
@@ -452,9 +452,9 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_meter__items.meter.item1:value1.value:1|m|#host:server1,env:staging,unit:none,unit_rate:ms,timestamp:1483232461\n" +
-                "test.test_meter__items.meter.item2:value2.value:1|m|#host:server1,env:staging,unit:none,unit_rate:ms,timestamp:1483232461\n" +
-                "test.test_meter.meter.value:2|m|#host:server1,env:staging,unit:none,unit_rate:ms,timestamp:1483232461";
+                "test.test_meter__items.meter.item1:value1.value:1|c|#host:server1,env:staging,unit:none,unit_rate:ms,timestamp:1483232461\n" +
+                "test.test_meter__items.meter.item2:value2.value:1|c|#host:server1,env:staging,unit:none,unit_rate:ms,timestamp:1483232461\n" +
+                "test.test_meter.meter.value:2|c|#host:server1,env:staging,unit:none,unit_rate:ms,timestamp:1483232461";
             var clock = new TestClock();
             var meter = new DefaultMeterMetric(clock);
             meter.Mark(new MetricSetItem("item1", "value1"), 1);
@@ -589,6 +589,48 @@ namespace App.Metrics.Reporting.StatsD.Facts
                     Unit.None,
                     MetricTags.Empty);
                 var valueSource = CreateValueSource("test", counters: counterValueSource);
+                var result = new MetricsDataValueSource(timestamp, new[] { valueSource });
+                timestamp += TimeSpan.FromSeconds(1);
+                return result;
+            }
+        }
+
+        [Fact]
+        public async Task Meters_should_not_be_sampled()
+        {
+            // Arrange
+            var sources = new List<MetricsDataValueSource>();
+            var timeStamp = _timestamp;
+
+            var expected =
+                "test.test_meter.meter.value:4|c|#unit:none,unit_rate:ms,timestamp:1483232461";
+
+            // Act
+            for (var i = 0; i < 100; ++i)
+            {
+                sources.Add(CreateMetricsDataValueSource(ref timeStamp));
+            }
+            var emittedData = (await Serialize(sources, 0.5)).Split('\n');
+
+            // Assert
+            emittedData.Length.Should().Be(100);
+            emittedData[0].Should().Be(expected);
+
+            MetricsDataValueSource CreateMetricsDataValueSource(ref DateTime timestamp)
+            {
+                var clock = new TestClock();
+                var meter = new DefaultMeterMetric(clock);
+                meter.Mark(1);
+                meter.Mark(1);
+                meter.Mark(1);
+                meter.Mark(1);
+                var meterValueSource = new MeterValueSource(
+                    "test meter",
+                    ConstantValue.Provider(meter.Value),
+                    Unit.None,
+                    TimeUnit.Milliseconds,
+                    MetricTags.Empty);
+                var valueSource = CreateValueSource("test", meters: meterValueSource);
                 var result = new MetricsDataValueSource(timestamp, new[] { valueSource });
                 timestamp += TimeSpan.FromSeconds(1);
                 return result;

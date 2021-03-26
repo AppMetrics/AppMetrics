@@ -378,7 +378,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_meter.meter.value:1|m";
+                "test.test_meter.meter.value:1|c";
             var clock = new TestClock();
             var meter = new DefaultMeterMetric(clock);
             meter.Mark(1);
@@ -400,7 +400,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
         public async Task Can_report_meters_when_multidimensional()
         {
             // Arrange
-            var expected = "test.test_meter.meter.value:1|m";
+            var expected = "test.test_meter.meter.value:1|c";
             var clock = new TestClock();
             var meter = new DefaultMeterMetric(clock);
             meter.Mark(1);
@@ -423,9 +423,9 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_meter__items.meter.item1:value1.value:1|m\n" +
-                "test.test_meter__items.meter.item2:value2.value:1|m\n" +
-                "test.test_meter.meter.value:2|m";
+                "test.test_meter__items.meter.item1:value1.value:1|c\n" +
+                "test.test_meter__items.meter.item2:value2.value:1|c\n" +
+                "test.test_meter.meter.value:2|c";
             var clock = new TestClock();
             var meter = new DefaultMeterMetric(clock);
             meter.Mark(new MetricSetItem("item1", "value1"), 1);
@@ -449,9 +449,9 @@ namespace App.Metrics.Reporting.StatsD.Facts
         {
             // Arrange
             var expected =
-                "test.test_meter__items.meter.item1:value1.value:1|m\n" +
-                "test.test_meter__items.meter.item2:value2.value:1|m\n" +
-                "test.test_meter.meter.value:2|m";
+                "test.test_meter__items.meter.item1:value1.value:1|c\n" +
+                "test.test_meter__items.meter.item2:value2.value:1|c\n" +
+                "test.test_meter.meter.value:2|c";
             var clock = new TestClock();
             var meter = new DefaultMeterMetric(clock);
             meter.Mark(new MetricSetItem("item1", "value1"), 1);
@@ -585,6 +585,48 @@ namespace App.Metrics.Reporting.StatsD.Facts
                     Unit.None,
                     MetricTags.Empty);
                 var valueSource = CreateValueSource("test", counters: counterValueSource);
+                var result = new MetricsDataValueSource(timestamp, new[] { valueSource });
+                timestamp += TimeSpan.FromSeconds(1);
+                return result;
+            }
+        }
+
+        [Fact]
+        public async Task Meters_should_not_be_sampled()
+        {
+            // Arrange
+            var sources = new List<MetricsDataValueSource>();
+            var timeStamp = _timestamp;
+
+            var expected =
+                "test.test_meter.meter.value:4|c";
+
+            // Act
+            for (var i = 0; i < 100; ++i)
+            {
+                sources.Add(CreateMetricsDataValueSource(ref timeStamp));
+            }
+            var emittedData = (await Serialize(sources, 0.5)).Split('\n');
+
+            // Assert
+            emittedData.Length.Should().Be(100);
+            emittedData[0].Should().Be(expected);
+
+            MetricsDataValueSource CreateMetricsDataValueSource(ref DateTime timestamp)
+            {
+                var clock = new TestClock();
+                var meter = new DefaultMeterMetric(clock);
+                meter.Mark(1);
+                meter.Mark(1);
+                meter.Mark(1);
+                meter.Mark(1);
+                var meterValueSource = new MeterValueSource(
+                    "test meter",
+                    ConstantValue.Provider(meter.Value),
+                    Unit.None,
+                    TimeUnit.Milliseconds,
+                    MetricTags.Empty);
+                var valueSource = CreateValueSource("test", meters: meterValueSource);
                 var result = new MetricsDataValueSource(timestamp, new[] { valueSource });
                 timestamp += TimeSpan.FromSeconds(1);
                 return result;
