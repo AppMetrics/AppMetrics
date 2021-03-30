@@ -69,11 +69,6 @@ namespace App.Metrics.Formatting.StatsD.Internal
             return MetricTypes.TryGetValue(metricType, out var type) ? type : Gauge;
         }
 
-        public static long FormatTimestamp(DateTime? utcTimestamp)
-            => utcTimestamp.HasValue
-                ? (long)utcTimestamp.Value.Subtract(Origin).TotalSeconds
-                : (long)DateTime.UtcNow.Subtract(Origin).TotalSeconds;
-
         /// <summary>
         ///     The numeric value format should depend on the original type. StatsD prefers integers.
         /// </summary>
