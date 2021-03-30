@@ -17,6 +17,9 @@ namespace App.Metrics.Formatting.StatsD.Internal
         private static readonly HashSet<string> ExcludeTags = new HashSet<string>
                                                               {
                                                                   AppMetricsConstants.Pack.MetricTagsTypeKey,
+                                                                  AppMetricsConstants.Pack.MetricTagsUnitKey,
+                                                                  AppMetricsConstants.Pack.MetricTagsUnitRateKey,
+                                                                  AppMetricsConstants.Pack.MetricTagsUnitRateDurationKey,
                                                                   StatsDFormatterConstants.SampleRateTagName,
                                                                   StatsDFormatterConstants.ItemTagName
                                                               };
