@@ -65,7 +65,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
             var result = point.Write(_options);
 
             // Assert
-            result.Should().Be("name.key:0|c|@0.1|#timestamp:1483232461");
+            result.Should().Be("name.key:0|c|@0.1");
         }
 
         [Fact]
@@ -96,9 +96,9 @@ namespace App.Metrics.Reporting.StatsD.Facts
 
             // Assert
             result.Should().Be(
-                "measurement.field1key:0|g|#timestamp:1483232461\n" +
-                "measurement.field2key:2|g|#timestamp:1483232461\n" +
-                "measurement.field3key:0|g|#timestamp:1483232461");
+                "measurement.field1key:0|g\n" +
+                "measurement.field2key:2|g\n" +
+                "measurement.field3key:0|g");
         }
 
         [Fact]
@@ -125,7 +125,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
 
             // Assert
             result.Should().Be(
-                "measurement.key:0|g|#tagkey:tagvalue,timestamp:1483232461",
+                "measurement.key:0|g|#tagkey:tagvalue",
                 "Hosted Metrics request at the moment allow tags array but its not yet used.");
         }
 
@@ -155,7 +155,7 @@ namespace App.Metrics.Reporting.StatsD.Facts
 
             // Assert
             result.Should().Be(
-                "context.measurement.key:0|g|#tagkey:tagvalue,timestamp:1483232461",
+                "context.measurement.key:0|g|#tagkey:tagvalue",
                 "Hosted Metrics request at the moment allow tags array but its not yet used.");
         }
 
