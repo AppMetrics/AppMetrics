@@ -27,17 +27,13 @@ namespace App.Metrics.Formatting.StatsD
                 builder.Append(point.SampleRate.Value.ToString("0.###############"));
             }
 
-            var tags = new List<string>();
-
             if (point.Tags != null && point.Tags.Count > 0)
             {
-                tags.AddRange(point.Tags.Select(tag => $"{tag.Key}:{tag.Value}"));
+                builder.Append('|');
+                builder.Append(options.TagMarker);
+                builder.Append(string.Join(",", point.Tags.Select(tag => $"{tag.Key}:{tag.Value}")));
             }
-
-            builder.Append('|');
-            builder.Append(options.TagMarker);
-            builder.Append(string.Join(",", tags));
-
+            
             return builder.ToString();
         }
     }
