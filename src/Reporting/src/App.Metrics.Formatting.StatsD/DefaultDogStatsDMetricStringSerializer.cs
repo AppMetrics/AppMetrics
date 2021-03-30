@@ -34,8 +34,6 @@ namespace App.Metrics.Formatting.StatsD
                 tags.AddRange(point.Tags.Select(tag => $"{tag.Key}:{tag.Value}"));
             }
 
-            tags.Add($"{StatsDFormatterConstants.TimestampTagName}:{StatsDSyntax.FormatTimestamp(point.UtcTimestamp)}");
-
             builder.Append('|');
             builder.Append(options.TagMarker);
             builder.Append(string.Join(",", tags));

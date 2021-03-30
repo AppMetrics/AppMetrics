@@ -10,7 +10,6 @@ namespace App.Metrics.Formatting.StatsD.Internal
     {
         public static string ItemTagName = "item";
         public static string SampleRateTagName = "sampleRate";
-        public static string TimestampTagName = "timestamp";
 
         public static class Defaults
         {
