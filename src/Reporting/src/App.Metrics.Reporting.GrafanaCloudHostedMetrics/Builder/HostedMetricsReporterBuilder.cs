@@ -28,19 +28,21 @@ namespace App.Metrics
         ///     The <see cref="IMetricsReportingBuilder" /> used to configure metrics reporters.
         /// </param>
         /// <param name="options">The HostedMetrics reporting options to use.</param>
+        /// <param name="httpMessageHandler">Http Handler used to customise the request/response.</param>
         /// <returns>
         ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public static IMetricsBuilder ToHostedMetrics(
             this IMetricsReportingBuilder metricsReportingBuilder,
-            MetricsReportingHostedMetricsOptions options)
+            MetricsReportingHostedMetricsOptions options,
+            HttpMessageHandler httpMessageHandler = null)
         {
             if (metricsReportingBuilder == null)
             {
                 throw new ArgumentNullException(nameof(metricsReportingBuilder));
             }
 
-            var httpClient = CreateClient(options, options.HttpPolicy);
+            var httpClient = CreateClient(options, options.HttpPolicy, httpMessageHandler);
             var reporter = new HostedMetricsReporter(options, httpClient);
 
             return metricsReportingBuilder.Using(reporter);
@@ -53,12 +55,14 @@ namespace App.Metrics
         ///     The <see cref="IMetricsReportingBuilder" /> used to configure metrics reporters.
         /// </param>
         /// <param name="setupAction">The HostedMetrics reporting options to use.</param>
+        /// <param name="httpMessageHandler">Http Handler used to customise the request/response.</param>
         /// <returns>
         ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
         public static IMetricsBuilder ToHostedMetrics(
             this IMetricsReportingBuilder metricReporterProviderBuilder,
-            Action<MetricsReportingHostedMetricsOptions> setupAction)
+            Action<MetricsReportingHostedMetricsOptions> setupAction,
+            HttpMessageHandler httpMessageHandler = null)
         {
             if (metricReporterProviderBuilder == null)
             {
@@ -69,7 +73,7 @@ namespace App.Metrics
 
             setupAction?.Invoke(options);
 
-            var httpClient = CreateClient(options, options.HttpPolicy);
+            var httpClient = CreateClient(options, options.HttpPolicy, httpMessageHandler);
             var reporter = new HostedMetricsReporter(options, httpClient);
 
             return metricReporterProviderBuilder.Using(reporter);
@@ -85,6 +89,7 @@ namespace App.Metrics
         /// <param name="apiKey">The api key used for authentication</param>
         /// <param name="fieldsSetup">The metric fields to report as well as their names.</param>
         /// <param name="hostedMetricsOptionsSetup">The setup action to configure the <see cref="MetricsHostedMetricsOptions"/> to use.</param>
+        /// <param name="httpMessageHandler">Http Handler used to customise the request/response.</param>
         /// <returns>
         ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
@@ -93,7 +98,8 @@ namespace App.Metrics
             string url,
             string apiKey,
             Action<MetricFields> fieldsSetup = null,
-            Action<MetricsHostedMetricsOptions> hostedMetricsOptionsSetup = null)
+            Action<MetricsHostedMetricsOptions> hostedMetricsOptionsSetup = null,
+            HttpMessageHandler httpMessageHandler = null)
         {
             if (metricReporterProviderBuilder == null)
             {
@@ -139,7 +145,7 @@ namespace App.Metrics
 
             options.MetricsOutputFormatter = formatter;
 
-            var httpClient = CreateClient(options, options.HttpPolicy);
+            var httpClient = CreateClient(options, options.HttpPolicy, httpMessageHandler);
             var reporter = new HostedMetricsReporter(options, httpClient);
 
             var builder = metricReporterProviderBuilder.Using(reporter);
@@ -162,6 +168,7 @@ namespace App.Metrics
         /// </param>
         /// <param name="fieldsSetup">The metric fields to report as well as their names.</param>
         /// <param name="hostedMetricsOptionsSetup">The setup action to configure the <see cref="MetricsHostedMetricsOptions"/> to use.</param>
+        /// <param name="httpMessageHandler">Http Handler used to customise the request/response.</param>
         /// <returns>
         ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
         /// </returns>
@@ -171,7 +178,8 @@ namespace App.Metrics
             string apiKey,
             TimeSpan flushInterval,
             Action<MetricFields> fieldsSetup = null,
-            Action<MetricsHostedMetricsOptions> hostedMetricsOptionsSetup = null)
+            Action<MetricsHostedMetricsOptions> hostedMetricsOptionsSetup = null,
+            HttpMessageHandler httpMessageHandler = null)
         {
             if (metricReporterProviderBuilder == null)
             {
@@ -218,7 +226,7 @@ namespace App.Metrics
 
             options.MetricsOutputFormatter = formatter;
 
-            var httpClient = CreateClient(options, options.HttpPolicy);
+            var httpClient = CreateClient(options, options.HttpPolicy, httpMessageHandler);
             var reporter = new HostedMetricsReporter(options, httpClient);
 
             var builder = metricReporterProviderBuilder.Using(reporter);
@@ -239,7 +247,10 @@ namespace App.Metrics
             httpClient.BaseAddress = options.HostedMetrics.BaseUri;
             httpClient.Timeout = httpPolicy.Timeout;
 
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", options.HostedMetrics.ApiKey);
+            if (httpMessageHandler == null)
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", options.HostedMetrics.ApiKey);
+            }
 
             return new DefaultHostedMetricsHttpClient(
                 httpClient,
