@@ -18,24 +18,24 @@ namespace App.Metrics.Formatters
         {
         }
 
-        public IReportMetrics GetType<TReporter>()
+        public IEnumerable<IReportMetrics> GetType<TReporter>()
             where TReporter : IReportMetrics
         {
             return GetType(typeof(TReporter));
         }
 
-        public IReportMetrics GetType(Type reporterType)
+        public IEnumerable<IReportMetrics> GetType(Type reporterType)
         {
             for (var i = Count - 1; i >= 0; i--)
             {
                 var reporter = this[i];
                 if (reporter.GetType() == reporterType)
                 {
-                    return reporter;
+                    yield return reporter;
                 }
             }
 
-            return default;
+            yield return default;
         }
 
         public void RemoveType<TReporter>()
@@ -59,13 +59,11 @@ namespace App.Metrics.Formatters
         public void TryAdd<TReporter>(IReportMetrics reporter)
             where TReporter : IReportMetrics
         {
-            RemoveType<TReporter>();
             Add(reporter);
         }
 
         public void TryAdd(IReportMetrics reporter)
         {
-            RemoveType(reporter.GetType());
             Add(reporter);
         }
     }

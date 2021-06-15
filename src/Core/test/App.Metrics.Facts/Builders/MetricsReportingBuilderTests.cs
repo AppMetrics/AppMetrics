@@ -96,7 +96,7 @@ namespace App.Metrics.Facts.Builders
             var reporter = (metrics.Reporters as MetricsReporterCollection)?.GetType<TestReporter>();
 
             // Assert
-            reporter?.FlushInterval.Should().Be(TimeSpan.FromDays(1));
+            reporter?.First()?.FlushInterval.Should().Be(TimeSpan.FromDays(1));
         }
 
         [Fact]
@@ -110,7 +110,7 @@ namespace App.Metrics.Facts.Builders
             var reporter = (metrics.Reporters as MetricsReporterCollection)?.GetType<TestReporter>();
 
             // Assert
-            reporter?.Formatter.Should().BeOfType(typeof(MetricsJsonOutputFormatter));
+            reporter?.First()?.Formatter.Should().BeOfType(typeof(MetricsJsonOutputFormatter));
         }
 
         [Fact]
@@ -125,7 +125,7 @@ namespace App.Metrics.Facts.Builders
             var reporter = (metrics.Reporters as MetricsReporterCollection)?.GetType<TestReporter>();
 
             // Assert
-            reporter?.Filter.Should().BeSameAs(filter);
+            reporter?.First()?.Filter.Should().BeSameAs(filter);
         }
 
         [Fact]
@@ -140,8 +140,8 @@ namespace App.Metrics.Facts.Builders
             var reporter = (metrics.Reporters as MetricsReporterCollection)?.GetType<TestReporter>();
 
             // Assert
-            reporter?.Filter.Should().BeSameAs(filter);
-            reporter?.FlushInterval.Should().Be(TimeSpan.FromDays(1));
+            reporter?.First()?.Filter.Should().BeSameAs(filter);
+            reporter?.First()?.FlushInterval.Should().Be(TimeSpan.FromDays(1));
         }
 
         [Fact]
@@ -156,8 +156,8 @@ namespace App.Metrics.Facts.Builders
             var reporter = (metrics.Reporters as MetricsReporterCollection)?.GetType<TestReporter>();
 
             // Assert
-            reporter?.Formatter.Should().BeOfType(typeof(MetricsJsonOutputFormatter));
-            reporter?.FlushInterval.Should().Be(TimeSpan.FromDays(1));
+            reporter?.First()?.Formatter.Should().BeOfType(typeof(MetricsJsonOutputFormatter));
+            reporter?.First()?.FlushInterval.Should().Be(TimeSpan.FromDays(1));
         }
 
         [Fact]
@@ -173,9 +173,9 @@ namespace App.Metrics.Facts.Builders
             var reporter = (metrics.Reporters as MetricsReporterCollection)?.GetType<TestReporter>();
 
             // Assert
-            reporter?.Filter.Should().BeSameAs(filter);
-            reporter?.FlushInterval.Should().Be(TimeSpan.FromDays(1));
-            reporter?.Formatter.Should().BeOfType(typeof(MetricsJsonOutputFormatter));
+            reporter?.First()?.Filter.Should().BeSameAs(filter);
+            reporter?.First()?.FlushInterval.Should().Be(TimeSpan.FromDays(1));
+            reporter?.First()?.Formatter.Should().BeOfType(typeof(MetricsJsonOutputFormatter));
         }
     }
 }
