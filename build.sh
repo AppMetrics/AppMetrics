@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-mkdir nuget -p
+rm -rf nuget
+mkdir nuget
 
 dotnet tool restore
 

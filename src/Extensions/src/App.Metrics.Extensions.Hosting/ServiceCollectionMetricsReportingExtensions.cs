@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Threading;
 using App.Metrics;
 using App.Metrics.Extensions.Hosting;
 using App.Metrics.Reporting;
@@ -25,9 +26,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 var options = serviceProvider.GetRequiredService<MetricsOptions>();
                 var metrics = serviceProvider.GetRequiredService<IMetrics>();
                 var reporters = serviceProvider.GetService<IReadOnlyCollection<IReportMetrics>>();
-
-                var instance = new MetricsReporterBackgroundService(metrics, options, reporters);
-
+                var lifetime = serviceProvider.GetService<IHostApplicationLifetime>();
+                var instance = new MetricsReporterBackgroundService(metrics, options, reporters, lifetime);
                 if (unobservedTaskExceptionHandler != null)
                 {
                     instance.UnobservedTaskException += unobservedTaskExceptionHandler;

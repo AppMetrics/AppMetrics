@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Metrics.InfluxDB", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Metrics.Prometheus", "src\App.Metrics.Prometheus\App.Metrics.Prometheus.csproj", "{AE2392F6-9B08-4E0C-A0BB-9E7BF9EE2148}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Metrics.StatsD", "src\App.Metrics.StatsD\App.Metrics.StatsD.csproj", "{4F75A543-14D8-473D-B214-9E8B06C813D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,7 @@ Global
 		{94F9F73B-6BCC-4A6C-91BD-CBBF7B321A17} = {2D805782-756E-4C98-B22E-F502BEE95318}
 		{4D6E9C54-253A-44C2-9CAC-3EDB3E76567A} = {2D805782-756E-4C98-B22E-F502BEE95318}
 		{AE2392F6-9B08-4E0C-A0BB-9E7BF9EE2148} = {2D805782-756E-4C98-B22E-F502BEE95318}
+		{4F75A543-14D8-473D-B214-9E8B06C813D6} = {2D805782-756E-4C98-B22E-F502BEE95318}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A8699A1D-0BA1-403C-86E9-C789CD2645EB}
@@ -79,5 +82,9 @@ Global
 		{AE2392F6-9B08-4E0C-A0BB-9E7BF9EE2148}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE2392F6-9B08-4E0C-A0BB-9E7BF9EE2148}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE2392F6-9B08-4E0C-A0BB-9E7BF9EE2148}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F75A543-14D8-473D-B214-9E8B06C813D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F75A543-14D8-473D-B214-9E8B06C813D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F75A543-14D8-473D-B214-9E8B06C813D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F75A543-14D8-473D-B214-9E8B06C813D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

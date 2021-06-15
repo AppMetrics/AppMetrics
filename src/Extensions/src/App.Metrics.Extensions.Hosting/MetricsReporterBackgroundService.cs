@@ -22,12 +22,15 @@ namespace App.Metrics.Extensions.Hosting
         private readonly CounterOptions _successCounter;
         private readonly CounterOptions _failedCounter;
         private readonly MetricsOptions _options;
+        private bool _stopped = false;
+
         private readonly List<SchedulerTaskWrapper> _scheduledReporters = new List<SchedulerTaskWrapper>();
 
         public MetricsReporterBackgroundService(
             IMetrics metrics,
             MetricsOptions options,
-            IEnumerable<IReportMetrics> reporters)
+            IEnumerable<IReportMetrics> reporters,
+            IHostApplicationLifetime lifetime)
         {
             _metrics = metrics;
             _options = options;
@@ -60,6 +63,9 @@ namespace App.Metrics.Extensions.Hosting
                         NextRunTime = referenceTime
                     });
             }
+
+            
+            lifetime.ApplicationStopping.Register(() => this.OnApplicationStopping().Wait());
         }
 
         public event EventHandler<UnobservedTaskExceptionEventArgs> UnobservedTaskException;
@@ -71,7 +77,8 @@ namespace App.Metrics.Extensions.Hosting
                 await Task.CompletedTask;
             }
 
-            while (!cancellationToken.IsCancellationRequested
+            while (!_stopped
+                && !cancellationToken.IsCancellationRequested
                 && _options.Enabled
                 && _options.ReportingEnabled)
             {
@@ -84,7 +91,6 @@ namespace App.Metrics.Extensions.Hosting
 
         private async Task ExecuteOnceAsync(CancellationToken cancellationToken)
         {
-            var taskFactory = new TaskFactory(TaskScheduler.Current);
             var referenceTime = DateTime.UtcNow;
 
             foreach (var flushTask in _scheduledReporters)
@@ -97,47 +103,48 @@ namespace App.Metrics.Extensions.Hosting
 
                 flushTask.Increment();
 
-                await taskFactory.StartNew(
-                    async () =>
+                try
+                {
+                    Logger.Trace($"Executing reporter {flushTask.Reporter.GetType().FullName} FlushAsync");
+
+                    var result = await flushTask.Reporter.FlushAsync(
+                        _metrics.Snapshot.Get(flushTask.Reporter.Filter),
+                        cancellationToken);
+
+                    if (result)
                     {
-                        try
-                        {
-                            Logger.Trace($"Executing reporter {flushTask.Reporter.GetType().FullName} FlushAsync");
+                        _metrics.Measure.Counter.Increment(_successCounter, flushTask.Reporter.GetType().FullName);
+                        Logger.Trace($"Reporter {flushTask.Reporter.GetType().FullName} FlushAsync executed successfully");
+                    }
+                    else
+                    {
+                        _metrics.Measure.Counter.Increment(_failedCounter, flushTask.Reporter.GetType().FullName);
+                        Logger.Warn($"Reporter {flushTask.Reporter.GetType().FullName} FlushAsync failed");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _metrics.Measure.Counter.Increment(_failedCounter, flushTask.Reporter.GetType().FullName);
 
-                            var result = await flushTask.Reporter.FlushAsync(
-                                _metrics.Snapshot.Get(flushTask.Reporter.Filter),
-                                cancellationToken);
+                    var args = new UnobservedTaskExceptionEventArgs(
+                        ex as AggregateException ?? new AggregateException(ex));
 
-                            if (result)
-                            {
-                                _metrics.Measure.Counter.Increment(_successCounter, flushTask.Reporter.GetType().FullName);
-                                Logger.Trace($"Reporter {flushTask.Reporter.GetType().FullName} FlushAsync executed successfully");
-                            }
-                            else
-                            {
-                                _metrics.Measure.Counter.Increment(_failedCounter, flushTask.Reporter.GetType().FullName);
-                                Logger.Warn($"Reporter {flushTask.Reporter.GetType().FullName} FlushAsync failed");
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            _metrics.Measure.Counter.Increment(_failedCounter, flushTask.Reporter.GetType().FullName);
+                    Logger.Error($"Reporter {flushTask.Reporter.GetType().FullName} FlushAsync failed", ex);
 
-                            var args = new UnobservedTaskExceptionEventArgs(
-                                ex as AggregateException ?? new AggregateException(ex));
+                    UnobservedTaskException?.Invoke(this, args);
 
-                            Logger.Error($"Reporter {flushTask.Reporter.GetType().FullName} FlushAsync failed", ex);
-
-                            UnobservedTaskException?.Invoke(this, args);
-
-                            if (!args.Observed)
-                            {
-                                throw;
-                            }
-                        }
-                    },
-                    cancellationToken);
+                    if (!args.Observed)
+                    {
+                        throw;
+                    }
+                }
             }
+        }
+
+        private async Task OnApplicationStopping()
+        {
+            _stopped = true;
+            await this.ExecuteOnceAsync(new CancellationToken());
         }
 
         private class SchedulerTaskWrapper
