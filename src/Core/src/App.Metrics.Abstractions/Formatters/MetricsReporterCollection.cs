@@ -34,8 +34,6 @@ namespace App.Metrics.Formatters
                     yield return reporter;
                 }
             }
-
-            yield return default;
         }
 
         public void RemoveType<TReporter>()
