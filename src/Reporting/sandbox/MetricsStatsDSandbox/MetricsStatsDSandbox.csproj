@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\App.Metrics.Formatting.StatsD\App.Metrics.Formatting.StatsD.csproj" />
+    <ProjectReference Include="..\..\src\App.Metrics.Reporting.Socket\App.Metrics.Reporting.Socket.csproj" />
     <ProjectReference Include="..\..\src\App.Metrics.Reporting.StatsD\App.Metrics.Reporting.StatsD.csproj" />
     <ProjectReference Include="..\..\src\App.Metrics.Reporting.Socket\App.Metrics.Reporting.Socket.csproj" />
   </ItemGroup>

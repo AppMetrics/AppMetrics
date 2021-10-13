@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using App.Metrics.Formatting.StatsD.Internal;
@@ -24,7 +25,7 @@ namespace App.Metrics.Formatting.StatsD
             if (point.SampleRate.HasValue && point.SampleRate < 1.0)
             {
                 builder.Append("|@");
-                builder.Append(point.SampleRate.Value.ToString("0.###############"));
+                builder.Append(point.SampleRate.Value.ToString("0.###############", NumberFormatInfo.InvariantInfo));
             }
 
             if (point.Tags != null && point.Tags.Count > 0)
