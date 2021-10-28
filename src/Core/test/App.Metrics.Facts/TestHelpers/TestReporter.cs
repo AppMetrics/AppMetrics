@@ -56,4 +56,9 @@ namespace App.Metrics.Facts.TestHelpers
             return Task.FromResult(_pass);
         }
     }
+
+    public class TestReporter2 : TestReporter
+    {
+
+    }
 }

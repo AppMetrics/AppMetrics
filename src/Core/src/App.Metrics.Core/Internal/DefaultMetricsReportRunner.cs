@@ -58,14 +58,21 @@ namespace App.Metrics.Internal
         public Task RunAsync<TMetricReporter>(CancellationToken cancellationToken = default)
             where TMetricReporter : IReportMetrics
         {
-            var reporter = _reporters.GetType<TMetricReporter>();
+            var reporters = _reporters.GetType<TMetricReporter>();
 
-            if (reporter == null)
+            if (reporters == null || !reporters.Any())
             {
                 throw new InvalidOperationException($"Metric Reporter of type {typeof(TMetricReporter)} is not available");
             }
 
-            return FlushMetrics(_metrics, cancellationToken, reporter);
+
+            var flushTasks = new List<Task>();
+            foreach(var reporter in reporters)
+            {
+                flushTasks.Add(FlushMetrics(_metrics, cancellationToken, reporter));
+            }
+
+            return Task.WhenAll(flushTasks);
         }
 
         private async Task FlushMetrics(IMetrics metrics, CancellationToken cancellationToken, IReportMetrics reporter)

@@ -93,10 +93,10 @@ namespace App.Metrics.Facts.Builders
 
             // Act
             var metrics = builder.Build();
-            var reporter = (metrics.Reporters as MetricsReporterCollection)?.GetType<TestReporter>();
+            var reporters = (metrics.Reporters as MetricsReporterCollection)?.GetType<TestReporter>();
 
             // Assert
-            reporter?.FlushInterval.Should().Be(TimeSpan.FromDays(1));
+            reporters?.First()?.FlushInterval.Should().Be(TimeSpan.FromDays(1));
         }
 
         [Fact]
@@ -107,10 +107,10 @@ namespace App.Metrics.Facts.Builders
 
             // Act
             var metrics = builder.Build();
-            var reporter = (metrics.Reporters as MetricsReporterCollection)?.GetType<TestReporter>();
+            var reporters = (metrics.Reporters as MetricsReporterCollection)?.GetType<TestReporter>();
 
             // Assert
-            reporter?.Formatter.Should().BeOfType(typeof(MetricsJsonOutputFormatter));
+            reporters?.First()?.Formatter.Should().BeOfType(typeof(MetricsJsonOutputFormatter));
         }
 
         [Fact]
@@ -122,10 +122,10 @@ namespace App.Metrics.Facts.Builders
 
             // Act
             var metrics = builder.Build();
-            var reporter = (metrics.Reporters as MetricsReporterCollection)?.GetType<TestReporter>();
+            var reporters = (metrics.Reporters as MetricsReporterCollection)?.GetType<TestReporter>();
 
             // Assert
-            reporter?.Filter.Should().BeSameAs(filter);
+            reporters?.First()?.Filter.Should().BeSameAs(filter);
         }
 
         [Fact]
@@ -137,11 +137,11 @@ namespace App.Metrics.Facts.Builders
 
             // Act
             var metrics = builder.Build();
-            var reporter = (metrics.Reporters as MetricsReporterCollection)?.GetType<TestReporter>();
+            var reporters = (metrics.Reporters as MetricsReporterCollection)?.GetType<TestReporter>();
 
             // Assert
-            reporter?.Filter.Should().BeSameAs(filter);
-            reporter?.FlushInterval.Should().Be(TimeSpan.FromDays(1));
+            reporters?.First()?.Filter.Should().BeSameAs(filter);
+            reporters?.First()?.FlushInterval.Should().Be(TimeSpan.FromDays(1));
         }
 
         [Fact]
@@ -153,11 +153,11 @@ namespace App.Metrics.Facts.Builders
 
             // Act
             var metrics = builder.Build();
-            var reporter = (metrics.Reporters as MetricsReporterCollection)?.GetType<TestReporter>();
+            var reporters = (metrics.Reporters as MetricsReporterCollection)?.GetType<TestReporter>();
 
             // Assert
-            reporter?.Formatter.Should().BeOfType(typeof(MetricsJsonOutputFormatter));
-            reporter?.FlushInterval.Should().Be(TimeSpan.FromDays(1));
+            reporters?.First()?.Formatter.Should().BeOfType(typeof(MetricsJsonOutputFormatter));
+            reporters?.First()?.FlushInterval.Should().Be(TimeSpan.FromDays(1));
         }
 
         [Fact]
@@ -170,12 +170,41 @@ namespace App.Metrics.Facts.Builders
 
             // Act
             var metrics = builder.Build();
-            var reporter = (metrics.Reporters as MetricsReporterCollection)?.GetType<TestReporter>();
+            var reporters = (metrics.Reporters as MetricsReporterCollection)?.GetType<TestReporter>();
 
             // Assert
-            reporter?.Filter.Should().BeSameAs(filter);
-            reporter?.FlushInterval.Should().Be(TimeSpan.FromDays(1));
-            reporter?.Formatter.Should().BeOfType(typeof(MetricsJsonOutputFormatter));
+            reporters?.First()?.Filter.Should().BeSameAs(filter);
+            reporters?.First()?.FlushInterval.Should().Be(TimeSpan.FromDays(1));
+            reporters?.First()?.Formatter.Should().BeOfType(typeof(MetricsJsonOutputFormatter));
+        }
+
+        [Fact]
+        public void Can_use_multiple_reporters_of_same_type()
+        {
+            // Arrange
+            var builder = new MetricsBuilder().Report.Using<TestReporter>();
+            builder.Report.Using<TestReporter>();
+
+            // Act
+            var metrics = builder.Build();
+            var reporters = (metrics.Reporters as MetricsReporterCollection)?.GetType<TestReporter>();
+
+            // Assert
+            reporters.Count().Should().Be(2);
+        }
+
+        [Fact]
+        public void No_reporters_of_type_returns_empty_list()
+        {
+            // Arrange
+            var builder = new MetricsBuilder().Report.Using<TestReporter>();
+
+            // Act
+            var metrics = builder.Build();
+            var reporters = (metrics.Reporters as MetricsReporterCollection)?.GetType<TestReporter2>();
+
+            // Assert
+            reporters.Should().BeEmpty();
         }
     }
 }
