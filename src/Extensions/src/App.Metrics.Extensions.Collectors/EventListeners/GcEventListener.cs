@@ -32,6 +32,7 @@ namespace App.Metrics.Extensions.Collectors.EventListeners
             switch (eventData.EventName)
             {
                 case "GCHeapStats_V1":
+                case "GCHeapStats_V2":
                     ProcessHeapStats(eventData);
                     break;
             }
