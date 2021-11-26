@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31402.337
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2D805782-756E-4C98-B22E-F502BEE95318}"
 	ProjectSection(SolutionItems) = preProject
@@ -106,17 +106,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsPrometheusSandboxMvc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Datadog", "Datadog", "{23445169-0670-42D5-A4D4-335C8DF387EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Metrics.Formatting.Datadog", "src\App.Metrics.Formatting.Datadog\App.Metrics.Formatting.Datadog.csproj", "{50F61ECE-DD43-41FF-95A7-5C162343DA2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Formatting.Datadog", "src\App.Metrics.Formatting.Datadog\App.Metrics.Formatting.Datadog.csproj", "{50F61ECE-DD43-41FF-95A7-5C162343DA2B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Datadog", "Datadog", "{051A3EFF-9AA1-499F-9888-CD2ADB543889}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricsDatadogSandboxMvc", "sandbox\MetricsDatadogSandboxMvc\MetricsDatadogSandboxMvc.csproj", "{7FD2964F-6C0F-4375-9FD9-9FF57B63F08A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsDatadogSandboxMvc", "sandbox\MetricsDatadogSandboxMvc\MetricsDatadogSandboxMvc.csproj", "{7FD2964F-6C0F-4375-9FD9-9FF57B63F08A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Metrics.Reporting.Datadog", "src\App.Metrics.Reporting.Datadog\App.Metrics.Reporting.Datadog.csproj", "{EC755048-F6E9-471E-B80D-D3FC89D317A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Reporting.Datadog", "src\App.Metrics.Reporting.Datadog\App.Metrics.Reporting.Datadog.csproj", "{EC755048-F6E9-471E-B80D-D3FC89D317A9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Datadog", "Datadog", "{91F23066-FE25-4F46-8EA8-3AD2A834CD36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Metrics.Reporting.Datadog.Facts", "test\App.Metrics.Reporting.Datadog.Facts\App.Metrics.Reporting.Datadog.Facts.csproj", "{EDF820D0-2FED-49F2-A10D-DA5382233EF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Reporting.Datadog.Facts", "test\App.Metrics.Reporting.Datadog.Facts\App.Metrics.Reporting.Datadog.Facts.csproj", "{EDF820D0-2FED-49F2-A10D-DA5382233EF0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StatsD", "StatsD", "{2DEA96C6-E3C9-4DEA-8142-3B402CFC67B3}"
 EndProject
@@ -132,7 +132,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StatsD", "StatsD", "{3E6F1F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsStatsDSandbox", "sandbox\MetricsStatsDSandbox\MetricsStatsDSandbox.csproj", "{44DAFDDE-DCE2-4090-9618-C3EDB4FE11A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricsStatsDSandboxMvc", "sandbox\MetricsStatsDSandboxMvc\MetricsStatsDSandboxMvc.csproj", "{EBCDEFE8-0D46-48ED-A75E-B27A34DB5F09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsStatsDSandboxMvc", "sandbox\MetricsStatsDSandboxMvc\MetricsStatsDSandboxMvc.csproj", "{EBCDEFE8-0D46-48ED-A75E-B27A34DB5F09}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Reporting.InfluxDB2", "src\App.Metrics.Reporting.InfluxDB2\App.Metrics.Reporting.InfluxDB2.csproj", "{81CE1228-3C94-48AD-8830-DDF13ED80FF4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsInfluxDB2Sandbox", "sandbox\MetricsInfluxDB2Sandbox\MetricsInfluxDB2Sandbox.csproj", "{8B32FBD8-2F3F-40EF-A672-8E1E9E16148F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsInfluxDB2SandboxMvc", "sandbox\MetricsInfluxDB2SandboxMvc\MetricsInfluxDB2SandboxMvc.csproj", "{74C314BC-394A-4A09-B739-03D4BE86DBB0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Reporting.InfluxDB2.Facts", "test\App.Metrics.Reporting.InfluxDB2.Facts\App.Metrics.Reporting.InfluxDB2.Facts.csproj", "{C4B12D2E-75D3-4800-B116-77851E4D1A2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -292,6 +300,22 @@ Global
 		{EBCDEFE8-0D46-48ED-A75E-B27A34DB5F09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBCDEFE8-0D46-48ED-A75E-B27A34DB5F09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBCDEFE8-0D46-48ED-A75E-B27A34DB5F09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81CE1228-3C94-48AD-8830-DDF13ED80FF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81CE1228-3C94-48AD-8830-DDF13ED80FF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81CE1228-3C94-48AD-8830-DDF13ED80FF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81CE1228-3C94-48AD-8830-DDF13ED80FF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B32FBD8-2F3F-40EF-A672-8E1E9E16148F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B32FBD8-2F3F-40EF-A672-8E1E9E16148F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B32FBD8-2F3F-40EF-A672-8E1E9E16148F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B32FBD8-2F3F-40EF-A672-8E1E9E16148F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74C314BC-394A-4A09-B739-03D4BE86DBB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74C314BC-394A-4A09-B739-03D4BE86DBB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74C314BC-394A-4A09-B739-03D4BE86DBB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74C314BC-394A-4A09-B739-03D4BE86DBB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4B12D2E-75D3-4800-B116-77851E4D1A2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4B12D2E-75D3-4800-B116-77851E4D1A2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4B12D2E-75D3-4800-B116-77851E4D1A2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4B12D2E-75D3-4800-B116-77851E4D1A2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -354,6 +378,10 @@ Global
 		{3E6F1FCA-3987-4FD1-B018-175DBC546F69} = {887BC5A0-8ED7-4460-851D-5EFC4AE828DE}
 		{44DAFDDE-DCE2-4090-9618-C3EDB4FE11A1} = {3E6F1FCA-3987-4FD1-B018-175DBC546F69}
 		{EBCDEFE8-0D46-48ED-A75E-B27A34DB5F09} = {3E6F1FCA-3987-4FD1-B018-175DBC546F69}
+		{81CE1228-3C94-48AD-8830-DDF13ED80FF4} = {F7356ACC-64BE-48BF-A9C8-864AA1C3DA5A}
+		{8B32FBD8-2F3F-40EF-A672-8E1E9E16148F} = {9D00C681-A88C-450E-B83E-E3BFF942F82A}
+		{74C314BC-394A-4A09-B739-03D4BE86DBB0} = {9D00C681-A88C-450E-B83E-E3BFF942F82A}
+		{C4B12D2E-75D3-4800-B116-77851E4D1A2E} = {3B064A0E-B6B6-41A3-BFC1-F4734E16EBA3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {492C97B1-706A-4357-B3F7-EFB6AFB1F6C6}
