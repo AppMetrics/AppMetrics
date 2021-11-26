@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -69,7 +70,7 @@ namespace App.Metrics.Formatting.StatsD.Internal
             }
 
             tagsDictionary.TryGetValue(StatsDFormatterConstants.SampleRateTagName, out var tagSampleRateStr);
-            if (!double.TryParse(tagSampleRateStr, out var tagSampleRate))
+            if (!double.TryParse(tagSampleRateStr, NumberStyles.Float | NumberStyles.AllowThousands, NumberFormatInfo.InvariantInfo, out var tagSampleRate))
             {
                 tagSampleRate = Options.DefaultSampleRate;
             }

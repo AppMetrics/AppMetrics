@@ -114,10 +114,12 @@ namespace Microsoft.AspNetCore.Builder
         {
             EnsureRequiredServices(app);
 
+            var metricsOptions = app.ApplicationServices.GetRequiredService<MetricsOptions>();
             var trackingMiddlewareOptionsAccessor = app.ApplicationServices.GetRequiredService<IOptions<MetricsWebTrackingOptions>>();
 
             app.UseWhen(
-                context => context.OAuthClientId().IsPresent() &&
+                context => metricsOptions.Enabled &&
+                           context.OAuthClientId().IsPresent() &&
                            trackingMiddlewareOptionsAccessor.Value.OAuth2TrackingEnabled &&
                            !IsNotAnIgnoredRoute(trackingMiddlewareOptionsAccessor.Value.IgnoredRoutesRegex, context.Request.Path),
                 appBuilder =>
