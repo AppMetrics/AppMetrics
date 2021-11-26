@@ -1,13 +1,13 @@
 <Project>
 
   <PropertyGroup>
-    <AppMetricsVersion>4.2.0-*</AppMetricsVersion>
+    <AppMetricsVersion>4.3.0-*</AppMetricsVersion>
     <FrameworkVersion>3.1.0</FrameworkVersion>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>
-    <MinVerMinimumMajorMinor>4.2</MinVerMinimumMajorMinor>
+    <MinVerMinimumMajorMinor>4.3</MinVerMinimumMajorMinor>
     <MinVerDefaultPreReleasePhase>preview</MinVerDefaultPreReleasePhase>
   </PropertyGroup>
 
