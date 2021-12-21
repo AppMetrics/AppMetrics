@@ -25,7 +25,7 @@ namespace App.Metrics.Extensions.Collectors.HostedServices
         {
             _metrics = metrics;
             _options = options;
-            _lastTimeStamp = _process.StartTime;
+            _lastTimeStamp = TimeZoneInfo.ConvertTimeToUtc(_process.StartTime);
         }
 
         public void Dispose()
