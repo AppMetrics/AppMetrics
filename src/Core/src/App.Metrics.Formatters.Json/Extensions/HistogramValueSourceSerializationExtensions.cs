@@ -36,10 +36,11 @@ namespace App.Metrics.Histogram
                 source.SampleSize);
 
             return new HistogramValueSource(
-                source.Name,
+                source.Name, 
                 ConstantValue.Provider(histogramValue),
                 source.Unit,
-                source.Tags.FromDictionary());
+                source.Tags.FromDictionary(),
+                description: source.Description);
         }
 
         public static BucketHistogramValueSource FromSerializableMetric(this BucketHistogramMetric source)
@@ -50,10 +51,11 @@ namespace App.Metrics.Histogram
                 new ReadOnlyDictionary<double, double>(source.Buckets));
 
             return new BucketHistogramValueSource(
-                source.Name,
+                source.Name, 
                 ConstantValue.Provider(histogramValue),
                 source.Unit,
-                source.Tags.FromDictionary());
+                source.Tags.FromDictionary(),
+                source.Description);
         }
 
         public static IEnumerable<HistogramValueSource> FromSerializableMetric(this IEnumerable<HistogramMetric> source)

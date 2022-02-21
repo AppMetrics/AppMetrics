@@ -47,7 +47,8 @@ namespace App.Metrics.Meter
                 ConstantValue.Provider(meterValue),
                 source.Unit,
                 rateUnit,
-                source.Tags.FromDictionary());
+                source.Tags.FromDictionary(),
+                description: source.Description);
         }
 
         public static IEnumerable<MeterValueSource> FromSerializableMetric(this IEnumerable<MeterMetric> source)

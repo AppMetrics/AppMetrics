@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Runtime.Serialization;
 using App.Metrics.Formatters;
 
 namespace App.Metrics
@@ -14,9 +15,15 @@ namespace App.Metrics
     /// <typeparam name="T">Type of the metric value</typeparam>
     public abstract class MetricValueSourceBase<T>
     {
-        protected MetricValueSourceBase(string name, IMetricValueProvider<T> valueProvider, Unit unit, MetricTags tags, bool resetOnReporting = false)
+        protected MetricValueSourceBase(
+            string name, IMetricValueProvider<T> valueProvider,
+            Unit unit,
+            MetricTags tags,
+            bool resetOnReporting = false,
+            string description = "")
         {
             Name = name;
+            Description = description;
             Unit = unit;
             ValueProvider = valueProvider;
             Tags = tags;
@@ -54,6 +61,14 @@ namespace App.Metrics
         ///     The name.
         /// </value>
         public string Name { get; }
+        
+        /// <summary>
+        ///     Gets the Description of the metric.
+        /// </summary>
+        /// <value>
+        ///     The description.
+        /// </value>
+        public string Description { get; }
 
         /// <summary>
         ///     Gets the Tags associated with the metric.

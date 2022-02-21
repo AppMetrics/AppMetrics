@@ -16,8 +16,9 @@ namespace App.Metrics.Meter
             TimeUnit rateUnit,
             MetricTags tags,
             bool resetOnReporting = false,
-            bool reportSetItems = true)
-            : base(name, new ScaledValueProvider<MeterValue>(value, v => v.Scale(rateUnit)), unit, tags, resetOnReporting)
+            bool reportSetItems = true,
+            string description = "")
+            : base(name, new ScaledValueProvider<MeterValue>(value, v => v.Scale(rateUnit)), unit, tags, resetOnReporting, description)
         {
             RateUnit = rateUnit;
             ReportSetItems = reportSetItems;
