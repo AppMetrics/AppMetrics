@@ -227,7 +227,7 @@ namespace App.Metrics
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            if (_key == null)
+            if (_keys == null)
             {
                 return _key?.GetHashCode() ?? 0;
             }
