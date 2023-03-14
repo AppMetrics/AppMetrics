@@ -9,6 +9,7 @@ using System.Threading;
 using App.Metrics.Concurrency;
 using App.Metrics.Infrastructure;
 using App.Metrics.Logging;
+using App.Metrics.ReservoirSampling.Abstractions;
 using App.Metrics.Scheduling;
 
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
@@ -30,7 +31,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
     ///     </p>
     /// </summary>
     /// <seealso cref="IReservoir" />
-    public sealed class DefaultForwardDecayingReservoir : IRescalingReservoir, IDisposable
+    public sealed class DefaultForwardDecayingReservoir : ReservoirBase<SortedList<double, WeightedSample>>, IRescalingReservoir, IDisposable
     {
         private static readonly ILog Logger = LogProvider.For<DefaultForwardDecayingReservoir>();
         private readonly double _alpha;
@@ -39,12 +40,9 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         private readonly IReservoirRescaleScheduler _rescaleScheduler;
         private readonly int _sampleSize;
 
-        private SortedList<double, WeightedSample> _values;
-        private AtomicLong _count = new AtomicLong(0);
         private bool _disposed;
         private SpinLock _lock = default;
         private AtomicLong _startTime;
-        private AtomicDouble _sum = new AtomicDouble(0.0);
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultForwardDecayingReservoir" /> class.
@@ -113,19 +111,9 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         ///     This behavior is useful if there are longer periods of very low or no activity. Default value is zero, which preserves all samples during rescaling.
         /// </param>
         /// <param name="clock">The <see cref="IClock">clock</see> type to use for calculating processing time.</param>
-        // ReSharper disable MemberCanBePrivate.Global
         public DefaultForwardDecayingReservoir(int sampleSize, double alpha, double minimumSampleWeight, IClock clock)
-            // ReSharper restore MemberCanBePrivate.Global
+            : this(sampleSize, alpha, minimumSampleWeight, clock, DefaultReservoirRescaleScheduler.Instance)
         {
-            _sampleSize = sampleSize;
-            _alpha = alpha;
-            _minimumSampleWeight = minimumSampleWeight;
-            _clock = clock;
-
-            _values = new SortedList<double, WeightedSample>(sampleSize, ReverseOrderDoubleComparer.Instance);
-            _startTime = new AtomicLong(clock.Seconds);
-            _rescaleScheduler = DefaultReservoirRescaleScheduler.Instance;
-            _rescaleScheduler.ScheduleReScaling(this);
         }
 
         /// <summary>
@@ -142,9 +130,8 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         /// </param>
         /// <param name="clock">The <see cref="IClock">clock</see> type to use for calculating processing time.</param>
         /// <param name="rescaleScheduler">The schedular used to rescale the reservoir.</param>
-        // ReSharper disable MemberCanBePrivate.Global
         public DefaultForwardDecayingReservoir(int sampleSize, double alpha, double minimumSampleWeight, IClock clock, IReservoirRescaleScheduler rescaleScheduler)
-            // ReSharper restore MemberCanBePrivate.Global
+            : base(new SortedList<double, WeightedSample>(sampleSize, ReverseOrderDoubleComparer.Instance))
         {
             _sampleSize = sampleSize;
             _alpha = alpha;
@@ -152,19 +139,21 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
             _clock = clock;
             _rescaleScheduler = rescaleScheduler;
 
-            _values = new SortedList<double, WeightedSample>(sampleSize, ReverseOrderDoubleComparer.Instance);
             _startTime = new AtomicLong(clock.Seconds);
             _rescaleScheduler.ScheduleReScaling(this);
         }
-
-        /// <summary>
-        ///     Gets the size.
-        /// </summary>
-        /// <value>
-        ///     The size.
-        /// </value>
-        public int Size => Math.Min(_sampleSize, (int)_count.GetValue());
-
+        
+        /// <inheritdoc />
+        protected internal override int Size
+        {
+            get
+            {
+                long totalCount = Count.GetValue();
+                // total count will be always lower than int.MaxValue, casting is safe 
+                return totalCount <= _sampleSize ? (int)totalCount : _sampleSize;
+            }
+        }
+        
         /// <summary>
         ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -196,7 +185,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         }
 
         /// <inheritdoc />
-        public IReservoirSnapshot GetSnapshot(bool resetReservoir)
+        public override IReservoirSnapshot GetSnapshot(bool resetReservoir)
         {
             var lockTaken = false;
 
@@ -208,7 +197,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
 
                 Logger.Trace("Lock entered for {Reservoir} snapshot", this);
 
-                var snapshot = new WeightedSnapshot(_count.GetValue(), _sum.GetValue(), _values.Values);
+                var snapshot = new WeightedSnapshot(Count.GetValue(), Sum.GetValue(), ValuesCollection.Values);
                 if (resetReservoir)
                 {
                     ResetReservoir();
@@ -229,13 +218,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         }
 
         /// <inheritdoc />
-        public IReservoirSnapshot GetSnapshot()
-        {
-            return GetSnapshot(false);
-        }
-
-        /// <inheritdoc />
-        public void Reset()
+        public override void Reset()
         {
             var lockTaken = false;
 
@@ -262,16 +245,7 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         }
 
         /// <inheritdoc cref="IReservoir" />
-        public void Update(long value, string userValue)
-        {
-            Update(value, userValue, _clock.Seconds);
-        }
-
-        /// <inheritdoc />
-        public void Update(long value)
-        {
-            Update(value, null);
-        }
+        public override void Update(long value, string userValue) => Update(value, userValue, _clock.Seconds);
 
         /// <summary>
         ///     A common feature of the above techniques—indeed, the key technique that
@@ -308,9 +282,9 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                 _startTime.SetValue(_clock.Seconds);
 
                 var scalingFactor = Math.Exp(-_alpha * (_startTime.GetValue() - oldStartTime));
-                var newSamples = new Dictionary<double, WeightedSample>(_values.Count);
+                var newSamples = new Dictionary<double, WeightedSample>(ValuesCollection.Count);
 
-                foreach (var keyValuePair in _values)
+                foreach (var keyValuePair in ValuesCollection)
                 {
                     var sample = keyValuePair.Value;
 
@@ -325,12 +299,14 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
                     newSamples[newKey] = newSample;
                 }
 
-                _values = new SortedList<double, WeightedSample>(newSamples, ReverseOrderDoubleComparer.Instance);
-                _values.Capacity = _sampleSize;
+                ValuesCollection = new SortedList<double, WeightedSample>(newSamples, ReverseOrderDoubleComparer.Instance)
+                {
+                    Capacity = _sampleSize
+                };
 
                 // make sure the counter is in sync with the number of stored samples.
-                _count.SetValue(_values.Count);
-                _sum.SetValue(_values.Values.Sum(sample => sample.Value));
+                Count.SetValue(ValuesCollection.Count);
+                Sum.SetValue(ValuesCollection.Values.Sum(sample => sample.Value));
             }
             finally
             {
@@ -347,9 +323,9 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
         private void ResetReservoir()
         {
             Logger.Trace("Resetting {Reservoir}", this);
-            _values.Clear();
-            _count.SetValue(0L);
-            _sum.SetValue(0.0);
+            ValuesCollection.Clear();
+            Count.SetValue(0L);
+            Sum.SetValue(0.0);
             _startTime.SetValue(_clock.Seconds);
             Logger.Trace("{Reservoir} reset", this);
         }
@@ -384,22 +360,22 @@ namespace App.Metrics.ReservoirSampling.ExponentialDecay
 
                 Logger.Trace("Lock entered for reservoir update");
 
-                var newCount = _count.GetValue();
+                var newCount = Count.GetValue();
                 newCount++;
-                _count.SetValue(newCount);
-                _sum.Add(value);
+                Count.SetValue(newCount);
+                Sum.Add(value);
 
                 if (newCount <= _sampleSize)
                 {
-                    _values[priority] = sample;
+                    ValuesCollection[priority] = sample;
                 }
                 else
                 {
-                    var first = _values.Keys[_values.Count - 1];
+                    var first = ValuesCollection.Keys[ValuesCollection.Count - 1];
                     if (first < priority)
                     {
-                        _values.Remove(first);
-                        _values[priority] = sample;
+                        ValuesCollection.Remove(first);
+                        ValuesCollection[priority] = sample;
                     }
                 }
             }

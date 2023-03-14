@@ -4,6 +4,7 @@
 
 using System.Linq;
 using System.Reflection;
+using App.Metrics.Concurrency;
 using App.Metrics.ReservoirSampling.SlidingWindow;
 using App.Metrics.ReservoirSampling.Uniform;
 using FluentAssertions;
@@ -78,7 +79,7 @@ namespace App.Metrics.Sampling.Facts
                 | BindingFlags.SetField
                 | BindingFlags.NonPublic);
 
-            var field = fields.FirstOrDefault(feildInfo => feildInfo.Name == "_values");
+            var field = fields.FirstOrDefault(feildInfo => feildInfo.Name == "ValuesCollection");
 
             // ReSharper disable PossibleNullReferenceException
             ((UserValueWrapper[])field.GetValue(reservoir)).Length.Should().Be(AppMetricsReservoirSamplingConstants.DefaultSampleSize);
@@ -103,6 +104,19 @@ namespace App.Metrics.Sampling.Facts
             reservoir.GetSnapshot().Should().BeOfType<UniformSnapshot>();
             reservoir.GetSnapshot().Size.Should().Be(0);
             reservoir.GetSnapshot().Values.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void Count_more_than_int32_max_returns_valid_snapshot()
+        {
+            var reservoir = new DefaultSlidingWindowReservoir(0);
+            var countField = typeof(DefaultSlidingWindowReservoir).GetRuntimeFields().Single(x => x.Name == "Count");
+            //Replace Count field of created reservoir with new value - Int64.MaxValue
+            countField.SetValue(reservoir, new AtomicLong(long.MaxValue));
+            
+            var snapshot = reservoir.GetSnapshot();
+            
+            Assert.Equal(0, snapshot.Count);
         }
     }
 }
