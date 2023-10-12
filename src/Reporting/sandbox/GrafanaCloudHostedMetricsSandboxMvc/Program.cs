@@ -24,7 +24,6 @@ namespace GrafanaCloudHostedMetricsSandboxMvc
             var configuration = new ConfigurationBuilder()
                                 .SetBasePath(Directory.GetCurrentDirectory())
                                 .AddJsonFile(path: "appsettings.json", optional: false, reloadOnChange: true)
-                                .AddUserSecrets(typeof(Program).Assembly)
                                 .Build();
 
             var grafanaCloudHostedMetricsOptions = new MetricsReportingHostedMetricsOptions();

@@ -56,7 +56,7 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics.Client
             {
                 var content = new StringContent(payload);
                 content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
-                var response = await _client.PostAsync("/metrics", content, cancellationToken);
+                var response = await _client.PostAsync(_options.RequestPath, content, cancellationToken);
 
                 if (!response.IsSuccessStatusCode)
                 {

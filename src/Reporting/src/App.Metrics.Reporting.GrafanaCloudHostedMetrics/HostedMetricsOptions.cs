@@ -19,6 +19,8 @@ namespace App.Metrics.Reporting.GrafanaCloudHostedMetrics
         }
 
         public Uri BaseUri { get; set; }
+        
+        public string RequestPath { get; set; }
 
         public string ApiKey { get; set; }
     }
