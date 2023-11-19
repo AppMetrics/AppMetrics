@@ -119,7 +119,7 @@ namespace App.Metrics.Formatters.GrafanaCloudHostedMetrics
 
                 jsonWriter.WriteNumber("value", HostedMetricsSyntax.FormatValue(f.Value, metric));
 
-                jsonWriter.WriteNumber("interval", point.FlushInterval.Seconds);
+                jsonWriter.WriteNumber("interval", point.FlushInterval.TotalSeconds);
 
                 // not used yet. but should be one of gauge rate count counter timestamp
                 jsonWriter.WriteString("mtype", "gauge");
