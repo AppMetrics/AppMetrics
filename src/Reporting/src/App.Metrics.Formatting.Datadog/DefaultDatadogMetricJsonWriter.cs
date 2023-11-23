@@ -31,7 +31,7 @@ namespace App.Metrics.Formatting.Datadog
             var utcTimestamp = point.UtcTimestamp ?? DateTime.UtcNow;
 
             tagsDictionary.TryGetValue("mtype", out var metricType);
-            
+
             foreach (var f in point.Fields)
             {
                 jsonWriter.WriteStartObject();
@@ -57,21 +57,21 @@ namespace App.Metrics.Formatting.Datadog
                     await metricWriter.WriteAsync(".");
                     await metricWriter.WriteAsync(metricType);
                 }
-                
+
                 await metricWriter.WriteAsync(".");
                 await metricWriter.WriteAsync(f.Key);
 
                 var metric = metricWriter.ToString();
 
                 jsonWriter.WriteString("metric", metric);
-                
+
                 jsonWriter.WriteStartArray("points");
-                
+
                 jsonWriter.WriteStartArray();
                 jsonWriter.WriteNumberValue(DatadogSyntax.FormatTimestamp(utcTimestamp));
                 jsonWriter.WriteNumberValue(DatadogSyntax.FormatValue(f.Value, metric));
                 jsonWriter.WriteEndArray();
-                
+
                 jsonWriter.WriteEndArray();
 
                 var datadogMetricType = DatadogSyntax.FormatMetricType(metricType);
@@ -79,7 +79,7 @@ namespace App.Metrics.Formatting.Datadog
 
                 if (datadogMetricType == DatadogSyntax.Rate || datadogMetricType == DatadogSyntax.Count)
                 {
-                    jsonWriter.WriteNumber("interval", point.FlushInterval.Seconds);
+                    jsonWriter.WriteNumber("interval", point.FlushInterval.TotalSeconds);
                 }
 
                 jsonWriter.WritePropertyName("tags");
