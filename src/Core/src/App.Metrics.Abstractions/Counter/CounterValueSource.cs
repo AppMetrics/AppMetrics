@@ -13,6 +13,7 @@ namespace App.Metrics.Counter
         ///     Initializes a new instance of the <see cref="CounterValueSource" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
+        /// <param name="description">The description.</param>
         /// <param name="value">The value.</param>
         /// <param name="unit">The unit.</param>
         /// <param name="tags">The tags.</param>
@@ -26,8 +27,9 @@ namespace App.Metrics.Counter
             MetricTags tags,
             bool resetOnReporting = false,
             bool reportItemPercentages = true,
-            bool reportSetItems = true)
-            : base(name, value, unit, tags, resetOnReporting)
+            bool reportSetItems = true,
+            string description = "")
+            : base(name, value, unit, tags, resetOnReporting, description)
         {
             ReportItemPercentages = reportItemPercentages;
             ReportSetItems = reportSetItems;

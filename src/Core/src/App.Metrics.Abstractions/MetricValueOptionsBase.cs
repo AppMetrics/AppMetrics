@@ -9,7 +9,11 @@ namespace App.Metrics
     /// </summary>
     public abstract class MetricValueOptionsBase
     {
-        protected MetricValueOptionsBase() { MeasurementUnit = Unit.None; }
+        protected MetricValueOptionsBase()
+        {
+            MeasurementUnit = Unit.None;
+            Description = string.Empty;
+        }
 
         /// <summary>
         ///     Gets or sets the context for which the metric belongs e.g. Application.WebRequests
@@ -35,6 +39,14 @@ namespace App.Metrics
         ///     The name.
         /// </value>
         public string Name { get; set; }
+        
+        /// <summary>
+        ///     Gets or sets the description of the Metric being measure />
+        /// </summary>
+        /// <value>
+        ///     The name.
+        /// </value>
+        public string Description { get; set; }
 
         /// <summary>
         ///     Gets or sets the <see cref="MetricTags" /> associated with the metric, this is useful for grouping metrics when

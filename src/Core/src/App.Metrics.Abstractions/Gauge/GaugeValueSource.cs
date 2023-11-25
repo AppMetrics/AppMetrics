@@ -14,8 +14,9 @@ namespace App.Metrics.Gauge
             IMetricValueProvider<double> value,
             Unit unit,
             MetricTags tags,
-            bool restOnReporting = false)
-            : base(name, value, unit, tags, restOnReporting)
+            bool restOnReporting = false,
+            string description = "")
+            : base(name, value, unit, tags, restOnReporting, description)
         {
         }
     }

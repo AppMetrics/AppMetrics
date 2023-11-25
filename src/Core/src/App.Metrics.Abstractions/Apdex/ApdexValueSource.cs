@@ -10,8 +10,9 @@ namespace App.Metrics.Apdex
             string name,
             IMetricValueProvider<ApdexValue> value,
             MetricTags tags,
-            bool resetOnReporting = false)
-            : base(name, value, Unit.Results, tags, resetOnReporting)
+            bool resetOnReporting = false,
+            string description = "")
+            : base(name, value, Unit.Results, tags, resetOnReporting, description)
         {}
     }
 }

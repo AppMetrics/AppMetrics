@@ -16,8 +16,8 @@ namespace App.Metrics.Gauge
         {
             var tags = source.Tags.FromDictionary();
             return source.Value.HasValue
-                ? new GaugeValueSource(source.Name, ConstantValue.Provider(source.Value.Value), source.Unit, tags)
-                : new GaugeValueSource(source.Name, null, source.Unit, tags);
+                ? new GaugeValueSource(source.Name, ConstantValue.Provider(source.Value.Value), source.Unit, tags, description: source.Description)
+                : new GaugeValueSource(source.Name, null, source.Unit, tags, description: source.Description);
         }
 
         public static IEnumerable<GaugeValueSource> FromSerializableMetric(this IEnumerable<GaugeMetric> source)

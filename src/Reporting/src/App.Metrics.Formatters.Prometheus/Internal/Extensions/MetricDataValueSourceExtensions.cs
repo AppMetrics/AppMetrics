@@ -24,7 +24,8 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                     var promMetricFamily = new MetricFamily
                                            {
                                                name = metricNameFormatter(group.Context, metricGroup.Key),
-                                               type = MetricType.GAUGE
+                                               type = MetricType.GAUGE,
+                                               help = ExtractMetricDescription(metricGroup)
                                            };
                     foreach (var metric in metricGroup)
                     {
@@ -40,7 +41,8 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                     var promMetricFamily = new MetricFamily
                                            {
                                                name = metricNameFormatter(group.Context, metricGroup.Key),
-                                               type = MetricType.GAUGE
+                                               type = MetricType.GAUGE,
+                                               help = ExtractMetricDescription(metricGroup)
                                            };
                     foreach (var metric in metricGroup)
                     {
@@ -56,7 +58,8 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                     var promMetricFamily = new MetricFamily
                                            {
                                                name = metricNameFormatter(group.Context, metricGroup.Key),
-                                               type = MetricType.GAUGE
+                                               type = MetricType.GAUGE,
+                                               help = ExtractMetricDescription(metricGroup)
                                            };
 
                     foreach (var metric in metricGroup)
@@ -73,7 +76,8 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                     var promMetricFamily = new MetricFamily
                                            {
                                                name = metricNameFormatter(group.Context, $"{metricGroup.Key}_total"),
-                                               type = MetricType.COUNTER
+                                               type = MetricType.COUNTER,
+                                               help = ExtractMetricDescription(metricGroup)
                                            };
 
                     foreach (var metric in metricGroup)
@@ -90,7 +94,8 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                     var promMetricFamily = new MetricFamily
                                            {
                                                name = metricNameFormatter(group.Context, metricGroup.Key),
-                                               type = MetricType.SUMMARY
+                                               type = MetricType.SUMMARY,
+                                               help = ExtractMetricDescription(metricGroup)
                                            };
 
                     foreach (var timer in metricGroup)
@@ -107,7 +112,8 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                     var promMetricFamily = new MetricFamily
                     {
                         name = metricNameFormatter(group.Context, metricGroup.Key),
-                        type = MetricType.HISTOGRAM
+                        type = MetricType.HISTOGRAM,
+                        help = ExtractMetricDescription(metricGroup)
                     };
 
                     foreach (var timer in metricGroup)
@@ -124,7 +130,8 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                     var promMetricFamily = new MetricFamily
                                            {
                                                name = metricNameFormatter(group.Context, metricGroup.Key),
-                                               type = MetricType.SUMMARY
+                                               type = MetricType.SUMMARY,
+                                               help = ExtractMetricDescription(metricGroup)
                                            };
 
                     foreach (var timer in metricGroup)
@@ -141,7 +148,8 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                     var promMetricFamily = new MetricFamily
                     {
                         name = metricNameFormatter(group.Context, metricGroup.Key),
-                        type = MetricType.HISTOGRAM
+                        type = MetricType.HISTOGRAM,
+                        help = ExtractMetricDescription(metricGroup)
                     };
 
                     foreach (var timer in metricGroup)
@@ -154,6 +162,14 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
             }
 
             return result;
+        }
+
+        private static string ExtractMetricDescription<T>(IEnumerable<MetricValueSourceBase<T>> group)
+        {
+             var description = group
+                .FirstOrDefault(metricGroupItem => !string.IsNullOrWhiteSpace(metricGroupItem.Description))?
+                .Description;
+             return description ?? string.Empty;
         }
     }
 }

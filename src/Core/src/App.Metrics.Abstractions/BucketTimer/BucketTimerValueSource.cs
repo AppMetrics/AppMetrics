@@ -15,8 +15,9 @@ namespace App.Metrics.BucketTimer
             Unit unit,
             TimeUnit rateUnit,
             TimeUnit durationUnit,
-            MetricTags tags)
-            : base(name, new ScaledValueProvider<BucketTimerValue>(value, v => v.Scale(rateUnit, durationUnit)), unit, tags)
+            MetricTags tags,
+            string description = "")
+            : base(name, new ScaledValueProvider<BucketTimerValue>(value, v => v.Scale(rateUnit, durationUnit)), unit, tags, description: description)
         {
             DurationUnit = durationUnit;
             RateUnit = rateUnit;

@@ -142,6 +142,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsInfluxDB2SandboxMvc"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Reporting.InfluxDB2.Facts", "test\App.Metrics.Reporting.InfluxDB2.Facts\App.Metrics.Reporting.InfluxDB2.Facts.csproj", "{C4B12D2E-75D3-4800-B116-77851E4D1A2E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Metrics.Formatters.Prometheus.Facts", "test\App.Metrics.Formatters.Prometheus.Facts\App.Metrics.Formatters.Prometheus.Facts.csproj", "{5E6D167B-E6D1-4853-A54C-DD53CB3416EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -316,6 +318,10 @@ Global
 		{C4B12D2E-75D3-4800-B116-77851E4D1A2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4B12D2E-75D3-4800-B116-77851E4D1A2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4B12D2E-75D3-4800-B116-77851E4D1A2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E6D167B-E6D1-4853-A54C-DD53CB3416EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E6D167B-E6D1-4853-A54C-DD53CB3416EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E6D167B-E6D1-4853-A54C-DD53CB3416EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E6D167B-E6D1-4853-A54C-DD53CB3416EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -382,6 +388,7 @@ Global
 		{8B32FBD8-2F3F-40EF-A672-8E1E9E16148F} = {9D00C681-A88C-450E-B83E-E3BFF942F82A}
 		{74C314BC-394A-4A09-B739-03D4BE86DBB0} = {9D00C681-A88C-450E-B83E-E3BFF942F82A}
 		{C4B12D2E-75D3-4800-B116-77851E4D1A2E} = {3B064A0E-B6B6-41A3-BFC1-F4734E16EBA3}
+		{5E6D167B-E6D1-4853-A54C-DD53CB3416EF} = {DC95E9C9-286C-45D6-BE58-83E3F42DB96D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {492C97B1-706A-4357-B3F7-EFB6AFB1F6C6}
