@@ -4,7 +4,7 @@
 
 using System;
 using System.Linq;
-using App.Metrics.Concurrency;
+using App.Metrics.ReservoirSampling.Abstractions;
 using App.Metrics.ReservoirSampling.Uniform;
 
 // Originally Written by Iulian Margarintescu https://github.com/etishor/Metrics.NET and will retain the same license
@@ -16,28 +16,29 @@ namespace App.Metrics.ReservoirSampling.SlidingWindow
     ///     (or other time unit).
     /// </summary>
     /// <seealso cref="IReservoir" />
-    public sealed class DefaultSlidingWindowReservoir : IReservoir
+    public sealed class DefaultSlidingWindowReservoir : ReservoirBase<UserValueWrapper[]>
     {
-        private readonly UserValueWrapper[] _values;
-        private AtomicLong _count = new AtomicLong(0);
-        private AtomicDouble _sum = new AtomicDouble(0.0);
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultSlidingWindowReservoir" /> class.
         /// </summary>
         public DefaultSlidingWindowReservoir()
-            : this(AppMetricsReservoirSamplingConstants.DefaultSampleSize) { }
+            : this(AppMetricsReservoirSamplingConstants.DefaultSampleSize)
+        {
+        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultSlidingWindowReservoir" /> class.
         /// </summary>
         /// <param name="sampleSize">The number of samples to keep in the sampling reservoir</param>
-        public DefaultSlidingWindowReservoir(int sampleSize) { _values = new UserValueWrapper[sampleSize]; }
+        public DefaultSlidingWindowReservoir(int sampleSize)
+            : base(new UserValueWrapper[sampleSize])
+        {
+        }
 
         /// <inheritdoc cref="IReservoir" />
-        public IReservoirSnapshot GetSnapshot(bool resetReservoir)
+        public override IReservoirSnapshot GetSnapshot(bool resetReservoir)
         {
-            var size = Math.Min((int)_count.GetValue(), _values.Length);
+            int size = Size;
 
             if (size == 0)
             {
@@ -46,7 +47,7 @@ namespace App.Metrics.ReservoirSampling.SlidingWindow
 
             var snapshotValues = new UserValueWrapper[size];
 
-            Array.Copy(_values, snapshotValues, size);
+            Array.Copy(ValuesCollection, snapshotValues, size);
 
             Array.Sort(snapshotValues, UserValueWrapper.Comparer);
 
@@ -54,8 +55,8 @@ namespace App.Metrics.ReservoirSampling.SlidingWindow
             var maxValue = snapshotValues[size - 1].UserValue;
 
             var result = new UniformSnapshot(
-                _count.GetValue(),
-                _sum.GetValue(),
+                Count.GetValue(),
+                Sum.GetValue(),
                 snapshotValues.Select(v => v.Value),
                 true,
                 minValue,
@@ -63,36 +64,30 @@ namespace App.Metrics.ReservoirSampling.SlidingWindow
 
             if (resetReservoir)
             {
-                Array.Clear(_values, 0, snapshotValues.Length);
-                _count.SetValue(0L);
-                _sum.SetValue(0.0);
+                Array.Clear(ValuesCollection, 0, snapshotValues.Length);
+                Count.SetValue(0L);
+                Sum.SetValue(0.0);
             }
 
             return result;
         }
 
-        /// <inheritdoc />
-        public IReservoirSnapshot GetSnapshot() { return GetSnapshot(false); }
-
         /// <inheritdoc cref="IReservoir" />
-        public void Reset()
+        public override void Reset()
         {
-            Array.Clear(_values, 0, _values.Length);
-            _count.SetValue(0L);
-            _sum.SetValue(0.0);
+            Array.Clear(ValuesCollection, 0, ValuesCollection.Length);
+            Count.SetValue(0L);
+            Sum.SetValue(0.0);
         }
 
         /// <inheritdoc cref="IReservoir" />
-        public void Update(long value, string userValue)
+        public override void Update(long value, string userValue)
         {
-            var newCount = _count.Increment();
+            var newCount = Count.Increment();
 
-            _sum.Add(value);
+            Sum.Add(value);
 
-            _values[(int)((newCount - 1) % _values.Length)] = new UserValueWrapper(value, userValue);
+            ValuesCollection[(int)((newCount - 1) % ValuesCollection.Length)] = new UserValueWrapper(value, userValue);
         }
-
-        /// <inheritdoc />
-        public void Update(long value) { Update(value, null); }
     }
 }
