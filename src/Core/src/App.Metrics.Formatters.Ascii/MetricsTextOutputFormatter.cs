@@ -59,7 +59,11 @@ namespace App.Metrics.Formatters.Ascii
 
             var serializer = new MetricSnapshotSerializer();
 
+#if NETSTANDARD2_1
+            await using var streamWriter = new StreamWriter(output, _options.Encoding, bufferSize: 1024, leaveOpen: true);
+#else
             using var streamWriter = new StreamWriter(output, _options.Encoding, bufferSize: 1024, leaveOpen: true);
+#endif
             
             await using var textWriter = new MetricSnapshotTextWriter(
                 streamWriter,
