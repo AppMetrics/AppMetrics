@@ -139,7 +139,10 @@ namespace App.Metrics.Infrastructure
         }
 #else
         // ReSharper disable InconsistentNaming
-        private static string GetFrameworkDescription() { return AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName; }
+        private static string GetFrameworkDescription() {     
+            var attribute = (TargetFrameworkAttribute)Assembly.GetEntryAssembly()?.GetCustomAttribute(typeof(TargetFrameworkAttribute));
+            return attribute?.FrameworkName ?? "Unknown Framework"; 
+        }
         // ReSharper restore InconsistentNaming
 #endif
     }
