@@ -1,5 +1,5 @@
-# App Metrics <img src="https://www.app-metrics.io/images/logo.png" alt="App Metrics" width="50px"/> 
-[![Official Site](https://img.shields.io/badge/site-appmetrics-blue.svg?style=flat-square)](https://www.app-metrics.io/getting-started/) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
+# App Metrics
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
 [![Donate](https://img.shields.io/badge/donorbox-donate-blue.svg)](https://donorbox.org/help-support-appmetrics?recurring=true) 
 
 ## What is App Metrics?
@@ -8,14 +8,11 @@ App Metrics is an open-source and cross-platform .NET library used to record met
 
 App Metrics provides various metric types to measure things such as the rate of requests, counting the number of user logins over time, measure the time taken to execute a database query, measure the amount of free memory and so on. Metrics types supported are Gauges, Counters, Meters, Histograms and Timers and Application Performance Indexes [Apdex](https://www.apdex.org/overview).
 
-`App.Metrics` includes an Exponentially Forward Decaying, Sliding Window and Algorithm R reservoir implementations. For more details on reservoir sampling see the [docs](https://www.app-metrics.io/getting-started/reservoir-sampling/).
+`App.Metrics` includes an Exponentially Forward Decaying, Sliding Window and Algorithm R reservoir implementations.
 
 ### Documentation
 
-- [Getting Started](https://www.app-metrics.io/getting-started/)
-- [ASP.NET Core 2.0](https://www.app-metrics.io/web-monitoring/aspnet-core/)
-- [Reporting](https://www.app-metrics.io/reporting/reporters/)
-- [Sample Applications & Grafana Dashboards](https://www.app-metrics.io/samples/)
+https://github.com/AppMetrics/Docs.V2.Hugo
 
 ## Latest Builds, Packages & Repo Stats
 

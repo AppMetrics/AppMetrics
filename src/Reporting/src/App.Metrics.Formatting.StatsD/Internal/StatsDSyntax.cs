@@ -82,7 +82,7 @@ namespace App.Metrics.Formatting.StatsD.Internal
             }
 
             Logger.Trace(
-                $"Attempted to write metric '{metric}' of type '{v.GetType()}' which is not supported. If found too noisy in logs filter in your log config or filter this from being reported, see https://www.app-metrics.io/getting-started/filtering-metrics/");
+                $"Attempted to write metric '{metric}' of type '{v.GetType()}' which is not supported. If found too noisy in logs filter in your log config or filter this from being reported");
 
             return "0";
         }
