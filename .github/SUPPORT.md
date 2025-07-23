@@ -1,1 +1,1 @@
-Before logging a new issue, please review the [documentation](https://www.app-metrics.io/getting-started/) have a quick read through the [contribution guidlines](https://github.com/alhardy/AppMetrics/blob/main/CONTRIBUTING.md).
+Before logging a new issue, please review the [documentation](https://github.com/AppMetrics/Docs.V2.Hugo) have a quick read through the [contribution guidlines](https://github.com/alhardy/AppMetrics/blob/main/CONTRIBUTING.md).
