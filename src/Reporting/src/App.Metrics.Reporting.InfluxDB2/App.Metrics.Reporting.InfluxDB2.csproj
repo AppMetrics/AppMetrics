@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Description>Provides InfluxDB 2 reporting capability to App Metrics</Description>
+		<TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+		<PackageTags>appmetrics;reporting;influxdb</PackageTags>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="App.Metrics.Abstractions" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\App.Metrics.Reporting.InfluxDB\App.Metrics.Reporting.InfluxDB.csproj" />
+	</ItemGroup>
+
+</Project>
