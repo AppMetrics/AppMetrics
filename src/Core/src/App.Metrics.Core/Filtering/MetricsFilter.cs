@@ -192,11 +192,19 @@ namespace App.Metrics.Filtering
                 isMatch = true;
             }
 
-            if (_tags != null && Array.Exists(_tags.ToArray(), t => sourceTags.Keys.Any(m => m == t.Key)))
+            if (_tags != null)
             {
-                isMatch = true;
-            }
-
+                foreach (var t in _tags.ToArray())
+                {
+                    var matchingKeyIx = Array.IndexOf(sourceTags.Keys, t.Key);
+                    if (matchingKeyIx > -1 && matchingKeyIx == Array.IndexOf(sourceTags.Values, t.Value))
+                    {
+                        isMatch = true;
+                        break;
+                    }
+                }
+            }            
+            
             return isMatch;
         }
     }
