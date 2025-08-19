@@ -54,7 +54,8 @@ namespace App.Metrics.Counter
                 source.Name,
                 ConstantValue.Provider(counterValue),
                 source.Unit,
-                source.Tags.FromDictionary());
+                source.Tags.FromDictionary(),
+                description: source.Description);
         }
 
         public static IEnumerable<CounterValueSource> FromSerializableMetric(this IEnumerable<CounterMetric> source)

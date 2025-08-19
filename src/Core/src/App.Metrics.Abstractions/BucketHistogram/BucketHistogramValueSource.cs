@@ -13,8 +13,9 @@ namespace App.Metrics.BucketHistogram
             string name,
             IMetricValueProvider<BucketHistogramValue> valueProvider,
             Unit unit,
-            MetricTags tags)
-            : base(name, valueProvider, unit, tags)
+            MetricTags tags,
+            string description = "")
+            : base(name, valueProvider, unit, tags, description: description)
         {
         }
     }

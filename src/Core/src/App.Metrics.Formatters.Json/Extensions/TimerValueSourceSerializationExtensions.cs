@@ -57,7 +57,8 @@ namespace App.Metrics.Timer
                 source.Unit,
                 rateUnit,
                 durationUnit,
-                source.Tags.FromDictionary());
+                source.Tags.FromDictionary(),
+                description: source.Description);
         }
         public static BucketTimerValueSource FromSerializableMetric(this BucketTimerMetric source)
         {
@@ -85,7 +86,8 @@ namespace App.Metrics.Timer
                 source.Unit,
                 rateUnit,
                 durationUnit,
-                source.Tags.FromDictionary());
+                source.Tags.FromDictionary(),
+                source.Description);
         }
 
         public static IEnumerable<TimerValueSource> FromSerializableMetric(this IEnumerable<TimerMetric> source)
