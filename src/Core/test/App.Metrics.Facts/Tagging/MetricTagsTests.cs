@@ -311,6 +311,15 @@ namespace App.Metrics.Facts.Tagging
             tags.Values.Should().Equal("machine-1", "machine-2");
         }
 
+        [Fact]
+        public void GetHashCode_does_not_throw_NRE()
+        {
+            Func<int> withKey = () => new MetricTags("tag1", "value1").GetHashCode();
+            Func<int> withKeys = () => new MetricTags(new [] { "tag2" }, new [] { "value2" }).GetHashCode();
+            withKey.Should().NotThrow<NullReferenceException>();
+            withKeys.Should().NotThrow<NullReferenceException>();
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)
