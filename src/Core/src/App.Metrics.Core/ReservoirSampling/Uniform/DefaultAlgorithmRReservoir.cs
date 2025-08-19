@@ -9,6 +9,7 @@
 using System;
 using System.Linq;
 using App.Metrics.Concurrency;
+using App.Metrics.ReservoirSampling.Abstractions;
 
 namespace App.Metrics.ReservoirSampling.Uniform
 {
@@ -29,13 +30,8 @@ namespace App.Metrics.ReservoirSampling.Uniform
     ///     <see cref="IReservoir">reservoir</see> sampling
     /// </remarks>
     /// <seealso cref="IReservoir" />
-    public sealed class DefaultAlgorithmRReservoir : IReservoir
+    public sealed class DefaultAlgorithmRReservoir : ReservoirBase<UserValueWrapper[]>
     {
-        private readonly UserValueWrapper[] _values;
-
-        private AtomicLong _count = new AtomicLong(0);
-        private AtomicDouble _sum = new AtomicDouble(0.0);
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="DefaultAlgorithmRReservoir" /> class.
         /// </summary>
@@ -48,47 +44,26 @@ namespace App.Metrics.ReservoirSampling.Uniform
         ///     Initializes a new instance of the <see cref="DefaultAlgorithmRReservoir" /> class.
         /// </summary>
         /// <param name="sampleSize">The number of samples to keep in the sampling reservoir</param>
-        public DefaultAlgorithmRReservoir(int sampleSize)
+        public DefaultAlgorithmRReservoir(int sampleSize) 
+            : base(new UserValueWrapper[sampleSize])
         {
-            _values = new UserValueWrapper[sampleSize];
         }
-
-        /// <summary>
-        ///     Gets the size.
-        /// </summary>
-        /// <value>
-        ///     The size.
-        /// </value>
-        // ReSharper disable MemberCanBePrivate.Global
-        public int Size
-        {
-            get
-            {
-                var totalCount = _count.GetValue();
-                var bufferCount = _values.Length;
-                if (totalCount <= bufferCount)
-                    // total count will be always lower than int.MaxValue, casting is safe 
-                    return (int) totalCount;
-                return bufferCount;
-            }
-        }
-        // ReSharper restore MemberCanBePrivate.Global
 
         /// <inheritdoc cref="IReservoir" />
-        public IReservoirSnapshot GetSnapshot(bool resetReservoir)
+        public override IReservoirSnapshot GetSnapshot(bool resetReservoir)
         {
-            var size = Size;
+            int size = Size;
 
             if (size == 0) return new UniformSnapshot(0, 0.0, Enumerable.Empty<long>());
 
             var snapshotValues = new UserValueWrapper[size];
 
-            Array.Copy(_values, snapshotValues, size);
+            Array.Copy(ValuesCollection, snapshotValues, size);
 
             if (resetReservoir)
             {
-                _count.SetValue(0L);
-                _sum.SetValue(0.0);
+                Count.SetValue(0L);
+                Sum.SetValue(0.0);
             }
 
             Array.Sort(snapshotValues, UserValueWrapper.Comparer);
@@ -97,25 +72,19 @@ namespace App.Metrics.ReservoirSampling.Uniform
             var maxValue = snapshotValues[size - 1].UserValue;
 
             return new UniformSnapshot(
-                _count.GetValue(),
-                _sum.GetValue(),
+                Count.GetValue(),
+                Sum.GetValue(),
                 snapshotValues.Select(v => v.Value),
                 true,
                 minValue,
                 maxValue);
         }
 
-        /// <inheritdoc />
-        public IReservoirSnapshot GetSnapshot()
-        {
-            return GetSnapshot(false);
-        }
-
         /// <inheritdoc cref="IReservoir" />
-        public void Reset()
+        public override void Reset()
         {
-            _count.SetValue(0L);
-            _sum.SetValue(0.0);
+            Count.SetValue(0L);
+            Sum.SetValue(0.0);
         }
 
         /// <summary>
@@ -141,28 +110,22 @@ namespace App.Metrics.ReservoirSampling.Uniform
         /// </example>
         /// <param name="value">The value to add to the sample set.</param>
         /// <param name="userValue">The user value to track, which records the last, min and max user values within the sample.</param>
-        public void Update(long value, string userValue)
+        public override void Update(long value, string userValue)
         {
-            var c = _count.Increment();
+            var c = Count.Increment();
 
-            _sum.Add(value);
+            Sum.Add(value);
 
-            if (c <= _values.Length)
+            if (c <= ValuesCollection.Length)
             {
-                _values[(int) c - 1] = new UserValueWrapper(value, userValue);
+                ValuesCollection[(int) c - 1] = new UserValueWrapper(value, userValue);
             }
             else
             {
                 var r = ThreadLocalRandom.NextLong(c);
 
-                if (r < _values.Length) _values[(int) r] = new UserValueWrapper(value, userValue);
+                if (r < ValuesCollection.Length) ValuesCollection[(int) r] = new UserValueWrapper(value, userValue);
             }
-        }
-
-        /// <inheritdoc />
-        public void Update(long value)
-        {
-            Update(value, null);
         }
     }
 }
